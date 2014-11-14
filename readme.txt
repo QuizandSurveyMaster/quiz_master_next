@@ -104,6 +104,11 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 
 == Changelog ==
 
+= 3.3.3 (November 14, 2014) =
+ * Minor Backend Change To Quiz Validation
+ * Disabled Enter Key On Quiz
+ * Minor Bug Fixes
+
 = 3.3.2 (October 26, 2014) =
  * Minor Design Change To Quiz Options
 
@@ -518,6 +523,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.3.3 =
+Upgrade for minor bug fixes.
 
 = 3.3.1 =
 Upgrade for new Horizontal Multiple Response question type and to be able to duplicate questions when duplicating quizzes. Also, fixes several major and minor bugs.
