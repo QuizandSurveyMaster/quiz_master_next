@@ -116,6 +116,15 @@ function mlw_quiz_shortcode($atts)
    			 $j( ".mlw_qmn_quiz" ).tooltip();
  		});
 		}, 100);
+		setTimeout(function()
+		{
+			var $j = jQuery.noConflict();
+			$j('.mlw_qmn_quiz input').on('keypress', function (e) {
+				if (e.which === 13) {
+					e.preventDefault();
+				}
+			});
+		}, 100);
 	</script>
  	<style type="text/css">
  		.ui-tooltip
