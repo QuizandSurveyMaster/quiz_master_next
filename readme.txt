@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.0
-Stable tag: 3.3.3
+Stable tag: 3.4.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -52,6 +52,9 @@ The plugin will **save** the results, the user's answers, the user's comments, a
 * Able to set up time limits on the quiz
 * And **Much** More...
 
+= Make Suggestions Or Contribute =
+Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
+
 = Quiz Master Next Add-ons =
 While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer vaious extra features and support available in our [Wordpress Store](http://mylocalwebstop.com/shop/)
 
@@ -75,9 +78,6 @@ We now offer an installation service to assist you in this process. We will inst
 
 
 == Frequently Asked Questions ==
-
-= What does the option do on that page? =
-On each page, there is a "?" next to the page title. Clicking on it will bring up a small help window that will assist you on that page.
 
 = How do you use that feature? =
 We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://mylocalwebstop.com/plugin-documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
@@ -103,6 +103,16 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.4.1 (November 20, 2014) =
+ * Added Preview Mode (Beta)
+ * Several Design Changes To Quizzes Page
+ * Minor Design Changes To Quiz Settings Page
+ * Added Completion Time To Quiz Results Page
+ * Added Time Taken To Quiz Result Details Page
+ * Created New Hook On Quiz Settings Page
+ * Broke Apart Quiz Settings Backend Into Smaller Functions That Hook Into New Hook
+ * Created New Backend Alert Manager Class To Replace Archaic Old Error System
 
 = 3.3.3 (November 14, 2014) =
  * Minor Backend Change To Quiz Validation
@@ -523,6 +533,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.4.1 =
+Upgrade for new preview mode, many design changes, and more!
 
 = 3.3.3 =
 Upgrade for minor bug fixes.
