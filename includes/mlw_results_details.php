@@ -134,6 +134,10 @@ EOC;
 				<h2>Quiz Results From <?php echo $mlw_results_data->quiz_name; ?></h2>
 				<table>
 					<tr>
+						<td>Time Taken: </td>
+						<td><?php echo $mlw_results_data->time_taken; ?></td>
+					</tr>
+					<tr>
 						<td>Name Provided: </td>
 						<td><?php echo $mlw_results_data->name; ?></td>
 					</tr>
