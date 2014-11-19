@@ -89,28 +89,36 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.3</a>
+			What&#8217;s New In 3.4</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Duplicate Questions With Quizzes</h2>
-	<p style="text-align: center;">You can now duplicate your questions with your quizzes when duplicating!</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Preview Mode</h2>
+	<p style="text-align: center;">You can now preview your quiz while in the admin side by going to the new Preview tab on the Quiz Settings page!</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Question Type</h2>
-	<p style="text-align: center;">You can now use the new Horizontal Multiple Response type to have your multiple reponse check boxes go horizontally instead of vertically.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Design Changes</h2>
+	<p style="text-align: center;">This version made several design changes to various pages as we continue to redesign our plugin. We also made many design changes in our code!</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
+	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Our Premium Add-Ons!</h2>
 	<p style="text-align: center;">We have several new premium add-ons in our WordPress Store: MailPoet Integration (subscribes users to your MailPoet list), MailChimp Integration (subscribes users to your Mailchimp list), Export Results (exports your quiz results), Extra Shortcodes (gives you extra shortcodes to use), User Dashboard (allow users to see the results from all the quizzes they have taken), and Advertisement Be Gone (gets rid of blue-border ads). Visit our <a href="http://mylocalwebstop.com/shop/">WordPress Store</a> for details! </p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (November 14, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (November 20, 2014)</h3>
 	<ul>
-		<li>* Minor Backend Change To Quiz Validation</li>
-		<li>* Disabled Enter Key On Quiz</li>
-		<li>* Minor Bug Fixes</li>
+		<li>* Added Preview Mode (Beta)</li>
+		<li>* Several Design Changes To Quizzes Page</li>
+		<li>* Minor Design Changes To Quiz Settings Page</li>
+		<li>* Added Completion Time To Quiz Results Page</li>
+		<li>* Added Time Taken To Quiz Result Details Page</li>
+		<li>* Created New Hook On Quiz Settings Page</li>
+		<li>* Broke Apart Quiz Settings Backend Into Smaller Functions That Hook Into New Hook</li>
+		<li>* Created New Backend Alert Manager Class To Replace Archaic Old Error System</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
