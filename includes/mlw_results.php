@@ -148,6 +148,19 @@ function mlw_generate_quiz_results()
 	foreach($mlw_quiz_data as $mlw_quiz_info) {
 		if($alternate) $alternate = "";
 		else $alternate = " class=\"alternate\"";
+		$mlw_complete_time = '';
+		$mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);
+		if (is_array($mlw_qmn_results_array))
+		{
+			$mlw_complete_minutes = floor($mlw_qmn_results_array[0] / 60);
+			if ($mlw_complete_minutes > 0)
+			{
+				$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+			}
+			$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+			$mlw_complete_time .=  "$mlw_complete_seconds seconds";
+		}
+		
 		$quotes_list .= "<tr{$alternate}>";
 		$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=mlw_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
@@ -163,6 +176,7 @@ function mlw_generate_quiz_results()
 		{
 			$quotes_list .= "<td><span style='font-size:16px;'>Not Graded</span></td>";
 		}
+		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time ."</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name ."</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email ."</span></td>";
@@ -198,6 +212,7 @@ function mlw_generate_quiz_results()
 			<th>Actions</th>
 			<th>Quiz Name</th>
 			<th>Score</th>
+			<th>Time To Complete</th>
 			<th>Name</th>
 			<th>Business</th>
 			<th>Email</th>
