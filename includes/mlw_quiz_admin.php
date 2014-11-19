@@ -387,29 +387,7 @@ function mlw_generate_quiz_admin()
 		// increase the default animation speed to exaggerate the effect
 		$j.fx.speeds._default = 1000;
 		$j(function() {
-			$j('#dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#opener').click(function() {
-				$j('#dialog').dialog('open');
-				return false;
-		}	);
-		});
-		$j(function() {
 			$j("#prev_page, #next_page").button();
-		    $j("#new_quiz_button, #new_quiz_button_two").button({
-		      icons: {
-		        primary: "ui-icon-circle-plus"
-		      }
-		    });		
 		});
 		$j(function() {
 			$j('#new_quiz_dialog').dialog({
@@ -490,9 +468,23 @@ function mlw_generate_quiz_admin()
 		cursor:hand;
 		}
 	</style>
+	<style>
+		.linkOptions
+		{
+			font-size: 14px !important;
+		}
+		.linkDelete
+		{
+			color: red !important;
+		}
+		.linkOptions:hover
+		{
+			background-color: black;
+		}
+	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
-	<h2>Quizzes<a id="opener" href="">(?)</a></h2>
+	<h2>Quizzes<a id="new_quiz_button" href="javascript:();" class="add-new-h2">Add New</a></h2>
 	<?php if ($hasCreatedQuiz)
 		{
 	?>
@@ -541,7 +533,6 @@ function mlw_generate_quiz_admin()
 	<?php
 		}
 	?>
-	<button id="new_quiz_button_two">Create New Quiz</button>
 	<?php 
 	$quotes_list = "";
 	$display = "";
@@ -551,7 +542,8 @@ function mlw_generate_quiz_admin()
 		else $alternate = " class=\"alternate\"";
 		$quotes_list .= "<tr{$alternate}>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
-		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>(Edit Name)</a></span><div><span style='color:green;font-size:12px;'><a href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a> | <a href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='#' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a></span></div></td>";
+		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
+		$quotes_list .= "<div class=\"row-actions\"><a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a> | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>Delete</a></div></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_views . "</span></td>";
@@ -607,9 +599,6 @@ function mlw_generate_quiz_admin()
 		$display .= "</table>";
 	echo $display;
 	?>
-
-	<button id="new_quiz_button">Create New Quiz</button>
-	
 	<?php echo mlw_qmn_show_adverts(); ?>
 	<!--Dialogs-->
 	
@@ -685,17 +674,6 @@ function mlw_generate_quiz_admin()
 	?>
 	</div>
 	
-	<!--Help Dialog-->
-	<div id="dialog" title="Help" style="display:none;">
-	<h3><b>Help</b></h3>
-	<p>This page shows all of the quizzes currently on your website.</p>
-	<p>The table shows the quiz id, the name of your quiz, the shortcode to use on your post or page to add the quiz, the shortcode to use on your post or page to add the leaderboard, the amount of views the quiz has had, and the amount of times the quiz was finished</p>
-	<p>To create a new quiz, click the Create New Quiz button and fill out the name.</p>
-	<p>To edit a quiz, click the Edit link underneath the name of the quiz.</p>
-	<p>To edit a quiz's name, click the Edit Name link next to the name of the quiz.</p>
-	<p>To delete a quiz, click the Delete link underneath the name of the quiz.</p>
-	<p>To view the results of a quiz, click the Results link underneath the name of the quiz.</p>
-	</div>	
 	</div>
 	</div>
 <?php
