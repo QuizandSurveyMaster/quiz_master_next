@@ -185,8 +185,16 @@ EOC;
 					}
 					else
 					{
+						$mlw_complete_time = '';
+						$mlw_complete_minutes = floor($mlw_qmn_results_array[0] / 60);
+						if ($mlw_complete_minutes > 0)
+						{
+							$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+						}
+						$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+						$mlw_complete_time .=  "$mlw_complete_seconds seconds";
 						?>
-						This quiz was completed in <?php echo $mlw_qmn_results_array[0]; ?> seconds.<br />
+						This quiz was completed in <?php echo $mlw_complete_time; ?>.<br />
 						<br />
 						The comments entered into the comment box (if enabled):<br />
 						<?php echo $mlw_qmn_results_array[2]; ?><br />
