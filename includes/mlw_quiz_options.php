@@ -8,33 +8,152 @@ Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 
 function mlw_generate_quiz_options()
 {
-	$quiz_id = $_GET["quiz_id"];
 	global $wpdb;
-	$table_name = $wpdb->prefix . "mlw_questions";
-	$is_new_quiz = 0;
-	$hasUpdatedLeaderboardOptions = false;
-	$hasCreatedQuestion = false;
-	$hasUpdatedOptions = false;
-	$hasUpdatedTemplates = false;
-	$hasDeletedQuestion = false;
-	$hasDuplicatedQuestion = false;
-	$hasUpdatedQuestion = false;
-	$mlw_UpdatedCertificate = false;
-	$mlw_hasResetQuizStats = false;
-	$mlw_hasAddedLanding = false;
-	$mlw_hasSavedLanding = false;
-	$mlw_hasAddedEmail = false;
-	$mlw_hasSavedEmail = false;
-	$mlw_hasSavedStyle = false;
-	$mlw_qmn_isQueryError = false;
-	$mlw_qmn_error_code = '0000';
-	
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}	
+	?>
+	<!-- css -->
+	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
+	<!-- jquery scripts -->
+	<?php
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-dialog' );
+	wp_enqueue_script( 'jquery-ui-button' );
+	wp_enqueue_script( 'jquery-ui-accordion' );
+	wp_enqueue_script( 'jquery-ui-tooltip' );
+	wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'jquery-effects-blind' );
+	wp_enqueue_script( 'jquery-effects-explode' );
+	?>
+	<script type="text/javascript">
+		var $j = jQuery.noConflict();
+		// increase the default animation speed to exaggerate the effect
+		$j.fx.speeds._default = 1000;
+		$j(function() {
+			$j("button").button();
+			$j( "#tabs" ).tabs();
+		});
+	</script>
+	<style>
+		.mlw_tab_content
+		{
+			padding: 20px 20px 20px 20px;
+			margin: 20px 20px 20px 20px;
+		}
+	</style>
+	<div class="wrap">
+	<div class='mlw_quiz_options'>
+	<h2>Quiz Settings For <?php echo $mlw_quiz_options->quiz_name; ?></h2>
+	<?php
+	ob_start();
 	if ($quiz_id != "")
 	{
-	/*
-	Code for quiz questions tab
-	*/
+	?>
+	<div id="tabs">
+		<ul>
+			<?php do_action('mlw_qmn_options_tab'); ?>
+		</ul>
+		<?php do_action('mlw_qmn_options_tab_content'); ?>
+  		
+	</div>
+	<?php
+	}
+	else
+	{
+		?>
+		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+		<strong>Hey!</strong> Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.</p
+		</div>
+		<?php
+	}
+	$mlw_output = ob_get_contents();
+	ob_end_clean();
+	$mlwQmnAlertManager->showAlerts();
+	echo $mlw_output;
+	?>
+	
+	<?php echo mlw_qmn_show_adverts(); ?>
+	</div>
+	</div>
+<?php
+}
 
+add_action('mlw_qmn_options_tab', 'mlw_options_questions_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_text_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_option_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_leaderboard_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_certificate_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_emails_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_results_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_styling_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_tools_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_preview_tab');
+
+function mlw_options_questions_tab()
+{
+	echo "<li><a href=\"#tabs-1\">Questions</a></li>";
+}
+function mlw_options_text_tab()
+{
+	echo "<li><a href=\"#tabs-2\">Text</a></li>";
+}
+function mlw_options_option_tab()
+{
+	echo "<li><a href=\"#tabs-3\">Options</a></li>";
+}
+function mlw_options_leaderboard_tab()
+{
+	echo "<li><a href=\"#tabs-4\">Leaderboard</a></li>";
+}
+function mlw_options_certificate_tab()
+{
+	echo "<li><a href=\"#tabs-5\">Certificate (Beta)</a></li>";
+}
+function mlw_options_emails_tab()
+{
+	echo "<li><a href=\"#tabs-9\">Emails</a></li>";
+}
+function mlw_options_results_tab()
+{
+	echo "<li><a href=\"#tabs-6\">Results Page</a></li>";
+}
+function mlw_options_styling_tab()
+{
+	echo "<li><a href=\"#tabs-7\">Styling</a></li>";
+}
+function mlw_options_tools_tab()
+{
+	echo "<li><a href=\"#tabs-8\">Tools/Add-Ons</a></li>";
+}
+function mlw_options_preview_tab()
+{
+	echo "<li><a href=\"#tabs-preview\">Preview (Beta)</a></li>";
+}
+
+add_action('mlw_qmn_options_tab_content', 'mlw_options_questions_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_text_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_option_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_leaderboard_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_certificate_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_emails_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_results_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_styling_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_tools_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
+
+function mlw_options_questions_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	
 	//Edit question
 	if ( isset($_POST["edit_question"]) && $_POST["edit_question"] == "confirmation")
 	{
@@ -83,7 +202,7 @@ function mlw_generate_quiz_options()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$hasUpdatedQuestion = true;
+			$mlwQmnAlertManager->newAlert('The question has been updated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -96,8 +215,7 @@ function mlw_generate_quiz_options()
 		}
 		else
 		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0004';
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0004.', 'error');
 		}
 	}
 
@@ -112,7 +230,7 @@ function mlw_generate_quiz_options()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$hasDeletedQuestion = true;
+			$mlwQmnAlertManager->newAlert('The question has been deleted successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -125,8 +243,7 @@ function mlw_generate_quiz_options()
 		}
 		else
 		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0002';
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0005.', 'error');
 		}
 	}
 	
@@ -195,7 +312,7 @@ function mlw_generate_quiz_options()
 		
 		if ($results != false)
 		{
-			$hasDuplicatedQuestion = true;
+			$mlwQmnAlertManager->newAlert('The question has been duplicated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -208,8 +325,7 @@ function mlw_generate_quiz_options()
 		}
 		else
 		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0019';
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0019.', 'error');
 		}
 	}
 	
@@ -252,7 +368,7 @@ function mlw_generate_quiz_options()
 		$results = $wpdb->query( $insert );
 		if ($results != false)
 		{
-			$hasCreatedQuestion = true;
+			$mlwQmnAlertManager->newAlert('The question has been created successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -265,39 +381,538 @@ function mlw_generate_quiz_options()
 		}
 		else
 		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0006';
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0006.', 'error');
 		}
 	}
-
-	//Get table of questions for this quiz
-	if ($quiz_id != "")
+	
+	if (isset($_GET["quiz_id"]))
 	{
-		global $wpdb;
-		$mlw_qmn_table_limit = 10;
-		$mlw_qmn_question_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(question_id) FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'", $quiz_id ) );
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+
+	$mlw_qmn_table_limit = 10;
+	$mlw_qmn_question_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(question_id) FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'", $quiz_id ) );
+	
+	if( isset($_GET{'mlw_question_page'} ) )
+	{
+	   $mlw_qmn_question_page = $_GET{'mlw_question_page'} + 1;
+	   $mlw_qmn_question_begin = $mlw_qmn_table_limit * $mlw_qmn_question_page ;
+	}
+	else
+	{
+	   $mlw_qmn_question_page = 0;
+	   $mlw_qmn_question_begin = 0;
+	}
+	$mlw_qmn_question_left = $mlw_qmn_question_count - ($mlw_qmn_question_page * $mlw_qmn_table_limit);
+	
+	$mlw_question_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0' 
+		ORDER BY question_order ASC LIMIT %d, %d", $quiz_id, $mlw_qmn_question_begin, $mlw_qmn_table_limit ) );
 		
-		if( isset($_GET{'mlw_question_page'} ) )
+	//Load and prepare answer arrays
+	$mlw_qmn_answer_arrays = array();
+	foreach($mlw_question_data as $mlw_question_info) {
+		$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
+		if ( !is_array($mlw_qmn_answer_array_each) )
 		{
-		   $mlw_qmn_question_page = $_GET{'mlw_question_page'} + 1;
-		   $mlw_qmn_question_begin = $mlw_qmn_table_limit * $mlw_qmn_question_page ;
+			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
+			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
+			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
+				array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
+				array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
+				array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
+				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
+				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
+				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
 		}
 		else
 		{
-		   $mlw_qmn_question_page = 0;
-		   $mlw_qmn_question_begin = 0;
+			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
 		}
-		$mlw_qmn_question_left = $mlw_qmn_question_count - ($mlw_qmn_question_page * $mlw_qmn_table_limit);
-		
-		$mlw_question_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0' 
-			ORDER BY question_order ASC LIMIT %d, %d", $quiz_id, $mlw_qmn_question_begin, $mlw_qmn_table_limit ) );
-		$is_new_quiz = $wpdb->num_rows;
 	}
+	$is_new_quiz = $wpdb->num_rows;
+	?>
+	<div id="tabs-1" class="mlw_tab_content">
+		<script>
+			$j(function() {
+				$j("#prev_page, #next_page, #new_answer_button").button();
+			});
+			 
+			jQuery(function() {
+				jQuery('#new_question_dialog').dialog({
+					autoOpen: false,
+					show: 'blind',
+					width:800,
+					hide: 'explode',
+					buttons: {
+					Cancel: function() {
+						jQuery(this).dialog('close');
+						}
+					}
+				});
+			
+				jQuery('#new_question_button').click(function() {
+					jQuery('#new_question_dialog').dialog('open');
+					document.getElementById("question_name").focus();
+					return false;
+			}	);
+				jQuery('#new_question_button_two').click(function() {
+					jQuery('#new_question_dialog').dialog('open');
+					document.getElementById("question_name").focus();
+					return false;
+			}	);
+			});
+			function deleteQuestion(id){
+				jQuery("#delete_dialog").dialog({
+					autoOpen: false,
+					show: 'blind',
+					hide: 'explode',
+					buttons: {
+					Cancel: function() {
+						jQuery(this).dialog('close');
+						}
+					}
+				});
+				jQuery("#delete_dialog").dialog('open');
+				var idText = document.getElementById("delete_question_id");
+				var idHidden = document.getElementById("question_id");
+				idText.innerHTML = id;
+				idHidden.value = id;		
+			};
+			function duplicateQuestion(id){
+				jQuery("#duplicate_dialog").dialog({
+					autoOpen: false,
+					show: 'blind',
+					hide: 'explode',
+					buttons: {
+					Cancel: function() {
+						jQuery(this).dialog('close');
+						}
+					}
+				});
+				jQuery("#duplicate_dialog").dialog('open');
+				var idHidden = document.getElementById("duplicate_question_id");
+				idHidden.value = id;		
+			};
+			function editQuestion(id){
+				jQuery("#edit_question_dialog_"+id).dialog({
+					autoOpen: false,
+					show: 'blind',
+					width:800,
+					hide: 'explode',
+					buttons: {
+					Cancel: function() {
+						jQuery(this).dialog('close');
+						}
+					}
+				});
+				jQuery("#edit_question_dialog_"+id).dialog('open');
+			};
+			function mlw_add_new_question(id)
+			{
+				var total_answers = parseFloat(document.getElementById("question_"+id+"_answer_total").value);
+				total_answers = total_answers + 1;
+				document.getElementById("question_"+id+"_answer_total").value = total_answers;
+				jQuery("#question_"+id+"_answers").append("<tr valign='top'><td><span style='font-weight:bold;'>Answer "+total_answers+"</span></td><td><input type='text' name='edit_answer_"+total_answers+"' id='edit_answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='edit_answer_"+total_answers+"_points' id='edit_answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='edit_answer_"+total_answers+"_correct' name='edit_answer_"+total_answers+"_correct' value=1 /></td></tr>");
+			}
+			function mlw_add_answer_to_new_question()
+			{
+				var total_answers = parseFloat(document.getElementById("new_question_answer_total").value);
+				total_answers = total_answers + 1;
+				document.getElementById("new_question_answer_total").value = total_answers;
+				jQuery("#new_question_answers").append("<tr valign='top'><td><span style='font-weight:bold;'>Answer "+total_answers+"</span></td><td><input type='text' name='answer_"+total_answers+"' id='answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='answer_"+total_answers+"_points' id='answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='answer_"+total_answers+"_correct' name='answer_"+total_answers+"_correct' value=1 /></td></tr>");
+			}
+		</script>
+		<style>
+			.linkOptions
+			{
+				color: #0074a2 !important;
+				font-size: 14px !important;
+			}
+			.linkDelete
+			{
+				color: red !important;
+				font-size: 14px !important;
+			}
+			.linkOptions:hover,
+			.linkDelete:hover
+			{
+				background-color: black;
+			}
+		</style>
+		<button id="new_question_button_two">Add Question</button>
+		<br />
+		<?php
+		$question_list = "";
+		$display = "";
+		$alternate = "";
+		foreach($mlw_question_data as $mlw_question_info) {
+			$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
+			if (!is_array($mlw_question_settings)) {
+				$mlw_question_settings = array();
+				$mlw_question_settings['required'] = 1;
+			}
+			$mlw_question_type_text = "";
+			switch ($mlw_question_info->question_type) {
+				case 0:
+					$mlw_question_type_text = "Multiple Choice";
+					break;
+				case 1:
+					$mlw_question_type_text = "Horizontal Multiple Choice";
+					break;
+				case 2:
+					$mlw_question_type_text = "Drop Down";
+					break;
+				case 3:
+					$mlw_question_type_text = "Small Open Answer";
+					break;
+				case 4:
+					$mlw_question_type_text = "Multiple Response";
+					break;
+				case 5:
+					$mlw_question_type_text = "Large Open Answer";
+					break;
+				case 6:
+					$mlw_question_type_text = "Text Block";
+					break;
+				case 7:
+					$mlw_question_type_text = "Number";
+					break;
+				case 8:
+					$mlw_question_type_text = "Accept";
+					break;
+				case 9:
+					$mlw_question_type_text = "Captcha";
+					break;
+				case 10:
+					$mlw_question_type_text = "Horizontal Multiple Response";
+					break;
+				default:
+					$mlw_question_type_text = "Error Code ";
+			}
+			if($alternate) $alternate = "";
+			else $alternate = " class=\"alternate\"";
+			$question_list .= "<tr{$alternate}>";
+			$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->question_order . "</span></td>";
+			$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_type_text . "</span></td>";
+			$question_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_question_info->question_name ."</span><div class='row-actions'><a class='linkOptions' onclick=\"editQuestion('".$mlw_question_info->question_id."')\" href='#'>Edit</a> | <a class='linkOptions' onclick=\"duplicateQuestion('".$mlw_question_info->question_id."')\" href='#'>Duplicate</a>| <a class='linkDelete' onclick=\"deleteQuestion('".$mlw_question_info->question_id."')\" href='#'>Delete</a></div></td>";
+			$question_list .= "</tr>";
+			
+			
+			$mlw_question_answer_array = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
+			?>
+			<div id="edit_question_dialog_<?php echo $mlw_question_info->question_id; ?>" title="Edit Question" style="display:none;">
+			<?php
+			echo "<form action='' method='post'>";
+			echo "<input type='hidden' name='edit_question' value='confirmation' />";
+			echo "<input type='hidden' id='edit_question_id' name='edit_question_id' value='".$mlw_question_info->question_id."' />";
+			echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
+			?>
+			<table class="wide" style="text-align: left; white-space: nowrap;" id="question_<?php echo $mlw_question_info->question_id; ?>_answers" name="question_<?php echo $mlw_question_info->question_id; ?>_answers">
+			<tr>
+			<td><span style='font-weight:bold;'>Question</span></td>
+			<td colspan="3">
+				<textarea name="edit_question_name" id="edit_question_name" style="width: 500px; height: 150px;"><?php echo htmlspecialchars_decode($mlw_question_info->question_name, ENT_QUOTES); ?></textarea>
+			</td>
+			</tr>
+			<tr valign="top">
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			</tr>
+			<tr valign="top">
+			<td>&nbsp;</td>
+			<td><span style='font-weight:bold;'>Answers</span></td>
+			<td><span style='font-weight:bold;'>Points Worth</span></td>
+			<td><span style='font-weight:bold;'>Correct Answer</span></td>
+			</tr>
+			<?php
+			$mlw_answer_total = 0;
+			foreach($mlw_question_answer_array as $mlw_question_answer_each)
+			{
+				$mlw_answer_total = $mlw_answer_total + 1;
+				?>
+				<tr valign="top">
+				<td><span style='font-weight:bold;'>Answer <?php echo $mlw_answer_total; ?></span></td>
+				<td>
+				<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>" id="edit_answer_<?php echo $mlw_answer_total; ?>" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_answer_each[0], ENT_QUOTES)); ?>" style="border-color:#000000;
+					color:#3300CC; 
+					cursor:hand;
+					width: 250px;"/>
+				</td>
+				<td>
+				<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>_points" id="edit_answer_<?php echo $mlw_answer_total; ?>_points" value="<?php echo $mlw_question_answer_each[1]; ?>" style="border-color:#000000;
+					color:#3300CC; 
+					cursor:hand;"/>
+				</td>
+				<td><input type="checkbox" id="edit_answer_<?php echo $mlw_answer_total; ?>_correct" name="edit_answer_<?php echo $mlw_answer_total; ?>_correct" <?php if ($mlw_question_answer_each[2] == 1) { echo 'checked="checked"'; } ?> value=1 /></td>
+				</tr>			
+				<?php
+			}
+			?>
+			</table>
+			<a href="#" id="new_answer_button" onclick="mlw_add_new_question(<?php echo $mlw_question_info->question_id; ?>);">Add New Answer!</a>
+			<br />
+			<br />
+			<table class="wide" style="text-align: left; white-space: nowrap;">
+			<tr>
+				<td><span style='font-weight:bold;'>Correct Answer Info:</span></td>
+				<td colspan="3"><input type="text" name="edit_correct_answer_info" id="edit_correct_answer_info" style="border-color:#000000;
+				color:#3300CC; 
+				cursor:hand;
+				width:550px;" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_info->question_answer_info, ENT_QUOTES)); ?>"/></td>
+			</tr>
+			<tr valign="top">
+			<td><span style='font-weight:bold;'>Hint</span></td>
+			<td colspan="3">
+			<input type="text" name="edit_hint" id="edit_hint" style="border-color:#000000;
+				color:#3300CC; 
+				cursor:hand;
+				width:550px;" value="<?php echo htmlspecialchars_decode($mlw_question_info->hints, ENT_QUOTES); ?>"/>
+			</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr><td>&nbsp;</td></tr>
+			<tr valign="top">
+			<td><span style='font-weight:bold;'>Question Type</span></td>
+			<td colspan="3">
+				<select name="edit_question_type">
+					<option value="0" <?php if ($mlw_question_info->question_type == 0) { echo 'selected="selected"'; } ?>>Normal Multiple Choice (Vertical Radio)</option>
+					<option value="1" <?php if ($mlw_question_info->question_type == 1) { echo 'selected="selected"'; } ?>>Horizontal Multiple Choice (Horizontal Radio)</option>
+					<option value="2" <?php if ($mlw_question_info->question_type == 2) { echo 'selected="selected"'; } ?>>Drop Down (Select)</option>
+					<option value="3" <?php if ($mlw_question_info->question_type == 3) { echo 'selected="selected"'; } ?>>Open Answer (Text Input)</option>
+					<option value="5" <?php if ($mlw_question_info->question_type == 5) { echo 'selected="selected"'; } ?>>Open Answer (Large Text Input)</option>
+					<option value="4" <?php if ($mlw_question_info->question_type == 4) { echo 'selected="selected"'; } ?>>Multiple Response (Checkbox)</option>
+					<option value="10" <?php if ($mlw_question_info->question_type == 10) { echo 'selected="selected"'; } ?>>Horizontal Multiple Response (Checkbox)</option>
+					<option value="6" <?php if ($mlw_question_info->question_type == 6) { echo 'selected="selected"'; } ?>>Text Block</option>
+					<option value="7" <?php if ($mlw_question_info->question_type == 7) { echo 'selected="selected"'; } ?>>Number</option>
+					<option value="8" <?php if ($mlw_question_info->question_type == 8) { echo 'selected="selected"'; } ?>>Accept</option>
+					<option value="9" <?php if ($mlw_question_info->question_type == 9) { echo 'selected="selected"'; } ?>>Captcha</option>
+				</select>
+			</div></td>
+			</tr>
+			<tr valign="top">
+			<td><span style='font-weight:bold;'>Comment Field</span></td>
+			<td colspan="3">
+				<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1" name="edit_comments" value=0 <?php if ($mlw_question_info->comments == 0) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1">Small Text Field</label>
+				<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3" name="edit_comments" value=2 <?php if ($mlw_question_info->comments == 2) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3">Large Text Field</label>
+				<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2" name="edit_comments" value=1 <?php if ($mlw_question_info->comments == 1) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2">None</label>
+			</td>
+			</tr>
+			<tr valign="top">
+			<td><span style='font-weight:bold;'>Question Order</span></td>
+			<td>
+			<input type="number" step="1" min="1" name="edit_question_order" value="<?php echo $mlw_question_info->question_order; ?>" id="edit_question_order" style="border-color:#000000;
+				color:#3300CC; 
+				cursor:hand;"/>
+			</td>
+			</tr>
+			<tr valign="top">
+			<td><span style='font-weight:bold;'>Required?</span></td>
+			<td colspan="3">
+				<select name="edit_required">
+					<option value="0" <?php if ($mlw_question_settings['required'] == 0) { echo 'selected="selected"'; } ?>>Yes</option>
+					<option value="1" <?php if ($mlw_question_settings['required'] == 1) { echo 'selected="selected"'; } ?>>No</option>
+				</select>
+			</div></td>
+			</tr>
+			</table>
+			<p> *Required currently only works on open answer, number, and captcha question types</p>
+			<input type="hidden" name="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" id="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" value="<?php echo $mlw_answer_total; ?>" />
+			<p class='submit'><input type='submit' class='button-primary' value='Edit Question' /></p>
+			</form>
+			</div>	
+			
+			<?php
+		}
+		
+		if( $mlw_qmn_question_page > 0 )
+		{
+			$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
+			$display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\">Previous 10 Questions</a>";
+			if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
+			{
+				$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">Next 10 Questions</a>";
+			}
+		}
+		else if( $mlw_qmn_question_page == 0 )
+		{
+		   if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
+		   {
+				$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">Next 10 Questions</a>";
+		   }
+		}
+		else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
+		{
+		   $mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
+		   $display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\">Previous 10 Questions</a>";
+		}
 
-	/*
-	Code for Quiz Text tab
-	*/
+		$display .= "<table class=\"widefat\">";
+			$display .= "<thead><tr>
+				<th>Question Order</th>
+				<th>Question Type</th>
+				<th>Question</th>
+			</tr></thead>";
+			$display .= "<tbody id=\"the-list\">{$question_list}</tbody>";
+			$display .= "<tfoot><tr>
+				<th>Question Order</th>
+				<th>Question Type</th>
+				<th>Question</th>
+			</tr></tfoot>";
+			$display .= "</table>";
+		echo $display;
+		?>
+		<button id="new_question_button">Add Question</button>
+		<div id="new_question_dialog" title="Create New Question" style="display:none;">
+		
+		<?php
+		echo "<form action='' method='post'>";
+		echo "<input type='hidden' name='create_question' value='confirmation' />";
+		echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
+		?>		
+		<table class="wide" style="text-align: left; white-space: nowrap;" id="new_question_answers" name="new_question_answers">
+		<tr>
+		<td><span style='font-weight:bold;'>Question</span></td>
+		<td colspan="3">
+			<textarea name="question_name" id="question_name" style="width: 500px; height: 150px;"></textarea>
+		</td>
+		</tr>
+		<tr valign="top">
+		<td>&nbsp;</td>
+		<td>&nbsp;</td>
+		</tr>
+		<tr valign="top">
+		<td>&nbsp;</td>
+		<td><span style='font-weight:bold;'>Answers</span></td>
+		<td><span style='font-weight:bold;'>Points Worth</span></td>
+		<td><span style='font-weight:bold;'>Correct Answer</span></td>
+		</tr>
+		<?php
+		$mlw_answer_total = 0;
+		$mlw_answer_total = $mlw_answer_total + 1;
+		?>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Answer <?php echo $mlw_answer_total; ?></span></td>
+		<td>
+		<input type="text" name="answer_<?php echo $mlw_answer_total; ?>" id="answer_<?php echo $mlw_answer_total; ?>" value="" style="border-color:#000000;
+			color:#3300CC; 
+			cursor:hand;
+			width: 250px;"/>
+		</td>
+		<td>
+		<input type="text" name="answer_<?php echo $mlw_answer_total; ?>_points" id="answer_<?php echo $mlw_answer_total; ?>_points" value=0 style="border-color:#000000;
+			color:#3300CC; 
+			cursor:hand;"/>
+		</td>
+		<td><input type="checkbox" id="answer_<?php echo $mlw_answer_total; ?>_correct" name="answer_<?php echo $mlw_answer_total; ?>_correct" checked="checked" value=1 /></td>
+		</tr>
+		</table>
+		<a href="#" id="new_answer_button" onclick="mlw_add_answer_to_new_question();">Add New Answer!</a>
+		<br />
+		<br />
+		<table class="wide" style="text-align: left; white-space: nowrap;">
+		<tr>
+			<td><span style='font-weight:bold;'>Correct Answer Info</span></td>
+			<td colspan="3"><input type="text" name="correct_answer_info" value="" id="correct_answer_info" style="border-color:#000000;
+			color:#3300CC; 
+			cursor:hand;
+			width:550px;"/></td>
+		</tr>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Hint</span></td>
+		<td colspan="3">
+		<input type="text" name="hint" value="" id="hint" style="border-color:#000000;
+			color:#3300CC; 
+			cursor:hand;
+			width:550px;"/>
+		</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Question Type</span></td>
+		<td colspan="3">
+			<select name="question_type">
+				<option value="0" selected="selected">Normal Multiple Choice (Vertical Radio)</option>
+				<option value="1">Horizontal Multiple Choice (Horizontal Radio)</option>
+				<option value="2">Drop Down (Select)</option>
+				<option value="3">Open Answer (Text Input)</option>
+				<option value="5">Open Answer (Large Text Input)</option>
+				<option value="4">Multiple Response (Checkbox)</option>
+				<option value="10">Horizontal Multiple Response (Checkbox)</option>
+				<option value="6">Text Block</option>
+				<option value="7">Number</option>
+				<option value="8">Accept</option>
+				<option value="9">Captcha</option>
+			</select>
+		</div></td>
+		</tr>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Comment Field</span></td>
+		<td colspan="3"><div id="comments">
+			<input type="radio" id="commentsRadio1" name="comments" value=0 /><label for="commentsRadio1">Small Text Field</label>
+			<input type="radio" id="commentsRadio3" name="comments" value=2 /><label for="commentsRadio3">Large Text Field</label>
+			<input type="radio" id="commentsRadio2" name="comments" checked="checked" value=1 /><label for="commentsRadio2">None</label>
+		</div></td>
+		</tr>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Question Order</span></td>
+		<td>
+		<input type="number" step="1" min="1" name="new_question_order" value="1" id="new_question_order" style="border-color:#000000;
+			color:#3300CC; 
+			cursor:hand;"/>
+		</td>
+		</tr>
+		<tr valign="top">
+		<td><span style='font-weight:bold;'>Required?</span></td>
+		<td colspan="3">
+			<select name="required">
+				<option value="0" selected="selected">Yes</option>
+				<option value="1">No</option>
+			</select>
+		</div></td>
+		</tr>
+		</table>
+		<p> *Required currently only works on open answer, number, and captcha question types</p>
+		<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="<?php echo $mlw_answer_total; ?>" />
+		<?php
+		echo "<p class='submit'><input type='submit' class='button-primary' value='Create Question' /></p>";
+		echo "</form>";
+		?>
+		</div>
+		<!--Dialogs-->
+		<div id="delete_dialog" title="Delete Question?" style="display:none;">
+			<h3><b>Are you sure you want to delete Question <span id="delete_question_id"></span>?</b></h3>
+			<?php
+			echo "<form action='' method='post'>";
+			echo "<input type='hidden' name='delete_question' value='confirmation' />";
+			echo "<input type='hidden' id='question_id' name='question_id' value='' />";
+			echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
+			echo "<p class='submit'><input type='submit' class='button-primary' value='Delete Question' /></p>";
+			echo "</form>";	
+			?>
+		</div>
+		
+		<div id="duplicate_dialog" title="Duplicate Question?" style="display:none;">
+			<h3><b>Are you sure you want to duplicate this Question?</b></h3>
+			<?php
+			echo "<form action='' method='post'>";
+			echo "<input type='hidden' name='duplicate_question' value='confirmation' />";
+			echo "<input type='hidden' id='duplicate_question_id' name='duplicate_question_id' value='' />";
+			echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
+			echo "<p class='submit'><input type='submit' class='button-primary' value='Duplicate Question' /></p>";
+			echo "</form>";	
+			?>
+		</div>
+	</div>
+	<?php
+}
 
+function mlw_options_text_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
 	//Submit saved templates into database
 	if ( isset($_POST["save_templates"]) && $_POST["save_templates"] == "confirmation")
 	{
@@ -322,7 +937,7 @@ function mlw_generate_quiz_options()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$hasUpdatedTemplates = true;
+			$mlwQmnAlertManager->newAlert('The templates has been updated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -335,1233 +950,24 @@ function mlw_generate_quiz_options()
 		}
 		else
 		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0007';
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0007.', 'error');
 		}
 	}
 	
-
-	/*
-	Code for Quiz Options tab
-	*/
-
-	//Submit saved options into database
-	if ( isset($_POST["save_options"]) && $_POST["save_options"] == "confirmation")
+	if (isset($_GET["quiz_id"]))
 	{
-		//Variables for save options form
-		$mlw_system = $_POST["system"];
-		$mlw_qmn_pagination = intval($_POST["pagination"]);
-		$mlw_qmn_social_media = intval($_POST["social_media"]);
-		$mlw_qmn_question_numbering = intval($_POST["question_numbering"]);
-		$mlw_qmn_timer = intval($_POST["timer_limit"]);
-		$mlw_qmn_questions_from_total = $_POST["question_from_total"];
-		$mlw_randomness_order = $_POST["randomness_order"];
-		$mlw_total_user_tries = intval($_POST["total_user_tries"]);
-		$mlw_send_user_email = $_POST["sendUserEmail"];
-		$mlw_send_admin_email = $_POST["sendAdminEmail"];
-		$mlw_contact_location = $_POST["contact_info_location"];
-		$mlw_user_name = $_POST["userName"];
-		$mlw_user_comp = $_POST["userComp"];
-		$mlw_user_email = $_POST["userEmail"];
-		$mlw_user_phone = $_POST["userPhone"];
-		$mlw_admin_email = $_POST["adminEmail"];
-		$mlw_comment_section = $_POST["commentSection"];
-		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
-		$quiz_id = $_POST["quiz_id"];
-		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
-		$results = $wpdb->query( $update );
-		if ($results != false)
-		{
-			$hasUpdatedOptions = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Options Have Been Edited For Quiz Number ".$quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0008';
-		}
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	
-	/*
-	Code For Leaderboard Options tab
-	*/
-	
-	///Submit saved leaderboard template into database
-	if ( isset($_POST["save_leaderboard_options"]) && $_POST["save_leaderboard_options"] == "confirmation")
-	{
-		///Variables for save leaderboard options form
-		$mlw_leaderboard_template = $_POST["mlw_quiz_leaderboard_template"];
-		$mlw_leaderboard_quiz_id = $_POST["leaderboard_quiz_id"];
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET leaderboard_template='".$mlw_leaderboard_template."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_leaderboard_quiz_id;
-		$results = $wpdb->query( $update );
-		if ($results != false)
-		{
-			$hasUpdatedLeaderboardOptions = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Leaderboard Options Have Been Edited For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0009';
-		}
-	}
-	
-	/*
-	Code For Certificate Tab
-	*/
-	
-	//Saved Certificate Options
-	if (isset($_POST["save_certificate_options"]) && $_POST["save_certificate_options"] == "confirmation")
-	{
-		$mlw_certificate_id = intval($_POST["certificate_quiz_id"]);
-		$mlw_certificate_title = $_POST["certificate_title"];
-		$mlw_certificate_text = $_POST["certificate_template"];
-		$mlw_certificate_logo = $_POST["certificate_logo"];
-		$mlw_certificate_background = $_POST["certificate_background"];
-		$mlw_enable_certificates = intval($_POST["enableCertificates"]);
-		$mlw_certificate = array($mlw_certificate_title, $mlw_certificate_text, $mlw_certificate_logo, $mlw_certificate_background, $mlw_enable_certificates);
-		$mlw_certificate_serialized = serialize($mlw_certificate);
-		
-		$mlw_certificate_sql_results = $wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "mlw_quizzes SET certificate_template=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_certificate_serialized, $mlw_certificate_id  ) );
-		
-		
-		if ($mlw_certificate_sql_results != false)
-		{
-			$mlw_UpdatedCertificate = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Certificate Options Have Been Edited For Quiz Number ".$mlw_certificate_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0012';
-		}
-	}
-	
-	/*
-	Code For Quiz Emails Tab
-	*/
-	
-	//Check to add new user email template
-	if (isset($_POST["mlw_add_email_page"]) && $_POST["mlw_add_email_page"] == "confirmation")
-	{
-		//Function variables
-		$mlw_qmn_add_email_id = intval($_POST["mlw_add_email_quiz_id"]);
-		$mlw_qmn_user_email = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_add_email_id ) );
-	
-		//Load user email and check if it is array already. If not, turn it into one
-		$mlw_qmn_email_array = @unserialize($mlw_qmn_user_email);
-		if (is_array($mlw_qmn_email_array))
-		{
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
-			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
-			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
-			
-		}
-		else
-		{
-			$mlw_qmn_email_array = array(array(0, 0, $mlw_qmn_user_email, 'Quiz Results For %QUIZ_NAME%'));
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
-			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
-			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
-		}
-		//Update message_after with new array then check to see if worked
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
-		if ($mlw_new_email_results != false)
-		{
-			$mlw_hasAddedEmail = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New User Email Has Been Created For Quiz Number ".$mlw_qmn_add_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0016';
-		}
-	}
-	
-	//Check to save email templates
-	if (isset($_POST["mlw_save_email_template"]) && $_POST["mlw_save_email_template"] == "confirmation")
-	{
-		//Function Variables
-		$mlw_qmn_email_id = intval($_POST["mlw_email_quiz_id"]);
-		$mlw_qmn_email_template_total = intval($_POST["mlw_email_template_total"]);
-		$mlw_qmn_admin_email = htmlspecialchars(stripslashes($_POST["mlw_quiz_admin_email_template"]), ENT_QUOTES);
-		
-		//Create new array
-		$i = 1;
-		$mlw_qmn_new_email_array = array();
-		while ($i <= $mlw_qmn_email_template_total)
-		{
-			if ($_POST["user_email_".$i] != "Delete")
-			{
-				$mlw_qmn_email_each = array(intval($_POST["user_email_begin_".$i]), intval($_POST["user_email_end_".$i]), htmlspecialchars(stripslashes($_POST["user_email_".$i]), ENT_QUOTES), htmlspecialchars(stripslashes($_POST["user_email_subject_".$i]), ENT_QUOTES));
-				$mlw_qmn_new_email_array[] = $mlw_qmn_email_each;
-			}
-			$i++;
-		}
-		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_admin_email, $mlw_qmn_email_id ) );
-		if ($mlw_new_email_results != false)
-		{
-			$mlw_hasSavedEmail = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Email Templates Have Been Saved For Quiz Number ".$mlw_qmn_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0017';
-		}
-	}
-	
-	/*
-	Code For Quiz Results Page Tab
-	*/
-	
-	//Check to add new results page
-	if (isset($_POST["mlw_add_landing_page"]) && $_POST["mlw_add_landing_page"] == "confirmation")
-	{
-		//Function variables
-		$mlw_qmn_landing_id = intval($_POST["mlw_add_landing_quiz_id"]);
-		$mlw_qmn_message_after = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_landing_id ) );
-		//Load message_after and check if it is array already. If not, turn it into one
-		$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
-		if (is_array($mlw_qmn_landing_array))
-		{
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
-			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
-			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
-			
-		}
-		else
-		{
-			$mlw_qmn_landing_array = array(array(0, 0, $mlw_qmn_message_after));
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
-			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
-			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
-		}
-		
-		//Update message_after with new array then check to see if worked
-		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
-		if ($mlw_new_landing_results != false)
-		{
-			$mlw_hasAddedLanding = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Landing Page Has Been Created For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0013';
-		}
-	}
-	
-	//Check to save landing pages
-	if (isset($_POST["mlw_save_landing_pages"]) && $_POST["mlw_save_landing_pages"] == "confirmation")
-	{
-		//Function Variables
-		$mlw_qmn_landing_id = intval($_POST["mlw_landing_quiz_id"]);
-		$mlw_qmn_landing_total = intval($_POST["mlw_landing_page_total"]);
-		
-		//Create new array
-		$i = 1;
-		$mlw_qmn_new_landing_array = array();
-		while ($i <= $mlw_qmn_landing_total)
-		{
-			if ($_POST["message_after_".$i] != "Delete")
-			{
-				$mlw_qmn_landing_each = array(intval($_POST["message_after_begin_".$i]), intval($_POST["message_after_end_".$i]), htmlspecialchars(stripslashes($_POST["message_after_".$i]), ENT_QUOTES));
-				$mlw_qmn_new_landing_array[] = $mlw_qmn_landing_each;
-			}
-			$i++;
-		}
-		$mlw_qmn_new_landing_array = serialize($mlw_qmn_new_landing_array);
-		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
-		if ($mlw_new_landing_results != false)
-		{
-			$mlw_hasSavedLanding = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Landing Pages Have Been Saved For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0014';
-		}
-	}
-	
-	/*
-	Code For Quiz Style Tab
-	*/
-	
-	if (isset($_POST["save_style_options"]) && $_POST["save_style_options"] == "confirmation")
-	{
-		//Function Variables
-		$mlw_qmn_style_id = intval($_POST["style_quiz_id"]);
-		$mlw_qmn_theme = $_POST["save_quiz_theme"];
-		$mlw_qmn_style = htmlspecialchars(stripslashes($_POST["quiz_css"]), ENT_QUOTES);
-		
-		//Save the new css
-		$mlw_save_stle_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_style, $mlw_qmn_theme, $mlw_qmn_style_id ) );
-		if ($mlw_save_stle_results != false)
-		{
-			$mlw_hasSavedStyle = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Styles Have Been Saved For Quiz Number ".$mlw_qmn_style_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0015';
-		}
-	}
-	
-		
-	/*
-	Code For Quiz Tools Tab
-	*/
-	
-	//Update Quiz Table
-	if (isset($_POST["mlw_reset_quiz_stats"]) && $_POST["mlw_reset_quiz_stats"] == "confirmation")
-	{
-		//Variables from reset stats form
-		$mlw_reset_stats_quiz_id = $_POST["mlw_reset_quiz_id"];
-		$mlw_reset_update_sql = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views=0, quiz_taken=0, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_reset_stats_quiz_id;
-		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
-		if ($mlw_reset_sql_results != false)
-		{
-			$mlw_hasResetQuizStats = true;
-			
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
-		}
-		else
-		{
-			$mlw_qmn_isQueryError = true;
-			$mlw_qmn_error_code = '0010';
-		}
-	}
-
-
-	/*
-	Code to load entire page
-	*/
-
-	//Load all quiz data
-	if ($quiz_id != "")
-	{
-		$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=".$quiz_id;
-		$mlw_quiz_options = $wpdb->get_results($sql);
-	
-		foreach($mlw_quiz_options as $testing) {
-			$mlw_quiz_options = $testing;
-			break;
-		}
-	}
-	
-	//Load and prepare answer arrays
-	$mlw_qmn_answer_arrays = array();
-	foreach($mlw_question_data as $mlw_question_info) {
-		$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-		if ( !is_array($mlw_qmn_answer_array_each) )
-		{
-			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
-			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
-				array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
-				array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
-				array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
-				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
-				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
-				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
-		}
-		else
-		{
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
-		}
-	}
-	
-	
-	//Load Certificate Options Variables
-	$mlw_certificate_options = @unserialize($mlw_quiz_options->certificate_template);
-	if (!is_array($mlw_certificate_options)) {
-        // something went wrong, initialize to empty array
-        $mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
-    }
-    
-    
-    //Load Email Templates
-    $mlw_qmn_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
-	if (!is_array($mlw_qmn_user_email_array)) {
-        // something went wrong, initialize to empty array
-        $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
-    }
-    
-    //Load Landing Pages
-    $mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
-	if (!is_array($mlw_message_after_array)) {
-        // something went wrong, initialize to empty array
-        $mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
-    }
-    
-    //Load Pagination Text
+	//Load Pagination Text
     $mlw_qmn_pagination_text = "";
 	$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
 	if (!is_array($mlw_qmn_pagination_text)) {
         $mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
     }
 	?>
-	<!-- css -->
-	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-	<!-- jquery scripts -->
-	<?php
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-ui-accordion' );
-	wp_enqueue_script( 'jquery-ui-tooltip' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'jquery-effects-blind' );
-	wp_enqueue_script( 'jquery-effects-explode' );
-	?>
-	<script type="text/javascript">
-		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-		$j(function() {
-			$j('#dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#opener').click(function() {
-				$j('#dialog').dialog('open');
-				return false;
-		}	);
-		});
-		$j(function() {
-			$j('#leaderboard_help_dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:700,
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#leaderboard_tab_help').click(function() {
-				$j('#leaderboard_help_dialog').dialog('open');
-				return false;
-		}	);
-		});
-		
-		$j(function() {
-			$j('#landing_page_help_dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:700,
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#landing_page_help').click(function() {
-				$j('#landing_page_help_dialog').dialog('open');
-				return false;
-		}	);
-		});
-		
-			$j(function() {
-			$j('#email_template_help_dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:700,
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#email_tab_help').click(function() {
-				$j('#email_template_help_dialog').dialog('open');
-				return false;
-		}	);
-		});
-		
-		$j(function() {
-			$j('#mlw_reset_stats_dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:700,
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#mlw_reset_stats_button').click(function() {
-				$j('#mlw_reset_stats_dialog').dialog('open');
-				return false;
-		}	);
-		});
-		$j(function() {
-    			$j( "#tabs" ).tabs();
-  		});
-		$j(function() {
-   			 //$j( document ).tooltip();
- 		});
-		$j(function() {
-			$j("#accordion").accordion({
-				heightStyle: "content"
-			});
-			$j("#email_accordion").accordion({
-				heightStyle: "content"
-			});
-		});
-		$j(function() {
-    			$j( "#system" ).buttonset();
-  		});
-  		$j(function() {
-    			$j( "#randomness_order" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#loggedin_user_contact" ).buttonset();	
-  		});
-		$j(function() {
-    			$j( "#sendUserEmail" ).buttonset();
-  		});
-		$j(function() {
-    			$j( "#sendAdminEmail" ).buttonset();
-  		});
-  		$j(function() {
-    			$j( "#contact_info_location" ).buttonset();
-  		});
-		$j(function() {
-    			$j( "#userName" ).buttonset();
-  		});
-		$j(function() {
-    			$j( "#userComp" ).buttonset();
-  		});
-		$j(function() {
-    			$j( "#userEmail" ).buttonset();
-  		});
-		$j(function() {
-    			$j( "#userPhone" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#pagination" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#commentSection" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#social_media" ).buttonset();
-  				$j( "#question_numbering" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#comments" ).buttonset();
-  		});
-  		$j(function() {
-  				$j( "#enableCertificates" ).buttonset();
-  		});
-		$j(function() {
-			$j("button, #prev_page, #next_page, #new_email_button_top, #new_email_button_bottom, #new_answer_button").button();
-		
-		});
-		$j(function() {
-			$j('#new_question_dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:800,
-				hide: 'explode',
-				buttons: {
-				Cancel: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#new_question_button').click(function() {
-				$j('#new_question_dialog').dialog('open');
-				document.getElementById("question_name").focus();
-				return false;
-		}	);
-			$j('#new_question_button_two').click(function() {
-				$j('#new_question_dialog').dialog('open');
-				document.getElementById("question_name").focus();
-				return false;
-		}	);
-		});
-		function deleteQuestion(id){
-			$j("#delete_dialog").dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Cancel: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-			$j("#delete_dialog").dialog('open');
-			var idText = document.getElementById("delete_question_id");
-			var idHidden = document.getElementById("question_id");
-			idText.innerHTML = id;
-			idHidden.value = id;		
-		};
-		function duplicateQuestion(id){
-			$j("#duplicate_dialog").dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Cancel: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-			$j("#duplicate_dialog").dialog('open');
-			var idHidden = document.getElementById("duplicate_question_id");
-			idHidden.value = id;		
-		};
-		function editQuestion(id){
-			$j("#edit_question_dialog_"+id).dialog({
-				autoOpen: false,
-				show: 'blind',
-				width:800,
-				hide: 'explode',
-				buttons: {
-				Cancel: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-			$j("#edit_question_dialog_"+id).dialog('open');
-		};
-		function delete_landing(id)
-		{
-			document.getElementById('message_after_'+id).value = "Delete";
-			document.mlw_quiz_save_landing_form.submit();	
-		}
-		function delete_email(id)
-		{
-			document.getElementById('user_email_'+id).value = "Delete";
-			document.mlw_quiz_save_email_form.submit();	
-		}
-		function mlw_add_new_question(id)
-		{
-			var total_answers = parseFloat(document.getElementById("question_"+id+"_answer_total").value);
-			total_answers = total_answers + 1;
-			document.getElementById("question_"+id+"_answer_total").value = total_answers;
-			jQuery("#question_"+id+"_answers").append("<tr valign='top'><td><span style='font-weight:bold;'>Answer "+total_answers+"</span></td><td><input type='text' name='edit_answer_"+total_answers+"' id='edit_answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='edit_answer_"+total_answers+"_points' id='edit_answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='edit_answer_"+total_answers+"_correct' name='edit_answer_"+total_answers+"_correct' value=1 /></td></tr>");
-		}
-		function mlw_add_answer_to_new_question()
-		{
-			var total_answers = parseFloat(document.getElementById("new_question_answer_total").value);
-			total_answers = total_answers + 1;
-			document.getElementById("new_question_answer_total").value = total_answers;
-			jQuery("#new_question_answers").append("<tr valign='top'><td><span style='font-weight:bold;'>Answer "+total_answers+"</span></td><td><input type='text' name='answer_"+total_answers+"' id='answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='answer_"+total_answers+"_points' id='answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='answer_"+total_answers+"_correct' name='answer_"+total_answers+"_correct' value=1 /></td></tr>");
-		}
-		function mlw_qmn_theme(theme)
-		{
-			document.getElementById('save_quiz_theme').value = theme;
-			jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
-			jQuery("#mlw_qmn_theme_block_"+theme).toggleClass("mlw_qmn_themeBlockActive");
-			
-		}
-	</script>
-	<style>
-		.linkOptions
-		{
-			color: green !important;
-			font-size: 14px !important;
-		}
-		.linkOptions:hover
-		{
-			background-color: black;
-		}
-	</style>
-	<div class="wrap">
-	<div class='mlw_quiz_options'>
-	<h2>Quiz Settings For <?php echo $mlw_quiz_options->quiz_name; ?><a id="opener" href="">(?)</a></h2>
-	<?php if ($hasUpdatedLeaderboardOptions)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> Your leaderboard options for this quiz have been saved.</p>
-	</div>
-	<?php
-		}
-		if ($mlw_qmn_isQueryError)
-		{
-	?>
-		<div class="ui-state-error ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Uh-Oh!</strong> There has been an error in this action! Please share this with the developer: Error Code <?php echo $mlw_qmn_error_code; ?></p>
-	</div>
-	<?php
-		}
-		if ($hasCreatedQuestion)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> Your new question has been created successfully.</p>
-	</div>
-	<?php
-		}
-		if ($hasUpdatedTemplates)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> Your templates for this quiz have been saved.</p>
-	</div>
-	<?php
-		}
-		if ($hasUpdatedOptions)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> Your options for this quiz have been saved.</p>
-	</div>
-	<?php
-		}
-		if ($hasDeletedQuestion)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The question has been deleted from this quiz.</p>
-	</div>
-	<?php
-		}
-		if ($hasDuplicatedQuestion)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The question has been duplicated.</p>
-	</div>
-	<?php
-		}
-		if ($hasUpdatedQuestion)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The question has been updated.</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasResetQuizStats)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The stats for this quiz has been reset!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasAddedLanding)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> A new results page has been added successfully!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasSavedLanding)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The results pages have been saved successfully!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasAddedEmail)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> A new email has been added successfully!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasSavedEmail)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The email templates have been saved successfully!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_UpdatedCertificate)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The certificate options have been saved successfully!</p>
-	</div>
-	<?php
-		}
-		if ($mlw_hasSavedStyle)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> The styles have been saved successfully!</p>
-	</div>
-	<?php
-		}
-	?>
-	<div id="tabs">
-		<ul>
-		    <li><a href="#tabs-1">Quiz Questions</a></li>
-		    <li><a href="#tabs-2">Quiz Text</a></li>
-		    <li><a href="#tabs-3">Quiz Options</a></li>
-		    <li><a href="#tabs-4">Quiz Leaderboard</a></li>	
-		    <li><a href="#tabs-5">Quiz Certificate (Beta)</a></li>
-		    <li><a href="#tabs-9">Quiz Emails</a></li>
-		    <li><a href="#tabs-6">Quiz Results Page</a></li>
-		    <li><a href="#tabs-7">Quiz Styling</a></li>
-		    <li><a href="#tabs-8">Quiz Tools/Add-Ons</a></li>
-		</ul>
-  		<div id="tabs-1">
-  			<button id="new_question_button_two">Add Question</button>
-  			<br />
-			<?php
-			$question_list = "";
-			$display = "";
-			$alternate = "";
-			foreach($mlw_question_data as $mlw_question_info) {
-				$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
-				if (!is_array($mlw_question_settings)) {
-					$mlw_question_settings = array();
-					$mlw_question_settings['required'] = 1;
-				}
-				$mlw_question_type_text = "";
-				switch ($mlw_question_info->question_type) {
-					case 0:
-						$mlw_question_type_text = "Multiple Choice";
-						break;
-					case 1:
-						$mlw_question_type_text = "Horizontal Multiple Choice";
-						break;
-					case 2:
-						$mlw_question_type_text = "Drop Down";
-						break;
-					case 3:
-						$mlw_question_type_text = "Small Open Answer";
-						break;
-					case 4:
-						$mlw_question_type_text = "Multiple Response";
-						break;
-					case 5:
-						$mlw_question_type_text = "Large Open Answer";
-						break;
-					case 6:
-						$mlw_question_type_text = "Text Block";
-						break;
-					case 7:
-						$mlw_question_type_text = "Number";
-						break;
-					case 8:
-						$mlw_question_type_text = "Accept";
-						break;
-					case 9:
-						$mlw_question_type_text = "Captcha";
-						break;
-					case 10:
-						$mlw_question_type_text = "Horizontal Multiple Response";
-						break;
-					default:
-						$mlw_question_type_text = "Error Code ";
-				}
-				if($alternate) $alternate = "";
-				else $alternate = " class=\"alternate\"";
-				$question_list .= "<tr{$alternate}>";
-				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->question_order . "</span></td>";
-				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_type_text . "</span></td>";
-				$question_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_question_info->question_name ."</span><div><a class='linkOptions' onclick=\"editQuestion('".$mlw_question_info->question_id."')\" href='#'>Edit</a> | <a class='linkOptions' onclick=\"deleteQuestion('".$mlw_question_info->question_id."')\" href='#'>Delete</a> | <a class='linkOptions' onclick=\"duplicateQuestion('".$mlw_question_info->question_id."')\" href='#'>Duplicate</a></span></div></td>";
-				$question_list .= "</tr>";
-				
-				
-				$mlw_question_answer_array = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
-				?>
-				<div id="edit_question_dialog_<?php echo $mlw_question_info->question_id; ?>" title="Edit Question" style="display:none;">
-				<?php
-				echo "<form action='' method='post'>";
-				echo "<input type='hidden' name='edit_question' value='confirmation' />";
-				echo "<input type='hidden' id='edit_question_id' name='edit_question_id' value='".$mlw_question_info->question_id."' />";
-				echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
-				?>
-				<table class="wide" style="text-align: left; white-space: nowrap;" id="question_<?php echo $mlw_question_info->question_id; ?>_answers" name="question_<?php echo $mlw_question_info->question_id; ?>_answers">
-				<tr>
-				<td><span style='font-weight:bold;'>Question</span></td>
-				<td colspan="3">
-					<textarea name="edit_question_name" id="edit_question_name" style="width: 500px; height: 150px;"><?php echo htmlspecialchars_decode($mlw_question_info->question_name, ENT_QUOTES); ?></textarea>
-				</td>
-				</tr>
-				<tr valign="top">
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-				</tr>
-				<tr valign="top">
-				<td>&nbsp;</td>
-				<td><span style='font-weight:bold;'>Answers</span></td>
-				<td><span style='font-weight:bold;'>Points Worth</span></td>
-				<td><span style='font-weight:bold;'>Correct Answer</span></td>
-				</tr>
-				<?php
-				$mlw_answer_total = 0;
-				foreach($mlw_question_answer_array as $mlw_question_answer_each)
-				{
-					$mlw_answer_total = $mlw_answer_total + 1;
-					?>
-					<tr valign="top">
-					<td><span style='font-weight:bold;'>Answer <?php echo $mlw_answer_total; ?></span></td>
-					<td>
-					<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>" id="edit_answer_<?php echo $mlw_answer_total; ?>" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_answer_each[0], ENT_QUOTES)); ?>" style="border-color:#000000;
-						color:#3300CC; 
-						cursor:hand;
-						width: 250px;"/>
-					</td>
-					<td>
-					<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>_points" id="edit_answer_<?php echo $mlw_answer_total; ?>_points" value="<?php echo $mlw_question_answer_each[1]; ?>" style="border-color:#000000;
-						color:#3300CC; 
-						cursor:hand;"/>
-					</td>
-					<td><input type="checkbox" id="edit_answer_<?php echo $mlw_answer_total; ?>_correct" name="edit_answer_<?php echo $mlw_answer_total; ?>_correct" <?php if ($mlw_question_answer_each[2] == 1) { echo 'checked="checked"'; } ?> value=1 /></td>
-					</tr>			
-					<?php
-				}
-				?>
-				</table>
-				<a href="#" id="new_answer_button" onclick="mlw_add_new_question(<?php echo $mlw_question_info->question_id; ?>);">Add New Answer!</a>
-				<br />
-				<br />
-				<table class="wide" style="text-align: left; white-space: nowrap;">
-				<tr>
-					<td><span style='font-weight:bold;'>Correct Answer Info:</span></td>
-					<td colspan="3"><input type="text" name="edit_correct_answer_info" id="edit_correct_answer_info" style="border-color:#000000;
-					color:#3300CC; 
-					cursor:hand;
-					width:550px;" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_info->question_answer_info, ENT_QUOTES)); ?>"/></td>
-				</tr>
-				<tr valign="top">
-				<td><span style='font-weight:bold;'>Hint</span></td>
-				<td colspan="3">
-				<input type="text" name="edit_hint" id="edit_hint" style="border-color:#000000;
-					color:#3300CC; 
-					cursor:hand;
-					width:550px;" value="<?php echo htmlspecialchars_decode($mlw_question_info->hints, ENT_QUOTES); ?>"/>
-				</td>
-				</tr>
-				<tr><td>&nbsp;</td></tr>
-				<tr><td>&nbsp;</td></tr>
-				<tr valign="top">
-				<td><span style='font-weight:bold;'>Question Type</span></td>
-				<td colspan="3">
-					<select name="edit_question_type">
-						<option value="0" <?php if ($mlw_question_info->question_type == 0) { echo 'selected="selected"'; } ?>>Normal Multiple Choice (Vertical Radio)</option>
-						<option value="1" <?php if ($mlw_question_info->question_type == 1) { echo 'selected="selected"'; } ?>>Horizontal Multiple Choice (Horizontal Radio)</option>
-						<option value="2" <?php if ($mlw_question_info->question_type == 2) { echo 'selected="selected"'; } ?>>Drop Down (Select)</option>
-						<option value="3" <?php if ($mlw_question_info->question_type == 3) { echo 'selected="selected"'; } ?>>Open Answer (Text Input)</option>
-						<option value="5" <?php if ($mlw_question_info->question_type == 5) { echo 'selected="selected"'; } ?>>Open Answer (Large Text Input)</option>
-						<option value="4" <?php if ($mlw_question_info->question_type == 4) { echo 'selected="selected"'; } ?>>Multiple Response (Checkbox)</option>
-						<option value="10" <?php if ($mlw_question_info->question_type == 10) { echo 'selected="selected"'; } ?>>Horizontal Multiple Response (Checkbox)</option>
-						<option value="6" <?php if ($mlw_question_info->question_type == 6) { echo 'selected="selected"'; } ?>>Text Block</option>
-						<option value="7" <?php if ($mlw_question_info->question_type == 7) { echo 'selected="selected"'; } ?>>Number</option>
-						<option value="8" <?php if ($mlw_question_info->question_type == 8) { echo 'selected="selected"'; } ?>>Accept</option>
-						<option value="9" <?php if ($mlw_question_info->question_type == 9) { echo 'selected="selected"'; } ?>>Captcha</option>
-					</select>
-				</div></td>
-				</tr>
-				<tr valign="top">
-				<td><span style='font-weight:bold;'>Comment Field</span></td>
-				<td colspan="3">
-					<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1" name="edit_comments" value=0 <?php if ($mlw_question_info->comments == 0) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1">Small Text Field</label>
-					<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3" name="edit_comments" value=2 <?php if ($mlw_question_info->comments == 2) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3">Large Text Field</label>
-					<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2" name="edit_comments" value=1 <?php if ($mlw_question_info->comments == 1) { echo 'checked="checked"'; } ?>/><label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2">None</label>
-				</td>
-				</tr>
-				<tr valign="top">
-				<td><span style='font-weight:bold;'>Question Order</span></td>
-				<td>
-				<input type="number" step="1" min="1" name="edit_question_order" value="<?php echo $mlw_question_info->question_order; ?>" id="edit_question_order" style="border-color:#000000;
-					color:#3300CC; 
-					cursor:hand;"/>
-				</td>
-				</tr>
-				<tr valign="top">
-				<td><span style='font-weight:bold;'>Required?</span></td>
-				<td colspan="3">
-					<select name="edit_required">
-						<option value="0" <?php if ($mlw_question_settings['required'] == 0) { echo 'selected="selected"'; } ?>>Yes</option>
-						<option value="1" <?php if ($mlw_question_settings['required'] == 1) { echo 'selected="selected"'; } ?>>No</option>
-					</select>
-				</div></td>
-				</tr>
-				</table>
-				<p> *Required currently only works on open answer, number, and captcha question types</p>
-				<input type="hidden" name="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" id="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" value="<?php echo $mlw_answer_total; ?>" />
-				<p class='submit'><input type='submit' class='button-primary' value='Edit Question' /></p>
-				</form>
-				</div>	
-				
-				<?php
-			}
-			
-			if( $mlw_qmn_question_page > 0 )
-			{
-			   	$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-			   	$display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\">Previous 10 Questions</a>";
-			   	if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-			   	{
-					$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">Next 10 Questions</a>";
-			   	}
-			}
-			else if( $mlw_qmn_question_page == 0 )
-			{
-			   if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-			   {
-					$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">Next 10 Questions</a>";
-			   }
-			}
-			else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
-			{
-			   $mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-			   $display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\">Previous 10 Questions</a>";
-			}
-
-			$display .= "<table class=\"widefat\">";
-				$display .= "<thead><tr>
-					<th>Question Order</th>
-					<th>Question Type</th>
-					<th>Question</th>
-				</tr></thead>";
-				$display .= "<tbody id=\"the-list\">{$question_list}</tbody>";
-				$display .= "<tfoot><tr>
-					<th>Question Order</th>
-					<th>Question Type</th>
-					<th>Question</th>
-				</tr></tfoot>";
-				$display .= "</table>";
-			echo $display;
-			?>
-			<button id="new_question_button">Add Question</button>
-			<div id="new_question_dialog" title="Create New Question" style="display:none;">
-			
-			<?php
-			echo "<form action='' method='post'>";
-			echo "<input type='hidden' name='create_question' value='confirmation' />";
-			echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
-			?>		
-			<table class="wide" style="text-align: left; white-space: nowrap;" id="new_question_answers" name="new_question_answers">
-			<tr>
-			<td><span style='font-weight:bold;'>Question</span></td>
-			<td colspan="3">
-				<textarea name="question_name" id="question_name" style="width: 500px; height: 150px;"></textarea>
-			</td>
-			</tr>
-			<tr valign="top">
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-			</tr>
-			<tr valign="top">
-			<td>&nbsp;</td>
-			<td><span style='font-weight:bold;'>Answers</span></td>
-			<td><span style='font-weight:bold;'>Points Worth</span></td>
-			<td><span style='font-weight:bold;'>Correct Answer</span></td>
-			</tr>
-			<?php
-			$mlw_answer_total = 0;
-			$mlw_answer_total = $mlw_answer_total + 1;
-			?>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Answer <?php echo $mlw_answer_total; ?></span></td>
-			<td>
-			<input type="text" name="answer_<?php echo $mlw_answer_total; ?>" id="answer_<?php echo $mlw_answer_total; ?>" value="" style="border-color:#000000;
-				color:#3300CC; 
-				cursor:hand;
-				width: 250px;"/>
-			</td>
-			<td>
-			<input type="text" name="answer_<?php echo $mlw_answer_total; ?>_points" id="answer_<?php echo $mlw_answer_total; ?>_points" value=0 style="border-color:#000000;
-				color:#3300CC; 
-				cursor:hand;"/>
-			</td>
-			<td><input type="checkbox" id="answer_<?php echo $mlw_answer_total; ?>_correct" name="answer_<?php echo $mlw_answer_total; ?>_correct" checked="checked" value=1 /></td>
-			</tr>
-			</table>
-			<a href="#" id="new_answer_button" onclick="mlw_add_answer_to_new_question();">Add New Answer!</a>
-			<br />
-			<br />
-			<table class="wide" style="text-align: left; white-space: nowrap;">
-			<tr>
-				<td><span style='font-weight:bold;'>Correct Answer Info</span></td>
-				<td colspan="3"><input type="text" name="correct_answer_info" value="" id="correct_answer_info" style="border-color:#000000;
-				color:#3300CC; 
-				cursor:hand;
-				width:550px;"/></td>
-			</tr>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Hint</span></td>
-			<td colspan="3">
-			<input type="text" name="hint" value="" id="hint" style="border-color:#000000;
-				color:#3300CC; 
-				cursor:hand;
-				width:550px;"/>
-			</td>
-			</tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Question Type</span></td>
-			<td colspan="3">
-				<select name="question_type">
-					<option value="0" selected="selected">Normal Multiple Choice (Vertical Radio)</option>
-					<option value="1">Horizontal Multiple Choice (Horizontal Radio)</option>
-					<option value="2">Drop Down (Select)</option>
-					<option value="3">Open Answer (Text Input)</option>
-					<option value="5">Open Answer (Large Text Input)</option>
-					<option value="4">Multiple Response (Checkbox)</option>
-					<option value="10">Horizontal Multiple Response (Checkbox)</option>
-					<option value="6">Text Block</option>
-					<option value="7">Number</option>
-					<option value="8">Accept</option>
-					<option value="9">Captcha</option>
-				</select>
-			</div></td>
-			</tr>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Comment Field</span></td>
-			<td colspan="3"><div id="comments">
-				<input type="radio" id="commentsRadio1" name="comments" value=0 /><label for="commentsRadio1">Small Text Field</label>
-				<input type="radio" id="commentsRadio3" name="comments" value=2 /><label for="commentsRadio3">Large Text Field</label>
-				<input type="radio" id="commentsRadio2" name="comments" checked="checked" value=1 /><label for="commentsRadio2">None</label>
-			</div></td>
-			</tr>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Question Order</span></td>
-			<td>
-			<input type="number" step="1" min="1" name="new_question_order" value="1" id="new_question_order" style="border-color:#000000;
-				color:#3300CC; 
-				cursor:hand;"/>
-			</td>
-			</tr>
-			<tr valign="top">
-			<td><span style='font-weight:bold;'>Required?</span></td>
-			<td colspan="3">
-				<select name="required">
-					<option value="0" selected="selected">Yes</option>
-					<option value="1">No</option>
-				</select>
-			</div></td>
-			</tr>
-			</table>
-			<p> *Required currently only works on open answer, number, and captcha question types</p>
-			<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="<?php echo $mlw_answer_total; ?>" />
-			<?php
-			echo "<p class='submit'><input type='submit' class='button-primary' value='Create Question' /></p>";
-			echo "</form>";
-			?>
-			</div>
-
-			
-
-
-  		</div>
-  		<div id="tabs-2">
+	<div id="tabs-2" class="mlw_tab_content">
 			<h3 style="text-align: center;">Template Variables</h3>
 			<table class="form-table">
 			<tr>
@@ -1741,7 +1147,71 @@ function mlw_generate_quiz_options()
 			<button id="save_template_button" onclick="javascript: document.quiz_template_form.submit();">Save Templates</button>
 			<?php echo "</form>"; ?>
   		</div>
-  		<div id="tabs-3">
+	<?php
+}
+
+function mlw_options_option_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	//Submit saved options into database
+	if ( isset($_POST["save_options"]) && $_POST["save_options"] == "confirmation")
+	{
+		//Variables for save options form
+		$mlw_system = $_POST["system"];
+		$mlw_qmn_pagination = intval($_POST["pagination"]);
+		$mlw_qmn_social_media = intval($_POST["social_media"]);
+		$mlw_qmn_question_numbering = intval($_POST["question_numbering"]);
+		$mlw_qmn_timer = intval($_POST["timer_limit"]);
+		$mlw_qmn_questions_from_total = $_POST["question_from_total"];
+		$mlw_randomness_order = $_POST["randomness_order"];
+		$mlw_total_user_tries = intval($_POST["total_user_tries"]);
+		$mlw_send_user_email = $_POST["sendUserEmail"];
+		$mlw_send_admin_email = $_POST["sendAdminEmail"];
+		$mlw_contact_location = $_POST["contact_info_location"];
+		$mlw_user_name = $_POST["userName"];
+		$mlw_user_comp = $_POST["userComp"];
+		$mlw_user_email = $_POST["userEmail"];
+		$mlw_user_phone = $_POST["userPhone"];
+		$mlw_admin_email = $_POST["adminEmail"];
+		$mlw_comment_section = $_POST["commentSection"];
+		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
+		$quiz_id = $_POST["quiz_id"];
+		
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
+		$results = $wpdb->query( $update );
+		if ($results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The options has been updated successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Options Have Been Edited For Quiz Number ".$quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0008.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	?>
+	<div id="tabs-3" class="mlw_tab_content">
+		<script>
+			jQuery(function() {
+    			jQuery( "#system, #randomness_order, #loggedin_user_contact, #sendUserEmail, #sendAdminEmail, #contact_info_location, #userName, #userComp, #userEmail, #userPhone, #pagination, #commentSection, #social_media, #question_numbering, #comments" ).buttonset();
+			});
+		</script>
 		<button id="save_options_button" onclick="javascript: document.quiz_options_form.submit();">Save Options</button>
 		<?php
 		echo "<form action='' method='post' name='quiz_options_form'>";
@@ -1878,7 +1348,48 @@ function mlw_generate_quiz_options()
 		<button id="save_options_button" onclick="javascript: document.quiz_options_form.submit();">Save Options</button>
 		<?php echo "</form>"; ?>
   		</div>
-	<div id="tabs-4">
+	<?php
+}
+
+function mlw_options_leaderboard_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	///Submit saved leaderboard template into database
+	if ( isset($_POST["save_leaderboard_options"]) && $_POST["save_leaderboard_options"] == "confirmation")
+	{
+		///Variables for save leaderboard options form
+		$mlw_leaderboard_template = $_POST["mlw_quiz_leaderboard_template"];
+		$mlw_leaderboard_quiz_id = $_POST["leaderboard_quiz_id"];
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET leaderboard_template='".$mlw_leaderboard_template."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_leaderboard_quiz_id;
+		$results = $wpdb->query( $update );
+		if ($results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The leaderboards has been updated successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Leaderboard Options Have Been Edited For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0009.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	?>
+	<div id="tabs-4" class="mlw_tab_content">
 		<h3>Template Variables</h3>
 		<table class="form-table">
 			<tr>
@@ -1910,7 +1421,7 @@ function mlw_generate_quiz_options()
 				<td><strong>%QUIZ_NAME%</strong> - The name of the quiz</td>
 			</tr>
 		</table>
-		<button id="save_template_button" onclick="javascript: document.quiz_leaderboard_options_form.submit();">Save Leaderboard Options</button><button id="leaderboard_tab_help">Help</button>
+		<button id="save_template_button" onclick="javascript: document.quiz_leaderboard_options_form.submit();">Save Leaderboard Options</button>
 		<?php
 			echo "<form action='' method='post' name='quiz_leaderboard_options_form'>";
 			echo "<input type='hidden' name='save_leaderboard_options' value='confirmation' />";
@@ -1941,7 +1452,66 @@ function mlw_generate_quiz_options()
 		<button id="save_template_button" onclick="javascript: document.quiz_leaderboard_options_form.submit();">Save Leaderboard Options</button>
 		</form>
 	</div>
-	<div id="tabs-5">
+	<?php
+}
+
+function mlw_options_certificate_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	//Saved Certificate Options
+	if (isset($_POST["save_certificate_options"]) && $_POST["save_certificate_options"] == "confirmation")
+	{
+		$mlw_certificate_id = intval($_POST["certificate_quiz_id"]);
+		$mlw_certificate_title = $_POST["certificate_title"];
+		$mlw_certificate_text = $_POST["certificate_template"];
+		$mlw_certificate_logo = $_POST["certificate_logo"];
+		$mlw_certificate_background = $_POST["certificate_background"];
+		$mlw_enable_certificates = intval($_POST["enableCertificates"]);
+		$mlw_certificate = array($mlw_certificate_title, $mlw_certificate_text, $mlw_certificate_logo, $mlw_certificate_background, $mlw_enable_certificates);
+		$mlw_certificate_serialized = serialize($mlw_certificate);
+		
+		$mlw_certificate_sql_results = $wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "mlw_quizzes SET certificate_template=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_certificate_serialized, $mlw_certificate_id  ) );
+		
+		
+		if ($mlw_certificate_sql_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The certificate has been updated successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Certificate Options Have Been Edited For Quiz Number ".$mlw_certificate_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0012.', 'error');
+		}
+	}
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	
+	//Load Certificate Options Variables
+	$mlw_certificate_options = @unserialize($mlw_quiz_options->certificate_template);
+	if (!is_array($mlw_certificate_options)) {
+        // something went wrong, initialize to empty array
+        $mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
+    }
+	?>
+	<div id="tabs-5" class="mlw_tab_content">
+		<script>
+			jQuery(function() {
+  				jQuery( "#enableCertificates" ).buttonset();
+			});
+		</script>
 		<h3>Quiz Certificate (Beta)</h3>
 		<p>Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate.</p>
 		<p>These fields cannot contain HTML.</p>
@@ -2004,7 +1574,129 @@ function mlw_generate_quiz_options()
 		<button id="save_certificate_button" onclick="javascript: document.quiz_certificate_options_form.submit();">Save Certificate Options</button>
 		</form>
 	</div>
-	<div id="tabs-9">
+	<?php
+}
+
+function mlw_options_emails_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	//Check to add new user email template
+	if (isset($_POST["mlw_add_email_page"]) && $_POST["mlw_add_email_page"] == "confirmation")
+	{
+		//Function variables
+		$mlw_qmn_add_email_id = intval($_POST["mlw_add_email_quiz_id"]);
+		$mlw_qmn_user_email = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_add_email_id ) );
+	
+		//Load user email and check if it is array already. If not, turn it into one
+		$mlw_qmn_email_array = @unserialize($mlw_qmn_user_email);
+		if (is_array($mlw_qmn_email_array))
+		{
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
+			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
+			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
+			
+		}
+		else
+		{
+			$mlw_qmn_email_array = array(array(0, 0, $mlw_qmn_user_email, 'Quiz Results For %QUIZ_NAME%'));
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
+			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
+			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
+		}
+		//Update message_after with new array then check to see if worked
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
+		if ($mlw_new_email_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The email has been added successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'New User Email Has Been Created For Quiz Number ".$mlw_qmn_add_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0016.', 'error');
+		}
+	}
+	
+	//Check to save email templates
+	if (isset($_POST["mlw_save_email_template"]) && $_POST["mlw_save_email_template"] == "confirmation")
+	{
+		//Function Variables
+		$mlw_qmn_email_id = intval($_POST["mlw_email_quiz_id"]);
+		$mlw_qmn_email_template_total = intval($_POST["mlw_email_template_total"]);
+		$mlw_qmn_admin_email = htmlspecialchars(stripslashes($_POST["mlw_quiz_admin_email_template"]), ENT_QUOTES);
+		
+		//Create new array
+		$i = 1;
+		$mlw_qmn_new_email_array = array();
+		while ($i <= $mlw_qmn_email_template_total)
+		{
+			if ($_POST["user_email_".$i] != "Delete")
+			{
+				$mlw_qmn_email_each = array(intval($_POST["user_email_begin_".$i]), intval($_POST["user_email_end_".$i]), htmlspecialchars(stripslashes($_POST["user_email_".$i]), ENT_QUOTES), htmlspecialchars(stripslashes($_POST["user_email_subject_".$i]), ENT_QUOTES));
+				$mlw_qmn_new_email_array[] = $mlw_qmn_email_each;
+			}
+			$i++;
+		}
+		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_admin_email, $mlw_qmn_email_id ) );
+		if ($mlw_new_email_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The email has been updated successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Email Templates Have Been Saved For Quiz Number ".$mlw_qmn_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0017.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	
+	//Load Email Templates
+    $mlw_qmn_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
+	if (!is_array($mlw_qmn_user_email_array)) {
+        // something went wrong, initialize to empty array
+        $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
+    }
+	?>
+	
+	<div id="tabs-9" class="mlw_tab_content">
+	<script>
+		$j(function() {
+			$j("#new_email_button_top, #new_email_button_bottom").button();
+		});
+		jQuery(function() {
+			jQuery("#email_accordion").accordion({
+				heightStyle: "content"
+			});
+		});
+		function delete_email(id)
+		{
+			document.getElementById('user_email_'+id).value = "Delete";
+			document.mlw_quiz_save_email_form.submit();	
+		}
+	</script>
 		<h3>Template Variables</h3>
 		<table class="form-table">
 			<tr>
@@ -2046,7 +1738,6 @@ function mlw_generate_quiz_options()
 			<input type='hidden' name='mlw_add_email_quiz_id' value='<?php echo $quiz_id; ?>' />
 		</form>
 		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates</button>
-		<button id="email_tab_help">Help</button>
 		<form method="post" action="" name="mlw_quiz_save_email_form">
 		<div id="email_accordion">
 			<h3><a href="#">Email Sent To User</a></h3>
@@ -2166,7 +1857,119 @@ function mlw_generate_quiz_options()
 		</form>
 		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates</button>
 	</div>
-	<div id="tabs-6">
+	<?php
+}
+
+function mlw_options_results_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	//Check to add new results page
+	if (isset($_POST["mlw_add_landing_page"]) && $_POST["mlw_add_landing_page"] == "confirmation")
+	{
+		//Function variables
+		$mlw_qmn_landing_id = intval($_POST["mlw_add_landing_quiz_id"]);
+		$mlw_qmn_message_after = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_landing_id ) );
+		//Load message_after and check if it is array already. If not, turn it into one
+		$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
+		if (is_array($mlw_qmn_landing_array))
+		{
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
+			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
+			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
+			
+		}
+		else
+		{
+			$mlw_qmn_landing_array = array(array(0, 0, $mlw_qmn_message_after));
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
+			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
+			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
+		}
+		
+		//Update message_after with new array then check to see if worked
+		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
+		if ($mlw_new_landing_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The results page has been added successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Landing Page Has Been Created For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0013.', 'error');
+		}
+	}
+	
+	//Check to save landing pages
+	if (isset($_POST["mlw_save_landing_pages"]) && $_POST["mlw_save_landing_pages"] == "confirmation")
+	{
+		//Function Variables
+		$mlw_qmn_landing_id = intval($_POST["mlw_landing_quiz_id"]);
+		$mlw_qmn_landing_total = intval($_POST["mlw_landing_page_total"]);
+		
+		//Create new array
+		$i = 1;
+		$mlw_qmn_new_landing_array = array();
+		while ($i <= $mlw_qmn_landing_total)
+		{
+			if ($_POST["message_after_".$i] != "Delete")
+			{
+				$mlw_qmn_landing_each = array(intval($_POST["message_after_begin_".$i]), intval($_POST["message_after_end_".$i]), htmlspecialchars(stripslashes($_POST["message_after_".$i]), ENT_QUOTES));
+				$mlw_qmn_new_landing_array[] = $mlw_qmn_landing_each;
+			}
+			$i++;
+		}
+		$mlw_qmn_new_landing_array = serialize($mlw_qmn_new_landing_array);
+		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
+		if ($mlw_new_landing_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The results page has been saved successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Landing Pages Have Been Saved For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0014.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	
+	//Load Landing Pages
+    $mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
+	if (!is_array($mlw_message_after_array)) {
+        // something went wrong, initialize to empty array
+        $mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
+    }
+	?>
+	<div id="tabs-6" class="mlw_tab_content">
+		<script>
+			function delete_landing(id)
+			{
+				document.getElementById('message_after_'+id).value = "Delete";
+				document.mlw_quiz_save_landing_form.submit();	
+			}
+		</script>
 		<h3>Template Variables</h3>
 			<table class="form-table">
 			<tr>
@@ -2209,7 +2012,6 @@ function mlw_generate_quiz_options()
 		</table>
 		<button id="save_landing_button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();">Save Results Pages</button>
 		<button id="new_landing_button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();">Add New Results Page</button>
-		<button id="landing_page_help">Help</button>
 		<form method="post" action="" name="mlw_quiz_save_landing_form" style=" display:inline!important;">
 		<table class="widefat">
 			<thead>
@@ -2287,7 +2089,58 @@ function mlw_generate_quiz_options()
 			<button id="new_landing_button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();">Add New Results Page</button>
 		</form>
 	</div>
-	<div id="tabs-7">
+	<?php
+}
+
+function mlw_options_styling_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	if (isset($_POST["save_style_options"]) && $_POST["save_style_options"] == "confirmation")
+	{
+		//Function Variables
+		$mlw_qmn_style_id = intval($_POST["style_quiz_id"]);
+		$mlw_qmn_theme = $_POST["save_quiz_theme"];
+		$mlw_qmn_style = htmlspecialchars(stripslashes($_POST["quiz_css"]), ENT_QUOTES);
+		
+		//Save the new css
+		$mlw_save_stle_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_style, $mlw_qmn_theme, $mlw_qmn_style_id ) );
+		if ($mlw_save_stle_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The style has been saved successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Styles Have Been Saved For Quiz Number ".$mlw_qmn_style_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0015.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	?>
+	<div id="tabs-7" class="mlw_tab_content">
+		<script>
+			function mlw_qmn_theme(theme)
+			{
+				document.getElementById('save_quiz_theme').value = theme;
+				jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
+				jQuery("#mlw_qmn_theme_block_"+theme).toggleClass("mlw_qmn_themeBlockActive");
+				
+			}
+		</script>
 		<?php
 			echo "<form action='' method='post' name='quiz_style_form'>";
 			echo "<input type='hidden' name='save_style_options' value='confirmation' />";
@@ -2391,7 +2244,67 @@ function mlw_generate_quiz_options()
 		<button id="save_styles_button" onclick="javascript: document.quiz_style_form.submit();">Save Quiz Style</button>
 		</form>
 	</div>
-	<div id="tabs-8">
+	<?php
+}
+
+function mlw_options_tools_tab_content()
+{
+	global $wpdb;
+	global $mlwQmnAlertManager;
+	$quiz_id = $_GET["quiz_id"];
+	//Update Quiz Table
+	if (isset($_POST["mlw_reset_quiz_stats"]) && $_POST["mlw_reset_quiz_stats"] == "confirmation")
+	{
+		//Variables from reset stats form
+		$mlw_reset_stats_quiz_id = $_POST["mlw_reset_quiz_id"];
+		$mlw_reset_update_sql = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views=0, quiz_taken=0, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_reset_stats_quiz_id;
+		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
+		if ($mlw_reset_sql_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('The stats has been reset successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0010.', 'error');
+		}
+	}
+	
+	if (isset($_GET["quiz_id"]))
+	{
+		$table_name = $wpdb->prefix . "mlw_quizzes";
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+	?>
+	<div id="tabs-8" class="mlw_tab_content">
+	<script>
+	jQuery(function() {
+			jQuery('#mlw_reset_stats_dialog').dialog({
+				autoOpen: false,
+				show: 'blind',
+				width:700,
+				hide: 'explode',
+				buttons: {
+				Ok: function() {
+					jQuery(this).dialog('close');
+					}
+				}
+			});
+		
+			jQuery('#mlw_reset_stats_button').click(function() {
+				jQuery('#mlw_reset_stats_dialog').dialog('open');
+				return false;
+		}	);
+		});
+	</script>
 		<p>Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken). </p>
 		<button id="mlw_reset_stats_button">Reset Quiz Views And Taken Stats</button>
 		<?php do_action('mlw_qmn_quiz_tools'); ?>
@@ -2406,91 +2319,17 @@ function mlw_generate_quiz_options()
 		?>
 		</div>		
 	</div>
-	</div>
-	
-	<?php echo mlw_qmn_show_adverts(); ?>
+	<?php
+}
 
-
-	<!--Dialogs-->
-	<div id="delete_dialog" title="Delete Question?" style="display:none;">
-		<h3><b>Are you sure you want to delete Question <span id="delete_question_id"></span>?</b></h3>
+function mlw_options_preview_tab_content()
+{
+	?>
+	<div id="tabs-preview" class="mlw_tab_content">
 		<?php
-		echo "<form action='' method='post'>";
-		echo "<input type='hidden' name='delete_question' value='confirmation' />";
-		echo "<input type='hidden' id='question_id' name='question_id' value='' />";
-		echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
-		echo "<p class='submit'><input type='submit' class='button-primary' value='Delete Question' /></p>";
-		echo "</form>";	
+		echo do_shortcode( '[mlw_quizmaster quiz='.intval($_GET["quiz_id"]).']' );
 		?>
-	</div>
-	
-	<div id="duplicate_dialog" title="Duplicate Question?" style="display:none;">
-		<h3><b>Are you sure you want to duplicate this Question?</b></h3>
-		<?php
-		echo "<form action='' method='post'>";
-		echo "<input type='hidden' name='duplicate_question' value='confirmation' />";
-		echo "<input type='hidden' id='duplicate_question_id' name='duplicate_question_id' value='' />";
-		echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
-		echo "<p class='submit'><input type='submit' class='button-primary' value='Duplicate Question' /></p>";
-		echo "</form>";	
-		?>
-	</div>
-	
-	<div id="dialog" title="Help" style="display:none;">
-		<h3><b>Help</b></h3>
-		<p>Having trouble using this page? Be sure to check out our useful <a href='http://mylocalwebstop.com/plugin-documentation/' target="_blank" style="color:blue;">Plugin Documentation</a>!</p>
-	</div>
-	
-	<div id="leaderboard_help_dialog" title="Help" style="display:none;">
-		<p>This tab is used to edit the options for the leaderboard for this quiz.</p>
-		<p>Currently, you can edit the template for the leaderboard.</p>
-		<p>The template is able to have variables inside the text. When the quiz is run, these variables will change to their values.</p>
-	</div>
-	
-	<div id="landing_page_help_dialog" title="Help" style="display: none;">
-		<h3><b>Help</b></h3>
-		<p>This page allows you to add, edit, and delete results pages for your quiz!</p>
-		<p>You can have unlimited different results pages to show the user after he or she takes the quiz. For example, you can have a page shown if they pass, and then show the default if they fail.</p>
-		<p>If you only need the one results page, leave just the default and edit it and then click the Save button.</p>
-		<p>To add a new results page, click Add New Results Page. A new section will appear with the new page.</p>
-		<p>For your extra pages, you must designate what score the user must be above and what score the user must be below to see the page. If the user does not fall into any, the default page will be shown.</p>
-		<p>Be sure to save after any changes are made!</p>
-	</div>
-	
-	<div id="email_template_help_dialog" title="Help" style="display: none;">
-		<h3><b>Help</b></h3>
-		<p>This page allows you to add, edit, and delete email templates for your quiz!</p>
-		<p>You can have unlimited different emails to send the user after he or she takes the quiz. For example, you can have an email sent if they pass, and then send the default if they fail.</p>
-		<p>If you only need the one email, leave just the default and edit it and then click the Save button.</p>
-		<p>To add a new email, click Add New Email. A new section will appear with the email.</p>
-		<p>For your extra emails, you must designate what score the user must be above and what score the user must be below to receive the email. If the user does not fall into any, the default email will be sent.</p>
-		<p>Be sure to save after any changes are made!</p>
-	</div>
-
-	</div>
 	</div>
 	<?php
-	}
-	else
-	{
-		?>
-		<!-- css -->
-		<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-		<!-- jquery scripts -->
-		<?php
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'jquery-ui-core' );
-		?>
-		<div class="wrap">
-		<div class='mlw_quiz_options'>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Hey!</strong> Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.</p
-		</div>
-		</div>
-		<?php
-	}
-	?>
-<?php
 }
 ?>
