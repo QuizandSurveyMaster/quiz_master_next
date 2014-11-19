@@ -56,6 +56,13 @@ function mlw_generate_quiz_options()
 			$j( "#tabs" ).tabs();
 		});
 	</script>
+	<style>
+		.mlw_tab_content
+		{
+			padding: 20px 20px 20px 20px;
+			margin: 20px 20px 20px 20px;
+		}
+	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
 	<h2>Quiz Settings For <?php echo $mlw_quiz_options->quiz_name; ?></h2>
@@ -232,42 +239,47 @@ add_action('mlw_qmn_options_tab', 'mlw_options_emails_tab');
 add_action('mlw_qmn_options_tab', 'mlw_options_results_tab');
 add_action('mlw_qmn_options_tab', 'mlw_options_styling_tab');
 add_action('mlw_qmn_options_tab', 'mlw_options_tools_tab');
+add_action('mlw_qmn_options_tab', 'mlw_options_preview_tab');
 
 function mlw_options_questions_tab()
 {
-	echo "<li><a href=\"#tabs-1\">Quiz Questions</a></li>";
+	echo "<li><a href=\"#tabs-1\">Questions</a></li>";
 }
 function mlw_options_text_tab()
 {
-	echo "<li><a href=\"#tabs-2\">Quiz Text</a></li>";
+	echo "<li><a href=\"#tabs-2\">Text</a></li>";
 }
 function mlw_options_option_tab()
 {
-	echo "<li><a href=\"#tabs-3\">Quiz Options</a></li>";
+	echo "<li><a href=\"#tabs-3\">Options</a></li>";
 }
 function mlw_options_leaderboard_tab()
 {
-	echo "<li><a href=\"#tabs-4\">Quiz Leaderboard</a></li>";
+	echo "<li><a href=\"#tabs-4\">Leaderboard</a></li>";
 }
 function mlw_options_certificate_tab()
 {
-	echo "<li><a href=\"#tabs-5\">Quiz Certificate (Beta)</a></li>";
+	echo "<li><a href=\"#tabs-5\">Certificate (Beta)</a></li>";
 }
 function mlw_options_emails_tab()
 {
-	echo "<li><a href=\"#tabs-9\">Quiz Emails</a></li>";
+	echo "<li><a href=\"#tabs-9\">Emails</a></li>";
 }
 function mlw_options_results_tab()
 {
-	echo "<li><a href=\"#tabs-6\">Quiz Results Page</a></li>";
+	echo "<li><a href=\"#tabs-6\">Results Page</a></li>";
 }
 function mlw_options_styling_tab()
 {
-	echo "<li><a href=\"#tabs-7\">Quiz Styling</a></li>";
+	echo "<li><a href=\"#tabs-7\">Styling</a></li>";
 }
 function mlw_options_tools_tab()
 {
-	echo "<li><a href=\"#tabs-8\">Quiz Tools/Add-Ons</a></li>";
+	echo "<li><a href=\"#tabs-8\">Tools/Add-Ons</a></li>";
+}
+function mlw_options_preview_tab()
+{
+	echo "<li><a href=\"#tabs-preview\">Preview (Beta)</a></li>";
 }
 
 add_action('mlw_qmn_options_tab_content', 'mlw_options_questions_tab_content');
@@ -279,6 +291,7 @@ add_action('mlw_qmn_options_tab_content', 'mlw_options_emails_tab_content');
 add_action('mlw_qmn_options_tab_content', 'mlw_options_results_tab_content');
 add_action('mlw_qmn_options_tab_content', 'mlw_options_styling_tab_content');
 add_action('mlw_qmn_options_tab_content', 'mlw_options_tools_tab_content');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
 
 function mlw_options_questions_tab_content()
 {
@@ -567,7 +580,7 @@ function mlw_options_questions_tab_content()
 	}
 	$is_new_quiz = $wpdb->num_rows;
 	?>
-	<div id="tabs-1">
+	<div id="tabs-1" class="mlw_tab_content">
 		<script>
 			$j(function() {
 				$j("#prev_page, #next_page, #new_answer_button").button();
@@ -1102,7 +1115,7 @@ function mlw_options_text_tab_content()
         $mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
     }
 	?>
-	<div id="tabs-2">
+	<div id="tabs-2" class="mlw_tab_content">
 			<h3 style="text-align: center;">Template Variables</h3>
 			<table class="form-table">
 			<tr>
@@ -1341,7 +1354,7 @@ function mlw_options_option_tab_content()
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	?>
-	<div id="tabs-3">
+	<div id="tabs-3" class="mlw_tab_content">
 		<script>
 			jQuery(function() {
     			jQuery( "#system, #randomness_order, #loggedin_user_contact, #sendUserEmail, #sendAdminEmail, #contact_info_location, #userName, #userComp, #userEmail, #userPhone, #pagination, #commentSection, #social_media, #question_numbering, #comments" ).buttonset();
@@ -1524,7 +1537,7 @@ function mlw_options_leaderboard_tab_content()
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	?>
-	<div id="tabs-4">
+	<div id="tabs-4" class="mlw_tab_content">
 		<h3>Template Variables</h3>
 		<table class="form-table">
 			<tr>
@@ -1641,7 +1654,7 @@ function mlw_options_certificate_tab_content()
         $mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
     }
 	?>
-	<div id="tabs-5">
+	<div id="tabs-5" class="mlw_tab_content">
 		<script>
 			jQuery(function() {
   				jQuery( "#enableCertificates" ).buttonset();
@@ -1816,6 +1829,8 @@ function mlw_options_emails_tab_content()
         $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
     }
 	?>
+	
+	<div id="tabs-9" class="mlw_tab_content">
 	<script>
 		$j(function() {
 			$j("#new_email_button_top, #new_email_button_bottom").button();
@@ -1831,7 +1846,6 @@ function mlw_options_emails_tab_content()
 			document.mlw_quiz_save_email_form.submit();	
 		}
 	</script>
-	<div id="tabs-9">
 		<h3>Template Variables</h3>
 		<table class="form-table">
 			<tr>
@@ -2098,7 +2112,7 @@ function mlw_options_results_tab_content()
         $mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
     }
 	?>
-	<div id="tabs-6">
+	<div id="tabs-6" class="mlw_tab_content">
 		<script>
 			function delete_landing(id)
 			{
@@ -2267,7 +2281,7 @@ function mlw_options_styling_tab_content()
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	?>
-	<div id="tabs-7">
+	<div id="tabs-7" class="mlw_tab_content">
 		<script>
 			function mlw_qmn_theme(theme)
 			{
@@ -2420,6 +2434,7 @@ function mlw_options_tools_tab_content()
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	?>
+	<div id="tabs-8" class="mlw_tab_content">
 	<script>
 	jQuery(function() {
 			jQuery('#mlw_reset_stats_dialog').dialog({
@@ -2440,7 +2455,6 @@ function mlw_options_tools_tab_content()
 		}	);
 		});
 	</script>
-	<div id="tabs-8">
 		<p>Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken). </p>
 		<button id="mlw_reset_stats_button">Reset Quiz Views And Taken Stats</button>
 		<?php do_action('mlw_qmn_quiz_tools'); ?>
@@ -2458,4 +2472,14 @@ function mlw_options_tools_tab_content()
 	<?php
 }
 
+function mlw_options_preview_tab_content()
+{
+	?>
+	<div id="tabs-preview" class="mlw_tab_content">
+		<?php
+		echo do_shortcode( '[mlw_quizmaster quiz='.intval($_GET["quiz_id"]).']' );
+		?>
+	</div>
+	<?php
+}
 ?>
