@@ -134,6 +134,10 @@ EOC;
 				<h2>Quiz Results From <?php echo $mlw_results_data->quiz_name; ?></h2>
 				<table>
 					<tr>
+						<td>Time Taken: </td>
+						<td><?php echo $mlw_results_data->time_taken; ?></td>
+					</tr>
+					<tr>
 						<td>Name Provided: </td>
 						<td><?php echo $mlw_results_data->name; ?></td>
 					</tr>
@@ -181,8 +185,16 @@ EOC;
 					}
 					else
 					{
+						$mlw_complete_time = '';
+						$mlw_complete_minutes = floor($mlw_qmn_results_array[0] / 60);
+						if ($mlw_complete_minutes > 0)
+						{
+							$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+						}
+						$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+						$mlw_complete_time .=  "$mlw_complete_seconds seconds";
 						?>
-						This quiz was completed in <?php echo $mlw_qmn_results_array[0]; ?> seconds.<br />
+						This quiz was completed in <?php echo $mlw_complete_time; ?>.<br />
 						<br />
 						The comments entered into the comment box (if enabled):<br />
 						<?php echo $mlw_qmn_results_array[2]; ?><br />
