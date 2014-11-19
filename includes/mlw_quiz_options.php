@@ -50,8 +50,8 @@ function mlw_generate_quiz_options()
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
 	<h2>Quiz Settings For <?php echo $mlw_quiz_options->quiz_name; ?></h2>
-	<?php 
-	$mlwQmnAlertManager->showAlerts();
+	<?php
+	ob_start();
 	if ($quiz_id != "")
 	{
 	?>
@@ -73,6 +73,10 @@ function mlw_generate_quiz_options()
 		</div>
 		<?php
 	}
+	$mlw_output = ob_get_contents();
+	ob_end_clean();
+	$mlwQmnAlertManager->showAlerts();
+	echo $mlw_output;
 	?>
 	
 	<?php echo mlw_qmn_show_adverts(); ?>
