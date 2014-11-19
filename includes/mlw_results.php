@@ -9,7 +9,7 @@ Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 function mlw_generate_quiz_results()
 {
 	global $wpdb;
-	$mlw_hasDeletedResults = false;
+	global $mlwQmnAlertManager;
 	
 	///Delete Results Function
 	if (isset($_POST["delete_results"]) && $_POST["delete_results"] == "confirmation")
@@ -20,16 +20,23 @@ function mlw_generate_quiz_results()
 		$mlw_delete_results_name = $_POST["delete_quiz_name"];
 		$mlw_delete_results_update_sql = "UPDATE " . $wpdb->prefix . "mlw_results" . " SET deleted=1 WHERE result_id=".$mlw_delete_results_id;
 		$mlw_delete_results_results = $wpdb->query( $mlw_delete_results_update_sql );
-		$mlw_hasDeletedResults = true;
+		if ($mlw_delete_results_results != false)
+		{
+			$mlwQmnAlertManager->newAlert('Your results has been deleted successfully.', 'success');
 		
-		//Insert Action Into Audit Trail
-		global $current_user;
-		get_currentuserinfo();
-		$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-		$insert = "INSERT INTO " . $table_name .
-			"(trail_id, action_user, action, time) " .
-			"VALUES (NULL , '" . $current_user->display_name . "' , 'Results Has Been Deleted From: ".$mlw_delete_results_name."' , '" . date("h:i:s A m/d/Y") . "')";
-		$results = $wpdb->query( $insert );		
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Results Has Been Deleted From: ".$mlw_delete_results_name."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0021.', 'error');
+		}
 	}
 
 	global $wpdb;
@@ -131,17 +138,9 @@ function mlw_generate_quiz_results()
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
 	<h2>Quiz Results<a id="opener" href="">(?)</a></h2>
-	<?php if ($mlw_hasDeletedResults)
-		{
-	?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Success!</strong> Your results have been deleted.</p>
-	</div>
-	<?php
-		}
-	?>
 	<?php 
+	$mlwQmnAlertManager->showAlerts();
+	
 	$quotes_list = "";
 	$display = "";
 	$alternate = "";
