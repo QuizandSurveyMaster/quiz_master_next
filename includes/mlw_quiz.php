@@ -36,7 +36,10 @@ function mlw_quiz_shortcode($atts)
 	//Check if user is required to be checked in
 	if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
 	{
-		$mlw_display = $mlw_quiz_options->require_log_in_text;
+		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
+		$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
+		$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+		$mlw_display = $mlw_message;
 		$mlw_display .= wp_login_form( array('echo' => false) );
 		return $mlw_display;
 		$mlw_qmn_isAllowed = false;
