@@ -254,6 +254,22 @@ function mlw_quiz_update()
 			$results = $wpdb->query( $update_sql );
 		}
 		
+		//Update 3.5.1
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in'") != "require_log_in")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD require_log_in INT NOT NULL AFTER last_activity";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET require_log_in='0'";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in_text'") != "require_log_in_text")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD require_log_in_text TEXT NOT NULL AFTER require_log_in";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET require_log_in_text='Enter Text Here'";
+			$results = $wpdb->query( $update_sql );
+		}
+		
 		
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_questions";

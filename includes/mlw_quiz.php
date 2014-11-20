@@ -33,6 +33,16 @@ function mlw_quiz_shortcode($atts)
 		break;
 	}
 	
+	//Check if user is required to be checked in
+	if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
+	{
+		$mlw_display = $mlw_quiz_options->require_log_in_text;
+		$mlw_display .= wp_login_form( array('echo' => false) );
+		return $mlw_display;
+		$mlw_qmn_isAllowed = false;
+	}
+	
+	
 	//Check to see if there is limit on the amount of tries
 	if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
 	{
