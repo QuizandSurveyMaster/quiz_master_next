@@ -1243,8 +1243,8 @@ function mlw_options_option_tab_content()
 			<tr valign="top">
 				<th scope="row"><label for="require_log_in">Should the user be required to be logged in to take this quiz?</label></th>
 				<td><div id="require_log_in">
-				    <input type="radio" id="radio5" name="require_log_in" <?php if ($mlw_quiz_options->require_log_in == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio5">Yes</label>
-				    <input type="radio" id="radio6" name="require_log_in" <?php if ($mlw_quiz_options->require_log_in == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio6">No</label>
+				    <input type="radio" id="radio_login_1" name="require_log_in" <?php if ($mlw_quiz_options->require_log_in == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio_login_1">Yes</label>
+				    <input type="radio" id="radio_login_2" name="require_log_in" <?php if ($mlw_quiz_options->require_log_in == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio_login_2">No</label>
 				</div></td>
 			</tr>
 			<tr valign="top">
