@@ -1415,7 +1415,7 @@ EOC;
 		$results = $wpdb->query( $wpdb->prepare( "INSERT INTO " . $table_name . " (result_id, quiz_id, quiz_name, quiz_system, point_score, correct_score, correct, total, name, business, email, phone, user, time_taken, time_taken_real, quiz_results, deleted) VALUES (NULL, %d, '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', 0)", $mlw_quiz_id, $mlw_quiz_options->quiz_name, $mlw_quiz_options->system, $mlw_points, $mlw_total_score, $mlw_correct, $mlw_total_questions, $mlw_user_name, $mlw_user_comp, $mlw_user_email, $mlw_user_phone, get_current_user_id(), date("h:i:s A m/d/Y"), date("Y-m-d H:i:s"), $mlw_quiz_results) );
 		
 		//Integration Action
-		do_action('mlw_qmn_load_results_page');
+		do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $mlw_quiz_options->quiz_settings);
 		}
 		else
 		{
