@@ -269,6 +269,20 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET require_log_in_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries'") != "limit_total_entries")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries INT NOT NULL AFTER require_log_in";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET limit_total_entries='0'";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries_text'") != "limit_total_entries_text")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries_text TEXT NOT NULL AFTER limit_total_entries";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET limit_total_entries_text='Enter Text Here'";
+			$results = $wpdb->query( $update_sql );
+		}
 		
 		
 		global $wpdb;

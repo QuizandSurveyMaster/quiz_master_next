@@ -929,12 +929,13 @@ function mlw_options_text_tab_content()
 		$mlw_before_comments = htmlspecialchars($_POST["mlw_quiz_before_comments"], ENT_QUOTES);
 		$mlw_comment_field_text = htmlspecialchars($_POST["mlw_commentText"], ENT_QUOTES);
 		$mlw_require_log_in_text = htmlspecialchars($_POST["mlw_require_log_in_text"], ENT_QUOTES);
+		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
 		$mlw_qmn_pagination_field = serialize(array( $_POST["pagination_prev_text"], $_POST["pagination_next_text"] ));
 		$mlw_email_from_text = $_POST["emailFromText"];
 		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
 		$quiz_id = $_POST["quiz_id"];
 		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', email_from_text='".$mlw_email_from_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$mlw_qmn_social_medi_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', email_from_text='".$mlw_email_from_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$mlw_qmn_social_medi_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -1087,6 +1088,17 @@ function mlw_options_text_tab_content()
 				</tr>
 				<tr>
 					<td width="30%">
+						<strong>Message Displayed If The Limit Of Total Entries Has Been Reached</strong>
+						<br />
+						<p>Allowed Variables: </p>
+						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
+						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
+					</td>
+					<td><textarea cols="80" rows="15" id="mlw_limit_total_entries_text" name="mlw_limit_total_entries_text"><?php echo $mlw_quiz_options->limit_total_entries_text; ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%">
 						<strong>%QUESTIONS_ANSWERS% Text</strong>
 						<br />
 						<p>Allowed Variables: </p>
@@ -1180,6 +1192,7 @@ function mlw_options_option_tab_content()
 		$mlw_randomness_order = $_POST["randomness_order"];
 		$mlw_total_user_tries = intval($_POST["total_user_tries"]);
 		$mlw_require_log_in = $_POST["require_log_in"];
+		$mlw_limit_total_entries = $_POST["limit_total_entries"];
 		$mlw_send_user_email = $_POST["sendUserEmail"];
 		$mlw_send_admin_email = $_POST["sendAdminEmail"];
 		$mlw_contact_location = $_POST["contact_info_location"];
@@ -1192,7 +1205,7 @@ function mlw_options_option_tab_content()
 		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
 		$quiz_id = $_POST["quiz_id"];
 		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -1263,6 +1276,12 @@ function mlw_options_option_tab_content()
 				<th scope="row"><label for="total_user_tries">How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. Currently only works for registered users)</label></th>
 				<td>
 				    <input name="total_user_tries" type="number" step="1" min="0" id="total_user_tries" value="<?php echo $mlw_quiz_options->total_user_tries; ?>" class="regular-text" />
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="limit_total_entries">How many total entries can this quiz have? (Leave 0 for unlimited entries)</label></th>
+				<td>
+				    <input name="limit_total_entries" type="number" step="1" min="0" id="limit_total_entries" value="<?php echo $mlw_quiz_options->limit_total_entries; ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr valign="top">
