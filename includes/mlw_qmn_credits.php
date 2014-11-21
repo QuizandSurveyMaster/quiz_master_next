@@ -89,18 +89,21 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.4</a>
+			What&#8217;s New In 3.5</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Preview Mode</h2>
-	<p style="text-align: center;">You can now preview your quiz while in the admin side by going to the new Preview tab on the Quiz Settings page!</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Require Users To Be Logged In</h2>
+	<p style="text-align: center;">You can now require users to be logged in to access your quiz. Set this up from the options tab. You can customize the text it shows to non-logged in users on the Text tab.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Design Changes</h2>
-	<p style="text-align: center;">This version made several design changes to various pages as we continue to redesign our plugin. We also made many design changes in our code!</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Limit Total Entries</h2>
+	<p style="text-align: center;">You can now limit the amount of total entries to your quiz. For example, you could say only 10 people can complete the survey. Edit this setting from the options tab. You can customize the text it shows once it reaches the limit on the text tab.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">LaTeX/Tex Support For Mathematics</h2>
+	<p style="text-align: center;">You can now use LaTex/Tex to show mathematic symbols and formulas such as square root, fractions, exponents, and more. You can place your math in any question, answer, or text on the quiz! For help with LaTeX, <a href="http://www.andy-roberts.net/writing/latex/mathematics_1">check out this tutorial</a>.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
@@ -109,16 +112,12 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">We have several new premium add-ons in our WordPress Store: MailPoet Integration (subscribes users to your MailPoet list), MailChimp Integration (subscribes users to your Mailchimp list), Export Results (exports your quiz results), Extra Shortcodes (gives you extra shortcodes to use), User Dashboard (allow users to see the results from all the quizzes they have taken), and Advertisement Be Gone (gets rid of blue-border ads). Visit our <a href="http://mylocalwebstop.com/shop/">WordPress Store</a> for details! </p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (November 20, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (November 22, 2014)</h3>
 	<ul>
-		<li>* Added Preview Mode (Beta)</li>
-		<li>* Several Design Changes To Quizzes Page</li>
-		<li>* Minor Design Changes To Quiz Settings Page</li>
-		<li>* Added Completion Time To Quiz Results Page</li>
-		<li>* Added Time Taken To Quiz Result Details Page</li>
-		<li>* Created New Hook On Quiz Settings Page</li>
-		<li>* Broke Apart Quiz Settings Backend Into Smaller Functions That Hook Into New Hook</li>
-		<li>* Created New Backend Alert Manager Class To Replace Archaic Old Error System</li>
+		<li>* Added The Ability To Require Users To Be Logged In To Access Quiz</li>
+		<li>* Added Ability To Limit Total Amount Of Entries</li>
+		<li>* Added Ability To Show Mathematic Formulas Using Tex Or LaTex</li>
+		<li>* Set Up Parameters For Action 'mlw_qmn_load_results_page' To Pass Results Id And Quiz Settings</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
@@ -130,7 +129,6 @@ function mlw_generate_about_page()
 	<ul>
 		<li>Importing Questions</li>
 		<li>Stats For Each Quiz</li>
-		<li>Force Login/Register Option</li>
 		<li>Categories</li>
 		<li>More Social Media Integration</li>
 		<li>Show Question Amount On Pagination</li>
@@ -139,11 +137,9 @@ function mlw_generate_about_page()
 		<li>Progress Bar For Timer</li>
 		<li>Ability To Redirect User Instead Of Showing Results Page</li>
 		<li>Multi-Delete Option For Quiz Results</li>
-		<li>Spam Prevention</li>
 		<li>Graphical Click Aware Questions</li>
 		<li>Results Bar Graph For Users Taking Polls</li>
 		<li>Head To Head Comparison Questions</li>
-		<li>Enhanced Leaderboard</li>
 		<li>Different Social Media Sharing Text For Different Social Media</li>
 		<li>Ability To Highlight Incorrect Answers</li>
 		<li>Set Default Question Type</li>
