@@ -43,8 +43,7 @@ function mlw_quiz_shortcode($atts)
 		$mlw_display .= wp_login_form( array('echo' => false) );
 		return $mlw_display;
 		$mlw_qmn_isAllowed = false;
-	}
-	
+	}	
 	
 	//Check to see if there is limit on the amount of tries
 	if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
@@ -178,6 +177,20 @@ function mlw_quiz_shortcode($atts)
 	//Display Quiz
 	if (!isset($_POST["complete_quiz"]) && $mlw_quiz_options->quiz_name != "" && $mlw_qmn_isAllowed)
 	{
+		//Check if total entries are limited
+		if ( $mlw_quiz_options->limit_total_entries != 0 )
+		{
+			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_results WHERE deleted='0' AND quiz_id=%d", $mlw_quiz_id ) );
+			if ($mlw_qmn_entries_count >= $mlw_quiz_options->limit_total_entries)
+			{
+				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES);
+				$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
+				$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+				$mlw_display = $mlw_message;
+				return $mlw_display;
+				$mlw_qmn_isAllowed = false;
+			}
+		}
 		$mlw_qmn_total_questions = 0;
 		//Calculate number of pages if pagination is turned on
 		if ($mlw_quiz_options->pagination != 0)
