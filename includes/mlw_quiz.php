@@ -117,6 +117,9 @@ function mlw_quiz_shortcode($atts)
 	wp_enqueue_script( 'jquery-ui-tooltip' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	?>
+	<script type="text/javascript"
+	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
 	<script type="text/javascript">
