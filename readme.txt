@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.0
-Stable tag: 3.4.1
+Stable tag: 3.5.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -37,10 +37,15 @@ The plugin features useful **statistics** that show how many times each quiz has
 = Saves The Results For Later Use =
 The plugin will **save** the results, the user's answers, the user's comments, and more!
 
+= Math Formulas =
+You can use Tex or LaTex in questions, answers, and text fields for your quiz. For assistance with LaTex, review this tutorial: [LaTeX](http://www.andy-roberts.net/writing/latex/mathematics_1) 
+
 = Other Useful Features =
 
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only one question per page
+* Require user to be logged in
+* Limit amount of total entries to quiz or survey
 * Allows for you to create **certificates** for the user
 * Can set amount of tries a user has to take the quiz
 * Can enable **comment boxes** for each question and/or comment section at the end of the quiz
@@ -103,6 +108,12 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.5.1 (November 22, 2014) =
+ * Added The Ability To Require Users To Be Logged In To Access Quiz
+ * Added Ability To Limit Total Amount Of Entries
+ * Added Ability To Show Mathematic Formulas Using Tex Or LaTex
+ * Set Up Parameters For Action 'mlw_qmn_load_results_page' To Pass Results Id And Quiz Settings
 
 = 3.4.1 (November 20, 2014) =
  * Added Preview Mode (Beta)
@@ -533,6 +544,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.5.1 =
+Upgrade to require users to be logged in, limit amount of total entries, and show mathematic formulas!
 
 = 3.4.1 =
 Upgrade for new preview mode, many design changes, and more!
