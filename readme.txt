@@ -114,6 +114,7 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
  * Added Ability To Limit Total Amount Of Entries
  * Added Ability To Show Mathematic Formulas Using Tex Or LaTex
  * Set Up Parameters For Action 'mlw_qmn_load_results_page' To Pass Results Id And Quiz Settings
+ * Minor Design Change To Quizzes Page
 
 = 3.4.1 (November 20, 2014) =
  * Added Preview Mode (Beta)
