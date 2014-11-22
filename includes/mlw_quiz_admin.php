@@ -381,9 +381,6 @@ function mlw_generate_quiz_admin()
 		// increase the default animation speed to exaggerate the effect
 		$j.fx.speeds._default = 1000;
 		$j(function() {
-			$j("#prev_page, #next_page").button();
-		});
-		$j(function() {
 			$j('#new_quiz_dialog').dialog({
 				autoOpen: false,
 				show: 'blind',
@@ -485,6 +482,7 @@ function mlw_generate_quiz_admin()
 			<span class="displaying-num"><?php echo $mlw_qmn_quiz_count; ?> quizzes</span>
 			<span class="pagination-links">
 				<?php
+				$mlw_qmn_previous_page = 0;
 				$mlw_current_page = $mlw_qmn_quiz_page+1;
 				$mlw_total_pages = ceil($mlw_qmn_quiz_count/$mlw_qmn_table_limit);
 				if( $mlw_qmn_quiz_page > 0 )
