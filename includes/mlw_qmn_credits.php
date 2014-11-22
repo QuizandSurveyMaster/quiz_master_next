@@ -118,6 +118,7 @@ function mlw_generate_about_page()
 		<li>* Added Ability To Limit Total Amount Of Entries</li>
 		<li>* Added Ability To Show Mathematic Formulas Using Tex Or LaTex</li>
 		<li>* Set Up Parameters For Action 'mlw_qmn_load_results_page' To Pass Results Id And Quiz Settings</li>
+		<li>* Minor Design Change To Quizzes Page</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
