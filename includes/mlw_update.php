@@ -6,7 +6,7 @@ function mlw_quiz_update()
 {
 	
 	//Update this variable each update. This is what is checked when the plugin is deciding to run the upgrade script or not.
-	$data = "3.4.1";
+	$data = "3.5.1";
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);
@@ -251,6 +251,36 @@ function mlw_quiz_update()
 			$sql = "ALTER TABLE ".$table_name." ADD last_activity DATETIME NOT NULL AFTER theme_selected";
 			$results = $wpdb->query( $sql );
 			$update_sql = "UPDATE ".$table_name." SET last_activity='".date("Y-m-d H:i:s")."'";
+			$results = $wpdb->query( $update_sql );
+		}
+		
+		//Update 3.5.1
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in'") != "require_log_in")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD require_log_in INT NOT NULL AFTER last_activity";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET require_log_in='0'";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in_text'") != "require_log_in_text")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD require_log_in_text TEXT NOT NULL AFTER require_log_in";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET require_log_in_text='Enter Text Here'";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries'") != "limit_total_entries")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries INT NOT NULL AFTER require_log_in";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET limit_total_entries='0'";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries_text'") != "limit_total_entries_text")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries_text TEXT NOT NULL AFTER limit_total_entries";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET limit_total_entries_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
 		

@@ -33,6 +33,18 @@ function mlw_quiz_shortcode($atts)
 		break;
 	}
 	
+	//Check if user is required to be checked in
+	if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
+	{
+		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
+		$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
+		$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+		$mlw_display = $mlw_message;
+		$mlw_display .= wp_login_form( array('echo' => false) );
+		return $mlw_display;
+		$mlw_qmn_isAllowed = false;
+	}	
+	
 	//Check to see if there is limit on the amount of tries
 	if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
 	{
@@ -105,6 +117,9 @@ function mlw_quiz_shortcode($atts)
 	wp_enqueue_script( 'jquery-ui-tooltip' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	?>
+	<script type="text/javascript"
+	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
 	<script type="text/javascript">
@@ -165,6 +180,20 @@ function mlw_quiz_shortcode($atts)
 	//Display Quiz
 	if (!isset($_POST["complete_quiz"]) && $mlw_quiz_options->quiz_name != "" && $mlw_qmn_isAllowed)
 	{
+		//Check if total entries are limited
+		if ( $mlw_quiz_options->limit_total_entries != 0 )
+		{
+			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_results WHERE deleted='0' AND quiz_id=%d", $mlw_quiz_id ) );
+			if ($mlw_qmn_entries_count >= $mlw_quiz_options->limit_total_entries)
+			{
+				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES);
+				$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
+				$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+				$mlw_display = $mlw_message;
+				return $mlw_display;
+				$mlw_qmn_isAllowed = false;
+			}
+		}
 		$mlw_qmn_total_questions = 0;
 		//Calculate number of pages if pagination is turned on
 		if ($mlw_quiz_options->pagination != 0)
@@ -1415,7 +1444,7 @@ EOC;
 		$results = $wpdb->query( $wpdb->prepare( "INSERT INTO " . $table_name . " (result_id, quiz_id, quiz_name, quiz_system, point_score, correct_score, correct, total, name, business, email, phone, user, time_taken, time_taken_real, quiz_results, deleted) VALUES (NULL, %d, '%s', %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', 0)", $mlw_quiz_id, $mlw_quiz_options->quiz_name, $mlw_quiz_options->system, $mlw_points, $mlw_total_score, $mlw_correct, $mlw_total_questions, $mlw_user_name, $mlw_user_comp, $mlw_user_email, $mlw_user_phone, get_current_user_id(), date("h:i:s A m/d/Y"), date("Y-m-d H:i:s"), $mlw_quiz_results) );
 		
 		//Integration Action
-		do_action('mlw_qmn_load_results_page');
+		do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $mlw_quiz_options->quiz_settings);
 		}
 		else
 		{
