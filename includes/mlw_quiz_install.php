@@ -101,6 +101,14 @@ function mlw_quiz_activate()
 			theme_selected TEXT NOT NULL,
 			
 			last_activity DATETIME NOT NULL,
+			
+			require_log_in INT NOT NULL,
+			
+			require_log_in_text TEXT NOT NULL,
+			
+			limit_total_entries INT NOT NULL,
+			
+			limit_total_entries_text TEXT NOT NULL,
 
 			quiz_views INT NOT NULL,
 
