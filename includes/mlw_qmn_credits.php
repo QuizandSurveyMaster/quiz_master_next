@@ -112,13 +112,9 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">We have several new premium add-ons in our WordPress Store: MailPoet Integration (subscribes users to your MailPoet list), MailChimp Integration (subscribes users to your Mailchimp list), Export Results (exports your quiz results), Extra Shortcodes (gives you extra shortcodes to use), User Dashboard (allow users to see the results from all the quizzes they have taken), and Advertisement Be Gone (gets rid of blue-border ads). Visit our <a href="http://mylocalwebstop.com/shop/">WordPress Store</a> for details! </p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (November 22, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (November 26, 2014)</h3>
 	<ul>
-		<li>* Added The Ability To Require Users To Be Logged In To Access Quiz</li>
-		<li>* Added Ability To Limit Total Amount Of Entries</li>
-		<li>* Added Ability To Show Mathematic Formulas Using Tex Or LaTex</li>
-		<li>* Set Up Parameters For Action 'mlw_qmn_load_results_page' To Pass Results Id And Quiz Settings</li>
-		<li>* Minor Design Change To Quizzes Page</li>
+		<li>* Bug Fix For Some Bugs Resulting In Error Code 0008</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
