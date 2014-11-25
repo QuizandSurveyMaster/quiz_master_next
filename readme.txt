@@ -109,7 +109,7 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 
 == Changelog ==
 
-= 3.5.1 (November 22, 2014) =
+= 3.5.1 (November 25, 2014) =
  * Added The Ability To Require Users To Be Logged In To Access Quiz
  * Added Ability To Limit Total Amount Of Entries
  * Added Ability To Show Mathematic Formulas Using Tex Or LaTex
