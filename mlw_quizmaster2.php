@@ -35,6 +35,7 @@ include("includes/mlw_leaderboard.php");
 include("includes/mlw_update.php");
 include("includes/mlw_qmn_widgets.php");
 include("includes/mlw_qmn_credits.php");
+include("includes/mlw_template_variables.php");
 
 
 ///Activation Actions
