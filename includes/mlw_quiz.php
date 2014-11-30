@@ -1073,6 +1073,24 @@ function mlw_quiz_shortcode($atts)
 			$mlw_qm_quiz_comments = "";
 		}
 		
+		$mlw_qmn_result_array = array(
+			'quiz_id' => $mlw_quiz_id,
+			'quiz_name' => $mlw_quiz_options->quiz_name,
+			'quiz_system' => $mlw_quiz_options->system,
+			'total_points' => $mlw_points,
+			'total_score' => $mlw_total_score,
+			'total_correct' => $mlw_correct,
+			'total_questions' => $mlw_total_questions,
+			'user_name' => $mlw_user_name,
+			'user_business' => $mlw_user_comp,
+			'user_email' => $mlw_user_email,
+			'user_phone' => $mlw_user_phone,
+			'user_id' => get_current_user_id(),
+			'question_answers_display' => $mlw_question_answers,
+			'question_answers_array' => $mlw_qmn_answer_array,
+			'timer' => $mlw_qmn_timer,
+			'comments' => $mlw_qm_quiz_comments
+		);
 		
 		//Prepare Certificate
 		$mlw_certificate_link = "";
@@ -1084,6 +1102,7 @@ function mlw_quiz_shortcode($atts)
 	    if ($mlw_certificate_options[4] == 0)
 	    {
 			$mlw_message_certificate = $mlw_certificate_options[1];
+			$mlw_message_certificate = apply_filters( 'mlw_qmn_text_variable', $mlw_message_certificate, $mlw_qmn_result_array);
 			$mlw_message_certificate = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_certificate);
 			$mlw_message_certificate = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_certificate);
 			$mlw_message_certificate = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_certificate);
@@ -1143,6 +1162,7 @@ EOC;
 				if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
 				{
 					$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+					$mlw_message_after = apply_filters( 'mlw_qmn_text_variable', $mlw_message_after, $mlw_qmn_result_array);
 					$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
 					$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
 					$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
@@ -1168,6 +1188,7 @@ EOC;
 					if ($mlw_quiz_options->system == 1 && $mlw_points >= $mlw_each[0] && $mlw_points <= $mlw_each[1])
 					{
 						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+						$mlw_message_after = apply_filters( 'mlw_qmn_text_variable', $mlw_message_after, $mlw_qmn_result_array);
 						$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
 						$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
 						$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
@@ -1191,6 +1212,7 @@ EOC;
 					if ($mlw_quiz_options->system == 0 && $mlw_total_score >= $mlw_each[0] && $mlw_total_score <= $mlw_each[1])
 					{
 						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+						$mlw_message_after = apply_filters( 'mlw_qmn_text_variable', $mlw_message_after, $mlw_qmn_result_array);
 						$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
 						$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
 						$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
@@ -1217,6 +1239,7 @@ EOC;
 		{
 			//Prepare the after quiz message
 			$mlw_message_after = htmlspecialchars_decode($mlw_quiz_options->message_after, ENT_QUOTES);
+			$mlw_message_after = apply_filters( 'mlw_qmn_text_variable', $mlw_message_after, $mlw_qmn_result_array);
 			$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
 			$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
 			$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
@@ -1266,7 +1289,9 @@ EOC;
             }
 			</script>
 			<?php
-			$mlw_social_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_quiz_options->social_media_text);
+			$mlw_social_message = $mlw_quiz_options->social_media_text;
+			$mlw_social_message = apply_filters( 'mlw_qmn_text_variable', $mlw_social_message, $mlw_qmn_result_array);
+			$mlw_social_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_social_message);
 			$mlw_social_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_social_message);
 			$mlw_social_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_social_message);
 			$mlw_social_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_social_message);
@@ -1305,6 +1330,7 @@ EOC;
 						{
 							$mlw_each[3] = "Quiz Results For %QUIZ_NAME";
 						}
+						$mlw_each[3] = apply_filters( 'mlw_qmn_text_variable', $mlw_each[3], $mlw_qmn_result_array);
 						$mlw_each[3] = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_each[3]);
 						$mlw_each[3] = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_each[3]);
 						$mlw_each[3] = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_each[3]);
@@ -1323,6 +1349,7 @@ EOC;
 						if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
 						{
 							$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+							$mlw_message = apply_filters( 'mlw_qmn_text_variable', $mlw_message, $mlw_qmn_result_array);
 							$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
 							$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
 							$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
@@ -1351,6 +1378,7 @@ EOC;
 							if ($mlw_quiz_options->system == 1 && $mlw_points >= $mlw_each[0] && $mlw_points <= $mlw_each[1])
 							{
 								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+								$mlw_message = apply_filters( 'mlw_qmn_text_variable', $mlw_message, $mlw_qmn_result_array);
 								$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
 								$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
 								$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
@@ -1378,6 +1406,7 @@ EOC;
 							if ($mlw_quiz_options->system == 0 && $mlw_total_score >= $mlw_each[0] && $mlw_total_score <= $mlw_each[1])
 							{
 								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
+								$mlw_message = apply_filters( 'mlw_qmn_text_variable', $mlw_message, $mlw_qmn_result_array);
 								$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
 								$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
 								$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
@@ -1406,6 +1435,7 @@ EOC;
 				else
 				{
 					$mlw_message = htmlspecialchars_decode($mlw_quiz_options->user_email_template, ENT_QUOTES);
+					$mlw_message = apply_filters( 'mlw_qmn_text_variable', $mlw_message, $mlw_qmn_result_array);
 					$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
 					$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
 					$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
@@ -1435,6 +1465,7 @@ EOC;
 		if ($mlw_quiz_options->send_admin_email == "0")
 		{
 			$mlw_message = htmlspecialchars_decode($mlw_quiz_options->admin_email_template, ENT_QUOTES);
+			$mlw_message = apply_filters( 'mlw_qmn_text_variable', $mlw_message, $mlw_qmn_result_array);
 			$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
 			$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
 			$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
