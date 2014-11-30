@@ -66,10 +66,113 @@ function mlw_generate_quiz_admin()
    						margin: auto;
 				}";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
-		$insert = "INSERT INTO " . $table_name .
-			"(quiz_id, quiz_name, message_before, message_after, message_comment, message_end_template, user_email_template, admin_email_template, submit_button_text, name_field_text, business_field_text, email_field_text, phone_field_text, comment_field_text, email_from_text, question_answer_template, leaderboard_template, system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp, user_email, user_phone, admin_email, comment_section, question_from_total, total_user_tries, total_user_tries_text, certificate_template, social_media, social_media_text, pagination, pagination_text, timer_limit, quiz_stye, question_numbering, quiz_settings, theme_selected, last_activity, quiz_views, quiz_taken, deleted) " .
-			"VALUES (NULL , '" . $quiz_name . "' , 'Enter your text here', 'Enter your text here', 'Enter your text here', '', 'Enter your text here', 'Enter your text here', 'Submit Quiz', 'Name', 'Business', 'Email', 'Phone Number', 'Comments', 'Wordpress', '".$mlw_question_answer_default."', '".$mlw_leaderboard_default."', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '".get_option( 'admin_email', 'Enter email' )."', 0, 0, 0, 'Enter Your Text Here', 'Enter Your Text Here!', 0, 'I just score a %CORRECT_SCORE%% on %QUIZ_NAME%!', 0, 'Next', 0, '".$mlw_style_default."', 0, '', 'default', '".date("Y-m-d H:i:s")."', 0, 0, 0)";
-		$results = $wpdb->query( $insert );
+		$results = $wpdb->insert( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+				'quiz_name' => $quiz_name, 
+				'message_before' => 'Enter your text here',
+				'message_after' => 'Enter your text here', 
+				'message_comment' => 'Enter your text here',
+				'message_end_template' => '', 
+				'user_email_template' => 'Enter your text here',
+				'admin_email_template' => 'Enter your text here', 
+				'submit_button_text' => 'Submit Quiz',
+				'name_field_text' => 'Name', 
+				'business_field_text' => 'Business',
+				'email_field_text' => 'Email', 
+				'phone_field_text' => 'Phone Number',
+				'comment_field_text' => 'Comments', 
+				'email_from_text' => 'Wordpress',
+				'question_answer_template' => $mlw_question_answer_default, 
+				'leaderboard_template' => $mlw_leaderboard_default,
+				'system' => 0, 
+				'randomness_order' => 0,
+				'loggedin_user_contact' => 0, 
+				'show_score' => 0,
+				'send_user_email' => 0, 
+				'send_admin_email' => 0,
+				'contact_info_location' => 0, 
+				'user_name' => 0,
+				'user_comp' => 0, 
+				'user_email' => 0,
+				'user_phone' => 0, 
+				'admin_email' => get_option( 'admin_email', 'Enter email' ),
+				'comment_section' => 0, 
+				'question_from_total' => 0,
+				'total_user_tries' => 0, 
+				'total_user_tries_text' => 'Enter Your Text Here',
+				'certificate_template' => 'Enter Your Text Here!', 
+				'social_media' => 0,
+				'social_media_text' => 'I just score a %CORRECT_SCORE%% on %QUIZ_NAME%!', 
+				'pagination' => 0,
+				'pagination_text' => 'Next',
+				'timer_limit' => 0, 
+				'quiz_stye' => $mlw_style_default,
+				'question_numbering' => 0, 
+				'quiz_settings' => '',
+				'theme_selected' => 'default', 
+				'last_activity' => date("Y-m-d H:i:s"),
+				'require_log_in' => 0,
+				'require_log_in_text' => 'Enter Your Text Here',
+				'limit_total_entries' => 0,
+				'limit_total_entries_text' => 'Enter Your Text Here',
+				'quiz_views' => 0, 
+				'quiz_taken' => 0,
+				'deleted' => 0
+			), 
+			array( 
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%s', 
+				'%s',
+				'%d', 
+				'%d',
+				'%d', 
+				'%d',
+				'%d', 
+				'%d',
+				'%d', 
+				'%d',
+				'%d', 
+				'%d',
+				'%d', 
+				'%s',
+				'%d', 
+				'%d',
+				'%d', 
+				'%s',
+				'%s', 
+				'%d',
+				'%s', 
+				'%d',
+				'%s',
+				'%d', 
+				'%s',
+				'%d', 
+				'%s',
+				'%s', 
+				'%s',
+				'%d',
+				'%s',
+				'%d',
+				'%s',
+				'%d', 
+				'%d',
+				'%d'
+			) 
+		);
 		if ($results != false)
 		{
 			$mlwQmnAlertManager->newAlert('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'success');
@@ -97,10 +200,28 @@ function mlw_generate_quiz_admin()
 		$mlw_quiz_id = $_POST["quiz_id"];
 		$quiz_name = $_POST["delete_quiz_name"];
 		$quiz_id = $_POST["quiz_id"];
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$results = $wpdb->query( $update );
-		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$delete_question_results = $wpdb->query( $update );
+		$results = $wpdb->update( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+				'deleted' => 1 
+			), 
+			array( 'quiz_id' => $mlw_quiz_id ), 
+			array( 
+				'%d'
+			), 
+			array( '%d' ) 
+		);
+		$delete_question_results = $wpdb->update( 
+			$wpdb->prefix . "mlw_questions", 
+			array( 
+				'deleted' => 1 
+			), 
+			array( 'quiz_id' => $mlw_quiz_id ), 
+			array( 
+				'%d'
+			), 
+			array( '%d' ) 
+		);
 		if ($results != false)
 		{
 			$mlwQmnAlertManager->newAlert('Your quiz has been deleted successfully.', 'success');
@@ -124,10 +245,19 @@ function mlw_generate_quiz_admin()
 	//Edit Quiz Name
 	if (isset($_POST["quiz_name_editted"]) && $_POST["quiz_name_editted"] == "confirmation")
 	{
-		$mlw_edit_quiz_id = $_POST["edit_quiz_id"];
-		$mlw_edit_quiz_name = htmlspecialchars($_POST["edit_quiz_name"], ENT_QUOTES);
-		$mlw_update_quiz_table = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_name='".$mlw_edit_quiz_name."' WHERE quiz_id=".$mlw_edit_quiz_id;
-		$results = $wpdb->query( $mlw_update_quiz_table );
+		$mlw_edit_quiz_id = intval($_POST["edit_quiz_id"]);
+		$mlw_edit_quiz_name = htmlspecialchars(stripslashes($_POST["edit_quiz_name"]), ENT_QUOTES);
+		$results = $wpdb->update( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+				'quiz_name' => $mlw_edit_quiz_name 
+			), 
+			array( 'quiz_id' => $mlw_edit_quiz_id ), 
+			array( 
+				'%s'
+			), 
+			array( '%d' ) 
+		);
 		if ($results != false)
 		{
 			$mlwQmnAlertManager->newAlert('Your quiz name has been updated successfully.', 'success');
@@ -200,6 +330,10 @@ function mlw_generate_quiz_admin()
 					'quiz_settings' => $mlw_qmn_duplicate_data->quiz_settings,
 					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
 					'last_activity' => date("Y-m-d H:i:s"),
+					'require_log_in' => $mlw_qmn_duplicate_data->require_log_in,
+					'require_log_in_text' => $mlw_qmn_duplicate_data->require_log_in_text,
+					'limit_total_entries' => $mlw_qmn_duplicate_data->limit_total_entries,
+					'limit_total_entries_text' => $mlw_qmn_duplicate_data->limit_total_entries_text,
 					'quiz_views' => 0,
 					'quiz_taken' => 0, 
 					'deleted' => 0
@@ -247,6 +381,10 @@ function mlw_generate_quiz_admin()
 					'%d',
 					'%s',
 					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%d',
 					'%s',
 					'%d',
 					'%d',
@@ -342,7 +480,7 @@ function mlw_generate_quiz_admin()
 
 	//Retrieve list of quizzes
 	global $wpdb;
-	$mlw_qmn_table_limit = 10;
+	$mlw_qmn_table_limit = 20;
 	$mlw_qmn_quiz_count = $wpdb->get_var( "SELECT COUNT(quiz_id) FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted='0'" );
 	
 	if( isset($_GET{'mlw_quiz_page'} ) )
@@ -362,11 +500,9 @@ function mlw_generate_quiz_admin()
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-<script type="text/javascript"
-  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 	<!-- jquery scripts -->
 	<?php
+	wp_enqueue_script( 'mlw_qmn_MathJax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
@@ -529,7 +665,7 @@ function mlw_generate_quiz_admin()
 		else $alternate = " class=\"alternate\"";
 		$quotes_list .= "<tr{$alternate}>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
-		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
+		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
 		$quotes_list .= "<div class=\"row-actions\"><a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a> | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>Delete</a></div></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
