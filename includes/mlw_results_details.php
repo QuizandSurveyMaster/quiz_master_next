@@ -186,7 +186,12 @@ EOC;
 					else
 					{
 						$mlw_complete_time = '';
-						$mlw_complete_minutes = floor($mlw_qmn_results_array[0] / 60);
+						$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
+						if ($mlw_complete_hours > 0)
+						{
+							$mlw_complete_time .= "$mlw_complete_hours hours ";	
+						}
+						$mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
 						if ($mlw_complete_minutes > 0)
 						{
 							$mlw_complete_time .= "$mlw_complete_minutes minutes ";
