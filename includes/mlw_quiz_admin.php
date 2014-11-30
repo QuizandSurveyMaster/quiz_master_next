@@ -97,10 +97,28 @@ function mlw_generate_quiz_admin()
 		$mlw_quiz_id = $_POST["quiz_id"];
 		$quiz_name = $_POST["delete_quiz_name"];
 		$quiz_id = $_POST["quiz_id"];
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$results = $wpdb->query( $update );
-		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$delete_question_results = $wpdb->query( $update );
+		$results = $wpdb->update( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+				'deleted' => 1 
+			), 
+			array( 'quiz_id' => $mlw_quiz_id ), 
+			array( 
+				'%d'
+			), 
+			array( '%d' ) 
+		);
+		$delete_question_results = $wpdb->update( 
+			$wpdb->prefix . "mlw_questions", 
+			array( 
+				'deleted' => 1 
+			), 
+			array( 'quiz_id' => $mlw_quiz_id ), 
+			array( 
+				'%d'
+			), 
+			array( '%d' ) 
+		);
 		if ($results != false)
 		{
 			$mlwQmnAlertManager->newAlert('Your quiz has been deleted successfully.', 'success');
@@ -124,10 +142,19 @@ function mlw_generate_quiz_admin()
 	//Edit Quiz Name
 	if (isset($_POST["quiz_name_editted"]) && $_POST["quiz_name_editted"] == "confirmation")
 	{
-		$mlw_edit_quiz_id = $_POST["edit_quiz_id"];
-		$mlw_edit_quiz_name = htmlspecialchars($_POST["edit_quiz_name"], ENT_QUOTES);
-		$mlw_update_quiz_table = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_name='".$mlw_edit_quiz_name."' WHERE quiz_id=".$mlw_edit_quiz_id;
-		$results = $wpdb->query( $mlw_update_quiz_table );
+		$mlw_edit_quiz_id = intval($_POST["edit_quiz_id"]);
+		$mlw_edit_quiz_name = htmlspecialchars(stripslashes($_POST["edit_quiz_name"]), ENT_QUOTES);
+		$results = $wpdb->update( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+				'quiz_name' => $mlw_edit_quiz_name 
+			), 
+			array( 'quiz_id' => $mlw_edit_quiz_id ), 
+			array( 
+				'%s'
+			), 
+			array( '%d' ) 
+		);
 		if ($results != false)
 		{
 			$mlwQmnAlertManager->newAlert('Your quiz name has been updated successfully.', 'success');
@@ -200,9 +227,17 @@ function mlw_generate_quiz_admin()
 					'quiz_settings' => $mlw_qmn_duplicate_data->quiz_settings,
 					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
 					'last_activity' => date("Y-m-d H:i:s"),
+					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
 					'quiz_views' => 0,
 					'quiz_taken' => 0, 
 					'deleted' => 0
+					require_log_in INT NOT NULL,
+			
+			require_log_in_text TEXT NOT NULL,
+			
+			limit_total_entries INT NOT NULL,
+			
+			limit_total_entries_text TEXT NOT NULL,
 				),
 				array( 
 					'%s',
@@ -342,7 +377,7 @@ function mlw_generate_quiz_admin()
 
 	//Retrieve list of quizzes
 	global $wpdb;
-	$mlw_qmn_table_limit = 10;
+	$mlw_qmn_table_limit = 20;
 	$mlw_qmn_quiz_count = $wpdb->get_var( "SELECT COUNT(quiz_id) FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted='0'" );
 	
 	if( isset($_GET{'mlw_quiz_page'} ) )
@@ -362,11 +397,9 @@ function mlw_generate_quiz_admin()
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-<script type="text/javascript"
-  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 	<!-- jquery scripts -->
 	<?php
+	wp_enqueue_script( 'mlw_qmn_MathJax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML');
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
@@ -529,7 +562,7 @@ function mlw_generate_quiz_admin()
 		else $alternate = " class=\"alternate\"";
 		$quotes_list .= "<tr{$alternate}>";
 		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
-		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
+		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
 		$quotes_list .= "<div class=\"row-actions\"><a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a> | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>Delete</a></div></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
