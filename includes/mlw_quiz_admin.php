@@ -227,17 +227,13 @@ function mlw_generate_quiz_admin()
 					'quiz_settings' => $mlw_qmn_duplicate_data->quiz_settings,
 					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
 					'last_activity' => date("Y-m-d H:i:s"),
-					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
+					'require_log_in' => $mlw_qmn_duplicate_data->require_log_in,
+					'require_log_in_text' => $mlw_qmn_duplicate_data->require_log_in_text,
+					'limit_total_entries' => $mlw_qmn_duplicate_data->limit_total_entries,
+					'limit_total_entries_text' => $mlw_qmn_duplicate_data->limit_total_entries_text,
 					'quiz_views' => 0,
 					'quiz_taken' => 0, 
 					'deleted' => 0
-					require_log_in INT NOT NULL,
-			
-			require_log_in_text TEXT NOT NULL,
-			
-			limit_total_entries INT NOT NULL,
-			
-			limit_total_entries_text TEXT NOT NULL,
 				),
 				array( 
 					'%s',
@@ -282,6 +278,10 @@ function mlw_generate_quiz_admin()
 					'%d',
 					'%s',
 					'%s',
+					'%s',
+					'%d',
+					'%s',
+					'%d',
 					'%s',
 					'%d',
 					'%d',
