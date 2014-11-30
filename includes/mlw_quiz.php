@@ -356,17 +356,47 @@ function mlw_quiz_shortcode($atts)
 				}
 				function minToSec(amount)
 				{
-				    var minutes = Math.floor(amount/60);
-				    var seconds = amount - (minutes * 60);
-				    if (seconds == '0') 
-				    { 
-				        seconds = "00"; 
-				    }
-				    else if (seconds < 10)
-				    {
-				        seconds = '0' + seconds;
-				    }
-				    return minutes+":"+seconds;
+					var timer_display = '';
+					var hours = Math.floor(amount/3600);
+					if (hours == '0')
+					{
+						timer_display = timer_display +"00:";
+					}
+					else if (hours < 10)
+					{
+						timer_display = timer_display + '0' + hours + ":";
+					}
+					else
+					{
+						timer_display = timer_display + hours + ":";
+					}
+					var minutes = Math.floor((amount % 3600)/60);
+					if (minutes == '0')
+					{
+						timer_display = timer_display +"00:";
+					}
+					else if (minutes < 10)
+					{
+						timer_display = timer_display + '0' + minutes + ":";
+					}
+					else
+					{
+						timer_display = timer_display + minutes + ":";
+					}
+					var seconds = Math.floor(amount % 60);
+					if (seconds == '0') 
+					{ 
+						timer_display = timer_display +"00";
+					}
+					else if (seconds < 10)
+					{
+						timer_display = timer_display +'0' + seconds;
+					}
+					else
+					{
+						timer_display = timer_display + seconds;
+					}
+					return timer_display;
 				}
 			</script>
 			<?php
