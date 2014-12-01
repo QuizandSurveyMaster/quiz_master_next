@@ -1089,7 +1089,8 @@ function mlw_quiz_shortcode($atts)
 			'question_answers_display' => $mlw_question_answers,
 			'question_answers_array' => $mlw_qmn_answer_array,
 			'timer' => $mlw_qmn_timer,
-			'comments' => $mlw_qm_quiz_comments
+			'comments' => $mlw_qm_quiz_comments,
+			'certificate_link' => ''
 		);
 		
 		//Prepare Certificate
