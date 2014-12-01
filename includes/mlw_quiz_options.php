@@ -935,6 +935,7 @@ function mlw_options_text_tab_content()
 		$mlw_require_log_in_text = htmlspecialchars($_POST["mlw_require_log_in_text"], ENT_QUOTES);
 		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
 		$mlw_qmn_pagination_field = serialize(array( $_POST["pagination_prev_text"], $_POST["pagination_next_text"] ));
+		$qmn_social_media_text = serialize(array('twitter' => $_POST["mlw_quiz_twitter_text_template"], 'facebook' => $_POST["mlw_quiz_facebook_text_template"]));
 		$mlw_email_from_text = $_POST["emailFromText"];
 		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
 		$quiz_id = $_POST["quiz_id"];
@@ -967,11 +968,21 @@ function mlw_options_text_tab_content()
 	}
 	
 	//Load Pagination Text
-    $mlw_qmn_pagination_text = "";
+    	$mlw_qmn_pagination_text = "";
 	$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
 	if (!is_array($mlw_qmn_pagination_text)) {
-        $mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
-    }
+        	$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
+	}
+	
+	//Load Social Media Text
+	$qmn_social_media_text = "";
+	$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
+	if (!is_array($qmn_social_media_text)) {
+        	$qmn_social_media_text = array(
+        		'twitter', $mlw_quiz_options->social_media_text,
+        		'facebook', $mlw_quiz_options->social_media_text
+        	);
+	}
 	?>
 	<div id="tabs-2" class="mlw_tab_content">
 			<h3 style="text-align: center;">Template Variables</h3>
@@ -1117,7 +1128,7 @@ function mlw_options_text_tab_content()
 				</tr>
 				<tr>
 					<td width="30%">
-						<strong>Social Media Sharing Text</strong>
+						<strong>Twitter Sharing Text</strong>
 						<br />
 						<p>Allowed Variables: </p>
 						<p style="margin: 2px 0">- %POINT_SCORE%</p>
@@ -1129,7 +1140,24 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %TIMER%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_social_media_text_template" name="mlw_quiz_social_media_text_template"><?php echo $mlw_quiz_options->social_media_text; ?></textarea>
+					<td><textarea cols="80" rows="15" id="mlw_quiz_twitter_text_template" name="mlw_quiz_twitter_text_template"><?php echo $qmn_social_media_text["twitter"]; ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%">
+						<strong>Facebook Sharing Text</strong>
+						<br />
+						<p>Allowed Variables: </p>
+						<p style="margin: 2px 0">- %POINT_SCORE%</p>
+						<p style="margin: 2px 0">- %AVERAGE_POINT%</p>
+						<p style="margin: 2px 0">- %AMOUNT_CORRECT%</p>
+						<p style="margin: 2px 0">- %TOTAL_QUESTIONS%</p>
+						<p style="margin: 2px 0">- %CORRECT_SCORE%</p>
+						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
+						<p style="margin: 2px 0">- %TIMER%</p>
+						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
+					</td>
+					<td><textarea cols="80" rows="15" id="mlw_quiz_facebook_text_template" name="mlw_quiz_facebook_text_template"><?php echo $qmn_social_media_text["facebook"] ?></textarea>
 					</td>
 				</tr>
 			</table>
