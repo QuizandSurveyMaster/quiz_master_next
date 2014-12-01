@@ -89,7 +89,7 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.5</a>
+			What&#8217;s New In 3.6</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
@@ -112,9 +112,12 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">We have several new premium add-ons in our WordPress Store: MailPoet Integration (subscribes users to your MailPoet list), MailChimp Integration (subscribes users to your Mailchimp list), Export Results (exports your quiz results), Extra Shortcodes (gives you extra shortcodes to use), User Dashboard (allow users to see the results from all the quizzes they have taken), and Advertisement Be Gone (gets rid of blue-border ads). Visit our <a href="http://mylocalwebstop.com/shop/">WordPress Store</a> for details! </p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (November 26, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 2, 2014)</h3>
 	<ul>
-		<li>* Bug Fix For Some Bugs Resulting In Error Code 0008</li>
+		<li>* Added Hours Field To Timer And Completion Time</li>
+		<li>* Converted Quizzes Page To Use wpdb->update And wpdb->insert Instead Of query</li>
+		<li>* Created New Filter For Creating New Variables For Quiz Page</li>
+		<li>* Created New Filter For Creating New Variables For Results Page</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
