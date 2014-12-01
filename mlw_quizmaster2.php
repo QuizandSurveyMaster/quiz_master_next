@@ -20,6 +20,13 @@ Neither My Local Webstop nor its suppliers and licensors, makes any warranty tha
 You understand that you install, operate, and unistall the plugin at your own discretion and risk.
 */
 
+/**
+  * This class is the main class of the plugin
+  *
+  * When loaded, it loads the included plugin files and add functions to hooks or filters. The class also handles the admin menu
+  *
+  * @since 3.6.1
+  */
 class MLWQuizMasterNext
 {
 	public function __construct() 
