@@ -1129,7 +1129,7 @@ EOC;
 			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
-			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate</a>";
+			$mlw_qmn_result_array["certificate_link"] = "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate</a>";
 	    }
 	    
 		/*
