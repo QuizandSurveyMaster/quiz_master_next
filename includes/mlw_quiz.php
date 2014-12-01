@@ -1197,7 +1197,7 @@ EOC;
 				var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
 				var pageUrl = window.location.href;
                 var pageUrlEncoded = encodeURIComponent(pageUrl);
-				if (network == 1)
+				if (network == 'facebook')
 				{
 					var Url = "https://www.facebook.com/dialog/feed?"
                     	+ "display=popup&"
@@ -1207,7 +1207,7 @@ EOC;
 						+ "description=  &"
                         + "redirect_uri=http://www.mylocalwebstop.com/mlw_qmn_close.html";
 				}
-				if (network == 2)
+				if (network == 'twitter')
 				{
 					var Url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
 				}
@@ -1216,11 +1216,20 @@ EOC;
             }
 			</script>
 			<?php
-			$mlw_social_message = $mlw_quiz_options->social_media_text;
-			$mlw_social_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_social_message, $mlw_qmn_result_array);
+			//Load Social Media Text
+			$qmn_social_media_text = "";
+			$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
+			if (!is_array($qmn_social_media_text)) {
+		        	$qmn_social_media_text = array(
+		        		'twitter' => $mlw_quiz_options->social_media_text,
+		        		'facebook' => $mlw_quiz_options->social_media_text
+		        	);
+			}
+			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_qmn_result_array);
+			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $mlw_qmn_result_array);
 			$mlw_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share(1, '".esc_js($mlw_social_message)."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share(2, '".esc_js($mlw_social_message)."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
+			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
+			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
 		
