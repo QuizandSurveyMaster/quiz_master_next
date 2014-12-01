@@ -1221,8 +1221,8 @@ EOC;
 			$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
 			if (!is_array($qmn_social_media_text)) {
 		        	$qmn_social_media_text = array(
-		        		'twitter', $mlw_quiz_options->social_media_text,
-		        		'facebook', $mlw_quiz_options->social_media_text
+		        		'twitter' => $mlw_quiz_options->social_media_text,
+		        		'facebook' => $mlw_quiz_options->social_media_text
 		        	);
 			}
 			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_qmn_result_array);
