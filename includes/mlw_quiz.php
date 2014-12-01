@@ -34,7 +34,7 @@ function mlw_quiz_shortcode($atts)
 	}
 	
 	$mlw_qmn_quiz_options_array = array(
-		'quiz_name' => $mlw_quiz_options->quiz_name
+		'quiz_name' => $mlw_quiz_options->quiz_name,
 		'quiz_id' => $mlw_quiz_options->quiz_id
 	);
 	
