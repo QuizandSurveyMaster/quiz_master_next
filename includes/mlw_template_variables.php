@@ -43,12 +43,12 @@ add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user',10,2);
 function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%POINT_SCORE%" , $mlw_quiz_array["total_point"], $content);
+	$content = str_replace( "%POINT_SCORE%" , $mlw_quiz_array["total_points"], $content);
 	return $content;
 }
 function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
 {
-	$mlw_average_points = $mlw_quiz_array["total_point"]/$mlw_quiz_array["total_questions"];
+	$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
 	$content = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $content);
 	return $content;
 }
@@ -100,17 +100,17 @@ function mlw_qmn_variable_user_email($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $content);
+	$content = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_quiz_array["question_answers_display"], $content);
 	return $content;
 }
 function mlw_qmn_variable_comments($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $content);
+	$content = str_replace( "%COMMENT_SECTION%" , $mlw_quiz_array["comments"], $content);
 	return $content;
 }
 function mlw_qmn_variable_timer($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%TIMER%" , $mlw_qmn_timer, $content);
+	$content = str_replace( "%TIMER%" , $mlw_quiz_array["timer"], $content);
 	return $content;
 }
 function mlw_qmn_variable_date($content, $mlw_quiz_array)
