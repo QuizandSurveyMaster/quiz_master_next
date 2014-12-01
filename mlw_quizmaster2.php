@@ -29,12 +29,28 @@ You understand that you install, operate, and unistall the plugin at your own di
   */
 class MLWQuizMasterNext
 {
+	/**
+	  * Main Construct Function
+	  *
+	  * Call functions within class
+	  *
+	  * @since 3.6.1
+	  * @uses MLWQuizMasterNext::load_dependencies() Loads required filed
+	  * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
+	  * @return void
+	  */
 	public function __construct() 
 	{
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
 	
+	/**
+	  * Load File Dependencies
+	  *
+	  * @since 3.6.1
+	  * @return void
+	  */
 	private function load_dependencies()
 	{
 		include("includes/mlw_quiz.php");
@@ -53,6 +69,14 @@ class MLWQuizMasterNext
 		include("includes/mlw_adverts.php");
 	}
 	
+	/**
+	  * Add Hooks
+	  * 
+	  * Adds functions to relavent hooks and filters
+	  *
+	  * @since 3.6.1
+	  * @return void
+	  */
 	private function add_hooks()
 	{
 		add_action('admin_menu', array( $this, 'setup_admin_menu'));
@@ -63,6 +87,14 @@ class MLWQuizMasterNext
 		add_action('plugins_loaded',  array( $this, 'setup_translations'));
 	}
 	
+	/**
+	  * Setup Admin Menu
+	  * 
+	  * Creates the admin menu and pages for the plugin and attaches functions to them
+	  *
+	  * @since 3.6.1
+	  * @return void
+	  */
 	public function setup_admin_menu()
 	{
 		if (function_exists('add_menu_page'))
@@ -77,6 +109,12 @@ class MLWQuizMasterNext
 		}
 	}
 	
+	/**
+	  * Loads the plugin language files
+	  *
+	  * @since 3.6.1
+	  * @return void
+	  */
 	public function setup_translations()
 	{
 		load_plugin_textdomain( 'mlw_qmn_text_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
