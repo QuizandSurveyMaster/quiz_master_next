@@ -1102,7 +1102,7 @@ function mlw_quiz_shortcode($atts)
 	    if ($mlw_certificate_options[4] == 0)
 	    {
 			$mlw_message_certificate = $mlw_certificate_options[1];
-			$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_pagev', $mlw_message_certificate, $mlw_qmn_result_array);
+			$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $mlw_qmn_result_array);
 			$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
 			$mlw_plugindirpath = plugin_dir_path( __FILE__ );
 			$plugindirpath=plugin_dir_path( __FILE__ );
