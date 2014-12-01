@@ -110,6 +110,7 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 == Changelog ==
 
 = 3.6.1 (December 2, 2014) =
+ * Add Separate Social Network Text Templates
  * Added Hours Field To Timer And Completion Time
  * Converted Quizzes Page To Use wpdb->update And wpdb->insert Instead Of query
  * Created New Filter For Creating New Variables For Quiz Page
