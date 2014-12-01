@@ -19,7 +19,8 @@ $mlw_qmn_result_array = array(
 			'question_answers_display' => $mlw_question_answers,
 			'question_answers_array' => $mlw_qmn_answer_array,
 			'timer' => $mlw_qmn_timer,
-			'comments' => $mlw_qm_quiz_comments
+			'comments' => $mlw_qm_quiz_comments,
+			'certificate_link' => CERTIFICATE LINK
 		);
 
 */
@@ -37,6 +38,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question_
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_certificate_link',10,2);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
@@ -116,6 +118,11 @@ function mlw_qmn_variable_timer($content, $mlw_quiz_array)
 function mlw_qmn_variable_date($content, $mlw_quiz_array)
 {
 	$content = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $content);
+	return $content;
+}
+function mlw_qmn_variable_certificate_link($content, $mlw_quiz_array)
+{
+	$content = str_replace( "%CERTIFICATE_LINK%" , $mlw_quiz_array["certificate_link"], $content);
 	return $content;
 }
 ?>
