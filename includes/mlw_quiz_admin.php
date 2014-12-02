@@ -103,7 +103,7 @@ function mlw_generate_quiz_admin()
 				'total_user_tries_text' => 'Enter Your Text Here',
 				'certificate_template' => 'Enter Your Text Here!', 
 				'social_media' => 0,
-				'social_media_text' => 'I just score a %CORRECT_SCORE%% on %QUIZ_NAME%!', 
+				'social_media_text' => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 
 				'pagination' => 0,
 				'pagination_text' => 'Next',
 				'timer_limit' => 0, 
