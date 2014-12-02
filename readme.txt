@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.0
-Stable tag: 3.5.2
+Stable tag: 3.6.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -108,6 +108,13 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.6.1 (December 2, 2014) =
+ * Add Separate Social Network Text Templates
+ * Added Hours Field To Timer And Completion Time
+ * Converted Quizzes Page To Use wpdb->update And wpdb->insert Instead Of query
+ * Created New Filter For Creating New Variables For Quiz Page
+ * Created New Filter For Creating New Variables For Results Page
 
 = 3.5.2 (November 26, 2014) =
  * Bug Fix For Some Bugs Resulting In Error Code 0008
@@ -548,6 +555,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.6.1 =
+Upgrade for many backend upgrades
 
 = 3.5.2 =
 Upgrade for minor bug fixes

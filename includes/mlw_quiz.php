@@ -33,12 +33,16 @@ function mlw_quiz_shortcode($atts)
 		break;
 	}
 	
+	$mlw_qmn_quiz_options_array = array(
+		'quiz_name' => $mlw_quiz_options->quiz_name,
+		'quiz_id' => $mlw_quiz_options->quiz_id
+	);
+	
 	//Check if user is required to be checked in
 	if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
 	{
 		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
-		$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-		$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
 		$mlw_display = $mlw_message;
 		$mlw_display .= wp_login_form( array('echo' => false) );
 		return $mlw_display;
@@ -187,8 +191,7 @@ function mlw_quiz_shortcode($atts)
 			if ($mlw_qmn_entries_count >= $mlw_quiz_options->limit_total_entries)
 			{
 				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES);
-				$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-				$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
 				$mlw_display = $mlw_message;
 				return $mlw_display;
 				$mlw_qmn_isAllowed = false;
@@ -356,17 +359,47 @@ function mlw_quiz_shortcode($atts)
 				}
 				function minToSec(amount)
 				{
-				    var minutes = Math.floor(amount/60);
-				    var seconds = amount - (minutes * 60);
-				    if (seconds == '0') 
-				    { 
-				        seconds = "00"; 
-				    }
-				    else if (seconds < 10)
-				    {
-				        seconds = '0' + seconds;
-				    }
-				    return minutes+":"+seconds;
+					var timer_display = '';
+					var hours = Math.floor(amount/3600);
+					if (hours == '0')
+					{
+						timer_display = timer_display +"00:";
+					}
+					else if (hours < 10)
+					{
+						timer_display = timer_display + '0' + hours + ":";
+					}
+					else
+					{
+						timer_display = timer_display + hours + ":";
+					}
+					var minutes = Math.floor((amount % 3600)/60);
+					if (minutes == '0')
+					{
+						timer_display = timer_display +"00:";
+					}
+					else if (minutes < 10)
+					{
+						timer_display = timer_display + '0' + minutes + ":";
+					}
+					else
+					{
+						timer_display = timer_display + minutes + ":";
+					}
+					var seconds = Math.floor(amount % 60);
+					if (seconds == '0') 
+					{ 
+						timer_display = timer_display +"00";
+					}
+					else if (seconds < 10)
+					{
+						timer_display = timer_display +'0' + seconds;
+					}
+					else
+					{
+						timer_display = timer_display + seconds;
+					}
+					return timer_display;
 				}
 			</script>
 			<?php
@@ -468,8 +501,7 @@ function mlw_quiz_shortcode($atts)
 		$mlw_display .= "<span id='mlw_top_of_quiz'></span>";
 		$mlw_display .= "<div class='quiz_section  quiz_begin slide".$mlw_qmn_section_count."'>";
 		$mlw_message_before = htmlspecialchars_decode($mlw_quiz_options->message_before, ENT_QUOTES);
-		$mlw_message_before = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_before);
-		$mlw_message_before = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_before);
+		$mlw_message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_before, $mlw_qmn_quiz_options_array);
 		$mlw_display .= "<span class='mlw_qmn_message_before'>".$mlw_message_before."</span><br />";
 		$mlw_display .= "<span name='mlw_error_message' id='mlw_error_message' style='color: red;'></span><br />";
 
@@ -806,8 +838,7 @@ function mlw_quiz_shortcode($atts)
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			$mlw_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
 			$mlw_message_comments = htmlspecialchars_decode($mlw_quiz_options->message_comment, ENT_QUOTES);
-			$mlw_message_comments = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_comments);
-			$mlw_message_comments = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_comments);
+			$mlw_message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_comments, $mlw_qmn_quiz_options_array);
 			$mlw_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text' style='font-weight:bold;'>".$mlw_message_comments."</label><br />";
 			$mlw_display .= "<textarea cols='70' rows='15' id='mlwQuizComments' name='mlwQuizComments' ></textarea>";
 			$mlw_display .= "</div>";
@@ -819,8 +850,7 @@ function mlw_quiz_shortcode($atts)
 		if ($mlw_quiz_options->message_end_template != '')
 		{
 			$mlw_message_end = htmlspecialchars_decode($mlw_quiz_options->message_end_template, ENT_QUOTES);
-			$mlw_message_end = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_end);
-			$mlw_message_end = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_end);
+			$mlw_message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_end, $mlw_qmn_quiz_options_array);
 			$mlw_display .= "<span class='mlw_qmn_message_end'>".$mlw_message_end."</span>";
 			$mlw_display .= "<br /><br />";
 		}
@@ -1043,6 +1073,25 @@ function mlw_quiz_shortcode($atts)
 			$mlw_qm_quiz_comments = "";
 		}
 		
+		$mlw_qmn_result_array = array(
+			'quiz_id' => $mlw_quiz_id,
+			'quiz_name' => $mlw_quiz_options->quiz_name,
+			'quiz_system' => $mlw_quiz_options->system,
+			'total_points' => $mlw_points,
+			'total_score' => $mlw_total_score,
+			'total_correct' => $mlw_correct,
+			'total_questions' => $mlw_total_questions,
+			'user_name' => $mlw_user_name,
+			'user_business' => $mlw_user_comp,
+			'user_email' => $mlw_user_email,
+			'user_phone' => $mlw_user_phone,
+			'user_id' => get_current_user_id(),
+			'question_answers_display' => $mlw_question_answers,
+			'question_answers_array' => $mlw_qmn_answer_array,
+			'timer' => $mlw_qmn_timer,
+			'comments' => $mlw_qm_quiz_comments,
+			'certificate_link' => ''
+		);
 		
 		//Prepare Certificate
 		$mlw_certificate_link = "";
@@ -1054,20 +1103,7 @@ function mlw_quiz_shortcode($atts)
 	    if ($mlw_certificate_options[4] == 0)
 	    {
 			$mlw_message_certificate = $mlw_certificate_options[1];
-			$mlw_message_certificate = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message_certificate);
-			$mlw_message_certificate = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_certificate);
+			$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $mlw_qmn_result_array);
 			$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
 			$mlw_plugindirpath = plugin_dir_path( __FILE__ );
 			$plugindirpath=plugin_dir_path( __FILE__ );
@@ -1094,7 +1130,7 @@ EOC;
 			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
-			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate</a>";
+			$mlw_qmn_result_array["certificate_link"] = "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate</a>";
 	    }
 	    
 		/*
@@ -1113,21 +1149,7 @@ EOC;
 				if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
 				{
 					$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-					$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
-					$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
-					$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
-					$mlw_message_after = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message_after);
-					$mlw_message_after = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message_after);
-					$mlw_message_after = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_after);
-					$mlw_message_after = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message_after);
-					$mlw_message_after = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message_after);
-					$mlw_message_after = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message_after);
-					$mlw_message_after = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message_after);
-					$mlw_message_after = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message_after);
-					$mlw_message_after = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message_after);
-					$mlw_message_after = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message_after);
-					$mlw_message_after = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message_after);
-					$mlw_message_after = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_after);
+					$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $mlw_qmn_result_array);
 					$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
 					$mlw_display .= $mlw_message_after;
 					break;
@@ -1138,21 +1160,7 @@ EOC;
 					if ($mlw_quiz_options->system == 1 && $mlw_points >= $mlw_each[0] && $mlw_points <= $mlw_each[1])
 					{
 						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
-						$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
-						$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
-						$mlw_message_after = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message_after);
-						$mlw_message_after = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message_after);
-						$mlw_message_after = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message_after);
-						$mlw_message_after = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message_after);
-						$mlw_message_after = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_after);
+						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $mlw_qmn_result_array);
 						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
 						$mlw_display .= $mlw_message_after;
 						break;
@@ -1161,21 +1169,7 @@ EOC;
 					if ($mlw_quiz_options->system == 0 && $mlw_total_score >= $mlw_each[0] && $mlw_total_score <= $mlw_each[1])
 					{
 						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
-						$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
-						$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
-						$mlw_message_after = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message_after);
-						$mlw_message_after = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message_after);
-						$mlw_message_after = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message_after);
-						$mlw_message_after = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message_after);
-						$mlw_message_after = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message_after);
-						$mlw_message_after = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message_after);
-						$mlw_message_after = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_after);
+						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $mlw_qmn_result_array);
 						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
 						$mlw_display .= $mlw_message_after;
 						break;
@@ -1187,21 +1181,7 @@ EOC;
 		{
 			//Prepare the after quiz message
 			$mlw_message_after = htmlspecialchars_decode($mlw_quiz_options->message_after, ENT_QUOTES);
-			$mlw_message_after = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message_after);
-			$mlw_message_after = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message_after);
-			$mlw_message_after = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message_after);
-			$mlw_message_after = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message_after);
-			$mlw_message_after = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message_after);
-			$mlw_message_after = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message_after);
-			$mlw_message_after = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message_after);
-			$mlw_message_after = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message_after);
-			$mlw_message_after = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message_after);
-			$mlw_message_after = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message_after);
-			$mlw_message_after = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message_after);
-			$mlw_message_after = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message_after);
-			$mlw_message_after = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message_after);
-			$mlw_message_after = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message_after);
-			$mlw_message_after = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message_after);
+			$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $mlw_qmn_result_array);
 			$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
 			$mlw_display .= $mlw_message_after;
 		}
@@ -1217,7 +1197,7 @@ EOC;
 				var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
 				var pageUrl = window.location.href;
                 var pageUrlEncoded = encodeURIComponent(pageUrl);
-				if (network == 1)
+				if (network == 'facebook')
 				{
 					var Url = "https://www.facebook.com/dialog/feed?"
                     	+ "display=popup&"
@@ -1227,7 +1207,7 @@ EOC;
 						+ "description=  &"
                         + "redirect_uri=http://www.mylocalwebstop.com/mlw_qmn_close.html";
 				}
-				if (network == 2)
+				if (network == 'twitter')
 				{
 					var Url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
 				}
@@ -1236,17 +1216,20 @@ EOC;
             }
 			</script>
 			<?php
-			$mlw_social_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_quiz_options->social_media_text);
-			$mlw_social_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_social_message);
-			$mlw_social_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_social_message);
-			$mlw_social_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_social_message);
-			$mlw_social_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_social_message);
-			$mlw_social_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_social_message);
-			$mlw_social_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_social_message);
-			$mlw_social_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_social_message);
+			//Load Social Media Text
+			$qmn_social_media_text = "";
+			$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
+			if (!is_array($qmn_social_media_text)) {
+		        	$qmn_social_media_text = array(
+		        		'twitter' => $mlw_quiz_options->social_media_text,
+		        		'facebook' => $mlw_quiz_options->social_media_text
+		        	);
+			}
+			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_qmn_result_array);
+			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $mlw_qmn_result_array);
 			$mlw_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share(1, '".esc_js($mlw_social_message)."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share(2, '".esc_js($mlw_social_message)."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
+			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
+			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
 		
@@ -1275,39 +1258,13 @@ EOC;
 						{
 							$mlw_each[3] = "Quiz Results For %QUIZ_NAME";
 						}
-						$mlw_each[3] = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_each[3]);
-						$mlw_each[3] = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_each[3]);
-						
+						$mlw_each[3] = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_each[3], $mlw_qmn_result_array);
 						
 						//Check to see if default
 						if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
 						{
 							$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-							$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
-							$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
-							$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
-							$mlw_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message);
-							$mlw_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message);
-							$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-							$mlw_message = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message);
-							$mlw_message = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message);
-							$mlw_message = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message);
-							$mlw_message = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message);
-							$mlw_message = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message);
-							$mlw_message = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message);
-							$mlw_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message);
-							$mlw_message = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message);
-							$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+							$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
 							$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 							$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 							$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
@@ -1321,21 +1278,7 @@ EOC;
 							if ($mlw_quiz_options->system == 1 && $mlw_points >= $mlw_each[0] && $mlw_points <= $mlw_each[1])
 							{
 								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-								$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
-								$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
-								$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
-								$mlw_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message);
-								$mlw_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message);
-								$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-								$mlw_message = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message);
-								$mlw_message = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message);
-								$mlw_message = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message);
-								$mlw_message = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message);
-								$mlw_message = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message);
-								$mlw_message = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message);
-								$mlw_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message);
-								$mlw_message = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message);
-								$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
 								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
@@ -1348,21 +1291,7 @@ EOC;
 							if ($mlw_quiz_options->system == 0 && $mlw_total_score >= $mlw_each[0] && $mlw_total_score <= $mlw_each[1])
 							{
 								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-								$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
-								$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
-								$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
-								$mlw_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message);
-								$mlw_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message);
-								$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-								$mlw_message = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message);
-								$mlw_message = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message);
-								$mlw_message = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message);
-								$mlw_message = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message);
-								$mlw_message = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message);
-								$mlw_message = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message);
-								$mlw_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message);
-								$mlw_message = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message);
-								$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
 								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
@@ -1376,21 +1305,7 @@ EOC;
 				else
 				{
 					$mlw_message = htmlspecialchars_decode($mlw_quiz_options->user_email_template, ENT_QUOTES);
-					$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
-					$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
-					$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
-					$mlw_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message);
-					$mlw_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message);
-					$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-					$mlw_message = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message);
-					$mlw_message = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message);
-					$mlw_message = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message);
-					$mlw_message = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message);
-					$mlw_message = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message);
-					$mlw_message = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message);
-					$mlw_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message);
-					$mlw_message = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message);
-					$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+					$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
 					$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 					$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 					$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
@@ -1405,21 +1320,7 @@ EOC;
 		if ($mlw_quiz_options->send_admin_email == "0")
 		{
 			$mlw_message = htmlspecialchars_decode($mlw_quiz_options->admin_email_template, ENT_QUOTES);
-			$mlw_message = str_replace( "%POINT_SCORE%" , $mlw_points, $mlw_message);
-			$mlw_message = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $mlw_message);
-			$mlw_message = str_replace( "%AMOUNT_CORRECT%" , $mlw_correct, $mlw_message);
-			$mlw_message = str_replace( "%TOTAL_QUESTIONS%" , $mlw_total_questions, $mlw_message);
-			$mlw_message = str_replace( "%CORRECT_SCORE%" , $mlw_total_score, $mlw_message);
-			$mlw_message = str_replace( "%USER_NAME%" , $mlw_user_name, $mlw_message);
-			$mlw_message = str_replace( "%USER_BUSINESS%" , $mlw_user_comp, $mlw_message);
-			$mlw_message = str_replace( "%USER_PHONE%" , $mlw_user_phone, $mlw_message);
-			$mlw_message = str_replace( "%USER_EMAIL%" , $mlw_user_email, $mlw_message);
-			$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-			$mlw_message = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_question_answers, $mlw_message);
-			$mlw_message = str_replace( "%COMMENT_SECTION%" , $mlw_qm_quiz_comments, $mlw_message);
-			$mlw_message = str_replace( "%TIMER%" , $mlw_qmn_timer, $mlw_message);
-			$mlw_message = str_replace( "%CERTIFICATE_LINK%" , $mlw_certificate_link, $mlw_message);
-			$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+			$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
 			if ( get_option('mlw_advert_shows') == 'true' ) {$mlw_message .= "<br>This email was generated by the Quiz Master Next script by Frank Corso";}
 			$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 			$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
@@ -1452,9 +1353,7 @@ EOC;
 			{
 				$current_user = wp_get_current_user();
 				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->total_user_tries_text, ENT_QUOTES);
-				$mlw_message = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_message);
-				$mlw_message = str_replace( "%USER_NAME%" , $current_user->display_name, $mlw_message);
-				$mlw_message = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $mlw_message);
+				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
 				$mlw_display .= $mlw_message;
 			}
 			elseif (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] != $_POST["mlw_code_captcha"])

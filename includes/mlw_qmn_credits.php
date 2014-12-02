@@ -89,32 +89,33 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.5</a>
+			What&#8217;s New In 3.6</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Require Users To Be Logged In</h2>
-	<p style="text-align: center;">You can now require users to be logged in to access your quiz. Set this up from the options tab. You can customize the text it shows to non-logged in users on the Text tab.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Separate Social Network Text Templates</h2>
+	<p style="text-align: center;">You can now customize the sharing text for each social network instead of having one for all of them.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Limit Total Entries</h2>
-	<p style="text-align: center;">You can now limit the amount of total entries to your quiz. For example, you could say only 10 people can complete the survey. Edit this setting from the options tab. You can customize the text it shows once it reaches the limit on the text tab.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">LaTeX/Tex Support For Mathematics</h2>
-	<p style="text-align: center;">You can now use LaTex/Tex to show mathematic symbols and formulas such as square root, fractions, exponents, and more. You can place your math in any question, answer, or text on the quiz! For help with LaTeX, <a href="http://www.andy-roberts.net/writing/latex/mathematics_1">check out this tutorial</a>.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Developer Filters</h2>
+	<p style="text-align: center;">For the developers that like to extend this plugin's functionality, there are now two new filters for creating your own template variables.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Our Premium Add-Ons!</h2>
-	<p style="text-align: center;">We have several new premium add-ons in our WordPress Store: MailPoet Integration (subscribes users to your MailPoet list), MailChimp Integration (subscribes users to your Mailchimp list), Export Results (exports your quiz results), Extra Shortcodes (gives you extra shortcodes to use), User Dashboard (allow users to see the results from all the quizzes they have taken), and Advertisement Be Gone (gets rid of blue-border ads). Visit our <a href="http://mylocalwebstop.com/shop/">WordPress Store</a> for details! </p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Popular Add-on Pack</h2>
+	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/shop/\">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (November 26, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 2, 2014)</h3>
 	<ul>
-		<li>* Bug Fix For Some Bugs Resulting In Error Code 0008</li>
+		<li>* Add Separate Social Network Text Templates</li>
+		<li>* Added Hours Field To Timer And Completion Time</li>
+		<li>* Converted Quizzes Page To Use wpdb->update And wpdb->insert Instead Of query</li>
+		<li>* Created New Filter For Creating New Variables For Quiz Page</li>
+		<li>* Created New Filter For Creating New Variables For Results Page</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
@@ -137,7 +138,6 @@ function mlw_generate_about_page()
 		<li>Graphical Click Aware Questions</li>
 		<li>Results Bar Graph For Users Taking Polls</li>
 		<li>Head To Head Comparison Questions</li>
-		<li>Different Social Media Sharing Text For Different Social Media</li>
 		<li>Ability To Highlight Incorrect Answers</li>
 		<li>Set Default Question Type</li>
 		<li>Show Pop-Up When Clicking Submit</li>
