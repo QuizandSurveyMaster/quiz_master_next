@@ -200,10 +200,28 @@ function mlw_generate_quiz_admin()
 		$mlw_quiz_id = $_POST["quiz_id"];
 		$quiz_name = $_POST["delete_quiz_name"];
 		$quiz_id = $_POST["quiz_id"];
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$results = $wpdb->query( $update );
-		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET deleted=1 WHERE quiz_id=".$mlw_quiz_id;
-		$delete_question_results = $wpdb->query( $update );
+		$results = $wpdb->update( 
+ 			$wpdb->prefix . "mlw_quizzes", 
+ 			array( 
+ 				'deleted' => 1 
+ 			), 
+ 			array( 'quiz_id' => $mlw_quiz_id ), 
+ 			array( 
+ 				'%d'
+ 			), 
+ 			array( '%d' ) 
+ 		);
+ 		$delete_question_results = $wpdb->update( 
+ 			$wpdb->prefix . "mlw_questions", 
+ 			array( 
+ 				'deleted' => 1 
+ 			), 
+ 			array( 'quiz_id' => $mlw_quiz_id ), 
+ 			array( 
+ 				'%d'
+ 			), 
+ 			array( '%d' ) 
+ 		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('Your quiz has been deleted successfully.', 'success');
@@ -229,8 +247,17 @@ function mlw_generate_quiz_admin()
 	{
 		$mlw_edit_quiz_id = $_POST["edit_quiz_id"];
 		$mlw_edit_quiz_name = htmlspecialchars($_POST["edit_quiz_name"], ENT_QUOTES);
-		$mlw_update_quiz_table = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_name='".$mlw_edit_quiz_name."' WHERE quiz_id=".$mlw_edit_quiz_id;
-		$results = $wpdb->query( $mlw_update_quiz_table );
+		$results = $wpdb->update( 
+ 			$wpdb->prefix . "mlw_quizzes", 
+ 			array( 
+ 				'quiz_name' => $mlw_edit_quiz_name 
+ 			), 
+ 			array( 'quiz_id' => $mlw_edit_quiz_id ), 
+ 			array( 
+ 				'%s'
+ 			), 
+ 			array( '%d' ) 
+ 		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('Your quiz name has been updated successfully.', 'success');
