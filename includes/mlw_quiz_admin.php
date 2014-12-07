@@ -9,7 +9,7 @@ Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 function mlw_generate_quiz_admin()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$table_name = $wpdb->prefix . "mlw_quizzes";
 
 	//Create new quiz
@@ -175,7 +175,7 @@ function mlw_generate_quiz_admin()
 		);
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'success');
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
@@ -187,7 +187,7 @@ function mlw_generate_quiz_admin()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0001.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0001.', 'error');
 		}
 		
 	}
@@ -206,7 +206,7 @@ function mlw_generate_quiz_admin()
 		$delete_question_results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('Your quiz has been deleted successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('Your quiz has been deleted successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -219,7 +219,7 @@ function mlw_generate_quiz_admin()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0002.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0002.', 'error');
 		}
 		
 	}	
@@ -233,7 +233,7 @@ function mlw_generate_quiz_admin()
 		$results = $wpdb->query( $mlw_update_quiz_table );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('Your quiz name has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('Your quiz name has been updated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -246,7 +246,7 @@ function mlw_generate_quiz_admin()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0003.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0003.', 'error');
 		}		
 	}
 	
@@ -357,11 +357,9 @@ function mlw_generate_quiz_admin()
 				)
 			);
 		$mlw_new_id = $wpdb->insert_id;
-		//$results = $wpdb->query( "INSERT INTO ".$table_name." (quiz_id, quiz_name, message_before, message_after, message_comment, message_end_template, user_email_template, admin_email_template, submit_button_text, name_field_text, business_field_text, email_field_text, phone_field_text, comment_field_text, email_from_text, question_answer_template, leaderboard_template, system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp, user_email, user_phone, admin_email, comment_section, question_from_total, total_user_tries, total_user_tries_text, certificate_template, social_media, social_media_text, pagination, pagination_text, timer_limit, quiz_stye, question_numbering, quiz_views, quiz_taken, deleted) VALUES (NULL , '".$mlw_duplicate_quiz_name."' , '".$mlw_qmn_duplicate_data->message_before."', '".$mlw_qmn_duplicate_data->message_after."', '".$mlw_qmn_duplicate_data->message_comment."', '".$mlw_qmn_duplicate_data->message_end_template."', '".$mlw_qmn_duplicate_data->user_email_template."', '".$mlw_qmn_duplicate_data->admin_email_template."', '".$mlw_qmn_duplicate_data->submit_button_text."', '".$mlw_qmn_duplicate_data->name_field_text."', '".$mlw_qmn_duplicate_data->business_field_text."', '".$mlw_qmn_duplicate_data->email_field_text."', '".$mlw_qmn_duplicate_data->phone_field_text."', '".$mlw_qmn_duplicate_data->comment_field_text."', '".$mlw_qmn_duplicate_data->email_from_text."', '".$mlw_qmn_duplicate_data->question_answer_template."', '".$mlw_qmn_duplicate_data->leaderboard_template."', ".$mlw_qmn_duplicate_data->system.", ".$mlw_qmn_duplicate_data->randomness_order.", ".$mlw_qmn_duplicate_data->loggedin_user_contact.", ".$mlw_qmn_duplicate_data->show_score.", ".$mlw_qmn_duplicate_data->send_user_email.", ".$mlw_qmn_duplicate_data->send_admin_email.", ".$mlw_qmn_duplicate_data->contact_info_location.", ".$mlw_qmn_duplicate_data->user_name.", ".$mlw_qmn_duplicate_data->user_comp.", ".$mlw_qmn_duplicate_data->user_email.", ".$mlw_qmn_duplicate_data->user_phone.", '".get_option( 'admin_email', 'Enter email' )."', ".$mlw_qmn_duplicate_data->comment_section.", ".$mlw_qmn_duplicate_data->question_from_total.", ".$mlw_qmn_duplicate_data->total_user_tries.", '".$mlw_qmn_duplicate_data->total_user_tries_text."', '".$mlw_qmn_duplicate_data->certificate_template."', ".$mlw_qmn_duplicate_data->social_media.", '".$mlw_qmn_duplicate_data->social_media_text."', ".$mlw_qmn_duplicate_data->pagination.", '".$mlw_qmn_duplicate_data->pagination_text."', ".$mlw_qmn_duplicate_data->timer_limit.", '".$mlw_qmn_duplicate_data->quiz_stye."', ".$mlw_qmn_duplicate_data->question_numbering.", 0, 0, 0)" );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('Your quiz has been duplicated successfully.', 'success');
-			$hasDuplicatedQuiz = true;
+			$mlwQuizMasterNext->alertManager->newAlert('Your quiz has been duplicated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -374,7 +372,7 @@ function mlw_generate_quiz_admin()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0011.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0011.', 'error');
 		}
 		if (isset($_POST["duplicate_questions"]))
 		{
@@ -437,7 +435,7 @@ function mlw_generate_quiz_admin()
 				);
 				if ($question_results == false)
 				{
-					$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0020.', 'error');
+					$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0020.', 'error');
 				}
 			}
 		}
@@ -445,7 +443,7 @@ function mlw_generate_quiz_admin()
 
 	//Retrieve list of quizzes
 	global $wpdb;
-	$mlw_qmn_table_limit = 10;
+	$mlw_qmn_table_limit = 25;
 	$mlw_qmn_quiz_count = $wpdb->get_var( "SELECT COUNT(quiz_id) FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted='0'" );
 	
 	if( isset($_GET{'mlw_quiz_page'} ) )
@@ -579,7 +577,7 @@ function mlw_generate_quiz_admin()
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
 	<h2>Quizzes<a id="new_quiz_button" href="javascript:();" class="add-new-h2">Add New</a></h2>
-	<?php $mlwQmnAlertManager->showAlerts(); ?>
+	<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 	<div class="tablenav top">
 		<div class="tablenav-pages">
 			<span class="displaying-num"><?php echo $mlw_qmn_quiz_count; ?> quizzes</span>
