@@ -9,7 +9,7 @@ Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 function mlw_generate_quiz_results()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	
 	///Delete Results Function
 	if (isset($_POST["delete_results"]) && $_POST["delete_results"] == "confirmation")
@@ -22,7 +22,7 @@ function mlw_generate_quiz_results()
 		$mlw_delete_results_results = $wpdb->query( $mlw_delete_results_update_sql );
 		if ($mlw_delete_results_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('Your results has been deleted successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('Your results has been deleted successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -35,7 +35,7 @@ function mlw_generate_quiz_results()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0021.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0021.', 'error');
 		}
 	}
 
@@ -139,7 +139,7 @@ function mlw_generate_quiz_results()
 	<div class='mlw_quiz_options'>
 	<h2>Quiz Results<a id="opener" href="">(?)</a></h2>
 	<?php 
-	$mlwQmnAlertManager->showAlerts();
+	$mlwQuizMasterNext->alertManager->showAlerts();
 	
 	$quotes_list = "";
 	$display = "";
