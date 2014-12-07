@@ -30,6 +30,14 @@ You understand that you install, operate, and unistall the plugin at your own di
 class MLWQuizMasterNext
 {
 	/**
+	 * QMN Alert Manager Object
+	 *
+	 * @var object
+	 * @since 3.7.1
+	 */
+	public $alertManager;
+	
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -67,6 +75,9 @@ class MLWQuizMasterNext
 		include("includes/mlw_qmn_credits.php");
 		include("includes/mlw_template_variables.php");
 		include("includes/mlw_adverts.php");
+		include("includes/mlw_alerts.php");
+		
+		$this->alertManager = new MlwQmnAlertManager();
 	}
 	
 	/**
@@ -122,6 +133,5 @@ class MLWQuizMasterNext
 }
 
 $mlwQuizMasterNext = new MLWQuizMasterNext();
-include("includes/mlw_alerts.php");
 register_activation_hook( __FILE__, 'mlw_quiz_activate');
 ?>
