@@ -38,6 +38,14 @@ class MLWQuizMasterNext
 	public $alertManager;
 	
 	/**
+	 * QMN Quiz Creator Object
+	 *
+	 * @var object
+	 * @since 3.7.1
+	 */
+	public $quizCreator;
+	
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -78,6 +86,12 @@ class MLWQuizMasterNext
 		include("includes/mlw_alerts.php");
 		
 		$this->alertManager = new MlwQmnAlertManager();
+		
+		if (is_admin())
+		{
+			include("includes/mlw_quiz_creator.php");
+			$this->quizCreator = new QMNQuizCreator();
+		}
 	}
 	
 	/**
