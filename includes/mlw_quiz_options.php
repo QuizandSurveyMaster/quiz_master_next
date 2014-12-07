@@ -9,7 +9,7 @@ Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 function mlw_generate_quiz_options()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	if (isset($_GET["quiz_id"]))
 	{
@@ -79,7 +79,7 @@ function mlw_generate_quiz_options()
 	}
 	$mlw_output = ob_get_contents();
 	ob_end_clean();
-	$mlwQmnAlertManager->showAlerts();
+	$mlwQuizMasterNext->alertManager->showAlerts();
 	echo $mlw_output;
 	?>
 	
@@ -155,7 +155,7 @@ add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
 function mlw_options_questions_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	
 	//Edit question
@@ -206,7 +206,7 @@ function mlw_options_questions_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The question has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The question has been updated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -219,7 +219,7 @@ function mlw_options_questions_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0004.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0004.', 'error');
 		}
 	}
 
@@ -234,7 +234,7 @@ function mlw_options_questions_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The question has been deleted successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The question has been deleted successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -247,7 +247,7 @@ function mlw_options_questions_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0005.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0005.', 'error');
 		}
 	}
 	
@@ -316,7 +316,7 @@ function mlw_options_questions_tab_content()
 		
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The question has been duplicated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The question has been duplicated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -329,7 +329,7 @@ function mlw_options_questions_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0019.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0019.', 'error');
 		}
 	}
 	
@@ -372,7 +372,7 @@ function mlw_options_questions_tab_content()
 		$results = $wpdb->query( $insert );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The question has been created successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The question has been created successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -385,7 +385,7 @@ function mlw_options_questions_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0006.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0006.', 'error');
 		}
 	}
 	
@@ -915,7 +915,7 @@ function mlw_options_questions_tab_content()
 function mlw_options_text_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Submit saved templates into database
 	if ( isset($_POST["save_templates"]) && $_POST["save_templates"] == "confirmation")
@@ -943,7 +943,7 @@ function mlw_options_text_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The templates has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The templates has been updated successfully.', 'success');
 		
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -956,7 +956,7 @@ function mlw_options_text_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0007.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0007.', 'error');
 		}
 	}
 	
@@ -1208,7 +1208,7 @@ function mlw_options_text_tab_content()
 function mlw_options_option_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Submit saved options into database
 	if ( isset($_POST["save_options"]) && $_POST["save_options"] == "confirmation")
@@ -1240,7 +1240,7 @@ function mlw_options_option_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The options has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The options has been updated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1253,7 +1253,7 @@ function mlw_options_option_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0008.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0008.', 'error');
 		}
 	}
 	
@@ -1424,7 +1424,7 @@ function mlw_options_option_tab_content()
 function mlw_options_leaderboard_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	///Submit saved leaderboard template into database
 	if ( isset($_POST["save_leaderboard_options"]) && $_POST["save_leaderboard_options"] == "confirmation")
@@ -1436,7 +1436,7 @@ function mlw_options_leaderboard_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The leaderboards has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The leaderboards has been updated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1449,7 +1449,7 @@ function mlw_options_leaderboard_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0009.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0009.', 'error');
 		}
 	}
 	
@@ -1528,7 +1528,7 @@ function mlw_options_leaderboard_tab_content()
 function mlw_options_certificate_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Saved Certificate Options
 	if (isset($_POST["save_certificate_options"]) && $_POST["save_certificate_options"] == "confirmation")
@@ -1547,7 +1547,7 @@ function mlw_options_certificate_tab_content()
 		
 		if ($mlw_certificate_sql_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The certificate has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The certificate has been updated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1560,7 +1560,7 @@ function mlw_options_certificate_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0012.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0012.', 'error');
 		}
 	}
 	if (isset($_GET["quiz_id"]))
@@ -1650,7 +1650,7 @@ function mlw_options_certificate_tab_content()
 function mlw_options_emails_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Check to add new user email template
 	if (isset($_POST["mlw_add_email_page"]) && $_POST["mlw_add_email_page"] == "confirmation")
@@ -1679,7 +1679,7 @@ function mlw_options_emails_tab_content()
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The email has been added successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The email has been added successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1692,7 +1692,7 @@ function mlw_options_emails_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0016.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0016.', 'error');
 		}
 	}
 	
@@ -1720,7 +1720,7 @@ function mlw_options_emails_tab_content()
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_admin_email, $mlw_qmn_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The email has been updated successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The email has been updated successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1733,7 +1733,7 @@ function mlw_options_emails_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0017.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0017.', 'error');
 		}
 	}
 	
@@ -1933,7 +1933,7 @@ function mlw_options_emails_tab_content()
 function mlw_options_results_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Check to add new results page
 	if (isset($_POST["mlw_add_landing_page"]) && $_POST["mlw_add_landing_page"] == "confirmation")
@@ -1962,7 +1962,7 @@ function mlw_options_results_tab_content()
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
 		if ($mlw_new_landing_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The results page has been added successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The results page has been added successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -1975,7 +1975,7 @@ function mlw_options_results_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0013.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0013.', 'error');
 		}
 	}
 	
@@ -2002,7 +2002,7 @@ function mlw_options_results_tab_content()
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
 		if ($mlw_new_landing_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The results page has been saved successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The results page has been saved successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -2015,7 +2015,7 @@ function mlw_options_results_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0014.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0014.', 'error');
 		}
 	}
 	
@@ -2165,7 +2165,7 @@ function mlw_options_results_tab_content()
 function mlw_options_styling_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	if (isset($_POST["save_style_options"]) && $_POST["save_style_options"] == "confirmation")
 	{
@@ -2178,7 +2178,7 @@ function mlw_options_styling_tab_content()
 		$mlw_save_stle_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_style, $mlw_qmn_theme, $mlw_qmn_style_id ) );
 		if ($mlw_save_stle_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The style has been saved successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The style has been saved successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -2191,7 +2191,7 @@ function mlw_options_styling_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0015.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0015.', 'error');
 		}
 	}
 	
@@ -2320,7 +2320,7 @@ function mlw_options_styling_tab_content()
 function mlw_options_tools_tab_content()
 {
 	global $wpdb;
-	global $mlwQmnAlertManager;
+	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Update Quiz Table
 	if (isset($_POST["mlw_reset_quiz_stats"]) && $_POST["mlw_reset_quiz_stats"] == "confirmation")
@@ -2331,7 +2331,7 @@ function mlw_options_tools_tab_content()
 		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
 		if ($mlw_reset_sql_results != false)
 		{
-			$mlwQmnAlertManager->newAlert('The stats has been reset successfully.', 'success');
+			$mlwQuizMasterNext->alertManager->newAlert('The stats has been reset successfully.', 'success');
 			
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -2344,7 +2344,7 @@ function mlw_options_tools_tab_content()
 		}
 		else
 		{
-			$mlwQmnAlertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0010.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0010.', 'error');
 		}
 	}
 	
