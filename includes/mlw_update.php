@@ -284,6 +284,15 @@ function mlw_quiz_update()
 			$results = $wpdb->query( $update_sql );
 		}
 		
+		//Update 3.7.1
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'scheduled_timeframe'") != "scheduled_timeframe")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe TEXT NOT NULL AFTER limit_total_entries_text";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe=''";
+			$results = $wpdb->query( $update_sql );
+		}
+		
 		
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_questions";
