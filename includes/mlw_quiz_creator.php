@@ -142,6 +142,7 @@ class QMNQuizCreator
 				'limit_total_entries' => 0,
 				'limit_total_entries_text' => 'Enter Your Text Here',
 				'scheduled_timeframe' => '',
+				'scheduled_timeframe_text' => '',
 				'quiz_views' => 0, 
 				'quiz_taken' => 0,
 				'deleted' => 0
@@ -193,6 +194,7 @@ class QMNQuizCreator
 				'%d',
 				'%s',
 				'%d',
+				'%s',
 				'%s',
 				'%s',
 				'%d', 
@@ -376,6 +378,7 @@ class QMNQuizCreator
 					'limit_total_entries' => $mlw_qmn_duplicate_data->limit_total_entries,
 					'limit_total_entries_text' => $mlw_qmn_duplicate_data->limit_total_entries_text,
 					'scheduled_timeframe' => $mlw_qmn_duplicate_data->scheduled_timeframe,
+					'scheduled_timeframe_text' => $mlw_qmn_duplicate_data->scheduled_timeframe_text,
 					'quiz_views' => 0,
 					'quiz_taken' => 0, 
 					'deleted' => 0
@@ -427,6 +430,7 @@ class QMNQuizCreator
 					'%d',
 					'%s',
 					'%d',
+					'%s',
 					'%s',
 					'%s',
 					'%d',
