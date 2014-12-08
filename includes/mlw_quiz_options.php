@@ -29,6 +29,7 @@ function mlw_generate_quiz_options()
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
 	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
@@ -1234,9 +1235,10 @@ function mlw_options_option_tab_content()
 		$mlw_admin_email = $_POST["adminEmail"];
 		$mlw_comment_section = $_POST["commentSection"];
 		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
+		$qmn_scheduled_timeframe = serialize(array("start" => $_POST["scheduled_time_start"], "end" => $_POST["scheduled_time_end"]))
 		$quiz_id = $_POST["quiz_id"];
 		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe='".$qmn_scheduled_timeframe."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -1262,11 +1264,23 @@ function mlw_options_option_tab_content()
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
+	
+	//Load Scheduled Timeframe
+    	$qmn_scheduled_timeframe = "";
+	if (is_serialized($mlw_quiz_options->scheduled_timeframe) && is_array(@unserialize($mlw_quiz_options->scheduled_timeframe))) 
+	{
+		$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
+	}
+	else
+	{
+		$qmn_scheduled_timeframe = array("start" => '', "end" => '');
+	}
 	?>
 	<div id="tabs-3" class="mlw_tab_content">
 		<script>
 			jQuery(function() {
     			jQuery( "#system, #require_log_in, #randomness_order, #loggedin_user_contact, #sendUserEmail, #sendAdminEmail, #contact_info_location, #userName, #userComp, #userEmail, #userPhone, #pagination, #commentSection, #social_media, #question_numbering, #comments" ).buttonset();
+    			jQuery( "#scheduled_time_start, #scheduled_time_end" ).datepicker();
 			});
 		</script>
 		<button id="save_options_button" onclick="javascript: document.quiz_options_form.submit();">Save Options</button>
@@ -1319,6 +1333,15 @@ function mlw_options_option_tab_content()
 				<th scope="row"><label for="question_from_total">How many questions should be loaded for quiz? (Leave 0 to load all questions)</label></th>
 				<td>
 				    <input name="question_from_total" type="number" step="1" min="0" id="question_from_total" value="<?php echo $mlw_quiz_options->question_from_total; ?>" class="regular-text" />
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="scheduled_time_start">How many questions should be loaded for quiz? (Leave 0 to load all questions)</label></th>
+				<td>
+				    <input name="scheduled_time_start" type="text" id="scheduled_time_start" value="<?php echo $qmn_scheduled_timeframe["start"] ?>" class="regular-text" />
+				</td>
+				<td>
+				    <input name="scheduled_time_end" type="text" id="scheduled_time_end" value="<?php echo $qmn_scheduled_timeframe["end"] ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr valign="top">
