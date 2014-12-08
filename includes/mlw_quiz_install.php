@@ -111,6 +111,8 @@ function mlw_quiz_activate()
 			limit_total_entries_text TEXT NOT NULL,
 			
 			scheduled_timeframe TEXT NOT NULL,
+			
+			scheduled_timeframe_text TEXT NOT NULL,
 
 			quiz_views INT NOT NULL,
 
