@@ -933,6 +933,7 @@ function mlw_options_text_tab_content()
 		$mlw_before_comments = htmlspecialchars($_POST["mlw_quiz_before_comments"], ENT_QUOTES);
 		$mlw_comment_field_text = htmlspecialchars($_POST["mlw_commentText"], ENT_QUOTES);
 		$mlw_require_log_in_text = htmlspecialchars($_POST["mlw_require_log_in_text"], ENT_QUOTES);
+		$mlw_scheduled_timeframe_text = htmlspecialchars($_POST["mlw_scheduled_timeframe_text"], ENT_QUOTES);
 		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
 		$mlw_qmn_pagination_field = serialize(array( $_POST["pagination_prev_text"], $_POST["pagination_next_text"] ));
 		$qmn_social_media_text = serialize(array('twitter' => $_POST["mlw_quiz_twitter_text_template"], 'facebook' => $_POST["mlw_quiz_facebook_text_template"]));
@@ -940,7 +941,7 @@ function mlw_options_text_tab_content()
 		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
 		$quiz_id = $_POST["quiz_id"];
 		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', email_from_text='".$mlw_email_from_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$qmn_social_media_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', email_from_text='".$mlw_email_from_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$qmn_social_media_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe_text='".$mlw_scheduled_timeframe_text."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -1099,6 +1100,17 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
 					<td><textarea cols="80" rows="15" id="mlw_require_log_in_text" name="mlw_require_log_in_text"><?php echo $mlw_quiz_options->require_log_in_text; ?></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="30%">
+						<strong>Message Displayed If Date Is Outside Scheduled Timeframe</strong>
+						<br />
+						<p>Allowed Variables: </p>
+						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
+						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
+					</td>
+					<td><textarea cols="80" rows="15" id="mlw_scheduled_timeframe_text" name="mlw_scheduled_timeframe_text"><?php echo $mlw_quiz_options->scheduled_timeframe_text; ?></textarea>
 					</td>
 				</tr>
 				<tr>
