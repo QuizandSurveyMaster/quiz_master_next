@@ -8,7 +8,7 @@ function mlw_quiz_shortcode($atts)
 		'quiz' => 0
 	), $atts));
 	
-	
+	date_default_timezone_set(get_option('timezone_string'));
 
 	/*
 	Code before loading the quiz
