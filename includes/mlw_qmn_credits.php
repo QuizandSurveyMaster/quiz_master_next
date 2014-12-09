@@ -89,18 +89,18 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.6</a>
+			What&#8217;s New In 3.7</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Separate Social Network Text Templates</h2>
-	<p style="text-align: center;">You can now customize the sharing text for each social network instead of having one for all of them.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Ability To Schedule When Quiz Is Active</h2>
+	<p style="text-align: center;">You can now set a time-frame of when the quiz is active. On the quiz options tab, you will see a spot to put in two dates. The quiz will now only be active during that time. Leave those fields blank to leave the quiz always active.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Developer Filters</h2>
-	<p style="text-align: center;">For the developers that like to extend this plugin's functionality, there are now two new filters for creating your own template variables.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
+	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and December 31st, 2014 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/sample-survey'>take our survey</a>.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
@@ -109,13 +109,11 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/shop/\">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 2, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 9, 2014)</h3>
 	<ul>
-		<li>* Add Separate Social Network Text Templates</li>
-		<li>* Added Hours Field To Timer And Completion Time</li>
-		<li>* Converted Quizzes Page To Use wpdb->update And wpdb->insert Instead Of query</li>
-		<li>* Created New Filter For Creating New Variables For Quiz Page</li>
-		<li>* Created New Filter For Creating New Variables For Results Page</li>
+		<li>* Added Ability To Schedule A Timeframe That The Quiz Is Active In</li>
+		<li>* In Backend: Moved Alert Class Inside Main Class</li>
+		<li>* In Backend: Created New Quiz Creator Class</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
