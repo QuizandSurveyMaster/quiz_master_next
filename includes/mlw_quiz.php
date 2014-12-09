@@ -8,7 +8,7 @@ function mlw_quiz_shortcode($atts)
 		'quiz' => 0
 	), $atts));
 	
-	
+	date_default_timezone_set(get_option('timezone_string'));
 
 	/*
 	Code before loading the quiz
@@ -47,7 +47,26 @@ function mlw_quiz_shortcode($atts)
 		$mlw_display .= wp_login_form( array('echo' => false) );
 		return $mlw_display;
 		$mlw_qmn_isAllowed = false;
-	}	
+	}
+	
+	//Check if date is inside scheduled timeframe
+	if (is_serialized($mlw_quiz_options->scheduled_timeframe) && is_array(@unserialize($mlw_quiz_options->scheduled_timeframe))) 
+	{
+		$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
+		if ($qmn_scheduled_timeframe["start"] != '' && $qmn_scheduled_timeframe["end"] != '')
+		{
+			$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
+			$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
+			if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
+			{
+				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
+				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+				$mlw_display = $mlw_message;
+				return $mlw_display;
+				$mlw_qmn_isAllowed = false;	
+			}
+		}
+	}
 	
 	//Check to see if there is limit on the amount of tries
 	if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
