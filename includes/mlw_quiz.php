@@ -54,7 +54,7 @@ function mlw_quiz_shortcode($atts)
 	{
 		$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
 		$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
-		$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]);
+		$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
 		echo "start: $qmn_scheduled_start<br />end: $qmn_scheduled_end<br />now: ".time();
 		if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
 		{
