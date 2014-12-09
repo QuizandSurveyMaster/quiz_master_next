@@ -109,7 +109,7 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/shop/\">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 9, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 10, 2014)</h3>
 	<ul>
 		<li>* Added Ability To Schedule A Timeframe That The Quiz Is Active In</li>
 		<li>* In Backend: Moved Alert Class Inside Main Class</li>
