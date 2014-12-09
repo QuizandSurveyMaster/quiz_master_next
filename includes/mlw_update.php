@@ -6,7 +6,7 @@ function mlw_quiz_update()
 {
 	
 	//Update this variable each update. This is what is checked when the plugin is deciding to run the upgrade script or not.
-	$data = "3.6.1";
+	$data = "3.7.1";
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);
