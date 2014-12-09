@@ -1348,12 +1348,12 @@ function mlw_options_option_tab_content()
 				</td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="scheduled_time_start">How many questions should be loaded for quiz? (Leave 0 to load all questions)</label></th>
+				<th scope="row"><label for="scheduled_time_start">What time-frame should the user be able to access the quiz? (Leave blank if the user can access anytime)</label></th>
 				<td>
-				    <input name="scheduled_time_start" type="text" id="scheduled_time_start" value="<?php echo $qmn_scheduled_timeframe["start"] ?>" class="regular-text" />
+				    <input name="scheduled_time_start" placeholder="start date" type="text" id="scheduled_time_start" value="<?php echo $qmn_scheduled_timeframe["start"] ?>" class="regular-text" />
 				</td>
 				<td>
-				    <input name="scheduled_time_end" type="text" id="scheduled_time_end" value="<?php echo $qmn_scheduled_timeframe["end"] ?>" class="regular-text" />
+				    <input name="scheduled_time_end" type="text" placeholder="end date" id="scheduled_time_end" value="<?php echo $qmn_scheduled_timeframe["end"] ?>" class="regular-text" />
 				</td>
 			</tr>
 			<tr valign="top">
