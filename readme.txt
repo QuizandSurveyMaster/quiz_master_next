@@ -116,10 +116,10 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 
 == Changelog ==
 
-= 3.7.1 (December 9, 2014) =
+= 3.7.1 (December 10, 2014) =
  * Added Ability To Schedule A Timeframe That The Quiz Is Active In
- * Developers: Moved Alert Class Inside Main Class
- * Developers: Created New Quiz Creator Class
+ * In Code: Moved Alert Class Inside Main Class
+ * In Code: Created New Quiz Creator Class
 
 = 3.6.1 (December 2, 2014) =
  * Add Separate Social Network Text Templates
