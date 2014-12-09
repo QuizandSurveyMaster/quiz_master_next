@@ -53,16 +53,18 @@ function mlw_quiz_shortcode($atts)
 	if (is_serialized($mlw_quiz_options->scheduled_timeframe) && is_array(@unserialize($mlw_quiz_options->scheduled_timeframe))) 
 	{
 		$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
-		$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
-		$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
-		echo "start: $qmn_scheduled_start<br />end: $qmn_scheduled_end<br />now: ".time();
-		if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
+		if ($qmn_scheduled_timeframe["start"] != '' && $qmn_scheduled_timeframe["end"] != '')
 		{
-			$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
-			$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
-			$mlw_display = $mlw_message;
-			return $mlw_display;
-			$mlw_qmn_isAllowed = false;	
+			$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
+			$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
+			if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
+			{
+				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
+				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+				$mlw_display = $mlw_message;
+				return $mlw_display;
+				$mlw_qmn_isAllowed = false;	
+			}
 		}
 	}
 	
