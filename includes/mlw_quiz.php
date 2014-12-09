@@ -43,6 +43,7 @@ function mlw_quiz_shortcode($atts)
 	{
 		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
 		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+		$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 		$mlw_display = $mlw_message;
 		$mlw_display .= wp_login_form( array('echo' => false) );
 		return $mlw_display;
@@ -61,6 +62,7 @@ function mlw_quiz_shortcode($atts)
 			{
 				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
 				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+				$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
 				$mlw_display = $mlw_message;
 				return $mlw_display;
 				$mlw_qmn_isAllowed = false;	
