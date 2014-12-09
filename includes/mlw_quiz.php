@@ -682,7 +682,7 @@ function mlw_quiz_shortcode($atts)
 						$mlw_answer_total++;
 						if ($mlw_qmn_answer_each[0] != "")
 						{
-							$mlw_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> ".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)." ";
+							$mlw_display .= "<input type='radio' id='question".$mlw_question->question_id."_".$mlw_answer_total."' name='question".$mlw_question->question_id."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> <label for='question".$mlw_question->question_id."_".$mlw_answer_total."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."</label> ";
 						}
 					}
 					$mlw_display .= "<input type='radio' style='display: none;' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_none' checked='checked' value='No Answer Provided' />";
