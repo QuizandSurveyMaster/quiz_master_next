@@ -3,7 +3,7 @@
 /*
 Plugin Name: Quiz Master Next
 Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-Version: 3.6.1
+Version: 3.7.1
 Author: Frank Corso
 Author URI: http://www.mylocalwebstop.com/
 Plugin URI: http://www.mylocalwebstop.com/
@@ -29,6 +29,22 @@ You understand that you install, operate, and unistall the plugin at your own di
   */
 class MLWQuizMasterNext
 {
+	/**
+	 * QMN Alert Manager Object
+	 *
+	 * @var object
+	 * @since 3.7.1
+	 */
+	public $alertManager;
+	
+	/**
+	 * QMN Quiz Creator Object
+	 *
+	 * @var object
+	 * @since 3.7.1
+	 */
+	public $quizCreator;
+	
 	/**
 	  * Main Construct Function
 	  *
@@ -67,6 +83,15 @@ class MLWQuizMasterNext
 		include("includes/mlw_qmn_credits.php");
 		include("includes/mlw_template_variables.php");
 		include("includes/mlw_adverts.php");
+		include("includes/mlw_alerts.php");
+		
+		$this->alertManager = new MlwQmnAlertManager();
+		
+		if (is_admin())
+		{
+			include("includes/mlw_quiz_creator.php");
+			$this->quizCreator = new QMNQuizCreator();
+		}
 	}
 	
 	/**
@@ -122,6 +147,5 @@ class MLWQuizMasterNext
 }
 
 $mlwQuizMasterNext = new MLWQuizMasterNext();
-include("includes/mlw_alerts.php");
 register_activation_hook( __FILE__, 'mlw_quiz_activate');
 ?>

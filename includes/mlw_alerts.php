@@ -26,5 +26,4 @@ class MlwQmnAlertManager {
 	}
 	
 }
-$mlwQmnAlertManager = new MlwQmnAlertManager();
 ?>

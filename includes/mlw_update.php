@@ -6,7 +6,7 @@ function mlw_quiz_update()
 {
 	
 	//Update this variable each update. This is what is checked when the plugin is deciding to run the upgrade script or not.
-	$data = "3.6.1";
+	$data = "3.7.1";
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);
@@ -271,7 +271,7 @@ function mlw_quiz_update()
 		}
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries'") != "limit_total_entries")
 		{
-			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries INT NOT NULL AFTER require_log_in";
+			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries INT NOT NULL AFTER require_log_in_text";
 			$results = $wpdb->query( $sql );
 			$update_sql = "UPDATE ".$table_name." SET limit_total_entries='0'";
 			$results = $wpdb->query( $update_sql );
@@ -281,6 +281,22 @@ function mlw_quiz_update()
 			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries_text TEXT NOT NULL AFTER limit_total_entries";
 			$results = $wpdb->query( $sql );
 			$update_sql = "UPDATE ".$table_name." SET limit_total_entries_text='Enter Text Here'";
+			$results = $wpdb->query( $update_sql );
+		}
+		
+		//Update 3.7.1
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'scheduled_timeframe'") != "scheduled_timeframe")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe TEXT NOT NULL AFTER limit_total_entries_text";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe=''";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'scheduled_timeframe_text'") != "scheduled_timeframe_text")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe_text TEXT NOT NULL AFTER scheduled_timeframe";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
 		
