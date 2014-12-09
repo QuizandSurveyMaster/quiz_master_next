@@ -81,10 +81,9 @@ function mlw_generate_quiz_options()
 	$mlw_output = ob_get_contents();
 	ob_end_clean();
 	$mlwQuizMasterNext->alertManager->showAlerts();
+	echo mlw_qmn_show_adverts();
 	echo $mlw_output;
 	?>
-	
-	<?php echo mlw_qmn_show_adverts(); ?>
 	</div>
 	</div>
 <?php
