@@ -3,8 +3,8 @@ Contributors: fpcorso
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTGYAETX36ZQJ
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
-Tested up to: 4.0
-Stable tag: 3.6.1
+Tested up to: 4.0.1
+Stable tag: 3.7.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -40,6 +40,9 @@ The plugin will **save** the results, the user's answers, the user's comments, a
 = Math Formulas =
 You can use Tex or LaTex in questions, answers, and text fields for your quiz. For assistance with LaTex, review this tutorial: [LaTeX](http://www.andy-roberts.net/writing/latex/mathematics_1) 
 
+= Schedule Time That Quiz Is Active =
+You can set up the quiz to only be active between two days. Utilize this for quizzes/surveys that are only active until a certain date.
+
 = Other Useful Features =
 
 * Allow the user to share the results on *social networks*
@@ -59,6 +62,10 @@ You can use Tex or LaTex in questions, answers, and text fields for your quiz. F
 
 = Make Suggestions Or Contribute =
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
+
+= Demoes! =
+You can check out the sample quiz with various questions types here: [Sample Quiz](http://mylocalwebstop.com/sample-quiz/)!
+You can check out the sample survey with pagination here: [Sample Survey](http://mylocalwebstop.com/sample-survey/)!
 
 = Quiz Master Next Add-ons =
 While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer vaious extra features and support available in our [Wordpress Store](http://mylocalwebstop.com/shop/)
@@ -108,6 +115,11 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.7.1 (December 9, 2014) =
+ * Added Ability To Schedule A Timeframe That The Quiz Is Active In
+ * Developers: Moved Alert Class Inside Main Class
+ * Developers: Created New Quiz Creator Class
 
 = 3.6.1 (December 2, 2014) =
  * Add Separate Social Network Text Templates
@@ -555,6 +567,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.7.1 =
+Upgrade for ability to schedule when quiz will be active
 
 = 3.6.1 =
 Upgrade for many backend upgrades
