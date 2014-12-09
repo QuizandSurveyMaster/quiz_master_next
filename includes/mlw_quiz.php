@@ -99,8 +99,12 @@ function mlw_quiz_shortcode($atts)
 	//Load and prepare answer arrays
 	$mlw_qmn_answer_arrays = array();
 	foreach($mlw_questions as $mlw_question_info) {
-		$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-		if ( !is_array($mlw_qmn_answer_array_each) )
+		if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array))) 
+		{
+			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
+			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+		}
+		else
 		{
 			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
 			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
@@ -111,10 +115,6 @@ function mlw_quiz_shortcode($atts)
 				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
 				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
 				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
-		}
-		else
-		{
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
 		}
 	}
 
@@ -230,10 +230,14 @@ function mlw_quiz_shortcode($atts)
 			
 			//Gather text for pagination buttons
 			$mlw_qmn_pagination_text = "";
-			$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
-			if (!is_array($mlw_qmn_pagination_text)) {
-		        $mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
-		    }
+			if (is_serialized($mlw_quiz_options->pagination_text) && is_array(@unserialize($mlw_quiz_options->pagination_text))) 
+			{
+				$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
+			}
+			else
+			{
+				$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
+			}
 			?>
 			<script type="text/javascript">
 				setTimeout(function(){
@@ -534,8 +538,11 @@ function mlw_quiz_shortcode($atts)
 		
 		//Display the questions
 		foreach($mlw_questions as $mlw_question) {
-			$mlw_question_settings = @unserialize($mlw_question->question_settings);
-			if (!is_array($mlw_question_settings)) 
+			if (is_serialized($mlw_question->question_settings) && is_array(@unserialize($mlw_question->question_settings))) 
+			{
+				$mlw_question_settings = @unserialize($mlw_question->question_settings);
+			}
+			else
 			{
 				$mlw_question_settings = array();
 				$mlw_question_settings['required'] = 1;
@@ -922,8 +929,12 @@ function mlw_quiz_shortcode($atts)
 		//Load and prepare answer arrays
 		$mlw_qmn_loaded_answer_arrays = array();
 		foreach($mlw_questions as $mlw_question_info) {
-			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-			if ( !is_array($mlw_qmn_answer_array_each) )
+			if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array))) 
+			{
+				$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
+				$mlw_qmn_loaded_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+			}
+			else
 			{
 				$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
 				$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
@@ -934,10 +945,6 @@ function mlw_quiz_shortcode($atts)
 					array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
 					array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
 					array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
-			}
-			else
-			{
-				$mlw_qmn_loaded_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
 			}
 		}
 	
@@ -1116,11 +1123,14 @@ function mlw_quiz_shortcode($atts)
 		
 		//Prepare Certificate
 		$mlw_certificate_link = "";
-		$mlw_certificate_options = unserialize($mlw_quiz_options->certificate_template);
-		if (!is_array($mlw_certificate_options)) {
-	        // something went wrong, initialize to empty array
-	        $mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
-	    }
+		if (is_serialized($mlw_quiz_options->certificate_template) && is_array(@unserialize($mlw_quiz_options->certificate_template))) 
+		{
+			$mlw_certificate_options = unserialize($mlw_quiz_options->certificate_template);
+		}
+		else
+		{
+			$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
+		}
 	    if ($mlw_certificate_options[4] == 0)
 	    {
 			$mlw_message_certificate = $mlw_certificate_options[1];
@@ -1160,9 +1170,9 @@ EOC;
 			-Second, check for array in case user has not updated
 			Message array = (array( bottomvalue, topvalue, text),array( bottomvalue, topvalue, text), etc..., array(0,0,text))
 		*/
-		$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
-		if (is_array($mlw_message_after_array))
+		if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after))) 
 		{
+			$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
 			//Cycle through landing pages
 			foreach($mlw_message_after_array as $mlw_each)
 			{
@@ -1239,9 +1249,13 @@ EOC;
 			<?php
 			//Load Social Media Text
 			$qmn_social_media_text = "";
-			$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
-			if (!is_array($qmn_social_media_text)) {
-		        	$qmn_social_media_text = array(
+			if (is_serialized($mlw_quiz_options->social_media_text) && is_array(@unserialize($mlw_quiz_options->social_media_text))) 
+			{
+				$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
+			}
+			else
+			{
+				$qmn_social_media_text = array(
 		        		'twitter' => $mlw_quiz_options->social_media_text,
 		        		'facebook' => $mlw_quiz_options->social_media_text
 		        	);
@@ -1267,9 +1281,10 @@ EOC;
 		{
 			if ($mlw_user_email != "")
 			{
-				$mlw_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
-				if (is_array($mlw_user_email_array))
+				if (is_serialized($mlw_quiz_options->user_email_template) && is_array(@unserialize($mlw_quiz_options->user_email_template))) 
 				{
+					$mlw_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
+				
 					//Cycle through landing pages
 					foreach($mlw_user_email_array as $mlw_each)
 					{
