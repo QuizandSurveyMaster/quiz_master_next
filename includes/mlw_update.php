@@ -296,7 +296,7 @@ function mlw_quiz_update()
 		{
 			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe_text TEXT NOT NULL AFTER scheduled_timeframe";
 			$results = $wpdb->query( $sql );
-			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe_text=''";
+			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
 		
