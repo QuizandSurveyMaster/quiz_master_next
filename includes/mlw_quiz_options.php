@@ -172,8 +172,11 @@ function mlw_options_questions_tab_content()
 		$edit_question_order = intval($_POST["edit_question_order"]);
 		$mlw_edit_answer_total = intval($_POST["question_".$mlw_edit_question_id."_answer_total"]);
 		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
-		$mlw_settings = @unserialize($mlw_row_settings->question_settings);
-		if ( !is_array($mlw_settings) )
+		if (is_serialized($mlw_row_settings->question_settings) && is_array(@unserialize($mlw_row_settings->question_settings))) 
+		{
+			$mlw_settings = @unserialize($mlw_row_settings->question_settings);
+		}
+		else
 		{
 			$mlw_settings = array();
 			$mlw_settings['required'] = intval($_POST["edit_required"]);
@@ -417,8 +420,12 @@ function mlw_options_questions_tab_content()
 	//Load and prepare answer arrays
 	$mlw_qmn_answer_arrays = array();
 	foreach($mlw_question_data as $mlw_question_info) {
-		$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-		if ( !is_array($mlw_qmn_answer_array_each) )
+		if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array))) 
+		{
+			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
+			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+		}
+		else
 		{
 			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
 			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
@@ -429,10 +436,6 @@ function mlw_options_questions_tab_content()
 				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
 				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
 				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
-		}
-		else
-		{
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
 		}
 	}
 	$is_new_quiz = $wpdb->num_rows;
@@ -552,8 +555,12 @@ function mlw_options_questions_tab_content()
 		$display = "";
 		$alternate = "";
 		foreach($mlw_question_data as $mlw_question_info) {
-			$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
-			if (!is_array($mlw_question_settings)) {
+			if (is_serialized($mlw_question_info->question_settings) && is_array(@unserialize($mlw_question_info->question_settings))) 
+			{
+				$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
+			}
+			else
+			{
 				$mlw_question_settings = array();
 				$mlw_question_settings['required'] = 1;
 			}
@@ -970,16 +977,24 @@ function mlw_options_text_tab_content()
 	
 	//Load Pagination Text
     	$mlw_qmn_pagination_text = "";
-	$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
-	if (!is_array($mlw_qmn_pagination_text)) {
-        	$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
+    	if (is_serialized($mlw_quiz_options->pagination_text) && is_array(@unserialize($mlw_quiz_options->pagination_text))) 
+	{
+		$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
+	}
+	else
+	{
+		$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
 	}
 	
 	//Load Social Media Text
 	$qmn_social_media_text = "";
-	$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
-	if (!is_array($qmn_social_media_text)) {
-        	$qmn_social_media_text = array(
+	if (is_serialized($mlw_quiz_options->social_media_text) && is_array(@unserialize($mlw_quiz_options->social_media_text))) 
+	{
+		$qmn_social_media_text = @unserialize($mlw_quiz_options->social_media_text);
+	}
+	else
+	{
+		$qmn_social_media_text = array(
         		'twitter' => $mlw_quiz_options->social_media_text,
         		'facebook' => $mlw_quiz_options->social_media_text
         	);
@@ -1605,11 +1620,14 @@ function mlw_options_certificate_tab_content()
 	}
 	
 	//Load Certificate Options Variables
-	$mlw_certificate_options = @unserialize($mlw_quiz_options->certificate_template);
-	if (!is_array($mlw_certificate_options)) {
-        // something went wrong, initialize to empty array
-        $mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
-    }
+	if (is_serialized($mlw_quiz_options->certificate_template) && is_array(@unserialize($mlw_quiz_options->certificate_template))) 
+	{
+		$mlw_certificate_options = @unserialize($mlw_quiz_options->certificate_template);
+	}
+	else
+	{
+		$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);	
+	}
 	?>
 	<div id="tabs-5" class="mlw_tab_content">
 		<script>
@@ -1695,9 +1713,9 @@ function mlw_options_emails_tab_content()
 		$mlw_qmn_user_email = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_add_email_id ) );
 	
 		//Load user email and check if it is array already. If not, turn it into one
-		$mlw_qmn_email_array = @unserialize($mlw_qmn_user_email);
-		if (is_array($mlw_qmn_email_array))
+		if (is_serialized($mlw_qmn_user_email) && is_array(@unserialize($mlw_qmn_user_email))) 
 		{
+			$mlw_qmn_email_array = @unserialize($mlw_qmn_user_email);
 			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
 			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
@@ -1779,10 +1797,18 @@ function mlw_options_emails_tab_content()
 	}
 	
 	//Load Email Templates
-    $mlw_qmn_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
+	if (is_serialized($mlw_quiz_options->user_email_template) && is_array(@unserialize($mlw_quiz_options->user_email_template))) 
+	{
+		$mlw_qmn_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
+	}
+	else
+	{
+		 $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
+	}
+    
 	if (!is_array($mlw_qmn_user_email_array)) {
         // something went wrong, initialize to empty array
-        $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
+       
     }
 	?>
 	
@@ -1977,9 +2003,9 @@ function mlw_options_results_tab_content()
 		$mlw_qmn_landing_id = intval($_POST["mlw_add_landing_quiz_id"]);
 		$mlw_qmn_message_after = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_landing_id ) );
 		//Load message_after and check if it is array already. If not, turn it into one
-		$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
-		if (is_array($mlw_qmn_landing_array))
+		if (is_serialized($mlw_qmn_message_after) && is_array(@unserialize($mlw_qmn_message_after))) 
 		{
+			$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
 			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
 			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
 			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
@@ -2061,11 +2087,14 @@ function mlw_options_results_tab_content()
 	}
 	
 	//Load Landing Pages
-    $mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
-	if (!is_array($mlw_message_after_array)) {
-        // something went wrong, initialize to empty array
-        $mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
-    }
+	if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after))) 
+	{
+    		$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
+	}
+	else
+	{
+		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
+	}
 	?>
 	<div id="tabs-6" class="mlw_tab_content">
 		<script>
