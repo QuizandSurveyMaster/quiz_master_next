@@ -21,7 +21,6 @@ function mlw_generate_quiz_dashboard()
 		add_meta_box("wpss_mrts", 'My Local Webstop Services', "mlw_dashboard_box_six", "quiz_wpss6"); 
 		add_meta_box("wpss_mrts", 'Contribution', "mlw_dashboard_box_eight", "quiz_wpss8");
 	}
-	add_meta_box("wpss_mrts", 'News From My Local Webstop', "mlw_dashboard_box_nine", "quiz_wpss9");
 	add_meta_box("wpss_mrts", 'Quizzes Taken Today', "mlw_qmn_daily_percent_taken_widget", "quiz_wpss10");
 	add_meta_box("wpss_mrts", 'Quizzes Taken Last 7 Days', "mlw_qmn_weekly_percent_taken_widget", "quiz_wpss11");
 	add_meta_box("wpss_mrts", 'Quizzes Taken Last 30 Days', "mlw_qmn_monthly_percent_taken_widget", "quiz_wpss12");
@@ -134,10 +133,6 @@ function mlw_generate_quiz_dashboard()
 	</div>
 	
 	<div style="clear:both">
-		
-	<div style="float:left; width:50%;" class="inner-sidebar1">
-		<?php do_meta_boxes('quiz_wpss9','advanced','');  ?>	
-	</div>
 		
 	<div style="float:left; width:50%; " class="inner-sidebar1">
 		<?php if ( get_option('mlw_advert_shows') == 'true' ) {do_meta_boxes('quiz_wpss8','advanced','');} ?>	
@@ -459,18 +454,6 @@ function mlw_dashboard_box_eight()
 	</tr>
 	</table>
 	<p>Thank you to those who have contributed so far!</p>
-	</div>
-	<?php
-}
-function mlw_dashboard_box_nine()
-{
-	?>
-	<div>
-	<table width='100%'>
-	<tr>
-	<td align='left'><iframe src="http://www.mylocalwebstop.com/mlw_news.html?cache=<?php echo rand(); ?>" seamless="seamless" style="width: 100%; height: 550px;"></iframe></td>
-	</tr>
-	</table>
 	</div>
 	<?php
 }
