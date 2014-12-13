@@ -223,52 +223,58 @@ function mlw_generate_quiz_admin()
 			<br class="clear">
 		</div>
 	</div>
-	<?php 
-	$quotes_list = "";
-	$display = "";
-	$alternate = "";
-	foreach($mlw_quiz_data as $mlw_quiz_info) {
-		if($alternate) $alternate = "";
-		else $alternate = " class=\"alternate\"";
-		$quotes_list .= "<tr{$alternate}>";
-		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
-		$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
-		$quotes_list .= "<div class=\"row-actions\"><a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a> | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>Delete</a></div></td>";
-		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
-		$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
-		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_views . "</span></td>";
-		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_taken ."</span></td>";
-		$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->last_activity ."</span></td>";
-		$quotes_list .= "</tr>";
-	}
-	
-	
-	
-	$display .= "<br />";
-
-	$display .= "<table class=\"widefat\">";
-		$display .= "<thead><tr>
-			<th>Quiz ID</th>
-			<th>Quiz Name</th>
-			<th>Quiz Shortcode</th>
-			<th>Leaderboard Shortcode</th>
-			<th>Quiz Views</th>
-			<th>Quiz Taken</th>
-			<th>Last Modified</th>
-		</tr></thead>";
-		$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
-		$display .= "<tfoot><tr>
-			<th>Quiz ID</th>
-			<th>Quiz Name</th>
-			<th>Quiz Shortcode</th>
-			<th>Leaderboard Shortcode</th>
-			<th>Quiz Views</th>
-			<th>Quiz Taken</th>
-			<th>Last Modified</th>
-		</tr></tfoot>";
-		$display .= "</table>";
-	echo $display;
-	?>
+	<div style="width: 85%; float: left;">
+		<table class="widefat">
+			<thead>
+				<tr>
+					<th>Quiz ID</th>
+					<th>Quiz Name</th>
+					<th>Quiz Shortcode</th>
+					<th>Leaderboard Shortcode</th>
+					<th>Quiz Views</th>
+					<th>Quiz Taken</th>
+					<th>Last Modified</th>
+				</tr>
+			</thead>
+			<tbody id="the-list">
+				<?php 
+				$quotes_list = "";
+				$display = "";
+				$alternate = "";
+				foreach($mlw_quiz_data as $mlw_quiz_info) {
+					if($alternate) $alternate = "";
+					else $alternate = " class=\"alternate\"";
+					$quotes_list .= "<tr{$alternate}>";
+					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
+					$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(Edit Name)</a></span>";
+					$quotes_list .= "<div class=\"row-actions\"><a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>Edit</a> | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>Results</a> | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">Duplicate</a> | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>Delete</a></div></td>";
+					$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
+					$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
+					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_views . "</span></td>";
+					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_taken ."</span></td>";
+					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->last_activity ."</span></td>";
+					$quotes_list .= "</tr>";
+				}
+				echo $quotes_list; ?>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th>Quiz ID</th>
+					<th>Quiz Name</th>
+					<th>Quiz Shortcode</th>
+					<th>Leaderboard Shortcode</th>
+					<th>Quiz Views</th>
+					<th>Quiz Taken</th>
+					<th>Last Modified</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div style="width: 15%; float:right;">
+		<h3 style="text-align: center;">My Local Webstop News</h3>
+		<iframe src="http://www.mylocalwebstop.com/mlw_news.html?cache=<?php echo rand(); ?>" seamless="seamless" style="width: 100%; height: 550px;"></iframe>
+	</div>
+	<div style="clear: both;"></div>
 	<?php echo mlw_qmn_show_adverts(); ?>
 	<!--Dialogs-->
 	

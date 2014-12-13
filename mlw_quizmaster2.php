@@ -84,6 +84,7 @@ class MLWQuizMasterNext
 		include("includes/mlw_template_variables.php");
 		include("includes/mlw_adverts.php");
 		include("includes/mlw_alerts.php");
+		include("includes/mlw_help.php");
 		include("includes/qmn_dashboard_widgets.php");
 		
 		$this->alertManager = new MlwQmnAlertManager();
@@ -125,12 +126,13 @@ class MLWQuizMasterNext
 	{
 		if (function_exists('add_menu_page'))
 		{
-			add_menu_page('Quiz Master Next', 'Quiz Dashboard', 'moderate_comments', __FILE__, 'mlw_generate_quiz_dashboard', 'dashicons-feedback');
-			add_submenu_page(__FILE__, 'Quizzes', 'Quizzes', 'moderate_comments', 'mlw_quiz_admin', 'mlw_generate_quiz_admin');
+			add_menu_page('Quiz Master Next', 'Quizzes', 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback');
 			add_submenu_page(__FILE__, 'Quiz Settings', 'Quiz Settings', 'moderate_comments', 'mlw_quiz_options', 'mlw_generate_quiz_options');
 			add_submenu_page(__FILE__, 'Quiz Results', 'Quiz Results', 'moderate_comments', 'mlw_quiz_results', 'mlw_generate_quiz_results');
 			add_submenu_page(__FILE__, 'Quiz Result Details', 'Quiz Result Details', 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');
-			add_submenu_page(__FILE__, 'Tools', 'Tools', 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
+			add_submenu_page(__FILE__, 'QMN Stats', 'QMN Stats', 'moderate_comments', 'mlw_quiz_stats', 'mlw_generate_quiz_dashboard');
+			add_submenu_page(__FILE__, 'QMN Tools', 'QMN Tools', 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
+			add_submenu_page(__FILE__, 'QMN Help', 'QMN Help', 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page');
 			add_submenu_page(__FILE__, 'QMN About', 'QMN About', 'manage_options', 'mlw_qmn_about', 'mlw_generate_about_page');
 		}
 	}
