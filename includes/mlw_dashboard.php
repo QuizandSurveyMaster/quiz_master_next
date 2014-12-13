@@ -6,53 +6,16 @@ This page creates the main dashboard for the Quiz Master Next plugin
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
-function mlw_generate_quiz_dashboard(){
-	
-	//Support Email Validation Script
-	echo "
-		<script>
-		function mlw_validateForm()
-		{
-			var x=document.forms['emailForm']['email'].value;
-			if (x==null || x=='')
-			{
-				document.getElementById('mlw_support_message').innerHTML = '**Email must be filled out!**';
-				return false;
-			};
-			var x=document.forms['emailForm']['username'].value;
-			if (x==null || x=='')
-			{
-				document.getElementById('mlw_support_message').innerHTML = '**Name must be filled out!**';
-				return false;
-			};
-			var x=document.forms['emailForm']['message'].value;
-			if (x==null || x=='')
-			{
-				document.getElementById('mlw_support_message').innerHTML = '**There must be a message to send!**';
-				return false;
-			};
-			var x=document.forms['emailForm']['email'].value;
-			var atpos=x.indexOf('@');
-			var dotpos=x.lastIndexOf('.');
-			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-			{
-				document.getElementById('mlw_support_message').innerHTML = '**Not a valid e-mail address!**';
-				return false;
-			}
-		}
-	</script>
-	";
-	
+function mlw_generate_quiz_dashboard()
+{
 	//Page Variables
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
-	
 	
 	///Creates the widgets
 	add_meta_box("wpss_mrts", 'Quiz Daily Stats - Times Taken', "mlw_dashboard_box", "quiz_wpss");  
 	add_meta_box("wpss_mrts", 'Quiz Total Stats', "mlw_dashboard_box_three", "quiz_wpss3");
 	add_meta_box("wpss_mrts", 'Quiz Weekly Stats - Times Taken', "mlw_dashboard_box_four", "quiz_wpss4");
 	add_meta_box("wpss_mrts", 'Quiz Monthly Stats - Times Taken', "mlw_dashboard_box_five", "quiz_wpss5");
-	add_meta_box("wpss_mrts", 'Support', "mlw_dashboard_box_seven", "quiz_wpss7");
 	if ( get_option('mlw_advert_shows') == 'true' )
 	{
 		add_meta_box("wpss_mrts", 'My Local Webstop Services', "mlw_dashboard_box_six", "quiz_wpss6"); 
@@ -82,22 +45,6 @@ function mlw_generate_quiz_dashboard(){
 		// increase the default animation speed to exaggerate the effect
 		$j.fx.speeds._default = 1000;
 		$j(function() {
-			$j('#dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#opener').click(function() {
-				$j('#dialog').dialog('open');
-				return false;
-			});
-			
 			$j(function() {
    				$j( document ).tooltip();
  			});
@@ -144,7 +91,7 @@ function mlw_generate_quiz_dashboard(){
 		}
 	</style>
 	<div class="wrap">
-	<h2>Quiz Master Next Version <?php echo $mlw_quiz_version; ?> <?php _e("Dashboard", "mlw_qmn_text_domain"); ?><a id="opener" href="">(?)</a></h2>
+	<h2>Quiz Master Next Version <?php echo $mlw_quiz_version; ?> Statistics</h2>
 	
 	<?php echo mlw_qmn_show_adverts(); ?>
 	<!--Display Widget Boxes-->
@@ -188,35 +135,15 @@ function mlw_generate_quiz_dashboard(){
 	
 	<div style="clear:both">
 		
-	<div style="float:left; width:38%;" class="inner-sidebar1">
+	<div style="float:left; width:50%;" class="inner-sidebar1">
 		<?php do_meta_boxes('quiz_wpss9','advanced','');  ?>	
 	</div>
 		
-	<div style="float:left; width:38%; " class="inner-sidebar1">
-		<?php do_meta_boxes('quiz_wpss7','advanced',''); ?>	
-	</div>
-	
-	<div style="float:right; width:24%; " class="inner-sidebar1">
+	<div style="float:left; width:50%; " class="inner-sidebar1">
 		<?php if ( get_option('mlw_advert_shows') == 'true' ) {do_meta_boxes('quiz_wpss8','advanced','');} ?>	
 	</div>
 	
 	<div style="clear:both">
-	
-	
-	<!--Dialogs-->	
-	<div id="dialog" title="Help" style="display:none;">
-	<h3><b>Help</b></h3>
-	<p>This page is the main admin dashboard for the Quiz Master Next. It contains many useful widgets for the admin.</p>
-	<p>Quiz Daily Stats -> This widget shows the times all quizzes have been taken each day over the last week.</p>
-	<p>Quiz Weekly Stats -> This widget shows the times all quizzes have been taken each week over the last few weeks.</p>
-	<p>Quiz Monthly Stats -> This widget shows the times all quizzes have been taken each month over the last few months.</p>
-	<p>Quiz Total Stats -> This widget shows several different stats that has been collected.</p>
-	<p>In This Update -> This widget shows what is new in the most recent update of the plugin.</p>
-	<p>Support -> This widget allows you to send a message to the developer of the plugin.</p>
-	<p>News From My Local Webstop -> This widget allows you to keep up with the latest news from My Local Webstop, the developer behind Quiz Master Next.</p>
-	<p>Contribution -> This widget allows you to make a contribution to the developer.</p>
-	</div>
-
 	</div>
 	<?php
 }
@@ -493,78 +420,6 @@ function mlw_dashboard_box_six()
 		<p>Our maintenance service includes around the clock security monitoring, off-site backups, plugin updates, theme updates, WordPress updates, WordPress training videos, and a Monthly Status Report.</p>
 		<p>Up to 30 minutes of support, consultation, and training included each month.</p>
 		<p>Visit our <a href="http://mylocalwebstop.com/wordpress-maintenance-services/" target="_blank" style="color:blue;">WordPress Maintenance Services</a> page for details.</p>
-	</div>
-	<?php
-}
-
-function mlw_dashboard_box_seven()
-{
-	$quiz_master_email_message = "";
-	$mlw_quiz_version = get_option('mlw_quiz_master_version');
-	if(isset($_POST["action"]))
-	{
-		$quiz_master_email_success = $_POST["action"];
-		$user_name = $_POST["username"];
-		$user_email = $_POST["email"];
-		$user_message = $_POST["message"];
-		$user_quiz_url = $_POST["quiz_url"];
-		$current_user = wp_get_current_user();
-		$mlw_site_name = get_bloginfo('name');
-		$mlw_site_url = get_bloginfo('url');
-		$mlw_site_version = get_bloginfo('version');
-		$mlw_site_info = $mlw_site_name." ".$mlw_site_url." ".$mlw_site_version;
-		if ($quiz_master_email_success == 'update')
-		{
-			$mlw_message = "Message from ".$user_name." at ".$user_email." It says: \n \n ".$user_message."\n Version: ".$mlw_quiz_version."\n Quiz URL Provided: ".$user_quiz_url."\n User ".$current_user->display_name." from ".$current_user->user_email."\n Wordpress Info: ".$mlw_site_info;
-			wp_mail('fpcorso@mylocalwebstop.com' ,'Support From Quiz Master Next Plugin', $mlw_message);
-			$quiz_master_email_message = "**Message Sent**";
-		}
-	}
-	?>
-	<div class='quiz_email_support'>
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=quiz-master-next/mlw_quizmaster2.php" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
-	<input type='hidden' name='action' value='update' />
-	<table>
-	<tr>
-	<td>If there is something you would like to suggest to add or even if you just want 
-	to let me know if you like the plugin or not, feel free to use the email form below.</td>
-	</tr>
-	<tr>
-	<td><span name='mlw_support_message' id='mlw_support_message' style="color: red;"><?php echo $quiz_master_email_message; ?></span></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Name (Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='username' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Email (Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='email' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>URL To Quiz (Not Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='quiz_url' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Message (Required): </span></td>
-	</tr>
-	<tr>
-	<td align='left'><TEXTAREA NAME="message" COLS=40 ROWS=6></TEXTAREA></td>
-	</tr>
-	<tr>
-	<td align='left'><input type='submit' class="button-primary" value='Send Email' /></td>
-	</tr>
-	<tr>
-	<td align='left'></td>
-	</tr>
-	</table>
-	</form>
-	<p>Disclaimer: In order to better assist you, this form will also send some useful information about your WordPress installation such as version of plugin, version of WordPress, and website url along with your message.</p>
 	</div>
 	<?php
 }
