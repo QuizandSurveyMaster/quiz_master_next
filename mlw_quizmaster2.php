@@ -84,6 +84,7 @@ class MLWQuizMasterNext
 		include("includes/mlw_template_variables.php");
 		include("includes/mlw_adverts.php");
 		include("includes/mlw_alerts.php");
+		include("includes/qmn_dashboard_widgets.php");
 		
 		$this->alertManager = new MlwQmnAlertManager();
 		
