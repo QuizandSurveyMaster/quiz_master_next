@@ -459,23 +459,24 @@ function mlw_quiz_shortcode($atts)
 			function mlw_validateForm()
 			{
 				mlw_validateResult = true;
-				if (document.forms['quizForm']['mlwUserEmail'].value != '')
-				{
-					var x=document.forms['quizForm']['mlwUserEmail'].value;
-					var atpos=x.indexOf('@');
-					var dotpos=x.lastIndexOf('.');
-					if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-					  {
-					  	document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
-					  	document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
-					  mlw_validateResult =  false;
-					  }
-				}
 				
 				jQuery('#quizForm *').filter(':input').each(function(){
 					jQuery(this).css("outline", "");
 					if (jQuery(this).attr('class'))
 					{
+						if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
+						{
+							var x=this.value;
+							var atpos=x.indexOf('@');
+							var dotpos=x.lastIndexOf('.');
+							if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+							{
+								document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
+								document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
+								mlw_validateResult =  false;
+								jQuery(this).css("outline", "2px solid red");
+							}
+						}
 						if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
 						{
 							document.getElementById('mlw_error_message').innerHTML = '**This field must be a number!**';
@@ -1445,10 +1446,10 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		}
 		if ($mlw_quiz_options->user_email != 2)
 		{
-			$mlw_contact_class = "class=\"\"";
+			$mlw_contact_class = "class=\"mlwEmail\"";
 			if ($mlw_quiz_options->user_email == 1)
 			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
+				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
 			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='".$current_user->user_email."' />";
@@ -1499,10 +1500,10 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		}
 		if ($mlw_quiz_options->user_email != 2)
 		{
-			$mlw_contact_class = "class=\"\"";
+			$mlw_contact_class = "class=\"mlwEmail\"";
 			if ($mlw_quiz_options->user_email == 1)
 			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
+				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
 			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='' />";
