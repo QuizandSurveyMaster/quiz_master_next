@@ -19,7 +19,6 @@ function mlw_generate_quiz_dashboard()
 	if ( get_option('mlw_advert_shows') == 'true' )
 	{
 		add_meta_box("wpss_mrts", 'My Local Webstop Services', "mlw_dashboard_box_six", "quiz_wpss6"); 
-		add_meta_box("wpss_mrts", 'Contribution', "mlw_dashboard_box_eight", "quiz_wpss8");
 	}
 	add_meta_box("wpss_mrts", 'Quizzes Taken Today', "mlw_qmn_daily_percent_taken_widget", "quiz_wpss10");
 	add_meta_box("wpss_mrts", 'Quizzes Taken Last 7 Days', "mlw_qmn_weekly_percent_taken_widget", "quiz_wpss11");
@@ -32,11 +31,8 @@ function mlw_generate_quiz_dashboard()
 	<?php
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
-	wp_enqueue_script( 'jquery-effects-blind' );
-	wp_enqueue_script( 'jquery-effects-explode' );
 	?>
 	<script type="text/javascript" src="<?php echo plugin_dir_url( __FILE__ ); ?>jquery_sparkline.js"></script>
 	<script type="text/javascript">
@@ -52,43 +48,6 @@ function mlw_generate_quiz_dashboard()
         	$j('.inlinesparkline').sparkline('html', {type: 'line', width: '400', height: '200'}); 
 		});
 	</script>
-	<style type="text/css">
-		textarea{
-		border-color:#000000;
-		color:#3300CC; 
-		cursor:hand;
-		}
-		p em {
-		padding-left: 1em;
-		color: #555;
-		font-weight: bold;
-		}
-		div.quiz_email_support {
-		text-align: left;
-		}
-		div.quiz_email_support input[type='text'] {
-		border-color:#000000;
-		color:#3300CC; 
-		cursor:hand;
-		}
-		div.donation {
-		border-width: 1px;
-		border-style: solid;
-		padding: 0 0.6em;
-		margin: 5px 0 15px;
-		-moz-border-radius: 3px;
-		-khtml-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		border-radius: 3px;
-		background-color: #ffffe0;
-		border-color: #e6db55;
-		text-align: center;
-		}
-		donation.p {	margin: 0.5em 0;
-		line-height: 1;
-		padding: 2px;
-		}
-	</style>
 	<div class="wrap">
 	<h2>Quiz Master Next Version <?php echo $mlw_quiz_version; ?> Statistics</h2>
 	
@@ -130,12 +89,6 @@ function mlw_generate_quiz_dashboard()
 	
 	<div style="float:left; width:38%;" class="inner-sidebar1">
 		<?php do_meta_boxes('quiz_wpss3','advanced','');  ?>	
-	</div>
-	
-	<div style="clear:both">
-		
-	<div style="float:left; width:50%; " class="inner-sidebar1">
-		<?php if ( get_option('mlw_advert_shows') == 'true' ) {do_meta_boxes('quiz_wpss8','advanced','');} ?>	
 	</div>
 	
 	<div style="clear:both">
@@ -415,45 +368,6 @@ function mlw_dashboard_box_six()
 		<p>Our maintenance service includes around the clock security monitoring, off-site backups, plugin updates, theme updates, WordPress updates, WordPress training videos, and a Monthly Status Report.</p>
 		<p>Up to 30 minutes of support, consultation, and training included each month.</p>
 		<p>Visit our <a href="http://mylocalwebstop.com/wordpress-maintenance-services/" target="_blank" style="color:blue;">WordPress Maintenance Services</a> page for details.</p>
-	</div>
-	<?php
-}
-
-function mlw_dashboard_box_eight()
-{
-	?>
-	<div>
-	<table width='100%'>
-	<tr>
-	<td align='left'>
-	Quiz Master Next is and always will be a free plugin. I have spent a lot of time and effort developing and maintaining this plugin. If it has been beneficial to your site, please consider supporting this plugin by making a donation.
-	</td>
-	</tr>
-	<tr>
-	<td>&nbsp;</td>
-	</tr>
-	<tr>
-	<td></td>
-	</tr>
-	<tr>
-	<td>&nbsp;</td>
-	</tr>
-	<tr>
-	<td>
-	<div class="donation">
-	<p>
-	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-	<input type="hidden" name="cmd" value="_s-xclick">
-	<input type="hidden" name="hosted_button_id" value="RTGYAETX36ZQJ">
-	<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-	<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-	</form>
-	</p>
-	</div>
-	</td>
-	</tr>
-	</table>
-	<p>Thank you to those who have contributed so far!</p>
 	</div>
 	<?php
 }
