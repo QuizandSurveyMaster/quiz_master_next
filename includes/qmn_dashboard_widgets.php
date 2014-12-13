@@ -26,31 +26,117 @@ function qmn_snapshot_dashboard_widget()
 	{
 		$mlw_qmn_analyze_today = $mlw_qmn_today_taken * 100;
 	}
+	
+	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
+	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
+	
+	$mlw_stat_most_popular_quiz = $wpdb->get_row( "SELECT quiz_name FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 ORDER BY quiz_taken Desc LIMIT 1" );
+	$mlw_stat_least_popular_quiz = $wpdb->get_row( "SELECT quiz_name FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 ORDER BY quiz_taken ASC LIMIT 1" );
 	?>
-	<div>
-		<table width="100%">
-			<tr>
-				<td><div style="font-size: 60px; text-align:center;"><?php echo $mlw_qmn_today_taken; ?></div></td>
-			</tr>
-			<tr><td>&nbsp;</td></tr>
-			<tr>
-				<td>
-					<div style="font-size: 40px; text-align:center;">
+	<style>
+	.qmn_dashboard_list
+	{
+		overflow: hidden;
+		margin: 0;
+	}
+	.qmn_dashboard_list li:first-child
+	{
+		border-top: 0;
+		width: 100%;
+	}
+	.qmn_dashboard_element
+	{
+		width: 50%;
+		float: left;
+		padding: 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		margin: 0;
+		border-top: 1px solid #ececec;
+		color: #aaa;
+	}
+	.qmn_dashboard_inside
+	{
+		display: block;
+		color: #aaa;
+		padding: 9px 12px;
+		-webkit-transition: all ease .5s;
+		position: relative;
+		font-size: 12px;
+	}
+	.qmn_dashboard_inside strong
+	{
+		font-size: 18px;
+		line-height: 1.2em;
+		font-weight: 400;
+		display: block;
+		color: #21759b;
+	}
+	.qmn_dashboard_graph
+	{
+		width: 25%;
+		height: 10px;
+		display: block;
+		float: right;
+		position: absolute;
+		right: 0;
+		top: 50%;
+		margin-right: 12px;
+		margin-top: -1.25em;
+		font-size: 18px
+	}
+	.qmn_dashboard_graph img
+	{
+		width: 15px;
+		height: 15px;
+	}
+	</style>
+	<ul class="qmn_dashboard_list">
+		<li class="qmn_dashboard_element">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_qmn_today_taken; ?></strong>
+				quizzes taken today
+				<span class="qmn_dashboard_graph">
 					<?php 
-					echo "<span title='Compared to this day last week'>".$mlw_qmn_analyze_today."%</span>"; 
+					echo $mlw_qmn_analyze_today."% ";
 					if ($mlw_qmn_analyze_today >= 0)
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png' width='40px' height='40px'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
 					}
 					else
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png' width='40px' height='40px'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
 					}
 					?>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</div>
+				</span>
+			</div>
+		</li>
+		<li class="qmn_dashboard_element">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_stat_total_active_quiz; ?></strong>
+				total active quizzes
+			</div>
+		</li>
+		<li class="qmn_dashboard_element">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_stat_total_questions; ?></strong>
+				total active questions
+			</div>
+		</li>
+		<li class="qmn_dashboard_element">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_stat_most_popular_quiz->quiz_name; ?></strong>
+				most popular quiz
+			</div>
+		</li>
+		<li class="qmn_dashboard_element">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_stat_least_popular_quiz->quiz_name; ?></strong>
+				least popular quiz
+			</div>
+		</li>
+	</ul>
+	<?php
 }
 ?>
