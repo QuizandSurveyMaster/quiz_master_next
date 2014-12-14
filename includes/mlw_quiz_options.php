@@ -1902,7 +1902,7 @@ function mlw_options_emails_tab_content()
 	<div id="tabs-9" class="mlw_tab_content">
 	<script>
 		$j(function() {
-			$j("#new_email_button_top, #new_email_button_bottom").button();
+			$j("#new_email_button_top, #new_email_button_bottom, #new_admin_email_button_top, #new_admin_email_button_bottom").button();
 		});
 		jQuery(function() {
 			jQuery("#email_accordion").accordion({
@@ -1954,6 +1954,10 @@ function mlw_options_emails_tab_content()
 		<form method="post" action="" name="mlw_quiz_add_email_form">
 			<input type='hidden' name='mlw_add_email_page' value='confirmation' />
 			<input type='hidden' name='mlw_add_email_quiz_id' value='<?php echo $quiz_id; ?>' />
+		</form>
+		<form method="post" action="" name="mlw_quiz_add_admin_email_form">
+			<input type='hidden' name='mlw_add_admin_email_page' value='confirmation' />
+			<input type='hidden' name='mlw_add_admin_email_quiz_id' value='<?php echo $quiz_id; ?>' />
 		</form>
 		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates</button>
 		<form method="post" action="" name="mlw_quiz_save_email_form">
@@ -2045,6 +2049,7 @@ function mlw_options_emails_tab_content()
 			</div>
 			<h3><a href="#">Email Sent To Admin</a></h3>
 			<div>
+				<a id="new_admin_email_button_top" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Email</a>
 				<table class="widefat">
 					<thead>
 						<tr>
@@ -2096,16 +2101,16 @@ function mlw_options_emails_tab_content()
 										echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').hide();\">No</a></div>";
 									echo "</td>";
 									echo "<td>";
-										echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
+										echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each["begin_score"]."'/>";
 									echo "</td>";
 									echo "<td>";
-										echo "<input type='text' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
+										echo "<input type='text' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' title='What score must the user score worse than to see this page' value='".$mlw_each["end_score"]."' />";
 									echo "</td>";
 									echo "<td>";
-										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each[3]."' />";
+										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
 									echo "</td>";
 									echo "<td>";
-										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' title='What email will the user be sent' name='admin_email_".$mlw_admin_count."'>".$mlw_each[2]."</textarea>";
+										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' title='What email will the user be sent' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
 									echo "</td>";
 								echo "</tr>";
 							}
@@ -2122,6 +2127,7 @@ function mlw_options_emails_tab_content()
 						</tr>
 					</tfoot>
 				</table>
+				<a id="new_admin_email_button_bottom" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Email</a>
 				<input type='hidden' name='mlw_email_admin_total' value='<?php echo $mlw_admin_count; ?>' />
 			</div>
 		</div>
