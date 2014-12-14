@@ -906,6 +906,10 @@ function mlw_quiz_shortcode($atts)
 	//Display Completion Screen
 	else
 	{
+		$mlw_display .= "<div id='top_of_results'></div>";
+		$mlw_display .= "<script>
+		window.location.hash='top_of_results'; 
+		</script>";
 		?>
 		<script type="text/javascript">
 			window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', 'completed');
