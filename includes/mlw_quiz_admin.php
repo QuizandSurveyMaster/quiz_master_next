@@ -180,50 +180,50 @@ function mlw_generate_quiz_admin()
 	<div class='mlw_quiz_options'>
 	<h2>Quizzes<a id="new_quiz_button" href="javascript:();" class="add-new-h2">Add New</a></h2>
 	<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-	<div class="tablenav top">
-		<div class="tablenav-pages">
-			<span class="displaying-num"><?php echo $mlw_qmn_quiz_count; ?> quizzes</span>
-			<span class="pagination-links">
-				<?php
-				$mlw_qmn_previous_page = 0;
-				$mlw_current_page = $mlw_qmn_quiz_page+1;
-				$mlw_total_pages = ceil($mlw_qmn_quiz_count/$mlw_qmn_table_limit);
-				if( $mlw_qmn_quiz_page > 0 )
-				{
-				   	$mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-				   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-					echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-				   	if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
-				   	{
-						echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-				   	}
-					else
-					{
-						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-				   	}
-				}
-				else if( $mlw_qmn_quiz_page == 0 )
-				{
-				   if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
-				   {
-						echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-				   }
-				}
-				else if( $mlw_qmn_quiz_left < $mlw_qmn_table_limit )
-				{
-				   $mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-				   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-					echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-					echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-				}
-				?>
-			</span>
-			<br class="clear">
-		</div>
-	</div>
 	<div style="width: 85%; float: left;">
+		<div class="tablenav top">
+			<div class="tablenav-pages">
+				<span class="displaying-num"><?php echo $mlw_qmn_quiz_count; ?> quizzes</span>
+				<span class="pagination-links">
+					<?php
+					$mlw_qmn_previous_page = 0;
+					$mlw_current_page = $mlw_qmn_quiz_page+1;
+					$mlw_total_pages = ceil($mlw_qmn_quiz_count/$mlw_qmn_table_limit);
+					if( $mlw_qmn_quiz_page > 0 )
+					{
+					   	$mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
+					   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+					   	if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
+					   	{
+							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+					   	}
+						else
+						{
+							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+					   	}
+					}
+					else if( $mlw_qmn_quiz_page == 0 )
+					{
+					   if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
+					   {
+							echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+					   }
+					}
+					else if( $mlw_qmn_quiz_left < $mlw_qmn_table_limit )
+					{
+					   $mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
+					   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+					}
+					?>
+				</span>
+				<br class="clear">
+			</div>
+		</div>
 		<table class="widefat">
 			<thead>
 				<tr>
