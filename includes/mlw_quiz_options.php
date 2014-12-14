@@ -1762,7 +1762,7 @@ function mlw_options_emails_tab_content()
 			$mlw_new_landing_array = array(
 				"begin_score" => 0,
 				"end_score" => 100,
-				"message" = > 'Enter Your Text Here',
+				"message" => 'Enter Your Text Here',
 				"subject" => 'Quiz Results For %QUIZ_NAME%'
 			);
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
@@ -1774,13 +1774,13 @@ function mlw_options_emails_tab_content()
 			$mlw_qmn_email_array = array(array(
 				"begin_score" => 0,
 				"end_score" => 0,
-				"message" = > $mlw_qmn_admin_email,
+				"message" => $mlw_qmn_admin_email,
 				"subject" => 'Quiz Results For %QUIZ_NAME%'
 			));
 			$mlw_new_landing_array = array(
 				"begin_score" => 0,
 				"end_score" => 100,
-				"message" = > 'Enter Your Text Here',
+				"message" => 'Enter Your Text Here',
 				"subject" => 'Quiz Results For %QUIZ_NAME%'
 			);
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
