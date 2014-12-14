@@ -1727,7 +1727,7 @@ function mlw_options_emails_tab_content()
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
 			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
 		}
-		//Update message_after with new array then check to see if worked
+		//Update email template with new array then check to see if worked
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
@@ -1748,13 +1748,72 @@ function mlw_options_emails_tab_content()
 		}
 	}
 	
+	//Check to add new admin email template
+	if (isset($_POST["mlw_add_admin_email_page"]) && $_POST["mlw_add_admin_email_page"] == "confirmation")
+	{
+		//Function variables
+		$mlw_qmn_add_email_id = intval($_POST["mlw_add_admin_email_quiz_id"]);
+		$mlw_qmn_admin_email = $wpdb->get_var( $wpdb->prepare( "SELECT admin_email_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_add_email_id ) );
+	
+		//Load user email and check if it is array already. If not, turn it into one
+		if (is_serialized($mlw_qmn_admin_email) && is_array(@unserialize($mlw_qmn_admin_email))) 
+		{
+			$mlw_qmn_email_array = @unserialize($mlw_qmn_admin_email);
+			$mlw_new_landing_array = array(
+				"begin_score" => 0,
+				"end_score" => 100,
+				"message" = > 'Enter Your Text Here',
+				"subject" => 'Quiz Results For %QUIZ_NAME%'
+			);
+			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
+			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
+			
+		}
+		else
+		{
+			$mlw_qmn_email_array = array(array(
+				"begin_score" => 0,
+				"end_score" => 0,
+				"message" = > $mlw_qmn_admin_email,
+				"subject" => 'Quiz Results For %QUIZ_NAME%'
+			));
+			$mlw_new_landing_array = array(
+				"begin_score" => 0,
+				"end_score" => 100,
+				"message" = > 'Enter Your Text Here',
+				"subject" => 'Quiz Results For %QUIZ_NAME%'
+			);
+			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
+			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
+		}
+		//Update email template with new array then check to see if worked
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
+		if ($mlw_new_email_results != false)
+		{
+			$mlwQuizMasterNext->alertManager->newAlert('The email has been added successfully.', 'success');
+			
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+			$insert = "INSERT INTO " . $table_name .
+				"(trail_id, action_user, action, time) " .
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Admin Email Has Been Created For Quiz Number ".$mlw_qmn_add_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
+			$results = $wpdb->query( $insert );	
+		}
+		else
+		{
+			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0016.', 'error');
+		}
+	}
+	
 	//Check to save email templates
 	if (isset($_POST["mlw_save_email_template"]) && $_POST["mlw_save_email_template"] == "confirmation")
 	{
 		//Function Variables
 		$mlw_qmn_email_id = intval($_POST["mlw_email_quiz_id"]);
 		$mlw_qmn_email_template_total = intval($_POST["mlw_email_template_total"]);
-		$mlw_qmn_admin_email = htmlspecialchars(stripslashes($_POST["mlw_quiz_admin_email_template"]), ENT_QUOTES);
+		$mlw_qmn_email_admin_total = intval($_POST["mlw_email_admin_total"]);
 		
 		//Create new array
 		$i = 1;
@@ -1768,8 +1827,27 @@ function mlw_options_emails_tab_content()
 			}
 			$i++;
 		}
+		
+		//Create new array
+		$i = 1;
+		$mlw_qmn_new_admin_array = array();
+		while ($i <= $mlw_qmn_email_admin_total)
+		{
+			if ($_POST["admin_email_".$i] != "Delete")
+			{
+				$mlw_qmn_email_each = array(
+					"begin_score" => intval($_POST["admin_email_begin_".$i]), 
+					"end_score" => intval($_POST["admin_email_end_".$i]), 
+					"message" => htmlspecialchars(stripslashes($_POST["admin_email_".$i]), ENT_QUOTES), 
+					"subject" => htmlspecialchars(stripslashes($_POST["admin_email_subject_".$i]), ENT_QUOTES)
+				);
+				$mlw_qmn_new_admin_array[] = $mlw_qmn_email_each;
+			}
+			$i++;
+		}
 		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_admin_email, $mlw_qmn_email_id ) );
+		$mlw_qmn_new_admin_array = serialize($mlw_qmn_new_admin_array);
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('The email has been updated successfully.', 'success');
@@ -1795,7 +1873,7 @@ function mlw_options_emails_tab_content()
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
 	
-	//Load Email Templates
+	//Load User Email Templates
 	if (is_serialized($mlw_quiz_options->user_email_template) && is_array(@unserialize($mlw_quiz_options->user_email_template))) 
 	{
 		$mlw_qmn_user_email_array = @unserialize($mlw_quiz_options->user_email_template);
@@ -1804,11 +1882,21 @@ function mlw_options_emails_tab_content()
 	{
 		 $mlw_qmn_user_email_array = array(array(0, 0, $mlw_quiz_options->user_email_template, 'Quiz Results For %QUIZ_NAME%'));
 	}
-    
-	if (!is_array($mlw_qmn_user_email_array)) {
-        // something went wrong, initialize to empty array
-       
-    }
+	
+	//Load Admin Email Templates
+	if (is_serialized($mlw_quiz_options->admin_email_template) && is_array(@unserialize($mlw_quiz_options->admin_email_template))) 
+	{
+		$mlw_qmn_admin_email_array = @unserialize($mlw_quiz_options->admin_email_template);
+	}
+	else
+	{
+		 $mlw_qmn_admin_email_array = array(array(
+			"begin_score" => 0, 
+			"end_score" => 0, 
+			"message" => $mlw_quiz_options->admin_email_template, 
+			"subject" => 'Quiz Results For %QUIZ_NAME%'
+		 ));
+	}
 	?>
 	
 	<div id="tabs-9" class="mlw_tab_content">
@@ -1957,31 +2045,84 @@ function mlw_options_emails_tab_content()
 			</div>
 			<h3><a href="#">Email Sent To Admin</a></h3>
 			<div>
-				<table class="form-table">
-					<tr>
-						<td width="30%">
-							<strong>Email sent to admin after completion (If turned on in options)</strong>
-							<br />
-							<p>Allowed Variables: </p>
-							<p style="margin: 2px 0">- %POINT_SCORE%</p>
-							<p style="margin: 2px 0">- %AVERAGE_POINT%</p>
-							<p style="margin: 2px 0">- %AMOUNT_CORRECT%</p>
-							<p style="margin: 2px 0">- %TOTAL_QUESTIONS%</p>
-							<p style="margin: 2px 0">- %CORRECT_SCORE%</p>
-							<p style="margin: 2px 0">- %USER_NAME%</p>
-							<p style="margin: 2px 0">- %USER_BUSINESS%</p>
-							<p style="margin: 2px 0">- %USER_PHONE%</p>
-							<p style="margin: 2px 0">- %USER_EMAIL%</p>
-							<p style="margin: 2px 0">- %QUIZ_NAME%</p>
-							<p style="margin: 2px 0">- %COMMENT_SECTION%</p>
-							<p style="margin: 2px 0">- %QUESTIONS_ANSWERS%</p>
-							<p style="margin: 2px 0">- %TIMER%</p>
-							<p style="margin: 2px 0">- %CURRENT_DATE%</p>
-						</td>
-						<td><textarea cols="80" rows="15" id="mlw_quiz_admin_email_template" name="mlw_quiz_admin_email_template"><?php echo $mlw_quiz_options->admin_email_template; ?></textarea>
-						</td>
-					</tr>
+				<table class="widefat">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Score Greater Than Or Equal To</th>
+							<th>Score Less Than Or Equal To</th>
+							<th>Subject</th>
+							<th>Email To Send</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+						$mlw_admin_count = 0;
+						$alternate = "";
+						foreach($mlw_qmn_admin_email_array as $mlw_each)
+						{
+							if($alternate) $alternate = "";
+							else $alternate = " class=\"alternate\"";
+							$mlw_admin_count += 1;
+							if (!isset($mlw_each["subject"]))
+							{
+								$mlw_each[3] = "Quiz Results For %QUIZ_NAME%";
+							}
+							if ($mlw_each["begin_score"] == 0 && $mlw_each["end_score"] == 0)
+							{
+								echo "<tr{$alternate}>";
+									echo "<td>";
+										echo "Default";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='hidden' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' value='0'/>-";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='hidden' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' value='0'/>-";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
+									echo "</td>";
+									echo "<td>";
+										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
+									echo "</td>";
+								echo "</tr>";
+								break;
+							}
+							else
+							{
+								echo "<tr{$alternate}>";
+									echo "<td>";
+										echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').hide();\">No</a></div>";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='text' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
+									echo "</td>";
+									echo "<td>";
+										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each[3]."' />";
+									echo "</td>";
+									echo "<td>";
+										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' title='What email will the user be sent' name='admin_email_".$mlw_admin_count."'>".$mlw_each[2]."</textarea>";
+									echo "</td>";
+								echo "</tr>";
+							}
+						}
+						?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>ID</th>
+							<th>Score Greater Than Or Equal To</th>
+							<th>Score Less Than Or Equal To</th>
+							<th>Subject</th>
+							<th>Email To Send</th>
+						</tr>
+					</tfoot>
 				</table>
+				<input type='hidden' name='mlw_email_admin_total' value='<?php echo $mlw_admin_count; ?>' />
 			</div>
 		</div>
 		</form>
