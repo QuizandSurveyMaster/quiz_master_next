@@ -297,6 +297,7 @@ class QMNQuizCreator
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0001.', 'error');
 		}
+		do_action('qmn_quiz_created', $wpdb->insert_id);
 	}
 	
 	/**
@@ -349,6 +350,7 @@ class QMNQuizCreator
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0002.', 'error');
 		}
+		do_action('qmn_quiz_deleted', $quiz_id);
 	 }
 	 
 	 /**
@@ -390,6 +392,7 @@ class QMNQuizCreator
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0003.', 'error');
 		}
+		do_action('qmn_quiz_name_edited', $quiz_id);
 	 }
 	 
 	 /**
@@ -600,6 +603,7 @@ class QMNQuizCreator
 				}
 			}
 		}
+		do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 	 }
 }
 ?>
