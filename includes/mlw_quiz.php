@@ -8,6 +8,8 @@ function mlw_quiz_shortcode($atts)
 		'quiz' => 0
 	), $atts));
 	
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->quizCreator->set_id($quiz);
 	date_default_timezone_set(get_option('timezone_string'));
 
 	/*
