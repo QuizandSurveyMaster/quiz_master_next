@@ -83,17 +83,14 @@ class MLWQuizMasterNext
 		include("includes/mlw_qmn_credits.php");
 		include("includes/mlw_template_variables.php");
 		include("includes/mlw_adverts.php");
-		include("includes/mlw_alerts.php");
 		include("includes/mlw_help.php");
 		include("includes/qmn_dashboard_widgets.php");
 		
+		include("includes/mlw_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
 		
-		if (is_admin())
-		{
-			include("includes/mlw_quiz_creator.php");
-			$this->quizCreator = new QMNQuizCreator();
-		}
+		include("includes/mlw_quiz_creator.php");
+		$this->quizCreator = new QMNQuizCreator();
 	}
 	
 	/**
