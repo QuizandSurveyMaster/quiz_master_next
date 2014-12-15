@@ -43,19 +43,19 @@ class QMNQuizCreator
 	 	$this->quiz_id = intval($quiz_id);
 	 }
 	 
-	 /**
-	  * Retrieves setting store in quiz_settings
-	  * 
-	  * @since 3.8.1
-	  * @access public
-	  * @return string The value of the setting 
-	  */
-	  public function get_setting($setting_name)
-	  {
-	  	global $wpdb;
-	  	$qmn_settings_array = '';
-	  	$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
-	  	if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings))) 
+	/**
+	* Retrieves setting store in quiz_settings
+	* 
+	* @since 3.8.1
+	* @access public
+	* @return string The value of the setting 
+	*/
+	public function get_setting($setting_name)
+	{
+		global $wpdb;
+		$qmn_settings_array = '';
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings))) 
 		{
 			$qmn_settings_array = @unserialize($qmn_quiz_settings);
 		}
@@ -68,46 +68,81 @@ class QMNQuizCreator
 			return '';
 		}
 		
-	  }
+	}
 	  
-	  /**
-	   * Updates setting stored in quiz_settings
-	   * 
-	   * @since 3.8.1
-	   * @access public
-	   * @return bool True if update was successful
-	   */
-	   public function update_setting($setting_name, $setting_value)
-	   {
-	   	global $wpdb;
-	   	$qmn_settings_array = array();
-	  	$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
-	  	if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings))) 
+	/**
+	* Updates setting stored in quiz_settings
+	* 
+	* @since 3.8.1
+	* @access public
+	* @return bool True if update was successful
+	*/
+	public function update_setting($setting_name, $setting_value)
+	{
+		global $wpdb;
+		$qmn_settings_array = array();
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings))) 
 		{
 			$qmn_settings_array = @unserialize($qmn_quiz_settings);
 		}
 		$qmn_settings_array[$setting_name] = $setting_value;	
 		$qmn_serialized_array = serialize($qmn_settings_array);
 		$results = $wpdb->update( 
- 			$wpdb->prefix . "mlw_quizzes", 
- 			array( 
- 				'quiz_settings' => $qmn_serialized_array 
- 			), 
- 			array( 'quiz_id' => $this->quiz_id ), 
- 			array( 
- 				'%s'
- 			), 
- 			array( '%d' ) 
- 		);
- 		if ($results != false)
- 		{
- 			return true;
- 		}
- 		else
- 		{
- 			return false;
- 		}
-	   }
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+			 	'quiz_settings' => $qmn_serialized_array 
+			), 
+			array( 'quiz_id' => $this->quiz_id ), 
+			array( 
+			 	'%s'
+			),
+			array( '%d' ) 
+		);
+		if ($results != false)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
+	 * Deletes setting stored in quiz_settings
+	 * 
+	 * @since 3.8.1
+	 * @access public
+	 * @return void
+	 */
+	public function delete_setting($setting_name)
+	{
+		global $wpdb;
+		$qmn_settings_array = array();
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings))) 
+		{
+			$qmn_settings_array = @unserialize($qmn_quiz_settings);
+		}
+		if (is_array($qmn_settings_array) && isset($qmn_settings_array[$setting_name]))
+		{
+			unset($qmn_settings_array[$setting_name]);
+		}
+		$qmn_serialized_array = serialize($qmn_settings_array);
+		$results = $wpdb->update( 
+			$wpdb->prefix . "mlw_quizzes", 
+			array( 
+			 	'quiz_settings' => $qmn_serialized_array 
+			), 
+			array( 'quiz_id' => $this->quiz_id ), 
+			array( 
+			 	'%s'
+			),
+			array( '%d' ) 
+		);
+	}
+	 
 	
 	
 	/**
