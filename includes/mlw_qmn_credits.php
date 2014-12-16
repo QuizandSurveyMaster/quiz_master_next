@@ -87,7 +87,7 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.7</a>
+			What&#8217;s New In 3.8</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
