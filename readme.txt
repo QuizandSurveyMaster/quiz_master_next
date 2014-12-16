@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.0.1
-Stable tag: 3.7.1
+Stable tag: 3.8.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -101,7 +101,7 @@ We now offer a premium support plan that offers priority response, priority feat
 We now offer an installation service that includes 1-on-1 training as well as a premium support that offers 1-on-1 training. For details, visit our [Wordpress Store](http://mylocalwebstop.com/shop/)
 
 = I have an idea, how do I contact you? =
-Feel free to use the widget on the quiz dashboard within the plugin or from the contact page at mylocalwebstop.com.
+Feel free to use the widget on the help page within the plugin or from the contact page at mylocalwebstop.com.
 
 == Screenshots ==
 
@@ -115,6 +115,15 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.8.1 (December 17, 2014) =
+ * Added Ability To Send Different Admin Emails Based On Score
+ * Added Ability To Customize Admin Email Subject
+ * Added New Dashboard Widget For Quick Snapshot Of Status
+ * Added New Help Page With Link To Documentation
+ * Create New System Info Widget On Help Page
+ * In Code: Added 4 New Hooks Throughout The Quiz Creator Class
+ * In Code: Added 3 New Quiz Settings Helper Functions In Quiz Creator Class
 
 = 3.7.1 (December 10, 2014) =
  * Added Ability To Schedule A Timeframe That The Quiz Is Active In
@@ -568,6 +577,9 @@ Feel free to use the widget on the quiz dashboard within the plugin or from the 
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.8.1 =
+Upgrade for ability for different admin emails based on score. Also, new help page is included. Added new dashboard widget as well.
 
 = 3.7.1 =
 Upgrade for ability to schedule when quiz will be active
