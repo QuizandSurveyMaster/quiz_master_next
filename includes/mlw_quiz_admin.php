@@ -77,8 +77,6 @@ function mlw_generate_quiz_admin()
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
 	?>
-	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
 		// increase the default animation speed to exaggerate the effect
@@ -192,32 +190,32 @@ function mlw_generate_quiz_admin()
 					if( $mlw_qmn_quiz_page > 0 )
 					{
 					   	$mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-					   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+					   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
 						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
 					   	if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
 					   	{
-							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
 					   	}
 						else
 						{
-							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
 					   	}
 					}
 					else if( $mlw_qmn_quiz_page == 0 )
 					{
 					   if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
 					   {
-							echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+							echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
 							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
 					   }
 					}
 					else if( $mlw_qmn_quiz_left < $mlw_qmn_table_limit )
 					{
 					   $mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-					   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+					   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
 						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_admin&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
 					}
 					?>
 				</span>
