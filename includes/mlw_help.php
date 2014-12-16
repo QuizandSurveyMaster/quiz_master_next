@@ -103,7 +103,7 @@ function qmn_support_meta_box_content()
 		}
 	</script>
 	<div class='quiz_email_support'>
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=mlw_help" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
+	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=mlw_quiz_help" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
 	<input type='hidden' name='action' value='update' />
 	<table>
 	<tr>
