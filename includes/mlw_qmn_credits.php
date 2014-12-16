@@ -10,8 +10,6 @@ function mlw_generate_about_page()
 {
 	//Page Variables
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
-	
-	
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -89,15 +87,24 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.7</a>
+			What&#8217;s New In 3.8</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Ability To Schedule When Quiz Is Active</h2>
-	<p style="text-align: center;">You can now set a time-frame of when the quiz is active. On the quiz options tab, you will see a spot to put in two dates. The quiz will now only be active during that time. Leave those fields blank to leave the quiz always active.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Ability To Send Different Admin Emails Based On Score</h2>
+	<p style="text-align: center;">You can now set up different admin emails based on score similarly to the user emails. You can also now customize the admin email's seubject.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Dashboard Widget</h2>
+	<p style="text-align: center;">We added a new dashboard widget that shows a snapshot of how your quizzes are doing. Includes daily total, most popular quiz, and more.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Help Page</h2>
+	<p style="text-align: center;">There is now a new page in the menu titled "Help". This page now has the support widget on it and a link to the documentation. We also added a system info widget on this page to better assist when trying to solve errors.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
+	<p style="text-align: center;">We added 4 new hooks in the Quiz Creator class. You can now hook into when a quiz is created, duplicated, deleted, or its name is changed. We also begun work on a few quiz settings helper functions in the class as well.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
 	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and December 31st, 2014 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
@@ -109,11 +116,15 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/shop/\">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 10, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 17, 2014)</h3>
 	<ul>
-		<li>* Added Ability To Schedule A Timeframe That The Quiz Is Active In</li>
-		<li>* In Backend: Moved Alert Class Inside Main Class</li>
-		<li>* In Backend: Created New Quiz Creator Class</li>
+		<li>* Added Ability To Send Different Admin Emails Based On Score</li>
+		<li>* Added Ability To Customize Admin Email Subject</li>
+		<li>* Added New Dashboard Widget For Quick Snapshot Of Status</li>
+		<li>* Added New Help Page With Link To Documentation</li>
+		<li>* Create New System Info Widget On Help Page</li>
+		<li>* In Code: Added 4 New Hooks Throughout The Quiz Creator Class</li>
+		<li>* In Code: Added 3 New Quiz Settings Helper Functions In Quiz Creator Class</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
@@ -140,6 +151,13 @@ function mlw_generate_about_page()
 		<li>Set Default Question Type</li>
 		<li>Show Pop-Up When Clicking Submit</li>
 		<li>Conditional Continuation To Next Quiz</li>
+		<li>Analyse Level Of Difficulty</li>
+		<li>Question Bank</li>
+		<li>Global Quiz Settings</li>
+		<li>Print Quiz</li>
+		<li>Easier Media In Questions</li>
+		<li>Easier Media In Answers</li>
+		<li>Mark Question To Be Reviewed</li>
 	</ul>
 	</div>
 	</div>

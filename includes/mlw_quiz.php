@@ -8,6 +8,8 @@ function mlw_quiz_shortcode($atts)
 		'quiz' => 0
 	), $atts));
 	
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->quizCreator->set_id($quiz);
 	date_default_timezone_set(get_option('timezone_string'));
 
 	/*
@@ -459,23 +461,24 @@ function mlw_quiz_shortcode($atts)
 			function mlw_validateForm()
 			{
 				mlw_validateResult = true;
-				if (document.forms['quizForm']['mlwUserEmail'].value != '')
-				{
-					var x=document.forms['quizForm']['mlwUserEmail'].value;
-					var atpos=x.indexOf('@');
-					var dotpos=x.lastIndexOf('.');
-					if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-					  {
-					  	document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
-					  	document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
-					  mlw_validateResult =  false;
-					  }
-				}
 				
 				jQuery('#quizForm *').filter(':input').each(function(){
 					jQuery(this).css("outline", "");
 					if (jQuery(this).attr('class'))
 					{
+						if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
+						{
+							var x=this.value;
+							var atpos=x.indexOf('@');
+							var dotpos=x.lastIndexOf('.');
+							if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+							{
+								document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
+								document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
+								mlw_validateResult =  false;
+								jQuery(this).css("outline", "2px solid red");
+							}
+						}
 						if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
 						{
 							document.getElementById('mlw_error_message').innerHTML = '**This field must be a number!**';
@@ -905,6 +908,10 @@ function mlw_quiz_shortcode($atts)
 	//Display Completion Screen
 	else
 	{
+		$mlw_display .= "<div id='top_of_results'></div>";
+		$mlw_display .= "<script>
+		window.location.hash='top_of_results'; 
+		</script>";
 		?>
 		<script type="text/javascript">
 			window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', 'completed');
@@ -1355,17 +1362,80 @@ EOC;
 		$mlw_message = "";
 		if ($mlw_quiz_options->send_admin_email == "0")
 		{
-			$mlw_message = htmlspecialchars_decode($mlw_quiz_options->admin_email_template, ENT_QUOTES);
-			$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
+			if ($mlw_quiz_options->admin_email != "")
+			{
+				$mlw_message = "";
+				$mlw_subject = "";
+				if (is_serialized($mlw_quiz_options->admin_email_template) && is_array(@unserialize($mlw_quiz_options->admin_email_template))) 
+				{
+					$mlw_admin_email_array = @unserialize($mlw_quiz_options->admin_email_template);
+				
+					//Cycle through landing pages
+					foreach($mlw_admin_email_array as $mlw_each)
+					{
+						
+						//Generate Email Subject
+						if (!isset($mlw_each["subject"]))
+						{
+							$mlw_each["subject"] = "Quiz Results For %QUIZ_NAME";
+						}
+						$mlw_each["subject"] = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_each["subject"], $mlw_qmn_result_array);
+						
+						//Check to see if default
+						if ($mlw_each["begin_score"] == 0 && $mlw_each["end_score"] == 0)
+						{
+							$mlw_message = htmlspecialchars_decode($mlw_each["message"], ENT_QUOTES);
+							$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
+							$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+							$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
+							$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+							$mlw_subject = $mlw_each["subject"];
+							break;
+						}
+						else
+						{
+							//Check to see if points fall in correct range
+							if ($mlw_quiz_options->system == 1 && $mlw_points >= $mlw_each["begin_score"] && $mlw_points <= $mlw_each["end_score"])
+							{
+								$mlw_message = htmlspecialchars_decode($mlw_each["message"], ENT_QUOTES);
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
+								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
+								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+								$mlw_subject = $mlw_each["subject"];
+								break;
+							}
+							
+							//Check to see if score fall in correct range
+							if ($mlw_quiz_options->system == 0 && $mlw_total_score >= $mlw_each["begin_score"] && $mlw_total_score <= $mlw_each["end_score"])
+							{
+								$mlw_message = htmlspecialchars_decode($mlw_each["message"], ENT_QUOTES);
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
+								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
+								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+								$mlw_subject = $mlw_each["subject"];
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					$mlw_message = htmlspecialchars_decode($mlw_quiz_options->admin_email_template, ENT_QUOTES);
+					$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $mlw_qmn_result_array);
+					$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+					$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
+					$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+					$mlw_subject = "Quiz Results For ".$mlw_quiz_options->quiz_name;
+				}
+			}
 			if ( get_option('mlw_advert_shows') == 'true' ) {$mlw_message .= "<br>This email was generated by the Quiz Master Next script by Frank Corso";}
-			$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-			$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
-			$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
 			$mlw_headers = 'From: '.$mlw_quiz_options->email_from_text.' <'.$mlw_quiz_options->admin_email.'>' . "\r\n";
 			$mlw_qmn_admin_emails = explode(",", $mlw_quiz_options->admin_email);
 			foreach($mlw_qmn_admin_emails as $admin_email)
 			{
-				wp_mail($admin_email, "Quiz Results For ".$mlw_quiz_options->quiz_name, $mlw_message, $mlw_headers);
+				wp_mail($admin_email, $mlw_subject, $mlw_message, $mlw_headers);
 			}
 		}
 		
@@ -1445,10 +1515,10 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		}
 		if ($mlw_quiz_options->user_email != 2)
 		{
-			$mlw_contact_class = "class=\"\"";
+			$mlw_contact_class = "class=\"mlwEmail\"";
 			if ($mlw_quiz_options->user_email == 1)
 			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
+				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
 			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='".$current_user->user_email."' />";
@@ -1499,10 +1569,10 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		}
 		if ($mlw_quiz_options->user_email != 2)
 		{
-			$mlw_contact_class = "class=\"\"";
+			$mlw_contact_class = "class=\"mlwEmail\"";
 			if ($mlw_quiz_options->user_email == 1)
 			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
+				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
 			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='' />";
