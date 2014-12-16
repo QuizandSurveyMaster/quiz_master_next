@@ -1914,6 +1914,11 @@ function mlw_options_emails_tab_content()
 			document.getElementById('user_email_'+id).value = "Delete";
 			document.mlw_quiz_save_email_form.submit();	
 		}
+		function delete_admin_email(id)
+		{
+			document.getElementById('admin_email_'+id).value = "Delete";
+			document.mlw_quiz_save_email_form.submit();	
+		}
 	</script>
 		<h3>Template Variables</h3>
 		<table class="form-table">
@@ -2098,7 +2103,7 @@ function mlw_options_emails_tab_content()
 							{
 								echo "<tr{$alternate}>";
 									echo "<td>";
-										echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_email_".$mlw_admin_count."').hide();\">No</a></div>";
+										echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_admin_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_admin_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').hide();\">No</a></div>";
 									echo "</td>";
 									echo "<td>";
 										echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each["begin_score"]."'/>";
