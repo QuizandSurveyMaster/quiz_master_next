@@ -113,18 +113,12 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Popular Add-on Pack</h2>
-	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/shop/\">WordPress Store</a> for details.</p>
+	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/store/\">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 17, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 21, 2014)</h3>
 	<ul>
-		<li>* Added Ability To Send Different Admin Emails Based On Score</li>
-		<li>* Added Ability To Customize Admin Email Subject</li>
-		<li>* Added New Dashboard Widget For Quick Snapshot Of Status</li>
-		<li>* Added New Help Page With Link To Documentation</li>
-		<li>* Create New System Info Widget On Help Page</li>
-		<li>* In Code: Added 4 New Hooks Throughout The Quiz Creator Class</li>
-		<li>* In Code: Added 3 New Quiz Settings Helper Functions In Quiz Creator Class</li>
+		<li>* Minor Design Changes</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
