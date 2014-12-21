@@ -113,7 +113,7 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Popular Add-on Pack</h2>
-	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://mylocalwebstop.com/store/\">WordPress Store</a> for details.</p>
+	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href="http://mylocalwebstop.com/store/">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
 	<h3><?php echo $mlw_quiz_version; ?> (December 21, 2014)</h3>
