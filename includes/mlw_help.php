@@ -203,6 +203,18 @@ function qmn_get_system_info()
 	$qmn_sys_info .= "MySQL : ".$wpdb->db_version()."<br />";
 	$qmn_sys_info .= "Webserver : ".$_SERVER['SERVER_SOFTWARE']."<br />";
 	
+	$mlw_stat_total_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes LIMIT 1" );
+	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
+	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions LIMIT 1" );
+	$mlw_stat_total_active_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
+	
+	$qmn_sys_info .= "<h3>QMN Information</h3><br />";
+	$qmn_sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
+	$qmn_sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
+	$qmn_sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
+	$qmn_sys_info .= "Total Active Questions : ".$mlw_stat_total_active_questions."<br />";
+	
+	
 	return $qmn_sys_info;
 }
 
