@@ -161,15 +161,15 @@ function mlw_quiz_shortcode($atts)
 		}
  	</style>
 
-			<?php 
-			if ($mlw_quiz_options->theme_selected == "default")
-			{
-				echo "<style type='text/css'>".$mlw_quiz_options->quiz_stye."</style>";
-			}
-			else
-			{
-				echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$mlw_quiz_options->theme_selected)."' rel='stylesheet' />";
-			}
+	<?php 
+	if ($mlw_quiz_options->theme_selected == "default")
+	{
+		echo "<style type='text/css'>".$mlw_quiz_options->quiz_stye."</style>";
+	}
+	else
+	{
+		echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$mlw_quiz_options->theme_selected)."' rel='stylesheet' />";
+	}
 			
 	/*
 	The following code is for displaying the quiz and completion screen
@@ -235,90 +235,11 @@ function mlw_quiz_shortcode($atts)
 			?>
 			<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
 			<script type="text/javascript">
-				setTimeout(function(){
-				var minutes = 0;
-				if (window.sessionStorage.getItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>') == "yes" && window.sessionStorage.getItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>') >= 0)
-				{
-					minutes = window.sessionStorage.getItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>');
-				}
-				else
-				{
-					minutes = <?php echo $mlw_quiz_options->timer_limit; ?>;
-				}
-				window.amount = (minutes*60);
-				window.titleText = window.document.title;
-				document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-				window.counter=setInterval(timer, 1000);
-				}, 100);
-				function timer()
-				{
-					window.amount=window.amount-1;
-					if (window.amount < 0)
-					{
-						window.amount = 0;	
-					}
-					window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', window.amount/60);
-					window.sessionStorage.setItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>', "yes");
-				    document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-				    window.document.title = minToSec(window.amount) + " " + window.titleText;
-				  	if (window.amount <= 0)
-				  	{
-				    	clearInterval(window.counter);
-				    	jQuery( ".mlw_qmn_quiz input:radio" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_quiz input:checkbox" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_quiz select" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_question_comment" ).attr('disabled',true);
-				    	jQuery( ".mlw_answer_open_text" ).attr('disabled',true);
-				    	//document.quizForm.submit();
-				     	return;
-				  	}
-				}
-				function minToSec(amount)
-				{
-					var timer_display = '';
-					var hours = Math.floor(amount/3600);
-					if (hours == '0')
-					{
-						timer_display = timer_display +"00:";
-					}
-					else if (hours < 10)
-					{
-						timer_display = timer_display + '0' + hours + ":";
-					}
-					else
-					{
-						timer_display = timer_display + hours + ":";
-					}
-					var minutes = Math.floor((amount % 3600)/60);
-					if (minutes == '0')
-					{
-						timer_display = timer_display +"00:";
-					}
-					else if (minutes < 10)
-					{
-						timer_display = timer_display + '0' + minutes + ":";
-					}
-					else
-					{
-						timer_display = timer_display + minutes + ":";
-					}
-					var seconds = Math.floor(amount % 60);
-					if (seconds == '0') 
-					{ 
-						timer_display = timer_display +"00";
-					}
-					else if (seconds < 10)
-					{
-						timer_display = timer_display +'0' + seconds;
-					}
-					else
-					{
-						timer_display = timer_display + seconds;
-					}
-					return timer_display;
-				}
+				var qmn_quiz_id = <?php echo $mlw_quiz_id; ?>;
+				var qmn_timer_limit = <?php echo $mlw_quiz_options->timer_limit; ?>;
 			</script>
 			<?php
+			wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'qmn_timer.js' , __FILE__ ) );
 		}
 		
 		//Update the quiz views
