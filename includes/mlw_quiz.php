@@ -143,31 +143,11 @@ function mlw_quiz_shortcode($atts)
 	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
+	wp_enqueue_script( 'qmn_quiz', plugins_url( 'qmn_quiz.js' , __FILE__ ) );
+	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 	?>
-	<script type="text/javascript"
-	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-	</script>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-	<script type="text/javascript">
-		setTimeout(function(){
-		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-		$j(function() {
-   			 $j( ".mlw_qmn_quiz" ).tooltip();
- 		});
-		}, 100);
-		setTimeout(function()
-		{
-			var $j = jQuery.noConflict();
-			$j('.mlw_qmn_quiz input').on('keypress', function (e) {
-				if (e.which === 13) {
-					e.preventDefault();
-				}
-			});
-		}, 100);
-	</script>
  	<style type="text/css">
  		.ui-tooltip
 		{
@@ -432,94 +412,11 @@ function mlw_quiz_shortcode($atts)
 			<?php
 		}
 		
-		?>
-		<script type="text/javascript">
-			var myVar=setInterval("mlwQmnTimer();",1000);
-	 		function mlwQmnTimer()
-	 		{
-	 			var x = +document.getElementById("timer").value;
-	 			x = x + 1;
-	 			document.getElementById("timer").value = x;
-	 		}
-	 		
-		</script>
-		<?php
 		//Update the quiz views
 		$mlw_views = $mlw_quiz_options->quiz_views;
 		$mlw_views += 1;
 		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views='".$mlw_views."' WHERE quiz_id=".$mlw_quiz_id;
 		$results = $wpdb->query( $update );
-		
-		//Form validation script
-		?>
-		<script>
-			function clear_field(field)
-			{
-				if (field.defaultValue == field.value) field.value = '';
-			}
-			
-			function mlw_validateForm()
-			{
-				mlw_validateResult = true;
-				
-				jQuery('#quizForm *').filter(':input').each(function(){
-					jQuery(this).css("outline", "");
-					if (jQuery(this).attr('class'))
-					{
-						if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
-						{
-							var x=this.value;
-							var atpos=x.indexOf('@');
-							var dotpos=x.lastIndexOf('.');
-							if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-							{
-								document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
-								document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
-								mlw_validateResult =  false;
-								jQuery(this).css("outline", "2px solid red");
-							}
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**This field must be a number!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**This field must be a number!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**The entered text is not correct!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**The entered text is not correct!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1 && !this.checked)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-					}
-				});
-				
-				if (!mlw_validateResult) {return mlw_validateResult;}
-				
-				jQuery( '.mlw_qmn_quiz input:radio' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_quiz input:checkbox' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_quiz select' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_question_comment' ).attr('disabled',false);
-				jQuery( '.mlw_answer_open_text' ).attr('disabled',false);
-			}		
-		</script>
-		<?php
 		
 		if ( $mlw_quiz_options->pagination != 0) { $mlw_display .= "<style>.quiz_section { display: none; }</style>"; }
 		
