@@ -20,8 +20,8 @@ function timer()
 	{
 		window.amount = 0;	
 	}
-	window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', window.amount/60);
-	window.sessionStorage.setItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>', "yes");
+	window.sessionStorage.setItem('mlw_time_quiz'+qmn_quiz_id, window.amount/60);
+	window.sessionStorage.setItem('mlw_started_quiz'+qmn_quiz_id, "yes");
 	document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
 	window.document.title = minToSec(window.amount) + " " + window.titleText;
 	if (window.amount <= 0)
