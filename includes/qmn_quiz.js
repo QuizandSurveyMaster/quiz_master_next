@@ -15,3 +15,75 @@ setTimeout(function()
 		}
 	});
 }, 100);
+var myVar=setInterval("mlwQmnTimer();",1000);
+function mlwQmnTimer()
+{
+	var x = +document.getElementById("timer").value;
+	x = x + 1;
+	document.getElementById("timer").value = x;
+}
+function clear_field(field)
+{
+	if (field.defaultValue == field.value) field.value = '';
+}
+
+function mlw_validateForm()
+{
+	mlw_validateResult = true;
+	
+	jQuery('#quizForm *').filter(':input').each(function(){
+		jQuery(this).css("outline", "");
+		if (jQuery(this).attr('class'))
+		{
+			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
+			{
+				var x=this.value;
+				var atpos=x.indexOf('@');
+				var dotpos=x.lastIndexOf('.');
+				if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
+				{
+					document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
+					mlw_validateResult =  false;
+					jQuery(this).css("outline", "2px solid red");
+				}
+			}
+			if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
+			{
+				document.getElementById('mlw_error_message').innerHTML = '**This field must be a number!**';
+				document.getElementById('mlw_error_message_bottom').innerHTML = '**This field must be a number!**';
+				jQuery(this).css("outline", "2px solid red");
+				mlw_validateResult =  false;
+			}
+			if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
+			{
+				document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
+				document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
+				jQuery(this).css("outline", "2px solid red");
+				mlw_validateResult =  false;
+			}
+			if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
+			{
+				document.getElementById('mlw_error_message').innerHTML = '**The entered text is not correct!**';
+				document.getElementById('mlw_error_message_bottom').innerHTML = '**The entered text is not correct!**';
+				jQuery(this).css("outline", "2px solid red");
+				mlw_validateResult =  false;
+			}
+			if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1 && !this.checked)
+			{
+				document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
+				document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
+				jQuery(this).css("outline", "2px solid red");
+				mlw_validateResult =  false;
+			}
+		}
+	});
+	
+	if (!mlw_validateResult) {return mlw_validateResult;}
+	
+	jQuery( '.mlw_qmn_quiz input:radio' ).attr('disabled',false);
+	jQuery( '.mlw_qmn_quiz input:checkbox' ).attr('disabled',false);
+	jQuery( '.mlw_qmn_quiz select' ).attr('disabled',false);
+	jQuery( '.mlw_qmn_question_comment' ).attr('disabled',false);
+	jQuery( '.mlw_answer_open_text' ).attr('disabled',false);
+}	
