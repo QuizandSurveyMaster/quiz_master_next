@@ -209,8 +209,8 @@ function mlw_quiz_shortcode($atts)
 			<script type="text/javascript">
 				var qmn_pagination = <?php echo $mlw_quiz_options->pagination; ?>;
 				var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
-				var qmn_pagination_previous_text = <?php echo $mlw_qmn_pagination_text[0]; ?>;
-				var qmn_pagination_next_text = <?php echo $mlw_qmn_pagination_text[1]; ?>;
+				var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
+				var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 			</script>
 			<?php
 			wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'qmn_pagination.js' , __FILE__ ) );
