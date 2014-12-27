@@ -869,7 +869,7 @@ function mlw_options_questions_tab_content()
 		<tr valign="top">
 		<td><span style='font-weight:bold;'>Question Order</span></td>
 		<td>
-		<input type="number" step="1" min="1" name="new_question_order" value="1" id="new_question_order" style="border-color:#000000;
+		<input type="number" step="1" min="1" name="new_question_order" value="<?php echo $mlw_qmn_question_count+1; ?>" id="new_question_order" style="border-color:#000000;
 			color:#3300CC; 
 			cursor:hand;"/>
 		</td>
