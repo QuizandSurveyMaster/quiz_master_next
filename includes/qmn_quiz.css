@@ -15,11 +15,9 @@
 	text-decoration:underline;
 	color:rgb(0,0,255);
 }
-.qmn_social_buttons
+.mlw_qmn_quiz_link
 {
 	display: inline;
 	vertical-align:top !important;
-	font-weight: bold;
-	cursor: pointer;
 	text-decoration: none;
 }
