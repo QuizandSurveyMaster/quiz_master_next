@@ -192,17 +192,19 @@ class QMNQuizCreator
 				div.mlw_qmn_quiz input[type=submit],
 				a.mlw_qmn_quiz_link
 				{
-					    border-radius: 4px;
-					    position: relative;
-					    background-image: linear-gradient(#fff,#dedede);
-						background-color: #eee;
-						border: #ccc solid 1px;
-						color: #333;
-						text-shadow: 0 1px 0 rgba(255,255,255,.5);
-						box-sizing: border-box;
-					    display: inline-block;
-					    padding: 5px 5px 5px 5px;
-   						margin: auto;
+					border-radius: 4px;
+					position: relative;
+					background-image: linear-gradient(#fff,#dedede);
+					background-color: #eee;
+					border: #ccc solid 1px;
+					color: #333;
+					text-shadow: 0 1px 0 rgba(255,255,255,.5);
+					box-sizing: border-box;
+					display: inline-block;
+					padding: 5px 5px 5px 5px;
+					margin: auto;
+					font-weight: bold;
+					cursor: pointer;
 				}
 				.mlw_qmn_question
 				{
