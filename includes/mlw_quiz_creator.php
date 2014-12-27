@@ -203,6 +203,10 @@ class QMNQuizCreator
 					    display: inline-block;
 					    padding: 5px 5px 5px 5px;
    						margin: auto;
+				}
+				.mlw_qmn_question
+				{
+					font-weight: bold;
 				}";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
 		$results = $wpdb->insert( 
