@@ -956,8 +956,8 @@ EOC;
 			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_qmn_result_array);
 			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $mlw_qmn_result_array);
 			$mlw_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" class=\"qmn_social_buttons\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" class=\"qmn_social_buttons\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
 		
