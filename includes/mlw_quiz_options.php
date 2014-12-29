@@ -1068,8 +1068,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_before_message" name="mlw_quiz_before_message"><?php echo $mlw_quiz_options->message_before; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->message_before, ENT_QUOTES), 'mlw_quiz_before_message' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1079,8 +1078,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_before_comments" name="mlw_quiz_before_comments"><?php echo $mlw_quiz_options->message_comment; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->message_comment, ENT_QUOTES), 'mlw_quiz_before_comments' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1090,8 +1088,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="message_end_template" name="message_end_template"><?php echo $mlw_quiz_options->message_end_template; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->message_end_template, ENT_QUOTES), 'message_end_template' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1101,8 +1098,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_total_user_tries_text" name="mlw_quiz_total_user_tries_text"><?php echo $mlw_quiz_options->total_user_tries_text; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->total_user_tries_text, ENT_QUOTES), 'mlw_quiz_total_user_tries_text' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1112,8 +1108,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_require_log_in_text" name="mlw_require_log_in_text"><?php echo $mlw_quiz_options->require_log_in_text; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES), 'mlw_require_log_in_text' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1123,8 +1118,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_scheduled_timeframe_text" name="mlw_scheduled_timeframe_text"><?php echo $mlw_quiz_options->scheduled_timeframe_text; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES), 'mlw_scheduled_timeframe_text' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1134,8 +1128,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_limit_total_entries_text" name="mlw_limit_total_entries_text"><?php echo $mlw_quiz_options->limit_total_entries_text; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES), 'mlw_limit_total_entries_text' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1148,8 +1141,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %USER_COMMENTS%</p>
 						<p style="margin: 2px 0">- %CORRECT_ANSWER_INFO%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_question_answer_template" name="mlw_quiz_question_answer_template"><?php echo $mlw_quiz_options->question_answer_template; ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->question_answer_template, ENT_QUOTES), 'mlw_quiz_question_answer_template' ); ?></td>
 				</tr>
 				<tr>
 					<td width="30%">
@@ -1165,7 +1157,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %TIMER%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_twitter_text_template" name="mlw_quiz_twitter_text_template"><?php echo $qmn_social_media_text["twitter"]; ?></textarea>
+					<td><?php wp_editor( htmlspecialchars_decode($qmn_social_media_text["twitter"], ENT_QUOTES), 'mlw_quiz_twitter_text_template' ); ?></td>
 					</td>
 				</tr>
 				<tr>
@@ -1182,8 +1174,7 @@ function mlw_options_text_tab_content()
 						<p style="margin: 2px 0">- %TIMER%</p>
 						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
 					</td>
-					<td><textarea cols="80" rows="15" id="mlw_quiz_facebook_text_template" name="mlw_quiz_facebook_text_template"><?php echo $qmn_social_media_text["facebook"] ?></textarea>
-					</td>
+					<td><?php wp_editor( htmlspecialchars_decode($qmn_social_media_text["facebook"], ENT_QUOTES), 'mlw_quiz_facebook_text_template' ); ?></td>
 				</tr>
 			</table>
 			<h3 style="text-align: center;">Other Templates</h3>
