@@ -684,10 +684,12 @@ function mlw_quiz_shortcode($atts)
 		//See which answers were correct and award points if necessary
 		$mlw_user_text = "";
 		$mlw_correct_text = "";
+		$qmn_correct = "incorrect";
 		$mlw_qmn_answer_array = array();
 		foreach($mlw_questions as $mlw_question) {
 			$mlw_user_text = "";
 			$mlw_correct_text = "";
+			$qmn_correct = "incorrect";
 			if ( isset($_POST["question".$mlw_question->question_id]) || isset($_POST["mlwComment".$mlw_question->question_id]) )
 			{
 				if ( $mlw_question->question_type == 0 || $mlw_question->question_type == 1 || $mlw_question->question_type == 2)
@@ -710,6 +712,7 @@ function mlw_quiz_shortcode($atts)
 							if ($mlw_qmn_question_answers_each[2] == 1)
 							{
 								$mlw_correct += 1;
+								$qmn_correct = "correct";
 							}
 						}
 						if ($mlw_qmn_question_answers_each[2] == 1)
@@ -736,6 +739,7 @@ function mlw_quiz_shortcode($atts)
 						if (strtoupper($mlw_user_text) == strtoupper($mlw_correct_text))
 						{
 							$mlw_correct += 1;
+							$qmn_correct = "correct";
 							$mlw_points += $mlw_qmn_question_answers_each[1];
 							break;
 						}
@@ -773,6 +777,7 @@ function mlw_quiz_shortcode($atts)
 					if ($mlw_qmn_user_correct_answers == $mlw_qmn_total_correct_answers)
 					{
 						$mlw_correct += 1;
+						$qmn_correct = "correct";
 					}
 				}
 				if (isset($_POST["mlwComment".$mlw_question->question_id]))
@@ -791,7 +796,7 @@ function mlw_quiz_shortcode($atts)
 				$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $mlw_qm_question_comment, $mlw_question_answer_display);
 				$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
 	
-				$mlw_qmn_answer_array[] = array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES));
+				$mlw_qmn_answer_array[] = array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id);
 				
 				$mlw_question_answers .= $mlw_question_answer_display;
 				$mlw_question_answers .= "<br />";
