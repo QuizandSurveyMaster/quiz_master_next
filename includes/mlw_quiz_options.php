@@ -30,7 +30,6 @@ function mlw_generate_quiz_options()
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'jquery-ui-datepicker' );
-	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-effects-blind' );
@@ -1251,20 +1250,17 @@ function mlw_options_option_tab_content()
 		$mlw_total_user_tries = intval($_POST["total_user_tries"]);
 		$mlw_require_log_in = $_POST["require_log_in"];
 		$mlw_limit_total_entries = $_POST["limit_total_entries"];
-		$mlw_send_user_email = $_POST["sendUserEmail"];
-		$mlw_send_admin_email = $_POST["sendAdminEmail"];
 		$mlw_contact_location = $_POST["contact_info_location"];
 		$mlw_user_name = $_POST["userName"];
 		$mlw_user_comp = $_POST["userComp"];
 		$mlw_user_email = $_POST["userEmail"];
 		$mlw_user_phone = $_POST["userPhone"];
-		$mlw_admin_email = $_POST["adminEmail"];
 		$mlw_comment_section = $_POST["commentSection"];
 		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
 		$qmn_scheduled_timeframe = serialize(array("start" => $_POST["scheduled_time_start"], "end" => $_POST["scheduled_time_end"]));
 		$quiz_id = $_POST["quiz_id"];
 		
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', send_user_email='".$mlw_send_user_email."', send_admin_email='".$mlw_send_admin_email."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', admin_email='".$mlw_admin_email."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe='".$qmn_scheduled_timeframe."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe='".$qmn_scheduled_timeframe."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -1430,24 +1426,6 @@ function mlw_options_option_tab_content()
 				    <input type="radio" id="radio21" name="commentSection" <?php if ($mlw_quiz_options->comment_section == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio21">Yes</label>
 				    <input type="radio" id="radio22" name="commentSection" <?php if ($mlw_quiz_options->comment_section == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio22">No</label>
 				</div></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><label for="sendUserEmail">Send user email upon completion?</label></th>
-				<td><div id="sendUserEmail">
-				    <input type="radio" id="radio5" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio5">Yes</label>
-				    <input type="radio" id="radio6" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio6">No</label>
-				</div></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><label for="sendAdminEmail">Send admin email upon completion?</label></th>
-				<td><div id="sendAdminEmail">
-				    <input type="radio" id="radio19" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio19">Yes</label>
-				    <input type="radio" id="radio20" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio20">No</label>
-				</div></td>
-			</tr>
-			<tr valign="top">
-				<th scope="row"><label for="adminEmail">What emails should we send the admin email to? Separate emails with a comma.</label></th>
-				<td><input name="adminEmail" type="text" id="adminEmail" value="<?php echo $mlw_quiz_options->admin_email; ?>" class="regular-text" /></td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="question_numbering">Show question number on quiz?</label></th>
@@ -1814,6 +1792,9 @@ function mlw_options_emails_tab_content()
 		$mlw_qmn_email_id = intval($_POST["mlw_email_quiz_id"]);
 		$mlw_qmn_email_template_total = intval($_POST["mlw_email_template_total"]);
 		$mlw_qmn_email_admin_total = intval($_POST["mlw_email_admin_total"]);
+		$mlw_send_user_email = $_POST["sendUserEmail"];
+		$mlw_send_admin_email = $_POST["sendAdminEmail"];
+		$mlw_admin_email = $_POST["adminEmail"];
 		
 		//Create new array
 		$i = 1;
@@ -1847,7 +1828,7 @@ function mlw_options_emails_tab_content()
 		}
 		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
 		$mlw_qmn_new_admin_array = serialize($mlw_qmn_new_admin_array);
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET send_user_email='%s', send_admin_email='%s', admin_email='%s', user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_send_user_email, $mlw_send_admin_email, $mlw_admin_email, $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert('The email has been updated successfully.', 'success');
@@ -1904,11 +1885,6 @@ function mlw_options_emails_tab_content()
 		$j(function() {
 			$j("#new_email_button_top, #new_email_button_bottom, #new_admin_email_button_top, #new_admin_email_button_bottom").button();
 		});
-		jQuery(function() {
-			jQuery("#email_accordion").accordion({
-				heightStyle: "content"
-			});
-		});
 		function delete_email(id)
 		{
 			document.getElementById('user_email_'+id).value = "Delete";
@@ -1956,6 +1932,8 @@ function mlw_options_emails_tab_content()
 				<td><strong>%TIMER%</strong> - The amount of time user spent of quiz</td>
 			</tr>
 		</table>
+		<br />
+		<br />
 		<form method="post" action="" name="mlw_quiz_add_email_form">
 			<input type='hidden' name='mlw_add_email_page' value='confirmation' />
 			<input type='hidden' name='mlw_add_email_quiz_id' value='<?php echo $quiz_id; ?>' />
@@ -1964,180 +1942,202 @@ function mlw_options_emails_tab_content()
 			<input type='hidden' name='mlw_add_admin_email_page' value='confirmation' />
 			<input type='hidden' name='mlw_add_admin_email_quiz_id' value='<?php echo $quiz_id; ?>' />
 		</form>
-		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates</button>
+		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates And Settings</button>
 		<form method="post" action="" name="mlw_quiz_save_email_form">
-		<div id="email_accordion">
-			<h3><a href="#">Email Sent To User</a></h3>
-			<div>				
-				<a id="new_email_button_top" href="#" onclick="javascript: document.mlw_quiz_add_email_form.submit();">Add New Email</a>
-				<table class="widefat">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Score Greater Than Or Equal To</th>
-							<th>Score Less Than Or Equal To</th>
-							<th>Subject</th>
-							<th>Email To Send</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$mlw_each_count = 0;
-						$alternate = "";
-						foreach($mlw_qmn_user_email_array as $mlw_each)
+			<table class="form-table">
+			<tr valign="top">
+				<th scope="row"><label for="sendUserEmail">Send user email upon completion?</label></th>
+				<td><div id="sendUserEmail">
+				    <input type="radio" id="radio5" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio5">Yes</label>
+				    <input type="radio" id="radio6" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio6">No</label>
+				</div></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="sendAdminEmail">Send admin email upon completion?</label></th>
+				<td><div id="sendAdminEmail">
+				    <input type="radio" id="radio19" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio19">Yes</label>
+				    <input type="radio" id="radio20" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio20">No</label>
+				</div></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="adminEmail">What emails should we send the admin email to? Separate emails with a comma.</label></th>
+				<td><input name="adminEmail" type="text" id="adminEmail" value="<?php echo $mlw_quiz_options->admin_email; ?>" class="regular-text" /></td>
+			</tr>
+			</table>
+			<br />
+			<br />
+			<h3>Email Sent To User</h3>		
+			<a id="new_email_button_top" href="#" onclick="javascript: document.mlw_quiz_add_email_form.submit();">Add New User Email</a>
+			<table class="widefat">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Score Greater Than Or Equal To</th>
+						<th>Score Less Than Or Equal To</th>
+						<th>Subject</th>
+						<th>Email To Send</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$mlw_each_count = 0;
+					$alternate = "";
+					foreach($mlw_qmn_user_email_array as $mlw_each)
+					{
+						if($alternate) $alternate = "";
+						else $alternate = " class=\"alternate\"";
+						$mlw_each_count += 1;
+						if (!isset($mlw_each[3]))
 						{
-							if($alternate) $alternate = "";
-							else $alternate = " class=\"alternate\"";
-							$mlw_each_count += 1;
-							if (!isset($mlw_each[3]))
-							{
-								$mlw_each[3] = "Quiz Results For %QUIZ_NAME%";
-							}
-							if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
-							{
-								echo "<tr{$alternate}>";
-									echo "<td>";
-										echo "Default";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='hidden' id='user_email_begin_".$mlw_each_count."' name='user_email_begin_".$mlw_each_count."' value='0'/>-";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='hidden' id='user_email_end_".$mlw_each_count."' name='user_email_end_".$mlw_each_count."' value='0'/>-";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='user_email_subject_".$mlw_each_count."' name='user_email_subject_".$mlw_each_count."' value='".$mlw_each[3]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<textarea cols='80' rows='15' id='user_email_".$mlw_each_count."' name='user_email_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
-									echo "</td>";
-								echo "</tr>";
-								break;
-							}
-							else
-							{
-								echo "<tr{$alternate}>";
-									echo "<td>";
-										echo $mlw_each_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_email_".$mlw_each_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_email_".$mlw_each_count."'>Are you sure?<br /><a onclick=\"delete_email(".$mlw_each_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_email_".$mlw_each_count."').hide();\">No</a></div>";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='user_email_begin_".$mlw_each_count."' name='user_email_begin_".$mlw_each_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='user_email_end_".$mlw_each_count."' name='user_email_end_".$mlw_each_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='user_email_subject_".$mlw_each_count."' name='user_email_subject_".$mlw_each_count."' value='".$mlw_each[3]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<textarea cols='80' rows='15' id='user_email_".$mlw_each_count."' title='What email will the user be sent' name='user_email_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
-									echo "</td>";
-								echo "</tr>";
-							}
+							$mlw_each[3] = "Quiz Results For %QUIZ_NAME%";
 						}
-						?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<th>ID</th>
-							<th>Score Greater Than Or Equal To</th>
-							<th>Score Less Than Or Equal To</th>
-							<th>Subject</th>
-							<th>Email To Send</th>
-						</tr>
-					</tfoot>
-				</table>
-				<a id="new_email_button_bottom" href="#" onclick="javascript: document.mlw_quiz_add_email_form.submit();">Add New Email</a>
-				<input type='hidden' name='mlw_save_email_template' value='confirmation' />
-				<input type='hidden' name='mlw_email_quiz_id' value='<?php echo $quiz_id; ?>' />
-				<input type='hidden' name='mlw_email_template_total' value='<?php echo $mlw_each_count; ?>' />
-			</div>
-			<h3><a href="#">Email Sent To Admin</a></h3>
-			<div>
-				<a id="new_admin_email_button_top" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Email</a>
-				<table class="widefat">
-					<thead>
-						<tr>
-							<th>ID</th>
-							<th>Score Greater Than Or Equal To</th>
-							<th>Score Less Than Or Equal To</th>
-							<th>Subject</th>
-							<th>Email To Send</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php
-						$mlw_admin_count = 0;
-						$alternate = "";
-						foreach($mlw_qmn_admin_email_array as $mlw_each)
+						if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
 						{
-							if($alternate) $alternate = "";
-							else $alternate = " class=\"alternate\"";
-							$mlw_admin_count += 1;
-							if (!isset($mlw_each["subject"]))
-							{
-								$mlw_each[3] = "Quiz Results For %QUIZ_NAME%";
-							}
-							if ($mlw_each["begin_score"] == 0 && $mlw_each["end_score"] == 0)
-							{
-								echo "<tr{$alternate}>";
-									echo "<td>";
-										echo "Default";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='hidden' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' value='0'/>-";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='hidden' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' value='0'/>-";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
-									echo "</td>";
-								echo "</tr>";
-								break;
-							}
-							else
-							{
-								echo "<tr{$alternate}>";
-									echo "<td>";
-										echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_admin_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_admin_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').hide();\">No</a></div>";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each["begin_score"]."'/>";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' title='What score must the user score worse than to see this page' value='".$mlw_each["end_score"]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
-									echo "</td>";
-									echo "<td>";
-										echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' title='What email will the user be sent' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
-									echo "</td>";
-								echo "</tr>";
-							}
+							echo "<tr{$alternate}>";
+								echo "<td>";
+									echo "Default";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='hidden' id='user_email_begin_".$mlw_each_count."' name='user_email_begin_".$mlw_each_count."' value='0'/>-";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='hidden' id='user_email_end_".$mlw_each_count."' name='user_email_end_".$mlw_each_count."' value='0'/>-";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='user_email_subject_".$mlw_each_count."' name='user_email_subject_".$mlw_each_count."' value='".$mlw_each[3]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<textarea cols='80' rows='15' id='user_email_".$mlw_each_count."' name='user_email_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
+								echo "</td>";
+							echo "</tr>";
+							break;
 						}
-						?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<th>ID</th>
-							<th>Score Greater Than Or Equal To</th>
-							<th>Score Less Than Or Equal To</th>
-							<th>Subject</th>
-							<th>Email To Send</th>
-						</tr>
-					</tfoot>
-				</table>
-				<a id="new_admin_email_button_bottom" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Email</a>
-				<input type='hidden' name='mlw_email_admin_total' value='<?php echo $mlw_admin_count; ?>' />
-			</div>
-		</div>
+						else
+						{
+							echo "<tr{$alternate}>";
+								echo "<td>";
+									echo $mlw_each_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_email_".$mlw_each_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_email_".$mlw_each_count."'>Are you sure?<br /><a onclick=\"delete_email(".$mlw_each_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_email_".$mlw_each_count."').hide();\">No</a></div>";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='user_email_begin_".$mlw_each_count."' name='user_email_begin_".$mlw_each_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='user_email_end_".$mlw_each_count."' name='user_email_end_".$mlw_each_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='user_email_subject_".$mlw_each_count."' name='user_email_subject_".$mlw_each_count."' value='".$mlw_each[3]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<textarea cols='80' rows='15' id='user_email_".$mlw_each_count."' title='What email will the user be sent' name='user_email_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
+								echo "</td>";
+							echo "</tr>";
+						}
+					}
+					?>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>ID</th>
+						<th>Score Greater Than Or Equal To</th>
+						<th>Score Less Than Or Equal To</th>
+						<th>Subject</th>
+						<th>Email To Send</th>
+					</tr>
+				</tfoot>
+			</table>
+			<a id="new_email_button_bottom" href="#" onclick="javascript: document.mlw_quiz_add_email_form.submit();">Add New User Email</a>
+			<input type='hidden' name='mlw_save_email_template' value='confirmation' />
+			<input type='hidden' name='mlw_email_quiz_id' value='<?php echo $quiz_id; ?>' />
+			<input type='hidden' name='mlw_email_template_total' value='<?php echo $mlw_each_count; ?>' />
+			<br />
+			<br />
+			<br />
+			<br />
+			<h3>Email Sent To Admin</h3>
+			<a id="new_admin_email_button_top" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Admin Email</a>
+			<table class="widefat">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Score Greater Than Or Equal To</th>
+						<th>Score Less Than Or Equal To</th>
+						<th>Subject</th>
+						<th>Email To Send</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					$mlw_admin_count = 0;
+					$alternate = "";
+					foreach($mlw_qmn_admin_email_array as $mlw_each)
+					{
+						if($alternate) $alternate = "";
+						else $alternate = " class=\"alternate\"";
+						$mlw_admin_count += 1;
+						if (!isset($mlw_each["subject"]))
+						{
+							$mlw_each[3] = "Quiz Results For %QUIZ_NAME%";
+						}
+						if ($mlw_each["begin_score"] == 0 && $mlw_each["end_score"] == 0)
+						{
+							echo "<tr{$alternate}>";
+								echo "<td>";
+									echo "Default";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='hidden' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' value='0'/>-";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='hidden' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' value='0'/>-";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
+								echo "</td>";
+							echo "</tr>";
+							break;
+						}
+						else
+						{
+							echo "<tr{$alternate}>";
+								echo "<td>";
+									echo $mlw_admin_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_admin_email_".$mlw_admin_count."'>Are you sure?<br /><a onclick=\"delete_admin_email(".$mlw_admin_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_admin_email_".$mlw_admin_count."').hide();\">No</a></div>";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='admin_email_begin_".$mlw_admin_count."' name='admin_email_begin_".$mlw_admin_count."' title='What score must the user score better than to see this page' value='".$mlw_each["begin_score"]."'/>";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='admin_email_end_".$mlw_admin_count."' name='admin_email_end_".$mlw_admin_count."' title='What score must the user score worse than to see this page' value='".$mlw_each["end_score"]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<input type='text' id='admin_email_subject_".$mlw_admin_count."' name='admin_email_subject_".$mlw_admin_count."' value='".$mlw_each["subject"]."' />";
+								echo "</td>";
+								echo "<td>";
+									echo "<textarea cols='80' rows='15' id='admin_email_".$mlw_admin_count."' title='What email will the user be sent' name='admin_email_".$mlw_admin_count."'>".$mlw_each["message"]."</textarea>";
+								echo "</td>";
+							echo "</tr>";
+						}
+					}
+					?>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>ID</th>
+						<th>Score Greater Than Or Equal To</th>
+						<th>Score Less Than Or Equal To</th>
+						<th>Subject</th>
+						<th>Email To Send</th>
+					</tr>
+				</tfoot>
+			</table>
+			<a id="new_admin_email_button_bottom" href="#" onclick="javascript: document.mlw_quiz_add_admin_email_form.submit();">Add New Admin Email</a>
+			<input type='hidden' name='mlw_email_admin_total' value='<?php echo $mlw_admin_count; ?>' />
 		</form>
-		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates</button>
+		<br />
+		<br />
+		<button id="save_email_button" onclick="javascript: document.mlw_quiz_save_email_form.submit();">Save Email Templates And Settings</button>
 	</div>
 	<?php
 }
