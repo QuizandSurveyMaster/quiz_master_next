@@ -588,6 +588,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 
 == Upgrade Notice ==
 
+= 3.9.0 =
+Upgrade for new editors on text tab and many more changes.
+
 = 3.8.1 =
 Upgrade for ability for different admin emails based on score. Also, new help page is included. Added new dashboard widget as well.
 
