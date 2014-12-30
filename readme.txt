@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 3.8.2
+Stable tag: 3.9.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -115,6 +115,13 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 3.9.0 (December 30, 2014) =
+ * Added Wp Editor To Text Tab
+ * Added Weekly Stats To Snapshot Widget
+ * Moved Email Settings To Emails Tab
+ * Default Question Order Auto-increments For New Questions
+ * In Code: Separated CSS/JS From Core Quiz PHP File
 
 = 3.8.2 (December 21, 2014) =
  * Minor Design Changes
@@ -580,6 +587,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 * Added results page
 
 == Upgrade Notice ==
+
+= 3.9.0 =
+Upgrade for new editors on text tab and many more changes.
 
 = 3.8.1 =
 Upgrade for ability for different admin emails based on score. Also, new help page is included. Added new dashboard widget as well.

@@ -27,6 +27,25 @@ function qmn_snapshot_dashboard_widget()
 		$mlw_qmn_analyze_today = $mlw_qmn_today_taken * 100;
 	}
 	
+	$mlw_this_week =  mktime(0, 0, 0, date("m")  , date("d")-6, date("Y"));
+	$mlw_this_week = date("Y-m-d", $mlw_this_week);
+	$mlw_qmn_this_week_taken = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$mlw_this_week." 00:00:00' AND '".date("Y-m-d")." 23:59:59') AND deleted=0");
+	
+	$mlw_last_week_start =  mktime(0, 0, 0, date("m")  , date("d")-13, date("Y"));
+	$mlw_last_week_start = date("Y-m-d", $mlw_last_week_start);
+	$mlw_last_week_end =  mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
+	$mlw_last_week_end = date("Y-m-d", $mlw_last_week_end);
+	$mlw_qmn_last_week_taken = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$mlw_last_week_start." 00:00:00' AND '".$mlw_last_week_end." 23:59:59') AND deleted=0");
+	
+	if ($mlw_qmn_last_week_taken != 0)
+	{
+		$mlw_qmn_analyze_week = round((($mlw_qmn_this_week_taken - $mlw_qmn_last_week_taken) / $mlw_qmn_last_week_taken) * 100, 2);
+	}
+	else
+	{
+		$mlw_qmn_analyze_week = $mlw_qmn_this_week_taken * 100;
+	}
+	
 	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
 	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
 	
@@ -42,11 +61,17 @@ function qmn_snapshot_dashboard_widget()
 	.qmn_dashboard_list li:first-child
 	{
 		border-top: 0;
+	}
+	.qmn_full_width
+	{
 		width: 100%;
+	}
+	.qmn_half_width
+	{
+		width: 50%;
 	}
 	.qmn_dashboard_element
 	{
-		width: 50%;
 		float: left;
 		padding: 0;
 		-webkit-box-sizing: border-box;
@@ -93,7 +118,7 @@ function qmn_snapshot_dashboard_widget()
 	}
 	</style>
 	<ul class="qmn_dashboard_list">
-		<li class="qmn_dashboard_element">
+		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_qmn_today_taken; ?></strong>
 				quizzes taken today
@@ -112,25 +137,44 @@ function qmn_snapshot_dashboard_widget()
 				</span>
 			</div>
 		</li>
-		<li class="qmn_dashboard_element">
+		<li class="qmn_dashboard_element qmn_full_width">
+			<div class="qmn_dashboard_inside">
+				<strong><?php echo $mlw_qmn_this_week_taken; ?></strong>
+				quizzes taken last 7 days
+				<span class="qmn_dashboard_graph">
+					<?php 
+					echo $mlw_qmn_analyze_week."% ";
+					if ($mlw_qmn_analyze_week >= 0)
+					{
+						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
+					}
+					else
+					{
+						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
+					}
+					?>
+				</span>
+			</div>
+		</li>
+		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_total_active_quiz; ?></strong>
 				total active quizzes
 			</div>
 		</li>
-		<li class="qmn_dashboard_element">
+		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_total_questions; ?></strong>
 				total active questions
 			</div>
 		</li>
-		<li class="qmn_dashboard_element">
+		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_most_popular_quiz->quiz_name; ?></strong>
 				most popular quiz
 			</div>
 		</li>
-		<li class="qmn_dashboard_element">
+		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_least_popular_quiz->quiz_name; ?></strong>
 				least popular quiz

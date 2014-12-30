@@ -140,56 +140,21 @@ function mlw_quiz_shortcode($atts)
 	wp_enqueue_script( 'jquery-effects-slide' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-ui-accordion' );
 	wp_enqueue_script( 'jquery-ui-tooltip' );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	?>
-	<script type="text/javascript"
-	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-	</script>
-	<!-- css -->
-	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-	<script type="text/javascript">
-		setTimeout(function(){
-		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-		$j(function() {
-   			 $j( ".mlw_qmn_quiz" ).tooltip();
- 		});
-		}, 100);
-		setTimeout(function()
-		{
-			var $j = jQuery.noConflict();
-			$j('.mlw_qmn_quiz input').on('keypress', function (e) {
-				if (e.which === 13) {
-					e.preventDefault();
-				}
-			});
-		}, 100);
-	</script>
- 	<style type="text/css">
- 		.ui-tooltip
-		{
-		    /* tooltip container box */
-		    max-width: 500px !important;
-		}
-		.ui-tooltip-content
-		{
-		    /* tooltip content */
-		    max-width: 500px !important;
-		}
- 	</style>
+	wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+	
+	wp_enqueue_script( 'qmn_quiz', plugins_url( 'qmn_quiz.js' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'qmn_quiz.css' , __FILE__ ) );
+	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
-			<?php 
-			if ($mlw_quiz_options->theme_selected == "default")
-			{
-				echo "<style type='text/css'>".$mlw_quiz_options->quiz_stye."</style>";
-			}
-			else
-			{
-				echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$mlw_quiz_options->theme_selected)."' rel='stylesheet' />";
-			}
+	if ($mlw_quiz_options->theme_selected == "default")
+	{
+		echo "<style type='text/css'>".$mlw_quiz_options->quiz_stye."</style>";
+	}
+	else
+	{
+		echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$mlw_quiz_options->theme_selected)."' rel='stylesheet' />";
+	}
 			
 	/*
 	The following code is for displaying the quiz and completion screen
@@ -242,284 +207,31 @@ function mlw_quiz_shortcode($atts)
 			}
 			?>
 			<script type="text/javascript">
-				setTimeout(function(){
-				var $j = jQuery.noConflict();
-				$j( ".quiz_section" ).hide();
-				$j( ".quiz_section" ).append( "<br />" );
-				$j( ".mlw_qmn_quiz" ).append( "<a class=\"mlw_qmn_quiz_link mlw_previous\" href=\"javascript:prevSlide(<?php echo $mlw_quiz_options->pagination; ?>, 1);\"><?php echo $mlw_qmn_pagination_text[0]; ?></a>" );
-				$j( ".mlw_qmn_quiz" ).append( "<a class=\"mlw_qmn_quiz_link mlw_next\" href=\"javascript:nextSlide(<?php echo $mlw_quiz_options->pagination; ?>, 1);\"><?php echo $mlw_qmn_pagination_text[1]; ?></a>" );
-				window.mlw_quiz_slide = 0;
-				window.mlw_previous = 0;
-				window.mlw_quiz_total_slides = <?php echo $mlw_qmn_section_limit; ?>;
-				nextSlide(1, 0);
-				}, 100);
-				function nextSlide(mlw_pagination, mlw_goto_top)
-				{
-					jQuery( ".quiz_section" ).hide();
-					for (var i = 0; i < mlw_pagination; i++) 
-					{
-						if (i == 0 && window.mlw_previous == 1 && window.mlw_quiz_slide > 1)
-						{
-							window.mlw_quiz_slide = window.mlw_quiz_slide + mlw_pagination;
-						}
-						else
-						{
-							window.mlw_quiz_slide++;
-						}
-						if (window.mlw_quiz_slide < 1)
-						{
-							window.mlw_quiz_slide = 1;
-						}
-						if (window.mlw_quiz_slide == 1)
-					    {
-					    	jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-					    }
-					    if (window.mlw_quiz_slide > 1)
-					    {
-					    	jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-					    }
-					    if (window.mlw_quiz_slide == window.mlw_quiz_total_slides)
-					    {
-					        jQuery( ".mlw_qmn_quiz_link.mlw_next" ).hide();
-					    } 
-					    if (window.mlw_quiz_slide < window.mlw_quiz_total_slides)
-					    {
-					        jQuery( ".mlw_qmn_quiz_link.mlw_next" ).show();
-					    } 
-					    jQuery( ".quiz_section.slide"+window.mlw_quiz_slide ).show();
-					}
-					window.mlw_previous = 0;
-					if (mlw_goto_top == 1)
-					{
-						window.location.hash = "mlw_does_not_exist";
-						window.location.hash = "mlw_top_of_quiz";
-					}
-				    
-				}
-				function prevSlide(mlw_pagination, mlw_goto_top)
-				{
-					jQuery( ".quiz_section" ).hide();
-					for (var i = 0; i < mlw_pagination; i++) 
-					{ 
-						if (i == 0 && window.mlw_previous == 0)
-						{
-							window.mlw_quiz_slide = window.mlw_quiz_slide - mlw_pagination;
-						}
-						else
-						{
-							window.mlw_quiz_slide--;
-						}
-						if (window.mlw_quiz_slide < 1)
-						{
-							window.mlw_quiz_slide = 1;
-						}
-						if (window.mlw_quiz_slide == 1)
-					    {
-					    	jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-					    }
-					    if (window.mlw_quiz_slide > 1)
-					    {
-					    	jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-					    }
-					    if (window.mlw_quiz_slide == window.mlw_quiz_total_slides)
-					    {
-					        jQuery( ".mlw_qmn_quiz_link.mlw_next" ).hide();
-					    } 
-					    if (window.mlw_quiz_slide < window.mlw_quiz_total_slides)
-					    {
-					        jQuery( ".mlw_qmn_quiz_link.mlw_next" ).show();
-					    }
-					    jQuery( ".quiz_section.slide"+window.mlw_quiz_slide ).show();	
-					}
-					window.mlw_previous = 1;
-					if (mlw_goto_top == 1)
-					{
-						window.location.hash = "mlw_does_not_exist";
-						window.location.hash = "mlw_top_of_quiz";
-					}
-				}
+				var qmn_pagination = <?php echo $mlw_quiz_options->pagination; ?>;
+				var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
+				var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
+				var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 			</script>
 			<?php
+			wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'qmn_pagination.js' , __FILE__ ) );
 		}
 		if ($mlw_quiz_options->timer_limit != 0)
 		{
 			?>
 			<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
 			<script type="text/javascript">
-				setTimeout(function(){
-				var minutes = 0;
-				if (window.sessionStorage.getItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>') == "yes" && window.sessionStorage.getItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>') >= 0)
-				{
-					minutes = window.sessionStorage.getItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>');
-				}
-				else
-				{
-					minutes = <?php echo $mlw_quiz_options->timer_limit; ?>;
-				}
-				window.amount = (minutes*60);
-				window.titleText = window.document.title;
-				document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-				window.counter=setInterval(timer, 1000);
-				}, 100);
-				function timer()
-				{
-					window.amount=window.amount-1;
-					if (window.amount < 0)
-					{
-						window.amount = 0;	
-					}
-					window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', window.amount/60);
-					window.sessionStorage.setItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>', "yes");
-				    document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-				    window.document.title = minToSec(window.amount) + " " + window.titleText;
-				  	if (window.amount <= 0)
-				  	{
-				    	clearInterval(window.counter);
-				    	jQuery( ".mlw_qmn_quiz input:radio" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_quiz input:checkbox" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_quiz select" ).attr('disabled',true);
-				    	jQuery( ".mlw_qmn_question_comment" ).attr('disabled',true);
-				    	jQuery( ".mlw_answer_open_text" ).attr('disabled',true);
-				    	//document.quizForm.submit();
-				     	return;
-				  	}
-				}
-				function minToSec(amount)
-				{
-					var timer_display = '';
-					var hours = Math.floor(amount/3600);
-					if (hours == '0')
-					{
-						timer_display = timer_display +"00:";
-					}
-					else if (hours < 10)
-					{
-						timer_display = timer_display + '0' + hours + ":";
-					}
-					else
-					{
-						timer_display = timer_display + hours + ":";
-					}
-					var minutes = Math.floor((amount % 3600)/60);
-					if (minutes == '0')
-					{
-						timer_display = timer_display +"00:";
-					}
-					else if (minutes < 10)
-					{
-						timer_display = timer_display + '0' + minutes + ":";
-					}
-					else
-					{
-						timer_display = timer_display + minutes + ":";
-					}
-					var seconds = Math.floor(amount % 60);
-					if (seconds == '0') 
-					{ 
-						timer_display = timer_display +"00";
-					}
-					else if (seconds < 10)
-					{
-						timer_display = timer_display +'0' + seconds;
-					}
-					else
-					{
-						timer_display = timer_display + seconds;
-					}
-					return timer_display;
-				}
+				var qmn_quiz_id = <?php echo $mlw_quiz_id; ?>;
+				var qmn_timer_limit = <?php echo $mlw_quiz_options->timer_limit; ?>;
 			</script>
 			<?php
+			wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'qmn_timer.js' , __FILE__ ) );
 		}
 		
-		?>
-		<script type="text/javascript">
-			var myVar=setInterval("mlwQmnTimer();",1000);
-	 		function mlwQmnTimer()
-	 		{
-	 			var x = +document.getElementById("timer").value;
-	 			x = x + 1;
-	 			document.getElementById("timer").value = x;
-	 		}
-	 		
-		</script>
-		<?php
 		//Update the quiz views
 		$mlw_views = $mlw_quiz_options->quiz_views;
 		$mlw_views += 1;
 		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views='".$mlw_views."' WHERE quiz_id=".$mlw_quiz_id;
 		$results = $wpdb->query( $update );
-		
-		//Form validation script
-		?>
-		<script>
-			function clear_field(field)
-			{
-				if (field.defaultValue == field.value) field.value = '';
-			}
-			
-			function mlw_validateForm()
-			{
-				mlw_validateResult = true;
-				
-				jQuery('#quizForm *').filter(':input').each(function(){
-					jQuery(this).css("outline", "");
-					if (jQuery(this).attr('class'))
-					{
-						if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
-						{
-							var x=this.value;
-							var atpos=x.indexOf('@');
-							var dotpos=x.lastIndexOf('.');
-							if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-							{
-								document.getElementById('mlw_error_message').innerHTML = '**Not a valid e-mail address!**';
-								document.getElementById('mlw_error_message_bottom').innerHTML = '**Not a valid e-mail address!**';
-								mlw_validateResult =  false;
-								jQuery(this).css("outline", "2px solid red");
-							}
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**This field must be a number!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**This field must be a number!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**The entered text is not correct!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**The entered text is not correct!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-						if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1 && !this.checked)
-						{
-							document.getElementById('mlw_error_message').innerHTML = '**Please complete all required fields!**';
-							document.getElementById('mlw_error_message_bottom').innerHTML = '**Please complete all required fields!**';
-							jQuery(this).css("outline", "2px solid red");
-							mlw_validateResult =  false;
-						}
-					}
-				});
-				
-				if (!mlw_validateResult) {return mlw_validateResult;}
-				
-				jQuery( '.mlw_qmn_quiz input:radio' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_quiz input:checkbox' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_quiz select' ).attr('disabled',false);
-				jQuery( '.mlw_qmn_question_comment' ).attr('disabled',false);
-				jQuery( '.mlw_answer_open_text' ).attr('disabled',false);
-			}		
-		</script>
-		<?php
 		
 		if ( $mlw_quiz_options->pagination != 0) { $mlw_display .= "<style>.quiz_section { display: none; }</style>"; }
 		
@@ -531,7 +243,7 @@ function mlw_quiz_shortcode($atts)
 		$mlw_message_before = htmlspecialchars_decode($mlw_quiz_options->message_before, ENT_QUOTES);
 		$mlw_message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_before, $mlw_qmn_quiz_options_array);
 		$mlw_display .= "<span class='mlw_qmn_message_before'>".$mlw_message_before."</span><br />";
-		$mlw_display .= "<span name='mlw_error_message' id='mlw_error_message' style='color: red;'></span><br />";
+		$mlw_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
 
 		if ($mlw_quiz_options->contact_info_location == 0)
 		{
@@ -558,7 +270,7 @@ function mlw_quiz_shortcode($atts)
 			$mlw_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
 			if ($mlw_question->question_type == 0)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -617,7 +329,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 4)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -643,7 +355,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 10)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -668,7 +380,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 1)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -721,7 +433,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 2)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -775,7 +487,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 5)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -790,7 +502,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			elseif ($mlw_question->question_type == 7)
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -802,7 +514,7 @@ function mlw_quiz_shortcode($atts)
 			{
 				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
 				$mlw_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
-				$mlw_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question' style='font-weight:bold;'>".htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span></label>";
+				$mlw_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span></label>";
 				$mlw_display .= "<br />";
 			}
 			elseif ($mlw_question->question_type == 9)
@@ -811,7 +523,7 @@ function mlw_quiz_shortcode($atts)
 				$mlw_display .= "<div class='mlw_captchaWrap'>";
 				$mlw_display .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
 				$mlw_display .= "</div>";
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 		        $mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
 		        $mlw_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
 		        $mlw_display .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
@@ -836,7 +548,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			else
 			{
-				$mlw_display .= "<span class='mlw_qmn_question' style='font-weight:bold;'>";
+				$mlw_display .= "<span class='mlw_qmn_question'>";
 				$mlw_qmn_total_questions = $mlw_qmn_total_questions + 1;
 				if ($mlw_quiz_options->question_numbering == 1) { $mlw_display .= $mlw_qmn_total_questions.") "; }
 				$mlw_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
@@ -856,7 +568,7 @@ function mlw_quiz_shortcode($atts)
 			}
 			if ($mlw_question->hints != "")
 			{
-				$mlw_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" style=\"text-decoration:underline;color:rgb(0,0,255);\" class='mlw_qmn_hint_link'>Hint</span>";
+				$mlw_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" class='mlw_qmn_hint_link'>Hint</span>";
 				$mlw_display .= "<br /><br />";
 			}
 			$mlw_display .= "</div>";
@@ -870,7 +582,7 @@ function mlw_quiz_shortcode($atts)
 			$mlw_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
 			$mlw_message_comments = htmlspecialchars_decode($mlw_quiz_options->message_comment, ENT_QUOTES);
 			$mlw_message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_comments, $mlw_qmn_quiz_options_array);
-			$mlw_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text' style='font-weight:bold;'>".$mlw_message_comments."</label><br />";
+			$mlw_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>".$mlw_message_comments."</label><br />";
 			$mlw_display .= "<textarea cols='70' rows='15' id='mlwQuizComments' name='mlwQuizComments' ></textarea>";
 			$mlw_display .= "</div>";
 			if ( $mlw_quiz_options->pagination == 0) { $mlw_display .= "<br /><br />"; }
@@ -899,7 +611,7 @@ function mlw_quiz_shortcode($atts)
 		$mlw_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$mlw_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
 		$mlw_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($mlw_quiz_options->submit_button_text, ENT_QUOTES))."' />";
-		$mlw_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' style='color: red;'></span><br />";
+		$mlw_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
 		$mlw_display .= "</form>";
 		$mlw_display .= "</div>";
 		$mlw_display .= "</div>";
@@ -972,10 +684,12 @@ function mlw_quiz_shortcode($atts)
 		//See which answers were correct and award points if necessary
 		$mlw_user_text = "";
 		$mlw_correct_text = "";
+		$qmn_correct = "incorrect";
 		$mlw_qmn_answer_array = array();
 		foreach($mlw_questions as $mlw_question) {
 			$mlw_user_text = "";
 			$mlw_correct_text = "";
+			$qmn_correct = "incorrect";
 			if ( isset($_POST["question".$mlw_question->question_id]) || isset($_POST["mlwComment".$mlw_question->question_id]) )
 			{
 				if ( $mlw_question->question_type == 0 || $mlw_question->question_type == 1 || $mlw_question->question_type == 2)
@@ -998,6 +712,7 @@ function mlw_quiz_shortcode($atts)
 							if ($mlw_qmn_question_answers_each[2] == 1)
 							{
 								$mlw_correct += 1;
+								$qmn_correct = "correct";
 							}
 						}
 						if ($mlw_qmn_question_answers_each[2] == 1)
@@ -1024,6 +739,7 @@ function mlw_quiz_shortcode($atts)
 						if (strtoupper($mlw_user_text) == strtoupper($mlw_correct_text))
 						{
 							$mlw_correct += 1;
+							$qmn_correct = "correct";
 							$mlw_points += $mlw_qmn_question_answers_each[1];
 							break;
 						}
@@ -1061,6 +777,7 @@ function mlw_quiz_shortcode($atts)
 					if ($mlw_qmn_user_correct_answers == $mlw_qmn_total_correct_answers)
 					{
 						$mlw_correct += 1;
+						$qmn_correct = "correct";
 					}
 				}
 				if (isset($_POST["mlwComment".$mlw_question->question_id]))
@@ -1079,7 +796,7 @@ function mlw_quiz_shortcode($atts)
 				$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $mlw_qm_question_comment, $mlw_question_answer_display);
 				$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
 	
-				$mlw_qmn_answer_array[] = array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES));
+				$mlw_qmn_answer_array[] = array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id);
 				
 				$mlw_question_answers .= $mlw_question_answer_display;
 				$mlw_question_answers .= "<br />";
@@ -1168,7 +885,7 @@ EOC;
 			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$mlw_qmn_timer.".php";
-			$mlw_qmn_result_array["certificate_link"] = "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate</a>";
+			$mlw_qmn_result_array["certificate_link"] = "<a href='".$mlw_qmn_certificate_filename."' class='qmn_certificate_link'>Download Certificate</a>";
 	    }
 	    
 		/*
@@ -1226,34 +943,8 @@ EOC;
 		
 		if ($mlw_quiz_options->social_media == 1)
 		{
-		?>
-			<script>
-			function mlw_qmn_share(network, mlw_qmn_social_text, mlw_qmn_title)
-			{
-				var sTop = window.screen.height/2-(218);
-                var sLeft = window.screen.width/2-(313);
-				var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
-				var pageUrl = window.location.href;
-                var pageUrlEncoded = encodeURIComponent(pageUrl);
-				if (network == 'facebook')
-				{
-					var Url = "https://www.facebook.com/dialog/feed?"
-                    	+ "display=popup&"
-                        + "app_id=483815031724529&"
-                        + "link=" + pageUrlEncoded + "&"
-                        + "name=" + encodeURIComponent(mlw_qmn_social_text) + "&"
-						+ "description=  &"
-                        + "redirect_uri=http://www.mylocalwebstop.com/mlw_qmn_close.html";
-				}
-				if (network == 'twitter')
-				{
-					var Url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
-				}
-                window.open(Url, "Share", sqShareOptions);
-                return false;
-            }
-			</script>
-			<?php
+			wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'qmn_social_share.js' , __FILE__ ) );
+			
 			//Load Social Media Text
 			$qmn_social_media_text = "";
 			if (is_serialized($mlw_quiz_options->social_media_text) && is_array(@unserialize($mlw_quiz_options->social_media_text))) 
@@ -1270,8 +961,8 @@ EOC;
 			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_qmn_result_array);
 			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $mlw_qmn_result_array);
 			$mlw_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" style=\"display: inline; vertical-align:top !important;font-weight: bold; cursor: pointer;text-decoration: none;\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Facebook</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
 		
@@ -1497,7 +1188,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='".$current_user->display_name."' />";
 			$mlw_contact_display .= "<br /><br />";
 
@@ -1509,7 +1200,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1520,7 +1211,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='".$current_user->user_email."' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1531,7 +1222,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1552,7 +1243,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1563,7 +1254,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1574,7 +1265,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1585,7 +1276,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span style='font-weight:bold;';>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}

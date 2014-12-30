@@ -87,24 +87,15 @@ function mlw_generate_about_page()
 	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.8</a>
+			What&#8217;s New In 3.9</a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
 			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
 			Requested Features</a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Ability To Send Different Admin Emails Based On Score</h2>
-	<p style="text-align: center;">You can now set up different admin emails based on score similarly to the user emails. You can also now customize the admin email's seubject.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Dashboard Widget</h2>
-	<p style="text-align: center;">We added a new dashboard widget that shows a snapshot of how your quizzes are doing. Includes daily total, most popular quiz, and more.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Help Page</h2>
-	<p style="text-align: center;">There is now a new page in the menu titled "Help". This page now has the support widget on it and a link to the documentation. We also added a system info widget on this page to better assist when trying to solve errors.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
-	<p style="text-align: center;">We added 4 new hooks in the Quiz Creator class. You can now hook into when a quiz is created, duplicated, deleted, or its name is changed. We also begun work on a few quiz settings helper functions in the class as well.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Text Editors On Text Tab</h2>
+	<p style="text-align: center;">When editing text on the text tab, you will now being using the WordPress editor. You will be able to easily style your text as well as add media.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
 	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and December 31st, 2014 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
@@ -112,13 +103,15 @@ function mlw_generate_about_page()
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Popular Add-on Pack</h2>
-	<p style="text-align: center;">Our Popular Add-On Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href="http://mylocalwebstop.com/store/">WordPress Store</a> for details.</p>
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 21, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (December 30, 2014)</h3>
 	<ul>
-		<li>* Minor Design Changes</li>
+		<li>* Added Wp Editor To Text Tab</li>
+		<li>* Added Weekly Stats To Snapshot Widget</li>
+		<li>* Moved Email Settings To Emails Tab</li>
+		<li>* Default Question Order Auto-increments For New Questions</li>
+		<li>* In Code: Separated CSS/JS From Core Quiz PHP File</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">

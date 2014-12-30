@@ -1,0 +1,23 @@
+.ui-tooltip
+{
+	max-width: 500px !important;
+}
+.ui-tooltip-content
+{
+	max-width: 500px !important;
+}
+.qmn_error
+{
+	color: red;
+}
+.mlw_qmn_hint_link
+{
+	text-decoration:underline;
+	color:rgb(0,0,255);
+}
+.mlw_qmn_quiz_link
+{
+	display: inline;
+	vertical-align:top !important;
+	text-decoration: none;
+}
