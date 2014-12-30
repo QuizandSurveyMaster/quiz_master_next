@@ -720,7 +720,7 @@ function mlw_options_questions_tab_content()
 			</div></td>
 			</tr>
 			</table>
-			<p> *Required currently only works on open answer, number, and captcha question types</p>
+			<p> *Required currently only works on open answer, number, accept, and captcha question types</p>
 			<input type="hidden" name="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" id="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" value="<?php echo $mlw_answer_total; ?>" />
 			<p class='submit'><input type='submit' class='button-primary' value='Edit Question' /></p>
 			</form>
@@ -877,7 +877,7 @@ function mlw_options_questions_tab_content()
 		</div></td>
 		</tr>
 		</table>
-		<p> *Required currently only works on open answer, number, and captcha question types</p>
+		<p> *Required currently only works on open answer, number, accept, and captcha question types</p>
 		<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="<?php echo $mlw_answer_total; ?>" />
 		<?php
 		echo "<p class='submit'><input type='submit' class='button-primary' value='Create Question' /></p>";
