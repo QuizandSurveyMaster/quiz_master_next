@@ -864,7 +864,7 @@ function mlw_quiz_shortcode($atts)
 			$plugindirpath=plugin_dir_path( __FILE__ );
 			$mlw_qmn_certificate_file=<<<EOC
 <?php
-include("$plugindirpath/WriteHTML.php");
+include("$plugindirpath/fpdf/WriteHTML.php");
 \$pdf=new PDF_HTML();
 \$pdf->AddPage('L');
 EOC;
