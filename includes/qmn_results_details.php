@@ -2,7 +2,7 @@
 /*
 This page allows for the viewing of the quiz results.
 */
-/* 
+/*
 Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
@@ -12,15 +12,15 @@ function mlw_generate_result_details()
 	if ($mlw_result_id != "")
 	{
 		global $wpdb;
-		
+
 		//Check if user wants to create certificate
 		if (isset($_POST["create_certificate"]) && $_POST["create_certificate"] == "confirmation")
 		{
 			$mlw_certificate_id = intval($_GET["result_id"]);
 			$mlw_quiz_results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."mlw_results WHERE result_id=%d", $mlw_certificate_id ) );
-			
+
 			$mlw_certificate_results = $wpdb->get_var( $wpdb->prepare( "SELECT certificate_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_results->quiz_id ) );
-			
+
 			//Prepare Certificate
 			$mlw_certificate_options = unserialize($mlw_certificate_results);
 			if (!is_array($mlw_certificate_options)) {
@@ -42,7 +42,7 @@ function mlw_generate_result_details()
 			$plugindirpath=plugin_dir_path( __FILE__ );
 			$mlw_qmn_certificate_file=<<<EOC
 <?php
-include("$plugindirpath/WriteHTML.php");
+include("$plugindirpath/fpdf/WriteHTML.php");
 \$pdf=new PDF_HTML();
 \$pdf->AddPage('L');
 EOC;
@@ -62,13 +62,13 @@ unlink(__FILE__);
 EOC;
 			$mlw_qmn_certificate_filename = "../".str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis")."admin.php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
-			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis")."admin.php";		
+			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis")."admin.php";
 		}
-		
-		
+
+
 		//Load Results
 		$mlw_results_data = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE result_id=".intval($mlw_result_id));
-		
+
 		?>
 		<!-- css -->
 		<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -100,7 +100,7 @@ EOC;
 						}
 					}
 				});
-			
+
 				$j('#opener').click(function() {
 					$j('#dialog').dialog('open');
 					return false;
@@ -118,7 +118,7 @@ EOC;
 		<style type="text/css">
 		div.mlw_quiz_options input[type='text'] {
 			border-color:#000000;
-			color:#3300CC; 
+			color:#3300CC;
 			cursor:hand;
 			}
 		</style>
@@ -166,7 +166,7 @@ EOC;
 							<?php
 							}
 							else if ($mlw_results_data->quiz_system == 1)
-							{								
+							{
 							?>
 								<td>Score Received:</td>
 								<td><?php echo $mlw_results_data->point_score." Points"; ?></td>
@@ -189,7 +189,7 @@ EOC;
 						$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
 						if ($mlw_complete_hours > 0)
 						{
-							$mlw_complete_time .= "$mlw_complete_hours hours ";	
+							$mlw_complete_time .= "$mlw_complete_hours hours ";
 						}
 						$mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
 						if ($mlw_complete_minutes > 0)
@@ -221,7 +221,7 @@ EOC;
 					}
 				?>
 			</div>
-			<div id="tabs-2">	
+			<div id="tabs-2">
 				<form action="" method="post" name="create_certificate_form">
 					<input type="hidden" name="create_certificate" value="confirmation" />
 					<input type="submit" value="Create Certificate" />
@@ -233,19 +233,19 @@ EOC;
 				}
 				?>
 			</div>
-			
-	
+
+
 		<div id="dialog" title="Help">
 		<h3><b>Help</b></h3>
 		<p>This page shows the results from the taken quiz.</p>
 		<p>The top section shows the question, the user's answer, and the correct answer.</p>
 		<p>The bottom section shows the text from the comment box if enabled.</p>
-		</div>	
+		</div>
 		</div>
 		<?php echo mlw_qmn_show_adverts(); ?>
 		</div>
 		</div>
-		
+
 <?php
 	}
 	else
@@ -271,7 +271,7 @@ EOC;
 						}
 					}
 				});
-			
+
 				$j('#opener').click(function() {
 					$j('#dialog').dialog('open');
 					return false;
@@ -282,7 +282,7 @@ EOC;
 	 		});
 			$j(function() {
 				$j("button").button();
-			
+
 			});
 		</script>
 		<style>
@@ -294,7 +294,7 @@ EOC;
 		<style type="text/css">
 		div.mlw_quiz_options input[type='text'] {
 			border-color:#000000;
-			color:#3300CC; 
+			color:#3300CC;
 			cursor:hand;
 			}
 		</style>
@@ -309,7 +309,7 @@ EOC;
 		<h3><b>Help</b></h3>
 		<p>You are getting this error page because this page could not find the results.</p>
 		<p>You must go to the Quiz Results page and click on the result you want to see from that table.</p>
-		</div>	
+		</div>
 		</div>
 		</div>
 		<?php
