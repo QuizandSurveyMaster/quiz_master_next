@@ -69,27 +69,27 @@ class MLWQuizMasterNext
 	  */
 	private function load_dependencies()
 	{
-		include("includes/mlw_quiz.php");
-		include("includes/mlw_dashboard.php");
-		include("includes/mlw_quiz_admin.php");
-		include("includes/mlw_quiz_options.php");
-		include("includes/mlw_quiz_install.php");
-		include("includes/mlw_results.php");
-		include("includes/mlw_results_details.php");
-		include("includes/mlw_tools.php");
-		include("includes/mlw_leaderboard.php");
-		include("includes/mlw_update.php");
-		include("includes/mlw_qmn_widgets.php");
-		include("includes/mlw_qmn_credits.php");
-		include("includes/mlw_template_variables.php");
-		include("includes/mlw_adverts.php");
-		include("includes/mlw_help.php");
+		include("includes/qmn_quiz.php");
+		include("includes/qmn_dashboard.php");
+		include("includes/qmn_quiz_admin.php");
+		include("includes/qmn_quiz_options.php");
+		include("includes/qmn_quiz_install.php");
+		include("includes/qmn_results.php");
+		include("includes/qmn_results_details.php");
+		include("includes/qmn_tools.php");
+		include("includes/qmn_leaderboard.php");
+		include("includes/qmn_update.php");
+		include("includes/qmn_widgets.php");
+		include("includes/qmn_credits.php");
+		include("includes/qmn_template_variables.php");
+		include("includes/qmn_adverts.php");
+		include("includes/qmn_help.php");
 		include("includes/qmn_dashboard_widgets.php");
 		
-		include("includes/mlw_alerts.php");
+		include("includes/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
 		
-		include("includes/mlw_quiz_creator.php");
+		include("includes/qmn_quiz_creator.php");
 		$this->quizCreator = new QMNQuizCreator();
 	}
 	
