@@ -41,7 +41,7 @@ class QMNPluginHelper
 	{
 		foreach($this->settings_tabs as $tab)
 		{
-			echo "<li><a href=\"".$tab["slug"]."\">".$tab["title"]."</a></li>";
+			echo "<li><a href=\"#".$tab["slug"]."\">".$tab["title"]."</a></li>";
 		}
 	}
 	
