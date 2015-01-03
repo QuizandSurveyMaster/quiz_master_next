@@ -1,8 +1,10 @@
 <?php
-function mlw_options_preview_tab()
+function qmn_settings_preview_tab()
 {
-	echo "<li><a href=\"#tabs-preview\">Preview (Beta)</a></li>";
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Preview", 'mlw_options_preview_tab_content');
 }
+add_action("plugins_loaded", 'qmn_settings_preview_tab');
 
 function mlw_options_preview_tab_content()
 {
@@ -14,6 +16,4 @@ function mlw_options_preview_tab_content()
 	</div>
 	<?php
 }
-add_action('mlw_qmn_options_tab', 'mlw_options_preview_tab');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
 ?>

@@ -1,8 +1,10 @@
 <?php
-function mlw_options_leaderboard_tab()
+function qmn_settings_leaderboard_tab()
 {
-	echo "<li><a href=\"#tabs-4\">Leaderboard</a></li>";
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Leaderboard", 'mlw_options_leaderboard_tab_content');
 }
+add_action("plugins_loaded", 'qmn_settings_leaderboard_tab');
 
 function mlw_options_leaderboard_tab_content()
 {
@@ -107,6 +109,4 @@ function mlw_options_leaderboard_tab_content()
 	</div>
 	<?php
 }
-add_action('mlw_qmn_options_tab', 'mlw_options_leaderboard_tab');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_leaderboard_tab_content');
 ?>

@@ -1,8 +1,10 @@
 <?php
-function mlw_options_certificate_tab()
+function qmn_settings_certificate_tab()
 {
-	echo "<li><a href=\"#tabs-5\">Certificate (Beta)</a></li>";
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Certificate (Beta)", 'mlw_options_certificate_tab_content');
 }
+add_action("plugins_loaded", 'qmn_settings_certificate_tab');
 
 function mlw_options_certificate_tab_content()
 {
@@ -128,6 +130,4 @@ function mlw_options_certificate_tab_content()
 	</div>
 	<?php
 }
-add_action('mlw_qmn_options_tab', 'mlw_options_certificate_tab');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_certificate_tab_content');
 ?>
