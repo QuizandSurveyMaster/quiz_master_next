@@ -39,7 +39,7 @@ class QMNPluginHelper
 	
 	public function get_settings_tabs()
 	{
-		foreach($this->settings_tab as $tab)
+		foreach($this->settings_tabs as $tab)
 		{
 			echo "<li><a href=\"".$tab["slug"]."\">".$tab["title"]."</a></li>";
 		}
@@ -47,7 +47,7 @@ class QMNPluginHelper
 	
 	public function get_settings_tabs_content()
 	{
-		foreach($this->settings_tab as $tab)
+		foreach($this->settings_tabs as $tab)
 		{
 			echo "<div id=\"".$tab["slug"]."\" class=\"mlw_tab_content\">";
 			call_user_func($tab['function']);
