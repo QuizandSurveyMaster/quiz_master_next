@@ -95,6 +95,7 @@ class MLWQuizMasterNext
 		include("includes/qmn_options_style_tab.php");
 		include("includes/qmn_options_tools_tab.php");
 		include("includes/qmn_options_preview_tab.php");
+		include("includes/qmn_addons.php");
 		
 		include("includes/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
@@ -140,6 +141,7 @@ class MLWQuizMasterNext
 			add_submenu_page(__FILE__, 'QMN Stats', 'QMN Stats', 'moderate_comments', 'mlw_quiz_stats', 'mlw_generate_quiz_dashboard');
 			add_submenu_page(__FILE__, 'QMN Tools', 'QMN Tools', 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
 			add_submenu_page(__FILE__, 'QMN Help', 'QMN Help', 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page');
+			add_submenu_page(__FILE__, 'Addon Settings', 'Addon Settings', 'manage_options', 'qmn_addons', 'qmn_addons_page');
 			add_submenu_page(__FILE__, 'QMN About', 'QMN About', 'manage_options', 'mlw_qmn_about', 'mlw_generate_about_page');
 		}
 	}
