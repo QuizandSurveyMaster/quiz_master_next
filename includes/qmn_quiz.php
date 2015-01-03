@@ -9,29 +9,50 @@ class QMNQuizManager
 	{
 		add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
 	}
-	
+
 	public function display_shortcode($atts)
 	{
 		extract(shortcode_atts(array(
 			'quiz' => 0
 		), $atts));
-		
+
 		global $wpdb;
 		global $mlwQuizMasterNext;
 		global $qmn_allowed_visit = true;
 		$mlwQuizMasterNext->quizCreator->set_id($quiz);
 		date_default_timezone_set(get_option('timezone_string'));
 		$return_display = '';
-		$mlw_qmn_section_count = 1;
-		$mlw_qmn_section_limit = 0;
-		$mlw_quiz_options = $this->load_quiz_options($quiz);
+		$qmn_quiz_options = $this->load_quiz_options($quiz);
+		$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options);
+		$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
+
+		$qmn_array_for_variables = array(
+			'quiz_name' => $mlw_quiz_options->quiz_name,
+			'quiz_id' => $mlw_quiz_options->quiz_id
+		);
+
+		$return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+
+		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
+		{
+			$return_display .= $this->display_quiz($return_display, $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
+		}
+		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
+		{
+			$return_display .= $this->display_results();
+		}
+		else
+		{
+			//return $return_display;
+		}
+		return $return_display;
 	}
-	
+
 	public function load_quiz_options($quiz_id)
 	{
 		return $wpdb->get_row($wpdb->prepare('SELECT * FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $quiz_id));
 	}
-	
+
 	public function load_questions($quiz_id, $quiz_options)
 	{
 		$order_by_sql = "ORDER BY question_order ASC";
@@ -46,130 +67,125 @@ class QMNQuizManager
 		}
 		return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE quiz_id=%d AND deleted=0 ".$order_by_sql.$limit_sql, $quiz_id));
 	}
-}
 
-
-function mlw_quiz_shortcode($atts)
-{
-	extract(shortcode_atts(array(
-		'quiz' => 0
-	), $atts));
-
-	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->quizCreator->set_id($quiz);
-	date_default_timezone_set(get_option('timezone_string'));
-
-	/*
-	Code before loading the quiz
-	*/
-
-	//Variables needed throughout script
-	$mlw_quiz_id = intval($quiz);
-	$GLOBALS['mlw_qmn_quiz'] = $mlw_quiz_id;
-	$mlw_display = "";
-	global $wpdb;
-	$mlw_qmn_isAllowed = true;
-	$mlw_qmn_section_count = 1;
-	$mlw_qmn_section_limit = 0;
-
-
-	//Load quiz
-	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
-	$mlw_quiz_options = $wpdb->get_results($sql);
-
-	foreach($mlw_quiz_options as $mlw_eaches) {
-		$mlw_quiz_options = $mlw_eaches;
-		break;
-	}
-
-	$mlw_qmn_quiz_options_array = array(
-		'quiz_name' => $mlw_quiz_options->quiz_name,
-		'quiz_id' => $mlw_quiz_options->quiz_id
-	);
-
-	//Check if user is required to be checked in
-	if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
+	public function create_answer_array($questions)
 	{
-		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
-		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
-		$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-		$mlw_display = $mlw_message;
-		$mlw_display .= wp_login_form( array('echo' => false) );
-		return $mlw_display;
-		$mlw_qmn_isAllowed = false;
-	}
-
-	//Check if date is inside scheduled timeframe
-	if (is_serialized($mlw_quiz_options->scheduled_timeframe) && is_array(@unserialize($mlw_quiz_options->scheduled_timeframe)))
-	{
-		$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
-		if ($qmn_scheduled_timeframe["start"] != '' && $qmn_scheduled_timeframe["end"] != '')
-		{
-			$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
-			$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
-			if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
+		//Load and prepare answer arrays
+		$mlw_qmn_answer_arrays = array();
+		foreach($questions as $mlw_question_info) {
+			if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
 			{
-				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
-				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
-				$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-				$mlw_display = $mlw_message;
-				return $mlw_display;
-				$mlw_qmn_isAllowed = false;
+				$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
+				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+			}
+			else
+			{
+				$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
+				$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
+				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
+					array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
+					array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
+					array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
+					array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
+					array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
+					array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
 			}
 		}
+		return $mlw_qmn_answer_arrays;
 	}
 
-	//Check to see if there is limit on the amount of tries
-	if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
+	public function display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
 	{
-		$current_user = wp_get_current_user();
-		$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE email='%s' AND deleted='0' AND quiz_id=%d", $current_user->user_email, $mlw_quiz_id ) );
-		if ($mlw_qmn_user_try_count >= $mlw_quiz_options->total_user_tries) { $mlw_qmn_isAllowed = false; }
-	}
-
-
-	//Load questions
-	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_questions" . " WHERE quiz_id=".$mlw_quiz_id." AND deleted='0' ";
-	if ($mlw_quiz_options->randomness_order == 0)
-	{
-		$sql .= "ORDER BY question_order ASC";
-	}
-	if ($mlw_quiz_options->randomness_order == 1 || $mlw_quiz_options->randomness_order == 2)
-	{
-		$sql .= "ORDER BY rand()";
-	}
-	if ($mlw_quiz_options->question_from_total != 0)
-	{
-		$sql .= " LIMIT ".$mlw_quiz_options->question_from_total;
-	}
-	$mlw_questions = $wpdb->get_results($sql);
-
-
-	//Load and prepare answer arrays
-	$mlw_qmn_answer_arrays = array();
-	foreach($mlw_questions as $mlw_question_info) {
-		if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
+		global $qmn_allowed_visit;
+		$quiz_display = '';
+		$quiz_display = apply_filters('qmn_begin_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		if (!$qmn_allowed_visit)
 		{
-			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+			return $quiz_display;
+		}
+		wp_enqueue_script( 'json2' );
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-effects-core' );
+		wp_enqueue_script( 'jquery-effects-slide' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-button' );
+		wp_enqueue_script( 'jquery-ui-tooltip' );
+		wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+
+		wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
+		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
+		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+
+		if ($qmn_quiz_options->theme_selected == "default")
+		{
+			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
 		}
 		else
 		{
-			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
-			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
-				array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
-				array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
-				array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
-				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
-				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
-				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
+			echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$qmn_quiz_options->theme_selected)."' rel='stylesheet' />";
 		}
+
+		$qmn_total_questions = 0;
+		$mlw_qmn_section_count = 1;
+		$mlw_qmn_section_limit = 0;
+
+		$quiz_display .= "<div class='mlw_qmn_quiz'>";
+		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
+		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
+		$quiz_display .= $this->display_begin_section($qmn_quiz_options, $qmn_array_for_variables);
+		$quiz_display .= $this->display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers);
+		$quiz_display .= $this->display_comment_section();
+		$quiz_display .= $this->display_end_section();
+
+		$quiz_display .= "<span style='display: none;'>If you are human, leave this field blank or you will be considered spam:</span>";
+		$quiz_display .= "<input style='display: none;' type='text' name='email' id='email' />";
+		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
+		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
+		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
+		$quiz_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
+		$quiz_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
+		$quiz_display .= "</form>";
+		$quiz_display .= "</div>";
+		$quiz_display .= "</div>";
+
+		return $quiz_display;
 	}
 
+	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
+	{
+		$section_display = "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
 
-	//Variables to load if quiz has been taken
-	if (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
+		$message_before = htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES);
+		$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
+
+		$section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
+		$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
+
+		if ($qmn_quiz_options->contact_info_location == 0)
+		{
+			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
+		}
+		$section_display .= "</div>";
+		return $section_display;
+	}
+
+	public function display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers)
+	{
+
+	}
+
+	public function display_comment_section()
+	{
+
+	}
+
+	public function display_end_section()
+	{
+
+	}
+
+	public function display_results()
 	{
 		$mlw_success = $_POST["complete_quiz"];
 		$mlw_user_name = isset($_POST["mlwUserName"]) ? $_POST["mlwUserName"] : 'None';
@@ -179,124 +195,21 @@ function mlw_quiz_shortcode($atts)
 		$mlw_qmn_timer = isset($_POST["timer"]) ? $_POST["timer"] : 0;
 		$mlw_spam_email = $_POST["email"];
 	}
-
-	wp_enqueue_script( 'json2' );
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-effects-core' );
-	wp_enqueue_script( 'jquery-effects-slide' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-ui-tooltip' );
-	wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
-
-	wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
-	wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-
-	if ($mlw_quiz_options->theme_selected == "default")
-	{
-		echo "<style type='text/css'>".$mlw_quiz_options->quiz_stye."</style>";
-	}
-	else
-	{
-		echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$mlw_quiz_options->theme_selected)."' rel='stylesheet' />";
-	}
-
-	/*
-	The following code is for displaying the quiz and completion screen
-	*/
-
-	//If there is no quiz for the shortcode provided
-	if ($mlw_quiz_options->quiz_name == "")
-	{
-		$mlw_display .= "It appears that this quiz is not set up correctly.";
-		return $mlw_display;
-	}
+}
 
 
+function mlw_quiz_shortcode($atts)
+{
+
+	//Variables needed throughout script
+	$mlw_quiz_id = intval($quiz);
+	$GLOBALS['mlw_qmn_quiz'] = $mlw_quiz_id;
 
 	//Display Quiz
 	if (!isset($_POST["complete_quiz"]) && $mlw_quiz_options->quiz_name != "" && $mlw_qmn_isAllowed)
 	{
-		//Check if total entries are limited
-		if ( $mlw_quiz_options->limit_total_entries != 0 )
-		{
-			$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_results WHERE deleted='0' AND quiz_id=%d", $mlw_quiz_id ) );
-			if ($mlw_qmn_entries_count >= $mlw_quiz_options->limit_total_entries)
-			{
-				$mlw_message = htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES);
-				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
-				$mlw_display = $mlw_message;
-				return $mlw_display;
-				$mlw_qmn_isAllowed = false;
-			}
-		}
-		$mlw_qmn_total_questions = 0;
-		//Calculate number of pages if pagination is turned on
-		if ($mlw_quiz_options->pagination != 0)
-		{
-			$mlw_qmn_section_limit = 2 + count($mlw_questions);
-			if ($mlw_quiz_options->comment_section == 0)
-			{
-				$mlw_qmn_section_limit = $mlw_qmn_section_limit + 1;
-			}
 
-			//Gather text for pagination buttons
-			$mlw_qmn_pagination_text = "";
-			if (is_serialized($mlw_quiz_options->pagination_text) && is_array(@unserialize($mlw_quiz_options->pagination_text)))
-			{
-				$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
-			}
-			else
-			{
-				$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
-			}
-			?>
-			<script type="text/javascript">
-				var qmn_pagination = <?php echo $mlw_quiz_options->pagination; ?>;
-				var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
-				var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
-				var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
-			</script>
-			<?php
-			wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'js/qmn_pagination.js' , __FILE__ ) );
-		}
-		if ($mlw_quiz_options->timer_limit != 0)
-		{
-			?>
-			<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
-			<script type="text/javascript">
-				var qmn_quiz_id = <?php echo $mlw_quiz_id; ?>;
-				var qmn_timer_limit = <?php echo $mlw_quiz_options->timer_limit; ?>;
-			</script>
-			<?php
-			wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'js/qmn_timer.js' , __FILE__ ) );
-		}
 
-		//Update the quiz views
-		$mlw_views = $mlw_quiz_options->quiz_views;
-		$mlw_views += 1;
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views='".$mlw_views."' WHERE quiz_id=".$mlw_quiz_id;
-		$results = $wpdb->query( $update );
-
-		if ( $mlw_quiz_options->pagination != 0) { $mlw_display .= "<style>.quiz_section { display: none; }</style>"; }
-
-		//Begin the quiz
-		$mlw_display .= "<div class='mlw_qmn_quiz'>";
-		$mlw_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
-		$mlw_display .= "<span id='mlw_top_of_quiz'></span>";
-		$mlw_display .= "<div class='quiz_section  quiz_begin slide".$mlw_qmn_section_count."'>";
-		$mlw_message_before = htmlspecialchars_decode($mlw_quiz_options->message_before, ENT_QUOTES);
-		$mlw_message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message_before, $mlw_qmn_quiz_options_array);
-		$mlw_display .= "<span class='mlw_qmn_message_before'>".$mlw_message_before."</span><br />";
-		$mlw_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
-
-		if ($mlw_quiz_options->contact_info_location == 0)
-		{
-			$mlw_display .= mlwDisplayContactInfo($mlw_quiz_options);
-		}
-		$mlw_display .= "</div>";
 
 		//Display the questions
 		foreach($mlw_questions as $mlw_question) {
@@ -652,16 +565,7 @@ function mlw_quiz_shortcode($atts)
 	        do_action('mlw_qmn_end_quiz_section');
 	        $mlw_display .= ob_get_contents();
 	    ob_end_clean();
-		$mlw_display .= "<span style='display: none;'>If you are human, leave this field blank or you will be considered spam:</span>";
-		$mlw_display .= "<input style='display: none;' type='text' name='email' id='email' />";
-		$mlw_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$mlw_qmn_total_questions."'/>";
-		$mlw_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
-		$mlw_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
-		$mlw_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($mlw_quiz_options->submit_button_text, ENT_QUOTES))."' />";
-		$mlw_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
-		$mlw_display .= "</form>";
-		$mlw_display .= "</div>";
-		$mlw_display .= "</div>";
+
 
 	}
 	//Display Completion Screen
@@ -1209,6 +1113,117 @@ EOC;
 	}
 return $mlw_display;
 }
+
+
+//Check if user is required to be checked in
+if ( $mlw_quiz_options->require_log_in == 1 && !is_user_logged_in() )
+{
+	$mlw_message = htmlspecialchars_decode($mlw_quiz_options->require_log_in_text, ENT_QUOTES);
+	$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+	$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+	$mlw_display = $mlw_message;
+	$mlw_display .= wp_login_form( array('echo' => false) );
+	return $mlw_display;
+	$mlw_qmn_isAllowed = false;
+}
+
+//Check if date is inside scheduled timeframe
+if (is_serialized($mlw_quiz_options->scheduled_timeframe) && is_array(@unserialize($mlw_quiz_options->scheduled_timeframe)))
+{
+	$qmn_scheduled_timeframe = @unserialize($mlw_quiz_options->scheduled_timeframe);
+	if ($qmn_scheduled_timeframe["start"] != '' && $qmn_scheduled_timeframe["end"] != '')
+	{
+		$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
+		$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
+		if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
+		{
+			$mlw_message = htmlspecialchars_decode($mlw_quiz_options->scheduled_timeframe_text, ENT_QUOTES);
+			$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+			$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
+			$mlw_display = $mlw_message;
+			return $mlw_display;
+			$mlw_qmn_isAllowed = false;
+		}
+	}
+}
+
+//Check to see if there is limit on the amount of tries
+if ( $mlw_quiz_options->total_user_tries != 0 && is_user_logged_in() )
+{
+	$current_user = wp_get_current_user();
+	$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE email='%s' AND deleted='0' AND quiz_id=%d", $current_user->user_email, $mlw_quiz_id ) );
+	if ($mlw_qmn_user_try_count >= $mlw_quiz_options->total_user_tries) { $mlw_qmn_isAllowed = false; }
+}
+
+//If there is no quiz for the shortcode provided
+if ($mlw_quiz_options->quiz_name == "")
+{
+	$mlw_display .= "It appears that this quiz is not set up correctly.";
+	return $mlw_display;
+}
+
+if ( $mlw_quiz_options->limit_total_entries != 0 )
+{
+	$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_results WHERE deleted='0' AND quiz_id=%d", $mlw_quiz_id ) );
+	if ($mlw_qmn_entries_count >= $mlw_quiz_options->limit_total_entries)
+	{
+		$mlw_message = htmlspecialchars_decode($mlw_quiz_options->limit_total_entries_text, ENT_QUOTES);
+		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $mlw_qmn_quiz_options_array);
+		$mlw_display = $mlw_message;
+		return $mlw_display;
+		$mlw_qmn_isAllowed = false;
+	}
+}
+
+if ( $mlw_quiz_options->pagination != 0) { $mlw_display .= "<style>.quiz_section { display: none; }</style>"; }
+
+//Calculate number of pages if pagination is turned on
+if ($mlw_quiz_options->pagination != 0)
+{
+	$mlw_qmn_section_limit = 2 + count($mlw_questions);
+	if ($mlw_quiz_options->comment_section == 0)
+	{
+		$mlw_qmn_section_limit = $mlw_qmn_section_limit + 1;
+	}
+
+	//Gather text for pagination buttons
+	$mlw_qmn_pagination_text = "";
+	if (is_serialized($mlw_quiz_options->pagination_text) && is_array(@unserialize($mlw_quiz_options->pagination_text)))
+	{
+		$mlw_qmn_pagination_text = @unserialize($mlw_quiz_options->pagination_text);
+	}
+	else
+	{
+		$mlw_qmn_pagination_text = array('Previous', $mlw_quiz_options->pagination_text);
+	}
+	?>
+	<script type="text/javascript">
+		var qmn_pagination = <?php echo $mlw_quiz_options->pagination; ?>;
+		var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
+		var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
+		var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
+	</script>
+	<?php
+	wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'js/qmn_pagination.js' , __FILE__ ) );
+}
+if ($mlw_quiz_options->timer_limit != 0)
+{
+	?>
+	<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
+	<script type="text/javascript">
+		var qmn_quiz_id = <?php echo $mlw_quiz_id; ?>;
+		var qmn_timer_limit = <?php echo $mlw_quiz_options->timer_limit; ?>;
+	</script>
+	<?php
+	wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'js/qmn_timer.js' , __FILE__ ) );
+}
+
+//Update the quiz views
+$mlw_views = $mlw_quiz_options->quiz_views;
+$mlw_views += 1;
+$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views='".$mlw_views."' WHERE quiz_id=".$mlw_quiz_id;
+$results = $wpdb->query( $update );
+
 
 
 /*
