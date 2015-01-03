@@ -111,7 +111,7 @@ class MLWQuizMasterNext
 		$this->quizCreator = new QMNQuizCreator();
 		
 		include("includes/qmn_helper.php");
-		$this->$pluginHelper = new QMNPluginHelper();
+		$this->pluginHelper = new QMNPluginHelper();
 	}
 	
 	/**
