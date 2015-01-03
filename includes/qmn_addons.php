@@ -2,7 +2,7 @@
 function qmn_addons_page()
 {
 	global $mlwQuizMasterNext;
-    $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'qmn_available_addons';
+    $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'available-addons';
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 	<div class="wrap">
@@ -16,7 +16,7 @@ function qmn_addons_page()
 				{
 					$active_class = 'nav-tab-active';
 				}
-				echo "<a href=\"?page=sandbox_theme_options&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+				echo "<a href=\"?page=qmn_addons&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
 			}
 			?>
 		</h2>
@@ -34,4 +34,19 @@ function qmn_addons_page()
 	</div>
 	<?php
 }
+
+
+function qmn_generate_available_addons()
+{
+	?>
+	<h3>Available Addons</h3>
+	<?php
+}
+
+function qmn_avaiable_addons_tab()
+{
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab("Available Addons", "qmn_generate_available_addons");
+}
+add_action("plugins_loaded", 'qmn_avaiable_addons_tab');
 ?>
