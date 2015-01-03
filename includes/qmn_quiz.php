@@ -1,7 +1,54 @@
 <?php
-/*
-This function is the very heart of the plugin. This function displays the quiz to the user as well as handles all the scripts that are part of the quiz.  Please be very careful if you are editing this script without my assistance.
-*/
+class QMNQuizManager
+{
+	public function __construct()
+	{
+		$this->add_hooks();
+	}
+	public function add_hooks()
+	{
+		add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
+	}
+	
+	public function display_shortcode($atts)
+	{
+		extract(shortcode_atts(array(
+			'quiz' => 0
+		), $atts));
+		
+		global $wpdb;
+		global $mlwQuizMasterNext;
+		global $qmn_allowed_visit = true;
+		$mlwQuizMasterNext->quizCreator->set_id($quiz);
+		date_default_timezone_set(get_option('timezone_string'));
+		$return_display = '';
+		$mlw_qmn_section_count = 1;
+		$mlw_qmn_section_limit = 0;
+		$mlw_quiz_options = $this->load_quiz_options($quiz);
+	}
+	
+	public function load_quiz_options($quiz_id)
+	{
+		return $wpdb->get_row($wpdb->prepare('SELECT * FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $quiz_id));
+	}
+	
+	public function load_questions($quiz_id, $quiz_options)
+	{
+		$order_by_sql = "ORDER BY question_order ASC";
+		$limit_sql = '';
+		if ($quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2)
+		{
+			$order_by_sql = "ORDER BY rand()";
+		}
+		if ($quiz_options->question_from_total != 0)
+		{
+			$limit_sql = " LIMIT ".$mlw_quiz_options->question_from_total;
+		}
+		return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE quiz_id=%d AND deleted=0 ".$order_by_sql.$limit_sql, $quiz_id));
+	}
+}
+
+
 function mlw_quiz_shortcode($atts)
 {
 	extract(shortcode_atts(array(
