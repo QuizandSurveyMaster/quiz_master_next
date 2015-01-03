@@ -1,0 +1,18 @@
+.qmn_addons
+{
+	float: left;
+	width: 300px;
+	height: 300px;
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin: 10px;
+	position: relative;
+}
+.qmn_addons_title
+{
+	font-size: 15px;
+}
+.qmn_addons_desc
+{
+
+}
