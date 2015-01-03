@@ -85,25 +85,4 @@ function mlw_generate_quiz_options()
 	</div>
 <?php
 }
-
-add_action('mlw_qmn_options_tab', 'mlw_options_questions_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_text_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_option_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_leaderboard_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_certificate_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_emails_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_results_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_styling_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_tools_tab');
-add_action('mlw_qmn_options_tab', 'mlw_options_preview_tab');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_questions_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_text_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_option_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_leaderboard_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_certificate_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_emails_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_results_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_styling_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_tools_tab_content');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
 ?>
