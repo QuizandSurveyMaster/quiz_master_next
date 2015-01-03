@@ -85,6 +85,16 @@ class MLWQuizMasterNext
 		include("includes/qmn_adverts.php");
 		include("includes/qmn_help.php");
 		include("includes/qmn_dashboard_widgets.php");
+		include("includes/qmn_options_questions_tab.php");
+		include("includes/qmn_options_text_tab.php");
+		include("includes/qmn_options_option_tab.php");
+		include("includes/qmn_options_leaderboard_tab.php");
+		include("includes/qmn_options_certificate_tab.php");
+		include("includes/qmn_options_email_tab.php");
+		include("includes/qmn_options_results_page_tab.php");
+		include("includes/qmn_options_style_tab.php");
+		include("includes/qmn_options_tools_tab.php");
+		include("includes/qmn_options_preview_tab.php");
 		
 		include("includes/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
