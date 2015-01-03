@@ -1,8 +1,10 @@
 <?php
-function mlw_options_questions_tab()
+function qmn_settings_questions_tab()
 {
-	echo "<li><a href=\"#tabs-1\">Questions</a></li>";
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Questions", 'mlw_options_questions_tab_content');
 }
+add_action("plugins_loaded", 'qmn_settings_questions_tab');
 
 function mlw_options_questions_tab_content()
 {
@@ -762,7 +764,4 @@ function mlw_options_questions_tab_content()
 	</div>
 	<?php
 }
-
-add_action('mlw_qmn_options_tab', 'mlw_options_questions_tab');
-add_action('mlw_qmn_options_tab_content', 'mlw_options_questions_tab_content');
 ?>
