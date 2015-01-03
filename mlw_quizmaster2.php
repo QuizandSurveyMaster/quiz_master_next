@@ -38,6 +38,14 @@ class MLWQuizMasterNext
 	public $alertManager;
 	
 	/**
+	 * QMN Plugin Helper Object
+	 *
+	 * @var object
+	 * @since 4.0.0
+	 */
+	public $pluginHelper;
+	
+	/**
 	 * QMN Quiz Creator Object
 	 *
 	 * @var object
@@ -102,6 +110,9 @@ class MLWQuizMasterNext
 		
 		include("includes/qmn_quiz_creator.php");
 		$this->quizCreator = new QMNQuizCreator();
+		
+		include("includes/qmn_helper.php");
+		$this->pluginHelper = new QMNPluginHelper();
 	}
 	
 	/**
