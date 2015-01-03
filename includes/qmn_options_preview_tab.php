@@ -14,4 +14,6 @@ function mlw_options_preview_tab_content()
 	</div>
 	<?php
 }
+add_action('mlw_qmn_options_tab', 'mlw_options_preview_tab');
+add_action('mlw_qmn_options_tab_content', 'mlw_options_preview_tab_content');
 ?>
