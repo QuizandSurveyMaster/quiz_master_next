@@ -1,8 +1,9 @@
 <?php
 function qmn_addons_page()
 {
+	global $mlwQuizMasterNext;
     $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'qmn_available_addons';
-    $tab_array = ////retrieve from helper class;
+    $tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 	<div class="wrap">
 		<h2>Quiz Master Next Addon Settings</h2>
@@ -21,7 +22,7 @@ function qmn_addons_page()
 		</h2>
 		<div>
 		<?php
-			foreach($tab_array as $tab)//foreach through tab array
+			foreach($tab_array as $tab)
 			{
 				if ($active_tab == $tab['slug'])
 				{
