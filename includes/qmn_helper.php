@@ -12,9 +12,9 @@ class QMNPluginHelper
 	{
 		$slug = strtolower(str_replace( " ", "-", $title));
 		$new_tab = array(
-			'title' = $title,
-			'function' = $function,
-			'slug' = $slug
+			'title' => $title,
+			'function' => $function,
+			'slug' => $slug
 		);
 		$this->addon_tabs[] = $new_tab;
 	}
