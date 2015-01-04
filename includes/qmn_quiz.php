@@ -500,7 +500,7 @@ class QMNQuizManager
 			}
 			if ($mlw_question->hints != "")
 			{
-				$question_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" class='mlw_qmn_hint_link'>Hint</span>";
+				$question_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" class='mlw_qmn_hint_link'>".__('Hint', 'quiz-master-next')."</span>";
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
@@ -1205,7 +1205,7 @@ function qmn_quiz_name_check($display, $qmn_quiz_options, $qmn_array_for_variabl
 	if ($qmn_quiz_options->quiz_name == "")
 	{
 		$qmn_allowed_visit = false;
-		$display .= "It appears that this quiz is not set up correctly.";
+		$display .= __("It appears that this quiz is not set up correctly.", 'quiz-master-next');
 	}
 	return $display;
 }
@@ -1256,7 +1256,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 		}
 		else
 		{
-			$mlw_qmn_pagination_text = array('Previous', $qmn_quiz_options->pagination_text);
+			$mlw_qmn_pagination_text = array(__('Previous', 'quiz-master-next'), $qmn_quiz_options->pagination_text);
 		}
 		?>
 		<script type="text/javascript">
