@@ -2,7 +2,7 @@
 function qmn_settings_tools_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Tools", 'mlw_options_tools_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Tools", 'quiz-master-next'), 'mlw_options_tools_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_tools_tab');
 function mlw_options_tools_tab_content()
@@ -19,8 +19,8 @@ function mlw_options_tools_tab_content()
 		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
 		if ($mlw_reset_sql_results != false)
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('The stats has been reset successfully.', 'success');
-			
+			$mlwQuizMasterNext->alertManager->newAlert(__('The stats has been reset successfully.', 'quiz-master-next'), 'success');
+
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
@@ -28,14 +28,14 @@ function mlw_options_tools_tab_content()
 			$insert = "INSERT INTO " . $table_name .
 				"(trail_id, action_user, action, time) " .
 				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
+			$results = $wpdb->query( $insert );
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0010.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(printf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0010'), 'error');
 		}
 	}
-	
+
 	if (isset($_GET["quiz_id"]))
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
@@ -56,26 +56,24 @@ function mlw_options_tools_tab_content()
 					}
 				}
 			});
-		
+
 			jQuery('#mlw_reset_stats_button').click(function() {
 				jQuery('#mlw_reset_stats_dialog').dialog('open');
 				return false;
 		}	);
 		});
 	</script>
-		<p>Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken). </p>
-		<button class="button" id="mlw_reset_stats_button">Reset Quiz Views And Taken Stats</button>
+		<p><?php _e('Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken).', 'quiz-master-next'); ?></p>
+		<button class="button" id="mlw_reset_stats_button"><?php _e('Reset Quiz Views And Taken Stats', 'quiz-master-next'); ?></button>
 		<?php do_action('mlw_qmn_quiz_tools'); ?>
 		<div id="mlw_reset_stats_dialog" title="Reset Stats For This Quiz" style="display:none;">
-		<p>Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone.</p>
-		<?php
-			echo "<form action='' method='post'>";
-			echo "<input type='hidden' name='mlw_reset_quiz_stats' value='confirmation' />";
-			echo "<input type='hidden' name='mlw_reset_quiz_id' value='".$quiz_id."' />";
-			echo "<p class='submit'><input type='submit' class='button-primary' value='Reset All Stats For Quiz' /></p>";
-			echo "</form>";
-		?>
-		</div>		
+			<p><?php _e('Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone.', 'quiz-master-next'); ?></p>
+			<form action='' method='post'>
+				<input type='hidden' name='mlw_reset_quiz_stats' value='confirmation' />
+				<input type='hidden' name='mlw_reset_quiz_id' value='<?php echo $quiz_id; ?>' />
+				<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Reset All Stats For Quiz', 'quiz-master-next'); ?>' /></p>
+			</form>
+		</div>
 	</div>
 	<?php
 }
