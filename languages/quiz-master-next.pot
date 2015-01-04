@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
-"POT-Creation-Date: 2015-01-04 16:23-0500\n"
+"POT-Creation-Date: 2015-01-04 17:59-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name <you@example.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Success!"
 msgstr ""
 
-#: includes/qmn_alerts.php:22 includes/qmn_options_questions_tab.php:482
+#: includes/qmn_alerts.php:22 includes/qmn_options_questions_tab.php:480
 #: includes/qmn_quiz_options.php:77 includes/qmn_results_details.php:301
 msgid "Error!"
 msgstr ""
@@ -264,8 +264,8 @@ msgstr ""
 #: includes/qmn_options_option_tab.php:201
 #: includes/qmn_options_option_tab.php:208
 #: includes/qmn_options_option_tab.php:215
-#: includes/qmn_options_questions_tab.php:604
-#: includes/qmn_options_questions_tab.php:733
+#: includes/qmn_options_questions_tab.php:603
+#: includes/qmn_options_questions_tab.php:732
 #: includes/qmn_options_results_page_tab.php:203
 msgid "Yes"
 msgstr ""
@@ -283,8 +283,8 @@ msgstr ""
 #: includes/qmn_options_option_tab.php:202
 #: includes/qmn_options_option_tab.php:209
 #: includes/qmn_options_option_tab.php:216
-#: includes/qmn_options_questions_tab.php:605
-#: includes/qmn_options_questions_tab.php:734
+#: includes/qmn_options_questions_tab.php:604
+#: includes/qmn_options_questions_tab.php:733
 #: includes/qmn_options_results_page_tab.php:203
 msgid "No"
 msgstr ""
@@ -705,224 +705,224 @@ msgstr ""
 msgid "The question has been created successfully."
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:370
-#: includes/qmn_options_questions_tab.php:377
-#: includes/qmn_options_questions_tab.php:526
-#: includes/qmn_options_questions_tab.php:658
+#: includes/qmn_options_questions_tab.php:367
+#: includes/qmn_options_questions_tab.php:374
+#: includes/qmn_options_questions_tab.php:522
+#: includes/qmn_options_questions_tab.php:657
 msgid "Answer"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:397
-#: includes/qmn_options_questions_tab.php:628
+#: includes/qmn_options_questions_tab.php:394
+#: includes/qmn_options_questions_tab.php:627
 msgid "Add Question"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:425
-#: includes/qmn_options_questions_tab.php:593
-#: includes/qmn_options_questions_tab.php:622
-#: includes/qmn_options_questions_tab.php:722
+#: includes/qmn_options_questions_tab.php:422
+#: includes/qmn_options_questions_tab.php:592
+#: includes/qmn_options_questions_tab.php:621
+#: includes/qmn_options_questions_tab.php:721
 msgid "Question Order"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:426
-#: includes/qmn_options_questions_tab.php:567
-#: includes/qmn_options_questions_tab.php:623
-#: includes/qmn_options_questions_tab.php:696
+#: includes/qmn_options_questions_tab.php:423
+#: includes/qmn_options_questions_tab.php:563
+#: includes/qmn_options_questions_tab.php:622
+#: includes/qmn_options_questions_tab.php:695
 msgid "Question Type"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:427
-#: includes/qmn_options_questions_tab.php:504
-#: includes/qmn_options_questions_tab.php:624
-#: includes/qmn_options_questions_tab.php:638
+#: includes/qmn_options_questions_tab.php:424
+#: includes/qmn_options_questions_tab.php:500
+#: includes/qmn_options_questions_tab.php:623
+#: includes/qmn_options_questions_tab.php:637
 msgid "Question"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:449
+#: includes/qmn_options_questions_tab.php:447
 msgid "Multiple Choice"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:452
+#: includes/qmn_options_questions_tab.php:450
 msgid "Horizontal Multiple Choice"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:455
+#: includes/qmn_options_questions_tab.php:453
 msgid "Drop Down"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:458
+#: includes/qmn_options_questions_tab.php:456
 msgid "Small Open Answer"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:461
+#: includes/qmn_options_questions_tab.php:459
 msgid "Multiple Response"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:464
+#: includes/qmn_options_questions_tab.php:462
 msgid "Large Open Answer"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:467
-#: includes/qmn_options_questions_tab.php:577
-#: includes/qmn_options_questions_tab.php:706
+#: includes/qmn_options_questions_tab.php:465
+#: includes/qmn_options_questions_tab.php:573
+#: includes/qmn_options_questions_tab.php:705
 msgid "Text Block"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:470
-#: includes/qmn_options_questions_tab.php:578
-#: includes/qmn_options_questions_tab.php:707
+#: includes/qmn_options_questions_tab.php:468
+#: includes/qmn_options_questions_tab.php:574
+#: includes/qmn_options_questions_tab.php:706
 msgid "Number"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:473
-#: includes/qmn_options_questions_tab.php:579
-#: includes/qmn_options_questions_tab.php:708
+#: includes/qmn_options_questions_tab.php:471
+#: includes/qmn_options_questions_tab.php:575
+#: includes/qmn_options_questions_tab.php:707
 msgid "Accept"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:476
-#: includes/qmn_options_questions_tab.php:580
-#: includes/qmn_options_questions_tab.php:709
+#: includes/qmn_options_questions_tab.php:474
+#: includes/qmn_options_questions_tab.php:576
+#: includes/qmn_options_questions_tab.php:708
 msgid "Captcha"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:479
+#: includes/qmn_options_questions_tab.php:477
 msgid "Horizontal Multiple Response"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:489 includes/qmn_quiz_admin.php:242
+#: includes/qmn_options_questions_tab.php:487 includes/qmn_quiz_admin.php:240
 msgid "Edit"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:489 includes/qmn_quiz_admin.php:244
-#: includes/qmn_quiz_admin.php:328
+#: includes/qmn_options_questions_tab.php:487 includes/qmn_quiz_admin.php:242
+#: includes/qmn_quiz_admin.php:326
 msgid "Duplicate"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:489
+#: includes/qmn_options_questions_tab.php:487
 #: includes/qmn_options_results_page_tab.php:203
-#: includes/qmn_quiz_admin.php:245
+#: includes/qmn_quiz_admin.php:243
 msgid "Delete"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:515
-#: includes/qmn_options_questions_tab.php:649
+#: includes/qmn_options_questions_tab.php:511
+#: includes/qmn_options_questions_tab.php:648
 msgid "Answers"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:516
-#: includes/qmn_options_questions_tab.php:650
+#: includes/qmn_options_questions_tab.php:512
+#: includes/qmn_options_questions_tab.php:649
 msgid "Points Worth"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:517
-#: includes/qmn_options_questions_tab.php:651
+#: includes/qmn_options_questions_tab.php:513
+#: includes/qmn_options_questions_tab.php:650
 msgid "Correct Answer"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:544
-#: includes/qmn_options_questions_tab.php:673
+#: includes/qmn_options_questions_tab.php:540
+#: includes/qmn_options_questions_tab.php:672
 msgid "Add New Answer!"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:549
-#: includes/qmn_options_questions_tab.php:678
+#: includes/qmn_options_questions_tab.php:545
+#: includes/qmn_options_questions_tab.php:677
 msgid "Correct Answer Info"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:556
-#: includes/qmn_options_questions_tab.php:685 includes/qmn_quiz.php:511
+#: includes/qmn_options_questions_tab.php:552
+#: includes/qmn_options_questions_tab.php:684 includes/qmn_quiz.php:511
 msgid "Hint"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:570
-#: includes/qmn_options_questions_tab.php:699
+#: includes/qmn_options_questions_tab.php:566
+#: includes/qmn_options_questions_tab.php:698
 msgid "Normal Multiple Choice (Vertical Radio)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:571
-#: includes/qmn_options_questions_tab.php:700
+#: includes/qmn_options_questions_tab.php:567
+#: includes/qmn_options_questions_tab.php:699
 msgid "Horizontal Multiple Choice (Horizontal Radio)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:572
-#: includes/qmn_options_questions_tab.php:701
+#: includes/qmn_options_questions_tab.php:568
+#: includes/qmn_options_questions_tab.php:700
 msgid "Drop Down (Select)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:573
-#: includes/qmn_options_questions_tab.php:702
+#: includes/qmn_options_questions_tab.php:569
+#: includes/qmn_options_questions_tab.php:701
 msgid "Open Answer (Text Input)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:574
-#: includes/qmn_options_questions_tab.php:703
+#: includes/qmn_options_questions_tab.php:570
+#: includes/qmn_options_questions_tab.php:702
 msgid "Open Answer (Large Text Input)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:575
-#: includes/qmn_options_questions_tab.php:704
+#: includes/qmn_options_questions_tab.php:571
+#: includes/qmn_options_questions_tab.php:703
 msgid "Multiple Response (Checkbox)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:576
-#: includes/qmn_options_questions_tab.php:705
+#: includes/qmn_options_questions_tab.php:572
+#: includes/qmn_options_questions_tab.php:704
 msgid "Horizontal Multiple Response (Checkbox)"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:585
-#: includes/qmn_options_questions_tab.php:714
+#: includes/qmn_options_questions_tab.php:581
+#: includes/qmn_options_questions_tab.php:713
 msgid "Comment Field"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:587
-#: includes/qmn_options_questions_tab.php:716
+#: includes/qmn_options_questions_tab.php:584
+#: includes/qmn_options_questions_tab.php:715
 msgid "Small Text Field"
+msgstr ""
+
+#: includes/qmn_options_questions_tab.php:586
+#: includes/qmn_options_questions_tab.php:716
+msgid "Large Text Field"
 msgstr ""
 
 #: includes/qmn_options_questions_tab.php:588
 #: includes/qmn_options_questions_tab.php:717
-msgid "Large Text Field"
-msgstr ""
-
-#: includes/qmn_options_questions_tab.php:589
-#: includes/qmn_options_questions_tab.php:718
 msgid "None"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:601
-#: includes/qmn_options_questions_tab.php:730
+#: includes/qmn_options_questions_tab.php:600
+#: includes/qmn_options_questions_tab.php:729
 msgid "Required?"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:610
-#: includes/qmn_options_questions_tab.php:739
+#: includes/qmn_options_questions_tab.php:609
+#: includes/qmn_options_questions_tab.php:738
 msgid ""
 "Required currently only works on open answer, number, accept, and captcha "
 "question types"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:612
+#: includes/qmn_options_questions_tab.php:611
 msgid "Edit Question"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:741
+#: includes/qmn_options_questions_tab.php:740
 msgid "Create Question"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:746
-msgid "Are you sure you want to delete question?"
+#: includes/qmn_options_questions_tab.php:745
+msgid "Are you sure you want to delete this question?"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:751
+#: includes/qmn_options_questions_tab.php:750
 msgid "Delete Question"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:756
+#: includes/qmn_options_questions_tab.php:755
 msgid "Are you sure you want to duplicate this question?"
 msgstr ""
 
-#: includes/qmn_options_questions_tab.php:761
+#: includes/qmn_options_questions_tab.php:760
 msgid "Duplicate Question"
 msgstr ""
 
@@ -1186,83 +1186,83 @@ msgstr ""
 msgid "It appears that this quiz is not set up correctly."
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:172 mlw_quizmaster2.php:146
+#: includes/qmn_quiz_admin.php:170 mlw_quizmaster2.php:146
 msgid "Quizzes"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:172
+#: includes/qmn_quiz_admin.php:170
 msgid "Add New"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:177
+#: includes/qmn_quiz_admin.php:175
 #, php-format
 msgid "One quiz"
 msgid_plural "%s quizzes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/qmn_quiz_admin.php:222 includes/qmn_quiz_admin.php:259
-#: includes/qmn_quiz_admin.php:295 includes/qmn_results.php:148
+#: includes/qmn_quiz_admin.php:220 includes/qmn_quiz_admin.php:257
+#: includes/qmn_quiz_admin.php:293 includes/qmn_results.php:148
 msgid "Quiz Name"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:223 includes/qmn_quiz_admin.php:260
+#: includes/qmn_quiz_admin.php:221 includes/qmn_quiz_admin.php:258
 msgid "Quiz Shortcode"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:224 includes/qmn_quiz_admin.php:261
+#: includes/qmn_quiz_admin.php:222 includes/qmn_quiz_admin.php:259
 msgid "Leaderboard Shortcode"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:225 includes/qmn_quiz_admin.php:262
+#: includes/qmn_quiz_admin.php:223 includes/qmn_quiz_admin.php:260
 msgid "Quiz Views"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:226 includes/qmn_quiz_admin.php:263
+#: includes/qmn_quiz_admin.php:224 includes/qmn_quiz_admin.php:261
 msgid "Quiz Taken"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:227 includes/qmn_quiz_admin.php:264
+#: includes/qmn_quiz_admin.php:225 includes/qmn_quiz_admin.php:262
 msgid "Last Modified"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:240
+#: includes/qmn_quiz_admin.php:238
 msgid "Edit Name"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:243
+#: includes/qmn_quiz_admin.php:241
 msgid "Results"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:290
+#: includes/qmn_quiz_admin.php:288
 msgid "Create New Quiz"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:304
+#: includes/qmn_quiz_admin.php:302
 msgid "Create Quiz"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:310
+#: includes/qmn_quiz_admin.php:308
 msgid "Quiz Name:"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:321
+#: includes/qmn_quiz_admin.php:319
 msgid "Duplicate this quiz?"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:323
+#: includes/qmn_quiz_admin.php:321
 msgid "Duplicate questions with quiz"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:325
+#: includes/qmn_quiz_admin.php:323
 msgid "Name Of New Quiz:"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:334
-msgid "Are you sure you want to delete quiz?"
+#: includes/qmn_quiz_admin.php:332
+msgid "Are you sure you want to delete this quiz?"
 msgstr ""
 
-#: includes/qmn_quiz_admin.php:339
+#: includes/qmn_quiz_admin.php:337
 msgid "Delete Quiz"
 msgstr ""
 
