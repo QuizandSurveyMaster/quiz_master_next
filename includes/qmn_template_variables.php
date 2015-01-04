@@ -122,7 +122,10 @@ function mlw_qmn_variable_date($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_certificate_link($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%CERTIFICATE_LINK%" , $mlw_quiz_array["certificate_link"], $content);
+	while (strpos($content, '%CERTIFICATE_LINK%') != false)
+	{
+		$content = str_replace( "%CERTIFICATE_LINK%" , $mlw_quiz_array["certificate_link"], $content);
+	}
 	return $content;
 }
 ?>

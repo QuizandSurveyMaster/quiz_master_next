@@ -9,13 +9,13 @@ Author URI: http://www.mylocalwebstop.com/
 Plugin URI: http://www.mylocalwebstop.com/
 */
 
-/* 
+/*
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 
-Disclaimer of Warranties. 
+Disclaimer of Warranties.
 
-The plugin is provided "as is". My Local Webstop and its suppliers and licensors hereby disclaim all warranties of any kind, 
-express or implied, including, without limitation, the warranties of merchantability, fitness for a particular purpose and non-infringement. 
+The plugin is provided "as is". My Local Webstop and its suppliers and licensors hereby disclaim all warranties of any kind,
+express or implied, including, without limitation, the warranties of merchantability, fitness for a particular purpose and non-infringement.
 Neither My Local Webstop nor its suppliers and licensors, makes any warranty that the plugin will be error free or that access thereto will be continuous or uninterrupted.
 You understand that you install, operate, and unistall the plugin at your own discretion and risk.
 */
@@ -36,7 +36,7 @@ class MLWQuizMasterNext
 	 * @since 3.7.1
 	 */
 	public $alertManager;
-	
+
 	/**
 	 * QMN Plugin Helper Object
 	 *
@@ -44,7 +44,7 @@ class MLWQuizMasterNext
 	 * @since 4.0.0
 	 */
 	public $pluginHelper;
-	
+
 	/**
 	 * QMN Quiz Creator Object
 	 *
@@ -52,7 +52,7 @@ class MLWQuizMasterNext
 	 * @since 3.7.1
 	 */
 	public $quizCreator;
-	
+
 	/**
 	  * Main Construct Function
 	  *
@@ -63,12 +63,12 @@ class MLWQuizMasterNext
 	  * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-	public function __construct() 
+	public function __construct()
 	{
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
-	
+
 	/**
 	  * Load File Dependencies
 	  *
@@ -104,20 +104,20 @@ class MLWQuizMasterNext
 		include("includes/qmn_options_tools_tab.php");
 		include("includes/qmn_options_preview_tab.php");
 		include("includes/qmn_addons.php");
-		
+
 		include("includes/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
-		
+
 		include("includes/qmn_quiz_creator.php");
 		$this->quizCreator = new QMNQuizCreator();
-		
+
 		include("includes/qmn_helper.php");
 		$this->pluginHelper = new QMNPluginHelper();
 	}
-	
+
 	/**
 	  * Add Hooks
-	  * 
+	  *
 	  * Adds functions to relavent hooks and filters
 	  *
 	  * @since 3.6.1
@@ -128,14 +128,13 @@ class MLWQuizMasterNext
 		add_action('admin_menu', array( $this, 'setup_admin_menu'));
 		add_action('admin_init', 'mlw_quiz_update');
 		add_action('widgets_init', create_function('', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");'));
-		add_shortcode('mlw_quizmaster', 'mlw_quiz_shortcode');
 		add_shortcode('mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode');
 		add_action('plugins_loaded',  array( $this, 'setup_translations'));
 	}
-	
+
 	/**
 	  * Setup Admin Menu
-	  * 
+	  *
 	  * Creates the admin menu and pages for the plugin and attaches functions to them
 	  *
 	  * @since 3.6.1
@@ -156,7 +155,7 @@ class MLWQuizMasterNext
 			add_submenu_page(__FILE__, 'QMN About', 'QMN About', 'manage_options', 'mlw_qmn_about', 'mlw_generate_about_page');
 		}
 	}
-	
+
 	/**
 	  * Loads the plugin language files
 	  *
