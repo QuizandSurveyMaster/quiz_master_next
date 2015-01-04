@@ -2,7 +2,7 @@
 function qmn_settings_leaderboard_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Leaderboard", 'mlw_options_leaderboard_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Leaderboard", 'quiz-master-next'), 'mlw_options_leaderboard_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_leaderboard_tab');
 
@@ -21,8 +21,8 @@ function mlw_options_leaderboard_tab_content()
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('The leaderboards has been updated successfully.', 'success');
-			
+			$mlwQuizMasterNext->alertManager->newAlert(__('The leaderboards has been updated successfully.', 'quiz-master-next'), 'success');
+
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
@@ -34,10 +34,10 @@ function mlw_options_leaderboard_tab_content()
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0009.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(printf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0009'), 'error');
 		}
 	}
-	
+
 	if (isset($_GET["quiz_id"]))
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
@@ -45,38 +45,38 @@ function mlw_options_leaderboard_tab_content()
 	}
 	?>
 	<div id="tabs-4" class="mlw_tab_content">
-		<h3>Template Variables</h3>
+		<h3><?php _e('Template Variables', 'quiz-master-next'); ?></h3>
 		<table class="form-table">
 			<tr>
-				<td><strong>%FIRST_PLACE_NAME%</strong> - The name of the user who is in first place</td>
-				<td><strong>%FIRST_PLACE_SCORE%</strong> - The score from the first place's quiz</td>
+				<td><strong>%FIRST_PLACE_NAME%</strong> - <?php _e("The name of the user who is in first place", 'quiz-master-next'); ?></td>
+				<td><strong>%FIRST_PLACE_SCORE%</strong> - <?php _e("The score from the first place's quiz", 'quiz-master-next'); ?></td>
 			</tr>
-		
+
 			<tr>
-				<td><strong>%SECOND_PLACE_NAME%</strong> - The name of the user who is in second place</td>
-				<td><strong>%SECOND_PLACE_SCORE%</strong> - The score from the second place's quiz</td>
+				<td><strong>%SECOND_PLACE_NAME%</strong> - <?php _e("The name of the user who is in second place", 'quiz-master-next'); ?></td>
+				<td><strong>%SECOND_PLACE_SCORE%</strong> - <?php _e("The score from the second place's quiz", 'quiz-master-next'); ?></td>
 			</tr>
-		
+
 			<tr>
-				<td><strong>%THIRD_PLACE_NAME%</strong> - The name of the user who is in third place</td>
-				<td><strong>%THIRD_PLACE_SCORE%</strong> - The score from the third place's quiz</td>
+				<td><strong>%THIRD_PLACE_NAME%</strong> - <?php _e('The name of the user who is in third place', 'quiz-master-next'); ?></td>
+				<td><strong>%THIRD_PLACE_SCORE%</strong> - <?php _e("The score from the third place's quiz", 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%FOURTH_PLACE_NAME%</strong> - The name of the user who is in fourth place</td>
-				<td><strong>%FOURTH_PLACE_SCORE%</strong> - The score from the fourth place's quiz</td>
+				<td><strong>%FOURTH_PLACE_NAME%</strong> - <?php _e('The name of the user who is in fourth place', 'quiz-master-next'); ?></td>
+				<td><strong>%FOURTH_PLACE_SCORE%</strong> - <?php _e("The score from the fourth place's quiz", 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%FIFTH_PLACE_NAME%</strong> - The name of the user who is in fifth place</td>
-				<td><strong>%FIFTH_PLACE_SCORE%</strong> - The score from the fifth place's quiz</td>
+				<td><strong>%FIFTH_PLACE_NAME%</strong> - <?php _e('The name of the user who is in fifth place', 'quiz-master-next'); ?></td>
+				<td><strong>%FIFTH_PLACE_SCORE%</strong> - <?php _e("The score from the fifth place's quiz", 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%QUIZ_NAME%</strong> - The name of the quiz</td>
+				<td><strong>%QUIZ_NAME%</strong> - <?php _e("The name of the quiz", 'quiz-master-next'); ?></td>
 			</tr>
 		</table>
-		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();">Save Leaderboard Options</button>
+		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
 		<?php
 			echo "<form action='' method='post' name='quiz_leaderboard_options_form'>";
 			echo "<input type='hidden' name='save_leaderboard_options' value='confirmation' />";
@@ -85,9 +85,9 @@ function mlw_options_leaderboard_tab_content()
     	<table class="form-table">
 			<tr>
 				<td width="30%">
-					<strong>Leaderboard Template</strong>
+					<strong><?php _e("Leaderboard Template", 'quiz-master-next'); ?></strong>
 					<br />
-					<p>Allowed Variables: </p>
+					<p><?php _e("Allowed Variables:", 'quiz-master-next'); ?></p>
 					<p style="margin: 2px 0">- %QUIZ_NAME%</p>
 					<p style="margin: 2px 0">- %FIRST_PLACE_NAME%</p>
 					<p style="margin: 2px 0">- %FIRST_PLACE_SCORE%</p>
@@ -104,7 +104,7 @@ function mlw_options_leaderboard_tab_content()
 				</td>
 			</tr>
 		</table>
-		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();">Save Leaderboard Options</button>
+		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
 		</form>
 	</div>
 	<?php
