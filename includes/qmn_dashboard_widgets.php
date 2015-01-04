@@ -1,11 +1,11 @@
 <?php
-function qmn_add_dashboard_widget() 
+function qmn_add_dashboard_widget()
 {
-	if ( current_user_can( 'publish_posts' ) ) 
+	if ( current_user_can( 'publish_posts' ) )
 	{
 		wp_add_dashboard_widget(
-			'qmn_snapshot_widget', 
-			'Quiz Master Next Snapshot',
+			'qmn_snapshot_widget',
+			__('Quiz Master Next Snapshot', 'quiz-master-next'),
 			'qmn_snapshot_dashboard_widget'
 		);
 	}
@@ -14,7 +14,7 @@ function qmn_add_dashboard_widget()
 add_action( 'wp_dashboard_setup', 'qmn_add_dashboard_widget' );
 
 
-function qmn_snapshot_dashboard_widget() 
+function qmn_snapshot_dashboard_widget()
 {
 	global $wpdb;
 	$mlw_qmn_today_taken = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".date("Y-m-d")." 00:00:00' AND '".date("Y-m-d")." 23:59:59') AND deleted=0");
@@ -29,17 +29,17 @@ function qmn_snapshot_dashboard_widget()
 	{
 		$mlw_qmn_analyze_today = $mlw_qmn_today_taken * 100;
 	}
-	
+
 	$mlw_this_week =  mktime(0, 0, 0, date("m")  , date("d")-6, date("Y"));
 	$mlw_this_week = date("Y-m-d", $mlw_this_week);
 	$mlw_qmn_this_week_taken = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$mlw_this_week." 00:00:00' AND '".date("Y-m-d")." 23:59:59') AND deleted=0");
-	
+
 	$mlw_last_week_start =  mktime(0, 0, 0, date("m")  , date("d")-13, date("Y"));
 	$mlw_last_week_start = date("Y-m-d", $mlw_last_week_start);
 	$mlw_last_week_end =  mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
 	$mlw_last_week_end = date("Y-m-d", $mlw_last_week_end);
 	$mlw_qmn_last_week_taken = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$mlw_last_week_start." 00:00:00' AND '".$mlw_last_week_end." 23:59:59') AND deleted=0");
-	
+
 	if ($mlw_qmn_last_week_taken != 0)
 	{
 		$mlw_qmn_analyze_week = round((($mlw_qmn_this_week_taken - $mlw_qmn_last_week_taken) / $mlw_qmn_last_week_taken) * 100, 2);
@@ -48,10 +48,10 @@ function qmn_snapshot_dashboard_widget()
 	{
 		$mlw_qmn_analyze_week = $mlw_qmn_this_week_taken * 100;
 	}
-	
+
 	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
 	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
-	
+
 	$mlw_stat_most_popular_quiz = $wpdb->get_row( "SELECT quiz_name FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 ORDER BY quiz_taken Desc LIMIT 1" );
 	$mlw_stat_least_popular_quiz = $wpdb->get_row( "SELECT quiz_name FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 ORDER BY quiz_taken ASC LIMIT 1" );
 	?>
@@ -124,9 +124,9 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_qmn_today_taken; ?></strong>
-				quizzes taken today
+				<?php _e('quizzes taken today', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
-					<?php 
+					<?php
 					echo $mlw_qmn_analyze_today."% ";
 					if ($mlw_qmn_analyze_today >= 0)
 					{
@@ -143,9 +143,9 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_qmn_this_week_taken; ?></strong>
-				quizzes taken last 7 days
+				<?php _e('quizzes taken last 7 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
-					<?php 
+					<?php
 					echo $mlw_qmn_analyze_week."% ";
 					if ($mlw_qmn_analyze_week >= 0)
 					{
@@ -162,25 +162,25 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_total_active_quiz; ?></strong>
-				total active quizzes
+				<?php _e('total active quizzes', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_total_questions; ?></strong>
-				total active questions
+				<?php _e('total active questions', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_most_popular_quiz->quiz_name; ?></strong>
-				most popular quiz
+				<?php _e('most popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo $mlw_stat_least_popular_quiz->quiz_name; ?></strong>
-				least popular quiz
+				<?php _e('least popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 	</ul>
