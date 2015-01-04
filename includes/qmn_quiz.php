@@ -121,10 +121,10 @@ class QMNQuizManager
 
 		?>
 		<script>
-		var email_error = <?php _e('Not a valid e-mail address!', 'quiz-master-next'); ?>;
-		var number_error = <?php _e('This field must be a number!', 'quiz-master-next'); ?>;
-		var incorrect_error = <?php _e('The entered text is not correct!', 'quiz-master-next'); ?>;
-		var empty_error = <?php _e('Please complete all required fields!', 'quiz-master-next'); ?>;
+		var email_error = '<?php _e('Not a valid e-mail address!', 'quiz-master-next'); ?>';
+		var number_error = '<?php _e('This field must be a number!', 'quiz-master-next'); ?>';
+		var incorrect_error = '<?php _e('The entered text is not correct!', 'quiz-master-next'); ?>';
+		var empty_error = '<?php _e('Please complete all required fields!', 'quiz-master-next'); ?>';
 		</script>
 		<?php
 		wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
