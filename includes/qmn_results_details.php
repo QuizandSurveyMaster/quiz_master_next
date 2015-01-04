@@ -201,7 +201,7 @@ EOC;
 						?>
 						<p><?php
 						/* translators: The %s will be replaces with the amount of time the user took on quiz. For example: 5 minutes 34 seconds */
-						echo printf(__('The user took %s to complete this quiz.','quiz-master-next'), $mlw_complete_time);
+						echo sprintf(__('The user took %s to complete this quiz.','quiz-master-next'), $mlw_complete_time);
 						?></p><br />
 						<br />
 						<?php _e('The comments entered into the comment box (if enabled)', 'quiz-master-next'); ?>:<br />

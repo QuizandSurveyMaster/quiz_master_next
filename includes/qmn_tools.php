@@ -87,23 +87,23 @@ function mlw_tools_box()
 	if( $mlw_qmn_audit_page > 0 )
 	{
 		$mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
-		echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+		echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".sprintf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 		if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
 		{
-			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".printf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".sprintf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 		}
 	}
 	else if( $mlw_qmn_audit_page == 0 )
 	{
 	   if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
 	   {
-			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".printf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".sprintf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	   }
 	}
 	else if( $mlw_qmn_audit_left < $mlw_qmn_table_limit )
 	{
 	   $mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
-	   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+	   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".sprintf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	}
 	?>
 	<table class=widefat>
@@ -115,34 +115,23 @@ function mlw_tools_box()
 				<th><?php _e('Time','quiz-master-next'); ?></th>
 			</tr>
 		</thead>
+		<tbody id="the-list">
 
 		<?php
-	$quotes_list = "";
-	$display = "";
 	$alternate = "";
 	foreach($audit_trails as $quote_data) {
 		if($alternate) $alternate = "";
 		else $alternate = " class=\"alternate\"";
-		$quotes_list .= "<tr{$alternate}>";
-		$quotes_list .= "<td>" . $quote_data->trail_id . "</td>";
-		$quotes_list .= "<td>" . $quote_data->action_user . "</td>";
-		$quotes_list .= "<td>" . $quote_data->action ."</td>";
-		$quotes_list .= "<td>" . $quote_data->time . "</td>";
-		$quotes_list .= "</tr>";
+		echo "<tr{$alternate}>";
+		echo "<td>" . $quote_data->trail_id . "</td>";
+		echo "<td>" . $quote_data->action_user . "</td>";
+		echo "<td>" . $quote_data->action ."</td>";
+		echo "<td>" . $quote_data->time . "</td>";
+		echo "</tr>";
 	}
-
-		$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
-		$display .= "</table>";
 	?>
-	<div>
-	<table width='100%'>
-	<tr>
-	<td align='left'>
-	<?php echo $display; ?>
-	</td>
-	</tr>
+		</tbody>
 	</table>
-	</div>
 	<?php
 }
 ?>
