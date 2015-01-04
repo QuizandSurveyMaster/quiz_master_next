@@ -53,7 +53,7 @@ function mlw_generate_quiz_options()
 	<div class='mlw_quiz_options'>
 	<h2><?php
 	/* translators: The %s corresponds to the name of the quiz */
-	echo printf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
+	echo sprintf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
 	?></h2>
 	<?php
 	ob_start();

@@ -108,10 +108,8 @@ function mlw_generate_quiz_admin()
 				}
 			});
 			$j("#delete_dialog").dialog('open');
-			var idText = document.getElementById("delete_quiz_id");
 			var idHidden = document.getElementById("quiz_id");
 			var idHiddenName = document.getElementById("delete_quiz_name");
-			idText.innerHTML = id;
 			idHidden.value = id;
 			idHiddenName.value = quizName;
 		};
