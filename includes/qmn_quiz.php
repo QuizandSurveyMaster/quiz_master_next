@@ -18,7 +18,8 @@ class QMNQuizManager
 
 		global $wpdb;
 		global $mlwQuizMasterNext;
-		global $qmn_allowed_visit = true;
+		global $qmn_allowed_visit;
+		$qmn_allowed_visit = true;
 		$mlwQuizMasterNext->quizCreator->set_id($quiz);
 		date_default_timezone_set(get_option('timezone_string'));
 		$return_display = '';
@@ -53,11 +54,13 @@ class QMNQuizManager
 
 	public function load_quiz_options($quiz_id)
 	{
+		global $wpdb;
 		return $wpdb->get_row($wpdb->prepare('SELECT * FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $quiz_id));
 	}
 
 	public function load_questions($quiz_id, $quiz_options)
 	{
+		global $wpdb;
 		$order_by_sql = "ORDER BY question_order ASC";
 		$limit_sql = '';
 		if ($quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2)
@@ -129,28 +132,29 @@ class QMNQuizManager
 			echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$qmn_quiz_options->theme_selected)."' rel='stylesheet' />";
 		}
 
-		global $qmn_total_questions = 0;
+		global $qmn_total_questions;
+		$qmn_total_questions = 0;
 		$mlw_qmn_section_count = 1;
 
 		$quiz_display .= "<div class='mlw_qmn_quiz'>";
 		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
-		$quiz_display = apply_filters('qmn_begin_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_begin_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_begin_section($qmn_quiz_options, $qmn_array_for_variables);
-		$quiz_display = apply_filters('qmn_begin_quiz_questions', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_begin_quiz_questions', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers);
-		$quiz_display = apply_filters('qmn_before_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_before_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_comment_section($qmn_quiz_options, $qmn_array_for_variables);
-		$quiz_display = apply_filters('qmn_after_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_after_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_end_section();
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
-		$quiz_display = apply_filters('qmn_end_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_end_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= "</form>";
 		$quiz_display .= "</div>";
 
-		$quiz_display = apply_filters('qmn_end_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables)
+		$quiz_display = apply_filters('qmn_end_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		return $quiz_display;
 	}
 
@@ -582,8 +586,8 @@ class QMNQuizManager
 		</script>";
 		?>
 		<script type="text/javascript">
-			window.sessionStorage.setItem('mlw_time_quiz<?php echo $mlw_quiz_id; ?>', 'completed');
-			window.sessionStorage.setItem('mlw_started_quiz<?php echo $mlw_quiz_id; ?>', "no");
+			window.sessionStorage.setItem('mlw_time_quiz<?php echo $qmn_array_for_variables['quiz_id']; ?>', 'completed');
+			window.sessionStorage.setItem('mlw_started_quiz<?php echo $qmn_array_for_variables['quiz_id']; ?>', "no");
 		</script>
 		<?php
 		if (empty($_POST["email"]) && ((!isset($_POST["mlw_code_captcha"])) || isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
@@ -836,7 +840,7 @@ class QMNQuizManager
     if ($mlw_certificate_options[4] == 0)
     {
 		$mlw_message_certificate = $mlw_certificate_options[1];
-		$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $mlw_qmn_result_array);
+		$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $qmn_array_for_variables);
 		$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
 		$mlw_plugindirpath = plugin_dir_path( __FILE__ );
 		$plugindirpath=plugin_dir_path( __FILE__ );
@@ -956,7 +960,7 @@ EOC;
 		$mlw_message = "";
 		if ($qmn_quiz_options->send_user_email == "0")
 		{
-			if ($mlw_user_email != "")
+			if ($qmn_array_for_variables['user_email'] != "")
 			{
 				if (is_serialized($qmn_quiz_options->user_email_template) && is_array(@unserialize($qmn_quiz_options->user_email_template)))
 				{
