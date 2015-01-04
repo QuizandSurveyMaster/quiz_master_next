@@ -41,7 +41,7 @@ function mlw_options_certificate_tab_content()
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert(printf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
 		}
 	}
 	if (isset($_GET["quiz_id"]))
