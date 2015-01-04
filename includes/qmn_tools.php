@@ -2,12 +2,12 @@
 /*
 This page creates the main dashboard for the Quiz Master Next plugin
 */
-/* 
+/*
 Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
 function mlw_generate_quiz_tools(){
-	add_meta_box("wpss_mrts", 'Audit Trail', "mlw_tools_box", "quiz_wpss"); 
+	add_meta_box("wpss_mrts", 'Audit Trail', "mlw_tools_box", "quiz_wpss");
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -29,32 +29,16 @@ function mlw_generate_quiz_tools(){
 		var $j = jQuery.noConflict();
 		// increase the default animation speed to exaggerate the effect
 		$j.fx.speeds._default = 1000;
-		$j(function() {
-			$j('#dialog').dialog({
-				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
-				buttons: {
-				Ok: function() {
-					$j(this).dialog('close');
-					}
-				}
-			});
-		
-			$j('#opener').click(function() {
-				$j('#dialog').dialog('open');
-				return false;
-		}	);
-		});
+
 		$j(function() {
 			$j("button, #prev_page, #next_page").button();
-		
+
 		});
 	</script>
 	<style type="text/css">
 		textarea{
 		border-color:#000000;
-		color:#3300CC; 
+		color:#3300CC;
 		cursor:hand;
 		}
 		p em {
@@ -64,21 +48,15 @@ function mlw_generate_quiz_tools(){
 		}
 	</style>
 	<div class="wrap">
-	<h2>Quiz Master Next Tools<a id="opener" href="">(?)</a></h2>
-	
+	<h2><?php _e('Tools', 'quiz-master-next'); ?></h2>
+
 	<div style="float:left; width:100%;" class="inner-sidebar1">
-		<?php do_meta_boxes('quiz_wpss','advanced','');  ?>	
+		<?php do_meta_boxes('quiz_wpss','advanced','');  ?>
 	</div>
 
 	<div style="clear:both"></div>
-	
-	<?php echo mlw_qmn_show_adverts(); ?>
 
-	<div id="dialog" title="Help" style="display:none;">
-	<h3><b>Help</b></h3>
-	<p>This page is the tools for the Quiz Master Next.</p>
-	<p>The first widget lists the audit trail.</p>
-	</div>
+	<?php echo mlw_qmn_show_adverts(); ?>
 
 	</div>
 	<?php
@@ -87,9 +65,9 @@ function mlw_generate_quiz_tools(){
 function mlw_tools_box()
 {
 	global $wpdb;
-	$mlw_qmn_table_limit = 25;
+	$mlw_qmn_table_limit = 30;
 	$mlw_qmn_audit_count = $wpdb->get_var( "SELECT COUNT(trail_id) FROM " . $wpdb->prefix . "mlw_qm_audit_trail" );
-	
+
 	if( isset($_GET{'mlw_audit_page'} ) )
 	{
 	   $mlw_qmn_audit_page = $_GET{'mlw_audit_page'} + 1;
@@ -101,11 +79,44 @@ function mlw_tools_box()
 	   $mlw_qmn_audit_begin = 0;
 	}
 	$mlw_qmn_audit_left = $mlw_qmn_audit_count - ($mlw_qmn_audit_page * $mlw_qmn_table_limit);
-	
-	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time 
-		FROM " . $wpdb->prefix . "mlw_qm_audit_trail 
+
+	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
+		FROM " . $wpdb->prefix . "mlw_qm_audit_trail
 		ORDER BY trail_id DESC LIMIT %d, %d", $mlw_qmn_audit_begin, $mlw_qmn_table_limit ) );
 
+	if( $mlw_qmn_audit_page > 0 )
+	{
+		$mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
+		echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+		if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
+		{
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".printf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+		}
+	}
+	else if( $mlw_qmn_audit_page == 0 )
+	{
+	   if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
+	   {
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">".printf(__('Next %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+	   }
+	}
+	else if( $mlw_qmn_audit_left < $mlw_qmn_table_limit )
+	{
+	   $mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
+	   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Audits','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+	}
+	?>
+	<table class=widefat>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th><?php _e('User','quiz-master-next'); ?></th>
+				<th><?php _e('Action','quiz-master-next'); ?></th>
+				<th><?php _e('Time','quiz-master-next'); ?></th>
+			</tr>
+		</thead>
+
+		<?php
 	$quotes_list = "";
 	$display = "";
 	$alternate = "";
@@ -119,35 +130,7 @@ function mlw_tools_box()
 		$quotes_list .= "<td>" . $quote_data->time . "</td>";
 		$quotes_list .= "</tr>";
 	}
-	
-	if( $mlw_qmn_audit_page > 0 )
-	{
-	   $mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
-	   $display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">Previous 25 Audits</a>";
-	   if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
-	   {
-			$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">Next 25 Audits</a>";
-	   }
-	}
-	else if( $mlw_qmn_audit_page == 0 )
-	{
-	   if( $mlw_qmn_audit_left > $mlw_qmn_table_limit )
-	   {
-			$display .= "<a id=\"next_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_audit_page\">Next 25 Audits</a>";
-	   }
-	}
-	else if( $mlw_qmn_audit_left < $mlw_qmn_table_limit )
-	{
-	   $mlw_qmn_previous_page = $mlw_qmn_audit_page - 2;
-	   $display .= "<a id=\"prev_page\" href=\"?page=mlw_quiz_tools&&mlw_audit_page=$mlw_qmn_previous_page\">Previous 25 Audits</a>";
-	}
-	$display .= "<table class=\"widefat\">";
-		$display .= "<thead><tr>
-			<th>ID</th>
-			<th>User</th>
-			<th>Action</th>
-			<th>Time</th>
-		</tr></thead>";
+
 		$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
 		$display .= "</table>";
 	?>
