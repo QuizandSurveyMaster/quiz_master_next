@@ -174,7 +174,7 @@ function mlw_generate_quiz_admin()
 		<div style="width: 85%; float: left;">
 			<div class="tablenav top">
 				<div class="tablenav-pages">
-					<span class="displaying-num"><?php echo printf(_n('One quiz', '%s quizzes', $mlw_qmn_quiz_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_quiz_count)); ?></span>
+					<span class="displaying-num"><?php echo sprintf(_n('One quiz', '%s quizzes', $mlw_qmn_quiz_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_quiz_count)); ?></span>
 					<span class="pagination-links">
 						<?php
 						$mlw_qmn_previous_page = 0;
@@ -237,7 +237,7 @@ function mlw_generate_quiz_admin()
 						else $alternate = " class=\"alternate\"";
 						$quotes_list .= "<tr{$alternate}>";
 						$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_id . "</span></td>";
-						$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(".__('Edit Name', 'quiz-master-next')."</a></span>";
+						$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . esc_html($mlw_quiz_info->quiz_name) ." </span><span style='color:green;font-size:12px;'><a onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(".__('Edit Name', 'quiz-master-next').")</a></span>";
 						$quotes_list .= "<div class=\"row-actions\">
 						<a class='linkOptions' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Edit', 'quiz-master-next')."</a>
 						 | <a class='linkOptions' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Results', 'quiz-master-next')."</a>
@@ -331,7 +331,7 @@ function mlw_generate_quiz_admin()
 
 		<!--Delete Quiz Dialog-->
 		<div id="delete_dialog" title="Delete Quiz?" style="display:none;">
-		<h3><b><?php _e('Are you sure you want to delete quiz?', 'quiz-master-next'); ?></b></h3>
+		<h3><b><?php _e('Are you sure you want to delete this quiz?', 'quiz-master-next'); ?></b></h3>
 		<form action='' method='post'>
 			<input type='hidden' name='delete_quiz' value='confirmation' />
 			<input type='hidden' id='quiz_id' name='quiz_id' value='' />
