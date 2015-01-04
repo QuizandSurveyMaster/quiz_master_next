@@ -991,7 +991,7 @@ EOC;
 							$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 							$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
 							$mlw_headers = 'From: '.$qmn_quiz_options->email_from_text.' <'.$qmn_quiz_options->admin_email.'>' . "\r\n";
-							wp_mail($mlw_user_email, $mlw_each[3], $mlw_message, $mlw_headers);
+							wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
 							break;
 						}
 						else
@@ -1004,7 +1004,7 @@ EOC;
 								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
 								$mlw_headers = 'From: '.$qmn_quiz_options->email_from_text.' <'.$qmn_quiz_options->admin_email.'>' . "\r\n";
-								wp_mail($mlw_user_email, $mlw_each[3], $mlw_message, $mlw_headers);
+								wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
 								break;
 							}
 
@@ -1017,7 +1017,7 @@ EOC;
 								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
 								$mlw_headers = 'From: '.$qmn_quiz_options->email_from_text.' <'.$qmn_quiz_options->admin_email.'>' . "\r\n";
-								wp_mail($mlw_user_email, $mlw_each[3], $mlw_message, $mlw_headers);
+								wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
 								break;
 							}
 						}
@@ -1031,7 +1031,7 @@ EOC;
 					$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
 					$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
 					$mlw_headers = 'From: '.$qmn_quiz_options->email_from_text.' <'.$qmn_quiz_options->admin_email.'>' . "\r\n";
-					wp_mail($mlw_user_email, "Quiz Results For ".$qmn_quiz_options->quiz_name, $mlw_message, $mlw_headers);
+					wp_mail($qmn_array_for_variables['user_email'], "Quiz Results For ".$qmn_quiz_options->quiz_name, $mlw_message, $mlw_headers);
 				}
 			}
 		}
