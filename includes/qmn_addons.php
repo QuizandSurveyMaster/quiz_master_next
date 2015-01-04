@@ -40,7 +40,7 @@ function qmn_generate_available_addons()
 {
 	wp_enqueue_style( 'qmn_addons_style', plugins_url( 'css/qmn_addons_page.css' , __FILE__ ) );
 	?>
-	<p>These addons extend the functionality of Quiz Master Next</p>
+	<p><?php _e('These addons extend the functionality of Quiz Master Next', 'quiz-master-next'); ?></p>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Export Results</h3>
 		<p class="qmn_addons_desc">This add-on gives you the ability to export your quiz results as a CSV file.</p>
@@ -63,14 +63,14 @@ function qmn_generate_available_addons()
 	</div>
 	<div style="clear:both;">
 	<br />
-	<a href="http://mylocalwebstop.com/store/" class="button-primary">Browse All Addons</a>
+	<a href="http://mylocalwebstop.com/store/" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
 	<?php
 }
 
 function qmn_avaiable_addons_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab("Available Addons", "qmn_generate_available_addons");
+	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab(__("Available Addons", 'quiz-master-next'), "qmn_generate_available_addons");
 }
 add_action("plugins_loaded", 'qmn_avaiable_addons_tab');
 ?>

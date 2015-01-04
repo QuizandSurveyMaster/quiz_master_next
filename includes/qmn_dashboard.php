@@ -12,18 +12,18 @@ function mlw_generate_quiz_dashboard()
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
 
 	///Creates the widgets
-	add_meta_box("wpss_mrts", 'Quiz Daily Stats - Times Taken', "mlw_dashboard_box", "quiz_wpss");
-	add_meta_box("wpss_mrts", 'Quiz Total Stats', "mlw_dashboard_box_three", "quiz_wpss3");
-	add_meta_box("wpss_mrts", 'Quiz Weekly Stats - Times Taken', "mlw_dashboard_box_four", "quiz_wpss4");
-	add_meta_box("wpss_mrts", 'Quiz Monthly Stats - Times Taken', "mlw_dashboard_box_five", "quiz_wpss5");
+	add_meta_box("wpss_mrts", __('Quiz Daily Stats - Times Taken', 'quiz-master-next'), "mlw_dashboard_box", "quiz_wpss");
+	add_meta_box("wpss_mrts", __('Quiz Total Stats', 'quiz-master-next'), "mlw_dashboard_box_three", "quiz_wpss3");
+	add_meta_box("wpss_mrts", __('Quiz Weekly Stats - Times Taken', 'quiz-master-next'), "mlw_dashboard_box_four", "quiz_wpss4");
+	add_meta_box("wpss_mrts", __('Quiz Monthly Stats - Times Taken', 'quiz-master-next'), "mlw_dashboard_box_five", "quiz_wpss5");
 	if ( get_option('mlw_advert_shows') == 'true' )
 	{
 		add_meta_box("wpss_mrts", 'My Local Webstop Services', "mlw_dashboard_box_six", "quiz_wpss6");
 	}
-	add_meta_box("wpss_mrts", 'Quizzes Taken Today', "mlw_qmn_daily_percent_taken_widget", "quiz_wpss10");
-	add_meta_box("wpss_mrts", 'Quizzes Taken Last 7 Days', "mlw_qmn_weekly_percent_taken_widget", "quiz_wpss11");
-	add_meta_box("wpss_mrts", 'Quizzes Taken Last 30 Days', "mlw_qmn_monthly_percent_taken_widget", "quiz_wpss12");
-	add_meta_box("wpss_mrts", 'Quizzes Taken Last 120 Days', "mlw_qmn_quaterly_percent_taken_widget", "quiz_wpss13");
+	add_meta_box("wpss_mrts", __('Quizzes Taken Today', 'quiz-master-next'), "mlw_qmn_daily_percent_taken_widget", "quiz_wpss10");
+	add_meta_box("wpss_mrts", __('Quizzes Taken Last 7 Days', 'quiz-master-next'), "mlw_qmn_weekly_percent_taken_widget", "quiz_wpss11");
+	add_meta_box("wpss_mrts", __('Quizzes Taken Last 30 Days', 'quiz-master-next'), "mlw_qmn_monthly_percent_taken_widget", "quiz_wpss12");
+	add_meta_box("wpss_mrts", __('Quizzes Taken Last 120 Days', 'quiz-master-next'), "mlw_qmn_quaterly_percent_taken_widget", "quiz_wpss13");
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -49,7 +49,7 @@ function mlw_generate_quiz_dashboard()
 		});
 	</script>
 	<div class="wrap">
-	<h2>Quiz Master Next Version <?php echo $mlw_quiz_version; ?> Statistics</h2>
+	<h2><?php _e('Quiz Statistics', 'quiz-master-next'); ?></h2>
 
 	<?php echo mlw_qmn_show_adverts(); ?>
 	<!--Display Widget Boxes-->
@@ -219,43 +219,43 @@ function mlw_dashboard_box_three()
 	<div>
 	<table width='100%'>
 	<tr>
-	<td align='left'>Total Created Quizzes</td>
+	<td align='left'><?php _e('Total Created Quizzes', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_stat_total_quiz; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Total Deleted Quizzes</td>
+	<td align='left'><?php _e('Total Deleted Quizzes', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_stat_total_deleted_quiz; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Total Active Quizzes</td>
+	<td align='left'><?php _e('Total Active Quizzes', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_stat_total_active_quiz; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Total Created Questions</td>
+	<td align='left'><?php _e('Total Created Questions', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_stat_total_questions; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Total Times All Active Quizzes Have Been Viewed</td>
+	<td align='left'><?php _e('Total Times All Active Quizzes Have Been Viewed', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_quiz_views; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Total Times All Active Quizzes Have Been Taken</td>
+	<td align='left'><?php _e('Total Times All Active Quizzes Have Been Taken', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_quiz_taken; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Average Amount Each Active Quiz Has Been Viewed</td>
+	<td align='left'><?php _e('Average Amount Each Active Quiz Has Been Viewed', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_average_views; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Average Amount Each Active Quiz Has Been Taken</td>
+	<td align='left'><?php _e('Average Amount Each Active Quiz Has Been Taken', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_average_taken; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Quiz That Has Been Viewed The Most</td>
+	<td align='left'><?php _e('Quiz That Has Been Viewed The Most', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_quiz_most_viewed; ?></td>
 	</tr>
 	<tr>
-	<td align='left'>Quiz That Has Been Taken The Most</td>
+	<td align='left'><?php _e('Quiz That Has Been Taken The Most', 'quiz-master-next'); ?></td>
 	<td align='right'><?php echo $mlw_quiz_most_taken; ?></td>
 	</tr>
 	</table>

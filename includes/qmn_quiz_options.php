@@ -2,7 +2,7 @@
 /*
 This page allows for the editing of quizzes selected from the quiz admin page.
 */
-/* 
+/*
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
@@ -15,9 +15,9 @@ function mlw_generate_quiz_options()
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
-	}	
+	}
 	?>
-	
+
 	<script type="text/javascript"
 	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 	</script>
@@ -51,7 +51,10 @@ function mlw_generate_quiz_options()
 	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
-	<h2>Quiz Settings For <?php echo $mlw_quiz_options->quiz_name; ?></h2>
+	<h2><?php
+	/* translators: The %s corresponds to the name of the quiz */
+	echo sprintf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
+	?></h2>
 	<?php
 	ob_start();
 	if ($quiz_id != "")
@@ -62,7 +65,7 @@ function mlw_generate_quiz_options()
 			<?php do_action('mlw_qmn_options_tab'); ?>
 		</ul>
 		<?php do_action('mlw_qmn_options_tab_content'); ?>
-  		
+
 	</div>
 	<?php
 	}
@@ -71,7 +74,7 @@ function mlw_generate_quiz_options()
 		?>
 		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Hey!</strong> Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.</p
+		<strong><?php _e('Error!', 'quiz-master-next'); ?></strong> <?php _e('Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next'); ?></p
 		</div>
 		<?php
 	}

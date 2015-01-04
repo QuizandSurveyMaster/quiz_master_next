@@ -124,33 +124,33 @@ EOC;
 		</style>
 		<div class="wrap">
 		<div class='mlw_quiz_options'>
-		<h2>Quiz Results<a id="opener" href="">(?)</a></h2>
+		<h2><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
 		<div id="tabs">
 			<ul>
-			    <li><a href="#tabs-1">Quiz Results</a></li>
-			    <li><a href="#tabs-2">Quiz Tools</a></li>
+			    <li><a href="#tabs-1"><?php _e('Quiz Results', 'quiz-master-next'); ?></a></li>
+			    <li><a href="#tabs-2"><?php _e('Quiz Tools', 'quiz-master-next'); ?></a></li>
 			</ul>
 			<div id="tabs-1">
-				<h2>Quiz Results From <?php echo $mlw_results_data->quiz_name; ?></h2>
+				<h2><?php _e('Quiz Results', 'quiz-master-next'); ?>: <?php echo $mlw_results_data->quiz_name; ?></h2>
 				<table>
 					<tr>
-						<td>Time Taken: </td>
+						<td><?php _e('Time Taken', 'quiz-master-next'); ?>: </td>
 						<td><?php echo $mlw_results_data->time_taken; ?></td>
 					</tr>
 					<tr>
-						<td>Name Provided: </td>
+						<td><?php _e('Name Provided', 'quiz-master-next'); ?>: </td>
 						<td><?php echo $mlw_results_data->name; ?></td>
 					</tr>
 					<tr>
-						<td>Business Provided: </td>
+						<td><?php _e('Business Provided', 'quiz-master-next'); ?>: </td>
 						<td><?php echo $mlw_results_data->business; ?></td>
 					</tr>
 					<tr>
-						<td>Email Provided: </td>
+						<td><?php _e('Email Provided', 'quiz-master-next'); ?>: </td>
 						<td><?php echo $mlw_results_data->email; ?></td>
 					</tr>
 					<tr>
-						<td>Phone Provided: </td>
+						<td><?php _e('Phone Provided', 'quiz-master-next'); ?>: </td>
 						<td><?php echo $mlw_results_data->phone; ?></td>
 					</tr>
 					<tr>
@@ -161,14 +161,14 @@ EOC;
 							if ($mlw_results_data->quiz_system == 0)
 							{
 							?>
-								<td>Score Received:</td>
+								<td><?php _e('Score Received', 'quiz-master-next'); ?>:</td>
 								<td><?php echo $mlw_results_data->correct."/".$mlw_results_data->total." or ".$mlw_results_data->correct_score."%"; ?></td>
 							<?php
 							}
 							else if ($mlw_results_data->quiz_system == 1)
 							{
 							?>
-								<td>Score Received:</td>
+								<td><?php _e('Score Received', 'quiz-master-next'); ?>:</td>
 								<td><?php echo $mlw_results_data->point_score." Points"; ?></td>
 							<?php
 							}
@@ -177,7 +177,7 @@ EOC;
 				</table>
 				<br />
 				<br />
-				<h3>Answers Provided</h3>
+				<h3><?php _e('Answers Provided', 'quiz-master-next'); ?></h3>
 				<?php
 					$mlw_qmn_results_array = @unserialize($mlw_results_data->quiz_results);
 					if (!is_array($mlw_qmn_results_array)) {
@@ -189,31 +189,34 @@ EOC;
 						$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
 						if ($mlw_complete_hours > 0)
 						{
-							$mlw_complete_time .= "$mlw_complete_hours hours ";
+							$mlw_complete_time .= "$mlw_complete_hours ".__('hours','quiz-master-next')." ";
 						}
 						$mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
 						if ($mlw_complete_minutes > 0)
 						{
-							$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+							$mlw_complete_time .= "$mlw_complete_minutes ".__('minutes','quiz-master-next')." ";
 						}
 						$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
-						$mlw_complete_time .=  "$mlw_complete_seconds seconds";
+						$mlw_complete_time .=  "$mlw_complete_seconds ".__('seconds','quiz-master-next');
 						?>
-						This quiz was completed in <?php echo $mlw_complete_time; ?>.<br />
+						<p><?php
+						/* translators: The %s will be replaces with the amount of time the user took on quiz. For example: 5 minutes 34 seconds */
+						echo sprintf(__('The user took %s to complete this quiz.','quiz-master-next'), $mlw_complete_time);
+						?></p><br />
 						<br />
-						The comments entered into the comment box (if enabled):<br />
+						<?php _e('The comments entered into the comment box (if enabled)', 'quiz-master-next'); ?>:<br />
 						<?php echo $mlw_qmn_results_array[2]; ?><br />
 						<br />
-						The answers were as follows:<br />
+						<p><?php _e('The answers were as follows', 'quiz-master-next'); ?>:</p>
 						<br />
 						<?php
 						$mlw_qmn_answer_array = $mlw_qmn_results_array[1];
 						foreach( $mlw_qmn_answer_array as $mlw_each )
 						{
 							echo htmlspecialchars_decode($mlw_each[0], ENT_QUOTES)."<br />";
-							echo "Answer Provided: ".htmlspecialchars_decode($mlw_each[1], ENT_QUOTES)."<br />";
-							echo "Correct Answer: ".htmlspecialchars_decode($mlw_each[2], ENT_QUOTES)."<br />";
-							echo "Comments Entered: <br />".htmlspecialchars_decode($mlw_each[3], ENT_QUOTES)."<br />";
+							echo __('Answer Provided: ','quiz-master-next').htmlspecialchars_decode($mlw_each[1], ENT_QUOTES)."<br />";
+							echo __("Correct Answer: ",'quiz-master-next').htmlspecialchars_decode($mlw_each[2], ENT_QUOTES)."<br />";
+							echo __("Comments Entered:" ,'quiz-master-next')."<br />".htmlspecialchars_decode($mlw_each[3], ENT_QUOTES)."<br />";
 							echo "<br /><br />";
 						}
 						?>
@@ -224,23 +227,15 @@ EOC;
 			<div id="tabs-2">
 				<form action="" method="post" name="create_certificate_form">
 					<input type="hidden" name="create_certificate" value="confirmation" />
-					<input type="submit" value="Create Certificate" />
+					<input type="submit" value="<?php _e('Create Certificate','quiz-master-next'); ?>" />
 				</form>
 				<?php
 				if (isset($_POST["create_certificate"]) && $_POST["create_certificate"] == "confirmation")
 				{
-					echo "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>Download Certificate Here</a><br />";
+					echo "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>".__('Download Certificate Here','quiz-master-next')."</a><br />";
 				}
 				?>
 			</div>
-
-
-		<div id="dialog" title="Help">
-		<h3><b>Help</b></h3>
-		<p>This page shows the results from the taken quiz.</p>
-		<p>The top section shows the question, the user's answer, and the correct answer.</p>
-		<p>The bottom section shows the text from the comment box if enabled.</p>
-		</div>
 		</div>
 		<?php echo mlw_qmn_show_adverts(); ?>
 		</div>
@@ -300,15 +295,10 @@ EOC;
 		</style>
 		<div class="wrap">
 		<div class='mlw_quiz_options'>
-		<h2>Quiz Results<a id="opener" href="">(?)</a></h2>
+		<h2><?php _e('Quiz Results','quiz-master-next'); ?></h2>
 		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong>Hey!</strong> Please go to the Quiz Results page and click on the View link from the result you wish to see.</p>
-		</div>
-		<div id="dialog" title="Help" style="display:none;">
-		<h3><b>Help</b></h3>
-		<p>You are getting this error page because this page could not find the results.</p>
-		<p>You must go to the Quiz Results page and click on the result you want to see from that table.</p>
+		<strong><?php _e('Error!','quiz-master-next'); ?></strong> <?php _e('Please go to the Quiz Results page and click on the View link from the result you wish to see.','quiz-master-next'); ?></p>
 		</div>
 		</div>
 		</div>

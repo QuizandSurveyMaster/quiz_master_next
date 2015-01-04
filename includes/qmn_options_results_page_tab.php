@@ -2,7 +2,7 @@
 function qmn_settings_results_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Results Pages", 'mlw_options_results_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Results Pages", 'quiz-master-next'), 'mlw_options_results_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_results_tab');
 function mlw_options_results_tab_content()
@@ -17,13 +17,13 @@ function mlw_options_results_tab_content()
 		$mlw_qmn_landing_id = intval($_POST["mlw_add_landing_quiz_id"]);
 		$mlw_qmn_message_after = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_landing_id ) );
 		//Load message_after and check if it is array already. If not, turn it into one
-		if (is_serialized($mlw_qmn_message_after) && is_array(@unserialize($mlw_qmn_message_after))) 
+		if (is_serialized($mlw_qmn_message_after) && is_array(@unserialize($mlw_qmn_message_after)))
 		{
 			$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
 			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
 			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
 			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
-			
+
 		}
 		else
 		{
@@ -32,13 +32,13 @@ function mlw_options_results_tab_content()
 			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
 			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
 		}
-		
+
 		//Update message_after with new array then check to see if worked
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
 		if ($mlw_new_landing_results != false)
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('The results page has been added successfully.', 'success');
-			
+			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been added successfully.', 'quiz-master-next'), 'success');
+
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
@@ -46,21 +46,21 @@ function mlw_options_results_tab_content()
 			$insert = "INSERT INTO " . $table_name .
 				"(trail_id, action_user, action, time) " .
 				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Landing Page Has Been Created For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
+			$results = $wpdb->query( $insert );
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0013.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0013'), 'error');
 		}
 	}
-	
+
 	//Check to save landing pages
 	if (isset($_POST["mlw_save_landing_pages"]) && $_POST["mlw_save_landing_pages"] == "confirmation")
 	{
 		//Function Variables
 		$mlw_qmn_landing_id = intval($_POST["mlw_landing_quiz_id"]);
 		$mlw_qmn_landing_total = intval($_POST["mlw_landing_page_total"]);
-		
+
 		//Create new array
 		$i = 1;
 		$mlw_qmn_new_landing_array = array();
@@ -77,8 +77,8 @@ function mlw_options_results_tab_content()
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
 		if ($mlw_new_landing_results != false)
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('The results page has been saved successfully.', 'success');
-			
+			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been saved successfully.', 'quiz-master-next'), 'success');
+
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
@@ -86,22 +86,22 @@ function mlw_options_results_tab_content()
 			$insert = "INSERT INTO " . $table_name .
 				"(trail_id, action_user, action, time) " .
 				"VALUES (NULL , '" . $current_user->display_name . "' , 'Landing Pages Have Been Saved For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );	
+			$results = $wpdb->query( $insert );
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert('There has been an error in this action. Please share this with the developer. Error Code: 0014.', 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0014'), 'error');
 		}
 	}
-	
+
 	if (isset($_GET["quiz_id"]))
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
-	
+
 	//Load Landing Pages
-	if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after))) 
+	if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after)))
 	{
     		$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
 	}
@@ -115,59 +115,58 @@ function mlw_options_results_tab_content()
 			function delete_landing(id)
 			{
 				document.getElementById('message_after_'+id).value = "Delete";
-				document.mlw_quiz_save_landing_form.submit();	
+				document.mlw_quiz_save_landing_form.submit();
 			}
 		</script>
 		<h3>Template Variables</h3>
-			<table class="form-table">
+		<table class="form-table">
 			<tr>
-				<td><strong>%POINT_SCORE%</strong> - Score for the quiz when using points</td>
-				<td><strong>%AVERAGE_POINT%</strong> - The average amount of points user had per question</td>
+				<td><strong>%POINT_SCORE%</strong> - <?php _e('Score for the quiz when using points', 'quiz-master-next'); ?></td>
+				<td><strong>%AVERAGE_POINT%</strong> - <?php _e('The average amount of points user had per question', 'quiz-master-next'); ?></td>
 			</tr>
-	
+
 			<tr>
-				<td><strong>%AMOUNT_CORRECT%</strong> - The number of correct answers the user had</td>
-				<td><strong>%TOTAL_QUESTIONS%</strong> - The total number of questions in the quiz</td>
+				<td><strong>%AMOUNT_CORRECT%</strong> - <?php _e('The number of correct answers the user had', 'quiz-master-next'); ?></td>
+				<td><strong>%TOTAL_QUESTIONS%</strong> - <?php _e('The total number of questions in the quiz', 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%CORRECT_SCORE%</strong> - Score for the quiz when using correct answers</td>
+				<td><strong>%CORRECT_SCORE%</strong> - <?php _e('Score for the quiz when using correct answers', 'quiz-master-next'); ?></td>
 			</tr>
-	
+
 			<tr>
-				<td><strong>%USER_NAME%</strong> - The name the user entered before the quiz</td>
-				<td><strong>%USER_BUSINESS%</strong> - The business the user entered before the quiz</td>
+				<td><strong>%USER_NAME%</strong> - <?php _e('The name the user entered before the quiz', 'quiz-master-next'); ?></td>
+				<td><strong>%USER_BUSINESS%</strong> - <?php _e('The business the user entered before the quiz', 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%USER_PHONE%</strong> - The phone number the user entered before the quiz</td>
-				<td><strong>%USER_EMAIL%</strong> - The email the user entered before the quiz</td>
+				<td><strong>%USER_PHONE%</strong> - <?php _e('The phone number the user entered before the quiz', 'quiz-master-next'); ?></td>
+				<td><strong>%USER_EMAIL%</strong> - <?php _e('The email the user entered before the quiz', 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%QUIZ_NAME%</strong> - The name of the quiz</td>
-				<td><strong>%QUESTIONS_ANSWERS%</strong> - Shows the question, the answer the user provided, and the correct answer</td>
+				<td><strong>%QUIZ_NAME%</strong> - <?php _e('The name of the quiz', 'quiz-master-next'); ?></td>
+				<td><strong>%QUESTIONS_ANSWERS%</strong> - <?php _e('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next'); ?></td>
 			</tr>
-			
+
 			<tr>
-				<td><strong>%COMMENT_SECTION%</strong> - The comments the user entered into comment box if enabled</td>
-				
+				<td><strong>%COMMENT_SECTION%</strong> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?></td>
+				<td><strong>%TIMER%</strong> - <?php _e('The amount of time user spent of quiz', 'quiz-master-next'); ?></td>
 			</tr>
 			<tr>
-				<td><strong>%TIMER%</strong> - The amount of time user spent of quiz</td>
-				<td><strong>%CERTIFICATE_LINK%</strong> - The link to the certificate after completing the quiz</td>
+				<td><strong>%CERTIFICATE_LINK%</strong> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?></td>
 			</tr>
 		</table>
-		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();">Save Results Pages</button>
-		<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();">Add New Results Page</button>
+		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
+		<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
 		<form method="post" action="" name="mlw_quiz_save_landing_form" style=" display:inline!important;">
 		<table class="widefat">
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Score Greater Than Or Equal To</th>
-					<th>Score Less Than Or Equal To</th>
-					<th>Results Page Shown</th>
+					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
+					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
+					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -201,7 +200,7 @@ function mlw_options_results_tab_content()
 					{
 						echo "<tr{$alternate}>";
 							echo "<td>";
-								echo $mlw_each_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_".$mlw_each_count."').show();\">Delete</a></span></div><div style=\"display: none;\" id='trying_delete_".$mlw_each_count."'>Are you sure?<br /><a onclick=\"delete_landing(".$mlw_each_count.")\">Yes</a>|<a onclick=\"\$j('#trying_delete_".$mlw_each_count."').hide();\">No</a></div>";
+								echo $mlw_each_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_".$mlw_each_count."').show();\">".__('Delete', 'quiz-master-next')."</a></span></div><div style=\"display: none;\" id='trying_delete_".$mlw_each_count."'>".__('Are you sure?', 'quiz-master-next')."<br /><a onclick=\"delete_landing(".$mlw_each_count.")\">".__('Yes', 'quiz-master-next')."</a>|<a onclick=\"\$j('#trying_delete_".$mlw_each_count."').hide();\">".__('No', 'quiz-master-next')."</a></div>";
 							echo "</td>";
 							echo "<td>";
 								echo "<input type='text' id='message_after_begin_".$mlw_each_count."' name='message_after_begin_".$mlw_each_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
@@ -220,21 +219,21 @@ function mlw_options_results_tab_content()
 			<tfoot>
 				<tr>
 					<th>ID</th>
-					<th>Score Greater Than Or Equal To</th>
-					<th>Score Less Than Or Equal To</th>
-					<th>Results Page Shown</th>
+					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
+					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
+					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
 				</tr>
 			</tfoot>
 		</table>
 		<input type='hidden' name='mlw_save_landing_pages' value='confirmation' />
 		<input type='hidden' name='mlw_landing_quiz_id' value='<?php echo $quiz_id; ?>' />
 		<input type='hidden' name='mlw_landing_page_total' value='<?php echo $mlw_each_count; ?>' />
-		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();">Save Results Pages</button>
+		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
 		</form>
 		<form method="post" action="" name="mlw_quiz_add_landing_form" style=" display:inline!important;">
 			<input type='hidden' name='mlw_add_landing_page' value='confirmation' />
 			<input type='hidden' name='mlw_add_landing_quiz_id' value='<?php echo $quiz_id; ?>' />
-			<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();">Add New Results Page</button>
+			<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
 		</form>
 	</div>
 	<?php
