@@ -1118,6 +1118,7 @@ EOC;
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 	}
 }
+$qmnQuizManager = new QMNQuizManager();
 
 add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);
 function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables)
