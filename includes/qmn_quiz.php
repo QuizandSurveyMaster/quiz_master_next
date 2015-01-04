@@ -134,6 +134,7 @@ class QMNQuizManager
 
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
+		global $mlw_qmn_section_count;
 		$mlw_qmn_section_count = 1;
 
 		$quiz_display .= "<div class='mlw_qmn_quiz'>";
@@ -146,7 +147,7 @@ class QMNQuizManager
 		$quiz_display = apply_filters('qmn_before_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_comment_section($qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display = apply_filters('qmn_after_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
-		$quiz_display .= $this->display_end_section();
+		$quiz_display .= $this->display_end_section($qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
@@ -160,6 +161,7 @@ class QMNQuizManager
 
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
+		global $mlw_qmn_section_count;
 		$section_display = "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
 
 		$message_before = htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES);
@@ -180,6 +182,7 @@ class QMNQuizManager
 	{
 		$question_display = '';
 		global $qmn_total_questions;
+		global $mlw_qmn_section_count;
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
 			if (is_serialized($mlw_question->question_settings) && is_array(@unserialize($mlw_question->question_settings)))
@@ -508,6 +511,7 @@ class QMNQuizManager
 
 	public function display_comment_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
+		global $mlw_qmn_section_count;
 		$comment_display = '';
 		if ($qmn_quiz_options->comment_section == 0)
 		{
@@ -515,7 +519,7 @@ class QMNQuizManager
 			$comment_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
 			$message_comments = htmlspecialchars_decode($qmn_quiz_options->message_comment, ENT_QUOTES);
 			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables);
-			$comment_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$mlw_message_comments</label><br />";
+			$comment_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$message_comments</label><br />";
 			$comment_display .= "<textarea cols='60' rows='15' id='mlwQuizComments' name='mlwQuizComments' ></textarea>";
 			$comment_display .= "</div>";
 			if ( $qmn_quiz_options->pagination == 0) { $comment_display .= "<br /><br />"; }
@@ -525,6 +529,7 @@ class QMNQuizManager
 
 	public function display_end_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
+		global $mlw_qmn_section_count;
 		$section_display = '';
 		$section_display .= "<br />";
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
@@ -533,7 +538,7 @@ class QMNQuizManager
 		{
 			$message_end = htmlspecialchars_decode($qmn_quiz_options->message_end_template, ENT_QUOTES);
 			$message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables);
-			$section_display .= "<span class='mlw_qmn_message_end'>$mlw_message_end</span>";
+			$section_display .= "<span class='mlw_qmn_message_end'>$message_end</span>";
 			$section_display .= "<br /><br />";
 		}
 		if ($qmn_quiz_options->contact_info_location == 1)
