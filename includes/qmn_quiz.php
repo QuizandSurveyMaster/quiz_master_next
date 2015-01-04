@@ -1184,6 +1184,7 @@ function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_
 	global $qmn_allowed_visit;
 	if ( $qmn_quiz_options->total_user_tries != 0 && is_user_logged_in() )
 	{
+		global $wpdb;
 		$current_user = wp_get_current_user();
 		$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE email='%s' AND deleted='0' AND quiz_id=%d", $current_user->user_email, $qmn_array_for_variables['quiz_id'] ) );
 		if ($mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries)
@@ -1215,6 +1216,7 @@ function qmn_total_tries_check($display, $qmn_quiz_options, $qmn_array_for_varia
 	global $qmn_allowed_visit;
 	if ( $qmn_quiz_options->limit_total_entries != 0 )
 	{
+		global $wpdb;
 		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_results WHERE deleted='0' AND quiz_id=%d", $qmn_array_for_variables['quiz_id'] ) );
 		if ($mlw_qmn_entries_count >= $qmn_quiz_options->limit_total_entries)
 		{
