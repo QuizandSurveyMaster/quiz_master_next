@@ -119,6 +119,14 @@ class QMNQuizManager
 		wp_enqueue_script( 'jquery-ui-tooltip' );
 		wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
+		?>
+		<script>
+		var email_error = <?php _e('Not a valid e-mail address!', 'quiz-master-next'); ?>;
+		var number_error = <?php _e('This field must be a number!', 'quiz-master-next'); ?>;
+		var incorrect_error = <?php _e('The entered text is not correct!', 'quiz-master-next'); ?>;
+		var empty_error = <?php _e('Please complete all required fields!', 'quiz-master-next'); ?>;
+		</script>
+		<?php
 		wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
