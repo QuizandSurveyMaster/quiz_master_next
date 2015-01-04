@@ -327,9 +327,7 @@ function mlw_options_questions_tab_content()
 					}
 				});
 				jQuery("#delete_dialog").dialog('open');
-				var idText = document.getElementById("delete_question_id");
 				var idHidden = document.getElementById("question_id");
-				idText.innerHTML = id;
 				idHidden.value = id;
 			};
 			function duplicateQuestion(id){
@@ -744,7 +742,7 @@ function mlw_options_questions_tab_content()
 		</div>
 		<!--Dialogs-->
 		<div id="delete_dialog" title="Delete Question?" style="display:none;">
-			<h3><b><?php _e('Are you sure you want to delete question?', 'quiz-master-next'); ?></b></h3>
+			<h3><b><?php _e('Are you sure you want to delete this question?', 'quiz-master-next'); ?></b></h3>
 			<form action='' method='post'>
 				<input type='hidden' name='delete_question' value='confirmation' />
 				<input type='hidden' id='question_id' name='question_id' value='' />

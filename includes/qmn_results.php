@@ -122,23 +122,23 @@ function mlw_generate_quiz_results()
 	if( $mlw_qmn_result_page > 0 )
 	{
 	   	$mlw_qmn_previous_page = $mlw_qmn_result_page - 2;
-	   	echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+	   	echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\">".sprintf(__('Previous %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	   	if( $mlw_qmn_result_left > $mlw_qmn_table_limit )
 	   	{
-			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">".printf(__('Next %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">".sprintf(__('Next %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	   	}
 	}
 	else if( $mlw_qmn_result_page == 0 )
 	{
 	   if( $mlw_qmn_result_left > $mlw_qmn_table_limit )
 	   {
-			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">".printf(__('Next %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+			echo "<a id=\"next_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">".sprintf(__('Next %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	   }
 	}
 	else if( $mlw_qmn_result_left < $mlw_qmn_table_limit )
 	{
 	   $mlw_qmn_previous_page = $mlw_qmn_result_page - 2;
-	   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\">".printf(__('Previous %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
+	   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\">".sprintf(__('Previous %s Results','quiz-master-next'),$mlw_qmn_table_limit)."</a>";
 	}
 	?>
 	<table class=widefat>
