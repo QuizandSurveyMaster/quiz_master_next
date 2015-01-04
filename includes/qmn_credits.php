@@ -2,7 +2,7 @@
 /*
 This page shows the about page
 */
-/* 
+/*
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
@@ -58,9 +58,9 @@ function mlw_generate_about_page()
 		{
 			background: <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
 			background: none, <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
-			position: absolute; 
-			top: 0; 
-			right: 0; 
+			position: absolute;
+			top: 0;
+			right: 0;
 			background-color: #0d97d8;
 			color: yellow;
 			background-position: center 24px;
@@ -82,16 +82,16 @@ function mlw_generate_about_page()
 		}
 	</style>
 	<div class="wrap about-wrap">
-	<h1>Welcome To Quiz Master Next <?php echo $mlw_quiz_version; ?></h1>
-	<div class="about-text">Thank you for updating!</div>
-	<div class="mlw_qmn_icon_wrap">Version <?php echo $mlw_quiz_version; ?></div>
+	<h1><?php _e('Welcome To Quiz Master Next', 'quiz-master-next'); ?></h1>
+	<div class="about-text"><?php _e('Thank you for updating!', 'quiz-master-next'); ?></div>
+	<div class="mlw_qmn_icon_wrap"><?php echo $mlw_quiz_version; ?></div>
 	<h2 class="nav-tab-wrapper">
 		<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
-			What&#8217;s New In 3.9</a>
+			<?php _e("What's New!", 'quiz-master-next'); ?></a>
 		<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
-			Changelog For <?php echo $mlw_quiz_version; ?>	</a>
+			<?php _e('Changelog', 'quiz-master-next'); ?></a>
 		<a href="javascript:mlw_qmn_setTab(3);" id="mlw_qmn_tab_3" class="nav-tab">
-			Requested Features</a>
+			<?php _e('Requested Features', 'quiz-master-next'); ?></a>
 	</h2>
 	<div id="mlw_quiz_what_new">
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Text Editors On Text Tab</h2>
