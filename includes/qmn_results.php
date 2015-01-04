@@ -29,7 +29,7 @@ function mlw_generate_quiz_results()
 		}
 		else
 		{
-			$mlwQuizMasterNext->alertManager->newAlert(printf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0021'), 'error');
+			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0021'), 'error');
 		}
 	}
 
