@@ -2,7 +2,7 @@
 function qmn_settings_preview_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs("Preview", 'mlw_options_preview_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Preview", 'quiz-master-next'), 'mlw_options_preview_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_preview_tab');
 
