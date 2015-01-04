@@ -1274,7 +1274,8 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 add_filter('qmn_begin_quiz', 'qmn_timer_check', 10, 3);
 function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 {
-	if ($qmn_quiz_options->timer_limit != 0)
+	global $qmn_allowed_visit;
+	if ($qmn_allowed_visit && $qmn_quiz_options->timer_limit != 0)
 	{
 		?>
 		<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
