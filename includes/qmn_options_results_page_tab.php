@@ -114,6 +114,7 @@ function mlw_options_results_tab_content()
 		<script>
 			function delete_landing(id)
 			{
+				tinyMCE.get('message_after_'+id).setContent('Delete');
 				document.getElementById('message_after_'+id).value = "Delete";
 				document.mlw_quiz_save_landing_form.submit();
 			}
@@ -191,7 +192,8 @@ function mlw_options_results_tab_content()
 								echo "<input type='hidden' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' value='0'/>-";
 							echo "</td>";
 							echo "<td>";
-								echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
+								wp_editor( $mlw_each[2], "message_after_".$mlw_each_count );
+								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
 						echo "</tr>";
 						break;
@@ -209,7 +211,8 @@ function mlw_options_results_tab_content()
 								echo "<input type='text' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
 							echo "</td>";
 							echo "<td>";
-								echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' title='What text will the user see when reaching this page' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
+								wp_editor( $mlw_each[2], "message_after_".$mlw_each_count );
+								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' title='What text will the user see when reaching this page' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
 						echo "</tr>";
 					}

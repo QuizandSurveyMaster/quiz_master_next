@@ -943,7 +943,7 @@ EOC;
 			$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
 			$results_text_display .= $mlw_message_after;
 		}
-		return $results_text_display;
+		return do_shortcode( $results_text_display );
 	}
 
 	public function display_social($qmn_quiz_options, $qmn_array_for_variables)
