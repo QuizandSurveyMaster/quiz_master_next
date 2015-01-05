@@ -102,7 +102,23 @@ function mlw_qmn_variable_user_email($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_quiz_array["question_answers_display"], $content);
+	while (strpos($content, '%QUESTIONS_ANSWERS%') != false)
+	{
+		$display = '';
+		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
+		{
+			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
+			$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , $answer[1], $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $answer[2], $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
+			$display .= $mlw_question_answer_display;
+			$display .= "<br />";
+		}
+		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
+	}
 	return $content;
 }
 function mlw_qmn_variable_comments($content, $mlw_quiz_array)
