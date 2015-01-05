@@ -471,6 +471,7 @@ function mlw_options_questions_tab_content()
 				$question_list .= "<tr{$alternate}>";
 				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->question_order . "</span></td>";
 				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_type_text . "</span></td>";
+				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->category . "</span></td>";
 				$question_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_question_info->question_name ."</span><div class='row-actions'><a class='linkOptions' onclick=\"editQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Edit', 'quiz-master-next')."</a> | <a class='linkOptions' onclick=\"duplicateQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Duplicate', 'quiz-master-next')."</a>| <a class='linkDelete' onclick=\"deleteQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Delete', 'quiz-master-next')."</a></div></td>";
 				$question_list .= "</tr>";
 
@@ -607,6 +608,7 @@ function mlw_options_questions_tab_content()
 					<tr>
 						<th><?php _e('Question Order', 'quiz-master-next'); ?></th>
 						<th><?php _e('Question Type', 'quiz-master-next'); ?></th>
+						<th><?php _e('Category', 'quiz-master-next'); ?></th>
 						<th><?php _e('Question', 'quiz-master-next'); ?></th>
 					</tr>
 				</thead>
@@ -617,6 +619,7 @@ function mlw_options_questions_tab_content()
 				<tr>
 					<th><?php _e('Question Order', 'quiz-master-next'); ?></th>
 					<th><?php _e('Question Type', 'quiz-master-next'); ?></th>
+					<th><?php _e('Category', 'quiz-master-next'); ?></th>
 					<th><?php _e('Question', 'quiz-master-next'); ?></th>
 				</tr>
 			</tfoot>
