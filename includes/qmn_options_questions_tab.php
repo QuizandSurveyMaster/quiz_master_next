@@ -24,6 +24,12 @@ function mlw_options_questions_tab_content()
 		$edit_hint = htmlspecialchars($_POST["edit_hint"], ENT_QUOTES);
 		$edit_question_order = intval($_POST["edit_question_order"]);
 		$mlw_edit_answer_total = intval($_POST["question_".$mlw_edit_question_id."_answer_total"]);
+
+		$qmn_edit_category = $_POST["edit_category"];
+		if ($qmn_edit_category == 'new_category')
+		{
+			$qmn_edit_category = $_POST["edit_new_category"];
+		}
 		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
 		if (is_serialized($mlw_row_settings->question_settings) && is_array(@unserialize($mlw_row_settings->question_settings)))
 		{
@@ -59,8 +65,33 @@ function mlw_options_questions_tab_content()
 		$mlw_qmn_new_answer_array = serialize($mlw_qmn_new_answer_array);
 		$quiz_id = $_POST["quiz_id"];
 
-		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET question_name='".$edit_question_name."',answer_array='".$mlw_qmn_new_answer_array."', question_answer_info='".$edit_question_answer_info."', comments='".$edit_comments."', hints='".$edit_hint."', question_order='".$edit_question_order."', question_type='".$mlw_edit_question_type."', question_settings='".$mlw_settings."' WHERE question_id=".$mlw_edit_question_id;
-		$results = $wpdb->query( $update );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_questions",
+			array(
+				'question_name' => $edit_question_name,
+				'answer_array' => $mlw_qmn_new_answer_array,
+				'question_answer_info' => $edit_question_answer_info,
+				'comments' => $edit_comments,
+				'hints' => $edit_hint,
+				'question_order' => $edit_question_order,
+				'question_type' => $mlw_edit_question_type,
+				'question_settings' => $mlw_settings,
+				'category' => $qmn_edit_category
+			),
+			array( 'question_id' => $mlw_edit_question_id ),
+			array(
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%s',
+				'%d',
+				'%d',
+				'%s',
+				'%s'
+			),
+			array( '%d' )
+		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been updated successfully.', 'quiz-master-next'), 'success');
@@ -141,6 +172,7 @@ function mlw_options_questions_tab_content()
 							'question_order' => $mlw_original['question_order'],
 							'question_type' => $mlw_original['question_type'],
 							'question_settings' => $mlw_original['question_settings'],
+							'category' => $mlw_original['category'],
 							'deleted' => $mlw_original['deleted']
 						),
 						array(
@@ -165,6 +197,7 @@ function mlw_options_questions_tab_content()
 							'%s',
 							'%d',
 							'%d',
+							'%s',
 							'%s',
 							'%d'
 						)
@@ -200,6 +233,12 @@ function mlw_options_questions_tab_content()
 		$hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
 		$new_question_order = intval($_POST["new_question_order"]);
 		$mlw_answer_total = intval($_POST["new_question_answer_total"]);
+
+		$qmn_category = $_POST["new_category"];
+		if ($qmn_category == 'new_category')
+		{
+			$qmn_category = $_POST["new_new_category"];
+		}
 		$mlw_settings = array();
 		$mlw_settings['required'] = intval($_POST["required"]);
 		$mlw_settings = serialize($mlw_settings);
@@ -221,10 +260,35 @@ function mlw_options_questions_tab_content()
 		}
 		$mlw_qmn_new_answer_array = serialize($mlw_qmn_new_answer_array);
 		$quiz_id = $_POST["quiz_id"];
-		$table_name = $wpdb->prefix . "mlw_questions";
-		$insert = "INSERT INTO " . $table_name .
-			" (question_id, quiz_id, question_name, answer_array, question_answer_info, comments, hints, question_order, question_type, question_settings, deleted) VALUES (NULL , ".$quiz_id.", '" . $question_name . "' , '".$mlw_qmn_new_answer_array."', '".$question_answer_info."', '".$comments."', '".$hint."', ".$new_question_order.", '".$question_type."', '".$mlw_settings."',  0)";
-		$results = $wpdb->query( $insert );
+		$results = $wpdb->insert(
+						$wpdb->prefix."mlw_questions",
+						array(
+							'quiz_id' => $quiz_id,
+							'question_name' => $question_name,
+							'answer_array' => $mlw_qmn_new_answer_array,
+							'question_answer_info' => $question_answer_info,
+							'comments' => $comments,
+							'hints' => $hint,
+							'question_order' => $new_question_order,
+							'question_type' => $question_type,
+							'question_settings' => $mlw_settings,
+							'category' => $qmn_category,
+							'deleted' => 0
+						),
+						array(
+							'%d',
+							'%s',
+							'%s',
+							'%s',
+							'%d',
+							'%s',
+							'%d',
+							'%d',
+							'%s',
+							'%s',
+							'%d'
+						)
+					);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been created successfully.', 'quiz-master-next'), 'success');
@@ -288,6 +352,11 @@ function mlw_options_questions_tab_content()
 				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
 		}
 	}
+
+	//Load Categories
+	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
+		ORDER BY question_order ASC", $quiz_id ) );
+
 	$is_new_quiz = $wpdb->num_rows;
 	?>
 		<script>
@@ -593,6 +662,21 @@ function mlw_options_questions_tab_content()
 									</select>
 								</td>
 							</tr>
+							<tr>
+								<td><span style="font-weight:bold;"><?php _e('Category', 'quiz-master-next'); ?></span></td>
+								<td colspan="3">
+									<?php
+									foreach($qmn_quiz_categories as $category)
+									{
+										?>
+										<input type="radio" name="edit_category" <?php if ($category->category == $mlw_question_info->category) { echo "selected='selected' "; } ?>id="edit_category_<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
+										<label for="edit_category_<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+										<?php
+									}
+									?>
+									<input type="radio" name="edit_category" id="edit_category_new" value="new_category"><label for="edit_category_new">New: <input type='text' name='edit_new_category' value='' /></label>
+								</td>
+							</tr>
 						</table>
 						<p>*<?php _e('Required currently only works on open answer, number, accept, and captcha question types', 'quiz-master-next'); ?></p>
 						<input type="hidden" name="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" id="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" value="<?php echo $mlw_answer_total; ?>" />
@@ -733,6 +817,21 @@ function mlw_options_questions_tab_content()
 				<option value="1"><?php _e('No', 'quiz-master-next'); ?></option>
 			</select>
 		</div></td>
+		</tr>
+		<tr>
+			<td><span style="font-weight:bold;"><?php _e('Category', 'quiz-master-next'); ?></span></td>
+			<td colspan="3">
+				<?php
+				foreach($qmn_quiz_categories as $category)
+				{
+					?>
+					<input type="radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
+					<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+					<?php
+				}
+				?>
+				<input type="radio" name="new_category" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' name='new_new_category' value='' /></label>
+			</td>
 		</tr>
 		</table>
 		<p>*<?php _e('Required currently only works on open answer, number, accept, and captcha question types', 'quiz-master-next'); ?></p>
