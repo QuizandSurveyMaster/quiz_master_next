@@ -4,7 +4,7 @@ This is the update function for the plugin. When the plugin gets updated, the da
 */
 function mlw_quiz_update()
 {
-	
+
 	//Update this variable each update. This is what is checked when the plugin is deciding to run the upgrade script or not.
 	$data = "3.9.0";
 	if ( ! get_option('mlw_quiz_master_version'))
@@ -27,7 +27,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET comment_field_text='Comments', comment_section=1, message_comment='Enter You Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 0.9.2
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'leaderboard_template'") != "leaderboard_template")
 		{
@@ -42,7 +42,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET leaderboard_template='".$mlw_leaderboard_default."'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 0.9.4
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'randomness_order'") != "randomness_order")
 		{
@@ -51,7 +51,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET randomness_order=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 0.9.5
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_answer_template'") != "question_answer_template")
 		{
@@ -61,7 +61,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_answer_template='".$mlw_question_answer_default."'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 0.9.6
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'contact_info_location'") != "contact_info_location")
 		{
@@ -70,7 +70,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET contact_info_location=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.0
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'email_from_text'") != "email_from_text")
 		{
@@ -79,7 +79,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET email_from_text='Wordpress'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.3.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'loggedin_user_contact'") != "loggedin_user_contact")
 		{
@@ -88,7 +88,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET loggedin_user_contact=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.5.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_from_total'") != "question_from_total")
 		{
@@ -97,7 +97,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_from_total=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.6.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'total_user_tries'") != "total_user_tries")
 		{
@@ -113,7 +113,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET total_user_tries_text='Enter Your Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.8.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'message_end_template'") != "message_end_template")
 		{
@@ -129,7 +129,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET certificate_template='Enter your text here!'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.9.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'social_media'") != "social_media")
 		{
@@ -166,7 +166,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET timer_limit=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 2.1.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'quiz_stye'") != "quiz_stye")
 		{
@@ -186,7 +186,7 @@ function mlw_quiz_update()
 					text-align: left;
 				}
 				div.quiz_section {
-					
+
 				}
 				div.mlw_qmn_timer {
 					position:fixed;
@@ -217,7 +217,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET quiz_stye='".$mlw_style_default."'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 2.2.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_numbering'") != "question_numbering")
 		{
@@ -226,7 +226,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_numbering='0'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 2.8.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'quiz_settings'") != "quiz_settings")
 		{
@@ -235,7 +235,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET quiz_settings=''";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 3.0.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'theme_selected'") != "theme_selected")
 		{
@@ -244,7 +244,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET theme_selected='default'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 3.3.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'last_activity'") != "last_activity")
 		{
@@ -253,7 +253,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET last_activity='".date("Y-m-d H:i:s")."'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 3.5.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in'") != "require_log_in")
 		{
@@ -283,7 +283,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET limit_total_entries_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 3.7.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'scheduled_timeframe'") != "scheduled_timeframe")
 		{
@@ -299,8 +299,8 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe_text='Enter Text Here'";
 			$results = $wpdb->query( $update_sql );
 		}
-		
-		
+
+
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_questions";
 		//Update 0.5
@@ -313,7 +313,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET comments=1, hints=''";
 			$results = $wpdb->query( $update_sql );
 		}
-		//Update 0.8	
+		//Update 0.8
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_order'") != "question_order")
 		{
 			$sql = "ALTER TABLE ".$table_name." ADD question_order INT NOT NULL AFTER hints";
@@ -321,7 +321,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_order=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_type'") != "question_type")
 		{
 			$sql = "ALTER TABLE ".$table_name." ADD question_type INT NOT NULL AFTER question_order";
@@ -329,7 +329,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_type=0";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 1.1.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_answer_info'") != "question_answer_info")
 		{
@@ -338,7 +338,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_answer_info=''";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 2.5.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'answer_array'") != "answer_array")
 		{
@@ -347,7 +347,7 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET answer_array=''";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
 		//Update 3.1.1
 		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_settings'") != "question_settings")
 		{
@@ -356,14 +356,23 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET question_settings=''";
 			$results = $wpdb->query( $update_sql );
 		}
-		
+
+		//Update 4.0.0
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'category'") != "category")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD category TEXT NOT NULL AFTER question_settings";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET category=''";
+			$results = $wpdb->query( $update_sql );
+		}
+
 		//Update 2.6.1
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;" );
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_quizzes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
-		
-		
+
+
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_results";
 		//Update 2.6.4
