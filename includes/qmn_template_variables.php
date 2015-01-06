@@ -108,6 +108,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 {
 	while (strpos($content, '%QUESTIONS_ANSWERS%') != false)
 	{
+		global $wpdb;
 		$display = '';
 		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
