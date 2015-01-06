@@ -24,6 +24,10 @@ $mlw_qmn_result_array = array(
 		);
 
 */
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_score',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_score',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_point_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_average_point',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_amount_correct',10,2);
@@ -141,6 +145,139 @@ function mlw_qmn_variable_certificate_link($content, $mlw_quiz_array)
 	while (strpos($content, '%CERTIFICATE_LINK%') != false)
 	{
 		$content = str_replace( "%CERTIFICATE_LINK%" , $mlw_quiz_array["certificate_link"], $content);
+	}
+	return $content;
+}
+
+/*
+*	Replaces variable %CATEGORY_POINTS% with the points for that category
+*
+* Filter function that replaces variable %CATEGORY_POINTS% with the points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
+*
+* @since 4.0.0
+* @param string $content The contents of the results page
+* @param array $mlw_quiz_array The array of all the results from user taking the quiz
+* @return string Returns the contents for the results page
+*/
+function qmn_variable_category_points($content, $mlw_quiz_array)
+{
+	$return_points = 0;
+	while (strpos($content, '%CATEGORY_POINTS%') != false)
+	{
+		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
+		{
+			if ($answer["category"] == $answer_text[1])
+			{
+				$return_points += $answer["points"];
+			}
+		}
+		$content = str_replace( $answer_text[0] , $return_points, $content);
+	}
+	return $content;
+}
+
+/*
+*	Replaces variable %CATEGORY_SCORE% with the score for that category
+*
+* Filter function that replaces variable %CATEGORY_SCORE% with the score from the category inside the variable tags. i.e. %CATEGORY_SCORE%category 1%/CATEGORY_SCORE%
+*
+* @since 4.0.0
+* @param string $content The contents of the results page
+* @param array $mlw_quiz_array The array of all the results from user taking the quiz
+* @return string Returns the contents for the results page
+*/
+function qmn_variable_category_score($content, $mlw_quiz_array)
+{
+	$return_score = 0;
+	$total_questions = 0;
+	$amount_correct = 0;
+	while (strpos($content, '%CATEGORY_SCORE%') != false)
+	{
+		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
+		{
+			if ($answer["category"] == $answer_text[1])
+			{
+				$total_questions += 1;
+				if ($answer["correct"] == 'correct')
+				{
+					$amount_correct += 1;
+				}
+			}
+		}
+		$return_score = $amount_correct/$total_questions;
+		$content = str_replace( $answer_text[0] , $return_score, $content);
+	}
+	return $content;
+}
+
+/*
+*	Replaces variable %CATEGORY_AVERAGE_SCORE% with the average score for all categories
+*
+* Filter function that replaces variable %CATEGORY_AVERAGE_SCORE% with the score from all categories.
+*
+* @since 4.0.0
+* @param string $content The contents of the results page
+* @param array $mlw_quiz_array The array of all the results from user taking the quiz
+* @return string Returns the contents for the results page
+*/
+function qmn_variable_category_average_score($content, $mlw_quiz_array)
+{
+	$return_score = 0;
+	$total_categories = 0;
+	$total_score = 0;
+	$category_scores = array();
+	while (strpos($content, '%CATEGORY_AVERAGE_SCORE%') != false)
+	{
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
+		{
+			$category_scores[$answer["category"]]['total_questions'] = isset($category_scores[$answer["category"]]['total_questions']) ? $category_scores[$answer["category"]]['total_questions'] + 1 : 1;
+			if ($answer["correct"] == 'correct')
+			{
+				$category_scores[$answer["category"]]['amount_correct'] = isset($category_scores[$answer["category"]]['amount_correct']) ? $category_scores[$answer["amount_correct"]]['total_questions'] + 1 : 1;
+			}
+		}
+		foreach($category_scores as $category)
+		{
+			$total_score += $category["amount_correct"]/$category["total_questions"];
+			$total_categories += 1;
+		}
+		$return_score = $total_score/$total_categories;
+		$content = str_replace( "%CATEGORY_AVERAGE_SCORE%" , $return_score, $content);
+	}
+	return $content;
+}
+
+/*
+*	Replaces variable %CATEGORY_AVERAGE_POINTS% with the average points for all categories
+*
+* Filter function that replaces variable %CATEGORY_AVERAGE_POINTS% with the points from all categories.
+*
+* @since 4.0.0
+* @param string $content The contents of the results page
+* @param array $mlw_quiz_array The array of all the results from user taking the quiz
+* @return string Returns the contents for the results page
+*/
+function qmn_variable_category_average_points($content, $mlw_quiz_array)
+{
+	$return_score = 0;
+	$total_categories = 0;
+	$total_points = 0;
+	$category_scores = array();
+	while (strpos($content, '%CATEGORY_AVERAGE_POINTS%') != false)
+	{
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
+		{
+			$category_scores[$answer["category"]]['points'] = isset($category_scores[$answer["category"]]['points']) ? $category_scores[$answer["category"]]['points'] + $answer["points"] : $answer["points"];
+		}
+		foreach($category_scores as $category)
+		{
+			$total_points += $category["points"];
+			$total_categories += 1;
+		}
+		$return_score = $total_points/$total_categories;
+		$content = str_replace( '%CATEGORY_AVERAGE_POINTS%' , $return_score, $content);
 	}
 	return $content;
 }
