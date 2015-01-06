@@ -722,7 +722,7 @@ class QMNQuizManager
 						if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
 						{
 							$mlw_points += $mlw_qmn_question_answers_each[1];
-							$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
+							$qmn_answer_points += $mlw_qmn_question_answers_each[1];
 							$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES));
 							if ($mlw_qmn_question_answers_each[2] == 1)
 							{
@@ -756,7 +756,7 @@ class QMNQuizManager
 							$mlw_correct += 1;
 							$qmn_correct = "correct";
 							$mlw_points += $mlw_qmn_question_answers_each[1];
-							$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
+							$qmn_answer_points += $mlw_qmn_question_answers_each[1];
 							break;
 						}
 					}
@@ -773,7 +773,7 @@ class QMNQuizManager
 						    if (isset($_POST["question".$mlw_question->question_id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$mlw_question->question_id."_".$i]), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
 						    {
 						    	$mlw_points += $mlw_qmn_question_answers_each[1];
-									$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
+									$qmn_answer_points += $mlw_qmn_question_answers_each[1];
 								$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES)).".";
 								if ($mlw_qmn_question_answers_each[2] == 1)
 								{
