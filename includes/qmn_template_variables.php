@@ -118,7 +118,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $answer[2], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
-			$display .= $mlw_question_answer_display;
+			$display .= apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array);
 			$display .= "<br />";
 		}
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
