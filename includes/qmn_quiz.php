@@ -696,12 +696,14 @@ class QMNQuizManager
 		$mlw_user_text = "";
 		$mlw_correct_text = "";
 		$qmn_correct = "incorrect";
+		$qmn_answer_points = 0;
 		$mlw_qmn_answer_array = array();
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
 			$mlw_user_text = "";
 			$mlw_correct_text = "";
 			$qmn_correct = "incorrect";
+			$qmn_answer_points = 0;
 			if ( isset($_POST["question".$mlw_question->question_id]) || isset($_POST["mlwComment".$mlw_question->question_id]) )
 			{
 				if ( $mlw_question->question_type == 0 || $mlw_question->question_type == 1 || $mlw_question->question_type == 2)
@@ -720,6 +722,7 @@ class QMNQuizManager
 						if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
 						{
 							$mlw_points += $mlw_qmn_question_answers_each[1];
+							$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
 							$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES));
 							if ($mlw_qmn_question_answers_each[2] == 1)
 							{
@@ -753,6 +756,7 @@ class QMNQuizManager
 							$mlw_correct += 1;
 							$qmn_correct = "correct";
 							$mlw_points += $mlw_qmn_question_answers_each[1];
+							$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
 							break;
 						}
 					}
@@ -769,6 +773,7 @@ class QMNQuizManager
 						    if (isset($_POST["question".$mlw_question->question_id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$mlw_question->question_id."_".$i]), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
 						    {
 						    	$mlw_points += $mlw_qmn_question_answers_each[1];
+									$qmn_answer_points = += $mlw_qmn_question_answers_each[1];
 								$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES)).".";
 								if ($mlw_qmn_question_answers_each[2] == 1)
 								{
@@ -801,17 +806,7 @@ class QMNQuizManager
 					$mlw_qm_question_comment = "";
 				}
 
-				$mlw_question_answer_display = htmlspecialchars_decode($qmn_quiz_options->question_answer_template, ENT_QUOTES);
-				$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES), $mlw_question_answer_display);
-				$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , $mlw_user_text, $mlw_question_answer_display);
-				$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $mlw_correct_text, $mlw_question_answer_display);
-				$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $mlw_qm_question_comment, $mlw_question_answer_display);
-				$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
-
-				$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id), $qmn_quiz_options, $qmn_array_for_variables);
-
-				$mlw_question_answers .= $mlw_question_answer_display;
-				$mlw_question_answers .= "<br />";
+				$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points), $qmn_quiz_options, $qmn_array_for_variables);
 			}
 
 		}
