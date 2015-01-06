@@ -111,6 +111,12 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		global $wpdb;
 		$display = '';
 		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
+		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0", $mlw_quiz_array['quiz_id'] ) );
+		$qmn_questions = array();
+		foreach($qmn_questions_sql as $question)
+		{
+			$qmn_questions[$question->question_id] = $question->question_answer_info;
+		}
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
@@ -118,7 +124,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , $answer[1], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $answer[2], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
-			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($mlw_question->question_answer_info, ENT_QUOTES), $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($qmn_questions[$answer['id']], ENT_QUOTES), $mlw_question_answer_display);
 			$display .= apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array);
 			$display .= "<br />";
 		}
