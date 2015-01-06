@@ -25,10 +25,17 @@ function mlw_options_questions_tab_content()
 		$edit_question_order = intval($_POST["edit_question_order"]);
 		$mlw_edit_answer_total = intval($_POST["question_".$mlw_edit_question_id."_answer_total"]);
 
-		$qmn_edit_category = $_POST["edit_category"];
-		if ($qmn_edit_category == 'new_category')
+		if (isset($_POST["edit_category"]))
 		{
-			$qmn_edit_category = $_POST["edit_new_category"];
+			$qmn_edit_category = $_POST["edit_category"];
+			if ($qmn_edit_category == 'new_category')
+			{
+				$qmn_edit_category = $_POST["edit_new_category"];
+			}
+		}
+		else
+		{
+			$qmn_edit_category = '';
 		}
 		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
 		if (is_serialized($mlw_row_settings->question_settings) && is_array(@unserialize($mlw_row_settings->question_settings)))
@@ -234,10 +241,17 @@ function mlw_options_questions_tab_content()
 		$new_question_order = intval($_POST["new_question_order"]);
 		$mlw_answer_total = intval($_POST["new_question_answer_total"]);
 
-		$qmn_category = $_POST["new_category"];
-		if ($qmn_category == 'new_category')
+		if (isset($_POST['new_category']))
 		{
-			$qmn_category = $_POST["new_new_category"];
+			$qmn_category = $_POST["new_category"];
+			if ($qmn_category == 'new_category')
+			{
+				$qmn_category = $_POST["new_new_category"];
+			}
+		}
+		else
+		{
+			$qmn_category = '';
 		}
 		$mlw_settings = array();
 		$mlw_settings['required'] = intval($_POST["required"]);
@@ -355,7 +369,7 @@ function mlw_options_questions_tab_content()
 
 	//Load Categories
 	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
-		ORDER BY question_order ASC", $quiz_id ) );
+		GROUP BY category", $quiz_id ) );
 
 	$is_new_quiz = $wpdb->num_rows;
 	?>
@@ -668,10 +682,14 @@ function mlw_options_questions_tab_content()
 									<?php
 									foreach($qmn_quiz_categories as $category)
 									{
-										?>
-										<input type="radio" name="edit_category" <?php if ($category->category == $mlw_question_info->category) { echo "selected='selected' "; } ?>id="edit_category_<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
-										<label for="edit_category_<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
-										<?php
+										if ($category->category != '')
+										{
+											?>
+											<input type="radio" name="edit_category" <?php if ($category->category == $mlw_question_info->category) { echo "checked='checked' "; } ?>id="edit_category_<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
+											<label for="edit_category_<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+											<br />
+											<?php
+										}
 									}
 									?>
 									<input type="radio" name="edit_category" id="edit_category_new" value="new_category"><label for="edit_category_new">New: <input type='text' name='edit_new_category' value='' /></label>
@@ -827,6 +845,7 @@ function mlw_options_questions_tab_content()
 					?>
 					<input type="radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
 					<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+					<br />
 					<?php
 				}
 				?>

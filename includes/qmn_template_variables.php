@@ -164,6 +164,7 @@ function qmn_variable_category_points($content, $mlw_quiz_array)
 	$return_points = 0;
 	while (strpos($content, '%CATEGORY_POINTS%') != false)
 	{
+		$return_points = 0;
 		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
@@ -194,6 +195,9 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 	$amount_correct = 0;
 	while (strpos($content, '%CATEGORY_SCORE%') != false)
 	{
+		$return_score = 0;
+		$total_questions = 0;
+		$amount_correct = 0;
 		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
@@ -206,7 +210,7 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 				}
 			}
 		}
-		$return_score = $amount_correct/$total_questions;
+		$return_score = round((($amount_correct/$total_questions)*100), 2);
 		$content = str_replace( $answer_text[0] , $return_score, $content);
 	}
 	return $content;
@@ -232,10 +236,18 @@ function qmn_variable_category_average_score($content, $mlw_quiz_array)
 	{
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			$category_scores[$answer["category"]]['total_questions'] = isset($category_scores[$answer["category"]]['total_questions']) ? $category_scores[$answer["category"]]['total_questions'] + 1 : 1;
+			if (!isset($category_scores[$answer["category"]]['total_questions']))
+			{
+				$category_scores[$answer["category"]]['total_questions'] = 0;
+			}
+			if (!isset($category_scores[$answer["category"]]['amount_correct']))
+			{
+				$category_scores[$answer["category"]]['amount_correct'] = 0;
+			}
+			$category_scores[$answer["category"]]['total_questions'] += 1;
 			if ($answer["correct"] == 'correct')
 			{
-				$category_scores[$answer["category"]]['amount_correct'] = isset($category_scores[$answer["category"]]['amount_correct']) ? $category_scores[$answer["amount_correct"]]['total_questions'] + 1 : 1;
+				$category_scores[$answer["category"]]['amount_correct'] += 1;
 			}
 		}
 		foreach($category_scores as $category)
@@ -243,7 +255,7 @@ function qmn_variable_category_average_score($content, $mlw_quiz_array)
 			$total_score += $category["amount_correct"]/$category["total_questions"];
 			$total_categories += 1;
 		}
-		$return_score = $total_score/$total_categories;
+		$return_score = round((($total_score/$total_categories)*100), 2);
 		$content = str_replace( "%CATEGORY_AVERAGE_SCORE%" , $return_score, $content);
 	}
 	return $content;
@@ -269,7 +281,11 @@ function qmn_variable_category_average_points($content, $mlw_quiz_array)
 	{
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			$category_scores[$answer["category"]]['points'] = isset($category_scores[$answer["category"]]['points']) ? $category_scores[$answer["category"]]['points'] + $answer["points"] : $answer["points"];
+			if (!isset($category_scores[$answer["category"]]['points']))
+			{
+				$category_scores[$answer["category"]]['points'] = 0;
+			}
+			$category_scores[$answer["category"]]['points'] += $answer["points"];
 		}
 		foreach($category_scores as $category)
 		{
