@@ -76,24 +76,24 @@ function mlw_validateForm()
 				jQuery(this).css("outline", "2px solid red");
 				mlw_validateResult =  false;
 			}
-			if($(this).attr('class').indexOf('mlwRequiredRadio') > -1)
+			if(jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1)
 			{
-        check_val = $(this).find('input:checked').val();
+        check_val = jQuery(this).find('input:checked').val();
         if (check_val == "No Answer Provided")
 				{
-          document.getElementById('mlw_error_message').innerHTML = '**test**';
-					document.getElementById('mlw_error_message_bottom').innerHTML = '**test**';
-					$(this).css("outline", "2px solid red");
+          document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+					jQuery(this).css("outline", "2px solid red");
 					mlw_validateResult =  false;
 				}
 			}
-			if($(this).attr('class').indexOf('mlwRequiredChecked') > -1)
+			if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1)
 			{
-				if (!$(this).find('input:checked').length)
+				if (!jQuery(this).find('input:checked').length)
 				{
-        	document.getElementById('mlw_error_message').innerHTML = '**test**';
-					document.getElementById('mlw_error_message_bottom').innerHTML = '**test**';
-					$(this).css("outline", "2px solid red");
+					document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+					jQuery(this).css("outline", "2px solid red");
 					mlw_validateResult =  false;
 				}
 			}
