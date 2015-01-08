@@ -189,10 +189,25 @@ class QMNQuizManager
 	public function display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers)
 	{
 		$question_display = '';
+		global $mlwQuizMasterNext;
 		global $qmn_total_questions;
 		global $mlw_qmn_section_count;
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
+			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
+			$question_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
+
+			$function_display = $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type, $mlw_question->question_id);
+			if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
+			$question_display .= $function_display;
+
+
+			/*
+			* Move All After To Separate Files!!
+			* Up To Comments/Hints
+			*/
+
+
 			if (is_serialized($mlw_question->question_settings) && is_array(@unserialize($mlw_question->question_settings)))
 			{
 				$mlw_question_settings = @unserialize($mlw_question->question_settings);
@@ -206,8 +221,7 @@ class QMNQuizManager
 			{
 				$mlw_question_settings['required'] = 1;
 			}
-			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$question_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
+
 			if ($mlw_question->question_type == 0)
 			{
 				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
@@ -703,6 +717,7 @@ class QMNQuizManager
 		$mlw_correct = 0;
 		$mlw_total_score = 0;
 		$mlw_question_answers = "";
+		global $mlwQuizMasterNext;
 		isset($_POST["total_questions"]) ? $mlw_total_questions = intval($_POST["total_questions"]) : $mlw_total_questions = 0;
 
 		$mlw_user_text = "";
@@ -716,6 +731,23 @@ class QMNQuizManager
 			$mlw_correct_text = "";
 			$qmn_correct = "incorrect";
 			$qmn_answer_points = 0;
+
+			$results_array = $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type, $mlw_question->question_id);
+			$mlw_points += $results_array["points"];
+			$qmn_answer_points += $results_array["points"];
+			if ($results_array["correct"] == "correct")
+			{
+				$mlw_correct += 1;
+				$qmn_correct = "correct";
+			}
+			$mlw_user_text = $results_array["user_text"];
+			$mlw_correct_text = $results_array["correct_text"];
+			
+
+
+			/*
+			* Move all after here to separate functions
+			*/
 			if ( isset($_POST["question".$mlw_question->question_id]) || isset($_POST["mlwComment".$mlw_question->question_id]) )
 			{
 				if ( $mlw_question->question_type == 0 || $mlw_question->question_type == 1 || $mlw_question->question_type == 2)

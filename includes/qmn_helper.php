@@ -83,7 +83,7 @@ class QMNPluginHelper
 
 	public function display_review($slug, $question_id)
 	{
-		$display = '';
+		$results_array = array();
 		global $wpdb;
 		$question = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE question_id=%d", intval($question_id)));
 		$answers = array();
@@ -107,10 +107,10 @@ class QMNPluginHelper
 		{
 			if ($type["slug"] == strtolower(str_replace( " ", "-", $slug)) && !is_null($type["review"]))
 			{
-				$display .= call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
+				$results_array = call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
 			}
 		}
-		$return $display;
+		return $results_array;
 	}
 
 	public function get_question_setting($question_id, $setting)
