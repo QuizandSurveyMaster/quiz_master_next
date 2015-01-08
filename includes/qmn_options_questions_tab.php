@@ -371,6 +371,9 @@ function mlw_options_questions_tab_content()
 	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
 		GROUP BY category", $quiz_id ) );
 
+	//Load Question Types
+	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+
 	$is_new_quiz = $wpdb->num_rows;
 	?>
 		<script>
@@ -512,42 +515,12 @@ function mlw_options_questions_tab_content()
 					$mlw_question_settings['required'] = 1;
 				}
 				$mlw_question_type_text = "";
-				switch ($mlw_question_info->question_type) {
-					case 0:
-						$mlw_question_type_text = __("Multiple Choice", 'quiz-master-next');
-						break;
-					case 1:
-						$mlw_question_type_text = __("Horizontal Multiple Choice", 'quiz-master-next');
-						break;
-					case 2:
-						$mlw_question_type_text = __("Drop Down", 'quiz-master-next');
-						break;
-					case 3:
-						$mlw_question_type_text = __("Small Open Answer", 'quiz-master-next');
-						break;
-					case 4:
-						$mlw_question_type_text = __("Multiple Response", 'quiz-master-next');
-						break;
-					case 5:
-						$mlw_question_type_text = __("Large Open Answer", 'quiz-master-next');
-						break;
-					case 6:
-						$mlw_question_type_text = __("Text Block", 'quiz-master-next');
-						break;
-					case 7:
-						$mlw_question_type_text = __("Number", 'quiz-master-next');
-						break;
-					case 8:
-						$mlw_question_type_text = __("Accept", 'quiz-master-next');
-						break;
-					case 9:
-						$mlw_question_type_text = __("Captcha", 'quiz-master-next');
-						break;
-					case 10:
-						$mlw_question_type_text = __("Horizontal Multiple Response", 'quiz-master-next');
-						break;
-					default:
-						$mlw_question_type_text = __("Error!", 'quiz-master-next');
+				foreach($qmn_question_types as $type)
+				{
+					if ($type["slug"] == $mlw_question_info->question_type)
+					{
+						$mlw_question_type_text = $type["name"];
+					}
 				}
 				if($alternate) $alternate = "";
 				else $alternate = " class=\"alternate\"";
@@ -634,17 +607,17 @@ function mlw_options_questions_tab_content()
 								<td><span style='font-weight:bold;'><?php _e('Question Type', 'quiz-master-next'); ?></span></td>
 								<td colspan="3">
 									<select name="edit_question_type">
-										<option value="0" <?php if ($mlw_question_info->question_type == 0) { echo 'selected="selected"'; } ?>><?php _e('Normal Multiple Choice (Vertical Radio)', 'quiz-master-next'); ?></option>
-										<option value="1" <?php if ($mlw_question_info->question_type == 1) { echo 'selected="selected"'; } ?>><?php _e('Horizontal Multiple Choice (Horizontal Radio)', 'quiz-master-next'); ?></option>
-										<option value="2" <?php if ($mlw_question_info->question_type == 2) { echo 'selected="selected"'; } ?>><?php _e('Drop Down (Select)', 'quiz-master-next'); ?></option>
-										<option value="3" <?php if ($mlw_question_info->question_type == 3) { echo 'selected="selected"'; } ?>><?php _e('Open Answer (Text Input)', 'quiz-master-next'); ?></option>
-										<option value="5" <?php if ($mlw_question_info->question_type == 5) { echo 'selected="selected"'; } ?>><?php _e('Open Answer (Large Text Input)', 'quiz-master-next'); ?></option>
-										<option value="4" <?php if ($mlw_question_info->question_type == 4) { echo 'selected="selected"'; } ?>><?php _e('Multiple Response (Checkbox)', 'quiz-master-next'); ?></option>
-										<option value="10" <?php if ($mlw_question_info->question_type == 10) { echo 'selected="selected"'; } ?>><?php _e('Horizontal Multiple Response (Checkbox)', 'quiz-master-next'); ?></option>
-										<option value="6" <?php if ($mlw_question_info->question_type == 6) { echo 'selected="selected"'; } ?>><?php _e('Text Block', 'quiz-master-next'); ?></option>
-										<option value="7" <?php if ($mlw_question_info->question_type == 7) { echo 'selected="selected"'; } ?>><?php _e('Number', 'quiz-master-next'); ?></option>
-										<option value="8" <?php if ($mlw_question_info->question_type == 8) { echo 'selected="selected"'; } ?>><?php _e('Accept', 'quiz-master-next'); ?></option>
-										<option value="9" <?php if ($mlw_question_info->question_type == 9) { echo 'selected="selected"'; } ?>><?php _e('Captcha', 'quiz-master-next'); ?></option>
+										<?php
+										foreach($qmn_question_types as $type)
+										{
+											$selected_text ='';
+											if ($mlw_question_info->question_type == $type["slug"])
+											{
+												$selected_text = 'selected="selected"';
+											}
+											echo "<option value='".$type['slug']."' $selected_text>".$type['name']."</option>";
+										}
+										?>
 									</select>
 								</td>
 							</tr>
@@ -797,17 +770,12 @@ function mlw_options_questions_tab_content()
 		<td><span style='font-weight:bold;'><?php _e('Question Type', 'quiz-master-next'); ?></span></td>
 		<td colspan="3">
 			<select name="question_type">
-				<option value="0" selected="selected"><?php _e('Normal Multiple Choice (Vertical Radio)', 'quiz-master-next'); ?></option>
-				<option value="1"><?php _e('Horizontal Multiple Choice (Horizontal Radio)', 'quiz-master-next'); ?></option>
-				<option value="2"><?php _e('Drop Down (Select)', 'quiz-master-next'); ?></option>
-				<option value="3"><?php _e('Open Answer (Text Input)', 'quiz-master-next'); ?></option>
-				<option value="5"><?php _e('Open Answer (Large Text Input)', 'quiz-master-next'); ?></option>
-				<option value="4"><?php _e('Multiple Response (Checkbox)', 'quiz-master-next'); ?></option>
-				<option value="10"><?php _e('Horizontal Multiple Response (Checkbox)', 'quiz-master-next'); ?></option>
-				<option value="6"><?php _e('Text Block', 'quiz-master-next'); ?></option>
-				<option value="7"><?php _e('Number', 'quiz-master-next'); ?></option>
-				<option value="8"><?php _e('Accept', 'quiz-master-next'); ?></option>
-				<option value="9"><?php _e('Captcha', 'quiz-master-next'); ?></option>
+				<?php
+				foreach($qmn_question_types as $type)
+				{
+					echo "<option value='".$type['slug']."'>".$type['name']."</option>";
+				}
+				?>
 			</select>
 		</div></td>
 		</tr>
