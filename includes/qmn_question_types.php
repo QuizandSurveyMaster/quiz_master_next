@@ -9,7 +9,28 @@ function qmn_question_type_multiple_choice()
 
 function qmn_multiple_choice_display($id, $question, $answers)
 {
-
+  $question_display = '';
+  global $mlwQuizMasterNext;
+  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
+  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
+  if (is_array($answers))
+  {
+    $mlw_answer_total = 0;
+    foreach($answers as $answer)
+    {
+      $mlw_answer_total++;
+      if ($answer[0] != "")
+      {
+        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
+        $question_display .= "<br />";
+      }
+    }
+    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
+  }
+  $question_display .= "</div>";
+  return $question_display;
 }
 
 function qmn_multiple_choice_review($id, $question, $answers)

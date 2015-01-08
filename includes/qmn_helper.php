@@ -44,7 +44,7 @@ class QMNPluginHelper
 		return $type_array;
 	}
 
-	public function display_question($slug, $question_id)
+	public function display_question($slug, $question_id, $quiz_options)
 	{
 		$display = '';
 		global $wpdb;
@@ -66,6 +66,10 @@ class QMNPluginHelper
 				array($question->answer_four, $question->answer_four_points, $mlw_answer_array_correct[3]),
 				array($question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4]),
 				array($question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5]));
+		}
+		if ($quiz_options->randomness_order == 2)
+		{
+			shuffle($answers);
 		}
 		foreach($this->question_types as $type)
 		{
