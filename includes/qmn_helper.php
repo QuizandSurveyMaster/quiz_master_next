@@ -78,6 +78,10 @@ class QMNPluginHelper
 				if ($type["graded"])
 				{
 					$qmn_total_questions += 1;
+					if ($quiz_options->question_numbering == 1)
+					{
+						$display .= "<span class='mlw_qmn_question'>$qmn_total_questions)</span>";
+					}
 				}
 				$display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
 			}
