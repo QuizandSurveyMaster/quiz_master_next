@@ -388,8 +388,6 @@ class QMNQuizManager
 	    $section_display .= ob_get_contents();
     ob_end_clean();
 
-		$section_display .= "<span style='display: none;'>If you are human, leave this field blank or you will be considered spam:</span>";
-		$section_display .= "<input style='display: none;' type='text' name='email' id='email' />";
 		$section_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
 		$section_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
 		$section_display .= "</div>";
@@ -459,7 +457,7 @@ class QMNQuizManager
 			window.sessionStorage.setItem('mlw_started_quiz<?php echo $qmn_array_for_variables['quiz_id']; ?>', "no");
 		</script>
 		<?php
-		if (empty($_POST["email"]) && ((!isset($_POST["mlw_code_captcha"])) || isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
+		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
 		{
 			$qmn_array_for_variables = array_merge($qmn_array_for_variables,$this->check_answers($qmn_quiz_questions, $qmn_quiz_answers, $qmn_quiz_options, $qmn_array_for_variables));
 			$result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
