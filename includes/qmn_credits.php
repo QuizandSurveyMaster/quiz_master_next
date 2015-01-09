@@ -105,13 +105,21 @@ function mlw_generate_about_page()
 	<br />
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (December 30, 2014)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (January 14, 2015)</h3>
 	<ul>
-		<li>* Added Wp Editor To Text Tab</li>
-		<li>* Added Weekly Stats To Snapshot Widget</li>
-		<li>* Moved Email Settings To Emails Tab</li>
-		<li>* Default Question Order Auto-increments For New Questions</li>
-		<li>* In Code: Separated CSS/JS From Core Quiz PHP File</li>
+		<li>* Added Ability To Add Categories To Your Quizzes</li>
+		<li>* Added Multiple Choice And Multiple Response To Required System</li>
+		<li>* Added Wp Editor To Results Pages</li>
+		<li>* Added Shortcode Capability To Results Pages</li>
+		<li>* Added Translation Capabilities</li>
+		<li>* Created New Addon Settings Page</li>
+		<li>* Design Changes To Quiz Settings Page</li>
+		<li>* In Code: Added 20 New Filters And Hooks</li>
+		<li>* In Code: Turned Question Types Into Extendable Functions For Creating Own Question Types</li>
+		<li>* In Code: Created New Plugin Helper Class For Extending Plugin</li>
+		<li>* In Code: Rewrote 75% of quiz shortcode file. Now With New Quiz Manager Class</li>
+		<li>* In Code: Re-organized File/Directory Structure</li>
+		<li>* In Code: Separated Quiz Settings Functions Into Own Files</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">

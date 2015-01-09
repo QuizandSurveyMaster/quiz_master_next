@@ -34,6 +34,9 @@ Your quiz can be graded with an incorrect/correct system or a points-based syste
 = Useful For Businesses =
 The plugin features useful **statistics** that show how many times each quiz has been viewed and taken and plots the data on several different **graphs** so you can see how the quizzes are doing at a glance. Also, the plugin includes an **audit trail** that logs every action done on the admin side so you can keep up with who is doing what!
 
+= Categories =
+You can assign categories to your questions. You can then show the user their score in a **particular** category or an average score of the categories.
+
 = Saves The Results For Later Use =
 The plugin will **save** the results, the user's answers, the user's comments, and more!
 
@@ -48,6 +51,7 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only one question per page
 * Require user to be logged in
+* **Require** certain or all questions to be answered
 * Limit amount of total entries to quiz or survey
 * Allows for you to create **certificates** for the user
 * Can set amount of tries a user has to take the quiz
@@ -106,7 +110,7 @@ Feel free to use the widget on the help page within the plugin or from the conta
 == Screenshots ==
 
 1. Quiz Admin Page (With Advertisement Be Gone Add-On)
-2. Quiz Options Page (With Advertisement Be Gone Add-On)
+2. Quiz Settings Page (With Advertisement Be Gone Add-On)
 3. Quiz Dashboard Page (With Advertisement Be Gone Add-On)
 4. Example Quiz
 5. Example Survey
@@ -115,6 +119,21 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.0.0 (January 14, 2015) =
+ * Added Ability To Add Categories To Your Quizzes
+ * Added Multiple Choice And Multiple Response To Required System
+ * Added Wp Editor To Results Pages
+ * Added Shortcode Capability To Results Pages
+ * Added Translation Capabilities
+ * Created New Addon Settings Page
+ * Design Changes To Quiz Settings Page
+ * In Code: Added 20 New Filters And Hooks
+ * In Code: Turned Question Types Into Extendable Functions For Creating Own Question Types
+ * In Code: Created New Plugin Helper Class For Extending Plugin
+ * In Code: Rewrote 75% of quiz shortcode file. Now With New Quiz Manager Class
+ * In Code: Re-organized File/Directory Structure
+ * In Code: Separated Quiz Settings Functions Into Own Files
 
 = 3.9.0 (December 30, 2014) =
  * Added Wp Editor To Text Tab
