@@ -39,14 +39,11 @@ class QMNPluginHelper
 	  * Call functions within class
 	  *
 	  * @since 4.0.0
-	  * @uses QMNPluginHelper::get_settings_tabs() Retrieves list of tabs
-	  * @uses QMNPluginHelper::get_settings_tabs_content() Retrieves list of tabs contents
 	  * @return void
 	  */
 	public function __construct()
 	{
-		add_action('mlw_qmn_options_tab', array($this, 'get_settings_tabs'));
-		add_action('mlw_qmn_options_tab_content', array($this, 'get_settings_tabs_content'));
+
 	}
 
 	/**
@@ -298,32 +295,11 @@ class QMNPluginHelper
 	  * Echos the title link of the registered tabs
 	  *
 	  * @since 4.0.0
-		* @return void
+		* @return array The array of registered tabs
 	  */
 	public function get_settings_tabs()
 	{
-		foreach($this->settings_tabs as $tab)
-		{
-			echo "<li><a href=\"#".$tab["slug"]."\">".$tab["title"]."</a></li>";
-		}
-	}
-
-	/**
-	  * Echos Registered Tabs Content
-	  *
-	  * Echos the content of the registered tabs
-	  *
-	  * @since 4.0.0
-		* @return void
-	  */
-	public function get_settings_tabs_content()
-	{
-		foreach($this->settings_tabs as $tab)
-		{
-			echo "<div id=\"".$tab["slug"]."\" class=\"mlw_tab_content\">";
-			call_user_func($tab['function']);
-			echo "</div>";
-		}
+		return $this->settings_tabs;
 	}
 }
 ?>

@@ -477,30 +477,45 @@ function mlw_options_questions_tab_content()
 				background-color: black;
 			}
 		</style>
-		<button class="button" id="new_question_button_two"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="new_question_button_two"><?php _e('Add Question', 'quiz-master-next'); ?></button>
 		<br />
+		<div class="tablenav top">
+			<div class="tablenav-pages">
+				<span class="displaying-num"><?php echo sprintf(_n('One question', '%s questions', $mlw_qmn_question_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_question_count)); ?></span>
+				<span class="pagination-links">
+					<?php
+					$mlw_current_page = $mlw_qmn_question_page+1;
+					$mlw_total_pages = ceil($mlw_qmn_question_count/$mlw_qmn_table_limit);
+					if( $mlw_qmn_question_page > 0 )
+					{
+						$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
+						echo "<a class=\"prev-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><</a>";
+						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+						if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
+						{
+							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
+						}
+					}
+					else if( $mlw_qmn_question_page == 0 )
+					{
+						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+						if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
+						{
+							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
+						}
+					}
+					else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
+					{
+						$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
+						echo "<a class=\"prev-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><</a>";
+						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+					}
+					?>
+				</span>
+				<br class="clear">
+			</div>
+		</div>
 		<?php
-		if( $mlw_qmn_question_page > 0 )
-		{
-			$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-			echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><?php print_f(__('Previous %d Questions', 'quiz-master-next'), $mlw_qmn_table_limit); ?></a>";
-			if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-			{
-				echo "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\"><?php print_f(__('Next %d Questions', 'quiz-master-next'), $mlw_qmn_table_limit); ?></a>";
-			}
-		}
-		else if( $mlw_qmn_question_page == 0 )
-		{
-		   if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-		   {
-				echo "<a id=\"next_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\"><?php print_f(__('Next %d Questions', 'quiz-master-next'), $mlw_qmn_table_limit); ?></a>";
-		   }
-		}
-		else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
-		{
-		   $mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-		   echo "<a id=\"prev_page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><?php print_f(__('Previous %d Questions', 'quiz-master-next'), $mlw_qmn_table_limit); ?></a>";
-		}
 			$alternate = "";
 			$question_list = "";
 			foreach($mlw_question_data as $mlw_question_info)
