@@ -103,6 +103,7 @@ class MLWQuizMasterNext
 		include("includes/qmn_options_tools_tab.php");
 		include("includes/qmn_options_preview_tab.php");
 		include("includes/qmn_addons.php");
+		include("includes/qmn_question_types.php");
 
 		include("includes/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();

@@ -185,6 +185,8 @@ function mlw_quiz_activate()
 
 			question_type INT NOT NULL,
 
+			question_type_new TEXT NOT NULL,
+
 			question_settings TEXT NOT NULL,
 
 			category TEXT NOT NULL,

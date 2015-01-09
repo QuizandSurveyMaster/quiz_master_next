@@ -366,6 +366,15 @@ function mlw_quiz_update()
 			$results = $wpdb->query( $update_sql );
 		}
 
+		//Update 4.0.0
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'question_type_new'") != "question_type_new")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD question_type_new TEXT NOT NULL AFTER question_type";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET question_type_new=question_type";
+			$results = $wpdb->query( $update_sql );
+		}
+
 		//Update 2.6.1
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;" );
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );

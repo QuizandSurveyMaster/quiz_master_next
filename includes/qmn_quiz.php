@@ -189,325 +189,18 @@ class QMNQuizManager
 	public function display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers)
 	{
 		$question_display = '';
+		global $mlwQuizMasterNext;
 		global $qmn_total_questions;
 		global $mlw_qmn_section_count;
+		$question_id_list = '';
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
-			if (is_serialized($mlw_question->question_settings) && is_array(@unserialize($mlw_question->question_settings)))
-			{
-				$mlw_question_settings = @unserialize($mlw_question->question_settings);
-			}
-			else
-			{
-				$mlw_question_settings = array();
-				$mlw_question_settings['required'] = 1;
-			}
-			if ( !isset($mlw_question_settings['required']))
-			{
-				$mlw_question_settings['required'] = 1;
-			}
+			$question_id_list .= $mlw_question->question_id."Q";
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			$question_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
-			if ($mlw_question->question_type == 0)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				$question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
-				$mlw_qmn_answer_array = $qmn_quiz_answers[$mlw_question->question_id];
-				if (is_array($mlw_qmn_answer_array))
-				{
-					if ($qmn_quiz_options->randomness_order == 2)
-					{
-						shuffle($mlw_qmn_answer_array);
-					}
-					$mlw_answer_total = 0;
-					foreach($mlw_qmn_answer_array as $mlw_qmn_answer_each)
-					{
-						$mlw_answer_total++;
-						if ($mlw_qmn_answer_each[0] != "")
-						{
-							$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_".$mlw_answer_total."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> <label for='question".$mlw_question->question_id."_".$mlw_answer_total."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."</label>";
-							$question_display .= "<br />";
-						}
-					}
-					$question_display .= "<input type='radio' style='display: none;' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_none' checked='checked' value='No Answer Provided' />";
-				}
-				else
-				{
-					if ($mlw_question->answer_one != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_one' value='1' /> <label for='question".$mlw_question->question_id."_one'>".htmlspecialchars_decode($mlw_question->answer_one, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-					if ($mlw_question->answer_two != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_two' value='2' /> <label for='question".$mlw_question->question_id."_two'>".htmlspecialchars_decode($mlw_question->answer_two, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-					if ($mlw_question->answer_three != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_three' value='3' /> <label for='question".$mlw_question->question_id."_three'>".htmlspecialchars_decode($mlw_question->answer_three, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-					if ($mlw_question->answer_four != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_four' value='4' /> <label for='question".$mlw_question->question_id."_four'>".htmlspecialchars_decode($mlw_question->answer_four, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-					if ($mlw_question->answer_five != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_five' value='5' /> <label for='question".$mlw_question->question_id."_five'>".htmlspecialchars_decode($mlw_question->answer_five, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-					if ($mlw_question->answer_six != "")
-					{
-						$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_six' value='6' /> <label for='question".$mlw_question->question_id."_six'>".htmlspecialchars_decode($mlw_question->answer_six, ENT_QUOTES)."</label>";
-						$question_display .= "<br />";
-					}
-				}
-				$question_display .= "</div>";
-			}
-			elseif ($mlw_question->question_type == 4)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				$question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
-				$mlw_qmn_answer_array = $qmn_quiz_answers[$mlw_question->question_id];
-				if (is_array($mlw_qmn_answer_array))
-				{
-					if ($qmn_quiz_options->randomness_order == 2)
-					{
-						shuffle($mlw_qmn_answer_array);
-					}
-					$mlw_answer_total = 0;
-					foreach($mlw_qmn_answer_array as $mlw_qmn_answer_each)
-					{
-						$mlw_answer_total++;
-						if ($mlw_qmn_answer_each[0] != "")
-						{
-							$question_display .= "<input type='hidden' name='question".$mlw_question->question_id."' value='This value does not matter' />";
-							$question_display .= "<input type='checkbox' name='question".$mlw_question->question_id."_".$mlw_answer_total."' id='question".$mlw_question->question_id."_".$mlw_answer_total."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> <label for='question".$mlw_question->question_id."_".$mlw_answer_total."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."</label>";
-							$question_display .= "<br />";
-						}
-					}
-				}
-				$question_display .= "</div>";
-			}
-			elseif ($mlw_question->question_type == 10)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				$question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
-				$mlw_qmn_answer_array = $qmn_quiz_answers[$mlw_question->question_id];
-				if (is_array($mlw_qmn_answer_array))
-				{
-					if ($qmn_quiz_options->randomness_order == 2)
-					{
-						shuffle($mlw_qmn_answer_array);
-					}
-					$mlw_answer_total = 0;
-					foreach($mlw_qmn_answer_array as $mlw_qmn_answer_each)
-					{
-						$mlw_answer_total++;
-						if ($mlw_qmn_answer_each[0] != "")
-						{
-							$question_display .= "<input type='hidden' name='question".$mlw_question->question_id."' value='This value does not matter' />";
-							$question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' name='question".$mlw_question->question_id."_".$mlw_answer_total."' id='question".$mlw_question->question_id."_".$mlw_answer_total."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> <label for='question".$mlw_question->question_id."_".$mlw_answer_total."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."&nbsp;</label></span>";
-						}
-					}
-				}
-				$question_display .= "</div>";
-			}
-			elseif ($mlw_question->question_type == 1)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				$question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
-				$mlw_qmn_answer_array = $qmn_quiz_answers[$mlw_question->question_id];
-				if (is_array($mlw_qmn_answer_array))
-				{
-					if ($qmn_quiz_options->randomness_order == 2)
-					{
-						shuffle($mlw_qmn_answer_array);
-					}
-					$mlw_answer_total = 0;
-					foreach($mlw_qmn_answer_array as $mlw_qmn_answer_each)
-					{
-						$mlw_answer_total++;
-						if ($mlw_qmn_answer_each[0] != "")
-						{
-							$question_display .= "<input type='radio' id='question".$mlw_question->question_id."_".$mlw_answer_total."' name='question".$mlw_question->question_id."' value='".esc_attr($mlw_qmn_answer_each[0])."' /> <label for='question".$mlw_question->question_id."_".$mlw_answer_total."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."</label> ";
-						}
-					}
-					$question_display .= "<input type='radio' style='display: none;' name='question".$mlw_question->question_id."' id='question".$mlw_question->question_id."_none' checked='checked' value='No Answer Provided' />";
-				}
-				else
-				{
-					if ($mlw_question->answer_one != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='1' />".htmlspecialchars_decode($mlw_question->answer_one, ENT_QUOTES);
-					}
-					if ($mlw_question->answer_two != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='2' />".htmlspecialchars_decode($mlw_question->answer_two, ENT_QUOTES);
-					}
-					if ($mlw_question->answer_three != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='3' />".htmlspecialchars_decode($mlw_question->answer_three, ENT_QUOTES);
-					}
-					if ($mlw_question->answer_four != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='4' />".htmlspecialchars_decode($mlw_question->answer_four, ENT_QUOTES);
-					}
-					if ($mlw_question->answer_five != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='5' />".htmlspecialchars_decode($mlw_question->answer_five, ENT_QUOTES);
-					}
-					if ($mlw_question->answer_six != "")
-					{
-						$question_display .= "<input type='radio' name='question".$mlw_question->question_id."' value='6' />".htmlspecialchars_decode($mlw_question->answer_six, ENT_QUOTES);
-					}
-				}
-				$question_display .= "</div>";
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 2)
-			{
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				$question_display .= "<select name='question".$mlw_question->question_id."'>";
-				$mlw_qmn_answer_array = $qmn_quiz_answers[$mlw_question->question_id];
-				if (is_array($mlw_qmn_answer_array))
-				{
-					if ($qmn_quiz_options->randomness_order == 2)
-					{
-						shuffle($mlw_qmn_answer_array);
-					}
-					$mlw_answer_total = 0;
-					foreach($mlw_qmn_answer_array as $mlw_qmn_answer_each)
-					{
-						$mlw_answer_total++;
-						if ($mlw_qmn_answer_each[0] != "")
-						{
-							$question_display .= "<option value='".esc_attr($mlw_qmn_answer_each[0])."'>".htmlspecialchars_decode($mlw_qmn_answer_each[0], ENT_QUOTES)."</option>";
-						}
-					}
-				}
-				else
-				{
-					if ($mlw_question->answer_one != "")
-					{
-						$question_display .= "<option value='1'>".htmlspecialchars_decode($mlw_question->answer_one, ENT_QUOTES)."</option>";
-					}
-					if ($mlw_question->answer_two != "")
-					{
-						$question_display .= "<option value='2'>".htmlspecialchars_decode($mlw_question->answer_two, ENT_QUOTES)."</option>";
-					}
-					if ($mlw_question->answer_three != "")
-					{
-						$question_display .= "<option value='3'>".htmlspecialchars_decode($mlw_question->answer_three, ENT_QUOTES)."</option>";
-					}
-					if ($mlw_question->answer_four != "")
-					{
-						$question_display .= "<option value='4'>".htmlspecialchars_decode($mlw_question->answer_four, ENT_QUOTES)."</option>";
-					}
-					if ($mlw_question->answer_five != "")
-					{
-						$question_display .= "<option value='5'>".htmlspecialchars_decode($mlw_question->answer_five, ENT_QUOTES)."</option>";
-					}
-					if ($mlw_question->answer_six != "")
-					{
-						$question_display .= "<option value='6'>".htmlspecialchars_decode($mlw_question->answer_six, ENT_QUOTES)."</option>";
-					}
-				}
-				$question_display .= "</select>";
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 5)
-			{
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
-				$question_display .= "<textarea class='mlw_answer_open_text $mlw_requireClass' cols='70' rows='5' name='question".$mlw_question->question_id."' /></textarea>";
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 6)
-			{
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES);
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 7)
-			{
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredNumber";} else {$mlw_requireClass = "";}
-				$question_display .= "<input type='number' class='mlw_answer_number $mlw_requireClass' name='question".$mlw_question->question_id."' />";
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 8)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredAccept";} else {$mlw_requireClass = "";}
-				$question_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
-				$question_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span></label>";
-				$question_display .= "<br />";
-			}
-			elseif ($mlw_question->question_type == 9)
-			{
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredCaptcha";} else {$mlw_requireClass = "";}
-				$question_display .= "<div class='mlw_captchaWrap'>";
-				$question_display .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
-				$question_display .= "</div>";
-				$question_display .= "<span class='mlw_qmn_question'>";
-		        $question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-		        $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
-		        $question_display .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
-				$question_display .= "<br />";
-				$question_display .= "<script>
-				var mlw_code = '';
-				var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-				var mlw_code_length = 5;
-				for (var i=0; i<mlw_code_length; i++) {
-		            var rnum = Math.floor(Math.random() * mlw_chars.length);
-		            mlw_code += mlw_chars.substring(rnum,rnum+1);
-		        }
-		        var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
-		        mlw_captchaCTX.font = 'normal 24px Verdana';
-		        mlw_captchaCTX.strokeStyle = '#000000';
-		        mlw_captchaCTX.clearRect(0,0,100,50);
-		        mlw_captchaCTX.strokeText(mlw_code,10,30,70);
-		        mlw_captchaCTX.textBaseline = 'middle';
-		        document.getElementById('mlw_code_captcha').value = mlw_code;
-		        </script>
-		        ";
-			}
-			else
-			{
-				$question_display .= "<span class='mlw_qmn_question'>";
-				$qmn_total_questions = $qmn_total_questions + 1;
-				if ($qmn_quiz_options->question_numbering == 1) { $question_display .= $qmn_total_questions.") "; }
-				$question_display .= htmlspecialchars_decode($mlw_question->question_name, ENT_QUOTES)."</span><br />";
-				if ($mlw_question_settings['required'] == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
-				$question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' name='question".$mlw_question->question_id."' />";
-				$question_display .= "<br />";
-			}
+
+			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
+
 			if ($mlw_question->comments == 0)
 			{
 				$question_display .= "<input type='text' class='mlw_qmn_question_comment' x-webkit-speech id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES))."' onclick='clear_field(this)'/>";
@@ -526,6 +219,7 @@ class QMNQuizManager
 			$question_display .= "</div>";
 			if ( $qmn_quiz_options->pagination == 0) { $question_display .= "<br />"; }
 		}
+		$question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
 		return $question_display;
 	}
 
@@ -703,8 +397,9 @@ class QMNQuizManager
 		$mlw_correct = 0;
 		$mlw_total_score = 0;
 		$mlw_question_answers = "";
+		global $mlwQuizMasterNext;
 		isset($_POST["total_questions"]) ? $mlw_total_questions = intval($_POST["total_questions"]) : $mlw_total_questions = 0;
-
+		isset($_POST["qmn_question_list"]) ? $question_list = explode('Q',$_POST["qmn_question_list"]) : $question_list = array();
 		$mlw_user_text = "";
 		$mlw_correct_text = "";
 		$qmn_correct = "incorrect";
@@ -712,115 +407,41 @@ class QMNQuizManager
 		$mlw_qmn_answer_array = array();
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
-			$mlw_user_text = "";
-			$mlw_correct_text = "";
-			$qmn_correct = "incorrect";
-			$qmn_answer_points = 0;
-			if ( isset($_POST["question".$mlw_question->question_id]) || isset($_POST["mlwComment".$mlw_question->question_id]) )
+			foreach($question_list as $question_id)
 			{
-				if ( $mlw_question->question_type == 0 || $mlw_question->question_type == 1 || $mlw_question->question_type == 2)
+				if ($mlw_question->question_id == $question_id)
 				{
-					if (isset($_POST["question".$mlw_question->question_id]))
+					$mlw_user_text = "";
+					$mlw_correct_text = "";
+					$qmn_correct = "incorrect";
+					$qmn_answer_points = 0;
+
+					$results_array = $mlwQuizMasterNext->pluginHelper->display_review($mlw_question->question_type_new, $mlw_question->question_id);
+					if (!isset($results_array["null_review"]))
 					{
-						$mlw_user_answer = $_POST["question".$mlw_question->question_id];
-					}
-					else
-					{
-						$mlw_user_answer = " ";
-					}
-					$mlw_qmn_question_answers_array = $qmn_quiz_answers[$mlw_question->question_id];
-					foreach($mlw_qmn_question_answers_array as $mlw_qmn_question_answers_each)
-					{
-						if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
-						{
-							$mlw_points += $mlw_qmn_question_answers_each[1];
-							$qmn_answer_points += $mlw_qmn_question_answers_each[1];
-							$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES));
-							if ($mlw_qmn_question_answers_each[2] == 1)
-							{
-								$mlw_correct += 1;
-								$qmn_correct = "correct";
-							}
-						}
-						if ($mlw_qmn_question_answers_each[2] == 1)
-						{
-							$mlw_correct_text .= htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES);
-						}
-					}
-				}
-				elseif ( $mlw_question->question_type == 3 ||  $mlw_question->question_type == 5 ||  $mlw_question->question_type == 7)
-				{
-					if (isset($_POST["question".$mlw_question->question_id]))
-					{
-						$mlw_user_answer = $_POST["question".$mlw_question->question_id];
-					}
-					else
-					{
-						$mlw_user_answer = " ";
-					}
-					$mlw_user_text .= strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
-					$mlw_qmn_question_answers_array = $qmn_quiz_answers[$mlw_question->question_id];
-					foreach($mlw_qmn_question_answers_array as $mlw_qmn_question_answers_each)
-					{
-						$mlw_correct_text = strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES));
-						if (strtoupper($mlw_user_text) == strtoupper($mlw_correct_text))
+						$mlw_points += $results_array["points"];
+						$qmn_answer_points += $results_array["points"];
+						if ($results_array["correct"] == "correct")
 						{
 							$mlw_correct += 1;
 							$qmn_correct = "correct";
-							$mlw_points += $mlw_qmn_question_answers_each[1];
-							$qmn_answer_points += $mlw_qmn_question_answers_each[1];
-							break;
 						}
-					}
-				}
-				elseif ( $mlw_question->question_type == 4 ||  $mlw_question->question_type == 10)
-				{
-					$mlw_qmn_user_correct_answers = 0;
-					$mlw_qmn_total_correct_answers = 0;
-					$mlw_qmn_question_answers_array = $qmn_quiz_answers[$mlw_question->question_id];
-					$mlw_qmn_total_answers = count($mlw_qmn_question_answers_array);
-					foreach($mlw_qmn_question_answers_array as $mlw_qmn_question_answers_each)
-					{
-						for ($i = 1; $i <= $mlw_qmn_total_answers; $i++) {
-						    if (isset($_POST["question".$mlw_question->question_id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$mlw_question->question_id."_".$i]), ENT_QUOTES) == esc_attr($mlw_qmn_question_answers_each[0]))
-						    {
-						    	$mlw_points += $mlw_qmn_question_answers_each[1];
-									$qmn_answer_points += $mlw_qmn_question_answers_each[1];
-								$mlw_user_text .= strval(htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES)).".";
-								if ($mlw_qmn_question_answers_each[2] == 1)
-								{
-									$mlw_qmn_user_correct_answers += 1;
-								}
-								else
-								{
-									$mlw_qmn_user_correct_answers = -1;
-								}
-						    }
-						}
-						if ($mlw_qmn_question_answers_each[2] == 1)
+						$mlw_user_text = $results_array["user_text"];
+						$mlw_correct_text = $results_array["correct_text"];
+
+						if (isset($_POST["mlwComment".$mlw_question->question_id]))
 						{
-							$mlw_correct_text .= htmlspecialchars_decode($mlw_qmn_question_answers_each[0], ENT_QUOTES).".";
-							$mlw_qmn_total_correct_answers++;
+							$mlw_qm_question_comment = $_POST["mlwComment".$mlw_question->question_id];
 						}
+						else
+						{
+							$mlw_qm_question_comment = "";
+						}
+						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
 					}
-					if ($mlw_qmn_user_correct_answers == $mlw_qmn_total_correct_answers)
-					{
-						$mlw_correct += 1;
-						$qmn_correct = "correct";
-					}
+					break;
 				}
-				if (isset($_POST["mlwComment".$mlw_question->question_id]))
-				{
-					$mlw_qm_question_comment = $_POST["mlwComment".$mlw_question->question_id];
-				}
-				else
-				{
-					$mlw_qm_question_comment = "";
-				}
-
-				$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
 			}
-
 		}
 
 		//Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
