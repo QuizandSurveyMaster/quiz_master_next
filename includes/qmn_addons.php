@@ -63,7 +63,7 @@ function qmn_generate_available_addons()
 	</div>
 	<div style="clear:both;">
 	<br />
-	<a href="http://mylocalwebstop.com/store/" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
+	<a href="http://mylocalwebstop.com/store/" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
 	<?php
 }
 
