@@ -394,8 +394,8 @@ function mlw_quiz_update()
 		update_option('mlw_quiz_master_version' , $data);
 		if(!isset($_GET['activate-multi']))
         {
-			wp_redirect( "admin.php?page=mlw_qmn_about" );
-			exit;
+					wp_safe_redirect( admin_url( 'index.php?page=mlw_qmn_about' ) );
+					exit;
         }
 	}
 	if ( ! get_option('mlw_advert_shows'))
