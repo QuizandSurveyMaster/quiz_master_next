@@ -94,14 +94,41 @@ function mlw_generate_about_page()
 			<?php _e('Requested Features', 'quiz-master-next'); ?></a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Text Editors On Text Tab</h2>
-	<p style="text-align: center;">When editing text on the text tab, you will now being using the WordPress editor. You will be able to easily style your text as well as add media.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Categories</h2>
+	<p style="text-align: center;">You can now assign a category when editing a question or adding a new question. You can then use the new variables to show the user their score in a particular category or an average of the categories.</p>
 	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
-	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and December 31st, 2014 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Enhanced Required System</h2>
+	<p style="text-align: center;">You can now multiple choice and multiple response questions to be answered before submitting the quiz.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Enhanced Results Pages</h2>
+	<p style="text-align: center;">You now use the WordPress editor when editing the Results Pages. You can also now use some shortcodes!</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Settings Page Designs</h2>
+	<p style="text-align: center;">You will notice many design changes on the settings page as we are still converting our design to a more WordPress feel.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
+	<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
+	<br />
+	<hr />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Plugin Helper Class</h2>
+	<p style="text-align: center;">Our new plugin helper class has many functions to assist you in extending the plugin.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Converted To Extendable Question Types</h2>
+	<p style="text-align: center;">With the new system, you can use the plugin helper class to create custom question types.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">20 New Filters And Hooks</h2>
+	<p style="text-align: center;">We added lots of filters and hooks throughout the code especially in the redesigned quiz shortcode file.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Rewrote 75% Of Quiz Shortcode File</h2>
+	<p style="text-align: center;">We took the time to rewrite almost all of the quiz shortcode file as it severly needed it. We created the new Quiz Manager class here as well.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
+	<br />
+	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
+	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and December 31st, 2014 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
 	<br />
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
