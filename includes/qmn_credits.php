@@ -98,7 +98,7 @@ function mlw_generate_about_page()
 	<p style="text-align: center;">You can now assign a category when editing a question or adding a new question. You can then use the new variables to show the user their score in a particular category or an average of the categories.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Enhanced Required System</h2>
-	<p style="text-align: center;">You can now multiple choice and multiple response questions to be answered before submitting the quiz.</p>
+	<p style="text-align: center;">You can now require multiple choice and multiple response questions to be answered before submitting the quiz.</p>
 	<br />
 	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Enhanced Results Pages</h2>
 	<p style="text-align: center;">You now use the WordPress editor when editing the Results Pages. You can also now use some shortcodes!</p>
