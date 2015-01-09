@@ -4,9 +4,8 @@ This is the update function for the plugin. When the plugin gets updated, the da
 */
 function mlw_quiz_update()
 {
-
-	//Update this variable each update. This is what is checked when the plugin is deciding to run the upgrade script or not.
-	$data = "3.9.0";
+	global $mlwQuizMasterNext;
+	$data = $mlwQuizMasterNext->version;
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);
