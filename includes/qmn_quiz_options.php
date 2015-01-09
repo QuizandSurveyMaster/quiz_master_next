@@ -10,12 +10,15 @@ function mlw_generate_quiz_options()
 {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
+	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'questions';
+	$quiz_id = intval($_GET["quiz_id"]);
 	if (isset($_GET["quiz_id"]))
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
+
 	?>
 
 	<script type="text/javascript"
@@ -34,14 +37,6 @@ function mlw_generate_quiz_options()
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
 	?>
-	<script type="text/javascript">
-		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-		$j(function() {
-			$j( "#tabs" ).tabs();
-		});
-	</script>
 	<style>
 		.mlw_tab_content
 		{
@@ -59,15 +54,34 @@ function mlw_generate_quiz_options()
 	ob_start();
 	if ($quiz_id != "")
 	{
-	?>
-	<div id="tabs">
-		<ul>
-			<?php do_action('mlw_qmn_options_tab'); ?>
-		</ul>
-		<?php do_action('mlw_qmn_options_tab_content'); ?>
-
-	</div>
-	<?php
+		?>
+		<h2 class="nav-tab-wrapper">
+			<?php
+			foreach($tab_array as $tab)
+			{
+				$active_class = '';
+				if ($active_tab == $tab['slug'])
+				{
+					$active_class = 'nav-tab-active';
+				}
+				echo "<a href=\"?page=mlw_quiz_options&quiz_id=$quiz_id&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+			}
+			?>
+		</h2>
+		<div>
+			<br />
+			<br />
+			<?php
+				foreach($tab_array as $tab)
+				{
+					if ($active_tab == $tab['slug'])
+					{
+						call_user_func($tab['function']);
+					}
+				}
+			?>
+		</div>
+		<?php
 	}
 	else
 	{

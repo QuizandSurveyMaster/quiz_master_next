@@ -43,6 +43,14 @@ function mlw_options_tools_tab_content()
 	}
 	?>
 	<div id="tabs-8" class="mlw_tab_content">
+		<script type="text/javascript">
+			var $j = jQuery.noConflict();
+			// increase the default animation speed to exaggerate the effect
+			$j.fx.speeds._default = 1000;
+			$j(function() {
+				$j( "#tabs" ).tabs();
+			});
+		</script>
 	<script>
 	jQuery(function() {
 			jQuery('#mlw_reset_stats_dialog').dialog({
@@ -65,6 +73,14 @@ function mlw_options_tools_tab_content()
 	</script>
 		<p><?php _e('Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken).', 'quiz-master-next'); ?></p>
 		<button class="button" id="mlw_reset_stats_button"><?php _e('Reset Quiz Views And Taken Stats', 'quiz-master-next'); ?></button>
+		<hr />
+		<h3>Addon Quiz Settings</h3>
+		<div id="tabs">
+			<ul>
+				<?php do_action('mlw_qmn_options_tab'); ?>
+			</ul>
+			<?php do_action('mlw_qmn_options_tab_content'); ?>
+		</div>
 		<?php do_action('mlw_qmn_quiz_tools'); ?>
 		<div id="mlw_reset_stats_dialog" title="Reset Stats For This Quiz" style="display:none;">
 			<p><?php _e('Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone.', 'quiz-master-next'); ?></p>

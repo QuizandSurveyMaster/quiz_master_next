@@ -1,15 +1,51 @@
 <?php
+/**
+* This class generates the contents of the quiz shortcode
+*
+* @since 4.0.0
+*/
 class QMNQuizManager
 {
+	/**
+	  * Main Construct Function
+	  *
+	  * Call functions within class
+	  *
+	  * @since 4.0.0
+	  * @uses QMNQuizManager::add_hooks() Adds actions to hooks and filters
+	  * @return void
+	  */
 	public function __construct()
 	{
 		$this->add_hooks();
 	}
+
+	/**
+	  * Add Hooks
+	  *
+	  * Adds functions to relavent hooks and filters
+	  *
+	  * @since 4.0.0
+	  * @return void
+	  */
 	public function add_hooks()
 	{
 		add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
 	}
 
+	/**
+	  * Generates Content For Quiz Shortcode
+	  *
+	  * Generates the content for the [mlw_quizmaster] shortcode
+	  *
+	  * @since 4.0.0
+		* @uses QMNQuizManager:load_quiz_options() Loads quiz
+		* @uses QMNQuizManager:load_questions() Loads questions
+		* @uses QMNQuizManager:create_answer_array() Prepares answers
+		* @uses QMNQuizManager:display_quiz() Generates and prepares quiz page
+		* @uses QMNQuizManager:display_results() Generates and prepares results page
+	  * @return string The content for the shortcode
+	  */
 	public function display_shortcode($atts)
 	{
 		extract(shortcode_atts(array(
@@ -52,12 +88,31 @@ class QMNQuizManager
 		return $return_display;
 	}
 
+	/**
+	  * Loads Quiz
+	  *
+	  * Retrieves the quiz from the database
+	  *
+	  * @since 4.0.0
+		* @param int $quiz_id The id for the quiz
+		* @return array Columns for the row from the database of the quiz
+	  */
 	public function load_quiz_options($quiz_id)
 	{
 		global $wpdb;
 		return $wpdb->get_row($wpdb->prepare('SELECT * FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $quiz_id));
 	}
 
+	/**
+	  * Loads Questions
+	  *
+	  * Retrieves the questions from the database
+	  *
+	  * @since 4.0.0
+		* @param int $quiz_id The id for the quiz
+		* @param array $quiz_options The database row for the quiz
+		* @return array The questions for the quiz
+	  */
 	public function load_questions($quiz_id, $quiz_options)
 	{
 		global $wpdb;
@@ -74,6 +129,15 @@ class QMNQuizManager
 		return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE quiz_id=%d AND deleted=0 ".$order_by_sql.$limit_sql, $quiz_id));
 	}
 
+	/**
+	  * Prepares Answers
+	  *
+	  * Prepares or creates the answer array for the quiz
+	  *
+	  * @since 4.0.0
+		* @param array $questions The questions for the quiz
+		* @return array The answers for the quiz
+	  */
 	public function create_answer_array($questions)
 	{
 		//Load and prepare answer arrays
@@ -100,6 +164,22 @@ class QMNQuizManager
 		return $mlw_qmn_answer_arrays;
 	}
 
+	/**
+	  * Generates Content Quiz Page
+	  *
+	  * Generates the content for the quiz page part of the shortcode
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_quiz_questions The questions of the quiz
+		* @param array $qmn_quiz_answers The answers of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @uses QMNQuizManager:display_begin_section() Creates display for beginning section
+		* @uses QMNQuizManager:display_questions() Creates display for questions
+		* @uses QMNQuizManager:display_comment_section() Creates display for comment section
+		* @uses QMNQuizManager:display_end_section() Creates display for end section
+		* @return string The content for the quiz page section
+	  */
 	public function display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
 	{
 		global $qmn_allowed_visit;
@@ -167,6 +247,16 @@ class QMNQuizManager
 		return $quiz_display;
 	}
 
+	/**
+	  * Creates Display For Beginning Section
+	  *
+	  * Generates the content for the beginning section of the quiz page
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The content for the beginning section
+	  */
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		global $mlw_qmn_section_count;
@@ -186,6 +276,18 @@ class QMNQuizManager
 		return $section_display;
 	}
 
+	/**
+	  * Creates Display For Questions
+	  *
+	  * Generates the content for the questions part of the quiz page
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_quiz_questions The questions of the quiz
+		* @param array $qmn_quiz_answers The answers of the quiz
+		* @uses QMNPluginHelper:display_question() Displays a question
+		* @return string The content for the questions section
+	  */
 	public function display_questions($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers)
 	{
 		$question_display = '';
@@ -223,6 +325,16 @@ class QMNQuizManager
 		return $question_display;
 	}
 
+	/**
+	  * Creates Display For Comment Section
+	  *
+	  * Generates the content for the comment section part of the quiz page
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The content for the comment section
+	  */
 	public function display_comment_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		global $mlw_qmn_section_count;
@@ -234,13 +346,23 @@ class QMNQuizManager
 			$message_comments = htmlspecialchars_decode($qmn_quiz_options->message_comment, ENT_QUOTES);
 			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables);
 			$comment_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$message_comments</label><br />";
-			$comment_display .= "<textarea cols='60' rows='15' id='mlwQuizComments' name='mlwQuizComments' ></textarea>";
+			$comment_display .= "<textarea cols='60' rows='10' id='mlwQuizComments' name='mlwQuizComments' ></textarea>";
 			$comment_display .= "</div>";
 			if ( $qmn_quiz_options->pagination == 0) { $comment_display .= "<br /><br />"; }
 		}
 		return $comment_display;
 	}
 
+	/**
+	  * Creates Display For End Section Of Quiz Page
+	  *
+	  * Generates the content for the end section of the quiz page
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The content for the end section
+	  */
 	public function display_end_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		global $mlw_qmn_section_count;
@@ -275,6 +397,25 @@ class QMNQuizManager
 		return $section_display;
 	}
 
+	/**
+	  * Generates Content Results Page
+	  *
+	  * Generates the content for the results page part of the shortcode
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_quiz_questions The questions of the quiz
+		* @param array $qmn_quiz_answers The answers of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @uses QMNQuizManager:check_answers() Creates display for beginning section
+		* @uses QMNQuizManager:check_comment_section() Creates display for questions
+		* @uses QMNQuizManager:generate_certificate() Creates display for comment section
+		* @uses QMNQuizManager:display_results_text() Creates display for end section
+		* @uses QMNQuizManager:display_social() Creates display for comment section
+		* @uses QMNQuizManager:send_user_email() Creates display for end section
+		* @uses QMNQuizManager:send_admin_email() Creates display for end section
+		* @return string The content for the results page section
+	  */
 	public function display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
 	{
 		global $qmn_allowed_visit;
@@ -391,6 +532,19 @@ class QMNQuizManager
 		return $result_display;
 	}
 
+	/**
+	  * Scores User Answers
+	  *
+	  * Calculates the users scores for the quiz
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_quiz_questions The questions of the quiz
+		* @param array $qmn_quiz_answers The answers of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @uses QMNPluginHelper:display_review() Scores the question
+		* @return array The results of the user's score
+	  */
 	public function check_answers($qmn_quiz_questions, $qmn_quiz_answers, $qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$mlw_points = 0;
@@ -466,6 +620,16 @@ class QMNQuizManager
 		);
 	}
 
+	/**
+	  * Retrieves User's Comments
+	  *
+	  * Checks to see if the user left a comment and returns the comment
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The user's comments
+	  */
 	public function check_comment_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$qmn_quiz_comments = "";
@@ -476,6 +640,16 @@ class QMNQuizManager
 		return apply_filters('qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables);
 	}
 
+	/**
+	  * Generates Certificate
+	  *
+	  * Generates the certificate for the user using fpdf
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The link to the certificate
+	  */
 	public function generate_certificate($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$mlw_certificate_link = "";
@@ -522,6 +696,16 @@ EOC;
 			return $mlw_certificate_link;
 	}
 
+	/**
+	  * Displays Results Text
+	  *
+	  * Prepares and display text for the results page
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The contents for the results text
+	  */
 	public function display_results_text($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$results_text_display = '';
@@ -574,6 +758,16 @@ EOC;
 		return do_shortcode( $results_text_display );
 	}
 
+	/**
+	  * Display Social Media Buttons
+	  *
+	  * Prepares and displays social media buttons for sharing results
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @return string The content of the social media button section
+	  */
 	public function display_social($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$social_display = '';
@@ -604,6 +798,15 @@ EOC;
 		return apply_filters('qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables);
 	}
 
+	/**
+	  * Send User Email
+	  *
+	  * Prepares the email to the user and then sends the email
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
+		*/
 	public function send_user_email($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
@@ -683,6 +886,15 @@ EOC;
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 	}
 
+	/**
+	  * Send Admin Email
+	  *
+	  * Prepares the email to the admin and then sends the email
+	  *
+	  * @since 4.0.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param arrar $qmn_array_for_variables The array of results for the quiz
+		*/
 	public function send_admin_email($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		//Switch email type to HTML

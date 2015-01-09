@@ -1,16 +1,64 @@
 <?php
+/**
+* This class is a helper class to be used for extending the plugin
+*
+* This class contains many functions for extending the plugin
+*
+*
+* @since 4.0.0
+*/
 class QMNPluginHelper
 {
+	/**
+	 * Addon Page tabs array
+	 *
+	 * @var array
+	 * @since 4.0.0
+	 */
 	public $addon_tabs = array();
+
+	/**
+	 * Settings Page tabs array
+	 *
+	 * @var array
+	 * @since 4.0.0
+	 */
 	public $settings_tabs = array();
+
+	/**
+	 * Question types array
+	 *
+	 * @var array
+	 * @since 4.0.0
+	 */
 	public $question_types = array();
 
+	/**
+	  * Main Construct Function
+	  *
+	  * Call functions within class
+	  *
+	  * @since 4.0.0
+	  * @return void
+	  */
 	public function __construct()
 	{
-		add_action('mlw_qmn_options_tab', array($this, 'get_settings_tabs'));
-		add_action('mlw_qmn_options_tab_content', array($this, 'get_settings_tabs_content'));
+
 	}
 
+	/**
+	  * Register Question Types
+	  *
+	  * Adds a question type to the question type array using the parameters given
+	  *
+	  * @since 4.0.0
+		* @param string $name The name of the Question Type which will be shown when selecting type
+		* @param string $display_function The name of the function to call when displaying the question
+		* @param bool $graded Tells the plugin if this question is graded or not. This will affect scoring.
+		* @param string $review_function The name of the function to call when scoring the question
+		* @param string $slug The slug of the question type to be stored with question in database
+	  * @return void
+	  */
 	public function register_question_type($name, $display_function, $graded, $review_function = null, $slug = null)
 	{
 		if (is_null($slug))
@@ -31,6 +79,14 @@ class QMNPluginHelper
 		$this->question_types[] = $new_type;
 	}
 
+	/**
+	  * Retrieves List Of Question Types
+	  *
+	  * retrieves a list of the slugs and names of the question types
+	  *
+	  * @since 4.0.0
+		* @return array An array which contains the slug and name of question types that have been registered
+	  */
 	public function get_question_type_options()
 	{
 		$type_array = array();
@@ -44,6 +100,17 @@ class QMNPluginHelper
 		return $type_array;
 	}
 
+	/**
+	  * Displays A Question
+	  *
+	  * Retrieves the question types display function and creates the HTML for the question
+	  *
+	  * @since 4.0.0
+		* @param string $slug The slug of the question type that the question is
+		* @param int $question_id The id of the question
+		* @param array $quiz_options An array of the columns of the quiz row from the database
+		* @return string The HTML for the question
+	  */
 	public function display_question($slug, $question_id, $quiz_options)
 	{
 		$display = '';
@@ -89,6 +156,16 @@ class QMNPluginHelper
 		return $display;
 	}
 
+	/**
+	  * Calculates Score For Question
+	  *
+	  * Calculates the score for the question based on the question type
+	  *
+	  * @since 4.0.0
+		* @param string $slug The slug of the question type that the question is
+		* @param int $question_id The id of the question
+		* @return array An array of the user's score from the question
+	  */
 	public function display_review($slug, $question_id)
 	{
 		$results_array = array();
@@ -128,6 +205,16 @@ class QMNPluginHelper
 		return $results_array;
 	}
 
+	/**
+	  * Retrieves A Question Setting
+	  *
+	  * Retrieves a setting stored in the question settings array
+	  *
+	  * @since 4.0.0
+		* @param int $question_id The id of the question
+		* @param string $setting The name of the setting
+		* @return string The value stored for the setting
+	  */
 	public function get_question_setting($question_id, $setting)
 	{
 		global $wpdb;
@@ -147,6 +234,47 @@ class QMNPluginHelper
 		}
 	}
 
+	/**
+	  * Retrieves A Quiz Setting
+	  *
+	  * Retrieves a setting stored in the quiz settings array
+	  *
+	  * @since 4.0.0
+		* @param string $setting The name of the setting
+		* @return string The value stored for the setting
+	  */
+	public function get_quiz_setting($setting)
+	{
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quizCreator->get_setting($setting);
+	}
+
+	/**
+	  * Updates A Quiz Setting
+	  *
+	  * Sets the value of a setting stored in the quiz settings array
+	  *
+	  * @since 4.0.0
+		* @param string $setting The name of the setting
+		* @param any $value The value to be store in the setting
+		* @return bool True if update was successful
+	  */
+	public function update_quiz_setting($setting, $value)
+	{
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quizCreator->update_setting($setting, $value);
+	}
+
+	/**
+	  * Registers Addon Settings Tab
+	  *
+	  * Registers a new tab on the addon settings page
+	  *
+	  * @since 4.0.0
+		* @param string $title The name of the tab
+		* @param string $function The function that displays the tab's content
+		* @return void
+	  */
 	public function register_addon_settings_tab($title, $function)
 	{
 		$slug = strtolower(str_replace( " ", "-", $title));
@@ -158,11 +286,29 @@ class QMNPluginHelper
 		$this->addon_tabs[] = $new_tab;
 	}
 
+	/**
+	  * Retrieves Addon Settings Tab Array
+	  *
+	  * Retrieves the array of titles and functions of the registered tabs
+	  *
+	  * @since 4.0.0
+		* @return array The array of registered tabs
+	  */
 	public function get_addon_tabs()
 	{
 		return $this->addon_tabs;
 	}
 
+	/**
+	  * Registers Quiz Settings Tab
+	  *
+	  * Registers a new tab on the quiz settings page
+	  *
+	  * @since 4.0.0
+		* @param string $title The name of the tab
+		* @param string $function The function that displays the tab's content
+		* @return void
+	  */
 	public function register_quiz_settings_tabs($title, $function)
 	{
 		$slug = strtolower(str_replace( " ", "-", $title));
@@ -174,22 +320,17 @@ class QMNPluginHelper
 		$this->settings_tabs[] = $new_tab;
 	}
 
+	/**
+	  * Echos Registered Tabs Title Link
+	  *
+	  * Echos the title link of the registered tabs
+	  *
+	  * @since 4.0.0
+		* @return array The array of registered tabs
+	  */
 	public function get_settings_tabs()
 	{
-		foreach($this->settings_tabs as $tab)
-		{
-			echo "<li><a href=\"#".$tab["slug"]."\">".$tab["title"]."</a></li>";
-		}
-	}
-
-	public function get_settings_tabs_content()
-	{
-		foreach($this->settings_tabs as $tab)
-		{
-			echo "<div id=\"".$tab["slug"]."\" class=\"mlw_tab_content\">";
-			call_user_func($tab['function']);
-			echo "</div>";
-		}
+		return $this->settings_tabs;
 	}
 }
 ?>

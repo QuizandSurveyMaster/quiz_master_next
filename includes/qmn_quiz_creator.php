@@ -178,6 +178,10 @@ class QMNQuizCreator
 				div.quiz_section {
 
 				}
+				.mlw_horizontal_choice
+				{
+				margin-right: 20px;
+				}
 				div.mlw_qmn_timer {
 					position:fixed;
 					top:200px;
