@@ -235,6 +235,37 @@ class QMNPluginHelper
 	}
 
 	/**
+	  * Retrieves A Quiz Setting
+	  *
+	  * Retrieves a setting stored in the quiz settings array
+	  *
+	  * @since 4.0.0
+		* @param string $setting The name of the setting
+		* @return string The value stored for the setting
+	  */
+	public function get_quiz_setting($setting)
+	{
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quizCreator->get_setting($setting);
+	}
+
+	/**
+	  * Updates A Quiz Setting
+	  *
+	  * Sets the value of a setting stored in the quiz settings array
+	  *
+	  * @since 4.0.0
+		* @param string $setting The name of the setting
+		* @param any $value The value to be store in the setting
+		* @return bool True if update was successful
+	  */
+	public function update_quiz_setting($setting, $value)
+	{
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quizCreator->update_setting($setting, $value);
+	}
+
+	/**
 	  * Registers Addon Settings Tab
 	  *
 	  * Registers a new tab on the addon settings page
