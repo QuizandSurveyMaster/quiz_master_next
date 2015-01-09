@@ -37,14 +37,6 @@ function mlw_generate_quiz_options()
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
 	?>
-	<script type="text/javascript">
-		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-		$j(function() {
-			$j( "#tabs" ).tabs();
-		});
-	</script>
 	<style>
 		.mlw_tab_content
 		{

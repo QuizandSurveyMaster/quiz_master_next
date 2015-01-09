@@ -43,6 +43,14 @@ function mlw_options_tools_tab_content()
 	}
 	?>
 	<div id="tabs-8" class="mlw_tab_content">
+		<script type="text/javascript">
+			var $j = jQuery.noConflict();
+			// increase the default animation speed to exaggerate the effect
+			$j.fx.speeds._default = 1000;
+			$j(function() {
+				$j( "#tabs" ).tabs();
+			});
+		</script>
 	<script>
 	jQuery(function() {
 			jQuery('#mlw_reset_stats_dialog').dialog({
