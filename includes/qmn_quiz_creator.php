@@ -612,7 +612,7 @@ class QMNQuizCreator
 						'comments' => $mlw_question->comments,
 						'hints' => $mlw_question->hints,
 						'question_order' => $mlw_question->question_order,
-						'question_type' => $mlw_question->question_type,
+						'question_type_new' => $mlw_question->question_type_new,
 						'question_settings' => $mlw_question->question_settings,
 						'deleted' => 0
 					),

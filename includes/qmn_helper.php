@@ -86,7 +86,7 @@ class QMNPluginHelper
 				$display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
 			}
 		}
-		$return $display;
+		return $display;
 	}
 
 	public function display_review($slug, $question_id)
@@ -113,9 +113,16 @@ class QMNPluginHelper
 		}
 		foreach($this->question_types as $type)
 		{
-			if ($type["slug"] == strtolower(str_replace( " ", "-", $slug)) && !is_null($type["review"]))
+			if ($type["slug"] == strtolower(str_replace( " ", "-", $slug)))
 			{
-				$results_array = call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
+				if (!is_null($type["review"]))
+				{
+					$results_array = call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
+				}
+				else
+				{
+					$results_array = array('null_review' => true);
+				}
 			}
 		}
 		return $results_array;

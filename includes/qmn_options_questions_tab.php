@@ -81,7 +81,7 @@ function mlw_options_questions_tab_content()
 				'comments' => $edit_comments,
 				'hints' => $edit_hint,
 				'question_order' => $edit_question_order,
-				'question_type' => $mlw_edit_question_type,
+				'question_type_new' => $mlw_edit_question_type,
 				'question_settings' => $mlw_settings,
 				'category' => $qmn_edit_category
 			),
@@ -177,7 +177,7 @@ function mlw_options_questions_tab_content()
 							'comments' => $mlw_original['comments'],
 							'hints' => $mlw_original['hints'],
 							'question_order' => $mlw_original['question_order'],
-							'question_type' => $mlw_original['question_type'],
+							'question_type_new' => $mlw_original['question_type_new'],
 							'question_settings' => $mlw_original['question_settings'],
 							'category' => $mlw_original['category'],
 							'deleted' => $mlw_original['deleted']
@@ -284,7 +284,7 @@ function mlw_options_questions_tab_content()
 							'comments' => $comments,
 							'hints' => $hint,
 							'question_order' => $new_question_order,
-							'question_type' => $question_type,
+							'question_type_new' => $question_type,
 							'question_settings' => $mlw_settings,
 							'category' => $qmn_category,
 							'deleted' => 0
@@ -517,7 +517,7 @@ function mlw_options_questions_tab_content()
 				$mlw_question_type_text = "";
 				foreach($qmn_question_types as $type)
 				{
-					if ($type["slug"] == $mlw_question_info->question_type)
+					if ($type["slug"] == $mlw_question_info->question_type_new)
 					{
 						$mlw_question_type_text = $type["name"];
 					}
@@ -611,7 +611,7 @@ function mlw_options_questions_tab_content()
 										foreach($qmn_question_types as $type)
 										{
 											$selected_text ='';
-											if ($mlw_question_info->question_type == $type["slug"])
+											if ($mlw_question_info->question_type_new == $type["slug"])
 											{
 												$selected_text = 'selected="selected"';
 											}
@@ -810,11 +810,14 @@ function mlw_options_questions_tab_content()
 				<?php
 				foreach($qmn_quiz_categories as $category)
 				{
-					?>
-					<input type="radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
-					<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
-					<br />
-					<?php
+					if ($category->category != '')
+					{
+						?>
+						<input type="radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
+						<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+						<br />
+						<?php
+					}
 				}
 				?>
 				<input type="radio" name="new_category" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' name='new_new_category' value='' /></label>

@@ -192,12 +192,14 @@ class QMNQuizManager
 		global $mlwQuizMasterNext;
 		global $qmn_total_questions;
 		global $mlw_qmn_section_count;
+		$question_id_list = '';
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
+			$question_id_list .= $mlw_question->question_id."Q";
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			$question_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
 
-			$question_display = $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type, $mlw_question->question_id, $qmn_quiz_questions);
+			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 
 			if ($mlw_question->comments == 0)
 			{
@@ -217,6 +219,7 @@ class QMNQuizManager
 			$question_display .= "</div>";
 			if ( $qmn_quiz_options->pagination == 0) { $question_display .= "<br />"; }
 		}
+		$question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
 		return $question_display;
 	}
 
@@ -396,7 +399,7 @@ class QMNQuizManager
 		$mlw_question_answers = "";
 		global $mlwQuizMasterNext;
 		isset($_POST["total_questions"]) ? $mlw_total_questions = intval($_POST["total_questions"]) : $mlw_total_questions = 0;
-
+		isset($_POST["qmn_question_list"]) ? $question_list = explode('Q',$_POST["qmn_question_list"]) : $question_list = array();
 		$mlw_user_text = "";
 		$mlw_correct_text = "";
 		$qmn_correct = "incorrect";
@@ -404,33 +407,41 @@ class QMNQuizManager
 		$mlw_qmn_answer_array = array();
 		foreach($qmn_quiz_questions as $mlw_question)
 		{
-			$mlw_user_text = "";
-			$mlw_correct_text = "";
-			$qmn_correct = "incorrect";
-			$qmn_answer_points = 0;
-
-			$results_array = $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type, $mlw_question->question_id);
-			$mlw_points += $results_array["points"];
-			$qmn_answer_points += $results_array["points"];
-			if ($results_array["correct"] == "correct")
+			foreach($question_list as $question_id)
 			{
-				$mlw_correct += 1;
-				$qmn_correct = "correct";
-			}
-			$mlw_user_text = $results_array["user_text"];
-			$mlw_correct_text = $results_array["correct_text"];
+				if ($mlw_question->question_id == $question_id)
+				{
+					$mlw_user_text = "";
+					$mlw_correct_text = "";
+					$qmn_correct = "incorrect";
+					$qmn_answer_points = 0;
 
-			if (isset($_POST["mlwComment".$mlw_question->question_id]))
-			{
-				$mlw_qm_question_comment = $_POST["mlwComment".$mlw_question->question_id];
-			}
-			else
-			{
-				$mlw_qm_question_comment = "";
-			}
+					$results_array = $mlwQuizMasterNext->pluginHelper->display_review($mlw_question->question_type_new, $mlw_question->question_id);
+					if (!isset($results_array["null_review"]))
+					{
+						$mlw_points += $results_array["points"];
+						$qmn_answer_points += $results_array["points"];
+						if ($results_array["correct"] == "correct")
+						{
+							$mlw_correct += 1;
+							$qmn_correct = "correct";
+						}
+						$mlw_user_text = $results_array["user_text"];
+						$mlw_correct_text = $results_array["correct_text"];
 
-			$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
-
+						if (isset($_POST["mlwComment".$mlw_question->question_id]))
+						{
+							$mlw_qm_question_comment = $_POST["mlwComment".$mlw_question->question_id];
+						}
+						else
+						{
+							$mlw_qm_question_comment = "";
+						}
+						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
+					}
+					break;
+				}
+			}
 		}
 
 		//Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
