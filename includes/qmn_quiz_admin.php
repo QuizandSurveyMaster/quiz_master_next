@@ -266,7 +266,32 @@ function mlw_generate_quiz_admin()
 		</div>
 		<div style="width: 15%; float:right;">
 			<h3 style="text-align: center;">My Local Webstop News</h3>
-			<iframe src="http://www.mylocalwebstop.com/mlw_news.html?cache=<?php echo rand(); ?>" seamless="seamless" style="width: 100%; height: 550px;"></iframe>
+			<?php
+			$qmn_rss = array();
+			$qmn_feed = fetch_feed('http://mylocalwebstop.com/category/our-blog/feed');
+			if (!is_wp_error($qmn_feed)) {
+				$qmn_feed_items = $qmn_feed->get_items(0, 5);
+				foreach ($qmn_feed_items as $feed_item) {
+				    $qmn_rss[] = array(
+				        'link' => $feed_item->get_link(),
+				        'title' => $feed_item->get_title(),
+				        'description' => $feed_item->get_description(),
+								'date' => $feed_item->get_date( 'F j Y' ),
+								'author' => $feed_item->get_author()->get_name()
+				    );
+				}
+			}
+			foreach($qmn_rss as $item)
+			{
+				?>
+				<h3><a target='_blank' href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h3>
+				<p>By <?php echo $item['author']; ?> on <?php echo $item['date']; ?></p>
+				<div>
+					<?php echo $item['description']; ?>
+				</div>
+				<?php
+			}
+			?>
 		</div>
 		<div style="clear: both;"></div>
 		<?php echo mlw_qmn_show_adverts(); ?>
