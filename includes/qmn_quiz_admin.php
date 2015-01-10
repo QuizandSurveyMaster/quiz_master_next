@@ -140,7 +140,6 @@ function mlw_generate_quiz_admin()
 				}
 			});
 			$j("#duplicate_dialog").dialog('open');
-			document.getElementById("duplicate_quiz_name").innerHTML = quizName;
 			document.getElementById("duplicate_quiz_id"). value = id;
 		}
 	</script>

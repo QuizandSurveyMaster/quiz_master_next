@@ -495,13 +495,22 @@ function mlw_options_questions_tab_content()
 						{
 							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
 						}
+						else
+						{
+							echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
+						}
 					}
 					else if( $mlw_qmn_question_page == 0 )
 					{
+						echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"javascript:();\"><</a>";
 						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
 						if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
 						{
 							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
+						}
+						else
+						{
+							echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
 						}
 					}
 					else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
@@ -509,6 +518,7 @@ function mlw_options_questions_tab_content()
 						$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
 						echo "<a class=\"prev-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><</a>";
 						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+						echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
 					}
 					?>
 				</span>
