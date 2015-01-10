@@ -112,10 +112,20 @@ function mlw_options_results_tab_content()
 	?>
 	<div id="tabs-6" class="mlw_tab_content">
 		<script>
+			var $j = jQuery.noConflict();
+			// increase the default animation speed to exaggerate the effect
+			$j.fx.speeds._default = 1000;
 			function delete_landing(id)
 			{
-				tinyMCE.get('message_after_'+id).setContent('Delete');
-				document.getElementById('message_after_'+id).value = "Delete";
+				var qmn_results_editor = tinyMCE.get('message_after_'+id);
+				if (qmn_results_editor)
+				{
+					tinyMCE.get('message_after_'+id).setContent('Delete');
+				}
+				else
+				{
+					document.getElementById('message_after_'+id).value = "Delete";
+				}
 				document.mlw_quiz_save_landing_form.submit();
 			}
 		</script>

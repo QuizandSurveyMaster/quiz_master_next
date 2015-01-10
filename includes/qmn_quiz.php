@@ -1081,12 +1081,15 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 	if ($qmn_quiz_options->pagination != 0)
 	{
 		global $wpdb;
-		$limit_sql = '';
+		$total_questions = 0;
 		if ($qmn_quiz_options->question_from_total != 0)
 		{
-			$limit_sql = " LIMIT ".$qmn_quiz_options->question_from_total;
+			$total_questions = $qmn_quiz_options->question_from_total;
 		}
-		$total_questions = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 AND quiz_id=%d".$limit_sql, $qmn_array_for_variables["quiz_id"]));
+		else
+		{
+			$total_questions = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables["quiz_id"]));
+		}
 		$display .= "<style>.quiz_section { display: none; }</style>";
 		$mlw_qmn_section_limit = 2 + $total_questions;
 		if ($qmn_quiz_options->comment_section == 0)

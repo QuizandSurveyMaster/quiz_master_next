@@ -208,7 +208,11 @@ function mlw_options_emails_tab_content()
 		 ));
 	}
 	?>
-
+	<script type="text/javascript">
+		var $j = jQuery.noConflict();
+		// increase the default animation speed to exaggerate the effect
+		$j.fx.speeds._default = 1000;
+	</script>
 	<div id="tabs-9" class="mlw_tab_content">
 	<script>
 		function delete_email(id)

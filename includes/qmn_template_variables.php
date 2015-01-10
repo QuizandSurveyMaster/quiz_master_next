@@ -217,7 +217,15 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 				}
 			}
 		}
-		$return_score = round((($amount_correct/$total_questions)*100), 2);
+		if ($total_questions != 0)
+		{
+			$return_score = round((($amount_correct/$total_questions)*100), 2);
+		}
+		else
+		{
+			$return_score = 0;
+		}
+
 		$content = str_replace( $answer_text[0] , $return_score, $content);
 	}
 	return $content;
@@ -262,7 +270,14 @@ function qmn_variable_category_average_score($content, $mlw_quiz_array)
 			$total_score += $category["amount_correct"]/$category["total_questions"];
 			$total_categories += 1;
 		}
-		$return_score = round((($total_score/$total_categories)*100), 2);
+		if ($total_categories != 0)
+		{
+			$return_score = round((($total_score/$total_categories)*100), 2);
+		}
+		else
+		{
+			$return_score = 0;
+		}
 		$content = str_replace( "%CATEGORY_AVERAGE_SCORE%" , $return_score, $content);
 	}
 	return $content;
