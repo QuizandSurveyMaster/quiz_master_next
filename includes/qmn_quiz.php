@@ -60,8 +60,6 @@ class QMNQuizManager
 		date_default_timezone_set(get_option('timezone_string'));
 		$return_display = '';
 		$qmn_quiz_options = $this->load_quiz_options($quiz);
-		$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options);
-		$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 
 		$qmn_array_for_variables = array(
 			'quiz_id' => $qmn_quiz_options->quiz_id,
@@ -73,10 +71,14 @@ class QMNQuizManager
 
 		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
 		{
+			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, true);
+			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 			$return_display .= $this->display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
 		}
 		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
 		{
+			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
+			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 			$return_display .= $this->display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
 		}
 		else
@@ -113,7 +115,7 @@ class QMNQuizManager
 		* @param array $quiz_options The database row for the quiz
 		* @return array The questions for the quiz
 	  */
-	public function load_questions($quiz_id, $quiz_options)
+	public function load_questions($quiz_id, $quiz_options, $is_quiz_page)
 	{
 		global $wpdb;
 		$order_by_sql = "ORDER BY question_order ASC";
@@ -122,7 +124,7 @@ class QMNQuizManager
 		{
 			$order_by_sql = "ORDER BY rand()";
 		}
-		if ($quiz_options->question_from_total != 0)
+		if ($is_quiz_page && $quiz_options->question_from_total != 0)
 		{
 			$limit_sql = " LIMIT ".$quiz_options->question_from_total;
 		}
