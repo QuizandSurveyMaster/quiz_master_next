@@ -16,6 +16,7 @@ function mlw_generate_quiz_dashboard()
 	add_meta_box("wpss_mrts", __('Quiz Total Stats', 'quiz-master-next'), "mlw_dashboard_box_three", "quiz_wpss3");
 	add_meta_box("wpss_mrts", __('Quiz Weekly Stats - Times Taken', 'quiz-master-next'), "mlw_dashboard_box_four", "quiz_wpss4");
 	add_meta_box("wpss_mrts", __('Quiz Monthly Stats - Times Taken', 'quiz-master-next'), "mlw_dashboard_box_five", "quiz_wpss5");
+	add_meta_box("wpss_mrts", __('Quiz Quarterly Stats - Times Taken', 'quiz-master-next'), "qmn_meta_quarterly_stats", "quiz_wpss2");
 	if ( get_option('mlw_advert_shows') == 'true' )
 	{
 		add_meta_box("wpss_mrts", 'My Local Webstop Services', "mlw_dashboard_box_six", "quiz_wpss6");
@@ -85,6 +86,10 @@ function mlw_generate_quiz_dashboard()
 
 	<div style="float:left; width:38%;" class="inner-sidebar1">
 		<?php do_meta_boxes('quiz_wpss5','advanced','');  ?>
+	</div>
+
+	<div style="float:left; width:38%;" class="inner-sidebar1">
+		<?php do_meta_boxes('quiz_wpss2','advanced','');  ?>
 	</div>
 
 	<div style="float:left; width:38%;" class="inner-sidebar1">
@@ -301,6 +306,40 @@ function mlw_dashboard_box_four()
 	</div>
 	<?php
 }
+
+function qmn_meta_quarterly_stats()
+{
+	//Gather the monthly stats, one variable for each day for the graph
+	global $wpdb;
+	$mlw_this_quarter =  mktime(0, 0, 0, date("m")  , date("d")-89, date("Y"));
+	$mlw_this_quarter = date("Y-m-d", $mlw_this_quarter);
+	$mlw_quiz_this_quarter = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND (time_taken_real BETWEEN '".$mlw_this_quarter." 00:00:00' AND '".date("Y-m-d")." 23:59:59')");
+
+	$mlw_last_quarter_first =  mktime(0, 0, 0, date("m")  , date("d")-179, date("Y"));
+	$mlw_last_quarter_first = date("Y-m-d", $mlw_last_quarter_first);
+	$mlw_last_quarter_last =  mktime(0, 0, 0, date("m")  , date("d")-90, date("Y"));
+	$mlw_last_quarter_last = date("Y-m-d", $mlw_last_quarter_last);
+	$mlw_quiz_last_quarter = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND (time_taken_real BETWEEN '".$mlw_last_quarter_first." 00:00:00' AND '".$mlw_last_quarter_last." 23:59:59')");
+
+	$mlw_two_quarter_first =  mktime(0, 0, 0, date("m")  , date("d")-269, date("Y"));
+	$mlw_two_quarter_first = date("Y-m-d", $mlw_two_quarter_first);
+	$mlw_two_quarter_last =  mktime(0, 0, 0, date("m")  , date("d")-180, date("Y"));
+	$mlw_two_quarter_last = date("Y-m-d", $mlw_two_quarter_last);
+	$mlw_quiz_two_quarters = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND (time_taken_real BETWEEN '".$mlw_two_quarter_first." 00:00:00' AND '".$mlw_two_quarter_last." 23:59:59')");
+
+	$mlw_three_quarter_first =  mktime(0, 0, 0, date("m")  , date("d")-359, date("Y"));
+	$mlw_three_quarter_first = date("Y-m-d", $mlw_three_quarter_first);
+	$mlw_three_quarter_last =  mktime(0, 0, 0, date("m")  , date("d")-270, date("Y"));
+	$mlw_three_quarter_last = date("Y-m-d", $mlw_three_quarter_last);
+	$mlw_quiz_three_quarters = $wpdb->get_var( "SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND (time_taken_real BETWEEN '".$mlw_three_quarter_first." 00:00:00' AND '".$mlw_three_quarter_last." 23:59:59')");
+
+	?>
+	<div>
+	<span class="inlinesparkline"><?php echo $mlw_quiz_three_quarters.",".$mlw_quiz_two_quarters.",".$mlw_quiz_last_quarter.",".$mlw_quiz_this_quarter; ?></span>
+	</div>
+	<?php
+}
+
 function mlw_dashboard_box_five()
 {
 	//Gather the monthly stats, one variable for each day for the graph

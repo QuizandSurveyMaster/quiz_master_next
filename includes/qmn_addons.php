@@ -2,7 +2,7 @@
 function qmn_addons_page()
 {
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'available-addons';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'featured-addons';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 	<div class="wrap">
@@ -36,7 +36,7 @@ function qmn_addons_page()
 }
 
 
-function qmn_generate_available_addons()
+function qmn_generate_featured_addons()
 {
 	wp_enqueue_style( 'qmn_addons_style', plugins_url( 'css/qmn_addons_page.css' , __FILE__ ) );
 	?>
@@ -67,10 +67,10 @@ function qmn_generate_available_addons()
 	<?php
 }
 
-function qmn_avaiable_addons_tab()
+function qmn_featured_addons_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab(__("Available Addons", 'quiz-master-next'), "qmn_generate_available_addons");
+	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab(__("Featured Addons", 'quiz-master-next'), "qmn_generate_featured_addons");
 }
-add_action("plugins_loaded", 'qmn_avaiable_addons_tab');
+add_action("plugins_loaded", 'qmn_featured_addons_tab');
 ?>
