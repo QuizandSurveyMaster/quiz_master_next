@@ -172,6 +172,10 @@ function mlw_options_results_tab_content()
 				<td><strong>%CATEGORY_SCORE%%/CATEGORY_SCORE%</strong> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?></td>
 			</tr>
 			<tr>
+				<td><strong>Example: %CATEGORY_POINTS%Tech%/CATEGORY_POINTS%</strong></td>
+				<td><strong>Example: %CATEGORY_SCORE%Tech%/CATEGORY_SCORE%</strong></td>
+			</tr>
+			<tr>
 				<td><strong>%CATEGORY_AVERAGE_POINTS%</strong> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?></td>
 				<td><strong>%CATEGORY_AVERAGE_SCORE%</strong> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?></td>
 			</tr>
