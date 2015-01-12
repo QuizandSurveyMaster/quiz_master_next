@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
-"POT-Creation-Date: 2015-01-10 19:38-0500\n"
+"POT-Creation-Date: 2015-01-11 20:34-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name <you@example.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -257,8 +257,8 @@ msgid "Enable Certificates For This Quiz?"
 msgstr ""
 
 #: includes/qmn_options_certificate_tab.php:82
-#: includes/qmn_options_email_tab.php:281
-#: includes/qmn_options_email_tab.php:288
+#: includes/qmn_options_email_tab.php:296
+#: includes/qmn_options_email_tab.php:303
 #: includes/qmn_options_option_tab.php:101
 #: includes/qmn_options_option_tab.php:162
 #: includes/qmn_options_option_tab.php:169
@@ -270,13 +270,13 @@ msgstr ""
 #: includes/qmn_options_option_tab.php:215
 #: includes/qmn_options_questions_tab.php:672
 #: includes/qmn_options_questions_tab.php:827
-#: includes/qmn_options_results_page_tab.php:215
+#: includes/qmn_options_results_page_tab.php:227
 msgid "Yes"
 msgstr ""
 
 #: includes/qmn_options_certificate_tab.php:83
-#: includes/qmn_options_email_tab.php:282
-#: includes/qmn_options_email_tab.php:289
+#: includes/qmn_options_email_tab.php:297
+#: includes/qmn_options_email_tab.php:304
 #: includes/qmn_options_option_tab.php:102
 #: includes/qmn_options_option_tab.php:149
 #: includes/qmn_options_option_tab.php:163
@@ -289,7 +289,7 @@ msgstr ""
 #: includes/qmn_options_option_tab.php:216
 #: includes/qmn_options_questions_tab.php:673
 #: includes/qmn_options_questions_tab.php:828
-#: includes/qmn_options_results_page_tab.php:215
+#: includes/qmn_options_results_page_tab.php:227
 msgid "No"
 msgstr ""
 
@@ -416,71 +416,97 @@ msgstr ""
 msgid "The amount of time user spent of quiz"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:275
-#: includes/qmn_options_email_tab.php:470
+#: includes/qmn_options_email_tab.php:265
+#: includes/qmn_options_results_page_tab.php:168
+#: includes/qmn_options_text_tab.php:137
+msgid "The link to the certificate after completing the quiz"
+msgstr ""
+
+#: includes/qmn_options_email_tab.php:268
+#: includes/qmn_options_results_page_tab.php:171
+msgid "The amount of points a specific category earned."
+msgstr ""
+
+#: includes/qmn_options_email_tab.php:269
+#: includes/qmn_options_results_page_tab.php:172
+msgid "The score a specific category earned."
+msgstr ""
+
+#: includes/qmn_options_email_tab.php:276
+#: includes/qmn_options_results_page_tab.php:179
+msgid "The average points from all categories."
+msgstr ""
+
+#: includes/qmn_options_email_tab.php:277
+#: includes/qmn_options_results_page_tab.php:180
+msgid "The average score from all categories."
+msgstr ""
+
+#: includes/qmn_options_email_tab.php:290
+#: includes/qmn_options_email_tab.php:485
 msgid "Save Email Templates And Settings"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:279
+#: includes/qmn_options_email_tab.php:294
 msgid "Send user email upon completion?"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:286
+#: includes/qmn_options_email_tab.php:301
 msgid "Send admin email upon completion?"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:293
+#: includes/qmn_options_email_tab.php:308
 msgid ""
 "What emails should we send the admin email to? Separate emails with a comma."
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:299
+#: includes/qmn_options_email_tab.php:314
 msgid "Email Sent To User"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:300
-#: includes/qmn_options_email_tab.php:378
+#: includes/qmn_options_email_tab.php:315
+#: includes/qmn_options_email_tab.php:393
 msgid "Add New User Email"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:305
-#: includes/qmn_options_email_tab.php:371
-#: includes/qmn_options_email_tab.php:392
-#: includes/qmn_options_email_tab.php:458
-#: includes/qmn_options_results_page_tab.php:178
-#: includes/qmn_options_results_page_tab.php:235
+#: includes/qmn_options_email_tab.php:320
+#: includes/qmn_options_email_tab.php:386
+#: includes/qmn_options_email_tab.php:407
+#: includes/qmn_options_email_tab.php:473
+#: includes/qmn_options_results_page_tab.php:190
+#: includes/qmn_options_results_page_tab.php:247
 msgid "Score Greater Than Or Equal To"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:306
-#: includes/qmn_options_email_tab.php:372
-#: includes/qmn_options_email_tab.php:393
-#: includes/qmn_options_email_tab.php:459
-#: includes/qmn_options_results_page_tab.php:179
-#: includes/qmn_options_results_page_tab.php:236
+#: includes/qmn_options_email_tab.php:321
+#: includes/qmn_options_email_tab.php:387
+#: includes/qmn_options_email_tab.php:408
+#: includes/qmn_options_email_tab.php:474
+#: includes/qmn_options_results_page_tab.php:191
+#: includes/qmn_options_results_page_tab.php:248
 msgid "Score Less Than Or Equal To"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:307
-#: includes/qmn_options_email_tab.php:373
-#: includes/qmn_options_email_tab.php:394
-#: includes/qmn_options_email_tab.php:460
+#: includes/qmn_options_email_tab.php:322
+#: includes/qmn_options_email_tab.php:388
+#: includes/qmn_options_email_tab.php:409
+#: includes/qmn_options_email_tab.php:475
 msgid "Subject"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:308
-#: includes/qmn_options_email_tab.php:374
-#: includes/qmn_options_email_tab.php:395
-#: includes/qmn_options_email_tab.php:461
+#: includes/qmn_options_email_tab.php:323
+#: includes/qmn_options_email_tab.php:389
+#: includes/qmn_options_email_tab.php:410
+#: includes/qmn_options_email_tab.php:476
 msgid "Email To Send"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:386
+#: includes/qmn_options_email_tab.php:401
 msgid "Email Sent To Admin"
 msgstr ""
 
-#: includes/qmn_options_email_tab.php:387
-#: includes/qmn_options_email_tab.php:465
+#: includes/qmn_options_email_tab.php:402
+#: includes/qmn_options_email_tab.php:480
 msgid "Add New Admin Email"
 msgstr ""
 
@@ -738,7 +764,7 @@ msgid "Duplicate"
 msgstr ""
 
 #: includes/qmn_options_questions_tab.php:556
-#: includes/qmn_options_results_page_tab.php:215
+#: includes/qmn_options_results_page_tab.php:227
 #: includes/qmn_quiz_admin.php:242
 msgid "Delete"
 msgstr ""
@@ -869,27 +895,22 @@ msgstr ""
 msgid "The results page has been saved successfully."
 msgstr ""
 
-#: includes/qmn_options_results_page_tab.php:168
-#: includes/qmn_options_text_tab.php:137
-msgid "The link to the certificate after completing the quiz"
-msgstr ""
-
-#: includes/qmn_options_results_page_tab.php:171
-#: includes/qmn_options_results_page_tab.php:244
+#: includes/qmn_options_results_page_tab.php:183
+#: includes/qmn_options_results_page_tab.php:256
 msgid "Save Results Pages"
 msgstr ""
 
-#: includes/qmn_options_results_page_tab.php:172
-#: includes/qmn_options_results_page_tab.php:249
+#: includes/qmn_options_results_page_tab.php:184
+#: includes/qmn_options_results_page_tab.php:261
 msgid "Add New Results Page"
 msgstr ""
 
-#: includes/qmn_options_results_page_tab.php:180
-#: includes/qmn_options_results_page_tab.php:237
+#: includes/qmn_options_results_page_tab.php:192
+#: includes/qmn_options_results_page_tab.php:249
 msgid "Results Page Shown"
 msgstr ""
 
-#: includes/qmn_options_results_page_tab.php:215
+#: includes/qmn_options_results_page_tab.php:227
 msgid "Are you sure?"
 msgstr ""
 
@@ -914,12 +935,12 @@ msgid "Custom"
 msgstr ""
 
 #: includes/qmn_options_style_tab.php:93
-#: includes/qmn_options_style_tab.php:149
+#: includes/qmn_options_style_tab.php:150
 msgid "Save Quiz Style"
 msgstr ""
 
 #: includes/qmn_options_style_tab.php:95
-msgid "Custom Theme CSS"
+msgid "Custom Style CSS"
 msgstr ""
 
 #: includes/qmn_options_style_tab.php:96
@@ -928,7 +949,7 @@ msgid ""
 "in this plugin, please visit the following link:"
 msgstr ""
 
-#: includes/qmn_options_style_tab.php:104
+#: includes/qmn_options_style_tab.php:105
 msgid "Default:"
 msgstr ""
 
