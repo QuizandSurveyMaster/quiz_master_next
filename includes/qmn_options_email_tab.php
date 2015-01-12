@@ -261,6 +261,17 @@ function mlw_options_emails_tab_content()
 				<td><strong>%COMMENT_SECTION%</strong> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?></td>
 				<td><strong>%TIMER%</strong> - <?php _e('The amount of time user spent of quiz', 'quiz-master-next'); ?></td>
 			</tr>
+			<tr>
+				<td><strong>%CERTIFICATE_LINK%</strong> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?></td>
+			</tr>
+			<tr>
+				<td><strong>%CATEGORY_POINTS%%/CATEGORY_POINTS%</strong> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?></td>
+				<td><strong>%CATEGORY_SCORE%%/CATEGORY_SCORE%</strong> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?></td>
+			</tr>
+			<tr>
+				<td><strong>%CATEGORY_AVERAGE_POINTS%</strong> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?></td>
+				<td><strong>%CATEGORY_AVERAGE_SCORE%</strong> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?></td>
+			</tr>
 		</table>
 		<br />
 		<br />

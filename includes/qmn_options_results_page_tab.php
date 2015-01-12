@@ -167,6 +167,14 @@ function mlw_options_results_tab_content()
 			<tr>
 				<td><strong>%CERTIFICATE_LINK%</strong> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?></td>
 			</tr>
+			<tr>
+				<td><strong>%CATEGORY_POINTS%%/CATEGORY_POINTS%</strong> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?></td>
+				<td><strong>%CATEGORY_SCORE%%/CATEGORY_SCORE%</strong> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?></td>
+			</tr>
+			<tr>
+				<td><strong>%CATEGORY_AVERAGE_POINTS%</strong> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?></td>
+				<td><strong>%CATEGORY_AVERAGE_SCORE%</strong> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?></td>
+			</tr>
 		</table>
 		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
 		<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
