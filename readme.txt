@@ -607,6 +607,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 
 == Upgrade Notice ==
 
+= 4.0.0 =
+Upgrade for categories, new editor for results pages, shortcode capability on results pages, enhanced required question system, and more.
+
 = 3.9.0 =
 Upgrade for new editors on text tab and many more changes.
 
