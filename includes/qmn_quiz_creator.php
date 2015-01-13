@@ -618,6 +618,7 @@ class QMNQuizCreator
 						'question_order' => $mlw_question->question_order,
 						'question_type_new' => $mlw_question->question_type_new,
 						'question_settings' => $mlw_question->question_settings,
+						'category' => $mlw_question->category,
 						'deleted' => 0
 					),
 					array(
@@ -642,6 +643,7 @@ class QMNQuizCreator
 						'%s',
 						'%d',
 						'%d',
+						'%s',
 						'%s',
 						'%d'
 					)
