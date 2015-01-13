@@ -4,7 +4,7 @@ function qmn_settings_results_tab()
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Results Pages", 'quiz-master-next'), 'mlw_options_results_tab_content');
 }
-add_action("plugins_loaded", 'qmn_settings_results_tab');
+add_action("plugins_loaded", 'qmn_settings_results_tab', 5);
 function mlw_options_results_tab_content()
 {
 	global $wpdb;

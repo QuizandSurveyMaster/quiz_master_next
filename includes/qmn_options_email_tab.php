@@ -4,7 +4,7 @@ function qmn_settings_email_tab()
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Emails", 'quiz-master-next'), 'mlw_options_emails_tab_content');
 }
-add_action("plugins_loaded", 'qmn_settings_email_tab');
+add_action("plugins_loaded", 'qmn_settings_email_tab', 5);
 
 function mlw_options_emails_tab_content()
 {

@@ -4,7 +4,7 @@ function qmn_settings_text_tab()
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Text", 'quiz-master-next'), 'mlw_options_text_tab_content');
 }
-add_action("plugins_loaded", 'qmn_settings_text_tab');
+add_action("plugins_loaded", 'qmn_settings_text_tab', 5);
 
 function mlw_options_text_tab_content()
 {
