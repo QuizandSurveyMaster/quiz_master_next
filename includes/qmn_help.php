@@ -2,44 +2,44 @@
 /*
 This page shows the user how-to's for using the plugin
 */
-/* 
+/*
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
 function mlw_generate_help_page()
 {
 	///Creates the widgets
-	add_meta_box("wpss_mrts", 'Plugin Documentation', "qmn_documentation_meta_box_content", "meta_box_help");  
-	add_meta_box("wpss_mrts", 'Support', "qmn_support_meta_box_content", "meta_box_support");
-	add_meta_box("wpss_mrts", 'System Info', "qmn_system_meta_box_content", "meta_box_sys_info");
+	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qmn_documentation_meta_box_content", "meta_box_help");
+	add_meta_box("wpss_mrts", __('Support', 'quiz-master-next'), "qmn_support_meta_box_content", "meta_box_support");
+	add_meta_box("wpss_mrts", __('System Info', 'quiz-master-next'), "qmn_system_meta_box_content", "meta_box_sys_info");
 	?>
 	<div class="wrap">
-	<h2>QMN Help</h2>
+	<h2><?php _e('Help Page', 'quiz-master-next'); ?></h2>
 	<?php echo mlw_qmn_show_adverts(); ?>
-	
+
 	<!--Display Widget Boxes-->
 	<div style="float:left; width:50%;" class="inner-sidebar1">
-		<?php do_meta_boxes('meta_box_help','advanced','');  ?>	
+		<?php do_meta_boxes('meta_box_help','advanced','');  ?>
 	</div>
-	
+
 	<div style="float:left; width:50%;" class="inner-sidebar1">
-		<?php do_meta_boxes('meta_box_support','advanced','');  ?>	
+		<?php do_meta_boxes('meta_box_support','advanced','');  ?>
 	</div>
-	
+
 	<div style="float:left; width:100%;" class="inner-sidebar1">
-		<?php do_meta_boxes('meta_box_sys_info','advanced','');  ?>	
+		<?php do_meta_boxes('meta_box_sys_info','advanced','');  ?>
 	</div>
-	
-	</div>	
+
+	</div>
 <?php
 }
 
 function qmn_documentation_meta_box_content()
 {
 	?>
-	<h3>Need help with the plugin? Try any of the following:</h3>
+	<p><?php _e('Need help with the plugin? Try any of the following:', 'quiz-master-next'); ?></p>
 	<ul>
-		<li>Visit our <a href="http://mylocalwebstop.com/plugin-documentation/">Documentation</a> for using this plugin</li>
+		<li>Visit our <a href="http://mylocalwebstop.com/plugin-documentation/">documentation</a> for using this plugin</li>
 		<li>Fill out the form in the Support widget to send us an email</li>
 		<li>Fill out the form on our <a href="http://mylocalwebstop.com/contact-us/">Contact Us Page</a></li>
 		<li>Create a topic in the <a href="https://wordpress.org/support/plugin/quiz-master-next">WordPress Support Forums</a></li>
@@ -107,7 +107,7 @@ function qmn_support_meta_box_content()
 	<input type='hidden' name='action' value='update' />
 	<table>
 	<tr>
-	<td>If there is something you would like to suggest to add or even if you just want 
+	<td>If there is something you would like to suggest to add or even if you just want
 	to let me know if you like the plugin or not, feel free to use the email form below.</td>
 	</tr>
 	<tr>
@@ -159,22 +159,22 @@ function qmn_get_system_info()
 {
 	global $wpdb;
 	$qmn_sys_info = "";
-	
+
 	$theme_data = wp_get_theme();
 	$theme      = $theme_data->Name . ' ' . $theme_data->Version;
-	
+
 	$qmn_sys_info .= "<h3>Site Information</h3><br />";
 	$qmn_sys_info .= "Site URL: ".site_url()."<br />";
 	$qmn_sys_info .= "Home URL: ".home_url()."<br />";
 	$qmn_sys_info .= "Multisite: ".( is_multisite() ? 'Yes' : 'No' )."<br />";
-	
+
 	$qmn_sys_info .= "<h3>WordPress Information</h3><br />";
 	$qmn_sys_info .= "Version: ".get_bloginfo( 'version' )."<br />";
 	$qmn_sys_info .= "Language: ".( defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US' )."<br />";
 	$qmn_sys_info .= "Active Theme: ".$theme."<br />";
 	$qmn_sys_info .= "Debug Mode: ".( defined( 'WP_DEBUG' ) ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set' )."<br />";
 	$qmn_sys_info .= "Memory Limit: ".WP_MEMORY_LIMIT."<br />";
-	
+
 	$qmn_sys_info .= "<h3>Plugins Information</h3><br />";
 	$qmn_plugin_mu = get_mu_plugins();
     	if( count( $qmn_plugin_mu > 0 ) ) {
@@ -197,24 +197,24 @@ function qmn_get_system_info()
 			continue;
 		$qmn_sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . "<br />";
 	}
-	
+
 	$qmn_sys_info .= "<h3>Server Information</h3><br />";
 	$qmn_sys_info .= "PHP : ".PHP_VERSION."<br />";
 	$qmn_sys_info .= "MySQL : ".$wpdb->db_version()."<br />";
 	$qmn_sys_info .= "Webserver : ".$_SERVER['SERVER_SOFTWARE']."<br />";
-	
+
 	$mlw_stat_total_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes LIMIT 1" );
 	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
 	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions LIMIT 1" );
 	$mlw_stat_total_active_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
-	
+
 	$qmn_sys_info .= "<h3>QMN Information</h3><br />";
 	$qmn_sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
 	$qmn_sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
 	$qmn_sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
 	$qmn_sys_info .= "Total Active Questions : ".$mlw_stat_total_active_questions."<br />";
-	
-	
+
+
 	return $qmn_sys_info;
 }
 

@@ -18,7 +18,7 @@ function timer()
 	window.amount=window.amount-1;
 	if (window.amount < 0)
 	{
-		window.amount = 0;	
+		window.amount = 0;
 	}
 	window.sessionStorage.setItem('mlw_time_quiz'+qmn_quiz_id, window.amount/60);
 	window.sessionStorage.setItem('mlw_started_quiz'+qmn_quiz_id, "yes");
@@ -32,6 +32,7 @@ function timer()
 		jQuery( ".mlw_qmn_quiz select" ).attr('disabled',true);
 		jQuery( ".mlw_qmn_question_comment" ).attr('disabled',true);
 		jQuery( ".mlw_answer_open_text" ).attr('disabled',true);
+		jQuery( ".mlw_answer_number" ).attr('disabled',true);
 		//document.quizForm.submit();
 		return;
 	}
@@ -66,8 +67,8 @@ function minToSec(amount)
 		timer_display = timer_display + minutes + ":";
 	}
 	var seconds = Math.floor(amount % 60);
-	if (seconds == '0') 
-	{ 
+	if (seconds == '0')
+	{
 		timer_display = timer_display +"00";
 	}
 	else if (seconds < 10)

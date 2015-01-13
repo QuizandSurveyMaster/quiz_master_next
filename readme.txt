@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 3.9.0
+Stable tag: 4.0.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -34,11 +34,14 @@ Your quiz can be graded with an incorrect/correct system or a points-based syste
 = Useful For Businesses =
 The plugin features useful **statistics** that show how many times each quiz has been viewed and taken and plots the data on several different **graphs** so you can see how the quizzes are doing at a glance. Also, the plugin includes an **audit trail** that logs every action done on the admin side so you can keep up with who is doing what!
 
+= Categories =
+You can assign categories to your questions. You can then show the user their score in a **particular** category or an average score of the categories.
+
 = Saves The Results For Later Use =
 The plugin will **save** the results, the user's answers, the user's comments, and more!
 
 = Math Formulas =
-You can use Tex or LaTex in questions, answers, and text fields for your quiz. For assistance with LaTex, review this tutorial: [LaTeX](http://www.andy-roberts.net/writing/latex/mathematics_1) 
+You can use Tex or LaTex in questions, answers, and text fields for your quiz. For assistance with LaTex, review this tutorial: [LaTeX](http://www.andy-roberts.net/writing/latex/mathematics_1)
 
 = Schedule Time That Quiz Is Active =
 You can set up the quiz to only be active between two days. Utilize this for quizzes/surveys that are only active until a certain date.
@@ -48,6 +51,7 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only one question per page
 * Require user to be logged in
+* **Require** certain or all questions to be answered
 * Limit amount of total entries to quiz or survey
 * Allows for you to create **certificates** for the user
 * Can set amount of tries a user has to take the quiz
@@ -106,7 +110,7 @@ Feel free to use the widget on the help page within the plugin or from the conta
 == Screenshots ==
 
 1. Quiz Admin Page (With Advertisement Be Gone Add-On)
-2. Quiz Options Page (With Advertisement Be Gone Add-On)
+2. Quiz Settings Page (With Advertisement Be Gone Add-On)
 3. Quiz Dashboard Page (With Advertisement Be Gone Add-On)
 4. Example Quiz
 5. Example Survey
@@ -115,6 +119,21 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.0.0 (January 14, 2015) =
+ * Added Ability To Add Categories To Your Quizzes
+ * Added Multiple Choice And Multiple Response To Required System
+ * Added Wp Editor To Results Pages
+ * Added Shortcode Capability To Results Pages
+ * Added Translation Capabilities
+ * Created New Addon Settings Page
+ * Design Changes To Quiz Settings Page
+ * In Code: Added 20 New Filters And Hooks
+ * In Code: Turned Question Types Into Extendable Functions For Creating Own Question Types
+ * In Code: Created New Plugin Helper Class For Extending Plugin
+ * In Code: Rewrote 75% of quiz shortcode file. Now With New Quiz Manager Class
+ * In Code: Re-organized File/Directory Structure
+ * In Code: Separated Quiz Settings Functions Into Own Files
 
 = 3.9.0 (December 30, 2014) =
  * Added Wp Editor To Text Tab
@@ -432,8 +451,8 @@ Feel free to use the widget on the help page within the plugin or from the conta
  * Added Ability To Reset Quiz Stats On Each Quiz
  * Added Ability To Delete Results
  * Minor Design Changes
- * Minor Bug Fixes 
- 
+ * Minor Bug Fixes
+
 = 0.9.7 (January 24, 2014) =
  * Started Setting Plugin Up For Translations
  * Relocated Widgets From Help Page To Quiz Dashboard Page
@@ -498,14 +517,14 @@ Feel free to use the widget on the help page within the plugin or from the conta
  * Started Work On Weekly Stat Widget
  * Tweaked Some Design Throughout Admin Side
  * Minor Bug Fixes
- 
+
 = 0.8.2 (December 10, 2013) =
  * Fixed Disappearing Question Bug Completely
  * Updated Update Process
- 
+
 = 0.8.1 (December 9, 2013) =
  * Fixed Disappearing Question Bug
- 
+
 = 0.8 (December 1, 2013) =
  * Added Spam Prevention Techniques To Backend
  * Added Ability To Reorder Questions
@@ -515,7 +534,7 @@ Feel free to use the widget on the help page within the plugin or from the conta
 = 0.7.2 (November 24, 2013) =
  * Bug Fixes
  * Added New Section On How-To Page
- 
+
 = 0.7.1 (November 19, 2013) =
  * Changed Design For How-To Page
  * Added New Section In How-To Page
@@ -525,46 +544,46 @@ Feel free to use the widget on the help page within the plugin or from the conta
  * Bug Fixes
  * Begun Work On New How-To Page
  * Continued Redesigning Plugin Dashboard
- 
+
 = 0.6.2 (November 10, 2013) =
  * Bug Fixes
  * Added More Stats
  * Started Redesigning Plugin Dashboard
- 
+
 = 0.6.1 (November 2, 2013) =
  * Bug Fixes
- 
+
 = 0.6 (October 19, 2013) =
  * Started Developing Quiz Leaderboards
  * Added Ability To Save User Answers And Comments
  * Added More Statistics To Quiz Dashboard
  * Bug Fixes
- 
+
 = 0.5.3 (October 11, 2013) =
  * Bug Fixes
  * Started Redesigning Quiz Look
 
 = 0.5.2 (September 29, 2013) =
  * Bug Fixes
- 
+
 = 0.5.1 (September 22, 2013) =
  * Added More Statistics To Quiz Dashboard
  * Bug Fixes
- 
+
 = 0.5 (September 18, 2013) =
  * Created New Tools Page And Moved Audit Trail To It
  * Added Ability For Comment Section At End Of Quiz
  * Added Ability To Have Hints
  * Added Option To Have Comment Boxes On Questions
  * Added More Statistics To Main Page
- 
+
 = 0.4.1 (September 15, 2013) =
  * Bug Fixes
 
 = 0.4 (September 13, 2013) =
  * Add The Ability To Require Contact Information
  * Add Email Validating To Email Field
- 
+
 = 0.3.1 (September 13, 2013) =
 * Bug Fixes
 
@@ -587,6 +606,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.0.0 =
+Upgrade for categories, new editor for results pages, shortcode capability on results pages, enhanced required question system, and more.
 
 = 3.9.0 =
 Upgrade for new editors on text tab and many more changes.
