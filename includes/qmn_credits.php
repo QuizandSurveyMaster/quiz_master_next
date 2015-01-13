@@ -158,10 +158,8 @@ function mlw_generate_about_page()
 	<ul>
 		<li>Importing Questions</li>
 		<li>Stats For Each Quiz</li>
-		<li>Categories</li>
 		<li>More Social Media Integration</li>
 		<li>Show Question Amount On Pagination</li>
-		<li>Required Questions</li>
 		<li>Allow Quiz To Not Show Start Page</li>
 		<li>Progress Bar For Timer</li>
 		<li>Ability To Redirect User Instead Of Showing Results Page</li>
