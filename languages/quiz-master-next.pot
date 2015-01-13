@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
-"POT-Creation-Date: 2015-01-11 20:34-0500\n"
+"POT-Creation-Date: 2015-01-13 11:37-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Your Name <you@example.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -215,7 +215,7 @@ msgstr ""
 #: includes/qmn_options_style_tab.php:38 includes/qmn_options_text_tab.php:54
 #: includes/qmn_options_tools_tab.php:35 includes/qmn_quiz_creator.php:347
 #: includes/qmn_quiz_creator.php:400 includes/qmn_quiz_creator.php:442
-#: includes/qmn_quiz_creator.php:588 includes/qmn_quiz_creator.php:651
+#: includes/qmn_quiz_creator.php:588 includes/qmn_quiz_creator.php:653
 #: includes/qmn_results.php:32
 #, php-format
 msgid ""
