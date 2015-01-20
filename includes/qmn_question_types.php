@@ -300,7 +300,7 @@ function qmn_multiple_response_review($id, $question, $answers)
     {
         if (isset($_POST["question".$id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) == esc_attr($answer[0]))
         {
-          $return_array["points"] = $answer[1];
+          $return_array["points"] += $answer[1];
           $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
           if ($answer[2] == 1)
           {
@@ -547,7 +547,7 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
     {
         if (isset($_POST["question".$id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) == esc_attr($answer[0]))
         {
-          $return_array["points"] = $answer[1];
+          $return_array["points"] += $answer[1];
           $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
           if ($answer[2] == 1)
           {
