@@ -214,7 +214,7 @@ function mlw_options_results_tab_content()
 								echo "<input type='hidden' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' value='0'/>-";
 							echo "</td>";
 							echo "<td>";
-								wp_editor( $mlw_each[2], "message_after_".$mlw_each_count );
+								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
 								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
 						echo "</tr>";
@@ -233,7 +233,7 @@ function mlw_options_results_tab_content()
 								echo "<input type='text' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
 							echo "</td>";
 							echo "<td>";
-								wp_editor( $mlw_each[2], "message_after_".$mlw_each_count );
+								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
 								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' title='What text will the user see when reaching this page' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
 						echo "</tr>";

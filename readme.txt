@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -119,6 +119,11 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.0.1 (January 21, 2015) =
+ * Results HTML Bug Fix
+ * Question HTML Bug Fix
+ * Multiple Response Points Bug Fix
 
 = 4.0.0 (January 14, 2015) =
  * Added Ability To Add Categories To Your Quizzes
@@ -606,6 +611,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.0.1 =
+Upgrade for various bug fixes.
 
 = 4.0.0 =
 Upgrade for categories, new editor for results pages, shortcode capability on results pages, enhanced required question system, and more.
