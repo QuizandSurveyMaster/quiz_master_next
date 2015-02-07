@@ -51,23 +51,31 @@ function qmn_support_meta_box_content()
 {
 	$quiz_master_email_message = "";
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
-	if(isset($_POST["action"]))
+	if(isset($_POST["support_email"]) && $_POST["support_email"] == 'confirmation')
 	{
-		$quiz_master_email_success = $_POST["action"];
 		$user_name = $_POST["username"];
 		$user_email = $_POST["email"];
 		$user_message = $_POST["message"];
 		$user_quiz_url = $_POST["quiz_url"];
 		$current_user = wp_get_current_user();
 		$mlw_site_info = qmn_get_system_info();
-		$mlw_site_info = str_replace("<br />", "\n", $mlw_site_info);
-		$mlw_site_info = str_replace("<h3>", "\n", $mlw_site_info);
-		$mlw_site_info = str_replace("</h3>", "\n", $mlw_site_info);
-		if ($quiz_master_email_success == 'update')
-		{
-			$mlw_message = "Message from ".$user_name." at ".$user_email." It says: \n \n ".$user_message."\n Version: ".$mlw_quiz_version."\n Quiz URL Provided: ".$user_quiz_url."\n User ".$current_user->display_name." from ".$current_user->user_email."\n Wordpress Info: ".$mlw_site_info;
-			wp_mail('fpcorso@mylocalwebstop.com' ,'Support From Quiz Master Next Plugin', $mlw_message);
-			$quiz_master_email_message = "**Message Sent**";
+		$mlw_message = $user_message."<br> Version: ".$mlw_quiz_version."<br> Quiz URL Provided: ".$user_quiz_url."<br> User ".$current_user->display_name." from ".$current_user->user_email."<br> Wordpress Info: ".$mlw_site_info;
+		$response = wp_remote_post( "http://mylocalwebstop.com/contact-us/", array(
+			'method' => 'POST',
+			'timeout' => 45,
+			'redirection' => 5,
+			'httpversion' => '1.0',
+			'blocking' => true,
+			'headers' => array(),
+			'body' => array( 'mlwUserName' => $user_name, 'mlwUserComp' => '', 'mlwUserEmail' => $user_email, 'question1' => 'Email', 'question3' => 'Quiz Master Next', 'question2' => $mlw_message, 'qmn_question_list' => '1Q3Q2Q', 'complete_quiz' => 'confirmation' ),
+			'cookies' => array()
+		  )
+		);
+		if ( is_wp_error( $response ) ) {
+		   $error_message = $response->get_error_message();
+		   $quiz_master_email_message = "Something went wrong: $error_message";
+		} else {
+		   $quiz_master_email_message = "**Message Sent**";
 		}
 	}
 	?>
@@ -104,11 +112,11 @@ function qmn_support_meta_box_content()
 	</script>
 	<div class='quiz_email_support'>
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=mlw_quiz_help" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
-	<input type='hidden' name='action' value='update' />
+	<input type='hidden' name='support_email' value='confirmation' />
 	<table>
 	<tr>
 	<td>If there is something you would like to suggest to add or even if you just want
-	to let me know if you like the plugin or not, feel free to use the email form below.</td>
+	to let me know if you like the plugin or not, feel free to use the support ticket form below.</td>
 	</tr>
 	<tr>
 	<td><span name='mlw_support_message' id='mlw_support_message' style="color: red;"><?php echo $quiz_master_email_message; ?></span></td>
@@ -138,7 +146,7 @@ function qmn_support_meta_box_content()
 	<td align='left'><TEXTAREA NAME="message" COLS=40 ROWS=6></TEXTAREA></td>
 	</tr>
 	<tr>
-	<td align='left'><input type='submit' class="button-primary" value='Send Email' /></td>
+	<td align='left'><input type='submit' class="button-primary" value='Submit Support Ticket' /></td>
 	</tr>
 	<tr>
 	<td align='left'></td>
