@@ -121,7 +121,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		{
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
 			$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
-			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , $answer[1], $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , htmlspecialchars_decode($answer[1], ENT_QUOTES), $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $answer[2], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($qmn_questions[$answer['id']], ENT_QUOTES), $mlw_question_answer_display);
