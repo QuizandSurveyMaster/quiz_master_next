@@ -173,13 +173,13 @@ function qmn_snapshot_dashboard_widget()
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_stat_most_popular_quiz->quiz_name; ?></strong>
+				<strong><?php if (!is_null($mlw_stat_most_popular_quiz)) { echo $mlw_stat_most_popular_quiz->quiz_name; } ?></strong>
 				<?php _e('most popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_stat_least_popular_quiz->quiz_name; ?></strong>
+				<strong><?php if (!is_null($mlw_stat_least_popular_quiz)) { echo $mlw_stat_least_popular_quiz->quiz_name; } ?></strong>
 				<?php _e('least popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
