@@ -61,6 +61,11 @@ class QMNQuizManager
 		$return_display = '';
 		$qmn_quiz_options = $this->load_quiz_options($quiz);
 
+		if (is_null($qmn_quiz_options) || $qmn_quiz_options->quiz_name == '')
+		{
+			return "It appears that this quiz is not set up correctly";
+		}
+
 		$qmn_array_for_variables = array(
 			'quiz_id' => $qmn_quiz_options->quiz_id,
 			'quiz_name' => $qmn_quiz_options->quiz_name,
@@ -1042,18 +1047,6 @@ function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_
 			$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
 			$display .= $mlw_message;
 		}
-	}
-	return $display;
-}
-
-add_filter('qmn_begin_shortcode', 'qmn_quiz_name_check', 10, 3);
-function qmn_quiz_name_check($display, $qmn_quiz_options, $qmn_array_for_variables)
-{
-	global $qmn_allowed_visit;
-	if ($qmn_quiz_options->quiz_name == "")
-	{
-		$qmn_allowed_visit = false;
-		$display .= __("It appears that this quiz is not set up correctly.", 'quiz-master-next');
 	}
 	return $display;
 }
