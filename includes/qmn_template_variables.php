@@ -54,7 +54,14 @@ function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
 {
-	$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
+	if ($mlw_quiz_array["total_questions"] != 0)
+	{
+		$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
+	}
+	else
+	{
+		$mlw_average_points = 0;
+	}
 	$content = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $content);
 	return $content;
 }
