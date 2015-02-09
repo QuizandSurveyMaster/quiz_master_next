@@ -57,7 +57,10 @@ class QMNQuizManager
 		global $qmn_allowed_visit;
 		$qmn_allowed_visit = true;
 		$mlwQuizMasterNext->quizCreator->set_id($quiz);
-		date_default_timezone_set(get_option('timezone_string'));
+		if (get_option('timezone_string') != '' && !get_option('timezone_string'))
+		{
+			date_default_timezone_set(get_option('timezone_string'));
+		}
 		$return_display = '';
 		$qmn_quiz_options = $this->load_quiz_options($quiz);
 
