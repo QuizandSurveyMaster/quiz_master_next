@@ -1196,7 +1196,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		if ($mlw_quiz_options->user_name != 2)
 		{
 			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_name == 1)
+			if ($mlw_quiz_options->user_name == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
@@ -1208,7 +1208,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		if ($mlw_quiz_options->user_comp != 2)
 		{
 			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_comp == 1)
+			if ($mlw_quiz_options->user_comp == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
@@ -1219,7 +1219,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		if ($mlw_quiz_options->user_email != 2)
 		{
 			$mlw_contact_class = "class=\"mlwEmail\"";
-			if ($mlw_quiz_options->user_email == 1)
+			if ($mlw_quiz_options->user_email == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
 			{
 				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
@@ -1230,7 +1230,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 		if ($mlw_quiz_options->user_phone != 2)
 		{
 			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_phone == 1)
+			if ($mlw_quiz_options->user_phone == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
