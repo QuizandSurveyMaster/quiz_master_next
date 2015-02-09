@@ -6,8 +6,10 @@ This page creates the main dashboard for the Quiz Master Next plugin
 Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
-function mlw_generate_quiz_tools(){
-	add_meta_box("wpss_mrts", 'Audit Trail', "mlw_tools_box", "quiz_wpss");
+function mlw_generate_quiz_tools()
+{
+	add_meta_box("qmn_restore_box", 'Restore Quiz', "qmn_restore_function", "quiz_wpss");
+	add_meta_box("qmn_audit_box", 'Audit Trail', "mlw_tools_box", "quiz_wpss");
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -51,7 +53,7 @@ function mlw_generate_quiz_tools(){
 	<h2><?php _e('Tools', 'quiz-master-next'); ?></h2>
 
 	<div style="float:left; width:100%;" class="inner-sidebar1">
-		<?php do_meta_boxes('quiz_wpss','advanced','');  ?>
+		<?php do_meta_boxes('quiz_wpss','advanced',null);  ?>
 	</div>
 
 	<div style="clear:both"></div>
@@ -61,7 +63,51 @@ function mlw_generate_quiz_tools(){
 	</div>
 	<?php
 }
-
+function qmn_restore_function()
+{
+	global $wpdb;
+	if (isset($_POST["restore_quiz"]))
+	{
+		$restore = $wpdb->update(
+			$wpdb->prefix.'mlw_quizzes',
+			array(
+				'deleted' => 0
+			),
+			array(
+				'quiz_id' => intval($_POST["restore_quiz"])
+			),
+			array(
+				'%d'
+			),
+			array(
+				'%d'
+			)
+		);
+		if (!$restore)
+		{
+			echo "<span style='color:red;'>".__("There has been an error! Please try again.", "quiz-master-next")."</span>";
+		}
+		else
+		{
+			echo "<span style='color:red;'>".__("Quiz Has Been Restored!", "quiz-master-next")."</span>";
+		}
+	}
+	$quizzes = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=1");
+	?>
+	<h3><?php _e("Choose a quiz in the drop down and then click the button to restore a deleted quiz.", "quiz-master-next"); ?></h3>
+	<form action='' method="post">
+		<select name="restore_quiz">
+			<?php
+			foreach($quizzes as $quiz)
+			{
+				echo "<option value='".$quiz->quiz_id."'>".$quiz->quiz_name."</option>";
+			}
+			?>
+		</select>
+		<input type="submit" value="<?php _e('Restore Quiz', "quiz-master-next"); ?>" class="button" />
+	</form>
+	<?php
+}
 function mlw_tools_box()
 {
 	global $wpdb;
