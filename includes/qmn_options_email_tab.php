@@ -124,6 +124,7 @@ function mlw_options_emails_tab_content()
 		$mlw_send_user_email = $_POST["sendUserEmail"];
 		$mlw_send_admin_email = $_POST["sendAdminEmail"];
 		$mlw_admin_email = $_POST["adminEmail"];
+		$mlw_email_from_text = $_POST["emailFromText"];
 
 		//Create new array
 		$i = 1;
@@ -157,7 +158,7 @@ function mlw_options_emails_tab_content()
 		}
 		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
 		$mlw_qmn_new_admin_array = serialize($mlw_qmn_new_admin_array);
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET send_user_email='%s', send_admin_email='%s', admin_email='%s', user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_send_user_email, $mlw_send_admin_email, $mlw_admin_email, $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
+		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET send_user_email='%s', send_admin_email='%s', admin_email='%s', email_from_text='%s', user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_send_user_email, $mlw_send_admin_email, $mlw_admin_email, $mlw_email_from_text, $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
 		if ($mlw_new_email_results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been updated successfully.', 'quiz-master-next'), 'success');
@@ -307,6 +308,10 @@ function mlw_options_emails_tab_content()
 			<tr valign="top">
 				<th scope="row"><label for="adminEmail"><?php _e('What emails should we send the admin email to? Separate emails with a comma.', 'quiz-master-next'); ?></label></th>
 				<td><input name="adminEmail" type="text" id="adminEmail" value="<?php echo $mlw_quiz_options->admin_email; ?>" class="regular-text" /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="emailFromText"><?php _e("What is the From Name for the email sent to users and admin?", 'quiz-master-next'); ?></label></th>
+				<td><input name="emailFromText" type="text" id="emailFromText" value="<?php echo $mlw_quiz_options->email_from_text; ?>" class="regular-text" /></td>
 			</tr>
 			</table>
 			<br />
