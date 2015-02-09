@@ -18,6 +18,14 @@ class QMNPluginHelper
 	public $addon_tabs = array();
 
 	/**
+	 * Results Page tabs array
+	 *
+	 * @var array
+	 * @since 4.1.0
+	 */
+	public $results_tabs = array();
+
+	/**
 	 * Settings Page tabs array
 	 *
 	 * @var array
@@ -297,6 +305,40 @@ class QMNPluginHelper
 	public function get_addon_tabs()
 	{
 		return $this->addon_tabs;
+	}
+
+	/**
+	  * Registers Results Tab
+	  *
+	  * Registers a new tab on the results page
+	  *
+	  * @since 4.1.0
+		* @param string $title The name of the tab
+		* @param string $function The function that displays the tab's content
+		* @return void
+	  */
+	public function register_results_settings_tab($title, $function)
+	{
+		$slug = strtolower(str_replace( " ", "-", $title));
+		$new_tab = array(
+			'title' => $title,
+			'function' => $function,
+			'slug' => $slug
+		);
+		$this->results_tabs[] = $new_tab;
+	}
+
+	/**
+	  * Retrieves Results Tab Array
+	  *
+	  * Retrieves the array of titles and functions of the registered tabs
+	  *
+	  * @since 4.1.0
+		* @return array The array of registered tabs
+	  */
+	public function get_results_tabs()
+	{
+		return $this->results_tabs;
 	}
 
 	/**
