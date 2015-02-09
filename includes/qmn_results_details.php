@@ -59,98 +59,55 @@ function qmn_generate_results_details_tab()
 	{
 		echo " <a class='button' href=\"?page=mlw_quiz_result_details&&result_id=".intval($next_results)."\" >View Next Results</a>";
 	}
-	?>
-	<h2><?php _e('Quiz Results', 'quiz-master-next'); ?>: <?php echo $mlw_results_data->quiz_name; ?></h2>
-	<table>
-		<tr>
-			<td><?php _e('Time Taken', 'quiz-master-next'); ?>: </td>
-			<td><?php echo $mlw_results_data->time_taken; ?></td>
-		</tr>
-		<tr>
-			<td><?php _e('Name Provided', 'quiz-master-next'); ?>: </td>
-			<td><?php echo $mlw_results_data->name; ?></td>
-		</tr>
-		<tr>
-			<td><?php _e('Business Provided', 'quiz-master-next'); ?>: </td>
-			<td><?php echo $mlw_results_data->business; ?></td>
-		</tr>
-		<tr>
-			<td><?php _e('Email Provided', 'quiz-master-next'); ?>: </td>
-			<td><?php echo $mlw_results_data->email; ?></td>
-		</tr>
-		<tr>
-			<td><?php _e('Phone Provided', 'quiz-master-next'); ?>: </td>
-			<td><?php echo $mlw_results_data->phone; ?></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-		</tr>
-		<tr>
-			<?php
-				if ($mlw_results_data->quiz_system == 0)
-				{
-				?>
-					<td><?php _e('Score Received', 'quiz-master-next'); ?>:</td>
-					<td><?php echo $mlw_results_data->correct."/".$mlw_results_data->total." or ".$mlw_results_data->correct_score."%"; ?></td>
-				<?php
-				}
-				else if ($mlw_results_data->quiz_system == 1)
-				{
-				?>
-					<td><?php _e('Score Received', 'quiz-master-next'); ?>:</td>
-					<td><?php echo $mlw_results_data->point_score." Points"; ?></td>
-				<?php
-				}
-			?>
-		</tr>
-	</table>
-	<br />
-	<br />
-	<h3><?php _e('Answers Provided', 'quiz-master-next'); ?></h3>
-	<?php
-	$mlw_qmn_results_array = @unserialize($mlw_results_data->quiz_results);
-	if (!is_array($mlw_qmn_results_array)) {
-		echo htmlspecialchars_decode($mlw_results_data->quiz_results, ENT_QUOTES);
+	$settings = (array) get_option( 'qmn-settings' );
+	if (isset($settings['results_details_template']))
+	{
+		$template = htmlspecialchars_decode($settings['results_details_template'], ENT_QUOTES);
 	}
 	else
 	{
-		$mlw_complete_time = '';
-		$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
-		if ($mlw_complete_hours > 0)
-		{
-			$mlw_complete_time .= "$mlw_complete_hours ".__('hours','quiz-master-next')." ";
-		}
-		$mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
-		if ($mlw_complete_minutes > 0)
-		{
-			$mlw_complete_time .= "$mlw_complete_minutes ".__('minutes','quiz-master-next')." ";
-		}
-		$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
-		$mlw_complete_time .=  "$mlw_complete_seconds ".__('seconds','quiz-master-next');
-		?>
-		<p><?php
-		/* translators: The %s will be replaces with the amount of time the user took on quiz. For example: 5 minutes 34 seconds */
-		echo sprintf(__('The user took %s to complete this quiz.','quiz-master-next'), $mlw_complete_time);
-		?></p><br />
-		<br />
-		<?php _e('The comments entered into the comment box (if enabled)', 'quiz-master-next'); ?>:<br />
-		<?php echo $mlw_qmn_results_array[2]; ?><br />
-		<br />
-		<p><?php _e('The answers were as follows', 'quiz-master-next'); ?>:</p>
-		<br />
-		<?php
-		$mlw_qmn_answer_array = $mlw_qmn_results_array[1];
-		foreach( $mlw_qmn_answer_array as $mlw_each )
-		{
-			echo htmlspecialchars_decode($mlw_each[0], ENT_QUOTES)."<br />";
-			echo __('Answer Provided: ','quiz-master-next').htmlspecialchars_decode($mlw_each[1], ENT_QUOTES)."<br />";
-			echo __("Correct Answer: ",'quiz-master-next').htmlspecialchars_decode($mlw_each[2], ENT_QUOTES)."<br />";
-			echo __("Comments Entered:" ,'quiz-master-next')."<br />".htmlspecialchars_decode($mlw_each[3], ENT_QUOTES)."<br />";
-			echo "<br /><br />";
-		}
-		?>
-		<?php
+		$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+		<p>Name Provided: %USER_NAME%</p>
+		<p>Business Provided: %USER_BUSINESS%</p>
+		<p>Phone Provided: %USER_PHONE%</p>
+		<p>Email Provided: %USER_EMAIL%</p>
+		<p>Score Received: %AMOUNT_CORRECT%/%TOTAL_QUESTIONS% or %CORRECT_SCORE%% or %POINT_SCORE% points</p>
+		<h2>Answers Provided:</h2>
+		<p>The user took %TIMER% to complete quiz.</p>
+		<p>Comments entered were: %COMMENT_SECTION%</p>
+		<p>The answers were as follows:</p>
+		%QUESTIONS_ANSWERS%";
 	}
+	if (is_serialized($mlw_results_data->quiz_results) && is_array(@unserialize($mlw_results_data->quiz_results)))
+	{
+		$results = unserialize($mlw_results_data->quiz_results);
+	}
+	else
+	{
+		$template = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_results_data->quiz_results, $template);
+		$template = str_replace( "%TIMER%" , '', $template);
+		$template = str_replace( "%COMMENT_SECTION%" , '', $template);
+	}
+	$qmn_array_for_variables = array(
+		'quiz_id' => $mlw_results_data->quiz_id,
+		'quiz_name' => $mlw_results_data->quiz_name,
+		'quiz_system' => $mlw_results_data->quiz_system,
+		'user_name' => $mlw_results_data->name,
+		'user_business' => $mlw_results_data->business,
+		'user_email' => $mlw_results_data->email,
+		'user_phone' => $mlw_results_data->phone,
+		'user_id' => $mlw_results_data->user,
+		'timer' => $results[0],
+		'total_points' => $mlw_results_data->point_score,
+		'total_score' => $mlw_results_data->correct_score,
+		'total_correct' => $mlw_results_data->correct,
+		'total_questions' => $mlw_results_data->total,
+		'comments' => $results[2],
+		'question_answers_array' => $results[1]
+	);
+	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $qmn_array_for_variables);
+	$template = str_replace( "\n" , "<br>", $template);
+	echo $template;
 }
 
 function qmn_results_details_tab()
