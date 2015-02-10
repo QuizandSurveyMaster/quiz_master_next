@@ -364,7 +364,7 @@ class QMNQuizCreator
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
-			
+
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'quiz-master-next'), 'success');
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -417,6 +417,20 @@ class QMNQuizCreator
  		);
 		if ($results != false)
 		{
+			$my_query = new WP_Query( array('post_type' => 'quiz', 'meta_key' => 'quiz_id', 'meta_value' => $quiz_id) );
+			if( $my_query->have_posts() )
+			{
+			  while( $my_query->have_posts() )
+				{
+			    $my_query->the_post();
+					$my_post = array(
+				      'ID'           => get_the_ID(),
+				      'post_status' => 'draft'
+				  );
+					wp_update_post( $my_post );
+			  }
+			}
+			wp_reset_postdata();
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been deleted successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail

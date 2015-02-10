@@ -165,14 +165,31 @@ class MLWQuizMasterNext
 			'not_found'          => 'No Quiz Found',
 			'not_found_in_trash' => 'No Quiz Found In Trash'
 		);
+		$has_archive = true;
+		$exclude_search = false;
+		$cpt_slug = 'quiz';
+		$settings = (array) get_option( 'qmn-settings' );
+    if (isset($settings['cpt_archive']) && $settings['cpt_archive'] == '1')
+		{
+			$has_archive = false;
+		}
+		if (isset($settings['cpt_search']) && $settings['cpt_search'] == '1')
+		{
+			$exclude_search = true;
+		}
+		if (isset($settings['cpt_slug']))
+		{
+			$cpt_slug = trim(strtolower(str_replace(" ", "-", $settings['cpt_slug'])));
+		}
 		$quiz_args = array(
 			'show_ui' => false,
 			'show_in_nav_menus' => true,
 			'labels' => $quiz_labels,
 			'publicly_queryable' => true,
-			'exclude_from_search' => false,
+			'exclude_from_search' => $exclude_search,
 			'label'  => 'Quizzes',
-			'has_archive'        => true,
+			'rewrite' => array('slug' => $cpt_slug),
+			'has_archive'        => $has_archive,
 			'supports'           => array( 'title', 'editor', 'author' )
 		);
 

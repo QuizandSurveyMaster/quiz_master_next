@@ -89,6 +89,20 @@ function qmn_restore_function()
 		}
 		else
 		{
+			$my_query = new WP_Query( array('post_type' => 'quiz', 'meta_key' => 'quiz_id', 'meta_value' => intval($_POST["restore_quiz"])) );
+			if( $my_query->have_posts() )
+			{
+			  while( $my_query->have_posts() )
+				{
+			    $my_query->the_post();
+					$my_post = array(
+				      'ID'           => get_the_ID(),
+				      'post_status' => 'publish'
+				  );
+					wp_update_post( $my_post );
+			  }
+			}
+			wp_reset_postdata();
 			echo "<span style='color:red;'>".__("Quiz Has Been Restored!", "quiz-master-next")."</span>";
 		}
 	}
