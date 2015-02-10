@@ -30,11 +30,11 @@ function mlw_options_text_tab_content()
 		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
 		$mlw_qmn_pagination_field = serialize(array( $_POST["pagination_prev_text"], $_POST["pagination_next_text"] ));
 		$qmn_social_media_text = serialize(array('twitter' => $_POST["mlw_quiz_twitter_text_template"], 'facebook' => $_POST["mlw_quiz_facebook_text_template"]));
-		$mlw_email_from_text = $_POST["emailFromText"];
+
 		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
 		$quiz_id = $_POST["quiz_id"];
 
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', email_from_text='".$mlw_email_from_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$qmn_social_media_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe_text='".$mlw_scheduled_timeframe_text."' WHERE quiz_id=".$quiz_id;
+		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$qmn_social_media_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe_text='".$mlw_scheduled_timeframe_text."' WHERE quiz_id=".$quiz_id;
 		$results = $wpdb->query( $update );
 		if ($results != false)
 		{
@@ -85,61 +85,86 @@ function mlw_options_text_tab_content()
         		'facebook' => $mlw_quiz_options->social_media_text
         	);
 	}
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( 'css/qmn_admin.css' , __FILE__ ) );
 	?>
 	<div id="tabs-2" class="mlw_tab_content">
 			<h3 style="text-align: center;"><?php _e("Template Variables", 'quiz-master-next'); ?></h3>
-			<table class="form-table">
-			<tr>
-				<td><strong>%POINT_SCORE%</strong> - <?php _e("Total points user earned when taking quiz", 'quiz-master-next'); ?></td>
-				<td><strong>%AVERAGE_POINT%</strong> - <?php _e("The average amount of points user had per question", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%AMOUNT_CORRECT%</strong> - <?php _e("The number of correct answers the user had", 'quiz-master-next'); ?></td>
-				<td><strong>%TOTAL_QUESTIONS%</strong> - <?php _e("The total number of questions in the quiz", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%CORRECT_SCORE%</strong> - <?php _e("The percent score for the quiz showing percent of total quetions answered correctly", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%USER_NAME%</strong> - <?php _e("The name the user entered before the quiz", 'quiz-master-next'); ?></td>
-				<td><strong>%USER_BUSINESS%</strong> - <?php _e("The business the user entered before the quiz", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%USER_PHONE%</strong> - <?php _e("The phone number the user entered before the quiz", 'quiz-master-next'); ?></td>
-				<td><strong>%USER_EMAIL%</strong> - <?php _e("The email the user entered before the quiz", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%QUIZ_NAME%</strong> - <?php _e("The name of the quiz", 'quiz-master-next'); ?></td>
-				<td><strong>%QUESTIONS_ANSWERS%</strong> - <?php _e("Shows the question, the answer the user provided, and the correct answer", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%COMMENT_SECTION%</strong> - <?php _e("The comments the user entered into comment box if enabled", 'quiz-master-next'); ?></td>
-				<td><strong>%QUESTION%</strong> - <?php _e("The question that the user answered", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%USER_ANSWER%</strong> - <?php _e("The answer the user gave for the question", 'quiz-master-next'); ?></td>
-				<td><strong>%CORRECT_ANSWER%</strong> - <?php _e("The correct answer for the question", 'quiz-master-next'); ?></td>
-			</tr>
-
-			<tr>
-				<td><strong>%USER_COMMENTS%</strong> - <?php _e("The comments the user provided in the comment field for the question", 'quiz-master-next'); ?></td>
-				<td><strong>%CORRECT_ANSWER_INFO%</strong> - <?php _e("Reason why the correct answer is the correct answer", 'quiz-master-next'); ?></td>
-			</tr>
-			<tr>
-				<td><strong>%TIMER%</strong> - <?php _e("The amount of time user spent of quiz", 'quiz-master-next'); ?></td>
-				<td><strong>%CERTIFICATE_LINK%</strong> - <?php _e("The link to the certificate after completing the quiz", 'quiz-master-next'); ?></td>
-			</tr>
-			<tr>
-				<td><strong>%CURRENT_DATE%</strong> - <?php _e("The Current Date", 'quiz-master-next'); ?></td>
-			</tr>
-			</table>
+			<div class="template_list_holder">
+				<div class="template_variable">
+					<span class="template_name">%POINT_SCORE%</span> - <?php _e('Score for the quiz when using points', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%AVERAGE_POINT%</span> - <?php _e('The average amount of points user had per question', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%AMOUNT_CORRECT%</span> - <?php _e('The number of correct answers the user had', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%TOTAL_QUESTIONS%</span> - <?php _e('The total number of questions in the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CORRECT_SCORE%</span> - <?php _e('Score for the quiz when using correct answers', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_NAME%</span> - <?php _e('The name the user entered before the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_BUSINESS%</span> - <?php _e('The business the user entered before the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_PHONE%</span> - <?php _e('The phone number the user entered before the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_EMAIL%</span> - <?php _e('The email the user entered before the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%QUIZ_NAME%</span> - <?php _e('The name of the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%QUESTIONS_ANSWERS%</span> - <?php _e('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent of quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CATEGORY_SCORE%%/CATEGORY_SCORE%</span> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CATEGORY_AVERAGE_POINTS%</span> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CATEGORY_AVERAGE_SCORE%</span> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%QUESTION%</span> - <?php _e('The question that the user answered', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_ANSWER%</span> - <?php _e('The answer the user gave for the question', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CORRECT_ANSWER%</span> - <?php _e('The correct answer for the question', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%USER_COMMENTS%</span> - <?php _e('The comments the user provided in the comment field for the question', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CORRECT_ANSWER_INFO%</span> - <?php _e('Reason why the correct answer is the correct answer', 'quiz-master-next'); ?>
+				</div>
+				<div class="template_variable">
+					<span class="template_name">%CURRENT_DATE%</span> - <?php _e('The Current Date', 'quiz-master-next'); ?>
+				</div>
+				<?php do_action('qmn_template_variable_list'); ?>
+			</div>
+			<div style="clear:both;"></div>
 			<button id="save_template_button" class="button" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>
 			<?php
 			echo "<form action='' method='post' name='quiz_template_form'>";
@@ -298,10 +323,6 @@ function mlw_options_text_tab_content()
 				<tr valign="top">
 					<th scope="row"><label for="pagination_next_text"><?php _e("Text for next button", 'quiz-master-next'); ?></label></th>
 					<td><input name="pagination_next_text" type="text" id="pagination_next_text" value="<?php echo $mlw_qmn_pagination_text[1]; ?>" class="regular-text" /></td>
-				</tr>
-				<tr valign="top">
-					<th scope="row"><label for="emailFromText"><?php _e("What is the From Name for the email sent to users and admin?", 'quiz-master-next'); ?></label></th>
-					<td><input name="emailFromText" type="text" id="emailFromText" value="<?php echo $mlw_quiz_options->email_from_text; ?>" class="regular-text" /></td>
 				</tr>
 			</table>
 			<button id="save_template_button" class="button" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>

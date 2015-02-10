@@ -180,7 +180,7 @@ class QMNQuizCreator
 				}
 				.mlw_horizontal_choice
 				{
-				margin-right: 20px;
+					margin-right: 20px;
 				}
 				div.mlw_qmn_timer {
 					position:fixed;
@@ -205,7 +205,7 @@ class QMNQuizCreator
 					text-shadow: 0 1px 0 rgba(255,255,255,.5);
 					box-sizing: border-box;
 					display: inline-block;
-					padding: 5px 5px 5px 5px;
+					padding: 7px 7px 7px 7px;
 					margin: auto;
 					font-weight: bold;
 					cursor: pointer;
@@ -214,9 +214,29 @@ class QMNQuizCreator
 				{
 					font-weight: bold;
 				}
+				.mlw_qmn_question_number
+				{
+					font-weight: bold;
+				}
 				.mlw_qmn_comment_section_text
 				{
 					font-weight: bold;
+				}
+				.mlw_next
+				{
+					float: right;
+				}
+				.mlw_previous
+				{
+					float: left;
+				}
+				.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
+				  width: 100%;
+				  border-radius: 7px;
+				  padding: 2px 10px;
+				  -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				  box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				  border: 1px solid #ccc;
 				}";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
 		$results = $wpdb->insert(
@@ -332,6 +352,19 @@ class QMNQuizCreator
 		);
 		if ($results != false)
 		{
+			$new_quiz = $wpdb->insert_id;
+			global $current_user;
+			get_currentuserinfo();
+			$quiz_post = array(
+			  'post_title'    => $quiz_name,
+			  'post_content'  => "[mlw_quizmaster quiz=$new_quiz]",
+			  'post_status'   => 'publish',
+			  'post_author'   => $current_user->ID,
+			  'post_type' => 'quiz'
+			);
+			$quiz_post_id = wp_insert_post( $quiz_post );
+			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
+
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'quiz-master-next'), 'success');
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -341,12 +374,12 @@ class QMNQuizCreator
 				"(trail_id, action_user, action, time) " .
 				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Quiz Has Been Created: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
 			$results = $wpdb->query( $insert );
+			do_action('qmn_quiz_created', $new_quiz);
 		}
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0001'), 'error');
 		}
-		do_action('qmn_quiz_created', $wpdb->insert_id);
 	}
 
 	/**
@@ -384,6 +417,20 @@ class QMNQuizCreator
  		);
 		if ($results != false)
 		{
+			$my_query = new WP_Query( array('post_type' => 'quiz', 'meta_key' => 'quiz_id', 'meta_value' => $quiz_id) );
+			if( $my_query->have_posts() )
+			{
+			  while( $my_query->have_posts() )
+				{
+			    $my_query->the_post();
+					$my_post = array(
+				      'ID'           => get_the_ID(),
+				      'post_status' => 'draft'
+				  );
+					wp_update_post( $my_post );
+			  }
+			}
+			wp_reset_postdata();
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been deleted successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail

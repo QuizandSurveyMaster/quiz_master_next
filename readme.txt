@@ -1,10 +1,10 @@
 === Quiz Master Next ===
 Contributors: fpcorso
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTGYAETX36ZQJ
-Tags: quiz, test, score, exam, survey, contact, form, email, answer, question
+Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 4.0.1
+Stable tag: 4.1.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -77,11 +77,6 @@ While Quiz Master Next is fully functional and is packed full of features that w
 
 == Installation ==
 
-We now offer an installation service to assist you in this process. We will install any or all of our plugins and spend up to 2 hours with you for consultaion and training. Visit our website for details.
-[My Local Webstop Plugin Installation](http://mylocalwebstop.com/downloads/plugin-installation/)
-
-**Or**
-
 * Navigate to Add New Plugin page within your WordPress
 * Search for Quiz Master Next
 * Click Install Now link on the plugin and follow the prompts
@@ -102,7 +97,7 @@ We have begun creating documentation for the plugin. You can view the documentat
 We now offer a premium support plan that offers priority response, technical support, and priority feature requests! For details, visit our services page: [My Local Webstop Services](http://mylocalwebstop.com/downloads/plugin-premium-support/)
 
 = Do you offer any 1-on-1 training to assist me in using this plugin? =
-We now offer an installation service that includes 1-on-1 training as well as a premium support that offers 1-on-1 training. For details, visit our [Wordpress Store](http://mylocalwebstop.com/store/)
+We now offer 1-on-1 training for consulting and training. For details, visit our [Wordpress Store](http://mylocalwebstop.com/store/)
 
 = I have an idea, how do I contact you? =
 Feel free to use the widget on the help page within the plugin or from the contact page at mylocalwebstop.com.
@@ -119,6 +114,22 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.1.0 (February 11, 2015) =
+ * Added Ability To Restore Deleted Quizzes ([GitHub Issue #107](https://github.com/fpcorso/quiz_master_next/issues/107))
+ * Added Ability To Multi-Delete Results ([GitHub Issue #4](https://github.com/fpcorso/quiz_master_next/issues/4))
+ * Redesigned Admin Results Pages ([GitHub Issue #106](https://github.com/fpcorso/quiz_master_next/issues/106))
+ * Added Ability To Go To Next/Previous Results ([GitHub Issue #71](https://github.com/fpcorso/quiz_master_next/issues/71))
+ * Quizzes Now Have Direct URL And Archive ([GitHub Issue #104](https://github.com/fpcorso/quiz_master_next/issues/104))
+ * Added Ability To Use Own Facebook App ID ([GitHub Issue #137](https://github.com/fpcorso/quiz_master_next/issues/137))
+ * In Code: New Hook For Template Variable List
+ * In Code: Certificate On Admin Results Now Hooked Into New Template Variable System
+ * In Code: Converted Support Widget To Remote Post ([GitHub Issue #114](https://github.com/fpcorso/quiz_master_next/issues/114))
+ * In Code: Added Uninstall File Direct Access Check
+ * Bug Fix: Fixed Dashboard Widget No Quiz Bug ([GitHub Issue #119](https://github.com/fpcorso/quiz_master_next/issues/119))
+ * Bug Fix: Fixed Shortcode No Quiz Bug ([GitHub Issue #120](https://github.com/fpcorso/quiz_master_next/issues/120))
+ * Bug Fix: Fixed Required Contact User Bug ([GitHub Issue #123](https://github.com/fpcorso/quiz_master_next/issues/123))
+ * Bug Fix: Fixed Text Template Bug ([GitHub Issue #117](https://github.com/fpcorso/quiz_master_next/issues/117))
 
 = 4.0.1 (January 21, 2015) =
  * Results HTML Bug Fix
@@ -611,6 +622,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.1.0 =
+Upgrade for redesigned admin results pages, new global settings page, ability to edit facebook app id, and more.
 
 = 4.0.1 =
 Upgrade for various bug fixes.

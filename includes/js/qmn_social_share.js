@@ -1,4 +1,4 @@
-function mlw_qmn_share(network, mlw_qmn_social_text, mlw_qmn_title)
+function mlw_qmn_share(network, mlw_qmn_social_text, mlw_qmn_title, facebook_id)
 {
 	var sTop = window.screen.height/2-(218);
 	var sLeft = window.screen.width/2-(313);
@@ -9,7 +9,7 @@ function mlw_qmn_share(network, mlw_qmn_social_text, mlw_qmn_title)
 	{
 		var Url = "https://www.facebook.com/dialog/feed?"
 			+ "display=popup&"
-			+ "app_id=483815031724529&"
+			+ "app_id="+facebook_id+"&"
 			+ "link=" + pageUrlEncoded + "&"
 			+ "name=" + encodeURIComponent(mlw_qmn_social_text) + "&"
 			+ "description=  &"

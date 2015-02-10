@@ -54,7 +54,14 @@ function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
 {
-	$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
+	if ($mlw_quiz_array["total_questions"] != 0)
+	{
+		$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
+	}
+	else
+	{
+		$mlw_average_points = 0;
+	}
 	$content = str_replace( "%AVERAGE_POINT%" , $mlw_average_points, $content);
 	return $content;
 }
@@ -111,7 +118,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		global $wpdb;
 		$display = '';
 		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
-		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0", $mlw_quiz_array['quiz_id'] ) );
+		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$qmn_questions = array();
 		foreach($qmn_questions_sql as $question)
 		{
@@ -121,7 +128,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		{
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
 			$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
-			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , $answer[1], $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , htmlspecialchars_decode($answer[1], ENT_QUOTES), $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , $answer[2], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($qmn_questions[$answer['id']], ENT_QUOTES), $mlw_question_answer_display);

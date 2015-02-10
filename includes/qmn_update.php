@@ -299,7 +299,6 @@ function mlw_quiz_update()
 			$results = $wpdb->query( $update_sql );
 		}
 
-
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_questions";
 		//Update 0.5

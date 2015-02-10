@@ -55,6 +55,18 @@ function mlw_generate_quiz_admin()
 	$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity
 		FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted='0'
 		ORDER BY quiz_id DESC LIMIT %d, %d", $mlw_qmn_quiz_begin, $mlw_qmn_table_limit ) );
+
+	$post_to_quiz_array = array();
+	$my_query = new WP_Query( array('post_type' => 'quiz') );
+	if( $my_query->have_posts() )
+	{
+	  while( $my_query->have_posts() )
+		{
+	    $my_query->the_post();
+			$post_to_quiz_array[get_post_meta( get_the_ID(), 'quiz_id', true )] = get_the_permalink();
+	  }
+	}
+	wp_reset_postdata();
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -168,7 +180,20 @@ function mlw_generate_quiz_admin()
 	<div class='mlw_quiz_options'>
 		<h2><?php _e('Quizzes', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h2>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-		<div style="width: 85%; float: left;">
+		<?php
+		if ( get_option('mlw_advert_shows') == 'true' )
+		{
+			?>
+			<div style="width: 85%; float: left;">
+			<?php
+		}
+		else
+		{
+			?>
+			<div style="width: 100%; float: left;">
+			<?php
+		}
+		?>
 			<div class="tablenav top">
 				<div class="tablenav-pages">
 					<span class="displaying-num"><?php echo sprintf(_n('One quiz', '%s quizzes', $mlw_qmn_quiz_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_quiz_count)); ?></span>
@@ -217,6 +242,7 @@ function mlw_generate_quiz_admin()
 					<tr>
 						<th>Quiz ID</th>
 						<th><?php _e('Quiz Name', 'quiz-master-next'); ?></th>
+						<th><?php _e('URL', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Views', 'quiz-master-next'); ?></th>
@@ -241,6 +267,14 @@ function mlw_generate_quiz_admin()
 						 | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">".__('Duplicate', 'quiz-master-next')."</a>
 						 | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>".__('Delete', 'quiz-master-next')."</a>
 						</div></td>";
+						if (isset($post_to_quiz_array[$mlw_quiz_info->quiz_id]))
+						{
+							$quotes_list .= "<td><span style='font-size:16px;'><a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."'>".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."</a></span></td>";
+						}
+						else
+						{
+							$quotes_list .= "<td><span style='font-size:16px;'></span></td>";
+						}
 						$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 						$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 						$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_views . "</span></td>";
@@ -263,35 +297,42 @@ function mlw_generate_quiz_admin()
 				</tfoot>
 			</table>
 		</div>
-		<div style="width: 15%; float:right;">
-			<h3 style="text-align: center;">My Local Webstop News</h3>
-			<?php
-			$qmn_rss = array();
-			$qmn_feed = fetch_feed('http://mylocalwebstop.com/category/our-blog/feed');
-			if (!is_wp_error($qmn_feed)) {
-				$qmn_feed_items = $qmn_feed->get_items(0, 5);
-				foreach ($qmn_feed_items as $feed_item) {
-				    $qmn_rss[] = array(
-				        'link' => $feed_item->get_link(),
-				        'title' => $feed_item->get_title(),
-				        'description' => $feed_item->get_description(),
-								'date' => $feed_item->get_date( 'F j Y' ),
-								'author' => $feed_item->get_author()->get_name()
-				    );
-				}
-			}
-			foreach($qmn_rss as $item)
-			{
-				?>
-				<h3><a target='_blank' href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h3>
-				<p>By <?php echo $item['author']; ?> on <?php echo $item['date']; ?></p>
-				<div>
-					<?php echo $item['description']; ?>
-				</div>
-				<?php
-			}
+		<?php
+		if ( get_option('mlw_advert_shows') == 'true' )
+		{
 			?>
-		</div>
+			<div style="width: 15%; float:right;">
+				<h3 style="text-align: center;">My Local Webstop News</h3>
+				<?php
+				$qmn_rss = array();
+				$qmn_feed = fetch_feed('http://mylocalwebstop.com/category/our-blog/feed');
+				if (!is_wp_error($qmn_feed)) {
+					$qmn_feed_items = $qmn_feed->get_items(0, 5);
+					foreach ($qmn_feed_items as $feed_item) {
+					    $qmn_rss[] = array(
+					        'link' => $feed_item->get_link(),
+					        'title' => $feed_item->get_title(),
+					        'description' => $feed_item->get_description(),
+									'date' => $feed_item->get_date( 'F j Y' ),
+									'author' => $feed_item->get_author()->get_name()
+					    );
+					}
+				}
+				foreach($qmn_rss as $item)
+				{
+					?>
+					<h3><a target='_blank' href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h3>
+					<p>By <?php echo $item['author']; ?> on <?php echo $item['date']; ?></p>
+					<div>
+						<?php echo $item['description']; ?>
+					</div>
+					<?php
+				}
+				?>
+			</div>
+			<?php
+		}
+		?>
 		<div style="clear: both;"></div>
 		<?php echo mlw_qmn_show_adverts(); ?>
 		<!--Dialogs-->
