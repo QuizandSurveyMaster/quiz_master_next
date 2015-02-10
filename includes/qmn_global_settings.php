@@ -26,11 +26,36 @@ class QMNGlobalSettingsPage
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
     add_settings_section( 'qmn-global-section', 'Main Settings', array($this, 'global_section'), 'qmn_global_settings' );
     add_settings_field( 'usage-tracker', 'Allow Usage Tracking?', array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'results-details', 'Template For Admin Results Details', array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	public function global_section()
 	{
 		echo 'These settings are applied to the entire plugin and all quizzes.';
+	}
+
+	public function results_details_template()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		if (isset($settings['results_details_template']))
+		{
+			$template = htmlspecialchars_decode($settings['results_details_template'], ENT_QUOTES);
+		}
+		else
+		{
+			$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+			<p>Name Provided: %USER_NAME%</p>
+			<p>Business Provided: %USER_BUSINESS%</p>
+			<p>Phone Provided: %USER_PHONE%</p>
+			<p>Email Provided: %USER_EMAIL%</p>
+			<p>Score Received: %AMOUNT_CORRECT%/%TOTAL_QUESTIONS% or %CORRECT_SCORE%% or %POINT_SCORE% points</p>
+			<h2>Answers Provided:</h2>
+			<p>The user took %TIMER% to complete quiz.</p>
+			<p>Comments entered were: %COMMENT_SECTION%</p>
+			<p>The answers were as follows:</p>
+			%QUESTIONS_ANSWERS%";
+		}
+		wp_editor( $template, 'results_template', array('textarea_name' => 'qmn-settings[results_details_template]') );
 	}
 
 	public function usage_tracker_field()
