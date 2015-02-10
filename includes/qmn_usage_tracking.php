@@ -3,12 +3,30 @@
 if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Class To Send Tracking Information Back To My Website
  *
+ * @since 4.1.0
  */
 class QMNTracking
 {
+  /**
+	 * Date To Send Home
+	 *
+	 * @var array
+	 * @since 4.1.0
+	 */
   private $data;
 
+  /**
+	  * Main Construct Function
+	  *
+	  * Call functions within class
+	  *
+	  * @since 4.1.0
+	  * @uses QMNTracking::load_dependencies() Loads required filed
+	  * @uses QMNTracking::add_hooks() Adds actions to hooks and filters
+	  * @return void
+	  */
   function __construct()
   {
     $this->load_dependencies();
@@ -16,17 +34,41 @@ class QMNTracking
     $this->track_check();
   }
 
+  /**
+	  * Load File Dependencies
+	  *
+	  * @since 4.1.0
+	  * @return void
+	  */
   private function load_dependencies()
   {
 
   }
 
+  /**
+	  * Add Hooks
+	  *
+	  * Adds functions to relavent hooks and filters
+	  *
+	  * @since 4.1.0
+	  * @return void
+	  */
   private function add_hooks()
   {
     add_action( 'admin_notices', array( $this, 'admin_notice' ) );
     add_action( 'admin_init', array($this, 'admin_notice_check'));
   }
 
+  /**
+   * Determines If Ready To Send Data Home
+   *
+   * Determines if the plugin has been authorized to send the data home in the settings page. Then checks if it has been at least a week since the last send.
+   *
+   * @since 4.1.0
+   * @uses QMNTracking::load_data()
+   * @uses QMNTracking::send_data()
+   * @return void
+   */
   private function track_check()
   {
     $settings = (array) get_option( 'qmn-settings' );
@@ -44,6 +86,12 @@ class QMNTracking
     }
   }
 
+  /**
+   * Sends The Data Home
+   *
+   * @since 4.1.0
+   * @return void
+   */
   private function send_data()
   {
     $response = wp_remote_post( 'http://mylocalwebstop.com/?usage_track=confirmation', array(
@@ -63,6 +111,12 @@ class QMNTracking
 		}
   }
 
+  /**
+   * Prepares The Data To Be Sent
+   *
+   * @since 4.1.0
+   * @return void
+   */
   private function load_data()
   {
     global $wpdb;
@@ -107,6 +161,14 @@ class QMNTracking
     $this->data = $data;
   }
 
+  /**
+   * Adds Admin Notice To Dashboard
+   *
+   * Adds an admin notice asking for authorization to send data home
+   *
+   * @since 4.1.0
+   * @return void
+   */
   public function admin_notice()
   {
     $show_notice = get_option( 'qmn-tracking-notice' );
@@ -137,6 +199,12 @@ class QMNTracking
     }
   }
 
+  /**
+   * Checks If User Has Clicked On Notice
+   *
+   * @since 4.1.0
+   * @return void
+   */
   public function admin_notice_check()
   {
     if (isset($_GET["qmn_track_check"]))

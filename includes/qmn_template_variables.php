@@ -118,7 +118,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		global $wpdb;
 		$display = '';
 		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
-		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0", $mlw_quiz_array['quiz_id'] ) );
+		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$qmn_questions = array();
 		foreach($qmn_questions_sql as $question)
 		{
