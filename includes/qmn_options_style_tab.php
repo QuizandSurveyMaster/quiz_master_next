@@ -99,7 +99,7 @@ function mlw_options_styling_tab_content()
 
 		<table class="form-table">
 			<tr>
-				<td><textarea style="width: 100%; height: 100%;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
+				<td><textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
 			</tr>
 		</table>
 		<button id="save_styles_button" class="button" onclick="javascript: document.quiz_style_form.submit();"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
