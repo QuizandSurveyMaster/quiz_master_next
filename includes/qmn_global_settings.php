@@ -29,6 +29,7 @@ class QMNGlobalSettingsPage
 		add_settings_field( 'cpt-search', 'Disable Quiz Posts From Being Searched?', array($this, 'cpt_search_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', 'Disable Quiz Archive?', array($this, 'cpt_archive_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', 'Quiz Url Slug', array($this, 'cpt_slug_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'facebook-app-id', 'Facebook App Id', array($this, 'facebook_app_id'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', 'Template For Admin Results Details', array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
@@ -40,6 +41,17 @@ class QMNGlobalSettingsPage
 			flush_rewrite_rules(true);
 			echo "<span style='color:red;'>Settings have been updated!</span>";
 		}
+	}
+
+	public function facebook_app_id()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$facebook_app_id = '483815031724529';
+		if (isset($settings['facebook_app_id']))
+		{
+			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
+		}
+		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";
 	}
 
 	public function cpt_slug_field()
