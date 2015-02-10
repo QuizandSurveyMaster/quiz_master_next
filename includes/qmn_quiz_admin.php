@@ -55,6 +55,18 @@ function mlw_generate_quiz_admin()
 	$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity
 		FROM " . $wpdb->prefix . "mlw_quizzes WHERE deleted='0'
 		ORDER BY quiz_id DESC LIMIT %d, %d", $mlw_qmn_quiz_begin, $mlw_qmn_table_limit ) );
+
+	$post_to_quiz_array = array();
+	$my_query = new WP_Query( array('post_type' => 'quiz') );
+	if( $my_query->have_posts() )
+	{
+	  while( $my_query->have_posts() )
+		{
+	    $my_query->the_post();
+			$post_to_quiz_array[get_post_meta( get_the_ID(), 'quiz_id', true )] = get_the_permalink();
+	  }
+	}
+	wp_reset_postdata();
 	?>
 	<!-- css -->
 	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
@@ -217,6 +229,7 @@ function mlw_generate_quiz_admin()
 					<tr>
 						<th>Quiz ID</th>
 						<th><?php _e('Quiz Name', 'quiz-master-next'); ?></th>
+						<th><?php _e('URL', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Views', 'quiz-master-next'); ?></th>
@@ -241,6 +254,14 @@ function mlw_generate_quiz_admin()
 						 | <a href='javascript:();' class='linkOptions' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">".__('Duplicate', 'quiz-master-next')."</a>
 						 | <a class='linkOptions linkDelete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>".__('Delete', 'quiz-master-next')."</a>
 						</div></td>";
+						if (isset($post_to_quiz_array[$mlw_quiz_info->quiz_id]))
+						{
+							$quotes_list .= "<td><span style='font-size:16px;'><a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."'>".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."</a></span></td>";
+						}
+						else
+						{
+							$quotes_list .= "<td><span style='font-size:16px;'></span></td>";
+						}
 						$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 						$quotes_list .= "<td><span style='font-size:16px;'>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</span></td>";
 						$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_views . "</span></td>";
