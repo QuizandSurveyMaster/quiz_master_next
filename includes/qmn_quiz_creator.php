@@ -180,7 +180,7 @@ class QMNQuizCreator
 				}
 				.mlw_horizontal_choice
 				{
-				margin-right: 20px;
+					margin-right: 20px;
 				}
 				div.mlw_qmn_timer {
 					position:fixed;
@@ -205,7 +205,7 @@ class QMNQuizCreator
 					text-shadow: 0 1px 0 rgba(255,255,255,.5);
 					box-sizing: border-box;
 					display: inline-block;
-					padding: 5px 5px 5px 5px;
+					padding: 7px 7px 7px 7px;
 					margin: auto;
 					font-weight: bold;
 					cursor: pointer;
@@ -214,9 +214,29 @@ class QMNQuizCreator
 				{
 					font-weight: bold;
 				}
+				.mlw_qmn_question_number
+				{
+					font-weight: bold;
+				}
 				.mlw_qmn_comment_section_text
 				{
 					font-weight: bold;
+				}
+				.mlw_next
+				{
+					float: right;
+				}
+				.mlw_previous
+				{
+					float: left;
+				}
+				.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
+				  width: 100%;
+				  border-radius: 7px;
+				  padding: 2px 10px;
+				  -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				  box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				  border: 1px solid #ccc;
 				}";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
 		$results = $wpdb->insert(
