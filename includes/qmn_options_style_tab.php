@@ -99,52 +99,7 @@ function mlw_options_styling_tab_content()
 
 		<table class="form-table">
 			<tr>
-				<td width="66%"><textarea style="width: 100%; height: 100%;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea>
-				</td>
-				<td width="30%">
-					<strong><?php _e('Default:', 'quiz-master-next'); ?></strong><br />
-					div.mlw_qmn_quiz input[type=radio],<br />
-					div.mlw_qmn_quiz input[type=submit],<br />
-					div.mlw_qmn_quiz label {<br />
-						cursor: pointer;<br />
-					}<br />
-					div.mlw_qmn_quiz input:not([type=submit]):focus,<br />
-					div.mlw_qmn_quiz textarea:focus {<br />
-						background: #eaeaea;<br />
-					}<br />
-					div.mlw_qmn_quiz {<br />
-						text-align: left;<br />
-					}<br />
-					div.quiz_section {<br />
-						<br />
-					}<br />
-					div.mlw_qmn_timer {<br />
-						position:fixed;<br />
-						top:200px;<br />
-						right:0px;<br />
-						width:130px;<br />
-						color:#00CCFF;<br />
-						border-radius: 15px;<br />
-						background:#000000;<br />
-						text-align: center;<br />
-						padding: 15px 15px 15px 15px<br />
-					}<br />
-					div.mlw_qmn_quiz input[type=submit],<br />
-					a.mlw_qmn_quiz_link<br />
-					{<br />
-						    border-radius: 4px;<br />
-						    position: relative;<br />
-						    background-image: linear-gradient(#fff,#dedede);<br />
-							background-color: #eee;<br />
-							border: #ccc solid 1px;<br />
-							color: #333;<br />
-							text-shadow: 0 1px 0 rgba(255,255,255,.5);<br />
-							box-sizing: border-box;<br />
-						    display: inline-block;<br />
-						    padding: 5px 5px 5px 5px;<br />
-	   						margin: auto;<br />
-					}<br />
-				</td>
+				<td><textarea style="width: 100%; height: 100%;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
 			</tr>
 		</table>
 		<button id="save_styles_button" class="button" onclick="javascript: document.quiz_style_form.submit();"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
