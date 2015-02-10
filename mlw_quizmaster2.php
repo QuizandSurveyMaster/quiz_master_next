@@ -144,6 +144,56 @@ class MLWQuizMasterNext
 		add_action('widgets_init', create_function('', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");'));
 		add_shortcode('mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode');
 		add_action('plugins_loaded',  array( $this, 'setup_translations'));
+		add_action('init', array( $this, 'register_quiz_post_types'));
+	}
+
+	public function register_quiz_post_types()
+ 	{
+		$quiz_labels = array(
+			'name'               => 'Quizzes',
+			'singular_name'      => 'Quiz',
+			'menu_name'          => 'Quiz',
+			'name_admin_bar'     => 'Quiz',
+			'add_new'            => 'Add New',
+			'add_new_item'       => 'Add New Quiz',
+			'new_item'           => 'New Quiz',
+			'edit_item'          => 'Edit Quiz',
+			'view_item'          => 'View Quiz',
+			'all_items'          => 'All Quizzes',
+			'search_items'       => 'Search Quizzes',
+			'parent_item_colon'  => 'Parent Quiz:',
+			'not_found'          => 'No Quiz Found',
+			'not_found_in_trash' => 'No Quiz Found In Trash'
+		);
+		$has_archive = true;
+		$exclude_search = false;
+		$cpt_slug = 'quiz';
+		$settings = (array) get_option( 'qmn-settings' );
+    if (isset($settings['cpt_archive']) && $settings['cpt_archive'] == '1')
+		{
+			$has_archive = false;
+		}
+		if (isset($settings['cpt_search']) && $settings['cpt_search'] == '1')
+		{
+			$exclude_search = true;
+		}
+		if (isset($settings['cpt_slug']))
+		{
+			$cpt_slug = trim(strtolower(str_replace(" ", "-", $settings['cpt_slug'])));
+		}
+		$quiz_args = array(
+			'show_ui' => false,
+			'show_in_nav_menus' => true,
+			'labels' => $quiz_labels,
+			'publicly_queryable' => true,
+			'exclude_from_search' => $exclude_search,
+			'label'  => 'Quizzes',
+			'rewrite' => array('slug' => $cpt_slug),
+			'has_archive'        => $has_archive,
+			'supports'           => array( 'title', 'editor', 'author' )
+		);
+
+		register_post_type( 'quiz', $quiz_args );
 	}
 
 	/**

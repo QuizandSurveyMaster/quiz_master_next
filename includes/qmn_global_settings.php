@@ -26,12 +26,63 @@ class QMNGlobalSettingsPage
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
     add_settings_section( 'qmn-global-section', 'Main Settings', array($this, 'global_section'), 'qmn_global_settings' );
     add_settings_field( 'usage-tracker', 'Allow Usage Tracking?', array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-search', 'Disable Quiz Posts From Being Searched?', array($this, 'cpt_search_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-archive', 'Disable Quiz Archive?', array($this, 'cpt_archive_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-slug', 'Quiz Url Slug', array($this, 'cpt_slug_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', 'Template For Admin Results Details', array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	public function global_section()
 	{
 		echo 'These settings are applied to the entire plugin and all quizzes.';
+		if (isset($_GET["settings-updated"]) && $_GET["settings-updated"])
+		{
+			flush_rewrite_rules(true);
+			echo "<span style='color:red;'>Settings have been updated!</span>";
+		}
+	}
+
+	public function cpt_slug_field()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$cpt_slug = 'quiz';
+		if (isset($settings['cpt_slug']))
+		{
+			$cpt_slug = esc_attr( $settings['cpt_slug'] );
+		}
+		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";
+	}
+
+	public function cpt_search_field()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$cpt_search = '0';
+		if (isset($settings['cpt_search']))
+		{
+			$cpt_search = esc_attr( $settings['cpt_search'] );
+		}
+		$checked = '';
+		if ($cpt_search == '1')
+		{
+			$checked = " checked='checked'";
+		}
+		echo "<input type='checkbox' name='qmn-settings[cpt_search]' id='qmn-settings[cpt_search]' value='1'$checked />";
+	}
+
+	public function cpt_archive_field()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$cpt_archive = '0';
+		if (isset($settings['cpt_archive']))
+		{
+			$cpt_archive = esc_attr( $settings['cpt_archive'] );
+		}
+		$checked = '';
+		if ($cpt_archive == '1')
+		{
+			$checked = " checked='checked'";
+		}
+		echo "<input type='checkbox' name='qmn-settings[cpt_archive]' id='qmn-settings[cpt_archive]' value='1'$checked />";
 	}
 
 	public function results_details_template()
