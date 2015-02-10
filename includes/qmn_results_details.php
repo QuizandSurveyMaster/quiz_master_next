@@ -129,23 +129,41 @@ function qmn_generate_results_certificate_tab()
 		$mlw_certificate_results = $wpdb->get_var( $wpdb->prepare( "SELECT certificate_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_results->quiz_id ) );
 
 		//Prepare Certificate
-		$mlw_certificate_options = unserialize($mlw_certificate_results);
-		if (!is_array($mlw_certificate_options)) {
-					// something went wrong, initialize to empty array
-					$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '');
-			}
-		$mlw_message_certificate = $mlw_certificate_options[1];
-		$mlw_message_certificate = str_replace( "%POINT_SCORE%" , $mlw_quiz_results->point_score, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%AVERAGE_POINT%" , $mlw_quiz_results->point_score/$mlw_quiz_results->total, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%AMOUNT_CORRECT%" , $mlw_quiz_results->correct, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%TOTAL_QUESTIONS%" , $mlw_quiz_results->total, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%CORRECT_SCORE%" , $mlw_quiz_results->correct_score, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%QUIZ_NAME%" , $mlw_quiz_results->quiz_name, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%USER_NAME%" , $mlw_quiz_results->name, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%USER_BUSINESS%" , $mlw_quiz_results->business, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%USER_PHONE%" , $mlw_quiz_results->email, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "%USER_EMAIL%" , $mlw_quiz_results->phone, $mlw_message_certificate);
-		$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
+		if (is_serialized($mlw_certificate_results) && is_array(@unserialize($mlw_certificate_results)))
+		{
+			$mlw_certificate_options = unserialize($mlw_certificate_results);
+		}
+		else
+		{
+			$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '');
+		}
+		if (is_serialized($mlw_quiz_results->quiz_results) && is_array(@unserialize($mlw_quiz_results->quiz_results)))
+		{
+			$results = unserialize($mlw_results_data->quiz_results);
+		}
+		else
+		{
+			$results = array( 0, '', '');
+		}
+		$qmn_array_for_variables = array(
+			'quiz_id' => $mlw_quiz_results->quiz_id,
+			'quiz_name' => $mlw_quiz_results->quiz_name,
+			'quiz_system' => $mlw_quiz_results->quiz_system,
+			'user_name' => $mlw_quiz_results->name,
+			'user_business' => $mlw_quiz_results->business,
+			'user_email' => $mlw_quiz_results->email,
+			'user_phone' => $mlw_quiz_results->phone,
+			'user_id' => $mlw_quiz_results->user,
+			'timer' => $results[0],
+			'total_points' => $mlw_quiz_results->point_score,
+			'total_score' => $mlw_quiz_results->correct_score,
+			'total_correct' => $mlw_quiz_results->correct,
+			'total_questions' => $mlw_quiz_results->total,
+			'comments' => $results[2],
+			'question_answers_array' => $results[1]
+		);
+		$template = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_certificate_options[1], $qmn_array_for_variables);
+		$template = str_replace( "\n" , "<br>", $template);
 		$plugindirpath=plugin_dir_path( __FILE__ );
 		$mlw_qmn_certificate_file=<<<EOC
 <?php
@@ -160,7 +178,7 @@ EOC;
 \$pdf->MultiCell(280,20,'$mlw_certificate_options[0]',0,'C');
 \$pdf->Ln(15);
 \$pdf->SetFont('Arial','',16);
-\$pdf->WriteHTML("<p align='center'>$mlw_message_certificate</p>");
+\$pdf->WriteHTML("<p align='center'>$template</p>");
 EOC;
 		$mlw_qmn_certificate_file.=$mlw_certificate_options[2] != '' ? '$pdf->Image("'.$mlw_certificate_options[2].'",110,130);' : '';
 		$mlw_qmn_certificate_file.=<<<EOC
