@@ -139,7 +139,7 @@ function qmn_generate_results_certificate_tab()
 		}
 		if (is_serialized($mlw_quiz_results->quiz_results) && is_array(@unserialize($mlw_quiz_results->quiz_results)))
 		{
-			$results = unserialize($mlw_results_data->quiz_results);
+			$results = unserialize($mlw_quiz_results->quiz_results);
 		}
 		else
 		{
