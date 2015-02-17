@@ -619,6 +619,17 @@ class QMNQuizCreator
 		$mlw_new_id = $wpdb->insert_id;
 		if ($results != false)
 		{
+			global $current_user;
+			get_currentuserinfo();
+			$quiz_post = array(
+				'post_title'    => $quiz_name,
+				'post_content'  => "[mlw_quizmaster quiz=$mlw_new_id]",
+				'post_status'   => 'publish',
+				'post_author'   => $current_user->ID,
+				'post_type' => 'quiz'
+			);
+			$quiz_post_id = wp_insert_post( $quiz_post );
+			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been duplicated successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
@@ -629,6 +640,7 @@ class QMNQuizCreator
 				"(trail_id, action_user, action, time) " .
 				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Quiz Has Been Created: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
 			$results = $wpdb->query( $insert );
+			do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 		}
 		else
 		{
@@ -701,7 +713,6 @@ class QMNQuizCreator
 				}
 			}
 		}
-		do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 	 }
 }
 ?>
