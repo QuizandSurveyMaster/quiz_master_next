@@ -288,6 +288,7 @@ function mlw_generate_quiz_admin()
 					<tr>
 						<th>Quiz ID</th>
 						<th><?php _e('Quiz Name', 'quiz-master-next'); ?></th>
+						<th><?php _e('URL', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Views', 'quiz-master-next'); ?></th>
