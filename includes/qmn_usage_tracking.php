@@ -105,9 +105,7 @@ class QMNTracking
 		) );
     if ( is_wp_error( $response ) ) {
 		   $error_message = $response->get_error_message();
-		   echo "Something went wrong: $error_message";
-		} else {
-		   echo "**Message Sent**";
+		   echo "Something went wrong with QMN Usage Tracker: $error_message";
 		}
   }
 
