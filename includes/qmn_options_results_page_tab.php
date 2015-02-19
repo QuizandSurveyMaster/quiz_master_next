@@ -20,7 +20,7 @@ function mlw_options_results_tab_content()
 		if (is_serialized($mlw_qmn_message_after) && is_array(@unserialize($mlw_qmn_message_after)))
 		{
 			$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', "redirect_url" => '');
 			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
 			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
 
@@ -28,7 +28,7 @@ function mlw_options_results_tab_content()
 		else
 		{
 			$mlw_qmn_landing_array = array(array(0, 0, $mlw_qmn_message_after));
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here');
+			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', "redirect_url" => '');
 			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
 			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
 		}
@@ -68,7 +68,7 @@ function mlw_options_results_tab_content()
 		{
 			if ($_POST["message_after_".$i] != "Delete")
 			{
-				$mlw_qmn_landing_each = array(intval($_POST["message_after_begin_".$i]), intval($_POST["message_after_end_".$i]), htmlspecialchars(stripslashes($_POST["message_after_".$i]), ENT_QUOTES));
+				$mlw_qmn_landing_each = array(intval($_POST["message_after_begin_".$i]), intval($_POST["message_after_end_".$i]), htmlspecialchars(stripslashes($_POST["message_after_".$i]), ENT_QUOTES), "redirect_url" => esc_url_raw($_POST["redirect_".$i]));
 				$mlw_qmn_new_landing_array[] = $mlw_qmn_landing_each;
 			}
 			$i++;
@@ -107,7 +107,7 @@ function mlw_options_results_tab_content()
 	}
 	else
 	{
-		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after));
+		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after, "redirect_url" => ''));
 	}
 	wp_enqueue_style( 'qmn_admin_style', plugins_url( 'css/qmn_admin.css' , __FILE__ ) );
 	?>
@@ -199,6 +199,7 @@ function mlw_options_results_tab_content()
 					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
+					<th><?php _e('Redirect URL', 'quiz-master-next'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -226,6 +227,9 @@ function mlw_options_results_tab_content()
 								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
 								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
+							echo "<td>";
+								echo "<input type='text' id='redirect_".$mlw_each_count."' name='redirect_".$mlw_each_count."' value='".esc_url($mlw_each["redirect_url"])."'/>";
+							echo "</td>";
 						echo "</tr>";
 						break;
 					}
@@ -245,6 +249,9 @@ function mlw_options_results_tab_content()
 								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
 								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' title='What text will the user see when reaching this page' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
 							echo "</td>";
+							echo "<td>";
+								echo "<input type='text' id='redirect_".$mlw_each_count."' name='redirect_".$mlw_each_count."' value='".esc_url($mlw_each["redirect_url"])."'/>";
+							echo "</td>";
 						echo "</tr>";
 					}
 				}
@@ -256,6 +263,7 @@ function mlw_options_results_tab_content()
 					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
+					<th><?php _e('Redirect URL', 'quiz-master-next'); ?></th>
 				</tr>
 			</tfoot>
 		</table>
