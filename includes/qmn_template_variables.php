@@ -43,10 +43,78 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments'
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_certificate_link',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_facebook_share',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_twitter_share',10,2);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user',10,2);
+
+function qmn_variable_facebook_share($content, $mlw_quiz_array)
+{
+	while (strpos($content, '%FACEBOOK_SHARE%') != false)
+	{
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+		$settings = (array) get_option( 'qmn-settings' );
+		$facebook_app_id = '483815031724529';
+		if (isset($settings['facebook_app_id']))
+		{
+			$facebook_app_id = esc_js( $settings['facebook_app_id'] );
+		}
+
+		global $wpdb;
+		$qmn_quiz_options = $wpdb->get_row($wpdb->prepare('SELECT social_media_text FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $mlw_quiz_array['quiz_id']));
+
+		//Load Social Media Text
+		$qmn_social_media_text = "";
+		if (is_serialized($qmn_quiz_options->social_media_text) && is_array(@unserialize($qmn_quiz_options->social_media_text)))
+		{
+			$qmn_social_media_text = @unserialize($qmn_quiz_options->social_media_text);
+		}
+		else
+		{
+			$qmn_social_media_text = array(
+				'twitter' => $qmn_quiz_options->social_media_text,
+				'facebook' => $qmn_quiz_options->social_media_text
+			);
+		}
+
+		$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $mlw_quiz_array);
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id');\">Facebook</a>";
+		$content = str_replace( "%FACEBOOK_SHARE%" , $social_display, $content);
+	}
+	return $content;
+}
+
+function qmn_variable_twitter_share($content, $mlw_quiz_array)
+{
+	while (strpos($content, '%TWITTER_SHARE%') != false)
+	{
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+
+		global $wpdb;
+		$qmn_quiz_options = $wpdb->get_row($wpdb->prepare('SELECT social_media_text FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $mlw_quiz_array['quiz_id']));
+
+		//Load Social Media Text
+		$qmn_social_media_text = "";
+		if (is_serialized($qmn_quiz_options->social_media_text) && is_array(@unserialize($qmn_quiz_options->social_media_text)))
+		{
+			$qmn_social_media_text = @unserialize($qmn_quiz_options->social_media_text);
+		}
+		else
+		{
+			$qmn_social_media_text = array(
+				'twitter' => $qmn_quiz_options->social_media_text,
+				'facebook' => $qmn_quiz_options->social_media_text
+			);
+		}
+
+		$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $mlw_quiz_array);
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($mlw_quiz_array["quiz_name"])."');\">Twitter</a>";
+		$content = str_replace( "%TWITTER_SHARE%" , $social_display, $content);
+	}
+	return $content;
+}
 function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 {
 	$content = str_replace( "%POINT_SCORE%" , $mlw_quiz_array["total_points"], $content);

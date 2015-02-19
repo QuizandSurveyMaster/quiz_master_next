@@ -210,7 +210,7 @@ function mlw_options_option_tab_content()
 				</div></td>
 			</tr>
 			<tr valign="top">
-				<th scope="row"><label for="social_media"><?php _e('Show social media sharing buttons? (Twitter & Facebook)', 'quiz-master-next'); ?></label></th>
+				<th scope="row"><label for="social_media"><?php _e('Show social media sharing buttons? (Twitter & Facebook)', 'quiz-master-next'); _e('This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!', 'quiz-master-next'); ?></label></th>
 				<td><div id="social_media">
 					<input type="radio" id="social_media_radio2" name="social_media" <?php if ($mlw_quiz_options->social_media == 1) {echo 'checked="checked"';} ?> value='1' /><label for="social_media_radio2"><?php _e('Yes', 'quiz-master-next'); ?></label>
 				    <input type="radio" id="social_media_radio" name="social_media" <?php if ($mlw_quiz_options->social_media == 0) {echo 'checked="checked"';} ?> value='0' /><label for="social_media_radio"><?php _e('No', 'quiz-master-next'); ?></label>
