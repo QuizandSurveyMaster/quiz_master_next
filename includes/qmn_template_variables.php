@@ -52,7 +52,7 @@ add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user
 
 function qmn_variable_facebook_share($content, $mlw_quiz_array)
 {
-	while (strpos($content, '%FACEBOOK_SHARE%') != false)
+	while (strpos($content, '%FACEBOOK_SHARE%') !== false)
 	{
 		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
 		$settings = (array) get_option( 'qmn-settings' );
@@ -88,7 +88,7 @@ function qmn_variable_facebook_share($content, $mlw_quiz_array)
 
 function qmn_variable_twitter_share($content, $mlw_quiz_array)
 {
-	while (strpos($content, '%TWITTER_SHARE%') != false)
+	while (strpos($content, '%TWITTER_SHARE%') !== false)
 	{
 		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
 
@@ -181,7 +181,7 @@ function mlw_qmn_variable_user_email($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 {
-	while (strpos($content, '%QUESTIONS_ANSWERS%') != false)
+	while (strpos($content, '%QUESTIONS_ANSWERS%') !== false)
 	{
 		global $wpdb;
 		$display = '';
@@ -244,7 +244,7 @@ function mlw_qmn_variable_certificate_link($content, $mlw_quiz_array)
 function qmn_variable_category_points($content, $mlw_quiz_array)
 {
 	$return_points = 0;
-	while (strpos($content, '%CATEGORY_POINTS%') != false)
+	while (strpos($content, '%CATEGORY_POINTS%') !== false)
 	{
 		$return_points = 0;
 		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
@@ -275,7 +275,7 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 	$return_score = 0;
 	$total_questions = 0;
 	$amount_correct = 0;
-	while (strpos($content, '%CATEGORY_SCORE%') != false)
+	while (strpos($content, '%CATEGORY_SCORE%') !== false)
 	{
 		$return_score = 0;
 		$total_questions = 0;
@@ -322,7 +322,7 @@ function qmn_variable_category_average_score($content, $mlw_quiz_array)
 	$total_categories = 0;
 	$total_score = 0;
 	$category_scores = array();
-	while (strpos($content, '%CATEGORY_AVERAGE_SCORE%') != false)
+	while (strpos($content, '%CATEGORY_AVERAGE_SCORE%') !== false)
 	{
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
@@ -374,7 +374,7 @@ function qmn_variable_category_average_points($content, $mlw_quiz_array)
 	$total_categories = 0;
 	$total_points = 0;
 	$category_scores = array();
-	while (strpos($content, '%CATEGORY_AVERAGE_POINTS%') != false)
+	while (strpos($content, '%CATEGORY_AVERAGE_POINTS%') !== false)
 	{
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{

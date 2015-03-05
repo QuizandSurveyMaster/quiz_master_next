@@ -711,7 +711,12 @@ class QMNQuizManager
 						{
 							$mlw_qm_question_comment = "";
 						}
-						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($mlw_question->question_name, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
+						$question_text = $mlw_question->question_name;
+						if (isset($results_array["question_text"]))
+						{
+							$question_text = $results_array["question_text"];
+						}
+						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($question_text, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
 					}
 					break;
 				}
