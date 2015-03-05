@@ -604,6 +604,10 @@ function qmn_fill_blank_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
+	if (strpos($question, '%BLANK%') !== false)
+	{
+		$return_array['question_text'] = str_replace( "%BLANK%", "__________", htmlspecialchars_decode($question, ENT_QUOTES));
+	}
   if (isset($_POST["question".$id]))
   {
     $mlw_user_answer = $_POST["question".$id];
