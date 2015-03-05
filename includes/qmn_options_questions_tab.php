@@ -93,7 +93,7 @@ function mlw_options_questions_tab_content()
 				'%d',
 				'%s',
 				'%d',
-				'%d',
+				'%s',
 				'%s',
 				'%s'
 			),
@@ -203,7 +203,7 @@ function mlw_options_questions_tab_content()
 							'%d',
 							'%s',
 							'%d',
-							'%d',
+							'%s',
 							'%s',
 							'%s',
 							'%d'
@@ -297,7 +297,7 @@ function mlw_options_questions_tab_content()
 							'%d',
 							'%s',
 							'%d',
-							'%d',
+							'%s',
 							'%s',
 							'%s',
 							'%d'
