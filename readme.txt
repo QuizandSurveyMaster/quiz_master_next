@@ -1,6 +1,6 @@
 === Quiz Master Next ===
 Contributors: fpcorso
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RTGYAETX36ZQJ
+Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1
@@ -13,7 +13,7 @@ The easiest and most flexible way to add multiple quizzes, tests, and surveys to
 
 The easiest and most flexible way to add multiple quizzes, tests, surveys, and contact forms to your website. This plugin allows for unlimited quizzes each with unlimited amount of questions. The plugin allows you to create the quiz, add it to any page using a customized shortcode, allows the user to take the quiz, and then saves the results. You can set up what the user sees after he or she takes the quiz based on the user's score. You can also have the plugin create a certificate for the user as well!
 
-= Have Unlimted Quizzes, Tests, Surveys, Contact Forms, etc.. =
+= Have Unlimited Quizzes, Tests, Surveys, Contact Forms, etc.. =
 Each of your quizzes can have **unlimited** questions and each of those questions can have **unlimited** answers! Your questions can contain **HTML** to show images, Youtube videos and more.
 
 = Customize Your Text =
@@ -22,7 +22,7 @@ All the text your users see can be **customized**. Everything from the text bloc
 = Different Types Of Questions =
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, and **accept**. More types are being supported in future updates!
 
-= Mulitple Landing Pages For Each Quiz =
+= Multiple Landing Pages For Each Quiz =
 Each quiz can have **unlimited** results pages that can be customized with your text. Show different results pages based on the users score!
 
 = Emails After Completion Of Quiz =
@@ -124,13 +124,13 @@ Feel free to use the widget on the help page within the plugin or from the conta
 == Changelog ==
 
 = 4.2.0 (March 7, 2015) =
- * Added Fill In The Blank Questions ([GitHub Issue #157](https://github.com/fpcorso/quiz_master_next/pull/157))
- * Created New Template Variables For Social Sharing ([GitHub Issue #155](https://github.com/fpcorso/quiz_master_next/pull/155))
- * Added Ability To Redirect To Other Page Upon Completion ([GitHub Issue #156](https://github.com/fpcorso/quiz_master_next/pull/156))
+ * Added Fill In The Blank Questions ([GitHub Issue #132](https://github.com/fpcorso/quiz_master_next/issues/132))
+ * Created New Template Variables For Social Sharing ([GitHub Issue #121](https://github.com/fpcorso/quiz_master_next/issues/121))
+ * Added Ability To Redirect To Other Page Upon Completion ([GitHub Issue #35](https://github.com/fpcorso/quiz_master_next/issues/35))
  * Added Several Translations: da_DK, es_ES, nl_NL, pt_BR, and th
- * Bug Fix: Duplicate Quizzes Not Having URL ([GitHub Issue #154](https://github.com/fpcorso/quiz_master_next/pull/154))
- * Bug Fix: Message Sent Text ([GitHub Issue #153](https://github.com/fpcorso/quiz_master_next/pull/153))
- * Bug Fix: Missing Footer Column ([GitHub Issue #152](https://github.com/fpcorso/quiz_master_next/pull/152))
+ * Bug Fix: Duplicate Quizzes Not Having URL ([GitHub Issue #144](https://github.com/fpcorso/quiz_master_next/issues/144))
+ * Bug Fix: Message Sent Text ([GitHub Issue #142](https://github.com/fpcorso/quiz_master_next/issues/142))
+ * Bug Fix: Missing Footer Column ([GitHub Issue #145](https://github.com/fpcorso/quiz_master_next/issues/145))
 
 = 4.1.0 (February 11, 2015) =
  * Added Ability To Restore Deleted Quizzes ([GitHub Issue #107](https://github.com/fpcorso/quiz_master_next/issues/107))

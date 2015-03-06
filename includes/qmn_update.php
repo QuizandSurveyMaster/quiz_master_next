@@ -6,6 +6,10 @@ function mlw_quiz_update()
 {
 	global $mlwQuizMasterNext;
 	$data = $mlwQuizMasterNext->version;
+	if ( ! get_option('qmn_original_version'))
+	{
+		add_option('qmn_original_version' , $data);
+	}
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);
