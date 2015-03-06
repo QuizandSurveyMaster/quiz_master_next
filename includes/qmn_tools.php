@@ -9,6 +9,10 @@ Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 
 function mlw_generate_quiz_tools()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
 	add_meta_box("qmn_restore_box", 'Restore Quiz', "qmn_restore_function", "quiz_wpss");
 	add_meta_box("qmn_audit_box", 'Audit Trail', "mlw_tools_box", "quiz_wpss");
 	?>

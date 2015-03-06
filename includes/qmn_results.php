@@ -2,6 +2,10 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 function mlw_generate_quiz_results()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
 	global $wpdb;
 	global $mlwQuizMasterNext;
 

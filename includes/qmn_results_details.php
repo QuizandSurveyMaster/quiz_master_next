@@ -9,6 +9,10 @@ Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 
 function mlw_generate_result_details()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
 	global $mlwQuizMasterNext;
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'results';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();

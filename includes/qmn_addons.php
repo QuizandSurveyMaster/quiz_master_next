@@ -2,6 +2,10 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_addons_page()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
 	global $mlwQuizMasterNext;
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'featured-addons';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
