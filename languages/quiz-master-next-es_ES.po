@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
-"POT-Creation-Date: 2015-03-06 13:42-0500\n"
-"PO-Revision-Date: 2015-03-06 13:42-0500\n"
+"POT-Creation-Date: 2015-03-06 14:04-0500\n"
+"PO-Revision-Date: 2015-03-06 14:04-0500\n"
 "Last-Translator: jhernanz <jordi.hernanz@gmail.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
 "Language: es_ES\n"
@@ -299,9 +299,9 @@ msgstr "¿Permitir Certificados para esta Encuesta?"
 #: includes/qmn_options_option_tab.php:202
 #: includes/qmn_options_option_tab.php:209
 #: includes/qmn_options_option_tab.php:216
-#: includes/qmn_options_questions_tab.php:673
-#: includes/qmn_options_questions_tab.php:828
-#: includes/qmn_options_results_page_tab.php:241
+#: includes/qmn_options_questions_tab.php:674
+#: includes/qmn_options_questions_tab.php:830
+#: includes/qmn_options_results_page_tab.php:247
 msgid "Yes"
 msgstr "sí"
 
@@ -318,9 +318,9 @@ msgstr "sí"
 #: includes/qmn_options_option_tab.php:203
 #: includes/qmn_options_option_tab.php:210
 #: includes/qmn_options_option_tab.php:217
-#: includes/qmn_options_questions_tab.php:674
-#: includes/qmn_options_questions_tab.php:829
-#: includes/qmn_options_results_page_tab.php:241
+#: includes/qmn_options_questions_tab.php:675
+#: includes/qmn_options_questions_tab.php:831
+#: includes/qmn_options_results_page_tab.php:247
 msgid "No"
 msgstr "No"
 
@@ -553,8 +553,8 @@ msgstr "Añadir un nuevo email de usuario "
 #: includes/qmn_options_email_tab.php:419
 #: includes/qmn_options_email_tab.php:440
 #: includes/qmn_options_email_tab.php:506
-#: includes/qmn_options_results_page_tab.php:200
-#: includes/qmn_options_results_page_tab.php:264
+#: includes/qmn_options_results_page_tab.php:206
+#: includes/qmn_options_results_page_tab.php:270
 msgid "Score Greater Than Or Equal To"
 msgstr "Puntuación 'mayor que' o 'igual que'"
 
@@ -562,8 +562,8 @@ msgstr "Puntuación 'mayor que' o 'igual que'"
 #: includes/qmn_options_email_tab.php:420
 #: includes/qmn_options_email_tab.php:441
 #: includes/qmn_options_email_tab.php:507
-#: includes/qmn_options_results_page_tab.php:201
-#: includes/qmn_options_results_page_tab.php:265
+#: includes/qmn_options_results_page_tab.php:207
+#: includes/qmn_options_results_page_tab.php:271
 msgid "Score Less Than Or Equal To"
 msgstr "Puntuación 'menor que' o 'igual que'"
 
@@ -848,13 +848,13 @@ msgstr "La pregunta ha sido creada correctamente."
 
 #: includes/qmn_options_questions_tab.php:454
 #: includes/qmn_options_questions_tab.php:461
-#: includes/qmn_options_questions_tab.php:592
-#: includes/qmn_options_questions_tab.php:758
+#: includes/qmn_options_questions_tab.php:593
+#: includes/qmn_options_questions_tab.php:760
 msgid "Answer"
 msgstr "Respuesta"
 
 #: includes/qmn_options_questions_tab.php:481
-#: includes/qmn_options_questions_tab.php:728
+#: includes/qmn_options_questions_tab.php:729
 msgid "Add Question"
 msgstr "Añadir pregunta"
 
@@ -875,96 +875,103 @@ msgid "Duplicate"
 msgstr "Duplicar"
 
 #: includes/qmn_options_questions_tab.php:557
-#: includes/qmn_options_results_page_tab.php:241
+#: includes/qmn_options_results_page_tab.php:247
 #: includes/qmn_quiz_admin.php:273
 msgid "Delete"
 msgstr "Eliminar"
 
-#: includes/qmn_options_questions_tab.php:570
-#: includes/qmn_options_questions_tab.php:713
-#: includes/qmn_options_questions_tab.php:724
-#: includes/qmn_options_questions_tab.php:738
+#: includes/qmn_options_questions_tab.php:568
+#: includes/qmn_options_questions_tab.php:737
+msgid ""
+"For fill in the blank types, use %BLANK% to represent where to put the text "
+"box in your text."
+msgstr ""
+
+#: includes/qmn_options_questions_tab.php:571
+#: includes/qmn_options_questions_tab.php:714
+#: includes/qmn_options_questions_tab.php:725
+#: includes/qmn_options_questions_tab.php:740
 msgid "Question"
 msgstr "Pregunta"
 
-#: includes/qmn_options_questions_tab.php:581
-#: includes/qmn_options_questions_tab.php:749
+#: includes/qmn_options_questions_tab.php:582
+#: includes/qmn_options_questions_tab.php:751
 msgid "Answers"
 msgstr "Respuestas"
 
-#: includes/qmn_options_questions_tab.php:582
-#: includes/qmn_options_questions_tab.php:750
+#: includes/qmn_options_questions_tab.php:583
+#: includes/qmn_options_questions_tab.php:752
 msgid "Points Worth"
 msgstr "Puntuación"
 
-#: includes/qmn_options_questions_tab.php:583
-#: includes/qmn_options_questions_tab.php:751
+#: includes/qmn_options_questions_tab.php:584
+#: includes/qmn_options_questions_tab.php:753
 msgid "Correct Answer"
 msgstr "Respuesta correcta"
 
-#: includes/qmn_options_questions_tab.php:610
-#: includes/qmn_options_questions_tab.php:773
+#: includes/qmn_options_questions_tab.php:611
+#: includes/qmn_options_questions_tab.php:775
 msgid "Add New Answer!"
 msgstr "Añada nueva respuesta!"
 
-#: includes/qmn_options_questions_tab.php:615
-#: includes/qmn_options_questions_tab.php:778
+#: includes/qmn_options_questions_tab.php:616
+#: includes/qmn_options_questions_tab.php:780
 msgid "Correct Answer Info"
 msgstr "Información acerca de la respuesta correcta"
 
-#: includes/qmn_options_questions_tab.php:622
-#: includes/qmn_options_questions_tab.php:785 includes/qmn_quiz.php:441
+#: includes/qmn_options_questions_tab.php:623
+#: includes/qmn_options_questions_tab.php:787 includes/qmn_quiz.php:441
 msgid "Hint"
 msgstr "Indicación"
 
-#: includes/qmn_options_questions_tab.php:633
-#: includes/qmn_options_questions_tab.php:711
-#: includes/qmn_options_questions_tab.php:722
-#: includes/qmn_options_questions_tab.php:796
+#: includes/qmn_options_questions_tab.php:634
+#: includes/qmn_options_questions_tab.php:712
+#: includes/qmn_options_questions_tab.php:723
+#: includes/qmn_options_questions_tab.php:798
 msgid "Question Type"
 msgstr "Tipo de pregunta"
 
-#: includes/qmn_options_questions_tab.php:651
-#: includes/qmn_options_questions_tab.php:809
+#: includes/qmn_options_questions_tab.php:652
+#: includes/qmn_options_questions_tab.php:811
 msgid "Comment Field"
 msgstr "Campo de Comentario"
 
-#: includes/qmn_options_questions_tab.php:654
-#: includes/qmn_options_questions_tab.php:811
+#: includes/qmn_options_questions_tab.php:655
+#: includes/qmn_options_questions_tab.php:813
 msgid "Small Text Field"
 msgstr "Campo de texto corto"
 
-#: includes/qmn_options_questions_tab.php:656
-#: includes/qmn_options_questions_tab.php:812
+#: includes/qmn_options_questions_tab.php:657
+#: includes/qmn_options_questions_tab.php:814
 msgid "Large Text Field"
 msgstr "Campo de texto largo"
 
-#: includes/qmn_options_questions_tab.php:658
-#: includes/qmn_options_questions_tab.php:813
+#: includes/qmn_options_questions_tab.php:659
+#: includes/qmn_options_questions_tab.php:815
 msgid "None"
 msgstr "Ninguna"
 
-#: includes/qmn_options_questions_tab.php:662
-#: includes/qmn_options_questions_tab.php:710
-#: includes/qmn_options_questions_tab.php:721
-#: includes/qmn_options_questions_tab.php:817
+#: includes/qmn_options_questions_tab.php:663
+#: includes/qmn_options_questions_tab.php:711
+#: includes/qmn_options_questions_tab.php:722
+#: includes/qmn_options_questions_tab.php:819
 msgid "Question Order"
 msgstr "Orden de preguntas"
 
-#: includes/qmn_options_questions_tab.php:670
-#: includes/qmn_options_questions_tab.php:825
+#: includes/qmn_options_questions_tab.php:671
+#: includes/qmn_options_questions_tab.php:827
 msgid "Required?"
 msgstr "¿Obligatorio?"
 
-#: includes/qmn_options_questions_tab.php:679
-#: includes/qmn_options_questions_tab.php:712
-#: includes/qmn_options_questions_tab.php:723
-#: includes/qmn_options_questions_tab.php:834
+#: includes/qmn_options_questions_tab.php:680
+#: includes/qmn_options_questions_tab.php:713
+#: includes/qmn_options_questions_tab.php:724
+#: includes/qmn_options_questions_tab.php:836
 msgid "Category"
 msgstr "Categoria"
 
-#: includes/qmn_options_questions_tab.php:698
-#: includes/qmn_options_questions_tab.php:853
+#: includes/qmn_options_questions_tab.php:699
+#: includes/qmn_options_questions_tab.php:855
 msgid ""
 "Required currently only works on open answer, number, accept, and captcha "
 "question types"
@@ -972,27 +979,27 @@ msgstr ""
 "Los campos obligatorios tan solo funcionan en respuestas abiertas, números, "
 "aceptar y preguntas tipo captcha."
 
-#: includes/qmn_options_questions_tab.php:700
+#: includes/qmn_options_questions_tab.php:701
 msgid "Edit Question"
 msgstr "Editar Pregunta"
 
-#: includes/qmn_options_questions_tab.php:855
+#: includes/qmn_options_questions_tab.php:857
 msgid "Create Question"
 msgstr "Crear Pregunta"
 
-#: includes/qmn_options_questions_tab.php:860
+#: includes/qmn_options_questions_tab.php:862
 msgid "Are you sure you want to delete this question?"
 msgstr "¿Está seguro que desea eliminar esta pregunta?"
 
-#: includes/qmn_options_questions_tab.php:865
+#: includes/qmn_options_questions_tab.php:867
 msgid "Delete Question"
 msgstr "Eliminar pregunta"
 
-#: includes/qmn_options_questions_tab.php:870
+#: includes/qmn_options_questions_tab.php:872
 msgid "Are you sure you want to duplicate this question?"
 msgstr "¿Está seguro que desea duplicar esta pregunta?"
 
-#: includes/qmn_options_questions_tab.php:875
+#: includes/qmn_options_questions_tab.php:877
 msgid "Duplicate Question"
 msgstr "Duplicar Pregunta"
 
@@ -1008,27 +1015,35 @@ msgstr "Los resultados han sido añadidos correctamente."
 msgid "The results page has been saved successfully."
 msgstr "La página de resultados ha sido guardada correctamente."
 
-#: includes/qmn_options_results_page_tab.php:193
-#: includes/qmn_options_results_page_tab.php:274
+#: includes/qmn_options_results_page_tab.php:191
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: includes/qmn_options_results_page_tab.php:194
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: includes/qmn_options_results_page_tab.php:199
+#: includes/qmn_options_results_page_tab.php:280
 msgid "Save Results Pages"
 msgstr "Guardar Página de Resultados"
 
-#: includes/qmn_options_results_page_tab.php:194
-#: includes/qmn_options_results_page_tab.php:279
+#: includes/qmn_options_results_page_tab.php:200
+#: includes/qmn_options_results_page_tab.php:285
 msgid "Add New Results Page"
 msgstr "Añadir Nueva Página de Resultados"
 
-#: includes/qmn_options_results_page_tab.php:202
-#: includes/qmn_options_results_page_tab.php:266
+#: includes/qmn_options_results_page_tab.php:208
+#: includes/qmn_options_results_page_tab.php:272
 msgid "Results Page Shown"
 msgstr "Mostrar Página de Resultados"
 
-#: includes/qmn_options_results_page_tab.php:203
-#: includes/qmn_options_results_page_tab.php:267
+#: includes/qmn_options_results_page_tab.php:209
+#: includes/qmn_options_results_page_tab.php:273
 msgid "Redirect URL"
 msgstr ""
 
-#: includes/qmn_options_results_page_tab.php:241
+#: includes/qmn_options_results_page_tab.php:247
 msgid "Are you sure?"
 msgstr "¿Está seguro?"
 

@@ -565,6 +565,7 @@ function mlw_options_questions_tab_content()
 						<input type='hidden' name='edit_question' value='confirmation' />
 						<input type='hidden' id='edit_question_id' name='edit_question_id' value='<?php echo $mlw_question_info->question_id; ?>' />
 						<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
+						<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
 						<table class="wide" style="text-align: left; white-space: nowrap;" id="question_<?php echo $mlw_question_info->question_id; ?>_answers" name="question_<?php echo $mlw_question_info->question_id; ?>_answers">
 							<tr>
 							<td><span style='font-weight:bold;'><?php _e('Question', 'quiz-master-next'); ?></span></td>
@@ -733,6 +734,7 @@ function mlw_options_questions_tab_content()
 		echo "<input type='hidden' name='create_question' value='confirmation' />";
 		echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
 		?>
+		<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
 		<table class="wide" style="text-align: left; white-space: nowrap;" id="new_question_answers" name="new_question_answers">
 		<tr>
 		<td><span style='font-weight:bold;'><?php _e('Question', 'quiz-master-next'); ?></span></td>

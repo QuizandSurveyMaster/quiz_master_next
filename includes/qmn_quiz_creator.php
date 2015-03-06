@@ -702,7 +702,7 @@ class QMNQuizCreator
 						'%d',
 						'%s',
 						'%d',
-						'%d',
+						'%s',
 						'%s',
 						'%s',
 						'%d'
