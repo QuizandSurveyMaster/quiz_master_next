@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1
-Stable tag: 4.1.0
+Stable tag: 4.2.0
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -20,7 +20,7 @@ Each of your quizzes can have **unlimited** questions and each of those question
 All the text your users see can be **customized**. Everything from the text blocks throughout the quiz to the submit button.
 
 = Different Types Of Questions =
-You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **number**, **captcha**, and **accept**. More types are being supported in future updates!
+You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, and **accept**. More types are being supported in future updates!
 
 = Mulitple Landing Pages For Each Quiz =
 Each quiz can have **unlimited** results pages that can be customized with your text. Show different results pages based on the users score!
@@ -63,6 +63,14 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 * Keep track how long a user takes on the quiz
 * Able to set up time limits on the quiz
 * And **Much** More...
+
+= Translations =
+
+* Portuguese (Brazil) (Thanks to Francisco Ildefonso)
+* Spanish (Spain) (Thanks to Jordi)
+* Thai (Thanks to Yudthaphon)
+* Danish (Thanks to Jørgen Granborg)
+* Dutch (Thanks to Huub Scheenen)
 
 = Make Suggestions Or Contribute =
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
@@ -114,6 +122,15 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.2.0 (March 7, 2015) =
+ * Added Fill In The Blank Questions ([GitHub Issue #157](https://github.com/fpcorso/quiz_master_next/pull/157))
+ * Created New Template Variables For Social Sharing ([GitHub Issue #155](https://github.com/fpcorso/quiz_master_next/pull/155))
+ * Added Ability To Redirect To Other Page Upon Completion ([GitHub Issue #156](https://github.com/fpcorso/quiz_master_next/pull/156))
+ * Added Several Translations: da_DK, es_ES, nl_NL, pt_BR, and th
+ * Bug Fix: Duplicate Quizzes Not Having URL ([GitHub Issue #154](https://github.com/fpcorso/quiz_master_next/pull/154))
+ * Bug Fix: Message Sent Text ([GitHub Issue #153](https://github.com/fpcorso/quiz_master_next/pull/153))
+ * Bug Fix: Missing Footer Column ([GitHub Issue #152](https://github.com/fpcorso/quiz_master_next/pull/152))
 
 = 4.1.0 (February 11, 2015) =
  * Added Ability To Restore Deleted Quizzes ([GitHub Issue #107](https://github.com/fpcorso/quiz_master_next/issues/107))
@@ -622,6 +639,9 @@ Feel free to use the widget on the help page within the plugin or from the conta
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.2.0=
+Upgrade for social sharing template variables, redirects, and fill in the blank question types.
 
 = 4.1.0 =
 Upgrade for redesigned admin results pages, new global settings page, ability to edit facebook app id, and more.
