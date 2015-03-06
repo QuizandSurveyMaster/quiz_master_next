@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 function mlw_qmn_show_adverts()
 {
 	$mlw_advert = "";
@@ -55,13 +55,13 @@ function mlw_qmn_show_adverts()
 			div.help_decide a
 			{
 				color: yellow;
-			}		
+			}
 			</style>";
 		$mlw_advert .= "
 			<div class=\"help_decide\">
 			<p>$mlw_advert_text</p>
 			</div>";
 	}
-	return $mlw_advert;	
+	return $mlw_advert;
 }
 ?>

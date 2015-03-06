@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action("plugins_loaded", 'qmn_question_type_multiple_choice');
 function qmn_question_type_multiple_choice()
 {

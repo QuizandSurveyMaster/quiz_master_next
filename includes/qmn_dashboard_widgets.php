@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_add_dashboard_widget()
 {
 	if ( current_user_can( 'publish_posts' ) )

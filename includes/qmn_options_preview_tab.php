@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_settings_preview_tab()
 {
 	global $mlwQuizMasterNext;

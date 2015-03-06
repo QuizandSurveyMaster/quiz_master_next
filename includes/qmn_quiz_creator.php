@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * QMN Quiz Creator Class
  *
@@ -701,7 +702,7 @@ class QMNQuizCreator
 						'%d',
 						'%s',
 						'%d',
-						'%d',
+						'%s',
 						'%s',
 						'%s',
 						'%d'
