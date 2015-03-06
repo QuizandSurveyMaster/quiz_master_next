@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page allows for the viewing of the quiz results.
 */

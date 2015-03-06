@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_settings_text_tab()
 {
 	global $mlwQuizMasterNext;

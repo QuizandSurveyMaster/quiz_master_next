@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page creates the main dashboard for the Quiz Master Next plugin
 */

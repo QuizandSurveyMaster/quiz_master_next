@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_addons_page()
 {
 	global $mlwQuizMasterNext;

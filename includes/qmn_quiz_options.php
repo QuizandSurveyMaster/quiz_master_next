@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page allows for the editing of quizzes selected from the quiz admin page.
 */

@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 function mlw_generate_quiz_admin()
 {
 	global $wpdb;

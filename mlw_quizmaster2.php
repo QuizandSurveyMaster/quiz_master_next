@@ -18,7 +18,7 @@
 * @author Frank Corso
 * @version 4.2.0
 */
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 /**
   * This class is the main class of the plugin
   *
