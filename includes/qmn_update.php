@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This is the update function for the plugin. When the plugin gets updated, the database changes are done here. This function is placed in the init of wordpress.
 */
@@ -6,6 +7,10 @@ function mlw_quiz_update()
 {
 	global $mlwQuizMasterNext;
 	$data = $mlwQuizMasterNext->version;
+	if ( ! get_option('qmn_original_version'))
+	{
+		add_option('qmn_original_version' , $data);
+	}
 	if ( ! get_option('mlw_quiz_master_version'))
 	{
 		add_option('mlw_quiz_master_version' , $data);

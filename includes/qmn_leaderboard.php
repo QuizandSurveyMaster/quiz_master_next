@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This function creates the leaderboard from the shortcode.
 */
@@ -9,8 +10,8 @@ function mlw_quiz_leaderboard_shortcode($atts)
 	), $atts));
 	$mlw_quiz_id = $mlw_quiz;
 	$mlw_quiz_leaderboard_display = "";
-	
-	
+
+
 	global $wpdb;
 	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
 	$mlw_quiz_options = $wpdb->get_results($sql);
@@ -29,10 +30,10 @@ function mlw_quiz_leaderboard_shortcode($atts)
 	}
 	$sql .= " LIMIT 10";
 	$mlw_result_data = $wpdb->get_results($sql);
-	
+
 	$mlw_quiz_leaderboard_display = $mlw_quiz_options->leaderboard_template;
 	$mlw_quiz_leaderboard_display = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_quiz_leaderboard_display);
-	
+
 	$leader_count = 0;
 	foreach($mlw_result_data as $mlw_eaches) {
 		$leader_count++;
@@ -69,7 +70,7 @@ function mlw_quiz_leaderboard_shortcode($atts)
 	$mlw_quiz_leaderboard_display = str_replace( "%THIRD_PLACE_SCORE%" , " ", $mlw_quiz_leaderboard_display);
 	$mlw_quiz_leaderboard_display = str_replace( "%FOURTH_PLACE_SCORE%" , " ", $mlw_quiz_leaderboard_display);
 	$mlw_quiz_leaderboard_display = str_replace( "%FIFTH_PLACE_SCORE%" , " ", $mlw_quiz_leaderboard_display);
-	
+
 	return $mlw_quiz_leaderboard_display;
 }
 ?>

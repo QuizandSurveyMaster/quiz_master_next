@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 add_action("plugins_loaded", 'qmn_question_type_multiple_choice');
 function qmn_question_type_multiple_choice()
 {
@@ -568,6 +568,64 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
   if ($user_correct == $total_correct)
   {
     $return_array["correct"] = "correct";
+  }
+  return $return_array;
+}
+
+add_action("plugins_loaded", 'qmn_question_type_fill_blank');
+function qmn_question_type_fill_blank()
+{
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review');
+}
+
+function qmn_fill_blank_display($id, $question, $answers)
+{
+  $question_display = '';
+  global $mlwQuizMasterNext;
+  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
+	$input_text = "<input type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
+	if (strpos($question, '%BLANK%') !== false)
+	{
+		$question = str_replace( "%BLANK%", $input_text, htmlspecialchars_decode($question, ENT_QUOTES));
+	}
+  $question_display = "<span class='mlw_qmn_question'>$question</span><br />";
+
+  $question_display .= "<br />";
+  return $question_display;
+}
+
+function qmn_fill_blank_review($id, $question, $answers)
+{
+  $return_array = array(
+    'points' => 0,
+    'correct' => 'incorrect',
+    'user_text' => '',
+    'correct_text' => ''
+  );
+	if (strpos($question, '%BLANK%') !== false)
+	{
+		$return_array['question_text'] = str_replace( "%BLANK%", "__________", htmlspecialchars_decode($question, ENT_QUOTES));
+	}
+  if (isset($_POST["question".$id]))
+  {
+    $mlw_user_answer = $_POST["question".$id];
+  }
+  else
+  {
+    $mlw_user_answer = " ";
+  }
+  $return_array['user_text'] = strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+  foreach($answers as $answer)
+  {
+    $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+    if (strtoupper($return_array['user_text']) == strtoupper($return_array['correct_text']))
+    {
+      $return_array['correct'] = "correct";
+      $return_array['points'] = $answer[1];
+      break;
+    }
   }
   return $return_array;
 }

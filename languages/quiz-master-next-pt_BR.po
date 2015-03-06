@@ -1,0 +1,3306 @@
+# Quiz Master Next
+# Copyright (C) 2015 ...
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Quiz Master Next\n"
+"Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
+"POT-Creation-Date: 2015-03-06 14:05-0500\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Fran Ildefonso <francisco@3dmaker.com.br>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _;_e;__;esc_html_e;esc_html_x:1,2c;esc_html__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;"
+"_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Generator: Poedit 1.7.3\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: .\n"
+
+#: ../4.1.0/includes/qmn_addons.php:43
+#: ../quiz_master_next/includes/qmn_addons.php:48
+#: ../trunk/includes/qmn_addons.php:43 includes/qmn_addons.php:48
+msgid "These addons extend the functionality of Quiz Master Next"
+msgstr "Estes complementos estendem a funcionalidade do Questionário "
+
+#: ../4.1.0/includes/qmn_addons.php:66
+#: ../quiz_master_next/includes/qmn_addons.php:71
+#: ../trunk/includes/qmn_addons.php:66 includes/qmn_addons.php:71
+msgid "Browse All Addons"
+msgstr "Consultar todos os Complementos"
+
+#: ../4.1.0/includes/qmn_addons.php:73
+#: ../quiz_master_next/includes/qmn_addons.php:78
+#: ../trunk/includes/qmn_addons.php:73 includes/qmn_addons.php:78
+msgid "Featured Addons"
+msgstr "Complementos em destaque"
+
+#: ../4.1.0/includes/qmn_alerts.php:18
+#: ../quiz_master_next/includes/qmn_alerts.php:19
+#: ../trunk/includes/qmn_alerts.php:18 includes/qmn_alerts.php:19
+msgid "Success!"
+msgstr "Sucesso!"
+
+#: ../4.1.0/includes/qmn_alerts.php:22
+#: ../4.1.0/includes/qmn_quiz_options.php:91
+#: ../quiz_master_next/includes/qmn_alerts.php:23
+#: ../quiz_master_next/includes/qmn_quiz_options.php:96
+#: ../trunk/includes/qmn_alerts.php:22
+#: ../trunk/includes/qmn_quiz_options.php:91 includes/qmn_alerts.php:23
+#: includes/qmn_quiz_options.php:96
+msgid "Error!"
+msgstr "Erro!"
+
+#: ../4.1.0/includes/qmn_credits.php:85
+#: ../quiz_master_next/includes/qmn_credits.php:86
+#: ../trunk/includes/qmn_credits.php:85 includes/qmn_credits.php:86
+msgid "Welcome To Quiz Master Next"
+msgstr "Bemvindo!"
+
+#: ../4.1.0/includes/qmn_credits.php:86
+#: ../quiz_master_next/includes/qmn_credits.php:87
+#: ../trunk/includes/qmn_credits.php:86 includes/qmn_credits.php:87
+msgid "Thank you for updating!"
+msgstr "Obrigado pela atualização!"
+
+#: ../4.1.0/includes/qmn_credits.php:90
+#: ../quiz_master_next/includes/qmn_credits.php:91
+#: ../trunk/includes/qmn_credits.php:90 includes/qmn_credits.php:91
+msgid "What's New!"
+msgstr "O que há de novo."
+
+#: ../4.1.0/includes/qmn_credits.php:92
+#: ../quiz_master_next/includes/qmn_credits.php:93
+#: ../trunk/includes/qmn_credits.php:92 includes/qmn_credits.php:93
+msgid "Changelog"
+msgstr "Alterações"
+
+#: ../4.1.0/includes/qmn_credits.php:94
+#: ../quiz_master_next/includes/qmn_credits.php:95
+#: ../trunk/includes/qmn_credits.php:94 includes/qmn_credits.php:95
+msgid "Requested Features"
+msgstr "Recursos solicitados"
+
+#: ../4.1.0/includes/qmn_dashboard.php:15
+#: ../quiz_master_next/includes/qmn_dashboard.php:16
+#: ../trunk/includes/qmn_dashboard.php:15 includes/qmn_dashboard.php:16
+msgid "Quiz Daily Stats - Times Taken"
+msgstr "Questionário Diário Estatísticas - Tempo Tomado"
+
+#: ../4.1.0/includes/qmn_dashboard.php:16
+#: ../quiz_master_next/includes/qmn_dashboard.php:17
+#: ../trunk/includes/qmn_dashboard.php:16 includes/qmn_dashboard.php:17
+msgid "Quiz Total Stats"
+msgstr "Questionário Total de Estatísticas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:17
+#: ../quiz_master_next/includes/qmn_dashboard.php:18
+#: ../trunk/includes/qmn_dashboard.php:17 includes/qmn_dashboard.php:18
+msgid "Quiz Weekly Stats - Times Taken"
+msgstr "Questionário semanal Estatísticas - tempo tomado"
+
+#: ../4.1.0/includes/qmn_dashboard.php:18
+#: ../quiz_master_next/includes/qmn_dashboard.php:19
+#: ../trunk/includes/qmn_dashboard.php:18 includes/qmn_dashboard.php:19
+msgid "Quiz Monthly Stats - Times Taken"
+msgstr "Questionário mensal Estatísticas - tempo tomado"
+
+#: ../4.1.0/includes/qmn_dashboard.php:19
+#: ../quiz_master_next/includes/qmn_dashboard.php:20
+#: ../trunk/includes/qmn_dashboard.php:19 includes/qmn_dashboard.php:20
+msgid "Quiz Quarterly Stats - Times Taken"
+msgstr "Questionário Quadrimestral Estatísticas - tempo tomado"
+
+#: ../4.1.0/includes/qmn_dashboard.php:24
+#: ../quiz_master_next/includes/qmn_dashboard.php:25
+#: ../trunk/includes/qmn_dashboard.php:24 includes/qmn_dashboard.php:25
+msgid "Quizzes Taken Today"
+msgstr "Avaliações feitas hoje"
+
+#: ../4.1.0/includes/qmn_dashboard.php:25
+#: ../quiz_master_next/includes/qmn_dashboard.php:26
+#: ../trunk/includes/qmn_dashboard.php:25 includes/qmn_dashboard.php:26
+msgid "Quizzes Taken Last 7 Days"
+msgstr "Avaliações feitas nos ultimos 7 dias"
+
+#: ../4.1.0/includes/qmn_dashboard.php:26
+#: ../quiz_master_next/includes/qmn_dashboard.php:27
+#: ../trunk/includes/qmn_dashboard.php:26 includes/qmn_dashboard.php:27
+msgid "Quizzes Taken Last 30 Days"
+msgstr "Avaliações feitas nos ultimos 30 dias"
+
+#: ../4.1.0/includes/qmn_dashboard.php:27
+#: ../quiz_master_next/includes/qmn_dashboard.php:28
+#: ../trunk/includes/qmn_dashboard.php:27 includes/qmn_dashboard.php:28
+msgid "Quizzes Taken Last 120 Days"
+msgstr "Avaliações feitas nos ultimos 120 dias"
+
+#: ../4.1.0/includes/qmn_dashboard.php:53
+#: ../quiz_master_next/includes/qmn_dashboard.php:54
+#: ../trunk/includes/qmn_dashboard.php:53 includes/qmn_dashboard.php:54
+msgid "Quiz Statistics"
+msgstr "Estatísticas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:227
+#: ../quiz_master_next/includes/qmn_dashboard.php:228
+#: ../trunk/includes/qmn_dashboard.php:227 includes/qmn_dashboard.php:228
+msgid "Total Created Quizzes"
+msgstr "Total de Avaliações"
+
+#: ../4.1.0/includes/qmn_dashboard.php:231
+#: ../quiz_master_next/includes/qmn_dashboard.php:232
+#: ../trunk/includes/qmn_dashboard.php:231 includes/qmn_dashboard.php:232
+msgid "Total Deleted Quizzes"
+msgstr "Total de Avaliações deletadas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:235
+#: ../quiz_master_next/includes/qmn_dashboard.php:236
+#: ../trunk/includes/qmn_dashboard.php:235 includes/qmn_dashboard.php:236
+msgid "Total Active Quizzes"
+msgstr "Total de Avaliações ativas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:239
+#: ../quiz_master_next/includes/qmn_dashboard.php:240
+#: ../trunk/includes/qmn_dashboard.php:239 includes/qmn_dashboard.php:240
+msgid "Total Created Questions"
+msgstr "Total de questões criadas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:243
+#: ../quiz_master_next/includes/qmn_dashboard.php:244
+#: ../trunk/includes/qmn_dashboard.php:243 includes/qmn_dashboard.php:244
+msgid "Total Times All Active Quizzes Have Been Viewed"
+msgstr "Total de vezes que todos Testes ativos foram exibidos"
+
+#: ../4.1.0/includes/qmn_dashboard.php:247
+#: ../quiz_master_next/includes/qmn_dashboard.php:248
+#: ../trunk/includes/qmn_dashboard.php:247 includes/qmn_dashboard.php:248
+msgid "Total Times All Active Quizzes Have Been Taken"
+msgstr "Total de vezes que todos Testes ativos foram feitos"
+
+#: ../4.1.0/includes/qmn_dashboard.php:251
+#: ../quiz_master_next/includes/qmn_dashboard.php:252
+#: ../trunk/includes/qmn_dashboard.php:251 includes/qmn_dashboard.php:252
+msgid "Average Amount Each Active Quiz Has Been Viewed"
+msgstr "Média de avaliações ativas vistas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:255
+#: ../quiz_master_next/includes/qmn_dashboard.php:256
+#: ../trunk/includes/qmn_dashboard.php:255 includes/qmn_dashboard.php:256
+msgid "Average Amount Each Active Quiz Has Been Taken"
+msgstr "Média de avaliações ativas feitas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:259
+#: ../quiz_master_next/includes/qmn_dashboard.php:260
+#: ../trunk/includes/qmn_dashboard.php:259 includes/qmn_dashboard.php:260
+msgid "Quiz That Has Been Viewed The Most"
+msgstr "Máximo de avaliações vistas"
+
+#: ../4.1.0/includes/qmn_dashboard.php:263
+#: ../quiz_master_next/includes/qmn_dashboard.php:264
+#: ../trunk/includes/qmn_dashboard.php:263 includes/qmn_dashboard.php:264
+msgid "Quiz That Has Been Taken The Most"
+msgstr "Máximo de avaliações feitas"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:8
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:9
+#: ../trunk/includes/qmn_dashboard_widgets.php:8
+#: includes/qmn_dashboard_widgets.php:9
+msgid "Quiz Master Next Snapshot"
+msgstr "próxima imagem capturada"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:127
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:128
+#: ../trunk/includes/qmn_dashboard_widgets.php:127
+#: includes/qmn_dashboard_widgets.php:128
+msgid "quizzes taken today"
+msgstr "avaliações feitas hoje"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:146
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:147
+#: ../trunk/includes/qmn_dashboard_widgets.php:146
+#: includes/qmn_dashboard_widgets.php:147
+msgid "quizzes taken last 7 days"
+msgstr "avaliações feitas nos ultimos 7 dias"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:165
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:166
+#: ../trunk/includes/qmn_dashboard_widgets.php:165
+#: includes/qmn_dashboard_widgets.php:166
+msgid "total active quizzes"
+msgstr "Total de avaliações ativas"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:171
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:172
+#: ../trunk/includes/qmn_dashboard_widgets.php:171
+#: includes/qmn_dashboard_widgets.php:172
+msgid "total active questions"
+msgstr "Total de questões ativas"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:177
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:178
+#: ../trunk/includes/qmn_dashboard_widgets.php:177
+#: includes/qmn_dashboard_widgets.php:178
+msgid "most popular quiz"
+msgstr "Avaliação mais popular"
+
+#: ../4.1.0/includes/qmn_dashboard_widgets.php:183
+#: ../quiz_master_next/includes/qmn_dashboard_widgets.php:184
+#: ../trunk/includes/qmn_dashboard_widgets.php:183
+#: includes/qmn_dashboard_widgets.php:184
+msgid "least popular quiz"
+msgstr "Última avaliação popular"
+
+#: ../4.1.0/includes/qmn_help.php:12
+#: ../quiz_master_next/includes/qmn_help.php:13
+#: ../trunk/includes/qmn_help.php:12 includes/qmn_help.php:13
+msgid "Need Help?"
+msgstr "Precisa de Ajuda?"
+
+#: ../4.1.0/includes/qmn_help.php:13
+#: ../quiz_master_next/includes/qmn_help.php:14
+#: ../trunk/includes/qmn_help.php:13 includes/qmn_help.php:14
+msgid "Support"
+msgstr "Suporte"
+
+#: ../4.1.0/includes/qmn_help.php:14
+#: ../quiz_master_next/includes/qmn_help.php:15
+#: ../trunk/includes/qmn_help.php:14 includes/qmn_help.php:15
+msgid "System Info"
+msgstr "Informação de Sistema"
+
+#: ../4.1.0/includes/qmn_help.php:17
+#: ../quiz_master_next/includes/qmn_help.php:18
+#: ../trunk/includes/qmn_help.php:17 includes/qmn_help.php:18
+msgid "Help Page"
+msgstr "Página de Ajuda"
+
+#: ../4.1.0/includes/qmn_help.php:40
+#: ../quiz_master_next/includes/qmn_help.php:41
+#: ../trunk/includes/qmn_help.php:40 includes/qmn_help.php:41
+msgid "Need help with the plugin? Try any of the following:"
+msgstr ""
+"Precisa de ajuda com o Plugin? Tente qualquer um dos seguintes procedimentos:"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:6
+#: ../trunk/includes/qmn_options_certificate_tab.php:5
+#: includes/qmn_options_certificate_tab.php:6
+msgid "Certificate (Beta)"
+msgstr "Certificado"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:31
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:32
+#: ../trunk/includes/qmn_options_certificate_tab.php:31
+#: includes/qmn_options_certificate_tab.php:32
+msgid "The certificate has been updated successfully."
+msgstr "O certificado foi atualizado com sucesso."
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:44
+#: ../4.1.0/includes/qmn_options_email_tab.php:54
+#: ../4.1.0/includes/qmn_options_email_tab.php:113
+#: ../4.1.0/includes/qmn_options_email_tab.php:177
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:37
+#: ../4.1.0/includes/qmn_options_option_tab.php:55
+#: ../4.1.0/includes/qmn_options_questions_tab.php:117
+#: ../4.1.0/includes/qmn_options_questions_tab.php:144
+#: ../4.1.0/includes/qmn_options_questions_tab.php:228
+#: ../4.1.0/includes/qmn_options_questions_tab.php:321
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:53
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:93
+#: ../4.1.0/includes/qmn_options_style_tab.php:38
+#: ../4.1.0/includes/qmn_options_text_tab.php:54
+#: ../4.1.0/includes/qmn_options_tools_tab.php:35
+#: ../4.1.0/includes/qmn_quiz_creator.php:381
+#: ../4.1.0/includes/qmn_quiz_creator.php:447
+#: ../4.1.0/includes/qmn_quiz_creator.php:489
+#: ../4.1.0/includes/qmn_quiz_creator.php:635
+#: ../4.1.0/includes/qmn_quiz_creator.php:700
+#: ../4.1.0/includes/qmn_results.php:32
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:45
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:55
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:114
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:178
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:38
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:56
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:118
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:145
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:229
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:322
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:54
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:94
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:39
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:55
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:36
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:382
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:448
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:490
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:648
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:713
+#: ../quiz_master_next/includes/qmn_results.php:36
+#: ../trunk/includes/qmn_options_certificate_tab.php:44
+#: ../trunk/includes/qmn_options_email_tab.php:54
+#: ../trunk/includes/qmn_options_email_tab.php:113
+#: ../trunk/includes/qmn_options_email_tab.php:177
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:37
+#: ../trunk/includes/qmn_options_option_tab.php:55
+#: ../trunk/includes/qmn_options_questions_tab.php:117
+#: ../trunk/includes/qmn_options_questions_tab.php:144
+#: ../trunk/includes/qmn_options_questions_tab.php:228
+#: ../trunk/includes/qmn_options_questions_tab.php:321
+#: ../trunk/includes/qmn_options_results_page_tab.php:53
+#: ../trunk/includes/qmn_options_results_page_tab.php:93
+#: ../trunk/includes/qmn_options_style_tab.php:38
+#: ../trunk/includes/qmn_options_text_tab.php:54
+#: ../trunk/includes/qmn_options_tools_tab.php:35
+#: ../trunk/includes/qmn_quiz_creator.php:381
+#: ../trunk/includes/qmn_quiz_creator.php:447
+#: ../trunk/includes/qmn_quiz_creator.php:489
+#: ../trunk/includes/qmn_quiz_creator.php:635
+#: ../trunk/includes/qmn_quiz_creator.php:700
+#: ../trunk/includes/qmn_results.php:32
+#: includes/qmn_options_certificate_tab.php:45
+#: includes/qmn_options_email_tab.php:55
+#: includes/qmn_options_email_tab.php:114
+#: includes/qmn_options_email_tab.php:178
+#: includes/qmn_options_leaderboard_tab.php:38
+#: includes/qmn_options_option_tab.php:56
+#: includes/qmn_options_questions_tab.php:118
+#: includes/qmn_options_questions_tab.php:145
+#: includes/qmn_options_questions_tab.php:229
+#: includes/qmn_options_questions_tab.php:322
+#: includes/qmn_options_results_page_tab.php:54
+#: includes/qmn_options_results_page_tab.php:94
+#: includes/qmn_options_style_tab.php:39 includes/qmn_options_text_tab.php:55
+#: includes/qmn_options_tools_tab.php:36 includes/qmn_quiz_creator.php:382
+#: includes/qmn_quiz_creator.php:448 includes/qmn_quiz_creator.php:490
+#: includes/qmn_quiz_creator.php:648 includes/qmn_quiz_creator.php:713
+#: includes/qmn_results.php:36
+#, php-format
+msgid ""
+"There has been an error in this action. Please share this with the "
+"developer. Error Code: %s"
+msgstr ""
+"Houve um erro nesta ação. Por favor, compartilhe isso com o desenvolvedor. "
+"Código de erro:%s"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:60
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:61
+#: ../trunk/includes/qmn_options_certificate_tab.php:60
+#: includes/qmn_options_certificate_tab.php:61
+msgid "Enter title here"
+msgstr "Coloque o título aqui"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:60
+#: ../4.1.0/includes/qmn_options_email_tab.php:72
+#: ../4.1.0/includes/qmn_options_email_tab.php:90
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:61
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:73
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:91
+#: ../trunk/includes/qmn_options_certificate_tab.php:60
+#: ../trunk/includes/qmn_options_email_tab.php:72
+#: ../trunk/includes/qmn_options_email_tab.php:90
+#: includes/qmn_options_certificate_tab.php:61
+#: includes/qmn_options_email_tab.php:73 includes/qmn_options_email_tab.php:91
+msgid "Enter text here"
+msgstr "Coloque o texto aqui"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:69
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:70
+#: ../trunk/includes/qmn_options_certificate_tab.php:69
+#: includes/qmn_options_certificate_tab.php:70
+msgid "Quiz Certificate (Beta)"
+msgstr "Certificado de Avaliação"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:70
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:71
+#: ../trunk/includes/qmn_options_certificate_tab.php:70
+#: includes/qmn_options_certificate_tab.php:71
+msgid ""
+"Enter in your text here to fill in the certificate for this quiz. Be sure to "
+"enter in the link variable into the templates on the Quiz Text tab so the "
+"user can access the certificate."
+msgstr ""
+"Digite em seu texto aqui para preencher o certificado para esta avaliação. "
+"Certifique-se de entrarno link para os modelos da guia Texto do Questionário "
+"de modo que o usuário pode acessar o certificado."
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:71
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:72
+#: ../trunk/includes/qmn_options_certificate_tab.php:71
+#: includes/qmn_options_certificate_tab.php:72
+msgid "These fields cannot contain HTML."
+msgstr "Estes campos não contém HTML."
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:72
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:128
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:73
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:129
+#: ../trunk/includes/qmn_options_certificate_tab.php:72
+#: ../trunk/includes/qmn_options_certificate_tab.php:128
+#: includes/qmn_options_certificate_tab.php:73
+#: includes/qmn_options_certificate_tab.php:129
+msgid "Save Certificate Options"
+msgstr "Salvar Opções de Certificado"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:80
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:81
+#: ../trunk/includes/qmn_options_certificate_tab.php:80
+#: includes/qmn_options_certificate_tab.php:81
+msgid "Enable Certificates For This Quiz?"
+msgstr "Ativar Certificados para esta Avaliação?"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:82
+#: ../4.1.0/includes/qmn_options_email_tab.php:324
+#: ../4.1.0/includes/qmn_options_email_tab.php:331
+#: ../4.1.0/includes/qmn_options_option_tab.php:101
+#: ../4.1.0/includes/qmn_options_option_tab.php:162
+#: ../4.1.0/includes/qmn_options_option_tab.php:169
+#: ../4.1.0/includes/qmn_options_option_tab.php:177
+#: ../4.1.0/includes/qmn_options_option_tab.php:185
+#: ../4.1.0/includes/qmn_options_option_tab.php:193
+#: ../4.1.0/includes/qmn_options_option_tab.php:201
+#: ../4.1.0/includes/qmn_options_option_tab.php:208
+#: ../4.1.0/includes/qmn_options_option_tab.php:215
+#: ../4.1.0/includes/qmn_options_questions_tab.php:672
+#: ../4.1.0/includes/qmn_options_questions_tab.php:827
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:236
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:83
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:325
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:332
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:102
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:163
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:170
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:178
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:186
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:194
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:202
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:209
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:216
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:674
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:830
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:247
+#: ../trunk/includes/qmn_options_certificate_tab.php:82
+#: ../trunk/includes/qmn_options_email_tab.php:324
+#: ../trunk/includes/qmn_options_email_tab.php:331
+#: ../trunk/includes/qmn_options_option_tab.php:101
+#: ../trunk/includes/qmn_options_option_tab.php:162
+#: ../trunk/includes/qmn_options_option_tab.php:169
+#: ../trunk/includes/qmn_options_option_tab.php:177
+#: ../trunk/includes/qmn_options_option_tab.php:185
+#: ../trunk/includes/qmn_options_option_tab.php:193
+#: ../trunk/includes/qmn_options_option_tab.php:201
+#: ../trunk/includes/qmn_options_option_tab.php:208
+#: ../trunk/includes/qmn_options_option_tab.php:215
+#: ../trunk/includes/qmn_options_questions_tab.php:672
+#: ../trunk/includes/qmn_options_questions_tab.php:827
+#: ../trunk/includes/qmn_options_results_page_tab.php:236
+#: includes/qmn_options_certificate_tab.php:83
+#: includes/qmn_options_email_tab.php:325
+#: includes/qmn_options_email_tab.php:332
+#: includes/qmn_options_option_tab.php:102
+#: includes/qmn_options_option_tab.php:163
+#: includes/qmn_options_option_tab.php:170
+#: includes/qmn_options_option_tab.php:178
+#: includes/qmn_options_option_tab.php:186
+#: includes/qmn_options_option_tab.php:194
+#: includes/qmn_options_option_tab.php:202
+#: includes/qmn_options_option_tab.php:209
+#: includes/qmn_options_option_tab.php:216
+#: includes/qmn_options_questions_tab.php:674
+#: includes/qmn_options_questions_tab.php:830
+#: includes/qmn_options_results_page_tab.php:247
+msgid "Yes"
+msgstr "Sim"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:83
+#: ../4.1.0/includes/qmn_options_email_tab.php:325
+#: ../4.1.0/includes/qmn_options_email_tab.php:332
+#: ../4.1.0/includes/qmn_options_option_tab.php:102
+#: ../4.1.0/includes/qmn_options_option_tab.php:149
+#: ../4.1.0/includes/qmn_options_option_tab.php:163
+#: ../4.1.0/includes/qmn_options_option_tab.php:171
+#: ../4.1.0/includes/qmn_options_option_tab.php:179
+#: ../4.1.0/includes/qmn_options_option_tab.php:187
+#: ../4.1.0/includes/qmn_options_option_tab.php:195
+#: ../4.1.0/includes/qmn_options_option_tab.php:202
+#: ../4.1.0/includes/qmn_options_option_tab.php:209
+#: ../4.1.0/includes/qmn_options_option_tab.php:216
+#: ../4.1.0/includes/qmn_options_questions_tab.php:673
+#: ../4.1.0/includes/qmn_options_questions_tab.php:828
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:236
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:84
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:326
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:333
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:103
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:150
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:164
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:172
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:180
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:188
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:196
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:203
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:210
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:217
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:675
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:831
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:247
+#: ../trunk/includes/qmn_options_certificate_tab.php:83
+#: ../trunk/includes/qmn_options_email_tab.php:325
+#: ../trunk/includes/qmn_options_email_tab.php:332
+#: ../trunk/includes/qmn_options_option_tab.php:102
+#: ../trunk/includes/qmn_options_option_tab.php:149
+#: ../trunk/includes/qmn_options_option_tab.php:163
+#: ../trunk/includes/qmn_options_option_tab.php:171
+#: ../trunk/includes/qmn_options_option_tab.php:179
+#: ../trunk/includes/qmn_options_option_tab.php:187
+#: ../trunk/includes/qmn_options_option_tab.php:195
+#: ../trunk/includes/qmn_options_option_tab.php:202
+#: ../trunk/includes/qmn_options_option_tab.php:209
+#: ../trunk/includes/qmn_options_option_tab.php:216
+#: ../trunk/includes/qmn_options_questions_tab.php:673
+#: ../trunk/includes/qmn_options_questions_tab.php:828
+#: ../trunk/includes/qmn_options_results_page_tab.php:236
+#: includes/qmn_options_certificate_tab.php:84
+#: includes/qmn_options_email_tab.php:326
+#: includes/qmn_options_email_tab.php:333
+#: includes/qmn_options_option_tab.php:103
+#: includes/qmn_options_option_tab.php:150
+#: includes/qmn_options_option_tab.php:164
+#: includes/qmn_options_option_tab.php:172
+#: includes/qmn_options_option_tab.php:180
+#: includes/qmn_options_option_tab.php:188
+#: includes/qmn_options_option_tab.php:196
+#: includes/qmn_options_option_tab.php:203
+#: includes/qmn_options_option_tab.php:210
+#: includes/qmn_options_option_tab.php:217
+#: includes/qmn_options_questions_tab.php:675
+#: includes/qmn_options_questions_tab.php:831
+#: includes/qmn_options_results_page_tab.php:247
+msgid "No"
+msgstr "Não"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:88
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:89
+#: ../trunk/includes/qmn_options_certificate_tab.php:88
+#: includes/qmn_options_certificate_tab.php:89
+msgid "Certificate Title"
+msgstr "Título do Certificado"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:95
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:96
+#: ../trunk/includes/qmn_options_certificate_tab.php:95
+#: includes/qmn_options_certificate_tab.php:96
+msgid "Message Displayed On Certificate"
+msgstr "Mensagem exibida no Certificado"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:97
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:90
+#: ../4.1.0/includes/qmn_options_text_tab.php:180
+#: ../4.1.0/includes/qmn_options_text_tab.php:190
+#: ../4.1.0/includes/qmn_options_text_tab.php:200
+#: ../4.1.0/includes/qmn_options_text_tab.php:210
+#: ../4.1.0/includes/qmn_options_text_tab.php:220
+#: ../4.1.0/includes/qmn_options_text_tab.php:230
+#: ../4.1.0/includes/qmn_options_text_tab.php:240
+#: ../4.1.0/includes/qmn_options_text_tab.php:250
+#: ../4.1.0/includes/qmn_options_text_tab.php:263
+#: ../4.1.0/includes/qmn_options_text_tab.php:280
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:98
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:91
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:181
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:191
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:201
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:211
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:221
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:231
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:241
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:251
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:264
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:281
+#: ../trunk/includes/qmn_options_certificate_tab.php:97
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:90
+#: ../trunk/includes/qmn_options_text_tab.php:180
+#: ../trunk/includes/qmn_options_text_tab.php:190
+#: ../trunk/includes/qmn_options_text_tab.php:200
+#: ../trunk/includes/qmn_options_text_tab.php:210
+#: ../trunk/includes/qmn_options_text_tab.php:220
+#: ../trunk/includes/qmn_options_text_tab.php:230
+#: ../trunk/includes/qmn_options_text_tab.php:240
+#: ../trunk/includes/qmn_options_text_tab.php:250
+#: ../trunk/includes/qmn_options_text_tab.php:263
+#: ../trunk/includes/qmn_options_text_tab.php:280
+#: includes/qmn_options_certificate_tab.php:98
+#: includes/qmn_options_leaderboard_tab.php:91
+#: includes/qmn_options_text_tab.php:181 includes/qmn_options_text_tab.php:191
+#: includes/qmn_options_text_tab.php:201 includes/qmn_options_text_tab.php:211
+#: includes/qmn_options_text_tab.php:221 includes/qmn_options_text_tab.php:231
+#: includes/qmn_options_text_tab.php:241 includes/qmn_options_text_tab.php:251
+#: includes/qmn_options_text_tab.php:264 includes/qmn_options_text_tab.php:281
+msgid "Allowed Variables:"
+msgstr "Variaveis Mantidas:"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:115
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:116
+#: ../trunk/includes/qmn_options_certificate_tab.php:115
+#: includes/qmn_options_certificate_tab.php:116
+msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL para o Logo ( JPG, JPEG, PNG or GIF)"
+
+#: ../4.1.0/includes/qmn_options_certificate_tab.php:122
+#: ../quiz_master_next/includes/qmn_options_certificate_tab.php:123
+#: ../trunk/includes/qmn_options_certificate_tab.php:122
+#: includes/qmn_options_certificate_tab.php:123
+msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL para o Background Img ( JPG, JPEG, PNG or GIF)"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:6
+#: ../trunk/includes/qmn_options_email_tab.php:5
+#: includes/qmn_options_email_tab.php:6
+msgid "Emails"
+msgstr "e-mails"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:41
+#: ../4.1.0/includes/qmn_options_email_tab.php:100
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:42
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:101
+#: ../trunk/includes/qmn_options_email_tab.php:41
+#: ../trunk/includes/qmn_options_email_tab.php:100
+#: includes/qmn_options_email_tab.php:42
+#: includes/qmn_options_email_tab.php:101
+msgid "The email has been added successfully."
+msgstr "E-mail adicionado com sucesso"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:164
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:165
+#: ../trunk/includes/qmn_options_email_tab.php:164
+#: includes/qmn_options_email_tab.php:165
+msgid "The email has been updated successfully."
+msgstr "E-mail atualizado com sucesso"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:231
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:48
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:133
+#: ../4.1.0/includes/qmn_options_text_tab.php:91
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:232
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:49
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:134
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:92
+#: ../trunk/includes/qmn_options_email_tab.php:231
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:48
+#: ../trunk/includes/qmn_options_results_page_tab.php:133
+#: ../trunk/includes/qmn_options_text_tab.php:91
+#: includes/qmn_options_email_tab.php:232
+#: includes/qmn_options_leaderboard_tab.php:49
+#: includes/qmn_options_results_page_tab.php:134
+#: includes/qmn_options_text_tab.php:92
+msgid "Template Variables"
+msgstr "Modelos Variáveis"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:234
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:136
+#: ../4.1.0/includes/qmn_options_text_tab.php:94
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:235
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:137
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:95
+#: ../trunk/includes/qmn_options_email_tab.php:234
+#: ../trunk/includes/qmn_options_results_page_tab.php:136
+#: ../trunk/includes/qmn_options_text_tab.php:94
+#: includes/qmn_options_email_tab.php:235
+#: includes/qmn_options_results_page_tab.php:137
+#: includes/qmn_options_text_tab.php:95
+msgid "Score for the quiz when using points"
+msgstr "Pontuação para avaliação que usa  pontos"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:237
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:139
+#: ../4.1.0/includes/qmn_options_text_tab.php:97
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:238
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:140
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:98
+#: ../trunk/includes/qmn_options_email_tab.php:237
+#: ../trunk/includes/qmn_options_results_page_tab.php:139
+#: ../trunk/includes/qmn_options_text_tab.php:97
+#: includes/qmn_options_email_tab.php:238
+#: includes/qmn_options_results_page_tab.php:140
+#: includes/qmn_options_text_tab.php:98
+msgid "The average amount of points user had per question"
+msgstr "A quantidade média de pontos que o usuário tinha por pergunta"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:240
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:142
+#: ../4.1.0/includes/qmn_options_text_tab.php:100
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:241
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:143
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:101
+#: ../trunk/includes/qmn_options_email_tab.php:240
+#: ../trunk/includes/qmn_options_results_page_tab.php:142
+#: ../trunk/includes/qmn_options_text_tab.php:100
+#: includes/qmn_options_email_tab.php:241
+#: includes/qmn_options_results_page_tab.php:143
+#: includes/qmn_options_text_tab.php:101
+msgid "The number of correct answers the user had"
+msgstr "Número de respostas corretas que o usuario obteve"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:243
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:145
+#: ../4.1.0/includes/qmn_options_text_tab.php:103
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:244
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:146
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:104
+#: ../trunk/includes/qmn_options_email_tab.php:243
+#: ../trunk/includes/qmn_options_results_page_tab.php:145
+#: ../trunk/includes/qmn_options_text_tab.php:103
+#: includes/qmn_options_email_tab.php:244
+#: includes/qmn_options_results_page_tab.php:146
+#: includes/qmn_options_text_tab.php:104
+msgid "The total number of questions in the quiz"
+msgstr "O número total de perguntas no questionário"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:246
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:148
+#: ../4.1.0/includes/qmn_options_text_tab.php:106
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:247
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:149
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:107
+#: ../trunk/includes/qmn_options_email_tab.php:246
+#: ../trunk/includes/qmn_options_results_page_tab.php:148
+#: ../trunk/includes/qmn_options_text_tab.php:106
+#: includes/qmn_options_email_tab.php:247
+#: includes/qmn_options_results_page_tab.php:149
+#: includes/qmn_options_text_tab.php:107
+msgid "Score for the quiz when using correct answers"
+msgstr "Pontuação para o questionário ao usar respostas corretas"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:249
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:151
+#: ../4.1.0/includes/qmn_options_text_tab.php:109
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:250
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:152
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:110
+#: ../trunk/includes/qmn_options_email_tab.php:249
+#: ../trunk/includes/qmn_options_results_page_tab.php:151
+#: ../trunk/includes/qmn_options_text_tab.php:109
+#: includes/qmn_options_email_tab.php:250
+#: includes/qmn_options_results_page_tab.php:152
+#: includes/qmn_options_text_tab.php:110
+msgid "The name the user entered before the quiz"
+msgstr "O nome do usuário inserido antes do questionário"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:252
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:154
+#: ../4.1.0/includes/qmn_options_text_tab.php:112
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:253
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:155
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:113
+#: ../trunk/includes/qmn_options_email_tab.php:252
+#: ../trunk/includes/qmn_options_results_page_tab.php:154
+#: ../trunk/includes/qmn_options_text_tab.php:112
+#: includes/qmn_options_email_tab.php:253
+#: includes/qmn_options_results_page_tab.php:155
+#: includes/qmn_options_text_tab.php:113
+msgid "The business the user entered before the quiz"
+msgstr "O negócio que o usuário digitou antes do quiz"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:255
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:157
+#: ../4.1.0/includes/qmn_options_text_tab.php:115
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:256
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:158
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:116
+#: ../trunk/includes/qmn_options_email_tab.php:255
+#: ../trunk/includes/qmn_options_results_page_tab.php:157
+#: ../trunk/includes/qmn_options_text_tab.php:115
+#: includes/qmn_options_email_tab.php:256
+#: includes/qmn_options_results_page_tab.php:158
+#: includes/qmn_options_text_tab.php:116
+msgid "The phone number the user entered before the quiz"
+msgstr "O numero de telefone que o usuário digitou antes do quiz"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:258
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:160
+#: ../4.1.0/includes/qmn_options_text_tab.php:118
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:259
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:161
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:119
+#: ../trunk/includes/qmn_options_email_tab.php:258
+#: ../trunk/includes/qmn_options_results_page_tab.php:160
+#: ../trunk/includes/qmn_options_text_tab.php:118
+#: includes/qmn_options_email_tab.php:259
+#: includes/qmn_options_results_page_tab.php:161
+#: includes/qmn_options_text_tab.php:119
+msgid "The email the user entered before the quiz"
+msgstr "O e-mail que o usuário digitou antes do quiz"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:261
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:76
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:163
+#: ../4.1.0/includes/qmn_options_text_tab.php:121
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:262
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:77
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:164
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:122
+#: ../trunk/includes/qmn_options_email_tab.php:261
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:76
+#: ../trunk/includes/qmn_options_results_page_tab.php:163
+#: ../trunk/includes/qmn_options_text_tab.php:121
+#: includes/qmn_options_email_tab.php:262
+#: includes/qmn_options_leaderboard_tab.php:77
+#: includes/qmn_options_results_page_tab.php:164
+#: includes/qmn_options_text_tab.php:122
+msgid "The name of the quiz"
+msgstr "Nome do questionário"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:264
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:166
+#: ../4.1.0/includes/qmn_options_text_tab.php:124
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:265
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:167
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:125
+#: ../trunk/includes/qmn_options_email_tab.php:264
+#: ../trunk/includes/qmn_options_results_page_tab.php:166
+#: ../trunk/includes/qmn_options_text_tab.php:124
+#: includes/qmn_options_email_tab.php:265
+#: includes/qmn_options_results_page_tab.php:167
+#: includes/qmn_options_text_tab.php:125
+msgid ""
+"Shows the question, the answer the user provided, and the correct answer"
+msgstr ""
+"Mostra a pergunta, a resposta do usuário fornecido, e a resposta correta"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:267
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:169
+#: ../4.1.0/includes/qmn_options_text_tab.php:127
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:268
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:170
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:128
+#: ../trunk/includes/qmn_options_email_tab.php:267
+#: ../trunk/includes/qmn_options_results_page_tab.php:169
+#: ../trunk/includes/qmn_options_text_tab.php:127
+#: includes/qmn_options_email_tab.php:268
+#: includes/qmn_options_results_page_tab.php:170
+#: includes/qmn_options_text_tab.php:128
+msgid "The comments the user entered into comment box if enabled"
+msgstr ""
+"Os comentários que o usuário entrou em caixa de comentário se habilitado"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:270
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:172
+#: ../4.1.0/includes/qmn_options_text_tab.php:130
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:271
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:173
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:131
+#: ../trunk/includes/qmn_options_email_tab.php:270
+#: ../trunk/includes/qmn_options_results_page_tab.php:172
+#: ../trunk/includes/qmn_options_text_tab.php:130
+#: includes/qmn_options_email_tab.php:271
+#: includes/qmn_options_results_page_tab.php:173
+#: includes/qmn_options_text_tab.php:131
+msgid "The amount of time user spent of quiz"
+msgstr "Tempo gasto do usuário na avaliação"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:273
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:175
+#: ../4.1.0/includes/qmn_options_text_tab.php:133
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:274
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:176
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:134
+#: ../trunk/includes/qmn_options_email_tab.php:273
+#: ../trunk/includes/qmn_options_results_page_tab.php:175
+#: ../trunk/includes/qmn_options_text_tab.php:133
+#: includes/qmn_options_email_tab.php:274
+#: includes/qmn_options_results_page_tab.php:176
+#: includes/qmn_options_text_tab.php:134
+msgid "The link to the certificate after completing the quiz"
+msgstr "Link para o certificado após a conclusão do teste"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:276
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:178
+#: ../4.1.0/includes/qmn_options_text_tab.php:136
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:277
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:179
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:137
+#: ../trunk/includes/qmn_options_email_tab.php:276
+#: ../trunk/includes/qmn_options_results_page_tab.php:178
+#: ../trunk/includes/qmn_options_text_tab.php:136
+#: includes/qmn_options_email_tab.php:277
+#: includes/qmn_options_results_page_tab.php:179
+#: includes/qmn_options_text_tab.php:137
+msgid "The amount of points a specific category earned."
+msgstr "A quantidade de pontos de uma categoria específica obteve."
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:279
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:181
+#: ../4.1.0/includes/qmn_options_text_tab.php:139
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:280
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:182
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:140
+#: ../trunk/includes/qmn_options_email_tab.php:279
+#: ../trunk/includes/qmn_options_results_page_tab.php:181
+#: ../trunk/includes/qmn_options_text_tab.php:139
+#: includes/qmn_options_email_tab.php:280
+#: includes/qmn_options_results_page_tab.php:182
+#: includes/qmn_options_text_tab.php:140
+msgid "The score a specific category earned."
+msgstr "A pontuação de uma categoria específica obteve."
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:282
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:184
+#: ../4.1.0/includes/qmn_options_text_tab.php:142
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:283
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:185
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:143
+#: ../trunk/includes/qmn_options_email_tab.php:282
+#: ../trunk/includes/qmn_options_results_page_tab.php:184
+#: ../trunk/includes/qmn_options_text_tab.php:142
+#: includes/qmn_options_email_tab.php:283
+#: includes/qmn_options_results_page_tab.php:185
+#: includes/qmn_options_text_tab.php:143
+msgid "The average points from all categories."
+msgstr "Os pontos médios de todas as categorias."
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:285
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:187
+#: ../4.1.0/includes/qmn_options_text_tab.php:145
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:286
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:188
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:146
+#: ../trunk/includes/qmn_options_email_tab.php:285
+#: ../trunk/includes/qmn_options_results_page_tab.php:187
+#: ../trunk/includes/qmn_options_text_tab.php:145
+#: includes/qmn_options_email_tab.php:286
+#: includes/qmn_options_results_page_tab.php:188
+#: includes/qmn_options_text_tab.php:146
+msgid "The average score from all categories."
+msgstr "Pontuação média de todas as categorias."
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:288
+#: ../4.1.0/includes/qmn_options_text_tab.php:148
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:289
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:149
+#: ../trunk/includes/qmn_options_email_tab.php:288
+#: ../trunk/includes/qmn_options_text_tab.php:148
+#: includes/qmn_options_email_tab.php:289
+#: includes/qmn_options_text_tab.php:149
+msgid "The question that the user answered"
+msgstr "A pergunta que o usuário respondeu"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:291
+#: ../4.1.0/includes/qmn_options_text_tab.php:151
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:292
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:152
+#: ../trunk/includes/qmn_options_email_tab.php:291
+#: ../trunk/includes/qmn_options_text_tab.php:151
+#: includes/qmn_options_email_tab.php:292
+#: includes/qmn_options_text_tab.php:152
+msgid "The answer the user gave for the question"
+msgstr "A resposta que o usuário deu para a pergunta"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:294
+#: ../4.1.0/includes/qmn_options_text_tab.php:154
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:295
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:155
+#: ../trunk/includes/qmn_options_email_tab.php:294
+#: ../trunk/includes/qmn_options_text_tab.php:154
+#: includes/qmn_options_email_tab.php:295
+#: includes/qmn_options_text_tab.php:155
+msgid "The correct answer for the question"
+msgstr "A resposta correta para a pergunta"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:297
+#: ../4.1.0/includes/qmn_options_text_tab.php:157
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:298
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:158
+#: ../trunk/includes/qmn_options_email_tab.php:297
+#: ../trunk/includes/qmn_options_text_tab.php:157
+#: includes/qmn_options_email_tab.php:298
+#: includes/qmn_options_text_tab.php:158
+msgid "The comments the user provided in the comment field for the question"
+msgstr ""
+"Os comentários do usuário fornecidos no campo de comentários para a questão"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:300
+#: ../4.1.0/includes/qmn_options_text_tab.php:160
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:301
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:161
+#: ../trunk/includes/qmn_options_email_tab.php:300
+#: ../trunk/includes/qmn_options_text_tab.php:160
+#: includes/qmn_options_email_tab.php:301
+#: includes/qmn_options_text_tab.php:161
+msgid "Reason why the correct answer is the correct answer"
+msgstr "Razão pela qual a  resposta está correta"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:303
+#: ../4.1.0/includes/qmn_options_text_tab.php:163
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:304
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:164
+#: ../trunk/includes/qmn_options_email_tab.php:303
+#: ../trunk/includes/qmn_options_text_tab.php:163
+#: includes/qmn_options_email_tab.php:304
+#: includes/qmn_options_text_tab.php:164
+msgid "The Current Date"
+msgstr "Data atual"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:318
+#: ../4.1.0/includes/qmn_options_email_tab.php:517
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:319
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:518
+#: ../trunk/includes/qmn_options_email_tab.php:318
+#: ../trunk/includes/qmn_options_email_tab.php:517
+#: includes/qmn_options_email_tab.php:319
+#: includes/qmn_options_email_tab.php:518
+msgid "Save Email Templates And Settings"
+msgstr "Salvar modelo de e-mail e configurações"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:322
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:323
+#: ../trunk/includes/qmn_options_email_tab.php:322
+#: includes/qmn_options_email_tab.php:323
+msgid "Send user email upon completion?"
+msgstr "Enviar e-mail do usuário após a conclusão?"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:329
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:330
+#: ../trunk/includes/qmn_options_email_tab.php:329
+#: includes/qmn_options_email_tab.php:330
+msgid "Send admin email upon completion?"
+msgstr "Enviar e-mail de administração após a conclusão?"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:336
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:337
+#: ../trunk/includes/qmn_options_email_tab.php:336
+#: includes/qmn_options_email_tab.php:337
+msgid ""
+"What emails should we send the admin email to? Separate emails with a comma."
+msgstr ""
+"Qual endereços de  e-mails que devemos enviar para administração? Separar e-"
+"mails com uma vírgula."
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:340
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:341
+#: ../trunk/includes/qmn_options_email_tab.php:340
+#: includes/qmn_options_email_tab.php:341
+msgid "What is the From Name for the email sent to users and admin?"
+msgstr "Qual é o nome a partir do e-mail enviado aos usuários e administrador?"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:346
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:347
+#: ../trunk/includes/qmn_options_email_tab.php:346
+#: includes/qmn_options_email_tab.php:347
+msgid "Email Sent To User"
+msgstr "e-mail enviado ao usuário"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:347
+#: ../4.1.0/includes/qmn_options_email_tab.php:425
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:348
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:426
+#: ../trunk/includes/qmn_options_email_tab.php:347
+#: ../trunk/includes/qmn_options_email_tab.php:425
+#: includes/qmn_options_email_tab.php:348
+#: includes/qmn_options_email_tab.php:426
+msgid "Add New User Email"
+msgstr "Adicionar novo usuário de e-mail"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:352
+#: ../4.1.0/includes/qmn_options_email_tab.php:418
+#: ../4.1.0/includes/qmn_options_email_tab.php:439
+#: ../4.1.0/includes/qmn_options_email_tab.php:505
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:199
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:256
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:353
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:419
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:440
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:506
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:206
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:270
+#: ../trunk/includes/qmn_options_email_tab.php:352
+#: ../trunk/includes/qmn_options_email_tab.php:418
+#: ../trunk/includes/qmn_options_email_tab.php:439
+#: ../trunk/includes/qmn_options_email_tab.php:505
+#: ../trunk/includes/qmn_options_results_page_tab.php:199
+#: ../trunk/includes/qmn_options_results_page_tab.php:256
+#: includes/qmn_options_email_tab.php:353
+#: includes/qmn_options_email_tab.php:419
+#: includes/qmn_options_email_tab.php:440
+#: includes/qmn_options_email_tab.php:506
+#: includes/qmn_options_results_page_tab.php:206
+#: includes/qmn_options_results_page_tab.php:270
+msgid "Score Greater Than Or Equal To"
+msgstr "Escore maior ou igual a"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:353
+#: ../4.1.0/includes/qmn_options_email_tab.php:419
+#: ../4.1.0/includes/qmn_options_email_tab.php:440
+#: ../4.1.0/includes/qmn_options_email_tab.php:506
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:200
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:257
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:354
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:420
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:441
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:507
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:207
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:271
+#: ../trunk/includes/qmn_options_email_tab.php:353
+#: ../trunk/includes/qmn_options_email_tab.php:419
+#: ../trunk/includes/qmn_options_email_tab.php:440
+#: ../trunk/includes/qmn_options_email_tab.php:506
+#: ../trunk/includes/qmn_options_results_page_tab.php:200
+#: ../trunk/includes/qmn_options_results_page_tab.php:257
+#: includes/qmn_options_email_tab.php:354
+#: includes/qmn_options_email_tab.php:420
+#: includes/qmn_options_email_tab.php:441
+#: includes/qmn_options_email_tab.php:507
+#: includes/qmn_options_results_page_tab.php:207
+#: includes/qmn_options_results_page_tab.php:271
+msgid "Score Less Than Or Equal To"
+msgstr "Escore menor ou igual a"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:354
+#: ../4.1.0/includes/qmn_options_email_tab.php:420
+#: ../4.1.0/includes/qmn_options_email_tab.php:441
+#: ../4.1.0/includes/qmn_options_email_tab.php:507
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:355
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:421
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:442
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:508
+#: ../trunk/includes/qmn_options_email_tab.php:354
+#: ../trunk/includes/qmn_options_email_tab.php:420
+#: ../trunk/includes/qmn_options_email_tab.php:441
+#: ../trunk/includes/qmn_options_email_tab.php:507
+#: includes/qmn_options_email_tab.php:355
+#: includes/qmn_options_email_tab.php:421
+#: includes/qmn_options_email_tab.php:442
+#: includes/qmn_options_email_tab.php:508
+msgid "Subject"
+msgstr "Assunto"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:355
+#: ../4.1.0/includes/qmn_options_email_tab.php:421
+#: ../4.1.0/includes/qmn_options_email_tab.php:442
+#: ../4.1.0/includes/qmn_options_email_tab.php:508
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:356
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:422
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:443
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:509
+#: ../trunk/includes/qmn_options_email_tab.php:355
+#: ../trunk/includes/qmn_options_email_tab.php:421
+#: ../trunk/includes/qmn_options_email_tab.php:442
+#: ../trunk/includes/qmn_options_email_tab.php:508
+#: includes/qmn_options_email_tab.php:356
+#: includes/qmn_options_email_tab.php:422
+#: includes/qmn_options_email_tab.php:443
+#: includes/qmn_options_email_tab.php:509
+msgid "Email To Send"
+msgstr "Enviar e-mail para"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:433
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:434
+#: ../trunk/includes/qmn_options_email_tab.php:433
+#: includes/qmn_options_email_tab.php:434
+msgid "Email Sent To Admin"
+msgstr "Enviar e-mail para admin"
+
+#: ../4.1.0/includes/qmn_options_email_tab.php:434
+#: ../4.1.0/includes/qmn_options_email_tab.php:512
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:435
+#: ../quiz_master_next/includes/qmn_options_email_tab.php:513
+#: ../trunk/includes/qmn_options_email_tab.php:434
+#: ../trunk/includes/qmn_options_email_tab.php:512
+#: includes/qmn_options_email_tab.php:435
+#: includes/qmn_options_email_tab.php:513
+msgid "Add New Admin Email"
+msgstr "Adicionar novo e-mail de administrador"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:6
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:5
+#: includes/qmn_options_leaderboard_tab.php:6
+msgid "Leaderboard"
+msgstr "Classificação"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:24
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:25
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:24
+#: includes/qmn_options_leaderboard_tab.php:25
+msgid "The leaderboards has been updated successfully."
+msgstr "As tabelas de classificação foi atualizado com sucesso."
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:51
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:52
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:51
+#: includes/qmn_options_leaderboard_tab.php:52
+msgid "The name of the user who is in first place"
+msgstr "O nome do usuário que está em primeiro lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:52
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:53
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:52
+#: includes/qmn_options_leaderboard_tab.php:53
+msgid "The score from the first place's quiz"
+msgstr "A pontuação do questionário do primeiro lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:56
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:57
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:56
+#: includes/qmn_options_leaderboard_tab.php:57
+msgid "The name of the user who is in second place"
+msgstr "O nome do usuário que está em segundo lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:57
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:58
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:57
+#: includes/qmn_options_leaderboard_tab.php:58
+msgid "The score from the second place's quiz"
+msgstr "A pontuação do teste do segundo lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:61
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:62
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:61
+#: includes/qmn_options_leaderboard_tab.php:62
+msgid "The name of the user who is in third place"
+msgstr "O nome do usuário que está em terceiro lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:62
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:63
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:62
+#: includes/qmn_options_leaderboard_tab.php:63
+msgid "The score from the third place's quiz"
+msgstr "A pontuação do teste do terceiro lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:66
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:67
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:66
+#: includes/qmn_options_leaderboard_tab.php:67
+msgid "The name of the user who is in fourth place"
+msgstr "O nome do usuário que está em quarto lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:67
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:68
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:67
+#: includes/qmn_options_leaderboard_tab.php:68
+msgid "The score from the fourth place's quiz"
+msgstr "A pontuação do teste a quarta do lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:71
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:72
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:71
+#: includes/qmn_options_leaderboard_tab.php:72
+msgid "The name of the user who is in fifth place"
+msgstr "O nome do usuário que está em quinto lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:72
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:73
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:72
+#: includes/qmn_options_leaderboard_tab.php:73
+msgid "The score from the fifth place's quiz"
+msgstr "A pontuação do teste do quinto lugar"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:79
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:107
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:80
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:108
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:79
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:107
+#: includes/qmn_options_leaderboard_tab.php:80
+#: includes/qmn_options_leaderboard_tab.php:108
+msgid "Save Leaderboard Options"
+msgstr "Salvar opções de Classificações"
+
+#: ../4.1.0/includes/qmn_options_leaderboard_tab.php:88
+#: ../quiz_master_next/includes/qmn_options_leaderboard_tab.php:89
+#: ../trunk/includes/qmn_options_leaderboard_tab.php:88
+#: includes/qmn_options_leaderboard_tab.php:89
+msgid "Leaderboard Template"
+msgstr "Modelos de Classificação"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:6
+#: ../trunk/includes/qmn_options_option_tab.php:5
+#: includes/qmn_options_option_tab.php:6
+msgid "Options"
+msgstr "Opções"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:42
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:43
+#: ../trunk/includes/qmn_options_option_tab.php:42
+#: includes/qmn_options_option_tab.php:43
+msgid "The options has been updated successfully."
+msgstr "As Opções foram atualizadas com sucesso."
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:83
+#: ../4.1.0/includes/qmn_options_option_tab.php:220
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:84
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:221
+#: ../trunk/includes/qmn_options_option_tab.php:83
+#: ../trunk/includes/qmn_options_option_tab.php:220
+#: includes/qmn_options_option_tab.php:84
+#: includes/qmn_options_option_tab.php:221
+msgid "Save Options"
+msgstr "Salvar Opções"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:91
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:92
+#: ../trunk/includes/qmn_options_option_tab.php:91
+#: includes/qmn_options_option_tab.php:92
+msgid "Which system is this quiz graded on?"
+msgstr "Escolha uma opção de avaliação"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:93
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:94
+#: ../trunk/includes/qmn_options_option_tab.php:93
+#: includes/qmn_options_option_tab.php:94
+msgid "Correct/Incorrect"
+msgstr "Correto/Incorreto"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:94
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:95
+#: ../trunk/includes/qmn_options_option_tab.php:94
+#: includes/qmn_options_option_tab.php:95
+msgid "Points"
+msgstr "Pontos"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:95
+#: ../4.1.0/includes/qmn_results.php:254
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:96
+#: ../quiz_master_next/includes/qmn_results.php:258
+#: ../trunk/includes/qmn_options_option_tab.php:95
+#: ../trunk/includes/qmn_results.php:254
+#: includes/qmn_options_option_tab.php:96 includes/qmn_results.php:258
+msgid "Not Graded"
+msgstr "Sem Classificação"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:99
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:100
+#: ../trunk/includes/qmn_options_option_tab.php:99
+#: includes/qmn_options_option_tab.php:100
+msgid "Should the user be required to be logged in to take this quiz?"
+msgstr "O usuário deve estar logado para fazer este teste?"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:106
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:107
+#: ../trunk/includes/qmn_options_option_tab.php:106
+#: includes/qmn_options_option_tab.php:107
+msgid ""
+"How many questions per page would you like? (Leave 0 for all questions on "
+"one page)"
+msgstr ""
+"Quantas perguntas por página ? (Deixe 0 para todas as perguntas em uma "
+"página)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:112
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:113
+#: ../trunk/includes/qmn_options_option_tab.php:112
+#: includes/qmn_options_option_tab.php:113
+msgid ""
+"How many minutes does the user have to finish the quiz? (Leave 0 for no time "
+"limit)"
+msgstr ""
+"Quantos minutos que o usuário tem que terminar o teste? (Deixe 0 para nenhum "
+"limite de tempo)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:118
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:119
+#: ../trunk/includes/qmn_options_option_tab.php:118
+#: includes/qmn_options_option_tab.php:119
+msgid ""
+"How many times can a user take this quiz? (Leave 0 for as many times as the "
+"user wants to. Currently only works for registered users)"
+msgstr ""
+"Quantas vezes um usuário pode  fazer o teste? (Deixe 0 para o número de "
+"vezes que o usuário quer. Atualmente só funciona para usuários registrados)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:124
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:125
+#: ../trunk/includes/qmn_options_option_tab.php:124
+#: includes/qmn_options_option_tab.php:125
+msgid ""
+"How many total entries can this quiz have? (Leave 0 for unlimited entries"
+msgstr ""
+"Quantas entradas no total pode ter este questionário? (Deixe 0 para entradas "
+"ilimitadas)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:130
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:131
+#: ../trunk/includes/qmn_options_option_tab.php:130
+#: includes/qmn_options_option_tab.php:131
+msgid ""
+"How many questions should be loaded for quiz? (Leave 0 to load all questions)"
+msgstr ""
+"Quantas perguntas devem ser carregados para teste? (Deixe 0 para carregar "
+"todas as perguntas)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:136
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:137
+#: ../trunk/includes/qmn_options_option_tab.php:136
+#: includes/qmn_options_option_tab.php:137
+msgid ""
+"What time-frame should the user be able to access the quiz? (Leave blank if "
+"the user can access anytime)"
+msgstr ""
+"O espaço de tempo que o usuário deve ser capaz de acessar o questionário? "
+"(Deixe em branco se o usuário pode acessar a qualquer momento)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:138
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:139
+#: ../trunk/includes/qmn_options_option_tab.php:138
+#: includes/qmn_options_option_tab.php:139
+msgid "start date"
+msgstr "data de início"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:141
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:142
+#: ../trunk/includes/qmn_options_option_tab.php:141
+#: includes/qmn_options_option_tab.php:142
+msgid "end date"
+msgstr "data final"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:145
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:146
+#: ../trunk/includes/qmn_options_option_tab.php:145
+#: includes/qmn_options_option_tab.php:146
+msgid ""
+"Are the questions random? (Question Order will not apply if this is yes)"
+msgstr ""
+"São as perguntas aleatórias? (Pergunta Ordem não será aplicada se este é sim)"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:147
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:148
+#: ../trunk/includes/qmn_options_option_tab.php:147
+#: includes/qmn_options_option_tab.php:148
+msgid "Random Questions"
+msgstr "Questões Aleatórias"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:148
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:149
+#: ../trunk/includes/qmn_options_option_tab.php:148
+#: includes/qmn_options_option_tab.php:149
+msgid "Random Questions And Answers"
+msgstr "Perguntas e Respostas aleatórias"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:153
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:154
+#: ../trunk/includes/qmn_options_option_tab.php:153
+#: includes/qmn_options_option_tab.php:154
+msgid ""
+"Would you like to ask for the contact information at the beginning or at the "
+"end of the quiz?"
+msgstr "Iformações de contato no início ou no final do questionário?"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:155
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:156
+#: ../trunk/includes/qmn_options_option_tab.php:155
+#: includes/qmn_options_option_tab.php:156
+msgid "Beginning"
+msgstr "Inicio"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:156
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:157
+#: ../trunk/includes/qmn_options_option_tab.php:156
+#: includes/qmn_options_option_tab.php:157
+msgid "End"
+msgstr "Fim"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:160
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:161
+#: ../trunk/includes/qmn_options_option_tab.php:160
+#: includes/qmn_options_option_tab.php:161
+msgid ""
+"If a logged-in user takes the quiz, would you like them to be able to edit "
+"contact information? If set to no, the fields will not show up for logged in "
+"users; however, the users information will be saved for the fields."
+msgstr ""
+"Usuário poderá edita informações de contato? Se definido como não, os campos "
+"não vão aparecer para usuários logados; no entanto, a informação aos "
+"usuários será salvo para os campos."
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:167
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:168
+#: ../trunk/includes/qmn_options_option_tab.php:167
+#: includes/qmn_options_option_tab.php:168
+msgid "Should we ask for users name?"
+msgstr "Nome de usuário"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:170
+#: ../4.1.0/includes/qmn_options_option_tab.php:178
+#: ../4.1.0/includes/qmn_options_option_tab.php:186
+#: ../4.1.0/includes/qmn_options_option_tab.php:194
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:171
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:179
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:187
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:195
+#: ../trunk/includes/qmn_options_option_tab.php:170
+#: ../trunk/includes/qmn_options_option_tab.php:178
+#: ../trunk/includes/qmn_options_option_tab.php:186
+#: ../trunk/includes/qmn_options_option_tab.php:194
+#: includes/qmn_options_option_tab.php:171
+#: includes/qmn_options_option_tab.php:179
+#: includes/qmn_options_option_tab.php:187
+#: includes/qmn_options_option_tab.php:195
+msgid "Require"
+msgstr "Exigir"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:175
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:176
+#: ../trunk/includes/qmn_options_option_tab.php:175
+#: includes/qmn_options_option_tab.php:176
+msgid "Should we ask for users business?"
+msgstr "Empresa em que trabalha"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:183
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:184
+#: ../trunk/includes/qmn_options_option_tab.php:183
+#: includes/qmn_options_option_tab.php:184
+msgid "Should we ask for users email?"
+msgstr "Solicitar e-mail"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:191
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:192
+#: ../trunk/includes/qmn_options_option_tab.php:191
+#: includes/qmn_options_option_tab.php:192
+msgid "Should we ask for users phone number?"
+msgstr "Solicitar núero de telefone"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:199
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:200
+#: ../trunk/includes/qmn_options_option_tab.php:199
+#: includes/qmn_options_option_tab.php:200
+msgid "Would you like a place for the user to enter comments?"
+msgstr "Campo para usuário digitar comentário"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:206
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:207
+#: ../trunk/includes/qmn_options_option_tab.php:206
+#: includes/qmn_options_option_tab.php:207
+msgid "Show question number on quiz?"
+msgstr "Exibir número das questões?"
+
+#: ../4.1.0/includes/qmn_options_option_tab.php:213
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:214
+#: ../trunk/includes/qmn_options_option_tab.php:213
+#: includes/qmn_options_option_tab.php:214
+msgid "Show social media sharing buttons? (Twitter & Facebook)"
+msgstr ""
+"Mostrar botões de compartilhamento de mídia social ? (Twitter e Facebook)"
+
+#: ../4.1.0/includes/qmn_options_preview_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_preview_tab.php:6
+#: ../trunk/includes/qmn_options_preview_tab.php:5
+#: includes/qmn_options_preview_tab.php:6
+msgid "Preview"
+msgstr "Visualizar"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:6
+#: ../trunk/includes/qmn_options_questions_tab.php:5
+#: includes/qmn_options_questions_tab.php:6
+msgid "Questions"
+msgstr "Questões"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:104
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:105
+#: ../trunk/includes/qmn_options_questions_tab.php:104
+#: includes/qmn_options_questions_tab.php:105
+msgid "The question has been updated successfully."
+msgstr "A questão foi atualizado com sucesso."
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:131
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:132
+#: ../trunk/includes/qmn_options_questions_tab.php:131
+#: includes/qmn_options_questions_tab.php:132
+msgid "The question has been deleted successfully."
+msgstr "A questão foi deletada com sucesso."
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:215
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:216
+#: ../trunk/includes/qmn_options_questions_tab.php:215
+#: includes/qmn_options_questions_tab.php:216
+msgid "The question has been duplicated successfully."
+msgstr "A questão foi duplicada com sucesso."
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:308
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:309
+#: ../trunk/includes/qmn_options_questions_tab.php:308
+#: includes/qmn_options_questions_tab.php:309
+msgid "The question has been created successfully."
+msgstr "A questão foi criada com sucesso."
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:453
+#: ../4.1.0/includes/qmn_options_questions_tab.php:460
+#: ../4.1.0/includes/qmn_options_questions_tab.php:591
+#: ../4.1.0/includes/qmn_options_questions_tab.php:757
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:454
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:461
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:593
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:760
+#: ../trunk/includes/qmn_options_questions_tab.php:453
+#: ../trunk/includes/qmn_options_questions_tab.php:460
+#: ../trunk/includes/qmn_options_questions_tab.php:591
+#: ../trunk/includes/qmn_options_questions_tab.php:757
+#: includes/qmn_options_questions_tab.php:454
+#: includes/qmn_options_questions_tab.php:461
+#: includes/qmn_options_questions_tab.php:593
+#: includes/qmn_options_questions_tab.php:760
+msgid "Answer"
+msgstr "Resposta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:480
+#: ../4.1.0/includes/qmn_options_questions_tab.php:727
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:481
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:729
+#: ../trunk/includes/qmn_options_questions_tab.php:480
+#: ../trunk/includes/qmn_options_questions_tab.php:727
+#: includes/qmn_options_questions_tab.php:481
+#: includes/qmn_options_questions_tab.php:729
+msgid "Add Question"
+msgstr "Adicionar Pergunta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:484
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:485
+#: ../trunk/includes/qmn_options_questions_tab.php:484
+#: includes/qmn_options_questions_tab.php:485
+#, php-format
+msgid "One question"
+msgid_plural "%s questions"
+msgstr[0] "Uma questão"
+msgstr[1] "%s Questões"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:556
+#: ../4.1.0/includes/qmn_quiz_admin.php:265
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:557
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:270
+#: ../trunk/includes/qmn_options_questions_tab.php:556
+#: ../trunk/includes/qmn_quiz_admin.php:265
+#: includes/qmn_options_questions_tab.php:557 includes/qmn_quiz_admin.php:270
+msgid "Edit"
+msgstr "Editar"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:556
+#: ../4.1.0/includes/qmn_quiz_admin.php:267
+#: ../4.1.0/includes/qmn_quiz_admin.php:391
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:557
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:272
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:397
+#: ../trunk/includes/qmn_options_questions_tab.php:556
+#: ../trunk/includes/qmn_quiz_admin.php:267
+#: ../trunk/includes/qmn_quiz_admin.php:391
+#: includes/qmn_options_questions_tab.php:557 includes/qmn_quiz_admin.php:272
+#: includes/qmn_quiz_admin.php:397
+msgid "Duplicate"
+msgstr "Duplicar"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:556
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:236
+#: ../4.1.0/includes/qmn_quiz_admin.php:268
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:557
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:247
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:273
+#: ../trunk/includes/qmn_options_questions_tab.php:556
+#: ../trunk/includes/qmn_options_results_page_tab.php:236
+#: ../trunk/includes/qmn_quiz_admin.php:268
+#: includes/qmn_options_questions_tab.php:557
+#: includes/qmn_options_results_page_tab.php:247
+#: includes/qmn_quiz_admin.php:273
+msgid "Delete"
+msgstr "Apagar"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:569
+#: ../4.1.0/includes/qmn_options_questions_tab.php:712
+#: ../4.1.0/includes/qmn_options_questions_tab.php:723
+#: ../4.1.0/includes/qmn_options_questions_tab.php:737
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:571
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:714
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:725
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:740
+#: ../trunk/includes/qmn_options_questions_tab.php:569
+#: ../trunk/includes/qmn_options_questions_tab.php:712
+#: ../trunk/includes/qmn_options_questions_tab.php:723
+#: ../trunk/includes/qmn_options_questions_tab.php:737
+#: includes/qmn_options_questions_tab.php:571
+#: includes/qmn_options_questions_tab.php:714
+#: includes/qmn_options_questions_tab.php:725
+#: includes/qmn_options_questions_tab.php:740
+msgid "Question"
+msgstr "Pergunta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:580
+#: ../4.1.0/includes/qmn_options_questions_tab.php:748
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:582
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:751
+#: ../trunk/includes/qmn_options_questions_tab.php:580
+#: ../trunk/includes/qmn_options_questions_tab.php:748
+#: includes/qmn_options_questions_tab.php:582
+#: includes/qmn_options_questions_tab.php:751
+msgid "Answers"
+msgstr "Respostas"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:581
+#: ../4.1.0/includes/qmn_options_questions_tab.php:749
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:583
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:752
+#: ../trunk/includes/qmn_options_questions_tab.php:581
+#: ../trunk/includes/qmn_options_questions_tab.php:749
+#: includes/qmn_options_questions_tab.php:583
+#: includes/qmn_options_questions_tab.php:752
+msgid "Points Worth"
+msgstr "Vale Pontos"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:582
+#: ../4.1.0/includes/qmn_options_questions_tab.php:750
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:584
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:753
+#: ../trunk/includes/qmn_options_questions_tab.php:582
+#: ../trunk/includes/qmn_options_questions_tab.php:750
+#: includes/qmn_options_questions_tab.php:584
+#: includes/qmn_options_questions_tab.php:753
+msgid "Correct Answer"
+msgstr "Resposta correta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:609
+#: ../4.1.0/includes/qmn_options_questions_tab.php:772
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:611
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:775
+#: ../trunk/includes/qmn_options_questions_tab.php:609
+#: ../trunk/includes/qmn_options_questions_tab.php:772
+#: includes/qmn_options_questions_tab.php:611
+#: includes/qmn_options_questions_tab.php:775
+msgid "Add New Answer!"
+msgstr "Adicionar nova Resposta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:614
+#: ../4.1.0/includes/qmn_options_questions_tab.php:777
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:616
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:780
+#: ../trunk/includes/qmn_options_questions_tab.php:614
+#: ../trunk/includes/qmn_options_questions_tab.php:777
+#: includes/qmn_options_questions_tab.php:616
+#: includes/qmn_options_questions_tab.php:780
+msgid "Correct Answer Info"
+msgstr "Informação da resposta correta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:621
+#: ../4.1.0/includes/qmn_options_questions_tab.php:784
+#: ../4.1.0/includes/qmn_quiz.php:328
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:623
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:787
+#: ../quiz_master_next/includes/qmn_quiz.php:441
+#: ../trunk/includes/qmn_options_questions_tab.php:621
+#: ../trunk/includes/qmn_options_questions_tab.php:784
+#: ../trunk/includes/qmn_quiz.php:328
+#: includes/qmn_options_questions_tab.php:623
+#: includes/qmn_options_questions_tab.php:787 includes/qmn_quiz.php:441
+msgid "Hint"
+msgstr "Sugestão"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:632
+#: ../4.1.0/includes/qmn_options_questions_tab.php:710
+#: ../4.1.0/includes/qmn_options_questions_tab.php:721
+#: ../4.1.0/includes/qmn_options_questions_tab.php:795
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:634
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:712
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:723
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:798
+#: ../trunk/includes/qmn_options_questions_tab.php:632
+#: ../trunk/includes/qmn_options_questions_tab.php:710
+#: ../trunk/includes/qmn_options_questions_tab.php:721
+#: ../trunk/includes/qmn_options_questions_tab.php:795
+#: includes/qmn_options_questions_tab.php:634
+#: includes/qmn_options_questions_tab.php:712
+#: includes/qmn_options_questions_tab.php:723
+#: includes/qmn_options_questions_tab.php:798
+msgid "Question Type"
+msgstr "Tipo de pergunta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:650
+#: ../4.1.0/includes/qmn_options_questions_tab.php:808
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:652
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:811
+#: ../trunk/includes/qmn_options_questions_tab.php:650
+#: ../trunk/includes/qmn_options_questions_tab.php:808
+#: includes/qmn_options_questions_tab.php:652
+#: includes/qmn_options_questions_tab.php:811
+msgid "Comment Field"
+msgstr "Comentários"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:653
+#: ../4.1.0/includes/qmn_options_questions_tab.php:810
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:655
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:813
+#: ../trunk/includes/qmn_options_questions_tab.php:653
+#: ../trunk/includes/qmn_options_questions_tab.php:810
+#: includes/qmn_options_questions_tab.php:655
+#: includes/qmn_options_questions_tab.php:813
+msgid "Small Text Field"
+msgstr "Campo de texto pequeno"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:655
+#: ../4.1.0/includes/qmn_options_questions_tab.php:811
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:657
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:814
+#: ../trunk/includes/qmn_options_questions_tab.php:655
+#: ../trunk/includes/qmn_options_questions_tab.php:811
+#: includes/qmn_options_questions_tab.php:657
+#: includes/qmn_options_questions_tab.php:814
+msgid "Large Text Field"
+msgstr "Campo de texto Grande"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:657
+#: ../4.1.0/includes/qmn_options_questions_tab.php:812
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:659
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:815
+#: ../trunk/includes/qmn_options_questions_tab.php:657
+#: ../trunk/includes/qmn_options_questions_tab.php:812
+#: includes/qmn_options_questions_tab.php:659
+#: includes/qmn_options_questions_tab.php:815
+msgid "None"
+msgstr "Nenhum"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:661
+#: ../4.1.0/includes/qmn_options_questions_tab.php:709
+#: ../4.1.0/includes/qmn_options_questions_tab.php:720
+#: ../4.1.0/includes/qmn_options_questions_tab.php:816
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:663
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:711
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:722
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:819
+#: ../trunk/includes/qmn_options_questions_tab.php:661
+#: ../trunk/includes/qmn_options_questions_tab.php:709
+#: ../trunk/includes/qmn_options_questions_tab.php:720
+#: ../trunk/includes/qmn_options_questions_tab.php:816
+#: includes/qmn_options_questions_tab.php:663
+#: includes/qmn_options_questions_tab.php:711
+#: includes/qmn_options_questions_tab.php:722
+#: includes/qmn_options_questions_tab.php:819
+msgid "Question Order"
+msgstr "Ordem das perguntas"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:669
+#: ../4.1.0/includes/qmn_options_questions_tab.php:824
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:671
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:827
+#: ../trunk/includes/qmn_options_questions_tab.php:669
+#: ../trunk/includes/qmn_options_questions_tab.php:824
+#: includes/qmn_options_questions_tab.php:671
+#: includes/qmn_options_questions_tab.php:827
+msgid "Required?"
+msgstr "Exigido?"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:678
+#: ../4.1.0/includes/qmn_options_questions_tab.php:711
+#: ../4.1.0/includes/qmn_options_questions_tab.php:722
+#: ../4.1.0/includes/qmn_options_questions_tab.php:833
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:680
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:713
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:724
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:836
+#: ../trunk/includes/qmn_options_questions_tab.php:678
+#: ../trunk/includes/qmn_options_questions_tab.php:711
+#: ../trunk/includes/qmn_options_questions_tab.php:722
+#: ../trunk/includes/qmn_options_questions_tab.php:833
+#: includes/qmn_options_questions_tab.php:680
+#: includes/qmn_options_questions_tab.php:713
+#: includes/qmn_options_questions_tab.php:724
+#: includes/qmn_options_questions_tab.php:836
+msgid "Category"
+msgstr "Categoria"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:697
+#: ../4.1.0/includes/qmn_options_questions_tab.php:852
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:699
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:855
+#: ../trunk/includes/qmn_options_questions_tab.php:697
+#: ../trunk/includes/qmn_options_questions_tab.php:852
+#: includes/qmn_options_questions_tab.php:699
+#: includes/qmn_options_questions_tab.php:855
+msgid ""
+"Required currently only works on open answer, number, accept, and captcha "
+"question types"
+msgstr ""
+"Necessário atualmente só funciona com resposta aberta, número, aceitar e "
+"tipos de captcha."
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:699
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:701
+#: ../trunk/includes/qmn_options_questions_tab.php:699
+#: includes/qmn_options_questions_tab.php:701
+msgid "Edit Question"
+msgstr "Editar Pergunta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:854
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:857
+#: ../trunk/includes/qmn_options_questions_tab.php:854
+#: includes/qmn_options_questions_tab.php:857
+msgid "Create Question"
+msgstr "Criar Pergunta"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:859
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:862
+#: ../trunk/includes/qmn_options_questions_tab.php:859
+#: includes/qmn_options_questions_tab.php:862
+msgid "Are you sure you want to delete this question?"
+msgstr "Tem certeza de que deseja excluir esta pergunta?"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:864
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:867
+#: ../trunk/includes/qmn_options_questions_tab.php:864
+#: includes/qmn_options_questions_tab.php:867
+msgid "Delete Question"
+msgstr "Apagar Perguntas"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:869
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:872
+#: ../trunk/includes/qmn_options_questions_tab.php:869
+#: includes/qmn_options_questions_tab.php:872
+msgid "Are you sure you want to duplicate this question?"
+msgstr "Tem certeza de que deseja duplicar esta pergunta?"
+
+#: ../4.1.0/includes/qmn_options_questions_tab.php:874
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:877
+#: ../trunk/includes/qmn_options_questions_tab.php:874
+#: includes/qmn_options_questions_tab.php:877
+msgid "Duplicate Question"
+msgstr "Duplicar Pergunta"
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:6
+#: ../trunk/includes/qmn_options_results_page_tab.php:5
+#: includes/qmn_options_results_page_tab.php:6
+msgid "Results Pages"
+msgstr "Paginas de resultados"
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:40
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:41
+#: ../trunk/includes/qmn_options_results_page_tab.php:40
+#: includes/qmn_options_results_page_tab.php:41
+msgid "The results page has been added successfully."
+msgstr "A Página de resultados foi adicionada com sucesso."
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:80
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:81
+#: ../trunk/includes/qmn_options_results_page_tab.php:80
+#: includes/qmn_options_results_page_tab.php:81
+msgid "The results page has been saved successfully."
+msgstr "A Página de resultados foi salva com sucesso."
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:192
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:265
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:199
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:280
+#: ../trunk/includes/qmn_options_results_page_tab.php:192
+#: ../trunk/includes/qmn_options_results_page_tab.php:265
+#: includes/qmn_options_results_page_tab.php:199
+#: includes/qmn_options_results_page_tab.php:280
+msgid "Save Results Pages"
+msgstr "Salvar página de resultados"
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:193
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:270
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:200
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:285
+#: ../trunk/includes/qmn_options_results_page_tab.php:193
+#: ../trunk/includes/qmn_options_results_page_tab.php:270
+#: includes/qmn_options_results_page_tab.php:200
+#: includes/qmn_options_results_page_tab.php:285
+msgid "Add New Results Page"
+msgstr "Adicionar novas páginas de resultados"
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:201
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:258
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:208
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:272
+#: ../trunk/includes/qmn_options_results_page_tab.php:201
+#: ../trunk/includes/qmn_options_results_page_tab.php:258
+#: includes/qmn_options_results_page_tab.php:208
+#: includes/qmn_options_results_page_tab.php:272
+msgid "Results Page Shown"
+msgstr "Página de Resultados"
+
+#: ../4.1.0/includes/qmn_options_results_page_tab.php:236
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:247
+#: ../trunk/includes/qmn_options_results_page_tab.php:236
+#: includes/qmn_options_results_page_tab.php:247
+msgid "Are you sure?"
+msgstr "Você tem certeza?"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:6
+#: ../trunk/includes/qmn_options_style_tab.php:5
+#: includes/qmn_options_style_tab.php:6
+msgid "Style"
+msgstr "Estilo"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:25
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:26
+#: ../trunk/includes/qmn_options_style_tab.php:25
+#: includes/qmn_options_style_tab.php:26
+msgid "The style has been saved successfully."
+msgstr "Estilo salvo com sucesso!"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:64
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:65
+#: ../trunk/includes/qmn_options_style_tab.php:64
+#: includes/qmn_options_style_tab.php:65
+msgid "Quiz Styles"
+msgstr "Estilo de Perguntas"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:65
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:66
+#: ../trunk/includes/qmn_options_style_tab.php:65
+#: includes/qmn_options_style_tab.php:66
+msgid "Choose your style:"
+msgstr "Escolha seu estilo"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:87
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:88
+#: ../trunk/includes/qmn_options_style_tab.php:87
+#: includes/qmn_options_style_tab.php:88
+msgid "Custom"
+msgstr "Personalizado"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:93
+#: ../4.1.0/includes/qmn_options_style_tab.php:105
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:94
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:106
+#: ../trunk/includes/qmn_options_style_tab.php:93
+#: ../trunk/includes/qmn_options_style_tab.php:105
+#: includes/qmn_options_style_tab.php:94
+#: includes/qmn_options_style_tab.php:106
+msgid "Save Quiz Style"
+msgstr "Salvar Estilo de Questionário"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:95
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:96
+#: ../trunk/includes/qmn_options_style_tab.php:95
+#: includes/qmn_options_style_tab.php:96
+msgid "Custom Style CSS"
+msgstr "Estilo CSS personalizado"
+
+#: ../4.1.0/includes/qmn_options_style_tab.php:96
+#: ../quiz_master_next/includes/qmn_options_style_tab.php:97
+#: ../trunk/includes/qmn_options_style_tab.php:96
+#: includes/qmn_options_style_tab.php:97
+msgid ""
+"For detailed help and guidance along with a list of different classes used "
+"in this plugin, please visit the following link:"
+msgstr ""
+"Para obter ajuda e orientação, juntamente com uma lista de diferentes "
+"classes usadas em este plugin detalhadas, por favor visite o seguinte link:"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:5
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:6
+#: ../trunk/includes/qmn_options_text_tab.php:5
+#: includes/qmn_options_text_tab.php:6
+msgid "Text"
+msgstr "texto"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:41
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:42
+#: ../trunk/includes/qmn_options_text_tab.php:41
+#: includes/qmn_options_text_tab.php:42
+msgid "The templates has been updated successfully."
+msgstr "Os modelos foram atualizados com sucesso"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:72
+#: ../4.1.0/includes/qmn_quiz.php:1112
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:73
+#: ../quiz_master_next/includes/qmn_quiz.php:1230
+#: ../trunk/includes/qmn_options_text_tab.php:72
+#: ../trunk/includes/qmn_quiz.php:1112 includes/qmn_options_text_tab.php:73
+#: includes/qmn_quiz.php:1230
+msgid "Previous"
+msgstr "Anterior"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:168
+#: ../4.1.0/includes/qmn_options_text_tab.php:328
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:169
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:329
+#: ../trunk/includes/qmn_options_text_tab.php:168
+#: ../trunk/includes/qmn_options_text_tab.php:328
+#: includes/qmn_options_text_tab.php:169 includes/qmn_options_text_tab.php:329
+msgid "Save Templates"
+msgstr "Salvar modelos"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:174
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:175
+#: ../trunk/includes/qmn_options_text_tab.php:174
+#: includes/qmn_options_text_tab.php:175
+msgid "Message Templates"
+msgstr "Modelos de mensagens"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:178
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:179
+#: ../trunk/includes/qmn_options_text_tab.php:178
+#: includes/qmn_options_text_tab.php:179
+msgid "Message Displayed Before Quiz"
+msgstr "Mensagem exibida antes do questionário"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:188
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:189
+#: ../trunk/includes/qmn_options_text_tab.php:188
+#: includes/qmn_options_text_tab.php:189
+msgid "Message Displayed Before Comments Box If Enabled"
+msgstr "Mensagem exibida  antes, se a caixa de comentários estiver ativa"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:198
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:199
+#: ../trunk/includes/qmn_options_text_tab.php:198
+#: includes/qmn_options_text_tab.php:199
+msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
+msgstr ""
+"Mensagem exibida ao encerrar a avaliação (Deixe em branco para omitir esta "
+"seção)"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:208
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:209
+#: ../trunk/includes/qmn_options_text_tab.php:208
+#: includes/qmn_options_text_tab.php:209
+msgid "Message Displayed If User Has Tried Quiz Too Many Times"
+msgstr "Mensagem exibida se usuário tentar questionário várias vezes"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:218
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:219
+#: ../trunk/includes/qmn_options_text_tab.php:218
+#: includes/qmn_options_text_tab.php:219
+msgid ""
+"Message Displayed If User Is Not Logged In And Quiz Requires Users To Be "
+"Logged In"
+msgstr ""
+"Mensagem exibida Se o usuário não está logado e o Questionário requerer que "
+"os usuários devam estar conectados"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:228
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:229
+#: ../trunk/includes/qmn_options_text_tab.php:228
+#: includes/qmn_options_text_tab.php:229
+msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
+msgstr "Mensagem exibida quando a data está fora do tempo programado"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:238
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:239
+#: ../trunk/includes/qmn_options_text_tab.php:238
+#: includes/qmn_options_text_tab.php:239
+msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
+msgstr "Mensagem exibida se ultrapassou o limite do total das entradas."
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:248
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:249
+#: ../trunk/includes/qmn_options_text_tab.php:248
+#: includes/qmn_options_text_tab.php:249
+msgid "%QUESTIONS_ANSWERS% Text"
+msgstr "%QUESTIONS_ANSWERS% Texto"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:261
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:262
+#: ../trunk/includes/qmn_options_text_tab.php:261
+#: includes/qmn_options_text_tab.php:262
+msgid "Twitter Sharing Text"
+msgstr "Compartilhar texto Twitter"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:278
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:279
+#: ../trunk/includes/qmn_options_text_tab.php:278
+#: includes/qmn_options_text_tab.php:279
+msgid "Facebook Sharing Text"
+msgstr "Compartilhar Texto Facebook  "
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:293
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:294
+#: ../trunk/includes/qmn_options_text_tab.php:293
+#: includes/qmn_options_text_tab.php:294
+msgid "Other Templates"
+msgstr "Outros Modelos"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:296
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:297
+#: ../trunk/includes/qmn_options_text_tab.php:296
+#: includes/qmn_options_text_tab.php:297
+msgid "Text for submit button"
+msgstr "Texto para botão submeter"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:300
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:301
+#: ../trunk/includes/qmn_options_text_tab.php:300
+#: includes/qmn_options_text_tab.php:301
+msgid "Text for name field"
+msgstr "Texto para o Campo Nome"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:304
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:305
+#: ../trunk/includes/qmn_options_text_tab.php:304
+#: includes/qmn_options_text_tab.php:305
+msgid "Text for business field"
+msgstr "Texto para o Campo Empresa"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:308
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:309
+#: ../trunk/includes/qmn_options_text_tab.php:308
+#: includes/qmn_options_text_tab.php:309
+msgid "Text for email field"
+msgstr "Texto para o campo e-mail"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:312
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:313
+#: ../trunk/includes/qmn_options_text_tab.php:312
+#: includes/qmn_options_text_tab.php:313
+msgid "Text for phone number field"
+msgstr "Texto para o campo numero telefone"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:316
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:317
+#: ../trunk/includes/qmn_options_text_tab.php:316
+#: includes/qmn_options_text_tab.php:317
+msgid "Text for comments field"
+msgstr "Texto para o campo comentários"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:320
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:321
+#: ../trunk/includes/qmn_options_text_tab.php:320
+#: includes/qmn_options_text_tab.php:321
+msgid "Text for previous button"
+msgstr "Texto para o botão anterior"
+
+#: ../4.1.0/includes/qmn_options_text_tab.php:324
+#: ../quiz_master_next/includes/qmn_options_text_tab.php:325
+#: ../trunk/includes/qmn_options_text_tab.php:324
+#: includes/qmn_options_text_tab.php:325
+msgid "Text for next button"
+msgstr "Texto para botão próximo "
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:5
+#: ../4.1.0/includes/qmn_tools.php:53 ../4.1.0/mlw_quizmaster2.php:222
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:6
+#: ../quiz_master_next/includes/qmn_tools.php:58
+#: ../quiz_master_next/mlw_quizmaster2.php:222
+#: ../trunk/includes/qmn_options_tools_tab.php:5
+#: ../trunk/includes/qmn_tools.php:53 ../trunk/mlw_quizmaster2.php:222
+#: includes/qmn_options_tools_tab.php:6 includes/qmn_tools.php:58
+#: mlw_quizmaster2.php:222
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:22
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:23
+#: ../trunk/includes/qmn_options_tools_tab.php:22
+#: includes/qmn_options_tools_tab.php:23
+msgid "The stats has been reset successfully."
+msgstr "Estatísticas resetadas com sucesso!"
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:74
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:75
+#: ../trunk/includes/qmn_options_tools_tab.php:74
+#: includes/qmn_options_tools_tab.php:75
+msgid ""
+"Use this button to reset all the stats collected for this quiz (Quiz Views "
+"and Times Quiz Has Been Taken)."
+msgstr ""
+"Utilize este botão para repor todas as estatísticas coletadas para este "
+"questionário (Questionário Visualizações e vezes que o Questionário foi "
+"usado)."
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:75
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:76
+#: ../trunk/includes/qmn_options_tools_tab.php:75
+#: includes/qmn_options_tools_tab.php:76
+msgid "Reset Quiz Views And Taken Stats"
+msgstr "Resetar questionário, pontos de vista e Estatísticas "
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:86
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:87
+#: ../trunk/includes/qmn_options_tools_tab.php:86
+#: includes/qmn_options_tools_tab.php:87
+msgid ""
+"Are you sure you want to reset the stats to 0? All views and taken stats for "
+"this quiz will be reset. This is permanent and cannot be undone."
+msgstr ""
+"Tem certeza de que deseja redefinir as estatísticas para 0? Todos os pontos "
+"de vista e estatísticas tomadas para esse teste serão repostos. Isso é  "
+"permanente e não pode ser desfeito."
+
+#: ../4.1.0/includes/qmn_options_tools_tab.php:90
+#: ../quiz_master_next/includes/qmn_options_tools_tab.php:91
+#: ../trunk/includes/qmn_options_tools_tab.php:90
+#: includes/qmn_options_tools_tab.php:91
+msgid "Reset All Stats For Quiz"
+msgstr "Redefinir todas as estatísticas para Questionário"
+
+#: ../4.1.0/includes/qmn_question_types.php:7
+#: ../quiz_master_next/includes/qmn_question_types.php:7
+#: ../trunk/includes/qmn_question_types.php:7
+#: includes/qmn_question_types.php:7
+msgid "Multiple Choice"
+msgstr "Multipla escolha"
+
+#: ../4.1.0/includes/qmn_question_types.php:75
+#: ../quiz_master_next/includes/qmn_question_types.php:75
+#: ../trunk/includes/qmn_question_types.php:75
+#: includes/qmn_question_types.php:75
+msgid "Horizontal Multiple Choice"
+msgstr "Multipla escolha horizontal"
+
+#: ../4.1.0/includes/qmn_question_types.php:143
+#: ../quiz_master_next/includes/qmn_question_types.php:143
+#: ../trunk/includes/qmn_question_types.php:143
+#: includes/qmn_question_types.php:143
+msgid "Drop Down"
+msgstr "Menu suspenso"
+
+#: ../4.1.0/includes/qmn_question_types.php:208
+#: ../quiz_master_next/includes/qmn_question_types.php:208
+#: ../trunk/includes/qmn_question_types.php:208
+#: includes/qmn_question_types.php:208
+msgid "Small Open Answer"
+msgstr "Respostas curtas"
+
+#: ../4.1.0/includes/qmn_question_types.php:257
+#: ../quiz_master_next/includes/qmn_question_types.php:257
+#: ../trunk/includes/qmn_question_types.php:257
+#: includes/qmn_question_types.php:257
+msgid "Multiple Response"
+msgstr "Resposta Multipla"
+
+#: ../4.1.0/includes/qmn_question_types.php:332
+#: ../quiz_master_next/includes/qmn_question_types.php:332
+#: ../trunk/includes/qmn_question_types.php:332
+#: includes/qmn_question_types.php:332
+msgid "Large Open Answer"
+msgstr "Resposta Grande aberta"
+
+#: ../4.1.0/includes/qmn_question_types.php:381
+#: ../quiz_master_next/includes/qmn_question_types.php:381
+#: ../trunk/includes/qmn_question_types.php:381
+#: includes/qmn_question_types.php:381
+msgid "Text Block"
+msgstr "Bloco de texto"
+
+#: ../4.1.0/includes/qmn_question_types.php:396
+#: ../quiz_master_next/includes/qmn_question_types.php:396
+#: ../trunk/includes/qmn_question_types.php:396
+#: includes/qmn_question_types.php:396
+msgid "Number"
+msgstr "Numero"
+
+#: ../4.1.0/includes/qmn_question_types.php:445
+#: ../quiz_master_next/includes/qmn_question_types.php:445
+#: ../trunk/includes/qmn_question_types.php:445
+#: includes/qmn_question_types.php:445
+msgid "Accept"
+msgstr "Aceitar"
+
+#: ../4.1.0/includes/qmn_question_types.php:464
+#: ../quiz_master_next/includes/qmn_question_types.php:464
+#: ../trunk/includes/qmn_question_types.php:464
+#: includes/qmn_question_types.php:464
+msgid "Captcha"
+msgstr "captcha"
+
+#: ../4.1.0/includes/qmn_question_types.php:505
+#: ../quiz_master_next/includes/qmn_question_types.php:505
+#: ../trunk/includes/qmn_question_types.php:505
+#: includes/qmn_question_types.php:505
+msgid "Horizontal Multiple Response"
+msgstr "Respostas múltiplas horizontais"
+
+#: ../4.1.0/includes/qmn_quiz.php:214
+#: ../quiz_master_next/includes/qmn_quiz.php:326
+#: ../trunk/includes/qmn_quiz.php:214 includes/qmn_quiz.php:326
+msgid "Not a valid e-mail address!"
+msgstr "Endereço de e-mail inválido"
+
+#: ../4.1.0/includes/qmn_quiz.php:215
+#: ../quiz_master_next/includes/qmn_quiz.php:327
+#: ../trunk/includes/qmn_quiz.php:215 includes/qmn_quiz.php:327
+msgid "This field must be a number!"
+msgstr "Este campo só aceita números!"
+
+#: ../4.1.0/includes/qmn_quiz.php:216
+#: ../quiz_master_next/includes/qmn_quiz.php:328
+#: ../trunk/includes/qmn_quiz.php:216 includes/qmn_quiz.php:328
+msgid "The entered text is not correct!"
+msgstr "Texto digitado não está correto!"
+
+#: ../4.1.0/includes/qmn_quiz.php:217
+#: ../quiz_master_next/includes/qmn_quiz.php:329
+#: ../trunk/includes/qmn_quiz.php:217 includes/qmn_quiz.php:329
+msgid "Please complete all required fields!"
+msgstr "Por Favor preencha todos campos obrigatórios!"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:181 ../4.1.0/mlw_quizmaster2.php:217
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:186
+#: ../quiz_master_next/mlw_quizmaster2.php:217
+#: ../trunk/includes/qmn_quiz_admin.php:181 ../trunk/mlw_quizmaster2.php:217
+#: includes/qmn_quiz_admin.php:186 mlw_quizmaster2.php:217
+msgid "Quizzes"
+msgstr "Testes"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:181
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:186
+#: ../trunk/includes/qmn_quiz_admin.php:181 includes/qmn_quiz_admin.php:186
+msgid "Add New"
+msgstr "Adicionar Novo"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:199
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:204
+#: ../trunk/includes/qmn_quiz_admin.php:199 includes/qmn_quiz_admin.php:204
+#, php-format
+msgid "One quiz"
+msgid_plural "%s quizzes"
+msgstr[0] "Uma questão"
+msgstr[1] "%s questões"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:244
+#: ../4.1.0/includes/qmn_quiz_admin.php:290
+#: ../4.1.0/includes/qmn_quiz_admin.php:358
+#: ../4.1.0/includes/qmn_results.php:205
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:249
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:295
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:364
+#: ../quiz_master_next/includes/qmn_results.php:209
+#: ../trunk/includes/qmn_quiz_admin.php:244
+#: ../trunk/includes/qmn_quiz_admin.php:290
+#: ../trunk/includes/qmn_quiz_admin.php:358
+#: ../trunk/includes/qmn_results.php:205 includes/qmn_quiz_admin.php:249
+#: includes/qmn_quiz_admin.php:295 includes/qmn_quiz_admin.php:364
+#: includes/qmn_results.php:209
+msgid "Quiz Name"
+msgstr "Nome da Avaliação"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:245
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:250
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:296
+#: ../trunk/includes/qmn_quiz_admin.php:245 includes/qmn_quiz_admin.php:250
+#: includes/qmn_quiz_admin.php:296
+msgid "URL"
+msgstr "URL"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:246
+#: ../4.1.0/includes/qmn_quiz_admin.php:291
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:251
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:297
+#: ../trunk/includes/qmn_quiz_admin.php:246
+#: ../trunk/includes/qmn_quiz_admin.php:291 includes/qmn_quiz_admin.php:251
+#: includes/qmn_quiz_admin.php:297
+msgid "Quiz Shortcode"
+msgstr "Shortcode do teste"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:247
+#: ../4.1.0/includes/qmn_quiz_admin.php:292
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:252
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:298
+#: ../trunk/includes/qmn_quiz_admin.php:247
+#: ../trunk/includes/qmn_quiz_admin.php:292 includes/qmn_quiz_admin.php:252
+#: includes/qmn_quiz_admin.php:298
+msgid "Leaderboard Shortcode"
+msgstr "Shortcode da Pontuação"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:248
+#: ../4.1.0/includes/qmn_quiz_admin.php:293
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:253
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:299
+#: ../trunk/includes/qmn_quiz_admin.php:248
+#: ../trunk/includes/qmn_quiz_admin.php:293 includes/qmn_quiz_admin.php:253
+#: includes/qmn_quiz_admin.php:299
+msgid "Quiz Views"
+msgstr "Visualização do Questionário"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:249
+#: ../4.1.0/includes/qmn_quiz_admin.php:294
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:254
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:300
+#: ../trunk/includes/qmn_quiz_admin.php:249
+#: ../trunk/includes/qmn_quiz_admin.php:294 includes/qmn_quiz_admin.php:254
+#: includes/qmn_quiz_admin.php:300
+msgid "Quiz Taken"
+msgstr "Questionário Tomado"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:250
+#: ../4.1.0/includes/qmn_quiz_admin.php:295
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:255
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:301
+#: ../trunk/includes/qmn_quiz_admin.php:250
+#: ../trunk/includes/qmn_quiz_admin.php:295 includes/qmn_quiz_admin.php:255
+#: includes/qmn_quiz_admin.php:301
+msgid "Last Modified"
+msgstr "Ultima modificação"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:263
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:268
+#: ../trunk/includes/qmn_quiz_admin.php:263 includes/qmn_quiz_admin.php:268
+msgid "Edit Name"
+msgstr "Editar nome"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:266
+#: ../4.1.0/includes/qmn_results_details.php:116
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:271
+#: ../quiz_master_next/includes/qmn_results_details.php:121
+#: ../trunk/includes/qmn_quiz_admin.php:266
+#: ../trunk/includes/qmn_results_details.php:116
+#: includes/qmn_quiz_admin.php:271 includes/qmn_results_details.php:121
+msgid "Results"
+msgstr "Resultados"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:353
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:359
+#: ../trunk/includes/qmn_quiz_admin.php:353 includes/qmn_quiz_admin.php:359
+msgid "Create New Quiz"
+msgstr "Criar Novo teste"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:367
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:373
+#: ../trunk/includes/qmn_quiz_admin.php:367 includes/qmn_quiz_admin.php:373
+msgid "Create Quiz"
+msgstr "Criar Teste"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:373
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:379
+#: ../trunk/includes/qmn_quiz_admin.php:373 includes/qmn_quiz_admin.php:379
+msgid "Quiz Name:"
+msgstr "Teste Nome:"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:384
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:390
+#: ../trunk/includes/qmn_quiz_admin.php:384 includes/qmn_quiz_admin.php:390
+msgid "Duplicate this quiz?"
+msgstr "Duplicar questão?"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:386
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:392
+#: ../trunk/includes/qmn_quiz_admin.php:386 includes/qmn_quiz_admin.php:392
+msgid "Duplicate questions with quiz"
+msgstr "Duplicar perguntas com questionário"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:388
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:394
+#: ../trunk/includes/qmn_quiz_admin.php:388 includes/qmn_quiz_admin.php:394
+msgid "Name Of New Quiz:"
+msgstr "Nome do novo questionário"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:397
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:403
+#: ../trunk/includes/qmn_quiz_admin.php:397 includes/qmn_quiz_admin.php:403
+msgid "Are you sure you want to delete this quiz?"
+msgstr "Você tem certeza que deseja deletar este questionário?"
+
+#: ../4.1.0/includes/qmn_quiz_admin.php:402
+#: ../quiz_master_next/includes/qmn_quiz_admin.php:408
+#: ../trunk/includes/qmn_quiz_admin.php:402 includes/qmn_quiz_admin.php:408
+msgid "Delete Quiz"
+msgstr "Delete Questionário"
+
+#: ../4.1.0/includes/qmn_quiz_creator.php:368
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:369
+#: ../trunk/includes/qmn_quiz_creator.php:368
+#: includes/qmn_quiz_creator.php:369
+msgid ""
+"Your new quiz has been created successfully. To begin editing your quiz, "
+"click the Edit link on the new quiz."
+msgstr ""
+"Seu novo questionário foi criado com sucesso. Para começar a editar o seu "
+"questionário, clique no link Editar na nova avaliação."
+
+#: ../4.1.0/includes/qmn_quiz_creator.php:434
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:435
+#: ../trunk/includes/qmn_quiz_creator.php:434
+#: includes/qmn_quiz_creator.php:435
+msgid "Your quiz has been deleted successfully."
+msgstr "Sua avaliação foi apagada com sucesso!"
+
+#: ../4.1.0/includes/qmn_quiz_creator.php:476
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:477
+#: ../trunk/includes/qmn_quiz_creator.php:476
+#: includes/qmn_quiz_creator.php:477
+msgid "Your quiz name has been updated successfully."
+msgstr "O nome de sua avaliação foi atualizada com sucesso!"
+
+#: ../4.1.0/includes/qmn_quiz_creator.php:622
+#: ../quiz_master_next/includes/qmn_quiz_creator.php:634
+#: ../trunk/includes/qmn_quiz_creator.php:622
+#: includes/qmn_quiz_creator.php:634
+msgid "Your quiz has been duplicated successfully."
+msgstr "Sua avaliação foi repetida com sucesso."
+
+#. translators: The %s corresponds to the name of the quiz
+#: ../4.1.0/includes/qmn_quiz_options.php:51
+#: ../quiz_master_next/includes/qmn_quiz_options.php:56
+#: ../trunk/includes/qmn_quiz_options.php:51 includes/qmn_quiz_options.php:56
+#, php-format
+msgid "Quiz Settings For %s"
+msgstr "Configurações do questionário para %s"
+
+#: ../4.1.0/includes/qmn_quiz_options.php:91
+#: ../quiz_master_next/includes/qmn_quiz_options.php:96
+#: ../trunk/includes/qmn_quiz_options.php:91 includes/qmn_quiz_options.php:96
+msgid ""
+"Please go to the quizzes page and click on the Edit link from the quiz you "
+"wish to edit."
+msgstr ""
+"Por favor, vá para a página de testes e clique no link Editar no "
+"questionário que pretende editar."
+
+#: ../4.1.0/includes/qmn_results.php:19
+#: ../quiz_master_next/includes/qmn_results.php:23
+#: ../trunk/includes/qmn_results.php:19 includes/qmn_results.php:23
+msgid "Your results has been deleted successfully."
+msgstr "Seus resultados foram apagados com sucesso!"
+
+#: ../4.1.0/includes/qmn_results.php:148
+#: ../4.1.0/includes/qmn_results_details.php:16
+#: ../4.1.0/mlw_quizmaster2.php:219
+#: ../quiz_master_next/includes/qmn_results.php:152
+#: ../quiz_master_next/includes/qmn_results_details.php:21
+#: ../quiz_master_next/mlw_quizmaster2.php:219
+#: ../trunk/includes/qmn_results.php:148
+#: ../trunk/includes/qmn_results_details.php:16
+#: ../trunk/mlw_quizmaster2.php:219 includes/qmn_results.php:152
+#: includes/qmn_results_details.php:21 mlw_quizmaster2.php:219
+msgid "Quiz Results"
+msgstr "Resultados"
+
+#: ../4.1.0/includes/qmn_results.php:157
+#: ../quiz_master_next/includes/qmn_results.php:161
+#: ../trunk/includes/qmn_results.php:157 includes/qmn_results.php:161
+#, php-format
+msgid "One result"
+msgid_plural "%s results"
+msgstr[0] "Um resultado"
+msgstr[1] "%s resultados"
+
+#: ../4.1.0/includes/qmn_results.php:204
+#: ../quiz_master_next/includes/qmn_results.php:208
+#: ../trunk/includes/qmn_results.php:204 includes/qmn_results.php:208
+msgid "Actions"
+msgstr "Ações"
+
+#: ../4.1.0/includes/qmn_results.php:206
+#: ../quiz_master_next/includes/qmn_results.php:210
+#: ../trunk/includes/qmn_results.php:206 includes/qmn_results.php:210
+msgid "Score"
+msgstr "Placar"
+
+#: ../4.1.0/includes/qmn_results.php:207
+#: ../quiz_master_next/includes/qmn_results.php:211
+#: ../trunk/includes/qmn_results.php:207 includes/qmn_results.php:211
+msgid "Time To Complete"
+msgstr "Tempo para concluir"
+
+#: ../4.1.0/includes/qmn_results.php:208
+#: ../quiz_master_next/includes/qmn_results.php:212
+#: ../trunk/includes/qmn_results.php:208 includes/qmn_results.php:212
+msgid "Name"
+msgstr "Nome"
+
+#: ../4.1.0/includes/qmn_results.php:209
+#: ../quiz_master_next/includes/qmn_results.php:213
+#: ../trunk/includes/qmn_results.php:209 includes/qmn_results.php:213
+msgid "Business"
+msgstr "Empresa"
+
+#: ../4.1.0/includes/qmn_results.php:210
+#: ../quiz_master_next/includes/qmn_results.php:214
+#: ../trunk/includes/qmn_results.php:210 includes/qmn_results.php:214
+msgid "Email"
+msgstr "e-mail"
+
+#: ../4.1.0/includes/qmn_results.php:211
+#: ../quiz_master_next/includes/qmn_results.php:215
+#: ../trunk/includes/qmn_results.php:211 includes/qmn_results.php:215
+msgid "Phone"
+msgstr "Fone"
+
+#: ../4.1.0/includes/qmn_results.php:212
+#: ../quiz_master_next/includes/qmn_results.php:216
+#: ../trunk/includes/qmn_results.php:212 includes/qmn_results.php:216
+msgid "Time Taken"
+msgstr "Tempo necessário"
+
+#: ../4.1.0/includes/qmn_results.php:272
+#: ../quiz_master_next/includes/qmn_results.php:276
+#: ../trunk/includes/qmn_results.php:272 includes/qmn_results.php:276
+msgid "Are you sure you want to delete these results?"
+msgstr "Tem certeza de que deseja apagar estes resultados?"
+
+#: ../4.1.0/includes/qmn_results.php:277
+#: ../quiz_master_next/includes/qmn_results.php:281
+#: ../trunk/includes/qmn_results.php:277 includes/qmn_results.php:281
+msgid "Delete Results"
+msgstr "Deletar Resultados"
+
+#: ../4.1.0/includes/qmn_results_details.php:195
+#: ../quiz_master_next/includes/qmn_results_details.php:200
+#: ../trunk/includes/qmn_results_details.php:195
+#: includes/qmn_results_details.php:200
+msgid "Create Certificate"
+msgstr "Criar Certificado"
+
+#: ../4.1.0/includes/qmn_results_details.php:200
+#: ../quiz_master_next/includes/qmn_results_details.php:205
+#: ../trunk/includes/qmn_results_details.php:200
+#: includes/qmn_results_details.php:205
+msgid "Download Certificate Here"
+msgstr "Baixe o  Certificado Aqui"
+
+#: ../4.1.0/includes/qmn_results_details.php:207
+#: ../quiz_master_next/includes/qmn_results_details.php:212
+#: ../trunk/includes/qmn_results_details.php:207
+#: includes/qmn_results_details.php:212
+msgid "Certificate"
+msgstr "Certificado"
+
+#: ../4.1.0/includes/qmn_tools.php:88
+#: ../quiz_master_next/includes/qmn_tools.php:93
+#: ../trunk/includes/qmn_tools.php:88 includes/qmn_tools.php:93
+msgid "There has been an error! Please try again."
+msgstr "Houve um erro! Por favor tente novamente."
+
+#: ../4.1.0/includes/qmn_tools.php:106
+#: ../quiz_master_next/includes/qmn_tools.php:111
+#: ../trunk/includes/qmn_tools.php:106 includes/qmn_tools.php:111
+msgid "Quiz Has Been Restored!"
+msgstr "A Avaliação foi restaurada!"
+
+#: ../4.1.0/includes/qmn_tools.php:111
+#: ../quiz_master_next/includes/qmn_tools.php:116
+#: ../trunk/includes/qmn_tools.php:111 includes/qmn_tools.php:116
+msgid ""
+"Choose a quiz in the drop down and then click the button to restore a "
+"deleted quiz."
+msgstr ""
+"Escolha uma Avaliação no drop down e, em seguida, clique no botão para "
+"restaurar uma avaliação excluída."
+
+#: ../4.1.0/includes/qmn_tools.php:121
+#: ../quiz_master_next/includes/qmn_tools.php:126
+#: ../trunk/includes/qmn_tools.php:121 includes/qmn_tools.php:126
+msgid "Restore Quiz"
+msgstr "Recuperar Avaliação"
+
+#: ../4.1.0/includes/qmn_tools.php:150 ../4.1.0/includes/qmn_tools.php:166
+#: ../quiz_master_next/includes/qmn_tools.php:155
+#: ../quiz_master_next/includes/qmn_tools.php:171
+#: ../trunk/includes/qmn_tools.php:150 ../trunk/includes/qmn_tools.php:166
+#: includes/qmn_tools.php:155 includes/qmn_tools.php:171
+#, php-format
+msgid "Previous %s Audits"
+msgstr "Anterior % s Auditorias"
+
+#: ../4.1.0/includes/qmn_tools.php:153 ../4.1.0/includes/qmn_tools.php:160
+#: ../quiz_master_next/includes/qmn_tools.php:158
+#: ../quiz_master_next/includes/qmn_tools.php:165
+#: ../trunk/includes/qmn_tools.php:153 ../trunk/includes/qmn_tools.php:160
+#: includes/qmn_tools.php:158 includes/qmn_tools.php:165
+#, php-format
+msgid "Next %s Audits"
+msgstr "Próximo% s Auditorias"
+
+#: ../4.1.0/includes/qmn_tools.php:173
+#: ../quiz_master_next/includes/qmn_tools.php:178
+#: ../trunk/includes/qmn_tools.php:173 includes/qmn_tools.php:178
+msgid "User"
+msgstr "Usuário"
+
+#: ../4.1.0/includes/qmn_tools.php:174
+#: ../quiz_master_next/includes/qmn_tools.php:179
+#: ../trunk/includes/qmn_tools.php:174 includes/qmn_tools.php:179
+msgid "Action"
+msgstr "Ação"
+
+#: ../4.1.0/includes/qmn_tools.php:175
+#: ../quiz_master_next/includes/qmn_tools.php:180
+#: ../trunk/includes/qmn_tools.php:175 includes/qmn_tools.php:180
+msgid "Time"
+msgstr "Tempo"
+
+#: ../4.1.0/includes/qmn_usage_tracking.php:195
+#: ../quiz_master_next/includes/qmn_usage_tracking.php:193
+#: ../trunk/includes/qmn_usage_tracking.php:195
+#: includes/qmn_usage_tracking.php:193
+msgid ""
+"Allow Quiz Master Next to anonymously track this plugin's usage and help us "
+"make this plugin better? No sensitive data is tracked."
+msgstr ""
+"Permitir anonimamente controlar o uso deste plugin e nos ajudar a fazer este "
+"plugin melhor? Sem os dados sensíveis são monitorados."
+
+#: ../4.1.0/includes/qmn_usage_tracking.php:196
+#: ../quiz_master_next/includes/qmn_usage_tracking.php:194
+#: ../trunk/includes/qmn_usage_tracking.php:196
+#: includes/qmn_usage_tracking.php:194
+msgid "Allow"
+msgstr "Permoitido"
+
+#: ../4.1.0/includes/qmn_usage_tracking.php:197
+#: ../quiz_master_next/includes/qmn_usage_tracking.php:195
+#: ../trunk/includes/qmn_usage_tracking.php:197
+#: includes/qmn_usage_tracking.php:195
+msgid "Do not allow"
+msgstr "Não permitido"
+
+#: ../4.1.0/includes/qmn_widgets.php:10
+#: ../Older_Dev/3.0.1/3.0.1/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.0.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.1.1/3.1.1/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.1.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.2.1/3.2.1/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.2.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.2.2/3.2.2/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.2.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.3.1/3.3.1/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.3.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.3.2/3.3.2/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/3.3.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before 1.0/0.9.8/trunk/includes/mlw_qmn_widgets.php:10
+#: 1.0/0.9.9/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.0.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.0/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.1.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.2.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.3.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.4.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.4.2/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.5.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.6.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.6.2/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.6.3/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.7.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.8.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.8.2/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.1/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.2/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.3/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.4/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.5/trunk/includes/mlw_qmn_widgets.php:10
+#: 2.0/1.9.6/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.0.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.1.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.2.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.2.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.3.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.4.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.5.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.6.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.6.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.6.3/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.6.4/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.7.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.7.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.7.3/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.2/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.3/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.4/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.5/2.8.5/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.8.5/trunk/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.9.1/2.9.1/includes/mlw_qmn_widgets.php:10
+#: ../Older_Dev/Before_3.0/2.9.1/trunk/includes/mlw_qmn_widgets.php:10
+#: ../quiz_master_next/includes/qmn_widgets.php:11
+#: ../trunk/includes/qmn_widgets.php:10 includes/qmn_widgets.php:11
+msgid "Quiz Master Next Leaderboard Widget"
+msgstr "Widget de Classificações"
+
+#: ../4.1.0/includes/qmn_widgets.php:25
+#: ../Older_Dev/3.0.1/3.0.1/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.0.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.1.1/3.1.1/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.1.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.2.1/3.2.1/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.2.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.2.2/3.2.2/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.2.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.3.1/3.3.1/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.3.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.3.2/3.3.2/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/3.3.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before 1.0/0.9.8/trunk/includes/mlw_qmn_widgets.php:25
+#: 1.0/0.9.9/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.0.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.0/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.1.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.2.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.3.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.4.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.4.2/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.5.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.6.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.6.2/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.6.3/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.7.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.8.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.8.2/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.1/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.2/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.3/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.4/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.5/trunk/includes/mlw_qmn_widgets.php:25
+#: 2.0/1.9.6/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.0.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.1.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.2.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.2.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.3.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.4.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.5.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.6.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.6.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.6.3/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.6.4/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.7.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.7.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.7.3/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.2/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.3/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.4/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.5/2.8.5/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.8.5/trunk/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.9.1/2.9.1/includes/mlw_qmn_widgets.php:25
+#: ../Older_Dev/Before_3.0/2.9.1/trunk/includes/mlw_qmn_widgets.php:25
+#: ../quiz_master_next/includes/qmn_widgets.php:26
+#: ../trunk/includes/qmn_widgets.php:25 includes/qmn_widgets.php:26
+msgid "Widget Title"
+msgstr "Titulo do Widget"
+
+#: ../4.1.0/includes/qmn_widgets.php:29
+#: ../Older_Dev/3.0.1/3.0.1/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.0.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.1.1/3.1.1/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.1.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.2.1/3.2.1/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.2.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.2.2/3.2.2/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.2.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.3.1/3.3.1/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.3.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.3.2/3.3.2/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/3.3.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before 1.0/0.9.8/trunk/includes/mlw_qmn_widgets.php:29
+#: 1.0/0.9.9/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.0.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.0/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.1.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.2.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.3.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.4.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.4.2/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.5.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.6.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.6.2/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.6.3/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.7.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.8.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.8.2/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.1/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.2/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.3/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.4/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.5/trunk/includes/mlw_qmn_widgets.php:29
+#: 2.0/1.9.6/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.0.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.1.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.2.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.2.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.3.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.4.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.5.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.6.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.6.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.6.3/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.6.4/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.7.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.7.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.7.3/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.2/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.3/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.4/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.5/2.8.5/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.8.5/trunk/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.9.1/2.9.1/includes/mlw_qmn_widgets.php:29
+#: ../Older_Dev/Before_3.0/2.9.1/trunk/includes/mlw_qmn_widgets.php:29
+#: ../quiz_master_next/includes/qmn_widgets.php:30
+#: ../trunk/includes/qmn_widgets.php:29 includes/qmn_widgets.php:30
+msgid "Quiz ID"
+msgstr "ID de Avaliação"
+
+#: ../4.1.0/mlw_quizmaster2.php:218
+#: ../quiz_master_next/mlw_quizmaster2.php:218
+#: ../trunk/mlw_quizmaster2.php:218 mlw_quizmaster2.php:218
+msgid "Quiz Settings"
+msgstr "Configuração de Avaliação"
+
+#: ../4.1.0/mlw_quizmaster2.php:220
+#: ../quiz_master_next/mlw_quizmaster2.php:220
+#: ../trunk/mlw_quizmaster2.php:220 mlw_quizmaster2.php:220
+msgid "Quiz Result Details"
+msgstr "Detalhes dos resultados da Avaliação"
+
+#: ../4.1.0/mlw_quizmaster2.php:221
+#: ../quiz_master_next/mlw_quizmaster2.php:221
+#: ../trunk/mlw_quizmaster2.php:221 mlw_quizmaster2.php:221
+msgid "Settings"
+msgstr "Configurações"
+
+#: ../4.1.0/mlw_quizmaster2.php:223
+#: ../quiz_master_next/mlw_quizmaster2.php:223
+#: ../trunk/mlw_quizmaster2.php:223 mlw_quizmaster2.php:223
+msgid "Stats"
+msgstr "Estatísticas"
+
+#: ../4.1.0/mlw_quizmaster2.php:224
+#: ../quiz_master_next/mlw_quizmaster2.php:224
+#: ../trunk/mlw_quizmaster2.php:224 mlw_quizmaster2.php:224
+msgid "Addon Settings"
+msgstr "Configurações de complemento"
+
+#: ../4.1.0/mlw_quizmaster2.php:225
+#: ../quiz_master_next/mlw_quizmaster2.php:225
+#: ../trunk/mlw_quizmaster2.php:225 mlw_quizmaster2.php:225
+msgid "Help"
+msgstr "Ajuda"
+
+#: ../4.1.0/mlw_quizmaster2.php:228 ../4.1.0/mlw_quizmaster2.php:229
+#: ../quiz_master_next/mlw_quizmaster2.php:228
+#: ../quiz_master_next/mlw_quizmaster2.php:229
+#: ../trunk/mlw_quizmaster2.php:228 ../trunk/mlw_quizmaster2.php:229
+#: mlw_quizmaster2.php:228 mlw_quizmaster2.php:229
+msgid "QMN About"
+msgstr "Sobre QMN"
+
+#: ../Older_Dev/3.0.1/3.0.1/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.0.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.1.1/3.1.1/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.1.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.2.1/3.2.1/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.2.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.2.2/3.2.2/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.2.2/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.3.1/3.3.1/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.3.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.3.2/3.3.2/includes/mlw_dashboard.php:147
+#: ../Older_Dev/3.3.2/trunk/includes/mlw_dashboard.php:147 ../Older_Dev/Before
+#: 1.0/0.9.7/trunk/includes/mlw_dashboard.php:125
+#: 1.0/0.9.8/trunk/includes/mlw_dashboard.php:125
+#: 1.0/0.9.9/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.0.1/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.0/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.1.1/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.2.1/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.3.1/trunk/includes/mlw_dashboard.php:125
+#: 2.0/1.4.1/trunk/includes/mlw_dashboard.php:133
+#: 2.0/1.4.2/trunk/includes/mlw_dashboard.php:133
+#: 2.0/1.5.1/trunk/includes/mlw_dashboard.php:131
+#: 2.0/1.6.1/trunk/includes/mlw_dashboard.php:135
+#: 2.0/1.6.2/trunk/includes/mlw_dashboard.php:135
+#: 2.0/1.6.3/trunk/includes/mlw_dashboard.php:135
+#: 2.0/1.7.1/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.8.1/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.8.2/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.1/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.2/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.3/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.4/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.5/trunk/includes/mlw_dashboard.php:144
+#: 2.0/1.9.6/trunk/includes/mlw_dashboard.php:144
+#: ../Older_Dev/Before_3.0/2.0.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.1.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.2.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.2.2/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.3.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.4.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.5.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.6.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.6.2/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.6.3/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.6.4/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.7.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.7.2/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.7.3/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.1/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.2/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.3/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.4/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.5/2.8.5/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.8.5/trunk/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.9.1/2.9.1/includes/mlw_dashboard.php:147
+#: ../Older_Dev/Before_3.0/2.9.1/trunk/includes/mlw_dashboard.php:147
+msgid "Dashboard"
+msgstr ""
+
+#: ../Older_Dev/3.0.1/3.0.1/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.0.1/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.5.1/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.6.1/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.6.2/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.6.3/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.6.4/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.7.1/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.7.2/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.7.3/trunk/mlw_quizmaster2.php:101
+#: ../Older_Dev/Before_3.0/2.8.1/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.8.2/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.8.3/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.8.4/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.8.5/2.8.5/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.8.5/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.9.1/2.9.1/mlw_quizmaster2.php:99
+#: ../Older_Dev/Before_3.0/2.9.1/trunk/mlw_quizmaster2.php:99
+#, php-format
+msgid ""
+"You have been using the Quiz Master Next plugin for a while now! Thanks for "
+"choosing to use this plugin. If it has benefited your website, please "
+"consider purchasing an <a href=\"http://mylocalwebstop.com/shop/\">add-on</"
+"a>, a <a href=\"http://wordpress.org/support/view/plugin-reviews/quiz-master-"
+"next\">review</a>, or taking this <a href=\"http://mylocalwebstop.com/sample-"
+"survey/\" target=\"_blank\">survey</a>. | <a href=\"%1$s\">Hide Notice</a>"
+msgstr ""
+
+#: ../Older_Dev/3.1.1/3.1.1/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.1.1/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.2.1/3.2.1/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.2.1/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.2.2/3.2.2/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.2.2/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.3.1/3.3.1/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.3.1/trunk/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.3.2/3.3.2/mlw_quizmaster2.php:99
+#: ../Older_Dev/3.3.2/trunk/mlw_quizmaster2.php:99
+#, php-format
+msgid ""
+"You have been using the Quiz Master Next plugin for a while now! Thanks for "
+"choosing to use this plugin. If it has benefited your website, please "
+"consider purchasing an <a href=\"http://mylocalwebstop.com/shop/\">add-on</"
+"a>, giving a <a href=\"http://wordpress.org/support/view/plugin-reviews/quiz-"
+"master-next\">review</a>, or taking this <a href=\"http://mylocalwebstop.com/"
+"sample-survey/\" target=\"_blank\">survey</a>. | <a href=\"%1$s\">Hide "
+"Notice</a>"
+msgstr ""
+
+#: ../Older_Dev/Before 1.0/0.9.7/trunk/includes/mlw_dashboard.php:128
+msgid ""
+"Thank you for trying out this plugin. I hope you find it beneficial to your "
+"website. If it is, please consider donating from the support page. Or, "
+"please consider rating this plugin "
+msgstr ""
+
+#: ../Older_Dev/Before 1.0/0.9.7/trunk/includes/mlw_dashboard.php:128
+#: 1.0/0.9.8/trunk/includes/mlw_dashboard.php:128
+#: 1.0/0.9.9/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.0.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.0/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.1.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.2.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.3.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.4.1/trunk/includes/mlw_dashboard.php:136
+#: 2.0/1.4.2/trunk/includes/mlw_dashboard.php:136
+#: 2.0/1.5.1/trunk/includes/mlw_dashboard.php:134
+#: 2.0/1.6.1/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.6.2/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.6.3/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.7.1/trunk/includes/mlw_dashboard.php:147
+msgid "here"
+msgstr ""
+
+#: ../Older_Dev/Before 1.0/0.9.8/trunk/includes/mlw_dashboard.php:128
+#: 1.0/0.9.9/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.0.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.0/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.1.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.2.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.3.1/trunk/includes/mlw_dashboard.php:128
+#: 2.0/1.4.1/trunk/includes/mlw_dashboard.php:136
+#: 2.0/1.4.2/trunk/includes/mlw_dashboard.php:136
+msgid ""
+"Thank you for trying out this plugin. I hope you find it beneficial to your "
+"website. If it is, please consider donating Or, please consider rating this "
+"plugin "
+msgstr ""
+
+#: ../Older_Dev/Before 2.0/1.5.1/trunk/includes/mlw_dashboard.php:134
+#: 2.0/1.6.1/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.6.2/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.6.3/trunk/includes/mlw_dashboard.php:138
+#: 2.0/1.7.1/trunk/includes/mlw_dashboard.php:147
+msgid ""
+"Thank you for trying out this plugin. I hope you find it beneficial to your "
+"website. If it is, please consider donating or please consider rating this "
+"plugin "
+msgstr ""
+
+#: ../Older_Dev/Before 2.0/1.7.1/trunk/mlw_quizmaster2.php:78
+#, php-format
+msgid ""
+"You have been using the Quiz Master Next plugin for a while now! Thanks for "
+"choosing to use this plugin. If it has benefited your website, please "
+"consider a <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-"
+"xclick&hosted_button_id=RTGYAETX36ZQJ\">donation</a> or a <a href=\"http://"
+"wordpress.org/support/view/plugin-reviews/quiz-master-next\">review</a>. | "
+"<a href=\"%1$s\">Hide Notice</a>"
+msgstr ""
+
+#: ../Older_Dev/Before 2.0/1.8.1/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.8.2/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.1/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.2/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.3/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.4/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.5/trunk/mlw_quizmaster2.php:78
+#: 2.0/1.9.6/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.0.1/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.1.1/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.2.1/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.2.2/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.3.1/trunk/mlw_quizmaster2.php:78
+#: ../Older_Dev/Before_3.0/2.4.1/trunk/mlw_quizmaster2.php:78
+#, php-format
+msgid ""
+"You have been using the Quiz Master Next plugin for a while now! Thanks for "
+"choosing to use this plugin. If it has benefited your website, please "
+"consider a <a href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-"
+"xclick&hosted_button_id=RTGYAETX36ZQJ\">donation</a>, a <a href=\"http://"
+"wordpress.org/support/view/plugin-reviews/quiz-master-next\">review</a>, or "
+"taking this <a href=\"http://mylocalwebstop.com/sample-survey/\" target="
+"\"_blank\">survey</a>. | <a href=\"%1$s\">Hide Notice</a>"
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_options_option_tab.php:214
+#: includes/qmn_options_option_tab.php:214
+msgid ""
+"This option is for here only for users of older versions. Please use the new "
+"template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages "
+"instead of using this option!"
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:568
+#: ../quiz_master_next/includes/qmn_options_questions_tab.php:737
+#: includes/qmn_options_questions_tab.php:568
+#: includes/qmn_options_questions_tab.php:737
+msgid ""
+"For fill in the blank types, use %BLANK% to represent where to put the text "
+"box in your text."
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:191
+#: includes/qmn_options_results_page_tab.php:191
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:194
+#: includes/qmn_options_results_page_tab.php:194
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:209
+#: ../quiz_master_next/includes/qmn_options_results_page_tab.php:273
+#: includes/qmn_options_results_page_tab.php:209
+#: includes/qmn_options_results_page_tab.php:273
+msgid "Redirect URL"
+msgstr ""
+
+#: ../quiz_master_next/includes/qmn_question_types.php:579
+#: includes/qmn_question_types.php:579
+msgid "Fill In The Blank"
+msgstr ""

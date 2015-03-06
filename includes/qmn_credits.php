@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page shows the about page
 */
@@ -94,51 +95,41 @@ function mlw_generate_about_page()
 			<?php _e('Requested Features', 'quiz-master-next'); ?></a>
 	</h2>
 	<div id="mlw_quiz_what_new">
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Admin Result Pages Redesigned</h2>
-	<p style="text-align: center;">This version redesigned the admin result pages. You can now multi-delete results. You can now go to the previous/next results when viewing results.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Restore Deleted Quizzes</h2>
-	<p style="text-align: center;">You can now restore quizzes that you have deleted! To do so, visit the Tools page.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Quizzes Have Direct URLs</h2>
-	<p style="text-align: center;">We have started to incorporate the custom post type system. As such, newer quizzes will have direct urls. Users can search for quizzes and view an archive of your quizzes. To disable these features, navigate to our new Settings page in the Quizzes menu.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Ability To Use Own Facebook App ID</h2>
-	<p style="text-align: center;">Many users have been asking to use their own app ID instead. You can now use your own app by changing the app id on the new Settings page.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
-	<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and March 31st, 2015 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
-	<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
-	<br />
-	<hr />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Hook For The Template Variable List</h2>
-	<p style="text-align: center;">You can now display your custom variables using the new qmn_template_variable_list hook.</p>
-	<br />
-	<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
-	<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
-	<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Fill In The Blank Questions</h2>
+		<p style="text-align: center;">You can now use the new fill in the blank question type. By placing the variable %BLANK% in your question, you will be able to designate where to show the text box so users can fill in their answer.</p>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Social Media Template Variables</h2>
+		<p style="text-align: center;">Using the new social media template variables, you can choose where on your results page to display the social media buttons.</p>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Redirect User Upon Completion</h2>
+		<p style="text-align: center;">If you decide to do so, you can have the user be redirected to a new page instead of being shown the results.</p>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">5 New Translations</h2>
+		<p style="text-align: center;">Thanks to the generosity of some of our users, we now have translations for Portuguese, Spanish, Thai, Danish, and Dutch.</p>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
+		<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. Users who take the survey between now and March 31st, 2015 will be emailed a 25% off coupon for our WordPress Store. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
+		<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
+		<br />
+		<hr />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
+		<br />
+		<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
+		<p style="text-align: center;">We have had several users ask for this so we thought we would try it out. We now love github! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a>.</p>
+		<br />
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (February 11, 2015)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (March 7, 2015)</h3>
 	<ul>
-		<li>* Added Ability To Restore Deleted Quizzes <a href="https://github.com/fpcorso/quiz_master_next/issues/107" target="_blank">GitHub Issue #107</a></li>
-		<li>* Added Ability To Multi-Delete Results <a href="https://github.com/fpcorso/quiz_master_next/issues/4" target="_blank">GitHub Issue #4</a></li>
-		<li>* Redesigned Admin Results Pages <a href="https://github.com/fpcorso/quiz_master_next/issues/106" target="_blank">GitHub Issue #106</a></li>
-		<li>* Added Ability To Go To Next/Previous Results <a href="https://github.com/fpcorso/quiz_master_next/issues/71" target="_blank">GitHub Issue #71</a></li>
-		<li>* Quizzes Now Have Direct URL And Archive <a href="https://github.com/fpcorso/quiz_master_next/issues/104" target="_blank">GitHub Issue #104</a></li>
-		<li>* Added Ability To Use Own Facebook App ID <a href="https://github.com/fpcorso/quiz_master_next/issues/137" target="_blank">GitHub Issue #137</a></li>
-		<li>* In Code: New Hook For Template Variable List</li>
-		<li>* In Code: Certificate On Admin Results Now Hooked Into New Template Variable System</li>
-		<li>* In Code: Converted Support Widget To Remote Post <a href="https://github.com/fpcorso/quiz_master_next/issues/114" target="_blank">GitHub Issue #114</a></li>
-		<li>* In Code: Added Uninstall File Direct Access Check</li>
-		<li>* Bug Fix: Fixed Dashboard Widget No Quiz Bug <a href="https://github.com/fpcorso/quiz_master_next/issues/119" target="_blank">GitHub Issue #119</a></li>
-		<li>* Bug Fix: Fixed Shortcode No Quiz Bug <a href="https://github.com/fpcorso/quiz_master_next/issues/120" target="_blank">GitHub Issue #120</a></li>
-		<li>* Bug Fix: Fixed Required Contact User Bug <a href="https://github.com/fpcorso/quiz_master_next/issues/123" target="_blank">GitHub Issue #123</a></li>
-		<li>* Bug Fix: Fixed Text Template Bug <a href="https://github.com/fpcorso/quiz_master_next/issues/117" target="_blank">GitHub Issue #117</a></li>
+		<li>* Added Fill In The Blank Questions <a href="https://github.com/fpcorso/quiz_master_next/issues/132" target="_blank">GitHub Issue #132</a></li>
+		<li>* Created New Template Variables For Social Sharing <a href="https://github.com/fpcorso/quiz_master_next/issues/121" target="_blank">GitHub Issue #121</a></li>
+		<li>* Added Ability To Redirect To Other Page Upon Completion <a href="https://github.com/fpcorso/quiz_master_next/issues/35" target="_blank">GitHub Issue #35</a></li>
+		<li>* Added Several Translations: da_DK, es_ES, nl_NL, pt_BR, and th</li>
+		<li>* Bug Fix: Duplicate Quizzes Not Having URL <a href="https://github.com/fpcorso/quiz_master_next/issues/144" target="_blank">GitHub Issue #144</a></li>
+		<li>* Bug Fix: Message Sent Text <a href="https://github.com/fpcorso/quiz_master_next/issues/142" target="_blank">GitHub Issue #142</a></li>
+		<li>* Bug Fix: Missing Footer Column <a href="https://github.com/fpcorso/quiz_master_next/issues/145" target="_blank">GitHub Issue #145</a></li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
@@ -154,7 +145,6 @@ function mlw_generate_about_page()
 		<li>Show Question Amount On Pagination</li>
 		<li>Allow Quiz To Not Show Start Page</li>
 		<li>Progress Bar For Timer</li>
-		<li>Ability To Redirect User Instead Of Showing Results Page</li>
 		<li>Graphical Click Aware Questions</li>
 		<li>Results Bar Graph For Users Taking Polls</li>
 		<li>Head To Head Comparison Questions</li>
