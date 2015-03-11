@@ -14,6 +14,7 @@ __Please Note:__ GitHub is not intended for support based questions. For those, 
   * For bug reports:
     * Please follow the debug guidlines below and report findings
     * Include what version of WordPress and what version of Quiz Master Next you are using
+    * Include what operating system and browser you are using if applicable
     * If possible include link to quiz url or screenshot of issue
     * Clearly describe the bug/issue and include steps on how to reproduce it
   * For feature requests:
@@ -26,6 +27,7 @@ If you are reporting a bug, please follow these guidlines first to see if any of
 * Switch to the default theme such as Twenty Fifteen, does your problem still persist?
 * De-activate all other plugins, does your problem still persist?
 	* If that solves the problem, re-activate your plugins one at a time and test is the problem re-appears. If so, let us know which plugin caused it.
+* Try switching to another browser. Does your problem still persist?
 
 ## Making Changes
 
