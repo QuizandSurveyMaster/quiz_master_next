@@ -26,7 +26,7 @@ __Please Note:__ GitHub is not intended for support based questions. For those, 
 If you are reporting a bug, please follow these guidlines first to see if any of these resolves the issue.
 * Switch to the default theme such as Twenty Fifteen, does your problem still persist?
 * De-activate all other plugins, does your problem still persist?
-	* If that solves the problem, re-activate your plugins one at a time and test is the problem re-appears. If so, let us know which plugin caused it.
+	* If that solves the problem, re-activate your plugins one at a time and test if the problem re-appears. If so, let us know which plugin caused it.
 * Try switching to another browser. Does your problem still persist?
 
 ## Making Changes
