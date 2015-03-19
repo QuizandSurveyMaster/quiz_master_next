@@ -4,7 +4,7 @@ Community made feature requests, patches, localisations, bug reports and contrib
 
 When contributing please ensure you follow the guidelines below so that we can keep on top of things.
 
-__Please Note:__ GitHub is not intended for support based questions. For those, please use the [Support Forums](https://wordpress.org/support/plugin/quiz-master-next) or [Our Contact Form](http://mylocalwebstop.com/contact-us/)
+__Please Note:__ GitHub is not intended for support based questions. For those, please use the [Support Forums](https://wordpress.org/support/plugin/quiz-master-next) or [Our Contact Form](http://quizmasternext.com/contact-us/)
 
 ## Getting Started
 * Make sure you have a free [GitHub Account](https://github.com/signup/free)

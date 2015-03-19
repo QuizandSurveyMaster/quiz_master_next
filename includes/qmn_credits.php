@@ -3,9 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page shows the about page
 */
-/*
-Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
-*/
 
 function mlw_generate_about_page()
 {
@@ -121,15 +118,10 @@ function mlw_generate_about_page()
 		<br />
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (March 7, 2015)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (March 19, 2015)</h3>
 	<ul>
-		<li>* Added Fill In The Blank Questions <a href="https://github.com/fpcorso/quiz_master_next/issues/132" target="_blank">GitHub Issue #132</a></li>
-		<li>* Created New Template Variables For Social Sharing <a href="https://github.com/fpcorso/quiz_master_next/issues/121" target="_blank">GitHub Issue #121</a></li>
-		<li>* Added Ability To Redirect To Other Page Upon Completion <a href="https://github.com/fpcorso/quiz_master_next/issues/35" target="_blank">GitHub Issue #35</a></li>
-		<li>* Added Several Translations: da_DK, es_ES, nl_NL, pt_BR, and th</li>
-		<li>* Bug Fix: Duplicate Quizzes Not Having URL <a href="https://github.com/fpcorso/quiz_master_next/issues/144" target="_blank">GitHub Issue #144</a></li>
-		<li>* Bug Fix: Message Sent Text <a href="https://github.com/fpcorso/quiz_master_next/issues/142" target="_blank">GitHub Issue #142</a></li>
-		<li>* Bug Fix: Missing Footer Column <a href="https://github.com/fpcorso/quiz_master_next/issues/145" target="_blank">GitHub Issue #145</a></li>
+		<li>* Minor Design Changes</li>
+		<li>* Moved Redirect URL Back To Beta</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">

@@ -3,8 +3,8 @@ Contributors: fpcorso
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
-Tested up to: 4.1
-Stable tag: 4.2.0
+Tested up to: 4.1.1
+Stable tag: 4.2.1
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -76,11 +76,11 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
 = Demoes! =
-You can check out the sample quiz with various questions types here: [Sample Quiz](http://mylocalwebstop.com/sample-quiz/)!
-You can check out the sample survey with pagination here: [Sample Survey](http://mylocalwebstop.com/sample-survey/)!
+You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizmasternext.com/quiz/sample-quiz/)!
+You can check out the sample survey with pagination here: [Sample Survey](http://quizmasternext.com/quiz/sample-survey/)!
 
 = Quiz Master Next Add-ons =
-While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer vaious extra features and support available in our [Wordpress Store](http://mylocalwebstop.com/store/)
+While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer vaious extra features and support available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
 
 
 == Installation ==
@@ -99,16 +99,13 @@ While Quiz Master Next is fully functional and is packed full of features that w
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://mylocalwebstop.com/plugin-documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
+We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizmasternext.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
 
 = I need a lot of help setting up my quiz, what can you do to help? =
-We now offer a premium support plan that offers priority response, technical support, and priority feature requests! For details, visit our services page: [My Local Webstop Services](http://mylocalwebstop.com/downloads/plugin-premium-support/)
-
-= Do you offer any 1-on-1 training to assist me in using this plugin? =
-We now offer 1-on-1 training for consulting and training. For details, visit our [Wordpress Store](http://mylocalwebstop.com/store/)
+We now offer a premium support plan that offers priority response, technical support, and priority feature requests! For details, visit our support page: [Quiz Master Next Support](http://quizmasternext.com/downloads/premium-support/)
 
 = I have an idea, how do I contact you? =
-Feel free to use the widget on the help page within the plugin or from the contact page at mylocalwebstop.com.
+Feel free to use the widget on the help page within the plugin or from our [contact page](http://quizmasternext.com/contact-us/).
 
 == Screenshots ==
 
@@ -122,6 +119,10 @@ Feel free to use the widget on the help page within the plugin or from the conta
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.2.1 (March 19, 2015) =
+ * Minor Design Changes
+ * Moved Redirect URL Back To Beta
 
 = 4.2.0 (March 7, 2015) =
  * Added Fill In The Blank Questions ([GitHub Issue #132](https://github.com/fpcorso/quiz_master_next/issues/132))

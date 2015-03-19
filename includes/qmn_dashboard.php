@@ -396,11 +396,7 @@ function mlw_dashboard_box_six()
 	<div>
 		<h2>Plugin Premium Support</h2>
 		<p>Get access to premium support and always be a priority in our support. We will provide technical support and even access your site to solve your problems. With premium support, we will answer your responses as quickly as possible and your feature requests will be priorities in our future updates.</p>
-		<p>For details, visit our <a href="http://mylocalwebstop.com/downloads/plugin-premium-support/" target="_blank" style="color:blue;">Plugin Premium Support</a> page.</p>
-		<hr />
-		<h2>Plugin Installation Services</h2>
-		<p>We will install and configure any or all of our WordPress plugins on your existing WordPress site.</p>
-		<p>For details, visit our <a href="http://mylocalwebstop.com/downloads/plugin-installation/" target="_blank" style="color:blue;">Plugin Installation</a> page.</p>
+		<p>For details, visit our <a href="http://quizmasternext.com/downloads/premium-support/" target="_blank" style="color:blue;">Premium Support</a> page.</p>
 		<hr />
 		<h2>WordPress Maintenance Services</h2>
 		<p>Our maintenance service includes around the clock security monitoring, off-site backups, plugin updates, theme updates, WordPress updates, WordPress training videos, and a Monthly Status Report.</p>

@@ -95,7 +95,7 @@ function mlw_options_styling_tab_content()
 		<hr />
 		<h3><?php _e('Custom Style CSS', 'quiz-master-next'); ?></h3>
 		<p><?php _e('For detailed help and guidance along with a list of different classes used in this plugin, please visit the following link:', 'quiz-master-next'); ?>
-		<a target="_blank" href="http://mylocalwebstop.com/quiz-master-next-editing-quizs-style/">Style Guide</a></p>
+		<a target="_blank" href="http://quizmasternext.com/quiz-master-next-editing-quizs-style/">Style Guide</a></p>
 		<button id="save_styles_button" class="button" onclick="javascript: document.quiz_style_form.submit();">Save Quiz Style</button>
 
 		<table class="form-table">
