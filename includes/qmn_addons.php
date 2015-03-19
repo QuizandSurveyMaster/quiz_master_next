@@ -49,26 +49,26 @@ function qmn_generate_featured_addons()
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Export Results</h3>
 		<p class="qmn_addons_desc">This add-on gives you the ability to export your quiz results as a CSV file.</p>
-		<a href="http://mylocalwebstop.com/downloads/export-results/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizmasternext.com/downloads/export-results/" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Advertisement Be Gone</h3>
 		<p class="qmn_addons_desc">This add-on will remove all services/add-on advertisements in all of our Master Suite plugins.</p>
-		<a href="http://mylocalwebstop.com/downloads/advertisement-gone/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizmasternext.com/downloads/advertisement-gone/" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">MailPoet Integration</h3>
 		<p class="qmn_addons_desc">Grow your list of subscribers in MailPoet by using this add-on to add users who take your quizzes!</p>
-		<a href="http://mylocalwebstop.com/downloads/mailpoet-integration/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizmasternext.com/downloads/mailpoet-integration/" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Advanced Leaderboard</h3>
 		<p class="qmn_addons_desc">This add-on gives you 4 new leaderboard shortcodes and 2 new widgets that you can customize per use. You can edit how many results are listed, the name of the leaderboard, and the order the results are listed in.</p>
-		<a href="http://mylocalwebstop.com/downloads/advanced-leaderboard-quiz-master-next/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizmasternext.com/downloads/advanced-leaderboard/" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div style="clear:both;">
 	<br />
-	<a href="http://mylocalwebstop.com/store/" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
+	<a href="http://quizmasternext.com/addons/" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
 	<?php
 }
 

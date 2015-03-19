@@ -206,7 +206,7 @@ function mlw_options_results_tab_content()
 					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
-					<th><?php _e('Redirect URL', 'quiz-master-next'); ?></th>
+					<th><?php _e('Redirect URL (Beta)', 'quiz-master-next'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -270,7 +270,7 @@ function mlw_options_results_tab_content()
 					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
 					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
-					<th><?php _e('Redirect URL', 'quiz-master-next'); ?></th>
+					<th><?php _e('Redirect URL (Beta)', 'quiz-master-next'); ?></th>
 				</tr>
 			</tfoot>
 		</table>

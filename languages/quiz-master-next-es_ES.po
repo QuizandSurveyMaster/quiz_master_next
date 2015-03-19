@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
-"Report-Msgid-Bugs-To: Frank Corso <fpcorso@mylocalwebstop.com>\n"
-"POT-Creation-Date: 2015-03-06 14:04-0500\n"
-"PO-Revision-Date: 2015-03-06 14:04-0500\n"
-"Last-Translator: jhernanz <jordi.hernanz@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-18 23:29-0500\n"
+"PO-Revision-Date: 2015-03-18 23:29-0500\n"
+"Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
@@ -13,15 +13,436 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
-"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
-"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
-"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
-"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
-"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
 "X-Poedit-Basepath: ../\n"
 "X-Generator: Poedit 1.7.3\n"
 "X-Loco-Target-Locale: es_ES\n"
 "X-Poedit-SearchPath-0: .\n"
+
+#: mlw_quizmaster2.php:217
+msgid "Quizzes"
+msgstr "Cuestionarios"
+
+#: mlw_quizmaster2.php:218
+msgid "Quiz Settings"
+msgstr "Configuración de la encuesta"
+
+#: mlw_quizmaster2.php:219
+msgid "Quiz Results"
+msgstr "Resultados de la encuesta."
+
+#: mlw_quizmaster2.php:220
+msgid "Quiz Result Details"
+msgstr "Detalle de resultados del cuestionario"
+
+#: mlw_quizmaster2.php:221
+msgid "Settings"
+msgstr "Configuración"
+
+#: mlw_quizmaster2.php:222
+msgid "Tools"
+msgstr "Herramientas"
+
+#: mlw_quizmaster2.php:223
+msgid "Stats"
+msgstr "Estadísticas"
+
+#: mlw_quizmaster2.php:224
+msgid "Addon Settings"
+msgstr "Configuración de Addon"
+
+#: mlw_quizmaster2.php:225
+msgid "Help"
+msgstr "Ayuda"
+
+#: mlw_quizmaster2.php:228
+#: mlw_quizmaster2.php:229
+msgid "QMN About"
+msgstr "Sobre QMN"
+
+#: includes/qmn_options_email_tab.php:6
+msgid "Emails"
+msgstr "Emails"
+
+#: includes/qmn_options_email_tab.php:42
+#: includes/qmn_options_email_tab.php:101
+msgid "The email has been added successfully."
+msgstr "El email ha sido añadido correctamente"
+
+#: includes/qmn_options_email_tab.php:55
+#: includes/qmn_options_email_tab.php:114
+#: includes/qmn_options_email_tab.php:178
+#: includes/qmn_quiz_creator.php:382
+#: includes/qmn_quiz_creator.php:448
+#: includes/qmn_quiz_creator.php:490
+#: includes/qmn_quiz_creator.php:648
+#: includes/qmn_quiz_creator.php:713
+#: includes/qmn_options_leaderboard_tab.php:38
+#: includes/qmn_options_text_tab.php:55
+#, php-format
+msgid "There has been an error in this action. Please share this with the developer. Error Code: %s"
+msgstr ""
+"Existe un error en esta acción. Por favor comparta esto con el desarrollador. El código de error es: \n"
+"%s"
+
+#: includes/qmn_options_email_tab.php:73
+#: includes/qmn_options_email_tab.php:91
+msgid "Enter text here"
+msgstr "Escriba el texto aquí"
+
+#: includes/qmn_options_email_tab.php:165
+msgid "The email has been updated successfully."
+msgstr "El email ha sido actualizado correctamente"
+
+#: includes/qmn_options_email_tab.php:232
+#: includes/qmn_options_leaderboard_tab.php:49
+#: includes/qmn_options_text_tab.php:92
+msgid "Template Variables"
+msgstr "Variables de la plantilla"
+
+#: includes/qmn_options_email_tab.php:235
+#: includes/qmn_options_text_tab.php:95
+msgid "Score for the quiz when using points"
+msgstr "Puntuación de la encuesta cuando se usan puntos"
+
+#: includes/qmn_options_email_tab.php:238
+#: includes/qmn_options_text_tab.php:98
+msgid "The average amount of points user had per question"
+msgstr "Media de puntos por usuario por pregunta"
+
+#: includes/qmn_options_email_tab.php:241
+#: includes/qmn_options_text_tab.php:101
+msgid "The number of correct answers the user had"
+msgstr "Número de respuestas correctas que obtuvo el usuario"
+
+#: includes/qmn_options_email_tab.php:244
+#: includes/qmn_options_text_tab.php:104
+msgid "The total number of questions in the quiz"
+msgstr "Número de preguntas totales en la encuesta"
+
+#: includes/qmn_options_email_tab.php:247
+#: includes/qmn_options_text_tab.php:107
+msgid "Score for the quiz when using correct answers"
+msgstr "Puntuación de la encuesta basada en las respuestas correctas"
+
+#: includes/qmn_options_email_tab.php:250
+#: includes/qmn_options_text_tab.php:110
+msgid "The name the user entered before the quiz"
+msgstr "Nombre que el usuario introdujo antes de la encuesta"
+
+#: includes/qmn_options_email_tab.php:253
+#: includes/qmn_options_text_tab.php:113
+msgid "The business the user entered before the quiz"
+msgstr "El asunto que el usuario introdujo antes de la encuesta."
+
+#: includes/qmn_options_email_tab.php:256
+#: includes/qmn_options_text_tab.php:116
+msgid "The phone number the user entered before the quiz"
+msgstr "El número de teléfono que el usuario introdujo antes de la encuesta"
+
+#: includes/qmn_options_email_tab.php:259
+#: includes/qmn_options_text_tab.php:119
+msgid "The email the user entered before the quiz"
+msgstr "El email que el usuario introdujo antes de la encuesta"
+
+#: includes/qmn_options_email_tab.php:262
+#: includes/qmn_options_leaderboard_tab.php:77
+#: includes/qmn_options_text_tab.php:122
+msgid "The name of the quiz"
+msgstr "El nombre de la encuesta"
+
+#: includes/qmn_options_email_tab.php:265
+#: includes/qmn_options_text_tab.php:125
+msgid "Shows the question, the answer the user provided, and the correct answer"
+msgstr "Muestra la pregunta, la respuesta del usuario y la respuesta correcta"
+
+#: includes/qmn_options_email_tab.php:268
+#: includes/qmn_options_text_tab.php:128
+msgid "The comments the user entered into comment box if enabled"
+msgstr "Los comentarios que el usuario introdujo en la caja de comentarios si esta está habilitada"
+
+#: includes/qmn_options_email_tab.php:271
+#: includes/qmn_options_text_tab.php:131
+msgid "The amount of time user spent of quiz"
+msgstr "Tiempo empleado por el usuario en responder el cuestionario"
+
+#: includes/qmn_options_email_tab.php:274
+#: includes/qmn_options_text_tab.php:134
+msgid "The link to the certificate after completing the quiz"
+msgstr "El enlace hacia el certificado después de completar la encuesta"
+
+#: includes/qmn_options_email_tab.php:277
+#: includes/qmn_options_text_tab.php:137
+msgid "The amount of points a specific category earned."
+msgstr "El total de puntos obtenidos en una categoría específica"
+
+#: includes/qmn_options_email_tab.php:280
+#: includes/qmn_options_text_tab.php:140
+msgid "The score a specific category earned."
+msgstr "La puntuación obtenida en una categoría específica."
+
+#: includes/qmn_options_email_tab.php:283
+#: includes/qmn_options_text_tab.php:143
+msgid "The average points from all categories."
+msgstr "La media de puntos contando todas las categorías."
+
+#: includes/qmn_options_email_tab.php:286
+#: includes/qmn_options_text_tab.php:146
+msgid "The average score from all categories."
+msgstr "La puntuación media contando todas las categorías."
+
+#: includes/qmn_options_email_tab.php:289
+#: includes/qmn_options_text_tab.php:149
+msgid "The question that the user answered"
+msgstr "La pregunta que el usuario respondió"
+
+#: includes/qmn_options_email_tab.php:292
+#: includes/qmn_options_text_tab.php:152
+msgid "The answer the user gave for the question"
+msgstr "La respuesta del usuario a la pregunta"
+
+#: includes/qmn_options_email_tab.php:295
+#: includes/qmn_options_text_tab.php:155
+msgid "The correct answer for the question"
+msgstr "La contestación correcta a la pregunta"
+
+#: includes/qmn_options_email_tab.php:298
+#: includes/qmn_options_text_tab.php:158
+msgid "The comments the user provided in the comment field for the question"
+msgstr "Los comentarios que el usuario indicó en el campo de comentarios de la pregunta."
+
+#: includes/qmn_options_email_tab.php:301
+#: includes/qmn_options_text_tab.php:161
+msgid "Reason why the correct answer is the correct answer"
+msgstr "La razón por qué la respuesta correcta es la respuesta correcta"
+
+#: includes/qmn_options_email_tab.php:304
+#: includes/qmn_options_text_tab.php:164
+msgid "The Current Date"
+msgstr "La fecha actual"
+
+#: includes/qmn_options_email_tab.php:319
+#: includes/qmn_options_email_tab.php:518
+msgid "Save Email Templates And Settings"
+msgstr "Guardar email, plantillas y preferencias"
+
+#: includes/qmn_options_email_tab.php:323
+msgid "Send user email upon completion?"
+msgstr "¿Enviar un email al usuario al finalizar?"
+
+#: includes/qmn_options_email_tab.php:325
+#: includes/qmn_options_email_tab.php:332
+msgid "Yes"
+msgstr "sí"
+
+#: includes/qmn_options_email_tab.php:326
+#: includes/qmn_options_email_tab.php:333
+msgid "No"
+msgstr "No"
+
+#: includes/qmn_options_email_tab.php:330
+msgid "Send admin email upon completion?"
+msgstr "¿Enviar un email al administrador al finalizar?"
+
+#: includes/qmn_options_email_tab.php:337
+msgid "What emails should we send the admin email to? Separate emails with a comma."
+msgstr "¿Qué emails deberíamos enviar al administrador?. Separar los emails con una coma."
+
+#: includes/qmn_options_email_tab.php:341
+msgid "What is the From Name for the email sent to users and admin?"
+msgstr "¿Cual es el nombre desde el cual se enviarán el email a los usuarios y administrador?"
+
+#: includes/qmn_options_email_tab.php:347
+msgid "Email Sent To User"
+msgstr "Email enviado al usuario"
+
+#: includes/qmn_options_email_tab.php:348
+#: includes/qmn_options_email_tab.php:426
+msgid "Add New User Email"
+msgstr "Añadir un nuevo email de usuario "
+
+#: includes/qmn_options_email_tab.php:353
+#: includes/qmn_options_email_tab.php:419
+#: includes/qmn_options_email_tab.php:440
+#: includes/qmn_options_email_tab.php:506
+msgid "Score Greater Than Or Equal To"
+msgstr "Puntuación 'mayor que' o 'igual que'"
+
+#: includes/qmn_options_email_tab.php:354
+#: includes/qmn_options_email_tab.php:420
+#: includes/qmn_options_email_tab.php:441
+#: includes/qmn_options_email_tab.php:507
+msgid "Score Less Than Or Equal To"
+msgstr "Puntuación 'menor que' o 'igual que'"
+
+#: includes/qmn_options_email_tab.php:355
+#: includes/qmn_options_email_tab.php:421
+#: includes/qmn_options_email_tab.php:442
+#: includes/qmn_options_email_tab.php:508
+msgid "Subject"
+msgstr "Asunto"
+
+#: includes/qmn_options_email_tab.php:356
+#: includes/qmn_options_email_tab.php:422
+#: includes/qmn_options_email_tab.php:443
+#: includes/qmn_options_email_tab.php:509
+msgid "Email To Send"
+msgstr "Email a enviar"
+
+#: includes/qmn_options_email_tab.php:434
+msgid "Email Sent To Admin"
+msgstr "Email enviado a administrador"
+
+#: includes/qmn_options_email_tab.php:435
+#: includes/qmn_options_email_tab.php:513
+msgid "Add New Admin Email"
+msgstr "Añadir nuevo email de administrador"
+
+#: includes/qmn_quiz_creator.php:369
+msgid "Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz."
+msgstr "Su cuestionario ha sido creado correctamente. Para empezar a editar su cuestionario haga click en Edit en el nuevo cuestionario."
+
+#: includes/qmn_quiz_creator.php:435
+msgid "Your quiz has been deleted successfully."
+msgstr "Su cuestionario ha sido eliminado correctamente."
+
+#: includes/qmn_quiz_creator.php:477
+msgid "Your quiz name has been updated successfully."
+msgstr "Su cuestionario ha sido actualizado correctamente."
+
+#: includes/qmn_quiz_creator.php:634
+msgid "Your quiz has been duplicated successfully."
+msgstr "Su cuestionario ha sido duplicado correctamente."
+
+#: includes/qmn_quiz.php:326
+msgid "Not a valid e-mail address!"
+msgstr "E-mail no válido!!"
+
+#: includes/qmn_quiz.php:327
+msgid "This field must be a number!"
+msgstr "Este campo debe ser númerico!"
+
+#: includes/qmn_quiz.php:328
+msgid "The entered text is not correct!"
+msgstr "El texto introducido no es correcto!"
+
+#: includes/qmn_quiz.php:329
+msgid "Please complete all required fields!"
+msgstr "Por favor, complete todas los campos obligatorios!"
+
+#: includes/qmn_quiz.php:441
+msgid "Hint"
+msgstr "Indicación"
+
+#: includes/qmn_quiz.php:1230
+#: includes/qmn_options_text_tab.php:73
+msgid "Previous"
+msgstr "Anterior"
+
+#: includes/qmn_credits.php:83
+msgid "Welcome To Quiz Master Next"
+msgstr "Bienvenido a Quiz Master Next"
+
+#: includes/qmn_credits.php:84
+msgid "Thank you for updating!"
+msgstr "Gracias por actualizar!"
+
+#: includes/qmn_credits.php:88
+msgid "What's New!"
+msgstr "Novedades!"
+
+#: includes/qmn_credits.php:90
+msgid "Changelog"
+msgstr "Historial de modificaciones"
+
+#: includes/qmn_credits.php:92
+msgid "Requested Features"
+msgstr "Características solicitadas"
+
+#: includes/qmn_usage_tracking.php:193
+msgid "Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked."
+msgstr ""
+"¿Permite a \n"
+"Quiz Master Next el envío de información acerca del uso de este plugin con el fín de ayudarnos a mejorar este plugin? No se hará seguimiento sobre información privada."
+
+#: includes/qmn_usage_tracking.php:194
+msgid "Allow"
+msgstr "Permitir"
+
+#: includes/qmn_usage_tracking.php:195
+msgid "Do not allow"
+msgstr "No permitir"
+
+#: includes/qmn_options_leaderboard_tab.php:6
+msgid "Leaderboard"
+msgstr "Clasificación"
+
+#: includes/qmn_options_leaderboard_tab.php:25
+msgid "The leaderboards has been updated successfully."
+msgstr "Las tablas de clasificación han sido actualizadas correctamente."
+
+#: includes/qmn_options_leaderboard_tab.php:52
+msgid "The name of the user who is in first place"
+msgstr "El nombre del usuario que está en el primer puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:53
+msgid "The score from the first place's quiz"
+msgstr "La puntuación del usuario que está en el primer puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:57
+msgid "The name of the user who is in second place"
+msgstr "El nombre del usuario que está en segundo puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:58
+msgid "The score from the second place's quiz"
+msgstr "La puntuación del usuario que está en el segundo puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:62
+msgid "The name of the user who is in third place"
+msgstr "El nombre del usuario que está en el tercer puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:63
+msgid "The score from the third place's quiz"
+msgstr "La puntuación del usuario que está en el tercer puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:67
+msgid "The name of the user who is in fourth place"
+msgstr "El nombre del usuario que está en el cuarto puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:68
+msgid "The score from the fourth place's quiz"
+msgstr "La puntuación del usuario que está en el cuarto puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:72
+msgid "The name of the user who is in fifth place"
+msgstr "El nombre del usuario que está en el quinto puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:73
+msgid "The score from the fifth place's quiz"
+msgstr "La puntuación del usuario que está en el quinto puesto"
+
+#: includes/qmn_options_leaderboard_tab.php:80
+#: includes/qmn_options_leaderboard_tab.php:108
+msgid "Save Leaderboard Options"
+msgstr "Guardar las opciones de clasificación"
+
+#: includes/qmn_options_leaderboard_tab.php:89
+msgid "Leaderboard Template"
+msgstr "Plantilla de clasificación"
+
+#: includes/qmn_options_leaderboard_tab.php:91
+#: includes/qmn_options_text_tab.php:181
+#: includes/qmn_options_text_tab.php:191
+#: includes/qmn_options_text_tab.php:201
+#: includes/qmn_options_text_tab.php:211
+#: includes/qmn_options_text_tab.php:221
+#: includes/qmn_options_text_tab.php:231
+#: includes/qmn_options_text_tab.php:241
+#: includes/qmn_options_text_tab.php:251
+#: includes/qmn_options_text_tab.php:264
+#: includes/qmn_options_text_tab.php:281
+msgid "Allowed Variables:"
+msgstr "Variables permitidas:"
 
 #: includes/qmn_addons.php:48
 msgid "These addons extend the functionality of Quiz Master Next"
@@ -38,33 +459,641 @@ msgstr "ver todos los complementos (addons)"
 msgid "Featured Addons"
 msgstr "Complementos (addons) destacados"
 
-#: includes/qmn_alerts.php:19
-msgid "Success!"
-msgstr "Hecho!"
+#: includes/qmn_options_text_tab.php:6
+msgid "Text"
+msgstr "Texto"
 
-#: includes/qmn_alerts.php:23 includes/qmn_quiz_options.php:96
+#: includes/qmn_options_text_tab.php:42
+msgid "The templates has been updated successfully."
+msgstr "La plantilla ha sido actualizada correctamente."
+
+#: includes/qmn_options_text_tab.php:169
+#: includes/qmn_options_text_tab.php:329
+msgid "Save Templates"
+msgstr "Guardar Plantillas"
+
+#: includes/qmn_options_text_tab.php:175
+msgid "Message Templates"
+msgstr "Plantillas de Mensaje"
+
+#: includes/qmn_options_text_tab.php:179
+msgid "Message Displayed Before Quiz"
+msgstr "Mensaje Mostrado Antes del Cuestionario"
+
+#: includes/qmn_options_text_tab.php:189
+msgid "Message Displayed Before Comments Box If Enabled"
+msgstr "Mensaje Mostrado Antes del campo de Comentarios si está activado."
+
+#: includes/qmn_options_text_tab.php:199
+msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
+msgstr "Mensaje Mostrado al final de la encuesta (Dejar en blanco para omitir sección de texto)"
+
+#: includes/qmn_options_text_tab.php:209
+msgid "Message Displayed If User Has Tried Quiz Too Many Times"
+msgstr "Mensaje Mostrado si el usuario ha intentando entrar demasiadas veces."
+
+#: includes/qmn_options_text_tab.php:219
+msgid "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In"
+msgstr "Mensaje Mostrado si el usuario no ha iniciado sesión en un cuestionario que requería iniciar sesión."
+
+#: includes/qmn_options_text_tab.php:229
+msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
+msgstr "Mensaje Mostrado si la fecha está fuera del  calendario."
+
+#: includes/qmn_options_text_tab.php:239
+msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
+msgstr "Mensaje mostrado si el límite total de entradas ha sido superado."
+
+#: includes/qmn_options_text_tab.php:249
+msgid "%QUESTIONS_ANSWERS% Text"
+msgstr "%QUESTIONS_ANSWERS% Texto"
+
+#: includes/qmn_options_text_tab.php:262
+msgid "Twitter Sharing Text"
+msgstr "Texto para compartir en Twitter"
+
+#: includes/qmn_options_text_tab.php:279
+msgid "Facebook Sharing Text"
+msgstr "Texto para compartir en Facebook"
+
+#: includes/qmn_options_text_tab.php:294
+msgid "Other Templates"
+msgstr "Otras plantillas"
+
+#: includes/qmn_options_text_tab.php:297
+msgid "Text for submit button"
+msgstr "Texto para el botón de envío."
+
+#: includes/qmn_options_text_tab.php:301
+msgid "Text for name field"
+msgstr "Texto para el nombre del campo"
+
+#: includes/qmn_options_text_tab.php:305
+msgid "Text for business field"
+msgstr "Texto para el campo asunto."
+
+#: includes/qmn_options_text_tab.php:309
+msgid "Text for email field"
+msgstr "Texto para el campo email"
+
+#: includes/qmn_options_text_tab.php:313
+msgid "Text for phone number field"
+msgstr "Texto para el campo número de teléfono"
+
+#: includes/qmn_options_text_tab.php:317
+msgid "Text for comments field"
+msgstr "Texto para el campo Comentarios"
+
+#: includes/qmn_options_text_tab.php:321
+msgid "Text for previous button"
+msgstr "Texto para el botón Anterior"
+
+#: includes/qmn_options_text_tab.php:325
+msgid "Text for next button"
+msgstr "Texto para el botón Siguiente"
+
+#: includes/qmn_options_tools_tab.php:23
+msgid "The stats has been reset successfully."
+msgstr "Las estadísticas han sido reseteadas correctamente."
+
+#: includes/qmn_options_tools_tab.php:75
+msgid "Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken)."
+msgstr "Las estadísticas han sido reseteadas correctamente."
+
+#: includes/qmn_options_tools_tab.php:76
+msgid "Reset Quiz Views And Taken Stats"
+msgstr "Resetear Encuesta y Estadísticas Guardadas"
+
+#: includes/qmn_options_tools_tab.php:87
+msgid "Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone."
+msgstr "¿Está seguro que desea resetear las estadísticas a 0? Todas las vistas y estadísticas guardadas para este cuestionario serán eliminadas. Esto es permanente y no se puede deshacer."
+
+#: includes/qmn_options_tools_tab.php:91
+msgid "Reset All Stats For Quiz"
+msgstr "Resetear todas las estadísticas para de un Cuestionario"
+
+#: includes/qmn_dashboard_widgets.php:9
+msgid "Quiz Master Next Snapshot"
+msgstr "Quiz Master Next Snapshot"
+
+#: includes/qmn_dashboard_widgets.php:128
+msgid "quizzes taken today"
+msgstr "encuestas completadas hoy"
+
+#: includes/qmn_dashboard_widgets.php:147
+msgid "quizzes taken last 7 days"
+msgstr "encuestas completadas los últimos 7 días"
+
+#: includes/qmn_dashboard_widgets.php:166
+msgid "total active quizzes"
+msgstr "total encuestas activas"
+
+#: includes/qmn_dashboard_widgets.php:172
+msgid "total active questions"
+msgstr "total preguntas activas"
+
+#: includes/qmn_dashboard_widgets.php:178
+msgid "most popular quiz"
+msgstr "encuesta más popular"
+
+#: includes/qmn_dashboard_widgets.php:184
+msgid "least popular quiz"
+msgstr "encuesta menos popular"
+
+#: includes/qmn_options_certificate_tab.php:6
+msgid "Certificate (Beta)"
+msgstr "Certificado (Beta)"
+
+#: includes/qmn_options_certificate_tab.php:32
+msgid "The certificate has been updated successfully."
+msgstr "El certificado ha sido actualizado correctamente."
+
+#: includes/qmn_options_certificate_tab.php:61
+msgid "Enter title here"
+msgstr "Escriba el título aquí"
+
+#: includes/qmn_options_certificate_tab.php:70
+msgid "Quiz Certificate (Beta)"
+msgstr "Certificado de encuesta (Beta)"
+
+#: includes/qmn_options_certificate_tab.php:71
+msgid "Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate."
+msgstr "Escriba aquí el texto que aparecerá como certificado de esta encuesta. Asegúrese de introducir su enlace dentro de las plantillas en la pestaña Quiz Text para que el usuario pueda acceder a su certificado."
+
+#: includes/qmn_options_certificate_tab.php:72
+msgid "These fields cannot contain HTML."
+msgstr "Estos campos no pueden contener HTML."
+
+#: includes/qmn_options_certificate_tab.php:73
+#: includes/qmn_options_certificate_tab.php:129
+msgid "Save Certificate Options"
+msgstr "Guardas Opciones de Certificado"
+
+#: includes/qmn_options_certificate_tab.php:81
+msgid "Enable Certificates For This Quiz?"
+msgstr "¿Permitir Certificados para esta Encuesta?"
+
+#: includes/qmn_options_certificate_tab.php:89
+msgid "Certificate Title"
+msgstr "Título del certificado"
+
+#: includes/qmn_options_certificate_tab.php:96
+msgid "Message Displayed On Certificate"
+msgstr "Mensaje mostrado en el Certificado"
+
+#: includes/qmn_options_certificate_tab.php:116
+msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL del logo (debe estar en formato JPG, JPEG, PNG o GIF)"
+
+#: includes/qmn_options_certificate_tab.php:123
+msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL de la imagen de fondo (debe estar en formato JPG, JPEG, PNG o GIF)"
+
+#: includes/qmn_quiz_options.php:56
+#, php-format
+msgid "Quiz Settings For %s"
+msgstr "Configuración para el cuestionario %s"
+
+#: includes/qmn_quiz_options.php:96
 msgid "Error!"
 msgstr "Error!"
 
-#: includes/qmn_credits.php:86
-msgid "Welcome To Quiz Master Next"
-msgstr "Bienvenido a Quiz Master Next"
+#: includes/qmn_quiz_options.php:96
+msgid "Please go to the quizzes page and click on the Edit link from the quiz you wish to edit."
+msgstr "Por favor vaya a la página de cuestionarios y haga click sobre el botón Editar en el cuestionario que desee editar."
 
-#: includes/qmn_credits.php:87
-msgid "Thank you for updating!"
-msgstr "Gracias por actualizar!"
+#: includes/qmn_options_questions_tab.php:6
+msgid "Questions"
+msgstr "Preguntas"
 
-#: includes/qmn_credits.php:91
-msgid "What's New!"
-msgstr "Novedades!"
+#: includes/qmn_options_questions_tab.php:105
+msgid "The question has been updated successfully."
+msgstr "La pregunta ha sido actualizada correctamente."
 
-#: includes/qmn_credits.php:93
-msgid "Changelog"
-msgstr "Historial de modificaciones"
+#: includes/qmn_options_questions_tab.php:132
+msgid "The question has been deleted successfully."
+msgstr "La pregunta ha sido eliminada correctamente."
 
-#: includes/qmn_credits.php:95
-msgid "Requested Features"
-msgstr "Características solicitadas"
+#: includes/qmn_options_questions_tab.php:216
+msgid "The question has been duplicated successfully."
+msgstr "La pregunta ha sido duplicada correctamente."
+
+#: includes/qmn_options_questions_tab.php:309
+msgid "The question has been created successfully."
+msgstr "La pregunta ha sido creada correctamente."
+
+#: includes/qmn_options_questions_tab.php:454
+#: includes/qmn_options_questions_tab.php:461
+#: includes/qmn_options_questions_tab.php:593
+#: includes/qmn_options_questions_tab.php:760
+msgid "Answer"
+msgstr "Respuesta"
+
+#: includes/qmn_options_questions_tab.php:481
+#: includes/qmn_options_questions_tab.php:729
+msgid "Add Question"
+msgstr "Añadir pregunta"
+
+#: includes/qmn_options_questions_tab.php:485
+#, php-format
+msgid "One question"
+msgid_plural "%s questions"
+msgstr[0] "Una pregunta"
+msgstr[1] "%s preguntas"
+
+#: includes/qmn_options_questions_tab.php:557
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/qmn_options_questions_tab.php:557
+msgid "Duplicate"
+msgstr "Duplicar"
+
+#: includes/qmn_options_questions_tab.php:557
+#: includes/qmn_options_results_page_tab.php:247
+msgid "Delete"
+msgstr "Eliminar"
+
+#: includes/qmn_options_questions_tab.php:568
+#: includes/qmn_options_questions_tab.php:737
+msgid "For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
+msgstr ""
+
+#: includes/qmn_options_questions_tab.php:571
+#: includes/qmn_options_questions_tab.php:714
+#: includes/qmn_options_questions_tab.php:725
+#: includes/qmn_options_questions_tab.php:740
+msgid "Question"
+msgstr "Pregunta"
+
+#: includes/qmn_options_questions_tab.php:582
+#: includes/qmn_options_questions_tab.php:751
+msgid "Answers"
+msgstr "Respuestas"
+
+#: includes/qmn_options_questions_tab.php:583
+#: includes/qmn_options_questions_tab.php:752
+msgid "Points Worth"
+msgstr "Puntuación"
+
+#: includes/qmn_options_questions_tab.php:584
+#: includes/qmn_options_questions_tab.php:753
+msgid "Correct Answer"
+msgstr "Respuesta correcta"
+
+#: includes/qmn_options_questions_tab.php:611
+#: includes/qmn_options_questions_tab.php:775
+msgid "Add New Answer!"
+msgstr "Añada nueva respuesta!"
+
+#: includes/qmn_options_questions_tab.php:616
+#: includes/qmn_options_questions_tab.php:780
+msgid "Correct Answer Info"
+msgstr "Información acerca de la respuesta correcta"
+
+#: includes/qmn_options_questions_tab.php:634
+#: includes/qmn_options_questions_tab.php:712
+#: includes/qmn_options_questions_tab.php:723
+#: includes/qmn_options_questions_tab.php:798
+msgid "Question Type"
+msgstr "Tipo de pregunta"
+
+#: includes/qmn_options_questions_tab.php:652
+#: includes/qmn_options_questions_tab.php:811
+msgid "Comment Field"
+msgstr "Campo de Comentario"
+
+#: includes/qmn_options_questions_tab.php:655
+#: includes/qmn_options_questions_tab.php:813
+msgid "Small Text Field"
+msgstr "Campo de texto corto"
+
+#: includes/qmn_options_questions_tab.php:657
+#: includes/qmn_options_questions_tab.php:814
+msgid "Large Text Field"
+msgstr "Campo de texto largo"
+
+#: includes/qmn_options_questions_tab.php:659
+#: includes/qmn_options_questions_tab.php:815
+msgid "None"
+msgstr "Ninguna"
+
+#: includes/qmn_options_questions_tab.php:663
+#: includes/qmn_options_questions_tab.php:711
+#: includes/qmn_options_questions_tab.php:722
+#: includes/qmn_options_questions_tab.php:819
+msgid "Question Order"
+msgstr "Orden de preguntas"
+
+#: includes/qmn_options_questions_tab.php:671
+#: includes/qmn_options_questions_tab.php:827
+msgid "Required?"
+msgstr "¿Obligatorio?"
+
+#: includes/qmn_options_questions_tab.php:680
+#: includes/qmn_options_questions_tab.php:713
+#: includes/qmn_options_questions_tab.php:724
+#: includes/qmn_options_questions_tab.php:836
+msgid "Category"
+msgstr "Categoria"
+
+#: includes/qmn_options_questions_tab.php:699
+#: includes/qmn_options_questions_tab.php:855
+msgid "Required currently only works on open answer, number, accept, and captcha question types"
+msgstr "Los campos obligatorios tan solo funcionan en respuestas abiertas, números, aceptar y preguntas tipo captcha."
+
+#: includes/qmn_options_questions_tab.php:701
+msgid "Edit Question"
+msgstr "Editar Pregunta"
+
+#: includes/qmn_options_questions_tab.php:857
+msgid "Create Question"
+msgstr "Crear Pregunta"
+
+#: includes/qmn_options_questions_tab.php:862
+msgid "Are you sure you want to delete this question?"
+msgstr "¿Está seguro que desea eliminar esta pregunta?"
+
+#: includes/qmn_options_questions_tab.php:867
+msgid "Delete Question"
+msgstr "Eliminar pregunta"
+
+#: includes/qmn_options_questions_tab.php:872
+msgid "Are you sure you want to duplicate this question?"
+msgstr "¿Está seguro que desea duplicar esta pregunta?"
+
+#: includes/qmn_options_questions_tab.php:877
+msgid "Duplicate Question"
+msgstr "Duplicar Pregunta"
+
+#: includes/qmn_results.php:23
+msgid "Your results has been deleted successfully."
+msgstr "Sus resultados han sido eliminados correctamente."
+
+#: includes/qmn_results.php:161
+#, php-format
+msgid "One result"
+msgid_plural "%s results"
+msgstr[0] "Un resultado"
+msgstr[1] "%s resultados"
+
+#: includes/qmn_results.php:208
+msgid "Actions"
+msgstr "Acciones"
+
+#: includes/qmn_results.php:209
+msgid "Quiz Name"
+msgstr "Nombre del Cuestionario"
+
+#: includes/qmn_results.php:210
+msgid "Score"
+msgstr "Puntuación"
+
+#: includes/qmn_results.php:211
+msgid "Time To Complete"
+msgstr "Tiempo para completar"
+
+#: includes/qmn_results.php:212
+msgid "Name"
+msgstr "Nombre"
+
+#: includes/qmn_results.php:213
+msgid "Business"
+msgstr "Asunto"
+
+#: includes/qmn_results.php:214
+msgid "Email"
+msgstr "Email"
+
+#: includes/qmn_results.php:215
+msgid "Phone"
+msgstr "Teléfono"
+
+#: includes/qmn_results.php:216
+msgid "Time Taken"
+msgstr "Tiempo empleado"
+
+#: includes/qmn_results.php:258
+#: includes/qmn_options_option_tab.php:96
+msgid "Not Graded"
+msgstr "No clasificada"
+
+#: includes/qmn_results.php:276
+msgid "Are you sure you want to delete these results?"
+msgstr "¿Está seguro de que desea eliminar estos resultados?"
+
+#: includes/qmn_results.php:281
+msgid "Delete Results"
+msgstr "Eliminar resultados"
+
+#: includes/qmn_options_results_page_tab.php:6
+msgid "Results Pages"
+msgstr "Página de Resultados"
+
+#: includes/qmn_options_results_page_tab.php:41
+msgid "The results page has been added successfully."
+msgstr "Los resultados han sido añadidos correctamente."
+
+#: includes/qmn_options_results_page_tab.php:81
+msgid "The results page has been saved successfully."
+msgstr "La página de resultados ha sido guardada correctamente."
+
+#: includes/qmn_options_results_page_tab.php:191
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: includes/qmn_options_results_page_tab.php:194
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: includes/qmn_options_results_page_tab.php:199
+#: includes/qmn_options_results_page_tab.php:280
+msgid "Save Results Pages"
+msgstr "Guardar Página de Resultados"
+
+#: includes/qmn_options_results_page_tab.php:200
+#: includes/qmn_options_results_page_tab.php:285
+msgid "Add New Results Page"
+msgstr "Añadir Nueva Página de Resultados"
+
+#: includes/qmn_options_results_page_tab.php:208
+#: includes/qmn_options_results_page_tab.php:272
+msgid "Results Page Shown"
+msgstr "Mostrar Página de Resultados"
+
+#: includes/qmn_options_results_page_tab.php:209
+#: includes/qmn_options_results_page_tab.php:273
+msgid "Redirect URL (Beta)"
+msgstr ""
+
+#: includes/qmn_options_results_page_tab.php:247
+msgid "Are you sure?"
+msgstr "¿Está seguro?"
+
+#: includes/qmn_options_preview_tab.php:6
+msgid "Preview"
+msgstr "Presentación"
+
+#: includes/qmn_options_option_tab.php:6
+msgid "Options"
+msgstr "Opciones"
+
+#: includes/qmn_options_option_tab.php:43
+msgid "The options has been updated successfully."
+msgstr "Las opciones han sido actualizadas correctamente."
+
+#: includes/qmn_options_option_tab.php:84
+#: includes/qmn_options_option_tab.php:221
+msgid "Save Options"
+msgstr "Guardar opciones"
+
+#: includes/qmn_options_option_tab.php:92
+msgid "Which system is this quiz graded on?"
+msgstr "¿Cual es el sistema de clasificación?"
+
+#: includes/qmn_options_option_tab.php:94
+msgid "Correct/Incorrect"
+msgstr "Correcto/Incorrecto"
+
+#: includes/qmn_options_option_tab.php:95
+msgid "Points"
+msgstr "Puntos"
+
+#: includes/qmn_options_option_tab.php:100
+msgid "Should the user be required to be logged in to take this quiz?"
+msgstr "¿Es necesario que el usuario inicie sesión para rellenar este cuestionario?"
+
+#: includes/qmn_options_option_tab.php:107
+msgid "How many questions per page would you like? (Leave 0 for all questions on one page)"
+msgstr "¿Cuantas preguntas por página desea?  (Deje 0 para que todas las preguntas aparezcan en una misma página)"
+
+#: includes/qmn_options_option_tab.php:113
+msgid "How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)"
+msgstr "¿Cuantos minutos tiene el usuario para realizar la encuesta? (Deje 0 sino tiene límite de tiempo)"
+
+#: includes/qmn_options_option_tab.php:119
+msgid "How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. Currently only works for registered users)"
+msgstr "¿Cuantas veces puede el usuario rellenar este cuestionario? (Deje 0 para tantas veces como el usuario quiera. Actualmente sólo funciona para usuarios registrados)"
+
+#: includes/qmn_options_option_tab.php:125
+msgid "How many total entries can this quiz have? (Leave 0 for unlimited entries"
+msgstr "¿Cuantas veces en total puede ser rellenado este cuestionario? (Deje 0 para entradas ilimitadas)"
+
+#: includes/qmn_options_option_tab.php:131
+msgid "How many questions should be loaded for quiz? (Leave 0 to load all questions)"
+msgstr "¿Cuantas preguntas deben ser cargadas por cuestionario?  (Deje 0 para cargar todas las preguntas)"
+
+#: includes/qmn_options_option_tab.php:137
+msgid "What time-frame should the user be able to access the quiz? (Leave blank if the user can access anytime)"
+msgstr "¿En qué periodo de tiempo puede el usuario acceder a la encuesta? (Déjelo en blanco si el usuario puede acceder en cualquier momento)"
+
+#: includes/qmn_options_option_tab.php:139
+msgid "start date"
+msgstr "fecha de inicio"
+
+#: includes/qmn_options_option_tab.php:142
+msgid "end date"
+msgstr "fecha de finalización"
+
+#: includes/qmn_options_option_tab.php:146
+msgid "Are the questions random? (Question Order will not apply if this is yes)"
+msgstr "¿Son preguntas aleatorias? (El orden de las preguntas no se aplicará si contesta que SÍ)"
+
+#: includes/qmn_options_option_tab.php:148
+msgid "Random Questions"
+msgstr "Preguntas aleatorias"
+
+#: includes/qmn_options_option_tab.php:149
+msgid "Random Questions And Answers"
+msgstr "Preguntas y respuestas aleatorias"
+
+#: includes/qmn_options_option_tab.php:154
+msgid "Would you like to ask for the contact information at the beginning or at the end of the quiz?"
+msgstr "¿Le gustaría pedir la información de contacto al principio o final de la encuesta?"
+
+#: includes/qmn_options_option_tab.php:156
+msgid "Beginning"
+msgstr "Principio"
+
+#: includes/qmn_options_option_tab.php:157
+msgid "End"
+msgstr "Fin"
+
+#: includes/qmn_options_option_tab.php:161
+msgid "If a logged-in user takes the quiz, would you like them to be able to edit contact information? If set to no, the fields will not show up for logged in users; however, the users information will be saved for the fields."
+msgstr "Si un usuario que ha iniciado sesión, ¿le gustaría que pudiera editar la información de contacto? Si contesta que NO, los campos no se mostrarán a los usuarios conectados, sin embargo, la información sobre el usuario sería registrada en los campos."
+
+#: includes/qmn_options_option_tab.php:168
+msgid "Should we ask for users name?"
+msgstr "¿Se debería pedir el nombre de los usuarios?"
+
+#: includes/qmn_options_option_tab.php:171
+#: includes/qmn_options_option_tab.php:179
+#: includes/qmn_options_option_tab.php:187
+#: includes/qmn_options_option_tab.php:195
+msgid "Require"
+msgstr "Obligatorio"
+
+#: includes/qmn_options_option_tab.php:176
+msgid "Should we ask for users business?"
+msgstr "¿Se debería pedir el empleo del usuario?"
+
+#: includes/qmn_options_option_tab.php:184
+msgid "Should we ask for users email?"
+msgstr "¿Se debería pedir el email al usuario?"
+
+#: includes/qmn_options_option_tab.php:192
+msgid "Should we ask for users phone number?"
+msgstr "¿Se debería pedir al usuario el número de teléfono?"
+
+#: includes/qmn_options_option_tab.php:200
+msgid "Would you like a place for the user to enter comments?"
+msgstr "¿Le gustaría un espacio para que el usuario pudiera dejar sus comentarios?"
+
+#: includes/qmn_options_option_tab.php:207
+msgid "Show question number on quiz?"
+msgstr "¿Mostrar el número de pregunta en la encuesta?"
+
+#: includes/qmn_options_option_tab.php:214
+msgid "Show social media sharing buttons? (Twitter & Facebook)"
+msgstr "¿Mostrar botones para compartir en medios sociales? (Twitter & Facebook)"
+
+#: includes/qmn_options_option_tab.php:214
+msgid "This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!"
+msgstr ""
+
+#: includes/qmn_options_style_tab.php:6
+msgid "Style"
+msgstr "Estilo"
+
+#: includes/qmn_options_style_tab.php:26
+msgid "The style has been saved successfully."
+msgstr "El estilo ha sido guardado correctamente."
+
+#: includes/qmn_options_style_tab.php:65
+msgid "Quiz Styles"
+msgstr "Estilos de Cuestionario."
+
+#: includes/qmn_options_style_tab.php:66
+msgid "Choose your style:"
+msgstr "Elija su estilo:"
+
+#: includes/qmn_options_style_tab.php:88
+msgid "Custom"
+msgstr "Personalizado"
+
+#: includes/qmn_options_style_tab.php:94
+#: includes/qmn_options_style_tab.php:106
+msgid "Save Quiz Style"
+msgstr "Guardar Estilo de Cuestionario"
+
+#: includes/qmn_options_style_tab.php:96
+msgid "Custom Style CSS"
+msgstr "Personalizar Estilo CSS"
+
+#: includes/qmn_options_style_tab.php:97
+msgid "For detailed help and guidance along with a list of different classes used in this plugin, please visit the following link:"
+msgstr "Para una ayuda detallada y guía acerca de las diferentes classes usadas en este plugin, por favor visite el siguiente enlace:"
 
 #: includes/qmn_dashboard.php:16
 msgid "Quiz Daily Stats - Times Taken"
@@ -169,33 +1198,63 @@ msgstr ""
 "La encuesta más \n"
 "completada"
 
-#: includes/qmn_dashboard_widgets.php:9
-msgid "Quiz Master Next Snapshot"
-msgstr "Quiz Master Next Snapshot"
+#: includes/qmn_results_details.php:121
+msgid "Results"
+msgstr "Resultados"
 
-#: includes/qmn_dashboard_widgets.php:128
-msgid "quizzes taken today"
-msgstr "encuestas completadas hoy"
+#: includes/qmn_results_details.php:200
+msgid "Create Certificate"
+msgstr "Crear Certificado"
 
-#: includes/qmn_dashboard_widgets.php:147
-msgid "quizzes taken last 7 days"
-msgstr "encuestas completadas los últimos 7 días"
+#: includes/qmn_results_details.php:205
+msgid "Download Certificate Here"
+msgstr "Descargar Certificado Aquí"
 
-#: includes/qmn_dashboard_widgets.php:166
-msgid "total active quizzes"
-msgstr "total encuestas activas"
+#: includes/qmn_results_details.php:212
+msgid "Certificate"
+msgstr "Cerificado"
 
-#: includes/qmn_dashboard_widgets.php:172
-msgid "total active questions"
-msgstr "total preguntas activas"
+#: includes/qmn_tools.php:93
+msgid "There has been an error! Please try again."
+msgstr "Ha habido un error! Por favor, inténtelo de nuevo."
 
-#: includes/qmn_dashboard_widgets.php:178
-msgid "most popular quiz"
-msgstr "encuesta más popular"
+#: includes/qmn_tools.php:111
+msgid "Quiz Has Been Restored!"
+msgstr "El cuestionario ha sido restaurado!"
 
-#: includes/qmn_dashboard_widgets.php:184
-msgid "least popular quiz"
-msgstr "encuesta menos popular"
+#: includes/qmn_tools.php:116
+msgid "Choose a quiz in the drop down and then click the button to restore a deleted quiz."
+msgstr "Escoja un cuestionario en la lista desplegable y después haga click en el botón para restaurar una encuesta eliminada."
+
+#: includes/qmn_tools.php:126
+msgid "Restore Quiz"
+msgstr "Restaurar la encuesta"
+
+#: includes/qmn_tools.php:155
+#: includes/qmn_tools.php:171
+#, php-format
+msgid "Previous %s Audits"
+msgstr ""
+"Auditoria \n"
+"%s Anterior"
+
+#: includes/qmn_tools.php:158
+#: includes/qmn_tools.php:165
+#, php-format
+msgid "Next %s Audits"
+msgstr "Próxima %s Auditoria"
+
+#: includes/qmn_tools.php:178
+msgid "User"
+msgstr "Usuario"
+
+#: includes/qmn_tools.php:179
+msgid "Action"
+msgstr "Acción"
+
+#: includes/qmn_tools.php:180
+msgid "Time"
+msgstr "Tiempo"
 
 #: includes/qmn_help.php:13
 msgid "Need Help?"
@@ -216,1007 +1275,6 @@ msgstr "Página de ayuda"
 #: includes/qmn_help.php:41
 msgid "Need help with the plugin? Try any of the following:"
 msgstr "¿Necesita ayuda con el plugin? Pruebe algo de lo siguiente:"
-
-#: includes/qmn_options_certificate_tab.php:6
-msgid "Certificate (Beta)"
-msgstr "Certificado (Beta)"
-
-#: includes/qmn_options_certificate_tab.php:32
-msgid "The certificate has been updated successfully."
-msgstr "El certificado ha sido actualizado correctamente."
-
-#: includes/qmn_options_certificate_tab.php:45
-#: includes/qmn_options_email_tab.php:55
-#: includes/qmn_options_email_tab.php:114
-#: includes/qmn_options_email_tab.php:178
-#: includes/qmn_options_leaderboard_tab.php:38
-#: includes/qmn_options_option_tab.php:56
-#: includes/qmn_options_questions_tab.php:118
-#: includes/qmn_options_questions_tab.php:145
-#: includes/qmn_options_questions_tab.php:229
-#: includes/qmn_options_questions_tab.php:322
-#: includes/qmn_options_results_page_tab.php:54
-#: includes/qmn_options_results_page_tab.php:94
-#: includes/qmn_options_style_tab.php:39 includes/qmn_options_text_tab.php:55
-#: includes/qmn_options_tools_tab.php:36 includes/qmn_quiz_creator.php:382
-#: includes/qmn_quiz_creator.php:448 includes/qmn_quiz_creator.php:490
-#: includes/qmn_quiz_creator.php:648 includes/qmn_quiz_creator.php:713
-#: includes/qmn_results.php:36
-#, php-format
-msgid ""
-"There has been an error in this action. Please share this with the "
-"developer. Error Code: %s"
-msgstr ""
-"Existe un error en esta acción. Por favor comparta esto con el "
-"desarrollador. El código de error es: \n"
-"%s"
-
-#: includes/qmn_options_certificate_tab.php:61
-msgid "Enter title here"
-msgstr "Escriba el título aquí"
-
-#: includes/qmn_options_certificate_tab.php:61
-#: includes/qmn_options_email_tab.php:73 includes/qmn_options_email_tab.php:91
-msgid "Enter text here"
-msgstr "Escriba el texto aquí"
-
-#: includes/qmn_options_certificate_tab.php:70
-msgid "Quiz Certificate (Beta)"
-msgstr "Certificado de encuesta (Beta)"
-
-#: includes/qmn_options_certificate_tab.php:71
-msgid ""
-"Enter in your text here to fill in the certificate for this quiz. Be sure to "
-"enter in the link variable into the templates on the Quiz Text tab so the "
-"user can access the certificate."
-msgstr ""
-"Escriba aquí el texto que aparecerá como certificado de esta encuesta. "
-"Asegúrese de introducir su enlace dentro de las plantillas en la pestaña "
-"Quiz Text para que el usuario pueda acceder a su certificado."
-
-#: includes/qmn_options_certificate_tab.php:72
-msgid "These fields cannot contain HTML."
-msgstr "Estos campos no pueden contener HTML."
-
-#: includes/qmn_options_certificate_tab.php:73
-#: includes/qmn_options_certificate_tab.php:129
-msgid "Save Certificate Options"
-msgstr "Guardas Opciones de Certificado"
-
-#: includes/qmn_options_certificate_tab.php:81
-msgid "Enable Certificates For This Quiz?"
-msgstr "¿Permitir Certificados para esta Encuesta?"
-
-#: includes/qmn_options_certificate_tab.php:83
-#: includes/qmn_options_email_tab.php:325
-#: includes/qmn_options_email_tab.php:332
-#: includes/qmn_options_option_tab.php:102
-#: includes/qmn_options_option_tab.php:163
-#: includes/qmn_options_option_tab.php:170
-#: includes/qmn_options_option_tab.php:178
-#: includes/qmn_options_option_tab.php:186
-#: includes/qmn_options_option_tab.php:194
-#: includes/qmn_options_option_tab.php:202
-#: includes/qmn_options_option_tab.php:209
-#: includes/qmn_options_option_tab.php:216
-#: includes/qmn_options_questions_tab.php:674
-#: includes/qmn_options_questions_tab.php:830
-#: includes/qmn_options_results_page_tab.php:247
-msgid "Yes"
-msgstr "sí"
-
-#: includes/qmn_options_certificate_tab.php:84
-#: includes/qmn_options_email_tab.php:326
-#: includes/qmn_options_email_tab.php:333
-#: includes/qmn_options_option_tab.php:103
-#: includes/qmn_options_option_tab.php:150
-#: includes/qmn_options_option_tab.php:164
-#: includes/qmn_options_option_tab.php:172
-#: includes/qmn_options_option_tab.php:180
-#: includes/qmn_options_option_tab.php:188
-#: includes/qmn_options_option_tab.php:196
-#: includes/qmn_options_option_tab.php:203
-#: includes/qmn_options_option_tab.php:210
-#: includes/qmn_options_option_tab.php:217
-#: includes/qmn_options_questions_tab.php:675
-#: includes/qmn_options_questions_tab.php:831
-#: includes/qmn_options_results_page_tab.php:247
-msgid "No"
-msgstr "No"
-
-#: includes/qmn_options_certificate_tab.php:89
-msgid "Certificate Title"
-msgstr "Título del certificado"
-
-#: includes/qmn_options_certificate_tab.php:96
-msgid "Message Displayed On Certificate"
-msgstr "Mensaje mostrado en el Certificado"
-
-#: includes/qmn_options_certificate_tab.php:98
-#: includes/qmn_options_leaderboard_tab.php:91
-#: includes/qmn_options_text_tab.php:181 includes/qmn_options_text_tab.php:191
-#: includes/qmn_options_text_tab.php:201 includes/qmn_options_text_tab.php:211
-#: includes/qmn_options_text_tab.php:221 includes/qmn_options_text_tab.php:231
-#: includes/qmn_options_text_tab.php:241 includes/qmn_options_text_tab.php:251
-#: includes/qmn_options_text_tab.php:264 includes/qmn_options_text_tab.php:281
-msgid "Allowed Variables:"
-msgstr "Variables permitidas:"
-
-#: includes/qmn_options_certificate_tab.php:116
-msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL del logo (debe estar en formato JPG, JPEG, PNG o GIF)"
-
-#: includes/qmn_options_certificate_tab.php:123
-msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL de la imagen de fondo (debe estar en formato JPG, JPEG, PNG o GIF)"
-
-#: includes/qmn_options_email_tab.php:6
-msgid "Emails"
-msgstr "Emails"
-
-#: includes/qmn_options_email_tab.php:42
-#: includes/qmn_options_email_tab.php:101
-msgid "The email has been added successfully."
-msgstr "El email ha sido añadido correctamente"
-
-#: includes/qmn_options_email_tab.php:165
-msgid "The email has been updated successfully."
-msgstr "El email ha sido actualizado correctamente"
-
-#: includes/qmn_options_email_tab.php:232
-#: includes/qmn_options_leaderboard_tab.php:49
-#: includes/qmn_options_results_page_tab.php:134
-#: includes/qmn_options_text_tab.php:92
-msgid "Template Variables"
-msgstr "Variables de la plantilla"
-
-#: includes/qmn_options_email_tab.php:235
-#: includes/qmn_options_results_page_tab.php:137
-#: includes/qmn_options_text_tab.php:95
-msgid "Score for the quiz when using points"
-msgstr "Puntuación de la encuesta cuando se usan puntos"
-
-#: includes/qmn_options_email_tab.php:238
-#: includes/qmn_options_results_page_tab.php:140
-#: includes/qmn_options_text_tab.php:98
-msgid "The average amount of points user had per question"
-msgstr "Media de puntos por usuario por pregunta"
-
-#: includes/qmn_options_email_tab.php:241
-#: includes/qmn_options_results_page_tab.php:143
-#: includes/qmn_options_text_tab.php:101
-msgid "The number of correct answers the user had"
-msgstr "Número de respuestas correctas que obtuvo el usuario"
-
-#: includes/qmn_options_email_tab.php:244
-#: includes/qmn_options_results_page_tab.php:146
-#: includes/qmn_options_text_tab.php:104
-msgid "The total number of questions in the quiz"
-msgstr "Número de preguntas totales en la encuesta"
-
-#: includes/qmn_options_email_tab.php:247
-#: includes/qmn_options_results_page_tab.php:149
-#: includes/qmn_options_text_tab.php:107
-msgid "Score for the quiz when using correct answers"
-msgstr "Puntuación de la encuesta basada en las respuestas correctas"
-
-#: includes/qmn_options_email_tab.php:250
-#: includes/qmn_options_results_page_tab.php:152
-#: includes/qmn_options_text_tab.php:110
-msgid "The name the user entered before the quiz"
-msgstr "Nombre que el usuario introdujo antes de la encuesta"
-
-#: includes/qmn_options_email_tab.php:253
-#: includes/qmn_options_results_page_tab.php:155
-#: includes/qmn_options_text_tab.php:113
-msgid "The business the user entered before the quiz"
-msgstr "El asunto que el usuario introdujo antes de la encuesta."
-
-#: includes/qmn_options_email_tab.php:256
-#: includes/qmn_options_results_page_tab.php:158
-#: includes/qmn_options_text_tab.php:116
-msgid "The phone number the user entered before the quiz"
-msgstr "El número de teléfono que el usuario introdujo antes de la encuesta"
-
-#: includes/qmn_options_email_tab.php:259
-#: includes/qmn_options_results_page_tab.php:161
-#: includes/qmn_options_text_tab.php:119
-msgid "The email the user entered before the quiz"
-msgstr "El email que el usuario introdujo antes de la encuesta"
-
-#: includes/qmn_options_email_tab.php:262
-#: includes/qmn_options_leaderboard_tab.php:77
-#: includes/qmn_options_results_page_tab.php:164
-#: includes/qmn_options_text_tab.php:122
-msgid "The name of the quiz"
-msgstr "El nombre de la encuesta"
-
-#: includes/qmn_options_email_tab.php:265
-#: includes/qmn_options_results_page_tab.php:167
-#: includes/qmn_options_text_tab.php:125
-msgid ""
-"Shows the question, the answer the user provided, and the correct answer"
-msgstr "Muestra la pregunta, la respuesta del usuario y la respuesta correcta"
-
-#: includes/qmn_options_email_tab.php:268
-#: includes/qmn_options_results_page_tab.php:170
-#: includes/qmn_options_text_tab.php:128
-msgid "The comments the user entered into comment box if enabled"
-msgstr ""
-"Los comentarios que el usuario introdujo en la caja de comentarios si esta "
-"está habilitada"
-
-#: includes/qmn_options_email_tab.php:271
-#: includes/qmn_options_results_page_tab.php:173
-#: includes/qmn_options_text_tab.php:131
-msgid "The amount of time user spent of quiz"
-msgstr "Tiempo empleado por el usuario en responder el cuestionario"
-
-#: includes/qmn_options_email_tab.php:274
-#: includes/qmn_options_results_page_tab.php:176
-#: includes/qmn_options_text_tab.php:134
-msgid "The link to the certificate after completing the quiz"
-msgstr "El enlace hacia el certificado después de completar la encuesta"
-
-#: includes/qmn_options_email_tab.php:277
-#: includes/qmn_options_results_page_tab.php:179
-#: includes/qmn_options_text_tab.php:137
-msgid "The amount of points a specific category earned."
-msgstr "El total de puntos obtenidos en una categoría específica"
-
-#: includes/qmn_options_email_tab.php:280
-#: includes/qmn_options_results_page_tab.php:182
-#: includes/qmn_options_text_tab.php:140
-msgid "The score a specific category earned."
-msgstr "La puntuación obtenida en una categoría específica."
-
-#: includes/qmn_options_email_tab.php:283
-#: includes/qmn_options_results_page_tab.php:185
-#: includes/qmn_options_text_tab.php:143
-msgid "The average points from all categories."
-msgstr "La media de puntos contando todas las categorías."
-
-#: includes/qmn_options_email_tab.php:286
-#: includes/qmn_options_results_page_tab.php:188
-#: includes/qmn_options_text_tab.php:146
-msgid "The average score from all categories."
-msgstr "La puntuación media contando todas las categorías."
-
-#: includes/qmn_options_email_tab.php:289
-#: includes/qmn_options_text_tab.php:149
-msgid "The question that the user answered"
-msgstr "La pregunta que el usuario respondió"
-
-#: includes/qmn_options_email_tab.php:292
-#: includes/qmn_options_text_tab.php:152
-msgid "The answer the user gave for the question"
-msgstr "La respuesta del usuario a la pregunta"
-
-#: includes/qmn_options_email_tab.php:295
-#: includes/qmn_options_text_tab.php:155
-msgid "The correct answer for the question"
-msgstr "La contestación correcta a la pregunta"
-
-#: includes/qmn_options_email_tab.php:298
-#: includes/qmn_options_text_tab.php:158
-msgid "The comments the user provided in the comment field for the question"
-msgstr ""
-"Los comentarios que el usuario indicó en el campo de comentarios de la "
-"pregunta."
-
-#: includes/qmn_options_email_tab.php:301
-#: includes/qmn_options_text_tab.php:161
-msgid "Reason why the correct answer is the correct answer"
-msgstr "La razón por qué la respuesta correcta es la respuesta correcta"
-
-#: includes/qmn_options_email_tab.php:304
-#: includes/qmn_options_text_tab.php:164
-msgid "The Current Date"
-msgstr "La fecha actual"
-
-#: includes/qmn_options_email_tab.php:319
-#: includes/qmn_options_email_tab.php:518
-msgid "Save Email Templates And Settings"
-msgstr "Guardar email, plantillas y preferencias"
-
-#: includes/qmn_options_email_tab.php:323
-msgid "Send user email upon completion?"
-msgstr "¿Enviar un email al usuario al finalizar?"
-
-#: includes/qmn_options_email_tab.php:330
-msgid "Send admin email upon completion?"
-msgstr "¿Enviar un email al administrador al finalizar?"
-
-#: includes/qmn_options_email_tab.php:337
-msgid ""
-"What emails should we send the admin email to? Separate emails with a comma."
-msgstr ""
-"¿Qué emails deberíamos enviar al administrador?. Separar los emails con una "
-"coma."
-
-#: includes/qmn_options_email_tab.php:341
-msgid "What is the From Name for the email sent to users and admin?"
-msgstr ""
-"¿Cual es el nombre desde el cual se enviarán el email a los usuarios y "
-"administrador?"
-
-#: includes/qmn_options_email_tab.php:347
-msgid "Email Sent To User"
-msgstr "Email enviado al usuario"
-
-#: includes/qmn_options_email_tab.php:348
-#: includes/qmn_options_email_tab.php:426
-msgid "Add New User Email"
-msgstr "Añadir un nuevo email de usuario "
-
-#: includes/qmn_options_email_tab.php:353
-#: includes/qmn_options_email_tab.php:419
-#: includes/qmn_options_email_tab.php:440
-#: includes/qmn_options_email_tab.php:506
-#: includes/qmn_options_results_page_tab.php:206
-#: includes/qmn_options_results_page_tab.php:270
-msgid "Score Greater Than Or Equal To"
-msgstr "Puntuación 'mayor que' o 'igual que'"
-
-#: includes/qmn_options_email_tab.php:354
-#: includes/qmn_options_email_tab.php:420
-#: includes/qmn_options_email_tab.php:441
-#: includes/qmn_options_email_tab.php:507
-#: includes/qmn_options_results_page_tab.php:207
-#: includes/qmn_options_results_page_tab.php:271
-msgid "Score Less Than Or Equal To"
-msgstr "Puntuación 'menor que' o 'igual que'"
-
-#: includes/qmn_options_email_tab.php:355
-#: includes/qmn_options_email_tab.php:421
-#: includes/qmn_options_email_tab.php:442
-#: includes/qmn_options_email_tab.php:508
-msgid "Subject"
-msgstr "Asunto"
-
-#: includes/qmn_options_email_tab.php:356
-#: includes/qmn_options_email_tab.php:422
-#: includes/qmn_options_email_tab.php:443
-#: includes/qmn_options_email_tab.php:509
-msgid "Email To Send"
-msgstr "Email a enviar"
-
-#: includes/qmn_options_email_tab.php:434
-msgid "Email Sent To Admin"
-msgstr "Email enviado a administrador"
-
-#: includes/qmn_options_email_tab.php:435
-#: includes/qmn_options_email_tab.php:513
-msgid "Add New Admin Email"
-msgstr "Añadir nuevo email de administrador"
-
-#: includes/qmn_options_leaderboard_tab.php:6
-msgid "Leaderboard"
-msgstr "Clasificación"
-
-#: includes/qmn_options_leaderboard_tab.php:25
-msgid "The leaderboards has been updated successfully."
-msgstr "Las tablas de clasificación han sido actualizadas correctamente."
-
-#: includes/qmn_options_leaderboard_tab.php:52
-msgid "The name of the user who is in first place"
-msgstr "El nombre del usuario que está en el primer puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:53
-msgid "The score from the first place's quiz"
-msgstr "La puntuación del usuario que está en el primer puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:57
-msgid "The name of the user who is in second place"
-msgstr "El nombre del usuario que está en segundo puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:58
-msgid "The score from the second place's quiz"
-msgstr "La puntuación del usuario que está en el segundo puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:62
-msgid "The name of the user who is in third place"
-msgstr "El nombre del usuario que está en el tercer puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:63
-msgid "The score from the third place's quiz"
-msgstr "La puntuación del usuario que está en el tercer puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:67
-msgid "The name of the user who is in fourth place"
-msgstr "El nombre del usuario que está en el cuarto puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:68
-msgid "The score from the fourth place's quiz"
-msgstr "La puntuación del usuario que está en el cuarto puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:72
-msgid "The name of the user who is in fifth place"
-msgstr "El nombre del usuario que está en el quinto puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:73
-msgid "The score from the fifth place's quiz"
-msgstr "La puntuación del usuario que está en el quinto puesto"
-
-#: includes/qmn_options_leaderboard_tab.php:80
-#: includes/qmn_options_leaderboard_tab.php:108
-msgid "Save Leaderboard Options"
-msgstr "Guardar las opciones de clasificación"
-
-#: includes/qmn_options_leaderboard_tab.php:89
-msgid "Leaderboard Template"
-msgstr "Plantilla de clasificación"
-
-#: includes/qmn_options_option_tab.php:6
-msgid "Options"
-msgstr "Opciones"
-
-#: includes/qmn_options_option_tab.php:43
-msgid "The options has been updated successfully."
-msgstr "Las opciones han sido actualizadas correctamente."
-
-#: includes/qmn_options_option_tab.php:84
-#: includes/qmn_options_option_tab.php:221
-msgid "Save Options"
-msgstr "Guardar opciones"
-
-#: includes/qmn_options_option_tab.php:92
-msgid "Which system is this quiz graded on?"
-msgstr "¿Cual es el sistema de clasificación?"
-
-#: includes/qmn_options_option_tab.php:94
-msgid "Correct/Incorrect"
-msgstr "Correcto/Incorrecto"
-
-#: includes/qmn_options_option_tab.php:95
-msgid "Points"
-msgstr "Puntos"
-
-#: includes/qmn_options_option_tab.php:96 includes/qmn_results.php:258
-msgid "Not Graded"
-msgstr "No clasificada"
-
-#: includes/qmn_options_option_tab.php:100
-msgid "Should the user be required to be logged in to take this quiz?"
-msgstr ""
-"¿Es necesario que el usuario inicie sesión para rellenar este cuestionario?"
-
-#: includes/qmn_options_option_tab.php:107
-msgid ""
-"How many questions per page would you like? (Leave 0 for all questions on "
-"one page)"
-msgstr ""
-"¿Cuantas preguntas por página desea?  (Deje 0 para que todas las preguntas "
-"aparezcan en una misma página)"
-
-#: includes/qmn_options_option_tab.php:113
-msgid ""
-"How many minutes does the user have to finish the quiz? (Leave 0 for no time "
-"limit)"
-msgstr ""
-"¿Cuantos minutos tiene el usuario para realizar la encuesta? (Deje 0 sino "
-"tiene límite de tiempo)"
-
-#: includes/qmn_options_option_tab.php:119
-msgid ""
-"How many times can a user take this quiz? (Leave 0 for as many times as the "
-"user wants to. Currently only works for registered users)"
-msgstr ""
-"¿Cuantas veces puede el usuario rellenar este cuestionario? (Deje 0 para "
-"tantas veces como el usuario quiera. Actualmente sólo funciona para usuarios "
-"registrados)"
-
-#: includes/qmn_options_option_tab.php:125
-msgid ""
-"How many total entries can this quiz have? (Leave 0 for unlimited entries"
-msgstr ""
-"¿Cuantas veces en total puede ser rellenado este cuestionario? (Deje 0 para "
-"entradas ilimitadas)"
-
-#: includes/qmn_options_option_tab.php:131
-msgid ""
-"How many questions should be loaded for quiz? (Leave 0 to load all questions)"
-msgstr ""
-"¿Cuantas preguntas deben ser cargadas por cuestionario?  (Deje 0 para cargar "
-"todas las preguntas)"
-
-#: includes/qmn_options_option_tab.php:137
-msgid ""
-"What time-frame should the user be able to access the quiz? (Leave blank if "
-"the user can access anytime)"
-msgstr ""
-"¿En qué periodo de tiempo puede el usuario acceder a la encuesta? (Déjelo en "
-"blanco si el usuario puede acceder en cualquier momento)"
-
-#: includes/qmn_options_option_tab.php:139
-msgid "start date"
-msgstr "fecha de inicio"
-
-#: includes/qmn_options_option_tab.php:142
-msgid "end date"
-msgstr "fecha de finalización"
-
-#: includes/qmn_options_option_tab.php:146
-msgid ""
-"Are the questions random? (Question Order will not apply if this is yes)"
-msgstr ""
-"¿Son preguntas aleatorias? (El orden de las preguntas no se aplicará si "
-"contesta que SÍ)"
-
-#: includes/qmn_options_option_tab.php:148
-msgid "Random Questions"
-msgstr "Preguntas aleatorias"
-
-#: includes/qmn_options_option_tab.php:149
-msgid "Random Questions And Answers"
-msgstr "Preguntas y respuestas aleatorias"
-
-#: includes/qmn_options_option_tab.php:154
-msgid ""
-"Would you like to ask for the contact information at the beginning or at the "
-"end of the quiz?"
-msgstr ""
-"¿Le gustaría pedir la información de contacto al principio o final de la "
-"encuesta?"
-
-#: includes/qmn_options_option_tab.php:156
-msgid "Beginning"
-msgstr "Principio"
-
-#: includes/qmn_options_option_tab.php:157
-msgid "End"
-msgstr "Fin"
-
-#: includes/qmn_options_option_tab.php:161
-msgid ""
-"If a logged-in user takes the quiz, would you like them to be able to edit "
-"contact information? If set to no, the fields will not show up for logged in "
-"users; however, the users information will be saved for the fields."
-msgstr ""
-"Si un usuario que ha iniciado sesión, ¿le gustaría que pudiera editar la "
-"información de contacto? Si contesta que NO, los campos no se mostrarán a "
-"los usuarios conectados, sin embargo, la información sobre el usuario sería "
-"registrada en los campos."
-
-#: includes/qmn_options_option_tab.php:168
-msgid "Should we ask for users name?"
-msgstr "¿Se debería pedir el nombre de los usuarios?"
-
-#: includes/qmn_options_option_tab.php:171
-#: includes/qmn_options_option_tab.php:179
-#: includes/qmn_options_option_tab.php:187
-#: includes/qmn_options_option_tab.php:195
-msgid "Require"
-msgstr "Obligatorio"
-
-#: includes/qmn_options_option_tab.php:176
-msgid "Should we ask for users business?"
-msgstr "¿Se debería pedir el empleo del usuario?"
-
-#: includes/qmn_options_option_tab.php:184
-msgid "Should we ask for users email?"
-msgstr "¿Se debería pedir el email al usuario?"
-
-#: includes/qmn_options_option_tab.php:192
-msgid "Should we ask for users phone number?"
-msgstr "¿Se debería pedir al usuario el número de teléfono?"
-
-#: includes/qmn_options_option_tab.php:200
-msgid "Would you like a place for the user to enter comments?"
-msgstr ""
-"¿Le gustaría un espacio para que el usuario pudiera dejar sus comentarios?"
-
-#: includes/qmn_options_option_tab.php:207
-msgid "Show question number on quiz?"
-msgstr "¿Mostrar el número de pregunta en la encuesta?"
-
-#: includes/qmn_options_option_tab.php:214
-msgid "Show social media sharing buttons? (Twitter & Facebook)"
-msgstr ""
-"¿Mostrar botones para compartir en medios sociales? (Twitter & Facebook)"
-
-#: includes/qmn_options_option_tab.php:214
-msgid ""
-"This option is for here only for users of older versions. Please use the new "
-"template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages "
-"instead of using this option!"
-msgstr ""
-
-#: includes/qmn_options_preview_tab.php:6
-msgid "Preview"
-msgstr "Presentación"
-
-#: includes/qmn_options_questions_tab.php:6
-msgid "Questions"
-msgstr "Preguntas"
-
-#: includes/qmn_options_questions_tab.php:105
-msgid "The question has been updated successfully."
-msgstr "La pregunta ha sido actualizada correctamente."
-
-#: includes/qmn_options_questions_tab.php:132
-msgid "The question has been deleted successfully."
-msgstr "La pregunta ha sido eliminada correctamente."
-
-#: includes/qmn_options_questions_tab.php:216
-msgid "The question has been duplicated successfully."
-msgstr "La pregunta ha sido duplicada correctamente."
-
-#: includes/qmn_options_questions_tab.php:309
-msgid "The question has been created successfully."
-msgstr "La pregunta ha sido creada correctamente."
-
-#: includes/qmn_options_questions_tab.php:454
-#: includes/qmn_options_questions_tab.php:461
-#: includes/qmn_options_questions_tab.php:593
-#: includes/qmn_options_questions_tab.php:760
-msgid "Answer"
-msgstr "Respuesta"
-
-#: includes/qmn_options_questions_tab.php:481
-#: includes/qmn_options_questions_tab.php:729
-msgid "Add Question"
-msgstr "Añadir pregunta"
-
-#: includes/qmn_options_questions_tab.php:485
-#, php-format
-msgid "One question"
-msgid_plural "%s questions"
-msgstr[0] "Una pregunta"
-msgstr[1] "%s preguntas"
-
-#: includes/qmn_options_questions_tab.php:557 includes/qmn_quiz_admin.php:270
-msgid "Edit"
-msgstr "Editar"
-
-#: includes/qmn_options_questions_tab.php:557 includes/qmn_quiz_admin.php:272
-#: includes/qmn_quiz_admin.php:397
-msgid "Duplicate"
-msgstr "Duplicar"
-
-#: includes/qmn_options_questions_tab.php:557
-#: includes/qmn_options_results_page_tab.php:247
-#: includes/qmn_quiz_admin.php:273
-msgid "Delete"
-msgstr "Eliminar"
-
-#: includes/qmn_options_questions_tab.php:568
-#: includes/qmn_options_questions_tab.php:737
-msgid ""
-"For fill in the blank types, use %BLANK% to represent where to put the text "
-"box in your text."
-msgstr ""
-
-#: includes/qmn_options_questions_tab.php:571
-#: includes/qmn_options_questions_tab.php:714
-#: includes/qmn_options_questions_tab.php:725
-#: includes/qmn_options_questions_tab.php:740
-msgid "Question"
-msgstr "Pregunta"
-
-#: includes/qmn_options_questions_tab.php:582
-#: includes/qmn_options_questions_tab.php:751
-msgid "Answers"
-msgstr "Respuestas"
-
-#: includes/qmn_options_questions_tab.php:583
-#: includes/qmn_options_questions_tab.php:752
-msgid "Points Worth"
-msgstr "Puntuación"
-
-#: includes/qmn_options_questions_tab.php:584
-#: includes/qmn_options_questions_tab.php:753
-msgid "Correct Answer"
-msgstr "Respuesta correcta"
-
-#: includes/qmn_options_questions_tab.php:611
-#: includes/qmn_options_questions_tab.php:775
-msgid "Add New Answer!"
-msgstr "Añada nueva respuesta!"
-
-#: includes/qmn_options_questions_tab.php:616
-#: includes/qmn_options_questions_tab.php:780
-msgid "Correct Answer Info"
-msgstr "Información acerca de la respuesta correcta"
-
-#: includes/qmn_options_questions_tab.php:623
-#: includes/qmn_options_questions_tab.php:787 includes/qmn_quiz.php:441
-msgid "Hint"
-msgstr "Indicación"
-
-#: includes/qmn_options_questions_tab.php:634
-#: includes/qmn_options_questions_tab.php:712
-#: includes/qmn_options_questions_tab.php:723
-#: includes/qmn_options_questions_tab.php:798
-msgid "Question Type"
-msgstr "Tipo de pregunta"
-
-#: includes/qmn_options_questions_tab.php:652
-#: includes/qmn_options_questions_tab.php:811
-msgid "Comment Field"
-msgstr "Campo de Comentario"
-
-#: includes/qmn_options_questions_tab.php:655
-#: includes/qmn_options_questions_tab.php:813
-msgid "Small Text Field"
-msgstr "Campo de texto corto"
-
-#: includes/qmn_options_questions_tab.php:657
-#: includes/qmn_options_questions_tab.php:814
-msgid "Large Text Field"
-msgstr "Campo de texto largo"
-
-#: includes/qmn_options_questions_tab.php:659
-#: includes/qmn_options_questions_tab.php:815
-msgid "None"
-msgstr "Ninguna"
-
-#: includes/qmn_options_questions_tab.php:663
-#: includes/qmn_options_questions_tab.php:711
-#: includes/qmn_options_questions_tab.php:722
-#: includes/qmn_options_questions_tab.php:819
-msgid "Question Order"
-msgstr "Orden de preguntas"
-
-#: includes/qmn_options_questions_tab.php:671
-#: includes/qmn_options_questions_tab.php:827
-msgid "Required?"
-msgstr "¿Obligatorio?"
-
-#: includes/qmn_options_questions_tab.php:680
-#: includes/qmn_options_questions_tab.php:713
-#: includes/qmn_options_questions_tab.php:724
-#: includes/qmn_options_questions_tab.php:836
-msgid "Category"
-msgstr "Categoria"
-
-#: includes/qmn_options_questions_tab.php:699
-#: includes/qmn_options_questions_tab.php:855
-msgid ""
-"Required currently only works on open answer, number, accept, and captcha "
-"question types"
-msgstr ""
-"Los campos obligatorios tan solo funcionan en respuestas abiertas, números, "
-"aceptar y preguntas tipo captcha."
-
-#: includes/qmn_options_questions_tab.php:701
-msgid "Edit Question"
-msgstr "Editar Pregunta"
-
-#: includes/qmn_options_questions_tab.php:857
-msgid "Create Question"
-msgstr "Crear Pregunta"
-
-#: includes/qmn_options_questions_tab.php:862
-msgid "Are you sure you want to delete this question?"
-msgstr "¿Está seguro que desea eliminar esta pregunta?"
-
-#: includes/qmn_options_questions_tab.php:867
-msgid "Delete Question"
-msgstr "Eliminar pregunta"
-
-#: includes/qmn_options_questions_tab.php:872
-msgid "Are you sure you want to duplicate this question?"
-msgstr "¿Está seguro que desea duplicar esta pregunta?"
-
-#: includes/qmn_options_questions_tab.php:877
-msgid "Duplicate Question"
-msgstr "Duplicar Pregunta"
-
-#: includes/qmn_options_results_page_tab.php:6
-msgid "Results Pages"
-msgstr "Página de Resultados"
-
-#: includes/qmn_options_results_page_tab.php:41
-msgid "The results page has been added successfully."
-msgstr "Los resultados han sido añadidos correctamente."
-
-#: includes/qmn_options_results_page_tab.php:81
-msgid "The results page has been saved successfully."
-msgstr "La página de resultados ha sido guardada correctamente."
-
-#: includes/qmn_options_results_page_tab.php:191
-msgid "Displays button to share on Facebook."
-msgstr ""
-
-#: includes/qmn_options_results_page_tab.php:194
-msgid "Displays button to share on Twitter."
-msgstr ""
-
-#: includes/qmn_options_results_page_tab.php:199
-#: includes/qmn_options_results_page_tab.php:280
-msgid "Save Results Pages"
-msgstr "Guardar Página de Resultados"
-
-#: includes/qmn_options_results_page_tab.php:200
-#: includes/qmn_options_results_page_tab.php:285
-msgid "Add New Results Page"
-msgstr "Añadir Nueva Página de Resultados"
-
-#: includes/qmn_options_results_page_tab.php:208
-#: includes/qmn_options_results_page_tab.php:272
-msgid "Results Page Shown"
-msgstr "Mostrar Página de Resultados"
-
-#: includes/qmn_options_results_page_tab.php:209
-#: includes/qmn_options_results_page_tab.php:273
-msgid "Redirect URL"
-msgstr ""
-
-#: includes/qmn_options_results_page_tab.php:247
-msgid "Are you sure?"
-msgstr "¿Está seguro?"
-
-#: includes/qmn_options_style_tab.php:6
-msgid "Style"
-msgstr "Estilo"
-
-#: includes/qmn_options_style_tab.php:26
-msgid "The style has been saved successfully."
-msgstr "El estilo ha sido guardado correctamente."
-
-#: includes/qmn_options_style_tab.php:65
-msgid "Quiz Styles"
-msgstr "Estilos de Cuestionario."
-
-#: includes/qmn_options_style_tab.php:66
-msgid "Choose your style:"
-msgstr "Elija su estilo:"
-
-#: includes/qmn_options_style_tab.php:88
-msgid "Custom"
-msgstr "Personalizado"
-
-#: includes/qmn_options_style_tab.php:94
-#: includes/qmn_options_style_tab.php:106
-msgid "Save Quiz Style"
-msgstr "Guardar Estilo de Cuestionario"
-
-#: includes/qmn_options_style_tab.php:96
-msgid "Custom Style CSS"
-msgstr "Personalizar Estilo CSS"
-
-#: includes/qmn_options_style_tab.php:97
-msgid ""
-"For detailed help and guidance along with a list of different classes used "
-"in this plugin, please visit the following link:"
-msgstr ""
-"Para una ayuda detallada y guía acerca de las diferentes classes usadas en "
-"este plugin, por favor visite el siguiente enlace:"
-
-#: includes/qmn_options_text_tab.php:6
-msgid "Text"
-msgstr "Texto"
-
-#: includes/qmn_options_text_tab.php:42
-msgid "The templates has been updated successfully."
-msgstr "La plantilla ha sido actualizada correctamente."
-
-#: includes/qmn_options_text_tab.php:73 includes/qmn_quiz.php:1230
-msgid "Previous"
-msgstr "Anterior"
-
-#: includes/qmn_options_text_tab.php:169 includes/qmn_options_text_tab.php:329
-msgid "Save Templates"
-msgstr "Guardar Plantillas"
-
-#: includes/qmn_options_text_tab.php:175
-msgid "Message Templates"
-msgstr "Plantillas de Mensaje"
-
-#: includes/qmn_options_text_tab.php:179
-msgid "Message Displayed Before Quiz"
-msgstr "Mensaje Mostrado Antes del Cuestionario"
-
-#: includes/qmn_options_text_tab.php:189
-msgid "Message Displayed Before Comments Box If Enabled"
-msgstr "Mensaje Mostrado Antes del campo de Comentarios si está activado."
-
-#: includes/qmn_options_text_tab.php:199
-msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
-msgstr ""
-"Mensaje Mostrado al final de la encuesta (Dejar en blanco para omitir "
-"sección de texto)"
-
-#: includes/qmn_options_text_tab.php:209
-msgid "Message Displayed If User Has Tried Quiz Too Many Times"
-msgstr "Mensaje Mostrado si el usuario ha intentando entrar demasiadas veces."
-
-#: includes/qmn_options_text_tab.php:219
-msgid ""
-"Message Displayed If User Is Not Logged In And Quiz Requires Users To Be "
-"Logged In"
-msgstr ""
-"Mensaje Mostrado si el usuario no ha iniciado sesión en un cuestionario que "
-"requería iniciar sesión."
-
-#: includes/qmn_options_text_tab.php:229
-msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
-msgstr "Mensaje Mostrado si la fecha está fuera del  calendario."
-
-#: includes/qmn_options_text_tab.php:239
-msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
-msgstr "Mensaje mostrado si el límite total de entradas ha sido superado."
-
-#: includes/qmn_options_text_tab.php:249
-msgid "%QUESTIONS_ANSWERS% Text"
-msgstr "%QUESTIONS_ANSWERS% Texto"
-
-#: includes/qmn_options_text_tab.php:262
-msgid "Twitter Sharing Text"
-msgstr "Texto para compartir en Twitter"
-
-#: includes/qmn_options_text_tab.php:279
-msgid "Facebook Sharing Text"
-msgstr "Texto para compartir en Facebook"
-
-#: includes/qmn_options_text_tab.php:294
-msgid "Other Templates"
-msgstr "Otras plantillas"
-
-#: includes/qmn_options_text_tab.php:297
-msgid "Text for submit button"
-msgstr "Texto para el botón de envío."
-
-#: includes/qmn_options_text_tab.php:301
-msgid "Text for name field"
-msgstr "Texto para el nombre del campo"
-
-#: includes/qmn_options_text_tab.php:305
-msgid "Text for business field"
-msgstr "Texto para el campo asunto."
-
-#: includes/qmn_options_text_tab.php:309
-msgid "Text for email field"
-msgstr "Texto para el campo email"
-
-#: includes/qmn_options_text_tab.php:313
-msgid "Text for phone number field"
-msgstr "Texto para el campo número de teléfono"
-
-#: includes/qmn_options_text_tab.php:317
-msgid "Text for comments field"
-msgstr "Texto para el campo Comentarios"
-
-#: includes/qmn_options_text_tab.php:321
-msgid "Text for previous button"
-msgstr "Texto para el botón Anterior"
-
-#: includes/qmn_options_text_tab.php:325
-msgid "Text for next button"
-msgstr "Texto para el botón Siguiente"
-
-#: includes/qmn_options_tools_tab.php:6 includes/qmn_tools.php:58
-#: mlw_quizmaster2.php:222
-msgid "Tools"
-msgstr "Herramientas"
-
-#: includes/qmn_options_tools_tab.php:23
-msgid "The stats has been reset successfully."
-msgstr "Las estadísticas han sido reseteadas correctamente."
-
-#: includes/qmn_options_tools_tab.php:75
-msgid ""
-"Use this button to reset all the stats collected for this quiz (Quiz Views "
-"and Times Quiz Has Been Taken)."
-msgstr "Las estadísticas han sido reseteadas correctamente."
-
-#: includes/qmn_options_tools_tab.php:76
-msgid "Reset Quiz Views And Taken Stats"
-msgstr "Resetear Encuesta y Estadísticas Guardadas"
-
-#: includes/qmn_options_tools_tab.php:87
-msgid ""
-"Are you sure you want to reset the stats to 0? All views and taken stats for "
-"this quiz will be reset. This is permanent and cannot be undone."
-msgstr ""
-"¿Está seguro que desea resetear las estadísticas a 0? Todas las vistas y "
-"estadísticas guardadas para este cuestionario serán eliminadas. Esto es "
-"permanente y no se puede deshacer."
-
-#: includes/qmn_options_tools_tab.php:91
-msgid "Reset All Stats For Quiz"
-msgstr "Resetear todas las estadísticas para de un Cuestionario"
 
 #: includes/qmn_question_types.php:7
 msgid "Multiple Choice"
@@ -1268,25 +1326,9 @@ msgstr "Múltiples Respuestas Horizontal"
 msgid "Fill In The Blank"
 msgstr ""
 
-#: includes/qmn_quiz.php:326
-msgid "Not a valid e-mail address!"
-msgstr "E-mail no válido!!"
-
-#: includes/qmn_quiz.php:327
-msgid "This field must be a number!"
-msgstr "Este campo debe ser númerico!"
-
-#: includes/qmn_quiz.php:328
-msgid "The entered text is not correct!"
-msgstr "El texto introducido no es correcto!"
-
-#: includes/qmn_quiz.php:329
-msgid "Please complete all required fields!"
-msgstr "Por favor, complete todas los campos obligatorios!"
-
-#: includes/qmn_quiz_admin.php:186 mlw_quizmaster2.php:217
-msgid "Quizzes"
-msgstr "Cuestionarios"
+#: includes/qmn_alerts.php:19
+msgid "Success!"
+msgstr "Hecho!"
 
 #: includes/qmn_quiz_admin.php:186
 msgid "Add New"
@@ -1299,42 +1341,39 @@ msgid_plural "%s quizzes"
 msgstr[0] "Un cuestionarios"
 msgstr[1] "%s cuestionarios"
 
-#: includes/qmn_quiz_admin.php:249 includes/qmn_quiz_admin.php:295
-#: includes/qmn_quiz_admin.php:364 includes/qmn_results.php:209
-msgid "Quiz Name"
-msgstr "Nombre del Cuestionario"
-
-#: includes/qmn_quiz_admin.php:250 includes/qmn_quiz_admin.php:296
+#: includes/qmn_quiz_admin.php:250
+#: includes/qmn_quiz_admin.php:296
 msgid "URL"
 msgstr "URL"
 
-#: includes/qmn_quiz_admin.php:251 includes/qmn_quiz_admin.php:297
+#: includes/qmn_quiz_admin.php:251
+#: includes/qmn_quiz_admin.php:297
 msgid "Quiz Shortcode"
 msgstr "Código Corto de la Encuesta"
 
-#: includes/qmn_quiz_admin.php:252 includes/qmn_quiz_admin.php:298
+#: includes/qmn_quiz_admin.php:252
+#: includes/qmn_quiz_admin.php:298
 msgid "Leaderboard Shortcode"
 msgstr "Código Corto del Panel de Puntuaciones"
 
-#: includes/qmn_quiz_admin.php:253 includes/qmn_quiz_admin.php:299
+#: includes/qmn_quiz_admin.php:253
+#: includes/qmn_quiz_admin.php:299
 msgid "Quiz Views"
 msgstr "Vistas del Cuestionario"
 
-#: includes/qmn_quiz_admin.php:254 includes/qmn_quiz_admin.php:300
+#: includes/qmn_quiz_admin.php:254
+#: includes/qmn_quiz_admin.php:300
 msgid "Quiz Taken"
 msgstr "Cuestionario Completado"
 
-#: includes/qmn_quiz_admin.php:255 includes/qmn_quiz_admin.php:301
+#: includes/qmn_quiz_admin.php:255
+#: includes/qmn_quiz_admin.php:301
 msgid "Last Modified"
 msgstr "Última Modificación"
 
 #: includes/qmn_quiz_admin.php:268
 msgid "Edit Name"
 msgstr "Editar Nombre"
-
-#: includes/qmn_quiz_admin.php:271 includes/qmn_results_details.php:121
-msgid "Results"
-msgstr "Resultados"
 
 #: includes/qmn_quiz_admin.php:359
 msgid "Create New Quiz"
@@ -1368,170 +1407,6 @@ msgstr "¿Está seguro que desea eliminar este cuestionario?"
 msgid "Delete Quiz"
 msgstr "Eliminar Cuestionario"
 
-#: includes/qmn_quiz_creator.php:369
-msgid ""
-"Your new quiz has been created successfully. To begin editing your quiz, "
-"click the Edit link on the new quiz."
-msgstr ""
-"Su cuestionario ha sido creado correctamente. Para empezar a editar su "
-"cuestionario haga click en Edit en el nuevo cuestionario."
-
-#: includes/qmn_quiz_creator.php:435
-msgid "Your quiz has been deleted successfully."
-msgstr "Su cuestionario ha sido eliminado correctamente."
-
-#: includes/qmn_quiz_creator.php:477
-msgid "Your quiz name has been updated successfully."
-msgstr "Su cuestionario ha sido actualizado correctamente."
-
-#: includes/qmn_quiz_creator.php:634
-msgid "Your quiz has been duplicated successfully."
-msgstr "Su cuestionario ha sido duplicado correctamente."
-
-#. translators: The %s corresponds to the name of the quiz
-#: includes/qmn_quiz_options.php:56
-#, php-format
-msgid "Quiz Settings For %s"
-msgstr "Configuración para el cuestionario %s"
-
-#: includes/qmn_quiz_options.php:96
-msgid ""
-"Please go to the quizzes page and click on the Edit link from the quiz you "
-"wish to edit."
-msgstr ""
-"Por favor vaya a la página de cuestionarios y haga click sobre el botón "
-"Editar en el cuestionario que desee editar."
-
-#: includes/qmn_results.php:23
-msgid "Your results has been deleted successfully."
-msgstr "Sus resultados han sido eliminados correctamente."
-
-#: includes/qmn_results.php:152 includes/qmn_results_details.php:21
-#: mlw_quizmaster2.php:219
-msgid "Quiz Results"
-msgstr "Resultados de la encuesta."
-
-#: includes/qmn_results.php:161
-#, php-format
-msgid "One result"
-msgid_plural "%s results"
-msgstr[0] "Un resultado"
-msgstr[1] "%s resultados"
-
-#: includes/qmn_results.php:208
-msgid "Actions"
-msgstr "Acciones"
-
-#: includes/qmn_results.php:210
-msgid "Score"
-msgstr "Puntuación"
-
-#: includes/qmn_results.php:211
-msgid "Time To Complete"
-msgstr "Tiempo para completar"
-
-#: includes/qmn_results.php:212
-msgid "Name"
-msgstr "Nombre"
-
-#: includes/qmn_results.php:213
-msgid "Business"
-msgstr "Asunto"
-
-#: includes/qmn_results.php:214
-msgid "Email"
-msgstr "Email"
-
-#: includes/qmn_results.php:215
-msgid "Phone"
-msgstr "Teléfono"
-
-#: includes/qmn_results.php:216
-msgid "Time Taken"
-msgstr "Tiempo empleado"
-
-#: includes/qmn_results.php:276
-msgid "Are you sure you want to delete these results?"
-msgstr "¿Está seguro de que desea eliminar estos resultados?"
-
-#: includes/qmn_results.php:281
-msgid "Delete Results"
-msgstr "Eliminar resultados"
-
-#: includes/qmn_results_details.php:200
-msgid "Create Certificate"
-msgstr "Crear Certificado"
-
-#: includes/qmn_results_details.php:205
-msgid "Download Certificate Here"
-msgstr "Descargar Certificado Aquí"
-
-#: includes/qmn_results_details.php:212
-msgid "Certificate"
-msgstr "Cerificado"
-
-#: includes/qmn_tools.php:93
-msgid "There has been an error! Please try again."
-msgstr "Ha habido un error! Por favor, inténtelo de nuevo."
-
-#: includes/qmn_tools.php:111
-msgid "Quiz Has Been Restored!"
-msgstr "El cuestionario ha sido restaurado!"
-
-#: includes/qmn_tools.php:116
-msgid ""
-"Choose a quiz in the drop down and then click the button to restore a "
-"deleted quiz."
-msgstr ""
-"Escoja un cuestionario en la lista desplegable y después haga click en el "
-"botón para restaurar una encuesta eliminada."
-
-#: includes/qmn_tools.php:126
-msgid "Restore Quiz"
-msgstr "Restaurar la encuesta"
-
-#: includes/qmn_tools.php:155 includes/qmn_tools.php:171
-#, php-format
-msgid "Previous %s Audits"
-msgstr ""
-"Auditoria \n"
-"%s Anterior"
-
-#: includes/qmn_tools.php:158 includes/qmn_tools.php:165
-#, php-format
-msgid "Next %s Audits"
-msgstr "Próxima %s Auditoria"
-
-#: includes/qmn_tools.php:178
-msgid "User"
-msgstr "Usuario"
-
-#: includes/qmn_tools.php:179
-msgid "Action"
-msgstr "Acción"
-
-#: includes/qmn_tools.php:180
-msgid "Time"
-msgstr "Tiempo"
-
-#: includes/qmn_usage_tracking.php:193
-msgid ""
-"Allow Quiz Master Next to anonymously track this plugin's usage and help us "
-"make this plugin better? No sensitive data is tracked."
-msgstr ""
-"¿Permite a \n"
-"Quiz Master Next el envío de información acerca del uso de este plugin con "
-"el fín de ayudarnos a mejorar este plugin? No se hará seguimiento sobre "
-"información privada."
-
-#: includes/qmn_usage_tracking.php:194
-msgid "Allow"
-msgstr "Permitir"
-
-#: includes/qmn_usage_tracking.php:195
-msgid "Do not allow"
-msgstr "No permitir"
-
 #: includes/qmn_widgets.php:11
 msgid "Quiz Master Next Leaderboard Widget"
 msgstr ""
@@ -1546,30 +1421,3 @@ msgstr "Título del Widget"
 msgid "Quiz ID"
 msgstr "ID del cuestionario"
 
-#: mlw_quizmaster2.php:218
-msgid "Quiz Settings"
-msgstr "Configuración de la encuesta"
-
-#: mlw_quizmaster2.php:220
-msgid "Quiz Result Details"
-msgstr "Detalle de resultados del cuestionario"
-
-#: mlw_quizmaster2.php:221
-msgid "Settings"
-msgstr "Configuración"
-
-#: mlw_quizmaster2.php:223
-msgid "Stats"
-msgstr "Estadísticas"
-
-#: mlw_quizmaster2.php:224
-msgid "Addon Settings"
-msgstr "Configuración de Addon"
-
-#: mlw_quizmaster2.php:225
-msgid "Help"
-msgstr "Ayuda"
-
-#: mlw_quizmaster2.php:228 mlw_quizmaster2.php:229
-msgid "QMN About"
-msgstr "Sobre QMN"
