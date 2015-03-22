@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-18 23:29-0500\n"
+"POT-Creation-Date: 2015-03-22 19:28-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -869,15 +869,15 @@ msgid "Time Taken"
 msgstr "Forbrugt tid"
 
 #: includes/qmn_results.php:258
-#: includes/qmn_options_option_tab.php:96
+#: includes/qmn_options_option_tab.php:141
 msgid "Not Graded"
 msgstr "Ikke Graded"
 
-#: includes/qmn_results.php:276
+#: includes/qmn_results.php:275
 msgid "Are you sure you want to delete these results?"
 msgstr "Er du sikker på at du vil slette disse resultater ?"
 
-#: includes/qmn_results.php:281
+#: includes/qmn_results.php:280
 msgid "Delete Results"
 msgstr "Slet resultater"
 
@@ -933,127 +933,127 @@ msgstr "Preview"
 msgid "Options"
 msgstr "Indstillinger"
 
-#: includes/qmn_options_option_tab.php:43
+#: includes/qmn_options_option_tab.php:88
 msgid "The options has been updated successfully."
 msgstr "Indstillinger er gemt"
 
-#: includes/qmn_options_option_tab.php:84
-#: includes/qmn_options_option_tab.php:221
+#: includes/qmn_options_option_tab.php:129
+#: includes/qmn_options_option_tab.php:266
 msgid "Save Options"
 msgstr "Gem indstillinger"
 
-#: includes/qmn_options_option_tab.php:92
+#: includes/qmn_options_option_tab.php:137
 msgid "Which system is this quiz graded on?"
 msgstr "Hvilket system er denne quiz sorteres på?"
 
-#: includes/qmn_options_option_tab.php:94
+#: includes/qmn_options_option_tab.php:139
 msgid "Correct/Incorrect"
 msgstr "Korrekt / Ukorrekt"
 
-#: includes/qmn_options_option_tab.php:95
+#: includes/qmn_options_option_tab.php:140
 msgid "Points"
 msgstr "Point"
 
-#: includes/qmn_options_option_tab.php:100
+#: includes/qmn_options_option_tab.php:145
 msgid "Should the user be required to be logged in to take this quiz?"
 msgstr "Skal brugeren være logget ind for at svare på denne test?"
 
-#: includes/qmn_options_option_tab.php:107
+#: includes/qmn_options_option_tab.php:152
 msgid "How many questions per page would you like? (Leave 0 for all questions on one page)"
 msgstr "Hvor mange spørgsmål vil du have per side ? (0 for alle spørgsmål på samme side)."
 
-#: includes/qmn_options_option_tab.php:113
+#: includes/qmn_options_option_tab.php:158
 msgid "How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)"
 msgstr "Hvor mange minutter har brugeren til at afslutte undersøgelsen? (0 for ingen tidsfrist)"
 
-#: includes/qmn_options_option_tab.php:119
+#: includes/qmn_options_option_tab.php:164
 msgid "How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. Currently only works for registered users)"
 msgstr "Hvor mange gange kan en bruger tage denne quiz? (Lad 0 for så mange gange som brugeren ønsker at. I øjeblikket virker kun for registrerede brugere)"
 
-#: includes/qmn_options_option_tab.php:125
+#: includes/qmn_options_option_tab.php:170
 msgid "How many total entries can this quiz have? (Leave 0 for unlimited entries"
 msgstr "Hvor mange samlede poster kan denne quiz have? (Lad 0 for ubegrænset poster"
 
-#: includes/qmn_options_option_tab.php:131
+#: includes/qmn_options_option_tab.php:176
 msgid "How many questions should be loaded for quiz? (Leave 0 to load all questions)"
 msgstr "Hvor mange spørgsmål skal indlæses til quiz? (Lad 0 at indlæse alle spørgsmål)"
 
-#: includes/qmn_options_option_tab.php:137
+#: includes/qmn_options_option_tab.php:182
 msgid "What time-frame should the user be able to access the quiz? (Leave blank if the user can access anytime)"
 msgstr "Hvilken tidsperiode skal brugeren kunne få adgang quizzen? (Står tom, hvis brugeren kan få adgang til når som helst)"
 
-#: includes/qmn_options_option_tab.php:139
+#: includes/qmn_options_option_tab.php:184
 msgid "start date"
 msgstr "Start dato"
 
-#: includes/qmn_options_option_tab.php:142
+#: includes/qmn_options_option_tab.php:187
 msgid "end date"
 msgstr "Slut dato"
 
-#: includes/qmn_options_option_tab.php:146
+#: includes/qmn_options_option_tab.php:191
 msgid "Are the questions random? (Question Order will not apply if this is yes)"
 msgstr "Er spørgsmålene tilfældigt? (Spørgsmål Order gælder ikke, hvis det er ja)"
 
-#: includes/qmn_options_option_tab.php:148
+#: includes/qmn_options_option_tab.php:193
 msgid "Random Questions"
 msgstr "Tilfældige spørgsmål"
 
-#: includes/qmn_options_option_tab.php:149
+#: includes/qmn_options_option_tab.php:194
 msgid "Random Questions And Answers"
 msgstr "Tilfældige Spørgsmål og svar"
 
-#: includes/qmn_options_option_tab.php:154
+#: includes/qmn_options_option_tab.php:199
 msgid "Would you like to ask for the contact information at the beginning or at the end of the quiz?"
 msgstr "Vil du bede om kontaktoplysninger i begyndelsen eller slutningen af ​​quizzen?"
 
-#: includes/qmn_options_option_tab.php:156
+#: includes/qmn_options_option_tab.php:201
 msgid "Beginning"
 msgstr "Begyndelse"
 
-#: includes/qmn_options_option_tab.php:157
+#: includes/qmn_options_option_tab.php:202
 msgid "End"
 msgstr "Slut"
 
-#: includes/qmn_options_option_tab.php:161
+#: includes/qmn_options_option_tab.php:206
 msgid "If a logged-in user takes the quiz, would you like them to be able to edit contact information? If set to no, the fields will not show up for logged in users; however, the users information will be saved for the fields."
 msgstr "Hvis en indloggede bruger tager quizzen, vil du have dem til at være i stand til at redigere kontaktoplysninger? Hvis sat til nej, vil de områder ikke op til logget ind brugere; dog vil brugerne oplysninger gemmes til felterne."
 
-#: includes/qmn_options_option_tab.php:168
+#: includes/qmn_options_option_tab.php:213
 msgid "Should we ask for users name?"
 msgstr "Skal vi bede for brugere navn?"
 
-#: includes/qmn_options_option_tab.php:171
-#: includes/qmn_options_option_tab.php:179
-#: includes/qmn_options_option_tab.php:187
-#: includes/qmn_options_option_tab.php:195
+#: includes/qmn_options_option_tab.php:216
+#: includes/qmn_options_option_tab.php:224
+#: includes/qmn_options_option_tab.php:232
+#: includes/qmn_options_option_tab.php:240
 msgid "Require"
 msgstr "Obligatorisk"
 
-#: includes/qmn_options_option_tab.php:176
+#: includes/qmn_options_option_tab.php:221
 msgid "Should we ask for users business?"
 msgstr "Skal vi bede for brugere virksomhed?"
 
-#: includes/qmn_options_option_tab.php:184
+#: includes/qmn_options_option_tab.php:229
 msgid "Should we ask for users email?"
 msgstr "Skal vi bede for brugere email?"
 
-#: includes/qmn_options_option_tab.php:192
+#: includes/qmn_options_option_tab.php:237
 msgid "Should we ask for users phone number?"
 msgstr "Skal vi bede for brugere telefonnummer?"
 
-#: includes/qmn_options_option_tab.php:200
+#: includes/qmn_options_option_tab.php:245
 msgid "Would you like a place for the user to enter comments?"
 msgstr "Kunne du tænke dig et sted for brugeren at indtaste kommentarer?"
 
-#: includes/qmn_options_option_tab.php:207
+#: includes/qmn_options_option_tab.php:252
 msgid "Show question number on quiz?"
 msgstr "Vis spørgsmål nummer på quiz?"
 
-#: includes/qmn_options_option_tab.php:214
+#: includes/qmn_options_option_tab.php:259
 msgid "Show social media sharing buttons? (Twitter & Facebook)"
 msgstr "Vis sociale medier knapper deling? (Twitter & Facebook)"
 
-#: includes/qmn_options_option_tab.php:214
+#: includes/qmn_options_option_tab.php:259
 msgid "This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!"
 msgstr ""
 
@@ -1343,35 +1343,35 @@ msgstr "Sidst ændret"
 msgid "Edit Name"
 msgstr "Ret navn"
 
-#: includes/qmn_quiz_admin.php:359
+#: includes/qmn_quiz_admin.php:358
 msgid "Create New Quiz"
 msgstr "Opret ny quiz"
 
-#: includes/qmn_quiz_admin.php:373
+#: includes/qmn_quiz_admin.php:372
 msgid "Create Quiz"
 msgstr "Opret quiz"
 
-#: includes/qmn_quiz_admin.php:379
+#: includes/qmn_quiz_admin.php:378
 msgid "Quiz Name:"
 msgstr "Quiz navn:"
 
-#: includes/qmn_quiz_admin.php:390
+#: includes/qmn_quiz_admin.php:389
 msgid "Duplicate this quiz?"
 msgstr "Kopier quiz"
 
-#: includes/qmn_quiz_admin.php:392
+#: includes/qmn_quiz_admin.php:391
 msgid "Duplicate questions with quiz"
 msgstr "Kopier spørgsmål"
 
-#: includes/qmn_quiz_admin.php:394
+#: includes/qmn_quiz_admin.php:393
 msgid "Name Of New Quiz:"
 msgstr "Navn på ny Quiz:"
 
-#: includes/qmn_quiz_admin.php:403
+#: includes/qmn_quiz_admin.php:402
 msgid "Are you sure you want to delete this quiz?"
 msgstr "Er du sikker på at du vil slette denne quiz?"
 
-#: includes/qmn_quiz_admin.php:408
+#: includes/qmn_quiz_admin.php:407
 msgid "Delete Quiz"
 msgstr "Slet Quiz"
 

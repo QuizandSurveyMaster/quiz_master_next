@@ -16,28 +16,73 @@ function mlw_options_option_tab_content()
 	if ( isset($_POST["save_options"]) && $_POST["save_options"] == "confirmation")
 	{
 		//Variables for save options form
-		$mlw_system = $_POST["system"];
+		$mlw_system = intval($_POST["system"]);
 		$mlw_qmn_pagination = intval($_POST["pagination"]);
 		$mlw_qmn_social_media = intval($_POST["social_media"]);
 		$mlw_qmn_question_numbering = intval($_POST["question_numbering"]);
 		$mlw_qmn_timer = intval($_POST["timer_limit"]);
-		$mlw_qmn_questions_from_total = $_POST["question_from_total"];
-		$mlw_randomness_order = $_POST["randomness_order"];
+		$mlw_qmn_questions_from_total = intval($_POST["question_from_total"]);
+		$mlw_randomness_order = intval($_POST["randomness_order"]);
 		$mlw_total_user_tries = intval($_POST["total_user_tries"]);
-		$mlw_require_log_in = $_POST["require_log_in"];
-		$mlw_limit_total_entries = $_POST["limit_total_entries"];
-		$mlw_contact_location = $_POST["contact_info_location"];
-		$mlw_user_name = $_POST["userName"];
-		$mlw_user_comp = $_POST["userComp"];
-		$mlw_user_email = $_POST["userEmail"];
-		$mlw_user_phone = $_POST["userPhone"];
-		$mlw_comment_section = $_POST["commentSection"];
-		$mlw_qmn_loggedin_contact = $_POST["loggedin_user_contact"];
+		$mlw_require_log_in = intval($_POST["require_log_in"]);
+		$mlw_limit_total_entries = intval($_POST["limit_total_entries"]);
+		$mlw_contact_location = intval($_POST["contact_info_location"]);
+		$mlw_user_name = intval($_POST["userName"]);
+		$mlw_user_comp = intval($_POST["userComp"]);
+		$mlw_user_email = intval($_POST["userEmail"]);
+		$mlw_user_phone = intval($_POST["userPhone"]);
+		$mlw_comment_section = intval($_POST["commentSection"]);
+		$mlw_qmn_loggedin_contact = intval($_POST["loggedin_user_contact"]);
 		$qmn_scheduled_timeframe = serialize(array("start" => $_POST["scheduled_time_start"], "end" => $_POST["scheduled_time_end"]));
 		$quiz_id = $_POST["quiz_id"];
 
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET system='".$mlw_system."', loggedin_user_contact='".$mlw_qmn_loggedin_contact."', contact_info_location=".$mlw_contact_location.", user_name='".$mlw_user_name."', user_comp='".$mlw_user_comp."', user_email='".$mlw_user_email."', user_phone='".$mlw_user_phone."', comment_section='".$mlw_comment_section."', randomness_order='".$mlw_randomness_order."', question_from_total=".$mlw_qmn_questions_from_total.", total_user_tries=".$mlw_total_user_tries.", social_media=".$mlw_qmn_social_media.", pagination=".$mlw_qmn_pagination.", timer_limit=".$mlw_qmn_timer.", question_numbering=".$mlw_qmn_question_numbering.", require_log_in=".$mlw_require_log_in.", limit_total_entries=".$mlw_limit_total_entries.", last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe='".$qmn_scheduled_timeframe."' WHERE quiz_id=".$quiz_id;
-		$results = $wpdb->query( $update );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+			 	'system' => $mlw_system,
+				'loggedin_user_contact' => $mlw_qmn_loggedin_contact,
+				'contact_info_location' => $mlw_contact_location,
+				'user_name' => $mlw_user_name,
+				'user_comp' => $mlw_user_comp,
+				'user_email' => $mlw_user_email,
+				'user_phone' => $mlw_user_phone,
+				'comment_section' => $mlw_comment_section,
+				'randomness_order' => $mlw_randomness_order,
+				'question_from_total' => $mlw_qmn_questions_from_total,
+				'total_user_tries' => $mlw_total_user_tries,
+				'social_media' => $mlw_qmn_social_media,
+				'pagination' => $mlw_qmn_pagination,
+				'timer_limit' => $mlw_qmn_timer,
+				'question_numbering' => $mlw_qmn_question_numbering,
+				'require_log_in' => $mlw_require_log_in,
+				'limit_total_entries' => $mlw_limit_total_entries,
+				'last_activity' => date("Y-m-d H:i:s"),
+				'scheduled_timeframe' => $qmn_scheduled_timeframe
+			),
+			array( 'quiz_id' => $quiz_id ),
+			array(
+			 	'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%d',
+				'%s',
+				'%s',
+			),
+			array( '%d' )
+		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The options has been updated successfully.', 'quiz-master-next'), 'success');
