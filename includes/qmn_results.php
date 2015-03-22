@@ -270,7 +270,6 @@ function mlw_generate_quiz_results()
 					?>
 				</table>
 			</form>
-			<?php echo mlw_qmn_show_adverts(); ?>
 
 			<div id="delete_dialog" title="Delete Results?" style="display:none;">
 				<h3><b><?php _e('Are you sure you want to delete these results?','quiz-master-next'); ?></b></h3>

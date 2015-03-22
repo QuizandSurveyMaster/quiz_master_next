@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1.1
-Stable tag: 4.2.1
+Stable tag: 4.2.2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
@@ -119,6 +119,9 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.2.2 (March 23, 2015) =
+ * Minor Design Update
 
 = 4.2.1 (March 19, 2015) =
  * Minor Design Changes

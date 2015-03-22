@@ -118,10 +118,9 @@ function mlw_generate_about_page()
 		<br />
 	</div>
 	<div id="mlw_quiz_changelog" style="display: none;">
-	<h3><?php echo $mlw_quiz_version; ?> (March 19, 2015)</h3>
+	<h3><?php echo $mlw_quiz_version; ?> (March 23, 2015)</h3>
 	<ul>
-		<li>* Minor Design Changes</li>
-		<li>* Moved Redirect URL Back To Beta</li>
+		<li>* Minor Design Update</li>
 	</ul>
 	</div>
 	<div id="mlw_quiz_requested" style="display: none;">
