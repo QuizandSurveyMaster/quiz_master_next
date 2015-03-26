@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 19:28-0500\n"
-"PO-Revision-Date: 2015-03-22 19:28-0500\n"
+"POT-Creation-Date: 2015-03-25 20:59-0500\n"
+"PO-Revision-Date: 2015-03-25 20:59-0500\n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
 "Language: es_ES\n"
@@ -314,50 +314,46 @@ msgstr "Su cuestionario ha sido actualizado correctamente."
 msgid "Your quiz has been duplicated successfully."
 msgstr "Su cuestionario ha sido duplicado correctamente."
 
-#: includes/qmn_quiz.php:326
+#: includes/qmn_quiz.php:331
 msgid "Not a valid e-mail address!"
 msgstr "E-mail no válido!!"
 
-#: includes/qmn_quiz.php:327
+#: includes/qmn_quiz.php:332
 msgid "This field must be a number!"
 msgstr "Este campo debe ser númerico!"
 
-#: includes/qmn_quiz.php:328
+#: includes/qmn_quiz.php:333
 msgid "The entered text is not correct!"
 msgstr "El texto introducido no es correcto!"
 
-#: includes/qmn_quiz.php:329
+#: includes/qmn_quiz.php:334
 msgid "Please complete all required fields!"
 msgstr "Por favor, complete todas los campos obligatorios!"
 
-#: includes/qmn_quiz.php:441
+#: includes/qmn_quiz.php:446
 msgid "Hint"
 msgstr "Indicación"
 
-#: includes/qmn_quiz.php:1230
+#: includes/qmn_quiz.php:1235
 #: includes/qmn_options_text_tab.php:73
 msgid "Previous"
 msgstr "Anterior"
 
-#: includes/qmn_credits.php:83
+#: includes/qmn_credits.php:76
 msgid "Welcome To Quiz Master Next"
 msgstr "Bienvenido a Quiz Master Next"
 
-#: includes/qmn_credits.php:84
+#: includes/qmn_credits.php:77
 msgid "Thank you for updating!"
 msgstr "Gracias por actualizar!"
 
-#: includes/qmn_credits.php:88
+#: includes/qmn_credits.php:81
 msgid "What's New!"
 msgstr "Novedades!"
 
-#: includes/qmn_credits.php:90
+#: includes/qmn_credits.php:83
 msgid "Changelog"
 msgstr "Historial de modificaciones"
-
-#: includes/qmn_credits.php:92
-msgid "Requested Features"
-msgstr "Características solicitadas"
 
 #: includes/qmn_usage_tracking.php:193
 msgid "Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked."
@@ -1421,3 +1417,5 @@ msgstr "Título del Widget"
 msgid "Quiz ID"
 msgstr "ID del cuestionario"
 
+#~ msgid "Requested Features"
+#~ msgstr "Características solicitadas"
