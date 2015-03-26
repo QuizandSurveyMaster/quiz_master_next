@@ -125,7 +125,7 @@ function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
 {
 	if ($mlw_quiz_array["total_questions"] != 0)
 	{
-		$mlw_average_points = $mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"];
+		$mlw_average_points = round($mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"], 2);
 	}
 	else
 	{

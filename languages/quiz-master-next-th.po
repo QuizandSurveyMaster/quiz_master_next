@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 19:29-0500\n"
+"POT-Creation-Date: 2015-03-25 21:01-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -314,50 +314,46 @@ msgstr "ชื่อแบบทดสอบของท่านได้ถู
 msgid "Your quiz has been duplicated successfully."
 msgstr "แบบทดสอบของท่านได้ถูกทำสำเนาเรียบร้อย"
 
-#: includes/qmn_quiz.php:326
+#: includes/qmn_quiz.php:331
 msgid "Not a valid e-mail address!"
 msgstr "รูปแบบอีเมล์ไม่ถูกต้อง"
 
-#: includes/qmn_quiz.php:327
+#: includes/qmn_quiz.php:332
 msgid "This field must be a number!"
 msgstr "ใช้ตัวเลขในช่องนี้เท่านั้น"
 
-#: includes/qmn_quiz.php:328
+#: includes/qmn_quiz.php:333
 msgid "The entered text is not correct!"
 msgstr "ข้อความที่กรอกไม่ถูกต้อง!"
 
-#: includes/qmn_quiz.php:329
+#: includes/qmn_quiz.php:334
 msgid "Please complete all required fields!"
 msgstr "กรุณาตอบช่องบังคับทุกช่อง!"
 
-#: includes/qmn_quiz.php:441
+#: includes/qmn_quiz.php:446
 msgid "Hint"
 msgstr "บอกใบ้"
 
-#: includes/qmn_quiz.php:1230
+#: includes/qmn_quiz.php:1235
 #: includes/qmn_options_text_tab.php:73
 msgid "Previous"
 msgstr "ก่อนหน้า"
 
-#: includes/qmn_credits.php:83
+#: includes/qmn_credits.php:76
 msgid "Welcome To Quiz Master Next"
 msgstr "ยินดีต้อนรับสู่ Quiz Master Next"
 
-#: includes/qmn_credits.php:84
+#: includes/qmn_credits.php:77
 msgid "Thank you for updating!"
 msgstr "ขอบคุณที่อัพเดท!"
 
-#: includes/qmn_credits.php:88
+#: includes/qmn_credits.php:81
 msgid "What's New!"
 msgstr "มีอะไรใหม่!"
 
-#: includes/qmn_credits.php:90
+#: includes/qmn_credits.php:83
 msgid "Changelog"
 msgstr "บันทึกการเปลี่ยนแปลง"
-
-#: includes/qmn_credits.php:92
-msgid "Requested Features"
-msgstr "ร้องของคุณสมบัติใหม่"
 
 #: includes/qmn_usage_tracking.php:193
 msgid "Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked."
@@ -1386,6 +1382,9 @@ msgstr "ชื่อหัวข้อวิตเจ็ต"
 #: includes/qmn_widgets.php:30
 msgid "Quiz ID"
 msgstr "หมายเลขแบบทดสอบ"
+
+#~ msgid "Requested Features"
+#~ msgstr "ร้องของคุณสมบัติใหม่"
 
 #~ msgid "Default:"
 #~ msgstr "ค่าเริ่มต้น:"

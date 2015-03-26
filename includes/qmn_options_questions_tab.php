@@ -18,7 +18,7 @@ function mlw_options_questions_tab_content()
 	{
 		//Variables from edit question form
 		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["edit_question_name"]), ENT_QUOTES))));
-		$edit_question_answer_info = $_POST["edit_correct_answer_info"];
+		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["edit_correct_answer_info"]), ENT_QUOTES);
 		$mlw_edit_question_id = intval($_POST["edit_question_id"]);
 		$mlw_edit_question_type = $_POST["edit_question_type"];
 		$edit_comments = htmlspecialchars($_POST["edit_comments"], ENT_QUOTES);
@@ -235,7 +235,7 @@ function mlw_options_questions_tab_content()
 	{
 		//Variables from new question form
 		$question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
-		$question_answer_info = $_POST["correct_answer_info"];
+		$question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
 		$question_type = $_POST["question_type"];
 		$comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
 		$hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
