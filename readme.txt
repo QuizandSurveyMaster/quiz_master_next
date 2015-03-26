@@ -71,6 +71,7 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 * Thai (Thanks to Yudthaphon)
 * Danish (Thanks to Jørgen Granborg)
 * Dutch (Thanks to Huub Scheenen)
+* Italian (Thanks to Junio)
 
 = Make Suggestions Or Contribute =
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
@@ -80,7 +81,7 @@ You can check out the sample quiz with various questions types here: [Sample Qui
 You can check out the sample survey with pagination here: [Sample Survey](http://quizmasternext.com/quiz/sample-survey/)!
 
 = Quiz Master Next Add-ons =
-While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer vaious extra features and support available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
+While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features and support available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
 
 
 == Installation ==
@@ -123,6 +124,7 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 = 4.2.3 (March 26, 2015) =
  * Minor Design Changes
  * Minor Bug Fixes
+ * Added Italian Translation
 
 = 4.2.2 (March 23, 2015) =
  * Minor Design Update
