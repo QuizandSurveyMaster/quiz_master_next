@@ -62,15 +62,10 @@ function mlw_options_certificate_tab_content()
 	}
 	?>
 	<div id="tabs-5" class="mlw_tab_content">
-		<script>
-			jQuery(function() {
-  				jQuery( "#enableCertificates" ).buttonset();
-			});
-		</script>
 		<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
 		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate.', 'quiz-master-next'); ?></p>
 		<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
-		<button id="save_certificate_button" class="button" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
+		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
 		<?php
 			echo "<form action='' method='post' name='quiz_certificate_options_form'>";
 			echo "<input type='hidden' name='save_certificate_options' value='confirmation' />";
@@ -79,10 +74,10 @@ function mlw_options_certificate_tab_content()
 		<table class="form-table">
 			<tr valign="top">
 				<td><label for="enableCertificates"><?php _e('Enable Certificates For This Quiz?', 'quiz-master-next'); ?></label></td>
-				<td><div id="enableCertificates">
-				    <input type="radio" id="radio30" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio30"><?php _e('Yes', 'quiz-master-next'); ?></label>
-				    <input type="radio" id="radio31" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio31"><?php _e('No', 'quiz-master-next'); ?></label>
-				</div></td>
+				<td>
+				    <input type="radio" id="radio30" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio30"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio31" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio31"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
 			</tr>
 			<tr>
 				<td width="30%">
@@ -126,7 +121,7 @@ function mlw_options_certificate_tab_content()
 				</td>
 			</tr>
 		</table>
-		<button id="save_certificate_button" class="button" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
+		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
 		</form>
 	</div>
 	<?php

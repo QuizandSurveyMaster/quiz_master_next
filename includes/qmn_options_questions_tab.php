@@ -726,7 +726,8 @@ function mlw_options_questions_tab_content()
 				</tr>
 			</tfoot>
 		</table>
-		<button class="button" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<br>
+		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
 		<div id="new_question_dialog" title="Create New Question" style="display:none;">
 
 		<?php

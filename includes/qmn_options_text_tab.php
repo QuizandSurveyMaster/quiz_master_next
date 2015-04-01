@@ -166,7 +166,8 @@ function mlw_options_text_tab_content()
 				<?php do_action('qmn_template_variable_list'); ?>
 			</div>
 			<div style="clear:both;"></div>
-			<button id="save_template_button" class="button" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>
+			<br>
+			<button id="save_template_button" class="button-primary" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>
 			<?php
 			echo "<form action='' method='post' name='quiz_template_form'>";
 			echo "<input type='hidden' name='save_templates' value='confirmation' />";
@@ -326,7 +327,7 @@ function mlw_options_text_tab_content()
 					<td><input name="pagination_next_text" type="text" id="pagination_next_text" value="<?php echo $mlw_qmn_pagination_text[1]; ?>" class="regular-text" /></td>
 				</tr>
 			</table>
-			<button id="save_template_button" class="button" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>
+			<button id="save_template_button" class="button-primary" onclick="javascript: document.quiz_template_form.submit();"><?php _e("Save Templates", 'quiz-master-next'); ?></button>
 			<?php echo "</form>"; ?>
   		</div>
 	<?php

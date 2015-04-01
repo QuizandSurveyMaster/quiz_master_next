@@ -77,7 +77,7 @@ function mlw_options_leaderboard_tab_content()
 				<td><strong>%QUIZ_NAME%</strong> - <?php _e("The name of the quiz", 'quiz-master-next'); ?></td>
 			</tr>
 		</table>
-		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
+		<button id="save_template_button" class="button-primary" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
 		<?php
 			echo "<form action='' method='post' name='quiz_leaderboard_options_form'>";
 			echo "<input type='hidden' name='save_leaderboard_options' value='confirmation' />";
@@ -105,7 +105,7 @@ function mlw_options_leaderboard_tab_content()
 				</td>
 			</tr>
 		</table>
-		<button id="save_template_button" class="button" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
+		<button id="save_template_button" class="button-primary" onclick="javascript: document.quiz_leaderboard_options_form.submit();"><?php _e("Save Leaderboard Options", 'quiz-master-next'); ?></button>
 		</form>
 	</div>
 	<?php
