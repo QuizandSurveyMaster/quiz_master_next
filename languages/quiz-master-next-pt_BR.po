@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-25 21:01-0500\n"
+"POT-Creation-Date: 2015-03-31 20:22-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: \n"
@@ -427,16 +427,16 @@ msgid "Leaderboard Template"
 msgstr "Modelos de Classificação"
 
 #: ../includes/qmn_options_leaderboard_tab.php:91
-#: ../includes/qmn_options_text_tab.php:181
-#: ../includes/qmn_options_text_tab.php:191
-#: ../includes/qmn_options_text_tab.php:201
-#: ../includes/qmn_options_text_tab.php:211
-#: ../includes/qmn_options_text_tab.php:221
-#: ../includes/qmn_options_text_tab.php:231
-#: ../includes/qmn_options_text_tab.php:241
-#: ../includes/qmn_options_text_tab.php:251
-#: ../includes/qmn_options_text_tab.php:264
-#: ../includes/qmn_options_text_tab.php:281
+#: ../includes/qmn_options_text_tab.php:182
+#: ../includes/qmn_options_text_tab.php:192
+#: ../includes/qmn_options_text_tab.php:202
+#: ../includes/qmn_options_text_tab.php:212
+#: ../includes/qmn_options_text_tab.php:222
+#: ../includes/qmn_options_text_tab.php:232
+#: ../includes/qmn_options_text_tab.php:242
+#: ../includes/qmn_options_text_tab.php:252
+#: ../includes/qmn_options_text_tab.php:265
+#: ../includes/qmn_options_text_tab.php:282
 msgid "Allowed Variables:"
 msgstr "Variaveis Mantidas:"
 
@@ -460,88 +460,88 @@ msgstr "texto"
 msgid "The templates has been updated successfully."
 msgstr "Os modelos foram atualizados com sucesso"
 
-#: ../includes/qmn_options_text_tab.php:169
-#: ../includes/qmn_options_text_tab.php:329
+#: ../includes/qmn_options_text_tab.php:170
+#: ../includes/qmn_options_text_tab.php:330
 msgid "Save Templates"
 msgstr "Salvar modelos"
 
-#: ../includes/qmn_options_text_tab.php:175
+#: ../includes/qmn_options_text_tab.php:176
 msgid "Message Templates"
 msgstr "Modelos de mensagens"
 
-#: ../includes/qmn_options_text_tab.php:179
+#: ../includes/qmn_options_text_tab.php:180
 msgid "Message Displayed Before Quiz"
 msgstr "Mensagem exibida antes do questionário"
 
-#: ../includes/qmn_options_text_tab.php:189
+#: ../includes/qmn_options_text_tab.php:190
 msgid "Message Displayed Before Comments Box If Enabled"
 msgstr "Mensagem exibida  antes, se a caixa de comentários estiver ativa"
 
-#: ../includes/qmn_options_text_tab.php:199
+#: ../includes/qmn_options_text_tab.php:200
 msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
 msgstr "Mensagem exibida ao encerrar a avaliação (Deixe em branco para omitir esta seção)"
 
-#: ../includes/qmn_options_text_tab.php:209
+#: ../includes/qmn_options_text_tab.php:210
 msgid "Message Displayed If User Has Tried Quiz Too Many Times"
 msgstr "Mensagem exibida se usuário tentar questionário várias vezes"
 
-#: ../includes/qmn_options_text_tab.php:219
+#: ../includes/qmn_options_text_tab.php:220
 msgid "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In"
 msgstr "Mensagem exibida Se o usuário não está logado e o Questionário requerer que os usuários devam estar conectados"
 
-#: ../includes/qmn_options_text_tab.php:229
+#: ../includes/qmn_options_text_tab.php:230
 msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
 msgstr "Mensagem exibida quando a data está fora do tempo programado"
 
-#: ../includes/qmn_options_text_tab.php:239
+#: ../includes/qmn_options_text_tab.php:240
 msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
 msgstr "Mensagem exibida se ultrapassou o limite do total das entradas."
 
-#: ../includes/qmn_options_text_tab.php:249
+#: ../includes/qmn_options_text_tab.php:250
 msgid "%QUESTIONS_ANSWERS% Text"
 msgstr "%QUESTIONS_ANSWERS% Texto"
 
-#: ../includes/qmn_options_text_tab.php:262
+#: ../includes/qmn_options_text_tab.php:263
 msgid "Twitter Sharing Text"
 msgstr "Compartilhar texto Twitter"
 
-#: ../includes/qmn_options_text_tab.php:279
+#: ../includes/qmn_options_text_tab.php:280
 msgid "Facebook Sharing Text"
 msgstr "Compartilhar Texto Facebook  "
 
-#: ../includes/qmn_options_text_tab.php:294
+#: ../includes/qmn_options_text_tab.php:295
 msgid "Other Templates"
 msgstr "Outros Modelos"
 
-#: ../includes/qmn_options_text_tab.php:297
+#: ../includes/qmn_options_text_tab.php:298
 msgid "Text for submit button"
 msgstr "Texto para botão submeter"
 
-#: ../includes/qmn_options_text_tab.php:301
+#: ../includes/qmn_options_text_tab.php:302
 msgid "Text for name field"
 msgstr "Texto para o Campo Nome"
 
-#: ../includes/qmn_options_text_tab.php:305
+#: ../includes/qmn_options_text_tab.php:306
 msgid "Text for business field"
 msgstr "Texto para o Campo Empresa"
 
-#: ../includes/qmn_options_text_tab.php:309
+#: ../includes/qmn_options_text_tab.php:310
 msgid "Text for email field"
 msgstr "Texto para o campo e-mail"
 
-#: ../includes/qmn_options_text_tab.php:313
+#: ../includes/qmn_options_text_tab.php:314
 msgid "Text for phone number field"
 msgstr "Texto para o campo numero telefone"
 
-#: ../includes/qmn_options_text_tab.php:317
+#: ../includes/qmn_options_text_tab.php:318
 msgid "Text for comments field"
 msgstr "Texto para o campo comentários"
 
-#: ../includes/qmn_options_text_tab.php:321
+#: ../includes/qmn_options_text_tab.php:322
 msgid "Text for previous button"
 msgstr "Texto para o botão anterior"
 
-#: ../includes/qmn_options_text_tab.php:325
+#: ../includes/qmn_options_text_tab.php:326
 msgid "Text for next button"
 msgstr "Texto para botão próximo "
 
@@ -605,40 +605,40 @@ msgstr "O certificado foi atualizado com sucesso."
 msgid "Enter title here"
 msgstr "Coloque o título aqui"
 
-#: ../includes/qmn_options_certificate_tab.php:70
+#: ../includes/qmn_options_certificate_tab.php:65
 msgid "Quiz Certificate (Beta)"
 msgstr "Certificado de Avaliação"
 
-#: ../includes/qmn_options_certificate_tab.php:71
+#: ../includes/qmn_options_certificate_tab.php:66
 msgid "Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate."
 msgstr "Digite em seu texto aqui para preencher o certificado para esta avaliação. Certifique-se de entrarno link para os modelos da guia Texto do Questionário de modo que o usuário pode acessar o certificado."
 
-#: ../includes/qmn_options_certificate_tab.php:72
+#: ../includes/qmn_options_certificate_tab.php:67
 msgid "These fields cannot contain HTML."
 msgstr "Estes campos não contém HTML."
 
-#: ../includes/qmn_options_certificate_tab.php:73
-#: ../includes/qmn_options_certificate_tab.php:129
+#: ../includes/qmn_options_certificate_tab.php:68
+#: ../includes/qmn_options_certificate_tab.php:124
 msgid "Save Certificate Options"
 msgstr "Salvar Opções de Certificado"
 
-#: ../includes/qmn_options_certificate_tab.php:81
+#: ../includes/qmn_options_certificate_tab.php:76
 msgid "Enable Certificates For This Quiz?"
 msgstr "Ativar Certificados para esta Avaliação?"
 
-#: ../includes/qmn_options_certificate_tab.php:89
+#: ../includes/qmn_options_certificate_tab.php:84
 msgid "Certificate Title"
 msgstr "Título do Certificado"
 
-#: ../includes/qmn_options_certificate_tab.php:96
+#: ../includes/qmn_options_certificate_tab.php:91
 msgid "Message Displayed On Certificate"
 msgstr "Mensagem exibida no Certificado"
 
-#: ../includes/qmn_options_certificate_tab.php:116
+#: ../includes/qmn_options_certificate_tab.php:111
 msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
 msgstr "URL para o Logo ( JPG, JPEG, PNG or GIF)"
 
-#: ../includes/qmn_options_certificate_tab.php:123
+#: ../includes/qmn_options_certificate_tab.php:118
 msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
 msgstr "URL para o Background Img ( JPG, JPEG, PNG or GIF)"
 
@@ -678,12 +678,12 @@ msgstr "A questão foi criada com sucesso."
 #: ../includes/qmn_options_questions_tab.php:454
 #: ../includes/qmn_options_questions_tab.php:461
 #: ../includes/qmn_options_questions_tab.php:593
-#: ../includes/qmn_options_questions_tab.php:760
+#: ../includes/qmn_options_questions_tab.php:761
 msgid "Answer"
 msgstr "Resposta"
 
 #: ../includes/qmn_options_questions_tab.php:481
-#: ../includes/qmn_options_questions_tab.php:729
+#: ../includes/qmn_options_questions_tab.php:730
 msgid "Add Question"
 msgstr "Adicionar Pergunta"
 
@@ -710,90 +710,90 @@ msgid "Delete"
 msgstr "Delete Questionário"
 
 #: ../includes/qmn_options_questions_tab.php:568
-#: ../includes/qmn_options_questions_tab.php:737
+#: ../includes/qmn_options_questions_tab.php:738
 msgid "For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
 msgstr ""
 
 #: ../includes/qmn_options_questions_tab.php:571
 #: ../includes/qmn_options_questions_tab.php:714
 #: ../includes/qmn_options_questions_tab.php:725
-#: ../includes/qmn_options_questions_tab.php:740
+#: ../includes/qmn_options_questions_tab.php:741
 msgid "Question"
 msgstr "Pergunta"
 
 #: ../includes/qmn_options_questions_tab.php:582
-#: ../includes/qmn_options_questions_tab.php:751
+#: ../includes/qmn_options_questions_tab.php:752
 msgid "Answers"
 msgstr "Respostas"
 
 #: ../includes/qmn_options_questions_tab.php:583
-#: ../includes/qmn_options_questions_tab.php:752
+#: ../includes/qmn_options_questions_tab.php:753
 msgid "Points Worth"
 msgstr "Vale Pontos"
 
 #: ../includes/qmn_options_questions_tab.php:584
-#: ../includes/qmn_options_questions_tab.php:753
+#: ../includes/qmn_options_questions_tab.php:754
 msgid "Correct Answer"
 msgstr "Resposta correta"
 
 #: ../includes/qmn_options_questions_tab.php:611
-#: ../includes/qmn_options_questions_tab.php:775
+#: ../includes/qmn_options_questions_tab.php:776
 msgid "Add New Answer!"
 msgstr "Adicionar nova Resposta"
 
 #: ../includes/qmn_options_questions_tab.php:616
-#: ../includes/qmn_options_questions_tab.php:780
+#: ../includes/qmn_options_questions_tab.php:781
 msgid "Correct Answer Info"
 msgstr "Informação da resposta correta"
 
 #: ../includes/qmn_options_questions_tab.php:634
 #: ../includes/qmn_options_questions_tab.php:712
 #: ../includes/qmn_options_questions_tab.php:723
-#: ../includes/qmn_options_questions_tab.php:798
+#: ../includes/qmn_options_questions_tab.php:799
 msgid "Question Type"
 msgstr "Tipo de pergunta"
 
 #: ../includes/qmn_options_questions_tab.php:652
-#: ../includes/qmn_options_questions_tab.php:811
+#: ../includes/qmn_options_questions_tab.php:812
 msgid "Comment Field"
 msgstr "Comentários"
 
 #: ../includes/qmn_options_questions_tab.php:655
-#: ../includes/qmn_options_questions_tab.php:813
+#: ../includes/qmn_options_questions_tab.php:814
 msgid "Small Text Field"
 msgstr "Campo de texto pequeno"
 
 #: ../includes/qmn_options_questions_tab.php:657
-#: ../includes/qmn_options_questions_tab.php:814
+#: ../includes/qmn_options_questions_tab.php:815
 msgid "Large Text Field"
 msgstr "Campo de texto Grande"
 
 #: ../includes/qmn_options_questions_tab.php:659
-#: ../includes/qmn_options_questions_tab.php:815
+#: ../includes/qmn_options_questions_tab.php:816
 msgid "None"
 msgstr ""
 
 #: ../includes/qmn_options_questions_tab.php:663
 #: ../includes/qmn_options_questions_tab.php:711
 #: ../includes/qmn_options_questions_tab.php:722
-#: ../includes/qmn_options_questions_tab.php:819
+#: ../includes/qmn_options_questions_tab.php:820
 msgid "Question Order"
 msgstr "Ordem das perguntas"
 
 #: ../includes/qmn_options_questions_tab.php:671
-#: ../includes/qmn_options_questions_tab.php:827
+#: ../includes/qmn_options_questions_tab.php:828
 msgid "Required?"
 msgstr "Exigido?"
 
 #: ../includes/qmn_options_questions_tab.php:680
 #: ../includes/qmn_options_questions_tab.php:713
 #: ../includes/qmn_options_questions_tab.php:724
-#: ../includes/qmn_options_questions_tab.php:836
+#: ../includes/qmn_options_questions_tab.php:837
 msgid "Category"
 msgstr ""
 
 #: ../includes/qmn_options_questions_tab.php:699
-#: ../includes/qmn_options_questions_tab.php:855
+#: ../includes/qmn_options_questions_tab.php:856
 msgid "Required currently only works on open answer, number, accept, and captcha question types"
 msgstr "Necessário atualmente só funciona com resposta aberta, número, aceitar e tipos de captcha."
 
@@ -801,23 +801,23 @@ msgstr "Necessário atualmente só funciona com resposta aberta, número, aceita
 msgid "Edit Question"
 msgstr "Editar Pergunta"
 
-#: ../includes/qmn_options_questions_tab.php:857
+#: ../includes/qmn_options_questions_tab.php:858
 msgid "Create Question"
 msgstr "Criar Pergunta"
 
-#: ../includes/qmn_options_questions_tab.php:862
+#: ../includes/qmn_options_questions_tab.php:863
 msgid "Are you sure you want to delete this question?"
 msgstr "Tem certeza de que deseja excluir esta pergunta?"
 
-#: ../includes/qmn_options_questions_tab.php:867
+#: ../includes/qmn_options_questions_tab.php:868
 msgid "Delete Question"
 msgstr "Apagar Perguntas"
 
-#: ../includes/qmn_options_questions_tab.php:872
+#: ../includes/qmn_options_questions_tab.php:873
 msgid "Are you sure you want to duplicate this question?"
 msgstr "Tem certeza de que deseja duplicar esta pergunta?"
 
-#: ../includes/qmn_options_questions_tab.php:877
+#: ../includes/qmn_options_questions_tab.php:878
 msgid "Duplicate Question"
 msgstr "Duplicar Pergunta"
 
