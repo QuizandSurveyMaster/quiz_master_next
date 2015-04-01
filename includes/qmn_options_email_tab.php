@@ -316,22 +316,22 @@ function mlw_options_emails_tab_content()
 			<input type='hidden' name='mlw_add_admin_email_page' value='confirmation' />
 			<input type='hidden' name='mlw_add_admin_email_quiz_id' value='<?php echo $quiz_id; ?>' />
 		</form>
-		<button id="save_email_button" class="button" onclick="javascript: document.mlw_quiz_save_email_form.submit();"><?php _e('Save Email Templates And Settings', 'quiz-master-next'); ?></button>
+		<button id="save_email_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_email_form.submit();"><?php _e('Save Email Templates And Settings', 'quiz-master-next'); ?></button>
 		<form method="post" action="" name="mlw_quiz_save_email_form">
 			<table class="form-table">
 			<tr valign="top">
 				<th scope="row"><label for="sendUserEmail"><?php _e('Send user email upon completion?', 'quiz-master-next'); ?></label></th>
-				<td><div id="sendUserEmail">
-				    <input type="radio" id="radio5" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio5"><?php _e('Yes', 'quiz-master-next'); ?></label>
-				    <input type="radio" id="radio6" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio6"><?php _e('No', 'quiz-master-next'); ?></label>
-				</div></td>
+				<td>
+				    <input type="radio" id="radio5" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio5"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio6" name="sendUserEmail" <?php if ($mlw_quiz_options->send_user_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio6"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="sendAdminEmail"><?php _e('Send admin email upon completion?', 'quiz-master-next'); ?></label></th>
-				<td><div id="sendAdminEmail">
-				    <input type="radio" id="radio19" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio19"><?php _e('Yes', 'quiz-master-next'); ?></label>
-				    <input type="radio" id="radio20" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio20"><?php _e('No', 'quiz-master-next'); ?></label>
-				</div></td>
+				<td>
+				    <input type="radio" id="radio19" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio19"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio20" name="sendAdminEmail" <?php if ($mlw_quiz_options->send_admin_email == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio20"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="adminEmail"><?php _e('What emails should we send the admin email to? Separate emails with a comma.', 'quiz-master-next'); ?></label></th>
@@ -515,7 +515,7 @@ function mlw_options_emails_tab_content()
 		</form>
 		<br />
 		<br />
-		<button id="save_email_button" class="button" onclick="javascript: document.mlw_quiz_save_email_form.submit();"><?php _e('Save Email Templates And Settings', 'quiz-master-next'); ?></button>
+		<button id="save_email_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_email_form.submit();"><?php _e('Save Email Templates And Settings', 'quiz-master-next'); ?></button>
 	</div>
 	<?php
 }

@@ -196,7 +196,7 @@ function mlw_options_results_tab_content()
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>
 		<div style="clear:both;"></div>
-		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
+		<button id="save_landing_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
 		<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
 		<form method="post" action="" name="mlw_quiz_save_landing_form" style=" display:inline!important;">
 		<table class="widefat">
@@ -277,7 +277,7 @@ function mlw_options_results_tab_content()
 		<input type='hidden' name='mlw_save_landing_pages' value='confirmation' />
 		<input type='hidden' name='mlw_landing_quiz_id' value='<?php echo $quiz_id; ?>' />
 		<input type='hidden' name='mlw_landing_page_total' value='<?php echo $mlw_each_count; ?>' />
-		<button id="save_landing_button" class="button" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
+		<button id="save_landing_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
 		</form>
 		<form method="post" action="" name="mlw_quiz_add_landing_form" style=" display:inline!important;">
 			<input type='hidden' name='mlw_add_landing_page' value='confirmation' />
