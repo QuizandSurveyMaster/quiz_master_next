@@ -1,5 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /*
 This page creates the main dashboard for the Quiz Master Next plugin
 */
@@ -7,8 +8,61 @@ This page creates the main dashboard for the Quiz Master Next plugin
 Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
 */
 
-function mlw_generate_quiz_dashboard()
+function qmn_generate_stats_page()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
+	global $mlwQuizMasterNext;
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'overview';
+	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
+	?>
+	<div class="wrap">
+		<h2><?php _e('Quiz Statistics', 'quiz-master-next'); ?></h2>
+		<?php echo mlw_qmn_show_adverts(); ?>
+		<h2 class="nav-tab-wrapper">
+			<?php
+			foreach($tab_array as $tab)
+			{
+				$active_class = '';
+				if ($active_tab == $tab['slug'])
+				{
+					$active_class = 'nav-tab-active';
+				}
+				echo "<a href=\"?page=qmn_stats&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+			}
+			?>
+		</h2>
+		<div>
+		<?php
+			foreach($tab_array as $tab)
+			{
+				if ($active_tab == $tab['slug'])
+				{
+					call_user_func($tab['function']);
+				}
+			}
+		?>
+		</div>
+	</div>
+	<?php
+}
+
+function qmn_stats_overview_tab()
+{
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_stats_settings_tab(__("Overview", 'quiz-master-next'), "qmn_stats_overview_content");
+}
+add_action("plugins_loaded", 'qmn_stats_overview_tab');
+
+function qmn_stats_overview_content()
+{
+	?>
+	<h3>Overview</h3>
+	<?php
+}
+
 	//Page Variables
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
 
@@ -51,9 +105,9 @@ function mlw_generate_quiz_dashboard()
 		});
 	</script>
 	<div class="wrap">
-	<h2><?php _e('Quiz Statistics', 'quiz-master-next'); ?></h2>
+	<h2></h2>
 
-	<?php echo mlw_qmn_show_adverts(); ?>
+
 	<!--Display Widget Boxes-->
 	<div style="float:left; width:19%;" class="inner-sidebar1">
 		<?php do_meta_boxes('quiz_wpss10','advanced','');  ?>
