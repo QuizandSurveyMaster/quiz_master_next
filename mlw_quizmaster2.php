@@ -86,7 +86,7 @@ class MLWQuizMasterNext
 	{
 		if (is_admin())
 		{
-			include("includes/qmn_dashboard.php");
+			include("includes/qmn-stats-page.php");
 			include("includes/qmn_quiz_admin.php");
 			include("includes/qmn_quiz_options.php");
 			include("includes/qmn_results.php");
@@ -220,7 +220,7 @@ class MLWQuizMasterNext
 			add_submenu_page(__FILE__, __('Quiz Result Details', 'quiz-master-next'), __('Quiz Result Details', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');
 			add_submenu_page(__FILE__, __('Settings', 'quiz-master-next'), __('Settings', 'quiz-master-next'), 'manage_options', 'qmn_global_settings', array('QMNGlobalSettingsPage', 'display_page'));
 			add_submenu_page(__FILE__, __('Tools', 'quiz-master-next'), __('Tools', 'quiz-master-next'), 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
-			add_submenu_page(__FILE__, __('Stats', 'quiz-master-next'), __('Stats', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_stats', 'mlw_generate_quiz_dashboard');
+			add_submenu_page(__FILE__, __('Stats', 'quiz-master-next'), __('Stats', 'quiz-master-next'), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page');
 			add_submenu_page(__FILE__, __('Addon Settings', 'quiz-master-next'), __('Addon Settings', 'quiz-master-next'), 'manage_options', 'qmn_addons', 'qmn_addons_page');
 			add_submenu_page(__FILE__, __('Help', 'quiz-master-next'), __('Help', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page');
 
