@@ -19,6 +19,14 @@ class QMNPluginHelper
 	public $addon_tabs = array();
 
 	/**
+	 * Stats Page tabs array
+	 *
+	 * @var array
+	 * @since 4.0.0
+	 */
+	public $stats_tabs = array();
+
+	/**
 	 * Results Page tabs array
 	 *
 	 * @var array
@@ -306,6 +314,40 @@ class QMNPluginHelper
 	public function get_addon_tabs()
 	{
 		return $this->addon_tabs;
+	}
+
+	/**
+	  * Registers Stats Tab
+	  *
+	  * Registers a new tab on the stats page
+	  *
+	  * @since 4.3.0
+		* @param string $title The name of the tab
+		* @param string $function The function that displays the tab's content
+		* @return void
+	  */
+	public function register_stats_settings_tab($title, $function)
+	{
+		$slug = strtolower(str_replace( " ", "-", $title));
+		$new_tab = array(
+			'title' => $title,
+			'function' => $function,
+			'slug' => $slug
+		);
+		$this->stats_tabs[] = $new_tab;
+	}
+
+	/**
+	  * Retrieves Stats Tab Array
+	  *
+	  * Retrieves the array of titles and functions of the registered tabs
+	  *
+	  * @since 4.3.0
+		* @return array The array of registered tabs
+	  */
+	public function get_stats_tabs()
+	{
+		return $this->stats_tabs;
 	}
 
 	/**
