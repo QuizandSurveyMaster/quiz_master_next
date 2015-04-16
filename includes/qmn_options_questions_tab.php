@@ -9,29 +9,35 @@ add_action("plugins_loaded", 'qmn_settings_questions_tab', 5);
 
 function mlw_options_questions_tab_content()
 {
+	?>
+	<script>
+		var answer_text = '<?php _e('Answer', 'quiz-master-next'); ?>';
+	</script>
+	<?php
+	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ));
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 
 	//Edit question
-	if ( isset($_POST["edit_question"]) && $_POST["edit_question"] == "confirmation")
+	if ( isset($_POST["question_submission"]) && $_POST["question_submission"] == "edit_question")
 	{
 		//Variables from edit question form
-		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["edit_question_name"]), ENT_QUOTES))));
-		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["edit_correct_answer_info"]), ENT_QUOTES);
-		$mlw_edit_question_id = intval($_POST["edit_question_id"]);
-		$mlw_edit_question_type = $_POST["edit_question_type"];
-		$edit_comments = htmlspecialchars($_POST["edit_comments"], ENT_QUOTES);
-		$edit_hint = htmlspecialchars($_POST["edit_hint"], ENT_QUOTES);
-		$edit_question_order = intval($_POST["edit_question_order"]);
-		$mlw_edit_answer_total = intval($_POST["question_".$mlw_edit_question_id."_answer_total"]);
+		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
+		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
+		$mlw_edit_question_id = intval($_POST["question_id"]);
+		$mlw_edit_question_type = $_POST["question_type"];
+		$edit_comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
+		$edit_hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
+		$edit_question_order = intval($_POST["new_question_order"]);
+		$mlw_edit_answer_total = intval($_POST["new_question_answer_total"]);
 
-		if (isset($_POST["edit_category"]))
+		if (isset($_POST["new_category"]))
 		{
-			$qmn_edit_category = $_POST["edit_category"];
+			$qmn_edit_category = $_POST["new_category"];
 			if ($qmn_edit_category == 'new_category')
 			{
-				$qmn_edit_category = $_POST["edit_new_category"];
+				$qmn_edit_category = $_POST["new_new_category"];
 			}
 		}
 		else
@@ -46,26 +52,26 @@ function mlw_options_questions_tab_content()
 		else
 		{
 			$mlw_settings = array();
-			$mlw_settings['required'] = intval($_POST["edit_required"]);
+			$mlw_settings['required'] = intval($_POST["required"]);
 		}
 		if ( !isset($mlw_settings['required']))
 		{
-			$mlw_settings['required'] = intval($_POST["edit_required"]);
+			$mlw_settings['required'] = intval($_POST["required"]);
 		}
-		$mlw_settings['required'] = intval($_POST["edit_required"]);
+		$mlw_settings['required'] = intval($_POST["required"]);
 		$mlw_settings = serialize($mlw_settings);
 		$i = 1;
 		$mlw_qmn_new_answer_array = array();
 		while ($i <= $mlw_edit_answer_total)
 		{
-			if ($_POST["edit_answer_".$i] != "")
+			if ($_POST["answer_".$i] != "")
 			{
 				$mlw_qmn_correct = 0;
-				if (isset($_POST["edit_answer_".$i."_correct"]) && $_POST["edit_answer_".$i."_correct"] == 1)
+				if (isset($_POST["answer_".$i."_correct"]) && $_POST["answer_".$i."_correct"] == 1)
 				{
 					$mlw_qmn_correct = 1;
 				}
-				$mlw_qmn_answer_each = array(htmlspecialchars(stripslashes($_POST["edit_answer_".$i]), ENT_QUOTES), floatval($_POST["edit_answer_".$i."_points"]), $mlw_qmn_correct);
+				$mlw_qmn_answer_each = array(htmlspecialchars(stripslashes($_POST["answer_".$i]), ENT_QUOTES), floatval($_POST["answer_".$i."_points"]), $mlw_qmn_correct);
 				$mlw_qmn_new_answer_array[] = $mlw_qmn_answer_each;
 			}
 			$i++;
@@ -231,7 +237,7 @@ function mlw_options_questions_tab_content()
 	}
 
 	//Submit new question into database
-	if ( isset($_POST["create_question"]) && $_POST["create_question"] == "confirmation")
+	if ( isset($_POST["question_submission"]) && $_POST["question_submission"] == "new_question")
 	{
 		//Variables from new question form
 		$question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
@@ -323,42 +329,21 @@ function mlw_options_questions_tab_content()
 		}
 	}
 
-	if (isset($_GET["quiz_id"]))
-	{
-		$table_name = $wpdb->prefix . "mlw_quizzes";
-		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
-	}
-	$mlw_qmn_table_limit = 15;
-	$mlw_qmn_question_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(question_id) FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'", $quiz_id ) );
 
-	if( isset($_GET{'mlw_question_page'} ) )
-	{
-	   $mlw_qmn_question_page = $_GET{'mlw_question_page'} + 1;
-	   $mlw_qmn_question_begin = $mlw_qmn_table_limit * $mlw_qmn_question_page ;
-	}
-	else
-	{
-	   $mlw_qmn_question_page = 0;
-	   $mlw_qmn_question_begin = 0;
-	}
-	$mlw_qmn_question_left = $mlw_qmn_question_count - ($mlw_qmn_question_page * $mlw_qmn_table_limit);
-
-	$mlw_question_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
-		ORDER BY question_order ASC LIMIT %d, %d", $quiz_id, $mlw_qmn_question_begin, $mlw_qmn_table_limit ) );
-
-	//Load and prepare answer arrays
-	$mlw_qmn_answer_arrays = array();
-	foreach($mlw_question_data as $mlw_question_info) {
+	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
+		ORDER BY question_order ASC", $quiz_id ) );
+	$answers = array();
+	foreach($questions as $mlw_question_info) {
 		if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
 		{
 			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+			$answers[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
 		}
 		else
 		{
 			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
 			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
-			$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
+			$answers[$mlw_question_info->question_id] = array(
 				array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
 				array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
 				array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
@@ -367,356 +352,103 @@ function mlw_options_questions_tab_content()
 				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
 		}
 	}
+	echo "<script>
+	var questions_list = [";
+	foreach($questions as $question) {
+
+		//Load Required
+		if (is_serialized($mlw_question_info->question_settings) && is_array(@unserialize($mlw_question_info->question_settings)))
+		{
+			$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
+		}
+		else
+		{
+			$mlw_question_settings = array();
+			$mlw_question_settings['required'] = 1;
+		}
+
+		//Load Answers
+		$answer_string = "";
+		foreach($answers[$question->question_id] as $answer_single) {
+			$answer_string .= "{answer: '".$answer_single[0]."',points: ".$answer_single[1].",correct: ".$answer_single[2]."},";
+		}
+
+		//Load Question Types
+		$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+
+		//Load Type
+		$type_slug = $question->question_type_new;
+		$type_name = $question->question_type_new;
+		foreach($qmn_question_types as $type)
+		{
+			if ($type["slug"] == $question->question_type_new)
+			{
+				$type_name = $type["name"];
+			}
+		}
+
+		//Parse Javascript Object
+		echo "{
+			id: ".$question->question_id.",
+		  question: '".$question->question_name."',
+		  answers: [".$answer_string."],
+		  correct_info: '".$question->question_answer_info."',
+		  hint: '".$question->hints."',
+		  type: '".$question->question_type_new."',
+			type_name: '".$type_name."',
+			comment: ".$question->comments.",
+		  order: ".$question->question_order.",
+		  required: ".$mlw_question_settings['required'].",
+		  category: '".$question->category."'
+		},";
+	}
+
+	echo "];
+	</script>";
 
 	//Load Categories
 	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
 		GROUP BY category", $quiz_id ) );
 
-	//Load Question Types
-	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
-
 	$is_new_quiz = $wpdb->num_rows;
 	?>
-		<script>
-			jQuery(function() {
-				jQuery('#new_question_dialog').dialog({
-					autoOpen: false,
-					show: 'blind',
-					width:800,
-					hide: 'explode',
-					buttons: {
-					Cancel: function() {
-						jQuery(this).dialog('close');
-						}
-					}
-				});
-
-				jQuery('#new_question_button').click(function() {
-					jQuery('#new_question_dialog').dialog('open');
-					document.getElementById("question_name").focus();
-					return false;
-			}	);
-				jQuery('#new_question_button_two').click(function() {
-					jQuery('#new_question_dialog').dialog('open');
-					document.getElementById("question_name").focus();
-					return false;
-			}	);
-			});
-			function deleteQuestion(id){
-				jQuery("#delete_dialog").dialog({
-					autoOpen: false,
-					show: 'blind',
-					hide: 'explode',
-					buttons: {
-					Cancel: function() {
-						jQuery(this).dialog('close');
-						}
-					}
-				});
-				jQuery("#delete_dialog").dialog('open');
-				var idHidden = document.getElementById("question_id");
-				idHidden.value = id;
-			};
-			function duplicateQuestion(id){
-				jQuery("#duplicate_dialog").dialog({
-					autoOpen: false,
-					show: 'blind',
-					hide: 'explode',
-					buttons: {
-					Cancel: function() {
-						jQuery(this).dialog('close');
-						}
-					}
-				});
-				jQuery("#duplicate_dialog").dialog('open');
-				var idHidden = document.getElementById("duplicate_question_id");
-				idHidden.value = id;
-			};
-			function editQuestion(id){
-				jQuery("#edit_question_dialog_"+id).dialog({
-					autoOpen: false,
-					show: 'blind',
-					width:800,
-					hide: 'explode',
-					buttons: {
-					Cancel: function() {
-						jQuery(this).dialog('close');
-						}
-					}
-				});
-				jQuery("#edit_question_dialog_"+id).dialog('open');
-			};
-			function mlw_add_new_question(id)
-			{
-				var total_answers = parseFloat(document.getElementById("question_"+id+"_answer_total").value);
-				total_answers = total_answers + 1;
-				document.getElementById("question_"+id+"_answer_total").value = total_answers;
-				jQuery("#question_"+id+"_answers").append("<tr valign='top'><td><span style='font-weight:bold;'><?php _e('Answer', 'quiz-master-next'); ?> "+total_answers+"</span></td><td><input type='text' name='edit_answer_"+total_answers+"' id='edit_answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='edit_answer_"+total_answers+"_points' id='edit_answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='edit_answer_"+total_answers+"_correct' name='edit_answer_"+total_answers+"_correct' value=1 /></td></tr>");
-			}
-			function mlw_add_answer_to_new_question()
-			{
-				var total_answers = parseFloat(document.getElementById("new_question_answer_total").value);
-				total_answers = total_answers + 1;
-				document.getElementById("new_question_answer_total").value = total_answers;
-				jQuery("#new_question_answers").append("<tr valign='top'><td><span style='font-weight:bold;'><?php _e('Answer', 'quiz-master-next'); ?> "+total_answers+"</span></td><td><input type='text' name='answer_"+total_answers+"' id='answer_"+total_answers+"' style='border-color:#000000;color:#3300CC;cursor:hand;width: 250px;'/></td><td><input type='text' name='answer_"+total_answers+"_points' id='answer_"+total_answers+"_points' value=0 style='border-color:#000000;color:#3300CC; cursor:hand;'/></td><td><input type='checkbox' id='answer_"+total_answers+"_correct' name='answer_"+total_answers+"_correct' value=1 /></td></tr>");
-			}
-		</script>
 		<style>
-			.linkOptions
-			{
+			.edit_link,
+			.duplicate_link {
 				color: #0074a2 !important;
 				font-size: 14px !important;
 			}
-			.linkDelete
-			{
+			.delete_link {
 				color: red !important;
 				font-size: 14px !important;
 			}
-			.linkOptions:hover,
-			.linkDelete:hover
-			{
+			.edit_link:hover,
+			.duplicate_link:hover,
+			.delete_link:hover {
 				background-color: black;
 			}
 		</style>
-		<button class="add-new-h2" id="new_question_button_two"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
 		<br />
+		<p class="search-box">
+			<label class="screen-reader-text" for="question_search">Search Questions:</label>
+			<input type="search" id="question_search" name="question_search" value="">
+			<a href="#" class="button">Search Questions</a>
+		</p>
 		<div class="tablenav top">
 			<div class="tablenav-pages">
-				<span class="displaying-num"><?php echo sprintf(_n('One question', '%s questions', $mlw_qmn_question_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_question_count)); ?></span>
-				<span class="pagination-links">
-					<?php
-					$mlw_current_page = $mlw_qmn_question_page+1;
-					$mlw_total_pages = ceil($mlw_qmn_question_count/$mlw_qmn_table_limit);
-					if( $mlw_qmn_question_page > 0 )
-					{
-						$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-						echo "<a class=\"prev-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-						{
-							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
-						}
-						else
-						{
-							echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
-						}
-					}
-					else if( $mlw_qmn_question_page == 0 )
-					{
-						echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"javascript:();\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						if( $mlw_qmn_question_left > $mlw_qmn_table_limit )
-						{
-							echo "<a class=\"next-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_question_page&&quiz_id=$quiz_id\">></a>";
-						}
-						else
-						{
-							echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
-						}
-					}
-					else if( $mlw_qmn_question_left < $mlw_qmn_table_limit )
-					{
-						$mlw_qmn_previous_page = $mlw_qmn_question_page - 2;
-						echo "<a class=\"prev-page\" href=\"?page=mlw_quiz_options&&mlw_question_page=$mlw_qmn_previous_page&&quiz_id=$quiz_id\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						echo "<a class=\"next-page disabled\" href=\"javascript:();\">></a>";
-					}
-					?>
-				</span>
-				<br class="clear">
+				<span class="displaying-num"><?php echo sprintf(_n('One question', '%s questions', count($questions), 'quiz-master-next'), number_format_i18n(count($questions))); ?></span>
 			</div>
 		</div>
-		<?php
-			$alternate = "";
-			$question_list = "";
-			foreach($mlw_question_data as $mlw_question_info)
-			{
-				if (is_serialized($mlw_question_info->question_settings) && is_array(@unserialize($mlw_question_info->question_settings)))
-				{
-					$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
-				}
-				else
-				{
-					$mlw_question_settings = array();
-					$mlw_question_settings['required'] = 1;
-				}
-				$mlw_question_type_text = "";
-				foreach($qmn_question_types as $type)
-				{
-					if ($type["slug"] == $mlw_question_info->question_type_new)
-					{
-						$mlw_question_type_text = $type["name"];
-					}
-				}
-				if($alternate) $alternate = "";
-				else $alternate = " class=\"alternate\"";
-				$question_list .= "<tr{$alternate}>";
-				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->question_order . "</span></td>";
-				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_type_text . "</span></td>";
-				$question_list .= "<td><span style='font-size:16px;'>" . $mlw_question_info->category . "</span></td>";
-				$question_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_question_info->question_name ."</span><div class='row-actions'><a class='linkOptions' onclick=\"editQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Edit', 'quiz-master-next')."</a> | <a class='linkOptions' onclick=\"duplicateQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Duplicate', 'quiz-master-next')."</a>| <a class='linkDelete' onclick=\"deleteQuestion('".$mlw_question_info->question_id."')\" href='#'>".__('Delete', 'quiz-master-next')."</a></div></td>";
-				$question_list .= "</tr>";
-
-
-				$mlw_question_answer_array = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
-				?>
-				<div id="edit_question_dialog_<?php echo $mlw_question_info->question_id; ?>" title="Edit Question" style="display:none;">
-					<form action='' method='post'>
-						<input type='hidden' name='edit_question' value='confirmation' />
-						<input type='hidden' id='edit_question_id' name='edit_question_id' value='<?php echo $mlw_question_info->question_id; ?>' />
-						<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
-						<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
-						<table class="wide" style="text-align: left; white-space: nowrap;" id="question_<?php echo $mlw_question_info->question_id; ?>_answers" name="question_<?php echo $mlw_question_info->question_id; ?>_answers">
-							<tr>
-							<td><span style='font-weight:bold;'><?php _e('Question', 'quiz-master-next'); ?></span></td>
-							<td colspan="3">
-								<textarea name="edit_question_name" id="edit_question_name" style="width: 500px; height: 150px;"><?php echo htmlspecialchars_decode($mlw_question_info->question_name, ENT_QUOTES); ?></textarea>
-							</td>
-							</tr>
-							<tr valign="top">
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							</tr>
-							<tr valign="top">
-							<td>&nbsp;</td>
-							<td><span style='font-weight:bold;'><?php _e('Answers', 'quiz-master-next'); ?></span></td>
-							<td><span style='font-weight:bold;'><?php _e('Points Worth', 'quiz-master-next'); ?></span></td>
-							<td><span style='font-weight:bold;'><?php _e('Correct Answer', 'quiz-master-next'); ?></span></td>
-							</tr>
-							<?php
-							$mlw_answer_total = 0;
-							foreach($mlw_question_answer_array as $mlw_question_answer_each)
-							{
-								$mlw_answer_total = $mlw_answer_total + 1;
-								?>
-								<tr valign="top">
-								<td><span style='font-weight:bold;'><?php _e('Answer', 'quiz-master-next'); ?> <?php echo $mlw_answer_total; ?></span></td>
-								<td>
-								<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>" id="edit_answer_<?php echo $mlw_answer_total; ?>" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_answer_each[0], ENT_QUOTES)); ?>" style="border-color:#000000;
-									color:#3300CC;
-									cursor:hand;
-									width: 250px;"/>
-								</td>
-								<td>
-								<input type="text" name="edit_answer_<?php echo $mlw_answer_total; ?>_points" id="edit_answer_<?php echo $mlw_answer_total; ?>_points" value="<?php echo $mlw_question_answer_each[1]; ?>" style="border-color:#000000;
-									color:#3300CC;
-									cursor:hand;"/>
-								</td>
-								<td><input type="checkbox" id="edit_answer_<?php echo $mlw_answer_total; ?>_correct" name="edit_answer_<?php echo $mlw_answer_total; ?>_correct" <?php if ($mlw_question_answer_each[2] == 1) { echo 'checked="checked"'; } ?> value=1 /></td>
-								</tr>
-								<?php
-							}
-							?>
-						</table>
-						<a href="#" class="button" id="new_answer_button" onclick="mlw_add_new_question(<?php echo $mlw_question_info->question_id; ?>);"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
-						<br />
-						<br />
-						<table class="wide" style="text-align: left; white-space: nowrap;">
-							<tr>
-								<td><span style='font-weight:bold;'><?php _e('Correct Answer Info', 'quiz-master-next'); ?></span></td>
-								<td colspan="3"><input type="text" name="edit_correct_answer_info" id="edit_correct_answer_info" style="border-color:#000000;
-								color:#3300CC;
-								cursor:hand;
-								width:550px;" value="<?php echo esc_attr(htmlspecialchars_decode($mlw_question_info->question_answer_info, ENT_QUOTES)); ?>"/></td>
-							</tr>
-							<tr valign="top">
-							<td><span style='font-weight:bold;'><?php _e('Hint', 'quiz-master-next'); ?></span></td>
-							<td colspan="3">
-							<input type="text" name="edit_hint" id="edit_hint" style="border-color:#000000;
-								color:#3300CC;
-								cursor:hand;
-								width:550px;" value="<?php echo htmlspecialchars_decode($mlw_question_info->hints, ENT_QUOTES); ?>"/>
-							</td>
-							</tr>
-							<tr><td>&nbsp;</td></tr>
-							<tr><td>&nbsp;</td></tr>
-							<tr valign="top">
-								<td><span style='font-weight:bold;'><?php _e('Question Type', 'quiz-master-next'); ?></span></td>
-								<td colspan="3">
-									<select name="edit_question_type">
-										<?php
-										foreach($qmn_question_types as $type)
-										{
-											$selected_text ='';
-											if ($mlw_question_info->question_type_new == $type["slug"])
-											{
-												$selected_text = 'selected="selected"';
-											}
-											echo "<option value='".$type['slug']."' $selected_text>".$type['name']."</option>";
-										}
-										?>
-									</select>
-								</td>
-							</tr>
-							<tr valign="top">
-								<td><span style='font-weight:bold;'><?php _e('Comment Field', 'quiz-master-next'); ?></span></td>
-								<td colspan="3">
-									<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1" name="edit_comments" value=0 <?php if ($mlw_question_info->comments == 0) { echo 'checked="checked"'; } ?>/>
-									<label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label>
-									<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3" name="edit_comments" value=2 <?php if ($mlw_question_info->comments == 2) { echo 'checked="checked"'; } ?>/>
-									<label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio3"><?php _e('Large Text Field', 'quiz-master-next'); ?></label>
-									<input type="radio" id="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2" name="edit_comments" value=1 <?php if ($mlw_question_info->comments == 1) { echo 'checked="checked"'; } ?>/>
-									<label for="<?php echo $mlw_question_info->question_id; ?>_editCommentRadio2"><?php _e('None', 'quiz-master-next'); ?></label>
-								</td>
-							</tr>
-							<tr valign="top">
-								<td><span style='font-weight:bold;'><?php _e('Question Order', 'quiz-master-next'); ?></span></td>
-								<td>
-								<input type="number" step="1" min="1" name="edit_question_order" value="<?php echo $mlw_question_info->question_order; ?>" id="edit_question_order" style="border-color:#000000;
-									color:#3300CC;
-									cursor:hand;"/>
-								</td>
-							</tr>
-							<tr valign="top">
-								<td><span style='font-weight:bold;'><?php _e('Required?', 'quiz-master-next'); ?></span></td>
-								<td colspan="3">
-									<select name="edit_required">
-										<option value="0" <?php if ($mlw_question_settings['required'] == 0) { echo 'selected="selected"'; } ?>><?php _e('Yes', 'quiz-master-next'); ?></option>
-										<option value="1" <?php if ($mlw_question_settings['required'] == 1) { echo 'selected="selected"'; } ?>><?php _e('No', 'quiz-master-next'); ?></option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td><span style="font-weight:bold;"><?php _e('Category', 'quiz-master-next'); ?></span></td>
-								<td colspan="3">
-									<?php
-									foreach($qmn_quiz_categories as $category)
-									{
-										if ($category->category != '')
-										{
-											?>
-											<input type="radio" name="edit_category" <?php if ($category->category == $mlw_question_info->category) { echo "checked='checked' "; } ?>id="edit_category_<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
-											<label for="edit_category_<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
-											<br />
-											<?php
-										}
-									}
-									?>
-									<input type="radio" name="edit_category" id="edit_category_new" value="new_category"><label for="edit_category_new">New: <input type='text' name='edit_new_category' value='' /></label>
-								</td>
-							</tr>
-						</table>
-						<p>*<?php _e('Required currently only works on open answer, number, accept, and captcha question types', 'quiz-master-next'); ?></p>
-						<input type="hidden" name="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" id="question_<?php echo $mlw_question_info->question_id; ?>_answer_total" value="<?php echo $mlw_answer_total; ?>" />
-						<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Edit Question', 'quiz-master-next'); ?>' /></p>
-					</form>
-				</div>
-
-				<?php
-			}
-			?>
-			<table class=widefat>
-				<thead>
-					<tr>
-						<th><?php _e('Question Order', 'quiz-master-next'); ?></th>
-						<th><?php _e('Question Type', 'quiz-master-next'); ?></th>
-						<th><?php _e('Category', 'quiz-master-next'); ?></th>
-						<th><?php _e('Question', 'quiz-master-next'); ?></th>
-					</tr>
-				</thead>
-				<tbody id=the-list>
-					<?php echo $question_list; ?>
-				</tbody>
+		<table class="widefat">
+			<thead>
+				<tr>
+					<th><?php _e('Question Order', 'quiz-master-next'); ?></th>
+					<th><?php _e('Question Type', 'quiz-master-next'); ?></th>
+					<th><?php _e('Category', 'quiz-master-next'); ?></th>
+					<th><?php _e('Question', 'quiz-master-next'); ?></th>
+				</tr>
+			</thead>
 			<tfoot>
 				<tr>
 					<th><?php _e('Question Order', 'quiz-master-next'); ?></th>
@@ -725,138 +457,163 @@ function mlw_options_questions_tab_content()
 					<th><?php _e('Question', 'quiz-master-next'); ?></th>
 				</tr>
 			</tfoot>
+			<tbody id="the-list">
+			</tbody>
 		</table>
-		<br>
-		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
-		<div id="new_question_dialog" title="Create New Question" style="display:none;">
 
-		<?php
-		echo "<form action='' method='post'>";
-		echo "<input type='hidden' name='create_question' value='confirmation' />";
-		echo "<input type='hidden' name='quiz_id' value='".$quiz_id."' />";
-		?>
-		<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
-		<table class="wide" style="text-align: left; white-space: nowrap;" id="new_question_answers" name="new_question_answers">
-		<tr>
-		<td><span style='font-weight:bold;'><?php _e('Question', 'quiz-master-next'); ?></span></td>
-		<td colspan="3">
-			<textarea name="question_name" id="question_name" style="width: 500px; height: 150px;"></textarea>
-		</td>
-		</tr>
-		<tr valign="top">
-		<td>&nbsp;</td>
-		<td>&nbsp;</td>
-		</tr>
-		<tr valign="top">
-		<td>&nbsp;</td>
-		<td><span style='font-weight:bold;'><?php _e('Answers', 'quiz-master-next'); ?></span></td>
-		<td><span style='font-weight:bold;'><?php _e('Points Worth', 'quiz-master-next'); ?></span></td>
-		<td><span style='font-weight:bold;'><?php _e('Correct Answer', 'quiz-master-next'); ?></span></td>
-		</tr>
-		<?php
-		$mlw_answer_total = 0;
-		$mlw_answer_total = $mlw_answer_total + 1;
-		?>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Answer', 'quiz-master-next'); ?> <?php echo $mlw_answer_total; ?></span></td>
-		<td>
-		<input type="text" name="answer_<?php echo $mlw_answer_total; ?>" id="answer_<?php echo $mlw_answer_total; ?>" value="" style="border-color:#000000;
-			color:#3300CC;
-			cursor:hand;
-			width: 250px;"/>
-		</td>
-		<td>
-		<input type="text" name="answer_<?php echo $mlw_answer_total; ?>_points" id="answer_<?php echo $mlw_answer_total; ?>_points" value=0 style="border-color:#000000;
-			color:#3300CC;
-			cursor:hand;"/>
-		</td>
-		<td><input type="checkbox" id="answer_<?php echo $mlw_answer_total; ?>_correct" name="answer_<?php echo $mlw_answer_total; ?>_correct" checked="checked" value=1 /></td>
-		</tr>
-		</table>
-		<a href="#" class="button" id="new_answer_button" onclick="mlw_add_answer_to_new_question();"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
-		<br />
-		<br />
-		<table class="wide" style="text-align: left; white-space: nowrap;">
-		<tr>
-			<td><span style='font-weight:bold;'><?php _e('Correct Answer Info', 'quiz-master-next'); ?></span></td>
-			<td colspan="3"><input type="text" name="correct_answer_info" value="" id="correct_answer_info" style="border-color:#000000;
-			color:#3300CC;
-			cursor:hand;
-			width:550px;"/></td>
-		</tr>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Hint', 'quiz-master-next'); ?></span></td>
-		<td colspan="3">
-		<input type="text" name="hint" value="" id="hint" style="border-color:#000000;
-			color:#3300CC;
-			cursor:hand;
-			width:550px;"/>
-		</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Question Type', 'quiz-master-next'); ?></span></td>
-		<td colspan="3">
-			<select name="question_type">
-				<?php
-				foreach($qmn_question_types as $type)
-				{
-					echo "<option value='".$type['slug']."'>".$type['name']."</option>";
-				}
-				?>
-			</select>
-		</div></td>
-		</tr>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Comment Field', 'quiz-master-next'); ?></span></td>
-		<td colspan="3"><div id="comments">
-			<input type="radio" id="commentsRadio1" name="comments" value=0 /><label for="commentsRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label>
-			<input type="radio" id="commentsRadio3" name="comments" value=2 /><label for="commentsRadio3"><?php _e('Large Text Field', 'quiz-master-next'); ?></label>
-			<input type="radio" id="commentsRadio2" name="comments" checked="checked" value=1 /><label for="commentsRadio2"><?php _e('None', 'quiz-master-next'); ?></label>
-		</div></td>
-		</tr>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Question Order', 'quiz-master-next'); ?></span></td>
-		<td>
-		<input type="number" step="1" min="1" name="new_question_order" value="<?php echo $mlw_qmn_question_count+1; ?>" id="new_question_order" style="border-color:#000000;
-			color:#3300CC;
-			cursor:hand;"/>
-		</td>
-		</tr>
-		<tr valign="top">
-		<td><span style='font-weight:bold;'><?php _e('Required?', 'quiz-master-next'); ?></span></td>
-		<td colspan="3">
-			<select name="required">
-				<option value="0" selected="selected"><?php _e('Yes', 'quiz-master-next'); ?></option>
-				<option value="1"><?php _e('No', 'quiz-master-next'); ?></option>
-			</select>
-		</div></td>
-		</tr>
-		<tr>
-			<td><span style="font-weight:bold;"><?php _e('Category', 'quiz-master-next'); ?></span></td>
-			<td colspan="3">
-				<?php
-				foreach($qmn_quiz_categories as $category)
-				{
-					if ($category->category != '')
-					{
-						?>
-						<input type="radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
-						<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
-						<br />
-						<?php
-					}
-				}
-				?>
-				<input type="radio" name="new_category" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' name='new_new_category' value='' /></label>
-			</td>
-		</tr>
-		</table>
-		<p>*<?php _e('Required currently only works on open answer, number, accept, and captcha question types', 'quiz-master-next'); ?></p>
-		<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="<?php echo $mlw_answer_total; ?>" />
-		<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Create Question', 'quiz-master-next'); ?>' /></p>
-		</form>
+		<style>
+			.row:after,
+			.answers:after,
+			.answers_single:after {
+				clear:both;
+				display:table;
+				content: " ";
+			}
+			.row {
+				margin-bottom: 15px;
+			}
+			.row .option_label {
+				width:15%;
+				float:left;
+				font-weight: bold;
+			}
+			.row .option_input {
+				width:84%;
+				float:left;
+			}
+			.question_form {
+
+			}
+			.question_form fieldset {
+				margin: 20px 0px;
+				background: #fff;
+				padding: 5px;
+			}
+			.question_form legend {
+				font-size: 16px;
+				font-weight: bold;
+				background: #f1f1f1;
+				padding: 5px;
+			}
+			.answer_number,
+			.answer_text,
+			.answer_points,
+			.answer_correct {
+				font-weight: bold;
+				float:left;
+				margin: 1%;
+			}
+			.answer_number {
+				width:10%;
+			}
+			.answer_text {
+				width:60%;
+			}
+			.answer_points {
+				width:10%;
+			}
+			.answer_correct {
+				width:10%;
+			}
+			.answer_input {
+				width: 100%;
+			}
+			.question_area_header_text {
+				padding: 40px 0 0 !important;
+			}
+		</style>
+
+		<div class="question_area" id="question_area">
+			<h2 class="question_area_header_text">Add New Question</h2>
+			<form action="" method="post" class="question_form">
+				<fieldset>
+					<legend>Question And Answers</legend>
+					<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
+					<?php wp_editor( '', "question_name" ); ?>
+
+					<div class="answer_headers">
+						<div class="answer_number">&nbsp;</div>
+						<div class="answer_text"><?php _e('Answers', 'quiz-master-next'); ?></div>
+						<div class="answer_points"><?php _e('Points Worth', 'quiz-master-next'); ?></div>
+						<div class="answer_correct"><?php _e('Correct Answer', 'quiz-master-next'); ?></div>
+					</div>
+					<div class="answers" id="answers">
+
+					</div>
+					<a href="#" class="button" id="new_answer_button"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
+				</fieldset>
+				<fieldset>
+					<legend>Question Options</legend>
+					<div class="row">
+						<label class="option_label"><?php _e('Correct Answer Info', 'quiz-master-next'); ?></label>
+						<input class="option_input" type="text" name="correct_answer_info" value="" id="correct_answer_info" />
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Hint', 'quiz-master-next'); ?></label>
+						<input class="option_input" type="text" name="hint" value="" id="hint"/>
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Question Type', 'quiz-master-next'); ?></label>
+						<select class="option_input" name="question_type" id="question_type">
+							<?php
+							foreach($qmn_question_types as $type)
+							{
+								echo "<option value='".$type['slug']."'>".$type['name']."</option>";
+							}
+							?>
+						</select>
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Comment Field', 'quiz-master-next'); ?></label>
+						<div class="option_input">
+							<input type="radio" class="comments_radio" id="commentsRadio1" name="comments" value="0" /><label for="commentsRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label><br>
+							<input type="radio" class="comments_radio" id="commentsRadio3" name="comments" value="2" /><label for="commentsRadio3"><?php _e('Large Text Field', 'quiz-master-next'); ?></label><br>
+							<input type="radio" class="comments_radio" id="commentsRadio2" name="comments" checked="checked" value="1" /><label for="commentsRadio2"><?php _e('None', 'quiz-master-next'); ?></label><br>
+						</div>
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Question Order', 'quiz-master-next'); ?></label>
+						<input class="option_input" type="number" step="1" min="1" name="new_question_order" value="<?php echo count($questions)+1; ?>" id="new_question_order"/>
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Required?', 'quiz-master-next'); ?></label>
+						<select class="option_input" name="required" id="required">
+							<option value="0" selected="selected"><?php _e('Yes', 'quiz-master-next'); ?></option>
+							<option value="1"><?php _e('No', 'quiz-master-next'); ?></option>
+						</select>
+					</div>
+
+					<div class="row">
+						<label class="option_label"><?php _e('Category', 'quiz-master-next'); ?></label>
+						<div class="option_input">
+							<?php
+							foreach($qmn_quiz_categories as $category)
+							{
+								if ($category->category != '')
+								{
+									?>
+									<input type="radio" class="category_radio" name="new_category" id="new_category<?php echo esc_attr($category->category); ?>" value="<?php echo esc_attr($category->category); ?>">
+									<label for="new_category<?php echo esc_attr($category->category); ?>"><?php echo $category->category; ?></label>
+									<br />
+									<?php
+								}
+							}
+							?>
+							<input type="radio" name="new_category" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' name='new_new_category' value='' /></label>
+						</div>
+					</div>
+				</fieldset>
+				<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="0" />
+				<input type="hidden" id="question_submission" name="question_submission" value="new_question" />
+				<input type="hidden" name="quiz_id" value="<?php echo $quiz_id; ?>" />
+				<input type="hidden" name="question_id" id="question_id" value="0" />
+				<input type='submit' class='button-primary' value='<?php _e('Create Question', 'quiz-master-next'); ?>' />
+			</form>
 		</div>
 		<!--Dialogs-->
 		<div id="delete_dialog" title="Delete Question?" style="display:none;">
