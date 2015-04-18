@@ -31,6 +31,8 @@ function mlw_options_option_tab_content()
 		$mlw_user_comp = intval($_POST["userComp"]);
 		$mlw_user_email = intval($_POST["userEmail"]);
 		$mlw_user_phone = intval($_POST["userPhone"]);
+		$disable_answer_onselect = intval($_POST["disable_answer_onselect"]);
+		$ajax_show_correct = intval($_POST["ajax_show_correct"]);
 		$mlw_comment_section = intval($_POST["commentSection"]);
 		$mlw_qmn_loggedin_contact = intval($_POST["loggedin_user_contact"]);
 		$qmn_scheduled_timeframe = serialize(array("start" => $_POST["scheduled_time_start"], "end" => $_POST["scheduled_time_end"]));
@@ -57,7 +59,9 @@ function mlw_options_option_tab_content()
 				'require_log_in' => $mlw_require_log_in,
 				'limit_total_entries' => $mlw_limit_total_entries,
 				'last_activity' => date("Y-m-d H:i:s"),
-				'scheduled_timeframe' => $qmn_scheduled_timeframe
+				'scheduled_timeframe' => $qmn_scheduled_timeframe,
+				'disable_answer_onselect' => $disable_answer_onselect,
+				'ajax_show_correct' => $ajax_show_correct
 			),
 			array( 'quiz_id' => $quiz_id ),
 			array(
@@ -80,6 +84,8 @@ function mlw_options_option_tab_content()
 				'%d',
 				'%s',
 				'%s',
+				'%d',
+				'%d'
 			),
 			array( '%d' )
 		);
@@ -260,6 +266,20 @@ function mlw_options_option_tab_content()
 				<td>
 					<input type="radio" id="social_media_radio2" name="social_media" <?php if ($mlw_quiz_options->social_media == 1) {echo 'checked="checked"';} ?> value='1' /><label for="social_media_radio2"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
 				  <input type="radio" id="social_media_radio" name="social_media" <?php if ($mlw_quiz_options->social_media == 0) {echo 'checked="checked"';} ?> value='0' /><label for="social_media_radio"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="disable_answer_onselect"><?php _e('Disable question once user selects answer? (Currently only work on multiple choice)', 'quiz-master-next'); ?></label></th>
+				<td>
+					<input type="radio" id="disable_answer_radio2" name="disable_answer_onselect" <?php if ($mlw_quiz_options->disable_answer_onselect == 1) {echo 'checked="checked"';} ?> value='1' /><label for="disable_answer_radio2"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				  <input type="radio" id="disable_answer_radio" name="disable_answer_onselect" <?php if ($mlw_quiz_options->disable_answer_onselect == 0) {echo 'checked="checked"';} ?> value='0' /><label for="disable_answer_radio"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="ajax_show_correct"><?php _e('Dynamically add class for incorrect/correct answer after user selects answer? (Currently only works on multiple choice)', 'quiz-master-next'); ?></label></th>
+				<td>
+					<input type="radio" id="ajax_show_correct_radio2" name="ajax_show_correct" <?php if ($mlw_quiz_options->ajax_show_correct == 1) {echo 'checked="checked"';} ?> value='1' /><label for="ajax_show_correct_radio2"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				  <input type="radio" id="ajax_show_correct_radio" name="ajax_show_correct" <?php if ($mlw_quiz_options->ajax_show_correct == 0) {echo 'checked="checked"';} ?> value='0' /><label for="ajax_show_correct_radio"><?php _e('No', 'quiz-master-next'); ?></label><br>
 				</td>
 			</tr>
 		</table>

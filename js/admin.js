@@ -36,7 +36,7 @@ function deleteQuestion(id){
     }
   });
   jQuery("#delete_dialog").dialog('open');
-  var idHidden = document.getElementById("question_id");
+  var idHidden = document.getElementById("delete_question_id");
   idHidden.value = id;
 };
 function duplicateQuestion(id){
