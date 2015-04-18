@@ -194,6 +194,20 @@ class QMNQuizManager
 
 		$return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
 
+		//Prepare JS Globals
+		echo "<script>";
+		if ($qmn_quiz_options->disable_answer_onselect == 1) {
+			echo "var qmn_disable_answer = true;";
+		} else {
+			echo "var qmn_disable_answer = false;";
+		}
+		if ($qmn_quiz_options->ajax_show_correct == 1) {
+			echo "var qmn_ajax_correct = true;";
+		} else {
+			echo "var qmn_ajax_correct = false;";
+		}
+		echo "</script>";
+
 		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
 		{
 			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, true);

@@ -304,6 +304,22 @@ function mlw_quiz_update()
 			$results = $wpdb->query( $update_sql );
 		}
 
+		//Update 4.3.0
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'disable_answer_onselect'") != "disable_answer_onselect")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD disable_answer_onselect INT NOT NULL AFTER scheduled_timeframe_text";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET disable_answer_onselect=0";
+			$results = $wpdb->query( $update_sql );
+		}
+		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'ajax_show_correct'") != "ajax_show_correct")
+		{
+			$sql = "ALTER TABLE ".$table_name." ADD ajax_show_correct INT NOT NULL AFTER disable_answer_onselect";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE ".$table_name." SET ajax_show_correct=0";
+			$results = $wpdb->query( $update_sql );
+		}
+
 		global $wpdb;
 		$table_name = $wpdb->prefix . "mlw_questions";
 		//Update 0.5
