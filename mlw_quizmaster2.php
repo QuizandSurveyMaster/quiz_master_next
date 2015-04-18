@@ -196,7 +196,7 @@ class MLWQuizMasterNext
 			'label'  => 'Quizzes',
 			'rewrite' => array('slug' => $cpt_slug),
 			'has_archive'        => $has_archive,
-			'supports'           => array( 'title', 'editor', 'author' )
+			'supports'           => array( 'title', 'author', 'comments' )
 		);
 
 		register_post_type( 'quiz', $quiz_args );
