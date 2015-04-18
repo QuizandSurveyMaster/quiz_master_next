@@ -269,11 +269,14 @@ class QMNQuizManager
 	{
 		//Load and prepare answer arrays
 		$mlw_qmn_answer_arrays = array();
+		$question_list = array();
 		foreach($questions as $mlw_question_info) {
+			$question_list[$mlw_question_info->question_id] = get_object_vars($mlw_question_info);
 			if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
 			{
 				$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
 				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+				$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_array_each;
 			}
 			else
 			{
@@ -286,8 +289,10 @@ class QMNQuizManager
 					array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
 					array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
 					array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
+					$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
 			}
 		}
+		echo "<script>var qmn_question_list = ".json_encode($question_list).";</script>";
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -334,7 +339,7 @@ class QMNQuizManager
 		var empty_error = '<?php _e('Please complete all required fields!', 'quiz-master-next'); ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
 		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );

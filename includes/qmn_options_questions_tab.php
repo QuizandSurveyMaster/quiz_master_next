@@ -128,7 +128,7 @@ function mlw_options_questions_tab_content()
 	if ( isset($_POST["delete_question"]) && $_POST["delete_question"] == "confirmation")
 	{
 		//Variables from delete question form
-		$mlw_question_id = intval($_POST["question_id"]);
+		$mlw_question_id = intval($_POST["delete_question_id"]);
 		$quiz_id = $_POST["quiz_id"];
 
 		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET deleted=1 WHERE question_id=".$mlw_question_id;
@@ -390,16 +390,16 @@ function mlw_options_questions_tab_content()
 		//Parse Javascript Object
 		echo "{
 			id: ".$question->question_id.",
-		  question: '".htmlspecialchars_decode($question->question_name, ENT_QUOTES)."',
+		  question: '".esc_js(htmlspecialchars_decode($question->question_name, ENT_QUOTES))."',
 		  answers: [".$answer_string."],
-		  correct_info: '".htmlspecialchars_decode($question->question_answer_info, ENT_QUOTES)."',
-		  hint: '".htmlspecialchars_decode($question->hints, ENT_QUOTES)."',
+		  correct_info: '".esc_js(htmlspecialchars_decode($question->question_answer_info, ENT_QUOTES))."',
+		  hint: '".esc_js(htmlspecialchars_decode($question->hints, ENT_QUOTES))."',
 		  type: '".$question->question_type_new."',
 			type_name: '".$type_name."',
 			comment: ".$question->comments.",
 		  order: ".$question->question_order.",
 		  required: ".$mlw_question_settings['required'].",
-		  category: '".$question->category."'
+		  category: '".esc_js($question->category)."'
 		},";
 	}
 
@@ -620,7 +620,7 @@ function mlw_options_questions_tab_content()
 			<h3><b><?php _e('Are you sure you want to delete this question?', 'quiz-master-next'); ?></b></h3>
 			<form action='' method='post'>
 				<input type='hidden' name='delete_question' value='confirmation' />
-				<input type='hidden' id='question_id' name='question_id' value='' />
+				<input type='hidden' id='delete_question_id' name='delete_question_id' value='' />
 				<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
 				<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Delete Question', 'quiz-master-next'); ?>' /></p>
 			</form>

@@ -23,8 +23,9 @@ function qmn_multiple_choice_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
+				$question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
         $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
-        $question_display .= "<br />";
+				$question_display .= "</div>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
