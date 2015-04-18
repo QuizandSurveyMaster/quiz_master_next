@@ -214,7 +214,7 @@ class QMNQuizManager
 			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 			$return_display .= $this->display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
 		}
-		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
+		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation" && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] )
 		{
 			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
 			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
