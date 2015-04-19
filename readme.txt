@@ -122,12 +122,13 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 == Changelog ==
 
-= 4.3.0 (April 18, 2015) =
- * Redesigned Stats Page
- * Added Ability To Have Shortcodes In Questions
- * Added Editor To Questions
+= 4.3.0 (April 20, 2015) =
+ * Redesigned Stats Page ([GitHub Issue #177](https://github.com/fpcorso/quiz_master_next/issues/177))
+ * Added Ability To Have Shortcodes In Questions ([GitHub Issue #175](https://github.com/fpcorso/quiz_master_next/issues/175))
+ * Added Editor To Questions ([GitHub Issue #36](https://github.com/fpcorso/quiz_master_next/issues/36))
+ * Added Ability To Edit Quiz Post ([GitHub Issue #176](https://github.com/fpcorso/quiz_master_next/issues/176))
+ * Added Ability To Search Questions ([GitHub Issue #151](https://github.com/fpcorso/quiz_master_next/issues/151))
  * Design Changes To Questions Tab
- * Added Ability To Edit Quiz Post
  * Minor Design Changes
  * Minor Bug Fixes
 
@@ -664,7 +665,10 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 == Upgrade Notice ==
 
-= 4.2.0=
+= 4.3.0 =
+Upgrade for redesigned stats page, ability to use shortcodes in questions, and ability to WordPress editor for questions.
+
+= 4.2.0 =
 Upgrade for social sharing template variables, redirects, and fill in the blank question types.
 
 = 4.1.0 =

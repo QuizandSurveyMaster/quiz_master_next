@@ -3,9 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page shows the user how-to's for using the plugin
 */
-/*
-Copyright 2014, My Local Webstop (email : fpcorso@mylocalwebstop.com)
-*/
 
 function mlw_generate_help_page()
 {
