@@ -43,7 +43,7 @@ function qmn_addons_page()
 
 function qmn_generate_featured_addons()
 {
-	wp_enqueue_style( 'qmn_addons_style', plugins_url( 'css/qmn_addons_page.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
 	?>
 	<p><?php _e('These addons extend the functionality of Quiz Master Next', 'quiz-master-next'); ?></p>
 	<div class="qmn_addons">

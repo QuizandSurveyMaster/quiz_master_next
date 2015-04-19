@@ -55,7 +55,7 @@ function qmn_variable_facebook_share($content, $mlw_quiz_array)
 {
 	while (strpos($content, '%FACEBOOK_SHARE%') !== false)
 	{
-		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
 		$settings = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '483815031724529';
 		if (isset($settings['facebook_app_id']))
@@ -91,7 +91,7 @@ function qmn_variable_twitter_share($content, $mlw_quiz_array)
 {
 	while (strpos($content, '%TWITTER_SHARE%') !== false)
 	{
-		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
 
 		global $wpdb;
 		$qmn_quiz_options = $wpdb->get_row($wpdb->prepare('SELECT social_media_text FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $mlw_quiz_array['quiz_id']));

@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1.1
-Stable tag: 4.2.4
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,15 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.3.0 (April 18, 2015) =
+ * Redesigned Stats Page
+ * Added Ability To Have Shortcodes In Questions
+ * Added Editor To Questions
+ * Design Changes To Questions Tab
+ * Added Ability To Edit Quiz Post
+ * Minor Design Changes
+ * Minor Bug Fixes
 
 = 4.2.4 (April 1, 2015) =
  * Minor Design Changes

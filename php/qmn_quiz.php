@@ -356,7 +356,7 @@ class QMNQuizManager
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
+		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		if ($qmn_quiz_options->theme_selected == "default")
 		{
 			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
@@ -571,7 +571,7 @@ class QMNQuizManager
 			return $result_display;
 		}
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
+		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		if ($qmn_quiz_options->theme_selected == "default")
 		{
 			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
@@ -923,7 +923,7 @@ EOC;
 		$social_display = '';
 		if ($qmn_quiz_options->social_media == 1)
 		{
-			wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+			wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
 			$settings = (array) get_option( 'qmn-settings' );
 			$facebook_app_id = '483815031724529';
 			if (isset($settings['facebook_app_id']))
@@ -1261,7 +1261,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'js/qmn_pagination.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ) );
 	}
 	return $display;
 }
@@ -1279,7 +1279,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'js/qmn_timer.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ) );
 	}
 	return $display;
 }
