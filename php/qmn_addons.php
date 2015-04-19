@@ -66,6 +66,26 @@ function qmn_generate_featured_addons()
 		<p class="qmn_addons_desc">This add-on gives you 4 new leaderboard shortcodes and 2 new widgets that you can customize per use. You can edit how many results are listed, the name of the leaderboard, and the order the results are listed in.</p>
 		<a href="http://quizmasternext.com/downloads/advanced-leaderboard/" target="_blank" class="button">Get This Addon</a>
 	</div>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Slack Integration</h3>
+		<p class="qmn_addons_desc">This addon will allow you to post a message to your slack when a user takes a quiz or test.</p>
+		<a href="http://quizmasternext.com/downloads/slack-integration/" target="_blank" class="button">Get This Addon</a>
+	</div>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Gradebook</h3>
+		<p class="qmn_addons_desc">Need a gradebook that will show your users average scores and their quizzes? Then this addon is for you!</p>
+		<a href="http://quizmasternext.com/downloads/gradebook/" target="_blank" class="button">Get This Addon</a>
+	</div>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Daily Limit</h3>
+		<p class="qmn_addons_desc">This Quiz Master Next add-on allows you to restrict users to only a set amount of entries per day.</p>
+		<a href="http://quizmasternext.com/downloads/daily-limit/" target="_blank" class="button">Get This Addon</a>
+	</div>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Extra Template Variables</h3>
+		<p class="qmn_addons_desc">This addon gives you several more template variables to use in your emails and results pages.</p>
+		<a href="http://quizmasternext.com/downloads/extra-template-variables/" target="_blank" class="button">Get This Addon</a>
+	</div>
 	<div style="clear:both;">
 	<br />
 	<a href="http://quizmasternext.com/addons/" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
