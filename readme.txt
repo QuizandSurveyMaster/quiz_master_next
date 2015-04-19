@@ -113,7 +113,7 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 1. Quiz Admin Page (With Advertisement Be Gone Add-On)
 2. Quiz Settings Page (With Advertisement Be Gone Add-On)
-3. Quiz Dashboard Page (With Advertisement Be Gone Add-On)
+3. Quiz Statistics Page (With Advertisement Be Gone Add-On)
 4. Example Quiz
 5. Example Survey
 6. Quiz Results Page
