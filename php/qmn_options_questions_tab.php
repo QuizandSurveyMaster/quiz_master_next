@@ -353,6 +353,11 @@ function mlw_options_questions_tab_content()
 				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
 		}
 	}
+
+	//Load Question Types
+	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+
+	
 	echo "<script>
 	var questions_list = [";
 	foreach($questions as $question) {
@@ -373,9 +378,6 @@ function mlw_options_questions_tab_content()
 		foreach($answers[$question->question_id] as $answer_single) {
 			$answer_string .= "{answer: '".$answer_single[0]."',points: ".$answer_single[1].",correct: ".$answer_single[2]."},";
 		}
-
-		//Load Question Types
-		$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 
 		//Load Type
 		$type_slug = $question->question_type_new;
