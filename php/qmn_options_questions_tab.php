@@ -390,10 +390,10 @@ function mlw_options_questions_tab_content()
 		//Parse Javascript Object
 		echo "{
 			id: ".$question->question_id.",
-		  question: '".esc_js(htmlspecialchars_decode($question->question_name, ENT_QUOTES))."',
+		  question: '".esc_js($question->question_name, ENT_QUOTES)."',
 		  answers: [".$answer_string."],
-		  correct_info: '".esc_js(htmlspecialchars_decode($question->question_answer_info, ENT_QUOTES))."',
-		  hint: '".esc_js(htmlspecialchars_decode($question->hints, ENT_QUOTES))."',
+		  correct_info: '".esc_js($question->question_answer_info, ENT_QUOTES)."',
+		  hint: '".esc_js($question->hints, ENT_QUOTES)."',
 		  type: '".$question->question_type_new."',
 			type_name: '".$type_name."',
 			comment: ".$question->comments.",

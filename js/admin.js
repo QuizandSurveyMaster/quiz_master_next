@@ -69,18 +69,19 @@ jQuery("#the-list").on('click', '.edit_link', function(event) {
   event.preventDefault();
   var question_array_id = jQuery(this).attr('data-question-id');
   var question_editor = tinyMCE.get('question_name');
+  var question = jQuery('<textarea/>').html(questions_list[question_array_id].question).text();
   if (question_editor)
   {
-    tinyMCE.get('question_name').setContent(questions_list[question_array_id].question);
+    tinyMCE.get('question_name').setContent(question);
   }
   else
   {
-    jQuery("#question_name").val(questions_list[question_array_id].question);
+    jQuery("#question_name").val(question);
   }
   jQuery(".question_area_header_text").text('Edit Question');
   jQuery(".question_area .button-primary").val("Save Question");
-  jQuery("#correct_answer_info").val(questions_list[question_array_id].correct_info);
-  jQuery("#hint").val(questions_list[question_array_id].hint);
+  jQuery("#correct_answer_info").val(jQuery('<textarea/>').html(questions_list[question_array_id].correct_info).text());
+  jQuery("#hint").val(jQuery('<textarea/>').html(questions_list[question_array_id].hint).text());
   jQuery("#new_question_order").val(questions_list[question_array_id].order);
   jQuery("#question_type").val(questions_list[question_array_id].type);
   jQuery(".comments_radio").val([questions_list[question_array_id].comment]);
@@ -150,7 +151,7 @@ for (var i = 0; i < questions_list.length; i++) {
   '<td>'+questions_list[i].type_name+'</td>'+
   '<td>'+questions_list[i].category+'</td>'+
   '<td>'+
-    questions_list[i].question+
+    jQuery('<textarea/>').html(questions_list[i].question.replace(/\\"/g, '"').replace(/\\'/g, "'")).text()+
     '<div class="row-actions">'+
       '<a class="edit_link" data-question-id="'+i+'" href="#">Edit</a> | '+
       '<a class="duplicate_link" onclick="duplicateQuestion('+questions_list[i].id+')" href="#">Duplicate</a>| '+

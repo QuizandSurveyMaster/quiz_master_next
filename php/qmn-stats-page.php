@@ -22,7 +22,7 @@ function qmn_generate_stats_page()
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'overview';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'quiz-taken-stats';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">
