@@ -3,9 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page creates the main dashboard for the Quiz Master Next plugin
 */
-/*
-Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
-*/
 
 function mlw_generate_quiz_tools()
 {

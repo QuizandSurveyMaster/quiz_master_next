@@ -115,6 +115,10 @@ function mlw_quiz_activate()
 
 			scheduled_timeframe_text TEXT NOT NULL,
 
+			disable_answer_onselect INT NOT NULL,
+
+			ajax_show_correct INT NOT NULL,
+
 			quiz_views INT NOT NULL,
 
 			quiz_taken INT NOT NULL,

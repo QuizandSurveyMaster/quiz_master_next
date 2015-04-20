@@ -1,0 +1,38 @@
+.template_list_holder
+{
+  width: 100%;
+}
+.template_variable
+{
+  width: 50%;
+  float: left;
+  font-size: 14px;
+}
+.template_name
+{
+  font-weight: bold;
+}
+div.mlw_qmn_icon_wrap
+{
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #0d97d8;
+  color: yellow;
+  background-position: center 24px;
+  background-size: 85px 85px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+  margin: 5px 0 0;
+  padding-top: 120px;
+  height: 40px;
+  display: inline-block;
+  width: 150px;
+  text-rendering: optimizeLegibility;
+  border: 5px solid #106daa;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+}

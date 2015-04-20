@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz Master Next
 * Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.2.4
+* Version: 4.3.0
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
 * Plugin URI: http://www.quizmasternext.com/
@@ -16,7 +16,7 @@
 * You understand that you install, operate, and unistall the plugin at your own discretion and risk.
 *
 * @author Frank Corso
-* @version 4.2.4
+* @version 4.3.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
@@ -34,7 +34,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.2.4';
+	public $version = '4.3.0';
 
 	/**
 	 * QMN Alert Manager Object
@@ -86,45 +86,45 @@ class MLWQuizMasterNext
 	{
 		if (is_admin())
 		{
-			include("includes/qmn_dashboard.php");
-			include("includes/qmn_quiz_admin.php");
-			include("includes/qmn_quiz_options.php");
-			include("includes/qmn_results.php");
-			include("includes/qmn_results_details.php");
-			include("includes/qmn_tools.php");
-			include("includes/qmn_credits.php");
-			include("includes/qmn_help.php");
-			include("includes/qmn_dashboard_widgets.php");
-			include("includes/qmn_options_questions_tab.php");
-			include("includes/qmn_options_text_tab.php");
-			include("includes/qmn_options_option_tab.php");
-			include("includes/qmn_options_leaderboard_tab.php");
-			include("includes/qmn_options_certificate_tab.php");
-			include("includes/qmn_options_email_tab.php");
-			include("includes/qmn_options_results_page_tab.php");
-			include("includes/qmn_options_style_tab.php");
-			include("includes/qmn_options_tools_tab.php");
-			include("includes/qmn_options_preview_tab.php");
-			include("includes/qmn_addons.php");
-			include("includes/qmn_global_settings.php");
-			include("includes/qmn_usage_tracking.php");
+			include("php/qmn-stats-page.php");
+			include("php/qmn_quiz_admin.php");
+			include("php/qmn_quiz_options.php");
+			include("php/qmn_results.php");
+			include("php/qmn_results_details.php");
+			include("php/qmn_tools.php");
+			include("php/qmn_credits.php");
+			include("php/qmn_help.php");
+			include("php/qmn_dashboard_widgets.php");
+			include("php/qmn_options_questions_tab.php");
+			include("php/qmn_options_text_tab.php");
+			include("php/qmn_options_option_tab.php");
+			include("php/qmn_options_leaderboard_tab.php");
+			include("php/qmn_options_certificate_tab.php");
+			include("php/qmn_options_email_tab.php");
+			include("php/qmn_options_results_page_tab.php");
+			include("php/qmn_options_style_tab.php");
+			include("php/qmn_options_tools_tab.php");
+			include("php/qmn_options_preview_tab.php");
+			include("php/qmn_addons.php");
+			include("php/qmn_global_settings.php");
+			include("php/qmn_usage_tracking.php");
 		}
-		include("includes/qmn_quiz.php");
-		include("includes/qmn_quiz_install.php");
-		include("includes/qmn_leaderboard.php");
-		include("includes/qmn_update.php");
-		include("includes/qmn_widgets.php");
-		include("includes/qmn_template_variables.php");
-		include("includes/qmn_adverts.php");
-		include("includes/qmn_question_types.php");
+		include("php/qmn_quiz.php");
+		include("php/qmn_quiz_install.php");
+		include("php/qmn_leaderboard.php");
+		include("php/qmn_update.php");
+		include("php/qmn_widgets.php");
+		include("php/qmn_template_variables.php");
+		include("php/qmn_adverts.php");
+		include("php/qmn_question_types.php");
 
-		include("includes/qmn_alerts.php");
+		include("php/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();
 
-		include("includes/qmn_quiz_creator.php");
+		include("php/qmn_quiz_creator.php");
 		$this->quizCreator = new QMNQuizCreator();
 
-		include("includes/qmn_helper.php");
+		include("php/qmn_helper.php");
 		$this->pluginHelper = new QMNPluginHelper();
 	}
 
@@ -196,7 +196,7 @@ class MLWQuizMasterNext
 			'label'  => 'Quizzes',
 			'rewrite' => array('slug' => $cpt_slug),
 			'has_archive'        => $has_archive,
-			'supports'           => array( 'title', 'editor', 'author' )
+			'supports'           => array( 'title', 'author', 'comments' )
 		);
 
 		register_post_type( 'quiz', $quiz_args );
@@ -220,7 +220,7 @@ class MLWQuizMasterNext
 			add_submenu_page(__FILE__, __('Quiz Result Details', 'quiz-master-next'), __('Quiz Result Details', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');
 			add_submenu_page(__FILE__, __('Settings', 'quiz-master-next'), __('Settings', 'quiz-master-next'), 'manage_options', 'qmn_global_settings', array('QMNGlobalSettingsPage', 'display_page'));
 			add_submenu_page(__FILE__, __('Tools', 'quiz-master-next'), __('Tools', 'quiz-master-next'), 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
-			add_submenu_page(__FILE__, __('Stats', 'quiz-master-next'), __('Stats', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_stats', 'mlw_generate_quiz_dashboard');
+			add_submenu_page(__FILE__, __('Stats', 'quiz-master-next'), __('Stats', 'quiz-master-next'), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page');
 			add_submenu_page(__FILE__, __('Addon Settings', 'quiz-master-next'), __('Addon Settings', 'quiz-master-next'), 'manage_options', 'qmn_addons', 'qmn_addons_page');
 			add_submenu_page(__FILE__, __('Help', 'quiz-master-next'), __('Help', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page');
 

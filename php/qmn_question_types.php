@@ -13,7 +13,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
   if (is_array($answers))
   {
@@ -23,8 +23,9 @@ function qmn_multiple_choice_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
+				$question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
         $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
-        $question_display .= "<br />";
+				$question_display .= "</div>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
@@ -81,7 +82,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
   if (is_array($answers))
   {
@@ -147,7 +148,7 @@ function qmn_drop_down_display($id, $question, $answers)
 {
   $question_display = '';
   global $mlwQuizMasterNext;
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<select name='question".$id."'>";
   if (is_array($answers))
   {
@@ -214,7 +215,7 @@ function qmn_small_open_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' name='question".$id."' />";
   $question_display .= "<br />";
   return $question_display;
@@ -263,7 +264,7 @@ function qmn_multiple_response_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
   if (is_array($answers))
   {
@@ -338,7 +339,7 @@ function qmn_large_open_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<textarea class='mlw_answer_open_text $mlw_requireClass' cols='70' rows='5' name='question".$id."' /></textarea>";
   $question_display .= "<br />";
   return $question_display;
@@ -384,7 +385,7 @@ function qmn_question_type_text_block()
 function qmn_text_block_display($id, $question, $answers)
 {
   $question_display = '';
-  $question_display .= htmlspecialchars_decode($question, ENT_QUOTES);
+  $question_display .= do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES));
   $question_display .= "<br />";
   return $question_display;
 }
@@ -402,7 +403,7 @@ function qmn_number_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredNumber";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<input type='number' class='mlw_answer_number $mlw_requireClass' name='question".$id."' />";
   $question_display .= "<br />";
   return $question_display;
@@ -452,7 +453,7 @@ function qmn_accept_display($id, $question, $answers)
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredAccept";} else {$mlw_requireClass = "";}
   $question_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
-  $question_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span></label>";
+  $question_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span></label>";
   $question_display .= "<br />";
   return $question_display;
 }
@@ -474,7 +475,7 @@ function qmn_captcha_display($id, $question, $answers)
   $question_display .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
   $question_display .= "</div>";
   $question_display .= "<span class='mlw_qmn_question'>";
-  $question_display .= htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
   $question_display .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
   $question_display .= "<br />";
@@ -511,7 +512,7 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
-  $question_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($question, ENT_QUOTES)."</span><br />";
+  $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span><br />";
   $question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
   if (is_array($answers))
   {
@@ -588,7 +589,7 @@ function qmn_fill_blank_display($id, $question, $answers)
 	$input_text = "<input type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
 	if (strpos($question, '%BLANK%') !== false)
 	{
-		$question = str_replace( "%BLANK%", $input_text, htmlspecialchars_decode($question, ENT_QUOTES));
+		$question = str_replace( "%BLANK%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   $question_display = "<span class='mlw_qmn_question'>$question</span><br />";
 
@@ -606,7 +607,7 @@ function qmn_fill_blank_review($id, $question, $answers)
   );
 	if (strpos($question, '%BLANK%') !== false)
 	{
-		$return_array['question_text'] = str_replace( "%BLANK%", "__________", htmlspecialchars_decode($question, ENT_QUOTES));
+		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   if (isset($_POST["question".$id]))
   {

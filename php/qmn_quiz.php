@@ -194,13 +194,27 @@ class QMNQuizManager
 
 		$return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
 
+		//Prepare JS Globals
+		echo "<script>";
+		if ($qmn_quiz_options->disable_answer_onselect == 1) {
+			echo "var qmn_disable_answer = true;";
+		} else {
+			echo "var qmn_disable_answer = false;";
+		}
+		if ($qmn_quiz_options->ajax_show_correct == 1) {
+			echo "var qmn_ajax_correct = true;";
+		} else {
+			echo "var qmn_ajax_correct = false;";
+		}
+		echo "</script>";
+
 		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
 		{
 			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, true);
 			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 			$return_display .= $this->display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
 		}
-		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
+		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation" && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] )
 		{
 			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
 			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
@@ -269,11 +283,14 @@ class QMNQuizManager
 	{
 		//Load and prepare answer arrays
 		$mlw_qmn_answer_arrays = array();
+		$question_list = array();
 		foreach($questions as $mlw_question_info) {
+			$question_list[$mlw_question_info->question_id] = get_object_vars($mlw_question_info);
 			if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
 			{
 				$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
 				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
+				$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_array_each;
 			}
 			else
 			{
@@ -286,8 +303,10 @@ class QMNQuizManager
 					array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
 					array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
 					array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
+					$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
 			}
 		}
+		echo "<script>var qmn_question_list = ".json_encode($question_list).";</script>";
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -334,10 +353,10 @@ class QMNQuizManager
 		var empty_error = '<?php _e('Please complete all required fields!', 'quiz-master-next'); ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz', plugins_url( 'js/qmn_quiz.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
+		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		if ($qmn_quiz_options->theme_selected == "default")
 		{
 			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
@@ -552,7 +571,7 @@ class QMNQuizManager
 			return $result_display;
 		}
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( 'css/qmn_quiz.css' , __FILE__ ) );
+		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		if ($qmn_quiz_options->theme_selected == "default")
 		{
 			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
@@ -904,7 +923,7 @@ EOC;
 		$social_display = '';
 		if ($qmn_quiz_options->social_media == 1)
 		{
-			wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( 'js/qmn_social_share.js' , __FILE__ ) );
+			wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
 			$settings = (array) get_option( 'qmn-settings' );
 			$facebook_app_id = '483815031724529';
 			if (isset($settings['facebook_app_id']))
@@ -1242,7 +1261,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( 'js/qmn_pagination.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ) );
 	}
 	return $display;
 }
@@ -1260,7 +1279,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( 'js/qmn_timer.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ) );
 	}
 	return $display;
 }

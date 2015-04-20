@@ -108,3 +108,32 @@ function mlw_validateForm()
 	jQuery( '.mlw_qmn_question_comment' ).attr('disabled',false);
 	jQuery( '.mlw_answer_open_text' ).attr('disabled',false);
 }
+
+if (qmn_ajax_correct) {
+	jQuery('.qmn_quiz_radio').change(function() {
+		var chosen_answer = jQuery(this).val();
+		var question_id = jQuery(this).attr('name').replace(/question/i,'');
+		var chosen_id = jQuery(this).attr('id');
+		jQuery.each(qmn_question_list, function(i, value) {
+			if (question_id == value.question_id) {
+				jQuery.each(value.answers, function(j, answer) {
+					if ( answer[0] === chosen_answer ) {
+						if ( answer[2] !== 1) {
+							jQuery('#'+chosen_id).parent().addClass("qmn_incorrect_answer");
+						}
+					}
+					if ( answer[2] === 1) {
+						jQuery(':radio[name=question'+question_id+'][value="'+answer[0]+'"]').parent().addClass("qmn_correct_answer");
+					}
+				});
+			}
+		});
+	});
+}
+
+if (qmn_disable_answer) {
+	jQuery('.qmn_quiz_radio').change(function() {
+		var radio_group = jQuery(this).attr('name');
+		jQuery('input[type=radio][name='+radio_group+']').prop('disabled',true);
+	});
+}

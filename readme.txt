@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.1.1
-Stable tag: 4.2.4
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,7 +113,7 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 1. Quiz Admin Page (With Advertisement Be Gone Add-On)
 2. Quiz Settings Page (With Advertisement Be Gone Add-On)
-3. Quiz Dashboard Page (With Advertisement Be Gone Add-On)
+3. Quiz Statistics Page (With Advertisement Be Gone Add-On)
 4. Example Quiz
 5. Example Survey
 6. Quiz Results Page
@@ -121,6 +121,16 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.3.0 (April 20, 2015) =
+ * Redesigned Stats Page ([GitHub Issue #177](https://github.com/fpcorso/quiz_master_next/issues/177))
+ * Added Ability To Have Shortcodes In Questions ([GitHub Issue #175](https://github.com/fpcorso/quiz_master_next/issues/175))
+ * Added Editor To Questions ([GitHub Issue #36](https://github.com/fpcorso/quiz_master_next/issues/36))
+ * Added Ability To Edit Quiz Post ([GitHub Issue #176](https://github.com/fpcorso/quiz_master_next/issues/176))
+ * Added Ability To Search Questions ([GitHub Issue #151](https://github.com/fpcorso/quiz_master_next/issues/151))
+ * Design Changes To Questions Tab
+ * Minor Design Changes
+ * Minor Bug Fixes
 
 = 4.2.4 (April 1, 2015) =
  * Minor Design Changes
@@ -655,7 +665,10 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 == Upgrade Notice ==
 
-= 4.2.0=
+= 4.3.0 =
+Upgrade for redesigned stats page, ability to use shortcodes in questions, and ability to WordPress editor for questions.
+
+= 4.2.0 =
 Upgrade for social sharing template variables, redirects, and fill in the blank question types.
 
 = 4.1.0 =

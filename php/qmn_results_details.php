@@ -3,10 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /*
 This page allows for the viewing of the quiz results.
 */
-/*
-Copyright 2013, My Local Webstop (email : fpcorso@mylocalwebstop.com)
-*/
-
 function mlw_generate_result_details()
 {
 	if ( !current_user_can('moderate_comments') )

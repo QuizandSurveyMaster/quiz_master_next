@@ -86,7 +86,7 @@ function mlw_options_text_tab_content()
         		'facebook' => $mlw_quiz_options->social_media_text
         	);
 	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( 'css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
 	?>
 	<div id="tabs-2" class="mlw_tab_content">
 			<h3 style="text-align: center;"><?php _e("Template Variables", 'quiz-master-next'); ?></h3>

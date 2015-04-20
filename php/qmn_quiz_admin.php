@@ -68,7 +68,10 @@ function mlw_generate_quiz_admin()
 	  while( $my_query->have_posts() )
 		{
 	    $my_query->the_post();
-			$post_to_quiz_array[get_post_meta( get_the_ID(), 'quiz_id', true )] = get_the_permalink();
+			$post_to_quiz_array[get_post_meta( get_the_ID(), 'quiz_id', true )] = array(
+				'link' => get_the_permalink(),
+				'id' => get_the_ID()
+			);
 	  }
 	}
 	wp_reset_postdata();
@@ -274,7 +277,12 @@ function mlw_generate_quiz_admin()
 						</div></td>";
 						if (isset($post_to_quiz_array[$mlw_quiz_info->quiz_id]))
 						{
-							$quotes_list .= "<td><span style='font-size:16px;'><a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."'>".$post_to_quiz_array[$mlw_quiz_info->quiz_id]."</a></span></td>";
+							$quotes_list .= "<td>
+							<span style='font-size:16px;'>
+							<a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."'>".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."</a>
+							</span>
+							<div class=\"row-actions\"><a class='linkOptions' href='post.php?post=".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['id']."&action=edit'>Edit Post Settings</a></a>
+							</td>";
 						}
 						else
 						{
