@@ -14,8 +14,6 @@
 }
 div.mlw_qmn_icon_wrap
 {
-  background: <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
-  background: none, <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
   position: absolute;
   top: 0;
   right: 0;
