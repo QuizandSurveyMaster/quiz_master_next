@@ -238,6 +238,9 @@ class QMNQuizCreator
 				  -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
 				  box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
 				  border: 1px solid #ccc;
+				}
+				.qmn_page_error_message {
+  				color: red;
 				}";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
 		$results = $wpdb->insert(

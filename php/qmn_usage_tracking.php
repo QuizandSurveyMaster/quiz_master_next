@@ -187,8 +187,8 @@ class QMNTracking
 		}
     else
     {
-      $optin_url  = add_query_arg( 'qmn_track_check', 'opt_into_tracking' );
-  		$optout_url = add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' );
+      $optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
+  		$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
   		echo '<div class="updated"><p>';
   			echo __( "Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked.", 'quiz-master-next' );
   			echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
