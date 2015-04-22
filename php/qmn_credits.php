@@ -57,15 +57,8 @@ function mlw_generate_about_page()
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" style="display: none;">
-		<h3><?php echo $mlw_quiz_version; ?> (April 20, 2015)</h3>
+		<h3><?php echo $mlw_quiz_version; ?> (April 22, 2015)</h3>
 		<ul>
-			<li>* Redesigned Stats Page <a target="_blank" href='https://github.com/fpcorso/quiz_master_next/issues/177'>GitHub Issue #177</a></li>
-			<li>* Added Ability To Have Shortcodes In Questions <a target="_blank" href='https://github.com/fpcorso/quiz_master_next/issues/175'>GitHub Issue #175</a></li>
-			<li>* Added Editor To Questions <a target="_blank" href='https://github.com/fpcorso/quiz_master_next/issues/36'>GitHub Issue #36</a></li>
-			<li>* Added Ability To Edit Quiz Post <a target="_blank" href='https://github.com/fpcorso/quiz_master_next/issues/176'>GitHub Issue #176</a></li>
-			<li>* Added Ability To Search Questions <a target="_blank" href='https://github.com/fpcorso/quiz_master_next/issues/151'>GitHub Issue #151</a></li>
-			<li>* Design Changes To Questions Tab</li>
-			<li>* Minor Design Changes</li>
 			<li>* Minor Bug Fixes</li>
 		</ul>
 		</div>
