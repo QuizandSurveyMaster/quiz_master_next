@@ -369,7 +369,7 @@ class QMNQuizManager
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
 		global $mlw_qmn_section_count;
-		$mlw_qmn_section_count = 1;
+		$mlw_qmn_section_count = 0;
 
 		$quiz_display .= "<div class='mlw_qmn_quiz'>";
 		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
@@ -406,20 +406,32 @@ class QMNQuizManager
 	  */
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
-		global $mlw_qmn_section_count;
-		$section_display = "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
+                $section_display = "";
+                
+                if (!empty($qmn_quiz_options->message_before) OR $qmn_quiz_options->contact_info_location == 0)
+                {
+                    $section_display.= "<script> var firstPage = true; </script>";
+                    global $mlw_qmn_section_count;
+                    $mlw_qmn_section_count +=1;
+                    $section_display .= "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
 
-		$message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
-		$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
+                    $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
+                    $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-		$section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
-		$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
+                    $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
+                    $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
 
-		if ($qmn_quiz_options->contact_info_location == 0)
-		{
+                    if ($qmn_quiz_options->contact_info_location == 0)
+                    {
 			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
-		}
-		$section_display .= "</div>";
+                    }
+                    $section_display .= "</div>";
+                
+                }                
+                else
+                {
+                    $section_display.= "<script> var firstPage = false; </script>";
+                }
 		return $section_display;
 	}
 
