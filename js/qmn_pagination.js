@@ -83,14 +83,22 @@ function nextSlide(mlw_pagination, mlw_goto_top)
 		{
 			window.mlw_quiz_slide = 1;
 		}
-		if (window.mlw_quiz_slide == 1)
-		{
-			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-		}
-		if (window.mlw_quiz_slide > 1)
-		{
+		jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
+                
+                if (firstPage)
+                {             
+                    if (window.mlw_quiz_slide > 1)
+                    {
 			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-		}
+                    }
+                }
+                else
+                {
+                     if (window.mlw_quiz_slide > mlw_pagination)
+                    {
+			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
+                    }
+                }
 		if (window.mlw_quiz_slide == window.mlw_quiz_total_slides)
 		{
 			jQuery( ".mlw_qmn_quiz_link.mlw_next" ).hide();
@@ -125,14 +133,23 @@ function prevSlide(mlw_pagination, mlw_goto_top)
 		{
 			window.mlw_quiz_slide = 1;
 		}
-		if (window.mlw_quiz_slide == 1)
-		{
-			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-		}
-		if (window.mlw_quiz_slide > 1)
-		{
+	
+                jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
+                
+                if (firstPage)
+                {
+                    if (window.mlw_quiz_slide > 1)
+                    {
 			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-		}
+                    }
+                }
+                else
+                {
+                    if (window.mlw_quiz_slide > mlw_pagination)
+                    {
+			jQuery( ".mlw_qmn_quiz_link.mlw_previous" ).show();
+                    }
+                }
 		if (window.mlw_quiz_slide == window.mlw_quiz_total_slides)
 		{
 			jQuery( ".mlw_qmn_quiz_link.mlw_next" ).hide();
@@ -160,8 +177,17 @@ jQuery( ".mlw_qmn_quiz" ).append( '<a class="mlw_qmn_quiz_link mlw_next" href="#
 window.mlw_quiz_slide = 0;
 window.mlw_previous = 0;
 window.mlw_quiz_total_slides = qmn_section_limit;
-nextSlide(1, 0);
 
+if (firstPage)
+{
+   nextSlide(1, 0);
+}
+
+else
+{
+   window.mlw_quiz_total_slides -=1;
+   nextSlide(qmn_pagination, 0);
+}
 jQuery(".mlw_next").click(function(event) {
 	event.preventDefault();
 	if ( qmnValidatePage() ) {
