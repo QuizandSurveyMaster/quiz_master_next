@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Adds the Text tab to the Quiz Settings page.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_text_tab()
 {
 	global $mlwQuizMasterNext;
@@ -7,6 +14,12 @@ function qmn_settings_text_tab()
 }
 add_action("plugins_loaded", 'qmn_settings_text_tab', 5);
 
+/**
+* Adds the Text tab content to the tab.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_text_tab_content()
 {
 	global $wpdb;

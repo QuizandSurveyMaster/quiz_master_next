@@ -4,6 +4,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 This page creates the main dashboard for the Quiz Master Next plugin
 */
 
+
+/**
+* Generates all of the quiz tools that are used
+*
+* Long Description
+*
+* @param type description
+* @return type description
+* @since 4.4.0
+*/
 function mlw_generate_quiz_tools()
 {
 	if ( !current_user_can('moderate_comments') )
@@ -65,6 +75,13 @@ function mlw_generate_quiz_tools()
 	</div>
 	<?php
 }
+
+/**
+* Allows the admin to restore a deleted quiz
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_restore_function()
 {
 	global $wpdb;
@@ -124,6 +141,13 @@ function qmn_restore_function()
 	</form>
 	<?php
 }
+
+/**
+* Creates the tools page that is used to make audits on the quizzes.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_tools_box()
 {
 	global $wpdb;

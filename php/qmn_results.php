@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* This function generates the admin side quiz results page 
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_generate_quiz_results()
 {
 	if ( !current_user_can('moderate_comments') )

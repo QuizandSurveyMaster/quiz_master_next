@@ -1,7 +1,14 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This function creates the leaderboard from the shortcode.
+
+/**
+* This function creates the leaderboard that is displayed.
+*
+* Sorts the scores a quizzes by type.
+*
+* @param $atts This is wordpress return for shortcodes
+* @return type $mlw_quiz_leaderboard_display This variable contains all the contents of the leaderboard. 
+* @since 4.4.0
 */
 function mlw_quiz_leaderboard_shortcode($atts)
 {

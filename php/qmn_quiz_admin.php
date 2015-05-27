@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Generates the quizzes page where the quizzes are displayed. 
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_generate_quiz_admin()
 {
 	if ( !current_user_can('moderate_comments') )

@@ -1,7 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-These functions are used for installing and uninstalling all necessary databases, options, page, etc.. for the plugin to work properly.
+/**
+* This is the install file for QMN. It installs all neccessary databases, pages, etc. 
+*
+* @return void
+* @since 4.4.0
 */
 function mlw_quiz_activate()
 {

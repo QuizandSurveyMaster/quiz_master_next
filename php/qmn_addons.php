@@ -1,4 +1,11 @@
 <?php
+
+/**
+*Creates the add on page that is displayed in the add on settings page
+*
+* @return void
+* @since 4.4.0
+*/
 if ( ! defined( 'ABSPATH' ) ) exit;
 function qmn_addons_page()
 {
@@ -40,7 +47,12 @@ function qmn_addons_page()
 	<?php
 }
 
-
+/**
+* Displays the contents of the featured add ons page. 
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_generate_featured_addons()
 {
 	wp_enqueue_style( 'qmn_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
@@ -92,6 +104,13 @@ function qmn_generate_featured_addons()
 	<?php
 }
 
+
+/**
+* This function registers the feature add ons tab. 
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_featured_addons_tab()
 {
 	global $mlwQuizMasterNext;
