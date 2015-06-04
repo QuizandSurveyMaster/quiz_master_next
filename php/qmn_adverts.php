@@ -1,5 +1,14 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Creates the advertisements that are used throughout the plugin page. 
+*
+* The advertisements are randomly generated every time the page is loaded. The function also handles the CSS for this.
+* 
+* @return $mlw_advert This variable is the main variable of the function and contains the advertisement content. 
+* @since 4.4.0
+*/
 function mlw_qmn_show_adverts()
 {
 	$mlw_advert = "";

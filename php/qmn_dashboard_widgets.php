@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* This function adds a widget to the dashboard in wordpress. 
+* 
+* @return void
+* @since 4.4.0
+*/
 function qmn_add_dashboard_widget()
 {
 	if ( current_user_can( 'publish_posts' ) )
@@ -14,7 +21,14 @@ function qmn_add_dashboard_widget()
 
 add_action( 'wp_dashboard_setup', 'qmn_add_dashboard_widget' );
 
-
+/**
+* This function creates the actual widget that is added to the dashboard. 
+* 
+* This widget adds things like the most popular/least popular quiz. How many people have taken the quiz etc. 
+* @param type description
+* @return type description
+* @since 4.4.0
+*/
 function qmn_snapshot_dashboard_widget()
 {
 	global $wpdb;

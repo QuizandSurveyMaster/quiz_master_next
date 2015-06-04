@@ -1,9 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This is the file that contains all the widgets for the plugin
-*/
 
+/**
+* The class contains all of the functions for the leaderboard widget.
+*
+* @return void
+* @since 4.4.0
+*/
 class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 
    	// constructor

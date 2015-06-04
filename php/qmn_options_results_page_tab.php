@@ -1,11 +1,25 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Adds the Results tab to the Quiz Settings page.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_results_tab()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Results Pages", 'quiz-master-next'), 'mlw_options_results_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_results_tab', 5);
+
+/**
+* Adds the Results page content to the Results tab.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_results_tab_content()
 {
 	global $wpdb;

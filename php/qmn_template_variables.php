@@ -1,5 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* This file contains all the variables that are in the plugin. It registers them and then makes them available for use.
+*
+* This plugin also contains the social media variables and all of there uses.
+*
+* @param type description
+* @return type description
+* @since 4.4.0
+*/
 /*
 
 Results Array For Reference:

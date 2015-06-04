@@ -1,7 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This page shows the about page
+/**
+* This function shows the about page. It also shows the changelog information. 
+*
+* @return void
+* @since 4.4.0
 */
 
 function mlw_generate_about_page()

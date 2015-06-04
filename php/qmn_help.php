@@ -1,9 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This page shows the user how-to's for using the plugin
-*/
 
+/**
+* This function generates the help page.
+* 
+* @return void
+* @since 4.4.0
+*/
 function mlw_generate_help_page()
 {
 	///Creates the widgets
@@ -32,6 +35,13 @@ function mlw_generate_help_page()
 <?php
 }
 
+/**
+* This function creates the text that is displayed on the help page. 
+* 
+* @param type description
+* @return void
+* @since 4.4.0
+*/
 function qmn_documentation_meta_box_content()
 {
 	?>
@@ -46,6 +56,12 @@ function qmn_documentation_meta_box_content()
 	<?php
 }
 
+/**
+* This function creates the content that is displayed on the help page.
+* 
+* @return void
+* @since 4.4.0
+*/
 function qmn_support_meta_box_content()
 {
 	$quiz_master_email_message = "";
@@ -157,11 +173,23 @@ function qmn_support_meta_box_content()
 	<?php
 }
 
+/**
+* This function echoes out the system info for the user.
+* 
+* @return void
+* @since 4.4.0
+*/
 function qmn_system_meta_box_content()
 {
 	echo qmn_get_system_info();
 }
 
+/**
+* This function gets the content that is in the system info
+* 
+* @return return $qmn_sys_info This variable contains all of the system info from the admins server. 
+* @since 4.4.0
+*/
 function qmn_get_system_info()
 {
 	global $wpdb;

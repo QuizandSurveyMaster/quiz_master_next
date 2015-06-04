@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Adds the leaderboard to the Quiz Settings page.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_leaderboard_tab()
 {
 	global $mlwQuizMasterNext;
@@ -7,6 +14,13 @@ function qmn_settings_leaderboard_tab()
 }
 add_action("plugins_loaded", 'qmn_settings_leaderboard_tab', 5);
 
+ 
+/**
+* Adds the leaderboard content to the leaderboard tab.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_leaderboard_tab_content()
 {
 	global $wpdb;
