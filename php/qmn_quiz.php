@@ -407,7 +407,7 @@ class QMNQuizManager
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
                 $section_display = "";
-                
+
                 if (!empty($qmn_quiz_options->message_before) OR $qmn_quiz_options->contact_info_location == 0)
                 {
                     $section_display.= "<script> var firstPage = true; </script>";
@@ -426,8 +426,8 @@ class QMNQuizManager
 			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
                     }
                     $section_display .= "</div>";
-                
-                }                
+
+                }
                 else
                 {
                     $section_display.= "<script> var firstPage = false; </script>";
@@ -1248,11 +1248,6 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			$total_questions = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables["quiz_id"]));
 		}
 		$display .= "<style>.quiz_section { display: none; }</style>";
-		$mlw_qmn_section_limit = 2 + $total_questions;
-		if ($qmn_quiz_options->comment_section == 0)
-		{
-			$mlw_qmn_section_limit = $mlw_qmn_section_limit + 1;
-		}
 
 		//Gather text for pagination buttons
 		$mlw_qmn_pagination_text = "";
@@ -1267,7 +1262,8 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 		?>
 		<script type="text/javascript">
 			var qmn_pagination = <?php echo $qmn_quiz_options->pagination; ?>;
-			var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
+			var qmn_section_comments = <?php echo $qmn_quiz_options->comment_section; ?>;
+			var qmn_total_questions = <?php echo $total_questions; ?>;
 			var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
