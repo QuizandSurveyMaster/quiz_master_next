@@ -828,11 +828,10 @@ class QMNQuizManager
 		$mlw_message_certificate = $mlw_certificate_options[1];
 		$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $qmn_array_for_variables);
 		$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
-		$mlw_plugindirpath = plugin_dir_path( __FILE__ );
-		$plugindirpath=plugin_dir_path( __FILE__ );
+		$path_to_fpdf = plugin_dir_path( __FILE__ )."fpdf/WriteHTML.php";
 		$mlw_qmn_certificate_file=<<<EOC
 <?php
-include("$plugindirpath/fpdf/WriteHTML.php");
+include("$path_to_fpdf");
 \$pdf=new PDF_HTML();
 \$pdf->AddPage('L');
 EOC;
