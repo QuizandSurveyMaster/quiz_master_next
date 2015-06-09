@@ -48,53 +48,56 @@ function mlw_validateForm()
 					jQuery(this).css("outline", "2px solid red");
 				}
 			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
-			{
-				document.getElementById('mlw_error_message').innerHTML = '**'+number_error+'**';
-				document.getElementById('mlw_error_message_bottom').innerHTML = '**'+number_error+'**';
-				jQuery(this).css("outline", "2px solid red");
-				mlw_validateResult =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
-			{
-				document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
-				document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
-				jQuery(this).css("outline", "2px solid red");
-				mlw_validateResult =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
-			{
-				document.getElementById('mlw_error_message').innerHTML = '**'+incorrect_error+'**';
-				document.getElementById('mlw_error_message_bottom').innerHTML = '**'+incorrect_error+'**';
-				jQuery(this).css("outline", "2px solid red");
-				mlw_validateResult =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 && !this.checked)
-			{
-				document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
-				document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
-				jQuery(this).css("outline", "2px solid red");
-				mlw_validateResult =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1)
-			{
-        check_val = jQuery(this).find('input:checked').val();
-        if (check_val == "No Answer Provided")
+			if (window.sessionStorage.getItem('mlw_time_quiz'+qmn_quiz_id) == null || window.sessionStorage.getItem('mlw_time_quiz'+qmn_quiz_id) > 0.08) {
+
+				if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
 				{
-          document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
-					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+					document.getElementById('mlw_error_message').innerHTML = '**'+number_error+'**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+number_error+'**';
 					jQuery(this).css("outline", "2px solid red");
 					mlw_validateResult =  false;
 				}
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1)
-			{
-				if (!jQuery(this).find('input:checked').length)
+				if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
 				{
 					document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
 					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
 					jQuery(this).css("outline", "2px solid red");
 					mlw_validateResult =  false;
+				}
+				if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
+				{
+					document.getElementById('mlw_error_message').innerHTML = '**'+incorrect_error+'**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+incorrect_error+'**';
+					jQuery(this).css("outline", "2px solid red");
+					mlw_validateResult =  false;
+				}
+				if(jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 && !this.checked)
+				{
+					document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
+					document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+					jQuery(this).css("outline", "2px solid red");
+					mlw_validateResult =  false;
+				}
+				if(jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1)
+				{
+	        check_val = jQuery(this).find('input:checked').val();
+	        if (check_val == "No Answer Provided")
+					{
+	          document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
+						document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+						jQuery(this).css("outline", "2px solid red");
+						mlw_validateResult =  false;
+					}
+				}
+				if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1)
+				{
+					if (!jQuery(this).find('input:checked').length)
+					{
+						document.getElementById('mlw_error_message').innerHTML = '**'+empty_error+'**';
+						document.getElementById('mlw_error_message_bottom').innerHTML = '**'+empty_error+'**';
+						jQuery(this).css("outline", "2px solid red");
+						mlw_validateResult =  false;
+					}
 				}
 			}
 		}
