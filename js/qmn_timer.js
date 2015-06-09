@@ -1,4 +1,18 @@
-setTimeout(function(){
+var qmn_timer_activated = false;
+if (typeof qmn_current_page !== 'undefined') {
+	jQuery(".mlw_next").click(function(event) {
+		event.preventDefault();
+		if ( !qmn_timer_activated ) {
+			qmn_activate_timer();
+		}
+	});
+} else {
+	setTimeout(qmn_activate_timer, 100);
+}
+
+function qmn_activate_timer() {
+	jQuery("#mlw_qmn_timer").show();
+	qmn_timer_activated = true;
 	var minutes = 0;
 	if (window.sessionStorage.getItem('mlw_started_quiz'+qmn_quiz_id) == "yes" && window.sessionStorage.getItem('mlw_time_quiz'+qmn_quiz_id) >= 0)
 	{
@@ -12,7 +26,8 @@ setTimeout(function(){
 	window.titleText = window.document.title;
 	document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
 	window.counter=setInterval(timer, 1000);
-}, 100);
+}
+
 function timer()
 {
 	window.amount=window.amount-1;

@@ -1279,7 +1279,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 	if ($qmn_allowed_visit && $qmn_quiz_options->timer_limit != 0)
 	{
 		?>
-		<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
+		<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
 		<script type="text/javascript">
 			var qmn_quiz_id = <?php echo $qmn_array_for_variables['quiz_id']; ?>;
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
