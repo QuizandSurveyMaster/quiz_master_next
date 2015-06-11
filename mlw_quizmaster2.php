@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz Master Next
 * Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.3.1
+* Version: 4.4.0
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
 * Plugin URI: http://www.quizmasternext.com/
@@ -16,7 +16,7 @@
 * You understand that you install, operate, and unistall the plugin at your own discretion and risk.
 *
 * @author Frank Corso
-* @version 4.3.1
+* @version 4.4.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
