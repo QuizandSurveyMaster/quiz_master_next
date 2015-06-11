@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-20 01:13-0500\n"
+"POT-Creation-Date: 2015-06-11 16:18-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -16,12 +16,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
+"X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;esc_attr_e;esc_attr_x:1,2c;"
+"esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;"
+"__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
 "X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: mlw_quizmaster2.php:217
+#: mlw_quizmaster2.php:217 php/qmn_quiz_admin.php:196
 msgid "Quizzes"
 msgstr "แบบทดสอบ"
 
@@ -29,7 +31,7 @@ msgstr "แบบทดสอบ"
 msgid "Quiz Settings"
 msgstr "ตั้งค่าแบบทดสอบ"
 
-#: mlw_quizmaster2.php:219
+#: mlw_quizmaster2.php:219 php/qmn_results.php:159 php/qmn_results_details.php:20
 msgid "Quiz Results"
 msgstr "ผลลัพธ์แบบทดสอบ"
 
@@ -41,7 +43,7 @@ msgstr "รายละเอียดผลลัพธ์ของแบบท
 msgid "Settings"
 msgstr ""
 
-#: mlw_quizmaster2.php:222
+#: mlw_quizmaster2.php:222 php/qmn_options_tools_tab.php:13 php/qmn_tools.php:65
 msgid "Tools"
 msgstr "เครื่องมือ"
 
@@ -57,236 +59,998 @@ msgstr "ตั้งค่าส่วนเพิ่มเติม"
 msgid "Help"
 msgstr "ช่วยเหลือ"
 
-#: mlw_quizmaster2.php:228
-#: mlw_quizmaster2.php:229
+#: mlw_quizmaster2.php:228 mlw_quizmaster2.php:229
 msgid "QMN About"
 msgstr "เกี่ยวกับ QMN"
 
-#: php/qmn_options_email_tab.php:6
-msgid "Emails"
-msgstr "อีเมล์"
+#: php/qmn-stats-page.php:29
+msgid "Quiz Statistics"
+msgstr "สถิติการทดสอบ"
 
-#: php/qmn_options_email_tab.php:42
-#: php/qmn_options_email_tab.php:101
-msgid "The email has been added successfully."
-msgstr "เพิ่มอีเมล์เรียบร้อย"
+#: php/qmn-stats-page.php:68
+#, fuzzy
+msgid "Quiz Taken Stats"
+msgstr "สถิติทดสอบทั้งหมด"
 
-#: php/qmn_options_email_tab.php:55
-#: php/qmn_options_email_tab.php:114
-#: php/qmn_options_email_tab.php:178
-#: php/qmn_quiz_creator.php:382
-#: php/qmn_quiz_creator.php:448
-#: php/qmn_quiz_creator.php:490
-#: php/qmn_quiz_creator.php:648
-#: php/qmn_quiz_creator.php:713
-#: php/qmn_options_leaderboard_tab.php:38
+#: php/qmn_addons.php:60
+msgid "These addons extend the functionality of Quiz Master Next"
+msgstr "ส่วนเพิ่มเติม เหล่านี้ ขยายการทำงานของ Quiz Master Next"
+
+#: php/qmn_addons.php:103
+msgid "Browse All Addons"
+msgstr "เลือกส่วนเพิ่มเติมทั้งหมด"
+
+#: php/qmn_addons.php:117
+msgid "Featured Addons"
+msgstr "ส่วนเพิ่มเติมแนะนำ"
+
+#: php/qmn_alerts.php:37
+msgid "Success!"
+msgstr "สำเร็จ!"
+
+#: php/qmn_alerts.php:41 php/qmn_quiz_options.php:96
+msgid "Error!"
+msgstr "ผิดพลาด!"
+
+#: php/qmn_credits.php:30
+msgid "Welcome To Quiz Master Next"
+msgstr "ยินดีต้อนรับสู่ Quiz Master Next"
+
+#: php/qmn_credits.php:31
+msgid "Thank you for updating!"
+msgstr "ขอบคุณที่อัพเดท!"
+
+#: php/qmn_credits.php:35
+msgid "What's New!"
+msgstr "มีอะไรใหม่!"
+
+#: php/qmn_credits.php:37
+msgid "Changelog"
+msgstr "บันทึกการเปลี่ยนแปลง"
+
+#: php/qmn_dashboard_widgets.php:16
+msgid "Quiz Master Next Snapshot"
+msgstr "Quiz Master Next Snapshot"
+
+#: php/qmn_dashboard_widgets.php:180
+msgid "quizzes taken today"
+msgstr "แบบทดสอบที่มีคนทำในวันนี้"
+
+#: php/qmn_dashboard_widgets.php:199
+msgid "quizzes taken last 7 days"
+msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
+
+#: php/qmn_dashboard_widgets.php:218
+#, fuzzy
+msgid "quizzes taken last 30 days"
+msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
+
+#: php/qmn_dashboard_widgets.php:237
+#, fuzzy
+msgid "quizzes taken last 120 days"
+msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
+
+#: php/qmn_dashboard_widgets.php:256
+msgid "total active quizzes"
+msgstr "จำนวนแบบทดสอบที่ใช้งานทั้งหมด"
+
+#: php/qmn_dashboard_widgets.php:262
+msgid "total active questions"
+msgstr "จำนวนคำถามที่ใช้งานทั้งหมด"
+
+#: php/qmn_dashboard_widgets.php:268
+msgid "most popular quiz"
+msgstr "แบบทดสอบเป็นที่นิยมสูงสุด"
+
+#: php/qmn_dashboard_widgets.php:274
+msgid "least popular quiz"
+msgstr "แบบทดสอบเป็นที่นิยมต่ำสุด"
+
+#: php/qmn_help.php:13
+msgid "Need Help?"
+msgstr "ต้องการความช่วยเหลือ?"
+
+#: php/qmn_help.php:14
+msgid "Support"
+msgstr "สนับสนุน"
+
+#: php/qmn_help.php:15
+msgid "System Info"
+msgstr "ข้อมูลระบบ"
+
+#: php/qmn_help.php:18
+msgid "Help Page"
+msgstr "หน้าช่วยเหลือ"
+
+#: php/qmn_help.php:48
+msgid "Need help with the plugin? Try any of the following:"
+msgstr "ต้องการความช่วยเหลือ? ลองทำสิ่งต่อไปนี้"
+
+#: php/qmn_options_certificate_tab.php:15
+msgid "Certificate (Beta)"
+msgstr "ประกาศนียบัตร (รุ่นทดสอบ)"
+
+#: php/qmn_options_certificate_tab.php:47
+msgid "The certificate has been updated successfully."
+msgstr "อัพเดทประกาศนียบัตรเรียบร้อย"
+
+#: php/qmn_options_certificate_tab.php:60 php/qmn_options_email_tab.php:68
+#: php/qmn_options_email_tab.php:127 php/qmn_options_email_tab.php:191
+#: php/qmn_options_leaderboard_tab.php:52 php/qmn_options_option_tab.php:120
+#: php/qmn_options_questions_tab.php:139 php/qmn_options_questions_tab.php:166
+#: php/qmn_options_questions_tab.php:250 php/qmn_options_questions_tab.php:343
+#: php/qmn_options_results_page_tab.php:68 php/qmn_options_results_page_tab.php:108
+#: php/qmn_options_style_tab.php:52 php/qmn_options_text_tab.php:68
+#: php/qmn_options_tools_tab.php:50 php/qmn_quiz_creator.php:385 php/qmn_quiz_creator.php:451
+#: php/qmn_quiz_creator.php:493 php/qmn_quiz_creator.php:651 php/qmn_quiz_creator.php:716
+#: php/qmn_results.php:43
 #, php-format
-msgid "There has been an error in this action. Please share this with the developer. Error Code: %s"
+msgid ""
+"There has been an error in this action. Please share this with the developer. Error Code: %s"
 msgstr "เกิดข้อผิดพลาดในการทำงาน โปรดแชร์ให้กับผู้พัฒนา หมายเลขข้อผิดพลาด Error Code: %s"
 
-#: php/qmn_options_email_tab.php:73
-#: php/qmn_options_email_tab.php:91
+#: php/qmn_options_certificate_tab.php:76
+msgid "Enter title here"
+msgstr "กรอกหัวข้อที่นี่"
+
+#: php/qmn_options_certificate_tab.php:76 php/qmn_options_email_tab.php:86
+#: php/qmn_options_email_tab.php:104
 msgid "Enter text here"
 msgstr "กรอกข้อความที่นี่"
 
-#: php/qmn_options_email_tab.php:165
-msgid "The email has been updated successfully."
-msgstr "อัพเดทอีเมล์เรียบร้อย"
+#: php/qmn_options_certificate_tab.php:80
+msgid "Quiz Certificate (Beta)"
+msgstr "ประกาศนียบัตรสำหรับแบบทดสอบ (รุ่นทดลอง)"
 
-#: php/qmn_options_email_tab.php:232
-#: php/qmn_options_leaderboard_tab.php:49
-msgid "Template Variables"
-msgstr "ตัวแปรแม่แบบ"
+#: php/qmn_options_certificate_tab.php:81
+msgid ""
+"Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link "
+"variable into the templates on the Quiz Text tab so the user can access the certificate."
+msgstr ""
+"กรอกข้อความที่นี่เพื่อเติมลงในประกาศนียบัตรสำหรับแบบทดสอบนี้ โปรดใส่ลิงค์ไปยังตัวแปรในแม่แบบ (Templates) ในแท็บ "
+"ข้อความแบบทดสอบ เพื่อให้ผู้ใช้งานสามารถเข้าสู่ประกาศนียบัตรได้"
 
-#: php/qmn_options_email_tab.php:235
-msgid "Score for the quiz when using points"
-msgstr "คะแนนแบบทดสอบ ใช้งานคะแนน"
+#: php/qmn_options_certificate_tab.php:82
+msgid "These fields cannot contain HTML."
+msgstr "ไม่สามารถใช้ HTML ในช่องนี้"
 
-#: php/qmn_options_email_tab.php:238
-msgid "The average amount of points user had per question"
-msgstr "คะแนนเฉลี่ยของผู้ใช้งาน ต่อคำถาม"
+#: php/qmn_options_certificate_tab.php:83 php/qmn_options_certificate_tab.php:139
+msgid "Save Certificate Options"
+msgstr "บันทึกการตั้งค่าประกาศนียบัตร"
 
-#: php/qmn_options_email_tab.php:241
-msgid "The number of correct answers the user had"
-msgstr "จำนวนข้อถูกของผู้ใช้"
+#: php/qmn_options_certificate_tab.php:91
+msgid "Enable Certificates For This Quiz?"
+msgstr "ใช้งานประกาศนียบัตรสำหรับแบบทดสอบนี้?"
 
-#: php/qmn_options_email_tab.php:244
-msgid "The total number of questions in the quiz"
-msgstr "จำนวนคำถามทั้งหมดของแบบทดสอบนี้"
-
-#: php/qmn_options_email_tab.php:247
-msgid "Score for the quiz when using correct answers"
-msgstr "คะแนนแบบทดสอบ ใช้งานคำตอบที่ถูก"
-
-#: php/qmn_options_email_tab.php:250
-msgid "The name the user entered before the quiz"
-msgstr "ชื่อที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:253
-msgid "The business the user entered before the quiz"
-msgstr "ที่ทำงานที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:256
-msgid "The phone number the user entered before the quiz"
-msgstr "โทรศัพท์ที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:259
-msgid "The email the user entered before the quiz"
-msgstr "อีเมล์ที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:262
-#: php/qmn_options_leaderboard_tab.php:77
-msgid "The name of the quiz"
-msgstr "ชื่อของแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:265
-msgid "Shows the question, the answer the user provided, and the correct answer"
-msgstr "แสดงคำถาม, คำตอบจากผู้ใช้, และข้อที่ถูกต้อง"
-
-#: php/qmn_options_email_tab.php:268
-msgid "The comments the user entered into comment box if enabled"
-msgstr "ข้อแนะนำที่ได้รับจากผู้ใช้"
-
-#: php/qmn_options_email_tab.php:271
-msgid "The amount of time user spent of quiz"
-msgstr "เวลาที่ใช้ทั่งหมดในการทำแบบทดสอบ"
-
-#: php/qmn_options_email_tab.php:274
-msgid "The link to the certificate after completing the quiz"
-msgstr "ลิงค์ไปสู่ประกาศนียบัตรหลังทำแบบทดสอบเรียบร้อย"
-
-#: php/qmn_options_email_tab.php:277
-msgid "The amount of points a specific category earned."
-msgstr "คะแนนเฉพาะจากหมวดหมู่"
-
-#: php/qmn_options_email_tab.php:280
-msgid "The score a specific category earned."
-msgstr "คะแนนเฉพาะจากหมวดหมู่"
-
-#: php/qmn_options_email_tab.php:283
-msgid "The average points from all categories."
-msgstr "คะแนนเฉลี่ยจากหมวดหมู่ทั้งหมด"
-
-#: php/qmn_options_email_tab.php:286
-msgid "The average score from all categories."
-msgstr "คะแนนเฉลี่ยจากหมวดหมู่ทั้งหมด"
-
-#: php/qmn_options_email_tab.php:289
-msgid "The question that the user answered"
-msgstr "คำถามที่ผู้ใช้ตอบ"
-
-#: php/qmn_options_email_tab.php:292
-msgid "The answer the user gave for the question"
-msgstr "คำตอบที่ผู้ใช้ตอบคำถาม"
-
-#: php/qmn_options_email_tab.php:295
-msgid "The correct answer for the question"
-msgstr "คำตอบที่ถูกต้อง"
-
-#: php/qmn_options_email_tab.php:298
-msgid "The comments the user provided in the comment field for the question"
-msgstr "ข้อเสนอแนะที่ผู้ใช้กรอกสำหรับคำถาม"
-
-#: php/qmn_options_email_tab.php:301
-msgid "Reason why the correct answer is the correct answer"
-msgstr "เหตุผลอธิบายข้อถูก"
-
-#: php/qmn_options_email_tab.php:304
-msgid "The Current Date"
-msgstr "วันที่ปัจจุบัน"
-
-#: php/qmn_options_email_tab.php:319
-#: php/qmn_options_email_tab.php:518
-msgid "Save Email Templates And Settings"
-msgstr "บันทึกแม่แบบอีเมล์และการตั้งค่า"
-
-#: php/qmn_options_email_tab.php:323
-msgid "Send user email upon completion?"
-msgstr "ส่งอีเมล์หาผู้ใช้เมื่อเสร็จเรียบร้อย"
-
-#: php/qmn_options_email_tab.php:325
-#: php/qmn_options_email_tab.php:332
+#: php/qmn_options_certificate_tab.php:93 php/qmn_options_email_tab.php:355
+#: php/qmn_options_email_tab.php:362 php/qmn_options_option_tab.php:166
+#: php/qmn_options_option_tab.php:227 php/qmn_options_option_tab.php:234
+#: php/qmn_options_option_tab.php:242 php/qmn_options_option_tab.php:250
+#: php/qmn_options_option_tab.php:258 php/qmn_options_option_tab.php:266
+#: php/qmn_options_option_tab.php:273 php/qmn_options_option_tab.php:280
+#: php/qmn_options_option_tab.php:287 php/qmn_options_option_tab.php:294
+#: php/qmn_options_questions_tab.php:603 php/qmn_options_results_page_tab.php:264
 msgid "Yes"
 msgstr "ใช่"
 
-#: php/qmn_options_email_tab.php:326
-#: php/qmn_options_email_tab.php:333
+#: php/qmn_options_certificate_tab.php:94 php/qmn_options_email_tab.php:356
+#: php/qmn_options_email_tab.php:363 php/qmn_options_option_tab.php:167
+#: php/qmn_options_option_tab.php:214 php/qmn_options_option_tab.php:228
+#: php/qmn_options_option_tab.php:236 php/qmn_options_option_tab.php:244
+#: php/qmn_options_option_tab.php:252 php/qmn_options_option_tab.php:260
+#: php/qmn_options_option_tab.php:267 php/qmn_options_option_tab.php:274
+#: php/qmn_options_option_tab.php:281 php/qmn_options_option_tab.php:288
+#: php/qmn_options_option_tab.php:295 php/qmn_options_questions_tab.php:604
+#: php/qmn_options_results_page_tab.php:264
 msgid "No"
 msgstr "ไม่ใช่"
 
-#: php/qmn_options_email_tab.php:330
+#: php/qmn_options_certificate_tab.php:99
+msgid "Certificate Title"
+msgstr "หัวข้อประกาศนียบัตร"
+
+#: php/qmn_options_certificate_tab.php:106
+msgid "Message Displayed On Certificate"
+msgstr "ข้อความแสดงบนประกาศนียบัตร"
+
+#: php/qmn_options_certificate_tab.php:108 php/qmn_options_leaderboard_tab.php:105
+#: php/qmn_options_text_tab.php:199 php/qmn_options_text_tab.php:209
+#: php/qmn_options_text_tab.php:219 php/qmn_options_text_tab.php:229
+#: php/qmn_options_text_tab.php:239 php/qmn_options_text_tab.php:249
+#: php/qmn_options_text_tab.php:259 php/qmn_options_text_tab.php:269
+#: php/qmn_options_text_tab.php:282 php/qmn_options_text_tab.php:299
+msgid "Allowed Variables:"
+msgstr "ตัวแปรที่อนุญาตื"
+
+#: php/qmn_options_certificate_tab.php:126
+msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL ไปยังโลโก้  (ชนิด JPG, JPEG, PNG or GIF)"
+
+#: php/qmn_options_certificate_tab.php:133
+msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL ไปยังภาพพื้นหลัง (ชนิด JPG, JPEG, PNG or GIF)"
+
+#: php/qmn_options_email_tab.php:13
+msgid "Emails"
+msgstr "อีเมล์"
+
+#: php/qmn_options_email_tab.php:55 php/qmn_options_email_tab.php:114
+msgid "The email has been added successfully."
+msgstr "เพิ่มอีเมล์เรียบร้อย"
+
+#: php/qmn_options_email_tab.php:178
+msgid "The email has been updated successfully."
+msgstr "อัพเดทอีเมล์เรียบร้อย"
+
+#: php/qmn_options_email_tab.php:258 php/qmn_options_leaderboard_tab.php:63
+#: php/qmn_options_results_page_tab.php:148 php/qmn_options_text_tab.php:105
+msgid "Template Variables"
+msgstr "ตัวแปรแม่แบบ"
+
+#: php/qmn_options_email_tab.php:261 php/qmn_options_results_page_tab.php:151
+#: php/qmn_options_text_tab.php:108
+msgid "Score for the quiz when using points"
+msgstr "คะแนนแบบทดสอบ ใช้งานคะแนน"
+
+#: php/qmn_options_email_tab.php:264 php/qmn_options_results_page_tab.php:154
+#: php/qmn_options_text_tab.php:111
+msgid "The average amount of points user had per question"
+msgstr "คะแนนเฉลี่ยของผู้ใช้งาน ต่อคำถาม"
+
+#: php/qmn_options_email_tab.php:267 php/qmn_options_results_page_tab.php:157
+#: php/qmn_options_text_tab.php:114
+msgid "The number of correct answers the user had"
+msgstr "จำนวนข้อถูกของผู้ใช้"
+
+#: php/qmn_options_email_tab.php:270 php/qmn_options_results_page_tab.php:160
+#: php/qmn_options_text_tab.php:117
+msgid "The total number of questions in the quiz"
+msgstr "จำนวนคำถามทั้งหมดของแบบทดสอบนี้"
+
+#: php/qmn_options_email_tab.php:273 php/qmn_options_results_page_tab.php:163
+#: php/qmn_options_text_tab.php:120
+msgid "Score for the quiz when using correct answers"
+msgstr "คะแนนแบบทดสอบ ใช้งานคำตอบที่ถูก"
+
+#: php/qmn_options_email_tab.php:276 php/qmn_options_results_page_tab.php:166
+#: php/qmn_options_text_tab.php:123
+msgid "The name the user entered before the quiz"
+msgstr "ชื่อที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
+
+#: php/qmn_options_email_tab.php:279 php/qmn_options_results_page_tab.php:169
+#: php/qmn_options_text_tab.php:126
+msgid "The business the user entered before the quiz"
+msgstr "ที่ทำงานที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
+
+#: php/qmn_options_email_tab.php:282 php/qmn_options_results_page_tab.php:172
+#: php/qmn_options_text_tab.php:129
+msgid "The phone number the user entered before the quiz"
+msgstr "โทรศัพท์ที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
+
+#: php/qmn_options_email_tab.php:285 php/qmn_options_results_page_tab.php:175
+#: php/qmn_options_text_tab.php:132
+msgid "The email the user entered before the quiz"
+msgstr "อีเมล์ที่ผู้ใช้กรอกก่อนทำแบบทดสอบ"
+
+#: php/qmn_options_email_tab.php:288 php/qmn_options_leaderboard_tab.php:91
+#: php/qmn_options_results_page_tab.php:178 php/qmn_options_text_tab.php:135
+msgid "The name of the quiz"
+msgstr "ชื่อของแบบทดสอบ"
+
+#: php/qmn_options_email_tab.php:291 php/qmn_options_results_page_tab.php:181
+#: php/qmn_options_text_tab.php:138
+msgid "Shows the question, the answer the user provided, and the correct answer"
+msgstr "แสดงคำถาม, คำตอบจากผู้ใช้, และข้อที่ถูกต้อง"
+
+#: php/qmn_options_email_tab.php:294 php/qmn_options_results_page_tab.php:184
+#: php/qmn_options_text_tab.php:141
+msgid "The comments the user entered into comment box if enabled"
+msgstr "ข้อแนะนำที่ได้รับจากผู้ใช้"
+
+#: php/qmn_options_email_tab.php:297 php/qmn_options_text_tab.php:144
+msgid "The amount of time user spent on quiz in seconds"
+msgstr ""
+
+#: php/qmn_options_email_tab.php:301 php/qmn_options_text_tab.php:147
+msgid "The amount of time user spent on quiz in minutes"
+msgstr ""
+
+#: php/qmn_options_email_tab.php:304 php/qmn_options_results_page_tab.php:193
+#: php/qmn_options_text_tab.php:151
+msgid "The link to the certificate after completing the quiz"
+msgstr "ลิงค์ไปสู่ประกาศนียบัตรหลังทำแบบทดสอบเรียบร้อย"
+
+#: php/qmn_options_email_tab.php:307 php/qmn_options_results_page_tab.php:196
+#: php/qmn_options_text_tab.php:154
+msgid "The amount of points a specific category earned."
+msgstr "คะแนนเฉพาะจากหมวดหมู่"
+
+#: php/qmn_options_email_tab.php:310 php/qmn_options_results_page_tab.php:199
+#: php/qmn_options_text_tab.php:157
+msgid "The score a specific category earned."
+msgstr "คะแนนเฉพาะจากหมวดหมู่"
+
+#: php/qmn_options_email_tab.php:313 php/qmn_options_results_page_tab.php:202
+#: php/qmn_options_text_tab.php:160
+msgid "The average points from all categories."
+msgstr "คะแนนเฉลี่ยจากหมวดหมู่ทั้งหมด"
+
+#: php/qmn_options_email_tab.php:316 php/qmn_options_results_page_tab.php:205
+#: php/qmn_options_text_tab.php:163
+msgid "The average score from all categories."
+msgstr "คะแนนเฉลี่ยจากหมวดหมู่ทั้งหมด"
+
+#: php/qmn_options_email_tab.php:319 php/qmn_options_text_tab.php:166
+msgid "The question that the user answered"
+msgstr "คำถามที่ผู้ใช้ตอบ"
+
+#: php/qmn_options_email_tab.php:322 php/qmn_options_text_tab.php:169
+msgid "The answer the user gave for the question"
+msgstr "คำตอบที่ผู้ใช้ตอบคำถาม"
+
+#: php/qmn_options_email_tab.php:325 php/qmn_options_text_tab.php:172
+msgid "The correct answer for the question"
+msgstr "คำตอบที่ถูกต้อง"
+
+#: php/qmn_options_email_tab.php:328 php/qmn_options_text_tab.php:175
+msgid "The comments the user provided in the comment field for the question"
+msgstr "ข้อเสนอแนะที่ผู้ใช้กรอกสำหรับคำถาม"
+
+#: php/qmn_options_email_tab.php:331 php/qmn_options_text_tab.php:178
+msgid "Reason why the correct answer is the correct answer"
+msgstr "เหตุผลอธิบายข้อถูก"
+
+#: php/qmn_options_email_tab.php:334 php/qmn_options_text_tab.php:181
+msgid "The Current Date"
+msgstr "วันที่ปัจจุบัน"
+
+#: php/qmn_options_email_tab.php:349 php/qmn_options_email_tab.php:548
+msgid "Save Email Templates And Settings"
+msgstr "บันทึกแม่แบบอีเมล์และการตั้งค่า"
+
+#: php/qmn_options_email_tab.php:353
+msgid "Send user email upon completion?"
+msgstr "ส่งอีเมล์หาผู้ใช้เมื่อเสร็จเรียบร้อย"
+
+#: php/qmn_options_email_tab.php:360
 msgid "Send admin email upon completion?"
 msgstr "ส่งอีเมล์หาผู้ดูแลระบบเมื่อเสร็จเรียบร้อย"
 
-#: php/qmn_options_email_tab.php:337
+#: php/qmn_options_email_tab.php:367
 msgid "What emails should we send the admin email to? Separate emails with a comma."
 msgstr "อีเมล์ใดที่จะใช้ส่งไปยังผู้ดูแลระบบ แยกแต่ละอีเมล์ด้วยเครื่องหมายลูกน่ำ"
 
-#: php/qmn_options_email_tab.php:341
+#: php/qmn_options_email_tab.php:371
 msgid "What is the From Name for the email sent to users and admin?"
 msgstr "ชื่อฟอร์มใดที่ต้องการใช้ส่งอีเมล์ไปยังผู้ใช้และผู้ดูแลระบบ"
 
-#: php/qmn_options_email_tab.php:347
+#: php/qmn_options_email_tab.php:377
 msgid "Email Sent To User"
 msgstr "ส่งอีเมล์ให้ผู้ใช้เรียบร้อย"
 
-#: php/qmn_options_email_tab.php:348
-#: php/qmn_options_email_tab.php:426
+#: php/qmn_options_email_tab.php:378 php/qmn_options_email_tab.php:456
 msgid "Add New User Email"
 msgstr "เพิ่มอีเมล์ผู้ใช่ใหม่"
 
-#: php/qmn_options_email_tab.php:353
-#: php/qmn_options_email_tab.php:419
-#: php/qmn_options_email_tab.php:440
-#: php/qmn_options_email_tab.php:506
+#: php/qmn_options_email_tab.php:383 php/qmn_options_email_tab.php:449
+#: php/qmn_options_email_tab.php:470 php/qmn_options_email_tab.php:536
+#: php/qmn_options_results_page_tab.php:223 php/qmn_options_results_page_tab.php:287
 msgid "Score Greater Than Or Equal To"
 msgstr "คะแนนมากกว่าหรือเท่ากับ"
 
-#: php/qmn_options_email_tab.php:354
-#: php/qmn_options_email_tab.php:420
-#: php/qmn_options_email_tab.php:441
-#: php/qmn_options_email_tab.php:507
+#: php/qmn_options_email_tab.php:384 php/qmn_options_email_tab.php:450
+#: php/qmn_options_email_tab.php:471 php/qmn_options_email_tab.php:537
+#: php/qmn_options_results_page_tab.php:224 php/qmn_options_results_page_tab.php:288
 msgid "Score Less Than Or Equal To"
 msgstr "คะแนนน้อยกว่าหรือเท่ากับ"
 
-#: php/qmn_options_email_tab.php:355
-#: php/qmn_options_email_tab.php:421
-#: php/qmn_options_email_tab.php:442
-#: php/qmn_options_email_tab.php:508
+#: php/qmn_options_email_tab.php:385 php/qmn_options_email_tab.php:451
+#: php/qmn_options_email_tab.php:472 php/qmn_options_email_tab.php:538
 msgid "Subject"
 msgstr "หัวเรื่อง"
 
-#: php/qmn_options_email_tab.php:356
-#: php/qmn_options_email_tab.php:422
-#: php/qmn_options_email_tab.php:443
-#: php/qmn_options_email_tab.php:509
+#: php/qmn_options_email_tab.php:386 php/qmn_options_email_tab.php:452
+#: php/qmn_options_email_tab.php:473 php/qmn_options_email_tab.php:539
 msgid "Email To Send"
 msgstr "อีเมล์ที่จะส่ง"
 
-#: php/qmn_options_email_tab.php:434
+#: php/qmn_options_email_tab.php:464
 msgid "Email Sent To Admin"
 msgstr "ส่งอีเมล์ไปหาผู้ดูแลระบบแล้ว"
 
-#: php/qmn_options_email_tab.php:435
-#: php/qmn_options_email_tab.php:513
+#: php/qmn_options_email_tab.php:465 php/qmn_options_email_tab.php:543
 msgid "Add New Admin Email"
 msgstr "เพื่ออีเมล์ผู้ดูแลระบบใหม่"
 
-#: php/qmn_quiz_creator.php:369
-msgid "Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz."
-msgstr "แบบทดสอบใหม่จองท่านได้ถูกสร้างเรียบร้อย คลิ้กลิงค์แก้ไขที่แบบทดสอบใหม่ เพื่อทำการแก้ไข"
+#: php/qmn_options_leaderboard_tab.php:13
+msgid "Leaderboard"
+msgstr "กระดานผู้นำ"
 
-#: php/qmn_quiz_creator.php:435
-msgid "Your quiz has been deleted successfully."
-msgstr "แบบทดสอบของท่านได้ถูกลบเรียบร้อย"
+#: php/qmn_options_leaderboard_tab.php:39
+msgid "The leaderboards has been updated successfully."
+msgstr "อัพเดทกระดานผู้นำเรียบร้อย"
 
-#: php/qmn_quiz_creator.php:477
-msgid "Your quiz name has been updated successfully."
-msgstr "ชื่อแบบทดสอบของท่านได้ถูกอัพเดทเรียบร้อย"
+#: php/qmn_options_leaderboard_tab.php:66
+msgid "The name of the user who is in first place"
+msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 1"
 
-#: php/qmn_quiz_creator.php:634
-msgid "Your quiz has been duplicated successfully."
-msgstr "แบบทดสอบของท่านได้ถูกทำสำเนาเรียบร้อย"
+#: php/qmn_options_leaderboard_tab.php:67
+msgid "The score from the first place's quiz"
+msgstr "คะแนนจากแบบทดสอบลำดับที่ 1"
+
+#: php/qmn_options_leaderboard_tab.php:71
+msgid "The name of the user who is in second place"
+msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 2"
+
+#: php/qmn_options_leaderboard_tab.php:72
+msgid "The score from the second place's quiz"
+msgstr "คะแนนจากแบบทดสอบลำดับที่ 2"
+
+#: php/qmn_options_leaderboard_tab.php:76
+msgid "The name of the user who is in third place"
+msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 3"
+
+#: php/qmn_options_leaderboard_tab.php:77
+msgid "The score from the third place's quiz"
+msgstr "คะแนนจากแบบทดสอบลำดับที่ 3"
+
+#: php/qmn_options_leaderboard_tab.php:81
+msgid "The name of the user who is in fourth place"
+msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 4"
+
+#: php/qmn_options_leaderboard_tab.php:82
+msgid "The score from the fourth place's quiz"
+msgstr "คะแนนจากแบบทดสอบลำดับที่ 4"
+
+#: php/qmn_options_leaderboard_tab.php:86
+msgid "The name of the user who is in fifth place"
+msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 5"
+
+#: php/qmn_options_leaderboard_tab.php:87
+msgid "The score from the fifth place's quiz"
+msgstr "คะแนนจากแบบทดสอบลำดับที่ 5"
+
+#: php/qmn_options_leaderboard_tab.php:94 php/qmn_options_leaderboard_tab.php:122
+msgid "Save Leaderboard Options"
+msgstr "บันทึกการตั้งค่ากระดานผู้นำ"
+
+#: php/qmn_options_leaderboard_tab.php:103
+msgid "Leaderboard Template"
+msgstr "แม่แบบกระดานผู้นำ"
+
+#: php/qmn_options_option_tab.php:13
+msgid "Options"
+msgstr "ตัวเลือก"
+
+#: php/qmn_options_option_tab.php:107
+msgid "The options has been updated successfully."
+msgstr "อัพเดทตัวเลือกเรียบร้อย"
+
+#: php/qmn_options_option_tab.php:148 php/qmn_options_option_tab.php:299
+msgid "Save Options"
+msgstr "บันทึกตัวเลือก"
+
+#: php/qmn_options_option_tab.php:156
+msgid "Which system is this quiz graded on?"
+msgstr "รูปแบบการให้คะแนน"
+
+#: php/qmn_options_option_tab.php:158
+msgid "Correct/Incorrect"
+msgstr "ข้อถูก/ข้อผิด"
+
+#: php/qmn_options_option_tab.php:159
+msgid "Points"
+msgstr "คะแนนรวม"
+
+#: php/qmn_options_option_tab.php:160 php/qmn_results.php:265
+msgid "Not Graded"
+msgstr "ไม่คิดคะแนน"
+
+#: php/qmn_options_option_tab.php:164
+msgid "Should the user be required to be logged in to take this quiz?"
+msgstr "ผู้ใช้งานต้อง ลงชื่อเข้าระบบ เพื่อทำแบบทดสอบ?"
+
+#: php/qmn_options_option_tab.php:171
+msgid "How many questions per page would you like? (Leave 0 for all questions on one page)"
+msgstr "จำนวนคำถามต่อหน้า? (ใส่ 0 จะแสดงคำถามทั้งหมดในหน้าเดียว)"
+
+#: php/qmn_options_option_tab.php:177
+msgid "How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)"
+msgstr "ให้เวลา กี่นาที สำหรับแบบทดสอบนี้? (ใส่ 0 จะไม่กำหนดเวลา)"
+
+#: php/qmn_options_option_tab.php:183
+msgid ""
+"How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. "
+"Currently only works for registered users)"
+msgstr ""
+"จำกัดจำนวนครั้งที่ผู้ใช้งานทำแบบทดสอบนี้?  (ใส่ 0 จะไม่จำกัดจำนวนครั้ง ใช้จำกัดได้เฉพาะผู้ใช้งานอยู่่ในระบบและลงชื่อเข้าใช้)"
+
+#: php/qmn_options_option_tab.php:189
+msgid "How many total entries can this quiz have? (Leave 0 for unlimited entries"
+msgstr "จำนวนรายการทั้งหมดที่แบบทดสอบมีได้? (ใส่ 0 จะไม่จำกัดจำนวน)"
+
+#: php/qmn_options_option_tab.php:195
+msgid "How many questions should be loaded for quiz? (Leave 0 to load all questions)"
+msgstr "กำหนดจำนวนคำถามที่เลือกมาใช้ในแบบทดสอบนี้  (ใส่ 0 จะเลือกคำถามทั้งหมด)"
+
+#: php/qmn_options_option_tab.php:201
+msgid ""
+"What time-frame should the user be able to access the quiz? (Leave blank if the user can access "
+"anytime)"
+msgstr "กำหนดช่วงเวลาที่อนุญาติให้เข้าทำแบบทดสอบ  (ใส่ 0 จะไม่กำหนดเวลา)"
+
+#: php/qmn_options_option_tab.php:203
+msgid "start date"
+msgstr "วันที่เริ่มต้น"
+
+#: php/qmn_options_option_tab.php:206
+msgid "end date"
+msgstr "วันที่สิ้นสุด"
+
+#: php/qmn_options_option_tab.php:210
+msgid "Are the questions random? (Question Order will not apply if this is yes)"
+msgstr "สุ่มเลือกคำถาม? (ระบบจะไม่สนใจการเรียงลำดับคำถาม)"
+
+#: php/qmn_options_option_tab.php:212
+msgid "Random Questions"
+msgstr "สุ่มคำถาม"
+
+#: php/qmn_options_option_tab.php:213
+msgid "Random Questions And Answers"
+msgstr "สุ่มลำดับคำถามและคำตอบ"
+
+#: php/qmn_options_option_tab.php:218
+msgid ""
+"Would you like to ask for the contact information at the beginning or at the end of the quiz?"
+msgstr "ต้องการถามที่อยู่่เพื่อติดต่อกลับ ที่ตอนต้นหรือตอนท้ายของแบบทดสอบ?"
+
+#: php/qmn_options_option_tab.php:220
+msgid "Beginning"
+msgstr "ตอนต้น"
+
+#: php/qmn_options_option_tab.php:221
+msgid "End"
+msgstr "ตอนท้าย"
+
+#: php/qmn_options_option_tab.php:225
+msgid ""
+"If a logged-in user takes the quiz, would you like them to be able to edit contact information? "
+"If set to no, the fields will not show up for logged in users; however, the users information "
+"will be saved for the fields."
+msgstr ""
+"ถ้าผู้ทำแบบทดสอบเข้าใช้ระบบอยู่ คุณต้องการให้ผู้ใช้สามารถแก้ไขที่อยู่ติดต่อหรือไม่? หากเลือกไม่ ช่องต่างๆ จะไม่แสดงผล "
+"อย่างไรก็ตามข้อมูลต่างๆ จะยังคงถูกบันทึกช่องนั้นๆ ในฐานข้อมูล"
+
+#: php/qmn_options_option_tab.php:232
+msgid "Should we ask for users name?"
+msgstr "ถามชื่อผู้ใช้งาน?"
+
+#: php/qmn_options_option_tab.php:235 php/qmn_options_option_tab.php:243
+#: php/qmn_options_option_tab.php:251 php/qmn_options_option_tab.php:259
+msgid "Require"
+msgstr "บังคับ"
+
+#: php/qmn_options_option_tab.php:240
+msgid "Should we ask for users business?"
+msgstr "ถามสถานที่ทำงานของผู้ใช้?"
+
+#: php/qmn_options_option_tab.php:248
+msgid "Should we ask for users email?"
+msgstr "ถามอีเมล์ของผู้ใช้?"
+
+#: php/qmn_options_option_tab.php:256
+msgid "Should we ask for users phone number?"
+msgstr "ถามเบอร์โทรศัพท์ของผู้ใช้?"
+
+#: php/qmn_options_option_tab.php:264
+msgid "Would you like a place for the user to enter comments?"
+msgstr "ต้องการให้ผู้ใช้กรอกความคิดเห็น?"
+
+#: php/qmn_options_option_tab.php:271
+msgid "Show question number on quiz?"
+msgstr "แสดงหมายเลขข้อของแบบทดสอบ?"
+
+#: php/qmn_options_option_tab.php:278
+msgid "Show social media sharing buttons? (Twitter & Facebook)"
+msgstr "แสดงปุ่มสำหรับสื่อสังคมออนไลน์ (Twitter & Facebook)"
+
+#: php/qmn_options_option_tab.php:278
+msgid ""
+"This option is for here only for users of older versions. Please use the new template variables "
+"%FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!"
+msgstr ""
+
+#: php/qmn_options_option_tab.php:285
+msgid "Disable question once user selects answer? (Currently only work on multiple choice)"
+msgstr ""
+
+#: php/qmn_options_option_tab.php:292
+msgid ""
+"Dynamically add class for incorrect/correct answer after user selects answer? (Currently only "
+"works on multiple choice)"
+msgstr ""
+
+#: php/qmn_options_preview_tab.php:13
+msgid "Preview"
+msgstr "ดูตัวอย่าง"
+
+#: php/qmn_options_questions_tab.php:13
+msgid "Questions"
+msgstr "คำถาม"
+
+#: php/qmn_options_questions_tab.php:28
+msgid "Answer"
+msgstr "คำตอบ"
+
+#: php/qmn_options_questions_tab.php:126
+msgid "The question has been updated successfully."
+msgstr "ปรับปรุงคำถามเรียบร้อย"
+
+#: php/qmn_options_questions_tab.php:153
+msgid "The question has been deleted successfully."
+msgstr "ลบคำถามเรียบร้อย"
+
+#: php/qmn_options_questions_tab.php:237
+msgid "The question has been duplicated successfully."
+msgstr "ทำสำเนาคำถามเรียบร้อย"
+
+#: php/qmn_options_questions_tab.php:330
+msgid "The question has been created successfully."
+msgstr "สร้างคำถามเรียบร้อย"
+
+#: php/qmn_options_questions_tab.php:448
+msgid "Add Question"
+msgstr "เพิ่มคำถาม"
+
+#: php/qmn_options_questions_tab.php:457
+#, php-format
+msgid "One question"
+msgid_plural "%s questions"
+msgstr[0] "หนึ่งคำถาม"
+msgstr[1] "%s คำถาม"
+
+#: php/qmn_options_questions_tab.php:463 php/qmn_options_questions_tab.php:471
+#: php/qmn_options_questions_tab.php:596
+msgid "Question Order"
+msgstr "ลำดับคำถาม"
+
+#: php/qmn_options_questions_tab.php:464 php/qmn_options_questions_tab.php:472
+#: php/qmn_options_questions_tab.php:575
+msgid "Question Type"
+msgstr "ชนิดคำถาม"
+
+#: php/qmn_options_questions_tab.php:465 php/qmn_options_questions_tab.php:473
+#: php/qmn_options_questions_tab.php:609
+msgid "Category"
+msgstr "หมวดหมู่"
+
+#: php/qmn_options_questions_tab.php:466 php/qmn_options_questions_tab.php:474
+msgid "Question"
+msgstr "คำถาม"
+
+#: php/qmn_options_questions_tab.php:548
+msgid ""
+"For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
+msgstr ""
+
+#: php/qmn_options_questions_tab.php:553
+msgid "Answers"
+msgstr "คำตอบ"
+
+#: php/qmn_options_questions_tab.php:554
+msgid "Points Worth"
+msgstr "ค่าคะแนน"
+
+#: php/qmn_options_questions_tab.php:555
+msgid "Correct Answer"
+msgstr "ข้อที่ถูกต้อง"
+
+#: php/qmn_options_questions_tab.php:560
+msgid "Add New Answer!"
+msgstr "เพิ่มคำตอบใหม่"
+
+#: php/qmn_options_questions_tab.php:565
+msgid "Correct Answer Info"
+msgstr "ข้อความข้อที่ถูกต้อง"
+
+#: php/qmn_options_questions_tab.php:570 php/qmn_quiz.php:477
+msgid "Hint"
+msgstr "บอกใบ้"
+
+#: php/qmn_options_questions_tab.php:587
+msgid "Comment Field"
+msgstr "ข้อเสนอแนะ"
+
+#: php/qmn_options_questions_tab.php:589
+msgid "Small Text Field"
+msgstr "ข้อความสั้น"
+
+#: php/qmn_options_questions_tab.php:590
+msgid "Large Text Field"
+msgstr "ข้อความยาว"
+
+#: php/qmn_options_questions_tab.php:591
+msgid "None"
+msgstr "ไม่มี"
+
+#: php/qmn_options_questions_tab.php:601
+msgid "Required?"
+msgstr "บังคับ?"
+
+#: php/qmn_options_questions_tab.php:632
+msgid "Create Question"
+msgstr "สร้างคำถาม"
+
+#: php/qmn_options_questions_tab.php:637
+msgid "Are you sure you want to delete this question?"
+msgstr "คุณแน่ใจหรือไม่ที่จะลบคำถามนี้?"
+
+#: php/qmn_options_questions_tab.php:642
+msgid "Delete Question"
+msgstr "ลบคำถาม"
+
+#: php/qmn_options_questions_tab.php:647
+msgid "Are you sure you want to duplicate this question?"
+msgstr "คุณแน่ใจหรือไม่ที่จะสำเนาคำถามนี้?"
+
+#: php/qmn_options_questions_tab.php:652
+msgid "Duplicate Question"
+msgstr "ทำสำเนาคำถาม"
+
+#: php/qmn_options_results_page_tab.php:13
+msgid "Results Pages"
+msgstr "หน้าแสดงผลลัพธ์"
+
+#: php/qmn_options_results_page_tab.php:55
+msgid "The results page has been added successfully."
+msgstr "เพิ่มหน้าแสดงผลลัพธ์เรียบร้อย"
+
+#: php/qmn_options_results_page_tab.php:95
+msgid "The results page has been saved successfully."
+msgstr "บันทึกหน้าแสดงผลลัพธ์เรียบร้อย"
+
+#: php/qmn_options_results_page_tab.php:187
+msgid "The amount of time user spent taking quiz in minutes"
+msgstr ""
+
+#: php/qmn_options_results_page_tab.php:190
+msgid "The amount of time user spent taking quiz in seconds"
+msgstr ""
+
+#: php/qmn_options_results_page_tab.php:208
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: php/qmn_options_results_page_tab.php:211
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: php/qmn_options_results_page_tab.php:216 php/qmn_options_results_page_tab.php:297
+msgid "Save Results Pages"
+msgstr "บันทึกหน้าแสดงผลลัพธ์"
+
+#: php/qmn_options_results_page_tab.php:217 php/qmn_options_results_page_tab.php:302
+msgid "Add New Results Page"
+msgstr "เพิ่มหน้าแสดงผลลัพธ์ใหม่"
+
+#: php/qmn_options_results_page_tab.php:225 php/qmn_options_results_page_tab.php:289
+msgid "Results Page Shown"
+msgstr "แสดงหน้าแสดงผลลัพธ์"
+
+#: php/qmn_options_results_page_tab.php:226 php/qmn_options_results_page_tab.php:290
+msgid "Redirect URL (Beta)"
+msgstr ""
+
+#: php/qmn_options_results_page_tab.php:264 php/qmn_quiz_admin.php:283
+msgid "Delete"
+msgstr "ลบ"
+
+#: php/qmn_options_results_page_tab.php:264
+msgid "Are you sure?"
+msgstr "คุณแน่ใจหรือไม่?"
+
+#: php/qmn_options_style_tab.php:13
+msgid "Style"
+msgstr "รูปแบบ"
+
+#: php/qmn_options_style_tab.php:39
+msgid "The style has been saved successfully."
+msgstr "บันทึกรูปแบบเรียบร้อย"
+
+#: php/qmn_options_style_tab.php:78
+msgid "Quiz Styles"
+msgstr "รูปแบบคำถาม"
+
+#: php/qmn_options_style_tab.php:79
+msgid "Choose your style:"
+msgstr "เลือกรูปแบบ:"
+
+#: php/qmn_options_style_tab.php:101
+msgid "Custom"
+msgstr "กำหนดเอง"
+
+#: php/qmn_options_style_tab.php:107 php/qmn_options_style_tab.php:119
+msgid "Save Quiz Style"
+msgstr "บันทึกรูปแบบคำถาม"
+
+#: php/qmn_options_style_tab.php:109
+msgid "Custom Style CSS"
+msgstr "กำหนด CSS เอง"
+
+#: php/qmn_options_style_tab.php:110
+msgid ""
+"For detailed help and guidance along with a list of different classes used in this plugin, "
+"please visit the following link:"
+msgstr "ข้อมูลความช่วยเหลือและห้องเรียนที่ใช้งานปลั้กอินนี้ กรุณาไปยังลิงค์:"
+
+#: php/qmn_options_text_tab.php:13
+msgid "Text"
+msgstr "ข้อความ"
+
+#: php/qmn_options_text_tab.php:55
+msgid "The templates has been updated successfully."
+msgstr "อัพเดทแม่แบบเรียบร้อย"
+
+#: php/qmn_options_text_tab.php:86 php/qmn_quiz.php:1259
+msgid "Previous"
+msgstr "ก่อนหน้า"
+
+#: php/qmn_options_text_tab.php:187 php/qmn_options_text_tab.php:347
+msgid "Save Templates"
+msgstr "บันทึกแม่แบบ"
+
+#: php/qmn_options_text_tab.php:193
+msgid "Message Templates"
+msgstr "แม่แบบข้อความ"
+
+#: php/qmn_options_text_tab.php:197
+msgid "Message Displayed Before Quiz"
+msgstr "ข้อความที่แสดงก่อนทำแบบทดสอบ"
+
+#: php/qmn_options_text_tab.php:207
+msgid "Message Displayed Before Comments Box If Enabled"
+msgstr "ข้อความที่ถูกแสดงก่อนช่องข้อแนะนำ, หากเปิดใช้"
+
+#: php/qmn_options_text_tab.php:217
+msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
+msgstr "ข้อความที่ถูกแสดงทำแบบทดสอบเสร็จ (ปล่อยว่างเพื่อละเว้นการเลือกข้อความ)"
+
+#: php/qmn_options_text_tab.php:227
+msgid "Message Displayed If User Has Tried Quiz Too Many Times"
+msgstr "ข้อความที่ถูกแสดงหากผู้ใช้ทำแบบทดสอบหลายครั้งเกินไป"
+
+#: php/qmn_options_text_tab.php:237
+msgid "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In"
+msgstr "ข้อความที่ถูกแสดง เมื่อผู้ใช้ไม่ได้ลงชื่อเข้าใช้ เมื่อแบบทดสอบต้องการลงชื่อเข้าใช้งาน"
+
+#: php/qmn_options_text_tab.php:247
+msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
+msgstr "ข้อความที่ถูกแสดงถ้าวันที่อยู่นอกวันเวลาที่อนุญาติใช้งาน"
+
+#: php/qmn_options_text_tab.php:257
+msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
+msgstr "ข้อความที่ถูกแสดงหากจำนวนรายการเกินกำหนด"
+
+#: php/qmn_options_text_tab.php:267
+msgid "%QUESTIONS_ANSWERS% Text"
+msgstr "%QUESTIONS_ANSWERS% ข้อความ"
+
+#: php/qmn_options_text_tab.php:280
+msgid "Twitter Sharing Text"
+msgstr "ข้อความแชร์ทวิตเตอร์"
+
+#: php/qmn_options_text_tab.php:297
+msgid "Facebook Sharing Text"
+msgstr "ข้อความแชร์เฟสบุค"
+
+#: php/qmn_options_text_tab.php:312
+msgid "Other Templates"
+msgstr "แม่แบบอื่นๆ"
+
+#: php/qmn_options_text_tab.php:315
+msgid "Text for submit button"
+msgstr "ข้อความสำหรับปุ่ม ส่ง"
+
+#: php/qmn_options_text_tab.php:319
+msgid "Text for name field"
+msgstr "ข้อความสำหรับช่องชื่อ"
+
+#: php/qmn_options_text_tab.php:323
+msgid "Text for business field"
+msgstr "ข้อความสำหรับช่องที่ทำงาน"
+
+#: php/qmn_options_text_tab.php:327
+msgid "Text for email field"
+msgstr "ข้อความสำหรับข่องอีเมล์"
+
+#: php/qmn_options_text_tab.php:331
+msgid "Text for phone number field"
+msgstr "ข้อความสำหรับช่องโทรศัพท์"
+
+#: php/qmn_options_text_tab.php:335
+msgid "Text for comments field"
+msgstr "ข้อความสำหรับช่องข้อแนะนำ"
+
+#: php/qmn_options_text_tab.php:339
+msgid "Text for previous button"
+msgstr "ข้อความสำหรับปุ่ม ก่อนหน้า"
+
+#: php/qmn_options_text_tab.php:343
+msgid "Text for next button"
+msgstr "ข้อความสำหรับปุ่ม ถัดไป"
+
+#: php/qmn_options_tools_tab.php:37
+msgid "The stats has been reset successfully."
+msgstr "ล้างค่าสถิติเรียบร้อย"
+
+#: php/qmn_options_tools_tab.php:89
+msgid ""
+"Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has "
+"Been Taken)."
+msgstr "ใช้ปุ่มนี้ เพื่อล้างค่าสถิติที่เก็บข้อมูลแบบทดสอบนี้"
+
+#: php/qmn_options_tools_tab.php:90
+msgid "Reset Quiz Views And Taken Stats"
+msgstr "ล้างสถิติการดูและทำแบบทดสอบ"
+
+#: php/qmn_options_tools_tab.php:101
+msgid ""
+"Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be "
+"reset. This is permanent and cannot be undone."
+msgstr ""
+"คุณแน่ใจหรือไม่ ว่าต้องการลบสถิติทั้งหมดเป็น 0? ข้อมูลสถิติการดูและทำแบบทำสอบจะถูกตั้งค่าใหม่ ไม่สามารถกู้คืนข้อมูลได้!!"
+
+#: php/qmn_options_tools_tab.php:105
+msgid "Reset All Stats For Quiz"
+msgstr "ล้างสถิติทั้งหมดของแบบทดสอบ"
+
+#: php/qmn_question_types.php:14
+msgid "Multiple Choice"
+msgstr "หลายตัวเลือก"
+
+#: php/qmn_question_types.php:108
+msgid "Horizontal Multiple Choice"
+msgstr "ตัวเลือกแนวนอน"
+
+#: php/qmn_question_types.php:201
+msgid "Drop Down"
+msgstr "ดรอปดาวน์"
+
+#: php/qmn_question_types.php:291
+msgid "Small Open Answer"
+msgstr "คำตอบปลายเปิดแบบสั้น"
+
+#: php/qmn_question_types.php:365
+msgid "Multiple Response"
+msgstr "เลือกหลายคำตอบ"
+
+#: php/qmn_question_types.php:464
+msgid "Large Open Answer"
+msgstr "กรอกคำตอบแบบยาว"
+
+#: php/qmn_question_types.php:538
+msgid "Text Block"
+msgstr "ช่องข้อความ"
+
+#: php/qmn_question_types.php:573
+msgid "Number"
+msgstr "ตัวเลข"
+
+#: php/qmn_question_types.php:649
+msgid "Accept"
+msgstr "ยอมรับ"
+
+#: php/qmn_question_types.php:684
+msgid "Captcha"
+msgstr "Captcha"
+
+#: php/qmn_question_types.php:742
+msgid "Horizontal Multiple Response"
+msgstr "เลือกได้หลายคำตอบแนวนอน"
+
+#: php/qmn_question_types.php:843
+msgid "Fill In The Blank"
+msgstr ""
 
 #: php/qmn_quiz.php:350
 msgid "Not a valid e-mail address!"
@@ -304,32 +1068,226 @@ msgstr "ข้อความที่กรอกไม่ถูกต้อง
 msgid "Please complete all required fields!"
 msgstr "กรุณาตอบช่องบังคับทุกช่อง!"
 
-#: php/qmn_quiz.php:465
-msgid "Hint"
-msgstr "บอกใบ้"
+#: php/qmn_quiz_admin.php:196
+msgid "Add New"
+msgstr "เพิ่มใหม่"
 
-#: php/qmn_quiz.php:1254
-msgid "Previous"
-msgstr "ก่อนหน้า"
+#: php/qmn_quiz_admin.php:214
+#, php-format
+msgid "One quiz"
+msgid_plural "%s quizzes"
+msgstr[0] "หนึ่งแบบทดสอบ"
+msgstr[1] "%s แบบทดสอบ"
 
-#: php/qmn_credits.php:27
-msgid "Welcome To Quiz Master Next"
-msgstr "ยินดีต้อนรับสู่ Quiz Master Next"
+#: php/qmn_quiz_admin.php:259 php/qmn_quiz_admin.php:310 php/qmn_quiz_admin.php:378
+#: php/qmn_results.php:216
+msgid "Quiz Name"
+msgstr "ชื่อแบบทดสอบ"
 
-#: php/qmn_credits.php:28
-msgid "Thank you for updating!"
-msgstr "ขอบคุณที่อัพเดท!"
+#: php/qmn_quiz_admin.php:260 php/qmn_quiz_admin.php:311
+msgid "URL"
+msgstr ""
 
-#: php/qmn_credits.php:32
-msgid "What's New!"
-msgstr "มีอะไรใหม่!"
+#: php/qmn_quiz_admin.php:261 php/qmn_quiz_admin.php:312
+msgid "Quiz Shortcode"
+msgstr "Shortcode แบบทดสอบ"
 
-#: php/qmn_credits.php:34
-msgid "Changelog"
-msgstr "บันทึกการเปลี่ยนแปลง"
+#: php/qmn_quiz_admin.php:262 php/qmn_quiz_admin.php:313
+msgid "Leaderboard Shortcode"
+msgstr "Shortcode กระดานผู้นำ"
+
+#: php/qmn_quiz_admin.php:263 php/qmn_quiz_admin.php:314
+msgid "Quiz Views"
+msgstr "ดูแบบทดสอบ"
+
+#: php/qmn_quiz_admin.php:264 php/qmn_quiz_admin.php:315
+msgid "Quiz Taken"
+msgstr "แบบทดสอบถูกทำ"
+
+#: php/qmn_quiz_admin.php:265 php/qmn_quiz_admin.php:316
+msgid "Last Modified"
+msgstr "แก้ไขล่าสุด"
+
+#: php/qmn_quiz_admin.php:278
+msgid "Edit Name"
+msgstr "แก้ไขชื่อ"
+
+#: php/qmn_quiz_admin.php:280
+msgid "Edit"
+msgstr "แก้ไข"
+
+#: php/qmn_quiz_admin.php:281 php/qmn_results_details.php:135
+msgid "Results"
+msgstr "ผลลัพธ์"
+
+#: php/qmn_quiz_admin.php:282 php/qmn_quiz_admin.php:411
+msgid "Duplicate"
+msgstr "ทำสำเนา"
+
+#: php/qmn_quiz_admin.php:373
+msgid "Create New Quiz"
+msgstr "สร้างแบบทดสอบใหม่"
+
+#: php/qmn_quiz_admin.php:387
+msgid "Create Quiz"
+msgstr "สร้างแบบทดสอบ"
+
+#: php/qmn_quiz_admin.php:393
+msgid "Quiz Name:"
+msgstr "ชื่อแบบทดสอบ:"
+
+#: php/qmn_quiz_admin.php:404
+msgid "Duplicate this quiz?"
+msgstr "ทำสำเนาแบบทดสอบนี้?"
+
+#: php/qmn_quiz_admin.php:406
+msgid "Duplicate questions with quiz"
+msgstr ""
+
+#: php/qmn_quiz_admin.php:408
+msgid "Name Of New Quiz:"
+msgstr "ชื่อแบบทดสอบใหม่"
+
+#: php/qmn_quiz_admin.php:417
+msgid "Are you sure you want to delete this quiz?"
+msgstr "คุณแน่ใจหรือไม่ที่จะลบแบบทดสอบ?"
+
+#: php/qmn_quiz_admin.php:422
+msgid "Delete Quiz"
+msgstr "ลบแบบทดสอบ"
+
+#: php/qmn_quiz_creator.php:372
+msgid ""
+"Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on "
+"the new quiz."
+msgstr "แบบทดสอบใหม่จองท่านได้ถูกสร้างเรียบร้อย คลิ้กลิงค์แก้ไขที่แบบทดสอบใหม่ เพื่อทำการแก้ไข"
+
+#: php/qmn_quiz_creator.php:438
+msgid "Your quiz has been deleted successfully."
+msgstr "แบบทดสอบของท่านได้ถูกลบเรียบร้อย"
+
+#: php/qmn_quiz_creator.php:480
+msgid "Your quiz name has been updated successfully."
+msgstr "ชื่อแบบทดสอบของท่านได้ถูกอัพเดทเรียบร้อย"
+
+#: php/qmn_quiz_creator.php:637
+msgid "Your quiz has been duplicated successfully."
+msgstr "แบบทดสอบของท่านได้ถูกทำสำเนาเรียบร้อย"
+
+#: php/qmn_quiz_options.php:56
+#, php-format
+msgid "Quiz Settings For %s"
+msgstr "ตั้งค่าแบบทดสอบสำหรับ %s"
+
+#: php/qmn_quiz_options.php:96
+msgid "Please go to the quizzes page and click on the Edit link from the quiz you wish to edit."
+msgstr "กรุณาไปยังหน้ารายการแบบทดสอบและ คลิ้ก แก้ไขลิงค์ ของแบบทดสอบที่ต้องการแก้ไข"
+
+#: php/qmn_results.php:30
+msgid "Your results has been deleted successfully."
+msgstr "ผลลัพท์ของท่านได้ถูกลบเรียบร้อย"
+
+#: php/qmn_results.php:168
+#, php-format
+msgid "One result"
+msgid_plural "%s results"
+msgstr[0] ""
+msgstr[1] ""
+
+#: php/qmn_results.php:215
+msgid "Actions"
+msgstr "กระทำ"
+
+#: php/qmn_results.php:217
+msgid "Score"
+msgstr "คำแนน"
+
+#: php/qmn_results.php:218
+msgid "Time To Complete"
+msgstr "เวลาที่ทำสำเร็จ"
+
+#: php/qmn_results.php:219
+msgid "Name"
+msgstr "ชื่อ"
+
+#: php/qmn_results.php:220
+msgid "Business"
+msgstr "ที่ทำงาน"
+
+#: php/qmn_results.php:221
+msgid "Email"
+msgstr "อีเมล์"
+
+#: php/qmn_results.php:222
+msgid "Phone"
+msgstr "โทรศัพท์"
+
+#: php/qmn_results.php:223
+msgid "Time Taken"
+msgstr "ใช้เวลาไป"
+
+#: php/qmn_results.php:282
+msgid "Are you sure you want to delete these results?"
+msgstr "คุณแน่ใจหรือไม่ที่จะลบผลลัพธ์"
+
+#: php/qmn_results.php:287
+msgid "Delete Results"
+msgstr "ลบผลลัพธ์"
+
+#: php/qmn_results_details.php:221
+msgid "Create Certificate"
+msgstr "สร้างประกาศนียบัตร"
+
+#: php/qmn_results_details.php:226
+msgid "Download Certificate Here"
+msgstr "ดาวน์โหลดประกาศนียบัตร"
+
+#: php/qmn_results_details.php:240
+msgid "Certificate"
+msgstr ""
+
+#: php/qmn_tools.php:107
+msgid "There has been an error! Please try again."
+msgstr ""
+
+#: php/qmn_tools.php:125
+msgid "Quiz Has Been Restored!"
+msgstr ""
+
+#: php/qmn_tools.php:130
+msgid "Choose a quiz in the drop down and then click the button to restore a deleted quiz."
+msgstr ""
+
+#: php/qmn_tools.php:140
+msgid "Restore Quiz"
+msgstr ""
+
+#: php/qmn_tools.php:176 php/qmn_tools.php:192
+#, php-format
+msgid "Previous %s Audits"
+msgstr "การตรวจสอบภายใน %s ก่อนหน้า"
+
+#: php/qmn_tools.php:179 php/qmn_tools.php:186
+#, php-format
+msgid "Next %s Audits"
+msgstr "Next %s Audits"
+
+#: php/qmn_tools.php:199
+msgid "User"
+msgstr "ผู้ใช้"
+
+#: php/qmn_tools.php:200
+msgid "Action"
+msgstr "กระทำ"
+
+#: php/qmn_tools.php:201
+msgid "Time"
+msgstr "เวลา"
 
 #: php/qmn_usage_tracking.php:193
-msgid "Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked."
+msgid ""
+"Allow Quiz Master Next to anonymously track this plugin's usage and help us make this plugin "
+"better? No sensitive data is tracked."
 msgstr ""
 
 #: php/qmn_usage_tracking.php:194
@@ -340,933 +1298,23 @@ msgstr ""
 msgid "Do not allow"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:6
-msgid "Leaderboard"
-msgstr "กระดานผู้นำ"
-
-#: php/qmn_options_leaderboard_tab.php:25
-msgid "The leaderboards has been updated successfully."
-msgstr "อัพเดทกระดานผู้นำเรียบร้อย"
-
-#: php/qmn_options_leaderboard_tab.php:52
-msgid "The name of the user who is in first place"
-msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 1"
-
-#: php/qmn_options_leaderboard_tab.php:53
-msgid "The score from the first place's quiz"
-msgstr "คะแนนจากแบบทดสอบลำดับที่ 1"
-
-#: php/qmn_options_leaderboard_tab.php:57
-msgid "The name of the user who is in second place"
-msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 2"
-
-#: php/qmn_options_leaderboard_tab.php:58
-msgid "The score from the second place's quiz"
-msgstr "คะแนนจากแบบทดสอบลำดับที่ 2"
-
-#: php/qmn_options_leaderboard_tab.php:62
-msgid "The name of the user who is in third place"
-msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 3"
-
-#: php/qmn_options_leaderboard_tab.php:63
-msgid "The score from the third place's quiz"
-msgstr "คะแนนจากแบบทดสอบลำดับที่ 3"
-
-#: php/qmn_options_leaderboard_tab.php:67
-msgid "The name of the user who is in fourth place"
-msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 4"
-
-#: php/qmn_options_leaderboard_tab.php:68
-msgid "The score from the fourth place's quiz"
-msgstr "คะแนนจากแบบทดสอบลำดับที่ 4"
-
-#: php/qmn_options_leaderboard_tab.php:72
-msgid "The name of the user who is in fifth place"
-msgstr "ชื่อผู้ใช้งานที่อยู่ในลำดับที่ 5"
-
-#: php/qmn_options_leaderboard_tab.php:73
-msgid "The score from the fifth place's quiz"
-msgstr "คะแนนจากแบบทดสอบลำดับที่ 5"
-
-#: php/qmn_options_leaderboard_tab.php:80
-#: php/qmn_options_leaderboard_tab.php:108
-msgid "Save Leaderboard Options"
-msgstr "บันทึกการตั้งค่ากระดานผู้นำ"
-
-#: php/qmn_options_leaderboard_tab.php:89
-msgid "Leaderboard Template"
-msgstr "แม่แบบกระดานผู้นำ"
-
-#: php/qmn_options_leaderboard_tab.php:91
-msgid "Allowed Variables:"
-msgstr "ตัวแปรที่อนุญาตื"
-
-#: php/qmn_addons.php:48
-msgid "These addons extend the functionality of Quiz Master Next"
-msgstr "ส่วนเพิ่มเติม เหล่านี้ ขยายการทำงานของ Quiz Master Next"
-
-#: php/qmn_addons.php:91
-msgid "Browse All Addons"
-msgstr "เลือกส่วนเพิ่มเติมทั้งหมด"
-
-#: php/qmn_addons.php:98
-msgid "Featured Addons"
-msgstr "ส่วนเพิ่มเติมแนะนำ"
-
-#: php/qmn_options_text_tab.php:6
-msgid "Text"
-msgstr "ข้อความ"
-
-#: php/qmn_options_text_tab.php:42
-msgid "The templates has been updated successfully."
-msgstr "อัพเดทแม่แบบเรียบร้อย"
-
-#: php/qmn_options_text_tab.php:170
-#: php/qmn_options_text_tab.php:330
-msgid "Save Templates"
-msgstr "บันทึกแม่แบบ"
-
-#: php/qmn_options_text_tab.php:176
-msgid "Message Templates"
-msgstr "แม่แบบข้อความ"
-
-#: php/qmn_options_text_tab.php:180
-msgid "Message Displayed Before Quiz"
-msgstr "ข้อความที่แสดงก่อนทำแบบทดสอบ"
-
-#: php/qmn_options_text_tab.php:190
-msgid "Message Displayed Before Comments Box If Enabled"
-msgstr "ข้อความที่ถูกแสดงก่อนช่องข้อแนะนำ, หากเปิดใช้"
-
-#: php/qmn_options_text_tab.php:200
-msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
-msgstr "ข้อความที่ถูกแสดงทำแบบทดสอบเสร็จ (ปล่อยว่างเพื่อละเว้นการเลือกข้อความ)"
-
-#: php/qmn_options_text_tab.php:210
-msgid "Message Displayed If User Has Tried Quiz Too Many Times"
-msgstr "ข้อความที่ถูกแสดงหากผู้ใช้ทำแบบทดสอบหลายครั้งเกินไป"
-
-#: php/qmn_options_text_tab.php:220
-msgid "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In"
-msgstr "ข้อความที่ถูกแสดง เมื่อผู้ใช้ไม่ได้ลงชื่อเข้าใช้ เมื่อแบบทดสอบต้องการลงชื่อเข้าใช้งาน"
-
-#: php/qmn_options_text_tab.php:230
-msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
-msgstr "ข้อความที่ถูกแสดงถ้าวันที่อยู่นอกวันเวลาที่อนุญาติใช้งาน"
-
-#: php/qmn_options_text_tab.php:240
-msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
-msgstr "ข้อความที่ถูกแสดงหากจำนวนรายการเกินกำหนด"
-
-#: php/qmn_options_text_tab.php:250
-msgid "%QUESTIONS_ANSWERS% Text"
-msgstr "%QUESTIONS_ANSWERS% ข้อความ"
-
-#: php/qmn_options_text_tab.php:263
-msgid "Twitter Sharing Text"
-msgstr "ข้อความแชร์ทวิตเตอร์"
-
-#: php/qmn_options_text_tab.php:280
-msgid "Facebook Sharing Text"
-msgstr "ข้อความแชร์เฟสบุค"
-
-#: php/qmn_options_text_tab.php:295
-msgid "Other Templates"
-msgstr "แม่แบบอื่นๆ"
-
-#: php/qmn_options_text_tab.php:298
-msgid "Text for submit button"
-msgstr "ข้อความสำหรับปุ่ม ส่ง"
-
-#: php/qmn_options_text_tab.php:302
-msgid "Text for name field"
-msgstr "ข้อความสำหรับช่องชื่อ"
-
-#: php/qmn_options_text_tab.php:306
-msgid "Text for business field"
-msgstr "ข้อความสำหรับช่องที่ทำงาน"
-
-#: php/qmn_options_text_tab.php:310
-msgid "Text for email field"
-msgstr "ข้อความสำหรับข่องอีเมล์"
-
-#: php/qmn_options_text_tab.php:314
-msgid "Text for phone number field"
-msgstr "ข้อความสำหรับช่องโทรศัพท์"
-
-#: php/qmn_options_text_tab.php:318
-msgid "Text for comments field"
-msgstr "ข้อความสำหรับช่องข้อแนะนำ"
-
-#: php/qmn_options_text_tab.php:322
-msgid "Text for previous button"
-msgstr "ข้อความสำหรับปุ่ม ก่อนหน้า"
-
-#: php/qmn_options_text_tab.php:326
-msgid "Text for next button"
-msgstr "ข้อความสำหรับปุ่ม ถัดไป"
-
-#: php/qmn_options_tools_tab.php:23
-msgid "The stats has been reset successfully."
-msgstr "ล้างค่าสถิติเรียบร้อย"
-
-#: php/qmn_options_tools_tab.php:75
-msgid "Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken)."
-msgstr "ใช้ปุ่มนี้ เพื่อล้างค่าสถิติที่เก็บข้อมูลแบบทดสอบนี้"
-
-#: php/qmn_options_tools_tab.php:76
-msgid "Reset Quiz Views And Taken Stats"
-msgstr "ล้างสถิติการดูและทำแบบทดสอบ"
-
-#: php/qmn_options_tools_tab.php:87
-msgid "Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone."
-msgstr "คุณแน่ใจหรือไม่ ว่าต้องการลบสถิติทั้งหมดเป็น 0? ข้อมูลสถิติการดูและทำแบบทำสอบจะถูกตั้งค่าใหม่ ไม่สามารถกู้คืนข้อมูลได้!!"
-
-#: php/qmn_options_tools_tab.php:91
-msgid "Reset All Stats For Quiz"
-msgstr "ล้างสถิติทั้งหมดของแบบทดสอบ"
-
-#: php/qmn_dashboard_widgets.php:9
-msgid "Quiz Master Next Snapshot"
-msgstr "Quiz Master Next Snapshot"
-
-#: php/qmn_dashboard_widgets.php:166
-msgid "quizzes taken today"
-msgstr "แบบทดสอบที่มีคนทำในวันนี้"
-
-#: php/qmn_dashboard_widgets.php:185
-msgid "quizzes taken last 7 days"
-msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
-
-#: php/qmn_dashboard_widgets.php:204
-#, fuzzy
-msgid "quizzes taken last 30 days"
-msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
-
-#: php/qmn_dashboard_widgets.php:223
-#, fuzzy
-msgid "quizzes taken last 120 days"
-msgstr "แบบทดสอบที่มีคนทำ ย้อนหลัง 7 วัน"
-
-#: php/qmn_dashboard_widgets.php:242
-msgid "total active quizzes"
-msgstr "จำนวนแบบทดสอบที่ใช้งานทั้งหมด"
-
-#: php/qmn_dashboard_widgets.php:248
-msgid "total active questions"
-msgstr "จำนวนคำถามที่ใช้งานทั้งหมด"
-
-#: php/qmn_dashboard_widgets.php:254
-msgid "most popular quiz"
-msgstr "แบบทดสอบเป็นที่นิยมสูงสุด"
-
-#: php/qmn_dashboard_widgets.php:260
-msgid "least popular quiz"
-msgstr "แบบทดสอบเป็นที่นิยมต่ำสุด"
-
-#: php/qmn_options_certificate_tab.php:6
-msgid "Certificate (Beta)"
-msgstr "ประกาศนียบัตร (รุ่นทดสอบ)"
-
-#: php/qmn_options_certificate_tab.php:32
-msgid "The certificate has been updated successfully."
-msgstr "อัพเดทประกาศนียบัตรเรียบร้อย"
-
-#: php/qmn_options_certificate_tab.php:61
-msgid "Enter title here"
-msgstr "กรอกหัวข้อที่นี่"
-
-#: php/qmn_options_certificate_tab.php:65
-msgid "Quiz Certificate (Beta)"
-msgstr "ประกาศนียบัตรสำหรับแบบทดสอบ (รุ่นทดลอง)"
-
-#: php/qmn_options_certificate_tab.php:66
-msgid "Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate."
-msgstr "กรอกข้อความที่นี่เพื่อเติมลงในประกาศนียบัตรสำหรับแบบทดสอบนี้ โปรดใส่ลิงค์ไปยังตัวแปรในแม่แบบ (Templates) ในแท็บ ข้อความแบบทดสอบ เพื่อให้ผู้ใช้งานสามารถเข้าสู่ประกาศนียบัตรได้"
-
-#: php/qmn_options_certificate_tab.php:67
-msgid "These fields cannot contain HTML."
-msgstr "ไม่สามารถใช้ HTML ในช่องนี้"
-
-#: php/qmn_options_certificate_tab.php:68
-#: php/qmn_options_certificate_tab.php:124
-msgid "Save Certificate Options"
-msgstr "บันทึกการตั้งค่าประกาศนียบัตร"
-
-#: php/qmn_options_certificate_tab.php:76
-msgid "Enable Certificates For This Quiz?"
-msgstr "ใช้งานประกาศนียบัตรสำหรับแบบทดสอบนี้?"
-
-#: php/qmn_options_certificate_tab.php:84
-msgid "Certificate Title"
-msgstr "หัวข้อประกาศนียบัตร"
-
-#: php/qmn_options_certificate_tab.php:91
-msgid "Message Displayed On Certificate"
-msgstr "ข้อความแสดงบนประกาศนียบัตร"
-
-#: php/qmn_options_certificate_tab.php:111
-msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL ไปยังโลโก้  (ชนิด JPG, JPEG, PNG or GIF)"
-
-#: php/qmn_options_certificate_tab.php:118
-msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL ไปยังภาพพื้นหลัง (ชนิด JPG, JPEG, PNG or GIF)"
-
-#: php/qmn_quiz_options.php:52
-#, php-format
-msgid "Quiz Settings For %s"
-msgstr "ตั้งค่าแบบทดสอบสำหรับ %s"
-
-#: php/qmn_quiz_options.php:92
-msgid "Error!"
-msgstr "ผิดพลาด!"
-
-#: php/qmn_quiz_options.php:92
-msgid "Please go to the quizzes page and click on the Edit link from the quiz you wish to edit."
-msgstr "กรุณาไปยังหน้ารายการแบบทดสอบและ คลิ้ก แก้ไขลิงค์ ของแบบทดสอบที่ต้องการแก้ไข"
-
-#: php/qmn_options_questions_tab.php:6
-msgid "Questions"
-msgstr "คำถาม"
-
-#: php/qmn_options_questions_tab.php:14
-msgid "Answer"
-msgstr "คำตอบ"
-
-#: php/qmn_options_questions_tab.php:112
-msgid "The question has been updated successfully."
-msgstr "ปรับปรุงคำถามเรียบร้อย"
-
-#: php/qmn_options_questions_tab.php:139
-msgid "The question has been deleted successfully."
-msgstr "ลบคำถามเรียบร้อย"
-
-#: php/qmn_options_questions_tab.php:223
-msgid "The question has been duplicated successfully."
-msgstr "ทำสำเนาคำถามเรียบร้อย"
-
-#: php/qmn_options_questions_tab.php:316
-msgid "The question has been created successfully."
-msgstr "สร้างคำถามเรียบร้อย"
-
-#: php/qmn_options_questions_tab.php:434
-msgid "Add Question"
-msgstr "เพิ่มคำถาม"
-
-#: php/qmn_options_questions_tab.php:443
-#, php-format
-msgid "One question"
-msgid_plural "%s questions"
-msgstr[0] "หนึ่งคำถาม"
-msgstr[1] "%s คำถาม"
-
-#: php/qmn_options_questions_tab.php:449
-#: php/qmn_options_questions_tab.php:457
-#: php/qmn_options_questions_tab.php:582
-msgid "Question Order"
-msgstr "ลำดับคำถาม"
-
-#: php/qmn_options_questions_tab.php:450
-#: php/qmn_options_questions_tab.php:458
-#: php/qmn_options_questions_tab.php:561
-msgid "Question Type"
-msgstr "ชนิดคำถาม"
-
-#: php/qmn_options_questions_tab.php:451
-#: php/qmn_options_questions_tab.php:459
-#: php/qmn_options_questions_tab.php:595
-msgid "Category"
-msgstr "หมวดหมู่"
-
-#: php/qmn_options_questions_tab.php:452
-#: php/qmn_options_questions_tab.php:460
-msgid "Question"
-msgstr "คำถาม"
-
-#: php/qmn_options_questions_tab.php:534
-msgid "For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
-msgstr ""
-
-#: php/qmn_options_questions_tab.php:539
-msgid "Answers"
-msgstr "คำตอบ"
-
-#: php/qmn_options_questions_tab.php:540
-msgid "Points Worth"
-msgstr "ค่าคะแนน"
-
-#: php/qmn_options_questions_tab.php:541
-msgid "Correct Answer"
-msgstr "ข้อที่ถูกต้อง"
-
-#: php/qmn_options_questions_tab.php:546
-msgid "Add New Answer!"
-msgstr "เพิ่มคำตอบใหม่"
-
-#: php/qmn_options_questions_tab.php:551
-msgid "Correct Answer Info"
-msgstr "ข้อความข้อที่ถูกต้อง"
-
-#: php/qmn_options_questions_tab.php:573
-msgid "Comment Field"
-msgstr "ข้อเสนอแนะ"
-
-#: php/qmn_options_questions_tab.php:575
-msgid "Small Text Field"
-msgstr "ข้อความสั้น"
-
-#: php/qmn_options_questions_tab.php:576
-msgid "Large Text Field"
-msgstr "ข้อความยาว"
-
-#: php/qmn_options_questions_tab.php:577
-msgid "None"
-msgstr "ไม่มี"
-
-#: php/qmn_options_questions_tab.php:587
-msgid "Required?"
-msgstr "บังคับ?"
-
-#: php/qmn_options_questions_tab.php:618
-msgid "Create Question"
-msgstr "สร้างคำถาม"
-
-#: php/qmn_options_questions_tab.php:623
-msgid "Are you sure you want to delete this question?"
-msgstr "คุณแน่ใจหรือไม่ที่จะลบคำถามนี้?"
-
-#: php/qmn_options_questions_tab.php:628
-msgid "Delete Question"
-msgstr "ลบคำถาม"
-
-#: php/qmn_options_questions_tab.php:633
-msgid "Are you sure you want to duplicate this question?"
-msgstr "คุณแน่ใจหรือไม่ที่จะสำเนาคำถามนี้?"
-
-#: php/qmn_options_questions_tab.php:638
-msgid "Duplicate Question"
-msgstr "ทำสำเนาคำถาม"
-
-#: php/qmn_results.php:23
-msgid "Your results has been deleted successfully."
-msgstr "ผลลัพท์ของท่านได้ถูกลบเรียบร้อย"
-
-#: php/qmn_results.php:161
-#, php-format
-msgid "One result"
-msgid_plural "%s results"
-msgstr[0] ""
-msgstr[1] ""
-
-#: php/qmn_results.php:208
-msgid "Actions"
-msgstr "กระทำ"
-
-#: php/qmn_results.php:209
-msgid "Quiz Name"
-msgstr "ชื่อแบบทดสอบ"
-
-#: php/qmn_results.php:210
-msgid "Score"
-msgstr "คำแนน"
-
-#: php/qmn_results.php:211
-msgid "Time To Complete"
-msgstr "เวลาที่ทำสำเร็จ"
-
-#: php/qmn_results.php:212
-msgid "Name"
-msgstr "ชื่อ"
-
-#: php/qmn_results.php:213
-msgid "Business"
-msgstr "ที่ทำงาน"
-
-#: php/qmn_results.php:214
-msgid "Email"
-msgstr "อีเมล์"
-
-#: php/qmn_results.php:215
-msgid "Phone"
-msgstr "โทรศัพท์"
-
-#: php/qmn_results.php:216
-msgid "Time Taken"
-msgstr "ใช้เวลาไป"
-
-#: php/qmn_results.php:258
-#: php/qmn_options_option_tab.php:147
-msgid "Not Graded"
-msgstr "ไม่คิดคะแนน"
-
-#: php/qmn_results.php:275
-msgid "Are you sure you want to delete these results?"
-msgstr "คุณแน่ใจหรือไม่ที่จะลบผลลัพธ์"
-
-#: php/qmn_results.php:280
-msgid "Delete Results"
-msgstr "ลบผลลัพธ์"
-
-#: php/qmn_options_results_page_tab.php:6
-msgid "Results Pages"
-msgstr "หน้าแสดงผลลัพธ์"
-
-#: php/qmn_options_results_page_tab.php:41
-msgid "The results page has been added successfully."
-msgstr "เพิ่มหน้าแสดงผลลัพธ์เรียบร้อย"
-
-#: php/qmn_options_results_page_tab.php:81
-msgid "The results page has been saved successfully."
-msgstr "บันทึกหน้าแสดงผลลัพธ์เรียบร้อย"
-
-#: php/qmn_options_results_page_tab.php:191
-msgid "Displays button to share on Facebook."
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:194
-msgid "Displays button to share on Twitter."
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:199
-#: php/qmn_options_results_page_tab.php:280
-msgid "Save Results Pages"
-msgstr "บันทึกหน้าแสดงผลลัพธ์"
-
-#: php/qmn_options_results_page_tab.php:200
-#: php/qmn_options_results_page_tab.php:285
-msgid "Add New Results Page"
-msgstr "เพิ่มหน้าแสดงผลลัพธ์ใหม่"
-
-#: php/qmn_options_results_page_tab.php:208
-#: php/qmn_options_results_page_tab.php:272
-msgid "Results Page Shown"
-msgstr "แสดงหน้าแสดงผลลัพธ์"
-
-#: php/qmn_options_results_page_tab.php:209
-#: php/qmn_options_results_page_tab.php:273
-msgid "Redirect URL (Beta)"
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:247
-msgid "Delete"
-msgstr "ลบ"
-
-#: php/qmn_options_results_page_tab.php:247
-msgid "Are you sure?"
-msgstr "คุณแน่ใจหรือไม่?"
-
-#: php/qmn_options_preview_tab.php:6
-msgid "Preview"
-msgstr "ดูตัวอย่าง"
-
-#: php/qmn-stats-page.php:29
-msgid "Quiz Statistics"
-msgstr "สถิติการทดสอบ"
-
-#: php/qmn-stats-page.php:68
-#, fuzzy
-msgid "Quiz Taken Stats"
-msgstr "สถิติทดสอบทั้งหมด"
-
-#: php/qmn_options_option_tab.php:6
-msgid "Options"
-msgstr "ตัวเลือก"
-
-#: php/qmn_options_option_tab.php:94
-msgid "The options has been updated successfully."
-msgstr "อัพเดทตัวเลือกเรียบร้อย"
-
-#: php/qmn_options_option_tab.php:135
-#: php/qmn_options_option_tab.php:286
-msgid "Save Options"
-msgstr "บันทึกตัวเลือก"
-
-#: php/qmn_options_option_tab.php:143
-msgid "Which system is this quiz graded on?"
-msgstr "รูปแบบการให้คะแนน"
-
-#: php/qmn_options_option_tab.php:145
-msgid "Correct/Incorrect"
-msgstr "ข้อถูก/ข้อผิด"
-
-#: php/qmn_options_option_tab.php:146
-msgid "Points"
-msgstr "คะแนนรวม"
-
-#: php/qmn_options_option_tab.php:151
-msgid "Should the user be required to be logged in to take this quiz?"
-msgstr "ผู้ใช้งานต้อง ลงชื่อเข้าระบบ เพื่อทำแบบทดสอบ?"
-
-#: php/qmn_options_option_tab.php:158
-msgid "How many questions per page would you like? (Leave 0 for all questions on one page)"
-msgstr "จำนวนคำถามต่อหน้า? (ใส่ 0 จะแสดงคำถามทั้งหมดในหน้าเดียว)"
-
-#: php/qmn_options_option_tab.php:164
-msgid "How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)"
-msgstr "ให้เวลา กี่นาที สำหรับแบบทดสอบนี้? (ใส่ 0 จะไม่กำหนดเวลา)"
-
-#: php/qmn_options_option_tab.php:170
-msgid "How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. Currently only works for registered users)"
-msgstr "จำกัดจำนวนครั้งที่ผู้ใช้งานทำแบบทดสอบนี้?  (ใส่ 0 จะไม่จำกัดจำนวนครั้ง ใช้จำกัดได้เฉพาะผู้ใช้งานอยู่่ในระบบและลงชื่อเข้าใช้)"
-
-#: php/qmn_options_option_tab.php:176
-msgid "How many total entries can this quiz have? (Leave 0 for unlimited entries"
-msgstr "จำนวนรายการทั้งหมดที่แบบทดสอบมีได้? (ใส่ 0 จะไม่จำกัดจำนวน)"
-
-#: php/qmn_options_option_tab.php:182
-msgid "How many questions should be loaded for quiz? (Leave 0 to load all questions)"
-msgstr "กำหนดจำนวนคำถามที่เลือกมาใช้ในแบบทดสอบนี้  (ใส่ 0 จะเลือกคำถามทั้งหมด)"
-
-#: php/qmn_options_option_tab.php:188
-msgid "What time-frame should the user be able to access the quiz? (Leave blank if the user can access anytime)"
-msgstr "กำหนดช่วงเวลาที่อนุญาติให้เข้าทำแบบทดสอบ  (ใส่ 0 จะไม่กำหนดเวลา)"
-
-#: php/qmn_options_option_tab.php:190
-msgid "start date"
-msgstr "วันที่เริ่มต้น"
-
-#: php/qmn_options_option_tab.php:193
-msgid "end date"
-msgstr "วันที่สิ้นสุด"
-
-#: php/qmn_options_option_tab.php:197
-msgid "Are the questions random? (Question Order will not apply if this is yes)"
-msgstr "สุ่มเลือกคำถาม? (ระบบจะไม่สนใจการเรียงลำดับคำถาม)"
-
-#: php/qmn_options_option_tab.php:199
-msgid "Random Questions"
-msgstr "สุ่มคำถาม"
-
-#: php/qmn_options_option_tab.php:200
-msgid "Random Questions And Answers"
-msgstr "สุ่มลำดับคำถามและคำตอบ"
-
-#: php/qmn_options_option_tab.php:205
-msgid "Would you like to ask for the contact information at the beginning or at the end of the quiz?"
-msgstr "ต้องการถามที่อยู่่เพื่อติดต่อกลับ ที่ตอนต้นหรือตอนท้ายของแบบทดสอบ?"
-
-#: php/qmn_options_option_tab.php:207
-msgid "Beginning"
-msgstr "ตอนต้น"
-
-#: php/qmn_options_option_tab.php:208
-msgid "End"
-msgstr "ตอนท้าย"
-
-#: php/qmn_options_option_tab.php:212
-msgid "If a logged-in user takes the quiz, would you like them to be able to edit contact information? If set to no, the fields will not show up for logged in users; however, the users information will be saved for the fields."
-msgstr "ถ้าผู้ทำแบบทดสอบเข้าใช้ระบบอยู่ คุณต้องการให้ผู้ใช้สามารถแก้ไขที่อยู่ติดต่อหรือไม่? หากเลือกไม่ ช่องต่างๆ จะไม่แสดงผล อย่างไรก็ตามข้อมูลต่างๆ จะยังคงถูกบันทึกช่องนั้นๆ ในฐานข้อมูล"
-
-#: php/qmn_options_option_tab.php:219
-msgid "Should we ask for users name?"
-msgstr "ถามชื่อผู้ใช้งาน?"
-
-#: php/qmn_options_option_tab.php:222
-#: php/qmn_options_option_tab.php:230
-#: php/qmn_options_option_tab.php:238
-#: php/qmn_options_option_tab.php:246
-msgid "Require"
-msgstr "บังคับ"
-
-#: php/qmn_options_option_tab.php:227
-msgid "Should we ask for users business?"
-msgstr "ถามสถานที่ทำงานของผู้ใช้?"
-
-#: php/qmn_options_option_tab.php:235
-msgid "Should we ask for users email?"
-msgstr "ถามอีเมล์ของผู้ใช้?"
-
-#: php/qmn_options_option_tab.php:243
-msgid "Should we ask for users phone number?"
-msgstr "ถามเบอร์โทรศัพท์ของผู้ใช้?"
-
-#: php/qmn_options_option_tab.php:251
-msgid "Would you like a place for the user to enter comments?"
-msgstr "ต้องการให้ผู้ใช้กรอกความคิดเห็น?"
-
-#: php/qmn_options_option_tab.php:258
-msgid "Show question number on quiz?"
-msgstr "แสดงหมายเลขข้อของแบบทดสอบ?"
-
-#: php/qmn_options_option_tab.php:265
-msgid "Show social media sharing buttons? (Twitter & Facebook)"
-msgstr "แสดงปุ่มสำหรับสื่อสังคมออนไลน์ (Twitter & Facebook)"
-
-#: php/qmn_options_option_tab.php:265
-msgid "This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!"
-msgstr ""
-
-#: php/qmn_options_option_tab.php:272
-msgid "Disable question once user selects answer? (Currently only work on multiple choice)"
-msgstr ""
-
-#: php/qmn_options_option_tab.php:279
-msgid "Dynamically add class for incorrect/correct answer after user selects answer? (Currently only works on multiple choice)"
-msgstr ""
-
-#: php/qmn_options_style_tab.php:6
-msgid "Style"
-msgstr "รูปแบบ"
-
-#: php/qmn_options_style_tab.php:26
-msgid "The style has been saved successfully."
-msgstr "บันทึกรูปแบบเรียบร้อย"
-
-#: php/qmn_options_style_tab.php:65
-msgid "Quiz Styles"
-msgstr "รูปแบบคำถาม"
-
-#: php/qmn_options_style_tab.php:66
-msgid "Choose your style:"
-msgstr "เลือกรูปแบบ:"
-
-#: php/qmn_options_style_tab.php:88
-msgid "Custom"
-msgstr "กำหนดเอง"
-
-#: php/qmn_options_style_tab.php:94
-#: php/qmn_options_style_tab.php:106
-msgid "Save Quiz Style"
-msgstr "บันทึกรูปแบบคำถาม"
-
-#: php/qmn_options_style_tab.php:96
-msgid "Custom Style CSS"
-msgstr "กำหนด CSS เอง"
-
-#: php/qmn_options_style_tab.php:97
-msgid "For detailed help and guidance along with a list of different classes used in this plugin, please visit the following link:"
-msgstr "ข้อมูลความช่วยเหลือและห้องเรียนที่ใช้งานปลั้กอินนี้ กรุณาไปยังลิงค์:"
-
-#: php/qmn_results_details.php:117
-msgid "Results"
-msgstr "ผลลัพธ์"
-
-#: php/qmn_results_details.php:196
-msgid "Create Certificate"
-msgstr "สร้างประกาศนียบัตร"
-
-#: php/qmn_results_details.php:201
-msgid "Download Certificate Here"
-msgstr "ดาวน์โหลดประกาศนียบัตร"
-
-#: php/qmn_results_details.php:208
-msgid "Certificate"
-msgstr ""
-
-#: php/qmn_tools.php:90
-msgid "There has been an error! Please try again."
-msgstr ""
-
-#: php/qmn_tools.php:108
-msgid "Quiz Has Been Restored!"
-msgstr ""
-
-#: php/qmn_tools.php:113
-msgid "Choose a quiz in the drop down and then click the button to restore a deleted quiz."
-msgstr ""
-
-#: php/qmn_tools.php:123
-msgid "Restore Quiz"
-msgstr ""
-
-#: php/qmn_tools.php:152
-#: php/qmn_tools.php:168
-#, php-format
-msgid "Previous %s Audits"
-msgstr "การตรวจสอบภายใน %s ก่อนหน้า"
-
-#: php/qmn_tools.php:155
-#: php/qmn_tools.php:162
-#, php-format
-msgid "Next %s Audits"
-msgstr "Next %s Audits"
-
-#: php/qmn_tools.php:175
-msgid "User"
-msgstr "ผู้ใช้"
-
-#: php/qmn_tools.php:176
-msgid "Action"
-msgstr "กระทำ"
-
-#: php/qmn_tools.php:177
-msgid "Time"
-msgstr "เวลา"
-
-#: php/qmn_help.php:10
-msgid "Need Help?"
-msgstr "ต้องการความช่วยเหลือ?"
-
-#: php/qmn_help.php:11
-msgid "Support"
-msgstr "สนับสนุน"
-
-#: php/qmn_help.php:12
-msgid "System Info"
-msgstr "ข้อมูลระบบ"
-
-#: php/qmn_help.php:15
-msgid "Help Page"
-msgstr "หน้าช่วยเหลือ"
-
-#: php/qmn_help.php:38
-msgid "Need help with the plugin? Try any of the following:"
-msgstr "ต้องการความช่วยเหลือ? ลองทำสิ่งต่อไปนี้"
-
-#: php/qmn_question_types.php:7
-msgid "Multiple Choice"
-msgstr "หลายตัวเลือก"
-
-#: php/qmn_question_types.php:76
-msgid "Horizontal Multiple Choice"
-msgstr "ตัวเลือกแนวนอน"
-
-#: php/qmn_question_types.php:144
-msgid "Drop Down"
-msgstr "ดรอปดาวน์"
-
-#: php/qmn_question_types.php:209
-msgid "Small Open Answer"
-msgstr "คำตอบปลายเปิดแบบสั้น"
-
-#: php/qmn_question_types.php:258
-msgid "Multiple Response"
-msgstr "เลือกหลายคำตอบ"
-
-#: php/qmn_question_types.php:333
-msgid "Large Open Answer"
-msgstr "กรอกคำตอบแบบยาว"
-
-#: php/qmn_question_types.php:382
-msgid "Text Block"
-msgstr "ช่องข้อความ"
-
-#: php/qmn_question_types.php:397
-msgid "Number"
-msgstr "ตัวเลข"
-
-#: php/qmn_question_types.php:446
-msgid "Accept"
-msgstr "ยอมรับ"
-
-#: php/qmn_question_types.php:465
-msgid "Captcha"
-msgstr "Captcha"
-
-#: php/qmn_question_types.php:506
-msgid "Horizontal Multiple Response"
-msgstr "เลือกได้หลายคำตอบแนวนอน"
-
-#: php/qmn_question_types.php:580
-msgid "Fill In The Blank"
-msgstr ""
-
-#: php/qmn_alerts.php:19
-msgid "Success!"
-msgstr "สำเร็จ!"
-
-#: php/qmn_quiz_admin.php:189
-msgid "Add New"
-msgstr "เพิ่มใหม่"
-
-#: php/qmn_quiz_admin.php:207
-#, php-format
-msgid "One quiz"
-msgid_plural "%s quizzes"
-msgstr[0] "หนึ่งแบบทดสอบ"
-msgstr[1] "%s แบบทดสอบ"
-
-#: php/qmn_quiz_admin.php:253
-#: php/qmn_quiz_admin.php:304
-msgid "URL"
-msgstr ""
-
-#: php/qmn_quiz_admin.php:254
-#: php/qmn_quiz_admin.php:305
-msgid "Quiz Shortcode"
-msgstr "Shortcode แบบทดสอบ"
-
-#: php/qmn_quiz_admin.php:255
-#: php/qmn_quiz_admin.php:306
-msgid "Leaderboard Shortcode"
-msgstr "Shortcode กระดานผู้นำ"
-
-#: php/qmn_quiz_admin.php:256
-#: php/qmn_quiz_admin.php:307
-msgid "Quiz Views"
-msgstr "ดูแบบทดสอบ"
-
-#: php/qmn_quiz_admin.php:257
-#: php/qmn_quiz_admin.php:308
-msgid "Quiz Taken"
-msgstr "แบบทดสอบถูกทำ"
-
-#: php/qmn_quiz_admin.php:258
-#: php/qmn_quiz_admin.php:309
-msgid "Last Modified"
-msgstr "แก้ไขล่าสุด"
-
-#: php/qmn_quiz_admin.php:271
-msgid "Edit Name"
-msgstr "แก้ไขชื่อ"
-
-#: php/qmn_quiz_admin.php:273
-msgid "Edit"
-msgstr "แก้ไข"
-
-#: php/qmn_quiz_admin.php:275
-#: php/qmn_quiz_admin.php:404
-msgid "Duplicate"
-msgstr "ทำสำเนา"
-
-#: php/qmn_quiz_admin.php:366
-msgid "Create New Quiz"
-msgstr "สร้างแบบทดสอบใหม่"
-
-#: php/qmn_quiz_admin.php:380
-msgid "Create Quiz"
-msgstr "สร้างแบบทดสอบ"
-
-#: php/qmn_quiz_admin.php:386
-msgid "Quiz Name:"
-msgstr "ชื่อแบบทดสอบ:"
-
-#: php/qmn_quiz_admin.php:397
-msgid "Duplicate this quiz?"
-msgstr "ทำสำเนาแบบทดสอบนี้?"
-
-#: php/qmn_quiz_admin.php:399
-msgid "Duplicate questions with quiz"
-msgstr ""
-
-#: php/qmn_quiz_admin.php:401
-msgid "Name Of New Quiz:"
-msgstr "ชื่อแบบทดสอบใหม่"
-
-#: php/qmn_quiz_admin.php:410
-msgid "Are you sure you want to delete this quiz?"
-msgstr "คุณแน่ใจหรือไม่ที่จะลบแบบทดสอบ?"
-
-#: php/qmn_quiz_admin.php:415
-msgid "Delete Quiz"
-msgstr "ลบแบบทดสอบ"
-
-#: php/qmn_widgets.php:11
+#: php/qmn_widgets.php:14
 msgid "Quiz Master Next Leaderboard Widget"
 msgstr "Leaderboard วิตเจ็ต"
 
-#: php/qmn_widgets.php:26
+#: php/qmn_widgets.php:29
 msgid "Widget Title"
 msgstr "ชื่อหัวข้อวิตเจ็ต"
 
-#: php/qmn_widgets.php:30
+#: php/qmn_widgets.php:33
 msgid "Quiz ID"
 msgstr "หมายเลขแบบทดสอบ"
 
+#~ msgid "The amount of time user spent of quiz"
+#~ msgstr "เวลาที่ใช้ทั่งหมดในการทำแบบทดสอบ"
+
 #~ msgid ""
-#~ "Required currently only works on open answer, number, accept, and captcha "
-#~ "question types"
+#~ "Required currently only works on open answer, number, accept, and captcha question types"
 #~ msgstr "บังคับได้เฉพาะคำถามแบบ คำตอบปลายเปิด ตัวเลข และ captcha เท่านั้น"
 
 #~ msgid "Edit Question"
@@ -1335,9 +1383,7 @@ msgstr "หมายเลขแบบทดสอบ"
 #~ msgid "Total points user earned when taking quiz"
 #~ msgstr "คะแนนรวมที่ได้รับจากการทำแบบทดสอบ"
 
-#~ msgid ""
-#~ "The percent score for the quiz showing percent of total quetions answered "
-#~ "correctly"
+#~ msgid "The percent score for the quiz showing percent of total quetions answered correctly"
 #~ msgstr "เปอร์เซ็นต์แสดงจำนวนข้อที่ตอบถูก"
 
 #~ msgid "It appears that this quiz is not set up correctly."
@@ -1398,6 +1444,6 @@ msgstr "หมายเลขแบบทดสอบ"
 #~ msgstr "ข้อเสนอแนะที่ได้รับ"
 
 #~ msgid ""
-#~ "Please go to the Quiz Results page and click on the View link from the "
-#~ "result you wish to see."
+#~ "Please go to the Quiz Results page and click on the View link from the result you wish to "
+#~ "see."
 #~ msgstr "กรุณาไปยังหน้าผลลัพท์ของแบบทดสอบ และ คลิ้กลิงค์สำหรับดู จากรายการผลลัพท์ที่ต้องการ"
