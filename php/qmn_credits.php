@@ -37,32 +37,36 @@ function mlw_generate_about_page()
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Newly Updated Questions Tab</h2>
-			<p style="text-align: center;">The newly updated questions tab now allows you to use the WordPress editor to edit your questions. This allows for easier media adding to question. We also added the ability to search through your questions as well. You can now also use shortcodes in the question.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added new template variable %TIMER_MINUTES%</h2>
+			<p style="text-align: center;">The %TIMER_MINUTES% variable allows for the time it took the user on the quiz to be displayed on the Emails and the Results Pages in minutes. </p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Redesigned Stats Page</h2>
-			<p style="text-align: center;">Continuing on with our process to slowly redesign the plugin, this update brings an updated stats page. We added new dynamic charts. There are many more items that we will be adding to this page over the next few updates.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Timer now begins counting down after starting quiz if using pagination</h2>
+			<p style="text-align: center;">The timer now does not start until the user clicks the Next button when the user has pagination enabled.</p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Please Take Our Survey To Better Improve This Plugin</h2>
-			<p style="text-align: center;">When you have a moment, please take our survey for this plugin. By filling out the survey, you are helping us improve this plugin. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>.</p>
-			<br />
+			
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
 			<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
 			<br />
 			<hr />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Add New Tabs To Stats Page</h2>
-			<p style="text-align: center;">With our new stats page, developers can create their own tabs using our plugin helper class.</p>
-			<br />
+			
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz Master Next repository.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" style="display: none;">
-		<h3><?php echo $mlw_quiz_version; ?> (April 22, 2015)</h3>
+		<h3><?php echo $mlw_quiz_version; ?> (June 11, 2015)</h3>
 		<ul>
-			<li>* Minor Bug Fixes</li>
+                    <li>* Added new template variable %TIMER_MINUTES% <a href="https://github.com/fpcorso/quiz_master_next/issues/209">GitHub Issue #209</a></li>
+                    <li>* Eliminates first page if empty <a href="https://github.com/fpcorso/quiz_master_next/issues/182">GitHub Issue #182</a></li>
+                    <li>* Timer now begins counting down after starting quiz if using pagination <a href="https://github.com/fpcorso/quiz_master_next/issues/181">GitHub Issue #181</a></li>
+                    <li>* Amount Finished Compared To Amount In Quiz <a href="https://github.com/fpcorso/quiz_master_next/issues/21">GitHub Issue #21</a></li>
+                    <li>* Bug Fix: Required Answers And Timer Doesn't Work Well Together <a href="https://github.com/fpcorso/quiz_master_next/issues/220">GitHub Issue #220</a></li>
+                    <li>* Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows <a href="https://github.com/fpcorso/quiz_master_next/issues/204">GitHub Issue #204</a></li>
+                    <li>* Bug Fix: Long quiz URL mangles page layout <a href="https://github.com/fpcorso/quiz_master_next/issues/202">GitHub Issue #202</a></li>
+                    <li>* Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly. </li>
+
 		</ul>
 		</div>
 	</div>
