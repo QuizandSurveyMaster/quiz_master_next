@@ -58,13 +58,13 @@ function mlw_generate_about_page()
 		<div id="mlw_quiz_changelog" style="display: none;">
 		<h3><?php echo $mlw_quiz_version; ?> (June 11, 2015)</h3>
 		<ul>
-                    <li>* Added new template variable %TIMER_MINUTES% <a href="https://github.com/fpcorso/quiz_master_next/issues/209">GitHub Issue #209</li>
-                    <li>* Eliminates first page if empty <a href="https://github.com/fpcorso/quiz_master_next/issues/182">GitHub Issue #182</li>
-                    <li>* Timer now begins counting down after starting quiz if using pagination <a href="https://github.com/fpcorso/quiz_master_next/issues/181">GitHub Issue #181</li>
-                    <li>* Amount Finished Compared To Amount In Quiz <a href="https://github.com/fpcorso/quiz_master_next/issues/21">GitHub Issue #21</li>
-                    <li>* Bug Fix: Required Answers And Timer Doesn't Work Well Together <a href="https://github.com/fpcorso/quiz_master_next/issues/220">GitHub Issue #220</li>
-                    <li>* Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows <a href="https://github.com/fpcorso/quiz_master_next/issues/204">GitHub Issue #204</li>
-                    <li>* Bug Fix: Long quiz URL mangles page layout <a href="https://github.com/fpcorso/quiz_master_next/issues/202">GitHub Issue #202</li>
+                    <li>* Added new template variable %TIMER_MINUTES% <a href="https://github.com/fpcorso/quiz_master_next/issues/209">GitHub Issue #209</a></li>
+                    <li>* Eliminates first page if empty <a href="https://github.com/fpcorso/quiz_master_next/issues/182">GitHub Issue #182</a></li>
+                    <li>* Timer now begins counting down after starting quiz if using pagination <a href="https://github.com/fpcorso/quiz_master_next/issues/181">GitHub Issue #181</a></li>
+                    <li>* Amount Finished Compared To Amount In Quiz <a href="https://github.com/fpcorso/quiz_master_next/issues/21">GitHub Issue #21</a></li>
+                    <li>* Bug Fix: Required Answers And Timer Doesn't Work Well Together <a href="https://github.com/fpcorso/quiz_master_next/issues/220">GitHub Issue #220</a></li>
+                    <li>* Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows <a href="https://github.com/fpcorso/quiz_master_next/issues/204">GitHub Issue #204</a></li>
+                    <li>* Bug Fix: Long quiz URL mangles page layout <a href="https://github.com/fpcorso/quiz_master_next/issues/202">GitHub Issue #202</a></li>
                     <li>* Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly. </li>
 
 		</ul>
