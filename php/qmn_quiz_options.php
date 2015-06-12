@@ -1,7 +1,11 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This page allows for the editing of quizzes selected from the quiz admin page.
+/**
+* This function allows for the editing of quiz options. 
+*
+* @param type description
+* @return void
+* @since 4.4.0
 */
 function mlw_generate_quiz_options()
 {

@@ -1,12 +1,28 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 add_action("plugins_loaded", 'qmn_question_type_multiple_choice');
+
+/**
+* Registers the multiple choice type
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_multiple_choice()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', 0);
 }
 
+/**
+* This function shows the content of the multiple choice question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_multiple_choice_display($id, $question, $answers)
 {
   $question_display = '';
@@ -34,6 +50,15 @@ function qmn_multiple_choice_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function determines how the multiple choice question is graded.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_multiple_choice_review($id, $question, $answers)
 {
   $return_array = array(
@@ -70,12 +95,28 @@ function qmn_multiple_choice_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_choice');
+
+/**
+* This function registers the horizontal multiple choice type.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_horizontal_multiple_choice()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Choice", 'quiz-master-next'), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', 1);
 }
 
+/**
+* This function shows the content of the horizontal multiple choice question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_horizontal_multiple_choice_display($id, $question, $answers)
 {
   $question_display = '';
@@ -102,6 +143,15 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function determines how the question is graded.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_horizontal_multiple_choice_review($id, $question, $answers)
 {
   $return_array = array(
@@ -138,12 +188,28 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_drop_down');
+
+/**
+* This function registers the drop down question type
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_drop_down()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Drop Down", 'quiz-master-next'), 'qmn_drop_down_display', true, 'qmn_drop_down_review', 2);
 }
 
+/**
+* This function shows the content of the multiple choice question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_drop_down_display($id, $question, $answers)
 {
   $question_display = '';
@@ -167,6 +233,15 @@ function qmn_drop_down_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function determines how the question is graded
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_drop_down_review($id, $question, $answers)
 {
   $return_array = array(
@@ -203,12 +278,28 @@ function qmn_drop_down_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_small_open');
+
+/**
+* This function registers the small open question type
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_small_open()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Small Open Answer", 'quiz-master-next'), 'qmn_small_open_display', true, 'qmn_small_open_review', 3);
 }
 
+/**
+* This function shows the content of the small open answer question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_small_open_display($id, $question, $answers)
 {
   $question_display = '';
@@ -221,6 +312,15 @@ function qmn_small_open_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function reviews the small open answer.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_small_open_review($id, $question, $answers)
 {
   $return_array = array(
@@ -252,12 +352,28 @@ function qmn_small_open_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_multiple_response');
+
+/**
+* This function registers the multiple response question type 
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_multiple_response()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Response", 'quiz-master-next'), 'qmn_multiple_response_display', true, 'qmn_multiple_response_review', 4);
 }
 
+/**
+* This function shows the content of the multiple response question
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_multiple_response_display($id, $question, $answers)
 {
   $question_display = '';
@@ -284,6 +400,15 @@ function qmn_multiple_response_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function determines how the multiple response is graded,
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_multiple_response_review($id, $question, $answers)
 {
   $return_array = array(
@@ -327,12 +452,27 @@ function qmn_multiple_response_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_large_open');
+
+/**
+* This function registers the large open question type.
+*
+* @since 4.4.0
+*/
 function qmn_question_type_large_open()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Large Open Answer", 'quiz-master-next'), 'qmn_large_open_display', true, 'qmn_large_open_review', 5);
 }
 
+/**
+* This function displays the content of the large open question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_large_open_display($id, $question, $answers)
 {
   $question_display = '';
@@ -345,6 +485,15 @@ function qmn_large_open_display($id, $question, $answers)
   return $question_display;
 }
 
+/**
+* This function determines how the large open question is graded
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_large_open_review($id, $question, $answers)
 {
   $return_array = array(
@@ -376,12 +525,29 @@ function qmn_large_open_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_text_block');
+
+/**
+* This function registers the text block question type
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_text_block()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Text Block", 'quiz-master-next'), 'qmn_text_block_display', false, null, 6);
 }
 
+
+/**
+* This function displays the contents of the text block question type.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_text_block_display($id, $question, $answers)
 {
   $question_display = '';
@@ -391,12 +557,32 @@ function qmn_text_block_display($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_number');
+
+/**
+* This function registers the number question type
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_number()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Number", 'quiz-master-next'), 'qmn_number_display', true, 'qmn_number_review', 7);
 }
 
+
+/**
+* This function shows the content of the multiple choice question.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_number_display($id, $question, $answers)
 {
   $question_display = '';
@@ -409,6 +595,16 @@ function qmn_number_display($id, $question, $answers)
   return $question_display;
 }
 
+
+/**
+* This function determines how the number question type is graded.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_number_review($id, $question, $answers)
 {
   $return_array = array(
@@ -440,12 +636,28 @@ function qmn_number_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_accept');
+
+/**
+* This function registers the accept question type.
+*
+* @return void Description
+* @since 4.4.0
+*/
 function qmn_question_type_accept()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Accept", 'quiz-master-next'), 'qmn_accept_display', false, null, 8);
 }
 
+/**
+* This function displays the accept question
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_accept_display($id, $question, $answers)
 {
   $question_display = '';
@@ -459,12 +671,29 @@ function qmn_accept_display($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_captcha');
+
+/**
+* This function registers the captcha question
+*
+*
+* @since 4.4.0
+*/
 function qmn_question_type_captcha()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Captcha", 'quiz-master-next'), 'qmn_captcha_display', false, null, 9);
 }
 
+
+/**
+* This function displays the captcha question
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_captcha_display($id, $question, $answers)
 {
   $question_display = '';
@@ -500,12 +729,29 @@ function qmn_captcha_display($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_response');
+
+/**
+* This function registers the horizontal multiple response question
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_horizontal_multiple_response()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Response", 'quiz-master-next'), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', 10);
 }
 
+
+/**
+* This function displays the content of the multiple response question type
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 4.4.0
+*/
 function qmn_horizontal_multiple_response_display($id, $question, $answers)
 {
   $question_display = '';
@@ -531,6 +777,16 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
   return $question_display;
 }
 
+
+/**
+* This function determines how the multiple response is graded.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the Results page
+* @since 4.4.0
+*/
 function qmn_horizontal_multiple_response_review($id, $question, $answers)
 {
   $return_array = array(
@@ -574,12 +830,29 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
 }
 
 add_action("plugins_loaded", 'qmn_question_type_fill_blank');
+
+/**
+* This function registers the fill in the blank question type
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_question_type_fill_blank()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review');
 }
 
+
+/**
+* This function displays the fill in the blank question
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Returns the content of the question
+* @since 4.4.0
+*/
 function qmn_fill_blank_display($id, $question, $answers)
 {
   $question_display = '';
@@ -597,6 +870,16 @@ function qmn_fill_blank_display($id, $question, $answers)
   return $question_display;
 }
 
+
+/**
+* This function determines how the fill in the blank question is graded.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 4.4.0
+*/
 function qmn_fill_blank_review($id, $question, $answers)
 {
   $return_array = array(

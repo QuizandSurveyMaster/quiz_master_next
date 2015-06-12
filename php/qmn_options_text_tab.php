@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Adds the Text tab to the Quiz Settings page.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_text_tab()
 {
 	global $mlwQuizMasterNext;
@@ -7,6 +14,12 @@ function qmn_settings_text_tab()
 }
 add_action("plugins_loaded", 'qmn_settings_text_tab', 5);
 
+/**
+* Adds the Text tab content to the tab.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_text_tab_content()
 {
 	global $wpdb;
@@ -128,7 +141,11 @@ function mlw_options_text_tab_content()
 					<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
 				</div>
 				<div class="template_variable">
-					<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent of quiz', 'quiz-master-next'); ?>
+					<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent on quiz in seconds', 'quiz-master-next'); ?>
+                                </div>
+                                <div class="template_variable">
+				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
+                                </div>
 				</div>
 				<div class="template_variable">
 					<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>

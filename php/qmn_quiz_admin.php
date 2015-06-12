@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Generates the quizzes page where the quizzes are displayed.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_generate_quiz_admin()
 {
 	if ( !current_user_can('moderate_comments') )
@@ -279,7 +286,7 @@ function mlw_generate_quiz_admin()
 						{
 							$quotes_list .= "<td>
 							<span style='font-size:16px;'>
-							<a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."'>".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."</a>
+							<a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."'>View Quiz</a>
 							</span>
 							<div class=\"row-actions\"><a class='linkOptions' href='post.php?post=".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['id']."&action=edit'>Edit Post Settings</a></a>
 							</td>";

@@ -1,11 +1,25 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Adds the Tools tab to the Quiz Settings page.
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_tools_tab()
 {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Tools", 'quiz-master-next'), 'mlw_options_tools_tab_content');
 }
 add_action("plugins_loaded", 'qmn_settings_tools_tab', 5);
+
+/**
+* Adds the Tools tab content to the Tools tab.
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_tools_tab_content()
 {
 	global $wpdb;

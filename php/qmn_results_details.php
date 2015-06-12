@@ -1,7 +1,10 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
-/*
-This page allows for the viewing of the quiz results.
+/**
+* This function generates the results details that are shown the results page.
+*
+* @return type void
+* @since 4.4.0
 */
 function mlw_generate_result_details()
 {
@@ -43,6 +46,14 @@ function mlw_generate_result_details()
 	<?php
 }
 
+
+/**
+* This function generates the results details tab that shows the details of the quiz
+*
+* @param type description
+* @return void
+* @since 4.4.0
+*/
 function qmn_generate_results_details_tab()
 {
 	echo "<br><br>";
@@ -111,6 +122,13 @@ function qmn_generate_results_details_tab()
 	echo $template;
 }
 
+
+/**
+* Generates the results details tab in the quiz results page
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_results_details_tab()
 {
 	global $mlwQuizMasterNext;
@@ -118,6 +136,14 @@ function qmn_results_details_tab()
 }
 add_action("plugins_loaded", 'qmn_results_details_tab');
 
+
+/**
+* Creates the certificate in the certificate tab.
+*
+* @param type description
+* @return type description
+* @since 4.4.0
+*/
 function qmn_generate_results_certificate_tab()
 {
 	//Check if user wants to create certificate
@@ -201,6 +227,13 @@ EOC;
 	}
 }
 
+
+/**
+* Registers the tab on the quiz details page
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_results_certificate_tab()
 {
 	global $mlwQuizMasterNext;

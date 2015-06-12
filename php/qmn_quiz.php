@@ -369,7 +369,7 @@ class QMNQuizManager
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
 		global $mlw_qmn_section_count;
-		$mlw_qmn_section_count = 1;
+		$mlw_qmn_section_count = 0;
 
 		$quiz_display .= "<div class='mlw_qmn_quiz'>";
 		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
@@ -406,20 +406,32 @@ class QMNQuizManager
 	  */
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
-		global $mlw_qmn_section_count;
-		$section_display = "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
+                $section_display = "";
 
-		$message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
-		$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
+                if (!empty($qmn_quiz_options->message_before) OR $qmn_quiz_options->contact_info_location == 0)
+                {
+                    $section_display.= "<script> var firstPage = true; </script>";
+                    global $mlw_qmn_section_count;
+                    $mlw_qmn_section_count +=1;
+                    $section_display .= "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
 
-		$section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
-		$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
+                    $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
+                    $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-		if ($qmn_quiz_options->contact_info_location == 0)
-		{
+                    $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
+                    $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
+
+                    if ($qmn_quiz_options->contact_info_location == 0)
+                    {
 			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
-		}
-		$section_display .= "</div>";
+                    }
+                    $section_display .= "</div>";
+
+                }
+                else
+                {
+                    $section_display.= "<script> var firstPage = false; </script>";
+                }
 		return $section_display;
 	}
 
@@ -816,11 +828,10 @@ class QMNQuizManager
 		$mlw_message_certificate = $mlw_certificate_options[1];
 		$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $qmn_array_for_variables);
 		$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
-		$mlw_plugindirpath = plugin_dir_path( __FILE__ );
-		$plugindirpath=plugin_dir_path( __FILE__ );
+		$path_to_fpdf = plugin_dir_path( __FILE__ )."fpdf/WriteHTML.php";
 		$mlw_qmn_certificate_file=<<<EOC
 <?php
-include("$plugindirpath/fpdf/WriteHTML.php");
+include("$path_to_fpdf");
 \$pdf=new PDF_HTML();
 \$pdf->AddPage('L');
 EOC;
@@ -1236,11 +1247,6 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			$total_questions = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables["quiz_id"]));
 		}
 		$display .= "<style>.quiz_section { display: none; }</style>";
-		$mlw_qmn_section_limit = 2 + $total_questions;
-		if ($qmn_quiz_options->comment_section == 0)
-		{
-			$mlw_qmn_section_limit = $mlw_qmn_section_limit + 1;
-		}
 
 		//Gather text for pagination buttons
 		$mlw_qmn_pagination_text = "";
@@ -1255,7 +1261,8 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 		?>
 		<script type="text/javascript">
 			var qmn_pagination = <?php echo $qmn_quiz_options->pagination; ?>;
-			var qmn_section_limit = <?php echo $mlw_qmn_section_limit; ?>;
+			var qmn_section_comments = <?php echo $qmn_quiz_options->comment_section; ?>;
+			var qmn_total_questions = <?php echo $total_questions; ?>;
 			var qmn_pagination_previous_text = '<?php echo $mlw_qmn_pagination_text[0]; ?>';
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
@@ -1272,7 +1279,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 	if ($qmn_allowed_visit && $qmn_quiz_options->timer_limit != 0)
 	{
 		?>
-		<div id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
+		<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
 		<script type="text/javascript">
 			var qmn_quiz_id = <?php echo $qmn_array_for_variables['quiz_id']; ?>;
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;

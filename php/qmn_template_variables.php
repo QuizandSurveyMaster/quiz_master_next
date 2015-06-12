@@ -1,5 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* This file contains all the variables that are in the plugin. It registers them and then makes them available for use.
+*
+* This plugin also contains the social media variables and all of there uses.
+*
+* @param type description
+* @return type description
+* @since 4.4.0
+*/
 /*
 
 Results Array For Reference:
@@ -42,6 +52,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_emai
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question_answers',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_certificate_link',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_facebook_share',10,2);
@@ -216,6 +227,12 @@ function mlw_qmn_variable_comments($content, $mlw_quiz_array)
 function mlw_qmn_variable_timer($content, $mlw_quiz_array)
 {
 	$content = str_replace( "%TIMER%" , $mlw_quiz_array["timer"], $content);
+	return $content;
+}
+function mlw_qmn_variable_timer_minutes($content, $mlw_quiz_array)
+{
+        $mlw_minutes = round($mlw_quiz_array["timer"]/60,2);
+	$content = str_replace( "%TIMER_MINUTES%" , $mlw_minutes, $content);
 	return $content;
 }
 function mlw_qmn_variable_date($content, $mlw_quiz_array)

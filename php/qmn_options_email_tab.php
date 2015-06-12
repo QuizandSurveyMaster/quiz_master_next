@@ -1,5 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+* Creates the email tab in the Quiz Settings Page
+*
+* @return void
+* @since 4.4.0
+*/
 function qmn_settings_email_tab()
 {
 	global $mlwQuizMasterNext;
@@ -7,6 +14,12 @@ function qmn_settings_email_tab()
 }
 add_action("plugins_loaded", 'qmn_settings_email_tab', 5);
 
+/**
+* Creates the email content that is displayed on the email tab. 
+*
+* @return void
+* @since 4.4.0
+*/
 function mlw_options_emails_tab_content()
 {
 	global $wpdb;
@@ -218,11 +231,24 @@ function mlw_options_emails_tab_content()
 	</script>
 	<div id="tabs-9" class="mlw_tab_content">
 	<script>
+                /**
+                * This deletes the user email from the list of emails.
+                *
+                * @return id This variable contains the ID of the email so the correct one is deleted.
+                * @since 4.4.0
+                */
 		function delete_email(id)
 		{
 			document.getElementById('user_email_'+id).value = "Delete";
 			document.mlw_quiz_save_email_form.submit();
 		}
+                
+                /**
+                * This function deletes the admin email from the list of emails.
+                *
+                * @return id This variable contains the ID of the email so the right one is deleted.
+                * @since 4.4.0
+                */
 		function delete_admin_email(id)
 		{
 			document.getElementById('admin_email_'+id).value = "Delete";
@@ -268,7 +294,11 @@ function mlw_options_emails_tab_content()
 				<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent of quiz', 'quiz-master-next'); ?>
+				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent on quiz in seconds', 'quiz-master-next'); ?>
+			</div>
+                        </div>
+			<div class="template_variable">
+				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>

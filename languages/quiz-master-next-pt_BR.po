@@ -17,7 +17,7 @@ msgstr ""
 "X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _;_e;__;esc_html_e;esc_html_x:1,2c;esc_html__;esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.8.1\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../mlw_quizmaster2.php:217
@@ -58,8 +58,7 @@ msgstr "Configurações de complemento"
 msgid "Help"
 msgstr "Página de Ajuda"
 
-#: ../mlw_quizmaster2.php:228
-#: ../mlw_quizmaster2.php:229
+#: ../mlw_quizmaster2.php:228 ../mlw_quizmaster2.php:229
 msgid "QMN About"
 msgstr "Sobre QMN"
 
@@ -67,26 +66,20 @@ msgstr "Sobre QMN"
 msgid "Emails"
 msgstr ""
 
-#: ../php/qmn_options_email_tab.php:42
-#: ../php/qmn_options_email_tab.php:101
+#: ../php/qmn_options_email_tab.php:42 ../php/qmn_options_email_tab.php:101
 msgid "The email has been added successfully."
 msgstr "E-mail adicionado com sucesso"
 
-#: ../php/qmn_options_email_tab.php:55
-#: ../php/qmn_options_email_tab.php:114
-#: ../php/qmn_options_email_tab.php:178
-#: ../php/qmn_quiz_creator.php:382
-#: ../php/qmn_quiz_creator.php:448
-#: ../php/qmn_quiz_creator.php:490
-#: ../php/qmn_quiz_creator.php:648
-#: ../php/qmn_quiz_creator.php:713
+#: ../php/qmn_options_email_tab.php:55 ../php/qmn_options_email_tab.php:114
+#: ../php/qmn_options_email_tab.php:178 ../php/qmn_quiz_creator.php:382
+#: ../php/qmn_quiz_creator.php:448 ../php/qmn_quiz_creator.php:490
+#: ../php/qmn_quiz_creator.php:648 ../php/qmn_quiz_creator.php:713
 #: ../php/qmn_options_leaderboard_tab.php:38
 #, php-format
 msgid "There has been an error in this action. Please share this with the developer. Error Code: %s"
 msgstr "Houve um erro nesta ação. Por favor, compartilhe isso com o desenvolvedor. Código de erro:%s"
 
-#: ../php/qmn_options_email_tab.php:73
-#: ../php/qmn_options_email_tab.php:91
+#: ../php/qmn_options_email_tab.php:73 ../php/qmn_options_email_tab.php:91
 msgid "Enter text here"
 msgstr "Coloque o texto aqui"
 
@@ -196,8 +189,7 @@ msgstr "Razão pela qual a  resposta está correta"
 msgid "The Current Date"
 msgstr "Data atual"
 
-#: ../php/qmn_options_email_tab.php:319
-#: ../php/qmn_options_email_tab.php:518
+#: ../php/qmn_options_email_tab.php:319 ../php/qmn_options_email_tab.php:518
 msgid "Save Email Templates And Settings"
 msgstr "Salvar modelo de e-mail e configurações"
 
@@ -205,13 +197,11 @@ msgstr "Salvar modelo de e-mail e configurações"
 msgid "Send user email upon completion?"
 msgstr "Enviar e-mail do usuário após a conclusão?"
 
-#: ../php/qmn_options_email_tab.php:325
-#: ../php/qmn_options_email_tab.php:332
+#: ../php/qmn_options_email_tab.php:325 ../php/qmn_options_email_tab.php:332
 msgid "Yes"
 msgstr "Sim"
 
-#: ../php/qmn_options_email_tab.php:326
-#: ../php/qmn_options_email_tab.php:333
+#: ../php/qmn_options_email_tab.php:326 ../php/qmn_options_email_tab.php:333
 msgid "No"
 msgstr "Não"
 
@@ -231,36 +221,27 @@ msgstr "Qual é o nome a partir do e-mail enviado aos usuários e administrador?
 msgid "Email Sent To User"
 msgstr "e-mail enviado ao usuário"
 
-#: ../php/qmn_options_email_tab.php:348
-#: ../php/qmn_options_email_tab.php:426
+#: ../php/qmn_options_email_tab.php:348 ../php/qmn_options_email_tab.php:426
 msgid "Add New User Email"
 msgstr "Adicionar novo usuário de e-mail"
 
-#: ../php/qmn_options_email_tab.php:353
-#: ../php/qmn_options_email_tab.php:419
-#: ../php/qmn_options_email_tab.php:440
-#: ../php/qmn_options_email_tab.php:506
+#: ../php/qmn_options_email_tab.php:353 ../php/qmn_options_email_tab.php:419
+#: ../php/qmn_options_email_tab.php:440 ../php/qmn_options_email_tab.php:506
 msgid "Score Greater Than Or Equal To"
 msgstr "Escore maior ou igual a"
 
-#: ../php/qmn_options_email_tab.php:354
-#: ../php/qmn_options_email_tab.php:420
-#: ../php/qmn_options_email_tab.php:441
-#: ../php/qmn_options_email_tab.php:507
+#: ../php/qmn_options_email_tab.php:354 ../php/qmn_options_email_tab.php:420
+#: ../php/qmn_options_email_tab.php:441 ../php/qmn_options_email_tab.php:507
 msgid "Score Less Than Or Equal To"
 msgstr "Escore menor ou igual a"
 
-#: ../php/qmn_options_email_tab.php:355
-#: ../php/qmn_options_email_tab.php:421
-#: ../php/qmn_options_email_tab.php:442
-#: ../php/qmn_options_email_tab.php:508
+#: ../php/qmn_options_email_tab.php:355 ../php/qmn_options_email_tab.php:421
+#: ../php/qmn_options_email_tab.php:442 ../php/qmn_options_email_tab.php:508
 msgid "Subject"
 msgstr "Assunto"
 
-#: ../php/qmn_options_email_tab.php:356
-#: ../php/qmn_options_email_tab.php:422
-#: ../php/qmn_options_email_tab.php:443
-#: ../php/qmn_options_email_tab.php:509
+#: ../php/qmn_options_email_tab.php:356 ../php/qmn_options_email_tab.php:422
+#: ../php/qmn_options_email_tab.php:443 ../php/qmn_options_email_tab.php:509
 msgid "Email To Send"
 msgstr "Enviar e-mail para"
 
@@ -268,8 +249,7 @@ msgstr "Enviar e-mail para"
 msgid "Email Sent To Admin"
 msgstr "Enviar e-mail para admin"
 
-#: ../php/qmn_options_email_tab.php:435
-#: ../php/qmn_options_email_tab.php:513
+#: ../php/qmn_options_email_tab.php:435 ../php/qmn_options_email_tab.php:513
 msgid "Add New Admin Email"
 msgstr "Adicionar novo e-mail de administrador"
 
@@ -423,8 +403,7 @@ msgstr "texto"
 msgid "The templates has been updated successfully."
 msgstr "Os modelos foram atualizados com sucesso"
 
-#: ../php/qmn_options_text_tab.php:170
-#: ../php/qmn_options_text_tab.php:330
+#: ../php/qmn_options_text_tab.php:170 ../php/qmn_options_text_tab.php:330
 msgid "Save Templates"
 msgstr "Salvar modelos"
 
@@ -799,8 +778,7 @@ msgstr "Fone"
 msgid "Time Taken"
 msgstr "Tempo necessário"
 
-#: ../php/qmn_results.php:258
-#: ../php/qmn_options_option_tab.php:147
+#: ../php/qmn_results.php:258 ../php/qmn_options_option_tab.php:147
 msgid "Not Graded"
 msgstr "Sem Classificação"
 
@@ -882,8 +860,7 @@ msgstr "Opções"
 msgid "The options has been updated successfully."
 msgstr "As Opções foram atualizadas com sucesso."
 
-#: ../php/qmn_options_option_tab.php:135
-#: ../php/qmn_options_option_tab.php:286
+#: ../php/qmn_options_option_tab.php:135 ../php/qmn_options_option_tab.php:286
 msgid "Save Options"
 msgstr "Salvar Opções"
 
@@ -967,10 +944,8 @@ msgstr "Usuário poderá edita informações de contato? Se definido como não, 
 msgid "Should we ask for users name?"
 msgstr "Nome de usuário"
 
-#: ../php/qmn_options_option_tab.php:222
-#: ../php/qmn_options_option_tab.php:230
-#: ../php/qmn_options_option_tab.php:238
-#: ../php/qmn_options_option_tab.php:246
+#: ../php/qmn_options_option_tab.php:222 ../php/qmn_options_option_tab.php:230
+#: ../php/qmn_options_option_tab.php:238 ../php/qmn_options_option_tab.php:246
 msgid "Require"
 msgstr "Exigir"
 
@@ -1030,8 +1005,7 @@ msgstr "Escolha seu estilo"
 msgid "Custom"
 msgstr ""
 
-#: ../php/qmn_options_style_tab.php:94
-#: ../php/qmn_options_style_tab.php:106
+#: ../php/qmn_options_style_tab.php:94 ../php/qmn_options_style_tab.php:106
 msgid "Save Quiz Style"
 msgstr "Salvar Estilo de Questionário"
 
@@ -1075,14 +1049,12 @@ msgstr "Escolha uma Avaliação no drop down e, em seguida, clique no botão par
 msgid "Restore Quiz"
 msgstr "Recuperar Avaliação"
 
-#: ../php/qmn_tools.php:152
-#: ../php/qmn_tools.php:168
+#: ../php/qmn_tools.php:152 ../php/qmn_tools.php:168
 #, php-format
 msgid "Previous %s Audits"
 msgstr "Anterior % s Auditorias"
 
-#: ../php/qmn_tools.php:155
-#: ../php/qmn_tools.php:162
+#: ../php/qmn_tools.php:155 ../php/qmn_tools.php:162
 #, php-format
 msgid "Next %s Audits"
 msgstr "Próximo% s Auditorias"
@@ -1184,33 +1156,27 @@ msgid_plural "%s quizzes"
 msgstr[0] "Uma questão"
 msgstr[1] "%s questões"
 
-#: ../php/qmn_quiz_admin.php:253
-#: ../php/qmn_quiz_admin.php:304
+#: ../php/qmn_quiz_admin.php:253 ../php/qmn_quiz_admin.php:304
 msgid "URL"
 msgstr "URL"
 
-#: ../php/qmn_quiz_admin.php:254
-#: ../php/qmn_quiz_admin.php:305
+#: ../php/qmn_quiz_admin.php:254 ../php/qmn_quiz_admin.php:305
 msgid "Quiz Shortcode"
 msgstr "Shortcode do teste"
 
-#: ../php/qmn_quiz_admin.php:255
-#: ../php/qmn_quiz_admin.php:306
+#: ../php/qmn_quiz_admin.php:255 ../php/qmn_quiz_admin.php:306
 msgid "Leaderboard Shortcode"
 msgstr "Shortcode da Pontuação"
 
-#: ../php/qmn_quiz_admin.php:256
-#: ../php/qmn_quiz_admin.php:307
+#: ../php/qmn_quiz_admin.php:256 ../php/qmn_quiz_admin.php:307
 msgid "Quiz Views"
 msgstr "Visualização do Questionário"
 
-#: ../php/qmn_quiz_admin.php:257
-#: ../php/qmn_quiz_admin.php:308
+#: ../php/qmn_quiz_admin.php:257 ../php/qmn_quiz_admin.php:308
 msgid "Quiz Taken"
 msgstr "Questionário Tomado"
 
-#: ../php/qmn_quiz_admin.php:258
-#: ../php/qmn_quiz_admin.php:309
+#: ../php/qmn_quiz_admin.php:258 ../php/qmn_quiz_admin.php:309
 msgid "Last Modified"
 msgstr "Ultima modificação"
 
@@ -1223,8 +1189,7 @@ msgstr "Editar nome"
 msgid "Edit"
 msgstr "Editar nome"
 
-#: ../php/qmn_quiz_admin.php:275
-#: ../php/qmn_quiz_admin.php:404
+#: ../php/qmn_quiz_admin.php:275 ../php/qmn_quiz_admin.php:404
 msgid "Duplicate"
 msgstr "Duplicar"
 
@@ -1272,12 +1237,8 @@ msgstr ""
 msgid "Quiz ID"
 msgstr "ID de Avaliação"
 
-#~ msgid ""
-#~ "Required currently only works on open answer, number, accept, and captcha "
-#~ "question types"
-#~ msgstr ""
-#~ "Necessário atualmente só funciona com resposta aberta, número, aceitar e "
-#~ "tipos de captcha."
+#~ msgid "Required currently only works on open answer, number, accept, and captcha question types"
+#~ msgstr "Necessário atualmente só funciona com resposta aberta, número, aceitar e tipos de captcha."
 
 #~ msgid "Edit Question"
 #~ msgstr "Editar Pergunta"
