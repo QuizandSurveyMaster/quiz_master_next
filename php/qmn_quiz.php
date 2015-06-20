@@ -419,18 +419,18 @@ class QMNQuizManager
                     $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
                     $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
-                    $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
 
                     if ($qmn_quiz_options->contact_info_location == 0)
                     {
-			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
+											$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
                     }
                     $section_display .= "</div>";
 
                 }
                 else
                 {
-                    $section_display.= "<script> var firstPage = false; </script>";
+                    $section_display .= "<script> var firstPage = false; </script>";
+										$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
                 }
 		return $section_display;
 	}
