@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
-* This function allows for the editing of quiz options. 
+* This function allows for the editing of quiz options.
 *
 * @param type description
 * @return void
@@ -93,7 +93,7 @@ function mlw_generate_quiz_options()
 		?>
 		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong><?php _e('Error!', 'quiz-master-next'); ?></strong> <?php _e('Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next'); ?></p
+		<strong><?php _e('Error!', 'quiz-master-next'); ?></strong> <?php _e('Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next'); ?></p>
 		</div>
 		<?php
 	}

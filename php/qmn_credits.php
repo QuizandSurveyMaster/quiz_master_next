@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
-* This function shows the about page. It also shows the changelog information. 
+* This function shows the about page. It also shows the changelog information.
 *
 * @return void
 * @since 4.4.0
@@ -43,30 +43,25 @@ function mlw_generate_about_page()
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Timer now begins counting down after starting quiz if using pagination</h2>
 			<p style="text-align: center;">The timer now does not start until the user clicks the Next button when the user has pagination enabled.</p>
 			<br />
-			
+
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
 			<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
 			<br />
 			<hr />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
 			<br />
-			
+
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz Master Next repository.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" style="display: none;">
-		<h3><?php echo $mlw_quiz_version; ?> (June 11, 2015)</h3>
+		<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
 		<ul>
-                    <li>* Added new template variable %TIMER_MINUTES% <a href="https://github.com/fpcorso/quiz_master_next/issues/209">GitHub Issue #209</a></li>
-                    <li>* Eliminates first page if empty <a href="https://github.com/fpcorso/quiz_master_next/issues/182">GitHub Issue #182</a></li>
-                    <li>* Timer now begins counting down after starting quiz if using pagination <a href="https://github.com/fpcorso/quiz_master_next/issues/181">GitHub Issue #181</a></li>
-                    <li>* Amount Finished Compared To Amount In Quiz <a href="https://github.com/fpcorso/quiz_master_next/issues/21">GitHub Issue #21</a></li>
-                    <li>* Bug Fix: Required Answers And Timer Doesn't Work Well Together <a href="https://github.com/fpcorso/quiz_master_next/issues/220">GitHub Issue #220</a></li>
-                    <li>* Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows <a href="https://github.com/fpcorso/quiz_master_next/issues/204">GitHub Issue #204</a></li>
-                    <li>* Bug Fix: Long quiz URL mangles page layout <a href="https://github.com/fpcorso/quiz_master_next/issues/202">GitHub Issue #202</a></li>
-                    <li>* Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly. </li>
-
+			<li>* Bug Fix: Fixes validation bug from missing first page</li>
+			<li>* Bug Fix: Fixes timer bug that prevented timer when first page was missing</li>
+			<li>* Bug Fix: Fixes bug that prevented re-editing of LaTex</li>
+			<li>* Bug Fix: Fixes certificate site_url bug</li>
 		</ul>
 		</div>
 	</div>
