@@ -1267,7 +1267,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ), array( 'jquery' ) );
 	}
 	return $display;
 }
@@ -1285,7 +1285,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ), array( 'jquery', 'qmn_quiz_pagination' ) );
 	}
 	return $display;
 }
