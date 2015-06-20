@@ -371,7 +371,7 @@ function mlw_options_questions_tab_content()
 	//Load Question Types
 	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 
-	
+
 	echo "<script>
 	var questions_list = [";
 	foreach($questions as $question) {
@@ -390,7 +390,7 @@ function mlw_options_questions_tab_content()
 		//Load Answers
 		$answer_string = "";
 		foreach($answers[$question->question_id] as $answer_single) {
-			$answer_string .= "{answer: '".$answer_single[0]."',points: ".$answer_single[1].",correct: ".$answer_single[2]."},";
+			$answer_string .= "{answer: '".esc_js( str_replace('\\', '\\\\', $answer_single[0] ) )."',points: ".$answer_single[1].",correct: ".$answer_single[2]."},";
 		}
 
 		//Load Type
@@ -407,9 +407,9 @@ function mlw_options_questions_tab_content()
 		//Parse Javascript Object
 		echo "{
 			id: ".$question->question_id.",
-		  question: '".esc_js($question->question_name, ENT_QUOTES)."',
+		  question: '".esc_js( str_replace('\\', '\\\\', $question->question_name ) )."',
 		  answers: [".$answer_string."],
-		  correct_info: '".esc_js($question->question_answer_info, ENT_QUOTES)."',
+		  correct_info: '".esc_js( $question->question_answer_info )."',
 		  hint: '".esc_js($question->hints, ENT_QUOTES)."',
 		  type: '".$question->question_type_new."',
 			type_name: '".$type_name."',
