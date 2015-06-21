@@ -15,7 +15,7 @@ function qmn_settings_email_tab()
 add_action("plugins_loaded", 'qmn_settings_email_tab', 5);
 
 /**
-* Creates the email content that is displayed on the email tab. 
+* Creates the email content that is displayed on the email tab.
 *
 * @return void
 * @since 4.4.0
@@ -242,7 +242,7 @@ function mlw_options_emails_tab_content()
 			document.getElementById('user_email_'+id).value = "Delete";
 			document.mlw_quiz_save_email_form.submit();
 		}
-                
+
                 /**
                 * This function deletes the admin email from the list of emails.
                 *
@@ -296,7 +296,6 @@ function mlw_options_emails_tab_content()
 			<div class="template_variable">
 				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent on quiz in seconds', 'quiz-master-next'); ?>
 			</div>
-                        </div>
 			<div class="template_variable">
 				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
 			</div>

@@ -146,7 +146,6 @@ function mlw_options_text_tab_content()
                                 <div class="template_variable">
 				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
                                 </div>
-				</div>
 				<div class="template_variable">
 					<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>
 				</div>

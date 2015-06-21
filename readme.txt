@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.2
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,14 +122,20 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 == Changelog ==
 
+= 4.4.1 (June 21, 2015) =
+  * Bug Fix: Fixes validation bug from missing first page
+  * Bug Fix: Fixes timer bug that prevented timer when first page was missing
+  * Bug Fix: Fixes bug that prevented re-editing of LaTex
+  * Bug Fix: Fixes certificate site_url bug
+
 = 4.4.0 (June 11, 2015) =
- * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209] (https://github.com/fpcorso/quiz_master_next/issues/209))
- * Eliminates first page if empty ([GitHub Issue #182] (https://github.com/fpcorso/quiz_master_next/issues/182))
- * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181] (https://github.com/fpcorso/quiz_master_next/issues/181))
- * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21] (https://github.com/fpcorso/quiz_master_next/issues/21))
- * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220] (https://github.com/fpcorso/quiz_master_next/issues/220))
- * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204] (https://github.com/fpcorso/quiz_master_next/issues/204))
- * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202] (https://github.com/fpcorso/quiz_master_next/issues/202))
+ * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209](https://github.com/fpcorso/quiz_master_next/issues/209))
+ * Eliminates first page if empty ([GitHub Issue #182](https://github.com/fpcorso/quiz_master_next/issues/182))
+ * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181](https://github.com/fpcorso/quiz_master_next/issues/181))
+ * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21](https://github.com/fpcorso/quiz_master_next/issues/21))
+ * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220](https://github.com/fpcorso/quiz_master_next/issues/220))
+ * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/fpcorso/quiz_master_next/issues/204))
+ * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
  * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
 
 
@@ -678,6 +684,10 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.4.1 =
+Upgrade for a variety of bug fixes
+
 = 4.4.0 =
 Upgrade for the new template variable %TIMER_MINUTES%, made modification to timer for pagination, Eliminates first page if empty, and more.
 
