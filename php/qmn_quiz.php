@@ -419,18 +419,18 @@ class QMNQuizManager
                     $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
                     $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
-                    $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
 
                     if ($qmn_quiz_options->contact_info_location == 0)
                     {
-			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
+											$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
                     }
                     $section_display .= "</div>";
 
                 }
                 else
                 {
-                    $section_display.= "<script> var firstPage = false; </script>";
+                    $section_display .= "<script> var firstPage = false; </script>";
+										$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
                 }
 		return $section_display;
 	}
@@ -848,7 +848,7 @@ EOC;
 			$mlw_qmn_certificate_file.=<<<EOC
 \$pdf->Output('mlw_qmn_certificate.pdf','D');
 EOC;
-			$mlw_qmn_certificate_filename = str_replace(site_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
+			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' class='qmn_certificate_link'>Download Certificate</a>";
@@ -1267,7 +1267,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 			var qmn_pagination_next_text = '<?php echo $mlw_qmn_pagination_text[1]; ?>';
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_pagination', plugins_url( '../js/qmn_pagination.js' , __FILE__ ), array( 'jquery' ) );
 	}
 	return $display;
 }
@@ -1285,7 +1285,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ), array( 'jquery', 'qmn_quiz_pagination' ) );
 	}
 	return $display;
 }

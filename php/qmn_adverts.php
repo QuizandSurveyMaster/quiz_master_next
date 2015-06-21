@@ -29,15 +29,6 @@ function mlw_qmn_show_adverts()
 			case 4:
 				$mlw_advert_text = "Need help keeping your plugins, themes, and WordPress up to date? Want around the clock security monitoring and off-site back-ups? How about WordPress training videos, a monthly status report, and support/consultation? Check out our <a href=\"http://mylocalwebstop.com/downloads/wordpress-maintenance/\">WordPress Maintenance Services</a> for more details!";
 				break;
-			case 5:
-				$mlw_advert_text = "Setting up a new site? Let us take care of the set-up so you back to running your business. Check out our <a href=\"http://mylocalwebstop.com/downloads/new-wordpress-installation/\">WordPress Installation Service</a> for more details!";
-				break;
-			case 6:
-				$mlw_advert_text = "Our Personal Addon Pack is now only $45 for 6 add-ons! Now is the time to save almost 50%! Visit our <a href=\"http://quizmasternext.com/addons/\">Addon Store</a> for details.";
-				break;
-			case 7:
-				$mlw_advert_text = "Please consider taking our survey so we can improve this add-on. The survey only takes a few minutes. When you are ready, please <a href='http://mylocalwebstop.com/quiz-master-next-survey/'>take our survey</a>";
-				break;
 			default:
 				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizmasternext.com/downloads/premium-support/\">Quiz Master Next Support</a> for details!";
 		}

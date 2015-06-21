@@ -1,5 +1,5 @@
 var qmn_timer_activated = false;
-if (typeof qmn_current_page !== 'undefined') {
+if (typeof qmn_current_page !== 'undefined' && firstPage) {
 	jQuery(".mlw_next").click(function(event) {
 		event.preventDefault();
 		if ( !qmn_timer_activated ) {
