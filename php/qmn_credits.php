@@ -58,10 +58,8 @@ function mlw_generate_about_page()
 		<div id="mlw_quiz_changelog" style="display: none;">
 		<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
 		<ul>
-			<li>* Bug Fix: Fixes validation bug from missing first page</li>
-			<li>* Bug Fix: Fixes timer bug that prevented timer when first page was missing</li>
-			<li>* Bug Fix: Fixes bug that prevented re-editing of LaTex</li>
-			<li>* Bug Fix: Fixes certificate site_url bug</li>
+			<li>* Bug Fix: Fixed bug that caused issues with validation<a href="https://github.com/fpcorso/quiz_master_next/issues/254">Github Issue #254</a></li>
+			<li>* Bug Fix: Fixed a rare permalink issue<a href="https://github.com/fpcorso/quiz_master_next/issues/253">Github Issue #253</a></li>
 		</ul>
 		</div>
 	</div>
