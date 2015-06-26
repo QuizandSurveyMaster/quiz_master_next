@@ -76,7 +76,7 @@ function mlw_generate_quiz_admin()
 		{
 	    $my_query->the_post();
 			$post_to_quiz_array[get_post_meta( get_the_ID(), 'quiz_id', true )] = array(
-				'link' => get_the_permalink(),
+				'link' => get_permalink(),
 				'id' => get_the_ID()
 			);
 	  }

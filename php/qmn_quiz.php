@@ -407,7 +407,7 @@ class QMNQuizManager
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
                 $section_display = "";
-
+                $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
                 if (!empty($qmn_quiz_options->message_before) OR $qmn_quiz_options->contact_info_location == 0)
                 {
                     $section_display.= "<script> var firstPage = true; </script>";
@@ -430,7 +430,7 @@ class QMNQuizManager
                 else
                 {
                     $section_display .= "<script> var firstPage = false; </script>";
-										$section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
+										
                 }
 		return $section_display;
 	}
