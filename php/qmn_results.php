@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* This function generates the admin side quiz results page 
+* This function generates the admin side quiz results page
 *
 * @return void
 * @since 4.4.0
@@ -41,6 +41,7 @@ function mlw_generate_quiz_results()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0021'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0021", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 

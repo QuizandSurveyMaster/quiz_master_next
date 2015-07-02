@@ -61,6 +61,14 @@ class MLWQuizMasterNext
 	public $quizCreator;
 
 	/**
+	 * QMN Log Manager Object
+	 *
+	 * @var object
+	 * @since 4.5.0
+	 */
+	public $log_manager;
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -84,6 +92,9 @@ class MLWQuizMasterNext
 	  */
 	private function load_dependencies()
 	{
+		include("php/class-qmn-log-manager.php");
+		$this->log_manager = new QMN_Log_Manager;
+
 		if (is_admin())
 		{
 			include("php/qmn-stats-page.php");

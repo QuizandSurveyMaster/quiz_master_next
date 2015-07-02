@@ -15,7 +15,7 @@ function qmn_settings_style_tab()
 add_action("plugins_loaded", 'qmn_settings_style_tab', 5);
 
 /**
-* Adds the Style tab content to the tab. 
+* Adds the Style tab content to the tab.
 *
 * @return void
 * @since 4.4.0
@@ -50,6 +50,7 @@ function mlw_options_styling_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0015'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0015", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 

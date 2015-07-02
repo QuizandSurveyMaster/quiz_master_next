@@ -383,6 +383,7 @@ class QMNQuizCreator
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0001'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0001", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -449,6 +450,7 @@ class QMNQuizCreator
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0002'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0002", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 		do_action('qmn_quiz_deleted', $quiz_id);
 	 }
@@ -491,6 +493,7 @@ class QMNQuizCreator
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0003'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0003", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 		do_action('qmn_quiz_name_edited', $quiz_id);
 	 }
@@ -649,6 +652,7 @@ class QMNQuizCreator
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0011'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0011", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 		if ($is_duplicating_questions)
 		{
@@ -714,6 +718,7 @@ class QMNQuizCreator
 				if ($question_results == false)
 				{
 					$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0020'), 'error');
+					$mlwQuizMasterNext->log_manager->add("Error 0020", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 				}
 			}
 		}
