@@ -146,7 +146,7 @@ for (var i = 0; i < questions_list.length; i++) {
   if (alternate) {
     alternate_css = ' alternate'
   }
-  var $question_row = jQuery('<tr class="question_row'+alternate_css+'">'+
+  var $question_row = jQuery('<tr id="question_'+questions_list[i].id+'" class="question_row'+alternate_css+'">'+
   '<td>'+questions_list[i].order+'</td>'+
   '<td>'+questions_list[i].type_name+'</td>'+
   '<td>'+questions_list[i].category+'</td>'+
@@ -162,3 +162,14 @@ for (var i = 0; i < questions_list.length; i++) {
   jQuery("#the-list").append($question_row);
   alternate = !alternate;
 }
+
+jQuery( '.widefat tbody' ).sortable({
+  containment: "parent",
+  cursor: 'move',
+  opacity: 0.7
+});
+
+jQuery( '#save_question_order' ).click(function() {
+  jQuery( '#save_question_order_input' ).val( jQuery( '.widefat tbody' ).sortable("toArray") );
+  jQuery( '#save_question_order_form' ).submit();
+});

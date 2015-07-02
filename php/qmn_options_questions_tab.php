@@ -30,9 +30,55 @@ function mlw_options_questions_tab_content()
 	<?php
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ));
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-sortable' );
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
+
+	//Re-ordering questions
+	if (isset($_POST['qmn_question_order_nonce']) && wp_verify_nonce( $_POST['qmn_question_order_nonce'], 'qmn_question_order')) {
+		$list_of_questions = explode( ',', $_POST["save_question_order_input"] );
+		$question_order = 0;
+		$success = true;
+		foreach( $list_of_questions as $id ) {
+			$question_order++;
+			$results = $wpdb->update(
+				$wpdb->prefix . "mlw_questions",
+				array(
+					'question_order' => $question_order
+				),
+				array( 'question_id' => explode( '_', $id )[1] ),
+				array(
+					'%d'
+				),
+				array( '%d' )
+			);
+			if ( $results ) {
+				$success = false;
+			}
+		}
+		if ( ! $success ) {
+			$mlwQuizMasterNext->alertManager->newAlert(__('The question order has been updated successfully.', 'quiz-master-next'), 'success');
+
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$results = $wpdb->insert(
+			$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Order Has Been Updated On Quiz: $quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		}
+	}
 
 	//Edit question
 	if ( isset($_POST["question_submission"]) && $_POST["question_submission"] == "edit_question")
@@ -450,6 +496,11 @@ function mlw_options_questions_tab_content()
 			}
 		</style>
 		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="save_question_order"><?php _e('Save Question Order', 'quiz-master-next'); ?></button>
+		<form style="display:none;" action="" method="post" name="save_question_order_form" id="save_question_order_form">
+			<input type="hidden" name="save_question_order_input" id="save_question_order_input" value="" />
+			<?php wp_nonce_field('qmn_question_order','qmn_question_order_nonce'); ?>
+		</form>
 		<br />
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search">Search Questions:</label>
