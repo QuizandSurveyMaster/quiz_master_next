@@ -6,8 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 *
 * This plugin also contains the social media variables and all of there uses.
 *
-* @param type description
-* @return type description
 * @since 4.4.0
 */
 /*
@@ -206,14 +204,20 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 		}
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
+			if ( $answer["correct"] === "correct" ){
+				$user_answer_class = "qmn_user_correct_answer";
+				$question_answer_class = "qmn_question_answer_correct";
+			} else{
+				$user_answer_class = "qmn_user_incorrect_answer";
+				$question_answer_class = "qmn_question_answer_incorrect";
+			}
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
 			$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
-			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , htmlspecialchars_decode($answer[1], ENT_QUOTES), $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , htmlspecialchars_decode($answer[2], ENT_QUOTES), $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($qmn_questions[$answer['id']], ENT_QUOTES), $mlw_question_answer_display);
-			$display .= apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array);
-			$display .= "<br />";
+			$display .= '<div class="qmn_question_answer $question_answer_class">'.apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
 		}
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
 	}
