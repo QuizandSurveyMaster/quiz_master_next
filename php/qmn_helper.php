@@ -76,21 +76,35 @@ class QMNPluginHelper
 		* @param string $slug The slug of the question type to be stored with question in database
 	  * @return void
 	  */
-	public function register_question_type($name, $display_function, $graded, $review_function = null, $slug = null)
+	public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_function = null, $save_edit_function = null, $slug = null)
 	{
-		if (is_null($slug))
-		{
+		if (is_null($slug)) {
 			$slug = strtolower(str_replace( " ", "-", $name));
-		}
-		else
-		{
+		} else {
 			$slug = strtolower(str_replace( " ", "-", $slug));
+		}
+		if ( is_null( $edit_function ) ) {
+			$edit_function = array(
+				'inputs' => array(
+					'question',
+					'answer',
+					'hint',
+					'correct_info',
+					'comments',
+					'category'
+				),
+				'information' => ''
+			);
+		}
+		if ( is_null( $save_edit_function ) ) {
+			
 		}
 		$new_type = array(
 			'name' => $name,
 			'display' => $display_function,
 			'review' => $review_function,
 			'graded' => $graded,
+			'edit' => $edit_function,
 			'slug' => $slug
 		);
 		$this->question_types[] = $new_type;
