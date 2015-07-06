@@ -1272,7 +1272,7 @@ function qmn_pagination_check($display, $qmn_quiz_options, $qmn_array_for_variab
 	return $display;
 }
 
-add_filter('qmn_begin_quiz', 'qmn_timer_check', 10, 3);
+add_filter('qmn_begin_quiz', 'qmn_timer_check', 15, 3);
 function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 {
 	global $qmn_allowed_visit;
@@ -1285,7 +1285,7 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
-		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ), array( 'jquery', 'qmn_quiz_pagination' ) );
+		wp_enqueue_script( 'qmn_quiz_timer', plugins_url( '../js/qmn_timer.js' , __FILE__ ), array( 'jquery' ) );
 	}
 	return $display;
 }
