@@ -93,11 +93,13 @@ class QMNPluginHelper
 					'comments',
 					'category'
 				),
-				'information' => ''
+				'information' => '',
+				'extra_inputs' => array(),
+				'function' => ''
 			);
 		}
 		if ( is_null( $save_edit_function ) ) {
-			
+			$save_edit_function = '';
 		}
 		$new_type = array(
 			'name' => $name,
@@ -105,6 +107,7 @@ class QMNPluginHelper
 			'review' => $review_function,
 			'graded' => $graded,
 			'edit' => $edit_function,
+			'save' => $save_edit_function,
 			'slug' => $slug
 		);
 		$this->question_types[] = $new_type;
