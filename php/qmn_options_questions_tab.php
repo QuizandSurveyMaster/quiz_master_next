@@ -98,7 +98,7 @@ function mlw_options_questions_tab_content()
 			$qmn_edit_category = $_POST["new_category"];
 			if ($qmn_edit_category == 'new_category')
 			{
-				$qmn_edit_category = $_POST["new_new_category"];
+				$qmn_edit_category = stripslashes($_POST["new_new_category"]);
 			}
 		}
 		else
@@ -317,7 +317,7 @@ function mlw_options_questions_tab_content()
 			$qmn_category = $_POST["new_category"];
 			if ($qmn_category == 'new_category')
 			{
-				$qmn_category = $_POST["new_new_category"];
+				$qmn_category = stripslashes($_POST["new_new_category"]);
 			}
 		}
 		else
