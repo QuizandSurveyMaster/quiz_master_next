@@ -77,7 +77,33 @@ function mlw_generate_quiz_results()
 
 	global $wpdb;
 	$mlw_qmn_table_limit = 30;
-	$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'" );
+	$search_phrase_sql = '';
+	$order_by_sql = 'ORDER BY result_id DESC';
+	if ( isset( $_GET["qmn_search_phrase"] ) ) {
+		$search_phrase = $_GET["qmn_search_phrase"];
+		$search_phrase_sql = "AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%')";
+	}
+	if ( isset( $_GET["qmn_order_by"] ) ) {
+		 switch ( $_GET["qmn_order_by"] )
+		 {
+			 case 'quiz_name':
+				 $order_by_sql = "ORDER BY quiz_name DESC";
+				 break;
+			 case 'name':
+				 $order_by_sql = "ORDER BY name DESC";
+				 break;
+			 case 'point_score':
+				 $order_by_sql = "ORDER BY point_score DESC";
+				 break;
+			 case 'correct_score':
+				 $order_by_sql = "ORDER BY correct_score DESC";
+				 break;
+			 default:
+				 $order_by_sql = "ORDER BY result_id DESC";
+		 }
+	}
+	
+	$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'$search_phrase_sql" );
 
 	if( isset($_GET['mlw_result_page'] ) )
 	{
@@ -92,11 +118,11 @@ function mlw_generate_quiz_results()
 	$mlw_qmn_result_left = $mlw_qmn_results_count - ($mlw_qmn_result_page * $mlw_qmn_table_limit);
 	if (isset($_GET["quiz_id"]) && $_GET["quiz_id"] != "")
 	{
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND quiz_id=%d ORDER BY result_id DESC LIMIT %d, %d", intval($_GET["quiz_id"]), $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND quiz_id=%d$search_phrase_sql $order_by_sql LIMIT %d, %d", intval($_GET["quiz_id"]), $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
 	}
 	else
 	{
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' ORDER BY result_id DESC LIMIT %d, %d", $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'$search_phrase_sql $order_by_sql LIMIT %d, %d", $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
 	}
 	?>
 	<!-- css -->
@@ -207,6 +233,21 @@ function mlw_generate_quiz_results()
 					<br class="clear">
 				</div>
 			</div>
+			<form action='' method="get">
+				<p class="search-box">
+					<label class="screen-reader-text" for="qmn_search_phrase">Search Results:</label>
+					<input type="search" id="qmn_search_phrase" name="qmn_search_phrase" value="">
+					<label class="screen-reader-text" for="qmn_order_by">Order By:</label>
+					<select id="qmn_order_by" name="qmn_order_by">
+						<option value="quiz_name">Quiz Name</option>
+						<option value="name">User Name</option>
+						<option value="point_score">Points</option>
+						<option value="correct_score">Correct Percent</option>
+						<option value="default">Default (time)</option>
+					</select>
+					<button class="button">Search Results</button>
+				</p>
+			</form>
 			<form action="" method="post" name="bulk_delete_form">
 				<input type="hidden" name="bulk_delete" value="confirmation" />
 				<table class=widefat>

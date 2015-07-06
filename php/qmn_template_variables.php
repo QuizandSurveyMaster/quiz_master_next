@@ -207,7 +207,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 			if ( $answer["correct"] === "correct" ){
 				$user_answer_class = "qmn_user_correct_answer";
 				$question_answer_class = "qmn_question_answer_correct";
-			} else{
+			} else {
 				$user_answer_class = "qmn_user_incorrect_answer";
 				$question_answer_class = "qmn_question_answer_incorrect";
 			}
