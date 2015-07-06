@@ -79,9 +79,9 @@ function mlw_generate_quiz_results()
 	$mlw_qmn_table_limit = 30;
 	$search_phrase_sql = '';
 	$order_by_sql = 'ORDER BY result_id DESC';
-	if ( isset( $_GET["qmn_search_phrase"] ) ) {
+	if ( isset( $_GET["qmn_search_phrase"] ) && !empty( $_GET["qmn_search_phrase"] ) ) {
 		$search_phrase = $_GET["qmn_search_phrase"];
-		$search_phrase_sql = "AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%')";
+		$search_phrase_sql = " AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%')";
 	}
 	if ( isset( $_GET["qmn_order_by"] ) ) {
 		 switch ( $_GET["qmn_order_by"] )
@@ -122,7 +122,7 @@ function mlw_generate_quiz_results()
 	}
 	else
 	{
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'$search_phrase_sql $order_by_sql LIMIT %d, %d", $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'$search_phrase_sql $order_by_sql LIMIT $mlw_qmn_result_begin, $mlw_qmn_table_limit" );
 	}
 	?>
 	<!-- css -->
@@ -234,10 +234,11 @@ function mlw_generate_quiz_results()
 				</div>
 			</div>
 			<form action='' method="get">
+				<input type="hidden" name="page" value="mlw_quiz_results">
 				<p class="search-box">
-					<label class="screen-reader-text" for="qmn_search_phrase">Search Results:</label>
+					<label for="qmn_search_phrase">Search Results:</label>
 					<input type="search" id="qmn_search_phrase" name="qmn_search_phrase" value="">
-					<label class="screen-reader-text" for="qmn_order_by">Order By:</label>
+					<label for="qmn_order_by">Order By:</label>
 					<select id="qmn_order_by" name="qmn_order_by">
 						<option value="quiz_name">Quiz Name</option>
 						<option value="name">User Name</option>
