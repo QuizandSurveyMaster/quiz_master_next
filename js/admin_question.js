@@ -173,3 +173,15 @@ jQuery( '#save_question_order' ).click(function() {
   jQuery( '#save_question_order_input' ).val( jQuery( '.widefat tbody' ).sortable("toArray") );
   jQuery( '#save_question_order_form' ).submit();
 });
+
+jQuery('#question_type').onchange(
+	var data = {
+		'action': 'qmn_question_type_change',
+		'question_type': jQuery('#question_type').val()
+	};
+
+	// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+	$.post(ajaxurl, data, function(response) {
+		alert('Got this from the server: ' + response);
+	});
+);

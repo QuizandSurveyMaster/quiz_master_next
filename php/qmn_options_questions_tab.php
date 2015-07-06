@@ -599,6 +599,20 @@ function mlw_options_questions_tab_content()
 			<h2 class="question_area_header_text">Add New Question</h2>
 			<form action="" method="post" class="question_form">
 				<fieldset>
+					<legend>Question Type</legend>
+					<div class="row">
+						<label class="option_label"><?php _e('Question Type', 'quiz-master-next'); ?></label>
+						<select class="option_input" name="question_type" id="question_type">
+							<?php
+							foreach($qmn_question_types as $type)
+							{
+								echo "<option value='".$type['slug']."'>".$type['name']."</option>";
+							}
+							?>
+						</select>
+					</div>
+				</fieldset>
+				<fieldset>
 					<legend>Question And Answers</legend>
 					<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
 					<?php wp_editor( '', "question_name" ); ?>
@@ -624,18 +638,6 @@ function mlw_options_questions_tab_content()
 					<div class="row">
 						<label class="option_label"><?php _e('Hint', 'quiz-master-next'); ?></label>
 						<input class="option_input" type="text" name="hint" value="" id="hint"/>
-					</div>
-
-					<div class="row">
-						<label class="option_label"><?php _e('Question Type', 'quiz-master-next'); ?></label>
-						<select class="option_input" name="question_type" id="question_type">
-							<?php
-							foreach($qmn_question_types as $type)
-							{
-								echo "<option value='".$type['slug']."'>".$type['name']."</option>";
-							}
-							?>
-						</select>
 					</div>
 
 					<div class="row">

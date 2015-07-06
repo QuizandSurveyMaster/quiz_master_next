@@ -60,7 +60,7 @@ class QMNPluginHelper
 	  */
 	public function __construct()
 	{
-
+		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
 	}
 
 	/**
@@ -132,6 +132,27 @@ class QMNPluginHelper
 			);
 		}
 		return $type_array;
+	}
+	
+	public function get_question_type_edit_content() {
+		$selected_type = $_POST["question_type"];
+		$type = array();
+		foreach($this->question_types as $single_type) {
+			if ($single_type["slug"] == $selected_type) {
+				$type = $single_type;
+			}
+		}
+		if ( is_array($type["edit"]) && empty($type["edit"]["function"]) ) {
+			return json_encode( $type["edit"] );
+		} elseif (is_array($type["edit"])) {
+			if (function_exists( $type["edit"]["function"] ) ) {
+				call_user_func( $type["edit"]["function"] );
+			}			
+		} else {
+			if ( function_exists( $type["edit"] ) ) {
+				call_user_func( $type["edit"] );
+			}			
+		}
 	}
 
 	/**
