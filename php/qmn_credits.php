@@ -31,12 +31,14 @@ function mlw_generate_about_page()
 		<div class="about-text"><?php _e('Thank you for updating!', 'quiz-master-next'); ?></div>
 		<div class="mlw_qmn_icon_wrap"><?php echo $mlw_quiz_version; ?></div>
 		<h2 class="nav-tab-wrapper">
-			<a href="javascript:mlw_qmn_setTab(1);" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
+			<a href="javascript:qmn_select_tab(1, 'mlw_quiz_what_new');" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
 				<?php _e("What's New!", 'quiz-master-next'); ?></a>
-			<a href="javascript:mlw_qmn_setTab(2);" id="mlw_qmn_tab_2" class="nav-tab">
+			<a href="javascript:qmn_select_tab(2, 'mlw_quiz_changelog');" id="mlw_qmn_tab_2" class="nav-tab">
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
+			<a href="javascript:qmn_select_tab(3, 'qmn_contributors');" id="mlw_qmn_tab_3" class="nav-tab">
+				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
 		</h2>
-		<div id="mlw_quiz_what_new">
+		<div id="mlw_quiz_what_new" class="qmn_tab">
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added new template variable %TIMER_MINUTES%</h2>
 			<p style="text-align: center;">The %TIMER_MINUTES% variable allows for the time it took the user on the quiz to be displayed on the Emails and the Results Pages in minutes. </p>
 			<br />
@@ -55,7 +57,7 @@ function mlw_generate_about_page()
 			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz Master Next repository.</p>
 			<br />
 		</div>
-		<div id="mlw_quiz_changelog" style="display: none;">
+		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
 			<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
 			<ul class="changelog">
@@ -67,6 +69,37 @@ function mlw_generate_about_page()
 				<li>* Bug Fix: Fixed bug that caused issues with validation<a href="https://github.com/fpcorso/quiz_master_next/issues/254">Github Issue #254</a></li>
 				<li>* Bug Fix: Fixed a rare permalink issue<a href="https://github.com/fpcorso/quiz_master_next/issues/253">Github Issue #253</a></li>
 			</ul>
+		</div>
+		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
+			<?php
+			$contributors = get_transient( 'qmn_contributors' );
+			if ( false !== $contributors )
+				return $contributors;
+			$response = wp_remote_get( 'https://api.github.com/repos/fpcorso/quiz_master_next/contributors', array( 'sslverify' => false ) );
+			if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) )
+				return array();
+			$contributors = json_decode( wp_remote_retrieve_body( $response ) );
+			if ( ! is_array( $contributors ) )
+				return array();
+			set_transient( 'qmn_contributors', $contributors, 3600 );
+			if ( empty( $contributors ) )
+				return '';
+			$contributor_list = '<ul class="wp-people-group">';
+			foreach ( $contributors as $contributor ) {
+				$contributor_list .= '<li class="wp-person">';
+				$contributor_list .= sprintf( '<a href="%s" title="%s">',
+					esc_url( 'https://github.com/' . $contributor->login ),
+					esc_html( sprintf( __( 'View %s', 'edd' ), $contributor->login ) )
+				);
+				$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
+				$contributor_list .= '</a>';
+				$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+				$contributor_list .= '</a>';
+				$contributor_list .= '</li>';
+			}
+			$contributor_list .= '</ul>';
+			echo $contributor_list;
+			?>
 		</div>
 	</div>
 <?php
