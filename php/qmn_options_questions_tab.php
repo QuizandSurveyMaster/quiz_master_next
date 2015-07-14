@@ -395,6 +395,8 @@ function mlw_options_questions_tab_content()
 	}
 
 
+	
+	//Load questions
 	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
 		ORDER BY question_order ASC", $quiz_id ) );
 	$answers = array();
@@ -420,7 +422,13 @@ function mlw_options_questions_tab_content()
 
 	//Load Question Types
 	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
-
+	
+	
+	//Load question type edit fields and convert to JavaScript
+	$qmn_question_type_fields = $mlwQuizMasterNext->pluginHelper->get_question_type_edit_fields();
+	echo "<script>
+		var qmn_question_type_fields = JSON.parse(".json_encode($qmn_question_type_fields).");
+	</script>";
 
 	echo "<script>
 	var questions_list = [";
@@ -614,33 +622,35 @@ function mlw_options_questions_tab_content()
 				</fieldset>
 				<fieldset>
 					<legend>Question And Answers</legend>
-					<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
+					<p id="question_type_info"></p>
 					<?php wp_editor( '', "question_name" ); ?>
 
-					<div class="answer_headers">
-						<div class="answer_number">&nbsp;</div>
-						<div class="answer_text"><?php _e('Answers', 'quiz-master-next'); ?></div>
-						<div class="answer_points"><?php _e('Points Worth', 'quiz-master-next'); ?></div>
-						<div class="answer_correct"><?php _e('Correct Answer', 'quiz-master-next'); ?></div>
-					</div>
-					<div class="answers" id="answers">
+					<div id="answer_area">
+						<div class="answer_headers">
+							<div class="answer_number">&nbsp;</div>
+							<div class="answer_text"><?php _e('Answers', 'quiz-master-next'); ?></div>
+							<div class="answer_points"><?php _e('Points Worth', 'quiz-master-next'); ?></div>
+							<div class="answer_correct"><?php _e('Correct Answer', 'quiz-master-next'); ?></div>
+						</div>
+						<div class="answers" id="answers">
 
+						</div>
+						<a href="#" class="button" id="new_answer_button"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
 					</div>
-					<a href="#" class="button" id="new_answer_button"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
 				</fieldset>
 				<fieldset>
 					<legend>Question Options</legend>
-					<div class="row">
+					<div id="correct_answer_area" class="row">
 						<label class="option_label"><?php _e('Correct Answer Info', 'quiz-master-next'); ?></label>
 						<input class="option_input" type="text" name="correct_answer_info" value="" id="correct_answer_info" />
 					</div>
 
-					<div class="row">
+					<div id="hint_area" class="row">
 						<label class="option_label"><?php _e('Hint', 'quiz-master-next'); ?></label>
 						<input class="option_input" type="text" name="hint" value="" id="hint"/>
 					</div>
 
-					<div class="row">
+					<div id="comment_area" class="row">
 						<label class="option_label"><?php _e('Comment Field', 'quiz-master-next'); ?></label>
 						<div class="option_input">
 							<input type="radio" class="comments_radio" id="commentsRadio1" name="comments" value="0" /><label for="commentsRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label><br>
@@ -654,7 +664,7 @@ function mlw_options_questions_tab_content()
 						<input class="option_input" type="number" step="1" min="1" name="new_question_order" value="<?php echo count($questions)+1; ?>" id="new_question_order"/>
 					</div>
 
-					<div class="row">
+					<div id="required_area" class="row">
 						<label class="option_label"><?php _e('Required?', 'quiz-master-next'); ?></label>
 						<select class="option_input" name="required" id="required">
 							<option value="0" selected="selected"><?php _e('Yes', 'quiz-master-next'); ?></option>
@@ -662,7 +672,7 @@ function mlw_options_questions_tab_content()
 						</select>
 					</div>
 
-					<div class="row">
+					<div id="category_area" class="row">
 						<label class="option_label"><?php _e('Category', 'quiz-master-next'); ?></label>
 						<div class="option_input">
 							<?php

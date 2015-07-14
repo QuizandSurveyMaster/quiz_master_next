@@ -65,6 +65,56 @@ jQuery(".answers").on('click', '.delete_answer', function(event) {
   jQuery(this).parent().parent().detach();
 });
 
+jQuery("#question_type").on('change', function(event) {
+	var new_value = jQuery("#question_type").val();
+	qmn_hide_show_correct_fields( new_value );
+});
+
+function qmn_hide_show_correct_fields( question_type ) {
+	var type_fields = qmn_question_type_fields.new_value;
+	if ( type_fields.information ) {
+		jQuery("#question_type_info").text(type_fields.information);
+		jQuery("#question_type_info").show();
+	} else {
+		jQuery("#question_type_info").hide();
+	}
+	if ( type_fields.inputs.question ) {
+		jQuery("#question_name").show();
+	} else {
+		jQuery("#question_name").hide();
+	}
+	if ( type_fields.inputs.answer ) {
+		jQuery("#answer_area").show();
+	} else {
+		jQuery("#answer_area").hide();
+	}
+	if ( type_fields.inputs.correct_info ) {
+		jQuery("#correct_answer_area").show();
+	} else {
+		jQuery("#correct_answer_area").hide();
+	}
+	if ( type_fields.inputs.hint ) {
+		jQuery("#hint_area").show();
+	} else {
+		jQuery("#hint_area").hide();
+	}
+	if ( type_fields.inputs.comments ) {
+		jQuery("#comment_area").show();
+	} else {
+		jQuery("#comment_area").hide();
+	}
+	if ( type_fields.inputs.category ) {
+		jQuery("#category_area").show();
+	} else {
+		jQuery("#category_area").hide();
+	}
+	if ( type_fields.inputs.required ) {
+		jQuery("#required_area").show();
+	} else {
+		jQuery("#required_area").hide();
+	}	
+}
+
 jQuery("#the-list").on('click', '.edit_link', function(event) {
   event.preventDefault();
   var question_array_id = jQuery(this).attr('data-question-id');
@@ -97,6 +147,7 @@ jQuery("#the-list").on('click', '.edit_link', function(event) {
   for (var i = 0; i < questions_list[question_array_id].answers.length; i++) {
     add_answer(questions_list[question_array_id].answers[i].answer,questions_list[question_array_id].answers[i].points,questions_list[question_array_id].answers[i].correct);
   }
+  qmn_hide_show_correct_fields(questions_list[question_array_id].type);
   location.hash = '';
   location.hash = '#question_area';
 });
@@ -173,15 +224,3 @@ jQuery( '#save_question_order' ).click(function() {
   jQuery( '#save_question_order_input' ).val( jQuery( '.widefat tbody' ).sortable("toArray") );
   jQuery( '#save_question_order_form' ).submit();
 });
-
-jQuery('#question_type').onchange(
-	var data = {
-		'action': 'qmn_question_type_change',
-		'question_type': jQuery('#question_type').val()
-	};
-
-	// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
-	$.post(ajaxurl, data, function(response) {
-		alert('Got this from the server: ' + response);
-	});
-);

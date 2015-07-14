@@ -116,26 +116,34 @@ class QMNPluginHelper
 		* @param string $slug The slug of the question type to be stored with question in database
 	  * @return void
 	  */
-	public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_function = null, $save_edit_function = null, $slug = null)
+	public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_args = null, $save_edit_function = null, $slug = null)
 	{
 		if (is_null($slug)) {
 			$slug = strtolower(str_replace( " ", "-", $name));
 		} else {
 			$slug = strtolower(str_replace( " ", "-", $slug));
 		}
-		if ( is_null( $edit_function ) ) {
-			$edit_function = array(
+		if ( is_null( $edit_args ) || !is_array( $edit_args ) ) {
+			$validated_edit_function = array(
 				'inputs' => array(
 					'question',
 					'answer',
 					'hint',
 					'correct_info',
 					'comments',
-					'category'
+					'category',
+					'required'
 				),
 				'information' => '',
 				'extra_inputs' => array(),
 				'function' => ''
+			);
+		} else {
+			$validated_edit_function = array(
+				'inputs' => $edit_args['inputs'],
+				'information' => $edit_args['information'],
+				'extra_inputs' => $edit_args['extra_inputs'],
+				'function' => $edit_args['function']
 			);
 		}
 		if ( is_null( $save_edit_function ) ) {
@@ -146,7 +154,7 @@ class QMNPluginHelper
 			'display' => $display_function,
 			'review' => $review_function,
 			'graded' => $graded,
-			'edit' => $edit_function,
+			'edit' => $validated_edit_function,
 			'save' => $save_edit_function,
 			'slug' => $slug
 		);
@@ -174,25 +182,13 @@ class QMNPluginHelper
 		return $type_array;
 	}
 	
-	public function get_question_type_edit_content() {
-		$selected_type = $_POST["question_type"];
-		$type = array();
-		foreach($this->question_types as $single_type) {
-			if ($single_type["slug"] == $selected_type) {
-				$type = $single_type;
-			}
+	public function get_question_type_edit_fields() {
+		$type_array = array();
+		foreach($this->question_types as $type)
+		{
+			$type_array[$type["slug"] = $type["edit"];
 		}
-		if ( is_array($type["edit"]) && empty($type["edit"]["function"]) ) {
-			return json_encode( $type["edit"] );
-		} elseif (is_array($type["edit"])) {
-			if (function_exists( $type["edit"]["function"] ) ) {
-				call_user_func( $type["edit"]["function"] );
-			}			
-		} else {
-			if ( function_exists( $type["edit"] ) ) {
-				call_user_func( $type["edit"] );
-			}			
-		}
+		return $type_array;
 	}
 
 	/**
