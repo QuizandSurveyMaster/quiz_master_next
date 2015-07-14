@@ -119,6 +119,7 @@ class MLWQuizMasterNext
 			include("php/qmn_addons.php");
 			include("php/qmn_global_settings.php");
 			include("php/qmn_usage_tracking.php");
+			include("php/class-qmn-review-message.php");
 		}
 		include("php/qmn_quiz.php");
 		include("php/qmn_quiz_install.php");
