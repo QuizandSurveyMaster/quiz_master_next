@@ -624,7 +624,6 @@ function mlw_options_questions_tab_content()
 					<legend>Question And Answers</legend>
 					<p id="question_type_info"></p>
 					<?php wp_editor( '', "question_name" ); ?>
-
 					<div id="answer_area">
 						<div class="answer_headers">
 							<div class="answer_number">&nbsp;</div>
