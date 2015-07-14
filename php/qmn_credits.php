@@ -60,6 +60,7 @@ function mlw_generate_about_page()
 			<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
 			<ul class="changelog">
 				<!--
+				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
