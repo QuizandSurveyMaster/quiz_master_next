@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 
    	// constructor
-    function Mlw_Qmn_Leaderboard_Widget() {
-        parent::WP_Widget(false, $name = __('Quiz Master Next Leaderboard Widget', 'quiz-master-next'));
+    function __construct() {
+        parent::__construct(false, $name = __('Quiz Master Next Leaderboard Widget', 'quiz-master-next'));
     }
 
     // widget form creation

@@ -248,6 +248,8 @@ function qmn_get_system_info()
 	$qmn_total_active_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE deleted=0 LIMIT 1" );
 
 	$qmn_sys_info .= "<h3>QMN Information</h3><br />";
+	$qmn_sys_info .= "Initial Version : ".get_option('qmn_original_version')."<br />";
+	$qmn_sys_info .= "Current Version : ".$mlwQuizMasterNext->version."<br />";
 	$qmn_sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
 	$qmn_sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
 	$qmn_sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
