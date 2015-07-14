@@ -163,85 +163,7 @@ class QMNQuizCreator
 			3. %THIRD_PLACE_NAME%-%THIRD_PLACE_SCORE%<br />
 			4. %FOURTH_PLACE_NAME%-%FOURTH_PLACE_SCORE%<br />
 			5. %FIFTH_PLACE_NAME%-%FIFTH_PLACE_SCORE%<br />";
-		$mlw_style_default = "
-				div.mlw_qmn_quiz input[type=radio],
-				div.mlw_qmn_quiz input[type=submit],
-				div.mlw_qmn_quiz label {
-					cursor: pointer;
-				}
-				div.mlw_qmn_quiz input:not([type=submit]):focus,
-				div.mlw_qmn_quiz textarea:focus {
-					background: #eaeaea;
-				}
-				div.mlw_qmn_quiz {
-					text-align: left;
-				}
-				div.quiz_section {
-
-				}
-				.mlw_horizontal_choice
-				{
-					margin-right: 20px;
-				}
-				div.mlw_qmn_timer {
-					position:fixed;
-					top:200px;
-					right:0px;
-					width:130px;
-					color:#00CCFF;
-					border-radius: 15px;
-					background:#000000;
-					text-align: center;
-					padding: 15px 15px 15px 15px
-				}
-				div.mlw_qmn_quiz input[type=submit],
-				a.mlw_qmn_quiz_link
-				{
-					border-radius: 4px;
-					position: relative;
-					background-image: linear-gradient(#fff,#dedede);
-					background-color: #eee;
-					border: #ccc solid 1px;
-					color: #333;
-					text-shadow: 0 1px 0 rgba(255,255,255,.5);
-					box-sizing: border-box;
-					display: inline-block;
-					padding: 7px 7px 7px 7px;
-					margin: auto;
-					font-weight: bold;
-					cursor: pointer;
-				}
-				.mlw_qmn_question
-				{
-					font-weight: bold;
-				}
-				.mlw_qmn_question_number
-				{
-					font-weight: bold;
-				}
-				.mlw_qmn_comment_section_text
-				{
-					font-weight: bold;
-				}
-				.mlw_next
-				{
-					float: right;
-				}
-				.mlw_previous
-				{
-					float: left;
-				}
-				.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
-				  width: 100%;
-				  border-radius: 7px;
-				  padding: 2px 10px;
-				  -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-				  box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-				  border: 1px solid #ccc;
-				}
-				.qmn_page_error_message {
-  				color: red;
-				}";
+		$mlw_style_default = "";
 		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
 		$results = $wpdb->insert(
 			$wpdb->prefix . "mlw_quizzes",
@@ -287,7 +209,7 @@ class QMNQuizCreator
 				'quiz_stye' => $mlw_style_default,
 				'question_numbering' => 0,
 				'quiz_settings' => '',
-				'theme_selected' => 'default',
+				'theme_selected' => 'primary',
 				'last_activity' => date("Y-m-d H:i:s"),
 				'require_log_in' => 0,
 				'require_log_in_text' => 'This quiz is for logged in users only.',

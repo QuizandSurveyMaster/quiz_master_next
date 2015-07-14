@@ -100,7 +100,6 @@ function mlw_options_styling_tab_content()
 				background-color: yellow;
 			}
 		</style>
-		<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
 		<?php
 		foreach($registered_templates as $slug => $template) {
 			?>
@@ -108,6 +107,7 @@ function mlw_options_styling_tab_content()
 			<?php
 		}		
 		?>
+		<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
 		<script>
 			mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
 		</script>
