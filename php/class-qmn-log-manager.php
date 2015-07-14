@@ -143,14 +143,12 @@ class QMN_Log_Manager
    * @param $amount int The amount of logs to return
    * @return bool|array Returns an array of logs or false on error
    */
-  public function get_logs( $type = false, $amount = 0 ) {
+  public function get_logs( $type = false, $amount = 5 ) {
 		$query_args = array(
 			'post_parent'    => 0,
 			'post_type'      => 'qmn_log',
-			'posts_per_page' => 10,
-			'post_status'    => 'publish',
-			'paged'          => get_query_var( 'paged' ),
-			'log_type'       => $type
+			'posts_per_page' => intval($amount),
+			'post_status'    => 'publish'
 		);
 		if( $type && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
