@@ -56,11 +56,16 @@ function mlw_generate_about_page()
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" style="display: none;">
-		<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
-		<ul>
-			<li>* Bug Fix: Fixed bug that caused issues with validation<a href="https://github.com/fpcorso/quiz_master_next/issues/254">Github Issue #254</a></li>
-			<li>* Bug Fix: Fixed a rare permalink issue<a href="https://github.com/fpcorso/quiz_master_next/issues/253">Github Issue #253</a></li>
-		</ul>
+			<h2>Changelog</h2>
+			<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
+			<ul class="changelog">
+				<!--
+				<li class="add"><div class="two">Add</div>Some feature was added</li>
+				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
+				-->
+				<li>* Bug Fix: Fixed bug that caused issues with validation<a href="https://github.com/fpcorso/quiz_master_next/issues/254">Github Issue #254</a></li>
+				<li>* Bug Fix: Fixed a rare permalink issue<a href="https://github.com/fpcorso/quiz_master_next/issues/253">Github Issue #253</a></li>
+			</ul>
 		</div>
 	</div>
 <?php

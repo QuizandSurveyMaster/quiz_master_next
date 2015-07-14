@@ -36,3 +36,39 @@ div.mlw_qmn_icon_wrap
   -khtml-border-radius: 20px;
   border-radius: 20px;
 }
+
+ul.changelog li div.two{
+  width: 70%;
+  float: left;
+  display: inline-block;
+  height: 25px;
+  margin-right: 20px;
+  background: #D9E0E4;
+  text-align: center;
+  line-height: 25px;
+}
+
+ul.changelog li.fixed > div {
+  background:#F0FFE1;
+  color: #444;
+  border-right:1px solid #5cb85c;
+  width: 20%;
+}
+ul.changelog li.fixed div.two:before{
+  content: "\f147";
+  font-family: "dashicons";
+  color:#5CB85C;
+  margin-right: 5px;
+}
+ul.changelog li.add > div{
+  background:#FFEED0;
+  color: #444;
+  border-right:1px solid #EFA537;
+  width: 20%;
+}
+ul.changelog li.add div.two:before{
+  content: "\f155";
+  font-family: "dashicons";
+  color:#EFA537;
+  margin-right: 5px;
+}
