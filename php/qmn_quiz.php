@@ -329,6 +329,7 @@ class QMNQuizManager
 	public function display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
 	{
 		global $qmn_allowed_visit;
+		global $mlwQuizMasterNext;
 		$quiz_display = '';
 		$quiz_display = apply_filters('qmn_begin_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		if (!$qmn_allowed_visit)
@@ -363,7 +364,18 @@ class QMNQuizManager
 		}
 		else
 		{
-			echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$qmn_quiz_options->theme_selected)."' rel='stylesheet' />";
+			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
+			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
+			// If all fails, then load custom styling instead
+			if ( $registered_template && file_exists( $registered_template ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', $registered_template );
+			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template, __FILE__ ) ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template, __FILE__ ) );
+			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template );
+			} else {
+				echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
+			}
 		}
 
 		global $qmn_total_questions;

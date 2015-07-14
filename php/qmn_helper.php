@@ -49,6 +49,14 @@ class QMNPluginHelper
 	 * @since 4.0.0
 	 */
 	public $question_types = array();
+	
+	/**
+	 * Template array
+	 * 
+	 * @var array
+	 * @since 4.5.0
+	 */
+	public $quiz_templates = array();
 
 	/**
 	  * Main Construct Function
@@ -61,6 +69,38 @@ class QMNPluginHelper
 	public function __construct()
 	{
 		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
+	}
+	
+	/**
+	 * Registers Quiz Templates
+	 * 
+	 * @since 4.5.0
+	 * @param $name String of the name of the template
+	 * @param $file_path String of the path to the css file
+	 */
+	public function register_quiz_template( $name, $file_path ) {
+		$slug = strtolower(str_replace( " ", "-", $name));
+		$this->quiz_templates[$slug] = array(
+			$name,
+			$file_path
+		);
+	}
+	
+	/**
+	 * Returns Template Array
+	 * 
+	 * @since 4.5.0
+	 * @param $name String of the name of the template. If left empty, will return all templates
+	 * @return array The array of quiz templates
+	 */
+	public function get_quiz_templates( $slug = null ) {
+		if ( is_null( $slug ) ) {
+			return $this->quiz_templates;
+		} elseif ( isset( $this->quiz_templates[$slug] ) ) {
+			return $this->quiz_templates[$slug];
+		} else {
+			return false;
+		}
 	}
 
 	/**
