@@ -42,7 +42,7 @@ function mlw_options_tools_tab_content()
 			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
 			$insert = "INSERT INTO " . $table_name .
 				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number $mlw_reset_stats_quiz_id' , '" . date("h:i:s A m/d/Y") . "')";
 			$results = $wpdb->query( $insert );
 		}
 		else
