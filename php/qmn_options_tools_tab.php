@@ -24,12 +24,12 @@ function mlw_options_tools_tab_content()
 {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
+	$quiz_id = intval($_GET["quiz_id"]);
 	//Update Quiz Table
 	if (isset($_POST["mlw_reset_quiz_stats"]) && $_POST["mlw_reset_quiz_stats"] == "confirmation")
 	{
 		//Variables from reset stats form
-		$mlw_reset_stats_quiz_id = $_POST["mlw_reset_quiz_id"];
+		$mlw_reset_stats_quiz_id = intval($_POST["mlw_reset_quiz_id"]);
 		$mlw_reset_update_sql = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views=0, quiz_taken=0, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_reset_stats_quiz_id;
 		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
 		if ($mlw_reset_sql_results != false)
@@ -42,7 +42,7 @@ function mlw_options_tools_tab_content()
 			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
 			$insert = "INSERT INTO " . $table_name .
 				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
+				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number $mlw_reset_stats_quiz_id' , '" . date("h:i:s A m/d/Y") . "')";
 			$results = $wpdb->query( $insert );
 		}
 		else
@@ -54,7 +54,7 @@ function mlw_options_tools_tab_content()
 	if (isset($_GET["quiz_id"]))
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
-		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $quiz_id));
 	}
 	?>
 	<div id="tabs-8" class="mlw_tab_content">
