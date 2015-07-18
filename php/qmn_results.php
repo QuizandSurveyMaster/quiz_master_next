@@ -32,7 +32,7 @@ function mlw_generate_quiz_results()
 			),
 			array( '%d' )
 		);
-		if ($mlw_delete_results_results != false)
+		if ( $results )
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your results has been deleted successfully.','quiz-master-next'), 'success');
 
@@ -65,20 +65,19 @@ function mlw_generate_quiz_results()
 		if ( is_array( $_POST["delete_results"] ) ) {
 			//Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
 			foreach($_POST["delete_results"] as $result) {
-				//Check to make sure the result is an int
-				if ( is_int( $result ) ) {
-					$wpdb->update(
-						$wpdb->prefix."mlw_results",
-						array(
-							'deleted' => 1,
-						),
-						array( 'result_id' => $result ),
-						array(
-							'%d'
-						),
-						array( '%d' )
-					);
-				}
+				//Santize by ensuring the value is an int
+				$result_id = intval( $result );
+				$wpdb->update(
+					$wpdb->prefix."mlw_results",
+					array(
+						'deleted' => 1,
+					),
+					array( 'result_id' => $result_id ),
+					array(
+						'%d'
+					),
+					array( '%d' )
+				);
 			}
 			//Insert Action Into Audit Trail
 			global $current_user;
@@ -100,7 +99,7 @@ function mlw_generate_quiz_results()
 	}
 
 	global $wpdb;
-	$mlw_qmn_table_limit = 30;
+	$mlw_qmn_table_limit = 40;
 	$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'" );
 
 	if( isset($_GET['mlw_result_page'] ) )

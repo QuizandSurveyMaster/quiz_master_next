@@ -29,29 +29,29 @@ function mlw_options_text_tab_content()
 	if ( isset($_POST["save_templates"]) && $_POST["save_templates"] == "confirmation")
 	{
 		//Variables for save templates form
-		$mlw_before_message = htmlspecialchars($_POST["mlw_quiz_before_message"], ENT_QUOTES);
-		$mlw_qmn_message_end = htmlspecialchars($_POST["message_end_template"], ENT_QUOTES);
-		$mlw_user_tries_text = htmlspecialchars($_POST["mlw_quiz_total_user_tries_text"], ENT_QUOTES);
-		$mlw_submit_button_text = sanitize_text_field( $_POST["mlw_submitText"] );
-		$mlw_name_field_text = sanitize_text_field( $_POST["mlw_nameText"] );
-		$mlw_business_field_text = sanitize_text_field( $_POST["mlw_businessText"] );
-		$mlw_email_field_text = sanitize_text_field( $_POST["mlw_emailText"] );
-		$mlw_phone_field_text = sanitize_text_field( $_POST["mlw_phoneText"] );
-		$mlw_before_comments = htmlspecialchars($_POST["mlw_quiz_before_comments"], ENT_QUOTES);
-		$mlw_comment_field_text = htmlspecialchars($_POST["mlw_commentText"], ENT_QUOTES);
-		$mlw_require_log_in_text = htmlspecialchars($_POST["mlw_require_log_in_text"], ENT_QUOTES);
-		$mlw_scheduled_timeframe_text = htmlspecialchars($_POST["mlw_scheduled_timeframe_text"], ENT_QUOTES);
-		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
+		$mlw_before_message = htmlspecialchars( stripslashes( $_POST["mlw_quiz_before_message"] ), ENT_QUOTES);
+		$mlw_qmn_message_end = htmlspecialchars( stripslashes( $_POST["message_end_template"] ), ENT_QUOTES);
+		$mlw_user_tries_text = htmlspecialchars( stripslashes( $_POST["mlw_quiz_total_user_tries_text"] ), ENT_QUOTES);
+		$mlw_submit_button_text = sanitize_text_field( stripslashes( $_POST["mlw_submitText"] ) );
+		$mlw_name_field_text = sanitize_text_field( stripslashes( $_POST["mlw_nameText"] ) );
+		$mlw_business_field_text = sanitize_text_field( stripslashes( $_POST["mlw_businessText"] ) );
+		$mlw_email_field_text = sanitize_text_field( stripslashes( $_POST["mlw_emailText"] ) );
+		$mlw_phone_field_text = sanitize_text_field( stripslashes( $_POST["mlw_phoneText"] ) );
+		$mlw_before_comments = htmlspecialchars(stripslashes( $_POST["mlw_quiz_before_comments"] ), ENT_QUOTES);
+		$mlw_comment_field_text = htmlspecialchars(stripslashes( $_POST["mlw_commentText"] ), ENT_QUOTES);
+		$mlw_require_log_in_text = htmlspecialchars(stripslashes( $_POST["mlw_require_log_in_text"] ), ENT_QUOTES);
+		$mlw_scheduled_timeframe_text = htmlspecialchars(stripslashes( $_POST["mlw_scheduled_timeframe_text"] ), ENT_QUOTES);
+		$mlw_limit_total_entries_text = htmlspecialchars(stripslashes( $_POST["mlw_limit_total_entries_text"] ), ENT_QUOTES);
 		$mlw_qmn_pagination_field = serialize( array(
-			sanitize_text_field( $_POST["pagination_prev_text"] ),
-			sanitize_text_field( $_POST["pagination_next_text"] )
+			sanitize_text_field( stripslashes( $_POST["pagination_prev_text"] ) ),
+			sanitize_text_field( stripslashes( $_POST["pagination_next_text"] ) )
 		));
 		$qmn_social_media_text = serialize( array(
-			'twitter' => wp_kses_post( $_POST["mlw_quiz_twitter_text_template"] ),
-			'facebook' => wp_kses_post( $_POST["mlw_quiz_facebook_text_template"] )
+			'twitter' => wp_kses_post( stripslashes( $_POST["mlw_quiz_twitter_text_template"] ) ),
+			'facebook' => wp_kses_post( stripslashes( $_POST["mlw_quiz_facebook_text_template"] ) )
 		));
 
-		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
+		$mlw_question_answer_template = htmlspecialchars(stripslashes( $_POST["mlw_quiz_question_answer_template"] ), ENT_QUOTES);
 		$quiz_id = intval($_POST["quiz_id"]);
 
 		$results = $wpdb->update(

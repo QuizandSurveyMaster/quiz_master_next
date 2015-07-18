@@ -31,8 +31,8 @@ function mlw_options_certificate_tab_content()
 	if (isset($_POST["save_certificate_options"]) && $_POST["save_certificate_options"] == "confirmation")
 	{
 		$mlw_certificate_id = intval($_POST["certificate_quiz_id"]);
-		$mlw_certificate_title = sanitize_text_field( $_POST["certificate_title"] );
-		$mlw_certificate_text = wp_kses_post( $_POST["certificate_template"] );
+		$mlw_certificate_title = sanitize_text_field( stripslashes( $_POST["certificate_title"] ) );
+		$mlw_certificate_text = wp_kses_post(  stripslashes( $_POST["certificate_template"] ) );
 		$mlw_certificate_logo = esc_url_raw( $_POST["certificate_logo"] );
 		$mlw_certificate_background = esc_url_raw( $_POST["certificate_background"] );
 		$mlw_enable_certificates = intval($_POST["enableCertificates"]);

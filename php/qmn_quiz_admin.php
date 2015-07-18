@@ -20,7 +20,7 @@ function mlw_generate_quiz_admin()
 	//Create new quiz
 	if ( isset( $_POST["create_quiz"] ) && $_POST["create_quiz"] == "confirmation" )
 	{
-		$quiz_name = htmlspecialchars($_POST["quiz_name"], ENT_QUOTES);
+		$quiz_name = htmlspecialchars(stripslashes( $_POST["quiz_name"] ), ENT_QUOTES);
 		$mlwQuizMasterNext->quizCreator->create_quiz($quiz_name);
 	}
 

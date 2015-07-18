@@ -153,8 +153,8 @@ function mlw_options_emails_tab_content()
 		$mlw_qmn_email_admin_total = intval($_POST["mlw_email_admin_total"]);
 		$mlw_send_user_email = intval( $_POST["sendUserEmail"] );
 		$mlw_send_admin_email = intval( $_POST["sendAdminEmail"] );
-		$mlw_admin_email = sanitize_text_box( $_POST["adminEmail"] );
-		$mlw_email_from_text = sanitize_text_box( $_POST["emailFromText"] );
+		$mlw_admin_email = sanitize_text_field( $_POST["adminEmail"] );
+		$mlw_email_from_text = sanitize_text_field( $_POST["emailFromText"] );
 
 		//Create new array
 		$i = 1;
