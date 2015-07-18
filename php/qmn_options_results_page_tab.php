@@ -57,11 +57,19 @@ function mlw_options_results_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Landing Page Has Been Created For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "New Results Page Has Been Created For Quiz Number $mlw_qmn_landing_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -97,11 +105,19 @@ function mlw_options_results_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Landing Pages Have Been Saved For Quiz Number ".$mlw_qmn_landing_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Results Pages Have Been Saved For Quiz Number $mlw_qmn_landing_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

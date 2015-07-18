@@ -430,7 +430,7 @@ class QMNQuizManager
                 else
                 {
                     $section_display .= "<script> var firstPage = false; </script>";
-										
+
                 }
 		return $section_display;
 	}
@@ -593,11 +593,11 @@ class QMNQuizManager
 			echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$qmn_quiz_options->theme_selected)."' rel='stylesheet' />";
 		}
 
-		$mlw_user_name = isset($_POST["mlwUserName"]) ? $_POST["mlwUserName"] : 'None';
-		$mlw_user_comp = isset($_POST["mlwUserComp"]) ? $_POST["mlwUserComp"] : 'None';
-		$mlw_user_email = isset($_POST["mlwUserEmail"]) ? $_POST["mlwUserEmail"] : 'None';
-		$mlw_user_phone = isset($_POST["mlwUserPhone"]) ? $_POST["mlwUserPhone"] : 'None';
-		$mlw_qmn_timer = isset($_POST["timer"]) ? $_POST["timer"] : 0;
+		$mlw_user_name = isset($_POST["mlwUserName"]) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None';
+		$mlw_user_comp = isset($_POST["mlwUserComp"]) ? sanitize_text_field( $_POST["mlwUserComp"] ) : 'None';
+		$mlw_user_email = isset($_POST["mlwUserEmail"]) ? sanitize_text_field( $_POST["mlwUserEmail"] ) : 'None';
+		$mlw_user_phone = isset($_POST["mlwUserPhone"]) ? sanitize_text_field( $_POST["mlwUserPhone"] ) : 'None';
+		$mlw_qmn_timer = isset($_POST["timer"]) ? intval( $_POST["timer"] ) : 0;
 		$qmn_array_for_variables['user_name'] = $mlw_user_name;
 		$qmn_array_for_variables['user_business'] = $mlw_user_comp;
 		$qmn_array_for_variables['user_email'] = $mlw_user_email;
@@ -740,12 +740,9 @@ class QMNQuizManager
 						$mlw_user_text = $results_array["user_text"];
 						$mlw_correct_text = $results_array["correct_text"];
 
-						if (isset($_POST["mlwComment".$mlw_question->question_id]))
-						{
-							$mlw_qm_question_comment = $_POST["mlwComment".$mlw_question->question_id];
-						}
-						else
-						{
+						if ( isset( $_POST["mlwComment".$mlw_question->question_id] ) ) {
+							$mlw_qm_question_comment = htmlspecialchars( stripslashes( $_POST["mlwComment".$mlw_question->question_id] ), ENT_QUOTES );
+						} else {
 							$mlw_qm_question_comment = "";
 						}
 						$question_text = $mlw_question->question_name;
@@ -753,7 +750,7 @@ class QMNQuizManager
 						{
 							$question_text = $results_array["question_text"];
 						}
-						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($question_text, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), htmlspecialchars(stripslashes($mlw_qm_question_comment), ENT_QUOTES), "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
+						$mlw_qmn_answer_array[] = apply_filters('qmn_answer_array', array($question_text, htmlspecialchars($mlw_user_text, ENT_QUOTES), htmlspecialchars($mlw_correct_text, ENT_QUOTES), $mlw_qm_question_comment, "correct" => $qmn_correct, "id" => $mlw_question->question_id, "points" => $qmn_answer_points, "category" => $mlw_question->category), $qmn_quiz_options, $qmn_array_for_variables);
 					}
 					break;
 				}
@@ -795,11 +792,10 @@ class QMNQuizManager
 	public function check_comment_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
 		$qmn_quiz_comments = "";
-		if (isset($_POST["mlwQuizComments"]))
-		{
-			$qmn_quiz_comments = $_POST["mlwQuizComments"];
+		if ( isset( $_POST["mlwQuizComments"] ) ) {
+			$qmn_quiz_comments = esc_textarea( stripslashes( $_POST["mlwQuizComments"] ) );
 		}
-		return apply_filters('qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables);
+		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
 	}
 
 	/**

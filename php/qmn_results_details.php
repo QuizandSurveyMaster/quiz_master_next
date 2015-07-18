@@ -59,7 +59,7 @@ function qmn_generate_results_details_tab()
 	echo "<br><br>";
 	$mlw_result_id = intval($_GET["result_id"]);
 	global $wpdb;
-	$mlw_results_data = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE result_id=".intval($mlw_result_id));
+	$mlw_results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE result_id=%d", $mlw_result_id ) );
 
 	$previous_results = $wpdb->get_var("SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MAX(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id < ".$mlw_result_id.")");
 	$next_results = $wpdb->get_var("SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MIN(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id > ".$mlw_result_id.")");

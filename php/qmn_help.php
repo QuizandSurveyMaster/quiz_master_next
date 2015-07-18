@@ -3,12 +3,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
 * This function generates the help page.
-* 
+*
 * @return void
 * @since 4.4.0
 */
 function mlw_generate_help_page()
 {
+	if ( !current_user_can('moderate_comments') )
+	{
+		return;
+	}
 	///Creates the widgets
 	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qmn_documentation_meta_box_content", "meta_box_help");
 	add_meta_box("wpss_mrts", __('Support', 'quiz-master-next'), "qmn_support_meta_box_content", "meta_box_support");
@@ -36,8 +40,8 @@ function mlw_generate_help_page()
 }
 
 /**
-* This function creates the text that is displayed on the help page. 
-* 
+* This function creates the text that is displayed on the help page.
+*
 * @param type description
 * @return void
 * @since 4.4.0
@@ -58,7 +62,7 @@ function qmn_documentation_meta_box_content()
 
 /**
 * This function creates the content that is displayed on the help page.
-* 
+*
 * @return void
 * @since 4.4.0
 */
@@ -66,31 +70,47 @@ function qmn_support_meta_box_content()
 {
 	$quiz_master_email_message = "";
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
-	if(isset($_POST["support_email"]) && $_POST["support_email"] == 'confirmation')
+	if ( isset( $_POST["support_email"] ) && wp_verify_nonce( $_POST['send_support_ticket_nonce'], 'send_support_ticket') )
 	{
-		$user_name = $_POST["username"];
-		$user_email = $_POST["email"];
-		$user_message = $_POST["message"];
-		$user_quiz_url = $_POST["quiz_url"];
-		$current_user = wp_get_current_user();
-		$mlw_site_info = qmn_get_system_info();
-		$mlw_message = $user_message."<br> Version: ".$mlw_quiz_version."<br> Quiz URL Provided: ".$user_quiz_url."<br> User ".$current_user->display_name." from ".$current_user->user_email."<br> Wordpress Info: ".$mlw_site_info;
-		$response = wp_remote_post( "http://mylocalwebstop.com/contact-us/", array(
-			'method' => 'POST',
-			'timeout' => 45,
-			'redirection' => 5,
-			'httpversion' => '1.0',
-			'blocking' => true,
-			'headers' => array(),
-			'body' => array( 'mlwUserName' => $user_name, 'mlwUserComp' => '', 'mlwUserEmail' => $user_email, 'question1' => 'Email', 'question63' => 'Quiz Master Next', 'question2' => $mlw_message, 'qmn_question_list' => '1Q63Q2Q', 'complete_quiz' => 'confirmation', 'qmn_quiz_id' => '1' ),
-			'cookies' => array()
-		  )
-		);
-		if ( is_wp_error( $response ) ) {
-		   $error_message = $response->get_error_message();
-		   $quiz_master_email_message = "Something went wrong: $error_message";
+		//These variables are not being be used in this site, they are being sent back to my open a support ticket form.
+		$user_name = sanitize_text_field( $_POST["username"] );
+		$user_email = sanitize_email( $_POST["email"] );
+		$user_message = esc_textarea( $_POST["message"] );
+		$user_quiz_url = esc_url_raw( $_POST["quiz_url"] );
+		if ( !is_email( $user_email ) ) {
+			$quiz_master_email_message = "Invalid email address";
 		} else {
-		   $quiz_master_email_message = "**Message Sent**";
+			$current_user = wp_get_current_user();
+			$mlw_site_info = qmn_get_system_info();
+			$mlw_message = "$user_message<br> Version: $mlw_quiz_version<br> Quiz URL Provided: $user_quiz_url<br> User ".$current_user->display_name." from ".$current_user->user_email."<br> Wordpress Info: $mlw_site_info";
+			$response = wp_remote_post( "http://quizmasternext.com/contact-us/", array(
+				'method' => 'POST',
+				'timeout' => 45,
+				'redirection' => 5,
+				'httpversion' => '1.0',
+				'blocking' => true,
+				'headers' => array(),
+				'body' => array(
+					'mlwUserName' => $user_name,
+					'mlwUserComp' => '',
+					'mlwUserEmail' => $user_email,
+					'question3' => 'Other',
+					'question72' => 'No',
+					'question2' => $mlw_message,
+					'qmn_question_list' => '3Q72Q2Q',
+					'total_questions' => 3,
+					'complete_quiz' => 'confirmation',
+					'qmn_quiz_id' => '1'
+				),
+				'cookies' => array()
+			  )
+			);
+			if ( is_wp_error( $response ) ) {
+			   $error_message = $response->get_error_message();
+			   $quiz_master_email_message = "Something went wrong: $error_message";
+			} else {
+			   $quiz_master_email_message = "**Message Sent**";
+			}
 		}
 	}
 	?>
@@ -126,56 +146,29 @@ function qmn_support_meta_box_content()
 		}
 	</script>
 	<div class='quiz_email_support'>
-	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?page=mlw_quiz_help" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
-	<input type='hidden' name='support_email' value='confirmation' />
-	<table>
-	<tr>
-	<td>If there is something you would like to suggest to add or even if you just want
-	to let me know if you like the plugin or not, feel free to use the support ticket form below.</td>
-	</tr>
-	<tr>
-	<td><span name='mlw_support_message' id='mlw_support_message' style="color: red;"><?php echo $quiz_master_email_message; ?></span></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Name (Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='username' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Email (Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='email' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>URL To Quiz (Not Required): </span></td>
-	</tr>
-	<tr>
-	<td><input type='text' name='quiz_url' value='' /></td>
-	</tr>
-	<tr>
-	<td align='left'><span style='font-weight:bold;';>Message (Required): </span></td>
-	</tr>
-	<tr>
-	<td align='left'><TEXTAREA NAME="message" COLS=40 ROWS=6></TEXTAREA></td>
-	</tr>
-	<tr>
-	<td align='left'><input type='submit' class="button-primary" value='Submit Support Ticket' /></td>
-	</tr>
-	<tr>
-	<td align='left'></td>
-	</tr>
-	</table>
-	</form>
-	<p>Disclaimer: In order to better assist you, this form will also send the system info from below with your message.</p>
+		<form action="" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
+			<input type='hidden' name='support_email' value='confirmation' />
+			<p>We would love to hear from you. Fill out the form below and we will contact you shortly.</p>
+			<p name='mlw_support_message' id='mlw_support_message'><?php echo $quiz_master_email_message; ?></p>
+			<label>Name (Required):</label><br />
+			<input type='text' name='username' value='' /><br />
+			<label>Email (Required):</label><br />
+			<input type='text' name='email' value='' /><br />
+			<label>URL To Quiz (Not Required):</label><br />
+			<input type='text' name='quiz_url' value='' /><br />
+			<label>Message (Required):</label><br />
+			<textarea name="message"></textarea><br />
+			<?php wp_nonce_field('send_support_ticket','send_support_ticket_nonce'); ?>
+			<input type='submit' class="button-primary" value='Submit Support Ticket' />
+		</form>
+		<p>Disclaimer: In order to better assist you, this form will also send the system info from below with your message.</p>
 	</div>
 	<?php
 }
 
 /**
 * This function echoes out the system info for the user.
-* 
+*
 * @return void
 * @since 4.4.0
 */
@@ -186,8 +179,8 @@ function qmn_system_meta_box_content()
 
 /**
 * This function gets the content that is in the system info
-* 
-* @return return $qmn_sys_info This variable contains all of the system info from the admins server. 
+*
+* @return return $qmn_sys_info This variable contains all of the system info from the admins server.
 * @since 4.4.0
 */
 function qmn_get_system_info()

@@ -373,11 +373,19 @@ class QMNQuizCreator
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Quiz Has Been Created: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "New Quiz Has Been Created: $quiz_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 			do_action('qmn_quiz_created', $new_quiz);
 		}
 		else
@@ -440,11 +448,19 @@ class QMNQuizCreator
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Has Been Deleted: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Quiz Has Been Deleted: $quiz_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -482,11 +498,19 @@ class QMNQuizCreator
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Name Has Been Edited: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Quiz Name Has Been Edited: $quiz_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -639,11 +663,19 @@ class QMNQuizCreator
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Quiz Has Been Created: ".$quiz_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "New Quiz Has Been Created: $quiz_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 			do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 		}
 		else
@@ -653,7 +685,7 @@ class QMNQuizCreator
 		if ($is_duplicating_questions)
 		{
 			$table_name = $wpdb->prefix."mlw_questions";
-			$mlw_current_questions = $wpdb->get_results("SELECT * FROM $table_name WHERE deleted=0 AND quiz_id=".$quiz_id);
+			$mlw_current_questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $table_name WHERE deleted=0 AND quiz_id=%d", $quiz_id ) );
 			foreach ($mlw_current_questions as $mlw_question)
 			{
 				$question_results = $wpdb->insert(

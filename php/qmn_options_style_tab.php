@@ -15,7 +15,7 @@ function qmn_settings_style_tab()
 add_action("plugins_loaded", 'qmn_settings_style_tab', 5);
 
 /**
-* Adds the Style tab content to the tab. 
+* Adds the Style tab content to the tab.
 *
 * @return void
 * @since 4.4.0
@@ -28,9 +28,9 @@ function mlw_options_styling_tab_content()
 	if (isset($_POST["save_style_options"]) && $_POST["save_style_options"] == "confirmation")
 	{
 		//Function Variables
-		$mlw_qmn_style_id = intval($_POST["style_quiz_id"]);
-		$mlw_qmn_theme = $_POST["save_quiz_theme"];
-		$mlw_qmn_style = htmlspecialchars(stripslashes($_POST["quiz_css"]), ENT_QUOTES);
+		$mlw_qmn_style_id = intval( $_POST["style_quiz_id"] );
+		$mlw_qmn_theme = sanitize_text_field( $_POST["save_quiz_theme"] );
+		$mlw_qmn_style = htmlspecialchars( stripslashes( $_POST["quiz_css"] ), ENT_QUOTES );
 
 		//Save the new css
 		$mlw_save_stle_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_style, $mlw_qmn_theme, $mlw_qmn_style_id ) );
@@ -41,11 +41,19 @@ function mlw_options_styling_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Styles Have Been Saved For Quiz Number ".$mlw_qmn_style_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Styles Have Been Saved For Quiz Number $mlw_qmn_style_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

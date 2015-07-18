@@ -35,28 +35,23 @@ function mlw_options_questions_tab_content()
 	$quiz_id = $_GET["quiz_id"];
 
 	//Edit question
-	if ( isset($_POST["question_submission"]) && $_POST["question_submission"] == "edit_question")
-	{
+	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "edit_question" ) {
 		//Variables from edit question form
 		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
-		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
-		$mlw_edit_question_id = intval($_POST["question_id"]);
-		$mlw_edit_question_type = $_POST["question_type"];
-		$edit_comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
-		$edit_hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
-		$edit_question_order = intval($_POST["new_question_order"]);
-		$mlw_edit_answer_total = intval($_POST["new_question_answer_total"]);
+		$edit_question_answer_info = htmlspecialchars(stripslashes( $_POST["correct_answer_info"]), ENT_QUOTES );
+		$mlw_edit_question_id = intval( $_POST["question_id"] ) ;
+		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
+		$edit_comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
+		$edit_hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
+		$edit_question_order = intval( $_POST["new_question_order"] );
+		$mlw_edit_answer_total = intval( $_POST["new_question_answer_total"] );
 
-		if (isset($_POST["new_category"]))
-		{
-			$qmn_edit_category = $_POST["new_category"];
-			if ($qmn_edit_category == 'new_category')
-			{
-				$qmn_edit_category = $_POST["new_new_category"];
+		if ( isset( $_POST["new_category"] ) ) {
+			$qmn_edit_category = sanitize_text_field( $_POST["new_category"] );
+			if ( $qmn_edit_category == 'new_category' ) {
+				$qmn_edit_category = sanitize_text_field( $_POST["new_new_category"] );
 			}
-		}
-		else
-		{
+		} else {
 			$qmn_edit_category = '';
 		}
 		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
@@ -91,8 +86,8 @@ function mlw_options_questions_tab_content()
 			}
 			$i++;
 		}
-		$mlw_qmn_new_answer_array = serialize($mlw_qmn_new_answer_array);
-		$quiz_id = $_POST["quiz_id"];
+		$mlw_qmn_new_answer_array = serialize( $mlw_qmn_new_answer_array );
+		$quiz_id = intval( $_POST["quiz_id"] );
 
 		$results = $wpdb->update(
 			$wpdb->prefix . "mlw_questions",
@@ -121,18 +116,26 @@ function mlw_options_questions_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($results != false)
+		if ($results !== false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been updated successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Question Has Been Edited: ".$edit_question_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Has Been Edited: $edit_question_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -140,14 +143,23 @@ function mlw_options_questions_tab_content()
 		}
 	}
 	//Delete question from quiz
-	if ( isset($_POST["delete_question"]) && $_POST["delete_question"] == "confirmation")
+	if ( isset( $_POST["delete_question"] ) && $_POST["delete_question"] == "confirmation")
 	{
 		//Variables from delete question form
-		$mlw_question_id = intval($_POST["delete_question_id"]);
-		$quiz_id = $_POST["quiz_id"];
+		$mlw_question_id = intval( $_POST["delete_question_id"] );
+		$quiz_id = intval( $_POST["quiz_id"] );
 
-		$update = "UPDATE " . $wpdb->prefix . "mlw_questions" . " SET deleted=1 WHERE question_id=".$mlw_question_id;
-		$results = $wpdb->query( $update );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_questions",
+			array(
+				'deleted' => 1
+			),
+			array( 'question_id' => $mlw_question_id ),
+			array(
+				'%d'
+			),
+			array( '%d' )
+		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been deleted successfully.', 'quiz-master-next'), 'success');
@@ -155,11 +167,19 @@ function mlw_options_questions_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Question Has Been Deleted: ".$mlw_question_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Has Been Deleted: $mlw_question_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -168,11 +188,10 @@ function mlw_options_questions_tab_content()
 	}
 
 	//Duplicate Questions
-	if ( isset($_POST["duplicate_question"]) && $_POST["duplicate_question"] == "confirmation")
-	{
+	if ( isset( $_POST["duplicate_question"] ) && $_POST["duplicate_question"] == "confirmation") {
 		//Variables from delete question form
-		$mlw_question_id = intval($_POST["duplicate_question_id"]);
-		$quiz_id = $_POST["quiz_id"];
+		$mlw_question_id = intval( $_POST["duplicate_question_id"] );
+		$quiz_id = intval( $_POST["quiz_id"] );
 
 		$mlw_original = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE question_id=%d", $mlw_question_id ), ARRAY_A );
 
@@ -239,11 +258,19 @@ function mlw_options_questions_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Question Has Been Duplicated: ".$mlw_question_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Has Been Duplicated: $mlw_question_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -252,27 +279,22 @@ function mlw_options_questions_tab_content()
 	}
 
 	//Submit new question into database
-	if ( isset($_POST["question_submission"]) && $_POST["question_submission"] == "new_question")
-	{
+	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "new_question") {
 		//Variables from new question form
 		$question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
-		$question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
-		$question_type = $_POST["question_type"];
-		$comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
-		$hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
-		$new_question_order = intval($_POST["new_question_order"]);
-		$mlw_answer_total = intval($_POST["new_question_answer_total"]);
+		$question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
+		$question_type = sanitize_text_field( $_POST["question_type"] );
+		$comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
+		$hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
+		$new_question_order = intval( $_POST["new_question_order"] );
+		$mlw_answer_total = intval( $_POST["new_question_answer_total"] );
 
-		if (isset($_POST['new_category']))
-		{
-			$qmn_category = $_POST["new_category"];
-			if ($qmn_category == 'new_category')
-			{
-				$qmn_category = $_POST["new_new_category"];
+		if ( isset( $_POST['new_category'] ) ) {
+			$qmn_category = sanitize_text_field( $_POST["new_category"] );
+			if ($qmn_category == 'new_category') {
+				$qmn_category = sanitize_text_field( $_POST["new_new_category"] );
 			}
-		}
-		else
-		{
+		} else {
 			$qmn_category = '';
 		}
 		$mlw_settings = array();
@@ -295,7 +317,7 @@ function mlw_options_questions_tab_content()
 			$i++;
 		}
 		$mlw_qmn_new_answer_array = serialize($mlw_qmn_new_answer_array);
-		$quiz_id = $_POST["quiz_id"];
+		$quiz_id = intval( $_POST["quiz_id"] );
 		$results = $wpdb->insert(
 						$wpdb->prefix."mlw_questions",
 						array(
@@ -332,11 +354,19 @@ function mlw_options_questions_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Question Has Been Added: ".$question_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Has Been Added: $question_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

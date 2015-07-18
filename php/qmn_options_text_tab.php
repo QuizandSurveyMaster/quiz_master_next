@@ -32,24 +32,71 @@ function mlw_options_text_tab_content()
 		$mlw_before_message = htmlspecialchars($_POST["mlw_quiz_before_message"], ENT_QUOTES);
 		$mlw_qmn_message_end = htmlspecialchars($_POST["message_end_template"], ENT_QUOTES);
 		$mlw_user_tries_text = htmlspecialchars($_POST["mlw_quiz_total_user_tries_text"], ENT_QUOTES);
-		$mlw_submit_button_text = htmlspecialchars($_POST["mlw_submitText"], ENT_QUOTES);
-		$mlw_name_field_text = htmlspecialchars($_POST["mlw_nameText"], ENT_QUOTES);
-		$mlw_business_field_text = htmlspecialchars($_POST["mlw_businessText"], ENT_QUOTES);
-		$mlw_email_field_text = htmlspecialchars($_POST["mlw_emailText"], ENT_QUOTES);
-		$mlw_phone_field_text = htmlspecialchars($_POST["mlw_phoneText"], ENT_QUOTES);
+		$mlw_submit_button_text = sanitize_text_field( $_POST["mlw_submitText"] );
+		$mlw_name_field_text = sanitize_text_field( $_POST["mlw_nameText"] );
+		$mlw_business_field_text = sanitize_text_field( $_POST["mlw_businessText"] );
+		$mlw_email_field_text = sanitize_text_field( $_POST["mlw_emailText"] );
+		$mlw_phone_field_text = sanitize_text_field( $_POST["mlw_phoneText"] );
 		$mlw_before_comments = htmlspecialchars($_POST["mlw_quiz_before_comments"], ENT_QUOTES);
 		$mlw_comment_field_text = htmlspecialchars($_POST["mlw_commentText"], ENT_QUOTES);
 		$mlw_require_log_in_text = htmlspecialchars($_POST["mlw_require_log_in_text"], ENT_QUOTES);
 		$mlw_scheduled_timeframe_text = htmlspecialchars($_POST["mlw_scheduled_timeframe_text"], ENT_QUOTES);
 		$mlw_limit_total_entries_text = htmlspecialchars($_POST["mlw_limit_total_entries_text"], ENT_QUOTES);
-		$mlw_qmn_pagination_field = serialize(array( $_POST["pagination_prev_text"], $_POST["pagination_next_text"] ));
-		$qmn_social_media_text = serialize(array('twitter' => $_POST["mlw_quiz_twitter_text_template"], 'facebook' => $_POST["mlw_quiz_facebook_text_template"]));
+		$mlw_qmn_pagination_field = serialize( array(
+			sanitize_text_field( $_POST["pagination_prev_text"] ),
+			sanitize_text_field( $_POST["pagination_next_text"] )
+		));
+		$qmn_social_media_text = serialize( array(
+			'twitter' => wp_kses_post( $_POST["mlw_quiz_twitter_text_template"] ),
+			'facebook' => wp_kses_post( $_POST["mlw_quiz_facebook_text_template"] )
+		));
 
 		$mlw_question_answer_template = htmlspecialchars($_POST["mlw_quiz_question_answer_template"], ENT_QUOTES);
 		$quiz_id = intval($_POST["quiz_id"]);
 
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET message_before='".$mlw_before_message."', message_comment='".$mlw_before_comments."', message_end_template='".$mlw_qmn_message_end."', comment_field_text='".$mlw_comment_field_text."', question_answer_template='".$mlw_question_answer_template."', submit_button_text='".$mlw_submit_button_text."', name_field_text='".$mlw_name_field_text."', business_field_text='".$mlw_business_field_text."', email_field_text='".$mlw_email_field_text."', phone_field_text='".$mlw_phone_field_text."', total_user_tries_text='".$mlw_user_tries_text."', social_media_text='".$qmn_social_media_text."', pagination_text='".$mlw_qmn_pagination_field."', require_log_in_text='".$mlw_require_log_in_text."', limit_total_entries_text='".$mlw_limit_total_entries_text."', last_activity='".date("Y-m-d H:i:s")."', scheduled_timeframe_text='".$mlw_scheduled_timeframe_text."' WHERE quiz_id=".$quiz_id;
-		$results = $wpdb->query( $update );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+				'message_before' => $mlw_before_message,
+				'message_comment' => $mlw_before_comments,
+				'message_end_template' => $mlw_qmn_message_end,
+				'comment_field_text' => $mlw_comment_field_text,
+				'question_answer_template' => $mlw_question_answer_template,
+				'submit_button_text' => $mlw_submit_button_text,
+				'name_field_text' => $mlw_name_field_text,
+				'business_field_text' => $mlw_business_field_text,
+				'email_field_text' => $mlw_email_field_text,
+				'phone_field_text' => $mlw_phone_field_text,
+				'total_user_tries_text' => $mlw_user_tries_text,
+				'social_media_text' => $qmn_social_media_text,
+				'pagination_text' => $mlw_qmn_pagination_field,
+				'require_log_in_text' => $mlw_require_log_in_text,
+				'limit_total_entries_text' => $mlw_limit_total_entries_text,
+				'last_activity' => date("Y-m-d H:i:s"),
+				'scheduled_timeframe_text' => $mlw_scheduled_timeframe_text
+			),
+			array( 'quiz_id' => $quiz_id ),
+			array(
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s'
+			),
+			array( '%d' )
+		);
 		if ($results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The templates has been updated successfully.', 'quiz-master-next'), 'success');
@@ -57,11 +104,19 @@ function mlw_options_text_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Templates Have Been Edited For Quiz Number ".$quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Templates Have Been Edited For Quiz Number $quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

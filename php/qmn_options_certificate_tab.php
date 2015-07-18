@@ -31,32 +31,55 @@ function mlw_options_certificate_tab_content()
 	if (isset($_POST["save_certificate_options"]) && $_POST["save_certificate_options"] == "confirmation")
 	{
 		$mlw_certificate_id = intval($_POST["certificate_quiz_id"]);
-		$mlw_certificate_title = $_POST["certificate_title"];
-		$mlw_certificate_text = $_POST["certificate_template"];
-		$mlw_certificate_logo = $_POST["certificate_logo"];
-		$mlw_certificate_background = $_POST["certificate_background"];
+		$mlw_certificate_title = sanitize_text_field( $_POST["certificate_title"] );
+		$mlw_certificate_text = wp_kses_post( $_POST["certificate_template"] );
+		$mlw_certificate_logo = esc_url_raw( $_POST["certificate_logo"] );
+		$mlw_certificate_background = esc_url_raw( $_POST["certificate_background"] );
 		$mlw_enable_certificates = intval($_POST["enableCertificates"]);
-		$mlw_certificate = array($mlw_certificate_title, $mlw_certificate_text, $mlw_certificate_logo, $mlw_certificate_background, $mlw_enable_certificates);
+		$mlw_certificate = array(
+			$mlw_certificate_title,
+			$mlw_certificate_text,
+			$mlw_certificate_logo,
+			$mlw_certificate_background,
+			$mlw_enable_certificates
+		);
 		$mlw_certificate_serialized = serialize($mlw_certificate);
 
-		$mlw_certificate_sql_results = $wpdb->query( $wpdb->prepare( "UPDATE " . $wpdb->prefix . "mlw_quizzes SET certificate_template=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_certificate_serialized, $mlw_certificate_id  ) );
+		$update_results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+				'certificate_template' => $mlw_certificate_serialized,
+				'last_activity' => date("Y-m-d H:i:s")
+			),
+			array( 'quiz_id' => $mlw_certificate_id ),
+			array(
+				'%s',
+				'%s'
+			),
+			array( '%d' )
+		);
 
+		if ( $update_results ) {
 
-		if ($mlw_certificate_sql_results != false)
-		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The certificate has been updated successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Certificate Options Have Been Edited For Quiz Number ".$mlw_certificate_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
-		}
-		else
-		{
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Certificate Options Have Been Edited For Quiz Number $mlw_certificate_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
 		}
 	}
