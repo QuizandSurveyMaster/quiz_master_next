@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.2
-Stable tag: 4.4.2
+Stable tag: 4.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,10 +121,14 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.4.3 (July 17, 2015) =
+  * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
+
 = 4.4.2 (June 26, 2015) =
   * Bug Fix: Fixed bug that caused issues with validation ([Github Issue #254](https://github.com/fpcorso/quiz_master_next/issues/254))
   * Bug Fix: Fixed a rare permalink issue ([Github Issue #253](https://github.com/fpcorso/quiz_master_next/issues/253))
- 
+
 
 = 4.4.1 (June 21, 2015) =
   * Bug Fix: Fixes validation bug from missing first page
@@ -689,9 +693,11 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 
 == Upgrade Notice ==
 
+= 4.4.3 =
+Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs. Please update immediately.
+
 = 4.4.2 =
 Upgrade for a variety of bug fixes
-
 
 = 4.4.1 =
 Upgrade for a variety of bug fixes
