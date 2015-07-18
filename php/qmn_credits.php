@@ -56,9 +56,10 @@ function mlw_generate_about_page()
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" style="display: none;">
-		<h3><?php echo $mlw_quiz_version; ?> (July 17, 2015)</h3>
+		<h3><?php echo $mlw_quiz_version; ?> (July 19, 2015)</h3>
 		<ul>
-			<li>* Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs</li>
+			<li>* Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs</li>
+			<li>* Security Fix: Fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode</li>
 		</ul>
 		</div>
 	</div>
