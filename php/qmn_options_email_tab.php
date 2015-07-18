@@ -57,11 +57,19 @@ function mlw_options_emails_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New User Email Has Been Created For Quiz Number ".$mlw_qmn_add_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "New User Email Has Been Created For Quiz Number $mlw_qmn_add_email_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -116,11 +124,19 @@ function mlw_options_emails_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'New Admin Email Has Been Created For Quiz Number ".$mlw_qmn_add_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "New Admin Email Has Been Created For Quiz Number $mlw_qmn_add_email_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -135,10 +151,10 @@ function mlw_options_emails_tab_content()
 		$mlw_qmn_email_id = intval($_POST["mlw_email_quiz_id"]);
 		$mlw_qmn_email_template_total = intval($_POST["mlw_email_template_total"]);
 		$mlw_qmn_email_admin_total = intval($_POST["mlw_email_admin_total"]);
-		$mlw_send_user_email = $_POST["sendUserEmail"];
-		$mlw_send_admin_email = $_POST["sendAdminEmail"];
-		$mlw_admin_email = $_POST["adminEmail"];
-		$mlw_email_from_text = $_POST["emailFromText"];
+		$mlw_send_user_email = intval( $_POST["sendUserEmail"] );
+		$mlw_send_admin_email = intval( $_POST["sendAdminEmail"] );
+		$mlw_admin_email = sanitize_text_field( $_POST["adminEmail"] );
+		$mlw_email_from_text = sanitize_text_field( $_POST["emailFromText"] );
 
 		//Create new array
 		$i = 1;
@@ -180,11 +196,19 @@ function mlw_options_emails_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Email Templates Have Been Saved For Quiz Number ".$mlw_qmn_email_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Email Templates Have Been Saved For Quiz Number $mlw_qmn_email_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

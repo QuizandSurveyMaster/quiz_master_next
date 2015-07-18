@@ -14,7 +14,7 @@ function qmn_settings_leaderboard_tab()
 }
 add_action("plugins_loaded", 'qmn_settings_leaderboard_tab', 5);
 
- 
+
 /**
 * Adds the leaderboard content to the leaderboard tab.
 *
@@ -25,30 +25,46 @@ function mlw_options_leaderboard_tab_content()
 {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
+	$quiz_id = intval( $_GET["quiz_id"] );
 	///Submit saved leaderboard template into database
 	if ( isset($_POST["save_leaderboard_options"]) && $_POST["save_leaderboard_options"] == "confirmation")
 	{
 		///Variables for save leaderboard options form
-		$mlw_leaderboard_template = $_POST["mlw_quiz_leaderboard_template"];
-		$mlw_leaderboard_quiz_id = $_POST["leaderboard_quiz_id"];
-		$update = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET leaderboard_template='".$mlw_leaderboard_template."', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_leaderboard_quiz_id;
-		$results = $wpdb->query( $update );
-		if ($results != false)
-		{
+		$mlw_leaderboard_template = wp_kses_post( $_POST["mlw_quiz_leaderboard_template"] );
+		$mlw_leaderboard_quiz_id = intval( $_POST["leaderboard_quiz_id"] );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+				'leaderboard_template' => $mlw_leaderboard_template,
+				'last_activity' => date("Y-m-d H:i:s")
+			),
+			array( 'quiz_id' => $mlw_leaderboard_quiz_id ),
+			array(
+				'%s',
+				'%s'
+			),
+			array( '%d' )
+		);
+		if ( $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The leaderboards has been updated successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Leaderboard Options Have Been Edited For Quiz Number ".$mlw_leaderboard_quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
-		}
-		else
-		{
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Leaderboard Options Have Been Edited For Quiz Number $mlw_leaderboard_quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0009'), 'error');
 		}
 	}

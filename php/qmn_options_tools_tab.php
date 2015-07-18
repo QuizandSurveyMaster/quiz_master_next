@@ -29,32 +29,49 @@ function mlw_options_tools_tab_content()
 	if (isset($_POST["mlw_reset_quiz_stats"]) && $_POST["mlw_reset_quiz_stats"] == "confirmation")
 	{
 		//Variables from reset stats form
-		$mlw_reset_stats_quiz_id = intval($_POST["mlw_reset_quiz_id"]);
-		$mlw_reset_update_sql = "UPDATE " . $wpdb->prefix . "mlw_quizzes" . " SET quiz_views=0, quiz_taken=0, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=".$mlw_reset_stats_quiz_id;
-		$mlw_reset_sql_results = $wpdb->query( $mlw_reset_update_sql );
-		if ($mlw_reset_sql_results != false)
-		{
+		$mlw_reset_stats_quiz_id = intval( $_POST["mlw_reset_quiz_id"] );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+				'quiz_views' => 1,
+				'quiz_taken' => 1,
+				'last_activity' => date("Y-m-d H:i:s")
+			),
+			array( 'quiz_id' => $mlw_reset_stats_quiz_id ),
+			array(
+				'%d',
+				'%d',
+				'%s'
+			),
+			array( '%d' )
+		);
+		if ( $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The stats has been reset successfully.', 'quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Quiz Stats Have Been Reset For Quiz Number $mlw_reset_stats_quiz_id' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
-		}
-		else
-		{
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Quiz Stats Have Been Reset For Quiz Number $mlw_reset_stats_quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0010'), 'error');
 		}
 	}
 
-	if (isset($_GET["quiz_id"]))
-	{
+	if ( isset( $_GET["quiz_id"] ) ) {
 		$table_name = $wpdb->prefix . "mlw_quizzes";
-		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $quiz_id));
+		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
 	?>
 	<div id="tabs-8" class="mlw_tab_content">

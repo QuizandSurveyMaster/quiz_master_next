@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* This function generates the admin side quiz results page 
+* This function generates the admin side quiz results page
 *
 * @return void
 * @since 4.4.0
@@ -17,26 +17,41 @@ function mlw_generate_quiz_results()
 	global $mlwQuizMasterNext;
 
 	///Delete Results Function
-	if (isset($_POST["delete_results"]) && $_POST["delete_results"] == "confirmation")
-	{
+	if ( isset( $_POST["delete_results"] ) && $_POST["delete_results"] == "confirmation" ) {
 		///Variables from delete result form
-		$mlw_delete_results_confirmation = $_POST["delete_results"];
-		$mlw_delete_results_id = $_POST["result_id"];
-		$mlw_delete_results_name = $_POST["delete_quiz_name"];
-		$mlw_delete_results_update_sql = "UPDATE " . $wpdb->prefix . "mlw_results" . " SET deleted=1 WHERE result_id=".$mlw_delete_results_id;
-		$mlw_delete_results_results = $wpdb->query( $mlw_delete_results_update_sql );
-		if ($mlw_delete_results_results != false)
+		$mlw_delete_results_id = intval( $_POST["result_id"] );
+		$mlw_delete_results_name = sanitize_text_field( $_POST["delete_quiz_name"] );
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_results",
+			array(
+				'deleted' => 1
+			),
+			array( 'result_id' => $mlw_delete_results_id ),
+			array(
+				'%d'
+			),
+			array( '%d' )
+		);
+		if ( $results )
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your results has been deleted successfully.','quiz-master-next'), 'success');
 
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Results Has Been Deleted From: ".$mlw_delete_results_name."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Results Has Been Deleted From: $mlw_delete_results_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{
@@ -44,19 +59,20 @@ function mlw_generate_quiz_results()
 		}
 	}
 
-	if (isset($_POST["bulk_delete"]) && $_POST["bulk_delete"] == "confirmation")
-	{
-		$results = $_POST["delete_results"];
-		if (is_array($results))
-		{
-			foreach($results as $result)
-			{
+	//Check if bulk delete has been selected. If so, verify nonce.
+	if ( isset( $_POST["bulk_delete"] ) && wp_verify_nonce( $_POST['bulk_delete_nonce'], 'bulk_delete') ) {
+		//Ensure the POST variable is an array
+		if ( is_array( $_POST["delete_results"] ) ) {
+			//Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
+			foreach($_POST["delete_results"] as $result) {
+				//Santize by ensuring the value is an int
+				$result_id = intval( $result );
 				$wpdb->update(
 					$wpdb->prefix."mlw_results",
 					array(
 						'deleted' => 1,
 					),
-					array( 'result_id' => $result ),
+					array( 'result_id' => $result_id ),
 					array(
 						'%d'
 					),
@@ -66,16 +82,24 @@ function mlw_generate_quiz_results()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Results Has Been Bulk Deleted' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Results Have Been Bulk Deleted",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 	}
 
 	global $wpdb;
-	$mlw_qmn_table_limit = 30;
+	$mlw_qmn_table_limit = 40;
 	$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'" );
 
 	if( isset($_GET['mlw_result_page'] ) )
@@ -207,6 +231,7 @@ function mlw_generate_quiz_results()
 				</div>
 			</div>
 			<form action="" method="post" name="bulk_delete_form">
+				<?php wp_nonce_field('bulk_delete','bulk_delete_nonce'); ?>
 				<input type="hidden" name="bulk_delete" value="confirmation" />
 				<table class=widefat>
 					<thead>
