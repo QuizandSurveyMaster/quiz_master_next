@@ -7,13 +7,30 @@
  */
 class QMN_Review_Message {
 	
+	/**
+	 * Variable to hold how many results needed to show message
+	 * 
+	 * @since 4.5.0
+	 */
 	public $trigger = -1;
 	
+	/**
+	 * Main Construct Function
+	 * 
+	 * Adds the notice check to init and then check to display message
+	 * 
+	 * @since 4.5.0
+	 */
 	function __construct() {
 		add_action( 'admin_init', array( $this, 'admin_notice_check' ) );
 		$this->check_message_display();
 	}
 	
+	/**
+	 * Checks if message should be displayed
+	 * 
+	 * @since 4.5.0
+	 */
 	public function check_message_display() {
 		$this->trigger = $this->check_message_trigger();
 		if ( $this->trigger !== -1 ) {
@@ -24,22 +41,41 @@ class QMN_Review_Message {
 		}
 	}
 	
+	/**
+	 * Retrieves what the next trigger value is
+	 * 
+	 * @since 4.5.0
+	 * @return int $trigger The amount of results needed to display message
+	 */
 	public function check_message_trigger() {
 		$trigger = get_option( 'qmn_review_message_trigger' );
-		if ( empty($trigger) || is_null($trigger) ) {
+		if ( empty( $trigger ) || is_null( $trigger ) ) {
 			add_option('qmn_review_message_trigger', 10 );
 			return 10;
 		}
-		return $trigger;
+		return intval( $trigger );
 	}
 	
+	/**
+	 * Checks the amount of results
+	 * 
+	 * @since 4.5.0
+	 * @return int $amount The amount of quiz results
+	 */
 	public function check_results_amount() {
 		global $wpdb;
 		$table_name = $wpdb->prefix."mlw_results";
 		$amount = $wpdb->get_var( "SELECT COUNT(result_id) FROM $table_name WHERE deleted=0" );
-		return $amount;
+		return intval( $amount );
 	}
 	
+	/**
+	 * Displays the message
+	 * 
+	 * Displays the message asking for review
+	 * 
+	 * @since 4.5.0
+	 */
 	public function display_admin_message() {
 		$already_url  = esc_url( add_query_arg( 'qmn_review_notice_check', 'already_did' ) );
 		$nope_url  = esc_url( add_query_arg( 'qmn_review_notice_check', 'remove_message' ) );
@@ -56,6 +92,11 @@ class QMN_Review_Message {
 		echo "</div>";
 	}
 	
+	/**
+	 * Checks if a link in the admin message has been clicked
+	 * 
+	 * @since 4.5.0
+	 */
 	public function admin_notice_check() {
 		if ( isset( $_GET["qmn_review_notice_check"] ) && $_GET["qmn_review_notice_check"] == 'remove_message' ) {
 			$this->trigger = $this->check_message_trigger();
