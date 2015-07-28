@@ -45,7 +45,7 @@ class QMN_Review_Message {
 	 * Retrieves what the next trigger value is
 	 * 
 	 * @since 4.5.0
-	 * @return int $trigger The amount of results needed to display message
+	 * @return int The amount of results needed to display message
 	 */
 	public function check_message_trigger() {
 		$trigger = get_option( 'qmn_review_message_trigger' );
@@ -60,7 +60,7 @@ class QMN_Review_Message {
 	 * Checks the amount of results
 	 * 
 	 * @since 4.5.0
-	 * @return int $amount The amount of quiz results
+	 * @return int The amount of quiz results
 	 */
 	public function check_results_amount() {
 		global $wpdb;
