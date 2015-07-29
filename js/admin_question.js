@@ -71,48 +71,48 @@ jQuery("#question_type").on('change', function(event) {
 });
 
 function qmn_hide_show_correct_fields( question_type ) {
-	var type_fields = qmn_question_type_fields.new_value;
+	var type_fields = qmn_question_type_fields[question_type];
 	if ( type_fields.information ) {
 		jQuery("#question_type_info").text(type_fields.information);
 		jQuery("#question_type_info").show();
 	} else {
 		jQuery("#question_type_info").hide();
 	}
-	if ( type_fields.inputs.question ) {
+	if ( type_fields.inputs.indexOf( "question") !== -1 ) {
 		jQuery("#question_name").show();
 	} else {
 		jQuery("#question_name").hide();
 	}
-	if ( type_fields.inputs.answer ) {
+	if ( type_fields.inputs.indexOf( "answer") !== -1  ) {
 		jQuery("#answer_area").show();
 	} else {
 		jQuery("#answer_area").hide();
 	}
-	if ( type_fields.inputs.correct_info ) {
+	if ( type_fields.inputs.indexOf( "correct_info") !== -1 ) {
 		jQuery("#correct_answer_area").show();
 	} else {
 		jQuery("#correct_answer_area").hide();
 	}
-	if ( type_fields.inputs.hint ) {
+	if ( type_fields.inputs.indexOf( "hint") !== -1 ) {
 		jQuery("#hint_area").show();
 	} else {
 		jQuery("#hint_area").hide();
 	}
-	if ( type_fields.inputs.comments ) {
+	if ( type_fields.inputs.indexOf( "comments") !== -1 ) {
 		jQuery("#comment_area").show();
 	} else {
 		jQuery("#comment_area").hide();
 	}
-	if ( type_fields.inputs.category ) {
+	if ( type_fields.inputs.indexOf( "category") !== -1 ) {
 		jQuery("#category_area").show();
 	} else {
 		jQuery("#category_area").hide();
 	}
-	if ( type_fields.inputs.required ) {
+	if ( type_fields.inputs.indexOf( "required") !== -1 ) {
 		jQuery("#required_area").show();
 	} else {
 		jQuery("#required_area").hide();
-	}	
+	}
 }
 
 jQuery("#the-list").on('click', '.edit_link', function(event) {

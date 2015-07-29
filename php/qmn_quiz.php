@@ -357,22 +357,22 @@ class QMNQuizManager
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		if ($qmn_quiz_options->theme_selected == "default")
 		{
 			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
+			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
 		}
 		else
 		{
 			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
 			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
 			// If all fails, then load custom styling instead
-			if ( $registered_template && file_exists( $registered_template ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', $registered_template );
-			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template, __FILE__ ) ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template, __FILE__ ) );
-			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template );
+			if ( $registered_template && file_exists( $registered_template["path"] ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', $registered_template["path"] );
+			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) );
+			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] );
 			} else {
 				echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
 			}
@@ -442,7 +442,7 @@ class QMNQuizManager
                 else
                 {
                     $section_display .= "<script> var firstPage = false; </script>";
-										
+
                 }
 		return $section_display;
 	}

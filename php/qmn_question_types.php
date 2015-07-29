@@ -354,7 +354,7 @@ function qmn_small_open_review($id, $question, $answers)
 add_action("plugins_loaded", 'qmn_question_type_multiple_response');
 
 /**
-* This function registers the multiple response question type 
+* This function registers the multiple response question type
 *
 * @return void
 * @since 4.4.0
@@ -876,7 +876,7 @@ function qmn_question_type_fill_blank()
 			'category',
 			'required'
 		),
-		'information' => __('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next');,
+		'information' => __('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'),
 		'extra_inputs' => array(),
 		'function' => ''
 	);
