@@ -6,5 +6,5 @@ function qmn_select_tab(tab, content) {
 }
 
 jQuery("#qmn_check_all").change( function() {
-	jQuery('.qmn_delete_checkbox').attr('checked','checked');
+	jQuery('.qmn_delete_checkbox').prop( 'checked', jQuery('#qmn_check_all').prop('checked') );
 });
