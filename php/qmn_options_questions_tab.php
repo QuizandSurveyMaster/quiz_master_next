@@ -427,7 +427,7 @@ function mlw_options_questions_tab_content()
 	//Load question type edit fields and convert to JavaScript
 	$qmn_question_type_fields = $mlwQuizMasterNext->pluginHelper->get_question_type_edit_fields();
 	echo "<script>
-		var qmn_question_type_fields = JSON.parse(".json_encode($qmn_question_type_fields).");
+		var qmn_question_type_fields = ".json_encode($qmn_question_type_fields).";
 	</script>";
 
 	echo "<script>
