@@ -66,8 +66,8 @@ function mlw_generate_about_page()
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li>* Bug Fix: Fixed bug that caused issues with validation<a href="https://github.com/fpcorso/quiz_master_next/issues/254">Github Issue #254</a></li>
-				<li>* Bug Fix: Fixed a rare permalink issue<a href="https://github.com/fpcorso/quiz_master_next/issues/253">Github Issue #253</a></li>
+				<li class="add"><div class="two">Add</div>Some feature was added</li>
+				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
