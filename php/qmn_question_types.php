@@ -67,17 +67,14 @@ function qmn_multiple_choice_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+  } else {
     $mlw_user_answer = " ";
   }
   foreach($answers as $answer)
   {
-    if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($answer[0]))
+    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -160,17 +157,14 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+  } else {
     $mlw_user_answer = " ";
   }
   foreach($answers as $answer)
   {
-    if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($answer[0]))
+    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -250,17 +244,14 @@ function qmn_drop_down_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if (isset($_POST["question".$id])) {
+    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+  } else {
     $mlw_user_answer = " ";
   }
   foreach($answers as $answer)
   {
-    if (htmlspecialchars(stripslashes($mlw_user_answer), ENT_QUOTES) == esc_attr($answer[0]))
+    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -329,15 +320,12 @@ function qmn_small_open_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+  } else {
     $mlw_user_answer = " ";
   }
-  $return_array['user_text'] = strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+  $return_array['user_text'] = $mlw_user_answer;
   foreach($answers as $answer)
   {
     $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -502,15 +490,12 @@ function qmn_large_open_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+  } else {
     $mlw_user_answer = " ";
   }
-  $return_array['user_text'] = strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+  $return_array['user_text'] = $mlw_user_answer;
   foreach($answers as $answer)
   {
     $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -621,15 +606,12 @@ function qmn_number_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+  } else {
     $mlw_user_answer = " ";
   }
-  $return_array['user_text'] = strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+  $return_array['user_text'] = $mlw_user_answer;
   foreach($answers as $answer)
   {
     $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -932,15 +914,12 @@ function qmn_fill_blank_review($id, $question, $answers)
 	{
 		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
-  if (isset($_POST["question".$id]))
-  {
-    $mlw_user_answer = $_POST["question".$id];
-  }
-  else
-  {
+  if ( isset( $_POST["question".$id] ) ) {
+    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+  } else {
     $mlw_user_answer = " ";
   }
-  $return_array['user_text'] = strval(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+  $return_array['user_text'] = $mlw_user_answer;
   foreach($answers as $answer)
   {
     $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));

@@ -48,8 +48,11 @@ function mlw_options_option_tab_content()
 		$ajax_show_correct = intval($_POST["ajax_show_correct"]);
 		$mlw_comment_section = intval($_POST["commentSection"]);
 		$mlw_qmn_loggedin_contact = intval($_POST["loggedin_user_contact"]);
-		$qmn_scheduled_timeframe = serialize(array("start" => $_POST["scheduled_time_start"], "end" => $_POST["scheduled_time_end"]));
-		$quiz_id = $_POST["quiz_id"];
+		$qmn_scheduled_timeframe = serialize( array(
+			'start' => sanitize_text_field( $_POST["scheduled_time_start"] ),
+			'end' => sanitize_text_field( $_POST["scheduled_time_end"] )
+		));
+		$quiz_id = intval( $_POST["quiz_id"] );
 
 		$results = $wpdb->update(
 			$wpdb->prefix . "mlw_quizzes",
@@ -109,11 +112,19 @@ function mlw_options_option_tab_content()
 			//Insert Action Into Audit Trail
 			global $current_user;
 			get_currentuserinfo();
-			$table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-			$insert = "INSERT INTO " . $table_name .
-				"(trail_id, action_user, action, time) " .
-				"VALUES (NULL , '" . $current_user->display_name . "' , 'Options Have Been Edited For Quiz Number ".$quiz_id."' , '" . date("h:i:s A m/d/Y") . "')";
-			$results = $wpdb->query( $insert );
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Options Have Been Edited For Quiz Number $quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
 		}
 		else
 		{

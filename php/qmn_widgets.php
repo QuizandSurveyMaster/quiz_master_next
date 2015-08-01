@@ -58,18 +58,17 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
    		if ( $title ) {
       		echo $before_title . $title . $after_title;
    		}
-   		$mlw_quiz_id = $quiz_id;
+   		$mlw_quiz_id = intval( $quiz_id );
 		$mlw_quiz_leaderboard_display = "";
 
 
 		global $wpdb;
-		$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
-		$mlw_quiz_options = $wpdb->get_results($sql);
+		$mlw_quiz_options = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d AND deleted='0'", $mlw_quiz_id ) );
 		foreach($mlw_quiz_options as $mlw_eaches) {
 			$mlw_quiz_options = $mlw_eaches;
 			break;
 		}
-		$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
+		$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE quiz_id=%d AND deleted='0'";
 		if ($mlw_quiz_options->system == 0)
 		{
 			$sql .= " ORDER BY correct_score DESC";
@@ -79,7 +78,7 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 			$sql .= " ORDER BY point_score DESC";
 		}
 		$sql .= " LIMIT 10";
-		$mlw_result_data = $wpdb->get_results($sql);
+		$mlw_result_data = $wpdb->get_results($sql, $mlw_quiz_id);
 
 		$mlw_quiz_leaderboard_display = $mlw_quiz_options->leaderboard_template;
 		$mlw_quiz_leaderboard_display = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_quiz_leaderboard_display);

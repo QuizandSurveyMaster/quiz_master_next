@@ -20,7 +20,7 @@ function mlw_generate_quiz_admin()
 	//Create new quiz
 	if ( isset( $_POST["create_quiz"] ) && $_POST["create_quiz"] == "confirmation" )
 	{
-		$quiz_name = htmlspecialchars($_POST["quiz_name"], ENT_QUOTES);
+		$quiz_name = htmlspecialchars(stripslashes( $_POST["quiz_name"] ), ENT_QUOTES);
 		$mlwQuizMasterNext->quizCreator->create_quiz($quiz_name);
 	}
 
@@ -28,7 +28,7 @@ function mlw_generate_quiz_admin()
 	if (isset( $_POST["delete_quiz"] ) && $_POST["delete_quiz"] == "confirmation")
 	{
 		$mlw_quiz_id = intval($_POST["quiz_id"]);
-		$quiz_name = $_POST["delete_quiz_name"];
+		$quiz_name = sanitize_text_field( $_POST["delete_quiz_name"] );
 		$mlwQuizMasterNext->quizCreator->delete_quiz($mlw_quiz_id, $quiz_name);
 	}
 

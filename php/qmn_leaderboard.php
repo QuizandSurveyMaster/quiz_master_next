@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * Sorts the scores a quizzes by type.
 *
 * @param $atts This is wordpress return for shortcodes
-* @return type $mlw_quiz_leaderboard_display This variable contains all the contents of the leaderboard. 
+* @return type $mlw_quiz_leaderboard_display This variable contains all the contents of the leaderboard.
 * @since 4.4.0
 */
 function mlw_quiz_leaderboard_shortcode($atts)
@@ -15,18 +15,17 @@ function mlw_quiz_leaderboard_shortcode($atts)
 	extract(shortcode_atts(array(
 		'mlw_quiz' => 0
 	), $atts));
-	$mlw_quiz_id = $mlw_quiz;
+	$mlw_quiz_id = intval( $mlw_quiz );
 	$mlw_quiz_leaderboard_display = "";
 
 
 	global $wpdb;
-	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
-	$mlw_quiz_options = $wpdb->get_results($sql);
+	$mlw_quiz_options = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d AND deleted='0'", $mlw_quiz_id ) );
 	foreach($mlw_quiz_options as $mlw_eaches) {
 		$mlw_quiz_options = $mlw_eaches;
 		break;
 	}
-	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE quiz_id=".$mlw_quiz_id." AND deleted='0'";
+	$sql = "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE quiz_id=%d AND deleted='0'";
 	if ($mlw_quiz_options->system == 0)
 	{
 		$sql .= " ORDER BY correct_score DESC";
@@ -36,7 +35,7 @@ function mlw_quiz_leaderboard_shortcode($atts)
 		$sql .= " ORDER BY point_score DESC";
 	}
 	$sql .= " LIMIT 10";
-	$mlw_result_data = $wpdb->get_results($sql);
+	$mlw_result_data = $wpdb->get_results( $wpdb->prepare( $sql, $mlw_quiz_id ) );
 
 	$mlw_quiz_leaderboard_display = $mlw_quiz_options->leaderboard_template;
 	$mlw_quiz_leaderboard_display = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_quiz_leaderboard_display);

@@ -2,21 +2,15 @@
 /**
 * Plugin Name: Quiz Master Next
 * Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.4.3
+* Version: 4.4.4
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
 * Plugin URI: http://www.quizmasternext.com/
 * Text Domain: quiz-master-next
 * Domain Path: /languages
 *
-* Disclaimer of Warranties
-* The plugin is provided "as is". My Local Webstop and its suppliers and licensors hereby disclaim all warranties of any kind,
-* express or implied, including, without limitation, the warranties of merchantability, fitness for a particular purpose and non-infringement.
-* Neither My Local Webstop nor its suppliers and licensors, makes any warranty that the plugin will be error free or that access thereto will be continuous or uninterrupted.
-* You understand that you install, operate, and unistall the plugin at your own discretion and risk.
-*
 * @author Frank Corso
-* @version 4.4.3
+* @version 4.4.4
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
@@ -34,7 +28,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.4.3';
+	public $version = '4.4.4';
 
 	/**
 	 * QMN Alert Manager Object

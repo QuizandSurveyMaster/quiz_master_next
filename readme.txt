@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.2
-Stable tag: 4.4.3
+Stable tag: 4.4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,10 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.4.4 (July 19, 2015) =
+  * Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs
+  * Security Fix: Fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode
 
 = 4.4.3 (July 17, 2015) =
   * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
@@ -454,7 +458,6 @@ Feel free to use the widget on the help page within the plugin or from our [cont
  * Fixed Dashboard Rounding Bug
  * Fixed Notice Unknown Company Field Bug
 
-
 = 1.7.1 (March 6, 2014) =
  * Added Several New Widgets To Quiz Dashboard
  * Added A Timer Mechanism To Track How Long User Takes On Quiz
@@ -692,6 +695,9 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.4.4 =
+Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs. Also fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode. Please update immediately.
 
 = 4.4.3 =
 Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs. Please update immediately.
