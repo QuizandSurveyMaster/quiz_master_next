@@ -258,6 +258,7 @@ function mlw_generate_quiz_results()
 		</form>
 		<form action="" method="post" name="bulk_delete_form">
 			<input type="hidden" name="bulk_delete" value="confirmation" />
+			<?php wp_nonce_field('bulk_delete','bulk_delete_nonce'); ?>
 			<table class=widefat>
 				<thead>
 					<tr>

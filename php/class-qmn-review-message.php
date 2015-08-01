@@ -22,7 +22,6 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	function __construct() {
-		add_action( 'admin_init', array( $this, 'admin_notice_check' ) );
 		$this->check_message_display();
 	}
 
@@ -32,6 +31,7 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function check_message_display() {
+		$this->admin_notice_check();
 		$this->trigger = $this->check_message_trigger();
 		if ( $this->trigger !== -1 ) {
 			$amount = $this->check_results_amount();

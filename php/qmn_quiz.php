@@ -181,11 +181,35 @@ class QMNQuizManager
 		$return_display = '';
 		$qmn_quiz_options = $this->load_quiz_options($quiz);
 
+		//If quiz options isn't found, stop function
 		if (is_null($qmn_quiz_options) || $qmn_quiz_options->quiz_name == '')
 		{
-			return "It appears that this quiz is not set up correctly";
+			return __("It appears that this quiz is not set up correctly", 'quiz-master-next');
 		}
 
+		// Loads Quiz Template
+		if ($qmn_quiz_options->theme_selected == "default")
+		{
+			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
+			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
+		}
+		else
+		{
+			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
+			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
+			// If all fails, then load custom styling instead
+			if ( $registered_template && file_exists( $registered_template["path"] ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', $registered_template["path"] );
+			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) );
+			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] );
+			} else {
+				echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
+			}
+		}
+
+		//Start to prepare variable array for filters
 		$qmn_array_for_variables = array(
 			'quiz_id' => $qmn_quiz_options->quiz_id,
 			'quiz_name' => $qmn_quiz_options->quiz_name,
@@ -208,6 +232,7 @@ class QMNQuizManager
 		}
 		echo "</script>";
 
+		//Check if we should be showing quiz or results page
 		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
 		{
 			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, true);
@@ -356,27 +381,6 @@ class QMNQuizManager
 		<?php
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-
-		if ($qmn_quiz_options->theme_selected == "default")
-		{
-			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
-			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
-		}
-		else
-		{
-			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
-			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
-			// If all fails, then load custom styling instead
-			if ( $registered_template && file_exists( $registered_template["path"] ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', $registered_template["path"] );
-			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) );
-			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] );
-			} else {
-				echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
-			}
-		}
 
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
@@ -595,15 +599,6 @@ class QMNQuizManager
 			return $result_display;
 		}
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-		wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
-		if ($qmn_quiz_options->theme_selected == "default")
-		{
-			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
-		}
-		else
-		{
-			echo "<link type='text/css' href='".get_option('mlw_qmn_theme_'.$qmn_quiz_options->theme_selected)."' rel='stylesheet' />";
-		}
 
 		$mlw_user_name = isset($_POST["mlwUserName"]) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None';
 		$mlw_user_comp = isset($_POST["mlwUserComp"]) ? sanitize_text_field( $_POST["mlwUserComp"] ) : 'None';

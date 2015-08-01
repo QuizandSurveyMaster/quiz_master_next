@@ -71,35 +71,37 @@ function mlw_generate_about_page()
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
+			<h2>GitHub Contributors</h2>
 			<?php
 			$contributors = get_transient( 'qmn_contributors' );
-			if ( false !== $contributors )
-				return $contributors;
-			$response = wp_remote_get( 'https://api.github.com/repos/fpcorso/quiz_master_next/contributors', array( 'sslverify' => false ) );
-			if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) )
-				return array();
-			$contributors = json_decode( wp_remote_retrieve_body( $response ) );
-			if ( ! is_array( $contributors ) )
-				return array();
-			set_transient( 'qmn_contributors', $contributors, 3600 );
-			if ( empty( $contributors ) )
-				return '';
-			$contributor_list = '<ul class="wp-people-group">';
-			foreach ( $contributors as $contributor ) {
-				$contributor_list .= '<li class="wp-person">';
-				$contributor_list .= sprintf( '<a href="%s" title="%s">',
-					esc_url( 'https://github.com/' . $contributor->login ),
-					esc_html( sprintf( __( 'View %s', 'edd' ), $contributor->login ) )
-				);
-				$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
-				$contributor_list .= '</a>';
-				$contributor_list .= sprintf( '<a class="web" href="%s">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
-				$contributor_list .= '</a>';
-				$contributor_list .= '</li>';
+			if ( false === $contributors ) {
+				$response = wp_remote_get( 'https://api.github.com/repos/fpcorso/quiz_master_next/contributors', array( 'sslverify' => false ) );
+				if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
+					$contributors = array();
+				} else {
+					$contributors = json_decode( wp_remote_retrieve_body( $response ) );
+				}
 			}
-			$contributor_list .= '</ul>';
-			echo $contributor_list;
+			if ( is_array( $contributors ) & ! empty( $contributors ) ) {
+				set_transient( 'qmn_contributors', $contributors, 3600 );
+				$contributor_list = '<ul class="wp-people-group">';
+				foreach ( $contributors as $contributor ) {
+					$contributor_list .= '<li class="wp-person">';
+					$contributor_list .= sprintf( '<a href="%s" title="%s">',
+						esc_url( 'https://github.com/' . $contributor->login ),
+						esc_html( sprintf( __( 'View %s', 'edd' ), $contributor->login ) )
+					);
+					$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
+					$contributor_list .= '</a>';
+					$contributor_list .= sprintf( '<a class="web" href="%s" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+					$contributor_list .= '</a>';
+					$contributor_list .= '</li>';
+				}
+				$contributor_list .= '</ul>';
+				echo $contributor_list;
+			}
 			?>
+			<a href="https://github.com/fpcorso/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
 		</div>
 	</div>
 <?php

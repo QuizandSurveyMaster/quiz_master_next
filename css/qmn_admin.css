@@ -37,6 +37,15 @@ div.mlw_qmn_icon_wrap
   border-radius: 20px;
 }
 
+ul.changelog {
+  background-color: #fff;
+  padding: 10px 10px;
+}
+
+ul.changelog li {
+  padding: 4px 0px;
+}
+
 ul.changelog li div.two{
   width: 70%;
   float: left;
