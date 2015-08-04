@@ -137,13 +137,7 @@ Feel free to use the widget on the help page within the plugin or from our [cont
   * Added a checkbox to the quiz results page to delete results.
   * Added a brand new review message system.
   * Bug Fix: Fixed a bug where slashes where appearing with the category name.
-  * Bug Fix: Fixed issue where special characters where not appearing properly. ([Github Issue #230](https://github.com/fpcorso/quiz_master_next/issues/230))
-  * Bug Fix: Fixes timer bug that had timer not showing when not using pagination.
-  * Bug Fix: Fixed issue where pages are blank and only show Previous/Next buttons ([Github Issue #243](https://github.com/fpcorso/quiz_master_next/issues/243))
   * Bug Fix: Fixed certificate tab text.
-  * Bug Fix: Fixed bulk delete select all checkbox bug.
-  * Bug Fix: Fixed Question type API bug.
-  * Bug Fix: Misc. bug fixes.
 
 
 = 4.4.4 (July 19, 2015) =

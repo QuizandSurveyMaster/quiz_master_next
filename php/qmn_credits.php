@@ -45,6 +45,8 @@ function mlw_generate_about_page()
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Quiz Results are now searchable!</h2>
 			<p style="text-align: center;">You can now search quiz results based on several different criteria.</p>
 			<br />
+                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added a new CSS template system</h2>
+			<p style="text-align: center;">When creating the style of your quiz you can now have distinct areas for our primary CSS styling or your own custom styling. </p>
 
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
 			<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
@@ -52,7 +54,12 @@ function mlw_generate_about_page()
 			<hr />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
 			<br />
-
+                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Template API</h2>
+			<p style="text-align: center;">A new template API has been created to help with creating CSS templates. </p>
+                         <br />
+                         <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Changes to Question API</h2>
+			<p style="text-align: center;">Changes were made to the Question API to only show relevant fields for each question type. </p>
+                        <br />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz Master Next repository.</p>
 			<br />
@@ -78,16 +85,11 @@ function mlw_generate_about_page()
                                 <li class="add"><div class="two">Add</div>Added new register template functions to the API.</li>
                                 <li class="add"><div class="two">Add</div>Added a new contributor tab to the credits page.</li>
                                 <li class="add"><div class="two">Add</div>Added a checkbox to the quiz results page to delete results.</li>
-                                <li class="add"><div class="two">Add</div>Added a brand new review message system.</li>                               
-				<li class="fixed"><div class="two">Fixed</div>Fixed a bug where slashes where appearing with the category name.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixes timer bug that had timer not showing when not using pagination.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed issue where special characters where not appearing properly.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixes timer bug that had timer not showing when not using pagination.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed issue where pages are blank and only show Previous/Next buttons.</li>
+                                <li class="add"><div class="two">Add</div>Added a brand new review message system.</li>   
+				<li class="fixed"><div class="two">Fixed</div>Fixed a bug where slashes were appearing with the category name.</li>
                                 <li class="fixed"><div class="two">Fixed</div>Fixed certificate tab text.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed bulk delete select all checkbox bug.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed Question type API bug.</li> 
-                                <li class="fixed"><div class="two">Fixed</div>Misc. bug fixes.</li>
+                                
+                               
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
