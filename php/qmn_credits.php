@@ -39,11 +39,11 @@ function mlw_generate_about_page()
 				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added new template variable %TIMER_MINUTES%</h2>
-			<p style="text-align: center;">The %TIMER_MINUTES% variable allows for the time it took the user on the quiz to be displayed on the Emails and the Results Pages in minutes. </p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added ability to reorder questions by drag and drop!</h2>
+			<p style="text-align: center;">When editing your questions you can now drag and drop your questions to reorganize them. </p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Timer now begins counting down after starting quiz if using pagination</h2>
-			<p style="text-align: center;">The timer now does not start until the user clicks the Next button when the user has pagination enabled.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Quiz Results are now searchable!</h2>
+			<p style="text-align: center;">You can now search quiz results based on several different criteria.</p>
 			<br />
 
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
@@ -59,15 +59,35 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (June 20, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (August 4, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>Some feature was added</li>
-				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
+				<li class="add"><div class="two">Add</div>Added a brand new log system to track errors in the plugin.</li>
+                                <li class="add"><div class="two">Add</div>Added the ability to drag and drop questions when creating your quiz.</li>
+                                <li class="add"><div class="two">Add</div>Added new CSS template system for quizzes.</li>
+                                <li class="add"><div class="two">Add</div>Added new classes for Correct/Incorrect Answers.</li>
+                                <li class="add"><div class="two">Add</div>Added ability to search quiz results and styled that search form.</li>
+                                <li class="add"><div class="two">Add</div>Added ability to disable Results being shown in the database.</li>
+                                <li class="add"><div class="two">Add</div>Added the ability to search quiz results by quiz name, score, time taken, and completion time.</li>
+                                <li class="add"><div class="two">Add</div>Added the ability to show only relevant fields when adding/editing questions.</li>
+                                <li class="add"><div class="two">Add</div>Added for developers an initial outline for newer question type registrations.</li>
+                                <li class="add"><div class="two">Add</div>Added new register template functions to the API.</li>
+                                <li class="add"><div class="two">Add</div>Added a new contributor tab to the credits page.</li>
+                                <li class="add"><div class="two">Add</div>Added a checkbox to the quiz results page to delete results.</li>
+                                <li class="add"><div class="two">Add</div>Added a brand new review message system.</li>                               
+				<li class="fixed"><div class="two">Fixed</div>Fixed a bug where slashes where appearing with the category name.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixes timer bug that had timer not showing when not using pagination.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixed issue where special characters where not appearing properly.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixes timer bug that had timer not showing when not using pagination.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixed issue where pages are blank and only show Previous/Next buttons.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixed certificate tab text.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixed bulk delete select all checkbox bug.</li>
+                                <li class="fixed"><div class="two">Fixed</div>Fixed Question type API bug.</li> 
+                                <li class="fixed"><div class="two">Fixed</div>Misc. bug fixes.</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

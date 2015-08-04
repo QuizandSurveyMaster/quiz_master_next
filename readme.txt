@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.2
-Stable tag: 4.4.4
+Stable tag: 4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,30 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.5 (August 4, 2015) =
+  * Added a brand new log system to track errors in the plugin. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/233))
+  * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/fpcorso/quiz_master_next/issues/235))
+  * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/fpcorso/quiz_master_next/issues/234))
+  * Added new classes for Correct/Incorrect Answers. ([Github Issue #228](https://github.com/fpcorso/quiz_master_next/issues/228))
+  * Added ability to search quiz results and styled that search form. ([Github Issue #167](https://github.com/fpcorso/quiz_master_next/issues/167))
+  * Added the ability for the admin to disable Results being shown in the database. ([Github Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
+  * Added the ability to search quiz results by quiz name, score, time taken, and completion time. ([Github Issue #70](https://github.com/fpcorso/quiz_master_next/issues/70))
+  * Added the ability to show only relevant fields when adding/editing questions.
+  * Added for developers an initial outline for newer question type registrations.
+  * Added new register template functions to the API.
+  * Added a new contributor tab to the credits page.
+  * Added a checkbox to the quiz results page to delete results.
+  * Added a brand new review message system.
+  * Bug Fix: Fixed a bug where slashes where appearing with the category name.
+  * Bug Fix: Fixed issue where special characters where not appearing properly. ([Github Issue #230](https://github.com/fpcorso/quiz_master_next/issues/230))
+  * Bug Fix: Fixes timer bug that had timer not showing when not using pagination.
+  * Bug Fix: Fixed issue where pages are blank and only show Previous/Next buttons ([Github Issue #243](https://github.com/fpcorso/quiz_master_next/issues/243))
+  * Bug Fix: Fixed certificate tab text.
+  * Bug Fix: Fixed bulk delete select all checkbox bug.
+  * Bug Fix: Fixed Question type API bug.
+  * Bug Fix: Misc. bug fixes.
+
 
 = 4.4.4 (July 19, 2015) =
   * Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs
@@ -695,6 +719,9 @@ Feel free to use the widget on the help page within the plugin or from our [cont
 * Added results page
 
 == Upgrade Notice ==
+
+= 4.5 = 
+Upgrade now for the ability to drag and drop questions to reorder, questions now only show relevent fields when adding/deleting them, and for the ability to search quiz results. 
 
 = 4.4.4 =
 Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs. Also fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode. Please update immediately.

@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz Master Next
 * Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.4.4
+* Version: 4.5
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
 * Plugin URI: http://www.quizmasternext.com/
@@ -10,7 +10,7 @@
 * Domain Path: /languages
 *
 * @author Frank Corso
-* @version 4.4.4
+* @version 4.5
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
@@ -28,7 +28,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.4.4';
+	public $version = '4.5';
 
 	/**
 	 * QMN Alert Manager Object
