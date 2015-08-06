@@ -164,7 +164,7 @@ Feel free to use the widget on the help page within the plugin or from our [cont
  * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
  * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
  
- ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/readme.txt))
+ ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
  
 == Upgrade Notice ==
 
