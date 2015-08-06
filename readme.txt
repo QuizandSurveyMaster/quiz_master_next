@@ -127,17 +127,15 @@ Feel free to use the widget on the help page within the plugin or from our [cont
   * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/fpcorso/quiz_master_next/issues/235))
   * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/fpcorso/quiz_master_next/issues/234))
   * Added new classes for Correct/Incorrect Answers. ([Github Issue #228](https://github.com/fpcorso/quiz_master_next/issues/228))
-  * Added ability to search quiz results and styled that search form. ([Github Issue #167](https://github.com/fpcorso/quiz_master_next/issues/167))
-  * Added the ability for the admin to disable Results being shown in the database. ([Github Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
+  * Added ability to sort the results. ([Github Issue #167](https://github.com/fpcorso/quiz_master_next/issues/167))
   * Added the ability to search quiz results by quiz name, score, time taken, and completion time. ([Github Issue #70](https://github.com/fpcorso/quiz_master_next/issues/70))
-  * Added the ability to show only relevant fields when adding/editing questions.
-  * Added for developers an initial outline for newer question type registrations.
+  * Added the ability for developers to show only relevant fields when adding/editing questions on different question types.
   * Added new register template functions to the API.
   * Added a new contributor tab to the credits page.
   * Added a checkbox to the quiz results page to delete results.
   * Added a brand new review message system.
   * Bug Fix: Fixed a bug where slashes where appearing with the category name.
-  * Bug Fix: Fixed certificate tab text.
+  * Bug Fix: Fixed a timer bug that prevented the timer form working when using pagination.
 
 = 4.4.4 (July 19, 2015) =
   * Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs

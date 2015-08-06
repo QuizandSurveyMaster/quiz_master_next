@@ -43,10 +43,10 @@ function mlw_generate_about_page()
 			<p style="text-align: center;">When editing your questions you can now drag and drop your questions to reorganize them. </p>
 			<br />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Quiz Results are now searchable!</h2>
-			<p style="text-align: center;">You can now search quiz results based on several different criteria.</p>
+			<p style="text-align: center;">You can now search quiz results based on several different criteria as well as sort the results.</p>
 			<br />
-                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added a new CSS template system</h2>
-			<p style="text-align: center;">When creating the style of your quiz you can now have distinct areas for our primary CSS styling or your own custom styling. </p>
+                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added new primary template</h2>
+			<p style="text-align: center;">Many versions ago, I added a new template system that would allow me to include different styles to choose from. This update adds the first template.</p>
 
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
 			<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
@@ -66,7 +66,7 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (August 4, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (August 7, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
@@ -77,17 +77,15 @@ function mlw_generate_about_page()
                                 <li class="add"><div class="two">Add</div>Added the ability to drag and drop questions when creating your quiz.</li>
                                 <li class="add"><div class="two">Add</div>Added new CSS template system for quizzes.</li>
                                 <li class="add"><div class="two">Add</div>Added new classes for Correct/Incorrect Answers.</li>
-                                <li class="add"><div class="two">Add</div>Added ability to search quiz results and styled that search form.</li>
-                                <li class="add"><div class="two">Add</div>Added ability to disable Results being shown in the database.</li>
+                                <li class="add"><div class="two">Add</div>Added ability to search quiz results and sort the results.</li>
                                 <li class="add"><div class="two">Add</div>Added the ability to search quiz results by quiz name, score, time taken, and completion time.</li>
-                                <li class="add"><div class="two">Add</div>Added the ability to show only relevant fields when adding/editing questions.</li>
-                                <li class="add"><div class="two">Add</div>Added for developers an initial outline for newer question type registrations.</li>
+                                <li class="add"><div class="two">Add</div>Added the ability for developers to show only relevant fields when adding/editing questions on different question types.</li>
                                 <li class="add"><div class="two">Add</div>Added new register template functions to the API.</li>
                                 <li class="add"><div class="two">Add</div>Added a new contributor tab to the credits page.</li>
                                 <li class="add"><div class="two">Add</div>Added a checkbox to the quiz results page to delete results.</li>
                                 <li class="add"><div class="two">Add</div>Added a brand new review message system.</li>   
 				<li class="fixed"><div class="two">Fixed</div>Fixed a bug where slashes were appearing with the category name.</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed certificate tab text.</li>
+				<li class="fixed"><div class="two">Fixed</div>Fixed a timer bug that prevented the timer form working when using pagination.</li>
                                 
                                
 			</ul>
