@@ -1,3 +1,6 @@
+.mlw_qmn_quiz label {
+	display: inline;
+}
 .ui-tooltip
 {
 	max-width: 500px !important;
