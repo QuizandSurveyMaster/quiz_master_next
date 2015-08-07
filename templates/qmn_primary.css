@@ -1,6 +1,9 @@
 .mlw_qmn_quiz label {
 	display: inline;
 }
+.mlw_qmn_quiz input[type=radio] {
+	vertical-align: middle;
+}
 .ui-tooltip
 {
 	max-width: 500px !important;
