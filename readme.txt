@@ -12,6 +12,15 @@ The easiest and most flexible way to add multiple quizzes, tests, and surveys to
 
 == Description ==
 
+= Demoes! =
+You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizmasternext.com/quiz/sample-quiz/)!
+You can check out the sample survey with pagination here: [Sample Survey](http://quizmasternext.com/quiz/sample-survey/)!
+
+= Keep Updated =
+Keep up with our latest news, updates, and more by [subscribing to our mailing list](http://quizmasternext.com/subscribe-to-our-newsletter/)!
+
+= Features =
+
 The easiest and most flexible way to add multiple quizzes, tests, surveys, and contact forms to your website. This plugin allows for unlimited quizzes each with unlimited amount of questions. The plugin allows you to create the quiz, add it to any page using a customized shortcode, allows the user to take the quiz, and then saves the results. You can set up what the user sees after he or she takes the quiz based on the user's score. You can also have the plugin create a certificate for the user as well!
 
 = Have Unlimited Quizzes, Tests, Surveys, Contact Forms, etc.. =
@@ -41,9 +50,6 @@ You can assign categories to your questions. You can then show the user their sc
 = Saves The Results For Later Use =
 The plugin will **save** the results, the user's answers, the user's comments, and more!
 
-= Math Formulas =
-You can use Tex or LaTex in questions, answers, and text fields for your quiz. For assistance with LaTex, review this tutorial: [LaTeX](http://www.andy-roberts.net/writing/latex/mathematics_1)
-
 = Schedule Time That Quiz Is Active =
 You can set up the quiz to only be active between two days. Utilize this for quizzes/surveys that are only active until a certain date.
 
@@ -63,6 +69,7 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 * **Leaderboards** for every quiz which can be used as shortcode or in included widget
 * Keep track how long a user takes on the quiz
 * Able to set up time limits on the quiz
+* Create and display math formulas
 * And **Much** More...
 
 = Translations =
@@ -76,10 +83,6 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 
 = Make Suggestions Or Contribute =
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
-
-= Demoes! =
-You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizmasternext.com/quiz/sample-quiz/)!
-You can check out the sample survey with pagination here: [Sample Survey](http://quizmasternext.com/quiz/sample-survey/)!
 
 = Quiz Master Next Add-ons =
 While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features and support available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
@@ -163,13 +166,13 @@ Feel free to use the widget on the help page within the plugin or from our [cont
  * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/fpcorso/quiz_master_next/issues/204))
  * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
  * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
- 
+
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
- 
+
 == Upgrade Notice ==
 
-= 4.5.0 = 
-Upgrade now for the ability to drag and drop questions to reorder, questions now only show relevent fields when adding/deleting them, and for the ability to search quiz results. 
+= 4.5.0 =
+Upgrade now for the ability to drag and drop questions to reorder, questions now only show relevent fields when adding/deleting them, and for the ability to search quiz results.
 
 = 4.4.4 =
 Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs. Also fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode. Please update immediately.
