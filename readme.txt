@@ -95,11 +95,6 @@ While Quiz Master Next is fully functional and is packed full of features that w
 * Click Install Now link on the plugin and follow the prompts
 * Activate the plugin through the 'Plugins' menu in WordPress
 
-**Or**
-
-* Upload plugin dir to the `/wp-content/plugins/` directory
-* Activate the plugin through the 'Plugins' menu in WordPress
-
 
 == Frequently Asked Questions ==
 
@@ -107,10 +102,18 @@ While Quiz Master Next is fully functional and is packed full of features that w
 We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizmasternext.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
 
 = I need a lot of help setting up my quiz, what can you do to help? =
-We now offer a premium support plan that offers priority response, technical support, and priority feature requests! For details, visit our support page: [Quiz Master Next Support](http://quizmasternext.com/downloads/premium-support/)
+We now offer a premium support plan that offers priority response, technical support, custom styling and more! For details, visit our support page: [Quiz Master Next Premium Support](http://quizmasternext.com/support-levels/)
 
 = I have an idea, how do I contact you? =
 Feel free to use the widget on the help page within the plugin or from our [contact page](http://quizmasternext.com/contact-us/).
+
+= I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
+
+Yes, it is possible to edit the output of the variable %QUESTIONS_ANSWERS%. When editing your quiz, go to the “Text” tab. Once on the “Text” tab scroll almost all the way down the page and you will see a text area that allows you to edit the contents of %QUESTIONS_ANSWERS%.
+
+= My preview looks different than my quiz. What can I do? =
+
+This is usually a theme conflict. You can [checkout out our common conflict solutions](http://quizmasternext.com/common-theme-conflict-fixes/) or feel free to contact us.
 
 == Screenshots ==
 
