@@ -66,7 +66,7 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (August 7, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (August 12, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
