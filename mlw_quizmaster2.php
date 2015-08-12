@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz Master Next
 * Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.4.4
+* Version: 4.5.0
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
 * Plugin URI: http://www.quizmasternext.com/
@@ -10,7 +10,7 @@
 * Domain Path: /languages
 *
 * @author Frank Corso
-* @version 4.4.4
+* @version 4.5.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
@@ -28,7 +28,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.4.4';
+	public $version = '4.5.0';
 
 	/**
 	 * QMN Alert Manager Object
@@ -55,6 +55,14 @@ class MLWQuizMasterNext
 	public $quizCreator;
 
 	/**
+	 * QMN Log Manager Object
+	 *
+	 * @var object
+	 * @since 4.5.0
+	 */
+	public $log_manager;
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -78,6 +86,9 @@ class MLWQuizMasterNext
 	  */
 	private function load_dependencies()
 	{
+		include("php/class-qmn-log-manager.php");
+		$this->log_manager = new QMN_Log_Manager;
+
 		if (is_admin())
 		{
 			include("php/qmn-stats-page.php");
@@ -102,6 +113,7 @@ class MLWQuizMasterNext
 			include("php/qmn_addons.php");
 			include("php/qmn_global_settings.php");
 			include("php/qmn_usage_tracking.php");
+			include("php/class-qmn-review-message.php");
 		}
 		include("php/qmn_quiz.php");
 		include("php/qmn_quiz_install.php");
@@ -111,6 +123,7 @@ class MLWQuizMasterNext
 		include("php/qmn_template_variables.php");
 		include("php/qmn_adverts.php");
 		include("php/qmn_question_types.php");
+		include("php/qmn-default-templates.php");
 
 		include("php/qmn_alerts.php");
 		$this->alertManager = new MlwQmnAlertManager();

@@ -66,6 +66,7 @@ function mlw_options_leaderboard_tab_content()
 			);
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0009'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0009", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 

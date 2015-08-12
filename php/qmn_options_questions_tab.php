@@ -30,26 +30,72 @@ function mlw_options_questions_tab_content()
 	<?php
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ));
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-sortable' );
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
+
+	//Re-ordering questions
+	if (isset($_POST['qmn_question_order_nonce']) && wp_verify_nonce( $_POST['qmn_question_order_nonce'], 'qmn_question_order')) {
+		$list_of_questions = explode( ',', $_POST["save_question_order_input"] );
+		$question_order = 0;
+		$success = true;
+		foreach( $list_of_questions as $id ) {
+			$question_order++;
+			$results = $wpdb->update(
+				$wpdb->prefix . "mlw_questions",
+				array(
+					'question_order' => $question_order
+				),
+				array( 'question_id' => explode( '_', $id )[1] ),
+				array(
+					'%d'
+				),
+				array( '%d' )
+			);
+			if ( $results ) {
+				$success = false;
+			}
+		}
+		if ( ! $success ) {
+			$mlwQuizMasterNext->alertManager->newAlert(__('The question order has been updated successfully.', 'quiz-master-next'), 'success');
+
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$results = $wpdb->insert(
+			$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Order Has Been Updated On Quiz: $quiz_id",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		}
+	}
 
 	//Edit question
 	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "edit_question" ) {
 		//Variables from edit question form
 		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
-		$edit_question_answer_info = htmlspecialchars(stripslashes( $_POST["correct_answer_info"]), ENT_QUOTES );
-		$mlw_edit_question_id = intval( $_POST["question_id"] ) ;
+		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
+		$mlw_edit_question_id = intval($_POST["question_id"]);
 		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
-		$edit_comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
-		$edit_hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
-		$edit_question_order = intval( $_POST["new_question_order"] );
-		$mlw_edit_answer_total = intval( $_POST["new_question_answer_total"] );
+		$edit_comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
+		$edit_hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
+		$edit_question_order = intval($_POST["new_question_order"]);
+		$mlw_edit_answer_total = intval($_POST["new_question_answer_total"]);
 
 		if ( isset( $_POST["new_category"] ) ) {
 			$qmn_edit_category = sanitize_text_field( $_POST["new_category"] );
 			if ( $qmn_edit_category == 'new_category' ) {
-				$qmn_edit_category = sanitize_text_field( $_POST["new_new_category"] );
+				$qmn_edit_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
 			}
 		} else {
 			$qmn_edit_category = '';
@@ -140,6 +186,7 @@ function mlw_options_questions_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0004'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0004", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 	//Delete question from quiz
@@ -184,6 +231,7 @@ function mlw_options_questions_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0005'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0005", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -275,6 +323,7 @@ function mlw_options_questions_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0019'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 00019", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -292,7 +341,7 @@ function mlw_options_questions_tab_content()
 		if ( isset( $_POST['new_category'] ) ) {
 			$qmn_category = sanitize_text_field( $_POST["new_category"] );
 			if ($qmn_category == 'new_category') {
-				$qmn_category = sanitize_text_field( $_POST["new_new_category"] );
+				$qmn_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
 			}
 		} else {
 			$qmn_category = '';
@@ -371,10 +420,13 @@ function mlw_options_questions_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0006'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0006", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
 
+
+	//Load questions
 	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
 		ORDER BY question_order ASC", $quiz_id ) );
 	$answers = array();
@@ -401,6 +453,12 @@ function mlw_options_questions_tab_content()
 	//Load Question Types
 	$qmn_question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 
+
+	//Load question type edit fields and convert to JavaScript
+	$qmn_question_type_fields = $mlwQuizMasterNext->pluginHelper->get_question_type_edit_fields();
+	echo "<script>
+		var qmn_question_type_fields = ".json_encode($qmn_question_type_fields).";
+	</script>";
 
 	echo "<script>
 	var questions_list = [";
@@ -476,6 +534,11 @@ function mlw_options_questions_tab_content()
 			}
 		</style>
 		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="save_question_order"><?php _e('Save Question Order', 'quiz-master-next'); ?></button>
+		<form style="display:none;" action="" method="post" name="save_question_order_form" id="save_question_order_form">
+			<input type="hidden" name="save_question_order_input" id="save_question_order_input" value="" />
+			<?php wp_nonce_field('qmn_question_order','qmn_question_order_nonce'); ?>
+		</form>
 		<br />
 		<p class="search-box">
 			<label class="screen-reader-text" for="question_search">Search Questions:</label>
@@ -574,33 +637,7 @@ function mlw_options_questions_tab_content()
 			<h2 class="question_area_header_text">Add New Question</h2>
 			<form action="" method="post" class="question_form">
 				<fieldset>
-					<legend>Question And Answers</legend>
-					<p><?php _e('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'); ?></p>
-					<?php wp_editor( '', "question_name" ); ?>
-
-					<div class="answer_headers">
-						<div class="answer_number">&nbsp;</div>
-						<div class="answer_text"><?php _e('Answers', 'quiz-master-next'); ?></div>
-						<div class="answer_points"><?php _e('Points Worth', 'quiz-master-next'); ?></div>
-						<div class="answer_correct"><?php _e('Correct Answer', 'quiz-master-next'); ?></div>
-					</div>
-					<div class="answers" id="answers">
-
-					</div>
-					<a href="#" class="button" id="new_answer_button"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
-				</fieldset>
-				<fieldset>
-					<legend>Question Options</legend>
-					<div class="row">
-						<label class="option_label"><?php _e('Correct Answer Info', 'quiz-master-next'); ?></label>
-						<input class="option_input" type="text" name="correct_answer_info" value="" id="correct_answer_info" />
-					</div>
-
-					<div class="row">
-						<label class="option_label"><?php _e('Hint', 'quiz-master-next'); ?></label>
-						<input class="option_input" type="text" name="hint" value="" id="hint"/>
-					</div>
-
+					<legend>Question Type</legend>
 					<div class="row">
 						<label class="option_label"><?php _e('Question Type', 'quiz-master-next'); ?></label>
 						<select class="option_input" name="question_type" id="question_type">
@@ -612,8 +649,37 @@ function mlw_options_questions_tab_content()
 							?>
 						</select>
 					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Question And Answers</legend>
+					<p id="question_type_info"></p>
+					<?php wp_editor( '', "question_name" ); ?>
+					<div id="answer_area">
+						<div class="answer_headers">
+							<div class="answer_number">&nbsp;</div>
+							<div class="answer_text"><?php _e('Answers', 'quiz-master-next'); ?></div>
+							<div class="answer_points"><?php _e('Points Worth', 'quiz-master-next'); ?></div>
+							<div class="answer_correct"><?php _e('Correct Answer', 'quiz-master-next'); ?></div>
+						</div>
+						<div class="answers" id="answers">
 
-					<div class="row">
+						</div>
+						<a href="#" class="button" id="new_answer_button"><?php _e('Add New Answer!', 'quiz-master-next'); ?></a>
+					</div>
+				</fieldset>
+				<fieldset>
+					<legend>Question Options</legend>
+					<div id="correct_answer_area" class="row">
+						<label class="option_label"><?php _e('Correct Answer Info', 'quiz-master-next'); ?></label>
+						<input class="option_input" type="text" name="correct_answer_info" value="" id="correct_answer_info" />
+					</div>
+
+					<div id="hint_area" class="row">
+						<label class="option_label"><?php _e('Hint', 'quiz-master-next'); ?></label>
+						<input class="option_input" type="text" name="hint" value="" id="hint"/>
+					</div>
+
+					<div id="comment_area" class="row">
 						<label class="option_label"><?php _e('Comment Field', 'quiz-master-next'); ?></label>
 						<div class="option_input">
 							<input type="radio" class="comments_radio" id="commentsRadio1" name="comments" value="0" /><label for="commentsRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label><br>
@@ -627,7 +693,7 @@ function mlw_options_questions_tab_content()
 						<input class="option_input" type="number" step="1" min="1" name="new_question_order" value="<?php echo count($questions)+1; ?>" id="new_question_order"/>
 					</div>
 
-					<div class="row">
+					<div id="required_area" class="row">
 						<label class="option_label"><?php _e('Required?', 'quiz-master-next'); ?></label>
 						<select class="option_input" name="required" id="required">
 							<option value="0" selected="selected"><?php _e('Yes', 'quiz-master-next'); ?></option>
@@ -635,7 +701,7 @@ function mlw_options_questions_tab_content()
 						</select>
 					</div>
 
-					<div class="row">
+					<div id="category_area" class="row">
 						<label class="option_label"><?php _e('Category', 'quiz-master-next'); ?></label>
 						<div class="option_input">
 							<?php

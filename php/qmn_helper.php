@@ -51,6 +51,14 @@ class QMNPluginHelper
 	public $question_types = array();
 
 	/**
+	 * Template array
+	 *
+	 * @var array
+	 * @since 4.5.0
+	 */
+	public $quiz_templates = array();
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -60,7 +68,39 @@ class QMNPluginHelper
 	  */
 	public function __construct()
 	{
+		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
+	}
 
+	/**
+	 * Registers Quiz Templates
+	 *
+	 * @since 4.5.0
+	 * @param $name String of the name of the template
+	 * @param $file_path String of the path to the css file
+	 */
+	public function register_quiz_template( $name, $file_path ) {
+		$slug = strtolower(str_replace( " ", "-", $name));
+		$this->quiz_templates[$slug] = array(
+			"name" => $name,
+			"path" => $file_path
+		);
+	}
+
+	/**
+	 * Returns Template Array
+	 *
+	 * @since 4.5.0
+	 * @param $name String of the name of the template. If left empty, will return all templates
+	 * @return array The array of quiz templates
+	 */
+	public function get_quiz_templates( $slug = null ) {
+		if ( is_null( $slug ) ) {
+			return $this->quiz_templates;
+		} elseif ( isset( $this->quiz_templates[$slug] ) ) {
+			return $this->quiz_templates[$slug];
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -76,21 +116,46 @@ class QMNPluginHelper
 		* @param string $slug The slug of the question type to be stored with question in database
 	  * @return void
 	  */
-	public function register_question_type($name, $display_function, $graded, $review_function = null, $slug = null)
+	public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_args = null, $save_edit_function = null, $slug = null)
 	{
-		if (is_null($slug))
-		{
+		if (is_null($slug)) {
 			$slug = strtolower(str_replace( " ", "-", $name));
-		}
-		else
-		{
+		} else {
 			$slug = strtolower(str_replace( " ", "-", $slug));
+		}
+		if ( is_null( $edit_args ) || !is_array( $edit_args ) ) {
+			$validated_edit_function = array(
+				'inputs' => array(
+					'question',
+					'answer',
+					'hint',
+					'correct_info',
+					'comments',
+					'category',
+					'required'
+				),
+				'information' => '',
+				'extra_inputs' => array(),
+				'function' => ''
+			);
+		} else {
+			$validated_edit_function = array(
+				'inputs' => $edit_args['inputs'],
+				'information' => $edit_args['information'],
+				'extra_inputs' => $edit_args['extra_inputs'],
+				'function' => $edit_args['function']
+			);
+		}
+		if ( is_null( $save_edit_function ) ) {
+			$save_edit_function = '';
 		}
 		$new_type = array(
 			'name' => $name,
 			'display' => $display_function,
 			'review' => $review_function,
 			'graded' => $graded,
+			'edit' => $validated_edit_function,
+			'save' => $save_edit_function,
 			'slug' => $slug
 		);
 		$this->question_types[] = $new_type;
@@ -113,6 +178,15 @@ class QMNPluginHelper
 				'slug' => $type["slug"],
 				'name' => $type["name"]
 			);
+		}
+		return $type_array;
+	}
+
+	public function get_question_type_edit_fields() {
+		$type_array = array();
+		foreach($this->question_types as $type)
+		{
+			$type_array[$type["slug"]] = $type["edit"];
 		}
 		return $type_array;
 	}

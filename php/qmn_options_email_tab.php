@@ -74,6 +74,7 @@ function mlw_options_emails_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0016'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0016", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -141,6 +142,7 @@ function mlw_options_emails_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0016'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0016", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -213,6 +215,7 @@ function mlw_options_emails_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0017'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0017", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 

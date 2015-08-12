@@ -58,6 +58,7 @@ function mlw_options_styling_tab_content()
 		else
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0015'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0015", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 
@@ -66,6 +67,7 @@ function mlw_options_styling_tab_content()
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
 	}
+	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>
 	<div id="tabs-7" class="mlw_tab_content">
 		<script>
@@ -106,8 +108,14 @@ function mlw_options_styling_tab_content()
 				background-color: yellow;
 			}
 		</style>
+		<?php
+		foreach($registered_templates as $slug => $template) {
+			?>
+			<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == $slug) {echo 'mlw_qmn_themeBlockActive';} ?>"><?php echo $template["name"]; ?></div>
+			<?php
+		}		
+		?>
 		<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
-		<?php do_action('mlw_qmn_quiz_themes'); ?>
 		<script>
 			mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
 		</script>

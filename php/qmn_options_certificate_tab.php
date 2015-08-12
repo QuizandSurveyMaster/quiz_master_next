@@ -81,6 +81,7 @@ function mlw_options_certificate_tab_content()
 			);
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
+			$mlwQuizMasterNext->log_manager->add("Error 0012", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
 	if (isset($_GET["quiz_id"]))
@@ -101,7 +102,7 @@ function mlw_options_certificate_tab_content()
 	?>
 	<div id="tabs-5" class="mlw_tab_content">
 		<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
-		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate.', 'quiz-master-next'); ?></p>
+		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate.', 'quiz-master-next'); ?></p>
 		<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
 		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
 		<?php

@@ -2,11 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* Creates the advertisements that are used throughout the plugin page. 
+* Creates the advertisements that are used throughout the plugin page.
 *
 * The advertisements are randomly generated every time the page is loaded. The function also handles the CSS for this.
-* 
-* @return $mlw_advert This variable is the main variable of the function and contains the advertisement content. 
+*
+* @return $mlw_advert This variable is the main variable of the function and contains the advertisement content.
 * @since 4.4.0
 */
 function mlw_qmn_show_adverts()
@@ -15,22 +15,22 @@ function mlw_qmn_show_adverts()
 	$mlw_advert_text = "";
 	if ( get_option('mlw_advert_shows') == 'true' )
 	{
-		$mlw_random_int = rand(0, 7);
+		$mlw_random_int = rand(0, 4);
 		switch ($mlw_random_int) {
 			case 0:
-				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizmasternext.com/downloads/premium-support/\">Quiz Master Next Support</a> for details!";
+				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizmasternext.com/support-levels/\">Quiz Master Next Support</a> for details!";
 				break;
 			case 1:
-				$mlw_advert_text = "Is Quiz Master Next beneficial to your website? Please help by giving us a review on WordPress.org by going <a href=\"http://wordpress.org/support/view/plugin-reviews/quiz-master-next\">here</a>!";
+				$mlw_advert_text = "Want 25% off your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizmasternext.com/subscribe-to-our-newsletter/\">subscribing to our mailing list</a> and receive a 25% discount on your next purchase!";
 				break;
-			case 3:
+			case 2:
 				$mlw_advert_text = "Would you like to support this plugin but do not need or want premium support? Please consider our inexpensive 'Advertisements Be Gone' add-on which will get rid of these ads. Visit our <a href=\"http://quizmasternext.com/addons/\">Addon Store</a> for details!";
 				break;
-			case 4:
-				$mlw_advert_text = "Need help keeping your plugins, themes, and WordPress up to date? Want around the clock security monitoring and off-site back-ups? How about WordPress training videos, a monthly status report, and support/consultation? Check out our <a href=\"http://mylocalwebstop.com/downloads/wordpress-maintenance/\">WordPress Maintenance Services</a> for more details!";
+			case 3:
+				$mlw_advert_text = "Need help keeping your plugins, themes, and WordPress up to date? Want around the clock security monitoring and off-site back-ups? How about WordPress training videos, a monthly status report, and support/consultation? Check out our <a href=\"http://mylocalwebstop.com/maintenance/\">WordPress Maintenance Services</a> for more details!";
 				break;
 			default:
-				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizmasternext.com/downloads/premium-support/\">Quiz Master Next Support</a> for details!";
+				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizmasternext.com/support-levels/\">Quiz Master Next Support</a> for details!";
 		}
 		$mlw_advert .= "
 			<style>

@@ -11,7 +11,7 @@ add_action("plugins_loaded", 'qmn_question_type_multiple_choice');
 function qmn_question_type_multiple_choice()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', 0);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0);
 }
 
 /**
@@ -102,7 +102,7 @@ add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_choice');
 function qmn_question_type_horizontal_multiple_choice()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Choice", 'quiz-master-next'), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', 1);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Choice", 'quiz-master-next'), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', null, null, 1);
 }
 
 /**
@@ -192,7 +192,7 @@ add_action("plugins_loaded", 'qmn_question_type_drop_down');
 function qmn_question_type_drop_down()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Drop Down", 'quiz-master-next'), 'qmn_drop_down_display', true, 'qmn_drop_down_review', 2);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Drop Down", 'quiz-master-next'), 'qmn_drop_down_display', true, 'qmn_drop_down_review', null, null, 2);
 }
 
 /**
@@ -279,7 +279,7 @@ add_action("plugins_loaded", 'qmn_question_type_small_open');
 function qmn_question_type_small_open()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Small Open Answer", 'quiz-master-next'), 'qmn_small_open_display', true, 'qmn_small_open_review', 3);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Small Open Answer", 'quiz-master-next'), 'qmn_small_open_display', true, 'qmn_small_open_review', null, null, 3);
 }
 
 /**
@@ -350,7 +350,7 @@ add_action("plugins_loaded", 'qmn_question_type_multiple_response');
 function qmn_question_type_multiple_response()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Response", 'quiz-master-next'), 'qmn_multiple_response_display', true, 'qmn_multiple_response_review', 4);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Response", 'quiz-master-next'), 'qmn_multiple_response_display', true, 'qmn_multiple_response_review', null, null, 4);
 }
 
 /**
@@ -449,7 +449,7 @@ add_action("plugins_loaded", 'qmn_question_type_large_open');
 function qmn_question_type_large_open()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Large Open Answer", 'quiz-master-next'), 'qmn_large_open_display', true, 'qmn_large_open_review', 5);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Large Open Answer", 'quiz-master-next'), 'qmn_large_open_display', true, 'qmn_large_open_review', null, null, 5);
 }
 
 /**
@@ -520,7 +520,15 @@ add_action("plugins_loaded", 'qmn_question_type_text_block');
 function qmn_question_type_text_block()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Text Block", 'quiz-master-next'), 'qmn_text_block_display', false, null, 6);
+	$edit_args = array(
+		'inputs' => array(
+			'question'
+		),
+		'information' => '',
+		'extra_inputs' => array(),
+		'function' => ''
+	);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Text Block", 'quiz-master-next'), 'qmn_text_block_display', false, null, $edit_args, null, 6);
 }
 
 
@@ -555,7 +563,7 @@ add_action("plugins_loaded", 'qmn_question_type_number');
 function qmn_question_type_number()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Number", 'quiz-master-next'), 'qmn_number_display', true, 'qmn_number_review', 7);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Number", 'quiz-master-next'), 'qmn_number_display', true, 'qmn_number_review', null, null, 7);
 }
 
 
@@ -628,7 +636,16 @@ add_action("plugins_loaded", 'qmn_question_type_accept');
 function qmn_question_type_accept()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Accept", 'quiz-master-next'), 'qmn_accept_display', false, null, 8);
+	$edit_args = array(
+		'inputs' => array(
+			'question',
+			'required'
+		),
+		'information' => '',
+		'extra_inputs' => array(),
+		'function' => ''
+	);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Accept", 'quiz-master-next'), 'qmn_accept_display', false, null, $edit_args, null, 8);
 }
 
 /**
@@ -663,7 +680,16 @@ add_action("plugins_loaded", 'qmn_question_type_captcha');
 function qmn_question_type_captcha()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Captcha", 'quiz-master-next'), 'qmn_captcha_display', false, null, 9);
+	$edit_args = array(
+		'inputs' => array(
+			'question',
+			'required'
+		),
+		'information' => '',
+		'extra_inputs' => array(),
+		'function' => ''
+	);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Captcha", 'quiz-master-next'), 'qmn_captcha_display', false, null, $edit_args, null, 9);
 }
 
 
@@ -721,7 +747,7 @@ add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_response');
 function qmn_question_type_horizontal_multiple_response()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Response", 'quiz-master-next'), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', 10);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Horizontal Multiple Response", 'quiz-master-next'), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', null, null, 10);
 }
 
 
@@ -822,7 +848,21 @@ add_action("plugins_loaded", 'qmn_question_type_fill_blank');
 function qmn_question_type_fill_blank()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review');
+	$edit_args = array(
+		'inputs' => array(
+			'question',
+			'answer',
+			'hint',
+			'correct_info',
+			'comments',
+			'category',
+			'required'
+		),
+		'information' => __('For fill in the blank types, use %BLANK% to represent where to put the text box in your text.', 'quiz-master-next'),
+		'extra_inputs' => array(),
+		'function' => ''
+	);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args );
 }
 
 

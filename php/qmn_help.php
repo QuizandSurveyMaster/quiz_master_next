@@ -189,6 +189,8 @@ function qmn_system_meta_box_content()
 function qmn_get_system_info()
 {
 	global $wpdb;
+	global $mlwQuizMasterNext;
+	
 	$qmn_sys_info = "";
 
 	$theme_data = wp_get_theme();
@@ -238,13 +240,28 @@ function qmn_get_system_info()
 	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
 	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions LIMIT 1" );
 	$mlw_stat_total_active_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
+	$qmn_total_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results LIMIT 1" );
+	$qmn_total_active_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE deleted=0 LIMIT 1" );
 
 	$qmn_sys_info .= "<h3>QMN Information</h3><br />";
+	$qmn_sys_info .= "Initial Version : ".get_option('qmn_original_version')."<br />";
+	$qmn_sys_info .= "Current Version : ".$mlwQuizMasterNext->version."<br />";
 	$qmn_sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
 	$qmn_sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
 	$qmn_sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
 	$qmn_sys_info .= "Total Active Questions : ".$mlw_stat_total_active_questions."<br />";
-
+	$qmn_sys_info .= "Total Results : ".$qmn_total_results."<br />";
+	$qmn_sys_info .= "Total Active Results : ".$qmn_total_active_results."<br />";
+	
+	$qmn_sys_info .= "<h3>QMN Recent Logs</h3><br />";
+	$recent_errors = $mlwQuizMasterNext->log_manager->get_logs();
+	if ( $recent_errors ) {
+		foreach( $recent_errors as $error ) {
+			$qmn_sys_info .= "Log created at ". $error->post_date . " : " . $error->post_title . " - " . $error->post_content . "<br />";
+		}
+	} else {
+		$qmn_sys_info .= "No recent logs<br />";
+	}
 
 	return $qmn_sys_info;
 }
