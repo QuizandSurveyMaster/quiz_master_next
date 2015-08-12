@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.2.4
-Stable tag: 4.5.0
+Stable tag: 4.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,7 +128,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 4.5.0 (August 4, 2015) =
+= 4.5.1 (August 12, 2015) =
+ * Fixes parse error on hosts with older PHP versions
+
+= 4.5.0 (August 11, 2015) =
   * Added a brand new log system to track errors in the plugin. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/233))
   * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/fpcorso/quiz_master_next/issues/235))
   * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/fpcorso/quiz_master_next/issues/234))
@@ -173,6 +176,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 4.5.1 =
+Upgrade to fix parse error on hosts with older PHP versions
 
 = 4.5.0 =
 Upgrade now for the ability to drag and drop questions to reorder, questions now only show relevent fields when adding/deleting them, and for the ability to search quiz results.

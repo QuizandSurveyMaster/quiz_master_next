@@ -43,12 +43,13 @@ function mlw_options_questions_tab_content()
 		$success = true;
 		foreach( $list_of_questions as $id ) {
 			$question_order++;
+			$update_question_id = explode( '_', $id );
 			$results = $wpdb->update(
 				$wpdb->prefix . "mlw_questions",
 				array(
 					'question_order' => $question_order
 				),
-				array( 'question_id' => explode( '_', $id )[1] ),
+				array( 'question_id' => $update_question_id[1] ),
 				array(
 					'%d'
 				),
