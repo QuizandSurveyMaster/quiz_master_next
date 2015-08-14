@@ -220,6 +220,7 @@ class QMNQuizManager
 
 		//Prepare JS Globals
 		echo "<script>";
+                echo "var qmn_quiz_id = ".$qmn_array_for_variables['quiz_id'].";";
 		if ($qmn_quiz_options->disable_answer_onselect == 1) {
 			echo "var qmn_disable_answer = true;";
 		} else {
@@ -1284,7 +1285,6 @@ function qmn_timer_check($display, $qmn_quiz_options, $qmn_array_for_variables)
 		?>
 		<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
 		<script type="text/javascript">
-			var qmn_quiz_id = <?php echo $qmn_array_for_variables['quiz_id']; ?>;
 			var qmn_timer_limit = <?php echo $qmn_quiz_options->timer_limit; ?>;
 		</script>
 		<?php
