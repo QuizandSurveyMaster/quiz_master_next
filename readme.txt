@@ -3,8 +3,8 @@ Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
-Tested up to: 4.2.4
-Stable tag: 4.5.1
+Tested up to: 4.3
+Stable tag: 4.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -128,6 +128,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.5.2 (August 14, 2015) =
+ * Ensured compatability with Wordpress version 4.3
+ * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
+
 = 4.5.1 (August 12, 2015) =
  * Fixes parse error on hosts with older PHP versions
 
@@ -176,6 +180,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 4.5.2 =
+Upgrade to fix a Required error in IE and to ensure compatability with Wordpress version 4.3
+
 
 = 4.5.1 =
 Upgrade to fix parse error on hosts with older PHP versions
