@@ -200,7 +200,7 @@ class QMNQuizManager
 			// If all fails, then load custom styling instead
 			if ( $registered_template && file_exists( $registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', $registered_template["path"] );
-			} elseif ( $registered_template && file_exists( plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) ) ) {
+			} elseif ( $registered_template && file_exists( plugin_dir_path(__FILE__).'../templates/'.$registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template["path"], __FILE__ ) );
 			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] );

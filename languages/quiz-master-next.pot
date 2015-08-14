@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-26 14:52-0500\n"
+"POT-Creation-Date: 2015-08-04 13:53-0400\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -18,50 +18,70 @@ msgstr ""
 "X-Textdomain-Support: yesX-Generator: Poedit 1.6.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;esc_html_e;esc_html_x:1,2c;esc_html__;esc_attr_e;esc_attr_x:1,2c;esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2;_n_noop:1,2;__ngettext:1,2;__ngettext_noop:1,2;_c,_nc:4c,1,2\n"
-"X-Poedit-Basepath: ../\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: mlw_quizmaster2.php:217 php/qmn_quiz_admin.php:196
+#: mlw_quizmaster2.php:224 php/qmn_quiz_admin.php:196
 msgid "Quizzes"
 msgstr ""
 
-#: mlw_quizmaster2.php:218
+#: mlw_quizmaster2.php:225
 msgid "Quiz Settings"
 msgstr ""
 
-#: mlw_quizmaster2.php:219 php/qmn_results.php:159
+#: mlw_quizmaster2.php:226 php/qmn_results.php:193
 #: php/qmn_results_details.php:20
 msgid "Quiz Results"
 msgstr ""
 
-#: mlw_quizmaster2.php:220
+#: mlw_quizmaster2.php:227
 msgid "Quiz Result Details"
 msgstr ""
 
-#: mlw_quizmaster2.php:221
+#: mlw_quizmaster2.php:228
 msgid "Settings"
 msgstr ""
 
-#: mlw_quizmaster2.php:222 php/qmn_options_tools_tab.php:13
+#: mlw_quizmaster2.php:229 php/qmn_options_tools_tab.php:13
 #: php/qmn_tools.php:65
 msgid "Tools"
 msgstr ""
 
-#: mlw_quizmaster2.php:223
+#: mlw_quizmaster2.php:230
 msgid "Stats"
 msgstr ""
 
-#: mlw_quizmaster2.php:224
+#: mlw_quizmaster2.php:231
 msgid "Addon Settings"
 msgstr ""
 
-#: mlw_quizmaster2.php:225
+#: mlw_quizmaster2.php:232
 msgid "Help"
 msgstr ""
 
-#: mlw_quizmaster2.php:228 mlw_quizmaster2.php:229
+#: mlw_quizmaster2.php:235 mlw_quizmaster2.php:236
 msgid "QMN About"
+msgstr ""
+
+#: php/class-qmn-review-message.php:83
+#, php-format
+msgid ""
+"Greetings! I just noticed that you now have more than %d quiz results. That is\n"
+"\t\tawesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This\n"
+"\t\twill help us by helping other users discover this plugin. %s"
+msgstr ""
+
+#: php/class-qmn-review-message.php:89
+msgid "Yeah, you deserve it!"
+msgstr ""
+
+#: php/class-qmn-review-message.php:90
+msgid "I already did!"
+msgstr ""
+
+#: php/class-qmn-review-message.php:91
+msgid "No, this plugin is not good enough"
 msgstr ""
 
 #: php/qmn-stats-page.php:29
@@ -108,6 +128,15 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
+#: php/qmn_credits.php:39
+msgid "People Who Make QMN Possible"
+msgstr ""
+
+#: php/qmn_credits.php:108
+#, php-format
+msgid "View %s"
+msgstr ""
+
 #: php/qmn_dashboard_widgets.php:16
 msgid "Quiz Master Next Snapshot"
 msgstr ""
@@ -144,23 +173,23 @@ msgstr ""
 msgid "least popular quiz"
 msgstr ""
 
-#: php/qmn_help.php:13
+#: php/qmn_help.php:20
 msgid "Need Help?"
 msgstr ""
 
-#: php/qmn_help.php:14
+#: php/qmn_help.php:21
 msgid "Support"
 msgstr ""
 
-#: php/qmn_help.php:15
+#: php/qmn_help.php:22
 msgid "System Info"
 msgstr ""
 
-#: php/qmn_help.php:18
+#: php/qmn_help.php:25
 msgid "Help Page"
 msgstr ""
 
-#: php/qmn_help.php:48
+#: php/qmn_help.php:55
 msgid "Need help with the plugin? Try any of the following:"
 msgstr ""
 
@@ -168,102 +197,102 @@ msgstr ""
 msgid "Certificate (Beta)"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:47
+#: php/qmn_options_certificate_tab.php:64
 msgid "The certificate has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:60 php/qmn_options_email_tab.php:68
-#: php/qmn_options_email_tab.php:127 php/qmn_options_email_tab.php:191
-#: php/qmn_options_leaderboard_tab.php:52 php/qmn_options_option_tab.php:120
-#: php/qmn_options_questions_tab.php:139 php/qmn_options_questions_tab.php:166
-#: php/qmn_options_questions_tab.php:250 php/qmn_options_questions_tab.php:343
-#: php/qmn_options_results_page_tab.php:68
-#: php/qmn_options_results_page_tab.php:108 php/qmn_options_style_tab.php:52
-#: php/qmn_options_text_tab.php:68 php/qmn_options_tools_tab.php:50
-#: php/qmn_quiz_creator.php:385 php/qmn_quiz_creator.php:451
-#: php/qmn_quiz_creator.php:493 php/qmn_quiz_creator.php:651
-#: php/qmn_quiz_creator.php:716 php/qmn_results.php:43
+#: php/qmn_options_certificate_tab.php:83 php/qmn_options_email_tab.php:76
+#: php/qmn_options_email_tab.php:144 php/qmn_options_email_tab.php:217
+#: php/qmn_options_leaderboard_tab.php:68 php/qmn_options_option_tab.php:131
+#: php/qmn_options_questions_tab.php:188 php/qmn_options_questions_tab.php:233
+#: php/qmn_options_questions_tab.php:325 php/qmn_options_questions_tab.php:422
+#: php/qmn_options_results_page_tab.php:76
+#: php/qmn_options_results_page_tab.php:125 php/qmn_options_style_tab.php:60
+#: php/qmn_options_text_tab.php:123 php/qmn_options_tools_tab.php:68
+#: php/qmn_quiz_creator.php:315 php/qmn_quiz_creator.php:390
+#: php/qmn_quiz_creator.php:441 php/qmn_quiz_creator.php:608
+#: php/qmn_quiz_creator.php:674 php/qmn_results.php:58
 #, php-format
 msgid "There has been an error in this action. Please share this with the developer. Error Code: %s"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:76
+#: php/qmn_options_certificate_tab.php:100
 msgid "Enter title here"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:76 php/qmn_options_email_tab.php:86
-#: php/qmn_options_email_tab.php:104
+#: php/qmn_options_certificate_tab.php:100 php/qmn_options_email_tab.php:95
+#: php/qmn_options_email_tab.php:113
 msgid "Enter text here"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:80
+#: php/qmn_options_certificate_tab.php:104
 msgid "Quiz Certificate (Beta)"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:81
-msgid "Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Quiz Text tab so the user can access the certificate."
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:82
-msgid "These fields cannot contain HTML."
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:83
-#: php/qmn_options_certificate_tab.php:139
-msgid "Save Certificate Options"
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:91
-msgid "Enable Certificates For This Quiz?"
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:93 php/qmn_options_email_tab.php:354
-#: php/qmn_options_email_tab.php:361 php/qmn_options_option_tab.php:166
-#: php/qmn_options_option_tab.php:227 php/qmn_options_option_tab.php:234
-#: php/qmn_options_option_tab.php:242 php/qmn_options_option_tab.php:250
-#: php/qmn_options_option_tab.php:258 php/qmn_options_option_tab.php:266
-#: php/qmn_options_option_tab.php:273 php/qmn_options_option_tab.php:280
-#: php/qmn_options_option_tab.php:287 php/qmn_options_option_tab.php:294
-#: php/qmn_options_questions_tab.php:603
-#: php/qmn_options_results_page_tab.php:264
-msgid "Yes"
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:94 php/qmn_options_email_tab.php:355
-#: php/qmn_options_email_tab.php:362 php/qmn_options_option_tab.php:167
-#: php/qmn_options_option_tab.php:214 php/qmn_options_option_tab.php:228
-#: php/qmn_options_option_tab.php:236 php/qmn_options_option_tab.php:244
-#: php/qmn_options_option_tab.php:252 php/qmn_options_option_tab.php:260
-#: php/qmn_options_option_tab.php:267 php/qmn_options_option_tab.php:274
-#: php/qmn_options_option_tab.php:281 php/qmn_options_option_tab.php:288
-#: php/qmn_options_option_tab.php:295 php/qmn_options_questions_tab.php:604
-#: php/qmn_options_results_page_tab.php:264
-msgid "No"
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:99
-msgid "Certificate Title"
+#: php/qmn_options_certificate_tab.php:105
+msgid "Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate."
 msgstr ""
 
 #: php/qmn_options_certificate_tab.php:106
+msgid "These fields cannot contain HTML."
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:107
+#: php/qmn_options_certificate_tab.php:163
+msgid "Save Certificate Options"
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:115
+msgid "Enable Certificates For This Quiz?"
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:117 php/qmn_options_email_tab.php:381
+#: php/qmn_options_email_tab.php:388 php/qmn_options_option_tab.php:178
+#: php/qmn_options_option_tab.php:239 php/qmn_options_option_tab.php:246
+#: php/qmn_options_option_tab.php:254 php/qmn_options_option_tab.php:262
+#: php/qmn_options_option_tab.php:270 php/qmn_options_option_tab.php:278
+#: php/qmn_options_option_tab.php:285 php/qmn_options_option_tab.php:292
+#: php/qmn_options_option_tab.php:299 php/qmn_options_option_tab.php:306
+#: php/qmn_options_questions_tab.php:699
+#: php/qmn_options_results_page_tab.php:282
+msgid "Yes"
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:118 php/qmn_options_email_tab.php:382
+#: php/qmn_options_email_tab.php:389 php/qmn_options_option_tab.php:179
+#: php/qmn_options_option_tab.php:226 php/qmn_options_option_tab.php:240
+#: php/qmn_options_option_tab.php:248 php/qmn_options_option_tab.php:256
+#: php/qmn_options_option_tab.php:264 php/qmn_options_option_tab.php:272
+#: php/qmn_options_option_tab.php:279 php/qmn_options_option_tab.php:286
+#: php/qmn_options_option_tab.php:293 php/qmn_options_option_tab.php:300
+#: php/qmn_options_option_tab.php:307 php/qmn_options_questions_tab.php:700
+#: php/qmn_options_results_page_tab.php:282
+msgid "No"
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:123
+msgid "Certificate Title"
+msgstr ""
+
+#: php/qmn_options_certificate_tab.php:130
 msgid "Message Displayed On Certificate"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:108
-#: php/qmn_options_leaderboard_tab.php:105 php/qmn_options_text_tab.php:198
-#: php/qmn_options_text_tab.php:208 php/qmn_options_text_tab.php:218
-#: php/qmn_options_text_tab.php:228 php/qmn_options_text_tab.php:238
-#: php/qmn_options_text_tab.php:248 php/qmn_options_text_tab.php:258
-#: php/qmn_options_text_tab.php:268 php/qmn_options_text_tab.php:281
-#: php/qmn_options_text_tab.php:298
+#: php/qmn_options_certificate_tab.php:132
+#: php/qmn_options_leaderboard_tab.php:122 php/qmn_options_text_tab.php:254
+#: php/qmn_options_text_tab.php:264 php/qmn_options_text_tab.php:274
+#: php/qmn_options_text_tab.php:284 php/qmn_options_text_tab.php:294
+#: php/qmn_options_text_tab.php:304 php/qmn_options_text_tab.php:314
+#: php/qmn_options_text_tab.php:324 php/qmn_options_text_tab.php:337
+#: php/qmn_options_text_tab.php:354
 msgid "Allowed Variables:"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:126
+#: php/qmn_options_certificate_tab.php:150
 msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
 msgstr ""
 
-#: php/qmn_options_certificate_tab.php:133
+#: php/qmn_options_certificate_tab.php:157
 msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
 msgstr ""
 
@@ -271,193 +300,193 @@ msgstr ""
 msgid "Emails"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:55 php/qmn_options_email_tab.php:114
+#: php/qmn_options_email_tab.php:55 php/qmn_options_email_tab.php:123
 msgid "The email has been added successfully."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:178
+#: php/qmn_options_email_tab.php:196
 msgid "The email has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:258 php/qmn_options_leaderboard_tab.php:63
-#: php/qmn_options_results_page_tab.php:148 php/qmn_options_text_tab.php:105
+#: php/qmn_options_email_tab.php:285 php/qmn_options_leaderboard_tab.php:80
+#: php/qmn_options_results_page_tab.php:166 php/qmn_options_text_tab.php:161
 msgid "Template Variables"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:261 php/qmn_options_results_page_tab.php:151
-#: php/qmn_options_text_tab.php:108
+#: php/qmn_options_email_tab.php:288 php/qmn_options_results_page_tab.php:169
+#: php/qmn_options_text_tab.php:164
 msgid "Score for the quiz when using points"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:264 php/qmn_options_results_page_tab.php:154
-#: php/qmn_options_text_tab.php:111
+#: php/qmn_options_email_tab.php:291 php/qmn_options_results_page_tab.php:172
+#: php/qmn_options_text_tab.php:167
 msgid "The average amount of points user had per question"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:267 php/qmn_options_results_page_tab.php:157
-#: php/qmn_options_text_tab.php:114
+#: php/qmn_options_email_tab.php:294 php/qmn_options_results_page_tab.php:175
+#: php/qmn_options_text_tab.php:170
 msgid "The number of correct answers the user had"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:270 php/qmn_options_results_page_tab.php:160
-#: php/qmn_options_text_tab.php:117
+#: php/qmn_options_email_tab.php:297 php/qmn_options_results_page_tab.php:178
+#: php/qmn_options_text_tab.php:173
 msgid "The total number of questions in the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:273 php/qmn_options_results_page_tab.php:163
-#: php/qmn_options_text_tab.php:120
+#: php/qmn_options_email_tab.php:300 php/qmn_options_results_page_tab.php:181
+#: php/qmn_options_text_tab.php:176
 msgid "Score for the quiz when using correct answers"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:276 php/qmn_options_results_page_tab.php:166
-#: php/qmn_options_text_tab.php:123
+#: php/qmn_options_email_tab.php:303 php/qmn_options_results_page_tab.php:184
+#: php/qmn_options_text_tab.php:179
 msgid "The name the user entered before the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:279 php/qmn_options_results_page_tab.php:169
-#: php/qmn_options_text_tab.php:126
+#: php/qmn_options_email_tab.php:306 php/qmn_options_results_page_tab.php:187
+#: php/qmn_options_text_tab.php:182
 msgid "The business the user entered before the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:282 php/qmn_options_results_page_tab.php:172
-#: php/qmn_options_text_tab.php:129
+#: php/qmn_options_email_tab.php:309 php/qmn_options_results_page_tab.php:190
+#: php/qmn_options_text_tab.php:185
 msgid "The phone number the user entered before the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:285 php/qmn_options_results_page_tab.php:175
-#: php/qmn_options_text_tab.php:132
+#: php/qmn_options_email_tab.php:312 php/qmn_options_results_page_tab.php:193
+#: php/qmn_options_text_tab.php:188
 msgid "The email the user entered before the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:288 php/qmn_options_leaderboard_tab.php:91
-#: php/qmn_options_results_page_tab.php:178 php/qmn_options_text_tab.php:135
+#: php/qmn_options_email_tab.php:315 php/qmn_options_leaderboard_tab.php:108
+#: php/qmn_options_results_page_tab.php:196 php/qmn_options_text_tab.php:191
 msgid "The name of the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:291 php/qmn_options_results_page_tab.php:181
-#: php/qmn_options_text_tab.php:138
+#: php/qmn_options_email_tab.php:318 php/qmn_options_results_page_tab.php:199
+#: php/qmn_options_text_tab.php:194
 msgid "Shows the question, the answer the user provided, and the correct answer"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:294 php/qmn_options_results_page_tab.php:184
-#: php/qmn_options_text_tab.php:141
+#: php/qmn_options_email_tab.php:321 php/qmn_options_results_page_tab.php:202
+#: php/qmn_options_text_tab.php:197
 msgid "The comments the user entered into comment box if enabled"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:297 php/qmn_options_text_tab.php:144
+#: php/qmn_options_email_tab.php:324 php/qmn_options_text_tab.php:200
 msgid "The amount of time user spent on quiz in seconds"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:300 php/qmn_options_text_tab.php:147
+#: php/qmn_options_email_tab.php:327 php/qmn_options_text_tab.php:203
 msgid "The amount of time user spent on quiz in minutes"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:303 php/qmn_options_results_page_tab.php:193
-#: php/qmn_options_text_tab.php:150
+#: php/qmn_options_email_tab.php:330 php/qmn_options_results_page_tab.php:211
+#: php/qmn_options_text_tab.php:206
 msgid "The link to the certificate after completing the quiz"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:306 php/qmn_options_results_page_tab.php:196
-#: php/qmn_options_text_tab.php:153
+#: php/qmn_options_email_tab.php:333 php/qmn_options_results_page_tab.php:214
+#: php/qmn_options_text_tab.php:209
 msgid "The amount of points a specific category earned."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:309 php/qmn_options_results_page_tab.php:199
-#: php/qmn_options_text_tab.php:156
+#: php/qmn_options_email_tab.php:336 php/qmn_options_results_page_tab.php:217
+#: php/qmn_options_text_tab.php:212
 msgid "The score a specific category earned."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:312 php/qmn_options_results_page_tab.php:202
-#: php/qmn_options_text_tab.php:159
+#: php/qmn_options_email_tab.php:339 php/qmn_options_results_page_tab.php:220
+#: php/qmn_options_text_tab.php:215
 msgid "The average points from all categories."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:315 php/qmn_options_results_page_tab.php:205
-#: php/qmn_options_text_tab.php:162
+#: php/qmn_options_email_tab.php:342 php/qmn_options_results_page_tab.php:223
+#: php/qmn_options_text_tab.php:218
 msgid "The average score from all categories."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:318 php/qmn_options_text_tab.php:165
+#: php/qmn_options_email_tab.php:345 php/qmn_options_text_tab.php:221
 msgid "The question that the user answered"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:321 php/qmn_options_text_tab.php:168
+#: php/qmn_options_email_tab.php:348 php/qmn_options_text_tab.php:224
 msgid "The answer the user gave for the question"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:324 php/qmn_options_text_tab.php:171
+#: php/qmn_options_email_tab.php:351 php/qmn_options_text_tab.php:227
 msgid "The correct answer for the question"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:327 php/qmn_options_text_tab.php:174
+#: php/qmn_options_email_tab.php:354 php/qmn_options_text_tab.php:230
 msgid "The comments the user provided in the comment field for the question"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:330 php/qmn_options_text_tab.php:177
+#: php/qmn_options_email_tab.php:357 php/qmn_options_text_tab.php:233
 msgid "Reason why the correct answer is the correct answer"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:333 php/qmn_options_text_tab.php:180
+#: php/qmn_options_email_tab.php:360 php/qmn_options_text_tab.php:236
 msgid "The Current Date"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:348 php/qmn_options_email_tab.php:547
+#: php/qmn_options_email_tab.php:375 php/qmn_options_email_tab.php:574
 msgid "Save Email Templates And Settings"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:352
+#: php/qmn_options_email_tab.php:379
 msgid "Send user email upon completion?"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:359
+#: php/qmn_options_email_tab.php:386
 msgid "Send admin email upon completion?"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:366
+#: php/qmn_options_email_tab.php:393
 msgid "What emails should we send the admin email to? Separate emails with a comma."
 msgstr ""
 
-#: php/qmn_options_email_tab.php:370
+#: php/qmn_options_email_tab.php:397
 msgid "What is the From Name for the email sent to users and admin?"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:376
+#: php/qmn_options_email_tab.php:403
 msgid "Email Sent To User"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:377 php/qmn_options_email_tab.php:455
+#: php/qmn_options_email_tab.php:404 php/qmn_options_email_tab.php:482
 msgid "Add New User Email"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:382 php/qmn_options_email_tab.php:448
-#: php/qmn_options_email_tab.php:469 php/qmn_options_email_tab.php:535
-#: php/qmn_options_results_page_tab.php:223
-#: php/qmn_options_results_page_tab.php:287
+#: php/qmn_options_email_tab.php:409 php/qmn_options_email_tab.php:475
+#: php/qmn_options_email_tab.php:496 php/qmn_options_email_tab.php:562
+#: php/qmn_options_results_page_tab.php:241
+#: php/qmn_options_results_page_tab.php:305
 msgid "Score Greater Than Or Equal To"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:383 php/qmn_options_email_tab.php:449
-#: php/qmn_options_email_tab.php:470 php/qmn_options_email_tab.php:536
-#: php/qmn_options_results_page_tab.php:224
-#: php/qmn_options_results_page_tab.php:288
+#: php/qmn_options_email_tab.php:410 php/qmn_options_email_tab.php:476
+#: php/qmn_options_email_tab.php:497 php/qmn_options_email_tab.php:563
+#: php/qmn_options_results_page_tab.php:242
+#: php/qmn_options_results_page_tab.php:306
 msgid "Score Less Than Or Equal To"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:384 php/qmn_options_email_tab.php:450
-#: php/qmn_options_email_tab.php:471 php/qmn_options_email_tab.php:537
+#: php/qmn_options_email_tab.php:411 php/qmn_options_email_tab.php:477
+#: php/qmn_options_email_tab.php:498 php/qmn_options_email_tab.php:564
 msgid "Subject"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:385 php/qmn_options_email_tab.php:451
-#: php/qmn_options_email_tab.php:472 php/qmn_options_email_tab.php:538
+#: php/qmn_options_email_tab.php:412 php/qmn_options_email_tab.php:478
+#: php/qmn_options_email_tab.php:499 php/qmn_options_email_tab.php:565
 msgid "Email To Send"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:463
+#: php/qmn_options_email_tab.php:490
 msgid "Email Sent To Admin"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:464 php/qmn_options_email_tab.php:542
+#: php/qmn_options_email_tab.php:491 php/qmn_options_email_tab.php:569
 msgid "Add New Admin Email"
 msgstr ""
 
@@ -465,56 +494,56 @@ msgstr ""
 msgid "Leaderboard"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:39
+#: php/qmn_options_leaderboard_tab.php:49
 msgid "The leaderboards has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:66
+#: php/qmn_options_leaderboard_tab.php:83
 msgid "The name of the user who is in first place"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:67
+#: php/qmn_options_leaderboard_tab.php:84
 msgid "The score from the first place's quiz"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:71
+#: php/qmn_options_leaderboard_tab.php:88
 msgid "The name of the user who is in second place"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:72
+#: php/qmn_options_leaderboard_tab.php:89
 msgid "The score from the second place's quiz"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:76
+#: php/qmn_options_leaderboard_tab.php:93
 msgid "The name of the user who is in third place"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:77
+#: php/qmn_options_leaderboard_tab.php:94
 msgid "The score from the third place's quiz"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:81
+#: php/qmn_options_leaderboard_tab.php:98
 msgid "The name of the user who is in fourth place"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:82
+#: php/qmn_options_leaderboard_tab.php:99
 msgid "The score from the fourth place's quiz"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:86
+#: php/qmn_options_leaderboard_tab.php:103
 msgid "The name of the user who is in fifth place"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:87
+#: php/qmn_options_leaderboard_tab.php:104
 msgid "The score from the fifth place's quiz"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:94
-#: php/qmn_options_leaderboard_tab.php:122
+#: php/qmn_options_leaderboard_tab.php:111
+#: php/qmn_options_leaderboard_tab.php:139
 msgid "Save Leaderboard Options"
 msgstr ""
 
-#: php/qmn_options_leaderboard_tab.php:103
+#: php/qmn_options_leaderboard_tab.php:120
 msgid "Leaderboard Template"
 msgstr ""
 
@@ -522,136 +551,136 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:107
+#: php/qmn_options_option_tab.php:110
 msgid "The options has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_option_tab.php:148 php/qmn_options_option_tab.php:299
+#: php/qmn_options_option_tab.php:160 php/qmn_options_option_tab.php:311
 msgid "Save Options"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:156
+#: php/qmn_options_option_tab.php:168
 msgid "Which system is this quiz graded on?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:158
+#: php/qmn_options_option_tab.php:170
 msgid "Correct/Incorrect"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:159
+#: php/qmn_options_option_tab.php:171
 msgid "Points"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:160 php/qmn_results.php:265
+#: php/qmn_options_option_tab.php:172 php/qmn_results.php:316
 msgid "Not Graded"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:164
+#: php/qmn_options_option_tab.php:176
 msgid "Should the user be required to be logged in to take this quiz?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:171
+#: php/qmn_options_option_tab.php:183
 msgid "How many questions per page would you like? (Leave 0 for all questions on one page)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:177
+#: php/qmn_options_option_tab.php:189
 msgid "How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:183
+#: php/qmn_options_option_tab.php:195
 msgid "How many times can a user take this quiz? (Leave 0 for as many times as the user wants to. Currently only works for registered users)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:189
+#: php/qmn_options_option_tab.php:201
 msgid "How many total entries can this quiz have? (Leave 0 for unlimited entries"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:195
+#: php/qmn_options_option_tab.php:207
 msgid "How many questions should be loaded for quiz? (Leave 0 to load all questions)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:201
+#: php/qmn_options_option_tab.php:213
 msgid "What time-frame should the user be able to access the quiz? (Leave blank if the user can access anytime)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:203
+#: php/qmn_options_option_tab.php:215
 msgid "start date"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:206
+#: php/qmn_options_option_tab.php:218
 msgid "end date"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:210
+#: php/qmn_options_option_tab.php:222
 msgid "Are the questions random? (Question Order will not apply if this is yes)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:212
+#: php/qmn_options_option_tab.php:224
 msgid "Random Questions"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:213
+#: php/qmn_options_option_tab.php:225
 msgid "Random Questions And Answers"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:218
+#: php/qmn_options_option_tab.php:230
 msgid "Would you like to ask for the contact information at the beginning or at the end of the quiz?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:220
+#: php/qmn_options_option_tab.php:232
 msgid "Beginning"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:221
+#: php/qmn_options_option_tab.php:233
 msgid "End"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:225
+#: php/qmn_options_option_tab.php:237
 msgid "If a logged-in user takes the quiz, would you like them to be able to edit contact information? If set to no, the fields will not show up for logged in users; however, the users information will be saved for the fields."
 msgstr ""
 
-#: php/qmn_options_option_tab.php:232
+#: php/qmn_options_option_tab.php:244
 msgid "Should we ask for users name?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:235 php/qmn_options_option_tab.php:243
-#: php/qmn_options_option_tab.php:251 php/qmn_options_option_tab.php:259
+#: php/qmn_options_option_tab.php:247 php/qmn_options_option_tab.php:255
+#: php/qmn_options_option_tab.php:263 php/qmn_options_option_tab.php:271
 msgid "Require"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:240
+#: php/qmn_options_option_tab.php:252
 msgid "Should we ask for users business?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:248
+#: php/qmn_options_option_tab.php:260
 msgid "Should we ask for users email?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:256
+#: php/qmn_options_option_tab.php:268
 msgid "Should we ask for users phone number?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:264
+#: php/qmn_options_option_tab.php:276
 msgid "Would you like a place for the user to enter comments?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:271
+#: php/qmn_options_option_tab.php:283
 msgid "Show question number on quiz?"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:278
+#: php/qmn_options_option_tab.php:290
 msgid "Show social media sharing buttons? (Twitter & Facebook)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:278
+#: php/qmn_options_option_tab.php:290
 msgid "This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:285
+#: php/qmn_options_option_tab.php:297
 msgid "Disable question once user selects answer? (Currently only work on multiple choice)"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:292
+#: php/qmn_options_option_tab.php:304
 msgid "Dynamically add class for incorrect/correct answer after user selects answer? (Currently only works on multiple choice)"
 msgstr ""
 
@@ -667,117 +696,121 @@ msgstr ""
 msgid "Answer"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:126
+#: php/qmn_options_questions_tab.php:62
+msgid "The question order has been updated successfully."
+msgstr ""
+
+#: php/qmn_options_questions_tab.php:167
 msgid "The question has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:153
+#: php/qmn_options_questions_tab.php:212
 msgid "The question has been deleted successfully."
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:237
+#: php/qmn_options_questions_tab.php:304
 msgid "The question has been duplicated successfully."
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:330
+#: php/qmn_options_questions_tab.php:401
 msgid "The question has been created successfully."
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:448
+#: php/qmn_options_questions_tab.php:536
 msgid "Add Question"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:457
+#: php/qmn_options_questions_tab.php:537
+msgid "Save Question Order"
+msgstr ""
+
+#: php/qmn_options_questions_tab.php:550
 #, php-format
 msgid "One question"
 msgid_plural "%s questions"
 msgstr[0] ""
 msgstr[1] ""
 
-#: php/qmn_options_questions_tab.php:463 php/qmn_options_questions_tab.php:471
-#: php/qmn_options_questions_tab.php:596
+#: php/qmn_options_questions_tab.php:556 php/qmn_options_questions_tab.php:564
+#: php/qmn_options_questions_tab.php:692
 msgid "Question Order"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:464 php/qmn_options_questions_tab.php:472
-#: php/qmn_options_questions_tab.php:575
+#: php/qmn_options_questions_tab.php:557 php/qmn_options_questions_tab.php:565
+#: php/qmn_options_questions_tab.php:642
 msgid "Question Type"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:465 php/qmn_options_questions_tab.php:473
-#: php/qmn_options_questions_tab.php:609
+#: php/qmn_options_questions_tab.php:558 php/qmn_options_questions_tab.php:566
+#: php/qmn_options_questions_tab.php:705
 msgid "Category"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:466 php/qmn_options_questions_tab.php:474
+#: php/qmn_options_questions_tab.php:559 php/qmn_options_questions_tab.php:567
 msgid "Question"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:548
-msgid "For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
-msgstr ""
-
-#: php/qmn_options_questions_tab.php:553
+#: php/qmn_options_questions_tab.php:660
 msgid "Answers"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:554
+#: php/qmn_options_questions_tab.php:661
 msgid "Points Worth"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:555
+#: php/qmn_options_questions_tab.php:662
 msgid "Correct Answer"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:560
+#: php/qmn_options_questions_tab.php:667
 msgid "Add New Answer!"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:565
+#: php/qmn_options_questions_tab.php:673
 msgid "Correct Answer Info"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:570 php/qmn_quiz.php:477
+#: php/qmn_options_questions_tab.php:678 php/qmn_quiz.php:493
 msgid "Hint"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:587
+#: php/qmn_options_questions_tab.php:683
 msgid "Comment Field"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:589
+#: php/qmn_options_questions_tab.php:685
 msgid "Small Text Field"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:590
+#: php/qmn_options_questions_tab.php:686
 msgid "Large Text Field"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:591
+#: php/qmn_options_questions_tab.php:687
 msgid "None"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:601
+#: php/qmn_options_questions_tab.php:697
 msgid "Required?"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:632
+#: php/qmn_options_questions_tab.php:728
 msgid "Create Question"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:637
+#: php/qmn_options_questions_tab.php:733
 msgid "Are you sure you want to delete this question?"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:642
+#: php/qmn_options_questions_tab.php:738
 msgid "Delete Question"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:647
+#: php/qmn_options_questions_tab.php:743
 msgid "Are you sure you want to duplicate this question?"
 msgstr ""
 
-#: php/qmn_options_questions_tab.php:652
+#: php/qmn_options_questions_tab.php:748
 msgid "Duplicate Question"
 msgstr ""
 
@@ -789,51 +822,51 @@ msgstr ""
 msgid "The results page has been added successfully."
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:95
+#: php/qmn_options_results_page_tab.php:104
 msgid "The results page has been saved successfully."
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:187
+#: php/qmn_options_results_page_tab.php:205
 msgid "The amount of time user spent taking quiz in minutes"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:190
+#: php/qmn_options_results_page_tab.php:208
 msgid "The amount of time user spent taking quiz in seconds"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:208
+#: php/qmn_options_results_page_tab.php:226
 msgid "Displays button to share on Facebook."
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:211
+#: php/qmn_options_results_page_tab.php:229
 msgid "Displays button to share on Twitter."
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:216
-#: php/qmn_options_results_page_tab.php:297
+#: php/qmn_options_results_page_tab.php:234
+#: php/qmn_options_results_page_tab.php:315
 msgid "Save Results Pages"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:217
-#: php/qmn_options_results_page_tab.php:302
+#: php/qmn_options_results_page_tab.php:235
+#: php/qmn_options_results_page_tab.php:320
 msgid "Add New Results Page"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:225
-#: php/qmn_options_results_page_tab.php:289
+#: php/qmn_options_results_page_tab.php:243
+#: php/qmn_options_results_page_tab.php:307
 msgid "Results Page Shown"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:226
-#: php/qmn_options_results_page_tab.php:290
+#: php/qmn_options_results_page_tab.php:244
+#: php/qmn_options_results_page_tab.php:308
 msgid "Redirect URL (Beta)"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:264 php/qmn_quiz_admin.php:283
+#: php/qmn_options_results_page_tab.php:282 php/qmn_quiz_admin.php:283
 msgid "Delete"
 msgstr ""
 
-#: php/qmn_options_results_page_tab.php:264
+#: php/qmn_options_results_page_tab.php:282
 msgid "Are you sure?"
 msgstr ""
 
@@ -845,27 +878,27 @@ msgstr ""
 msgid "The style has been saved successfully."
 msgstr ""
 
-#: php/qmn_options_style_tab.php:78
+#: php/qmn_options_style_tab.php:88
 msgid "Quiz Styles"
 msgstr ""
 
-#: php/qmn_options_style_tab.php:79
+#: php/qmn_options_style_tab.php:89
 msgid "Choose your style:"
 msgstr ""
 
-#: php/qmn_options_style_tab.php:101
+#: php/qmn_options_style_tab.php:118
 msgid "Custom"
 msgstr ""
 
-#: php/qmn_options_style_tab.php:107 php/qmn_options_style_tab.php:119
+#: php/qmn_options_style_tab.php:123 php/qmn_options_style_tab.php:135
 msgid "Save Quiz Style"
 msgstr ""
 
-#: php/qmn_options_style_tab.php:109
+#: php/qmn_options_style_tab.php:125
 msgid "Custom Style CSS"
 msgstr ""
 
-#: php/qmn_options_style_tab.php:110
+#: php/qmn_options_style_tab.php:126
 msgid "For detailed help and guidance along with a list of different classes used in this plugin, please visit the following link:"
 msgstr ""
 
@@ -873,115 +906,115 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:55
+#: php/qmn_options_text_tab.php:102
 msgid "The templates has been updated successfully."
 msgstr ""
 
-#: php/qmn_options_text_tab.php:86 php/qmn_quiz.php:1259
+#: php/qmn_options_text_tab.php:142 php/qmn_quiz.php:1262
 msgid "Previous"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:186 php/qmn_options_text_tab.php:346
+#: php/qmn_options_text_tab.php:242 php/qmn_options_text_tab.php:402
 msgid "Save Templates"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:192
+#: php/qmn_options_text_tab.php:248
 msgid "Message Templates"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:196
+#: php/qmn_options_text_tab.php:252
 msgid "Message Displayed Before Quiz"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:206
+#: php/qmn_options_text_tab.php:262
 msgid "Message Displayed Before Comments Box If Enabled"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:216
+#: php/qmn_options_text_tab.php:272
 msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:226
+#: php/qmn_options_text_tab.php:282
 msgid "Message Displayed If User Has Tried Quiz Too Many Times"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:236
+#: php/qmn_options_text_tab.php:292
 msgid "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:246
+#: php/qmn_options_text_tab.php:302
 msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:256
+#: php/qmn_options_text_tab.php:312
 msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:266
+#: php/qmn_options_text_tab.php:322
 msgid "%QUESTIONS_ANSWERS% Text"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:279
+#: php/qmn_options_text_tab.php:335
 msgid "Twitter Sharing Text"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:296
+#: php/qmn_options_text_tab.php:352
 msgid "Facebook Sharing Text"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:311
+#: php/qmn_options_text_tab.php:367
 msgid "Other Templates"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:314
+#: php/qmn_options_text_tab.php:370
 msgid "Text for submit button"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:318
+#: php/qmn_options_text_tab.php:374
 msgid "Text for name field"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:322
+#: php/qmn_options_text_tab.php:378
 msgid "Text for business field"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:326
+#: php/qmn_options_text_tab.php:382
 msgid "Text for email field"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:330
+#: php/qmn_options_text_tab.php:386
 msgid "Text for phone number field"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:334
+#: php/qmn_options_text_tab.php:390
 msgid "Text for comments field"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:338
+#: php/qmn_options_text_tab.php:394
 msgid "Text for previous button"
 msgstr ""
 
-#: php/qmn_options_text_tab.php:342
+#: php/qmn_options_text_tab.php:398
 msgid "Text for next button"
 msgstr ""
 
-#: php/qmn_options_tools_tab.php:37
+#: php/qmn_options_tools_tab.php:49
 msgid "The stats has been reset successfully."
 msgstr ""
 
-#: php/qmn_options_tools_tab.php:89
+#: php/qmn_options_tools_tab.php:107
 msgid "Use this button to reset all the stats collected for this quiz (Quiz Views and Times Quiz Has Been Taken)."
 msgstr ""
 
-#: php/qmn_options_tools_tab.php:90
+#: php/qmn_options_tools_tab.php:108
 msgid "Reset Quiz Views And Taken Stats"
 msgstr ""
 
-#: php/qmn_options_tools_tab.php:101
+#: php/qmn_options_tools_tab.php:119
 msgid "Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone."
 msgstr ""
 
-#: php/qmn_options_tools_tab.php:105
+#: php/qmn_options_tools_tab.php:123
 msgid "Reset All Stats For Quiz"
 msgstr ""
 
@@ -989,63 +1022,71 @@ msgstr ""
 msgid "Multiple Choice"
 msgstr ""
 
-#: php/qmn_question_types.php:108
+#: php/qmn_question_types.php:105
 msgid "Horizontal Multiple Choice"
 msgstr ""
 
-#: php/qmn_question_types.php:201
+#: php/qmn_question_types.php:195
 msgid "Drop Down"
 msgstr ""
 
-#: php/qmn_question_types.php:291
+#: php/qmn_question_types.php:282
 msgid "Small Open Answer"
 msgstr ""
 
-#: php/qmn_question_types.php:365
+#: php/qmn_question_types.php:353
 msgid "Multiple Response"
 msgstr ""
 
-#: php/qmn_question_types.php:464
+#: php/qmn_question_types.php:452
 msgid "Large Open Answer"
 msgstr ""
 
-#: php/qmn_question_types.php:538
+#: php/qmn_question_types.php:531
 msgid "Text Block"
 msgstr ""
 
-#: php/qmn_question_types.php:573
+#: php/qmn_question_types.php:566
 msgid "Number"
 msgstr ""
 
-#: php/qmn_question_types.php:649
+#: php/qmn_question_types.php:648
 msgid "Accept"
 msgstr ""
 
-#: php/qmn_question_types.php:684
+#: php/qmn_question_types.php:692
 msgid "Captcha"
 msgstr ""
 
-#: php/qmn_question_types.php:742
+#: php/qmn_question_types.php:750
 msgid "Horizontal Multiple Response"
 msgstr ""
 
-#: php/qmn_question_types.php:843
+#: php/qmn_question_types.php:861
+msgid "For fill in the blank types, use %BLANK% to represent where to put the text box in your text."
+msgstr ""
+
+#: php/qmn_question_types.php:865
 msgid "Fill In The Blank"
 msgstr ""
 
-#: php/qmn_quiz.php:350
+#: php/qmn_quiz.php:187
+msgid "It appears that this quiz is not set up correctly"
+msgstr ""
+
+#: php/qmn_quiz.php:376
 msgid "Not a valid e-mail address!"
 msgstr ""
 
-#: php/qmn_quiz.php:351
+#: php/qmn_quiz.php:377
 msgid "This field must be a number!"
 msgstr ""
 
-#: php/qmn_quiz.php:352
+#: php/qmn_quiz.php:378
 msgid "The entered text is not correct!"
 msgstr ""
 
-#: php/qmn_quiz.php:353
+#: php/qmn_quiz.php:379
 msgid "Please complete all required fields!"
 msgstr ""
 
@@ -1061,7 +1102,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: php/qmn_quiz_admin.php:259 php/qmn_quiz_admin.php:310
-#: php/qmn_quiz_admin.php:378 php/qmn_results.php:216
+#: php/qmn_quiz_admin.php:378 php/qmn_results.php:267
 msgid "Quiz Name"
 msgstr ""
 
@@ -1137,19 +1178,19 @@ msgstr ""
 msgid "Delete Quiz"
 msgstr ""
 
-#: php/qmn_quiz_creator.php:372
+#: php/qmn_quiz_creator.php:294
 msgid "Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz."
 msgstr ""
 
-#: php/qmn_quiz_creator.php:438
+#: php/qmn_quiz_creator.php:369
 msgid "Your quiz has been deleted successfully."
 msgstr ""
 
-#: php/qmn_quiz_creator.php:480
+#: php/qmn_quiz_creator.php:420
 msgid "Your quiz name has been updated successfully."
 msgstr ""
 
-#: php/qmn_quiz_creator.php:637
+#: php/qmn_quiz_creator.php:586
 msgid "Your quiz has been duplicated successfully."
 msgstr ""
 
@@ -1162,54 +1203,54 @@ msgstr ""
 msgid "Please go to the quizzes page and click on the Edit link from the quiz you wish to edit."
 msgstr ""
 
-#: php/qmn_results.php:30
+#: php/qmn_results.php:37
 msgid "Your results has been deleted successfully."
 msgstr ""
 
-#: php/qmn_results.php:168
+#: php/qmn_results.php:202
 #, php-format
 msgid "One result"
 msgid_plural "%s results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: php/qmn_results.php:215
+#: php/qmn_results.php:266
 msgid "Actions"
 msgstr ""
 
-#: php/qmn_results.php:217
+#: php/qmn_results.php:268
 msgid "Score"
 msgstr ""
 
-#: php/qmn_results.php:218
+#: php/qmn_results.php:269
 msgid "Time To Complete"
 msgstr ""
 
-#: php/qmn_results.php:219
+#: php/qmn_results.php:270
 msgid "Name"
 msgstr ""
 
-#: php/qmn_results.php:220
+#: php/qmn_results.php:271
 msgid "Business"
 msgstr ""
 
-#: php/qmn_results.php:221
+#: php/qmn_results.php:272
 msgid "Email"
 msgstr ""
 
-#: php/qmn_results.php:222
+#: php/qmn_results.php:273
 msgid "Phone"
 msgstr ""
 
-#: php/qmn_results.php:223
+#: php/qmn_results.php:274
 msgid "Time Taken"
 msgstr ""
 
-#: php/qmn_results.php:282
+#: php/qmn_results.php:333
 msgid "Are you sure you want to delete these results?"
 msgstr ""
 
-#: php/qmn_results.php:287
+#: php/qmn_results.php:338
 msgid "Delete Results"
 msgstr ""
 
