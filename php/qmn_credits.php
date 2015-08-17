@@ -74,10 +74,10 @@ function mlw_generate_about_page()
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
 				<li class="add"><div class="two">Add</div>Ensured compatability with Wordpress version 4.3</li>
-                                <li class="fixed"><div class="two">Fixed</div>Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. <a href="https://github.com/fpcorso/quiz_master_next/issues/270"></li>
-                               
-                                
-                               
+        <li class="fixed"><div class="two">Fixed</div>Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. <a href="https://github.com/fpcorso/quiz_master_next/issues/270">Issue 270</a></li>
+
+
+
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

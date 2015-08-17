@@ -1,3 +1,26 @@
+= 4.4.3 (July 17, 2015) =
+  * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
+
+= 4.4.2 (June 26, 2015) =
+  * Bug Fix: Fixed bug that caused issues with validation ([Github Issue #254](https://github.com/fpcorso/quiz_master_next/issues/254))
+  * Bug Fix: Fixed a rare permalink issue ([Github Issue #253](https://github.com/fpcorso/quiz_master_next/issues/253))
+
+= 4.4.1 (June 21, 2015) =
+  * Bug Fix: Fixes validation bug from missing first page
+  * Bug Fix: Fixes timer bug that prevented timer when first page was missing
+  * Bug Fix: Fixes bug that prevented re-editing of LaTex
+  * Bug Fix: Fixes certificate site_url bug
+
+= 4.4.0 (June 11, 2015) =
+ * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209](https://github.com/fpcorso/quiz_master_next/issues/209))
+ * Eliminates first page if empty ([GitHub Issue #182](https://github.com/fpcorso/quiz_master_next/issues/182))
+ * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181](https://github.com/fpcorso/quiz_master_next/issues/181))
+ * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21](https://github.com/fpcorso/quiz_master_next/issues/21))
+ * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220](https://github.com/fpcorso/quiz_master_next/issues/220))
+ * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/fpcorso/quiz_master_next/issues/204))
+ * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
+ * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
+
 = 4.2.4 (April 1, 2015) =
  * Minor Design Changes
  * Minor Bug Fixes
