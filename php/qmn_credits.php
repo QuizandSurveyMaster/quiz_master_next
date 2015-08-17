@@ -73,21 +73,11 @@ function mlw_generate_about_page()
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>Added a brand new log system to track errors in the plugin.</li>
-                                <li class="add"><div class="two">Add</div>Added the ability to drag and drop questions when creating your quiz.</li>
-                                <li class="add"><div class="two">Add</div>Added new CSS template system for quizzes.</li>
-                                <li class="add"><div class="two">Add</div>Added new classes for Correct/Incorrect Answers.</li>
-                                <li class="add"><div class="two">Add</div>Added ability to search quiz results and sort the results.</li>
-                                <li class="add"><div class="two">Add</div>Added the ability to search quiz results by quiz name, score, time taken, and completion time.</li>
-                                <li class="add"><div class="two">Add</div>Added the ability for developers to show only relevant fields when adding/editing questions on different question types.</li>
-                                <li class="add"><div class="two">Add</div>Added new register template functions to the API.</li>
-                                <li class="add"><div class="two">Add</div>Added a new contributor tab to the credits page.</li>
-                                <li class="add"><div class="two">Add</div>Added a checkbox to the quiz results page to delete results.</li>
-                                <li class="add"><div class="two">Add</div>Added a brand new review message system.</li>   
-				<li class="fixed"><div class="two">Fixed</div>Fixed a bug where slashes were appearing with the category name.</li>
-				<li class="fixed"><div class="two">Fixed</div>Fixed a timer bug that prevented the timer form working when using pagination.</li>
-                                
-                               
+				<li class="add"><div class="two">Add</div>Ensured compatability with Wordpress version 4.3</li>
+        <li class="fixed"><div class="two">Fixed</div>Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. <a href="https://github.com/fpcorso/quiz_master_next/issues/270">Issue 270</a></li>
+
+
+
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

@@ -1,10 +1,10 @@
 ﻿=== Quiz Master Next ===
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
-Tags: quiz, test, score, exam, survey, contact, form, email, answer, question, certificate, points, results, math
+Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
-Tested up to: 4.2.4
-Stable tag: 4.5.1
+Tested up to: 4.3
+Stable tag: 4.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,13 +21,16 @@ Keep up with our latest news, updates, and more by [subscribing to our mailing l
 
 = Features =
 
-The easiest and most flexible way to add multiple quizzes, tests, surveys, and contact forms to your website. This plugin allows for unlimited quizzes each with unlimited amount of questions. The plugin allows you to create the quiz, add it to any page using a customized shortcode, allows the user to take the quiz, and then saves the results. You can set up what the user sees after he or she takes the quiz based on the user's score. You can also have the plugin create a certificate for the user as well!
+The easiest and most flexible way to add multiple quizzes, tests, and surveys forms to your website. This plugin allows for unlimited quizzes or surveys each with unlimited amount of questions. The plugin allows you to create the quiz, add it to any page using a customized shortcode, allows the user to take the quiz, and then saves the results. You can set up what the user sees after he or she takes the quiz based on the user's score. You can also have the plugin create a certificate for the user as well!
 
-= Have Unlimited Quizzes, Tests, Surveys, Contact Forms, etc.. =
+= Have Unlimited Quizzes, Tests, Surveys, etc.. =
 Each of your quizzes can have **unlimited** questions and each of those questions can have **unlimited** answers! Your questions can contain **HTML** to show images, Youtube videos and more.
 
 = Customize Your Text =
 All the text your users see can be **customized**. Everything from the text blocks throughout the quiz to the submit button.
+
+= Easily Create Surveys For Your Users =
+You can easily create surveys for your users. Everything from customer satisfaction surveys to employee surveys.
 
 = Different Types Of Questions =
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, and **accept**. More types are being supported in future updates!
@@ -47,28 +50,23 @@ The plugin features useful **statistics** that show how many times each quiz has
 = Categories =
 You can assign categories to your questions. You can then show the user their score in a **particular** category or an average score of the categories.
 
-= Saves The Results For Later Use =
-The plugin will **save** the results, the user's answers, the user's comments, and more!
-
-= Schedule Time That Quiz Is Active =
-You can set up the quiz to only be active between two days. Utilize this for quizzes/surveys that are only active until a certain date.
-
 = Other Useful Features =
 
 * Allow the user to share the results on *social networks*
 * Show all questions on one page or have only one question per page
 * Require user to be logged in
+* Schedule when the quiz or survey should be active
 * **Require** certain or all questions to be answered
 * Limit amount of total entries to quiz or survey
 * Allows for you to create **certificates** for the user
-* Can set amount of tries a user has to take the quiz
+* Can set amount of tries a user has to take the quiz or survey
 * Can enable **comment boxes** for each question and/or comment section at the end of the quiz
 * Can enable **hints** for questions
 * Can show user why the answer is the correct answer
 * Questions can be in predetermined order or random
 * **Leaderboards** for every quiz which can be used as shortcode or in included widget
-* Keep track how long a user takes on the quiz
-* Able to set up time limits on the quiz
+* Keep track how long a user takes on the quiz or survey
+* Able to set up time limits on the quiz or survey
 * Create and display math formulas
 * And **Much** More...
 
@@ -84,9 +82,14 @@ You can set up the quiz to only be active between two days. Utilize this for qui
 = Make Suggestions Or Contribute =
 Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
-= Quiz Master Next Add-ons =
-While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features and support available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
+= Premium Quiz Master Next Add-ons =
+While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
 
+* [Export Results](http://quizmasternext.com/downloads/export-results/)
+* [Zapier Integration](http://quizmasternext.com/downloads/zapier-integration/)
+* [Aweber Integration](http://quizmasternext.com/downloads/aweber-integration/)
+* [Daily Limits](http://quizmasternext.com/downloads/daily-limit/)
+* And **many** more available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
 
 == Installation ==
 
@@ -128,6 +131,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.5.2 (August 14, 2015) =
+ * Ensured compatibility with Wordpress version 4.3
+ * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
+
 = 4.5.1 (August 12, 2015) =
  * Fixes parse error on hosts with older PHP versions
 
@@ -150,32 +157,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
   * Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs
   * Security Fix: Fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode
 
-= 4.4.3 (July 17, 2015) =
-  * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
-
-= 4.4.2 (June 26, 2015) =
-  * Bug Fix: Fixed bug that caused issues with validation ([Github Issue #254](https://github.com/fpcorso/quiz_master_next/issues/254))
-  * Bug Fix: Fixed a rare permalink issue ([Github Issue #253](https://github.com/fpcorso/quiz_master_next/issues/253))
-
-= 4.4.1 (June 21, 2015) =
-  * Bug Fix: Fixes validation bug from missing first page
-  * Bug Fix: Fixes timer bug that prevented timer when first page was missing
-  * Bug Fix: Fixes bug that prevented re-editing of LaTex
-  * Bug Fix: Fixes certificate site_url bug
-
-= 4.4.0 (June 11, 2015) =
- * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209](https://github.com/fpcorso/quiz_master_next/issues/209))
- * Eliminates first page if empty ([GitHub Issue #182](https://github.com/fpcorso/quiz_master_next/issues/182))
- * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181](https://github.com/fpcorso/quiz_master_next/issues/181))
- * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21](https://github.com/fpcorso/quiz_master_next/issues/21))
- * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220](https://github.com/fpcorso/quiz_master_next/issues/220))
- * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/fpcorso/quiz_master_next/issues/204))
- * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
- * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 4.5.2 =
+Upgrade to fix a Required error in IE and to ensure compatability with Wordpress version 4.3
 
 = 4.5.1 =
 Upgrade to fix parse error on hosts with older PHP versions
@@ -197,18 +184,3 @@ Upgrade for a variety of bug fixes
 
 = 4.4.0 =
 Upgrade for the new template variable %TIMER_MINUTES%, made modification to timer for pagination, Eliminates first page if empty, and more.
-
-= 4.3.0 =
-Upgrade for redesigned stats page, ability to use shortcodes in questions, and ability to WordPress editor for questions.
-
-= 4.2.0 =
-Upgrade for social sharing template variables, redirects, and fill in the blank question types.
-
-= 4.1.0 =
-Upgrade for redesigned admin results pages, new global settings page, ability to edit facebook app id, and more.
-
-= 4.0.1 =
-Upgrade for various bug fixes.
-
-= 4.0.0 =
-Upgrade for categories, new editor for results pages, shortcode capability on results pages, enhanced required question system, and more.
