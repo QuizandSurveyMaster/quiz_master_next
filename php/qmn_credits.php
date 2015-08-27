@@ -66,18 +66,14 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (August 12, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (August 27, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>Ensured compatability with Wordpress version 4.3</li>
-        <li class="fixed"><div class="two">Fixed</div>Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. <a href="https://github.com/fpcorso/quiz_master_next/issues/270">Issue 270</a></li>
-
-
-
+				<li class="fixed"><div class="two">Fixed</div>* Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0.</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

@@ -33,8 +33,8 @@ function mlw_options_tools_tab_content()
 		$results = $wpdb->update(
 			$wpdb->prefix . "mlw_quizzes",
 			array(
-				'quiz_views' => 1,
-				'quiz_taken' => 1,
+				'quiz_views' => 0,
+				'quiz_taken' => 0,
 				'last_activity' => date("Y-m-d H:i:s")
 			),
 			array( 'quiz_id' => $mlw_reset_stats_quiz_id ),
