@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.5.2
+Stable tag: 4.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,6 +131,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.5.3 (August 21, 2015) =
+ * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/277))
+
 = 4.5.2 (August 14, 2015) =
  * Ensured compatibility with Wordpress version 4.3
  * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
@@ -160,6 +163,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 4.5.3 =
+Upgrade to fix a issue with reseting the stats for Quiz Taken and Quiz Views. It was reseting to 1 instead of 0.
 
 = 4.5.2 =
 Upgrade to fix a Required error in IE and to ensure compatability with Wordpress version 4.3
