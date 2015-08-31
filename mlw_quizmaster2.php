@@ -1,11 +1,11 @@
 <?php
 /**
-* Plugin Name: Quiz Master Next
-* Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
+* Plugin Name: Quiz And Survey Master
+* Description: Easily and quickly add quizzes and surveys to your website.
 * Version: 4.5.3
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
-* Plugin URI: http://www.quizmasternext.com/
+* Plugin URI: http://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
 * Domain Path: /languages
 *

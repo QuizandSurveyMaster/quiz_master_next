@@ -323,10 +323,10 @@ function mlw_generate_quiz_admin()
 		{
 			?>
 			<div style="width: 15%; float:right;">
-				<h3 style="text-align: center;">Quiz Master Next News</h3>
+				<h3 style="text-align: center;">Quiz And Survey Master News</h3>
 				<?php
 				$qmn_rss = array();
-				$qmn_feed = fetch_feed('http://quizmasternext.com/feed');
+				$qmn_feed = fetch_feed('http://quizandsurveymaster.com/feed');
 				if (!is_wp_error($qmn_feed)) {
 					$qmn_feed_items = $qmn_feed->get_items(0, 5);
 					foreach ($qmn_feed_items as $feed_item) {

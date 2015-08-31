@@ -1,4 +1,4 @@
-﻿=== Quiz Master Next ===
+﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
@@ -8,16 +8,16 @@ Stable tag: 4.5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The easiest and most flexible way to add multiple quizzes, tests, and surveys to your website.
+Easily and quickly add quizzes and surveys to your website.
 
 == Description ==
 
 = Demoes! =
-You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizmasternext.com/quiz/sample-quiz/)!
-You can check out the sample survey with pagination here: [Sample Survey](http://quizmasternext.com/quiz/sample-survey/)!
+You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizandsurveymaster.com/quiz/sample-quiz/)!
+You can check out the sample survey with pagination here: [Sample Survey](http://quizandsurveymaster.com/quiz/sample-survey/)!
 
 = Keep Updated =
-Keep up with our latest news, updates, and more by [subscribing to our mailing list](http://quizmasternext.com/subscribe-to-our-newsletter/)!
+Keep up with our latest news, updates, and more by [subscribing to our mailing list](http://quizandsurveymaster.com/subscribe-to-our-newsletter/)!
 
 = Features =
 
@@ -80,21 +80,21 @@ You can assign categories to your questions. You can then show the user their sc
 * Italian (Thanks to Junio)
 
 = Make Suggestions Or Contribute =
-Quiz Master Next is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
+Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
-= Premium Quiz Master Next Add-ons =
-While Quiz Master Next is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
+= Premium Quiz And Survey Master Add-ons =
+While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
 
-* [Export Results](http://quizmasternext.com/downloads/export-results/)
-* [Zapier Integration](http://quizmasternext.com/downloads/zapier-integration/)
-* [Aweber Integration](http://quizmasternext.com/downloads/aweber-integration/)
-* [Daily Limits](http://quizmasternext.com/downloads/daily-limit/)
-* And **many** more available in our [Quiz Master Next Addon Store](http://quizmasternext.com/addons/)
+* [Export Results](http://quizandsurveymaster.com/downloads/export-results/)
+* [Zapier Integration](http://quizandsurveymaster.com/downloads/zapier-integration/)
+* [Aweber Integration](http://quizandsurveymaster.com/downloads/aweber-integration/)
+* [Daily Limits](http://quizandsurveymaster.com/downloads/daily-limit/)
+* And **many** more available in our [Quiz And Survey Master Addon Store](http://quizandsurveymaster.com/addons/)
 
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
-* Search for Quiz Master Next
+* Search for Quiz And Survey Master
 * Click Install Now link on the plugin and follow the prompts
 * Activate the plugin through the 'Plugins' menu in WordPress
 
@@ -102,13 +102,13 @@ While Quiz Master Next is fully functional and is packed full of features that w
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizmasternext.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
+We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizandsurveymaster.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
 
 = I need a lot of help setting up my quiz, what can you do to help? =
-We now offer a premium support plan that offers priority response, technical support, custom styling and more! For details, visit our support page: [Quiz Master Next Premium Support](http://quizmasternext.com/support-levels/)
+We now offer a premium support plan that offers priority response, technical support, custom styling and more! For details, visit our support page: [Quiz And Survey Master Premium Support](http://quizandsurveymaster.com/support-levels/)
 
 = I have an idea, how do I contact you? =
-Feel free to use the widget on the help page within the plugin or from our [contact page](http://quizmasternext.com/contact-us/).
+Feel free to use the widget on the help page within the plugin or from our [contact page](http://quizandsurveymaster.com/contact-us/).
 
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
@@ -116,7 +116,7 @@ Yes, it is possible to edit the output of the variable %QUESTIONS_ANSWERS%. When
 
 = My preview looks different than my quiz. What can I do? =
 
-This is usually a theme conflict. You can [checkout out our common conflict solutions](http://quizmasternext.com/common-theme-conflict-fixes/) or feel free to contact us.
+This is usually a theme conflict. You can [checkout out our common conflict solutions](http://quizandsurveymaster.com/common-theme-conflict-fixes/) or feel free to contact us.
 
 == Screenshots ==
 
