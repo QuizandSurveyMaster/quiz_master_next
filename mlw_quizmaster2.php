@@ -1,16 +1,16 @@
 <?php
 /**
-* Plugin Name: Quiz Master Next
-* Description: Use this plugin to add multiple quizzes, tests, or surveys to your website.
-* Version: 4.5.3
+* Plugin Name: Quiz And Survey Master
+* Description: Easily and quickly add quizzes and surveys to your website.
+* Version: 4.5.4
 * Author: Frank Corso
 * Author URI: http://www.mylocalwebstop.com/
-* Plugin URI: http://www.quizmasternext.com/
+* Plugin URI: http://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
 * Domain Path: /languages
 *
 * @author Frank Corso
-* @version 4.5.3
+* @version 4.5.4
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 /**
@@ -28,7 +28,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.5.3';
+	public $version = '4.5.4';
 
 	/**
 	 * QMN Alert Manager Object
@@ -221,10 +221,10 @@ class MLWQuizMasterNext
 	{
 		if (function_exists('add_menu_page'))
 		{
-			add_menu_page('Quiz Master Next', __('Quizzes', 'quiz-master-next'), 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback');
-			add_submenu_page(__FILE__, __('Quiz Settings', 'quiz-master-next'), __('Quiz Settings', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_options', 'mlw_generate_quiz_options');
-			add_submenu_page(__FILE__, __('Quiz Results', 'quiz-master-next'), __('Quiz Results', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_results', 'mlw_generate_quiz_results');
-			add_submenu_page(__FILE__, __('Quiz Result Details', 'quiz-master-next'), __('Quiz Result Details', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');
+			add_menu_page('Quiz And Survey Master', __('Quizzes/Surveys', 'quiz-master-next'), 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback');
+			add_submenu_page(__FILE__, __('Settings', 'quiz-master-next'), __('Settings', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_options', 'mlw_generate_quiz_options');
+			add_submenu_page(__FILE__, __('Results', 'quiz-master-next'), __('Results', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_results', 'mlw_generate_quiz_results');
+			add_submenu_page(__FILE__, __('Result Details', 'quiz-master-next'), __('Result Details', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');
 			add_submenu_page(__FILE__, __('Settings', 'quiz-master-next'), __('Settings', 'quiz-master-next'), 'manage_options', 'qmn_global_settings', array('QMNGlobalSettingsPage', 'display_page'));
 			add_submenu_page(__FILE__, __('Tools', 'quiz-master-next'), __('Tools', 'quiz-master-next'), 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools');
 			add_submenu_page(__FILE__, __('Stats', 'quiz-master-next'), __('Stats', 'quiz-master-next'), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page');

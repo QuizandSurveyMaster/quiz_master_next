@@ -13,7 +13,7 @@ function qmn_add_dashboard_widget()
 	{
 		wp_add_dashboard_widget(
 			'qmn_snapshot_widget',
-			__('Quiz Master Next Snapshot', 'quiz-master-next'),
+			__('Quiz And Survey Master Snapshot', 'quiz-master-next'),
 			'qmn_snapshot_dashboard_widget'
 		);
 	}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Log Manager For Quiz Master Next
+ * Log Manager For Quiz And Survey Master
  *
  * Used to log errors and events into a custom post type of qmn_log
  *

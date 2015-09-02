@@ -108,8 +108,7 @@ function nextSlide(mlw_pagination, mlw_goto_top) {
 
 	window.mlw_previous = 0;
 	if (mlw_goto_top == 1) {
-		window.location.hash = "mlw_does_not_exist";
-		window.location.hash = "mlw_top_of_quiz";
+		qmn_return_to_top();
 	}
 }
 
@@ -151,9 +150,12 @@ function prevSlide(mlw_pagination, mlw_goto_top) {
 
 	window.mlw_previous = 1;
 	if (mlw_goto_top == 1) {
-		window.location.hash = "mlw_does_not_exist";
-		window.location.hash = "mlw_top_of_quiz";
+		qmn_return_to_top();
 	}
+}
+
+function qmn_return_to_top() {
+	jQuery('html, body').animate({scrollTop: jQuery('.mlw_qmn_quiz').offset().top - 100}, 1000);
 }
 
 jQuery( ".quiz_section" ).hide();
@@ -187,11 +189,11 @@ if (firstPage) {
 jQuery(".mlw_next").click(function(event) {
 	event.preventDefault();
 	if ( qmnValidatePage() ) {
-		nextSlide(qmn_pagination, 0);
+		nextSlide(qmn_pagination, 1);
 	}
 });
 
 jQuery(".mlw_previous").click(function(event) {
 	event.preventDefault();
-	prevSlide(qmn_pagination, 0);
+	prevSlide(qmn_pagination, 1);
 });

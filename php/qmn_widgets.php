@@ -11,7 +11,7 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 
    	// constructor
     function __construct() {
-        parent::__construct(false, $name = __('Quiz Master Next Leaderboard Widget', 'quiz-master-next'));
+        parent::__construct(false, $name = __('Quiz And Survey Master Leaderboard Widget', 'quiz-master-next'));
     }
 
     // widget form creation
@@ -78,7 +78,7 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 			$sql .= " ORDER BY point_score DESC";
 		}
 		$sql .= " LIMIT 10";
-		$mlw_result_data = $wpdb->get_results($sql, $mlw_quiz_id);
+		$mlw_result_data = $wpdb->get_results( $wpdb->prepare( $sql, $mlw_quiz_id ) );
 
 		$mlw_quiz_leaderboard_display = $mlw_quiz_options->leaderboard_template;
 		$mlw_quiz_leaderboard_display = str_replace( "%QUIZ_NAME%" , $mlw_quiz_options->quiz_name, $mlw_quiz_leaderboard_display);

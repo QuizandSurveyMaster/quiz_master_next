@@ -1,10 +1,10 @@
-#Contribute To Quiz Master Next
+#Contribute To Quiz And Survey Master
 
-Community made feature requests, patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Quiz Master Next continues to grow to become the #1 quiz platform for on WordPress.
+Community made feature requests, patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Quiz and Survey Master continues to grow to become the #1 quiz and survey platform for on WordPress.
 
 When contributing please ensure you follow the guidelines below so that we can keep on top of things.
 
-__Please Note:__ GitHub is not intended for support based questions. For those, please use the [Support Forums](https://wordpress.org/support/plugin/quiz-master-next) or [Our Contact Form](http://quizmasternext.com/contact-us/)
+__Please Note:__ GitHub is not intended for support based questions. For those, please use the [Support Forums](https://wordpress.org/support/plugin/quiz-master-next) or [Our Contact Form](http://quizandsurveymaster.com/contact-us/)
 
 ## Getting Started
 * Make sure you have a free [GitHub Account](https://github.com/signup/free)
@@ -13,7 +13,7 @@ __Please Note:__ GitHub is not intended for support based questions. For those, 
 * If you have a bug report or feature request, please [create an issue](https://github.com/fpcorso/quiz_master_next/issues).
   * For bug reports:
     * Please follow the debug guidlines below and report findings
-    * Include what version of WordPress and what version of Quiz Master Next you are using
+    * Include what version of WordPress and what version of Quiz And Survey Master you are using
     * Include what operating system and browser you are using if applicable
     * If possible include link to quiz url or screenshot of issue
     * Clearly describe the bug/issue and include steps on how to reproduce it

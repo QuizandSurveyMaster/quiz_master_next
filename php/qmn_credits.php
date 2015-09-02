@@ -27,7 +27,7 @@ function mlw_generate_about_page()
 		}
 	</style>
 	<div class="wrap about-wrap">
-		<h1><?php _e('Welcome To Quiz Master Next', 'quiz-master-next'); ?></h1>
+		<h1><?php _e('Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next'); ?></h1>
 		<div class="about-text"><?php _e('Thank you for updating!', 'quiz-master-next'); ?></div>
 		<div class="mlw_qmn_icon_wrap"><?php echo $mlw_quiz_version; ?></div>
 		<h2 class="nav-tab-wrapper">
@@ -61,19 +61,21 @@ function mlw_generate_about_page()
 			<p style="text-align: center;">Changes were made to the Question API to only show relevant fields for each question type. </p>
                         <br />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
-			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz Master Next repository.</p>
+			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz And Survey Master repository.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (August 27, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (September 3, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0.</li>
+				<li class="add"><div class="two">Add</div>* Rebrand as Quiz And Survey Master</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes scroll to top pagination bug</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes leaderboard widget bug</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
