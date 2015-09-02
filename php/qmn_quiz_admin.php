@@ -193,7 +193,7 @@ function mlw_generate_quiz_admin()
 	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
-		<h2><?php _e('Quizzes', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h2>
+		<h2><?php _e('Quizzes/Surveys', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h2>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
 		if ( get_option('mlw_advert_shows') == 'true' )
@@ -255,13 +255,13 @@ function mlw_generate_quiz_admin()
 			<table class="widefat">
 				<thead>
 					<tr>
-						<th>Quiz ID</th>
-						<th><?php _e('Quiz Name', 'quiz-master-next'); ?></th>
+						<th>ID</th>
+						<th><?php _e('Name', 'quiz-master-next'); ?></th>
 						<th><?php _e('URL', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Shortcode', 'quiz-master-next'); ?></th>
+						<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Views', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Taken', 'quiz-master-next'); ?></th>
+						<th><?php _e('Views', 'quiz-master-next'); ?></th>
+						<th><?php _e('Taken', 'quiz-master-next'); ?></th>
 						<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
 					</tr>
 				</thead>
@@ -306,13 +306,13 @@ function mlw_generate_quiz_admin()
 				</tbody>
 				<tfoot>
 					<tr>
-						<th>Quiz ID</th>
-						<th><?php _e('Quiz Name', 'quiz-master-next'); ?></th>
+						<th>ID</th>
+						<th><?php _e('Name', 'quiz-master-next'); ?></th>
 						<th><?php _e('URL', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Shortcode', 'quiz-master-next'); ?></th>
+						<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
 						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Views', 'quiz-master-next'); ?></th>
-						<th><?php _e('Quiz Taken', 'quiz-master-next'); ?></th>
+						<th><?php _e('Views', 'quiz-master-next'); ?></th>
+						<th><?php _e('Taken', 'quiz-master-next'); ?></th>
 						<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
 					</tr>
 				</tfoot>
@@ -358,7 +358,7 @@ function mlw_generate_quiz_admin()
 		<!--Dialogs-->
 
 		<!--New Quiz Dialog-->
-		<div id="new_quiz_dialog" title="Create New Quiz" style="display:none;">
+		<div id="new_quiz_dialog" title="Create New Quiz Or Survey" style="display:none;">
 			<form action='' method='post'>
 				<input type='hidden' name='create_quiz' value='confirmation' />
 				<table class="wide" style="text-align: left; white-space: nowrap;">
@@ -370,7 +370,7 @@ function mlw_generate_quiz_admin()
 				</tr>
 
 				<tr valign="top">
-				<th scope="row"><h3><?php _e('Create New Quiz', 'quiz-master-next'); ?></h3></th>
+				<th scope="row"><h3><?php _e('Create New Quiz Or Survey', 'quiz-master-next'); ?></h3></th>
 				<td></td>
 				</tr>
 
@@ -384,13 +384,13 @@ function mlw_generate_quiz_admin()
 				</tr>
 				</thead>
 				</table>
-				<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Create Quiz', 'quiz-master-next'); ?>' /></p>
+				<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Create Quiz Or Survey', 'quiz-master-next'); ?>' /></p>
 			</form>
 		</div>
 
 		<!--Edit Quiz Name Dialog-->
-		<div id="edit_dialog" title="Edit Quiz Name" style="display:none;">
-			<h3><?php _e('Quiz Name:', 'quiz-master-next'); ?></h3><br />
+		<div id="edit_dialog" title="Edit Name" style="display:none;">
+			<h3><?php _e('Name:', 'quiz-master-next'); ?></h3><br />
 			<form action='' method='post'>
 			<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
 			<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" />
@@ -400,12 +400,12 @@ function mlw_generate_quiz_admin()
 		</div>
 
 		<!--Duplicate Quiz Dialog-->
-		<div id="duplicate_dialog" title="Duplicate Quiz" style="display:none;">
-			<h3><?php _e('Duplicate this quiz?', 'quiz-master-next'); ?></h3><br />
+		<div id="duplicate_dialog" title="Duplicate Quiz Or Survey" style="display:none;">
+			<h3><?php _e('Duplicate this quiz or survey?', 'quiz-master-next'); ?></h3><br />
 			<form action='' method='post'>
-				<label for="duplicate_questions"><?php _e('Duplicate questions with quiz', 'quiz-master-next'); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
+				<label for="duplicate_questions"><?php _e('Duplicate questions also?', 'quiz-master-next'); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
 				<br />
-				<label for="duplicate_new_quiz_name"><?php _e('Name Of New Quiz:', 'quiz-master-next'); ?></label><input type="text" id="duplicate_new_quiz_name" name="duplicate_new_quiz_name" /><br />
+				<label for="duplicate_new_quiz_name"><?php _e('Name Of New Quiz Or Survey:', 'quiz-master-next'); ?></label><input type="text" id="duplicate_new_quiz_name" name="duplicate_new_quiz_name" /><br />
 				<input type="hidden" id="duplicate_quiz_id" name="duplicate_quiz_id" />
 				<input type='hidden' name='duplicate_quiz' value='confirmation' />
 				<input type="submit" class="button-primary" value="<?php _e('Duplicate', 'quiz-master-next'); ?>" />
@@ -413,13 +413,13 @@ function mlw_generate_quiz_admin()
 		</div>
 
 		<!--Delete Quiz Dialog-->
-		<div id="delete_dialog" title="Delete Quiz?" style="display:none;">
-		<h3><b><?php _e('Are you sure you want to delete this quiz?', 'quiz-master-next'); ?></b></h3>
+		<div id="delete_dialog" title="Delete Quiz Or Survey?" style="display:none;">
+		<h3><b><?php _e('Are you sure you want to delete this quiz or survey?', 'quiz-master-next'); ?></b></h3>
 		<form action='' method='post'>
 			<input type='hidden' name='delete_quiz' value='confirmation' />
 			<input type='hidden' id='quiz_id' name='quiz_id' value='' />
 			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Delete Quiz', 'quiz-master-next'); ?>' /></p>
+			<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Delete', 'quiz-master-next'); ?>' /></p>
 		</form>
 		</div>
 	</div>

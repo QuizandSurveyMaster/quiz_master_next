@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-02 16:07-0500\n"
+"POT-Creation-Date: 2015-09-02 16:14-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <fpcorso@mylocalwebstop.com>\n"
@@ -24,25 +24,23 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: mlw_quizmaster2.php:224 php/qmn_quiz_admin.php:196
-msgid "Quizzes"
+#, fuzzy
+msgid "Quizzes/Surveys"
 msgstr "Quizzer"
 
-#: mlw_quizmaster2.php:225
-msgid "Quiz Settings"
-msgstr "Quiz indstillinger"
-
-#: mlw_quizmaster2.php:226 php/qmn_results_details.php:20
-#: php/qmn_results.php:193
-msgid "Quiz Results"
-msgstr "Quiz resultater"
-
-#: mlw_quizmaster2.php:227
-msgid "Quiz Result Details"
-msgstr "Quiz resultater detaljer"
-
-#: mlw_quizmaster2.php:228
+#: mlw_quizmaster2.php:225 mlw_quizmaster2.php:228
 msgid "Settings"
 msgstr "Indstillinger"
+
+#: mlw_quizmaster2.php:226 php/qmn_results_details.php:135
+#: php/qmn_quiz_admin.php:281
+msgid "Results"
+msgstr "Resultater"
+
+#: mlw_quizmaster2.php:227
+#, fuzzy
+msgid "Result Details"
+msgstr "Quiz resultater detaljer"
 
 #: mlw_quizmaster2.php:229 php/qmn_options_tools_tab.php:13
 #: php/qmn_tools.php:65
@@ -841,9 +839,9 @@ msgstr "Tillad"
 msgid "Do not allow"
 msgstr "Tillad ikke"
 
-#: php/qmn_results_details.php:135 php/qmn_quiz_admin.php:281
-msgid "Results"
-msgstr "Resultater"
+#: php/qmn_results_details.php:20 php/qmn_results.php:193
+msgid "Quiz Results"
+msgstr "Quiz resultater"
 
 #: php/qmn_results_details.php:221
 msgid "Create Certificate"
@@ -995,16 +993,17 @@ msgstr[0] "En quiz"
 msgstr[1] "%s quizzer"
 
 #: php/qmn_quiz_admin.php:259 php/qmn_quiz_admin.php:310
-#: php/qmn_quiz_admin.php:378 php/qmn_results.php:267
-msgid "Quiz Name"
-msgstr "Quiz navn"
+#: php/qmn_results.php:270
+msgid "Name"
+msgstr "Navn"
 
 #: php/qmn_quiz_admin.php:260 php/qmn_quiz_admin.php:311
 msgid "URL"
 msgstr "URL"
 
 #: php/qmn_quiz_admin.php:261 php/qmn_quiz_admin.php:312
-msgid "Quiz Shortcode"
+#, fuzzy
+msgid "Shortcode"
 msgstr "Quiz Shortcode"
 
 #: php/qmn_quiz_admin.php:262 php/qmn_quiz_admin.php:313
@@ -1012,11 +1011,13 @@ msgid "Leaderboard Shortcode"
 msgstr "Lederboard Shortcode"
 
 #: php/qmn_quiz_admin.php:263 php/qmn_quiz_admin.php:314
-msgid "Quiz Views"
+#, fuzzy
+msgid "Views"
 msgstr "Quiz set"
 
 #: php/qmn_quiz_admin.php:264 php/qmn_quiz_admin.php:315
-msgid "Quiz Taken"
+#, fuzzy
+msgid "Taken"
 msgstr "Quiz gennemført"
 
 #: php/qmn_quiz_admin.php:265 php/qmn_quiz_admin.php:316
@@ -1035,41 +1036,49 @@ msgstr "Ret"
 msgid "Duplicate"
 msgstr "Kopier"
 
-#: php/qmn_quiz_admin.php:283 php/qmn_options_results_page_tab.php:282
+#: php/qmn_quiz_admin.php:283 php/qmn_quiz_admin.php:422
+#: php/qmn_options_results_page_tab.php:282
 msgid "Delete"
 msgstr "Slet"
 
 #: php/qmn_quiz_admin.php:373
-msgid "Create New Quiz"
+#, fuzzy
+msgid "Create New Quiz Or Survey"
 msgstr "Opret ny quiz"
 
+#: php/qmn_quiz_admin.php:378 php/qmn_results.php:267
+msgid "Quiz Name"
+msgstr "Quiz navn"
+
 #: php/qmn_quiz_admin.php:387
-msgid "Create Quiz"
+#, fuzzy
+msgid "Create Quiz Or Survey"
 msgstr "Opret quiz"
 
 #: php/qmn_quiz_admin.php:393
-msgid "Quiz Name:"
-msgstr "Quiz navn:"
+#, fuzzy
+msgid "Name:"
+msgstr "Navn"
 
 #: php/qmn_quiz_admin.php:404
-msgid "Duplicate this quiz?"
+#, fuzzy
+msgid "Duplicate this quiz or survey?"
 msgstr "Kopier quiz"
 
 #: php/qmn_quiz_admin.php:406
-msgid "Duplicate questions with quiz"
-msgstr "Kopier spørgsmål"
+#, fuzzy
+msgid "Duplicate questions also?"
+msgstr "Kopieret spørgsmål"
 
 #: php/qmn_quiz_admin.php:408
-msgid "Name Of New Quiz:"
+#, fuzzy
+msgid "Name Of New Quiz Or Survey:"
 msgstr "Navn på ny Quiz:"
 
 #: php/qmn_quiz_admin.php:417
-msgid "Are you sure you want to delete this quiz?"
+#, fuzzy
+msgid "Are you sure you want to delete this quiz or survey?"
 msgstr "Er du sikker på at du vil slette denne quiz?"
-
-#: php/qmn_quiz_admin.php:422
-msgid "Delete Quiz"
-msgstr "Slet Quiz"
 
 #: php/qmn_credits.php:30
 #, fuzzy
@@ -1373,10 +1382,6 @@ msgstr "Skore"
 msgid "Time To Complete"
 msgstr "Tid til at færdiggøre"
 
-#: php/qmn_results.php:270
-msgid "Name"
-msgstr "Navn"
-
 #: php/qmn_results.php:271
 msgid "Business"
 msgstr "Forretning"
@@ -1420,6 +1425,18 @@ msgstr "Dit quiz navn er blevet opdateret."
 #: php/qmn_quiz_creator.php:679
 msgid "Your quiz has been duplicated successfully."
 msgstr "Din Quiz er blevet dublikeret."
+
+#~ msgid "Quiz Settings"
+#~ msgstr "Quiz indstillinger"
+
+#~ msgid "Quiz Name:"
+#~ msgstr "Quiz navn:"
+
+#~ msgid "Duplicate questions with quiz"
+#~ msgstr "Kopier spørgsmål"
+
+#~ msgid "Delete Quiz"
+#~ msgstr "Slet Quiz"
 
 #~ msgid ""
 #~ "Enter in your text here to fill in the certificate for this quiz. Be sure "
