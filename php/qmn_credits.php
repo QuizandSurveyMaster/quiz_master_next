@@ -66,14 +66,16 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (August 27, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (September 3, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0.</li>
+				<li class="add"><div class="two">Add</div>* Rebrand as Quiz And Survey Master</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes scroll to top pagination bug</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes leaderboard widget bug</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
