@@ -1,6 +1,6 @@
 #Contribute To Quiz And Survey Master
 
-Community made feature requests, patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Quiz Master Next continues to grow to become the #1 quiz platform for on WordPress.
+Community made feature requests, patches, localisations, bug reports and contributions are always welcome and are crucial to ensure Quiz and Survey Master continues to grow to become the #1 quiz and survey platform for on WordPress.
 
 When contributing please ensure you follow the guidelines below so that we can keep on top of things.
 

@@ -221,7 +221,7 @@ class MLWQuizMasterNext
 	{
 		if (function_exists('add_menu_page'))
 		{
-			add_menu_page('Quiz Master Next', __('Quizzes', 'quiz-master-next'), 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback');
+			add_menu_page('Quiz And Survey Master', __('Quizzes', 'quiz-master-next'), 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback');
 			add_submenu_page(__FILE__, __('Quiz Settings', 'quiz-master-next'), __('Quiz Settings', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_options', 'mlw_generate_quiz_options');
 			add_submenu_page(__FILE__, __('Quiz Results', 'quiz-master-next'), __('Quiz Results', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_results', 'mlw_generate_quiz_results');
 			add_submenu_page(__FILE__, __('Quiz Result Details', 'quiz-master-next'), __('Quiz Result Details', 'quiz-master-next'), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details');

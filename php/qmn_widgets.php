@@ -11,7 +11,7 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
 
    	// constructor
     function __construct() {
-        parent::__construct(false, $name = __('Quiz Master Next Leaderboard Widget', 'quiz-master-next'));
+        parent::__construct(false, $name = __('Quiz And Survey Master Leaderboard Widget', 'quiz-master-next'));
     }
 
     // widget form creation
