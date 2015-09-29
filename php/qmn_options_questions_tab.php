@@ -28,10 +28,11 @@ function mlw_options_questions_tab_content()
 		var answer_text = '<?php _e('Answer', 'quiz-master-next'); ?>';
 	</script>
 	<?php
-	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ));
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
+	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
+	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+	
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
