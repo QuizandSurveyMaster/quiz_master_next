@@ -66,11 +66,11 @@ label.inline .mlw_qmn_question,
   margin: 0 0 10px 0;
 }
 
-select,
-textarea,
-input[type="text"],
-input[type="email"],
-input[type="number"] {
+.quiz_section select,
+.quiz_section textarea,
+.quiz_section input[type="text"],
+.quiz_section input[type="email"],
+.quiz_section input[type="number"] {
 width: 70%;
 display: inline-block;
 padding: 10px 8px 10px 8px;
@@ -89,18 +89,18 @@ border: 1px solid #e3e3e3;
         transition: all .5s ease-in-out;
 }
 
-select { height: 38px; }
+.quiz_section select { height: 38px; }
 
-select:hover,
-textarea:hover,
-input[type="text"]:hover,
-input[type="email"]:hover,
-input[type="number"]:hover,
-select:focus,
-textarea:focus,
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="number"]:focus {
+.quiz_section select:hover,
+.quiz_section textarea:hover,
+.quiz_section input[type="text"]:hover,
+.quiz_section input[type="email"]:hover,
+.quiz_section input[type="number"]:hover,
+.quiz_section select:focus,
+.quiz_section textarea:focus,
+.quiz_section input[type="text"]:focus,
+.quiz_section input[type="email"]:focus,
+.quiz_section input[type="number"]:focus {
   outline: 0;
   background: #f7f7f7;
   border: 1px solid #bdc3c7;
@@ -109,11 +109,12 @@ input[type="number"]:focus {
           box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
 
-.qmn_fill_blank.small { 
+.qmn_fill_blank { 
   margin: 0 5px 0 5px;
-  width: 50px; 
+  width: 100px; 
 }
 
+.qmn_fill_blank.small { width: 50px; }
 .qmn_fill_blank.medium { width: 100px; }
 .qmn_fill_blank.large { width: 150px; }
 
@@ -186,7 +187,7 @@ input[type="number"]:focus {
         border-radius: 3px;
 }
 
-.btn {
+.qmn_btn, .btn {
   display: relative;
   display: inline-block!important;
   color: #666;
@@ -205,7 +206,7 @@ input[type="number"]:focus {
         transition: background .25s ease-out;
 }
 
-.btn:hover { 
+.qmn_btn:hover, .btn:hover { 
   color: #fff;
   background: #666; 
 }
@@ -455,9 +456,9 @@ input[type="number"]:focus {
 
   .quiz_section p.form-help { font-size: 14px; }
 
-  select,
-  textarea,
-  input[type="text"] {
+  .quiz_section select,
+  .quiz_section textarea,
+  .quiz_section input[type="text"] {
     display: block;
     width: 100%;
     padding: 12px 10px 12px 10px;

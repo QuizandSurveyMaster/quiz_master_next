@@ -161,11 +161,11 @@ function qmn_return_to_top() {
 jQuery( ".quiz_section" ).hide();
 jQuery( ".quiz_section" ).append( "<br />" );
 jQuery( '.mlw_qmn_quiz' ).append( '<div class="qmn_pagination border margin-bottom"></div>' );
-jQuery( ".qmn_pagination" ).append( '<a class="mlw_qmn_quiz_link mlw_previous" href="#">'+qmn_pagination_previous_text+'</a>' );
+jQuery( ".qmn_pagination" ).append( '<a class="qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">'+qmn_pagination_previous_text+'</a>' );
 jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_message"></span>' );
 jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_counter_message"></span>' );
 jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_error_message qmn_error"></span>' );
-jQuery( ".qmn_pagination" ).append( '<a class="mlw_qmn_quiz_link mlw_next" href="#">'+qmn_pagination_next_text+'</a>' );
+jQuery( ".qmn_pagination" ).append( '<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="#">'+qmn_pagination_next_text+'</a>' );
 window.mlw_quiz_slide = 0;
 window.mlw_previous = 0;
 

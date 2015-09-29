@@ -435,7 +435,7 @@ class QMNQuizManager
                     $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
                     $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-                    $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
+                    $section_display .= "<p class='mlw_qmn_message_before'>$message_before</p>";
 
                     if ($qmn_quiz_options->contact_info_location == 0)
                     {
@@ -564,7 +564,7 @@ class QMNQuizManager
 	    $section_display .= ob_get_contents();
     ob_end_clean();
 
-		$section_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
+		$section_display .= "<input type='submit' class='qmn_btn' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
 		$section_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
 		$section_display .= "</div>";
 
