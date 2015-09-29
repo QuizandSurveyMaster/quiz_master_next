@@ -1,4 +1,14 @@
-/* Begin shared quiz styles */
+.ui-tooltip {
+	max-width: 500px !important;
+} 
+.ui-tooltip-content {
+	max-width: 500px !important;
+}
+.mlw_qmn_hint_link {
+	text-decoration:underline;
+	color:rgb(0,0,255);
+}
+
 
 .mlw_qmn_message_before {
   color: #666;
@@ -121,7 +131,7 @@ border: 1px solid #e3e3e3;
 
 /* Alerts and error state */
 
-.qmn_error {
+.qmn_error_message {
   color: #da4f49;
   border: 1px solid #da4f49;
   background: #F2DEDE;
@@ -133,21 +143,21 @@ border: 1px solid #e3e3e3;
           border-radius: 3px;
 }
 
-.quiz_section.error select,
-.quiz_section.error textarea,
-.quiz_section.error input[type="text"],
-.quiz_section.error input[type="number"],
-.quiz_section.error input[type="email"],
-.quiz_section.error select:hover,
-.quiz_section.error textarea:hover,
-.quiz_section.error input[type="text"]:hover,
-.quiz_section.error input[type="number"]:hover,
-.quiz_section.error input[type="email"]:hover,
-.quiz_section.error select:focus,
-.quiz_section.error textarea:focus,
-.quiz_section.error input[type="text"]:focus,
-.quiz_section.error input[type="number"]:focus,
-.quiz_section.error input[type="email"]:focus  {
+.quiz_section.qmn_error select,
+.quiz_section.qmn_error textarea,
+.quiz_section.qmn_error input[type="text"],
+.quiz_section.qmn_error input[type="number"],
+.quiz_section.qmn_error input[type="email"],
+.quiz_section.qmn_error select:hover,
+.quiz_section.qmn_error textarea:hover,
+.quiz_section.qmn_error input[type="text"]:hover,
+.quiz_section.qmn_error input[type="number"]:hover,
+.quiz_section.qmn_error input[type="email"]:hover,
+.quiz_section.qmn_error select:focus,
+.quiz_section.qmn_error textarea:focus,
+.quiz_section.qmn_error input[type="text"]:focus,
+.quiz_section.qmn_error input[type="number"]:focus,
+.quiz_section.qmn_error input[type="email"]:focus  {
   position: relative;
   border: 1px solid #da4f49;
   background: #F2DEDE; 
@@ -156,9 +166,9 @@ border: 1px solid #e3e3e3;
           box-shadow: 0 0 10px rgba(218, 79, 73, .35); 
 }
 
-.quiz_section.error { position: relative; }
+.quiz_section.qmn_error { position: relative; }
 
-.quiz_section.error:after {
+.quiz_section.qmn_error:after {
   content: '-';
   color: #fff;
   font-size: 20px;
@@ -178,7 +188,7 @@ border: 1px solid #e3e3e3;
 
 }
 
-.quiz_section.error .qmn_radio_answers {
+.quiz_section.qmn_error .qmn_radio_answers {
   border: 1px solid #da4f49;
   background: #F2DEDE; 
   padding: 5px;
@@ -189,12 +199,12 @@ border: 1px solid #e3e3e3;
 
 .qmn_btn, .btn {
   display: relative;
-  display: inline-block!important;
-  color: #666;
-  background: #ccc;
-  font-size: 16px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
+  display: inline-block;
+  color: #666 !important;
+  background: #ccc !important;
+  font-size: 16px !important;
+  padding: 10px 20px 10px 20px !important;
+  text-decoration: none !important;
   -webkit-border-radius: 3px;
      -moz-border-radius: 3px;
           border-radius: 3px;
@@ -238,6 +248,7 @@ border: 1px solid #e3e3e3;
 }
 
 .mlw_qmn_timer {
+  z-index: 999;
   display: inline-block;
   position: fixed;
   bottom: 20px;

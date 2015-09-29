@@ -266,40 +266,6 @@ border: 1px solid #e3e3e3;
           box-shadow:  0 4px 8px rgba(0,0,0,.10);
 }
 
-.qmn_quiz_container .select,
-.qmn_quiz_container textarea,
-.qmn_quiz_container input[type="text"],
-.qmn_quiz_container input[type="email"],
-.qmn_quiz_container input[type="number"] {
-  background: #fff;
-  border: 1px solid #3498db;
-}
-
-.qmn_quiz_container select:hover,
-.qmn_quiz_container textarea:hover,
-.qmn_quiz_container input[type="text"]:hover,
-.qmn_quiz_container input[type="email"]:hover,
-.qmn_quiz_container input[type="number"]:hover,
-.qmn_quiz_container select:focus,
-.qmn_quiz_container textarea:focus,
-.qmn_quiz_container input[type="text"]:focus,
-.qmn_quiz_container input[type="email"]:focus,
-.qmn_quiz_container input[type="number"]:focus{
-  outline: 0;
-  background: #fff;
-  border: 1px solid #3498db;
-  -webkit-box-shadow: 0 0 10px rgba(52, 152, 219, .35);
-     -moz-box-shadow: 0 0 10px rgba(52, 152, 219, .35);
-          box-shadow: 0 0 10px rgba(52, 152, 219, .35);
-}
-
-.qmn_quiz_container .qmn_btn, .qmn_quiz_container .btn {
-  color: #fff !important;
-  background: #3498db !important;
-}
-
-.qmn_quiz_container .qmn_btn:hover, .qmn_quiz_container .btn:hover { background: #2980b9 !important; }
-
 /* Helper classes */
 
 .border-none { border: 0; }

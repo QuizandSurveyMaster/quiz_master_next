@@ -3,43 +3,46 @@
 function qmnValidatePage() {
 	var validated = true;
 	jQuery(".quiz_section.slide"+window.mlw_quiz_slide+' *').each(function(){
-		jQuery(this).css("outline", "");
 		if (jQuery(this).attr('class'))
 		{
-			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "")
-			{
+			if ( jQuery(this).attr('class').indexOf('mlwEmail') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1 ||
+			jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1 ) {
+				qmn_reset_field_error( jQuery( this ) );
+			}
+			
+			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "") {
 				var x=this.value;
 				var atpos=x.indexOf('@');
 				var dotpos=x.lastIndexOf('.');
 				if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
 				{
-					jQuery('.qmn_page_error_message').text('**'+email_error+'**');
+					qmn_display_error( email_error, jQuery(this) );
 					validated =  false;
-					jQuery(this).css("outline", "2px solid red");
 				}
 			}
 			if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
 			{
-				jQuery('.qmn_page_error_message').text('**'+number_error+'**');
-				jQuery(this).css("outline", "2px solid red");
+				qmn_display_error( number_error, jQuery(this) );
 				validated =  false;
 			}
 			if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
 			{
-				jQuery('.qmn_page_error_message').text('**'+empty_error+'**');
-				jQuery(this).css("outline", "2px solid red");
+				qmn_display_error( empty_error, jQuery(this) );
 				validated =  false;
 			}
 			if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
 			{
-				jQuery('.qmn_page_error_message').text('**'+incorrect_error+'**');
-				jQuery(this).css("outline", "2px solid red");
+				qmn_display_error( incorrect_error, jQuery(this) );
 				validated =  false;
 			}
 			if(jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 && !this.checked)
 			{
-				jQuery('.qmn_page_error_message').text('**'+empty_error+'**');
-				jQuery(this).css("outline", "2px solid red");
+				qmn_display_error( empty_error, jQuery(this) );
 				validated =  false;
 			}
 			if(jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1)
@@ -47,8 +50,7 @@ function qmnValidatePage() {
         check_val = jQuery(this).find('input:checked').val();
         if (check_val == "No Answer Provided")
 				{
-					jQuery('.qmn_page_error_message').text('**'+empty_error+'**');
-					jQuery(this).css("outline", "2px solid red");
+					qmn_display_error( empty_error, jQuery(this) );
 					validated =  false;
 				}
 			}
@@ -56,15 +58,14 @@ function qmnValidatePage() {
 			{
 				if (!jQuery(this).find('input:checked').length)
 				{
-					jQuery('.qmn_page_error_message').text('**'+empty_error+'**');
-					jQuery(this).css("outline", "2px solid red");
+					qmn_display_error( empty_error, jQuery(this) );
 					validated =  false;
 				}
 			}
 		}
 	});
 	if (validated) {
-		jQuery('.qmn_page_error_message').text(' ');
+		qmn_reset_error();
 	}
 	return validated;
 }
@@ -163,8 +164,7 @@ jQuery( ".quiz_section" ).append( "<br />" );
 jQuery( '.mlw_qmn_quiz' ).append( '<div class="qmn_pagination border margin-bottom"></div>' );
 jQuery( ".qmn_pagination" ).append( '<a class="qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">'+qmn_pagination_previous_text+'</a>' );
 jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_message"></span>' );
-jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_counter_message"></span>' );
-jQuery( ".qmn_pagination" ).append( '<span class="qmn_page_error_message qmn_error"></span>' );
+jQuery( ".qmn_pagination" ).append( '<div class="qmn_page_counter_message"></div>' );
 jQuery( ".qmn_pagination" ).append( '<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="#">'+qmn_pagination_next_text+'</a>' );
 window.mlw_quiz_slide = 0;
 window.mlw_previous = 0;
