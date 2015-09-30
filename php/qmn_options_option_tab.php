@@ -105,7 +105,7 @@ function mlw_options_option_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($results != false)
+		if ($results !== false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The options has been updated successfully.', 'quiz-master-next'), 'success');
 
