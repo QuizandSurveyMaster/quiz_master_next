@@ -32,7 +32,7 @@ function mlw_options_questions_tab_content()
 	wp_enqueue_script( 'jquery-ui-sortable' );
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-	
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
@@ -467,9 +467,9 @@ function mlw_options_questions_tab_content()
 	foreach($questions as $question) {
 
 		//Load Required
-		if (is_serialized($mlw_question_info->question_settings) && is_array(@unserialize($mlw_question_info->question_settings)))
+		if (is_serialized($question->question_settings) && is_array(@unserialize($question->question_settings)))
 		{
-			$mlw_question_settings = @unserialize($mlw_question_info->question_settings);
+			$mlw_question_settings = @unserialize($question->question_settings);
 		}
 		else
 		{
