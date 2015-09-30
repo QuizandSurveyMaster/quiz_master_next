@@ -436,7 +436,7 @@ class QMNQuizManager
                     $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
                     $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-                    $section_display .= "<p class='mlw_qmn_message_before'>$message_before</p>";
+                    $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
 
                     if ($qmn_quiz_options->contact_info_location == 0)
                     {

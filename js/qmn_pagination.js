@@ -2,19 +2,10 @@
 //Function to validate the answers provided in quiz
 function qmnValidatePage() {
 	var validated = true;
+	qmn_reset_error();
 	jQuery(".quiz_section.slide"+window.mlw_quiz_slide+' *').each(function(){
 		if (jQuery(this).attr('class'))
 		{
-			if ( jQuery(this).attr('class').indexOf('mlwEmail') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1 ||
-			jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1 ) {
-				qmn_reset_field_error( jQuery( this ) );
-			}
-			
 			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "") {
 				var x=this.value;
 				var atpos=x.indexOf('@');
@@ -64,9 +55,6 @@ function qmnValidatePage() {
 			}
 		}
 	});
-	if (validated) {
-		qmn_reset_error();
-	}
 	return validated;
 }
 

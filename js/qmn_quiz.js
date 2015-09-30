@@ -11,24 +11,20 @@ function qmn_display_error( message, field ) {
 	jQuery( '#mlw_error_message' ).addClass( 'qmn_error_message' );
 	jQuery( '#mlw_error_message_bottom' ).addClass( 'qmn_error_message' );
 	jQuery( '.qmn_error_message' ).text( message );
-	field.closest( '.qmn_section' ).addClass( 'qmn_error' );
+	field.closest( '.quiz_section' ).addClass( 'qmn_error' );
 }
 
 function qmn_reset_error() {
 	jQuery( '.qmn_error_message' ).text( '' );
 	jQuery( '#mlw_error_message' ).removeClass( 'qmn_error_message' );
 	jQuery( '#mlw_error_message_bottom' ).removeClass( 'qmn_error_message' );
-}
-
-function qmn_reset_field_error( field ) {
-	field.closest( '.qmn_section' ).removeClass( 'qmn_error' );
+	jQuery( '.quiz_section' ).removeClass( 'qmn_error' );
 }
 
 function mlw_validateForm() {
 	mlw_validateResult = true;
-
+	qmn_reset_error();
 	jQuery('#quizForm *').each(function(){
-		qmn_reset_field_error( jQuery( this ) );
 		if (jQuery(this).attr('class')) {
 			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "") {
 				var x=this.value;
