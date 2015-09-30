@@ -663,9 +663,10 @@ function qmn_accept_display($id, $question, $answers)
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredAccept";} else {$mlw_requireClass = "";}
+	$question_display .= "<div class='qmn_accept_answers'>";
   $question_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
-  $question_display .= "<label for='mlwAcceptance'><span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span></label>";
-  $question_display .= "<br />";
+  $question_display .= "<label for='mlwAcceptance'><span class='qmn_accept_text'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span></label>";
+  $question_display .= "</div>";
   return $question_display;
 }
 

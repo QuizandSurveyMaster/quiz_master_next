@@ -66,16 +66,18 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (September 3, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (October 1, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>* Rebrand as Quiz And Survey Master</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes scroll to top pagination bug</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes leaderboard widget bug</li>
+				<li class="add"><div class="two">Add</div>* 4 new style templates to choose from</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes Dutch translation <a href='https://github.com/fpcorso/quiz_master_next/issues/285'>GitHub Issue 285</a></li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes quiz results losing search filters after first page <a href='https://github.com/fpcorso/quiz_master_next/issues/293'>GitHub Issue 293</a></li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes question drag and drop not working on certain installs <a href='https://github.com/fpcorso/quiz_master_next/issues/295'>GitHub Issue 295</a></li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes Required? question setting where the Yes or No value did not show when editing <a href='https://github.com/fpcorso/quiz_master_next/issues/296'>GitHub Issue 296</a></li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

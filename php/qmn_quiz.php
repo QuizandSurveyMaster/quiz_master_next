@@ -388,8 +388,9 @@ class QMNQuizManager
 		global $mlw_qmn_section_count;
 		$mlw_qmn_section_count = 0;
 
-		$quiz_display .= "<div class='mlw_qmn_quiz'>";
-		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
+		$quiz_display .= "<div class='qmn_quiz_container mlw_qmn_quiz'>";
+		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='qmn_quiz_form mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
+		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message'></div>";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
 		$quiz_display = apply_filters('qmn_begin_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_begin_section($qmn_quiz_options, $qmn_array_for_variables);
@@ -399,6 +400,7 @@ class QMNQuizManager
 		$quiz_display .= $this->display_comment_section($qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display = apply_filters('qmn_after_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= $this->display_end_section($qmn_quiz_options, $qmn_array_for_variables);
+		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom'></div>";
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$quiz_display .= "<input type='hidden' name='qmn_quiz_id' id='qmn_quiz_id' value='".$qmn_array_for_variables["quiz_id"]."'/>";
@@ -424,7 +426,6 @@ class QMNQuizManager
 	public function display_begin_section($qmn_quiz_options, $qmn_array_for_variables)
 	{
                 $section_display = "";
-                $section_display .= "<span name='mlw_error_message' id='mlw_error_message' class='qmn_error'></span><br />";
                 if (!empty($qmn_quiz_options->message_before) OR $qmn_quiz_options->contact_info_location == 0)
                 {
                     $section_display.= "<script> var firstPage = true; </script>";
@@ -435,7 +436,7 @@ class QMNQuizManager
                     $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
                     $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-                    $section_display .= "<span class='mlw_qmn_message_before'>$message_before</span><br />";
+                    $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
 
                     if ($qmn_quiz_options->contact_info_location == 0)
                     {
@@ -564,8 +565,7 @@ class QMNQuizManager
 	    $section_display .= ob_get_contents();
     ob_end_clean();
 
-		$section_display .= "<input type='submit' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
-		$section_display .= "<span name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error'></span><br />";
+		$section_display .= "<input type='submit' class='qmn_btn' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
 		$section_display .= "</div>";
 
 		return $section_display;

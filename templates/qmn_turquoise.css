@@ -276,7 +276,7 @@ border: 1px solid #e3e3e3;
 .qmn_quiz_container input[type="email"],
 .qmn_quiz_container input[type="number"] {
   background: #fff;
-  border: 1px solid #3498db;
+  border: 1px solid #1abc9c;
 }
 
 .qmn_quiz_container select:hover,
@@ -291,18 +291,18 @@ border: 1px solid #e3e3e3;
 .qmn_quiz_container input[type="number"]:focus{
   outline: 0;
   background: #fff;
-  border: 1px solid #3498db;
-  -webkit-box-shadow: 0 0 10px rgba(52, 152, 219, .35);
-     -moz-box-shadow: 0 0 10px rgba(52, 152, 219, .35);
-          box-shadow: 0 0 10px rgba(52, 152, 219, .35);
+  border: 1px solid #1abc9c;
+  -webkit-box-shadow: 0 0 10px rgba(26, 188, 156, .35);
+     -moz-box-shadow: 0 0 10px rgba(26, 188, 156, .35);
+          box-shadow: 0 0 10px rgba(26, 188, 156, .35);
 }
 
 .qmn_quiz_container .qmn_btn, .qmn_quiz_container .btn {
   color: #fff !important;
-  background: #3498db !important;
+  background: #1abc9c !important;
 }
 
-.qmn_quiz_container .qmn_btn:hover, .qmn_quiz_container .btn:hover { background: #2980b9 !important; }
+.qmn_quiz_container .qmn_btn:hover, .qmn_quiz_container .btn:hover { background: #16a085 !important; }
 
 /* Helper classes */
 
@@ -317,7 +317,7 @@ border: 1px solid #e3e3e3;
     font-size: 18px;
   }
 
-  .quiz_section .qmn_radio_answers .qmn_mc_answer_wrap label {
+  .quiz_section.radio .qmn_mc_answer_wrap label {
     font-size: 18px;
   }
 

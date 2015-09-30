@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.5.4
+Stable tag: 4.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,10 +126,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 4. Example Quiz
 5. Example Survey
 6. Quiz/Survey Results Page
-7. Example Contact Form
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.5.5 (October 1, 2015) =
+ * Adds 4 new style templates to choose from
+ * Fixes Dutch translation ([Github Issue #285](https://github.com/fpcorso/quiz_master_next/issues/285))
+ * Fixes quiz results losing search filters after first page ([Github Issue #293](https://github.com/fpcorso/quiz_master_next/issues/293))
+ * Fixes question drag and drop not working on certain installs ([Github Issue #295](https://github.com/fpcorso/quiz_master_next/issues/295))
+ * Fixes Required? question setting where the Yes or No value did not show when editing ([Github Issue #296](https://github.com/fpcorso/quiz_master_next/issues/296))
 
 = 4.5.4 (September 3, 2015) =
  * Rebrand as Quiz And Survey Master
@@ -137,7 +143,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  * Fixes leaderboard widget bug
 
 = 4.5.3 (August 21, 2015) =
- * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/277))
+ * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #277](https://github.com/fpcorso/quiz_master_next/issues/277))
 
 = 4.5.2 (August 14, 2015) =
  * Ensured compatibility with Wordpress version 4.3
@@ -169,14 +175,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
+= 4.5.5 =
+Upgrade to use 5 new style templates as well as a variety of bug fixes
+
 = 4.5.4 =
 Upgrade to fix scroll to top pagination bug and leaderboard widget bug
 
 = 4.5.3 =
 Upgrade to fix a issue with reseting the stats for Quiz Taken and Quiz Views. It was reseting to 1 instead of 0.
-
-= 4.5.2 =
-Upgrade to fix a Required error in IE and to ensure compatability with Wordpress version 4.3
-
-= 4.5.1 =
-Upgrade to fix parse error on hosts with older PHP versions
