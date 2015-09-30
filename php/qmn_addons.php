@@ -48,7 +48,7 @@ function qmn_addons_page()
 }
 
 /**
-* Displays the contents of the featured add ons page. 
+* Displays the contents of the featured add ons page.
 *
 * @return void
 * @since 4.4.0
@@ -58,6 +58,11 @@ function qmn_generate_featured_addons()
 	wp_enqueue_style( 'qmn_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
 	?>
 	<p><?php _e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Results Analysis</h3>
+		<p class="qmn_addons_desc">Analyze your quiz's or survey's results to see the percentage of users who chose each answer displayed on useful charts, number of submissions, average points earned, and average score earned.</p>
+		<a href="http://quizandsurveymaster.com/downloads/results-analysis/" target="_blank" class="button">Get This Addon</a>
+	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Export Results</h3>
 		<p class="qmn_addons_desc">This add-on gives you the ability to export your quiz results as a CSV file.</p>
@@ -72,11 +77,6 @@ function qmn_generate_featured_addons()
 		<h3 class="qmn_addons_title">MailPoet Integration</h3>
 		<p class="qmn_addons_desc">Grow your list of subscribers in MailPoet by using this add-on to add users who take your quizzes!</p>
 		<a href="http://quizandsurveymaster.com/downloads/mailpoet-integration/" target="_blank" class="button">Get This Addon</a>
-	</div>
-	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">Advanced Leaderboard</h3>
-		<p class="qmn_addons_desc">This add-on gives you 4 new leaderboard shortcodes and 2 new widgets that you can customize per use. You can edit how many results are listed, the name of the leaderboard, and the order the results are listed in.</p>
-		<a href="http://quizandsurveymaster.com/downloads/advanced-leaderboard/" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Slack Integration</h3>
@@ -106,7 +106,7 @@ function qmn_generate_featured_addons()
 
 
 /**
-* This function registers the feature add ons tab. 
+* This function registers the feature add ons tab.
 *
 * @return void
 * @since 4.4.0

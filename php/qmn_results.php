@@ -258,7 +258,13 @@ function mlw_generate_quiz_results()
 			</div>
 		</div>
 		<form action='' method="get">
-			<input type="hidden" name="quiz_id" value="<?php echo $_GET["quiz_id"]; ?>" />
+			<?php
+			if ( isset( $_GET["quiz_id"] ) ) {
+				?>
+				<input type="hidden" name="quiz_id" value="<?php echo $_GET["quiz_id"]; ?>" />
+				<?php
+			}
+			?>
 			<input type="hidden" name="page" value="mlw_quiz_results">
 			<p class="search-box">
 				<label for="qmn_search_phrase">Search Results:</label>
