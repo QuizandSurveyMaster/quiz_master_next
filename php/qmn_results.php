@@ -106,33 +106,35 @@ function mlw_generate_quiz_results()
 	$order_by_sql = 'ORDER BY result_id DESC';
 	if ( isset( $_GET["qmn_search_phrase"] ) && !empty( $_GET["qmn_search_phrase"] ) ) {
 		$search_phrase = $_GET["qmn_search_phrase"];
+		$mlw_qmn_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s)", '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%' ) );
 		$search_phrase_sql = " AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%')";
+	} else {
+		$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'" );
 	}
 	if ( isset( $_GET["qmn_order_by"] ) ) {
 		 switch ( $_GET["qmn_order_by"] )
 		 {
 			 case 'quiz_name':
-				 $order_by_sql = "ORDER BY quiz_name DESC";
+				 $order_by_sql = " ORDER BY quiz_name DESC";
 				 break;
 			 case 'name':
-				 $order_by_sql = "ORDER BY name DESC";
+				 $order_by_sql = " ORDER BY name DESC";
 				 break;
 			 case 'point_score':
-				 $order_by_sql = "ORDER BY point_score DESC";
+				 $order_by_sql = " ORDER BY point_score DESC";
 				 break;
 			 case 'correct_score':
-				 $order_by_sql = "ORDER BY correct_score DESC";
+				 $order_by_sql = " ORDER BY correct_score DESC";
 				 break;
 			 default:
-				 $order_by_sql = "ORDER BY result_id DESC";
+				 $order_by_sql = " ORDER BY result_id DESC";
 		 }
 	}
 
-	$mlw_qmn_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'%s", $search_phrase_sql ) );
 
 	if( isset($_GET['mlw_result_page'] ) )
 	{
-	   $mlw_qmn_result_page = $_GET['mlw_result_page'] + 1;
+	   $mlw_qmn_result_page = intval( $_GET['mlw_result_page'] ) + 1;
 	   $mlw_qmn_result_begin = $mlw_qmn_table_limit * $mlw_qmn_result_page ;
 	}
 	else
@@ -143,7 +145,8 @@ function mlw_generate_quiz_results()
 	$mlw_qmn_result_left = $mlw_qmn_results_count - ($mlw_qmn_result_page * $mlw_qmn_table_limit);
 	if (isset($_GET["quiz_id"]) && $_GET["quiz_id"] != "")
 	{
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND quiz_id=%d$search_phrase_sql $order_by_sql LIMIT %d, %d", intval($_GET["quiz_id"]), $mlw_qmn_result_begin, $mlw_qmn_table_limit ) );
+		$quiz_id = intval( $_GET["quiz_id"] );
+		$mlw_quiz_data = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND quiz_id=$quiz_id $search_phrase_sql $order_by_sql LIMIT $mlw_qmn_result_begin, $mlw_qmn_table_limit" );
 	}
 	else
 	{
@@ -205,35 +208,49 @@ function mlw_generate_quiz_results()
 					$mlw_qmn_previous_page = 0;
 					$mlw_current_page = $mlw_qmn_result_page+1;
 					$mlw_total_pages = ceil($mlw_qmn_results_count/$mlw_qmn_table_limit);
+
+					$url_query_string = '';
+					if ( isset( $_GET["quiz_id"] ) && $_GET["quiz_id"] != "" ) {
+						$url_query_string .= '&&quiz_id='.intval( $_GET["quiz_id"] );
+					}
+
+					if ( isset( $_GET["qmn_search_phrase"] ) && !empty( $_GET["qmn_search_phrase"] ) ) {
+						$url_query_string .= '&&qmn_search_phrase='.$_GET["qmn_search_phrase"];
+					}
+
+					if ( isset( $_GET["qmn_order_by"] ) && !empty( $_GET["qmn_order_by"] ) ) {
+						$url_query_string .= '&&qmn_order_by='.$_GET["qmn_order_by"];
+					}
+
 					if( $mlw_qmn_result_page > 0 )
 					{
 							$mlw_qmn_previous_page = $mlw_qmn_result_page - 2;
-							echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\"><</a>";
+							echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
 							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
 							if( $mlw_qmn_result_left > $mlw_qmn_table_limit )
 							{
-								echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">></a>";
+								echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page$url_query_string\">></a>";
 							}
 						else
 						{
-							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">></a>";
+							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page$url_query_string\">></a>";
 						}
 					}
 					else if( $mlw_qmn_result_page == 0 )
 					{
 						if( $mlw_qmn_result_left > $mlw_qmn_table_limit )
 						{
-							echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\"><</a>";
+							echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
 							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">></a>";
+							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page$url_query_string\">></a>";
 						}
 					}
 					else if( $mlw_qmn_result_left < $mlw_qmn_table_limit )
 					{
 						$mlw_qmn_previous_page = $mlw_qmn_result_page - 2;
-						echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page\"><</a>";
+						echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
 						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page\">></a>";
+						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&mlw_result_page=$mlw_qmn_result_page$url_query_string\">></a>";
 					}
 					?>
 				</span>
@@ -241,6 +258,7 @@ function mlw_generate_quiz_results()
 			</div>
 		</div>
 		<form action='' method="get">
+			<input type="hidden" name="quiz_id" value="<?php echo $_GET["quiz_id"]; ?>" />
 			<input type="hidden" name="page" value="mlw_quiz_results">
 			<p class="search-box">
 				<label for="qmn_search_phrase">Search Results:</label>
