@@ -31,118 +31,10 @@ class QMNQuizManager
 	  */
 	public function add_hooks()
 	{
-		add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
-		add_action('init', array($this, 'redirect_init'));
-	}
-
-	/**
-	 * Redirects To Other Page
-	 *
-	 * Redirects users to admin defined pages if admin has entered pages
-	 *
-	 * @since 4.2.0
-	 * @return void
-	 * @uses QMNQuizManager::load_quiz_options
-	 * @uses QMNQuizManager::load_questions
-	 */
-	public function redirect_init()
-	{
-		if (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation")
-		{
-			$quiz_id = intval($_POST["qmn_quiz_id"]);
-			$qmn_options = $this->load_quiz_options($quiz_id);
-			$qmn_quiz_questions = $this->load_questions($quiz_id, $qmn_options, false);
-			if (is_serialized($qmn_options->message_after) && is_array(@unserialize($qmn_options->message_after)))
-			{
-				$mlw_message_after_array = @unserialize($qmn_options->message_after);
-
-				$mlw_points = 0;
-				$mlw_correct = 0;
-				$mlw_total_score = 0;
-				$mlw_question_answers = "";
-				global $mlwQuizMasterNext;
-				isset($_POST["total_questions"]) ? $mlw_total_questions = intval($_POST["total_questions"]) : $mlw_total_questions = 0;
-				isset($_POST["qmn_question_list"]) ? $question_list = explode('Q',$_POST["qmn_question_list"]) : $question_list = array();
-				$qmn_answer_points = 0;
-				$mlw_qmn_answer_array = array();
-				foreach($qmn_quiz_questions as $mlw_question)
-				{
-					foreach($question_list as $question_id)
-					{
-						if ($mlw_question->question_id == $question_id)
-						{
-							$mlw_user_text = "";
-							$mlw_correct_text = "";
-							$qmn_correct = "incorrect";
-							$qmn_answer_points = 0;
-
-							$results_array = $mlwQuizMasterNext->pluginHelper->display_review($mlw_question->question_type_new, $mlw_question->question_id);
-							if (!isset($results_array["null_review"]))
-							{
-								$mlw_points += $results_array["points"];
-								$qmn_answer_points += $results_array["points"];
-								if ($results_array["correct"] == "correct")
-								{
-									$mlw_correct += 1;
-									$qmn_correct = "correct";
-								}
-							}
-							break;
-						}
-					}
-				}
-
-				//Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
-				if ($mlw_total_questions != 0)
-				{
-					$mlw_total_score = round((($mlw_correct/$mlw_total_questions)*100), 2);
-					$mlw_average_points = round(($mlw_points/$mlw_total_questions), 2);
-				}
-				else
-				{
-					$mlw_total_score = 0;
-					$mlw_average_points = 0;
-				}
-
-				//Cycle through landing pages
-				foreach($mlw_message_after_array as $mlw_each)
-				{
-					//Check to see if not default
-					if ($mlw_each[0] != 0 || $mlw_each[1] != 0)
-					{
-						//Check to see if points fall in correct range
-						if ($qmn_options->system == 1 && $mlw_points >= $mlw_each[0] && $mlw_points <= $mlw_each[1])
-						{
-							if (esc_url($mlw_each["redirect_url"]) != '')
-							{
-								wp_redirect( esc_url($mlw_each["redirect_url"]) );
-								exit;
-							}
-							break;
-						}
-						//Check to see if score fall in correct range
-						if ($qmn_options->system == 0 && $mlw_total_score >= $mlw_each[0] && $mlw_total_score <= $mlw_each[1])
-						{
-							if (esc_url($mlw_each["redirect_url"]) != '')
-							{
-								wp_redirect( esc_url($mlw_each["redirect_url"]) );
-								exit;
-							}
-							break;
-						}
-					}
-					else
-					{
-						if (esc_url($mlw_each["redirect_url"]) != '')
-						{
-							wp_redirect( esc_url($mlw_each["redirect_url"]) );
-							exit;
-						}
-						break;
-					}
-				}
-			}
-		}
+		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
+		add_action( 'wp_ajax_qmn_process_quiz', 'ajax_submit_results' );
+		add_action( 'wp_ajax_nopriv_qmn_process_quiz', 'ajax_submit_results' );
+		add_action('init', array($this, 'redirect_init' ) );
 	}
 
 	/**
@@ -381,6 +273,7 @@ class QMNQuizManager
 		</script>
 		<?php
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
+		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
 		global $qmn_total_questions;
@@ -389,7 +282,7 @@ class QMNQuizManager
 		$mlw_qmn_section_count = 0;
 
 		$quiz_display .= "<div class='qmn_quiz_container mlw_qmn_quiz'>";
-		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='qmn_quiz_form mlw_quiz_form' onsubmit='return mlw_validateForm()' novalidate >";
+		$quiz_display .= "<form name='quizForm' id='quizForm' action='' method='post' class='qmn_quiz_form mlw_quiz_form' novalidate >";
 		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message'></div>";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
 		$quiz_display = apply_filters('qmn_begin_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -482,12 +375,12 @@ class QMNQuizManager
 
 			if ($mlw_question->comments == 0)
 			{
-				$question_display .= "<input type='text' class='mlw_qmn_question_comment' x-webkit-speech id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES))."' onclick='clear_field(this)'/>";
+				$question_display .= "<input type='text' class='mlw_qmn_question_comment' x-webkit-speech id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES))."' onclick='qmnClearField(this)'/>";
 				$question_display .= "<br />";
 			}
 			if ($mlw_question->comments == 2)
 			{
-				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' onclick='clear_field(this)'>".htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)."</textarea>";
+				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' onclick='qmnClearField(this)'>".htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)."</textarea>";
 				$question_display .= "<br />";
 			}
 			if ($mlw_question->hints != "")
@@ -581,6 +474,46 @@ class QMNQuizManager
 		* @param array $qmn_quiz_questions The questions of the quiz
 		* @param array $qmn_quiz_answers The answers of the quiz
 		* @param array $qmn_array_for_variables The array of results for the quiz
+		* @uses QMNQuizManager:submit_results() Perform The Quiz/Survey Submission
+		* @return string The content for the results page section
+	  */
+	public function display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables) {
+		$result = submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
+		$results_array = json_decode( $result );
+		return $results_array['display'];
+	}
+
+	/**
+	  * Calls the results page from ajax
+	  *
+	  * @since 4.6.0
+		* @uses QMNQuizManager:submit_results() Perform The Quiz/Survey Submission
+		* @return string The content for the results page section
+	  */
+	public function ajax_submit_results() {
+		$qmn_quiz_options = $this->load_quiz_options( intval( $_POST["quizID"] ) );
+		$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
+		$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
+		$qmn_array_for_variables = array(
+			'quiz_id' => $qmn_quiz_options->quiz_id,
+			'quiz_name' => $qmn_quiz_options->quiz_name,
+			'quiz_system' => $qmn_quiz_options->system
+		);
+		parse_str( $_POST["quizData"], $_POST );
+		echo json_encode( submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables) );
+		die();
+	}
+
+	/**
+	  * Perform The Quiz/Survey Submission
+	  *
+	  * Perpares and save the results, prepares and send emails, prepare results page
+	  *
+	  * @since 4.6.0
+		* @param array $qmn_quiz_options The database row of the quiz
+		* @param array $qmn_quiz_questions The questions of the quiz
+		* @param array $qmn_quiz_answers The answers of the quiz
+		* @param array $qmn_array_for_variables The array of results for the quiz
 		* @uses QMNQuizManager:check_answers() Creates display for beginning section
 		* @uses QMNQuizManager:check_comment_section() Creates display for questions
 		* @uses QMNQuizManager:generate_certificate() Creates display for comment section
@@ -590,7 +523,7 @@ class QMNQuizManager
 		* @uses QMNQuizManager:send_admin_email() Creates display for end section
 		* @return string The content for the results page section
 	  */
-	public function display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
+	public function submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables)
 	{
 		global $qmn_allowed_visit;
 		$result_display = '';
@@ -599,7 +532,6 @@ class QMNQuizManager
 		{
 			return $result_display;
 		}
-		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
 		$mlw_user_name = isset($_POST["mlwUserName"]) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None';
 		$mlw_user_comp = isset($_POST["mlwUserComp"]) ? sanitize_text_field( $_POST["mlwUserComp"] ) : 'None';
@@ -613,17 +545,6 @@ class QMNQuizManager
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
 
-
-		$result_display .= "<div id='top_of_results'></div>";
-		$result_display .= "<script>
-		window.location.hash='top_of_results';
-		</script>";
-		?>
-		<script type="text/javascript">
-			window.sessionStorage.setItem('mlw_time_quiz<?php echo $qmn_array_for_variables['quiz_id']; ?>', 'completed');
-			window.sessionStorage.setItem('mlw_started_quiz<?php echo $qmn_array_for_variables['quiz_id']; ?>', "no");
-		</script>
-		<?php
 		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
 		{
 			$qmn_array_for_variables = array_merge($qmn_array_for_variables,$this->check_answers($qmn_quiz_questions, $qmn_quiz_answers, $qmn_quiz_options, $qmn_array_for_variables));
@@ -642,7 +563,11 @@ class QMNQuizManager
 			$result_display = apply_filters('qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
 			//Save the results into database
-			$mlw_quiz_results_array = array( intval($qmn_array_for_variables['timer']), $qmn_array_for_variables['question_answers_array'], htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES));
+			$mlw_quiz_results_array = array(
+				intval($qmn_array_for_variables['timer']),
+				$qmn_array_for_variables['question_answers_array'],
+				htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES)
+			);
 			$mlw_quiz_results = serialize($mlw_quiz_results_array);
 
 			global $wpdb;
@@ -694,7 +619,63 @@ class QMNQuizManager
 		{
 			$result_display .= "Thank you.";
 		}
-		return $result_display;
+
+		//Check to see if we need to set up a redirect
+		$redirect = false;
+		$redirect_url = '';
+		if (is_serialized($qmn_quiz_options->message_after) && is_array(@unserialize($qmn_quiz_options->message_after))) {
+			$mlw_message_after_array = @unserialize($qmn_quiz_options->message_after);
+
+			//Cycle through landing pages
+			foreach($mlw_message_after_array as $mlw_each)
+			{
+				//Check to see if not default
+				if ($mlw_each[0] != 0 || $mlw_each[1] != 0)
+				{
+					//Check to see if points fall in correct range
+					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
+					{
+						if (esc_url($mlw_each["redirect_url"]) != '')
+						{
+							$redirect = true;
+							$redirect_url = esc_url( $mlw_each["redirect_url"] );
+							exit;
+						}
+						break;
+					}
+					//Check to see if score fall in correct range
+					if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
+					{
+						if (esc_url($mlw_each["redirect_url"]) != '')
+						{
+							$redirect = true;
+							$redirect_url = esc_url( $mlw_each["redirect_url"] );
+							exit;
+						}
+						break;
+					}
+				}
+				else
+				{
+					if (esc_url($mlw_each["redirect_url"]) != '')
+					{
+						$redirect = true;
+						$redirect_url = esc_url( $mlw_each["redirect_url"] );
+						exit;
+					}
+					break;
+				}
+			}
+		}
+
+		//Prepare data to be sent back to front-end
+		$return_array = array(
+			'display' => $result_display,
+			'redirect' => $redirect,
+			'redirect_url' => $redirect_url
+		);
+
+		return $return_json;
 	}
 
 	/**

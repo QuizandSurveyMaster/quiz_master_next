@@ -1,68 +1,15 @@
 
 //Function to validate the answers provided in quiz
 function qmnValidatePage() {
-	var validated = true;
-	qmn_reset_error();
-	jQuery(".quiz_section.slide"+window.mlw_quiz_slide+' *').each(function(){
-		if (jQuery(this).attr('class'))
-		{
-			if(jQuery(this).attr('class').indexOf('mlwEmail') > -1 && this.value != "") {
-				var x=this.value;
-				var atpos=x.indexOf('@');
-				var dotpos=x.lastIndexOf('.');
-				if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length)
-				{
-					qmn_display_error( email_error, jQuery(this) );
-					validated =  false;
-				}
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredNumber') > -1 && this.value == "" && +this.value != NaN)
-			{
-				qmn_display_error( number_error, jQuery(this) );
-				validated =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredText') > -1 && this.value == "")
-			{
-				qmn_display_error( empty_error, jQuery(this) );
-				validated =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredCaptcha') > -1 && this.value != mlw_code)
-			{
-				qmn_display_error( incorrect_error, jQuery(this) );
-				validated =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredAccept') > -1 && !this.checked)
-			{
-				qmn_display_error( empty_error, jQuery(this) );
-				validated =  false;
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1)
-			{
-        check_val = jQuery(this).find('input:checked').val();
-        if (check_val == "No Answer Provided")
-				{
-					qmn_display_error( empty_error, jQuery(this) );
-					validated =  false;
-				}
-			}
-			if(jQuery(this).attr('class').indexOf('mlwRequiredCheck') > -1)
-			{
-				if (!jQuery(this).find('input:checked').length)
-				{
-					qmn_display_error( empty_error, jQuery(this) );
-					validated =  false;
-				}
-			}
-		}
-	});
-	return validated;
+	var result = qmnValidation( ".quiz_section.slide"+window.mlw_quiz_slide+' *' );
+	return result;
 }
 
 
 //Function to advance quiz to next page
-function nextSlide(mlw_pagination, mlw_goto_top) {
+function nextSlide( mlw_pagination, mlw_goto_top ) {
 	jQuery( ".quiz_section" ).hide();
-	for (var i = 0; i < mlw_pagination; i++) {
+	for ( var i = 0; i < mlw_pagination; i++ ) {
 		if (i == 0 && window.mlw_previous == 1 && window.mlw_quiz_slide > 1) {
 			window.mlw_quiz_slide = window.mlw_quiz_slide + mlw_pagination;
 		} else {
@@ -97,7 +44,7 @@ function nextSlide(mlw_pagination, mlw_goto_top) {
 
 	window.mlw_previous = 0;
 	if (mlw_goto_top == 1) {
-		qmn_return_to_top();
+		qmnReturnToTop();
 	}
 }
 
@@ -139,11 +86,11 @@ function prevSlide(mlw_pagination, mlw_goto_top) {
 
 	window.mlw_previous = 1;
 	if (mlw_goto_top == 1) {
-		qmn_return_to_top();
+		qmnReturnToTop();
 	}
 }
 
-function qmn_return_to_top() {
+function qmnReturnToTop() {
 	jQuery('html, body').animate({scrollTop: jQuery('.mlw_qmn_quiz').offset().top - 100}, 1000);
 }
 
