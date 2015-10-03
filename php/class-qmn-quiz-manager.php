@@ -32,9 +32,8 @@ class QMNQuizManager
 	public function add_hooks()
 	{
 		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
-		add_action( 'wp_ajax_qmn_process_quiz', 'ajax_submit_results' );
-		add_action( 'wp_ajax_nopriv_qmn_process_quiz', 'ajax_submit_results' );
-		add_action('init', array($this, 'redirect_init' ) );
+		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
+		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 	}
 
 	/**
@@ -197,7 +196,7 @@ class QMNQuizManager
 		* @param array $questions The questions for the quiz
 		* @return array The answers for the quiz
 	  */
-	public function create_answer_array($questions)
+	public function create_answer_array($questions, $is_ajax = false)
 	{
 		//Load and prepare answer arrays
 		$mlw_qmn_answer_arrays = array();
@@ -224,7 +223,9 @@ class QMNQuizManager
 					$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_arrays[$mlw_question_info->question_id];
 			}
 		}
-		echo "<script>var qmn_question_list = ".json_encode($question_list).";</script>";
+		if ( ! $is_ajax ) {
+			echo "<script>var qmn_question_list = ".json_encode($question_list).";</script>";
+		}
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -491,16 +492,19 @@ class QMNQuizManager
 		* @return string The content for the results page section
 	  */
 	public function ajax_submit_results() {
-		$qmn_quiz_options = $this->load_quiz_options( intval( $_POST["quizID"] ) );
-		$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
-		$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
+		global $qmn_allowed_visit;
+		$qmn_allowed_visit = true;
+		$quiz = intval( $_POST["quizID"] );
+		$qmn_quiz_options = $this->load_quiz_options( $quiz );
+		$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
+		$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions, true );
 		$qmn_array_for_variables = array(
 			'quiz_id' => $qmn_quiz_options->quiz_id,
 			'quiz_name' => $qmn_quiz_options->quiz_name,
 			'quiz_system' => $qmn_quiz_options->system
 		);
 		parse_str( $_POST["quizData"], $_POST );
-		echo json_encode( submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables) );
+		echo json_encode( $this->submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables) );
 		die();
 	}
 
@@ -547,6 +551,7 @@ class QMNQuizManager
 
 		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
 		{
+
 			$qmn_array_for_variables = array_merge($qmn_array_for_variables,$this->check_answers($qmn_quiz_questions, $qmn_quiz_answers, $qmn_quiz_options, $qmn_array_for_variables));
 			$result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
@@ -639,7 +644,6 @@ class QMNQuizManager
 						{
 							$redirect = true;
 							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-							exit;
 						}
 						break;
 					}
@@ -650,7 +654,6 @@ class QMNQuizManager
 						{
 							$redirect = true;
 							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-							exit;
 						}
 						break;
 					}
@@ -661,7 +664,6 @@ class QMNQuizManager
 					{
 						$redirect = true;
 						$redirect_url = esc_url( $mlw_each["redirect_url"] );
-						exit;
 					}
 					break;
 				}
@@ -675,7 +677,7 @@ class QMNQuizManager
 			'redirect_url' => $redirect_url
 		);
 
-		return $return_json;
+		return $return_array;
 	}
 
 	/**

@@ -90,10 +90,6 @@ function prevSlide(mlw_pagination, mlw_goto_top) {
 	}
 }
 
-function qmnReturnToTop() {
-	jQuery('html, body').animate({scrollTop: jQuery('.mlw_qmn_quiz').offset().top - 100}, 1000);
-}
-
 jQuery( ".quiz_section" ).hide();
 jQuery( ".quiz_section" ).append( "<br />" );
 jQuery( '.mlw_qmn_quiz' ).append( '<div class="qmn_pagination border margin-bottom"></div>' );

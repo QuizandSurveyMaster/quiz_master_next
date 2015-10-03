@@ -7,6 +7,10 @@ function qmnClearField(field) {
 	if (field.defaultValue == field.value) field.value = '';
 }
 
+function qmnReturnToTop() {
+	jQuery('html, body').animate({scrollTop: jQuery('.qmn_quiz_container').offset().top - 150}, 1000);
+}
+
 function qmnDisplayError( message, field ) {
 	jQuery( '#mlw_error_message' ).addClass( 'qmn_error_message' );
 	jQuery( '#mlw_error_message_bottom' ).addClass( 'qmn_error_message' );
@@ -105,6 +109,7 @@ function qmnDisplayResults( results ) {
 	} else {
 		jQuery( '.qmn_quiz_container' ).append( '<div class="qmn_results_page"></div>' );
 		jQuery( '.qmn_results_page' ).html( results.display );
+		qmnReturnToTop();
 	}
 }
 
