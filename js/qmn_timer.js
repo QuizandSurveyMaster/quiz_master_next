@@ -3,14 +3,14 @@ if (typeof qmn_current_page !== 'undefined' && firstPage) {
 	jQuery(".mlw_next").click(function(event) {
 		event.preventDefault();
 		if ( !qmn_timer_activated ) {
-			qmn_activate_timer();
+			qmnActivateTimer();
 		}
 	});
 } else {
-	setTimeout(qmn_activate_timer, 100);
+	setTimeout(qmnActivateTimer, 100);
 }
 
-function qmn_activate_timer() {
+function qmnActivateTimer() {
 	jQuery("#mlw_qmn_timer").show();
 	qmn_timer_activated = true;
 	var minutes = 0;
@@ -24,11 +24,11 @@ function qmn_activate_timer() {
 	}
 	window.amount = (minutes*60);
 	window.titleText = window.document.title;
-	document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-	window.counter=setInterval(timer, 1000);
+	document.getElementById("mlw_qmn_timer").innerHTML = qmnMinToSec(window.amount);
+	window.counter=setInterval(qmnTimer, 1000);
 }
 
-function timer()
+function qmnTimer()
 {
 	window.amount=window.amount-1;
 	if (window.amount < 0)
@@ -37,8 +37,8 @@ function timer()
 	}
 	window.sessionStorage.setItem('mlw_time_quiz'+qmn_quiz_id, window.amount/60);
 	window.sessionStorage.setItem('mlw_started_quiz'+qmn_quiz_id, "yes");
-	document.getElementById("mlw_qmn_timer").innerHTML = minToSec(window.amount);
-	window.document.title = minToSec(window.amount) + " " + window.titleText;
+	document.getElementById("mlw_qmn_timer").innerHTML = qmnMinToSec(window.amount);
+	window.document.title = qmnMinToSec(window.amount) + " " + window.titleText;
 	if (window.amount <= 0)
 	{
 		clearInterval(window.counter);
@@ -52,7 +52,13 @@ function timer()
 		return;
 	}
 }
-function minToSec(amount)
+
+function qmnEndTimer() {
+	window.sessionStorage.setItem('mlw_time_quiz'+qmn_quiz_id, 'completed');
+	window.sessionStorage.setItem('mlw_started_quiz'+qmn_quiz_id, 'no');
+}
+
+function qmnMinToSec(amount)
 {
 	var timer_display = '';
 	var hours = Math.floor(amount/3600);
