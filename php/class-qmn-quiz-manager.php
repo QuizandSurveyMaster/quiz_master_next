@@ -302,7 +302,7 @@ class QMNQuizManager
 		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error_message_section'></div>";
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
-		$quiz_display .= "<input type='hidden' name='qmn_quiz_id' id='qmn_quiz_id' value='".$qmn_array_for_variables["quiz_id"]."'/>";
+		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='".$qmn_array_for_variables["quiz_id"]."'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
 		$quiz_display = apply_filters('qmn_end_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables);
 		$quiz_display .= "</form>";
@@ -930,12 +930,9 @@ EOC;
 
 			//Load Social Media Text
 			$qmn_social_media_text = "";
-			if (is_serialized($qmn_quiz_options->social_media_text) && is_array(@unserialize($qmn_quiz_options->social_media_text)))
-			{
+			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( @unserialize( $qmn_quiz_options->social_media_text ) ) ) {
 				$qmn_social_media_text = @unserialize($qmn_quiz_options->social_media_text);
-			}
-			else
-			{
+			} else {
 				$qmn_social_media_text = array(
 		        		'twitter' => $qmn_quiz_options->social_media_text,
 		        		'facebook' => $qmn_quiz_options->social_media_text
@@ -944,8 +941,8 @@ EOC;
 			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
 			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $qmn_array_for_variables);
 			$social_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($qmn_quiz_options->quiz_name)."', '$facebook_app_id');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" onclick=\"mlw_qmn_share('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($qmn_quiz_options->quiz_name)."');\">Twitter</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($qmn_quiz_options->quiz_name)."', '$facebook_app_id');\">Facebook</a>
+			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($qmn_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
 		return apply_filters('qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -1250,15 +1247,13 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 	return $display;
 }
 
-add_filter( 'qmn_begin_quiz', 'qmn_timer_check', 15, 3 );
+add_filter( 'qmn_begin_quiz_form', 'qmn_timer_check', 15, 3 );
 function qmn_timer_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	global $qmn_allowed_visit;
 	global $qmn_json_data;
 	if ( $qmn_allowed_visit && $qmn_quiz_options->timer_limit != 0 ) {
 		$qmn_json_data["timer_limit"] = $qmn_quiz_options->timer_limit;
-		?>
-		<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>
-		<?php
+		$display .= '<div style="display:none;" id="mlw_qmn_timer" class="mlw_qmn_timer"></div>';
 	}
 	return $display;
 }
