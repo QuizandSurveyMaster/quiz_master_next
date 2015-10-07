@@ -439,8 +439,8 @@ function mlw_options_emails_tab_content()
 			<tr valign="top">
 				<th scope="row"><label for="replyToUser"><?php _e('Add user\'s email as Reply-To on admin email?', 'quiz-master-next'); ?></label></th>
 				<td>
-				    <input type="radio" id="radio19" name="replyToUser" <?php checked( $from_email_array["reply-to"], 0 ); ?> value='0' /><label for="radio19"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
-				    <input type="radio" id="radio20" name="replyToUser" <?php checked( $from_email_array["reply-to"], 1 ); ?> value='1' /><label for="radio20"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio19" name="replyToUser" <?php checked( $from_email_array["reply_to"], 0 ); ?> value='0' /><label for="radio19"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio20" name="replyToUser" <?php checked( $from_email_array["reply_to"], 1 ); ?> value='1' /><label for="radio20"><?php _e('No', 'quiz-master-next'); ?></label><br>
 				</td>
 			</tr>
 			</table>
