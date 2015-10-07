@@ -191,8 +191,11 @@ function mlw_options_emails_tab_content()
 			}
 			$i++;
 		}
+
+		$from_email_array = serialize( $from_email_array );
 		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
 		$mlw_qmn_new_admin_array = serialize($mlw_qmn_new_admin_array);
+
 		$mlw_new_email_results = $wpdb->update(
 			$wpdb->prefix . "mlw_quizzes",
 			array(
