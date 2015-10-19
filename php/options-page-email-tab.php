@@ -26,23 +26,19 @@ function mlw_options_emails_tab_content()
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
 	//Check to add new user email template
-	if (isset($_POST["mlw_add_email_page"]) && $_POST["mlw_add_email_page"] == "confirmation")
-	{
+	if ( isset( $_POST["mlw_add_email_page"] ) && $_POST["mlw_add_email_page"] == "confirmation" ) {
 		//Function variables
 		$mlw_qmn_add_email_id = intval($_POST["mlw_add_email_quiz_id"]);
 		$mlw_qmn_user_email = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_add_email_id ) );
 
 		//Load user email and check if it is array already. If not, turn it into one
-		if (is_serialized($mlw_qmn_user_email) && is_array(@unserialize($mlw_qmn_user_email)))
-		{
+		if ( is_serialized( $mlw_qmn_user_email ) && is_array( @unserialize( $mlw_qmn_user_email ) ) ) {
 			$mlw_qmn_email_array = @unserialize($mlw_qmn_user_email);
 			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
 			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
 
-		}
-		else
-		{
+		} else {
 			$mlw_qmn_email_array = array(array(0, 0, $mlw_qmn_user_email, 'Quiz Results For %QUIZ_NAME%'));
 			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', 'Quiz Results For %QUIZ_NAME%');
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
@@ -157,14 +153,21 @@ function mlw_options_emails_tab_content()
 		$mlw_send_admin_email = intval( $_POST["sendAdminEmail"] );
 		$mlw_admin_email = sanitize_text_field( $_POST["adminEmail"] );
 		$mlw_email_from_text = sanitize_text_field( $_POST["emailFromText"] );
+		$from_address = sanitize_text_field( $_POST["emailFromAddress"] );
+		$reply_to_user = sanitize_text_field( $_POST["replyToUser"] );
+
+		//from email array
+		$from_email_array = array(
+			'from_name' => $mlw_email_from_text,
+			'from_email' => $from_address,
+			'reply_to' => $reply_to_user
+		);
 
 		//Create new array
 		$i = 1;
 		$mlw_qmn_new_email_array = array();
-		while ($i <= $mlw_qmn_email_template_total)
-		{
-			if ($_POST["user_email_".$i] != "Delete")
-			{
+		while ( $i <= $mlw_qmn_email_template_total ) {
+			if ( $_POST["user_email_".$i] != "Delete" ) {
 				$mlw_qmn_email_each = array(intval($_POST["user_email_begin_".$i]), intval($_POST["user_email_end_".$i]), htmlspecialchars(stripslashes($_POST["user_email_".$i]), ENT_QUOTES), htmlspecialchars(stripslashes($_POST["user_email_subject_".$i]), ENT_QUOTES));
 				$mlw_qmn_new_email_array[] = $mlw_qmn_email_each;
 			}
@@ -188,9 +191,34 @@ function mlw_options_emails_tab_content()
 			}
 			$i++;
 		}
+
+		$from_email_array = serialize( $from_email_array );
 		$mlw_qmn_new_email_array = serialize($mlw_qmn_new_email_array);
 		$mlw_qmn_new_admin_array = serialize($mlw_qmn_new_admin_array);
-		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET send_user_email='%s', send_admin_email='%s', admin_email='%s', email_from_text='%s', user_email_template='%s', admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_send_user_email, $mlw_send_admin_email, $mlw_admin_email, $mlw_email_from_text, $mlw_qmn_new_email_array, $mlw_qmn_new_admin_array, $mlw_qmn_email_id ) );
+
+		$mlw_new_email_results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+				'send_user_email' => $mlw_send_user_email,
+				'send_admin_email' => $mlw_send_admin_email,
+				'admin_email' => $mlw_admin_email,
+				'email_from_text' => $from_email_array,
+				'user_email_template' => $mlw_qmn_new_email_array,
+				'admin_email_template' => $mlw_qmn_new_admin_array,
+				'last_activity' => date("Y-m-d H:i:s")
+			),
+			array( 'quiz_id' => $mlw_qmn_email_id ),
+			array(
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s',
+				'%s'
+			),
+			array( '%d' )
+		);
 		if ($mlw_new_email_results != false)
 		{
 			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been updated successfully.', 'quiz-master-next'), 'success');
@@ -223,6 +251,16 @@ function mlw_options_emails_tab_content()
 	{
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+	}
+
+	//Load from email array
+	$from_email_array = maybe_unserialize( $mlw_quiz_options->email_from_text );
+	if ( ! isset( $from_email_array["from_email"] ) ) {
+		$from_email_array = array(
+			'from_name' => $mlw_quiz_options->email_from_text,
+			'from_email' => $mlw_quiz_options->admin_email,
+			'reply_to' => 1
+		);
 	}
 
 	//Load User Email Templates
@@ -395,7 +433,18 @@ function mlw_options_emails_tab_content()
 			</tr>
 			<tr valign="top">
 				<th scope="row"><label for="emailFromText"><?php _e("What is the From Name for the email sent to users and admin?", 'quiz-master-next'); ?></label></th>
-				<td><input name="emailFromText" type="text" id="emailFromText" value="<?php echo $mlw_quiz_options->email_from_text; ?>" class="regular-text" /></td>
+				<td><input name="emailFromText" type="text" id="emailFromText" value="<?php echo $from_email_array["from_name"]; ?>" class="regular-text" /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="emailFromAddress"><?php _e("What is the From Email address for the email sent to users and admin?", 'quiz-master-next'); ?></label></th>
+				<td><input name="emailFromAddress" type="text" id="emailFromAddress" value="<?php echo $from_email_array["from_email"]; ?>" class="regular-text" /></td>
+			</tr>
+			<tr valign="top">
+				<th scope="row"><label for="replyToUser"><?php _e('Add user\'s email as Reply-To on admin email?', 'quiz-master-next'); ?></label></th>
+				<td>
+				    <input type="radio" id="radio19" name="replyToUser" <?php checked( $from_email_array["reply_to"], 0 ); ?> value='0' /><label for="radio19"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
+				    <input type="radio" id="radio20" name="replyToUser" <?php checked( $from_email_array["reply_to"], 1 ); ?> value='1' /><label for="radio20"><?php _e('No', 'quiz-master-next'); ?></label><br>
+				</td>
 			</tr>
 			</table>
 			<br />
