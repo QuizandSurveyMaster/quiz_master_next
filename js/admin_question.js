@@ -24,7 +24,7 @@ function add_answer(answer, points, correct)
   '</div>');
   jQuery("#answers").append($answer_single);
 }
-function deleteQuestion(id){
+function deleteQuestion( id ) {
   jQuery("#delete_dialog").dialog({
     autoOpen: false,
     show: 'blind',
@@ -38,8 +38,8 @@ function deleteQuestion(id){
   jQuery("#delete_dialog").dialog('open');
   var idHidden = document.getElementById("delete_question_id");
   idHidden.value = id;
-};
-function duplicateQuestion(id){
+}
+function duplicateQuestion( id ) {
   jQuery("#duplicate_dialog").dialog({
     autoOpen: false,
     show: 'blind',
@@ -53,7 +53,7 @@ function duplicateQuestion(id){
   jQuery("#duplicate_dialog").dialog('open');
   var idHidden = document.getElementById("duplicate_question_id");
   idHidden.value = id;
-};
+}
 
 jQuery("#new_answer_button").click(function(event) {
   event.preventDefault();
@@ -137,7 +137,7 @@ jQuery("#the-list").on('click', '.edit_link', function(event) {
   jQuery(".comments_radio").val([questions_list[question_array_id].comment]);
   jQuery("#required").val(questions_list[question_array_id].required);
   jQuery(".category_radio").removeAttr('checked');
-  if (questions_list[question_array_id].category != '') {
+  if ( questions_list[question_array_id].category !== '' ) {
     jQuery(".category_radio").val([questions_list[question_array_id].category]);
   }
   jQuery("#question_submission").val('edit_question');
@@ -189,13 +189,17 @@ jQuery("#question_search").keyup(function() {
   });
 });
 
+jQuery('.button-primary').on('click',function() {
+    location.hash = '';
+});
+
 jQuery("#the-list").text('');
 var alternate = false;
 var alternate_css = '';
 for (var i = 0; i < questions_list.length; i++) {
   alternate_css = '';
   if (alternate) {
-    alternate_css = ' alternate'
+    alternate_css = ' alternate';
   }
   var $question_row = jQuery('<tr id="question_'+questions_list[i].id+'" class="question_row'+alternate_css+'">'+
   '<td>'+questions_list[i].order+'</td>'+

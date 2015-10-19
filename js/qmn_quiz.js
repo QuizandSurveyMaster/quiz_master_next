@@ -96,6 +96,8 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_qmn_question_comment' ).attr( 'disabled', false );
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
 
+	clearInterval( qsmTimerInterval );
+
 	var data = {
 		action: 'qmn_process_quiz',
 		quizData: jQuery( '#' + quiz_form_id ).serialize()
@@ -161,7 +163,6 @@ function qmnInit() {
 }
 
 function qmnActivateTimer( quiz_id ) {
-	console.log('Inside Activate Timer:' + quiz_id);
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').show();
 	qmn_timer_activated = true;
 	var minutes = 0;
@@ -206,9 +207,7 @@ function qmnEndTimer( quiz_id ) {
 }
 
 function qmnInitTimer( quiz_id ) {
-	console.log('Inside Init Timer:' + quiz_id);
 	if ( qmn_quiz_data[quiz_id].hasOwnProperty('pagination') && qmn_quiz_data[quiz_id].first_page ) {
-		console.log('Pagination and first page is true');
 		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 			event.preventDefault();
 			if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quiz_id ) ) {
@@ -273,13 +272,12 @@ function qmnValidatePage( quiz_form_id ) {
 
 //Function to advance quiz to next page
 function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
-	console.log('Inside Next Slide:' + quiz_form_id);
 	var quiz_id = +jQuery( quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var quiz_container = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' );
 	var slide_number = +quiz_container.find( '.slide_number_hidden' ).val();
 	var previous = +quiz_container.find( '.previous_amount_hidden' ).val();
 	var section_totals = +quiz_container.find( '.total_sections_hidden' ).val();
-	console.log('Variables: '+quiz_id+' '+slide_number+' '+previous+' '+section_totals);
+
 	jQuery( quiz_form_id + " .quiz_section" ).hide();
 	for ( var i = 0; i < pagination; i++ ) {
 		if (i === 0 && previous === 1 && slide_number > 1) {
@@ -456,4 +454,4 @@ jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
 	qmnFormSubmit( this.id );
 });
 
-var myVar = setInterval( qmnTimeTakenTimer, 1000 );
+var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
