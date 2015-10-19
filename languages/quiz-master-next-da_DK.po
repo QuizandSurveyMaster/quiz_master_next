@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Quiz Master Next\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-30 18:10-0500\n"
+"POT-Creation-Date: 2015-10-19 15:29-0500\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Frank Corso <frank@mylocalwebstop.com>\n"
 "Language-Team: My Local Webstop <support@mylocalwebstop.com>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: mlw_quizmaster2.php:224 php/qmn_quiz_admin.php:196
+#: mlw_quizmaster2.php:224 php/quizzes-page.php:171
 #, fuzzy
 msgid "Quizzes/Surveys"
 msgstr "Quizzer"
@@ -32,8 +32,8 @@ msgstr "Quizzer"
 msgid "Settings"
 msgstr "Indstillinger"
 
-#: mlw_quizmaster2.php:226 php/qmn_results_details.php:135
-#: php/qmn_quiz_admin.php:281
+#: mlw_quizmaster2.php:226 php/admin-results-details-page.php:135
+#: php/quizzes-page.php:243
 msgid "Results"
 msgstr "Resultater"
 
@@ -42,8 +42,8 @@ msgstr "Resultater"
 msgid "Result Details"
 msgstr "Quiz resultater detaljer"
 
-#: mlw_quizmaster2.php:229 php/qmn_options_tools_tab.php:13
-#: php/qmn_tools.php:65
+#: mlw_quizmaster2.php:229 php/tools-page.php:65
+#: php/options-page-tools-tab.php:13
 msgid "Tools"
 msgstr "Værktøjer"
 
@@ -63,92 +63,97 @@ msgstr "Hjælp"
 msgid "QMN About"
 msgstr "QMN Om"
 
-#: php/qmn_addons.php:60
-#, fuzzy
-msgid "These addons extend the functionality of Quiz And Survey Master"
-msgstr "Disse addons udvide funktionaliteten i Quiz Master Next"
+#: php/admin-results-details-page.php:20 php/admin-results-page.php:196
+msgid "Quiz Results"
+msgstr "Quiz resultater"
 
-#: php/qmn_addons.php:103
-msgid "Browse All Addons"
-msgstr "Gennemse alle Addons"
+#: php/admin-results-details-page.php:221
+msgid "Create Certificate"
+msgstr "Opret certificat"
 
-#: php/qmn_addons.php:117
-msgid "Featured Addons"
-msgstr "Udvalgte Addons"
+#: php/admin-results-details-page.php:226
+msgid "Download Certificate Here"
+msgstr "Download certificat her"
 
-#: php/qmn_question_types.php:14
+#: php/admin-results-details-page.php:240
+msgid "Certificate"
+msgstr "Certifikat"
+
+#: php/question-types.php:14
 msgid "Multiple Choice"
 msgstr "Flere valgmuligheder"
 
-#: php/qmn_question_types.php:105
+#: php/question-types.php:105
 msgid "Horizontal Multiple Choice"
 msgstr "Vandret Multiple Choice"
 
-#: php/qmn_question_types.php:195
+#: php/question-types.php:195
 msgid "Drop Down"
 msgstr "Drop Down"
 
-#: php/qmn_question_types.php:282
+#: php/question-types.php:282
 msgid "Small Open Answer"
 msgstr "Kort tekst svar"
 
-#: php/qmn_question_types.php:353
+#: php/question-types.php:353
 msgid "Multiple Response"
 msgstr "Multiple svar"
 
-#: php/qmn_question_types.php:452
+#: php/question-types.php:452
 msgid "Large Open Answer"
 msgstr "Stor åbent svar"
 
-#: php/qmn_question_types.php:531
+#: php/question-types.php:531
 msgid "Text Block"
 msgstr "tekstblok"
 
-#: php/qmn_question_types.php:566
+#: php/question-types.php:566
 msgid "Number"
 msgstr "Tal"
 
-#: php/qmn_question_types.php:648
+#: php/question-types.php:648
 msgid "Accept"
 msgstr "Accepter"
 
-#: php/qmn_question_types.php:693
+#: php/question-types.php:693
 msgid "Captcha"
 msgstr "CAPTCHA"
 
-#: php/qmn_question_types.php:751
+#: php/question-types.php:751
 msgid "Horizontal Multiple Response"
 msgstr "Vandret Multiple svar"
 
-#: php/qmn_question_types.php:862
+#: php/question-types.php:862
 msgid ""
 "For fill in the blank types, use %BLANK% to represent where to put the text "
 "box in your text."
 msgstr ""
 
-#: php/qmn_question_types.php:866
+#: php/question-types.php:866
 msgid "Fill In The Blank"
 msgstr ""
 
-#: php/qmn_options_option_tab.php:13
-msgid "Options"
-msgstr "Indstillinger"
+#: php/options-page-email-tab.php:13
+msgid "Emails"
+msgstr "E-mails"
 
-#: php/qmn_options_option_tab.php:110
-msgid "The options has been updated successfully."
-msgstr "Indstillinger er gemt"
+#: php/options-page-email-tab.php:51 php/options-page-email-tab.php:119
+msgid "The email has been added successfully."
+msgstr "E-mail er blevet tilføjet."
 
-#: php/qmn_options_option_tab.php:131 php/qmn_options_leaderboard_tab.php:68
-#: php/qmn_options_email_tab.php:76 php/qmn_options_email_tab.php:144
-#: php/qmn_options_email_tab.php:217 php/qmn_options_style_tab.php:60
-#: php/qmn_options_certificate_tab.php:83 php/qmn_options_tools_tab.php:68
-#: php/qmn_options_text_tab.php:123 php/qmn_options_results_page_tab.php:76
-#: php/qmn_options_results_page_tab.php:125
-#: php/qmn_options_questions_tab.php:190 php/qmn_options_questions_tab.php:235
-#: php/qmn_options_questions_tab.php:327 php/qmn_options_questions_tab.php:424
-#: php/qmn_results.php:58 php/qmn_quiz_creator.php:408
-#: php/qmn_quiz_creator.php:483 php/qmn_quiz_creator.php:534
-#: php/qmn_quiz_creator.php:701 php/qmn_quiz_creator.php:767
+#: php/options-page-email-tab.php:72 php/options-page-email-tab.php:140
+#: php/options-page-email-tab.php:245 php/options-page-leaderboard-tab.php:68
+#: php/options-page-questions-tab.php:190
+#: php/options-page-questions-tab.php:235
+#: php/options-page-questions-tab.php:327
+#: php/options-page-questions-tab.php:424 php/class-qmn-quiz-creator.php:408
+#: php/class-qmn-quiz-creator.php:483 php/class-qmn-quiz-creator.php:534
+#: php/class-qmn-quiz-creator.php:701 php/class-qmn-quiz-creator.php:767
+#: php/options-page-text-tab.php:123 php/options-page-certificate-tab.php:83
+#: php/options-page-results-page-tab.php:76
+#: php/options-page-results-page-tab.php:125
+#: php/options-page-option-tab.php:131 php/admin-results-page.php:58
+#: php/options-page-style-tab.php:60 php/options-page-tools-tab.php:68
 #, php-format
 msgid ""
 "There has been an error in this action. Please share this with the "
@@ -156,275 +161,503 @@ msgid ""
 msgstr ""
 "Der har været en fejl. Venligst del dette med udvikleren . Fejlkode:% s"
 
-#: php/qmn_options_option_tab.php:160 php/qmn_options_option_tab.php:311
-msgid "Save Options"
-msgstr "Gem indstillinger"
+#: php/options-page-email-tab.php:91 php/options-page-email-tab.php:109
+#: php/options-page-certificate-tab.php:100
+msgid "Enter text here"
+msgstr "Indtast tekst her"
 
-#: php/qmn_options_option_tab.php:168
-msgid "Which system is this quiz graded on?"
-msgstr "Hvilket system er denne quiz sorteres på?"
+#: php/options-page-email-tab.php:224
+msgid "The email has been updated successfully."
+msgstr "E-mail er blevet opdateret."
 
-#: php/qmn_options_option_tab.php:170
-msgid "Correct/Incorrect"
-msgstr "Korrekt / Ukorrekt"
-
-#: php/qmn_options_option_tab.php:171
-msgid "Points"
-msgstr "Point"
-
-#: php/qmn_options_option_tab.php:172 php/qmn_results.php:340
-msgid "Not Graded"
-msgstr "Ikke Graded"
-
-#: php/qmn_options_option_tab.php:176
-msgid "Should the user be required to be logged in to take this quiz?"
-msgstr "Skal brugeren være logget ind for at svare på denne test?"
-
-#: php/qmn_options_option_tab.php:178 php/qmn_options_option_tab.php:239
-#: php/qmn_options_option_tab.php:246 php/qmn_options_option_tab.php:254
-#: php/qmn_options_option_tab.php:262 php/qmn_options_option_tab.php:270
-#: php/qmn_options_option_tab.php:278 php/qmn_options_option_tab.php:285
-#: php/qmn_options_option_tab.php:292 php/qmn_options_option_tab.php:299
-#: php/qmn_options_option_tab.php:306 php/qmn_options_email_tab.php:381
-#: php/qmn_options_email_tab.php:388 php/qmn_options_certificate_tab.php:117
-#: php/qmn_options_results_page_tab.php:282
-#: php/qmn_options_questions_tab.php:701
-msgid "Yes"
-msgstr "Ja"
-
-#: php/qmn_options_option_tab.php:179 php/qmn_options_option_tab.php:226
-#: php/qmn_options_option_tab.php:240 php/qmn_options_option_tab.php:248
-#: php/qmn_options_option_tab.php:256 php/qmn_options_option_tab.php:264
-#: php/qmn_options_option_tab.php:272 php/qmn_options_option_tab.php:279
-#: php/qmn_options_option_tab.php:286 php/qmn_options_option_tab.php:293
-#: php/qmn_options_option_tab.php:300 php/qmn_options_option_tab.php:307
-#: php/qmn_options_email_tab.php:382 php/qmn_options_email_tab.php:389
-#: php/qmn_options_certificate_tab.php:118
-#: php/qmn_options_results_page_tab.php:282
-#: php/qmn_options_questions_tab.php:702
-msgid "No"
-msgstr "Nej"
-
-#: php/qmn_options_option_tab.php:183
-msgid ""
-"How many questions per page would you like? (Leave 0 for all questions on "
-"one page)"
-msgstr ""
-"Hvor mange spørgsmål vil du have per side ? (0 for alle spørgsmål på samme "
-"side)."
-
-#: php/qmn_options_option_tab.php:189
-msgid ""
-"How many minutes does the user have to finish the quiz? (Leave 0 for no time "
-"limit)"
-msgstr ""
-"Hvor mange minutter har brugeren til at afslutte undersøgelsen? (0 for ingen "
-"tidsfrist)"
-
-#: php/qmn_options_option_tab.php:195
-msgid ""
-"How many times can a user take this quiz? (Leave 0 for as many times as the "
-"user wants to. Currently only works for registered users)"
-msgstr ""
-"Hvor mange gange kan en bruger tage denne quiz? (Lad 0 for så mange gange "
-"som brugeren ønsker at. I øjeblikket virker kun for registrerede brugere)"
-
-#: php/qmn_options_option_tab.php:201
-msgid ""
-"How many total entries can this quiz have? (Leave 0 for unlimited entries"
-msgstr ""
-"Hvor mange samlede poster kan denne quiz have? (Lad 0 for ubegrænset poster"
-
-#: php/qmn_options_option_tab.php:207
-msgid ""
-"How many questions should be loaded for quiz? (Leave 0 to load all questions)"
-msgstr ""
-"Hvor mange spørgsmål skal indlæses til quiz? (Lad 0 at indlæse alle "
-"spørgsmål)"
-
-#: php/qmn_options_option_tab.php:213
-msgid ""
-"What time-frame should the user be able to access the quiz? (Leave blank if "
-"the user can access anytime)"
-msgstr ""
-"Hvilken tidsperiode skal brugeren kunne få adgang quizzen? (Står tom, hvis "
-"brugeren kan få adgang til når som helst)"
-
-#: php/qmn_options_option_tab.php:215
-msgid "start date"
-msgstr "Start dato"
-
-#: php/qmn_options_option_tab.php:218
-msgid "end date"
-msgstr "Slut dato"
-
-#: php/qmn_options_option_tab.php:222
-msgid ""
-"Are the questions random? (Question Order will not apply if this is yes)"
-msgstr ""
-"Er spørgsmålene tilfældigt? (Spørgsmål Order gælder ikke, hvis det er ja)"
-
-#: php/qmn_options_option_tab.php:224
-msgid "Random Questions"
-msgstr "Tilfældige spørgsmål"
-
-#: php/qmn_options_option_tab.php:225
-msgid "Random Questions And Answers"
-msgstr "Tilfældige Spørgsmål og svar"
-
-#: php/qmn_options_option_tab.php:230
-msgid ""
-"Would you like to ask for the contact information at the beginning or at the "
-"end of the quiz?"
-msgstr ""
-"Vil du bede om kontaktoplysninger i begyndelsen eller slutningen af ​​quizzen?"
-
-#: php/qmn_options_option_tab.php:232
-msgid "Beginning"
-msgstr "Begyndelse"
-
-#: php/qmn_options_option_tab.php:233
-msgid "End"
-msgstr "Slut"
-
-#: php/qmn_options_option_tab.php:237
-msgid ""
-"If a logged-in user takes the quiz, would you like them to be able to edit "
-"contact information? If set to no, the fields will not show up for logged in "
-"users; however, the users information will be saved for the fields."
-msgstr ""
-"Hvis en indloggede bruger tager quizzen, vil du have dem til at være i stand "
-"til at redigere kontaktoplysninger? Hvis sat til nej, vil de områder ikke op "
-"til logget ind brugere; dog vil brugerne oplysninger gemmes til felterne."
-
-#: php/qmn_options_option_tab.php:244
-msgid "Should we ask for users name?"
-msgstr "Skal vi bede for brugere navn?"
-
-#: php/qmn_options_option_tab.php:247 php/qmn_options_option_tab.php:255
-#: php/qmn_options_option_tab.php:263 php/qmn_options_option_tab.php:271
-msgid "Require"
-msgstr "Obligatorisk"
-
-#: php/qmn_options_option_tab.php:252
-msgid "Should we ask for users business?"
-msgstr "Skal vi bede for brugere virksomhed?"
-
-#: php/qmn_options_option_tab.php:260
-msgid "Should we ask for users email?"
-msgstr "Skal vi bede for brugere email?"
-
-#: php/qmn_options_option_tab.php:268
-msgid "Should we ask for users phone number?"
-msgstr "Skal vi bede for brugere telefonnummer?"
-
-#: php/qmn_options_option_tab.php:276
-msgid "Would you like a place for the user to enter comments?"
-msgstr "Kunne du tænke dig et sted for brugeren at indtaste kommentarer?"
-
-#: php/qmn_options_option_tab.php:283
-msgid "Show question number on quiz?"
-msgstr "Vis spørgsmål nummer på quiz?"
-
-#: php/qmn_options_option_tab.php:290
-msgid "Show social media sharing buttons? (Twitter & Facebook)"
-msgstr "Vis sociale medier knapper deling? (Twitter & Facebook)"
-
-#: php/qmn_options_option_tab.php:290
-msgid ""
-"This option is for here only for users of older versions. Please use the new "
-"template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages "
-"instead of using this option!"
-msgstr ""
-
-#: php/qmn_options_option_tab.php:297
-msgid ""
-"Disable question once user selects answer? (Currently only work on multiple "
-"choice)"
-msgstr ""
-
-#: php/qmn_options_option_tab.php:304
-msgid ""
-"Dynamically add class for incorrect/correct answer after user selects "
-"answer? (Currently only works on multiple choice)"
-msgstr ""
-
-#: php/qmn_options_leaderboard_tab.php:13
-msgid "Leaderboard"
-msgstr "Leaderboard"
-
-#: php/qmn_options_leaderboard_tab.php:49
-msgid "The leaderboards has been updated successfully."
-msgstr "Leaderboards er blevet opdateret"
-
-#: php/qmn_options_leaderboard_tab.php:80 php/qmn_options_email_tab.php:285
-#: php/qmn_options_text_tab.php:161 php/qmn_options_results_page_tab.php:166
+#: php/options-page-email-tab.php:323 php/options-page-leaderboard-tab.php:80
+#: php/options-page-text-tab.php:161 php/options-page-results-page-tab.php:166
 msgid "Template Variables"
 msgstr "Skabelon variable"
 
-#: php/qmn_options_leaderboard_tab.php:83
-msgid "The name of the user who is in first place"
-msgstr "Navn på bruger der er nummer et"
+#: php/options-page-email-tab.php:326 php/options-page-text-tab.php:164
+#: php/options-page-results-page-tab.php:169
+msgid "Score for the quiz when using points"
+msgstr "Score for quizzen, når du bruger point"
 
-#: php/qmn_options_leaderboard_tab.php:84
-msgid "The score from the first place's quiz"
-msgstr "Skore på førstepladsen"
+#: php/options-page-email-tab.php:329 php/options-page-text-tab.php:167
+#: php/options-page-results-page-tab.php:172
+msgid "The average amount of points user had per question"
+msgstr "Det gennemsnitlige antal point bruger havde pr spørgsmål"
 
-#: php/qmn_options_leaderboard_tab.php:88
-msgid "The name of the user who is in second place"
-msgstr "Navn på bruger som er nummer 2"
+#: php/options-page-email-tab.php:332 php/options-page-text-tab.php:170
+#: php/options-page-results-page-tab.php:175
+msgid "The number of correct answers the user had"
+msgstr "Antallet af korrekte svar brugeren havde"
 
-#: php/qmn_options_leaderboard_tab.php:89
-msgid "The score from the second place's quiz"
-msgstr "Andenpladsens skore"
+#: php/options-page-email-tab.php:335 php/options-page-text-tab.php:173
+#: php/options-page-results-page-tab.php:178
+msgid "The total number of questions in the quiz"
+msgstr "Det samlede antal spørgsmål i quizzen"
 
-#: php/qmn_options_leaderboard_tab.php:93
-msgid "The name of the user who is in third place"
-msgstr "Navn på bruger på trediepladsen"
+#: php/options-page-email-tab.php:338 php/options-page-text-tab.php:176
+#: php/options-page-results-page-tab.php:181
+msgid "Score for the quiz when using correct answers"
+msgstr "Score for quizzen, når du bruger korrekte svar"
 
-#: php/qmn_options_leaderboard_tab.php:94
-msgid "The score from the third place's quiz"
-msgstr "Skore fra bruger på trediepladsen"
+#: php/options-page-email-tab.php:341 php/options-page-text-tab.php:179
+#: php/options-page-results-page-tab.php:184
+msgid "The name the user entered before the quiz"
+msgstr "Navnet brugeren indtastes, før quizzen"
 
-#: php/qmn_options_leaderboard_tab.php:98
-msgid "The name of the user who is in fourth place"
-msgstr "Navn på bruger på fjerdepladsen"
+#: php/options-page-email-tab.php:344 php/options-page-text-tab.php:182
+#: php/options-page-results-page-tab.php:187
+msgid "The business the user entered before the quiz"
+msgstr "Forretningen brugeren indtastes, før quizzen"
 
-#: php/qmn_options_leaderboard_tab.php:99
-msgid "The score from the fourth place's quiz"
-msgstr "Skore fra bruger på fjerdepladsen"
+#: php/options-page-email-tab.php:347 php/options-page-text-tab.php:185
+#: php/options-page-results-page-tab.php:190
+msgid "The phone number the user entered before the quiz"
+msgstr "Telefonnummeret brugeren indtastede, før quizzen"
 
-#: php/qmn_options_leaderboard_tab.php:103
-msgid "The name of the user who is in fifth place"
-msgstr "Navn på bruger på femte pladsen"
+#: php/options-page-email-tab.php:350 php/options-page-text-tab.php:188
+#: php/options-page-results-page-tab.php:193
+msgid "The email the user entered before the quiz"
+msgstr "Den e-mail brugeren indtastes, før quizzen"
 
-#: php/qmn_options_leaderboard_tab.php:104
-msgid "The score from the fifth place's quiz"
-msgstr "Skore på 5 pladsens bruger"
-
-#: php/qmn_options_leaderboard_tab.php:108 php/qmn_options_email_tab.php:315
-#: php/qmn_options_text_tab.php:191 php/qmn_options_results_page_tab.php:196
+#: php/options-page-email-tab.php:353 php/options-page-leaderboard-tab.php:108
+#: php/options-page-text-tab.php:191 php/options-page-results-page-tab.php:196
 msgid "The name of the quiz"
 msgstr "Navn på Quiz:"
 
-#: php/qmn_options_leaderboard_tab.php:111
-#: php/qmn_options_leaderboard_tab.php:139
+#: php/options-page-email-tab.php:356 php/options-page-text-tab.php:194
+#: php/options-page-results-page-tab.php:199
+msgid ""
+"Shows the question, the answer the user provided, and the correct answer"
+msgstr "Viser brugers svar og det korrekte svar"
+
+#: php/options-page-email-tab.php:359 php/options-page-text-tab.php:197
+#: php/options-page-results-page-tab.php:202
+msgid "The comments the user entered into comment box if enabled"
+msgstr "Kommenar som brugeren har indtastet"
+
+#: php/options-page-email-tab.php:362 php/options-page-text-tab.php:200
+msgid "The amount of time user spent on quiz in seconds"
+msgstr ""
+
+#: php/options-page-email-tab.php:365 php/options-page-text-tab.php:203
+msgid "The amount of time user spent on quiz in minutes"
+msgstr ""
+
+#: php/options-page-email-tab.php:368 php/options-page-text-tab.php:206
+#: php/options-page-results-page-tab.php:211
+msgid "The link to the certificate after completing the quiz"
+msgstr "Link til certifikat - efter endt test"
+
+#: php/options-page-email-tab.php:371 php/options-page-text-tab.php:209
+#: php/options-page-results-page-tab.php:214
+msgid "The amount of points a specific category earned."
+msgstr "Antal point der er opnået i kategorien"
+
+#: php/options-page-email-tab.php:374 php/options-page-text-tab.php:212
+#: php/options-page-results-page-tab.php:217
+msgid "The score a specific category earned."
+msgstr "Skore for specifik kategori"
+
+#: php/options-page-email-tab.php:377 php/options-page-text-tab.php:215
+#: php/options-page-results-page-tab.php:220
+msgid "The average points from all categories."
+msgstr "Gennemsnit af point for alle kategorier"
+
+#: php/options-page-email-tab.php:380 php/options-page-text-tab.php:218
+#: php/options-page-results-page-tab.php:223
+msgid "The average score from all categories."
+msgstr "Gennemsnit skore for alle kategorier"
+
+#: php/options-page-email-tab.php:383 php/options-page-text-tab.php:221
+msgid "The question that the user answered"
+msgstr "Spørgsmål brugeren besvarede"
+
+#: php/options-page-email-tab.php:386 php/options-page-text-tab.php:224
+msgid "The answer the user gave for the question"
+msgstr "Brugerens svar på sprøgesmål"
+
+#: php/options-page-email-tab.php:389 php/options-page-text-tab.php:227
+msgid "The correct answer for the question"
+msgstr "Korrekt svar på spørgsmål"
+
+#: php/options-page-email-tab.php:392 php/options-page-text-tab.php:230
+msgid "The comments the user provided in the comment field for the question"
+msgstr "Kommentar til spørgsmål"
+
+#: php/options-page-email-tab.php:395 php/options-page-text-tab.php:233
+msgid "Reason why the correct answer is the correct answer"
+msgstr "Årsag til at dette er det korrekte svar"
+
+#: php/options-page-email-tab.php:398 php/options-page-text-tab.php:236
+msgid "The Current Date"
+msgstr "Dags dato"
+
+#: php/options-page-email-tab.php:413 php/options-page-email-tab.php:623
+msgid "Save Email Templates And Settings"
+msgstr "Gem e-mail skabelon og opsætning"
+
+#: php/options-page-email-tab.php:417
+msgid "Send user email upon completion?"
+msgstr "Send bruger mail ved afslutning"
+
+#: php/options-page-email-tab.php:419 php/options-page-email-tab.php:426
+#: php/options-page-email-tab.php:445 php/options-page-questions-tab.php:701
+#: php/options-page-certificate-tab.php:117
+#: php/options-page-results-page-tab.php:282
+#: php/options-page-option-tab.php:178 php/options-page-option-tab.php:239
+#: php/options-page-option-tab.php:246 php/options-page-option-tab.php:254
+#: php/options-page-option-tab.php:262 php/options-page-option-tab.php:270
+#: php/options-page-option-tab.php:278 php/options-page-option-tab.php:285
+#: php/options-page-option-tab.php:292 php/options-page-option-tab.php:299
+#: php/options-page-option-tab.php:306
+msgid "Yes"
+msgstr "Ja"
+
+#: php/options-page-email-tab.php:420 php/options-page-email-tab.php:427
+#: php/options-page-email-tab.php:446 php/options-page-questions-tab.php:702
+#: php/options-page-certificate-tab.php:118
+#: php/options-page-results-page-tab.php:282
+#: php/options-page-option-tab.php:179 php/options-page-option-tab.php:226
+#: php/options-page-option-tab.php:240 php/options-page-option-tab.php:248
+#: php/options-page-option-tab.php:256 php/options-page-option-tab.php:264
+#: php/options-page-option-tab.php:272 php/options-page-option-tab.php:279
+#: php/options-page-option-tab.php:286 php/options-page-option-tab.php:293
+#: php/options-page-option-tab.php:300 php/options-page-option-tab.php:307
+msgid "No"
+msgstr "Nej"
+
+#: php/options-page-email-tab.php:424
+msgid "Send admin email upon completion?"
+msgstr "Send e-mail til administrator ved afslutning?"
+
+#: php/options-page-email-tab.php:431
+msgid ""
+"What emails should we send the admin email to? Separate emails with a comma."
+msgstr "E-mail som administrator e-mails skal sendes til? adskil med komma."
+
+#: php/options-page-email-tab.php:435
+msgid "What is the From Name for the email sent to users and admin?"
+msgstr "Navn på afsender på e-mails til brugere og administrator?"
+
+#: php/options-page-email-tab.php:439
+#, fuzzy
+msgid "What is the From Email address for the email sent to users and admin?"
+msgstr "Navn på afsender på e-mails til brugere og administrator?"
+
+#: php/options-page-email-tab.php:443
+msgid "Add user's email as Reply-To on admin email?"
+msgstr ""
+
+#: php/options-page-email-tab.php:452
+msgid "Email Sent To User"
+msgstr "E-mail til bruger"
+
+#: php/options-page-email-tab.php:453 php/options-page-email-tab.php:531
+msgid "Add New User Email"
+msgstr "Tilføj ny bruger e-mail"
+
+#: php/options-page-email-tab.php:458 php/options-page-email-tab.php:524
+#: php/options-page-email-tab.php:545 php/options-page-email-tab.php:611
+#: php/options-page-results-page-tab.php:241
+#: php/options-page-results-page-tab.php:305
+msgid "Score Greater Than Or Equal To"
+msgstr "Skore større eller lig med"
+
+#: php/options-page-email-tab.php:459 php/options-page-email-tab.php:525
+#: php/options-page-email-tab.php:546 php/options-page-email-tab.php:612
+#: php/options-page-results-page-tab.php:242
+#: php/options-page-results-page-tab.php:306
+msgid "Score Less Than Or Equal To"
+msgstr "Skore mindre end eller lige med"
+
+#: php/options-page-email-tab.php:460 php/options-page-email-tab.php:526
+#: php/options-page-email-tab.php:547 php/options-page-email-tab.php:613
+msgid "Subject"
+msgstr "Emne"
+
+#: php/options-page-email-tab.php:461 php/options-page-email-tab.php:527
+#: php/options-page-email-tab.php:548 php/options-page-email-tab.php:614
+msgid "Email To Send"
+msgstr "E-mail der sendes"
+
+#: php/options-page-email-tab.php:539
+msgid "Email Sent To Admin"
+msgstr "E-mail sendt til administrator"
+
+#: php/options-page-email-tab.php:540 php/options-page-email-tab.php:618
+msgid "Add New Admin Email"
+msgstr "Tilføj ny administrator e-mail"
+
+#: php/options-page-leaderboard-tab.php:13
+msgid "Leaderboard"
+msgstr "Leaderboard"
+
+#: php/options-page-leaderboard-tab.php:49
+msgid "The leaderboards has been updated successfully."
+msgstr "Leaderboards er blevet opdateret"
+
+#: php/options-page-leaderboard-tab.php:83
+msgid "The name of the user who is in first place"
+msgstr "Navn på bruger der er nummer et"
+
+#: php/options-page-leaderboard-tab.php:84
+msgid "The score from the first place's quiz"
+msgstr "Skore på førstepladsen"
+
+#: php/options-page-leaderboard-tab.php:88
+msgid "The name of the user who is in second place"
+msgstr "Navn på bruger som er nummer 2"
+
+#: php/options-page-leaderboard-tab.php:89
+msgid "The score from the second place's quiz"
+msgstr "Andenpladsens skore"
+
+#: php/options-page-leaderboard-tab.php:93
+msgid "The name of the user who is in third place"
+msgstr "Navn på bruger på trediepladsen"
+
+#: php/options-page-leaderboard-tab.php:94
+msgid "The score from the third place's quiz"
+msgstr "Skore fra bruger på trediepladsen"
+
+#: php/options-page-leaderboard-tab.php:98
+msgid "The name of the user who is in fourth place"
+msgstr "Navn på bruger på fjerdepladsen"
+
+#: php/options-page-leaderboard-tab.php:99
+msgid "The score from the fourth place's quiz"
+msgstr "Skore fra bruger på fjerdepladsen"
+
+#: php/options-page-leaderboard-tab.php:103
+msgid "The name of the user who is in fifth place"
+msgstr "Navn på bruger på femte pladsen"
+
+#: php/options-page-leaderboard-tab.php:104
+msgid "The score from the fifth place's quiz"
+msgstr "Skore på 5 pladsens bruger"
+
+#: php/options-page-leaderboard-tab.php:111
+#: php/options-page-leaderboard-tab.php:139
 msgid "Save Leaderboard Options"
 msgstr "Gem leaderboard indstillinger"
 
-#: php/qmn_options_leaderboard_tab.php:120
+#: php/options-page-leaderboard-tab.php:120
 msgid "Leaderboard Template"
 msgstr "Leaderboard skabelon"
 
-#: php/qmn_options_leaderboard_tab.php:122
-#: php/qmn_options_certificate_tab.php:132 php/qmn_options_text_tab.php:254
-#: php/qmn_options_text_tab.php:264 php/qmn_options_text_tab.php:274
-#: php/qmn_options_text_tab.php:284 php/qmn_options_text_tab.php:294
-#: php/qmn_options_text_tab.php:304 php/qmn_options_text_tab.php:314
-#: php/qmn_options_text_tab.php:324 php/qmn_options_text_tab.php:337
-#: php/qmn_options_text_tab.php:354
+#: php/options-page-leaderboard-tab.php:122 php/options-page-text-tab.php:254
+#: php/options-page-text-tab.php:264 php/options-page-text-tab.php:274
+#: php/options-page-text-tab.php:284 php/options-page-text-tab.php:294
+#: php/options-page-text-tab.php:304 php/options-page-text-tab.php:314
+#: php/options-page-text-tab.php:324 php/options-page-text-tab.php:337
+#: php/options-page-text-tab.php:354 php/options-page-certificate-tab.php:132
 msgid "Allowed Variables:"
 msgstr "Tilladte variable"
+
+#: php/class-qmn-alert-manager.php:37
+msgid "Success!"
+msgstr "Succes"
+
+#: php/class-qmn-alert-manager.php:41 php/quiz-options-page.php:96
+msgid "Error!"
+msgstr "Fejl!"
+
+#: php/class-qmn-tracking.php:193
+#, fuzzy
+msgid ""
+"Allow Quiz And Survey Master to anonymously track this plugin's usage and "
+"help us make this plugin better? No sensitive data is tracked."
+msgstr ""
+"Tillad Quiz Master Next at følge brugen af dette plugin for at forbedre "
+"kvaliteten - ingen følsomme data overvåges."
+
+#: php/class-qmn-tracking.php:194
+msgid "Allow"
+msgstr "Tillad"
+
+#: php/class-qmn-tracking.php:195
+msgid "Do not allow"
+msgstr "Tillad ikke"
+
+#: php/help-page.php:20
+msgid "Need Help?"
+msgstr "Brug for hjælp?"
+
+#: php/help-page.php:21
+msgid "Support"
+msgstr "Support"
+
+#: php/help-page.php:22
+msgid "System Info"
+msgstr "System Info"
+
+#: php/help-page.php:25
+msgid "Help Page"
+msgstr "Hjælp"
+
+#: php/help-page.php:55
+msgid "Need help with the plugin? Try any of the following:"
+msgstr "Har du brug for hjælp med dette plugin? Forsøg​følgende:"
+
+#: php/options-page-questions-tab.php:13
+msgid "Questions"
+msgstr "Spørgsmål"
+
+#: php/options-page-questions-tab.php:28
+msgid "Answer"
+msgstr "Svar:"
+
+#: php/options-page-questions-tab.php:64
+msgid "The question order has been updated successfully."
+msgstr ""
+
+#: php/options-page-questions-tab.php:169
+msgid "The question has been updated successfully."
+msgstr "Spørgsmålet er blevet opdateret."
+
+#: php/options-page-questions-tab.php:214
+msgid "The question has been deleted successfully."
+msgstr "Dine resultater er blevet slettet."
+
+#: php/options-page-questions-tab.php:306
+msgid "The question has been duplicated successfully."
+msgstr "Din Spørgsmål er blevet dublikeret."
+
+#: php/options-page-questions-tab.php:403
+msgid "The question has been created successfully."
+msgstr "Spørgsmålet er blevet oprettet."
+
+#: php/options-page-questions-tab.php:538
+msgid "Add Question"
+msgstr "Nyt spørgsmål"
+
+#: php/options-page-questions-tab.php:539
+msgid "Save Question Order"
+msgstr ""
+
+#: php/options-page-questions-tab.php:552
+#, php-format
+msgid "One question"
+msgid_plural "%s questions"
+msgstr[0] "Et spørgsmål"
+msgstr[1] "%s spørgsmål"
+
+#: php/options-page-questions-tab.php:558
+#: php/options-page-questions-tab.php:566
+#: php/options-page-questions-tab.php:694
+msgid "Question Order"
+msgstr "Rækkefølge spørgsmål"
+
+#: php/options-page-questions-tab.php:559
+#: php/options-page-questions-tab.php:567
+#: php/options-page-questions-tab.php:644
+msgid "Question Type"
+msgstr "Spørgsmål type"
+
+#: php/options-page-questions-tab.php:560
+#: php/options-page-questions-tab.php:568
+#: php/options-page-questions-tab.php:707
+msgid "Category"
+msgstr "Kategori"
+
+#: php/options-page-questions-tab.php:561
+#: php/options-page-questions-tab.php:569
+msgid "Question"
+msgstr "Spørgsmål"
+
+#: php/options-page-questions-tab.php:662
+msgid "Answers"
+msgstr "Svar"
+
+#: php/options-page-questions-tab.php:663
+msgid "Points Worth"
+msgstr "Værdi af point"
+
+#: php/options-page-questions-tab.php:664
+msgid "Correct Answer"
+msgstr "Korrekt svar"
+
+#: php/options-page-questions-tab.php:669
+msgid "Add New Answer!"
+msgstr "Tilføj nyt svar!"
+
+#: php/options-page-questions-tab.php:675
+msgid "Correct Answer Info"
+msgstr "Info for korrekt svar"
+
+#: php/options-page-questions-tab.php:680 php/class-qmn-quiz-manager.php:390
+msgid "Hint"
+msgstr "Hint"
+
+#: php/options-page-questions-tab.php:685
+msgid "Comment Field"
+msgstr "KOmmentar felt"
+
+#: php/options-page-questions-tab.php:687
+msgid "Small Text Field"
+msgstr "Lille tekst felt"
+
+#: php/options-page-questions-tab.php:688
+msgid "Large Text Field"
+msgstr "Stort tekst felt"
+
+#: php/options-page-questions-tab.php:689
+msgid "None"
+msgstr "Ingen"
+
+#: php/options-page-questions-tab.php:699
+msgid "Required?"
+msgstr "Obligatorisk"
+
+#: php/options-page-questions-tab.php:730
+msgid "Create Question"
+msgstr "Opret spørgsmål"
+
+#: php/options-page-questions-tab.php:735
+msgid "Are you sure you want to delete this question?"
+msgstr "Er du sikker på du vil slette dette spørgsmål"
+
+#: php/options-page-questions-tab.php:740
+msgid "Delete Question"
+msgstr "Slet spørgsmål"
+
+#: php/options-page-questions-tab.php:745
+msgid "Are you sure you want to duplicate this question?"
+msgstr "Er du sikker på du vil kopiere dette spørgsmål?"
+
+#: php/options-page-questions-tab.php:750
+msgid "Duplicate Question"
+msgstr "Kopieret spørgsmål"
+
+#: php/class-qmn-quiz-creator.php:387
+msgid ""
+"Your new quiz has been created successfully. To begin editing your quiz, "
+"click the Edit link on the new quiz."
+msgstr ""
+"Din nye quiz er blevet oprettet. For at edigere din quiz, klik på linket "
+"Rediger ved den nye quiz"
+
+#: php/class-qmn-quiz-creator.php:462
+msgid "Your quiz has been deleted successfully."
+msgstr "Din Quiz er blevet slettet."
+
+#: php/class-qmn-quiz-creator.php:513
+msgid "Your quiz name has been updated successfully."
+msgstr "Dit quiz navn er blevet opdateret."
+
+#: php/class-qmn-quiz-creator.php:679
+msgid "Your quiz has been duplicated successfully."
+msgstr "Din Quiz er blevet dublikeret."
+
+#: php/stats-page.php:29
+msgid "Quiz Statistics"
+msgstr "Quiz statistik"
+
+#: php/stats-page.php:68
+#, fuzzy
+msgid "Quiz Taken Stats"
+msgstr "Total statistik"
 
 #: php/class-qmn-review-message.php:83
 #, php-format
@@ -448,226 +681,699 @@ msgstr ""
 msgid "No, this plugin is not good enough"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:13
-msgid "Emails"
-msgstr "E-mails"
+#: php/about-page.php:30
+#, fuzzy
+msgid "Welcome To Quiz And Survey Master (Formerly Quiz Master Next)"
+msgstr "Velkommen til Quiz Master Next"
 
-#: php/qmn_options_email_tab.php:55 php/qmn_options_email_tab.php:123
-msgid "The email has been added successfully."
-msgstr "E-mail er blevet tilføjet."
+#: php/about-page.php:31
+msgid "Thank you for updating!"
+msgstr "Tak for opdatering!"
 
-#: php/qmn_options_email_tab.php:95 php/qmn_options_email_tab.php:113
-#: php/qmn_options_certificate_tab.php:100
-msgid "Enter text here"
-msgstr "Indtast tekst her"
+#: php/about-page.php:35
+msgid "What's New!"
+msgstr "Nyheder!"
 
-#: php/qmn_options_email_tab.php:196
-msgid "The email has been updated successfully."
-msgstr "E-mail er blevet opdateret."
+#: php/about-page.php:37
+msgid "Changelog"
+msgstr "Ændringslog"
 
-#: php/qmn_options_email_tab.php:288 php/qmn_options_text_tab.php:164
-#: php/qmn_options_results_page_tab.php:169
-msgid "Score for the quiz when using points"
-msgstr "Score for quizzen, når du bruger point"
-
-#: php/qmn_options_email_tab.php:291 php/qmn_options_text_tab.php:167
-#: php/qmn_options_results_page_tab.php:172
-msgid "The average amount of points user had per question"
-msgstr "Det gennemsnitlige antal point bruger havde pr spørgsmål"
-
-#: php/qmn_options_email_tab.php:294 php/qmn_options_text_tab.php:170
-#: php/qmn_options_results_page_tab.php:175
-msgid "The number of correct answers the user had"
-msgstr "Antallet af korrekte svar brugeren havde"
-
-#: php/qmn_options_email_tab.php:297 php/qmn_options_text_tab.php:173
-#: php/qmn_options_results_page_tab.php:178
-msgid "The total number of questions in the quiz"
-msgstr "Det samlede antal spørgsmål i quizzen"
-
-#: php/qmn_options_email_tab.php:300 php/qmn_options_text_tab.php:176
-#: php/qmn_options_results_page_tab.php:181
-msgid "Score for the quiz when using correct answers"
-msgstr "Score for quizzen, når du bruger korrekte svar"
-
-#: php/qmn_options_email_tab.php:303 php/qmn_options_text_tab.php:179
-#: php/qmn_options_results_page_tab.php:184
-msgid "The name the user entered before the quiz"
-msgstr "Navnet brugeren indtastes, før quizzen"
-
-#: php/qmn_options_email_tab.php:306 php/qmn_options_text_tab.php:182
-#: php/qmn_options_results_page_tab.php:187
-msgid "The business the user entered before the quiz"
-msgstr "Forretningen brugeren indtastes, før quizzen"
-
-#: php/qmn_options_email_tab.php:309 php/qmn_options_text_tab.php:185
-#: php/qmn_options_results_page_tab.php:190
-msgid "The phone number the user entered before the quiz"
-msgstr "Telefonnummeret brugeren indtastede, før quizzen"
-
-#: php/qmn_options_email_tab.php:312 php/qmn_options_text_tab.php:188
-#: php/qmn_options_results_page_tab.php:193
-msgid "The email the user entered before the quiz"
-msgstr "Den e-mail brugeren indtastes, før quizzen"
-
-#: php/qmn_options_email_tab.php:318 php/qmn_options_text_tab.php:194
-#: php/qmn_options_results_page_tab.php:199
-msgid ""
-"Shows the question, the answer the user provided, and the correct answer"
-msgstr "Viser brugers svar og det korrekte svar"
-
-#: php/qmn_options_email_tab.php:321 php/qmn_options_text_tab.php:197
-#: php/qmn_options_results_page_tab.php:202
-msgid "The comments the user entered into comment box if enabled"
-msgstr "Kommenar som brugeren har indtastet"
-
-#: php/qmn_options_email_tab.php:324 php/qmn_options_text_tab.php:200
-msgid "The amount of time user spent on quiz in seconds"
+#: php/about-page.php:39
+msgid "People Who Make QMN Possible"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:327 php/qmn_options_text_tab.php:203
-msgid "The amount of time user spent on quiz in minutes"
+#: php/about-page.php:99
+#, php-format
+msgid "View %s"
 msgstr ""
 
-#: php/qmn_options_email_tab.php:330 php/qmn_options_text_tab.php:206
-#: php/qmn_options_results_page_tab.php:211
-msgid "The link to the certificate after completing the quiz"
-msgstr "Link til certifikat - efter endt test"
+#: php/options-page-preview-tab.php:13
+msgid "Preview"
+msgstr "Preview"
 
-#: php/qmn_options_email_tab.php:333 php/qmn_options_text_tab.php:209
-#: php/qmn_options_results_page_tab.php:214
-msgid "The amount of points a specific category earned."
-msgstr "Antal point der er opnået i kategorien"
+#: php/addons-page.php:60
+#, fuzzy
+msgid "These addons extend the functionality of Quiz And Survey Master"
+msgstr "Disse addons udvide funktionaliteten i Quiz Master Next"
 
-#: php/qmn_options_email_tab.php:336 php/qmn_options_text_tab.php:212
-#: php/qmn_options_results_page_tab.php:217
-msgid "The score a specific category earned."
-msgstr "Skore for specifik kategori"
+#: php/addons-page.php:103
+msgid "Browse All Addons"
+msgstr "Gennemse alle Addons"
 
-#: php/qmn_options_email_tab.php:339 php/qmn_options_text_tab.php:215
-#: php/qmn_options_results_page_tab.php:220
-msgid "The average points from all categories."
-msgstr "Gennemsnit af point for alle kategorier"
+#: php/addons-page.php:117
+msgid "Featured Addons"
+msgstr "Udvalgte Addons"
 
-#: php/qmn_options_email_tab.php:342 php/qmn_options_text_tab.php:218
-#: php/qmn_options_results_page_tab.php:223
-msgid "The average score from all categories."
-msgstr "Gennemsnit skore for alle kategorier"
+#: php/options-page-text-tab.php:13
+msgid "Text"
+msgstr "Tekst"
 
-#: php/qmn_options_email_tab.php:345 php/qmn_options_text_tab.php:221
-msgid "The question that the user answered"
-msgstr "Spørgsmål brugeren besvarede"
+#: php/options-page-text-tab.php:102
+msgid "The templates has been updated successfully."
+msgstr "Skabelonerne er blevet opdateret"
 
-#: php/qmn_options_email_tab.php:348 php/qmn_options_text_tab.php:224
-msgid "The answer the user gave for the question"
-msgstr "Brugerens svar på sprøgesmål"
+#: php/options-page-text-tab.php:142 php/class-qmn-quiz-manager.php:1256
+msgid "Previous"
+msgstr "Tidligere"
 
-#: php/qmn_options_email_tab.php:351 php/qmn_options_text_tab.php:227
-msgid "The correct answer for the question"
-msgstr "Korrekt svar på spørgsmål"
+#: php/options-page-text-tab.php:242 php/options-page-text-tab.php:402
+msgid "Save Templates"
+msgstr "Gem skabeloner"
 
-#: php/qmn_options_email_tab.php:354 php/qmn_options_text_tab.php:230
-msgid "The comments the user provided in the comment field for the question"
-msgstr "Kommentar til spørgsmål"
+#: php/options-page-text-tab.php:248
+msgid "Message Templates"
+msgstr "Besked skabeloner"
 
-#: php/qmn_options_email_tab.php:357 php/qmn_options_text_tab.php:233
-msgid "Reason why the correct answer is the correct answer"
-msgstr "Årsag til at dette er det korrekte svar"
+#: php/options-page-text-tab.php:252
+msgid "Message Displayed Before Quiz"
+msgstr "Besked vist før Quiz"
 
-#: php/qmn_options_email_tab.php:360 php/qmn_options_text_tab.php:236
-msgid "The Current Date"
-msgstr "Dags dato"
+#: php/options-page-text-tab.php:262
+msgid "Message Displayed Before Comments Box If Enabled"
+msgstr "Besked vist før kommentar boksen hvis aktiv"
 
-#: php/qmn_options_email_tab.php:375 php/qmn_options_email_tab.php:574
-msgid "Save Email Templates And Settings"
-msgstr "Gem e-mail skabelon og opsætning"
+#: php/options-page-text-tab.php:272
+msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
+msgstr ""
+"Besked vist ved slutningen af Quizzen (Vis blank for at undlade tekst "
+"sektion)"
 
-#: php/qmn_options_email_tab.php:379
-msgid "Send user email upon completion?"
-msgstr "Send bruger mail ved afslutning"
+#: php/options-page-text-tab.php:282
+msgid "Message Displayed If User Has Tried Quiz Too Many Times"
+msgstr "Besked vist hvis brugeren har deltaget for mange gange"
 
-#: php/qmn_options_email_tab.php:386
-msgid "Send admin email upon completion?"
-msgstr "Send e-mail til administrator ved afslutning?"
-
-#: php/qmn_options_email_tab.php:393
+#: php/options-page-text-tab.php:292
 msgid ""
-"What emails should we send the admin email to? Separate emails with a comma."
-msgstr "E-mail som administrator e-mails skal sendes til? adskil med komma."
+"Message Displayed If User Is Not Logged In And Quiz Requires Users To Be "
+"Logged In"
+msgstr ""
+"Besked vist, hvis brugeren skal være logget ind for at besvare denne Quiz"
 
-#: php/qmn_options_email_tab.php:397
-msgid "What is the From Name for the email sent to users and admin?"
-msgstr "Navn på afsender på e-mails til brugere og administrator?"
+#: php/options-page-text-tab.php:302
+msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
+msgstr "Besked hvis dato er udenfor planlagt Tidsramme"
 
-#: php/qmn_options_email_tab.php:403
-msgid "Email Sent To User"
-msgstr "E-mail til bruger"
+#: php/options-page-text-tab.php:312
+msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
+msgstr "Besked Hvis grænsen på indtastninger er nået"
 
-#: php/qmn_options_email_tab.php:404 php/qmn_options_email_tab.php:482
-msgid "Add New User Email"
-msgstr "Tilføj ny bruger e-mail"
+#: php/options-page-text-tab.php:322
+msgid "%QUESTIONS_ANSWERS% Text"
+msgstr "% QUESTIONS_ANSWERS% Tekst"
 
-#: php/qmn_options_email_tab.php:409 php/qmn_options_email_tab.php:475
-#: php/qmn_options_email_tab.php:496 php/qmn_options_email_tab.php:562
-#: php/qmn_options_results_page_tab.php:241
-#: php/qmn_options_results_page_tab.php:305
-msgid "Score Greater Than Or Equal To"
-msgstr "Skore større eller lig med"
+#: php/options-page-text-tab.php:335
+msgid "Twitter Sharing Text"
+msgstr "Twitter Deling tekst"
 
-#: php/qmn_options_email_tab.php:410 php/qmn_options_email_tab.php:476
-#: php/qmn_options_email_tab.php:497 php/qmn_options_email_tab.php:563
-#: php/qmn_options_results_page_tab.php:242
-#: php/qmn_options_results_page_tab.php:306
-msgid "Score Less Than Or Equal To"
-msgstr "Skore mindre end eller lige med"
+#: php/options-page-text-tab.php:352
+msgid "Facebook Sharing Text"
+msgstr "Facebook Deling tekst"
 
-#: php/qmn_options_email_tab.php:411 php/qmn_options_email_tab.php:477
-#: php/qmn_options_email_tab.php:498 php/qmn_options_email_tab.php:564
-msgid "Subject"
-msgstr "Emne"
+#: php/options-page-text-tab.php:367
+msgid "Other Templates"
+msgstr "Andre skabeloner"
 
-#: php/qmn_options_email_tab.php:412 php/qmn_options_email_tab.php:478
-#: php/qmn_options_email_tab.php:499 php/qmn_options_email_tab.php:565
-msgid "Email To Send"
-msgstr "E-mail der sendes"
+#: php/options-page-text-tab.php:370
+msgid "Text for submit button"
+msgstr "Tekst for send-knappen"
 
-#: php/qmn_options_email_tab.php:490
-msgid "Email Sent To Admin"
-msgstr "E-mail sendt til administrator"
+#: php/options-page-text-tab.php:374
+msgid "Text for name field"
+msgstr "Tekst til navnefeltet"
 
-#: php/qmn_options_email_tab.php:491 php/qmn_options_email_tab.php:569
-msgid "Add New Admin Email"
-msgstr "Tilføj ny administrator e-mail"
+#: php/options-page-text-tab.php:378
+msgid "Text for business field"
+msgstr "Tekst til firma felt"
 
-#: php/qmn_options_style_tab.php:13
+#: php/options-page-text-tab.php:382
+msgid "Text for email field"
+msgstr "Tekst til e-mail-feltet"
+
+#: php/options-page-text-tab.php:386
+msgid "Text for phone number field"
+msgstr "Tekst til telefon nummer felt"
+
+#: php/options-page-text-tab.php:390
+msgid "Text for comments field"
+msgstr "Tekst for kommentarer felt"
+
+#: php/options-page-text-tab.php:394
+msgid "Text for previous button"
+msgstr "Tekst til forrige knap"
+
+#: php/options-page-text-tab.php:398
+msgid "Text for next button"
+msgstr "Tekst til næste knap"
+
+#: php/options-page-certificate-tab.php:15
+msgid "Certificate (Beta)"
+msgstr "Certifikat"
+
+#: php/options-page-certificate-tab.php:64
+msgid "The certificate has been updated successfully."
+msgstr "Certifikatet er blevet opdateret."
+
+#: php/options-page-certificate-tab.php:100
+msgid "Enter title here"
+msgstr "Indtast titel her"
+
+#: php/options-page-certificate-tab.php:104
+msgid "Quiz Certificate (Beta)"
+msgstr "Quiz Certificate (Beta)"
+
+#: php/options-page-certificate-tab.php:105
+msgid ""
+"Enter in your text here to fill in the certificate for this quiz. Be sure to "
+"enter in the link variable into the templates on the Emails and Results Page "
+"tabs so the user can access the certificate."
+msgstr ""
+
+#: php/options-page-certificate-tab.php:106
+msgid "These fields cannot contain HTML."
+msgstr "Disse felter kan ikke indeholde HTML."
+
+#: php/options-page-certificate-tab.php:107
+#: php/options-page-certificate-tab.php:163
+msgid "Save Certificate Options"
+msgstr "Gem Certificate indstillinger"
+
+#: php/options-page-certificate-tab.php:115
+msgid "Enable Certificates For This Quiz?"
+msgstr "Aktiver certifikater for denne quiz?"
+
+#: php/options-page-certificate-tab.php:123
+msgid "Certificate Title"
+msgstr "Certifikat Titel"
+
+#: php/options-page-certificate-tab.php:130
+msgid "Message Displayed On Certificate"
+msgstr "Meddelelse på Certifikat"
+
+#: php/options-page-certificate-tab.php:150
+msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL til Logo (Skal være JPG, JPEG, PNG eller GIF)"
+
+#: php/options-page-certificate-tab.php:157
+msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
+msgstr "URL til Baggrund Img (Skal være JPG, JPEG, PNG eller GIF)"
+
+#: php/dashboard-widgets.php:16
+#, fuzzy
+msgid "Quiz And Survey Master Snapshot"
+msgstr "Quiz Master Next skærmdump"
+
+#: php/dashboard-widgets.php:180
+msgid "quizzes taken today"
+msgstr "Spørgeskemaer udfyldt i dag"
+
+#: php/dashboard-widgets.php:199
+msgid "quizzes taken last 7 days"
+msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
+
+#: php/dashboard-widgets.php:218
+#, fuzzy
+msgid "quizzes taken last 30 days"
+msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
+
+#: php/dashboard-widgets.php:237
+#, fuzzy
+msgid "quizzes taken last 120 days"
+msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
+
+#: php/dashboard-widgets.php:256
+msgid "total active quizzes"
+msgstr "Antal aktive spørgeskemaundersøgelser"
+
+#: php/dashboard-widgets.php:262
+msgid "total active questions"
+msgstr "Antal aktive spørgsmål"
+
+#: php/dashboard-widgets.php:268
+msgid "most popular quiz"
+msgstr "mest populære spørgeskemaundersøgelse"
+
+#: php/dashboard-widgets.php:274
+msgid "least popular quiz"
+msgstr "mindst populære undersøgelse"
+
+#: php/options-page-results-page-tab.php:13
+msgid "Results Pages"
+msgstr "Resultat sider"
+
+#: php/options-page-results-page-tab.php:55
+msgid "The results page has been added successfully."
+msgstr "Resultat siden er tilføjet"
+
+#: php/options-page-results-page-tab.php:104
+msgid "The results page has been saved successfully."
+msgstr "Resultatsiden er gemt"
+
+#: php/options-page-results-page-tab.php:205
+msgid "The amount of time user spent taking quiz in minutes"
+msgstr ""
+
+#: php/options-page-results-page-tab.php:208
+msgid "The amount of time user spent taking quiz in seconds"
+msgstr ""
+
+#: php/options-page-results-page-tab.php:226
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: php/options-page-results-page-tab.php:229
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: php/options-page-results-page-tab.php:234
+#: php/options-page-results-page-tab.php:315
+msgid "Save Results Pages"
+msgstr "Gem resultatsider"
+
+#: php/options-page-results-page-tab.php:235
+#: php/options-page-results-page-tab.php:320
+msgid "Add New Results Page"
+msgstr "Tilføj ny resultat side"
+
+#: php/options-page-results-page-tab.php:243
+#: php/options-page-results-page-tab.php:307
+msgid "Results Page Shown"
+msgstr "Resultat side vist"
+
+#: php/options-page-results-page-tab.php:244
+#: php/options-page-results-page-tab.php:308
+msgid "Redirect URL (Beta)"
+msgstr ""
+
+#: php/options-page-results-page-tab.php:282 php/quizzes-page.php:245
+#: php/quizzes-page.php:360
+msgid "Delete"
+msgstr "Slet"
+
+#: php/options-page-results-page-tab.php:282
+msgid "Are you sure?"
+msgstr "Er du sikker?"
+
+#: php/options-page-option-tab.php:13
+msgid "Options"
+msgstr "Indstillinger"
+
+#: php/options-page-option-tab.php:110
+msgid "The options has been updated successfully."
+msgstr "Indstillinger er gemt"
+
+#: php/options-page-option-tab.php:160 php/options-page-option-tab.php:311
+msgid "Save Options"
+msgstr "Gem indstillinger"
+
+#: php/options-page-option-tab.php:168
+msgid "Which system is this quiz graded on?"
+msgstr "Hvilket system er denne quiz sorteres på?"
+
+#: php/options-page-option-tab.php:170
+msgid "Correct/Incorrect"
+msgstr "Korrekt / Ukorrekt"
+
+#: php/options-page-option-tab.php:171
+msgid "Points"
+msgstr "Point"
+
+#: php/options-page-option-tab.php:172 php/admin-results-page.php:340
+msgid "Not Graded"
+msgstr "Ikke Graded"
+
+#: php/options-page-option-tab.php:176
+msgid "Should the user be required to be logged in to take this quiz?"
+msgstr "Skal brugeren være logget ind for at svare på denne test?"
+
+#: php/options-page-option-tab.php:183
+msgid ""
+"How many questions per page would you like? (Leave 0 for all questions on "
+"one page)"
+msgstr ""
+"Hvor mange spørgsmål vil du have per side ? (0 for alle spørgsmål på samme "
+"side)."
+
+#: php/options-page-option-tab.php:189
+msgid ""
+"How many minutes does the user have to finish the quiz? (Leave 0 for no time "
+"limit)"
+msgstr ""
+"Hvor mange minutter har brugeren til at afslutte undersøgelsen? (0 for ingen "
+"tidsfrist)"
+
+#: php/options-page-option-tab.php:195
+msgid ""
+"How many times can a user take this quiz? (Leave 0 for as many times as the "
+"user wants to. Currently only works for registered users)"
+msgstr ""
+"Hvor mange gange kan en bruger tage denne quiz? (Lad 0 for så mange gange "
+"som brugeren ønsker at. I øjeblikket virker kun for registrerede brugere)"
+
+#: php/options-page-option-tab.php:201
+msgid ""
+"How many total entries can this quiz have? (Leave 0 for unlimited entries"
+msgstr ""
+"Hvor mange samlede poster kan denne quiz have? (Lad 0 for ubegrænset poster"
+
+#: php/options-page-option-tab.php:207
+msgid ""
+"How many questions should be loaded for quiz? (Leave 0 to load all questions)"
+msgstr ""
+"Hvor mange spørgsmål skal indlæses til quiz? (Lad 0 at indlæse alle "
+"spørgsmål)"
+
+#: php/options-page-option-tab.php:213
+msgid ""
+"What time-frame should the user be able to access the quiz? (Leave blank if "
+"the user can access anytime)"
+msgstr ""
+"Hvilken tidsperiode skal brugeren kunne få adgang quizzen? (Står tom, hvis "
+"brugeren kan få adgang til når som helst)"
+
+#: php/options-page-option-tab.php:215
+msgid "start date"
+msgstr "Start dato"
+
+#: php/options-page-option-tab.php:218
+msgid "end date"
+msgstr "Slut dato"
+
+#: php/options-page-option-tab.php:222
+msgid ""
+"Are the questions random? (Question Order will not apply if this is yes)"
+msgstr ""
+"Er spørgsmålene tilfældigt? (Spørgsmål Order gælder ikke, hvis det er ja)"
+
+#: php/options-page-option-tab.php:224
+msgid "Random Questions"
+msgstr "Tilfældige spørgsmål"
+
+#: php/options-page-option-tab.php:225
+msgid "Random Questions And Answers"
+msgstr "Tilfældige Spørgsmål og svar"
+
+#: php/options-page-option-tab.php:230
+msgid ""
+"Would you like to ask for the contact information at the beginning or at the "
+"end of the quiz?"
+msgstr ""
+"Vil du bede om kontaktoplysninger i begyndelsen eller slutningen af ​​quizzen?"
+
+#: php/options-page-option-tab.php:232
+msgid "Beginning"
+msgstr "Begyndelse"
+
+#: php/options-page-option-tab.php:233
+msgid "End"
+msgstr "Slut"
+
+#: php/options-page-option-tab.php:237
+msgid ""
+"If a logged-in user takes the quiz, would you like them to be able to edit "
+"contact information? If set to no, the fields will not show up for logged in "
+"users; however, the users information will be saved for the fields."
+msgstr ""
+"Hvis en indloggede bruger tager quizzen, vil du have dem til at være i stand "
+"til at redigere kontaktoplysninger? Hvis sat til nej, vil de områder ikke op "
+"til logget ind brugere; dog vil brugerne oplysninger gemmes til felterne."
+
+#: php/options-page-option-tab.php:244
+msgid "Should we ask for users name?"
+msgstr "Skal vi bede for brugere navn?"
+
+#: php/options-page-option-tab.php:247 php/options-page-option-tab.php:255
+#: php/options-page-option-tab.php:263 php/options-page-option-tab.php:271
+msgid "Require"
+msgstr "Obligatorisk"
+
+#: php/options-page-option-tab.php:252
+msgid "Should we ask for users business?"
+msgstr "Skal vi bede for brugere virksomhed?"
+
+#: php/options-page-option-tab.php:260
+msgid "Should we ask for users email?"
+msgstr "Skal vi bede for brugere email?"
+
+#: php/options-page-option-tab.php:268
+msgid "Should we ask for users phone number?"
+msgstr "Skal vi bede for brugere telefonnummer?"
+
+#: php/options-page-option-tab.php:276
+msgid "Would you like a place for the user to enter comments?"
+msgstr "Kunne du tænke dig et sted for brugeren at indtaste kommentarer?"
+
+#: php/options-page-option-tab.php:283
+msgid "Show question number on quiz?"
+msgstr "Vis spørgsmål nummer på quiz?"
+
+#: php/options-page-option-tab.php:290
+msgid "Show social media sharing buttons? (Twitter & Facebook)"
+msgstr "Vis sociale medier knapper deling? (Twitter & Facebook)"
+
+#: php/options-page-option-tab.php:290
+msgid ""
+"This option is for here only for users of older versions. Please use the new "
+"template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages "
+"instead of using this option!"
+msgstr ""
+
+#: php/options-page-option-tab.php:297
+msgid ""
+"Disable question once user selects answer? (Currently only work on multiple "
+"choice)"
+msgstr ""
+
+#: php/options-page-option-tab.php:304
+msgid ""
+"Dynamically add class for incorrect/correct answer after user selects "
+"answer? (Currently only works on multiple choice)"
+msgstr ""
+
+#: php/admin-results-page.php:37
+msgid "Your results has been deleted successfully."
+msgstr "Dine resultater er blevet slettet."
+
+#: php/admin-results-page.php:205
+#, php-format
+msgid "One result"
+msgid_plural "%s results"
+msgstr[0] "Et resultat"
+msgstr[1] "%s resultater"
+
+#: php/admin-results-page.php:290
+msgid "Actions"
+msgstr "Handlinger"
+
+#: php/admin-results-page.php:291
+msgid "Quiz Name"
+msgstr "Quiz navn"
+
+#: php/admin-results-page.php:292
+msgid "Score"
+msgstr "Skore"
+
+#: php/admin-results-page.php:293
+msgid "Time To Complete"
+msgstr "Tid til at færdiggøre"
+
+#: php/admin-results-page.php:294 php/quizzes-page.php:221
+#: php/quizzes-page.php:270 php/quizzes-page.php:325 php/quizzes-page.php:333
+msgid "Name"
+msgstr "Navn"
+
+#: php/admin-results-page.php:295
+msgid "Business"
+msgstr "Forretning"
+
+#: php/admin-results-page.php:296
+msgid "Email"
+msgstr "Email"
+
+#: php/admin-results-page.php:297
+msgid "Phone"
+msgstr "Telefon"
+
+#: php/admin-results-page.php:298
+msgid "Time Taken"
+msgstr "Forbrugt tid"
+
+#: php/admin-results-page.php:357
+msgid "Are you sure you want to delete these results?"
+msgstr "Er du sikker på at du vil slette disse resultater ?"
+
+#: php/admin-results-page.php:362
+msgid "Delete Results"
+msgstr "Slet resultater"
+
+#: php/tools-page.php:107
+msgid "There has been an error! Please try again."
+msgstr "Der har været en fejl! Forsøg igen"
+
+#: php/tools-page.php:125
+msgid "Quiz Has Been Restored!"
+msgstr "Den pågældende quiz er gendannet"
+
+#: php/tools-page.php:130
+msgid ""
+"Choose a quiz in the drop down and then click the button to restore a "
+"deleted quiz."
+msgstr ""
+"Vælg en quiz i drop Down boksen og klik for at gendanne en slettet quiz."
+
+#: php/tools-page.php:140
+msgid "Restore Quiz"
+msgstr "Gendan Quiz"
+
+#: php/tools-page.php:176 php/tools-page.php:192
+#, php-format
+msgid "Previous %s Audits"
+msgstr "Sidste %s Audits"
+
+#: php/tools-page.php:179 php/tools-page.php:186
+#, php-format
+msgid "Next %s Audits"
+msgstr "Næste %s Audits"
+
+#: php/tools-page.php:199
+msgid "User"
+msgstr "Bruger"
+
+#: php/tools-page.php:200
+msgid "Action"
+msgstr "Aktion"
+
+#: php/tools-page.php:201
+msgid "Time"
+msgstr "Klokken"
+
+#: php/class-qmn-quiz-manager.php:80
+msgid "It appears that this quiz is not set up correctly"
+msgstr ""
+
+#: php/class-qmn-quiz-manager.php:275
+msgid "Not a valid e-mail address!"
+msgstr "Ikke en gyldig e-mail-adresse!"
+
+#: php/class-qmn-quiz-manager.php:276
+msgid "This field must be a number!"
+msgstr "Dette felt skal være et tal!"
+
+#: php/class-qmn-quiz-manager.php:277
+msgid "The entered text is not correct!"
+msgstr "Den indtastede tekst er ikke korrekt!"
+
+#: php/class-qmn-quiz-manager.php:278
+msgid "Please complete all required fields!"
+msgstr "Venligst udfyld alle obligatoriske felter"
+
+#: php/quizzes-page.php:171
+msgid "Add New"
+msgstr "Tilføj ny"
+
+#: php/quizzes-page.php:176
+#, fuzzy, php-format
+msgid "One quiz or survey"
+msgid_plural "%s quizzes or surveys"
+msgstr[0] "Kopier quiz"
+msgstr[1] "Kopier quiz"
+
+#: php/quizzes-page.php:222 php/quizzes-page.php:271
+msgid "URL"
+msgstr "URL"
+
+#: php/quizzes-page.php:223 php/quizzes-page.php:272
+#, fuzzy
+msgid "Shortcode"
+msgstr "Quiz Shortcode"
+
+#: php/quizzes-page.php:224 php/quizzes-page.php:273
+msgid "Leaderboard Shortcode"
+msgstr "Lederboard Shortcode"
+
+#: php/quizzes-page.php:225 php/quizzes-page.php:274
+#, fuzzy
+msgid "Views"
+msgstr "Quiz set"
+
+#: php/quizzes-page.php:226 php/quizzes-page.php:275
+#, fuzzy
+msgid "Taken"
+msgstr "Quiz gennemført"
+
+#: php/quizzes-page.php:227 php/quizzes-page.php:276
+msgid "Last Modified"
+msgstr "Sidst ændret"
+
+#: php/quizzes-page.php:240
+msgid "Edit Name"
+msgstr "Ret navn"
+
+#: php/quizzes-page.php:242 php/quizzes-page.php:337
+msgid "Edit"
+msgstr "Ret"
+
+#: php/quizzes-page.php:244 php/quizzes-page.php:349
+msgid "Duplicate"
+msgstr "Kopier"
+
+#: php/quizzes-page.php:250
+#, fuzzy
+msgid "View Quiz/Survey"
+msgstr "Quizzer"
+
+#: php/quizzes-page.php:324
+#, fuzzy
+msgid "Create New Quiz Or Survey"
+msgstr "Opret ny quiz"
+
+#: php/quizzes-page.php:326
+msgid "Create"
+msgstr ""
+
+#: php/quizzes-page.php:344
+#, fuzzy
+msgid "Duplicate questions also?"
+msgstr "Kopieret spørgsmål"
+
+#: php/quizzes-page.php:346
+#, fuzzy
+msgid "Name Of New Quiz Or Survey:"
+msgstr "Navn på ny Quiz:"
+
+#: php/quizzes-page.php:356
+#, fuzzy
+msgid "Are you sure you want to delete this quiz or survey?"
+msgstr "Er du sikker på at du vil slette denne quiz?"
+
+#: php/options-page-style-tab.php:13
 msgid "Style"
 msgstr "Style"
 
-#: php/qmn_options_style_tab.php:39
+#: php/options-page-style-tab.php:39
 msgid "The style has been saved successfully."
 msgstr "Denne style er gemt"
 
-#: php/qmn_options_style_tab.php:88
+#: php/options-page-style-tab.php:88
 msgid "Quiz Styles"
 msgstr "Quiz styles"
 
-#: php/qmn_options_style_tab.php:89
+#: php/options-page-style-tab.php:89
 msgid "Choose your style:"
 msgstr "Vælg din style"
 
-#: php/qmn_options_style_tab.php:118
+#: php/options-page-style-tab.php:118
 msgid "Custom"
 msgstr "Custom"
 
-#: php/qmn_options_style_tab.php:123 php/qmn_options_style_tab.php:135
+#: php/options-page-style-tab.php:123 php/options-page-style-tab.php:135
 msgid "Save Quiz Style"
 msgstr "Gem quiz style"
 
-#: php/qmn_options_style_tab.php:125
+#: php/options-page-style-tab.php:125
 msgid "Custom Style CSS"
 msgstr "Custom style CSS"
 
-#: php/qmn_options_style_tab.php:126
+#: php/options-page-style-tab.php:126
 msgid ""
 "For detailed help and guidance along with a list of different classes used "
 "in this plugin, please visit the following link:"
@@ -675,191 +1381,11 @@ msgstr ""
 "For detaljeret hjælp og instruktion sammen med en liste over de forskellige "
 "klasser benyttet i dette plugin, besøg følgende link:"
 
-#: php/qmn_dashboard_widgets.php:16
-#, fuzzy
-msgid "Quiz And Survey Master Snapshot"
-msgstr "Quiz Master Next skærmdump"
-
-#: php/qmn_dashboard_widgets.php:180
-msgid "quizzes taken today"
-msgstr "Spørgeskemaer udfyldt i dag"
-
-#: php/qmn_dashboard_widgets.php:199
-msgid "quizzes taken last 7 days"
-msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
-
-#: php/qmn_dashboard_widgets.php:218
-#, fuzzy
-msgid "quizzes taken last 30 days"
-msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
-
-#: php/qmn_dashboard_widgets.php:237
-#, fuzzy
-msgid "quizzes taken last 120 days"
-msgstr "Spørgeskemaer udfyldt de sidste 7 dage"
-
-#: php/qmn_dashboard_widgets.php:256
-msgid "total active quizzes"
-msgstr "Antal aktive spørgeskemaundersøgelser"
-
-#: php/qmn_dashboard_widgets.php:262
-msgid "total active questions"
-msgstr "Antal aktive spørgsmål"
-
-#: php/qmn_dashboard_widgets.php:268
-msgid "most popular quiz"
-msgstr "mest populære spørgeskemaundersøgelse"
-
-#: php/qmn_dashboard_widgets.php:274
-msgid "least popular quiz"
-msgstr "mindst populære undersøgelse"
-
-#: php/qmn_alerts.php:37
-msgid "Success!"
-msgstr "Succes"
-
-#: php/qmn_alerts.php:41 php/qmn_quiz_options.php:96
-msgid "Error!"
-msgstr "Fejl!"
-
-#: php/qmn_options_certificate_tab.php:15
-msgid "Certificate (Beta)"
-msgstr "Certifikat"
-
-#: php/qmn_options_certificate_tab.php:64
-msgid "The certificate has been updated successfully."
-msgstr "Certifikatet er blevet opdateret."
-
-#: php/qmn_options_certificate_tab.php:100
-msgid "Enter title here"
-msgstr "Indtast titel her"
-
-#: php/qmn_options_certificate_tab.php:104
-msgid "Quiz Certificate (Beta)"
-msgstr "Quiz Certificate (Beta)"
-
-#: php/qmn_options_certificate_tab.php:105
-msgid ""
-"Enter in your text here to fill in the certificate for this quiz. Be sure to "
-"enter in the link variable into the templates on the Emails and Results Page "
-"tabs so the user can access the certificate."
-msgstr ""
-
-#: php/qmn_options_certificate_tab.php:106
-msgid "These fields cannot contain HTML."
-msgstr "Disse felter kan ikke indeholde HTML."
-
-#: php/qmn_options_certificate_tab.php:107
-#: php/qmn_options_certificate_tab.php:163
-msgid "Save Certificate Options"
-msgstr "Gem Certificate indstillinger"
-
-#: php/qmn_options_certificate_tab.php:115
-msgid "Enable Certificates For This Quiz?"
-msgstr "Aktiver certifikater for denne quiz?"
-
-#: php/qmn_options_certificate_tab.php:123
-msgid "Certificate Title"
-msgstr "Certifikat Titel"
-
-#: php/qmn_options_certificate_tab.php:130
-msgid "Message Displayed On Certificate"
-msgstr "Meddelelse på Certifikat"
-
-#: php/qmn_options_certificate_tab.php:150
-msgid "URL To Logo (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL til Logo (Skal være JPG, JPEG, PNG eller GIF)"
-
-#: php/qmn_options_certificate_tab.php:157
-msgid "URL To Background Img (Must be JPG, JPEG, PNG or GIF)"
-msgstr "URL til Baggrund Img (Skal være JPG, JPEG, PNG eller GIF)"
-
-#: php/qmn_help.php:20
-msgid "Need Help?"
-msgstr "Brug for hjælp?"
-
-#: php/qmn_help.php:21
-msgid "Support"
-msgstr "Support"
-
-#: php/qmn_help.php:22
-msgid "System Info"
-msgstr "System Info"
-
-#: php/qmn_help.php:25
-msgid "Help Page"
-msgstr "Hjælp"
-
-#: php/qmn_help.php:55
-msgid "Need help with the plugin? Try any of the following:"
-msgstr "Har du brug for hjælp med dette plugin? Forsøg​følgende:"
-
-#: php/qmn_quiz.php:187
-msgid "It appears that this quiz is not set up correctly"
-msgstr ""
-
-#: php/qmn_quiz.php:377
-msgid "Not a valid e-mail address!"
-msgstr "Ikke en gyldig e-mail-adresse!"
-
-#: php/qmn_quiz.php:378
-msgid "This field must be a number!"
-msgstr "Dette felt skal være et tal!"
-
-#: php/qmn_quiz.php:379
-msgid "The entered text is not correct!"
-msgstr "Den indtastede tekst er ikke korrekt!"
-
-#: php/qmn_quiz.php:380
-msgid "Please complete all required fields!"
-msgstr "Venligst udfyld alle obligatoriske felter"
-
-#: php/qmn_quiz.php:495 php/qmn_options_questions_tab.php:680
-msgid "Hint"
-msgstr "Hint"
-
-#: php/qmn_quiz.php:1263 php/qmn_options_text_tab.php:142
-msgid "Previous"
-msgstr "Tidligere"
-
-#: php/qmn_usage_tracking.php:193
-#, fuzzy
-msgid ""
-"Allow Quiz And Survey Master to anonymously track this plugin's usage and "
-"help us make this plugin better? No sensitive data is tracked."
-msgstr ""
-"Tillad Quiz Master Next at følge brugen af dette plugin for at forbedre "
-"kvaliteten - ingen følsomme data overvåges."
-
-#: php/qmn_usage_tracking.php:194
-msgid "Allow"
-msgstr "Tillad"
-
-#: php/qmn_usage_tracking.php:195
-msgid "Do not allow"
-msgstr "Tillad ikke"
-
-#: php/qmn_results_details.php:20 php/qmn_results.php:196
-msgid "Quiz Results"
-msgstr "Quiz resultater"
-
-#: php/qmn_results_details.php:221
-msgid "Create Certificate"
-msgstr "Opret certificat"
-
-#: php/qmn_results_details.php:226
-msgid "Download Certificate Here"
-msgstr "Download certificat her"
-
-#: php/qmn_results_details.php:240
-msgid "Certificate"
-msgstr "Certifikat"
-
-#: php/qmn_options_tools_tab.php:49
+#: php/options-page-tools-tab.php:49
 msgid "The stats has been reset successfully."
 msgstr "De statistikker er blevet nulstillet korrekt."
 
-#: php/qmn_options_tools_tab.php:107
+#: php/options-page-tools-tab.php:107
 msgid ""
 "Use this button to reset all the stats collected for this quiz (Quiz Views "
 "and Times Quiz Has Been Taken)."
@@ -867,11 +1393,11 @@ msgstr ""
 "Brug denne knap til at nulstille alle indsamlet til denne quiz statistik "
 "(Quiz Views og Times Quiz er taget)."
 
-#: php/qmn_options_tools_tab.php:108
+#: php/options-page-tools-tab.php:108
 msgid "Reset Quiz Views And Taken Stats"
 msgstr "Nulstil Quiz Views og oprettede statistikker"
 
-#: php/qmn_options_tools_tab.php:119
+#: php/options-page-tools-tab.php:119
 msgid ""
 "Are you sure you want to reset the stats to 0? All views and taken stats for "
 "this quiz will be reset. This is permanent and cannot be undone."
@@ -880,551 +1406,47 @@ msgstr ""
 "statistik for denne quiz vil blive nulstillet. Det er permanent og kan ikke "
 "fortrydes."
 
-#: php/qmn_options_tools_tab.php:123
+#: php/options-page-tools-tab.php:123
 msgid "Reset All Stats For Quiz"
 msgstr "Nulstil alle Stats for Quiz"
 
-#: php/qmn_options_text_tab.php:13
-msgid "Text"
-msgstr "Tekst"
-
-#: php/qmn_options_text_tab.php:102
-msgid "The templates has been updated successfully."
-msgstr "Skabelonerne er blevet opdateret"
-
-#: php/qmn_options_text_tab.php:242 php/qmn_options_text_tab.php:402
-msgid "Save Templates"
-msgstr "Gem skabeloner"
-
-#: php/qmn_options_text_tab.php:248
-msgid "Message Templates"
-msgstr "Besked skabeloner"
-
-#: php/qmn_options_text_tab.php:252
-msgid "Message Displayed Before Quiz"
-msgstr "Besked vist før Quiz"
-
-#: php/qmn_options_text_tab.php:262
-msgid "Message Displayed Before Comments Box If Enabled"
-msgstr "Besked vist før kommentar boksen hvis aktiv"
-
-#: php/qmn_options_text_tab.php:272
-msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
-msgstr ""
-"Besked vist ved slutningen af Quizzen (Vis blank for at undlade tekst "
-"sektion)"
-
-#: php/qmn_options_text_tab.php:282
-msgid "Message Displayed If User Has Tried Quiz Too Many Times"
-msgstr "Besked vist hvis brugeren har deltaget for mange gange"
-
-#: php/qmn_options_text_tab.php:292
-msgid ""
-"Message Displayed If User Is Not Logged In And Quiz Requires Users To Be "
-"Logged In"
-msgstr ""
-"Besked vist, hvis brugeren skal være logget ind for at besvare denne Quiz"
-
-#: php/qmn_options_text_tab.php:302
-msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
-msgstr "Besked hvis dato er udenfor planlagt Tidsramme"
-
-#: php/qmn_options_text_tab.php:312
-msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
-msgstr "Besked Hvis grænsen på indtastninger er nået"
-
-#: php/qmn_options_text_tab.php:322
-msgid "%QUESTIONS_ANSWERS% Text"
-msgstr "% QUESTIONS_ANSWERS% Tekst"
-
-#: php/qmn_options_text_tab.php:335
-msgid "Twitter Sharing Text"
-msgstr "Twitter Deling tekst"
-
-#: php/qmn_options_text_tab.php:352
-msgid "Facebook Sharing Text"
-msgstr "Facebook Deling tekst"
-
-#: php/qmn_options_text_tab.php:367
-msgid "Other Templates"
-msgstr "Andre skabeloner"
-
-#: php/qmn_options_text_tab.php:370
-msgid "Text for submit button"
-msgstr "Tekst for send-knappen"
-
-#: php/qmn_options_text_tab.php:374
-msgid "Text for name field"
-msgstr "Tekst til navnefeltet"
-
-#: php/qmn_options_text_tab.php:378
-msgid "Text for business field"
-msgstr "Tekst til firma felt"
-
-#: php/qmn_options_text_tab.php:382
-msgid "Text for email field"
-msgstr "Tekst til e-mail-feltet"
-
-#: php/qmn_options_text_tab.php:386
-msgid "Text for phone number field"
-msgstr "Tekst til telefon nummer felt"
-
-#: php/qmn_options_text_tab.php:390
-msgid "Text for comments field"
-msgstr "Tekst for kommentarer felt"
-
-#: php/qmn_options_text_tab.php:394
-msgid "Text for previous button"
-msgstr "Tekst til forrige knap"
-
-#: php/qmn_options_text_tab.php:398
-msgid "Text for next button"
-msgstr "Tekst til næste knap"
-
-#: php/qmn_quiz_admin.php:196
-msgid "Add New"
-msgstr "Tilføj ny"
-
-#: php/qmn_quiz_admin.php:214
-#, php-format
-msgid "One quiz"
-msgid_plural "%s quizzes"
-msgstr[0] "En quiz"
-msgstr[1] "%s quizzer"
-
-#: php/qmn_quiz_admin.php:259 php/qmn_quiz_admin.php:310
-#: php/qmn_results.php:294
-msgid "Name"
-msgstr "Navn"
-
-#: php/qmn_quiz_admin.php:260 php/qmn_quiz_admin.php:311
-msgid "URL"
-msgstr "URL"
-
-#: php/qmn_quiz_admin.php:261 php/qmn_quiz_admin.php:312
-#, fuzzy
-msgid "Shortcode"
-msgstr "Quiz Shortcode"
-
-#: php/qmn_quiz_admin.php:262 php/qmn_quiz_admin.php:313
-msgid "Leaderboard Shortcode"
-msgstr "Lederboard Shortcode"
-
-#: php/qmn_quiz_admin.php:263 php/qmn_quiz_admin.php:314
-#, fuzzy
-msgid "Views"
-msgstr "Quiz set"
-
-#: php/qmn_quiz_admin.php:264 php/qmn_quiz_admin.php:315
-#, fuzzy
-msgid "Taken"
-msgstr "Quiz gennemført"
-
-#: php/qmn_quiz_admin.php:265 php/qmn_quiz_admin.php:316
-msgid "Last Modified"
-msgstr "Sidst ændret"
-
-#: php/qmn_quiz_admin.php:278
-msgid "Edit Name"
-msgstr "Ret navn"
-
-#: php/qmn_quiz_admin.php:280
-msgid "Edit"
-msgstr "Ret"
-
-#: php/qmn_quiz_admin.php:282 php/qmn_quiz_admin.php:411
-msgid "Duplicate"
-msgstr "Kopier"
-
-#: php/qmn_quiz_admin.php:283 php/qmn_quiz_admin.php:422
-#: php/qmn_options_results_page_tab.php:282
-msgid "Delete"
-msgstr "Slet"
-
-#: php/qmn_quiz_admin.php:373
-#, fuzzy
-msgid "Create New Quiz Or Survey"
-msgstr "Opret ny quiz"
-
-#: php/qmn_quiz_admin.php:378 php/qmn_results.php:291
-msgid "Quiz Name"
-msgstr "Quiz navn"
-
-#: php/qmn_quiz_admin.php:387
-#, fuzzy
-msgid "Create Quiz Or Survey"
-msgstr "Opret quiz"
-
-#: php/qmn_quiz_admin.php:393
-#, fuzzy
-msgid "Name:"
-msgstr "Navn"
-
-#: php/qmn_quiz_admin.php:404
-#, fuzzy
-msgid "Duplicate this quiz or survey?"
-msgstr "Kopier quiz"
-
-#: php/qmn_quiz_admin.php:406
-#, fuzzy
-msgid "Duplicate questions also?"
-msgstr "Kopieret spørgsmål"
-
-#: php/qmn_quiz_admin.php:408
-#, fuzzy
-msgid "Name Of New Quiz Or Survey:"
-msgstr "Navn på ny Quiz:"
-
-#: php/qmn_quiz_admin.php:417
-#, fuzzy
-msgid "Are you sure you want to delete this quiz or survey?"
-msgstr "Er du sikker på at du vil slette denne quiz?"
-
-#: php/qmn_credits.php:30
-#, fuzzy
-msgid "Welcome To Quiz And Survey Master (Formerly Quiz Master Next)"
-msgstr "Velkommen til Quiz Master Next"
-
-#: php/qmn_credits.php:31
-msgid "Thank you for updating!"
-msgstr "Tak for opdatering!"
-
-#: php/qmn_credits.php:35
-msgid "What's New!"
-msgstr "Nyheder!"
-
-#: php/qmn_credits.php:37
-msgid "Changelog"
-msgstr "Ændringslog"
-
-#: php/qmn_credits.php:39
-msgid "People Who Make QMN Possible"
-msgstr ""
-
-#: php/qmn_credits.php:102
-#, php-format
-msgid "View %s"
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:13
-msgid "Results Pages"
-msgstr "Resultat sider"
-
-#: php/qmn_options_results_page_tab.php:55
-msgid "The results page has been added successfully."
-msgstr "Resultat siden er tilføjet"
-
-#: php/qmn_options_results_page_tab.php:104
-msgid "The results page has been saved successfully."
-msgstr "Resultatsiden er gemt"
-
-#: php/qmn_options_results_page_tab.php:205
-msgid "The amount of time user spent taking quiz in minutes"
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:208
-msgid "The amount of time user spent taking quiz in seconds"
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:226
-msgid "Displays button to share on Facebook."
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:229
-msgid "Displays button to share on Twitter."
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:234
-#: php/qmn_options_results_page_tab.php:315
-msgid "Save Results Pages"
-msgstr "Gem resultatsider"
-
-#: php/qmn_options_results_page_tab.php:235
-#: php/qmn_options_results_page_tab.php:320
-msgid "Add New Results Page"
-msgstr "Tilføj ny resultat side"
-
-#: php/qmn_options_results_page_tab.php:243
-#: php/qmn_options_results_page_tab.php:307
-msgid "Results Page Shown"
-msgstr "Resultat side vist"
-
-#: php/qmn_options_results_page_tab.php:244
-#: php/qmn_options_results_page_tab.php:308
-msgid "Redirect URL (Beta)"
-msgstr ""
-
-#: php/qmn_options_results_page_tab.php:282
-msgid "Are you sure?"
-msgstr "Er du sikker?"
-
-#: php/qmn_options_preview_tab.php:13
-msgid "Preview"
-msgstr "Preview"
-
-#: php/qmn_widgets.php:14
+#: php/widgets.php:14
 #, fuzzy
 msgid "Quiz And Survey Master Leaderboard Widget"
 msgstr "Quiz Master Next Styrings Widget"
 
-#: php/qmn_widgets.php:29
+#: php/widgets.php:29
 msgid "Widget Title"
 msgstr "Widget titel"
 
-#: php/qmn_widgets.php:33
+#: php/widgets.php:33
 msgid "Quiz ID"
 msgstr "Quiz ID"
 
-#: php/qmn_quiz_options.php:56
+#: php/quiz-options-page.php:56
 #, php-format
 msgid "Quiz Settings For %s"
 msgstr "Quiz indstillinger for %s"
 
-#: php/qmn_quiz_options.php:96
+#: php/quiz-options-page.php:96
 msgid ""
 "Please go to the quizzes page and click on the Edit link from the quiz you "
 "wish to edit."
 msgstr ""
 "Go til quiz siden og klik på rediger linket på den quiz du ønsker at redigere"
 
-#: php/qmn-stats-page.php:29
-msgid "Quiz Statistics"
-msgstr "Quiz statistik"
+#~ msgid "One quiz"
+#~ msgid_plural "%s quizzes"
+#~ msgstr[0] "En quiz"
+#~ msgstr[1] "%s quizzer"
 
-#: php/qmn-stats-page.php:68
 #, fuzzy
-msgid "Quiz Taken Stats"
-msgstr "Total statistik"
+#~ msgid "Create Quiz Or Survey"
+#~ msgstr "Opret quiz"
 
-#: php/qmn_options_questions_tab.php:13
-msgid "Questions"
-msgstr "Spørgsmål"
-
-#: php/qmn_options_questions_tab.php:28
-msgid "Answer"
-msgstr "Svar:"
-
-#: php/qmn_options_questions_tab.php:64
-msgid "The question order has been updated successfully."
-msgstr ""
-
-#: php/qmn_options_questions_tab.php:169
-msgid "The question has been updated successfully."
-msgstr "Spørgsmålet er blevet opdateret."
-
-#: php/qmn_options_questions_tab.php:214
-msgid "The question has been deleted successfully."
-msgstr "Dine resultater er blevet slettet."
-
-#: php/qmn_options_questions_tab.php:306
-msgid "The question has been duplicated successfully."
-msgstr "Din Spørgsmål er blevet dublikeret."
-
-#: php/qmn_options_questions_tab.php:403
-msgid "The question has been created successfully."
-msgstr "Spørgsmålet er blevet oprettet."
-
-#: php/qmn_options_questions_tab.php:538
-msgid "Add Question"
-msgstr "Nyt spørgsmål"
-
-#: php/qmn_options_questions_tab.php:539
-msgid "Save Question Order"
-msgstr ""
-
-#: php/qmn_options_questions_tab.php:552
-#, php-format
-msgid "One question"
-msgid_plural "%s questions"
-msgstr[0] "Et spørgsmål"
-msgstr[1] "%s spørgsmål"
-
-#: php/qmn_options_questions_tab.php:558 php/qmn_options_questions_tab.php:566
-#: php/qmn_options_questions_tab.php:694
-msgid "Question Order"
-msgstr "Rækkefølge spørgsmål"
-
-#: php/qmn_options_questions_tab.php:559 php/qmn_options_questions_tab.php:567
-#: php/qmn_options_questions_tab.php:644
-msgid "Question Type"
-msgstr "Spørgsmål type"
-
-#: php/qmn_options_questions_tab.php:560 php/qmn_options_questions_tab.php:568
-#: php/qmn_options_questions_tab.php:707
-msgid "Category"
-msgstr "Kategori"
-
-#: php/qmn_options_questions_tab.php:561 php/qmn_options_questions_tab.php:569
-msgid "Question"
-msgstr "Spørgsmål"
-
-#: php/qmn_options_questions_tab.php:662
-msgid "Answers"
-msgstr "Svar"
-
-#: php/qmn_options_questions_tab.php:663
-msgid "Points Worth"
-msgstr "Værdi af point"
-
-#: php/qmn_options_questions_tab.php:664
-msgid "Correct Answer"
-msgstr "Korrekt svar"
-
-#: php/qmn_options_questions_tab.php:669
-msgid "Add New Answer!"
-msgstr "Tilføj nyt svar!"
-
-#: php/qmn_options_questions_tab.php:675
-msgid "Correct Answer Info"
-msgstr "Info for korrekt svar"
-
-#: php/qmn_options_questions_tab.php:685
-msgid "Comment Field"
-msgstr "KOmmentar felt"
-
-#: php/qmn_options_questions_tab.php:687
-msgid "Small Text Field"
-msgstr "Lille tekst felt"
-
-#: php/qmn_options_questions_tab.php:688
-msgid "Large Text Field"
-msgstr "Stort tekst felt"
-
-#: php/qmn_options_questions_tab.php:689
-msgid "None"
-msgstr "Ingen"
-
-#: php/qmn_options_questions_tab.php:699
-msgid "Required?"
-msgstr "Obligatorisk"
-
-#: php/qmn_options_questions_tab.php:730
-msgid "Create Question"
-msgstr "Opret spørgsmål"
-
-#: php/qmn_options_questions_tab.php:735
-msgid "Are you sure you want to delete this question?"
-msgstr "Er du sikker på du vil slette dette spørgsmål"
-
-#: php/qmn_options_questions_tab.php:740
-msgid "Delete Question"
-msgstr "Slet spørgsmål"
-
-#: php/qmn_options_questions_tab.php:745
-msgid "Are you sure you want to duplicate this question?"
-msgstr "Er du sikker på du vil kopiere dette spørgsmål?"
-
-#: php/qmn_options_questions_tab.php:750
-msgid "Duplicate Question"
-msgstr "Kopieret spørgsmål"
-
-#: php/qmn_tools.php:107
-msgid "There has been an error! Please try again."
-msgstr "Der har været en fejl! Forsøg igen"
-
-#: php/qmn_tools.php:125
-msgid "Quiz Has Been Restored!"
-msgstr "Den pågældende quiz er gendannet"
-
-#: php/qmn_tools.php:130
-msgid ""
-"Choose a quiz in the drop down and then click the button to restore a "
-"deleted quiz."
-msgstr ""
-"Vælg en quiz i drop Down boksen og klik for at gendanne en slettet quiz."
-
-#: php/qmn_tools.php:140
-msgid "Restore Quiz"
-msgstr "Gendan Quiz"
-
-#: php/qmn_tools.php:176 php/qmn_tools.php:192
-#, php-format
-msgid "Previous %s Audits"
-msgstr "Sidste %s Audits"
-
-#: php/qmn_tools.php:179 php/qmn_tools.php:186
-#, php-format
-msgid "Next %s Audits"
-msgstr "Næste %s Audits"
-
-#: php/qmn_tools.php:199
-msgid "User"
-msgstr "Bruger"
-
-#: php/qmn_tools.php:200
-msgid "Action"
-msgstr "Aktion"
-
-#: php/qmn_tools.php:201
-msgid "Time"
-msgstr "Klokken"
-
-#: php/qmn_results.php:37
-msgid "Your results has been deleted successfully."
-msgstr "Dine resultater er blevet slettet."
-
-#: php/qmn_results.php:205
-#, php-format
-msgid "One result"
-msgid_plural "%s results"
-msgstr[0] "Et resultat"
-msgstr[1] "%s resultater"
-
-#: php/qmn_results.php:290
-msgid "Actions"
-msgstr "Handlinger"
-
-#: php/qmn_results.php:292
-msgid "Score"
-msgstr "Skore"
-
-#: php/qmn_results.php:293
-msgid "Time To Complete"
-msgstr "Tid til at færdiggøre"
-
-#: php/qmn_results.php:295
-msgid "Business"
-msgstr "Forretning"
-
-#: php/qmn_results.php:296
-msgid "Email"
-msgstr "Email"
-
-#: php/qmn_results.php:297
-msgid "Phone"
-msgstr "Telefon"
-
-#: php/qmn_results.php:298
-msgid "Time Taken"
-msgstr "Forbrugt tid"
-
-#: php/qmn_results.php:357
-msgid "Are you sure you want to delete these results?"
-msgstr "Er du sikker på at du vil slette disse resultater ?"
-
-#: php/qmn_results.php:362
-msgid "Delete Results"
-msgstr "Slet resultater"
-
-#: php/qmn_quiz_creator.php:387
-msgid ""
-"Your new quiz has been created successfully. To begin editing your quiz, "
-"click the Edit link on the new quiz."
-msgstr ""
-"Din nye quiz er blevet oprettet. For at edigere din quiz, klik på linket "
-"Rediger ved den nye quiz"
-
-#: php/qmn_quiz_creator.php:462
-msgid "Your quiz has been deleted successfully."
-msgstr "Din Quiz er blevet slettet."
-
-#: php/qmn_quiz_creator.php:513
-msgid "Your quiz name has been updated successfully."
-msgstr "Dit quiz navn er blevet opdateret."
-
-#: php/qmn_quiz_creator.php:679
-msgid "Your quiz has been duplicated successfully."
-msgstr "Din Quiz er blevet dublikeret."
+#, fuzzy
+#~ msgid "Name:"
+#~ msgstr "Navn"
 
 #~ msgid "Quiz Settings"
 #~ msgstr "Quiz indstillinger"

@@ -39,45 +39,42 @@ function mlw_generate_about_page()
 				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added ability to reorder questions by drag and drop!</h2>
-			<p style="text-align: center;">When editing your questions you can now drag and drop your questions to reorganize them. </p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Dynamic Form Submission</h2>
+			<p style="text-align: center;">Rather than making a user wait for an entire page submission, now the plugin dynamically calculates the results and displays the results page.</p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Quiz Results are now searchable!</h2>
-			<p style="text-align: center;">You can now search quiz results based on several different criteria as well as sort the results.</p>
-			<br />
-                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Added new primary template</h2>
-			<p style="text-align: center;">Many versions ago, I added a new template system that would allow me to include different styles to choose from. This update adds the first template.</p>
-
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">This Plugin Is Now Translation Ready!</h2>
-			<p style="text-align: center;">For those who wish to assist in translating, you can find the POT in the languages folder. If you do not know what that is, feel free to contact me and I will assist you with it.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Specify From Email Address And Reply-To</h2>
+			<p style="text-align: center;">After several requests, I have finally added the option to specify a from email address for sending emails. I also added the option to add a reply-to email to the admin emails using the user email.</p>
 			<br />
 			<hr />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
 			<br />
-                        <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Template API</h2>
-			<p style="text-align: center;">A new template API has been created to help with creating CSS templates. </p>
-                         <br />
-                         <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Changes to Question API</h2>
-			<p style="text-align: center;">Changes were made to the Question API to only show relevant fields for each question type. </p>
-                        <br />
+      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">JavaScript Re-write</h2>
+			<p style="text-align: center;">I re-wrote all the JavaScript files and combined them into one file.</p>
+      <br />
+      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Renamed files/functions</h2>
+			<p style="text-align: center;">I renamed many files and functions to align with WordPress standards. None of these were externally used and will not affect your customizations/code.</p>
+      <br />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
 			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz And Survey Master repository.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (October 1, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (October 20, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>* 4 new style templates to choose from</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes Dutch translation <a href='https://github.com/fpcorso/quiz_master_next/issues/285'>GitHub Issue 285</a></li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes quiz results losing search filters after first page <a href='https://github.com/fpcorso/quiz_master_next/issues/293'>GitHub Issue 293</a></li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes question drag and drop not working on certain installs <a href='https://github.com/fpcorso/quiz_master_next/issues/295'>GitHub Issue 295</a></li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes Required? question setting where the Yes or No value did not show when editing <a href='https://github.com/fpcorso/quiz_master_next/issues/296'>GitHub Issue 296</a></li>
+				<li class="add"><div class="two">Add</div>* Adds new dynamic form submission</li>
+				<li class="add"><div class="two">Add</div>* Adds new From email address option</li>
+				<li class="add"><div class="two">Add</div>* Adds new Reply-To admin email option</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixed timer issue that started timer but prevent access to next page</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes redirect bug that prevented submissions from saving</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes required question bug that prevented multiple quizzes/surveys on one page</li>
+				<li class="fixed"><div class="two">Fixed</div>* Re-wrote front-end JavaScript to fix a variety of smaller bugs</li>
+				<li class="fixed"><div class="two">Fixed</div>* Renamed several file names and functions to align more with WordPress coding standards</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
