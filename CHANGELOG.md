@@ -1,3 +1,29 @@
+= 4.5.2 (August 14, 2015) =
+ * Ensured compatibility with Wordpress version 4.3
+ * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
+
+= 4.5.1 (August 12, 2015) =
+ * Fixes parse error on hosts with older PHP versions
+
+= 4.5.0 (August 11, 2015) =
+  * Added a brand new log system to track errors in the plugin. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/233))
+  * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/fpcorso/quiz_master_next/issues/235))
+  * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/fpcorso/quiz_master_next/issues/234))
+  * Added new classes for Correct/Incorrect Answers. ([Github Issue #228](https://github.com/fpcorso/quiz_master_next/issues/228))
+  * Added ability to sort the results. ([Github Issue #167](https://github.com/fpcorso/quiz_master_next/issues/167))
+  * Added the ability to search quiz results by quiz name, score, time taken, and completion time. ([Github Issue #70](https://github.com/fpcorso/quiz_master_next/issues/70))
+  * Added the ability for developers to show only relevant fields when adding/editing questions on different question types.
+  * Added new register template functions to the API.
+  * Added a new contributor tab to the credits page.
+  * Added a checkbox to the quiz results page to delete results.
+  * Added a brand new review message system.
+  * Bug Fix: Fixed a bug where slashes where appearing with the category name.
+  * Bug Fix: Fixed a timer bug that prevented the timer form working when using pagination.
+
+= 4.4.4 (July 19, 2015) =
+  * Security Fix: Fixed possible sql injection from authenticated users on certificate, email, and leaderboard tabs
+  * Security Fix: Fixed data validation bug on help page, leaderboard shortcode, and quiz shortcode
+
 = 4.4.3 (July 17, 2015) =
   * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
 
