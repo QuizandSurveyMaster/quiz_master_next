@@ -46,8 +46,8 @@ function qmnValidation( element, quiz_form_id ) {
 					result = false;
 				}
 			}
-			if ( window.sessionStorage.getItem( 'mlw_time_quiz' + qmn_quiz_id ) === null ||
-			window.sessionStorage.getItem( 'mlw_time_quiz'+qmn_quiz_id ) > 0.08 ) {
+			if ( window.sessionStorage.getItem( 'mlw_time_quiz' + quiz_id ) === null ||
+			window.sessionStorage.getItem( 'mlw_time_quiz'+quiz_id ) > 0.08 ) {
 
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredNumber' ) > -1 && this.value === "" && +this.value != NaN ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );

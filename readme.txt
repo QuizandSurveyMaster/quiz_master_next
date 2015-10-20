@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.6.0
+Stable tag: 4.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.6.1 (October 20, 2015) =
+ * Bug fix for rare bug preventing IE usage on a small number of sites
+
 = 4.6.0 (October 20, 2015) =
  * Adds new dynamic form submission ([Github Issue #206](https://github.com/fpcorso/quiz_master_next/issues/206))
  * Adds new From email address option ([Github Issue #312](https://github.com/fpcorso/quiz_master_next/issues/312))
@@ -162,6 +165,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 4.6.1 =
+Upgrade to fix rare bug preventing IE usage on a small number of sites.
 
 = 4.6.0 =
 Upgrade to use new dynamic form submission, from email addresses, reply-to options as well as bug fixes including redirect bug, timer bug, and more.
