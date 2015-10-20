@@ -143,18 +143,29 @@ class QMNTracking
 		$data['inactive_plugins'] = $plugins;
 
     $theme_data = wp_get_theme();
-		$theme = $theme_data->Name . ' ' . $theme_data->Version;
-    $data['theme']  = $theme;
+    $data['theme']  = $theme_data->Name;
+    $data['theme_version'] = $theme_data->Version;
 
     $mlw_stat_total_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes" );
   	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0" );
   	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions" );
   	$mlw_stat_total_active_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0" );
+    $mlw_stat_total_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results" );
+  	$mlw_stat_total_active_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE deleted=0" );
 
   	$data["total_quizzes"] = $mlw_stat_total_quiz;
   	$data["total_active_quizzes"] = $mlw_stat_total_active_quiz;
   	$data["total_questions"] = $mlw_stat_total_questions;
   	$data["total_active_questions"] = $mlw_stat_total_active_questions;
+    $data["total_results"] = $mlw_stat_total_results;
+  	$data["total_active_results"] = $mlw_stat_total_active_results;
+
+    $data['original_version'] = get_option('qmn_original_version');
+    $data['current_version'] = get_option('mlw_quiz_master_version');
+
+    $data['quiz_options'] = $wpdb->get_results( "SELECT quiz_name, system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp,
+     user_email, user_phone, comment_section, question_from_total, total_user_tries, pagination, timer_limit, question_numbering, last_activity, require_log_in, limit_total_entries, disable_answer_onselect, ajax_show_correct, quiz_views, quiz_taken FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0" );
+
 
     $this->data = $data;
   }
