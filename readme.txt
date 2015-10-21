@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.6.1
+Stable tag: 4.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.6.2 (October 21, 2015) =
+ * Bug fix for browsers with JavaScript turned off
 
 = 4.6.1 (October 20, 2015) =
  * Bug fix for rare bug preventing IE usage on a small number of sites
