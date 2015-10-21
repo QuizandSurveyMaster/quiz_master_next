@@ -480,8 +480,8 @@ class QMNQuizManager
 		* @return string The content for the results page section
 	  */
 	public function display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables) {
-		$result = submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
-		$results_array = json_decode( $result );
+		$result = $this->submit_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
+		$results_array = $result;
 		return $results_array['display'];
 	}
 
