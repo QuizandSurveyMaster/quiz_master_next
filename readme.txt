@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.6.1
+Stable tag: 4.6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,12 +16,7 @@ Easily and quickly add quizzes and surveys to your website.
 You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizandsurveymaster.com/quiz/sample-quiz/)!
 You can check out the sample survey with pagination here: [Sample Survey](http://quizandsurveymaster.com/quiz/sample-survey/)!
 
-= Keep Updated =
-Keep up with our latest news, updates, and more by [subscribing to our mailing list](http://quizandsurveymaster.com/subscribe-to-our-newsletter/)!
-
 = Features =
-
-The easiest and most flexible way to add multiple quizzes, tests, and surveys forms to your website. This plugin allows for unlimited quizzes or surveys each with unlimited amount of questions. The plugin allows you to create the quiz, add it to any page using a customized shortcode, allows the user to take the quiz, and then saves the results. You can set up what the user sees after he or she takes the quiz based on the user's score. You can also have the plugin create a certificate for the user as well!
 
 = Have Unlimited Quizzes, Tests, Surveys, etc.. =
 Each of your quizzes and surveys can have **unlimited** questions and each of those questions can have **unlimited** answers! Your questions can contain **HTML** to show images, Youtube videos and more.
@@ -44,9 +39,6 @@ After the user takes a quiz or survey, you can have the plugin email you and the
 = Very Flexible =
 Your quiz or survey can be graded with an incorrect/correct system or a points-based system. Or not at all. You ask for contact information at the beginning or the end and you decide which contact fields are required. You can decide to use all the questions or only a select few chosen at random. You can also set the number of questions per page or have all the questions on one page.
 
-= Useful For Businesses =
-The plugin features useful **statistics** that show how many times each quiz has been viewed and taken and plots the data on several different **graphs** so you can see how the quizzes are doing at a glance. Also, the plugin includes an **audit trail** that logs every action done on the admin side so you can keep up with who is doing what!
-
 = Categories =
 You can assign categories to your questions. You can then show the user their score in a **particular** category or an average score of the categories.
 
@@ -64,7 +56,6 @@ You can assign categories to your questions. You can then show the user their sc
 * Can enable **hints** for questions
 * Can show user why the answer is the correct answer
 * Questions can be in predetermined order or random
-* **Leaderboards** for every quiz which can be used as shortcode or in included widget
 * Keep track how long a user takes on the quiz or survey
 * Able to set up time limits on the quiz or survey
 * Create and display math formulas
@@ -104,12 +95,6 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 = How do you use that feature? =
 We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizandsurveymaster.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
 
-= I need a lot of help setting up my quiz, what can you do to help? =
-We now offer a premium support plan that offers priority response, technical support, custom styling and more! For details, visit our support page: [Quiz And Survey Master Premium Support](http://quizandsurveymaster.com/support-levels/)
-
-= I have an idea, how do I contact you? =
-Feel free to use the widget on the help page within the plugin or from our [contact page](http://quizandsurveymaster.com/contact-us/).
-
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
 Yes, it is possible to edit the output of the variable %QUESTIONS_ANSWERS%. When editing your quiz, go to the “Text” tab. Once on the “Text” tab scroll almost all the way down the page and you will see a text area that allows you to edit the contents of %QUESTIONS_ANSWERS%.
@@ -133,6 +118,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 4.6.2 (October 21, 2015) =
+ * Bug fix for browsers with JavaScript turned off
 
 = 4.6.1 (October 20, 2015) =
  * Bug fix for rare bug preventing IE usage on a small number of sites
@@ -174,9 +162,3 @@ Upgrade to use new dynamic form submission, from email addresses, reply-to optio
 
 = 4.5.5 =
 Upgrade to use 5 new style templates as well as a variety of bug fixes
-
-= 4.5.4 =
-Upgrade to fix scroll to top pagination bug and leaderboard widget bug
-
-= 4.5.3 =
-Upgrade to fix a issue with reseting the stats for Quiz Taken and Quiz Views. It was reseting to 1 instead of 0.
