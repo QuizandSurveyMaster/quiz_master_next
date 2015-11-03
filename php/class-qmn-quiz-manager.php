@@ -278,7 +278,7 @@ class QMNQuizManager
 			'empty' => __('Please complete all required fields!', 'quiz-master-next')
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ) );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
@@ -838,7 +838,7 @@ EOC;
 			$mlw_qmn_certificate_file.=<<<EOC
 \$pdf->Output('mlw_qmn_certificate.pdf','D');
 EOC;
-			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
+			$mlw_qmn_certificate_filename = plugin_dir_path( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' class='qmn_certificate_link'>Download Certificate</a>";
