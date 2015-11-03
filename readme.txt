@@ -1,25 +1,20 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
-Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
+Tags: quiz, survey, quizzes, surveys, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
 Requires at least: 3.8.1
 Tested up to: 4.3
-Stable tag: 4.6.2
+Stable tag: 4.6.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily and quickly add quizzes and surveys to your website.
+Easily and quickly add unlimited quizzes and surveys to your website.
 
 == Description ==
 
 = Demoes! =
 You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizandsurveymaster.com/quiz/sample-quiz/)!
 You can check out the sample survey with pagination here: [Sample Survey](http://quizandsurveymaster.com/quiz/sample-survey/)!
-
-= Features =
-
-= Have Unlimited Quizzes, Tests, Surveys, etc.. =
-Each of your quizzes and surveys can have **unlimited** questions and each of those questions can have **unlimited** answers! Your questions can contain **HTML** to show images, Youtube videos and more.
 
 = Customize Your Text =
 All the text your users see can be **customized**. Everything from the text blocks throughout the quiz or survey to the submit button.
@@ -77,7 +72,7 @@ Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master
 While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
 
 * [Export Results](http://quizandsurveymaster.com/downloads/export-results/)
-* [Results Analysis](http://quizandsurveymaster.com/downloads/results-analysis/)
+* [Reporting & Analysis](http://quizandsurveymaster.com/downloads/results-analysis/)
 * [Aweber Integration](http://quizandsurveymaster.com/downloads/aweber-integration/)
 * [Daily Limits](http://quizandsurveymaster.com/downloads/daily-limit/)
 * And **many** more available in our [Quiz And Survey Master Addon Store](http://quizandsurveymaster.com/addons/)
@@ -88,7 +83,6 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 * Search for Quiz And Survey Master
 * Click Install Now link on the plugin and follow the prompts
 * Activate the plugin through the 'Plugins' menu in WordPress
-
 
 == Frequently Asked Questions ==
 
@@ -119,6 +113,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.6.3 (November 4, 2015) =
+ * Fixes certificate bug that was preventing quiz/survey submissions
+ * Fixes undefined quiz id bug that was affecting some addons
+ * Fixes tooltip bug that was affecting required question validation on a few sites
+
 = 4.6.2 (October 21, 2015) =
  * Bug fix for browsers with JavaScript turned off
 
@@ -135,30 +134,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  * Re-wrote front-end JavaScript to fix a variety of smaller bugs
  * Renamed several file names and functions to align more with WordPress coding standards
 
-= 4.5.5 (October 1, 2015) =
- * Adds 4 new style templates to choose from
- * Fixes Dutch translation ([Github Issue #285](https://github.com/fpcorso/quiz_master_next/issues/285))
- * Fixes quiz results losing search filters after first page ([Github Issue #293](https://github.com/fpcorso/quiz_master_next/issues/293))
- * Fixes question drag and drop not working on certain installs ([Github Issue #295](https://github.com/fpcorso/quiz_master_next/issues/295))
- * Fixes Required? question setting where the Yes or No value did not show when editing ([Github Issue #296](https://github.com/fpcorso/quiz_master_next/issues/296))
-
-= 4.5.4 (September 3, 2015) =
- * Rebrand as Quiz And Survey Master
- * Fixes scroll to top pagination bug
- * Fixes leaderboard widget bug
-
-= 4.5.3 (August 21, 2015) =
- * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #277](https://github.com/fpcorso/quiz_master_next/issues/277))
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
 = 4.6.1 =
 Upgrade to fix rare bug preventing IE usage on a small number of sites.
-
-= 4.6.0 =
-Upgrade to use new dynamic form submission, from email addresses, reply-to options as well as bug fixes including redirect bug, timer bug, and more.
-
-= 4.5.5 =
-Upgrade to use 5 new style templates as well as a variety of bug fixes

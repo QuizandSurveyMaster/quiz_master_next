@@ -1,3 +1,18 @@
+= 4.5.5 (October 1, 2015) =
+ * Adds 4 new style templates to choose from
+ * Fixes Dutch translation ([Github Issue #285](https://github.com/fpcorso/quiz_master_next/issues/285))
+ * Fixes quiz results losing search filters after first page ([Github Issue #293](https://github.com/fpcorso/quiz_master_next/issues/293))
+ * Fixes question drag and drop not working on certain installs ([Github Issue #295](https://github.com/fpcorso/quiz_master_next/issues/295))
+ * Fixes Required? question setting where the Yes or No value did not show when editing ([Github Issue #296](https://github.com/fpcorso/quiz_master_next/issues/296))
+
+= 4.5.4 (September 3, 2015) =
+ * Rebrand as Quiz And Survey Master
+ * Fixes scroll to top pagination bug
+ * Fixes leaderboard widget bug
+
+= 4.5.3 (August 21, 2015) =
+ * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #277](https://github.com/fpcorso/quiz_master_next/issues/277))
+
 = 4.5.2 (August 14, 2015) =
  * Ensured compatibility with Wordpress version 4.3
  * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
