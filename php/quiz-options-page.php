@@ -51,10 +51,10 @@ function mlw_generate_quiz_options()
 	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
-	<h2><?php
+	<h1><?php
 	/* translators: The %s corresponds to the name of the quiz */
 	echo sprintf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
-	?></h2>
+	?></h1>
 	<?php
 	ob_start();
 	if ($quiz_id != "")
@@ -74,8 +74,6 @@ function mlw_generate_quiz_options()
 			?>
 		</h2>
 		<div>
-			<br />
-			<br />
 			<?php
 				foreach($tab_array as $tab)
 				{
