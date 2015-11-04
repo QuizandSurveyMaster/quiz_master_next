@@ -60,21 +60,16 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (October 20, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (November 4, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="add"><div class="two">Add</div>* Adds new dynamic form submission</li>
-				<li class="add"><div class="two">Add</div>* Adds new From email address option</li>
-				<li class="add"><div class="two">Add</div>* Adds new Reply-To admin email option</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixed timer issue that started timer but prevent access to next page</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes redirect bug that prevented submissions from saving</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes required question bug that prevented multiple quizzes/surveys on one page</li>
-				<li class="fixed"><div class="two">Fixed</div>* Re-wrote front-end JavaScript to fix a variety of smaller bugs</li>
-				<li class="fixed"><div class="two">Fixed</div>* Renamed several file names and functions to align more with WordPress coding standards</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes certificate bug that was preventing quiz/survey submissions</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes undefined quiz id bug that was affecting some addons</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes tooltip bug that was affecting required question validation on a few sites</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
