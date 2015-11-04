@@ -168,7 +168,7 @@ function mlw_generate_quiz_admin()
 		}
 	</script>
 	<div class="wrap qsm-quizes-page">
-		<h2><?php _e('Quizzes/Surveys', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h2>
+		<h1><?php _e('Quizzes/Surveys', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<div class="<?php if ( get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 			<div class="tablenav top">

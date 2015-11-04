@@ -278,7 +278,7 @@ class QMNQuizManager
 			'empty' => __('Please complete all required fields!', 'quiz-master-next')
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array('jquery') );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ) );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
@@ -494,9 +494,11 @@ class QMNQuizManager
 	  */
 	public function ajax_submit_results() {
 		global $qmn_allowed_visit;
+		global $mlwQuizMasterNext;
 		parse_str( $_POST["quizData"], $_POST );
 		$qmn_allowed_visit = true;
 		$quiz = intval( $_POST["qmn_quiz_id"] );
+		$mlwQuizMasterNext->quizCreator->set_id($quiz);
 		$qmn_quiz_options = $this->load_quiz_options( $quiz );
 		$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
 		$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions, true );
@@ -836,7 +838,7 @@ EOC;
 			$mlw_qmn_certificate_file.=<<<EOC
 \$pdf->Output('mlw_qmn_certificate.pdf','D');
 EOC;
-			$mlw_qmn_certificate_filename = str_replace(home_url()."/", '', plugin_dir_url( __FILE__ ))."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
+			$mlw_qmn_certificate_filename = plugin_dir_path( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
 			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
 			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' class='qmn_certificate_link'>Download Certificate</a>";
@@ -961,10 +963,14 @@ EOC;
 	{
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 		$mlw_message = "";
-		if ($qmn_quiz_options->send_user_email == "0")
-		{
-			if ($qmn_array_for_variables['user_email'] != "")
-			{
+
+		//Check if this quiz has user emails turned on
+		if ( $qmn_quiz_options->send_user_email == "0" ) {
+
+			//Make sure that the user filled in the email field
+			if ( $qmn_array_for_variables['user_email'] != "" ) {
+
+				//Prepare from email and name
 				$from_email_array = maybe_unserialize( $qmn_quiz_options->email_from_text );
 				if ( ! isset( $from_email_array["from_email"] ) ) {
 					$from_email_array = array(
@@ -973,71 +979,71 @@ EOC;
 						'reply_to' => 1
 					);
 				}
-				if (is_serialized($qmn_quiz_options->user_email_template) && is_array(@unserialize($qmn_quiz_options->user_email_template)))
-				{
-					$mlw_user_email_array = @unserialize($qmn_quiz_options->user_email_template);
 
-					//Cycle through landing pages
-					foreach($mlw_user_email_array as $mlw_each)
-					{
+				//Prepare email attachments
+				$attachments = array();
+				$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $qmn_array_for_variables );
+
+				if ( is_serialized( $qmn_quiz_options->user_email_template ) && is_array( @unserialize( $qmn_quiz_options->user_email_template ) ) ) {
+
+					$mlw_user_email_array = @unserialize( $qmn_quiz_options->user_email_template );
+
+					//Cycle through emails
+					foreach( $mlw_user_email_array as $mlw_each ) {
 
 						//Generate Email Subject
-						if (!isset($mlw_each[3]))
-						{
+						if ( !isset( $mlw_each[3] ) ) {
 							$mlw_each[3] = "Quiz Results For %QUIZ_NAME";
 						}
-						$mlw_each[3] = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_each[3], $qmn_array_for_variables);
+						$mlw_each[3] = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_each[3], $qmn_array_for_variables );
 
 						//Check to see if default
-						if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
-						{
-							$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-							$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables);
-							$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-							$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
-							$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+						if ( $mlw_each[0] == 0 && $mlw_each[1] == 0 ) {
+							$mlw_message = htmlspecialchars_decode( $mlw_each[2], ENT_QUOTES );
+							$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables );
+							$mlw_message = str_replace( "\n" , "<br>", $mlw_message );
+							$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message );
+							$mlw_message = str_replace( "<br />" , "<br>", $mlw_message );
 							$mlw_headers = 'From: '.$from_email_array["from_name"].' <'.$from_email_array["from_email"].'>' . "\r\n";
-							wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
+							wp_mail( $qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers, $attachments );
 							break;
-						}
-						else
-						{
-							if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
-							{
-								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables);
-								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
-								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+						} else {
+
+							//Check to see if this quiz uses points and check if the points earned falls in the point range for this email
+							if ( $qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1] ) {
+								$mlw_message = htmlspecialchars_decode( $mlw_each[2], ENT_QUOTES );
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables );
+								$mlw_message = str_replace( "\n" , "<br>", $mlw_message );
+								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message );
+								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message );
 								$mlw_headers = 'From: '.$from_email_array["from_name"].' <'.$from_email_array["from_email"].'>' . "\r\n";
-								wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
+								wp_mail( $qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers, $attachments );
 								break;
 							}
 
 							//Check to see if score fall in correct range
-							if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
-							{
-								$mlw_message = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables);
-								$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
-								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+							if ( $qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1] ) {
+								$mlw_message = htmlspecialchars_decode( $mlw_each[2], ENT_QUOTES );
+								$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables );
+								$mlw_message = str_replace( "\n" , "<br>", $mlw_message );
+								$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message );
+								$mlw_message = str_replace( "<br />" , "<br>", $mlw_message );
 								$mlw_headers = 'From: '.$from_email_array["from_name"].' <'.$from_email_array["from_email"].'>' . "\r\n";
-								wp_mail($qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers);
+								wp_mail( $qmn_array_for_variables['user_email'], $mlw_each[3], $mlw_message, $mlw_headers, $attachments );
 								break;
 							}
 						}
 					}
-				}
-				else
-				{
-					$mlw_message = htmlspecialchars_decode($qmn_quiz_options->user_email_template, ENT_QUOTES);
-					$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables);
-					$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-					$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message);
-					$mlw_message = str_replace( "<br />" , "<br>", $mlw_message);
+				} else {
+
+					//Uses older email system still which was before different emails were created.
+					$mlw_message = htmlspecialchars_decode( $qmn_quiz_options->user_email_template, ENT_QUOTES );
+					$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables );
+					$mlw_message = str_replace( "\n" , "<br>", $mlw_message );
+					$mlw_message = str_replace( "<br/>" , "<br>", $mlw_message );
+					$mlw_message = str_replace( "<br />" , "<br>", $mlw_message );
 					$mlw_headers = 'From: '.$from_email_array["from_name"].' <'.$from_email_array["from_email"].'>' . "\r\n";
-					wp_mail($qmn_array_for_variables['user_email'], "Quiz Results For ".$qmn_quiz_options->quiz_name, $mlw_message, $mlw_headers);
+					wp_mail( $qmn_array_for_variables['user_email'], "Quiz Results For ".$qmn_quiz_options->quiz_name, $mlw_message, $mlw_headers, $attachments );
 				}
 			}
 		}
