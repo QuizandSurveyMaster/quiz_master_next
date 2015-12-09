@@ -18,19 +18,24 @@ function mlw_qmn_show_adverts()
 		$mlw_random_int = rand(0, 4);
 		switch ($mlw_random_int) {
 			case 0:
-				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizandsurveymaster.com/support-levels/\">Quiz And Survey Master Support</a> for details!";
+				// Support Advert 1
+				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizandsurveymaster.com/support-levels/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=support-advert-1&utm_campaign=qsm_plugin\">Quiz And Survey Master Support</a> for details!";
 				break;
 			case 1:
-				$mlw_advert_text = "Want 25% off your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizandsurveymaster.com/subscribe-to-our-newsletter/\">subscribing to our mailing list</a> and receive a 25% discount on your next purchase!";
+				// Subscribe Newsletter 1
+				$mlw_advert_text = "Want 25% off your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=subscribe-newsletter-1&utm_campaign=qsm_plugin\">subscribing to our mailing list</a> and receive a 25% discount on your next purchase!";
 				break;
 			case 2:
-				$mlw_advert_text = "Would you like to support this plugin but do not need or want premium support? Please consider our inexpensive 'Advertisements Be Gone' add-on which will get rid of these ads. Visit our <a href=\"http://quizandsurveymaster.com/addons/\">Addon Store</a> for details!";
+				// Continued development 1
+				$mlw_advert_text = "Are you finding this plugin very beneficial? Please consider checking out our premium addons which help support continued development of this plugin. Visit our <a href=\"http://quizandsurveymaster.com/addons/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=continued-development-1&utm_campaign=qsm_plugin\">Addon Store</a> for details!";
 				break;
 			case 3:
-				$mlw_advert_text = "Need help keeping your plugins, themes, and WordPress up to date? Want around the clock security monitoring and off-site back-ups? How about WordPress training videos, a monthly status report, and support/consultation? Check out our <a href=\"http://mylocalwebstop.com/maintenance/\">WordPress Maintenance Services</a> for more details!";
+				// Reporting and anaylsis 1
+				$mlw_advert_text = "Are you receiving a lot of responses to your quizzes and surveys? Consider our Reporting and Anaylsis addon which analyzes the data for you and allows you to filter the data as well as export it! <a href=\"http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=reporting-analysis-1&utm_campaign=qsm_plugin\">Click here for more details!</a>";
 				break;
 			default:
-				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizandsurveymaster.com/support-levels/\">Quiz And Survey Master Support</a> for details!";
+				// Support Advert 2
+				$mlw_advert_text = "Need support or features? Check out our Premium Support options! Visit our <a href=\"http://quizandsurveymaster.com/support-levels/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=support-advert-2&utm_campaign=qsm_plugin\">Quiz And Survey Master Support</a> for details!";
 		}
 		$mlw_advert .= "
 			<style>

@@ -13,8 +13,8 @@ Easily and quickly add unlimited quizzes and surveys to your website.
 == Description ==
 
 = Demoes! =
-You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizandsurveymaster.com/quiz/sample-quiz/)!
-You can check out the sample survey with pagination here: [Sample Survey](http://quizandsurveymaster.com/quiz/sample-survey/)!
+You can check out the sample quiz with various questions types here: [Sample Quiz](http://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin)!
+You can check out the sample survey with pagination here: [Sample Survey](http://quizandsurveymaster.com/quiz/sample-survey/?utm_source=readme&utm_medium=plugin&utm_content=sample-survey&utm_campaign=qsm_plugin)!
 
 = Customize Your Text =
 All the text your users see can be **customized**. Everything from the text blocks throughout the quiz or survey to the submit button.
@@ -71,11 +71,11 @@ Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master
 = Premium Quiz And Survey Master Add-ons =
 While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
 
-* [Export Results](http://quizandsurveymaster.com/downloads/export-results/)
-* [Reporting & Analysis](http://quizandsurveymaster.com/downloads/results-analysis/)
-* [Aweber Integration](http://quizandsurveymaster.com/downloads/aweber-integration/)
-* [Daily Limits](http://quizandsurveymaster.com/downloads/daily-limit/)
-* And **many** more available in our [Quiz And Survey Master Addon Store](http://quizandsurveymaster.com/addons/)
+* [Landing Page](http://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
+* [Export Results](http://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
+* [Reporting & Analysis](http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
+* [MailChimp Integration](http://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
+* And **many** more available in our [Quiz And Survey Master Addon Store](http://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
 == Installation ==
 
@@ -87,7 +87,7 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizandsurveymaster.com/documentation/) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
+We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](http://quizandsurveymaster.com/documentation/?utm_source=readme&utm_medium=plugin&utm_content=faq-documentation&utm_campaign=qsm_plugin) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
 
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
@@ -99,7 +99,7 @@ To make these changes, you will edit the %QUESTIONS_ANSWERS% variable. To do tha
 
 = My preview looks different than my quiz. What can I do? =
 
-This is usually a theme conflict. You can [checkout out our common conflict solutions](http://quizandsurveymaster.com/common-theme-conflict-fixes/) or feel free to contact us.
+This is usually a theme conflict. You can [checkout out our common conflict solutions](http://quizandsurveymaster.com/common-theme-conflict-fixes/?utm_source=readme&utm_medium=plugin&utm_content=faq-common-theme-conflicts&utm_campaign=qsm_plugin) or feel free to contact us.
 
 == Screenshots ==
 
