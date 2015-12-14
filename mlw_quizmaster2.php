@@ -4,7 +4,7 @@
 * Description: Easily and quickly add quizzes and surveys to your website.
 * Version: 4.6.4
 * Author: Frank Corso
-* Author URI: http://www.mylocalwebstop.com/
+* Author URI: http://www.quizandsurveymaster.com/
 * Plugin URI: http://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
 * Domain Path: /languages
