@@ -144,17 +144,14 @@ function qmn_generate_results_certificate_tab() {
 
 		//Prepare Certificate
 		if ( is_serialized( $mlw_certificate_results ) && is_array( @unserialize( $mlw_certificate_results ) ) ) {
-			$mlw_certificate_options = unserialize($mlw_certificate_results);
+			$mlw_certificate_options = unserialize( $mlw_certificate_results );
 		} else {
-			$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '');
+			$mlw_certificate_options = array( 'Enter title here', 'Enter text here', '', '' );
 		}
-		if (is_serialized($mlw_quiz_results->quiz_results) && is_array(@unserialize($mlw_quiz_results->quiz_results)))
-		{
+		if ( is_serialized( $mlw_quiz_results->quiz_results ) && is_array( @unserialize( $mlw_quiz_results->quiz_results ) ) ) {
 			$results = unserialize($mlw_quiz_results->quiz_results);
-		}
-		else
-		{
-			$results = array( 0, '', '');
+		} else {
+			$results = array( 0, '', '' );
 		}
 		$qmn_array_for_variables = array(
 			'quiz_id' => $mlw_quiz_results->quiz_id,
@@ -173,8 +170,8 @@ function qmn_generate_results_certificate_tab() {
 			'comments' => $results[2],
 			'question_answers_array' => $results[1]
 		);
-		$template = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_certificate_options[1], $qmn_array_for_variables);
-		$template = str_replace( "\n" , "<br>", $template);
+		$template = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_certificate_options[1], $qmn_array_for_variables );
+		$template = str_replace( "\n" , "<br>", $template );
 		$plugindirpath=plugin_dir_path( __FILE__ );
 		$mlw_qmn_certificate_file=<<<EOC
 <?php
@@ -205,9 +202,8 @@ EOC;
 		<input type="submit" value="<?php _e('Create Certificate','quiz-master-next'); ?>" class="button"/>
 	</form>
 	<?php
-	if (isset($_POST["create_certificate"]) && $_POST["create_certificate"] == "confirmation")
-	{
-		echo "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>".__('Download Certificate Here','quiz-master-next')."</a><br />";
+	if ( isset( $_POST["create_certificate"] ) && "confirmation" == $_POST["create_certificate"] ) {
+		echo "<a href='$mlw_qmn_certificate_filename' style='color: blue;'>" . __( 'Download Certificate Here','quiz-master-next' ) . "</a><br />";
 	}
 }
 
@@ -218,10 +214,9 @@ EOC;
 * @return void
 * @since 4.4.0
 */
-function qmn_results_certificate_tab()
-{
+function qmn_results_certificate_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab(__("Certificate", 'quiz-master-next'), "qmn_generate_results_certificate_tab");
+	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Certificate", 'quiz-master-next' ), "qmn_generate_results_certificate_tab" );
 }
-add_action("plugins_loaded", 'qmn_results_certificate_tab');
+add_action( "plugins_loaded", 'qmn_results_certificate_tab' );
 ?>
