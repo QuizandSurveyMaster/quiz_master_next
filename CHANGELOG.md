@@ -1,3 +1,16 @@
+= 4.6.1 (October 20, 2015) =
+ * Bug fix for rare bug preventing IE usage on a small number of sites
+
+= 4.6.0 (October 20, 2015) =
+ * Adds new dynamic form submission ([Github Issue #206](https://github.com/fpcorso/quiz_master_next/issues/206))
+ * Adds new From email address option ([Github Issue #312](https://github.com/fpcorso/quiz_master_next/issues/312))
+ * Adds new Reply-To admin email option
+ * Fixed timer issue that started timer but prevent access to next page ([Github Issue #302](https://github.com/fpcorso/quiz_master_next/issues/302))
+ * Fixes redirect bug that prevented submissions from saving ([Github Issue #201](https://github.com/fpcorso/quiz_master_next/issues/201))
+ * Fixes required question bug that prevented multiple quizzes/surveys on one page ([Github Issue #304](https://github.com/fpcorso/quiz_master_next/issues/304))
+ * Re-wrote front-end JavaScript to fix a variety of smaller bugs
+ * Renamed several file names and functions to align more with WordPress coding standards
+
 = 4.5.5 (October 1, 2015) =
  * Adds 4 new style templates to choose from
  * Fixes Dutch translation ([Github Issue #285](https://github.com/fpcorso/quiz_master_next/issues/285))
