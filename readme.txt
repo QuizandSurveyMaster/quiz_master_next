@@ -1,10 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
-Tags: quiz, survey, quizzes, surveys, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math
-Requires at least: 3.8.1
-Tested up to: 4.3
-Stable tag: 4.6.3
+Tags: quiz, survey, quizzes, surveys, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math, mailchimp, newsletter, optin
+Requires at least: 4.0.1
+Tested up to: 4.4
+Stable tag: 4.6.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.6.4 (December 15, 2015) =
+ * Fixes undefined results notice displayed on admin results for some users
+ * Fixes bug that was causing the disable radio buttons option to not work in all browsers
+ * Minor design changes
+
 = 4.6.3 (November 4, 2015) =
  * Fixes certificate bug that was preventing quiz/survey submissions
  * Fixes undefined quiz id bug that was affecting some addons
@@ -121,22 +126,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 4.6.2 (October 21, 2015) =
  * Bug fix for browsers with JavaScript turned off
 
-= 4.6.1 (October 20, 2015) =
- * Bug fix for rare bug preventing IE usage on a small number of sites
-
-= 4.6.0 (October 20, 2015) =
- * Adds new dynamic form submission ([Github Issue #206](https://github.com/fpcorso/quiz_master_next/issues/206))
- * Adds new From email address option ([Github Issue #312](https://github.com/fpcorso/quiz_master_next/issues/312))
- * Adds new Reply-To admin email option
- * Fixed timer issue that started timer but prevent access to next page ([Github Issue #302](https://github.com/fpcorso/quiz_master_next/issues/302))
- * Fixes redirect bug that prevented submissions from saving ([Github Issue #201](https://github.com/fpcorso/quiz_master_next/issues/201))
- * Fixes required question bug that prevented multiple quizzes/surveys on one page ([Github Issue #304](https://github.com/fpcorso/quiz_master_next/issues/304))
- * Re-wrote front-end JavaScript to fix a variety of smaller bugs
- * Renamed several file names and functions to align more with WordPress coding standards
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.6.1 =
-Upgrade to fix rare bug preventing IE usage on a small number of sites.
+= 4.6.4 =
+Upgrade to fix minor bugs

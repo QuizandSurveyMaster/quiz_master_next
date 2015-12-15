@@ -60,16 +60,16 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (November 4, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (December 15, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixes certificate bug that was preventing quiz/survey submissions</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes undefined quiz id bug that was affecting some addons</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes tooltip bug that was affecting required question validation on a few sites</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes undefined results notice displayed on admin results for some users</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes bug that was causing the disable radio buttons option to not work in all browsers</li>
+				<li class="fixed"><div class="two">Fixed</div>* Minor design changes</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
