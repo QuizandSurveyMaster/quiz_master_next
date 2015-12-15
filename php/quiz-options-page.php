@@ -73,7 +73,7 @@ function mlw_generate_quiz_options()
 			}
 			?>
 		</h2>
-		<div>
+		<div class="mlw_tab_content">
 			<?php
 				foreach($tab_array as $tab)
 				{
