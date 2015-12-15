@@ -58,49 +58,51 @@ function qmn_generate_featured_addons()
 	wp_enqueue_style( 'qmn_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
 	?>
 	<p><?php _e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
+	<a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
+	<br />
 	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">Results Analysis</h3>
-		<p class="qmn_addons_desc">Analyze your quiz's or survey's results to see the percentage of users who chose each answer displayed on useful charts, number of submissions, average points earned, and average score earned.</p>
-		<a href="http://quizandsurveymaster.com/downloads/results-analysis/" target="_blank" class="button">Get This Addon</a>
+		<h3 class="qmn_addons_title">Landing Page</h3>
+		<p class="qmn_addons_desc">Display your quizzes and surveys in their own standalone page without distracting menus, themes, or other content from your site.</p>
+		<a href="http://quizandsurveymaster.com/downloads/landing-page/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
+	</div>
+	<div class="qmn_addons">
+		<h3 class="qmn_addons_title">Reporting and Analysis</h3>
+		<p class="qmn_addons_desc">Analyze your quiz's or survey's results to see the percentage of users who chose each answer displayed on useful charts. You can then filter that data or export it.</p>
+		<a href="http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=reporting-and-analysis&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Export Results</h3>
 		<p class="qmn_addons_desc">This add-on gives you the ability to export your quiz results as a CSV file.</p>
-		<a href="http://quizandsurveymaster.com/downloads/export-results/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizandsurveymaster.com/downloads/export-results/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Advertisement Be Gone</h3>
-		<p class="qmn_addons_desc">This add-on will remove all services/add-on advertisements in all of our Master Suite plugins.</p>
-		<a href="http://quizandsurveymaster.com/downloads/advertisement-gone/" target="_blank" class="button">Get This Addon</a>
+		<p class="qmn_addons_desc">This add-on will remove all services/add-on advertisements throughout the plugin.</p>
+		<a href="http://quizandsurveymaster.com/downloads/advertisement-gone/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=advertisement-be-gone&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">MailPoet Integration</h3>
-		<p class="qmn_addons_desc">Grow your list of subscribers in MailPoet by using this add-on to add users who take your quizzes!</p>
-		<a href="http://quizandsurveymaster.com/downloads/mailpoet-integration/" target="_blank" class="button">Get This Addon</a>
+		<h3 class="qmn_addons_title">MailChimp Integration</h3>
+		<p class="qmn_addons_desc">Grow your list of subscribers in MailChimp by using this add-on to add users who take your quizzes and surveys!</p>
+		<a href="http://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">Slack Integration</h3>
-		<p class="qmn_addons_desc">This addon will allow you to post a message to your slack when a user takes a quiz or test.</p>
-		<a href="http://quizandsurveymaster.com/downloads/slack-integration/" target="_blank" class="button">Get This Addon</a>
+		<h3 class="qmn_addons_title">User Dashboard</h3>
+		<p class="qmn_addons_desc">This add-on gives you the ability to set up a page where users can review their results from all the quizzes they have taken.</p>
+		<a href="http://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=user-dashboard&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">Gradebook</h3>
-		<p class="qmn_addons_desc">Need a gradebook that will show your users average scores and their quizzes? Then this addon is for you!</p>
-		<a href="http://quizandsurveymaster.com/downloads/gradebook/" target="_blank" class="button">Get This Addon</a>
-	</div>
-	<div class="qmn_addons">
-		<h3 class="qmn_addons_title">Daily Limit</h3>
-		<p class="qmn_addons_desc">This Quiz And Survey Master add-on allows you to restrict users to only a set amount of entries per day.</p>
-		<a href="http://quizandsurveymaster.com/downloads/daily-limit/" target="_blank" class="button">Get This Addon</a>
+		<h3 class="qmn_addons_title">AWeber Integration</h3>
+		<p class="qmn_addons_desc">Grow your list of subscribers in AWeber by using this add-on to add users who take your quizzes!</p>
+		<a href="http://quizandsurveymaster.com/downloads/aweber-integration/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=aweber-integration&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div class="qmn_addons">
 		<h3 class="qmn_addons_title">Extra Template Variables</h3>
 		<p class="qmn_addons_desc">This addon gives you several more template variables to use in your emails and results pages.</p>
-		<a href="http://quizandsurveymaster.com/downloads/extra-template-variables/" target="_blank" class="button">Get This Addon</a>
+		<a href="http://quizandsurveymaster.com/downloads/extra-template-variables/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=extra-template-variables&utm_campaign=qsm_plugin" target="_blank" class="button">Get This Addon</a>
 	</div>
 	<div style="clear:both;">
 	<br />
-	<a href="http://quizandsurveymaster.com/addons/" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
+	<a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-bottom&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
 	<?php
 }
 

@@ -6,10 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return type void
 * @since 4.4.0
 */
-function mlw_generate_result_details()
-{
-	if ( !current_user_can('moderate_comments') )
-	{
+function mlw_generate_result_details() {
+	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
 	global $mlwQuizMasterNext;
@@ -20,24 +18,20 @@ function mlw_generate_result_details()
 		<h2><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach($tab_array as $tab)
-			{
+			foreach( $tab_array as $tab ) {
 				$active_class = '';
-				if ($active_tab == $tab['slug'])
-				{
+				if ( $active_tab == $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
-				echo "<a href=\"?page=mlw_quiz_result_details&&result_id=".intval($_GET["result_id"])."&&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+				echo "<a href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . $tab['slug'] . "\" class=\"nav-tab $active_class\">" . $tab['title'] . "</a>";
 			}
 			?>
 		</h2>
 		<div>
 		<?php
-			foreach($tab_array as $tab)
-			{
-				if ($active_tab == $tab['slug'])
-				{
-					call_user_func($tab['function']);
+			foreach( $tab_array as $tab ) {
+				if ( $active_tab == $tab['slug'] ) {
+					call_user_func( $tab['function'] );
 				}
 			}
 		?>
@@ -54,30 +48,24 @@ function mlw_generate_result_details()
 * @return void
 * @since 4.4.0
 */
-function qmn_generate_results_details_tab()
-{
+function qmn_generate_results_details_tab() {
 	echo "<br><br>";
-	$mlw_result_id = intval($_GET["result_id"]);
+	$mlw_result_id = intval( $_GET["result_id"] );
 	global $wpdb;
 	$mlw_results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE result_id=%d", $mlw_result_id ) );
 
-	$previous_results = $wpdb->get_var("SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MAX(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id < ".$mlw_result_id.")");
-	$next_results = $wpdb->get_var("SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MIN(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id > ".$mlw_result_id.")");
-	if (!is_null($previous_results) && $previous_results)
-	{
-		echo "<a class='button' href=\"?page=mlw_quiz_result_details&&result_id=".intval($previous_results)."\" >View Previous Results</a> ";
+	$previous_results = $wpdb->get_var( "SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MAX(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id < ".$mlw_result_id.")" );
+	$next_results = $wpdb->get_var( "SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MIN(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id > ".$mlw_result_id.")" );
+	if ( ! is_null( $previous_results ) && $previous_results ) {
+		echo "<a class='button' href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
 	}
-	if (!is_null($next_results) && $next_results)
-	{
-		echo " <a class='button' href=\"?page=mlw_quiz_result_details&&result_id=".intval($next_results)."\" >View Next Results</a>";
+	if ( ! is_null( $next_results ) && $next_results ) {
+		echo " <a class='button' href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $next_results ) . "\" >View Next Results</a>";
 	}
 	$settings = (array) get_option( 'qmn-settings' );
-	if (isset($settings['results_details_template']))
-	{
-		$template = htmlspecialchars_decode($settings['results_details_template'], ENT_QUOTES);
-	}
-	else
-	{
+	if ( isset( $settings['results_details_template'] ) ) {
+		$template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
+	} else {
 		$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
 		<p>Name Provided: %USER_NAME%</p>
 		<p>Business Provided: %USER_BUSINESS%</p>
@@ -90,15 +78,17 @@ function qmn_generate_results_details_tab()
 		<p>The answers were as follows:</p>
 		%QUESTIONS_ANSWERS%";
 	}
-	if (is_serialized($mlw_results_data->quiz_results) && is_array(@unserialize($mlw_results_data->quiz_results)))
-	{
+	if ( is_serialized( $mlw_results_data->quiz_results ) && is_array( @unserialize( $mlw_results_data->quiz_results ) ) ) {
 		$results = unserialize($mlw_results_data->quiz_results);
-	}
-	else
-	{
+	} else {
 		$template = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_results_data->quiz_results, $template);
 		$template = str_replace( "%TIMER%" , '', $template);
 		$template = str_replace( "%COMMENT_SECTION%" , '', $template);
+		$results = array(
+			0,
+			array(),
+			''
+		);
 	}
 	$qmn_array_for_variables = array(
 		'quiz_id' => $mlw_results_data->quiz_id,
@@ -117,8 +107,8 @@ function qmn_generate_results_details_tab()
 		'comments' => $results[2],
 		'question_answers_array' => $results[1]
 	);
-	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $qmn_array_for_variables);
-	$template = str_replace( "\n" , "<br>", $template);
+	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $qmn_array_for_variables );
+	$template = str_replace( "\n" , "<br>", $template );
 	echo $template;
 }
 
@@ -129,12 +119,11 @@ function qmn_generate_results_details_tab()
 * @return void
 * @since 4.4.0
 */
-function qmn_results_details_tab()
-{
+function qmn_results_details_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab(__("Results", 'quiz-master-next'), "qmn_generate_results_details_tab");
+	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Results", 'quiz-master-next' ), "qmn_generate_results_details_tab" );
 }
-add_action("plugins_loaded", 'qmn_results_details_tab');
+add_action( "plugins_loaded", 'qmn_results_details_tab' );
 
 
 /**
@@ -144,33 +133,25 @@ add_action("plugins_loaded", 'qmn_results_details_tab');
 * @return type description
 * @since 4.4.0
 */
-function qmn_generate_results_certificate_tab()
-{
+function qmn_generate_results_certificate_tab() {
 	//Check if user wants to create certificate
-	if (isset($_POST["create_certificate"]) && $_POST["create_certificate"] == "confirmation")
-	{
+	if ( isset( $_POST["create_certificate"] ) && "confirmation" == $_POST["create_certificate"] ) {
 		global $wpdb;
-		$mlw_certificate_id = intval($_GET["result_id"]);
+		$mlw_certificate_id = intval( $_GET["result_id"] );
 		$mlw_quiz_results = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."mlw_results WHERE result_id=%d", $mlw_certificate_id ) );
 
 		$mlw_certificate_results = $wpdb->get_var( $wpdb->prepare( "SELECT certificate_template FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_results->quiz_id ) );
 
 		//Prepare Certificate
-		if (is_serialized($mlw_certificate_results) && is_array(@unserialize($mlw_certificate_results)))
-		{
-			$mlw_certificate_options = unserialize($mlw_certificate_results);
+		if ( is_serialized( $mlw_certificate_results ) && is_array( @unserialize( $mlw_certificate_results ) ) ) {
+			$mlw_certificate_options = unserialize( $mlw_certificate_results );
+		} else {
+			$mlw_certificate_options = array( 'Enter title here', 'Enter text here', '', '' );
 		}
-		else
-		{
-			$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '');
-		}
-		if (is_serialized($mlw_quiz_results->quiz_results) && is_array(@unserialize($mlw_quiz_results->quiz_results)))
-		{
+		if ( is_serialized( $mlw_quiz_results->quiz_results ) && is_array( @unserialize( $mlw_quiz_results->quiz_results ) ) ) {
 			$results = unserialize($mlw_quiz_results->quiz_results);
-		}
-		else
-		{
-			$results = array( 0, '', '');
+		} else {
+			$results = array( 0, '', '' );
 		}
 		$qmn_array_for_variables = array(
 			'quiz_id' => $mlw_quiz_results->quiz_id,
@@ -189,8 +170,8 @@ function qmn_generate_results_certificate_tab()
 			'comments' => $results[2],
 			'question_answers_array' => $results[1]
 		);
-		$template = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_certificate_options[1], $qmn_array_for_variables);
-		$template = str_replace( "\n" , "<br>", $template);
+		$template = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_certificate_options[1], $qmn_array_for_variables );
+		$template = str_replace( "\n" , "<br>", $template );
 		$plugindirpath=plugin_dir_path( __FILE__ );
 		$mlw_qmn_certificate_file=<<<EOC
 <?php
@@ -221,9 +202,8 @@ EOC;
 		<input type="submit" value="<?php _e('Create Certificate','quiz-master-next'); ?>" class="button"/>
 	</form>
 	<?php
-	if (isset($_POST["create_certificate"]) && $_POST["create_certificate"] == "confirmation")
-	{
-		echo "<a href='".$mlw_qmn_certificate_filename."' style='color: blue;'>".__('Download Certificate Here','quiz-master-next')."</a><br />";
+	if ( isset( $_POST["create_certificate"] ) && "confirmation" == $_POST["create_certificate"] ) {
+		echo "<a href='$mlw_qmn_certificate_filename' style='color: blue;'>" . __( 'Download Certificate Here','quiz-master-next' ) . "</a><br />";
 	}
 }
 
@@ -234,10 +214,9 @@ EOC;
 * @return void
 * @since 4.4.0
 */
-function qmn_results_certificate_tab()
-{
+function qmn_results_certificate_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab(__("Certificate", 'quiz-master-next'), "qmn_generate_results_certificate_tab");
+	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Certificate", 'quiz-master-next' ), "qmn_generate_results_certificate_tab" );
 }
-add_action("plugins_loaded", 'qmn_results_certificate_tab');
+add_action( "plugins_loaded", 'qmn_results_certificate_tab' );
 ?>
