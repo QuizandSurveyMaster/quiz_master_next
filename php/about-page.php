@@ -70,6 +70,7 @@ function mlw_generate_about_page()
 				<li class="fixed"><div class="two">Fixed</div>* Fixes timer bug that caused the timer to continue counting down after quiz has been submitted</li>
 				<li class="fixed"><div class="two">Fixed</div>* Fixes theme conflict between QSM and some Bootstrap based themes</li>
 				<li class="fixed"><div class="two">Fixed</div>* Fixes Quizzes/Surveys page table width issue</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes but preventing editing of quiz post settings</li>
 				<li class="fixed"><div class="two">Fixed</div>* Minor design changes</li>
 			</ul>
 		</div>

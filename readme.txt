@@ -117,6 +117,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
  * Fixes theme conflict between QSM and some Bootstrap based themes
  * Fixes Quizzes/Surveys page table width issue
+ * Fixes but preventing editing of quiz post settings
  * Minor design changes
 
 = 4.6.4 (December 15, 2015) =

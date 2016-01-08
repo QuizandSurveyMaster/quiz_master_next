@@ -195,7 +195,8 @@ class MLWQuizMasterNext
 			$cpt_slug = trim(strtolower(str_replace(" ", "-", $settings['cpt_slug'])));
 		}
 		$quiz_args = array(
-			'show_ui' => false,
+			'show_ui'           => true,
+			'show_in_menu'      => false,
 			'show_in_nav_menus' => true,
 			'labels' => $quiz_labels,
 			'publicly_queryable' => true,
