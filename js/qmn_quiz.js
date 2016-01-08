@@ -85,6 +85,7 @@ function qmnValidation( element, quiz_form_id ) {
 }
 
 function qmnFormSubmit( quiz_form_id ) {
+	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
 
@@ -97,6 +98,7 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
 
 	clearInterval( qsmTimerInterval );
+	qmnEndTimer( quiz_id );
 
 	var data = {
 		action: 'qmn_process_quiz',
@@ -175,7 +177,7 @@ function qmnActivateTimer( quiz_id ) {
 	window.amount = minutes * 60;
 	window.titleText = window.document.title;
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( window.amount );
-	window.counter = setInterval( qmnTimer, 1000, quiz_id );
+	window.qsmCounter = setInterval( qmnTimer, 1000, quiz_id );
 }
 
 function qmnTimer( quiz_id ) {
@@ -202,8 +204,10 @@ function qmnTimer( quiz_id ) {
 }
 
 function qmnEndTimer( quiz_id ) {
-	window.sessionStorage.setItem('mlw_time_quiz' + qmn_quiz_id, 'completed');
-	window.sessionStorage.setItem('mlw_started_quiz' + qmn_quiz_id, 'no');
+	window.sessionStorage.setItem('mlw_time_quiz' + quiz_id, 'completed');
+	window.sessionStorage.setItem('mlw_started_quiz' + quiz_id, 'no');
+	window.document.title = window.titleText;
+	clearInterval( qsmCounter );
 }
 
 function qmnInitTimer( quiz_id ) {

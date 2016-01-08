@@ -170,151 +170,160 @@ function mlw_generate_quiz_admin()
 	<div class="wrap qsm-quizes-page">
 		<h1><?php _e('Quizzes/Surveys', 'quiz-master-next'); ?><a id="new_quiz_button" href="javascript:();" class="add-new-h2"><?php _e('Add New', 'quiz-master-next'); ?></a></h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-		<div class="<?php if ( get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
-			<div class="tablenav top">
-				<div class="tablenav-pages">
-					<span class="displaying-num"><?php echo sprintf(_n('One quiz or survey', '%s quizzes or surveys', $mlw_qmn_quiz_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_quiz_count)); ?></span>
-					<span class="pagination-links">
+		<div class="qsm-quizzes-page-content">
+			<div class="<?php if ( get_option( 'mlw_advert_shows' ) != 'false' ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
+				<div class="tablenav top">
+					<div class="tablenav-pages">
+						<span class="displaying-num"><?php echo sprintf(_n('One quiz or survey', '%s quizzes or surveys', $mlw_qmn_quiz_count, 'quiz-master-next'), number_format_i18n($mlw_qmn_quiz_count)); ?></span>
+						<span class="pagination-links">
+							<?php
+							$mlw_qmn_previous_page = 0;
+							$mlw_current_page = $mlw_qmn_quiz_page+1;
+							$mlw_total_pages = ceil($mlw_qmn_quiz_count/$mlw_qmn_table_limit);
+							if( $mlw_qmn_quiz_page > 0 )
+							{
+							   	$mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
+							   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+								echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+							   	if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
+							   	{
+									echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							   	}
+								else
+								{
+									echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							   	}
+							}
+							else if( $mlw_qmn_quiz_page == 0 )
+							{
+							   if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
+							   {
+									echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+									echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+									echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							   }
+							}
+							else if( $mlw_qmn_quiz_left < $mlw_qmn_table_limit )
+							{
+							   $mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
+							   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
+								echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
+								echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
+							}
+							?>
+						</span>
+						<br class="clear">
+					</div>
+				</div>
+				<table class="widefat">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th><?php _e('Name', 'quiz-master-next'); ?></th>
+							<th><?php _e('URL', 'quiz-master-next'); ?></th>
+							<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
+							<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
+							<th><?php _e('Views', 'quiz-master-next'); ?></th>
+							<th><?php _e('Taken', 'quiz-master-next'); ?></th>
+							<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
+						</tr>
+					</thead>
+					<tbody id="the-list">
 						<?php
-						$mlw_qmn_previous_page = 0;
-						$mlw_current_page = $mlw_qmn_quiz_page+1;
-						$mlw_total_pages = ceil($mlw_qmn_quiz_count/$mlw_qmn_table_limit);
-						if( $mlw_qmn_quiz_page > 0 )
-						{
-						   	$mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-						   	echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						   	if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
-						   	{
-								echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-						   	}
+						$quotes_list = "";
+						$display = "";
+						$alternate = "";
+						foreach($mlw_quiz_data as $mlw_quiz_info) {
+							if($alternate) $alternate = "";
+							else $alternate = " class=\"alternate\"";
+							$quotes_list .= "<tr{$alternate}>";
+							$quotes_list .= "<td>" . $mlw_quiz_info->quiz_id . "</td>";
+							$quotes_list .= "<td class='post-title column-title'>" . esc_html($mlw_quiz_info->quiz_name) ." <a class='qsm-edit-name' onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(".__('Edit Name', 'quiz-master-next').")</a>";
+							$quotes_list .= "<div class=\"row-actions\">
+							<a class='qsm-action-link' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Edit', 'quiz-master-next')."</a>
+							 | <a class='qsm-action-link' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Results', 'quiz-master-next')."</a>
+							 | <a href='javascript:();' class='qsm-action-link' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">".__('Duplicate', 'quiz-master-next')."</a>
+							 | <a class='qsm-action-link qsm-action-link-delete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>".__('Delete', 'quiz-master-next')."</a>
+							</div></td>";
+							if (isset($post_to_quiz_array[$mlw_quiz_info->quiz_id]))
+							{
+								$quotes_list .= "<td>
+								<a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."'>" . __( 'View Quiz/Survey', 'quiz-master-next' ) . "</a>
+								<div class=\"row-actions\"><a class='linkOptions' href='post.php?post=".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['id']."&action=edit'>Edit Post Settings</a></a>
+								</td>";
+							}
 							else
 							{
-								echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-						   	}
+								$quotes_list .= "<td></td>";
+							}
+							$quotes_list .= "<td>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</td>";
+							$quotes_list .= "<td>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</td>";
+							$quotes_list .= "<td>" . $mlw_quiz_info->quiz_views . "</td>";
+							$quotes_list .= "<td>" . $mlw_quiz_info->quiz_taken ."</td>";
+							$quotes_list .= "<td>" . $mlw_quiz_info->last_activity ."</td>";
+							$quotes_list .= "</tr>";
 						}
-						else if( $mlw_qmn_quiz_page == 0 )
-						{
-						   if( $mlw_qmn_quiz_left > $mlw_qmn_table_limit )
-						   {
-								echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-								echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-								echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-						   }
-						}
-						else if( $mlw_qmn_quiz_left < $mlw_qmn_table_limit )
-						{
-						   $mlw_qmn_previous_page = $mlw_qmn_quiz_page - 2;
-						   echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_previous_page\"><</a>";
-							echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-							echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=quiz-master-next/mlw_quizmaster2.php&&mlw_quiz_page=$mlw_qmn_quiz_page\">></a>";
-						}
-						?>
-					</span>
-					<br class="clear">
-				</div>
-			</div>
-			<table class="widefat">
-				<thead>
-					<tr>
-						<th>ID</th>
-						<th><?php _e('Name', 'quiz-master-next'); ?></th>
-						<th><?php _e('URL', 'quiz-master-next'); ?></th>
-						<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Views', 'quiz-master-next'); ?></th>
-						<th><?php _e('Taken', 'quiz-master-next'); ?></th>
-						<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
-					</tr>
-				</thead>
-				<tbody id="the-list">
-					<?php
-					$quotes_list = "";
-					$display = "";
-					$alternate = "";
-					foreach($mlw_quiz_data as $mlw_quiz_info) {
-						if($alternate) $alternate = "";
-						else $alternate = " class=\"alternate\"";
-						$quotes_list .= "<tr{$alternate}>";
-						$quotes_list .= "<td>" . $mlw_quiz_info->quiz_id . "</td>";
-						$quotes_list .= "<td class='post-title column-title'>" . esc_html($mlw_quiz_info->quiz_name) ." <a class='qsm-edit-name' onclick=\"editQuizName('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>(".__('Edit Name', 'quiz-master-next').")</a>";
-						$quotes_list .= "<div class=\"row-actions\">
-						<a class='qsm-action-link' href='admin.php?page=mlw_quiz_options&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Edit', 'quiz-master-next')."</a>
-						 | <a class='qsm-action-link' href='admin.php?page=mlw_quiz_results&&quiz_id=".$mlw_quiz_info->quiz_id."'>".__('Results', 'quiz-master-next')."</a>
-						 | <a href='javascript:();' class='qsm-action-link' onclick=\"duplicateQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\">".__('Duplicate', 'quiz-master-next')."</a>
-						 | <a class='qsm-action-link qsm-action-link-delete' onclick=\"deleteQuiz('".$mlw_quiz_info->quiz_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='javascript:();'>".__('Delete', 'quiz-master-next')."</a>
-						</div></td>";
-						if (isset($post_to_quiz_array[$mlw_quiz_info->quiz_id]))
-						{
-							$quotes_list .= "<td>
-							<a href='".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['link']."'>" . __( 'View Quiz/Survey', 'quiz-master-next' ) . "</a>
-							<div class=\"row-actions\"><a class='linkOptions' href='post.php?post=".$post_to_quiz_array[$mlw_quiz_info->quiz_id]['id']."&action=edit'>Edit Post Settings</a></a>
-							</td>";
-						}
-						else
-						{
-							$quotes_list .= "<td></td>";
-						}
-						$quotes_list .= "<td>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</td>";
-						$quotes_list .= "<td>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</td>";
-						$quotes_list .= "<td>" . $mlw_quiz_info->quiz_views . "</td>";
-						$quotes_list .= "<td>" . $mlw_quiz_info->quiz_taken ."</td>";
-						$quotes_list .= "<td>" . $mlw_quiz_info->last_activity ."</td>";
-						$quotes_list .= "</tr>";
-					}
-					echo $quotes_list; ?>
-				</tbody>
-				<tfoot>
-					<tr>
-						<th>ID</th>
-						<th><?php _e('Name', 'quiz-master-next'); ?></th>
-						<th><?php _e('URL', 'quiz-master-next'); ?></th>
-						<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
-						<th><?php _e('Views', 'quiz-master-next'); ?></th>
-						<th><?php _e('Taken', 'quiz-master-next'); ?></th>
-						<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-		<?php
-		if ( get_option('mlw_advert_shows') == 'true' )
-		{
-			?>
-			<div class="qsm-news-ads">
-				<h3 class="qsm-news-ads-title">Quiz And Survey Master News</h3>
-				<?php
-				$qmn_rss = array();
-				$qmn_feed = fetch_feed('http://quizandsurveymaster.com/feed');
-				if (!is_wp_error($qmn_feed)) {
-					$qmn_feed_items = $qmn_feed->get_items(0, 5);
-					foreach ($qmn_feed_items as $feed_item) {
-					    $qmn_rss[] = array(
-					        'link' => $feed_item->get_link(),
-					        'title' => $feed_item->get_title(),
-					        'description' => $feed_item->get_description(),
-									'date' => $feed_item->get_date( 'F j Y' ),
-									'author' => $feed_item->get_author()->get_name()
-					    );
-					}
-				}
-				foreach($qmn_rss as $item)
-				{
-					?>
-					<h3><a target='_blank' href="<?php echo $item['link']; ?>"><?php echo $item['title']; ?></a></h3>
-					<p>By <?php echo $item['author']; ?> on <?php echo $item['date']; ?></p>
-					<div>
-						<?php echo $item['description']; ?>
-					</div>
-					<?php
-				}
-				?>
+						echo $quotes_list; ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th>ID</th>
+							<th><?php _e('Name', 'quiz-master-next'); ?></th>
+							<th><?php _e('URL', 'quiz-master-next'); ?></th>
+							<th><?php _e('Shortcode', 'quiz-master-next'); ?></th>
+							<th><?php _e('Leaderboard Shortcode', 'quiz-master-next'); ?></th>
+							<th><?php _e('Views', 'quiz-master-next'); ?></th>
+							<th><?php _e('Taken', 'quiz-master-next'); ?></th>
+							<th><?php _e('Last Modified', 'quiz-master-next'); ?></th>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 			<?php
-		}
-		?>
-		<div style="clear: both;"></div>
+			if ( get_option('mlw_advert_shows') == 'true' )
+			{
+				?>
+				<div class="qsm-news-ads">
+					<h3 class="qsm-news-ads-title">Quiz And Survey Master News</h3>
+					<div class="qsm-news-ads-widget">
+						<h3>Subscribe to our newsletter!</h3>
+						<p>Join our mailing list and recevie a 20% off coupon off your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
+						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary">Subscribe Now</a>
+					</div>
+					<?php
+					$qmn_rss = array();
+					$qmn_feed = fetch_feed('http://quizandsurveymaster.com/feed');
+					if (!is_wp_error($qmn_feed)) {
+						$qmn_feed_items = $qmn_feed->get_items(0, 5);
+						foreach ($qmn_feed_items as $feed_item) {
+						    $qmn_rss[] = array(
+						        'link' => $feed_item->get_link(),
+						        'title' => $feed_item->get_title(),
+						        'description' => $feed_item->get_description(),
+										'date' => $feed_item->get_date( 'F j Y' ),
+										'author' => $feed_item->get_author()->get_name()
+						    );
+						}
+					}
+					foreach($qmn_rss as $item)
+					{
+						?>
+						<div class="qsm-news-ads-widget">
+							<h3><?php echo $item['title']; ?></h3>
+							<p>By <?php echo $item['author']; ?></p>
+							<div>
+								<?php echo $item['description']; ?>
+							</div>
+							<a target='_blank' href="<?php echo $item['link']; ?>" class="button-primary">Read More</a>
+						</div>
+						<?php
+					}
+					?>
+				</div>
+				<?php
+			}
+			?>
+		</div>
 		<!--Dialogs-->
 
 		<!--New Quiz Dialog-->

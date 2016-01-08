@@ -83,6 +83,7 @@ label.inline .mlw_qmn_question,
 .quiz_section input[type="email"],
 .quiz_section input[type="number"] {
 width: 70%;
+min-height: 35px;
 display: inline-block;
 padding: 10px 8px 10px 8px;
 font-size: 14px;

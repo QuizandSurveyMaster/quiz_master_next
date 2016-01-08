@@ -1348,7 +1348,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='".$current_user->display_name."' />";
 			$mlw_contact_display .= "<br /><br />";
 
@@ -1360,7 +1360,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1371,7 +1371,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='".$current_user->user_email."' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1382,7 +1382,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1403,7 +1403,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1414,7 +1414,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1425,7 +1425,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
@@ -1436,7 +1436,7 @@ function mlwDisplayContactInfo($mlw_quiz_options)
 			{
 				$mlw_contact_class = "class=\"mlwRequiredText\"";
 			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span><br />";
+			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span>";
 			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
 			$mlw_contact_display .= "<br /><br />";
 		}
