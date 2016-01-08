@@ -60,15 +60,16 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (December 15, 2015)</h3>
+			<h3><?php echo $mlw_quiz_version; ?> (January 9, 2015)</h3>
 			<ul class="changelog">
 				<!--
 				Examples:
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixes undefined results notice displayed on admin results for some users</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes bug that was causing the disable radio buttons option to not work in all browsers</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes timer bug that caused the timer to continue counting down after quiz has been submitted</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes theme conflict between QSM and some Bootstrap based themes</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes Quizzes/Surveys page table width issue</li>
 				<li class="fixed"><div class="two">Fixed</div>* Minor design changes</li>
 			</ul>
 		</div>
