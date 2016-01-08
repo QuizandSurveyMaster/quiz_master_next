@@ -6,26 +6,36 @@ Quizzes/Surveys Page
   font-size: 16px !important;
 }
 
+.qsm-quizzes-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .qsm-quiz-page-wrapper {
-  width: 100%;
-  float: left;
+  flex-grow: 1;
 }
 
 .qsm-quiz-page-wrapper-with-ads {
-  width: 85%;
-  float: left;
+  flex-grow: 1;
 }
 
 .qsm-news-ads {
-  width: 13%;
-  float: right;
-  padding: 1%;
   background-color: white;
 }
 
 .qsm-news-ads-title {
   text-align: center;
   border-bottom: 1px solid black;
+}
+
+.qsm-news-ads-widget {
+  text-align: center;
+  border-top: 2px solid black;
+  border-bottom: 5px solid black;
+  margin: 10px 0;
+  background: #ddd;
+  padding: 10px 5px;
 }
 
 .qsm-edit-name {
@@ -53,6 +63,20 @@ Quizzes/Surveys Page
   font-size: 16px;
   font-weight: bold;
   padding-right: 30px;
+}
+
+@media screen and (min-width: 1200px) {
+  .qsm-quizzes-page-content {
+    flex-direction: row;
+  }
+
+  .qsm-quiz-page-wrapper-with-ads {
+    margin-right: 10px;
+  }
+
+  .qsm-news-ads {
+    flex-basis: 15%;
+  }
 }
 
 
