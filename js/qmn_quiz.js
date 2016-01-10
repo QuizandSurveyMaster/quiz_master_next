@@ -1,5 +1,6 @@
 //Global Variables
 var qmn_timer_activated = false;
+var qsmTitleText = window.document.title;
 
 function qmnTimeTakenTimer() {
 	var x = +document.getElementById("timer").value;
@@ -175,7 +176,7 @@ function qmnActivateTimer( quiz_id ) {
 		minutes = qmn_quiz_data[quiz_id].timer_limit;
 	}
 	window.amount = minutes * 60;
-	window.titleText = window.document.title;
+
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( window.amount );
 	window.qsmCounter = setInterval( qmnTimer, 1000, quiz_id );
 }
@@ -188,7 +189,7 @@ function qmnTimer( quiz_id ) {
 	window.sessionStorage.setItem( 'mlw_time_quiz' + quiz_id, window.amount / 60 );
 	window.sessionStorage.setItem( 'mlw_started_quiz' + quiz_id, "yes" );
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( qmnMinToSec( window.amount ) );
-	window.document.title = qmnMinToSec( window.amount ) + " " + window.titleText;
+	window.document.title = qmnMinToSec( window.amount ) + " " + qsmTitleText;
 	if ( window.amount <= 0 )
 	{
 		clearInterval( window.counter );
@@ -206,8 +207,10 @@ function qmnTimer( quiz_id ) {
 function qmnEndTimer( quiz_id ) {
 	window.sessionStorage.setItem('mlw_time_quiz' + quiz_id, 'completed');
 	window.sessionStorage.setItem('mlw_started_quiz' + quiz_id, 'no');
-	window.document.title = window.titleText;
-	clearInterval( qsmCounter );
+	window.document.title = qsmTitleText;
+	if ( typeof window.qsmCounter != 'undefined' ) {
+		clearInterval( window.qsmCounter );
+	}
 }
 
 function qmnInitTimer( quiz_id ) {
