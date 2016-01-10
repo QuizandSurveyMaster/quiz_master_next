@@ -207,7 +207,7 @@ function qmnEndTimer( quiz_id ) {
 	window.sessionStorage.setItem('mlw_time_quiz' + quiz_id, 'completed');
 	window.sessionStorage.setItem('mlw_started_quiz' + quiz_id, 'no');
 	window.document.title = window.titleText;
-	clearInterval( qsmCounter );
+	clearInterval( window.qsmCounter );
 }
 
 function qmnInitTimer( quiz_id ) {
