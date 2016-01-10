@@ -67,11 +67,8 @@ function mlw_generate_about_page()
 				<li class="add"><div class="two">Add</div>Some feature was added</li>
 				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
 				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixes timer bug that caused the timer to continue counting down after quiz has been submitted</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes theme conflict between QSM and some Bootstrap based themes</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes Quizzes/Surveys page table width issue</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes but preventing editing of quiz post settings</li>
-				<li class="fixed"><div class="two">Fixed</div>* Minor design changes</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes bug preventing some users to not be able to submit quiz</li>
+				<li class="fixed"><div class="two">Fixed</div>* Fixes bug causing undefined titles for some users</li>
 			</ul>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">

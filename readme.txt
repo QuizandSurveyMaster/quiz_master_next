@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, quizzes, surveys, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math, mailchimp, newsletter, optin
 Requires at least: 4.0.1
 Tested up to: 4.4.1
-Stable tag: 4.6.5
+Stable tag: 4.6.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,11 +113,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.6.6 (January 11, 2015) =
+ * Fixes bug preventing some users to not be able to submit quiz
+ * Fixes bug causing undefined titles for some users
+
 = 4.6.5 (January 9, 2015) =
  * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
  * Fixes theme conflict between QSM and some Bootstrap based themes
  * Fixes Quizzes/Surveys page table width issue
- * Fixes but preventing editing of quiz post settings
+ * Fixes bug preventing editing of quiz post settings
  * Minor design changes
 
 = 4.6.4 (December 15, 2015) =
@@ -137,5 +141,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.6.5 =
-Upgrade to fix timer bug, theme conflict bug, table width bug, and more minor bugs. Also has some minor design changes to admin pages.
+= 4.6.6 =
+Upgrade to fix bugs that prevented some users from not submitting the quiz or survey
