@@ -86,11 +86,13 @@ class MLWQuizMasterNext
 	  */
 	private function load_dependencies()
 	{
+
+		include("php/install.php");
+
 		include("php/class-qmn-log-manager.php");
 		$this->log_manager = new QMN_Log_Manager;
 
-		if (is_admin())
-		{
+		if ( is_admin() ) {
 			include("php/stats-page.php");
 			include("php/quizzes-page.php");
 			include("php/quiz-options-page.php");
@@ -116,7 +118,7 @@ class MLWQuizMasterNext
 			include("php/class-qmn-review-message.php");
 		}
 		include("php/class-qmn-quiz-manager.php");
-		include("php/install.php");
+
 		include("php/leaderboard-shortcode.php");
 		include("php/updates.php");
 		include("php/widgets.php");
