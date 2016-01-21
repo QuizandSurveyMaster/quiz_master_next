@@ -175,6 +175,20 @@ ul.changelog li.add div.two:before {
   margin-right: 5px;
 }
 
+ul.changelog li.update > div{
+  background:#bde7ff;
+  color: #444;
+  border-right:1px solid #106daa;
+  width: 20%;
+}
+
+ul.changelog li.update div.two:before {
+  content: "\f463";
+  font-family: "dashicons";
+  color:#106daa;
+  margin-right: 5px;
+}
+
 
 /********************
 Help Page
