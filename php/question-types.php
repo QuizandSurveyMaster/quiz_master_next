@@ -375,8 +375,10 @@ function qmn_multiple_response_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
+				$question_display .= '<div class="qsm_check_answer">';
         $question_display .= "<input type='hidden' name='question".$id."' value='This value does not matter' />";
         $question_display .= "<input type='checkbox' name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
+				$question_display .= '</div>';
       }
     }
   }

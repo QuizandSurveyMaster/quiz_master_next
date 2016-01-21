@@ -1,10 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
-Tags: quiz, survey, quizzes, surveys, test, score, exam, questionnaire, email, answer, question, certificate, points, results, math, mailchimp, newsletter, optin
+Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.0.1
 Tested up to: 4.4.1
-Stable tag: 4.6.6
+Stable tag: 4.6.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,15 +56,6 @@ You can assign categories to your questions. You can then show the user their sc
 * Create and display math formulas
 * And **Much** More...
 
-= Translations =
-
-* Portuguese (Brazil) (Thanks to Francisco Ildefonso)
-* Spanish (Spain) (Thanks to Jordi)
-* Thai (Thanks to Yudthaphon)
-* Danish (Thanks to Jørgen Granborg)
-* Dutch (Thanks to Huub Scheenen)
-* Italian (Thanks to Junio)
-
 = Make Suggestions Or Contribute =
 Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
@@ -113,6 +104,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.6.7 (January 22, 2015) =
+ * Fixes bug causing multiple response to be on a single line for some users
+ * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
+ * Fixes bug causing unexpected output error when activating plugin
+ * Changes comment section to default to off in newer quizzes
+ * Adds link to online academy to help page
+ * Cleans up installation function code
+
 = 4.6.6 (January 11, 2015) =
  * Fixes bug preventing some users to not be able to submit quiz
  * Fixes bug causing undefined titles for some users
@@ -141,5 +140,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.6.6 =
-Upgrade to fix bugs that prevented some users from not submitting the quiz or survey
+= 4.6.7 =
+Upgrade to fix bugs that affected the appearance of the multiple response questions and other minor bugs

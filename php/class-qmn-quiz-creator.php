@@ -164,100 +164,99 @@ class QMNQuizCreator
 			4. %FOURTH_PLACE_NAME%-%FOURTH_PLACE_SCORE%<br />
 			5. %FIFTH_PLACE_NAME%-%FIFTH_PLACE_SCORE%<br />";
 		$mlw_style_default = ".mlw_qmn_quiz label {
-			display: inline;
-		}
-		.ui-tooltip
-		{
-			max-width: 500px !important;
-		}
-		.ui-tooltip-content
-		{
-			max-width: 500px !important;
-		}
-		.qmn_error, .qmn_page_error_message
-		{
-			color: red;
-		}
-		.mlw_qmn_hint_link
-		{
-		text-decoration:underline;
-		color:rgb(0,0,255);
-		}
-		.mlw_qmn_quiz_link
-		{
-			display: inline;
-			vertical-align:top !important;
-			text-decoration: none;
-		}
-		div.mlw_qmn_quiz input[type=radio],
-		div.mlw_qmn_quiz input[type=submit],
-		div.mlw_qmn_quiz label {
-			cursor: pointer;
-		}
-		div.mlw_qmn_quiz input:not([type=submit]):focus,
-		div.mlw_qmn_quiz textarea:focus {
-			background: #eaeaea;
-		}
-		div.mlw_qmn_quiz {
-			text-align: left;
-		}
-		div.quiz_section {
+				display: inline;
+			}
+			.ui-tooltip
+			{
+				max-width: 500px !important;
+			}
+			.ui-tooltip-content
+			{
+				max-width: 500px !important;
+			}
+			.qmn_error, .qmn_page_error_message
+			{
+				color: red;
+			}
+			.mlw_qmn_hint_link
+			{
+			text-decoration:underline;
+			color:rgb(0,0,255);
+			}
+			.mlw_qmn_quiz_link
+			{
+				display: inline;
+				vertical-align:top !important;
+				text-decoration: none;
+			}
+			div.mlw_qmn_quiz input[type=radio],
+			div.mlw_qmn_quiz input[type=submit],
+			div.mlw_qmn_quiz label {
+				cursor: pointer;
+			}
+			div.mlw_qmn_quiz input:not([type=submit]):focus,
+			div.mlw_qmn_quiz textarea:focus {
+				background: #eaeaea;
+			}
+			div.mlw_qmn_quiz {
+				text-align: left;
+			}
+			div.quiz_section {
 
-		}
-		.mlw_horizontal_choice
-		{
-			margin-right: 20px;
-		}
-		div.mlw_qmn_timer {
-			position:fixed;
-			top:200px;
-			right:0px;
-			width:130px;
-			color:#00CCFF;
-			border-radius: 15px;
-			background:#000000;
-			text-align: center;
-			padding: 15px 15px 15px 15px
-		}
-		div.mlw_qmn_quiz input[type=submit],
-		a.mlw_qmn_quiz_link
-		{
-			border-radius: 4px;
-			position: relative;
-			background-image: linear-gradient(#fff,#dedede);
-			background-color: #eee;
-			border: #ccc solid 1px;
-			color: #333;
-			text-shadow: 0 1px 0 rgba(255,255,255,.5);
-			box-sizing: border-box;
-			display: inline-block;
-			padding: 7px 7px 7px 7px;
-			margin: auto;
-			font-weight: bold;
-			cursor: pointer;
-		}
-		.mlw_qmn_question, .mlw_qmn_question_number, .mlw_qmn_comment_section_text
-		{
-			font-weight: bold;
-		}
-		.mlw_next
-		{
-			float: right;
-		}
-		.mlw_previous
-		{
-			float: left;
-		}
-		.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
-			width: 100%;
-			border-radius: 7px;
-			padding: 2px 10px;
-			-webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-			box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-			border: 1px solid #ccc;
-		}
-";
-		$mlw_question_answer_default = "%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />";
+			}
+			.mlw_horizontal_choice
+			{
+				margin-right: 20px;
+			}
+			div.mlw_qmn_timer {
+				position:fixed;
+				top:200px;
+				right:0px;
+				width:130px;
+				color:#00CCFF;
+				border-radius: 15px;
+				background:#000000;
+				text-align: center;
+				padding: 15px 15px 15px 15px
+			}
+			div.mlw_qmn_quiz input[type=submit],
+			a.mlw_qmn_quiz_link
+			{
+				border-radius: 4px;
+				position: relative;
+				background-image: linear-gradient(#fff,#dedede);
+				background-color: #eee;
+				border: #ccc solid 1px;
+				color: #333;
+				text-shadow: 0 1px 0 rgba(255,255,255,.5);
+				box-sizing: border-box;
+				display: inline-block;
+				padding: 7px 7px 7px 7px;
+				margin: auto;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			.mlw_qmn_question, .mlw_qmn_question_number, .mlw_qmn_comment_section_text
+			{
+				font-weight: bold;
+			}
+			.mlw_next
+			{
+				float: right;
+			}
+			.mlw_previous
+			{
+				float: left;
+			}
+			.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
+				width: 100%;
+				border-radius: 7px;
+				padding: 2px 10px;
+				-webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
+				border: 1px solid #ccc;
+			}
+		";
 		$results = $wpdb->insert(
 			$wpdb->prefix . "mlw_quizzes",
 			array(
@@ -275,7 +274,7 @@ class QMNQuizCreator
 				'phone_field_text' => 'Phone Number',
 				'comment_field_text' => 'Comments',
 				'email_from_text' => 'Wordpress',
-				'question_answer_template' => $mlw_question_answer_default,
+				'question_answer_template' => '%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />',
 				'leaderboard_template' => $mlw_leaderboard_default,
 				'system' => 0,
 				'randomness_order' => 0,
@@ -289,7 +288,7 @@ class QMNQuizCreator
 				'user_email' => 0,
 				'user_phone' => 0,
 				'admin_email' => get_option( 'admin_email', 'Enter email' ),
-				'comment_section' => 0,
+				'comment_section' => 1,
 				'question_from_total' => 0,
 				'total_user_tries' => 0,
 				'total_user_tries_text' => 'You are only allowed 1 try and have already submitted your quiz.',
