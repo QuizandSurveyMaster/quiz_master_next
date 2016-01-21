@@ -289,7 +289,7 @@ class QMNQuizCreator
 				'user_email' => 0,
 				'user_phone' => 0,
 				'admin_email' => get_option( 'admin_email', 'Enter email' ),
-				'comment_section' => 0,
+				'comment_section' => 1,
 				'question_from_total' => 0,
 				'total_user_tries' => 0,
 				'total_user_tries_text' => 'You are only allowed 1 try and have already submitted your quiz.',
