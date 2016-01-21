@@ -55,9 +55,9 @@ function qmn_documentation_meta_box_content()
 	<p><?php _e('Need help with the plugin? Try any of the following:', 'quiz-master-next'); ?></p>
 	<ul>
 		<li>To report a bug, issue, or make a feature request, please create an issue in our <a href="https://github.com/fpcorso/quiz_master_next/issues">Github Issue Tracker</a></li>
-		<li>For assistance in using the plugin, visit our <a href="http://quizandsurveymaster.com/documentation/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin">documentation</a> for using this plugin</li>
+		<li>For assistance in using the plugin, read our <a href="http://quizandsurveymaster.com/documentation/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">documentation</a> or view videos in our <a href="http://quizandsurveymaster.com/online-academy/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=online_academy" target="_blank">online academy</a></li>
 		<li>For support, fill out the form in the Support widget to send us an email</li>
-		<li>For support, fill out the form on our <a href="http://quizandsurveymaster.com/contact-us/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin">Contact Us Page</a></li>
+		<li>For support, fill out the form on our <a href="http://quizandsurveymaster.com/contact-us/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
 		<li>For support, create a topic in the <a href="https://wordpress.org/support/plugin/quiz-master-next">WordPress Support Forums</a></li>
 	</ul>
 	<?php
