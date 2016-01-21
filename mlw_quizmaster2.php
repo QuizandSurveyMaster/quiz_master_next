@@ -86,9 +86,6 @@ class MLWQuizMasterNext
 	  */
 	private function load_dependencies()
 	{
-
-		include("php/install.php");
-
 		include("php/class-qmn-log-manager.php");
 		$this->log_manager = new QMN_Log_Manager;
 
@@ -271,6 +268,8 @@ class MLWQuizMasterNext
 	}
 }
 
-$mlwQuizMasterNext = new MLWQuizMasterNext();
+include("php/install.php");
 register_activation_hook( __FILE__, 'mlw_quiz_activate');
+$mlwQuizMasterNext = new MLWQuizMasterNext();
+
 ?>
