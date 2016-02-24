@@ -26,7 +26,7 @@ class QSM_Changelog_Generator {
     // Converts the array into HTML list
     $display = '<ul class="changelog">';
     foreach ( $changelog as $change ) {
-      $display .= "<li class='fixed'><div class='two'>Fixed</div>* $change</li>";
+      $display .= "<li class='closed'><div class='two'>Closed</div>* $change</li>";
     }
     $display = .'</ul>';
 
