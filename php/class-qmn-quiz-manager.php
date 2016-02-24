@@ -268,7 +268,7 @@ class QMNQuizManager
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-tooltip' );
-		wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+		wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 		global $qmn_json_data;
 		$qmn_json_data["error_messages"] = array(

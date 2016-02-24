@@ -29,9 +29,6 @@ function mlw_generate_quiz_options()
 	<script type="text/javascript"
 	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 	</script>
-	<!-- css -->
-	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-	<!-- jquery scripts -->
 	<?php
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
@@ -41,6 +38,7 @@ function mlw_generate_quiz_options()
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
+	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	?>
 	<style>
 		.mlw_tab_content
