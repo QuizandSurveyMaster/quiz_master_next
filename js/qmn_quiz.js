@@ -73,6 +73,13 @@ function qmnValidation( element, quiz_form_id ) {
 						result =  false;
 					}
 				}
+				if( jQuery( this ).attr( 'class' ).indexOf( 'qsmRequiredSelect' ) > -1 ) {
+					check_val = jQuery( this ).val();
+					if ( check_val == "No Answer Provided" ) {
+						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
+						result =  false;
+					}
+				}
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredCheck' ) > -1 ) {
 					if ( ! jQuery( this ).find( 'input:checked' ).length ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
