@@ -61,20 +61,7 @@ function mlw_generate_about_page()
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
 			<h3><?php echo $mlw_quiz_version; ?> (January 22, 2015)</h3>
-			<ul class="changelog">
-				<!--
-				Examples:
-				<li class="add"><div class="two">Add</div>Some feature was added</li>
-				<li class="fixed"><div class="two">Fixed</div>Fixed some bug</li>
-				<li class="update"><div class="two">Updated</div>Fixed some bug</li>
-				-->
-				<li class="fixed"><div class="two">Fixed</div>* Fixes bug causing multiple response to be on a single line for some users</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly</li>
-				<li class="fixed"><div class="two">Fixed</div>* Fixes bug causing unexpected output error when activating plugin</li>
-				<li class="update"><div class="two">Updated</div>* Changes comment section to default to off in newer quizzes</li>
-				<li class="update"><div class="two">Updated</div>* Adds link to online academy to help page</li>
-				<li class="update"><div class="two">Updated</div>* Cleans up installation function code</li>
-			</ul>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 15 ); ?>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
 			<h2>GitHub Contributors</h2>
