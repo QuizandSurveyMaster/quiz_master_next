@@ -108,6 +108,9 @@ function qmnFormSubmit( quiz_form_id ) {
 	clearInterval( qsmTimerInterval );
 	qmnEndTimer( quiz_id );
 
+	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
+	qsmDisplayLoading( container );
+
 	var data = {
 		action: 'qmn_process_quiz',
 		quizData: jQuery( '#' + quiz_form_id ).serialize()
@@ -118,6 +121,11 @@ function qmnFormSubmit( quiz_form_id ) {
 	});
 
 	return false;
+}
+
+function qsmDisplayLoading( container ) {
+	jQuery( container ).empty();
+	jQuery( container ).append( '<div class="spinner-loader"></div>' );
 }
 
 function qmnDisplayResults( results, quiz_form_id, container ) {
