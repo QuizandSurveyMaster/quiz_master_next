@@ -51,7 +51,16 @@ function qsm_options_contact_tab_content() {
   <h2>Contact</h2>
   <div class="contact-message"></div>
   <a class="save-contact button-primary">Save Contact Form</a> <a class="add-contact-field button-primary">Add New Field</a>
-  <div class="contact-form"></div>
+  <div class="contact-form">
+    <div class="contact-form-row">
+      <div class="contact-form-group">
+        <label>Name *</label>
+        <div class="contact-form-group-field">
+          <input type="text">
+        </div>
+      </div>
+    </div>
+  </div>
   <a class="save-contact button-primary">Save Contact Form</a>
   <?php
 }
