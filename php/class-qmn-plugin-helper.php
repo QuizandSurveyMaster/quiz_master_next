@@ -225,7 +225,7 @@ class QMNPluginHelper
 				array($question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4]),
 				array($question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5]));
 		}
-		if ( 2 == $quiz_options->randomness_order || 3 = $quiz_options->randomness_order ) {
+		if ( 2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order ) {
 			shuffle( $answers );
 		}
 		foreach($this->question_types as $type)
