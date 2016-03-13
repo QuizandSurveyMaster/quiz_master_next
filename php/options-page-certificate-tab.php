@@ -4,8 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
 * This function adds the certificate tab using our API.
 *
-* Long Description
-*
 * @return type description
 * @since 4.4.0
 */
