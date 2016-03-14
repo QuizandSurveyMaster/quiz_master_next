@@ -56,4 +56,22 @@ function qsm_options_contact_tab_content() {
   <?php
 }
 
+add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
+add_action( 'wp_ajax_nopriv_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
+
+/**
+ * Saves the contact form from the quiz settings tab
+ *
+ * @since 0.1.0
+ * @return void
+ */
+function qsm_contact_form_admin_ajax() {
+  global $wpdb;
+  global $mlwQuizMasterNext;
+  $mlwQuizMasterNext->quizCreator->set_id( intval( $_POST["quiz_id"] ) );
+  $contact_ajax["status"] = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( "contact_form", serialize( $_POST["contact_form"] ) );
+  echo json_encode( $contact_ajax );
+  die();
+}
+
 ?>
