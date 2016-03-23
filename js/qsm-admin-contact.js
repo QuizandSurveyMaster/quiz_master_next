@@ -14,18 +14,21 @@ var QSMContact;
     addField : function( fieldArray ) {
       var required = '';
       if ( fieldArray.required ) {
-        required = '*';
+        required = 'checked="checked"';
       }
-      $( '.contact_form' ).append(
+      $( '.contact-form' ).append(
         '<div class="contact-form-row">' +
           '<div class="contact-form-group">' +
-            '<label>' +
-              fieldArray.label +
-              required +
-            '</label>' +
-            '<div class="contact-form-group-field">' +
-              '<input type="text">' +
-            '</div>' +
+            '<label>Label</label>' +
+            '<input type="text" value="' + fieldArray.label + '">' +
+            '<label>Type</label>' +
+            '<select>' +
+              '<option value="none">Select a type...</option>' +
+              '<option value="text">Small Open Answer</option>' +
+              '<option value="checkbox">Checkbox</option>' +
+            '</select>' +
+            '<label>Required?</label>' +
+            '<input type="checkbox" ' + required + '>' +
           '</div>' +
         '</div>'
       );
