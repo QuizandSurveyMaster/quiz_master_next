@@ -5,7 +5,7 @@
 var QSMContact;
 (function ($) {
   QSMContact = {
-    contactForm : qsmContactObject.contactForm,
+    contactForm : [],
     load : function() {
       $.each( QSMContact.contactForm, function( i, val ) {
         QSMContact.addField( val );
