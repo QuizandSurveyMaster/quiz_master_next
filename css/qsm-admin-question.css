@@ -84,13 +84,7 @@
 
 .import_question_button,
 .other_quiz_question_text {
-  margin-right: 15px;
-}
-
-.qsm-spinner-loader {
-	right: 50%;
-  position: absolute;
-  bottom: 40%;
+  margin-right: 15px !important;
 }
 
 @-moz-keyframes qsm-spinner-loader {
