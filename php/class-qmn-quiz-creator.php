@@ -306,7 +306,7 @@ class QMNQuizCreator
 				'require_log_in' => 0,
 				'require_log_in_text' => 'This quiz is for logged in users only.',
 				'limit_total_entries' => 0,
-				'limit_total_entries_text' => 'Unfortunately, this quiz is limited the amount of entries it can recieve and has already reached that limit.',
+				'limit_total_entries_text' => 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.',
 				'scheduled_timeframe' => '',
 				'scheduled_timeframe_text' => '',
 				'quiz_views' => 0,
