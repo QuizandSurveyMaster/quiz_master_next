@@ -34,6 +34,7 @@ $mlw_qmn_result_array = array(
 
 */
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_average_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_points',10,2);
@@ -285,6 +286,38 @@ function qmn_variable_category_points($content, $mlw_quiz_array)
 			}
 		}
 		$content = str_replace( $answer_text[0] , $return_points, $content);
+	}
+	return $content;
+}
+
+/*
+*	Replaces variable %CATEGORY_POINTS% with the average points for that category
+*
+* Filter function that replaces variable %CATEGORY_POINTS% with the average points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
+*
+* @since 4.0.0
+* @param string $content The contents of the results page
+* @param array $mlw_quiz_array The array of all the results from user taking the quiz
+* @return string Returns the contents for the results page
+*/
+function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
+	$return_points = 0;
+	while ( strpos( $content, '%AVERAGE_CATEGORY_POINTS%' ) !== false ) {
+		$return_points = 0;
+		$total_questions = 0;
+		preg_match( "~%AVERAGE_CATEGORY_POINTS%(.*?)%/AVERAGE_CATEGORY_POINTS%~i", $content, $answer_text );
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
+			if ( $answer["category"] == $answer_text[1] ) {
+				$total_questions += 1;
+				$return_points += $answer["points"];
+			}
+		}
+		if ( $total_questions !== 0 ) {
+			$return_points = round( $return_points / $total_questions, 2 );
+		} else {
+			$return_points = 0;
+		}
+		$content = str_replace( $answer_text[0], $return_points, $content );
 	}
 	return $content;
 }
