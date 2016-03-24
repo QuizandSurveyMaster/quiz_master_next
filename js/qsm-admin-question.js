@@ -8,8 +8,7 @@ var QSMQuestion;
     addQuestionFromQuiz: function() {
       jQuery( "#from_other_quiz_dialog" ).dialog({
         autoOpen: false,
-        show: 'blind',
-        hide: 'explode',
+        width: 550,
         buttons: {
           Cancel: function() {
             jQuery( this ).dialog( 'close' );
@@ -30,12 +29,13 @@ var QSMQuestion;
       });
     },
     displayQuestionBank: function( questions ) {
+      QSMQuestion.removeSpinner( '.other_quiz_questions' );
       $.each( questions, function( i, val ) {
         $( '.other_quiz_questions' ).append(
           '<div class="other_quiz_question">' +
   					'<input type="hidden" class="hidden_question_id" value="' + val.id + '">' +
-            '<button class="import_question_button">Import Question</button>' +
-            '<span class="other_quiz_question_text">' + val.question + '</span> - <span class="other_quiz_question_quiz_text"> ' + val.quiz + '</span>' +
+            '<button class="import_question_button button">Import Question</button>' +
+            '<span class="other_quiz_question_text">' + val.question + '</span> <span class="other_quiz_question_quiz_text"> ' + val.quiz + '</span>' +
   				'</div>'
         );
       });
@@ -48,7 +48,10 @@ var QSMQuestion;
       if ( empty ) {
         $( container ).empty();
       }
-      $( container ).append( '<div class="spinner-loader"></div>' );
+      $( container ).append( '<div class="qsm-spinner-loader"></div>' );
+    },
+    removeSpinner: function( container ) {
+      $( container + ' .qsm-spinner-loader' ).remove();
     }
   };
 
