@@ -236,7 +236,7 @@ function mlw_qmn_variable_timer($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_timer_minutes($content, $mlw_quiz_array)
 {
-        $mlw_minutes = round($mlw_quiz_array["timer"]/60,2);
+	$mlw_minutes = round($mlw_quiz_array["timer"]/60,2);
 	$content = str_replace( "%TIMER_MINUTES%" , $mlw_minutes, $content);
 	return $content;
 }

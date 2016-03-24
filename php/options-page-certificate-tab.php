@@ -139,6 +139,7 @@ function mlw_options_certificate_tab_content()
 					<p style="margin: 2px 0">- %USER_PHONE%</p>
 					<p style="margin: 2px 0">- %USER_EMAIL%</p>
 					<p style="margin: 2px 0">- %CURRENT_DATE%</p>
+					<p style="margin: 2px 0">- %DATE_TAKEN%</p>
 				</td>
 				<td><label for="certificate_template">Allowed tags: &lt;b&gt; - bold, &lt;i&gt;-italics, &lt;u&gt;-underline, &lt;br&gt;-New Line or start a new line by pressing enter</label><textarea cols="80" rows="15" id="certificate_template" name="certificate_template"><?php echo $mlw_certificate_options[1]; ?></textarea>
 				</td>
