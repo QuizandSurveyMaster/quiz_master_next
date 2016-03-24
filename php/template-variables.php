@@ -52,6 +52,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments'
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_certificate_link',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_twitter_share',10,2);
@@ -244,6 +245,12 @@ function mlw_qmn_variable_date($content, $mlw_quiz_array)
 	$content = str_replace( "%CURRENT_DATE%" , date("F jS Y"), $content);
 	return $content;
 }
+
+function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
+	$content = str_replace( "%DATE_TAKEN%" , date("m/d/Y", strtotime( $mlw_quiz_array["time_taken"] ) ), $content);
+	return $content;
+}
+
 function mlw_qmn_variable_certificate_link($content, $mlw_quiz_array)
 {
 	while (strpos($content, '%CERTIFICATE_LINK%') != false)
