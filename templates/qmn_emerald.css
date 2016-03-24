@@ -262,7 +262,7 @@ border: 1px solid #e3e3e3;
         border-radius: 3px;
 }
 
-.qmn_btn, .btn {
+.qmn_btn, .qmn_quiz_container .btn {
   display: relative;
   display: inline-block;
   color: #666 !important;
@@ -281,7 +281,7 @@ border: 1px solid #e3e3e3;
         transition: background .25s ease-out;
 }
 
-.qmn_btn:hover, .btn:hover {
+.qmn_btn:hover, .qmn_quiz_container .btn:hover {
   color: #fff;
   background: #666;
 }
