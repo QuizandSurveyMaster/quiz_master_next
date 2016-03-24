@@ -30,7 +30,8 @@ function mlw_options_questions_tab_content()
 	<?php
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
-	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/admin_question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
+	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/qsm-admin-question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
+	wp_enqueue_style('qmn_admin_question_css', plugins_url( '../js/qsm-admin-question.css' , __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
 	global $wpdb;
@@ -426,7 +427,68 @@ function mlw_options_questions_tab_content()
 		}
 	}
 
+	// Import question from another quiz
+	if ( isset( $_POST["add_question_from_quiz_nonce"] ) && wp_verify_nonce( $_POST['add_question_from_quiz_nonce'], 'add_question_from_quiz') ) {
 
+		// Load question from question bank
+		$question_id = intval( $_POST["copy_question_id"] );
+		$quiz_id = intval( $_POST["quiz_id"] );
+		$importing_question = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $question_id ) );
+
+		// Save question into question bank for this quiz
+		$results = $wpdb->insert(
+			$wpdb->prefix."mlw_questions",
+			array(
+				'quiz_id' => $quiz_id,
+				'question_name' => $importing_question->question_name,
+				'answer_array' => $importing_question->answer_array,
+				'question_answer_info' => $importing_question->question_answer_info,
+				'comments' => $importing_question->comments,
+				'hints' => $importing_question->hints,
+				'question_order' => $importing_question->question_order,
+				'question_type_new' => $importing_question->question_type_new,
+				'question_settings' => $importing_question->question_settings,
+				'category' => $importing_question->category,
+				'deleted' => 0
+			),
+			array(
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%d',
+				'%s',
+				'%d',
+				'%s',
+				'%s',
+				'%s',
+				'%d'
+			)
+		);
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The question has been created successfully.', 'quiz-master-next' ), 'success' );
+
+			//Insert Action Into Audit Trail
+			global $current_user;
+			get_currentuserinfo();
+			$wpdb->insert(
+				$wpdb->prefix . "mlw_qm_audit_trail",
+				array(
+					'action_user' => $current_user->display_name,
+					'action' => "Question Has Been Added: $question_name",
+					'time' => date("h:i:s A m/d/Y")
+				),
+				array(
+					'%s',
+					'%s',
+					'%s'
+				)
+			);
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0023' ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( "Error 0023", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error' );
+		}
+	}
 
 	//Load questions
 	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
@@ -519,23 +581,8 @@ function mlw_options_questions_tab_content()
 
 	$is_new_quiz = $wpdb->num_rows;
 	?>
-		<style>
-			.edit_link,
-			.duplicate_link {
-				color: #0074a2 !important;
-				font-size: 14px !important;
-			}
-			.delete_link {
-				color: red !important;
-				font-size: 14px !important;
-			}
-			.edit_link:hover,
-			.duplicate_link:hover,
-			.delete_link:hover {
-				background-color: black;
-			}
-		</style>
 		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="from_other_quiz_button"><?php _e('Add Question From Other Quiz', 'quiz-master-next'); ?></button>
 		<button class="add-new-h2" id="save_question_order"><?php _e('Save Question Order', 'quiz-master-next'); ?></button>
 		<form style="display:none;" action="" method="post" name="save_question_order_form" id="save_question_order_form">
 			<input type="hidden" name="save_question_order_input" id="save_question_order_input" value="" />
@@ -572,68 +619,6 @@ function mlw_options_questions_tab_content()
 			<tbody id="the-list">
 			</tbody>
 		</table>
-
-		<style>
-			.row:after,
-			.answers:after,
-			.answers_single:after {
-				clear:both;
-				display:table;
-				content: " ";
-			}
-			.row {
-				margin-bottom: 15px;
-			}
-			.row .option_label {
-				width:15%;
-				float:left;
-				font-weight: bold;
-			}
-			.row .option_input {
-				width:84%;
-				float:left;
-			}
-			.question_form {
-
-			}
-			.question_form fieldset {
-				margin: 20px 0px;
-				background: #fff;
-				padding: 5px;
-			}
-			.question_form legend {
-				font-size: 16px;
-				font-weight: bold;
-				background: #f1f1f1;
-				padding: 5px;
-			}
-			.answer_number,
-			.answer_text,
-			.answer_points,
-			.answer_correct {
-				font-weight: bold;
-				float:left;
-				margin: 1%;
-			}
-			.answer_number {
-				width:10%;
-			}
-			.answer_text {
-				width:60%;
-			}
-			.answer_points {
-				width:10%;
-			}
-			.answer_correct {
-				width:10%;
-			}
-			.answer_input {
-				width: 100%;
-			}
-			.question_area_header_text {
-				padding: 40px 0 0 !important;
-			}
-		</style>
 
 		<div class="question_area" id="question_area">
 			<h2 class="question_area_header_text">Add New Question</h2>
@@ -750,6 +735,51 @@ function mlw_options_questions_tab_content()
 				<p class='submit'><input type='submit' class='button-primary' value='<?php _e ('Duplicate Question', 'quiz-master-next'); ?>' /></p>
 			</form>
 		</div>
+
+		<div id="from_other_quiz_dialog" title="Add Question From Other Quiz" style="display:none;">
+			<h3><?php _e('Select a question to import into this quiz', 'quiz-master-next'); ?></h3>
+			<div class="other_quiz_questions">
+
+			</div>
+			<form action='' method='post' id="copy_question_form">
+				<?php wp_nonce_field('add_question_from_quiz','add_question_from_quiz_nonce'); ?>
+				<input type='hidden' id='copy_question_id' name='question_id' value='' />
+				<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
+			</form>
+		</div>
 	<?php
 }
+
+add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
+add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
+
+/**
+ * Loads all the questions and echos out JSON
+ *
+ * @since 0.1.0
+ * @return void
+ */
+function qsm_load_all_quiz_questions_ajax() {
+  global $wpdb;
+  global $mlwQuizMasterNext;
+
+	// Loads questions
+	$questions = $wpdb->get_results( "SELECT mlw_questions.question_id, mlw_questions.question_name, mlw_quizzes.quiz_name FROM {$wpdb->prefix}mlw_questions
+		LEFT JOIN mlw_quizzes ON mlw_questions.quiz_id=mlw_quizzes.quiz_id WHERE deleted='0' ORDER BY question_id DESC" );
+
+	// Creates question array
+	$question_json = array();
+	foreach ( $questions as $question ) {
+		$question_json[] = array(
+			'id' => $question->question_id,
+			'question' => $question->question_name,
+			'quiz' => $question->quiz_name
+		);
+	}
+
+	// Echos JSON and dies
+  echo json_encode( $question_json );
+  die();
+}
+
 ?>
