@@ -9,6 +9,7 @@ var QSMQuestion;
       jQuery( "#from_other_quiz_dialog" ).dialog({
         autoOpen: false,
         width: 550,
+        height: 400,
         buttons: {
           Cancel: function() {
             jQuery( this ).dialog( 'close' );
@@ -44,6 +45,15 @@ var QSMQuestion;
       $( '#copy_question_id' ).val( id );
       $( '#copy_question_form' ).submit();
     },
+    searchQuestionBank: function( query ) {
+      jQuery( ".other_quiz_question" ).each(function() {
+        if ( -1 === jQuery( this ).children( '.other_quiz_question_text' ).text().toLowerCase().indexOf( query.toLowerCase() ) ) {
+          jQuery( this ).hide();
+        } else {
+          jQuery( this ).show();
+        }
+      });
+    },
     loadSpinner: function( container, empty ) {
       if ( empty ) {
         $( container ).empty();
@@ -70,6 +80,15 @@ var QSMQuestion;
       QSMQuestion.importQuestion( $( this ).prev().val() );
     });
 
+    // Adds event handlers for searching question bank
+    $( "#dialog_question_search" ).keyup(function() {
+      QSMQuestion.searchQuestionBank( $( this ).val() );
+    });
+    $( '#dialog_question_search_button' ).on( 'click', function( event ) {
+      event.preventDefault();
+      var query = $( "#dialog_question_search" ).val();
+      QSMQuestion.searchQuestionBank( query );
+    });
   });
 }(jQuery));
 

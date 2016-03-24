@@ -738,6 +738,11 @@ function mlw_options_questions_tab_content()
 
 		<div id="from_other_quiz_dialog" title="Add Question From Other Quiz" style="display:none;">
 			<h3><?php _e('Select a question to import into this quiz', 'quiz-master-next'); ?></h3>
+			<p>
+				<label class="screen-reader-text" for="question_search">Search Questions:</label>
+				<input type="search" id="dialog_question_search" name="dialog_question_search" value="">
+				<button class="button" id="dialog_question_search_button">Search Questions</button>
+			</p>
 			<div class="other_quiz_questions">
 
 			</div>
