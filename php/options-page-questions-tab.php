@@ -31,7 +31,7 @@ function mlw_options_questions_tab_content()
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/qsm-admin-question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
-	wp_enqueue_style('qmn_admin_question_css', plugins_url( '../js/qsm-admin-question.css' , __FILE__ ) );
+	wp_enqueue_style('qmn_admin_question_css', plugins_url( '../css/qsm-admin-question.css' , __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
 	global $wpdb;
@@ -475,7 +475,7 @@ function mlw_options_questions_tab_content()
 				$wpdb->prefix . "mlw_qm_audit_trail",
 				array(
 					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Added: $question_name",
+					'action' => "Question Has Been Added: {$importing_question->question_name}",
 					'time' => date("h:i:s A m/d/Y")
 				),
 				array(
@@ -743,7 +743,7 @@ function mlw_options_questions_tab_content()
 			</div>
 			<form action='' method='post' id="copy_question_form">
 				<?php wp_nonce_field('add_question_from_quiz','add_question_from_quiz_nonce'); ?>
-				<input type='hidden' id='copy_question_id' name='question_id' value='' />
+				<input type='hidden' id='copy_question_id' name='copy_question_id' value='' />
 				<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
 			</form>
 		</div>
@@ -764,8 +764,8 @@ function qsm_load_all_quiz_questions_ajax() {
   global $mlwQuizMasterNext;
 
 	// Loads questions
-	$questions = $wpdb->get_results( "SELECT mlw_questions.question_id, mlw_questions.question_name, mlw_quizzes.quiz_name FROM {$wpdb->prefix}mlw_questions
-		LEFT JOIN mlw_quizzes ON mlw_questions.quiz_id=mlw_quizzes.quiz_id WHERE deleted='0' ORDER BY question_id DESC" );
+	$questions = $wpdb->get_results( "SELECT {$wpdb->prefix}mlw_questions.question_id, {$wpdb->prefix}mlw_questions.question_name, {$wpdb->prefix}mlw_quizzes.quiz_name FROM {$wpdb->prefix}mlw_questions
+		LEFT JOIN {$wpdb->prefix}mlw_quizzes ON {$wpdb->prefix}mlw_questions.quiz_id={$wpdb->prefix}mlw_quizzes.quiz_id WHERE {$wpdb->prefix}mlw_questions.deleted='0' ORDER BY {$wpdb->prefix}mlw_questions.question_id DESC" );
 
 	// Creates question array
 	$question_json = array();
