@@ -26,9 +26,10 @@ class QSM_Changelog_Generator {
     // Converts the array into HTML list
     $display = '<ul class="changelog">';
     foreach ( $changelog as $change ) {
-      $display .= "<li class='closed'><div class='two'>Closed</div>* $change</li>";
+      $label_type = $change["labels"][0]["name"];
+      $display .= "<li class='fixed'><div class='two'>Closed</div>$label_type: {$change['title']}</li>";
     }
-    $display = .'</ul>';
+    $display .= '</ul>';
 
     // Echos or returns HTML list based on $echo parameter
     if ( true === $echo ) {
@@ -62,7 +63,10 @@ class QSM_Changelog_Generator {
       foreach ( $changes as $issue ) {
         if ( ! isset( $issue["pull_request"] ) ) {
           if ( "closed" === $issue["state"] ) {
-            $changelog[] = $issue["title"];
+            $changelog[] = array(
+              'title' => $issue["title"],
+              'labels' => $issue["labels"]
+            );
           }
         }
       }

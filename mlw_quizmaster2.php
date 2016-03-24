@@ -99,6 +99,7 @@ class MLWQuizMasterNext
 			include("php/admin-results-page.php");
 			include("php/admin-results-details-page.php");
 			include("php/tools-page.php");
+			include("php/class-qsm-changelog-generator.php");
 			include("php/about-page.php");
 			include("php/help-page.php");
 			include("php/dashboard-widgets.php");
