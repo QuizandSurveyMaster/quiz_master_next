@@ -8,6 +8,10 @@ function qmnTimeTakenTimer() {
 	document.getElementById("timer").value = x;
 }
 
+function qsmEndTimeTakenTimer() {
+	clearInterval( qsmTimerInterval );
+}
+
 function qmnClearField( field ) {
 	if ( field.defaultValue == field.value ) field.value = '';
 }
@@ -94,7 +98,7 @@ function qmnValidation( element, quiz_form_id ) {
 
 function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
-	var container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
+	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
 
 	if ( ! result ) { return result; }
@@ -105,36 +109,39 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_qmn_question_comment' ).attr( 'disabled', false );
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
 
-	clearInterval( qsmTimerInterval );
-	qmnEndTimer( quiz_id );
-
-	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
-	qsmDisplayLoading( container );
-
 	var data = {
 		action: 'qmn_process_quiz',
 		quizData: jQuery( '#' + quiz_form_id ).serialize()
 	};
 
+	qsmEndTimeTakenTimer();
+
+	if ( qmn_quiz_data[quiz_id].hasOwnProperty( 'timer_limit' ) ) {
+		qmnEndTimer( quiz_id );
+	}
+
+	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
+	qsmDisplayLoading( $container );
+
 	jQuery.post( qmn_ajax_object.ajaxurl, data, function( response ) {
-		qmnDisplayResults( JSON.parse( response ), quiz_form_id, container );
+		qmnDisplayResults( JSON.parse( response ), quiz_form_id, $container );
 	});
 
 	return false;
 }
 
-function qsmDisplayLoading( container ) {
-	jQuery( container ).empty();
-	jQuery( container ).append( '<div class="spinner-loader"></div>' );
+function qsmDisplayLoading( $container ) {
+	$container.empty();
+	$container.append( '<div class="spinner-loader"></div>' );
 }
 
-function qmnDisplayResults( results, quiz_form_id, container ) {
-	jQuery( container ).empty();
+function qmnDisplayResults( results, quiz_form_id, $container ) {
+	$container.empty();
 	if ( results.redirect ) {
 		window.location.replace( results.redirect_url );
 	} else {
-		container.append( '<div class="qmn_results_page"></div>' );
-		container.find( '.qmn_results_page' ).html( results.display );
+		$container.append( '<div class="qmn_results_page"></div>' );
+		$container.find( '.qmn_results_page' ).html( results.display );
 		qmnReturnToTop();
 	}
 }
