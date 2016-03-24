@@ -1,3 +1,97 @@
+/**
+ * QSM Question Tab
+ */
+
+var QSMQuestion;
+(function ($) {
+  QSMQuestion = {
+    addQuestionFromQuiz: function() {
+      jQuery( "#from_other_quiz_dialog" ).dialog({
+        autoOpen: false,
+        width: 550,
+        height: 400,
+        buttons: {
+          Cancel: function() {
+            jQuery( this ).dialog( 'close' );
+          }
+        }
+      });
+      QSMQuestion.loadSpinner( '.other_quiz_questions', true );
+      jQuery( "#from_other_quiz_dialog" ).dialog( 'open' );
+      QSMQuestion.loadQuestionBank();
+    },
+    loadQuestionBank: function() {
+      var data = {
+      	action: 'qsm_load_all_quiz_questions'
+      };
+
+      jQuery.post( ajaxurl, data, function( response ) {
+      	QSMQuestion.displayQuestionBank( JSON.parse( response ) );
+      });
+    },
+    displayQuestionBank: function( questions ) {
+      QSMQuestion.removeSpinner( '.other_quiz_questions' );
+      $.each( questions, function( i, val ) {
+        $( '.other_quiz_questions' ).append(
+          '<div class="other_quiz_question">' +
+  					'<input type="hidden" class="hidden_question_id" value="' + val.id + '">' +
+            '<button class="import_question_button button">Import Question</button>' +
+            '<span class="other_quiz_question_text">' + val.question + '</span> <span class="other_quiz_question_quiz_text"> ' + val.quiz + '</span>' +
+  				'</div>'
+        );
+      });
+    },
+    importQuestion: function( id ) {
+      $( '#copy_question_id' ).val( id );
+      $( '#copy_question_form' ).submit();
+    },
+    searchQuestionBank: function( query ) {
+      jQuery( ".other_quiz_question" ).each(function() {
+        if ( -1 === jQuery( this ).children( '.other_quiz_question_text' ).text().toLowerCase().indexOf( query.toLowerCase() ) ) {
+          jQuery( this ).hide();
+        } else {
+          jQuery( this ).show();
+        }
+      });
+    },
+    loadSpinner: function( container, empty ) {
+      if ( empty ) {
+        $( container ).empty();
+      }
+      $( container ).append( '<div class="qsm-spinner-loader"></div>' );
+    },
+    removeSpinner: function( container ) {
+      $( container + ' .qsm-spinner-loader' ).remove();
+    }
+  };
+
+  // Code to run after DOM is loaded
+  $(function() {
+
+    // Adds event handler for adding question from other quizzes dialog
+    $( '#from_other_quiz_button' ).on( 'click', function( event ) {
+      event.preventDefault();
+      QSMQuestion.addQuestionFromQuiz();
+    });
+
+    // Adds event handler to import button in other quizzes dialog
+    $( '.other_quiz_questions' ).on( 'click', '.import_question_button', function( event ) {
+      event.preventDefault();
+      QSMQuestion.importQuestion( $( this ).prev().val() );
+    });
+
+    // Adds event handlers for searching question bank
+    $( "#dialog_question_search" ).keyup(function() {
+      QSMQuestion.searchQuestionBank( $( this ).val() );
+    });
+    $( '#dialog_question_search_button' ).on( 'click', function( event ) {
+      event.preventDefault();
+      var query = $( "#dialog_question_search" ).val();
+      QSMQuestion.searchQuestionBank( query );
+    });
+  });
+}(jQuery));
+
 function add_answer(answer, points, correct)
 {
   if (!answer) {
@@ -24,6 +118,7 @@ function add_answer(answer, points, correct)
   '</div>');
   jQuery("#answers").append($answer_single);
 }
+
 function deleteQuestion( id ) {
   jQuery("#delete_dialog").dialog({
     autoOpen: false,
@@ -167,7 +262,7 @@ jQuery("#new_question_button").click(function() {
   jQuery("#correct_answer_info").val('');
   jQuery("#hint").val('');
   jQuery("#new_question_order").val(questions_list.length+1);
-  jQuery("#question_type").val('');
+  jQuery("#question_type").val(0);
   jQuery(".comments_radio").val([1]);
   jQuery("#required").val(1);
   jQuery("#question_submission").val('new_question');
