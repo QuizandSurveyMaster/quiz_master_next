@@ -212,15 +212,15 @@ function qmnTimer( quiz_id ) {
 	window.sessionStorage.setItem( 'mlw_started_quiz' + quiz_id, "yes" );
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( qmnMinToSec( window.amount ) );
 	window.document.title = qmnMinToSec( window.amount ) + " " + qsmTitleText;
-	if ( window.amount <= 0 )
-	{
-		clearInterval( window.counter );
+	if ( window.amount <= 0 ) {
+		clearInterval( window.qsmCounter );
 		jQuery( ".mlw_qmn_quiz input:radio" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_quiz input:checkbox" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_quiz select" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_question_comment" ).attr( 'disabled',true );
 		jQuery( ".mlw_answer_open_text" ).attr( 'disabled',true );
 		jQuery( ".mlw_answer_number" ).attr( 'disabled',true );
+		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
 		//document.quizForm.submit();
 		return;
 	}
