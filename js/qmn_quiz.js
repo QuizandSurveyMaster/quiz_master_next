@@ -294,8 +294,7 @@ function qmnMinToSec( amount ) {
 
 //Function to validate the answers provided in quiz
 function qmnValidatePage( quiz_form_id ) {
-	var slide_number = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.slide_number_hidden' ).val();
-	var result = qmnValidation( '#' + quiz_form_id + " .quiz_section.slide" + slide_number + ' *', quiz_form_id );
+	var result = qmnValidation( '#' + quiz_form_id + ' .quiz_section:visible *', quiz_form_id );
 	return result;
 }
 
