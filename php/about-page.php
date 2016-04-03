@@ -23,7 +23,7 @@ function mlw_generate_about_page()
 	<style>
 		div.mlw_qmn_icon_wrap
 		{
-			background: <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
+			background: <?php echo 'url("'.plugins_url( '../assets/icon-128x128.png' , __FILE__ ).'")'; ?> no-repeat;
 		}
 	</style>
 	<div class="wrap about-wrap">
