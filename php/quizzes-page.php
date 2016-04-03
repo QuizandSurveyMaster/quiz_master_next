@@ -36,7 +36,7 @@ function mlw_generate_quiz_admin()
 	if (isset($_POST["quiz_name_editted"]) && $_POST["quiz_name_editted"] == "confirmation")
 	{
 		$mlw_edit_quiz_id = intval($_POST["edit_quiz_id"]);
-		$mlw_edit_quiz_name = htmlspecialchars($_POST["edit_quiz_name"], ENT_QUOTES);
+		$mlw_edit_quiz_name = htmlspecialchars( stripslashes( $_POST["edit_quiz_name"] ), ENT_QUOTES);
 		$mlwQuizMasterNext->quizCreator->edit_quiz_name($mlw_edit_quiz_id, $mlw_edit_quiz_name);
 	}
 
