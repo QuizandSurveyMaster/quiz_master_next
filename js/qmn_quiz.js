@@ -132,7 +132,8 @@ function qmnFormSubmit( quiz_form_id ) {
 
 function qsmDisplayLoading( $container ) {
 	$container.empty();
-	$container.append( '<div class="spinner-loader"></div>' );
+	$container.append( '<div class="qsm-spinner-loader"></div>' );
+	qmnReturnToTop();
 }
 
 function qmnDisplayResults( results, quiz_form_id, $container ) {
