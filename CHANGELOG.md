@@ -1,3 +1,27 @@
+= 4.6.6 (January 11, 2016) =
+ * Fixes bug preventing some users to not be able to submit quiz
+ * Fixes bug causing undefined titles for some users
+
+= 4.6.5 (January 9, 2016) =
+ * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
+ * Fixes theme conflict between QSM and some Bootstrap based themes
+ * Fixes Quizzes/Surveys page table width issue
+ * Fixes bug preventing editing of quiz post settings
+ * Minor design changes
+
+= 4.6.4 (December 15, 2015) =
+ * Fixes undefined results notice displayed on admin results for some users
+ * Fixes bug that was causing the disable radio buttons option to not work in all browsers
+ * Minor design changes
+
+= 4.6.3 (November 4, 2015) =
+ * Fixes certificate bug that was preventing quiz/survey submissions
+ * Fixes undefined quiz id bug that was affecting some addons
+ * Fixes tooltip bug that was affecting required question validation on a few sites
+
+= 4.6.2 (October 21, 2015) =
+ * Bug fix for browsers with JavaScript turned off
+ 
 = 4.6.1 (October 20, 2015) =
  * Bug fix for rare bug preventing IE usage on a small number of sites
 
