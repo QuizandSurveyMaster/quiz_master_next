@@ -3,8 +3,8 @@ Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.0.1
-Tested up to: 4.4.1
-Stable tag: 4.6.7
+Tested up to: 4.4.2
+Stable tag: 4.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,7 +104,23 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 4.6.7 (January 22, 2015) =
+= 4.7.0 (April 4, 2016) =
+  * Closed Bug: Slash Added Before Quotation Mark When Editing Quiz/Survey Name - Issue #401
+  * Closed User Request: Add CSS Class To Container When Timer Runs Out - Issue #400
+  * Closed Bug: Validation breaks on second time through quiz - Issue #398
+  * Closed Bug: Validation not working when more than one question per page - Issue #395
+  * Closed Enhancement: Add Spinner/De-activate Submit Button Once Submitted - Issue #387
+  * Closed Enhancement: Pull changelog from GitHub API - Issue #377
+  * Closed Bug: Theme Conflict With Button Class (btn) - Issue #370
+  * Closed User Request: Add Average Points Per Category Variable - Issue #369
+  * Closed Bug: Mixed content SSL error - Issue #367
+  * Closed Enhancement: Default Option For Drop Down - Issue #334
+  * Closed Bug: Disable Answer On Change Not Working - Issue #331
+  * Closed User Request: Randomize Answers But Not Questions - Issue #330
+  * Closed User Request: Add Date Taken Variable - Issue #310
+  * Closed User Request: Copy Questions Between Quizzes - Issue #166
+
+= 4.6.7 (January 22, 2016) =
  * Fixes bug causing multiple response to be on a single line for some users
  * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
  * Fixes bug causing unexpected output error when activating plugin
@@ -112,33 +128,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
  * Adds link to online academy to help page
  * Cleans up installation function code
 
-= 4.6.6 (January 11, 2015) =
- * Fixes bug preventing some users to not be able to submit quiz
- * Fixes bug causing undefined titles for some users
-
-= 4.6.5 (January 9, 2015) =
- * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
- * Fixes theme conflict between QSM and some Bootstrap based themes
- * Fixes Quizzes/Surveys page table width issue
- * Fixes bug preventing editing of quiz post settings
- * Minor design changes
-
-= 4.6.4 (December 15, 2015) =
- * Fixes undefined results notice displayed on admin results for some users
- * Fixes bug that was causing the disable radio buttons option to not work in all browsers
- * Minor design changes
-
-= 4.6.3 (November 4, 2015) =
- * Fixes certificate bug that was preventing quiz/survey submissions
- * Fixes undefined quiz id bug that was affecting some addons
- * Fixes tooltip bug that was affecting required question validation on a few sites
-
-= 4.6.2 (October 21, 2015) =
- * Bug fix for browsers with JavaScript turned off
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.6.7 =
-Upgrade to fix bugs that affected the appearance of the multiple response questions and other minor bugs
+= 4.7.0 =
+Upgrade to gain ability to copy questions from other quizzes/surveys, new loading icon when quiz/survey is submitted, option to randomize the answers only, and much more.

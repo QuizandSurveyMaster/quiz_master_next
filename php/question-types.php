@@ -215,7 +215,7 @@ function qmn_drop_down_display($id, $question, $answers)
 	}
   $question_display .= "<span class='mlw_qmn_question'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . "</span>";
   $question_display .= "<select class='qsm_select $require_class' name='question".$id."'>";
-	$question_display .= "<option value='No Answer Provided' selected='selected'>Select an answer...</option>";
+	$question_display .= "<option value='No Answer Provided' selected='selected'>&nbsp;</option>";
   if (is_array($answers))
   {
     $mlw_answer_total = 0;

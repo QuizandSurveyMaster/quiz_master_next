@@ -23,7 +23,7 @@ function mlw_generate_about_page()
 	<style>
 		div.mlw_qmn_icon_wrap
 		{
-			background: <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
+			background: <?php echo 'url("'.plugins_url( '../assets/icon-128x128.png' , __FILE__ ).'")'; ?> no-repeat;
 		}
 	</style>
 	<div class="wrap about-wrap">
@@ -39,23 +39,22 @@ function mlw_generate_about_page()
 				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Dynamic Form Submission</h2>
-			<p style="text-align: center;">Rather than making a user wait for an entire page submission, now the plugin dynamically calculates the results and displays the results page.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Copy Questions From Other Surveys And Quizzes</h2>
+			<p style="text-align: center;">There are many times that quiz/survey creators will want to use a similar question from another survey or quiz. You can now copy questions from other quizzes and surveys using the new "Add Question From Other Survey/Quiz" button.</p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Specify From Email Address And Reply-To</h2>
-			<p style="text-align: center;">After several requests, I have finally added the option to specify a from email address for sending emails. I also added the option to add a reply-to email to the admin emails using the user email.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Randomize Answers Only</h2>
+			<p style="text-align: center;">Many admins have asked for the ability to randomize the answers only without randomizing the questions. This option has now been enhanced to include randomizing answers only.</p>
+			<br />
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Template Variables</h2>
+			<p style="text-align: center;">Two new variables have been added. %DATE_TAKEN% allows you to display the date the quiz was taken which is useful when creating certificates after the date the user completed the quiz or survey. %AVERAGE_CATEGORY_POINTS% is used to show the average points earned per question in a particular category.</p>
+			<br />
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Loading Icon</h2>
+			<p style="text-align: center;">Many admins have encountered a scenario where users will click the submit button multiple times while the results are loading. To prevent this, a new loading icon appears once the button has been clicked and the submit button is now removed.</p>
 			<br />
 			<hr />
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
-			<br />
-      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">JavaScript Re-write</h2>
-			<p style="text-align: center;">I re-wrote all the JavaScript files and combined them into one file.</p>
-      <br />
-      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Renamed files/functions</h2>
-			<p style="text-align: center;">I renamed many files and functions to align with WordPress standards. None of these were externally used and will not affect your customizations/code.</p>
-      <br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
-			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz And Survey Master repository.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Timer Ended Class</h2>
+			<p style="text-align: center;">A new CSS class 'qsm_timer_ended' is now added to the quiz container when the timer ends allowing you to style the form differently once the timer runs out.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">

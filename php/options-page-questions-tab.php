@@ -582,7 +582,7 @@ function mlw_options_questions_tab_content()
 	$is_new_quiz = $wpdb->num_rows;
 	?>
 		<button class="add-new-h2" id="new_question_button"><?php _e('Add Question', 'quiz-master-next'); ?></button>
-		<button class="add-new-h2" id="from_other_quiz_button"><?php _e('Add Question From Other Quiz', 'quiz-master-next'); ?></button>
+		<button class="add-new-h2" id="from_other_quiz_button"><?php _e('Add Question From Other Survey/Quiz', 'quiz-master-next'); ?></button>
 		<button class="add-new-h2" id="save_question_order"><?php _e('Save Question Order', 'quiz-master-next'); ?></button>
 		<form style="display:none;" action="" method="post" name="save_question_order_form" id="save_question_order_form">
 			<input type="hidden" name="save_question_order_input" id="save_question_order_input" value="" />

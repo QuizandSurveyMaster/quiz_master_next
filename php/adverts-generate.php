@@ -19,7 +19,7 @@ function mlw_qmn_show_adverts() {
 		switch ( $mlw_random_int ) {
 			case 0:
 				// Subscribe Newsletter 1
-				$mlw_advert_text = "Want a discount on your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=subscribe-newsletter-1&utm_campaign=qsm_plugin\">subscribing to our mailing list</a> and receive a 25% discount on your next purchase!";
+				$mlw_advert_text = "Want a discount on your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=subscribe-newsletter-1&utm_campaign=qsm_plugin\">subscribing to our mailing list</a> and receive a discount on your next purchase!";
 				break;
 			case 1:
 				// Continued development 1
