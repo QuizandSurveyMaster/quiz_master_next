@@ -201,7 +201,7 @@ function mlw_options_results_tab_content()
 			<div class="template_variable">
 				<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
 			</div>
-                        <div class="template_variable">
+			<div class="template_variable">
 				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent taking quiz in minutes', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
@@ -212,6 +212,9 @@ function mlw_options_results_tab_content()
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<spane class="template_name">%AVERAGE_CATEGORY_POINTS%%/AVERAGE_CATEGORY_POINTS%</span> - <?php _e('The average amount of points a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_SCORE%%/CATEGORY_SCORE%</span> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?>

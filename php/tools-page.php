@@ -22,11 +22,7 @@ function mlw_generate_quiz_tools()
 	}
 	add_meta_box("qmn_restore_box", 'Restore Quiz', "qmn_restore_function", "quiz_wpss");
 	add_meta_box("qmn_audit_box", 'Audit Trail', "mlw_tools_box", "quiz_wpss");
-	?>
-	<!-- css -->
-	<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css" rel="stylesheet" />
-	<!-- jquery scripts -->
-	<?php
+
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
@@ -36,9 +32,9 @@ function mlw_generate_quiz_tools()
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
+	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	?>
-	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>-->
+
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
 		// increase the default animation speed to exaggerate the effect

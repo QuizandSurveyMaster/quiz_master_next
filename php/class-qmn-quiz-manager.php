@@ -268,7 +268,7 @@ class QMNQuizManager
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-button' );
 		wp_enqueue_script( 'jquery-ui-tooltip' );
-		wp_enqueue_style( 'qmn_jquery_redmond_theme', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+		wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 		global $qmn_json_data;
 		$qmn_json_data["error_messages"] = array(
@@ -551,6 +551,7 @@ class QMNQuizManager
 		$qmn_array_for_variables['user_phone'] = $mlw_user_phone;
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
+		$qmn_array_for_variables['time_taken'] = date("h:i:s A m/d/Y");
 
 		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
 		{
@@ -595,8 +596,8 @@ class QMNQuizManager
 					'email' => $qmn_array_for_variables['user_email'],
 					'phone' => $qmn_array_for_variables['user_phone'],
 					'user' => $qmn_array_for_variables['user_id'],
-					'time_taken' => date("h:i:s A m/d/Y"),
-					'time_taken_real' => date("Y-m-d H:i:s"),
+					'time_taken' => $qmn_array_for_variables['time_taken'],
+					'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
 					'quiz_results' => $mlw_quiz_results,
 					'deleted' => 0
 				),

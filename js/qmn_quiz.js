@@ -8,6 +8,10 @@ function qmnTimeTakenTimer() {
 	document.getElementById("timer").value = x;
 }
 
+function qsmEndTimeTakenTimer() {
+	clearInterval( qsmTimerInterval );
+}
+
 function qmnClearField( field ) {
 	if ( field.defaultValue == field.value ) field.value = '';
 }
@@ -73,6 +77,13 @@ function qmnValidation( element, quiz_form_id ) {
 						result =  false;
 					}
 				}
+				if( jQuery( this ).attr( 'class' ).indexOf( 'qsmRequiredSelect' ) > -1 ) {
+					check_val = jQuery( this ).val();
+					if ( check_val == "No Answer Provided" ) {
+						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
+						result =  false;
+					}
+				}
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredCheck' ) > -1 ) {
 					if ( ! jQuery( this ).find( 'input:checked' ).length ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
@@ -87,7 +98,7 @@ function qmnValidation( element, quiz_form_id ) {
 
 function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
-	var container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
+	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
 
 	if ( ! result ) { return result; }
@@ -98,28 +109,40 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_qmn_question_comment' ).attr( 'disabled', false );
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
 
-	clearInterval( qsmTimerInterval );
-	qmnEndTimer( quiz_id );
-
 	var data = {
 		action: 'qmn_process_quiz',
 		quizData: jQuery( '#' + quiz_form_id ).serialize()
 	};
 
+	qsmEndTimeTakenTimer();
+
+	if ( qmn_quiz_data[quiz_id].hasOwnProperty( 'timer_limit' ) ) {
+		qmnEndTimer( quiz_id );
+	}
+
+	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
+	qsmDisplayLoading( $container );
+
 	jQuery.post( qmn_ajax_object.ajaxurl, data, function( response ) {
-		qmnDisplayResults( JSON.parse( response ), quiz_form_id, container );
+		qmnDisplayResults( JSON.parse( response ), quiz_form_id, $container );
 	});
 
 	return false;
 }
 
-function qmnDisplayResults( results, quiz_form_id, container ) {
-	jQuery( container ).empty();
+function qsmDisplayLoading( $container ) {
+	$container.empty();
+	$container.append( '<div class="qsm-spinner-loader"></div>' );
+	qmnReturnToTop();
+}
+
+function qmnDisplayResults( results, quiz_form_id, $container ) {
+	$container.empty();
 	if ( results.redirect ) {
 		window.location.replace( results.redirect_url );
 	} else {
-		container.append( '<div class="qmn_results_page"></div>' );
-		container.find( '.qmn_results_page' ).html( results.display );
+		$container.append( '<div class="qmn_results_page"></div>' );
+		$container.find( '.qmn_results_page' ).html( results.display );
 		qmnReturnToTop();
 	}
 }
@@ -190,15 +213,15 @@ function qmnTimer( quiz_id ) {
 	window.sessionStorage.setItem( 'mlw_started_quiz' + quiz_id, "yes" );
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( qmnMinToSec( window.amount ) );
 	window.document.title = qmnMinToSec( window.amount ) + " " + qsmTitleText;
-	if ( window.amount <= 0 )
-	{
-		clearInterval( window.counter );
+	if ( window.amount <= 0 ) {
+		clearInterval( window.qsmCounter );
 		jQuery( ".mlw_qmn_quiz input:radio" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_quiz input:checkbox" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_quiz select" ).attr( 'disabled',true );
 		jQuery( ".mlw_qmn_question_comment" ).attr( 'disabled',true );
 		jQuery( ".mlw_answer_open_text" ).attr( 'disabled',true );
 		jQuery( ".mlw_answer_number" ).attr( 'disabled',true );
+		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
 		//document.quizForm.submit();
 		return;
 	}
@@ -272,8 +295,7 @@ function qmnMinToSec( amount ) {
 
 //Function to validate the answers provided in quiz
 function qmnValidatePage( quiz_form_id ) {
-	var slide_number = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.slide_number_hidden' ).val();
-	var result = qmnValidation( '#' + quiz_form_id + " .quiz_section.slide" + slide_number + ' *', quiz_form_id );
+	var result = qmnValidation( '#' + quiz_form_id + ' .quiz_section:visible *', quiz_form_id );
 	return result;
 }
 

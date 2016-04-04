@@ -223,6 +223,7 @@ function mlw_options_option_tab_content()
 				<td>
 					<input type="radio" id="radio24" name="randomness_order" <?php if ($mlw_quiz_options->randomness_order == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio24"><?php _e('Random Questions', 'quiz-master-next'); ?></label><br>
 					<input type="radio" id="randomness2" name="randomness_order" <?php if ($mlw_quiz_options->randomness_order == 2) {echo 'checked="checked"';} ?> value='2' /><label for="randomness2"><?php _e('Random Questions And Answers', 'quiz-master-next'); ?></label><br>
+					<input type="radio" id="randomness3" name="randomness_order" <?php checked( $mlw_quiz_options->randomness_order, 3 ); ?>value='3'><label for="randomness3"><?php _e('Random Answers', 'quiz-master-next'); ?></label><br>
 				  <input type="radio" id="radio23" name="randomness_order" <?php if ($mlw_quiz_options->randomness_order == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio23"><?php _e('No', 'quiz-master-next'); ?></label><br>
 				</td>
 			</tr>
