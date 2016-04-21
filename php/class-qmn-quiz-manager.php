@@ -111,6 +111,12 @@ class QMNQuizManager
 			'quiz_system' => $qmn_quiz_options->system
 		);
 
+		if ( $_SERVER["REMOTE_ADDR"] ) {
+			$qmn_array_for_variables['user_ip'] = $_SERVER["REMOTE_ADDR"];
+		} else {
+			$qmn_array_for_variables['user_ip'] = "Unknown";
+		}
+
 		echo "<script>
 			if (window.qmn_quiz_data === undefined) {
 				window.qmn_quiz_data = new Object();
@@ -547,6 +553,13 @@ class QMNQuizManager
 	{
 		global $qmn_allowed_visit;
 		$result_display = '';
+
+		if ( $_SERVER["REMOTE_ADDR"] ) {
+			$qmn_array_for_variables['user_ip'] = $_SERVER["REMOTE_ADDR"];
+		} else {
+			$qmn_array_for_variables['user_ip'] = "Unknown";
+		}
+
 		$result_display = apply_filters('qmn_begin_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 		if (!$qmn_allowed_visit)
 		{
@@ -609,6 +622,7 @@ class QMNQuizManager
 					'email' => $qmn_array_for_variables['user_email'],
 					'phone' => $qmn_array_for_variables['user_phone'],
 					'user' => $qmn_array_for_variables['user_id'],
+					'user_ip' => $qmn_array_for_variables['user_ip'],
 					'time_taken' => $qmn_array_for_variables['time_taken'],
 					'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
 					'quiz_results' => $mlw_quiz_results,
@@ -627,6 +641,7 @@ class QMNQuizManager
 					'%s',
 					'%s',
 					'%d',
+					'%s',
 					'%s',
 					'%s',
 					'%s',
@@ -1217,19 +1232,40 @@ function qmn_scheduled_timeframe_check($display, $qmn_quiz_options, $qmn_array_f
 }
 
 add_filter('qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3);
-function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_variables)
-{
+
+/**
+ * Checks if user has already reach the user limit of the quiz
+ *
+ * @since 4.8.0
+ * @param string $display The HTML displayed for the quiz
+ * @param array $qmn_quiz_options The settings for the quiz
+ * @param array $qmn_array_for_variables The array of data by the quiz
+ * @return string The altered HTML display for the quiz
+ */
+function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
+
 	global $qmn_allowed_visit;
-	if ( $qmn_quiz_options->total_user_tries != 0 && is_user_logged_in() )
-	{
+	if ( $qmn_quiz_options->total_user_tries != 0 ) ) {
+
+		// Prepares the variables
 		global $wpdb;
-		$current_user = wp_get_current_user();
-		$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE email='%s' AND deleted='0' AND quiz_id=%d", $current_user->user_email, $qmn_array_for_variables['quiz_id'] ) );
-		if ($mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries)
-		{
+		$mlw_qmn_user_try_count = 0;
+
+		// Checks if the user is logged in. If so, check by user id. If not, check by IP.
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE user=%d AND deleted='0' AND quiz_id=%d", $current_user->ID, $qmn_array_for_variables['quiz_id'] ) );
+		} else {
+			$mlw_qmn_user_try_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE user_ip='%s' AND deleted='0' AND quiz_id=%d", $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id'] ) );
+		}
+
+		// If user has already reached the limit for this quiz
+		if ( $mlw_qmn_user_try_count >= $qmn_quiz_options->total_user_tries ) {
+
+			// Stops the quiz and prepares entered text
 			$qmn_allowed_visit = false;
-			$mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->total_user_tries_text, ENT_QUOTES));
-			$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
+			$mlw_message = wpautop( htmlspecialchars_decode( $qmn_quiz_options->total_user_tries_text, ENT_QUOTES ) );
+			$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables );
 			$display .= $mlw_message;
 		}
 	}
