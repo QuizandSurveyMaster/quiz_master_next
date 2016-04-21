@@ -52,7 +52,8 @@ class QMNQuizManager
 	public function display_shortcode($atts)
 	{
 		extract(shortcode_atts(array(
-			'quiz' => 0
+			'quiz' => 0,
+			'question_amount' => 0
 		), $atts));
 
 		global $wpdb;
@@ -62,6 +63,7 @@ class QMNQuizManager
 		$qmn_json_data = array();
 		$qmn_allowed_visit = true;
 		$mlwQuizMasterNext->quizCreator->set_id($quiz);
+		$question_amount = intval( $question_amount );
 
 		//Legacy variable
 		global $mlw_qmn_quiz;
@@ -125,7 +127,7 @@ class QMNQuizManager
 		//Check if we should be showing quiz or results page
 		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
 		{
-			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, true);
+			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, true, $question_amount );
 			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
 			$return_display .= $this->display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
 		}
@@ -173,22 +175,33 @@ class QMNQuizManager
 	  * @since 4.0.0
 		* @param int $quiz_id The id for the quiz
 		* @param array $quiz_options The database row for the quiz
+		* @param bool $is_quiz_page If the page being loaded is the quiz page or not
+		* @param int $question_amount The amount of questions entered using the shortcode attribute
 		* @return array The questions for the quiz
 	  */
-	public function load_questions($quiz_id, $quiz_options, $is_quiz_page)
-	{
+	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount ) {
+
+		// Prepare variables
 		global $wpdb;
 		$order_by_sql = "ORDER BY question_order ASC";
 		$limit_sql = '';
-		if ($quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2)
-		{
+
+		// Checks if the questions should be randomized
+		if ( $quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2 ) {
 			$order_by_sql = "ORDER BY rand()";
 		}
-		if ($is_quiz_page && $quiz_options->question_from_total != 0)
-		{
-			$limit_sql = " LIMIT ".$quiz_options->question_from_total;
+
+		// Check if we should load all questions or only a selcted amount
+		if ($is_quiz_page && ( $quiz_options->question_from_total !== 0 || $question_amount !== 0 ) ) {
+			if ( $question_amount !== 0 ) {
+				$limit_sql = " LIMIT $question_amount";
+			} else {
+				$limit_sql = " LIMIT " . intval( $quiz_options->question_from_total );
+			}
 		}
-		return $wpdb->get_results($wpdb->prepare("SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE quiz_id=%d AND deleted=0 ".$order_by_sql.$limit_sql, $quiz_id));
+
+		// Returns an array of all the loaded questions
+		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
 	}
 
 	/**
