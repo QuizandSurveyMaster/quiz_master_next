@@ -7,7 +7,7 @@ This is the update function for the plugin. When the plugin gets updated, the da
 /**
 * This is the update file for the plugin. All updates to the database happen here.
 *
-*@return void 
+*@return void
 * @since 4.4.0
 */
 function mlw_quiz_update()
@@ -418,6 +418,16 @@ function mlw_quiz_update()
 			$update_sql = "UPDATE ".$table_name." SET user=0";
 			$results = $wpdb->query( $update_sql );
 		}
+
+		// Update 4.8.0
+		if( $wpdb->get_var( "SHOW COLUMNS FROM $table_name LIKE 'user_ip'" ) != "user_ip" ) {
+			$sql = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
+			$results = $wpdb->query( $sql );
+			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
+			$results = $wpdb->query( $update_sql );
+		}
+
+
 		update_option('mlw_quiz_master_version' , $data);
 		if(!isset($_GET['activate-multi']))
         {

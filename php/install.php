@@ -130,6 +130,7 @@ function mlw_quiz_activate()
 			email TEXT NOT NULL,
 			phone TEXT NOT NULL,
 			user INT NOT NULL,
+			user_ip TEXT NOT NULL,
 			time_taken TEXT NOT NULL,
 			time_taken_real DATETIME NOT NULL,
 			quiz_results TEXT NOT NULL,
