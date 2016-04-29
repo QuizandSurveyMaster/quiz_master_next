@@ -1245,7 +1245,7 @@ add_filter('qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3);
 function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 
 	global $qmn_allowed_visit;
-	if ( $qmn_quiz_options->total_user_tries != 0 ) ) {
+	if ( $qmn_quiz_options->total_user_tries != 0 ) {
 
 		// Prepares the variables
 		global $wpdb;

@@ -5,11 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class QSM_Install {
 
   function __construct() {
-
+    $this->add_hooks();
   }
 
   public function add_hooks() {
-    add_action( 'admin_init', array( $this, 'mlw_quiz_update' ) );
+    add_action( 'admin_init', array( $this, 'update' ) );
+    add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
   }
 
   public static function install() {
@@ -590,6 +591,13 @@ class QSM_Install {
   	{
   		add_option('mlw_advert_shows' , 'true');
   	}
+  }
+
+  public function plugin_action_links( $links ) {
+    $action_links = array(
+      'settings' => '<a href="' . admin_url( 'admin.php?page=' . QSM_PLUGIN_BASENAME ) . '" title="' . esc_attr( __( 'Quizzes/Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes/Surveys', 'quiz-master-next' ) . '</a>',
+    );
+    return array_merge( $action_links, $links );
   }
 }
 

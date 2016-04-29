@@ -13,6 +13,8 @@
 * @version 4.7.0
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
   * This class is the main class of the plugin
   *
@@ -72,8 +74,7 @@ class MLWQuizMasterNext
 	  * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
@@ -87,7 +88,7 @@ class MLWQuizMasterNext
 	private function load_dependencies()
 	{
 
-		include("php/install.php");
+		include("php/class-qsm-install.php");
 
 		include("php/class-qmn-log-manager.php");
 		$this->log_manager = new QMN_Log_Manager;
@@ -121,7 +122,6 @@ class MLWQuizMasterNext
 		include("php/class-qmn-quiz-manager.php");
 
 		include("php/leaderboard-shortcode.php");
-		include("php/updates.php");
 		include("php/widgets.php");
 		include("php/template-variables.php");
 		include("php/adverts-generate.php");
@@ -272,5 +272,5 @@ class MLWQuizMasterNext
 }
 
 $mlwQuizMasterNext = new MLWQuizMasterNext();
-register_activation_hook( __FILE__, array( 'QSM_Install', 'mlw_quiz_activate' ) );
+register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
 ?>
