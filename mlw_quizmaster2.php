@@ -273,5 +273,5 @@ class MLWQuizMasterNext
 }
 
 $mlwQuizMasterNext = new MLWQuizMasterNext();
-register_activation_hook( __FILE__, 'mlw_quiz_activate');
+register_activation_hook( __FILE__, array( 'QSM_Install', 'mlw_quiz_activate' ) );
 ?>
