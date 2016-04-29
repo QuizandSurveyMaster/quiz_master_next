@@ -150,7 +150,6 @@ class MLWQuizMasterNext
 	{
 		add_action('admin_menu', array( $this, 'setup_admin_menu'));
 		add_action('admin_head', array( $this, 'admin_head'), 900);
-		add_action('admin_init', 'mlw_quiz_update');
 		add_action('widgets_init', create_function('', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");'));
 		add_shortcode('mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode');
 		add_action('plugins_loaded',  array( $this, 'setup_translations'));
