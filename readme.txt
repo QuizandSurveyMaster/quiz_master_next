@@ -2,8 +2,8 @@
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
-Requires at least: 4.0.1
-Tested up to: 4.4.2
+Requires at least: 4.1
+Tested up to: 4.5.1
 Stable tag: 4.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
