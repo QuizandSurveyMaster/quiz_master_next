@@ -2,18 +2,39 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Class that handles installation, updates, and plugin row meta
+ *
+ * @since 4.7.1
+ */
 class QSM_Install {
 
+  /**
+   * Main Constructor
+   *
+   * @uses QSM_Install::add_hooks
+   * @since 4.7.1
+   */
   function __construct() {
     $this->add_hooks();
   }
 
+  /**
+   * Adds the various class functions to hooks and filters
+   *
+   * @since 4.7.1
+   */
   public function add_hooks() {
     add_action( 'admin_init', array( $this, 'update' ) );
     add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
     add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
   }
 
+  /**
+   * Installs the plugin and its database tables
+   *
+   * @since 4.7.1
+   */
   public static function install() {
 
     global $wpdb;
@@ -164,6 +185,11 @@ class QSM_Install {
   	}
   }
 
+  /**
+   * Updates the plugin
+   *
+   * @since 4.7.1
+   */
   public function update() {
     global $mlwQuizMasterNext;
   	$data = $mlwQuizMasterNext->version;
@@ -594,6 +620,11 @@ class QSM_Install {
   	}
   }
 
+  /**
+   * Adds new links to the plugin action links
+   *
+   * @since 4.7.1
+   */
   public function plugin_action_links( $links ) {
     $action_links = array(
       'settings' => '<a href="' . admin_url( 'admin.php?page=' . QSM_PLUGIN_BASENAME ) . '" title="' . esc_attr( __( 'Quizzes/Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes/Surveys', 'quiz-master-next' ) . '</a>',
@@ -601,6 +632,11 @@ class QSM_Install {
     return array_merge( $action_links, $links );
   }
 
+  /**
+   * Adds new links to the plugin row meta
+   *
+   * @since 4.7.1
+   */
   public function plugin_row_meta( $links, $file ) {
     if ( $file == QSM_PLUGIN_BASENAME ) {
       $row_meta = array(
