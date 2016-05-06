@@ -133,5 +133,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.0 =
-Upgrade to gain ability to copy questions from other quizzes/surveys, new loading icon when quiz/survey is submitted, option to randomize the answers only, and much more.
+= 4.7.1 =
+Upgrade to make minor changes and improve limit per user feature
