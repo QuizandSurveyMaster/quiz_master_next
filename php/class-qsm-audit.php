@@ -31,6 +31,8 @@ class QSM_Audit {
       return false;
     }
 
+    global $wpdb;
+
     // Inserts new audit into table
     $inserted = $wpdb->insert(
       $wpdb->prefix . "mlw_qm_audit_trail",
