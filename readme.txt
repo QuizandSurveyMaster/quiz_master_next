@@ -106,7 +106,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 4.7.1 (May 6, 2016) =
   * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
-  * Closed Enhancement: WordPress Compatibility with 4.5.1 - Issue #422
+  * Closed Enhancement: WordPress Compatibility with 4.5.2 - Issue #422
   * Closed Enhancement: Move installation process into new QSM_Install class - Issue #416
   * Closed Enhancement: Update links for plugin on Plugins page - Issue #415
   * Closed Bug: Activating plugin on fresh install causes unexpected output warning - Issue #414
