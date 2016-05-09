@@ -34,29 +34,10 @@ function mlw_options_styling_tab_content()
 
 		//Save the new css
 		$mlw_save_stle_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_style, $mlw_qmn_theme, $mlw_qmn_style_id ) );
-		if ($mlw_save_stle_results != false)
-		{
+		if ( false != $mlw_save_stle_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The style has been saved successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Styles Have Been Saved For Quiz Number $mlw_qmn_style_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved For Quiz Number $mlw_qmn_style_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0015'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0015", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -113,7 +94,7 @@ function mlw_options_styling_tab_content()
 			?>
 			<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == $slug) {echo 'mlw_qmn_themeBlockActive';} ?>"><?php echo $template["name"]; ?></div>
 			<?php
-		}		
+		}
 		?>
 		<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="mlw_qmn_themeBlock <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
 		<script>

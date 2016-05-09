@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz And Survey Master
 * Description: Easily and quickly add quizzes and surveys to your website.
-* Version: 4.7.0
+* Version: 4.7.1
 * Author: Frank Corso
 * Author URI: http://www.quizandsurveymaster.com/
 * Plugin URI: http://www.quizandsurveymaster.com/
@@ -10,9 +10,11 @@
 * Domain Path: /languages
 *
 * @author Frank Corso
-* @version 4.7.0
+* @version 4.7.1
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
   * This class is the main class of the plugin
   *
@@ -28,7 +30,7 @@ class MLWQuizMasterNext
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '4.7.0';
+	public $version = '4.7.1';
 
 	/**
 	 * QMN Alert Manager Object
@@ -63,6 +65,14 @@ class MLWQuizMasterNext
 	public $log_manager;
 
 	/**
+	 * QSM Audit Manager Object
+	 *
+	 * @var object
+	 * @since 4.7.1
+	 */
+	public $audit_manager;
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -72,8 +82,7 @@ class MLWQuizMasterNext
 	  * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
@@ -87,10 +96,13 @@ class MLWQuizMasterNext
 	private function load_dependencies()
 	{
 
-		include("php/install.php");
+		include("php/class-qsm-install.php");
 
 		include("php/class-qmn-log-manager.php");
 		$this->log_manager = new QMN_Log_Manager;
+
+		include( "php/class-qsm-audit.php" );
+		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
 			include("php/stats-page.php");
@@ -121,7 +133,6 @@ class MLWQuizMasterNext
 		include("php/class-qmn-quiz-manager.php");
 
 		include("php/leaderboard-shortcode.php");
-		include("php/updates.php");
 		include("php/widgets.php");
 		include("php/template-variables.php");
 		include("php/adverts-generate.php");
@@ -150,7 +161,6 @@ class MLWQuizMasterNext
 	{
 		add_action('admin_menu', array( $this, 'setup_admin_menu'));
 		add_action('admin_head', array( $this, 'admin_head'), 900);
-		add_action('admin_init', 'mlw_quiz_update');
 		add_action('widgets_init', create_function('', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");'));
 		add_shortcode('mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode');
 		add_action('plugins_loaded',  array( $this, 'setup_translations'));
@@ -273,5 +283,5 @@ class MLWQuizMasterNext
 }
 
 $mlwQuizMasterNext = new MLWQuizMasterNext();
-register_activation_hook( __FILE__, 'mlw_quiz_activate');
+register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
 ?>

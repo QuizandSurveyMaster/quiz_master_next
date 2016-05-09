@@ -2,9 +2,9 @@
 Contributors: mylocalwebstop, fpcorso, elrath
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
-Requires at least: 4.0.1
-Tested up to: 4.4.2
-Stable tag: 4.7.0
+Requires at least: 4.1
+Tested up to: 4.5.2
+Stable tag: 4.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.1 (May 10, 2016) =
+  * Closed Enhancement: Create new audit trail class - Issue #425
+  * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
+  * Closed Enhancement: WordPress Compatibility with 4.5.2 - Issue #422
+  * Closed Enhancement: Move installation process into new QSM_Install class - Issue #416
+  * Closed Enhancement: Update links for plugin on Plugins page - Issue #415
+  * Closed Bug: Activating plugin on fresh install causes unexpected output warning - Issue #414
+  * Closed User Request: Shortcode parameter to override amount of questions - Issue #345
+  * Closed Enhancement: Limit per user - upgrade to include non-logged in users - Issue #301
+
 = 4.7.0 (April 4, 2016) =
   * Closed Bug: Slash Added Before Quotation Mark When Editing Quiz/Survey Name - Issue #401
   * Closed User Request: Add CSS Class To Container When Timer Runs Out - Issue #400
@@ -120,17 +130,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
   * Closed User Request: Add Date Taken Variable - Issue #310
   * Closed User Request: Copy Questions Between Quizzes - Issue #166
 
-= 4.6.7 (January 22, 2016) =
- * Fixes bug causing multiple response to be on a single line for some users
- * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
- * Fixes bug causing unexpected output error when activating plugin
- * Changes comment section to default to off in newer quizzes
- * Adds link to online academy to help page
- * Cleans up installation function code
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.7.0 =
-Upgrade to gain ability to copy questions from other quizzes/surveys, new loading icon when quiz/survey is submitted, option to randomize the answers only, and much more.
+= 4.7.1 =
+Upgrade to make minor changes and improve limit per user feature

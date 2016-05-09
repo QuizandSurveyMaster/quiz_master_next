@@ -1,3 +1,11 @@
+= 4.6.7 (January 22, 2016) =
+ * Fixes bug causing multiple response to be on a single line for some users
+ * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
+ * Fixes bug causing unexpected output error when activating plugin
+ * Changes comment section to default to off in newer quizzes
+ * Adds link to online academy to help page
+ * Cleans up installation function code
+ 
 = 4.6.6 (January 11, 2016) =
  * Fixes bug preventing some users to not be able to submit quiz
  * Fixes bug causing undefined titles for some users
@@ -21,7 +29,7 @@
 
 = 4.6.2 (October 21, 2015) =
  * Bug fix for browsers with JavaScript turned off
- 
+
 = 4.6.1 (October 20, 2015) =
  * Bug fix for rare bug preventing IE usage on a small number of sites
 
