@@ -46,26 +46,9 @@ function mlw_options_emails_tab_content()
 		}
 		//Update email template with new array then check to see if worked
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
-		if ($mlw_new_email_results != false)
-		{
+		if ( false != $mlw_new_email_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been added successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "New User Email Has Been Created For Quiz Number $mlw_qmn_add_email_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "New User Email Has Been Created For Quiz Number $mlw_qmn_add_email_id" );
 		}
 		else
 		{
@@ -114,26 +97,9 @@ function mlw_options_emails_tab_content()
 		}
 		//Update email template with new array then check to see if worked
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET admin_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
-		if ($mlw_new_email_results != false)
-		{
+		if ( false != $mlw_new_email_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been added successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "New Admin Email Has Been Created For Quiz Number $mlw_qmn_add_email_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Admin Email Has Been Created For Quiz Number $mlw_qmn_add_email_id" );
 		}
 		else
 		{
@@ -219,26 +185,9 @@ function mlw_options_emails_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($mlw_new_email_results != false)
-		{
-			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Email Templates Have Been Saved For Quiz Number $mlw_qmn_email_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+		if ( false != $mlw_new_email_results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The email has been updated successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Email Templates Have Been Saved For Quiz Number $mlw_qmn_email_id" );
 		}
 		else
 		{

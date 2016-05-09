@@ -65,6 +65,14 @@ class MLWQuizMasterNext
 	public $log_manager;
 
 	/**
+	 * QSM Audit Manager Object
+	 *
+	 * @var object
+	 * @since 4.7.1
+	 */
+	public $audit_manager;
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -92,6 +100,9 @@ class MLWQuizMasterNext
 
 		include("php/class-qmn-log-manager.php");
 		$this->log_manager = new QMN_Log_Manager;
+
+		include( "php/class-qsm-audit.php" );
+		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
 			include("php/stats-page.php");

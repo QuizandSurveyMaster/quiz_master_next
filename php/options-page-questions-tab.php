@@ -63,23 +63,7 @@ function mlw_options_questions_tab_content()
 		}
 		if ( ! $success ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question order has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$results = $wpdb->insert(
-			$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Order Has Been Updated On Quiz: $quiz_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Order Has Been Updated On Quiz: $quiz_id" );
 		}
 	}
 
@@ -165,29 +149,10 @@ function mlw_options_questions_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($results !== false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Edited: $edit_question_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Edited: $edit_question_name" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0004'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0004", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -210,29 +175,10 @@ function mlw_options_questions_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($results != false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been deleted successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Deleted: $mlw_question_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Deleted: $mlw_question_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0005'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0005", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -302,29 +248,10 @@ function mlw_options_questions_tab_content()
 						)
 					);
 
-		if ($results != false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been duplicated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Duplicated: $mlw_question_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Duplicated: $mlw_question_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0019'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 00019", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -399,29 +326,10 @@ function mlw_options_questions_tab_content()
 							'%d'
 						)
 					);
-		if ($results != false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been created successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Added: $question_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Added: $question_name" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0006'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0006", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -467,23 +375,7 @@ function mlw_options_questions_tab_content()
 		);
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The question has been created successfully.', 'quiz-master-next' ), 'success' );
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Question Has Been Added: {$importing_question->question_name}",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Added: {$importing_question->question_name}" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0023' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( "Error 0023", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error' );
