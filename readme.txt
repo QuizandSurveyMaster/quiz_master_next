@@ -104,7 +104,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 4.7.1 (May 6, 2016) =
+= 4.7.1 (May 10, 2016) =
+  * Closed Enhancement: Create new audit trail class - Issue #425
   * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
   * Closed Enhancement: WordPress Compatibility with 4.5.2 - Issue #422
   * Closed Enhancement: Move installation process into new QSM_Install class - Issue #416
