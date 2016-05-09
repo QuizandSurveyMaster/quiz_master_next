@@ -60,23 +60,7 @@ function mlw_options_certificate_tab_content()
 		if ( $update_results ) {
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('The certificate has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Certificate Options Have Been Edited For Quiz Number $mlw_certificate_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Certificate Options Have Been Edited For Quiz Number $mlw_certificate_id" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0012", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');

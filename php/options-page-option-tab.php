@@ -105,29 +105,10 @@ function mlw_options_option_tab_content()
 			),
 			array( '%d' )
 		);
-		if ($results !== false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The options has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Options Have Been Edited For Quiz Number $quiz_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Options Have Been Edited For Quiz Number $quiz_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0008'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0008", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}

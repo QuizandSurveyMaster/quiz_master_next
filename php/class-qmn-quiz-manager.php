@@ -198,7 +198,7 @@ class QMNQuizManager
 		}
 
 		// Check if we should load all questions or only a selcted amount
-		if ($is_quiz_page && ( $quiz_options->question_from_total !== 0 || $question_amount !== 0 ) ) {
+		if ($is_quiz_page && ( $quiz_options->question_from_total != 0 || $question_amount !== 0 ) ) {
 			if ( $question_amount !== 0 ) {
 				$limit_sql = " LIMIT $question_amount";
 			} else {

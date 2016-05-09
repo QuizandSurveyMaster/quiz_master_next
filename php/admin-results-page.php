@@ -32,26 +32,9 @@ function mlw_generate_quiz_results()
 			),
 			array( '%d' )
 		);
-		if ( $results )
-		{
+		if ( $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your results has been deleted successfully.','quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Results Has Been Deleted From: $mlw_delete_results_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name" );
 		}
 		else
 		{
@@ -80,22 +63,8 @@ function mlw_generate_quiz_results()
 					array( '%d' )
 				);
 			}
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Results Have Been Bulk Deleted",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted" );
 		}
 	}
 

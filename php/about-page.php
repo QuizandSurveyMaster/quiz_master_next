@@ -59,7 +59,7 @@ function mlw_generate_about_page()
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 15 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 21 ); ?>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
 			<h2>GitHub Contributors</h2>
