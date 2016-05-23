@@ -104,6 +104,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.2 (May 23, 2016) =
+  * Closed Bug: Multiple quizzes on page causes plugin to scroll to top quiz when submitting - Issue #428
+
 = 4.7.1 (May 10, 2016) =
   * Closed Enhancement: Create new audit trail class - Issue #425
   * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
@@ -134,5 +137,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.1 =
-Upgrade to make minor changes and improve limit per user feature
+= 4.7.2 =
+Upgrade to fix scrolling bug affecting posts with multiple quizzes
