@@ -410,7 +410,6 @@ class QMNQuizManager
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
-			if ( $qmn_quiz_options->pagination == 0) { $question_display .= "<br />"; }
 		}
 		$question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
 		return $question_display;
