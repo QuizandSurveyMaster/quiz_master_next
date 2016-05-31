@@ -390,7 +390,7 @@ class QMNQuizManager
 		{
 			$question_id_list .= $mlw_question->question_id."Q";
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$question_display .= "<div class='quiz_section slide".$mlw_qmn_section_count."'>";
+			$question_display .= "<div class='quiz_section question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
 
 			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 
@@ -410,7 +410,6 @@ class QMNQuizManager
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
-			if ( $qmn_quiz_options->pagination == 0) { $question_display .= "<br />"; }
 		}
 		$question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
 		return $question_display;

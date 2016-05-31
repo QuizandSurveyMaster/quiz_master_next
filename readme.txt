@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
 Tested up to: 4.5.2
-Stable tag: 4.7.2
+Stable tag: 4.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.3 (May 31, 2016) =
+  * Closed Enhancement: Create new question section id CSS class for each question - Issue #440
+  * Closed Bug: Creating/Editing questions throw PHP notice of undefined index - Issue #436
+
 = 4.7.2 (May 23, 2016) =
   * Closed Bug: Multiple quizzes on page causes plugin to scroll to top quiz when submitting - Issue #428
 
@@ -137,5 +141,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.2 =
-Upgrade to fix scrolling bug affecting posts with multiple quizzes
+= 4.7.3 =
+Upgrade to fix undefined index bug when editing questions

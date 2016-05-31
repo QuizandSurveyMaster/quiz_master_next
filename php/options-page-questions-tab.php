@@ -69,64 +69,77 @@ function mlw_options_questions_tab_content()
 
 	//Edit question
 	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "edit_question" ) {
-		//Variables from edit question form
-		$edit_question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
-		$edit_question_answer_info = htmlspecialchars(stripslashes($_POST["correct_answer_info"]), ENT_QUOTES);
-		$mlw_edit_question_id = intval($_POST["question_id"]);
-		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
-		$edit_comments = htmlspecialchars($_POST["comments"], ENT_QUOTES);
-		$edit_hint = htmlspecialchars($_POST["hint"], ENT_QUOTES);
-		$edit_question_order = intval($_POST["new_question_order"]);
-		$mlw_edit_answer_total = intval($_POST["new_question_answer_total"]);
 
+		//Variables from edit question form
+		$edit_question_name = trim( preg_replace( '/\s+/',' ', nl2br( htmlspecialchars( stripslashes( $_POST["question_name"] ), ENT_QUOTES ) ) ) );
+		$edit_question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
+		$mlw_edit_question_id = intval( $_POST["question_id"] );
+		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
+		$edit_comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
+		$edit_hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
+		$edit_question_order = intval( $_POST["new_question_order"] );
+		$total_answers = intval( $_POST["new_question_answer_total"] );
+
+    // Checks if a category was selected or entered
 		if ( isset( $_POST["new_category"] ) ) {
+
 			$qmn_edit_category = sanitize_text_field( $_POST["new_category"] );
-			if ( $qmn_edit_category == 'new_category' ) {
+
+      // Checks if the new category radio was selected
+			if ( 'new_category' == $qmn_edit_category ) {
 				$qmn_edit_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
 			}
 		} else {
 			$qmn_edit_category = '';
 		}
+
+    // Retrieves question settings and sets required field
 		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
-		if (is_serialized($mlw_row_settings->question_settings) && is_array(@unserialize($mlw_row_settings->question_settings)))
-		{
-			$mlw_settings = @unserialize($mlw_row_settings->question_settings);
-		}
-		else
-		{
+		if ( is_serialized( $mlw_row_settings->question_settings ) && is_array( @unserialize( $mlw_row_settings->question_settings ) ) ) {
+			$mlw_settings = @unserialize( $mlw_row_settings->question_settings );
+		} else {
 			$mlw_settings = array();
-			$mlw_settings['required'] = intval($_POST["required"]);
+			$mlw_settings['required'] = intval( $_POST["required"] );
 		}
-		if ( !isset($mlw_settings['required']))
-		{
-			$mlw_settings['required'] = intval($_POST["required"]);
+		if ( ! isset( $mlw_settings['required'] ) ) {
+			$mlw_settings['required'] = intval( $_POST["required"] );
 		}
-		$mlw_settings['required'] = intval($_POST["required"]);
-		$mlw_settings = serialize($mlw_settings);
+		$mlw_settings['required'] = intval( $_POST["required"] );
+		$mlw_settings = serialize( $mlw_settings );
+
+    // Cycles through answers
 		$i = 1;
-		$mlw_qmn_new_answer_array = array();
-		while ($i <= $mlw_edit_answer_total)
-		{
-			if ($_POST["answer_".$i] != "")
-			{
-				$mlw_qmn_correct = 0;
-				if (isset($_POST["answer_".$i."_correct"]) && $_POST["answer_".$i."_correct"] == 1)
-				{
-					$mlw_qmn_correct = 1;
+		$answer_array = array();
+		while ( $i <= $total_answers ) {
+
+      // Checks if that answer exists and it's not empty
+			if ( isset( $_POST["answer_$i"] ) && ! empty( $_POST["answer_$i"] ) ) {
+
+        // Checks if the answer was marked as correct
+				$correct = 0;
+				if ( isset( $_POST["answer_$i"."_correct"] ) && 1 == $_POST["answer_$i"."_correct"] ) {
+					$correct = 1;
 				}
-				$mlw_qmn_answer_each = array(htmlspecialchars(stripslashes($_POST["answer_".$i]), ENT_QUOTES), floatval($_POST["answer_".$i."_points"]), $mlw_qmn_correct);
-				$mlw_qmn_new_answer_array[] = $mlw_qmn_answer_each;
+
+        // Prepares this answer array
+				$answer_array[] = array(
+          htmlspecialchars( stripslashes( $_POST["answer_$i"] ), ENT_QUOTES ),
+          floatval( $_POST["answer_".$i."_points"] ),
+          $correct
+        );
 			}
 			$i++;
 		}
-		$mlw_qmn_new_answer_array = serialize( $mlw_qmn_new_answer_array );
+
+		$answer_array = serialize( $answer_array );
 		$quiz_id = intval( $_POST["quiz_id"] );
 
+    // Updates question row in table
 		$results = $wpdb->update(
 			$wpdb->prefix . "mlw_questions",
 			array(
 				'question_name' => $edit_question_name,
-				'answer_array' => $mlw_qmn_new_answer_array,
+				'answer_array' => $answer_array,
 				'question_answer_info' => $edit_question_answer_info,
 				'comments' => $edit_comments,
 				'hints' => $edit_hint,
@@ -259,73 +272,93 @@ function mlw_options_questions_tab_content()
 
 	//Submit new question into database
 	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "new_question") {
+
 		//Variables from new question form
-		$question_name = trim(preg_replace('/\s+/',' ', nl2br(htmlspecialchars(stripslashes($_POST["question_name"]), ENT_QUOTES))));
+		$question_name = trim( preg_replace( '/\s+/',' ', nl2br( htmlspecialchars( stripslashes( $_POST["question_name"] ), ENT_QUOTES ) ) ) );
 		$question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
 		$question_type = sanitize_text_field( $_POST["question_type"] );
 		$comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
 		$hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
 		$new_question_order = intval( $_POST["new_question_order"] );
-		$mlw_answer_total = intval( $_POST["new_question_answer_total"] );
+		$total_answers = intval( $_POST["new_question_answer_total"] );
 
+    // Checks if a category was selected or entered
 		if ( isset( $_POST['new_category'] ) ) {
+
 			$qmn_category = sanitize_text_field( $_POST["new_category"] );
-			if ($qmn_category == 'new_category') {
+
+      // Checks if the new category radio was selected
+			if ( 'new_category' == $qmn_category ) {
 				$qmn_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
 			}
 		} else {
 			$qmn_category = '';
 		}
+
+    // Creates question settings array
 		$mlw_settings = array();
 		$mlw_settings['required'] = intval($_POST["required"]);
 		$mlw_settings = serialize($mlw_settings);
+
+    // Cycles through answers
 		$i = 1;
-		$mlw_qmn_new_answer_array = array();
-		while ($i <= $mlw_answer_total)
-		{
-			if ($_POST["answer_".$i] != "")
-			{
-				$mlw_qmn_correct = 0;
-				if (isset($_POST["answer_".$i."_correct"]) && $_POST["answer_".$i."_correct"] == 1)
-				{
-					$mlw_qmn_correct = 1;
+		$answer_array = array();
+		while ( $i <= $total_answers ) {
+
+      // Checks if that answer exists and it's not empty
+			if ( isset( $_POST["answer_$i"] ) && ! empty( $_POST["answer_$i"] ) ) {
+
+        // Checks if the answer was marked as correct
+				$correct = 0;
+				if ( isset( $_POST["answer_".$i."_correct"] ) && 1 == $_POST["answer_".$i."_correct"] ) {
+					$correct = 1;
 				}
-				$mlw_qmn_answer_each = array(htmlspecialchars(stripslashes($_POST["answer_".$i]), ENT_QUOTES), floatval($_POST["answer_".$i."_points"]), $mlw_qmn_correct);
-				$mlw_qmn_new_answer_array[] = $mlw_qmn_answer_each;
+
+        // Prepares answer array
+				$answer_array[] = array(
+          htmlspecialchars( stripslashes( $_POST["answer_".$i] ), ENT_QUOTES ),
+          floatval( $_POST["answer_".$i."_points"] ),
+          $correct
+        );
 			}
 			$i++;
 		}
-		$mlw_qmn_new_answer_array = serialize($mlw_qmn_new_answer_array);
+
+		$answer_array = serialize( $answer_array );
 		$quiz_id = intval( $_POST["quiz_id"] );
+
+    // Inserts new question into table
 		$results = $wpdb->insert(
-						$wpdb->prefix."mlw_questions",
-						array(
-							'quiz_id' => $quiz_id,
-							'question_name' => $question_name,
-							'answer_array' => $mlw_qmn_new_answer_array,
-							'question_answer_info' => $question_answer_info,
-							'comments' => $comments,
-							'hints' => $hint,
-							'question_order' => $new_question_order,
-							'question_type_new' => $question_type,
-							'question_settings' => $mlw_settings,
-							'category' => $qmn_category,
-							'deleted' => 0
-						),
-						array(
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%d',
-							'%s',
-							'%d',
-							'%s',
-							'%s',
-							'%s',
-							'%d'
-						)
-					);
+  		$wpdb->prefix."mlw_questions",
+  		array(
+  			'quiz_id' => $quiz_id,
+  			'question_name' => $question_name,
+  			'answer_array' => $answer_array,
+  			'question_answer_info' => $question_answer_info,
+  			'comments' => $comments,
+  			'hints' => $hint,
+  			'question_order' => $new_question_order,
+  			'question_type_new' => $question_type,
+  			'question_settings' => $mlw_settings,
+  			'category' => $qmn_category,
+  			'deleted' => 0
+  		),
+  		array(
+  			'%d',
+  			'%s',
+  			'%s',
+  			'%s',
+  			'%d',
+  			'%s',
+  			'%d',
+  			'%s',
+  			'%s',
+  			'%s',
+  			'%d'
+  		)
+  	);
+
+    // Checks if insert was successful or not
 		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been created successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Added: $question_name" );
