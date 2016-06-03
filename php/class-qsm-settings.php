@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 4.8.0
  */
-class QSM_Settings {
+class QSM_Quiz_Settings {
 
   /**
    * ID of the quiz
@@ -26,6 +26,14 @@ class QSM_Settings {
   private $settings;
 
   /**
+   * The fields that have been registered
+   *
+   * @var array
+   * @since 4.8.0
+   */
+  private $registered_fields;
+
+  /**
    * Prepares the settings for the supplied quiz
    *
    * @since 4.8.0
@@ -34,6 +42,47 @@ class QSM_Settings {
   public function prepare_quiz( $quiz_id ) {
     $this->quiz_id = intval( $quiz_id );
     $this->load_settings();
+  }
+
+  /**
+   * Registers a setting be shown on the Options or Text tab
+   *
+   * @since 4.8.0
+   * @param array $field_array An array of the components for the settings field
+   */
+  public function register_setting( $field_array, $section = 'options' ) {
+
+    // Load default
+    $defaults = array(
+      'id' => '',
+      'label' => '',
+      'type' => '',
+      'options' => array(
+        ''
+      ),
+      'default' => ''
+    );
+    $field_array = wp_parse_args( $field_array, $defaults );
+
+    // Adds field to registered fields
+    $this->registered_fields[ $section ][] = $field_array;
+  }
+
+  /**
+   * Retrieves the registered setting fields
+   *
+   * @since 4.8.0
+   * @param string $section The section whose fields that are being retrieved
+   * @return array All the fields registered the the section provided
+   */
+  public function load_setting_fields( $section = 'options' ) {
+
+    // Checks if section exists in registered fields and returns it if it does
+    if ( isset( $this->registered_fields[ $section ] ) ) {
+      return $this->registered_fields[ $section ];
+    } else {
+      return false;
+    }
   }
 
   /**
