@@ -1,15 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
 * This class is a helper class to be used for extending the plugin
 *
 * This class contains many functions for extending the plugin
 *
-*
 * @since 4.0.0
 */
-class QMNPluginHelper
-{
+class QMNPluginHelper {
+
 	/**
 	 * Addon Page tabs array
 	 *
@@ -27,7 +27,15 @@ class QMNPluginHelper
 	public $stats_tabs = array();
 
 	/**
-	 * Results Page tabs array
+	 * Admin Results Page tabs array
+	 *
+	 * @var array
+	 * @since 4.8.0
+	 */
+	public $admin_results_tabs = array();
+
+	/**
+	 * Results Details Page tabs array
 	 *
 	 * @var array
 	 * @since 4.1.0
@@ -66,8 +74,7 @@ class QMNPluginHelper
 	  * @since 4.0.0
 	  * @return void
 	  */
-	public function __construct()
-	{
+	public function __construct() {
 		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
 	}
 
@@ -421,6 +428,38 @@ class QMNPluginHelper
 	public function get_stats_tabs()
 	{
 		return $this->stats_tabs;
+	}
+
+	/**
+	 * Registers tabs for the Admin Results page
+	 *
+	 * Registers a new tab on the admin results page
+	 *
+	 * @since 4.8.0
+	 * @param string $title The name of the tab
+	 * @param string $function The function that displays the tab's content
+	 * @return void
+	 */
+	public function register_admin_results_tab( $title, $function) {
+		$slug = strtolower( str_replace( " ", "-", $title ) );
+		$new_tab = array(
+			'title' => $title,
+			'function' => $function,
+			'slug' => $slug
+		);
+		$this->admin_results_tabs[] = $new_tab;
+	}
+
+	/**
+	 * Retrieves Admin Results Tab Array
+	 *
+	 * Retrieves the array of titles and functions for the tabs registered for the admin results page
+	 *
+	 * @since 4.8.0
+	 * @return array The array of registered tabs
+	 */
+	public function get_admin_results_tabs() {
+		return $this->admin_results_tabs;
 	}
 
 	/**
