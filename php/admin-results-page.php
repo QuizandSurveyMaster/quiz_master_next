@@ -32,7 +32,7 @@ function qsm_generate_admin_results_page() {
 				if ( $active_tab == $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
-				echo "<a href=\"?page=qmn_stats&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
+				echo "<a href=\"?page=mlw_quiz_results&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
 			}
 			?>
 		</h2>
