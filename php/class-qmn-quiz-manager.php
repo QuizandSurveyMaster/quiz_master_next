@@ -185,7 +185,7 @@ class QMNQuizManager
 		* @param int $question_amount The amount of questions entered using the shortcode attribute
 		* @return array The questions for the quiz
 	  */
-	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount ) {
+	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
 		// Prepare variables
 		global $wpdb;
