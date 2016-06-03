@@ -52,18 +52,6 @@ class QSM_Quiz_Settings {
    */
   public function register_setting( $field_array, $section = 'options' ) {
 
-    // Load default
-    $defaults = array(
-      'id' => '',
-      'label' => '',
-      'type' => '',
-      'options' => array(
-        ''
-      ),
-      'default' => ''
-    );
-    $field_array = wp_parse_args( $field_array, $defaults );
-
     // Adds field to registered fields
     $this->registered_fields[ $section ][] = $field_array;
   }
