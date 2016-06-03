@@ -10,6 +10,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class QSM_Fields {
 
   /**
+   * 
+   */
+  public function generate_section( $fields, $settings ) {
+    foreach ( $fields as  $field ) {
+      if ( isset( $settings[ $field["id"] ] ) ) {
+        $field["value"] = $settings[ $field["id"] ];
+      } else {
+        $field["value"] = $field["default"];
+      }
+      $this->generate_field( $field );
+    }
+  }
+
+  /**
    * Prepares the field and calls the correct generate field function based on field's type
    *
    * @since 4.8.0
