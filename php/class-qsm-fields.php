@@ -10,16 +10,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class QSM_Fields {
 
   /**
-   * 
+   * Cycles through the fields in the array and generates each field
+   *
+   * @since 4.8.0
+   * @param array $fields The array that contains the data for all fields
+   * @param array $settings The array that holds the settings for this section
    */
   public function generate_section( $fields, $settings ) {
+
+    // Cycles through each field
     foreach ( $fields as  $field ) {
-      if ( isset( $settings[ $field["id"] ] ) ) {
-        $field["value"] = $settings[ $field["id"] ];
-      } else {
-        $field["value"] = $field["default"];
-      }
-      $this->generate_field( $field );
+
+      // Generate the field
+      $this->generate_field( $field, $settings[ $field["id"] );
     }
   }
 
@@ -28,9 +31,10 @@ class QSM_Fields {
    *
    * @since 4.8.0
    * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
    * @return bool False if the field is invalid, true if successful
    */
-  public function generate_field( $field ) {
+  public function generate_field( $field, $value ) {
 
     // Load default
     $defaults = array(
@@ -39,8 +43,7 @@ class QSM_Fields {
       'type' => '',
       'options' => array(
         ''
-      ),
-      'value' => ''
+      )
     );
     $field = wp_parse_args( $field, $defaults );
 
@@ -56,7 +59,7 @@ class QSM_Fields {
 
     // Prepare function to call for field type
     $method = "generate_{$field["type"]}_field";
-    $this->$method( $field );
+    $this->$method( $field, $value );
 
     return true;
   }
@@ -66,13 +69,14 @@ class QSM_Fields {
    *
    * @since 4.8.0
    * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
    */
-  public function generate_text_field( $field ) {
+  public function generate_text_field( $field, $value ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
-          <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value='<?php echo $field["value"]; ?>' />
+          <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
       </td>
     </tr>
     <?php
