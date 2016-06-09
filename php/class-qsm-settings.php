@@ -50,7 +50,7 @@ class QSM_Quiz_Settings {
    * @since 4.8.0
    * @param string $section The section that the settings were registered with
    */
-  public function generate_settings_section( $section = 'options' ) {
+  public function generate_settings_section( $section = 'quiz_options' ) {
     $QSMFIELDSVAR->generate_section( $this->load_setting_fields( $section ), $section );
   }
 
@@ -60,7 +60,7 @@ class QSM_Quiz_Settings {
    * @since 4.8.0
    * @param array $field_array An array of the components for the settings field
    */
-  public function register_setting( $field_array, $section = 'options' ) {
+  public function register_setting( $field_array, $section = 'quiz_options' ) {
 
     /*
       Example field array
@@ -90,7 +90,7 @@ class QSM_Quiz_Settings {
    * @param string $section The section whose fields that are being retrieved
    * @return array All the fields registered the the section provided
    */
-  public function load_setting_fields( $section = 'options' ) {
+  public function load_setting_fields( $section = 'quiz_options' ) {
 
     // Checks if section exists in registered fields and returns it if it does
     if ( isset( $this->registered_fields[ $section ] ) ) {
