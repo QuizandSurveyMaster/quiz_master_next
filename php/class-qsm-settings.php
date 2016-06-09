@@ -45,12 +45,34 @@ class QSM_Quiz_Settings {
   }
 
   /**
+   * Outputs the section of input fields
+   *
+   * @since 4.8.0
+   * @param string $section The section that the settings were registered with
+   */
+  public function generate_settings_section( $section = 'options' ) {
+    $QSMFIELDSVAR->generate_section( $this->load_setting_fields( $section ), $section );
+  }
+
+  /**
    * Registers a setting be shown on the Options or Text tab
    *
    * @since 4.8.0
    * @param array $field_array An array of the components for the settings field
    */
   public function register_setting( $field_array, $section = 'options' ) {
+
+    /*
+      Example field array
+      $field_array = array(
+        'id' => 'system',
+        'label' => 'Which system is this quiz graded on?',
+        'type' => 'text',
+        'options' => array(
+          ''
+        )
+      );
+    */
 
     // Adds field to registered fields
     $this->registered_fields[ $section ][] = $field_array;
