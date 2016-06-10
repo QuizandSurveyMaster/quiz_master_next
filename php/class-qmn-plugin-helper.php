@@ -79,6 +79,16 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Registers a quiz setting
+	 *
+	 * @since 4.8.0
+	 * @param array $field_array An array of the components for the settings field
+	 */
+	public function register_quiz_setting( $field_array, $section = 'quiz_options' ) {
+		$mlwQuizMasterNext->quiz_settings->register_setting( $field_array, $section );
+	}
+
+	/**
    * Retrieves setting value based on name of setting
    *
    * @since 4.0.0
