@@ -44,15 +44,6 @@ class QSM_Quiz_Settings {
     $this->load_settings();
   }
 
-  /**
-   * Outputs the section of input fields
-   *
-   * @since 4.8.0
-   * @param string $section The section that the settings were registered with
-   */
-  public function generate_settings_section( $section = 'quiz_options' ) {
-    $QSMFIELDSVAR->generate_section( $this->load_setting_fields( $section ), $section );
-  }
 
   /**
    * Registers a setting be shown on the Options or Text tab
@@ -70,7 +61,8 @@ class QSM_Quiz_Settings {
         'type' => 'text',
         'options' => array(
           ''
-        )
+        ),
+        'default' => ''
       );
     */
 
