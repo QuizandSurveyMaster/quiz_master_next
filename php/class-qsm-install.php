@@ -80,13 +80,85 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers require_log_in setting
+    // Registers pagination setting
     $field_array = array(
       'id' => 'pagination',
       'label' => __('How many questions per page would you like? (Leave 0 for all questions on one page)', 'quiz-master-next'),
       'type' => 'number',
       'options' => array(
-        
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers pagination setting
+    $field_array = array(
+      'id' => 'timer_limit',
+      'label' => __('How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers total_user_tries setting
+    $field_array = array(
+      'id' => 'total_user_tries',
+      'label' => __('How many times can a user take this quiz? (Leave 0 for as many times as the user wants to.)', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers limit_total_entries setting
+    $field_array = array(
+      'id' => 'limit_total_entries',
+      'label' => __('How many total entries can this quiz have? (Leave 0 for unlimited entries)', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers limit_total_entries setting
+    $field_array = array(
+      'id' => 'question_from_total',
+      'label' => __('How many questions should be loaded for quiz? (Leave 0 to load all questions)', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers limit_total_entries setting
+    $field_array = array(
+      'id' => 'scheduled_time_start',
+      'label' => __('What should the user be able to start accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers limit_total_entries setting
+    $field_array = array(
+      'id' => 'scheduled_time_end',
+      'label' => __('What should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
       ),
       'default' => 0
     );
