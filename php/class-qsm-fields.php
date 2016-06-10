@@ -16,7 +16,7 @@ class QSM_Fields {
    * @param array $fields The array that contains the data for all fields
    * @param array $settings The array that holds the settings for this section
    */
-  public function generate_section( $fields, $section ) {
+  public static function generate_section( $fields, $section ) {
 
     global $mlwQuizMasterNext;
 
@@ -46,7 +46,7 @@ class QSM_Fields {
       }
 
       // Update the settings and show alert based on outcome
-      $results = QSMSETTINGSVAR->update_setting( $section, $settings_array );
+      $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
       if ( false != $results ) {
   			$mlwQuizMasterNext->alertManager->newAlert(__('The settings has been updated successfully.', 'quiz-master-next'), 'success');
   			$mlwQuizMasterNext->audit_manager->new_audit( "Settings Have Been Edited" );
@@ -57,8 +57,8 @@ class QSM_Fields {
     }
 
     // Retrieve the settings for this section
-    $settings = QSMSETTINGSVAR->get_setting( $section );
-    
+    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+
     ?>
     <form action="" method="post">
       <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
@@ -87,7 +87,7 @@ class QSM_Fields {
    * @param mixed $value The current value of the setting
    * @return bool False if the field is invalid, true if successful
    */
-  public function generate_field( $field, $value ) {
+  public static function generate_field( $field, $value ) {
 
     // Load default
     $defaults = array(
@@ -124,7 +124,7 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public function generate_text_field( $field, $value ) {
+  public static function generate_text_field( $field, $value ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
