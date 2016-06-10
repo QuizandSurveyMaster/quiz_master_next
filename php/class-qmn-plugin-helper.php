@@ -79,6 +79,43 @@ class QMNPluginHelper {
 	}
 
 	/**
+   * Retrieves setting value based on name of setting
+   *
+   * @since 4.0.0
+   * @param string $setting The name of the setting whose value we need to retrieve
+   * @param mixed $default What we need to return if no setting exists with given $setting
+   * @return $mixed Value set for $setting or $default if setting does not exist
+   */
+	public function get_quiz_setting( $setting, $default = false ) {
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
+	}
+
+
+	/**
+   * Updates a settings value, adding it if it didn't already exist
+   *
+   * @since 4.0.0
+   * @param string $setting The name of the setting whose value we need to retrieve
+   * @param mixed $value The value that needs to be stored for the setting
+   * @return bool True if successful or false if fails
+   */
+	public function update_quiz_setting( $setting, $value ) {
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quiz_settings->update_setting( $setting, $value );
+	}
+
+	/**
+   * Outputs the section of input fields
+   *
+   * @since 4.8.0
+   * @param string $section The section that the settings were registered with
+   */
+  public function generate_settings_section( $section = 'quiz_options' ) {
+    QSM_Fields::generate_section( $this->load_setting_fields( $section ), $section );
+  }
+
+	/**
 	 * Registers Quiz Templates
 	 *
 	 * @since 4.5.0
@@ -329,37 +366,6 @@ class QMNPluginHelper {
 		{
 			return '';
 		}
-	}
-
-	/**
-	  * Retrieves A Quiz Setting
-	  *
-	  * Retrieves a setting stored in the quiz settings array
-	  *
-	  * @since 4.0.0
-		* @param string $setting The name of the setting
-		* @return string The value stored for the setting
-	  */
-	public function get_quiz_setting($setting)
-	{
-		global $mlwQuizMasterNext;
-		return $mlwQuizMasterNext->quizCreator->get_setting($setting);
-	}
-
-	/**
-	  * Updates A Quiz Setting
-	  *
-	  * Sets the value of a setting stored in the quiz settings array
-	  *
-	  * @since 4.0.0
-		* @param string $setting The name of the setting
-		* @param any $value The value to be store in the setting
-		* @return bool True if update was successful
-	  */
-	public function update_quiz_setting($setting, $value)
-	{
-		global $mlwQuizMasterNext;
-		return $mlwQuizMasterNext->quizCreator->update_setting($setting, $value);
 	}
 
 	/**
