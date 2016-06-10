@@ -31,6 +31,7 @@ class QSM_Fields {
         $sanitized_value = '';
         switch ( $field["type"] ) {
           case 'text':
+          case 'radio':
             $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
             break;
 
@@ -130,6 +131,24 @@ class QSM_Fields {
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
           <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+      </td>
+    </tr>
+    <?php
+  }
+
+  /**
+   * Generates a number field
+   *
+   * @since 4.8.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_number_field( $field, $value, $options ) {
+    ?>
+    <tr valign="top">
+      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <td>
+          <input type="number" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
       </td>
     </tr>
     <?php
