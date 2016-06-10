@@ -73,6 +73,14 @@ class MLWQuizMasterNext
 	public $audit_manager;
 
 	/**
+	 * QSM Settings Object
+	 *
+	 * @var object
+	 * @since 4.8.0
+	 */
+	public $quiz_settings;
+
+	/**
 	  * Main Construct Function
 	  *
 	  * Call functions within class
@@ -147,6 +155,9 @@ class MLWQuizMasterNext
 
 		include("php/class-qmn-plugin-helper.php");
 		$this->pluginHelper = new QMNPluginHelper();
+
+		include( "php/class-qsm-settings.php" );
+		$this->quiz_settings = new QSM_Quiz_Settings();
 	}
 
 	/**
