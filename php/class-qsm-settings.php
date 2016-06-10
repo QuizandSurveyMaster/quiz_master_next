@@ -60,7 +60,10 @@ class QSM_Quiz_Settings {
         'label' => 'Which system is this quiz graded on?',
         'type' => 'text',
         'options' => array(
-          ''
+          array(
+            'label' => '',
+            'value' => ''
+          )
         ),
         'default' => ''
       );

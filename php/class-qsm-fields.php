@@ -70,7 +70,7 @@ class QSM_Fields {
         foreach ( $fields as  $field ) {
 
           // Generate the field
-          $this->generate_field( $field, $settings[ $field["id"] ] );
+          QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
         }
         ?>
       </table>
@@ -112,7 +112,7 @@ class QSM_Fields {
 
     // Prepare function to call for field type
     $method = "generate_{$field["type"]}_field";
-    $this->$method( $field, $value );
+    QSM_Fields::$method( $field, $value, $field["option"] );
 
     return true;
   }
@@ -124,13 +124,36 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_text_field( $field, $value ) {
+  public static function generate_text_field( $field, $value, $options ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
           <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
       </td>
+    </tr>
+    <?php
+  }
+
+  /**
+   * Generates radio inputs
+   *
+   * @since 4.8.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_radio_field( $field, $value, $options ) {
+    ?>
+    <tr valign="top">
+      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <?php
+        foreach ( $options as $option ) {
+          ?>
+            <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
+            <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br>
+          <?php
+        }
+      ?>
     </tr>
     <?php
   }

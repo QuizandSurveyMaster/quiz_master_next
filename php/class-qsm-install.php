@@ -38,14 +38,57 @@ class QSM_Install {
    */
   public function register_default_settings() {
 
+    // Registers system setting
     $field_array = array(
       'id' => 'system',
-      'label' => 'Which system is this quiz graded on?',
-      'type' => 'text',
+      'label' => __('Which system is this quiz graded on?', 'quiz-master-next'),
+      'type' => 'radio',
       'options' => array(
-        ''
+        array(
+          'label' => __('Correct/Incorrect', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Points', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('Not Graded', 'quiz-master-next'),
+          'value' => 2
+        )
       ),
-      'default' => ''
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers require_log_in setting
+    $field_array = array(
+      'id' => 'require_log_in',
+      'label' => __('Should the user be required to be logged in to take this quiz?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers require_log_in setting
+    $field_array = array(
+      'id' => 'pagination',
+      'label' => __('How many questions per page would you like? (Leave 0 for all questions on one page)', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+        
+      ),
+      'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
   }
