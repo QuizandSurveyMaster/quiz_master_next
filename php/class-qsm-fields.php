@@ -148,7 +148,7 @@ class QSM_Fields {
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
-          <input type="number" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+          <input type="number" step="1" min="0" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
       </td>
     </tr>
     <?php

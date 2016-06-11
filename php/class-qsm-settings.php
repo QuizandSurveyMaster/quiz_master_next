@@ -147,7 +147,8 @@ class QSM_Quiz_Settings {
     $this->settings[ $setting ] = $serialized_value;
 
     // Update the database
-    $serialized_settings = serailize( $this->settings );
+    global $wpdb;
+    $serialized_settings = serialize( $this->settings );
     $results = $wpdb->update(
       $wpdb->prefix . "mlw_quizzes",
       array( 'quiz_settings' => $serialized_settings ),
