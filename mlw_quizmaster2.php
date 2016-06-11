@@ -101,59 +101,59 @@ class MLWQuizMasterNext
 	  * @since 3.6.1
 	  * @return void
 	  */
-	private function load_dependencies()
-	{
+	private function load_dependencies() {
 
-		include("php/class-qsm-install.php");
+		include( "php/class-qsm-install.php" );
+		include( "php/class-qsm-fields.php" );
 
-		include("php/class-qmn-log-manager.php");
+		include( "php/class-qmn-log-manager.php" );
 		$this->log_manager = new QMN_Log_Manager;
 
 		include( "php/class-qsm-audit.php" );
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
-			include("php/stats-page.php");
-			include("php/quizzes-page.php");
-			include("php/quiz-options-page.php");
-			include("php/admin-results-page.php");
-			include("php/admin-results-details-page.php");
-			include("php/tools-page.php");
-			include("php/class-qsm-changelog-generator.php");
-			include("php/about-page.php");
-			include("php/help-page.php");
-			include("php/dashboard-widgets.php");
-			include("php/options-page-questions-tab.php");
-			include("php/options-page-text-tab.php");
-			include("php/options-page-option-tab.php");
-			include("php/options-page-leaderboard-tab.php");
-			include("php/options-page-certificate-tab.php");
-			include("php/options-page-email-tab.php");
-			include("php/options-page-results-page-tab.php");
-			include("php/options-page-style-tab.php");
-			include("php/options-page-tools-tab.php");
-			include("php/options-page-preview-tab.php");
-			include("php/addons-page.php");
-			include("php/settings-page.php");
-			include("php/class-qmn-tracking.php");
-			include("php/class-qmn-review-message.php");
+			include( "php/stats-page.php" );
+			include( "php/quizzes-page.php" );
+			include( "php/quiz-options-page.php" );
+			include( "php/admin-results-page.php" );
+			include( "php/admin-results-details-page.php" );
+			include( "php/tools-page.php" );
+			include( "php/class-qsm-changelog-generator.php" );
+			include( "php/about-page.php" );
+			include( "php/help-page.php" );
+			include( "php/dashboard-widgets.php" );
+			include( "php/options-page-questions-tab.php" );
+			include( "php/options-page-text-tab.php" );
+			include( "php/options-page-option-tab.php" );
+			include( "php/options-page-leaderboard-tab.php" );
+			include( "php/options-page-certificate-tab.php" );
+			include( "php/options-page-email-tab.php" );
+			include( "php/options-page-results-page-tab.php" );
+			include( "php/options-page-style-tab.php" );
+			include( "php/options-page-tools-tab.php" );
+			include( "php/options-page-preview-tab.php" );
+			include( "php/addons-page.php" );
+			include( "php/settings-page.php" );
+			include( "php/class-qmn-tracking.php" );
+			include( "php/class-qmn-review-message.php" );
 		}
-		include("php/class-qmn-quiz-manager.php");
+		include( "php/class-qmn-quiz-manager.php" );
 
-		include("php/leaderboard-shortcode.php");
-		include("php/widgets.php");
-		include("php/template-variables.php");
-		include("php/adverts-generate.php");
-		include("php/question-types.php");
-		include("php/default-templates.php");
+		include( "php/leaderboard-shortcode.php" );
+		include( "php/widgets.php" );
+		include( "php/template-variables.php" );
+		include( "php/adverts-generate.php" );
+		include( "php/question-types.php" );
+		include( "php/default-templates.php" );
 
-		include("php/class-qmn-alert-manager.php");
+		include( "php/class-qmn-alert-manager.php" );
 		$this->alertManager = new MlwQmnAlertManager();
 
-		include("php/class-qmn-quiz-creator.php");
+		include( "php/class-qmn-quiz-creator.php" );
 		$this->quizCreator = new QMNQuizCreator();
 
-		include("php/class-qmn-plugin-helper.php");
+		include( "php/class-qmn-plugin-helper.php" );
 		$this->pluginHelper = new QMNPluginHelper();
 
 		include( "php/class-qsm-settings.php" );
@@ -168,14 +168,13 @@ class MLWQuizMasterNext
 	  * @since 3.6.1
 	  * @return void
 	  */
-	private function add_hooks()
-	{
-		add_action('admin_menu', array( $this, 'setup_admin_menu'));
-		add_action('admin_head', array( $this, 'admin_head'), 900);
-		add_action('widgets_init', create_function('', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");'));
-		add_shortcode('mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode');
-		add_action('plugins_loaded',  array( $this, 'setup_translations'));
-		add_action('init', array( $this, 'register_quiz_post_types'));
+	private function add_hooks() {
+		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
+		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
+		add_action( 'widgets_init', create_function( '', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");' ) );
+		add_shortcode( 'mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode' );
+		add_action( 'plugins_loaded',  array( $this, 'setup_translations' ) );
+		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 	}
 
 	/**
@@ -184,8 +183,7 @@ class MLWQuizMasterNext
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function register_quiz_post_types()
- 	{
+	public function register_quiz_post_types() {
 		$quiz_labels = array(
 			'name'               => 'Quizzes',
 			'singular_name'      => 'Quiz',
