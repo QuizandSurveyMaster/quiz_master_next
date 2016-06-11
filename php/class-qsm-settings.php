@@ -264,8 +264,8 @@ class QSM_Quiz_Settings {
       foreach ( $fields as $field ) {
 
         // Check if setting exists in section settings and, if not, set it to the default
-        if ( ! isset( $settings_array[ $section ][ $field ] ) ) {
-          $settings_array[ $section ][ $field ] = $field["default"];
+        if ( ! isset( $settings_array[ $section ][ $field["id"] ] ) ) {
+          $settings_array[ $section ][ $field["id"] ] = $field["default"];
         }
       }
     }
