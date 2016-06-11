@@ -70,12 +70,12 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -173,10 +173,6 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Random Questions', 'quiz-master-next'),
           'value' => 1
         ),
@@ -187,6 +183,10 @@ class QSM_Install {
         array(
           'label' => __('Random Answers', 'quiz-master-next'),
           'value' => 3
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -273,7 +273,7 @@ class QSM_Install {
           'value' => 2
         )
       ),
-      'default' => 0
+      'default' => 2
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -319,7 +319,7 @@ class QSM_Install {
           'value' => 2
         )
       ),
-      'default' => 0
+      'default' => 2
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -338,7 +338,7 @@ class QSM_Install {
           'value' => 1
         )
       ),
-      'default' => 0
+      'default' => 1
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -349,12 +349,12 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -368,12 +368,12 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -387,12 +387,12 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -406,12 +406,12 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(
         array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
