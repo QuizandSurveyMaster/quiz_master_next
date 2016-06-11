@@ -38,6 +38,8 @@ class QSM_Install {
    */
   public function register_default_settings() {
 
+    global $mlwQuizMasterNext;
+
     // Registers system setting
     $field_array = array(
       'id' => 'system',
@@ -92,7 +94,7 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers pagination setting
+    // Registers timer_limit setting
     $field_array = array(
       'id' => 'timer_limit',
       'label' => __('How many minutes does the user have to finish the quiz? (Leave 0 for no time limit)', 'quiz-master-next'),
@@ -229,9 +231,9 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers userName setting
+    // Registers user_name setting
     $field_array = array(
-      'id' => 'userName',
+      'id' => 'user_name',
       'label' => __('Should we ask for users name?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
@@ -252,9 +254,9 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers userComp setting
+    // Registers user_comp setting
     $field_array = array(
-      'id' => 'userComp',
+      'id' => 'user_comp',
       'label' => __('Should we ask for users business?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
@@ -275,9 +277,9 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers userEmail setting
+    // Registers user_email setting
     $field_array = array(
-      'id' => 'userEmail',
+      'id' => 'user_email',
       'label' => __('Should we ask for users email?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
@@ -298,9 +300,9 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers userPhone setting
+    // Registers user_phone setting
     $field_array = array(
-      'id' => 'userPhone',
+      'id' => 'user_phone',
       'label' => __('Should we ask for users phone number?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
@@ -321,9 +323,9 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers commentSection setting
+    // Registers comment_section setting
     $field_array = array(
-      'id' => 'commentSection',
+      'id' => 'comment_section',
       'label' => __('Would you like a place for the user to enter comments?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(

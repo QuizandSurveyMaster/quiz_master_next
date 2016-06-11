@@ -113,7 +113,7 @@ class QSM_Fields {
 
     // Prepare function to call for field type
     $method = "generate_{$field["type"]}_field";
-    QSM_Fields::$method( $field, $value, $field["option"] );
+    QSM_Fields::$method( $field, $value, $field["options"] );
 
     return true;
   }
@@ -165,14 +165,16 @@ class QSM_Fields {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
-      <?php
-        foreach ( $options as $option ) {
-          ?>
+      <td>
+        <?php
+          foreach ( $options as $option ) {
+            ?>
             <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
             <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br>
-          <?php
-        }
-      ?>
+            <?php
+          }
+        ?>
+      </td>
     </tr>
     <?php
   }

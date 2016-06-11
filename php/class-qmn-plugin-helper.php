@@ -85,6 +85,7 @@ class QMNPluginHelper {
 	 * @param array $field_array An array of the components for the settings field
 	 */
 	public function register_quiz_setting( $field_array, $section = 'quiz_options' ) {
+		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->quiz_settings->register_setting( $field_array, $section );
 	}
 
@@ -122,7 +123,8 @@ class QMNPluginHelper {
    * @param string $section The section that the settings were registered with
    */
   public function generate_settings_section( $section = 'quiz_options' ) {
-    QSM_Fields::generate_section( $this->load_setting_fields( $section ), $section );
+		global $mlwQuizMasterNext;
+    QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
   }
 
 	/**

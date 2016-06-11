@@ -20,10 +20,9 @@ add_action( "plugins_loaded", 'qmn_settings_options_tab', 5 );
 * @since 4.4.0
 */
 function mlw_options_option_tab_content() {
-	
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
-  $mlwQuizMasterNext->quizCreator->set_id( intval( $_GET["quiz_id"] ) );
 	$mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_options' );
 }
 ?>

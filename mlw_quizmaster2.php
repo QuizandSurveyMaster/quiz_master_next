@@ -22,8 +22,8 @@ define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
   *
   * @since 3.6.1
   */
-class MLWQuizMasterNext
-{
+class MLWQuizMasterNext {
+	
 	/**
 	 * QMN Version Number
 	 *
