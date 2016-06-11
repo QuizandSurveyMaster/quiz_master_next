@@ -195,7 +195,7 @@ class QSM_Quiz_Settings {
 
       // If no options are present
       if ( ! isset( $settings_array['quiz_options'] ) ) {
-        $settings_array['quiz_options'] = array(
+        $settings_array['quiz_options'] = serialize( array(
           'system' => $quiz_options->system,
   				'loggedin_user_contact' => $quiz_options->loggedin_user_contact,
   				'contact_info_location' => $quiz_options->contact_info_location,
@@ -216,12 +216,12 @@ class QSM_Quiz_Settings {
   				'scheduled_timeframe' => $quiz_options->scheduled_timeframe,
   				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
   				'ajax_show_correct' => $quiz_options->ajax_show_correct
-        );
+        ) );
       }
 
       // If no text is present
       if ( ! isset( $settings_array["quiz_text"] ) ) {
-        $settings_array["quiz_text"] = array(
+        $settings_array["quiz_text"] = serialize( array(
           'message_before' => $quiz_options->message_before,
   				'message_comment' => $quiz_options->message_comment,
   				'message_end_template' => $quiz_options->message_end_template,
@@ -238,7 +238,7 @@ class QSM_Quiz_Settings {
   				'require_log_in_text' => $quiz_options->require_log_in_text,
   				'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
   				'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text
-        );
+        ) );
       }
 
       // Update new settings system
@@ -261,14 +261,18 @@ class QSM_Quiz_Settings {
         $settings_array[ $section ] = array();
       }
 
+      $unserialized_section = unserialize( $settings_array[ $section ] );
+
       // Cycle through each setting in section
       foreach ( $fields as $field ) {
 
         // Check if setting exists in section settings and, if not, set it to the default
-        if ( ! isset( $settings_array[ $section ][ $field["id"] ] ) ) {
-          $settings_array[ $section ][ $field["id"] ] = $field["default"];
+        if ( ! isset( $unserialized_section[ $field["id"] ] ) ) {
+          $unserialized_section[ $field["id"] ] = $field["default"];
         }
       }
+
+      $settings_array[ $section ] = serialize( $unserialized_section );
     }
 
     $this->settings = $settings_array;
