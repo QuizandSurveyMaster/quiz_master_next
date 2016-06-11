@@ -228,29 +228,10 @@ function mlw_options_text_tab_content()
 			?>
 			<h3 style="text-align: center;"><?php _e("Message Templates", 'quiz-master-next'); ?></h3>
 			<table class="form-table">
+
 				<tr>
 					<td width="30%">
-						<strong><?php _e("Message Displayed Before Quiz", 'quiz-master-next'); ?></strong>
-						<br />
-						<p><?php _e("Allowed Variables:", 'quiz-master-next'); ?></p>
-						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
-						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
-					</td>
-					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->message_before, ENT_QUOTES), 'mlw_quiz_before_message' ); ?></td>
-				</tr>
-				<tr>
-					<td width="30%">
-						<strong><?php _e("Message Displayed Before Comments Box If Enabled", 'quiz-master-next'); ?></strong>
-						<br />
-						<p><?php _e("Allowed Variables:", 'quiz-master-next'); ?></p>
-						<p style="margin: 2px 0">- %QUIZ_NAME%</p>
-						<p style="margin: 2px 0">- %CURRENT_DATE%</p>
-					</td>
-					<td><?php wp_editor( htmlspecialchars_decode($mlw_quiz_options->message_comment, ENT_QUOTES), 'mlw_quiz_before_comments' ); ?></td>
-				</tr>
-				<tr>
-					<td width="30%">
-						<strong><?php _e("Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)", 'quiz-master-next'); ?></strong>
+						<strong><?php _e("", 'quiz-master-next'); ?></strong>
 						<br />
 						<p><?php _e("Allowed Variables:", 'quiz-master-next'); ?></p>
 						<p style="margin: 2px 0">- %QUIZ_NAME%</p>

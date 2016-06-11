@@ -65,6 +65,9 @@ class QSM_Quiz_Settings {
             'value' => ''
           )
         ),
+        'variables' => array(
+          ''
+        ),
         'default' => ''
       );
     */

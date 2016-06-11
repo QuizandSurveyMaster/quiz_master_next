@@ -417,6 +417,45 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers message_before setting
+    $field_array = array(
+      'id' => 'message_before',
+      'label' =>  __("Message Displayed Before Quiz", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers message_comment setting
+    $field_array = array(
+      'id' => 'message_comment',
+      'label' =>  __("Message Displayed Before Comments Box If Enabled", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers message_end_template setting
+    $field_array = array(
+      'id' => 'message_end_template',
+      'label' =>  __("Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
   }
 
   /**

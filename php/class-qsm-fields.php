@@ -31,6 +31,9 @@ class QSM_Fields {
         $sanitized_value = '';
         switch ( $field["type"] ) {
           case 'text':
+            $sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
+            break;
+
           case 'radio':
           case 'date':
             $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
@@ -38,6 +41,10 @@ class QSM_Fields {
 
           case 'number':
             $sanitized_value = intval( $_POST[ $field["id"] ] );
+            break;
+
+          case 'editor':
+            $sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
             break;
 
           default:
@@ -96,9 +103,8 @@ class QSM_Fields {
       'id' => null,
       'label' => '',
       'type' => '',
-      'options' => array(
-        ''
-      )
+      'options' => array(),
+      'variables' => array()
     );
     $field = wp_parse_args( $field, $defaults );
 
@@ -114,7 +120,7 @@ class QSM_Fields {
 
     // Prepare function to call for field type
     $method = "generate_{$field["type"]}_field";
-    QSM_Fields::$method( $field, $value, $field["options"] );
+    QSM_Fields::$method( $field, $value );
 
     return true;
   }
@@ -126,12 +132,42 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_text_field( $field, $value, $options ) {
+  public static function generate_text_field( $field, $value ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
-          <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+        <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+      </td>
+    </tr>
+    <?php
+  }
+
+  /**
+   * Generates a textarea field using the WP Editor
+   *
+   * @since 4.8.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_editor_field( $field, $value ) {
+    ?>
+    <tr>
+      <th scope="row">
+        <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?>
+          <br>
+          <p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
+          <?php
+          foreach ( $field["variables"] as $variable ) {
+            ?>
+            <p style="margin: 2px 0">- <?php echo $variable; ?></p>
+            <?php
+          }
+          ?>
+        </label>
+      </th>
+      <td>
+        <?php wp_editor( htmlspecialchars_decode( $value, ENT_QUOTES ), $field["id"] ); ?>
       </td>
     </tr>
     <?php
@@ -144,7 +180,7 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_date_field( $field, $value, $options ) {
+  public static function generate_date_field( $field, $value ) {
     wp_enqueue_script( 'jquery-ui-datepicker' );
     ?>
     <script>
@@ -168,7 +204,7 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_number_field( $field, $value, $options ) {
+  public static function generate_number_field( $field, $value ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
@@ -186,13 +222,13 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_radio_field( $field, $value, $options ) {
+  public static function generate_radio_field( $field, $value ) {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
         <?php
-          foreach ( $options as $option ) {
+          foreach ( $field["options"] as $option ) {
             ?>
             <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
             <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br>
