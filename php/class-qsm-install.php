@@ -128,7 +128,7 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers limit_total_entries setting
+    // Registers question_from_total setting
     $field_array = array(
       'id' => 'question_from_total',
       'label' => __('How many questions should be loaded for quiz? (Leave 0 to load all questions)', 'quiz-master-next'),
@@ -140,7 +140,7 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers limit_total_entries setting
+    // Registers scheduled_time_start setting
     $field_array = array(
       'id' => 'scheduled_time_start',
       'label' => __('What should the user be able to start accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
@@ -152,19 +152,7 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers limit_total_entries setting
-    $field_array = array(
-      'id' => 'scheduled_time_end',
-      'label' => __('What should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
-      'type' => 'text',
-      'options' => array(
-
-      ),
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers limit_total_entries setting
+    // Registers scheduled_time_end setting
     $field_array = array(
       'id' => 'scheduled_time_end',
       'label' => __('What should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
