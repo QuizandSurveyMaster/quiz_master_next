@@ -145,24 +145,24 @@ class QSM_Install {
     // Registers scheduled_time_start setting
     $field_array = array(
       'id' => 'scheduled_time_start',
-      'label' => __('What should the user be able to start accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
-      'type' => 'text',
+      'label' => __('When should the user be able to start accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
+      'type' => 'date',
       'options' => array(
 
       ),
-      'default' => 0
+      'default' => ''
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers scheduled_time_end setting
     $field_array = array(
       'id' => 'scheduled_time_end',
-      'label' => __('What should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
-      'type' => 'text',
+      'label' => __('When should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
+      'type' => 'date',
       'options' => array(
 
       ),
-      'default' => 0
+      'default' => ''
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
