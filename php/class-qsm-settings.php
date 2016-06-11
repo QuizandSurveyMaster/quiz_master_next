@@ -72,10 +72,6 @@ class QSM_Quiz_Settings {
     // Adds field to registered fields
     $this->registered_fields[ $section ][] = $field_array;
 
-    // Adds the default value into the settings if the setting doesn't exist
-    if ( false === $this->get_setting( $field_array["id"] ) ) {
-      $this->update_setting( $field_array["id"], $field_array["default"] );
-    }
   }
 
   /**
@@ -253,6 +249,25 @@ class QSM_Quiz_Settings {
   			array( '%s' ),
   			array( '%d' )
   		);
+    }
+
+    // Cycle through registered settings
+    $registered_fields = $this->registered_fields;
+    foreach ( $registered_fields as $section => $fields ) {
+
+      // Check if section exists in settings and, if not, set it to empty array
+      if ( ! isset( $settings_array[ $section ] ) ) {
+        $settings_array[ $section ] = array();
+      }
+
+      // Cycle through each setting in section
+      foreach ( $fields as $field ) {
+
+        // Check if setting exists in section settings and, if not, set it to the default
+        if ( ! isset( $settings_array[ $section ][ $field ] ) ) {
+          $settings_array[ $section ][ $field ] = $field["default"];
+        }
+      }
     }
 
     $this->settings = $settings_array;
