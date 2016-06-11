@@ -163,6 +163,270 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers limit_total_entries setting
+    $field_array = array(
+      'id' => 'scheduled_time_end',
+      'label' => __('What should the user stop accessing the quiz? (Leave blank if the user can access anytime)', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers randomness_order setting
+    $field_array = array(
+      'id' => 'randomness_order',
+      'label' => __('Are the questions random? (Question Order will not apply if this is yes)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Random Questions', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('Random Questions And Answers', 'quiz-master-next'),
+          'value' => 2
+        ),
+        array(
+          'label' => __('Random Answers', 'quiz-master-next'),
+          'value' => 3
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers contact_info_location setting
+    $field_array = array(
+      'id' => 'contact_info_location',
+      'label' => __('Would you like to ask for the contact information at the beginning or at the end of the quiz?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Beginning', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('End', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers loggedin_user_contact setting
+    $field_array = array(
+      'id' => 'loggedin_user_contact',
+      'label' => __('If a logged-in user takes the quiz, would you like them to be able to edit contact information? If set to no, the fields will not show up for logged in users; however, the users information will be saved for the fields.', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers userName setting
+    $field_array = array(
+      'id' => 'userName',
+      'label' => __('Should we ask for users name?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers userComp setting
+    $field_array = array(
+      'id' => 'userComp',
+      'label' => __('Should we ask for users business?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers userEmail setting
+    $field_array = array(
+      'id' => 'userEmail',
+      'label' => __('Should we ask for users email?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers userPhone setting
+    $field_array = array(
+      'id' => 'userPhone',
+      'label' => __('Should we ask for users phone number?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers commentSection setting
+    $field_array = array(
+      'id' => 'commentSection',
+      'label' => __('Would you like a place for the user to enter comments?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers question_numbering setting
+    $field_array = array(
+      'id' => 'question_numbering',
+      'label' => __('Show question number on quiz?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers social_media setting
+    $field_array = array(
+      'id' => 'social_media',
+      'label' => __('Show social media sharing buttons? (Twitter & Facebook) This option is for here only for users of older versions. Please use the new template variables %FACEBOOK_SHARE% %TWITTER_SHARE% on your results pages instead of using this option!', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers disable_answer_onselect setting
+    $field_array = array(
+      'id' => 'disable_answer_onselect',
+      'label' => __('Disable question once user selects answer? (Currently only work on multiple choice)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers ajax_show_correct setting
+    $field_array = array(
+      'id' => 'ajax_show_correct',
+      'label' => __('Dynamically add class for incorrect/correct answer after user selects answer? (Currently only works on multiple choice)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
   }
 
   /**
