@@ -456,6 +456,212 @@ class QSM_Install {
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers total_user_tries_text setting
+    $field_array = array(
+      'id' => 'total_user_tries_text',
+      'label' =>  __("Message Displayed If User Has Tried Quiz Too Many Times", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers require_log_in_text setting
+    $field_array = array(
+      'id' => 'require_log_in_text',
+      'label' =>  __("Message Displayed If User Is Not Logged In And Quiz Requires Users To Be Logged In", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers scheduled_timeframe_text setting
+    $field_array = array(
+      'id' => 'scheduled_timeframe_text',
+      'label' =>  __("Message Displayed If Date Is Outside Scheduled Timeframe", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers limit_total_entries_text setting
+    $field_array = array(
+      'id' => 'limit_total_entries_text',
+      'label' =>  __("Message Displayed If The Limit Of Total Entries Has Been Reached", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers question_answer_template setting
+    $field_array = array(
+      'id' => 'question_answer_template',
+      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUESTION%',
+        '%USER_ANSWER%',
+        '%CORRECT_ANSWER%',
+        '%USER_COMMENTS%',
+        '%CORRECT_ANSWER_INFO%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers question_answer_template setting
+    $field_array = array(
+      'id' => 'question_answer_template',
+      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%QUESTION%',
+        '%USER_ANSWER%',
+        '%CORRECT_ANSWER%',
+        '%USER_COMMENTS%',
+        '%CORRECT_ANSWER_INFO%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers twitter_sharing_text setting
+    $field_array = array(
+      'id' => 'twitter_sharing_text',
+      'label' =>  __("Twitter Sharing Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%POINT_SCORE%',
+        '%AVERAGE_POINT%',
+        '%AMOUNT_CORRECT%',
+        '%TOTAL_QUESTIONS%',
+        '%CORRECT_SCORE%',
+        '%QUIZ_NAME%',
+        '%TIMER%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers facebook_sharing_text setting
+    $field_array = array(
+      'id' => 'facebook_sharing_text',
+      'label' =>  __("Facebook Sharing Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => 0,
+      'variables' => array(
+        '%POINT_SCORE%',
+        '%AVERAGE_POINT%',
+        '%AMOUNT_CORRECT%',
+        '%TOTAL_QUESTIONS%',
+        '%CORRECT_SCORE%',
+        '%QUIZ_NAME%',
+        '%TIMER%',
+        '%CURRENT_DATE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers submit_button_text setting
+    $field_array = array(
+      'id' => 'submit_button_text',
+      'label' => __('Text for submit button', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers business_field_text setting
+    $field_array = array(
+      'id' => 'business_field_text',
+      'label' => __('Text for business field', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers email_field_text setting
+    $field_array = array(
+      'id' => 'email_field_text',
+      'label' => __('Text for email field', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers phone_field_text setting
+    $field_array = array(
+      'id' => 'phone_field_text',
+      'label' => __('Text for phone number field', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers comment_field_text setting
+    $field_array = array(
+      'id' => 'comment_field_text',
+      'label' => __('Text for comments field', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers previous_button_text setting
+    $field_array = array(
+      'id' => 'previous_button_text',
+      'label' => __('Text for previous button', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers next_button_text setting
+    $field_array = array(
+      'id' => 'next_button_text',
+      'label' => __('Text for next button', 'quiz-master-next'),
+      'type' => 'text',
+      'options' => array(
+
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
   }
 
   /**
