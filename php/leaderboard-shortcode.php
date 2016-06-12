@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return type $mlw_quiz_leaderboard_display This variable contains all the contents of the leaderboard.
 * @since 4.4.0
 */
-function mlw_quiz_leaderboard_shortcode($atts)
-{
+function mlw_quiz_leaderboard_shortcode( $atts ) {
+	
 	extract(shortcode_atts(array(
 		'mlw_quiz' => 0
 	), $atts));
