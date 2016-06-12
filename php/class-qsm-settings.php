@@ -191,35 +191,10 @@ class QSM_Quiz_Settings {
 		}
 
     // If some options are missing
-    if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array["quiz_text"] ) || ! isset( $settings_array["quiz_certificate"] ) || ! isset( $settings_array["quiz_leaderboards"] ) ) {
+    if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array["quiz_text"] ) || ! isset( $settings_array["quiz_leaderboards"] ) ) {
 
       // Load the old options system
       $quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
-
-      // If no certificate is present
-      if ( ! isset( $settings_array["quiz_certificate"] ) ) {
-
-        // Sets up older certificate settings
-        if ( is_serialized( $quiz_options->certificate_template) && is_array( @unserialize( $quiz_options->certificate_template ) ) ) {
-          $certificate = @unserialize( $quiz_options->certificate_template );
-        } else {
-          $certificate = array(
-            __('Enter title here', 'quiz-master-next'),
-            __('Enter text here', 'quiz-master-next'),
-            '',
-            '',
-            1
-          );
-        }
-
-        $settings_array["quiz_certificate"] = serialize( array(
-          'enabled' => $certificate[4],
-          'title' => $certificate[0],
-          'message' => $certificate[1],
-          'logo' => $certificate[2],
-          'background' => $certificate[3]
-        ) );
-      }
 
       // If no leadboard is present
       if ( ! isset( $settings_array["quiz_leaderboards"] ) ) {

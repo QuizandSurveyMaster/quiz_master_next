@@ -24,7 +24,7 @@ function qsm_options_leaderboard_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	?>
-	<h3><?php _e('Template Variables', 'quiz-master-next'); ?></h3>
+	<h3><?php _e( 'Template Variables', 'quiz-master-next' ); ?></h3>
 	<table class="form-table">
 		<tr>
 			<td><strong>%FIRST_PLACE_NAME%</strong> - <?php _e("The name of the user who is in first place", 'quiz-master-next'); ?></td>
