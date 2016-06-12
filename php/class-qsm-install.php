@@ -584,9 +584,6 @@ class QSM_Install {
       'id' => 'submit_button_text',
       'label' => __('Text for submit button', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -596,9 +593,6 @@ class QSM_Install {
       'id' => 'business_field_text',
       'label' => __('Text for business field', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -608,9 +602,6 @@ class QSM_Install {
       'id' => 'email_field_text',
       'label' => __('Text for email field', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -620,9 +611,6 @@ class QSM_Install {
       'id' => 'phone_field_text',
       'label' => __('Text for phone number field', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -632,9 +620,6 @@ class QSM_Install {
       'id' => 'comment_field_text',
       'label' => __('Text for comments field', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -644,9 +629,6 @@ class QSM_Install {
       'id' => 'previous_button_text',
       'label' => __('Text for previous button', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -656,12 +638,31 @@ class QSM_Install {
       'id' => 'next_button_text',
       'label' => __('Text for next button', 'quiz-master-next'),
       'type' => 'text',
-      'options' => array(
-
-      ),
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers template setting
+    $field_array = array(
+      'id' => 'template',
+      'label' => __('Leaderboard Template', 'quiz-master-next'),
+      'type' => 'editor',
+      'variables' => array(
+        '%QUIZ_NAME%',
+        '%FIRST_PLACE_NAME%',
+        '%FIRST_PLACE_SCORE%',
+        '%SECOND_PLACE_NAME%',
+        '%SECOND_PLACE_SCORE%',
+        '%THIRD_PLACE_NAME%',
+        '%THIRD_PLACE_SCORE%',
+        '%FOURTH_PLACE_NAME%',
+        '%FOURTH_PLACE_SCORE%',
+        '%FIFTH_PLACE_NAME%',
+        '%FIFTH_PLACE_SCORE%'
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_leaderboards' );
   }
 
   /**
