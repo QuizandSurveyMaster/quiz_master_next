@@ -198,6 +198,18 @@ class QSM_Quiz_Settings {
 
       // If no options are present
       if ( ! isset( $settings_array['quiz_options'] ) ) {
+
+        // Sets up older scheduled timeframe settings
+        if ( is_serialized( $quiz_options->scheduled_timeframe) && is_array( @unserialize( $quiz_options->scheduled_timeframe ) ) ) {
+          $scheduled_timeframe = @unserialize( $quiz_options->scheduled_timeframe );
+        } else {
+          $scheduled_timeframe = array(
+            'start' => '',
+            'end' => ''
+          );
+        }
+
+        // Prepares new quiz_options section's settings
         $settings_array['quiz_options'] = serialize( array(
           'system' => $quiz_options->system,
   				'loggedin_user_contact' => $quiz_options->loggedin_user_contact,
@@ -216,7 +228,8 @@ class QSM_Quiz_Settings {
   				'question_numbering' => $quiz_options->question_numbering,
   				'require_log_in' => $quiz_options->require_log_in,
   				'limit_total_entries' => $quiz_options->limit_total_entries,
-  				'scheduled_timeframe' => $quiz_options->scheduled_timeframe,
+          'scheduled_time_start'=> $scheduled_timeframe["start"],
+  				'scheduled_time_end' => $scheduled_timeframe["end"],
   				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
   				'ajax_show_correct' => $quiz_options->ajax_show_correct
         ) );
@@ -224,6 +237,29 @@ class QSM_Quiz_Settings {
 
       // If no text is present
       if ( ! isset( $settings_array["quiz_text"] ) ) {
+
+        // Sets up older pagination text
+        if ( is_serialized( $quiz_options->pagination_text) && is_array( @unserialize( $quiz_options->pagination_text ) ) ) {
+          $pagination_text = @unserialize( $quiz_options->pagination_text );
+        } else {
+          $pagination_text = array(
+            __( 'Previous', 'quiz-master-next' ),
+            __( 'Next', 'quiz-master-next' )
+          );
+        }
+
+        // Sets up older social sharing text
+        if ( is_serialized( $quiz_options->social_media_text) && is_array( @unserialize( $quiz_options->social_media_text ) ) ) {
+          $social_media_text = @unserialize( $quiz_options->social_media_text );
+        } else {
+          $social_media_text = array(
+            'twitter' => $quiz_options->social_media_text,
+            'facebook' => $quiz_options->social_media_text
+
+          );
+        }
+
+        // Prepares new quiz_text section's settings
         $settings_array["quiz_text"] = serialize( array(
           'message_before' => $quiz_options->message_before,
   				'message_comment' => $quiz_options->message_comment,
@@ -236,8 +272,10 @@ class QSM_Quiz_Settings {
   				'email_field_text' => $quiz_options->email_field_text,
   				'phone_field_text' => $quiz_options->phone_field_text,
   				'total_user_tries_text' => $quiz_options->total_user_tries_text,
-  				'social_media_text' => $quiz_options->social_media_text,
-  				'pagination_text' => $quiz_options->pagination_text,
+  				'twitter_sharing_text' => $social_media_text["twitter"],
+          'facebook_sharing_text' => $social_media_text["facebook"],
+  				'previous_button_text' => $pagination_text[0],
+          'next_button_text' => $pagination_text[1],
   				'require_log_in_text' => $quiz_options->require_log_in_text,
   				'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
   				'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text

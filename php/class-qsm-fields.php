@@ -155,13 +155,17 @@ class QSM_Fields {
     <tr>
       <th scope="row">
         <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?>
-          <br>
-          <p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
           <?php
-          foreach ( $field["variables"] as $variable ) {
+          if ( is_array( $field["variables"] ) ) {
             ?>
-            <p style="margin: 2px 0">- <?php echo $variable; ?></p>
+            <br>
+            <p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
             <?php
+            foreach ( $field["variables"] as $variable ) {
+              ?>
+              <p style="margin: 2px 0">- <?php echo $variable; ?></p>
+              <?php
+            }
           }
           ?>
         </label>
