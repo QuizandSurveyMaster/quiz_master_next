@@ -36,7 +36,7 @@ function mlw_generate_about_page()
 			<a href="javascript:qmn_select_tab(2, 'mlw_quiz_changelog');" id="mlw_qmn_tab_2" class="nav-tab">
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
 			<a href="javascript:qmn_select_tab(3, 'qmn_contributors');" id="mlw_qmn_tab_3" class="nav-tab">
-				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
+				<?php _e('People Who Make QSM Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Notice: Certificates Are Being Moved</h2>
