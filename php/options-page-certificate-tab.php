@@ -81,9 +81,12 @@ function mlw_options_certificate_tab_content()
 	{
 		$mlw_certificate_options = array(__('Enter title here', 'quiz-master-next'), __('Enter text here', 'quiz-master-next'), '', '', 1);
 	}
+
 	?>
 	<div id="tabs-5" class="mlw_tab_content">
 		<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
+		<div style="error">
+		</div>
 		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate.', 'quiz-master-next'); ?></p>
 		<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
 		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
