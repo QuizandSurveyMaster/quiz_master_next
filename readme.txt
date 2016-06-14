@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
 Tested up to: 4.5.2
-Stable tag: 4.7.4
+Stable tag: 4.7.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -104,6 +104,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.5 (June 15, 2016) =
+  * Closed Enhancement: Change Text Block To Text/HTML - Issue #451
+  * Closed Enhancement: Create alert warning about removal of certificate - Issue #382
+
 = 4.7.4 (June 3, 2016) =
   * Closed Bug: Results page will not load on some sites - Issue #445
 
@@ -144,5 +148,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.4 =
-Upgrade to fix major bug affecting a few sites where the results page is not loading
+= 4.7.5 =
+Upgrade for minor design changes
