@@ -160,12 +160,10 @@ class QMNTracking {
 
     $data['error_logs'] = $mlwQuizMasterNext->log_manager->get_logs();
 
-    $data['site_data'] = array(
-      'title' => get_bloginfo( 'name' ),
-      'desc' => get_bloginfo( 'description' ),
-      'charset' => get_bloginfo( 'charset' ),
-      'lang' => get_bloginfo( 'language' )
-    );
+    $data['site_title'] = get_bloginfo( 'name' );
+    $data['site_desc'] = get_bloginfo( 'description' );
+    $data['site_charset'] = get_bloginfo( 'charset' );
+    $data['lang'] = get_bloginfo( 'language' );
 
     $this->data = $data;
   }
