@@ -1,14 +1,14 @@
 <?php
 // Exit if accessed directly
-if ( !defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Class To Send Tracking Information Back To My Website
  *
  * @since 4.1.0
  */
-class QMNTracking
-{
+class QMNTracking {
+
   /**
 	 * Date To Send Home
 	 *
@@ -27,11 +27,9 @@ class QMNTracking
 	  * @uses QMNTracking::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-  function __construct()
-  {
+  function __construct() {
     $this->load_dependencies();
     $this->add_hooks();
-    $this->track_check();
   }
 
   /**
@@ -40,8 +38,7 @@ class QMNTracking
 	  * @since 4.1.0
 	  * @return void
 	  */
-  private function load_dependencies()
-  {
+  private function load_dependencies() {
 
   }
 
@@ -53,10 +50,10 @@ class QMNTracking
 	  * @since 4.1.0
 	  * @return void
 	  */
-  private function add_hooks()
-  {
+  private function add_hooks() {
     add_action( 'admin_notices', array( $this, 'admin_notice' ) );
-    add_action( 'admin_init', array($this, 'admin_notice_check'));
+    add_action( 'admin_init', array( $this, 'admin_notice_check' ) );
+    add_action( 'plugins_loaded', array( $this, 'track_check' ) );
   }
 
   /**
@@ -69,17 +66,14 @@ class QMNTracking
    * @uses QMNTracking::send_data()
    * @return void
    */
-  private function track_check()
-  {
+  private function track_check() {
     $settings = (array) get_option( 'qmn-settings' );
     $tracking_allowed = '0';
-		if (isset($settings['tracking_allowed']))
-		{
+		if ( isset( $settings['tracking_allowed'] ) ) {
 			$tracking_allowed = $settings['tracking_allowed'];
 		}
     $last_time = get_option( 'qmn_tracker_last_time' );
-    if ($tracking_allowed == '1' && (($last_time && $last_time < strtotime( '-1 week' )) || !$last_time))
-    {
+    if ( $tracking_allowed == '1' && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {
       $this->load_data();
       $this->send_data();
       update_option( 'qmn_tracker_last_time', time() );
@@ -92,20 +86,19 @@ class QMNTracking
    * @since 4.1.0
    * @return void
    */
-  private function send_data()
-  {
-    $response = wp_remote_post( 'http://mylocalwebstop.com/?usage_track=confirmation', array(
+  private function send_data() {
+    $response = wp_remote_post( 'http://quizandsurveymaster.com/?usage_track=confirmation', array(
 			'method'      => 'POST',
 			'timeout'     => 45,
 			'redirection' => 5,
 			'httpversion' => '1.0',
 			'blocking'    => true,
 			'body'        => $this->data,
-			'user-agent'  => 'QMN Usage Tracker'
+			'user-agent'  => 'QSM Usage Tracker'
 		) );
     if ( is_wp_error( $response ) ) {
 		   $error_message = $response->get_error_message();
-		   echo "Something went wrong with QMN Usage Tracker: $error_message";
+       $mlwQuizMasterNext->log_manager->add( "Error 0024", "Usage tracker failed due to following reason: $error_message", 0, 'error' );
 		}
   }
 
@@ -115,11 +108,10 @@ class QMNTracking
    * @since 4.1.0
    * @return void
    */
-  private function load_data()
-  {
+  private function load_data() {
     global $wpdb;
     $data = array();
-    $data["plugin"] = "QMN";
+    $data["plugin"] = "QSM";
 
     $data['url']    = home_url();
     $data["wp_version"] = get_bloginfo( 'version' );
@@ -166,6 +158,14 @@ class QMNTracking
     $data['quiz_options'] = $wpdb->get_results( "SELECT quiz_name, system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp,
      user_email, user_phone, comment_section, question_from_total, total_user_tries, certificate_template, pagination, timer_limit, question_numbering, theme_selected, last_activity, require_log_in, limit_total_entries, disable_answer_onselect, ajax_show_correct, quiz_views, quiz_taken FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0" );
 
+    $data['error_logs'] = $mlwQuizMasterNext->log_manager->get_logs();
+
+    $data['site_data'] = array(
+      'title' => get_bloginfo( 'name' ),
+      'desc' => get_bloginfo( 'description' ),
+      'charset' => get_bloginfo( 'charset' ),
+      'lang' => get_bloginfo( 'language' )
+    );
 
     $this->data = $data;
   }
@@ -178,26 +178,22 @@ class QMNTracking
    * @since 4.1.0
    * @return void
    */
-  public function admin_notice()
-  {
+  public function admin_notice() {
     $show_notice = get_option( 'qmn-tracking-notice' );
     $settings = (array) get_option( 'qmn-settings' );
 
     if ($show_notice)
       return;
 
-    if (isset($settings['tracking_allowed']) && $settings['tracking_allowed'] == '1')
+    if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' )
       return;
 
-    if(!current_user_can('manage_options'))
+    if( ! current_user_can( 'manage_options' ) )
 			return;
 
-    if(stristr(network_site_url('/'), 'dev') !== false || stristr(network_site_url('/'), 'localhost') !== false || stristr(network_site_url('/'), ':8888') !== false)
-    {
+    if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
 			update_option( 'qmn-tracking-notice', '1' );
-		}
-    else
-    {
+		} else {
       $optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
   		$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
   		echo '<div class="updated"><p>';
@@ -214,18 +210,13 @@ class QMNTracking
    * @since 4.1.0
    * @return void
    */
-  public function admin_notice_check()
-  {
-    if (isset($_GET["qmn_track_check"]))
-    {
-      if ($_GET["qmn_track_check"] == 'opt_into_tracking')
-      {
+  public function admin_notice_check() {
+    if ( isset( $_GET["qmn_track_check"] ) ) {
+      if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
         $settings = (array) get_option( 'qmn-settings' );
         $settings['tracking_allowed'] = '1';
         update_option( 'qmn-settings', $settings );
-      }
-      else
-      {
+      } else {
         $settings = (array) get_option( 'qmn-settings' );
         $settings['tracking_allowed'] = '0';
         update_option( 'qmn-settings', $settings );
