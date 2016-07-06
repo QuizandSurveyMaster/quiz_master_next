@@ -1,5 +1,5 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
-Contributors: mylocalwebstop, fpcorso, elrath
+Contributors: mylocalwebstop, fpcorso, elrath, dukeran
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
