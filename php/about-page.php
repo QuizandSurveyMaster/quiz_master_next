@@ -36,30 +36,19 @@ function mlw_generate_about_page()
 			<a href="javascript:qmn_select_tab(2, 'mlw_quiz_changelog');" id="mlw_qmn_tab_2" class="nav-tab">
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
 			<a href="javascript:qmn_select_tab(3, 'qmn_contributors');" id="mlw_qmn_tab_3" class="nav-tab">
-				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
+				<?php _e('People Who Make QSM Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Copy Questions From Other Surveys And Quizzes</h2>
-			<p style="text-align: center;">There are many times that quiz/survey creators will want to use a similar question from another survey or quiz. You can now copy questions from other quizzes and surveys using the new "Add Question From Other Survey/Quiz" button.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Notice: Certificates Are Being Moved</h2>
+			<p style="text-align: center;">The certificate feature is being moved from core to a free addon. If you use certificates, please <a target="_blank" href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate_removal_notice">read our post about certificates being moved.</a></p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Randomize Answers Only</h2>
-			<p style="text-align: center;">Many admins have asked for the ability to randomize the answers only without randomizing the questions. This option has now been enhanced to include randomizing answers only.</p>
-			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Template Variables</h2>
-			<p style="text-align: center;">Two new variables have been added. %DATE_TAKEN% allows you to display the date the quiz was taken which is useful when creating certificates after the date the user completed the quiz or survey. %AVERAGE_CATEGORY_POINTS% is used to show the average points earned per question in a particular category.</p>
-			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Loading Icon</h2>
-			<p style="text-align: center;">Many admins have encountered a scenario where users will click the submit button multiple times while the results are loading. To prevent this, a new loading icon appears once the button has been clicked and the submit button is now removed.</p>
-			<br />
-			<hr />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Timer Ended Class</h2>
-			<p style="text-align: center;">A new CSS class 'qsm_timer_ended' is now added to the quiz container when the timer ends allowing you to style the form differently once the timer runs out.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Major Coming Changes In 5.0.0</h2>
+			<p style="text-align: center;">We have several major changes and features we are planning for version 5.0.0. To keep up with the changes and be notified when the beta becomes available. Please <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe_for_beta_notices">subscribe to our newsletter</a>.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 24 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 18 ); ?>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
 			<h2>GitHub Contributors</h2>

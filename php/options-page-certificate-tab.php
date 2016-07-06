@@ -80,13 +80,23 @@ function qsm_options_certificate_tab_content() {
 	{
 		$mlw_certificate_options = array(__('Enter title here', 'quiz-master-next'), __('Enter text here', 'quiz-master-next'), '', '', 1);
 	}
-	?>
-	<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
-	<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate.', 'quiz-master-next'); ?></p>
-	<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
 
+	?>
+	<div id="tabs-5" class="mlw_tab_content">
+		<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
+		<div style="background:#fff;border-left: 4px solid #fff;padding: 1px 12px;margin: 5px 0 15px;border-left-color: #dc3232;">
+			<p style="font-weight:bold;">Warning: This feature is being removed from the core version. Please use our new free Certificate addon. You can read more about this change in <a href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=certificate_removal_notice&utm_medium=plugin&utm_campaign=qsm_plugin" target="_blank">our post about the certificate being moved.</a></p>
+		</div>
+		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate.', 'quiz-master-next'); ?></p>
+		<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
+		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
+		<?php
+			echo "<form action='' method='post' name='quiz_certificate_options_form'>";
+			echo "<input type='hidden' name='save_certificate_options' value='confirmation' />";
+			echo "<input type='hidden' name='certificate_quiz_id' value='".$quiz_id."' />";
+		?>
 		<table class="form-table">
-			
+
 		</table>
 		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
 		</form>
