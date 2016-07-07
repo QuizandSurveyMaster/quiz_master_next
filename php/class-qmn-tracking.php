@@ -66,15 +66,15 @@ class QMNTracking {
    * @uses QMNTracking::send_data()
    * @return void
    */
-  private function track_check() {
+  public function track_check() {
     $settings = (array) get_option( 'qmn-settings' );
     $tracking_allowed = '0';
 		if ( isset( $settings['tracking_allowed'] ) ) {
 			$tracking_allowed = $settings['tracking_allowed'];
 		}
     $last_time = get_option( 'qmn_tracker_last_time' );
-    if ( $tracking_allowed == '1' && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {
-      $this->load_data();
+    if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {
+      $this->load_data( $tracking_allowed );
       $this->send_data();
       update_option( 'qmn_tracker_last_time', time() );
     }
@@ -108,7 +108,7 @@ class QMNTracking {
    * @since 4.1.0
    * @return void
    */
-  private function load_data() {
+  private function load_data( $tracking ) {
     global $wpdb;
     $data = array();
     $data["plugin"] = "QSM";
@@ -165,6 +165,11 @@ class QMNTracking {
     $data['site_charset'] = get_bloginfo( 'charset' );
     $data['lang'] = get_bloginfo( 'language' );
 
+    // Only add email if they opted into the newer optin message that includes joining the mailing list
+    if ( $tracking == "2" ) {
+      $data['email'] = get_bloginfo( 'admin_email' );
+    }
+
     $this->data = $data;
   }
 
@@ -195,7 +200,7 @@ class QMNTracking {
       $optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
   		$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
   		echo '<div class="updated"><p>';
-  			echo __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better? No sensitive data is tracked.", 'quiz-master-next' );
+  			echo __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better? Opt-in to tracking and our newsletter and immediately be emailed a 20%% discount to the QSM store, valid towards the purchase of addons. No sensitive data is tracked.", 'quiz-master-next' );
   			echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
   			echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
   		echo '</p></div>';
@@ -212,7 +217,7 @@ class QMNTracking {
     if ( isset( $_GET["qmn_track_check"] ) ) {
       if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
         $settings = (array) get_option( 'qmn-settings' );
-        $settings['tracking_allowed'] = '1';
+        $settings['tracking_allowed'] = '2';
         update_option( 'qmn-settings', $settings );
       } else {
         $settings = (array) get_option( 'qmn-settings' );
