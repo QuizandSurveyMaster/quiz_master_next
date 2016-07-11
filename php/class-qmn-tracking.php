@@ -110,6 +110,7 @@ class QMNTracking {
    */
   private function load_data( $tracking ) {
     global $wpdb;
+    global $mlwQuizMasterNext;
     $data = array();
     $data["plugin"] = "QSM";
 
