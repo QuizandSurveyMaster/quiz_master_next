@@ -207,11 +207,11 @@ class QMNGlobalSettingsPage
 			$tracking_allowed = esc_attr( $settings['tracking_allowed'] );
 		}
 		$checked = '';
-		if ($tracking_allowed == '1')
+		if ($tracking_allowed == '2')
 		{
 			$checked = " checked='checked'";
 		}
-		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='1'$checked />";
+		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked />";
 		echo "<label for='qmn-settings[tracking_allowed]'>Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.</label>";
 	}
 

@@ -1,10 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
-Contributors: mylocalwebstop, fpcorso, elrath
+Contributors: mylocalwebstop, fpcorso, elrath, dukeran
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
-Tested up to: 4.5.2
-Stable tag: 4.7.5
+Tested up to: 4.5.3
+Stable tag: 4.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,7 +45,6 @@ You can assign categories to your questions. You can then show the user their sc
 * Schedule when the quiz or survey should be active
 * **Require** certain or all questions to be answered
 * Limit amount of total entries to quiz or survey
-* Allows for you to create **certificates** for the user
 * Can set amount of tries a user has to take the quiz or survey
 * Can enable **comment boxes** for each question and/or comment section at the end of the quiz or survey
 * Can enable **hints** for questions
@@ -59,8 +58,14 @@ You can assign categories to your questions. You can then show the user their sc
 = Make Suggestions Or Contribute =
 Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
-= Premium Quiz And Survey Master Add-ons =
+= Quiz And Survey Master Add-ons =
 While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
+
+**Free Add-ons**
+
+* [Certificates](http://quizandsurveymaster.com/downloads/certificate/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate)
+
+**Premium Add-ons**
 
 * [Landing Page](http://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [Export Results](http://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
@@ -104,49 +109,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.6 (July 11, 2016) =
+  * Closed: Add language and error logs to usage tracking - Issue #457
+
 = 4.7.5 (June 15, 2016) =
   * Closed Enhancement: Change Text Block To Text/HTML - Issue #451
   * Closed Enhancement: Create alert warning about removal of certificate - Issue #382
-
-= 4.7.4 (June 3, 2016) =
-  * Closed Bug: Results page will not load on some sites - Issue #445
-
-= 4.7.3 (May 31, 2016) =
-  * Closed Enhancement: Create new question section id CSS class for each question - Issue #440
-  * Closed Bug: Creating/Editing questions throw PHP notice of undefined index - Issue #436
-
-= 4.7.2 (May 23, 2016) =
-  * Closed Bug: Multiple quizzes on page causes plugin to scroll to top quiz when submitting - Issue #428
-
-= 4.7.1 (May 10, 2016) =
-  * Closed Enhancement: Create new audit trail class - Issue #425
-  * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
-  * Closed Enhancement: WordPress Compatibility with 4.5.2 - Issue #422
-  * Closed Enhancement: Move installation process into new QSM_Install class - Issue #416
-  * Closed Enhancement: Update links for plugin on Plugins page - Issue #415
-  * Closed Bug: Activating plugin on fresh install causes unexpected output warning - Issue #414
-  * Closed User Request: Shortcode parameter to override amount of questions - Issue #345
-  * Closed Enhancement: Limit per user - upgrade to include non-logged in users - Issue #301
-
-= 4.7.0 (April 4, 2016) =
-  * Closed Bug: Slash Added Before Quotation Mark When Editing Quiz/Survey Name - Issue #401
-  * Closed User Request: Add CSS Class To Container When Timer Runs Out - Issue #400
-  * Closed Bug: Validation breaks on second time through quiz - Issue #398
-  * Closed Bug: Validation not working when more than one question per page - Issue #395
-  * Closed Enhancement: Add Spinner/De-activate Submit Button Once Submitted - Issue #387
-  * Closed Enhancement: Pull changelog from GitHub API - Issue #377
-  * Closed Bug: Theme Conflict With Button Class (btn) - Issue #370
-  * Closed User Request: Add Average Points Per Category Variable - Issue #369
-  * Closed Bug: Mixed content SSL error - Issue #367
-  * Closed Enhancement: Default Option For Drop Down - Issue #334
-  * Closed Bug: Disable Answer On Change Not Working - Issue #331
-  * Closed User Request: Randomize Answers But Not Questions - Issue #330
-  * Closed User Request: Add Date Taken Variable - Issue #310
-  * Closed User Request: Copy Questions Between Quizzes - Issue #166
 
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.7.5 =
+= 4.7.6 =
 Upgrade for minor design changes
