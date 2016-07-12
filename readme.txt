@@ -3,7 +3,7 @@ Contributors: mylocalwebstop, fpcorso, elrath, dukeran
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: 4.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -62,6 +62,7 @@ Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master
 While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
 
 **Free Add-ons**
+
 * [Certificates](http://quizandsurveymaster.com/downloads/certificate/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate)
 
 **Premium Add-ons**
