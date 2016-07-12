@@ -193,16 +193,10 @@ class QSM_Install {
   public function update() {
     global $mlwQuizMasterNext;
   	$data = $mlwQuizMasterNext->version;
-  	if ( ! get_option('qmn_original_version'))
-  	{
-  		add_option('qmn_original_version' , $data);
-  	}
-  	if ( ! get_option('mlw_quiz_master_version'))
-  	{
-  		add_option('mlw_quiz_master_version' , $data);
-  	}
-  	elseif (get_option('mlw_quiz_master_version') != $data)
-  	{
+  	if ( ! get_option( 'qmn_original_version' ) ) {
+  		add_option( 'qmn_original_version', $data );
+    }
+  	if ( get_option( 'mlw_quiz_master_version' ) != $data ) {
   		global $wpdb;
   		$table_name = $wpdb->prefix . "mlw_quizzes";
   		//Update 0.5
@@ -608,15 +602,13 @@ class QSM_Install {
 
 
   		update_option('mlw_quiz_master_version' , $data);
-  		if(!isset($_GET['activate-multi']))
-          {
-  					wp_safe_redirect( admin_url( 'index.php?page=mlw_qmn_about' ) );
-  					exit;
-          }
+  		if( ! isset( $_GET['activate-multi'] ) ) {
+				wp_safe_redirect( admin_url( 'index.php?page=mlw_qmn_about' ) );
+				exit;
+      }
   	}
-  	if ( ! get_option('mlw_advert_shows'))
-  	{
-  		add_option('mlw_advert_shows' , 'true');
+  	if ( ! get_option('mlw_advert_shows') ) {
+  		add_option( 'mlw_advert_shows' , 'true' );
   	}
   }
 
