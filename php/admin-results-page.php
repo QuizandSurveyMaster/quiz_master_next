@@ -232,7 +232,7 @@ function mlw_generate_quiz_results()
 			}
 			?>
 			<input type="hidden" name="page" value="mlw_quiz_results">
-			<p class="search-box">
+			<p class="search-box" style="margin-bottom: 10px;">
 				<label for="qmn_search_phrase">Search Results:</label>
 				<input type="search" id="qmn_search_phrase" name="qmn_search_phrase" value="">
 				<label for="qmn_order_by">Order By:</label>
@@ -252,7 +252,7 @@ function mlw_generate_quiz_results()
 			<table class=widefat>
 				<thead>
 					<tr>
-						<th><input type="checkbox" id="qmn_check_all" /></th>
+						<th><input type="checkbox" id="qmn_check_all" style="margin-left: 0;"/></th>
 						<th><?php _e('Actions','quiz-master-next'); ?></th>
 						<th><?php _e('Quiz Name','quiz-master-next'); ?></th>
 						<th><?php _e('Score','quiz-master-next'); ?></th>
@@ -291,26 +291,26 @@ function mlw_generate_quiz_results()
 
 					$quotes_list .= "<tr{$alternate}>";
 					$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";
-					$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=mlw_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
+					$quotes_list .= "<td><span><a href='admin.php?page=mlw_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a style='color:red;' onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->quiz_name . "</span></td>";
 					if ($mlw_quiz_info->quiz_system == 0)
 					{
-						$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
+						$quotes_list .= "<td class='post-title column-title'><span>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
 					}
 					if ($mlw_quiz_info->quiz_system == 1)
 					{
-						$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+						$quotes_list .= "<td><span>" . $mlw_quiz_info->point_score . " Points</span></td>";
 					}
 					if ($mlw_quiz_info->quiz_system == 2)
 					{
-						$quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next')."</span></td>";
+						$quotes_list .= "<td><span>".__('Not Graded','quiz-master-next')."</span></td>";
 					}
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time ."</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name ."</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email ."</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone ."</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->time_taken ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_complete_time ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->name ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->business ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->email ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->phone ."</span></td>";
+					$quotes_list .= "<td><span>" . $mlw_quiz_info->time_taken ."</span></td>";
 					$quotes_list .= "</tr>";
 				}
 				$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
