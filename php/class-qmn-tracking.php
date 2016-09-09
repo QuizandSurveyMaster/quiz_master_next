@@ -97,8 +97,9 @@ class QMNTracking {
 			'user-agent'  => 'QSM Usage Tracker'
 		) );
     if ( is_wp_error( $response ) ) {
-		   $error_message = $response->get_error_message();
-       $mlwQuizMasterNext->log_manager->add( "Error 0024", "Usage tracker failed due to following reason: $error_message", 0, 'error' );
+      global $mlwQuizMasterNext;
+      $error_message = $response->get_error_message();
+      $mlwQuizMasterNext->log_manager->add( "Error 0024", "Usage tracker failed due to following reason: $error_message", 0, 'error' );
 		}
   }
 

@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
 Tested up to: 4.5.3
-Stable tag: 4.7.6
+Stable tag: 4.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.7 (September 10, 2016) =
+  * Closed Bug: From Email Bug Causing 500 Error On WP 4.6 - Issue #473
+  * Closed Enhancement: Table Styles Don't Match Default WordPress Styles. - Issue #471
+  * Closed Bug: Tracking manager causes admin server error when request error occurs. - Issue #470
+
 = 4.7.6 (July 11, 2016) =
   * Closed: Add language and error logs to usage tracking - Issue #457
 
@@ -120,5 +125,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.6 =
-Upgrade for minor design changes
+= 4.7.7 =
+Upgrade to fix bug affecting some users using WordPress 4.6 causing results page not to load
