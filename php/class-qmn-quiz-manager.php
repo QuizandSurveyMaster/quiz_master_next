@@ -1009,7 +1009,11 @@ EOC;
 				}
 
 				if ( ! is_email( $from_email_array["from_email"] ) ) {
-					$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					if ( is_email( $qmn_quiz_options->admin_email ) ) {
+						$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					} else {
+						$from_email_array["from_email"] = get_option( 'admin_email ', 'test@example.com' );
+					}
 				}
 
 				//Prepare email attachments
@@ -1109,7 +1113,11 @@ EOC;
 				}
 
 				if ( ! is_email( $from_email_array["from_email"] ) ) {
-					$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					if ( is_email( $qmn_quiz_options->admin_email ) ) {
+						$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					} else {
+						$from_email_array["from_email"] = get_option( 'admin_email ', 'test@example.com' );
+					}
 				}
 
 				$mlw_message = "";
@@ -1185,9 +1193,11 @@ EOC;
 			if ( $from_email_array["reply_to"] == 0 ) {
 				$headers[] = 'Reply-To: '.$qmn_array_for_variables["user_name"]." <".$qmn_array_for_variables["user_email"].">";
 			}
-			$mlw_qmn_admin_emails = explode( ",", $qmn_quiz_options->admin_email );
-			foreach( $mlw_qmn_admin_emails as $admin_email ) {
-				wp_mail( $admin_email, $mlw_subject, $mlw_message, $headers );
+			$admin_emails = explode( ",", $qmn_quiz_options->admin_email );
+			foreach( $admin_emails as $admin_email ) {
+				if ( is_email( $admin_email ) ) {
+					wp_mail( $admin_email, $mlw_subject, $mlw_message, $headers );
+				}
 			}
 		}
 
