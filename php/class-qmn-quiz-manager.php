@@ -1008,6 +1008,10 @@ EOC;
 					);
 				}
 
+				if ( ! is_email( $from_email_array["from_email"] ) ) {
+					$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+				}
+
 				//Prepare email attachments
 				$attachments = array();
 				$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $qmn_array_for_variables );
@@ -1093,10 +1097,8 @@ EOC;
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 
 		$mlw_message = "";
-		if ($qmn_quiz_options->send_admin_email == "0")
-		{
-			if ($qmn_quiz_options->admin_email != "")
-			{
+		if ( $qmn_quiz_options->send_admin_email == "0" ) {
+			if ( $qmn_quiz_options->admin_email != "" ) {
 				$from_email_array = maybe_unserialize( $qmn_quiz_options->email_from_text );
 				if ( ! isset( $from_email_array["from_email"] ) ) {
 					$from_email_array = array(
@@ -1105,6 +1107,11 @@ EOC;
 						'reply_to' => 1
 					);
 				}
+
+				if ( ! is_email( $from_email_array["from_email"] ) ) {
+					$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+				}
+
 				$mlw_message = "";
 				$mlw_subject = "";
 				if (is_serialized($qmn_quiz_options->admin_email_template) && is_array(@unserialize($qmn_quiz_options->admin_email_template)))
