@@ -110,7 +110,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 4.7.8 (November, 2, 2016) =
-  * 
+  * Closed Bug: Apostrophe in translation for tab name text causing errors - Issue #490
+  * Closed Bug: Timer resets if user copies link, opens new tab, and pastes link - Issue #489
+  * Closed Enhancement: Add Business, Email, And Phone To Quiz Results Search - Issue #485
+  * Closed Bug: "You Deserve It" button in review message leads to 404 - Issue #476
+  * Closed Bug: In the Hint dropdown text, the 'apostrophe' does not display properly - Issue #453
 
 = 4.7.7 (September 10, 2016) =
   * Closed Bug: From Email Bug Causing 500 Error On WP 4.6 - Issue #473
