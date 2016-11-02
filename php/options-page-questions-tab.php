@@ -76,7 +76,7 @@ function mlw_options_questions_tab_content()
 		$mlw_edit_question_id = intval( $_POST["question_id"] );
 		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
 		$edit_comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
-		$edit_hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
+		$edit_hint = htmlspecialchars( stripslashes( $_POST["hint"] ), ENT_QUOTES );
 		$edit_question_order = intval( $_POST["new_question_order"] );
 		$total_answers = intval( $_POST["new_question_answer_total"] );
 
@@ -278,7 +278,7 @@ function mlw_options_questions_tab_content()
 		$question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
 		$question_type = sanitize_text_field( $_POST["question_type"] );
 		$comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
-		$hint = htmlspecialchars( $_POST["hint"], ENT_QUOTES );
+		$hint = htmlspecialchars( stripslashes( $_POST["hint"] ), ENT_QUOTES );
 		$new_question_order = intval( $_POST["new_question_order"] );
 		$total_answers = intval( $_POST["new_question_answer_total"] );
 

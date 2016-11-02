@@ -95,7 +95,7 @@ class QMN_Review_Message {
 			$this->trigger,
 			'<br /><strong><em>~ Frank Corso</em></strong><br /><br />'
 		);
-		echo '&nbsp;<a target="_blank" href="https://wordpress.org/support/view/plugin-reviews/quiz-master-next?rate=5#postform" class="button-primary">' . __( 'Yeah, you deserve it!', 'quiz-master-next' ) . '</a>';
+		echo '&nbsp;<a target="_blank" href="https://wordpress.org/support/plugin/quiz-master-next/reviews/#new-topic-0" class="button-primary">' . __( 'Yeah, you deserve it!', 'quiz-master-next' ) . '</a>';
 		echo '&nbsp;<a href="' . esc_url( $already_url ) . '" class="button-secondary">' . __( 'I already did!', 'quiz-master-next' ) . '</a>';
   		echo '&nbsp;<a href="' . esc_url( $nope_url ) . '" class="button-secondary">' . __( 'No, this plugin is not good enough', 'quiz-master-next' ) . '</a>';
 		echo "<br /><br /></div>";
@@ -116,6 +116,8 @@ class QMN_Review_Message {
 				$update_trigger = 100;
 			} else if ( $this->trigger === 100 ) {
 				$update_trigger = 1000;
+			} else if ( $this->trigger === 1000 ) {
+				$update_trigger = -1;
 			}
 			update_option( 'qmn_review_message_trigger', $update_trigger );
 		}

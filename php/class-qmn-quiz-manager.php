@@ -404,9 +404,10 @@ class QMNQuizManager
 				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' onclick='qmnClearField(this)'>".htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)."</textarea>";
 				$question_display .= "<br />";
 			}
-			if ($mlw_question->hints != "")
-			{
-				$question_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" class='mlw_qmn_hint_link'>".__('Hint', 'quiz-master-next')."</span>";
+
+			// Checks if a hint is entered
+			if ( ! empty( $mlw_question->hints ) ) {
+				$question_display .= "<span title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>" . __( 'Hint', 'quiz-master-next' ) . "</span>";
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";

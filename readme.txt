@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
 Requires at least: 4.1
 Tested up to: 4.6.1
-Stable tag: 4.7.7
+Stable tag: 4.7.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 4.7.8 (November, 2, 2016) =
+  * Closed Bug: Apostrophe in translation for tab name text causing errors - Issue #490
+  * Closed Bug: Timer resets if user copies link, opens new tab, and pastes link - Issue #489
+  * Closed Enhancement: Add Business, Email, And Phone To Quiz Results Search - Issue #485
+  * Closed Bug: "You Deserve It" button in review message leads to 404 - Issue #476
+  * Closed Bug: In the Hint dropdown text, the 'apostrophe' does not display properly - Issue #453
+
 = 4.7.7 (September 10, 2016) =
   * Closed Bug: From Email Bug Causing 500 Error On WP 4.6 - Issue #473
   * Closed Enhancement: Table Styles Don't Match Default WordPress Styles. - Issue #471
@@ -125,5 +132,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 4.7.7 =
-Upgrade to fix bug affecting some users using WordPress 4.6 causing results page not to load
+= 4.7.8 =
+Upgrade to fix bug affecting some users where the results page will not load
