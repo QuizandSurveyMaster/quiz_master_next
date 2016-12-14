@@ -7,12 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return void
 * @since 4.4.0
 */
-function qmn_settings_questions_tab()
-{
+function qmn_settings_questions_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Questions", 'quiz-master-next'), 'mlw_options_questions_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Questions", 'quiz-master-next' ), 'mlw_options_questions_tab_content' );
 }
-add_action("plugins_loaded", 'qmn_settings_questions_tab', 5);
+add_action( "plugins_loaded", 'qmn_settings_questions_tab', 5 );
 
 
 /**
@@ -21,9 +20,9 @@ add_action("plugins_loaded", 'qmn_settings_questions_tab', 5);
 * @return void
 * @since 4.4.0
 */
-function mlw_options_questions_tab_content()
-{
+function mlw_options_questions_tab_content() {
 	?>
+
 	<script>
 		var answer_text = '<?php _e('Answer', 'quiz-master-next'); ?>';
 	</script>
@@ -39,7 +38,7 @@ function mlw_options_questions_tab_content()
 	$quiz_id = $_GET["quiz_id"];
 
 	//Re-ordering questions
-	if (isset($_POST['qmn_question_order_nonce']) && wp_verify_nonce( $_POST['qmn_question_order_nonce'], 'qmn_question_order')) {
+	if ( isset( $_POST['qmn_question_order_nonce'] ) && wp_verify_nonce( $_POST['qmn_question_order_nonce'], 'qmn_question_order' ) ) {
 		$list_of_questions = explode( ',', $_POST["save_question_order_input"] );
 		$question_order = 0;
 		$success = true;
@@ -67,11 +66,11 @@ function mlw_options_questions_tab_content()
 		}
 	}
 
-	//Edit question
-	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "edit_question" ) {
+	// Edit question
+	if ( isset( $_POST['qsm_question_save_nonce'] ) && wp_verify_nonce( $_POST['qsm_question_save_nonce'], 'qsm_question_save' ) && isset( $_POST["question_submission"] ) && "edit_question" == $_POST["question_submission"] ) {
 
-		//Variables from edit question form
-		$edit_question_name = trim( preg_replace( '/\s+/',' ', nl2br( htmlspecialchars( stripslashes( $_POST["question_name"] ), ENT_QUOTES ) ) ) );
+		// Variables from edit question form
+		$edit_question_name = trim( preg_replace( '/\s+/',' ', htmlspecialchars( nl2br( wp_kses_post( stripslashes( $_POST["question_name"] ) ) ), ENT_QUOTES ) ) );
 		$edit_question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
 		$mlw_edit_question_id = intval( $_POST["question_id"] );
 		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
@@ -94,7 +93,7 @@ function mlw_options_questions_tab_content()
 		}
 
     // Retrieves question settings and sets required field
-		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions" . " WHERE question_id=%d", $mlw_edit_question_id ) );
+		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $mlw_edit_question_id ) );
 		if ( is_serialized( $mlw_row_settings->question_settings ) && is_array( @unserialize( $mlw_row_settings->question_settings ) ) ) {
 			$mlw_settings = @unserialize( $mlw_row_settings->question_settings );
 		} else {
@@ -162,7 +161,7 @@ function mlw_options_questions_tab_content()
 			),
 			array( '%d' )
 		);
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been updated successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Edited: $edit_question_name" );
 		} else {
@@ -170,10 +169,11 @@ function mlw_options_questions_tab_content()
 			$mlwQuizMasterNext->log_manager->add("Error 0004", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
 	}
-	//Delete question from quiz
-	if ( isset( $_POST["delete_question"] ) && $_POST["delete_question"] == "confirmation")
-	{
-		//Variables from delete question form
+
+	// Delete question from quiz
+	if ( isset( $_POST['qsm_delete_question_nonce'] ) && wp_verify_nonce( $_POST['qsm_delete_question_nonce'], 'qsm_delete_question' ) ) {
+
+		// Variables from delete question form
 		$mlw_question_id = intval( $_POST["delete_question_id"] );
 		$quiz_id = intval( $_POST["quiz_id"] );
 
@@ -188,7 +188,7 @@ function mlw_options_questions_tab_content()
 			),
 			array( '%d' )
 		);
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been deleted successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Deleted: $mlw_question_id" );
 		} else {
@@ -197,13 +197,14 @@ function mlw_options_questions_tab_content()
 		}
 	}
 
-	//Duplicate Questions
-	if ( isset( $_POST["duplicate_question"] ) && $_POST["duplicate_question"] == "confirmation") {
-		//Variables from delete question form
+	// Duplicate Questions
+	if ( isset( $_POST['qsm_duplicate_question_nonce'] ) && wp_verify_nonce( $_POST['qsm_duplicate_question_nonce'], 'qsm_duplicate_question' ) ) {
+
+		// Variables from delete question form
 		$mlw_question_id = intval( $_POST["duplicate_question_id"] );
 		$quiz_id = intval( $_POST["quiz_id"] );
 
-		$mlw_original = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$wpdb->prefix."mlw_questions WHERE question_id=%d", $mlw_question_id ), ARRAY_A );
+		$mlw_original = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $mlw_question_id ), ARRAY_A );
 
 		$results = $wpdb->insert(
 						$wpdb->prefix."mlw_questions",
@@ -261,7 +262,7 @@ function mlw_options_questions_tab_content()
 						)
 					);
 
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been duplicated successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Duplicated: $mlw_question_id" );
 		} else {
@@ -270,11 +271,11 @@ function mlw_options_questions_tab_content()
 		}
 	}
 
-	//Submit new question into database
-	if ( isset( $_POST["question_submission"] ) && $_POST["question_submission"] == "new_question") {
+	// Submit new question into database
+	if ( isset( $_POST['qsm_question_save_nonce'] ) && wp_verify_nonce( $_POST['qsm_question_save_nonce'], 'qsm_question_save' ) && isset( $_POST["question_submission"] ) && "new_question" == $_POST["question_submission"] ) {
 
-		//Variables from new question form
-		$question_name = trim( preg_replace( '/\s+/',' ', nl2br( htmlspecialchars( stripslashes( $_POST["question_name"] ), ENT_QUOTES ) ) ) );
+		// Variables from new question form
+		$question_name = trim( preg_replace( '/\s+/',' ', htmlspecialchars( nl2br( wp_kses_post( stripslashes( $_POST["question_name"] ) ) ), ENT_QUOTES ) ) );
 		$question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
 		$question_type = sanitize_text_field( $_POST["question_type"] );
 		$comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
@@ -359,7 +360,7 @@ function mlw_options_questions_tab_content()
   	);
 
     // Checks if insert was successful or not
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The question has been created successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Question Has Been Added: $question_name" );
 		} else {
@@ -416,26 +417,23 @@ function mlw_options_questions_tab_content()
 	}
 
 	//Load questions
-	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
-		ORDER BY question_order ASC", $quiz_id ) );
+	$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ) );
 	$answers = array();
-	foreach($questions as $mlw_question_info) {
-		if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
-		{
-			$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-			$answers[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
-		}
-		else
-		{
+	foreach( $questions as $mlw_question_info ) {
+		if ( is_serialized( $mlw_question_info->answer_array ) && is_array( @unserialize( $mlw_question_info->answer_array ) ) ) {
+			$mlw_qmn_answer_array_each = @unserialize( $mlw_question_info->answer_array );
+			$answers[ $mlw_question_info->question_id ] = $mlw_qmn_answer_array_each;
+		} else {
 			$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
-			$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
-			$answers[$mlw_question_info->question_id] = array(
-				array($mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0]),
-				array($mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1]),
-				array($mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2]),
-				array($mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3]),
-				array($mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4]),
-				array($mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5]));
+			$mlw_answer_array_correct[ $mlw_question_info->correct_answer - 1 ] = 1;
+			$answers[ $mlw_question_info->question_id ] = array(
+				array( $mlw_question_info->answer_one, $mlw_question_info->answer_one_points, $mlw_answer_array_correct[0] ),
+				array( $mlw_question_info->answer_two, $mlw_question_info->answer_two_points, $mlw_answer_array_correct[1] ),
+				array( $mlw_question_info->answer_three, $mlw_question_info->answer_three_points, $mlw_answer_array_correct[2] ),
+				array( $mlw_question_info->answer_four, $mlw_question_info->answer_four_points, $mlw_answer_array_correct[3] ),
+				array( $mlw_question_info->answer_five, $mlw_question_info->answer_five_points, $mlw_answer_array_correct[4] ),
+				array( $mlw_question_info->answer_six, $mlw_question_info->answer_six_points, $mlw_answer_array_correct[5] )
+			);
 		}
 	}
 
@@ -446,42 +444,37 @@ function mlw_options_questions_tab_content()
 	//Load question type edit fields and convert to JavaScript
 	$qmn_question_type_fields = $mlwQuizMasterNext->pluginHelper->get_question_type_edit_fields();
 	echo "<script>
-		var qmn_question_type_fields = ".json_encode($qmn_question_type_fields).";
+		var qmn_question_type_fields = " . json_encode( $qmn_question_type_fields ) . ";
 	</script>";
 
 	echo "<script>
 	var questions_list = [";
-	foreach($questions as $question) {
+	foreach( $questions as $question ) {
 
-		//Load Required
-		if (is_serialized($question->question_settings) && is_array(@unserialize($question->question_settings)))
-		{
-			$mlw_question_settings = @unserialize($question->question_settings);
-		}
-		else
-		{
+		// Load Required
+		if ( is_serialized( $question->question_settings ) && is_array( @unserialize( $question->question_settings ) ) ) {
+			$mlw_question_settings = @unserialize( $question->question_settings );
+		} else {
 			$mlw_question_settings = array();
 			$mlw_question_settings['required'] = 1;
 		}
 
-		//Load Answers
+		// Load Answers
 		$answer_string = "";
-		foreach($answers[$question->question_id] as $answer_single) {
-			$answer_string .= "{answer: '".esc_js( str_replace('\\', '\\\\', $answer_single[0] ) )."',points: ".$answer_single[1].",correct: ".$answer_single[2]."},";
+		foreach( $answers[ $question->question_id ] as $answer_single ) {
+			$answer_string .= "{answer: '" . esc_js( str_replace('\\', '\\\\', $answer_single[0] ) ) . "',points: " . $answer_single[1] . ",correct: " . $answer_single[2] . "},";
 		}
 
-		//Load Type
+		// Load Type
 		$type_slug = $question->question_type_new;
 		$type_name = $question->question_type_new;
-		foreach($qmn_question_types as $type)
-		{
-			if ($type["slug"] == $question->question_type_new)
-			{
+		foreach( $qmn_question_types as $type ) {
+			if ( $type["slug"] == $question->question_type_new ) {
 				$type_name = $type["name"];
 			}
 		}
 
-		//Parse Javascript Object
+		// Parse Javascript Object
 		echo "{
 			id: ".$question->question_id.",
 		  question: '".esc_js( str_replace('\\', '\\\\', $question->question_name ) )."',
@@ -500,8 +493,8 @@ function mlw_options_questions_tab_content()
 	echo "];
 	</script>";
 
-	//Load Categories
-	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted='0'
+	// Load Categories
+	$qmn_quiz_categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0'
 		GROUP BY category", $quiz_id ) );
 
 	$is_new_quiz = $wpdb->num_rows;
@@ -635,16 +628,18 @@ function mlw_options_questions_tab_content()
 				</fieldset>
 				<input type="hidden" name="new_question_answer_total" id="new_question_answer_total" value="0" />
 				<input type="hidden" id="question_submission" name="question_submission" value="new_question" />
+				<?php wp_nonce_field( 'qsm_question_save','qsm_question_save_nonce' ); ?>
 				<input type="hidden" name="quiz_id" value="<?php echo $quiz_id; ?>" />
 				<input type="hidden" name="question_id" id="question_id" value="0" />
 				<input type='submit' class='button-primary' value='<?php _e('Create Question', 'quiz-master-next'); ?>' />
 			</form>
 		</div>
+
 		<!--Dialogs-->
 		<div id="delete_dialog" title="Delete Question?" style="display:none;">
 			<h3><b><?php _e('Are you sure you want to delete this question?', 'quiz-master-next'); ?></b></h3>
 			<form action='' method='post'>
-				<input type='hidden' name='delete_question' value='confirmation' />
+				<?php wp_nonce_field( 'qsm_delete_question','qsm_delete_question_nonce' ); ?>
 				<input type='hidden' id='delete_question_id' name='delete_question_id' value='' />
 				<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
 				<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Delete Question', 'quiz-master-next'); ?>' /></p>
@@ -654,7 +649,7 @@ function mlw_options_questions_tab_content()
 		<div id="duplicate_dialog" title="Duplicate Question?" style="display:none;">
 			<h3><b><?php _e('Are you sure you want to duplicate this question?', 'quiz-master-next'); ?></b></h3>
 			<form action='' method='post'>
-				<input type='hidden' name='duplicate_question' value='confirmation' />
+				<?php wp_nonce_field( 'qsm_duplicate_question','qsm_duplicate_question_nonce' ); ?>
 				<input type='hidden' id='duplicate_question_id' name='duplicate_question_id' value='' />
 				<input type='hidden' name='quiz_id' value='<?php echo $quiz_id; ?>' />
 				<p class='submit'><input type='submit' class='button-primary' value='<?php _e ('Duplicate Question', 'quiz-master-next'); ?>' /></p>
