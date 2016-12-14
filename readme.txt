@@ -2,9 +2,9 @@
 Contributors: mylocalwebstop, fpcorso, elrath, dukeran
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
-Requires at least: 4.1
-Tested up to: 4.6.1
-Stable tag: 4.7.8
+Requires at least: 4.3
+Tested up to: 4.7
+Stable tag: 4.7.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,7 +109,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 4.7.8 (November, 2, 2016) =
+= 4.7.9 (December 13, 2016) =
+  * Closed Security: CSRF vulnerability on Questions tab
+
+= 4.7.8 (November 2, 2016) =
   * Closed Bug: Apostrophe in translation for tab name text causing errors - Issue #490
   * Closed Bug: Timer resets if user copies link, opens new tab, and pastes link - Issue #489
   * Closed Enhancement: Add Business, Email, And Phone To Quiz Results Search - Issue #485
@@ -121,16 +124,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
   * Closed Enhancement: Table Styles Don't Match Default WordPress Styles. - Issue #471
   * Closed Bug: Tracking manager causes admin server error when request error occurs. - Issue #470
 
-= 4.7.6 (July 11, 2016) =
-  * Closed: Add language and error logs to usage tracking - Issue #457
-
-= 4.7.5 (June 15, 2016) =
-  * Closed Enhancement: Change Text Block To Text/HTML - Issue #451
-  * Closed Enhancement: Create alert warning about removal of certificate - Issue #382
-
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.7.8 =
-Upgrade to fix bug affecting some users where the results page will not load
+= 4.7.9 =
+Important security update to fix CSRF vulnerability
