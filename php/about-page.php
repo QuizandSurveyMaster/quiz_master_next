@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @since 4.4.0
 */
 function mlw_generate_about_page() {
-	
+
 	global $mlwQuizMasterNext;
 	$mlw_quiz_version = $mlwQuizMasterNext->version;
 	wp_enqueue_script( 'jquery' );
@@ -48,7 +48,7 @@ function mlw_generate_about_page() {
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 30 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 31 ); ?>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
 			<h2>GitHub Contributors</h2>

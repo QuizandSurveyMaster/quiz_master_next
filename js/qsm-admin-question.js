@@ -213,15 +213,16 @@ function qmn_hide_show_correct_fields( question_type ) {
 jQuery("#the-list").on('click', '.edit_link', function(event) {
   event.preventDefault();
   var question_array_id = jQuery(this).attr('data-question-id');
-  var question_editor = tinyMCE.get('question_name');
   var question = jQuery('<textarea/>').html(questions_list[question_array_id].question).text();
-  if (question_editor)
-  {
-    tinyMCE.get('question_name').setContent(question);
-  }
-  else
-  {
-    jQuery("#question_name").val(question);
+  if ( 'undefined' === typeof tinyMCE || null === tinyMCE ) {
+    jQuery( "#question_name" ).val( question );
+  } else {
+    var question_editor = tinyMCE.get( 'question_name' );
+    if ( question_editor ) {
+      tinyMCE.get( 'question_name' ).setContent( question );
+    } else {
+      jQuery( "#question_name" ).val( question );
+    }
   }
   jQuery(".question_area_header_text").text('Edit Question');
   jQuery(".question_area .button-primary").val("Save Question");
