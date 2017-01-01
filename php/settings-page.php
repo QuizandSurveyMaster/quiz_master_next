@@ -5,8 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 4.1.0
  */
-class QMNGlobalSettingsPage
-{
+class QMNGlobalSettingsPage {
 
 	/**
 	  * Main Construct Function
@@ -18,21 +17,8 @@ class QMNGlobalSettingsPage
 	  * @uses QMNGlobalSettingsPage::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-	function __construct()
-  {
-    $this->load_dependencies();
+	function __construct() {
     $this->add_hooks();
-  }
-
-	/**
-	  * Load File Dependencies
-	  *
-	  * @since 4.1.0
-	  * @return void
-	  */
-  private function load_dependencies()
-  {
-
   }
 
 	/**
@@ -43,9 +29,8 @@ class QMNGlobalSettingsPage
 	  * @since 4.1.0
 	  * @return void
 	  */
-  private function add_hooks()
-  {
-		add_action("admin_init", array($this, 'init'));
+  private function add_hooks() {
+		add_action( "admin_init", array( $this, 'init' ) );
   }
 
 	/**
@@ -54,16 +39,15 @@ class QMNGlobalSettingsPage
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function init()
-	{
+	public function init() {
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
-    add_settings_section( 'qmn-global-section', 'Main Settings', array($this, 'global_section'), 'qmn_global_settings' );
-    add_settings_field( 'usage-tracker', 'Allow Usage Tracking?', array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-search', 'Disable Quiz Posts From Being Searched?', array($this, 'cpt_search_field'), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-archive', 'Disable Quiz Archive?', array($this, 'cpt_archive_field'), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-slug', 'Quiz Url Slug', array($this, 'cpt_slug_field'), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'facebook-app-id', 'Facebook App Id', array($this, 'facebook_app_id'), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'results-details', 'Template For Admin Results Details', array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
+    add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array($this, 'global_section'), 'qmn_global_settings' );
+    add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array($this, 'cpt_search_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array($this, 'cpt_archive_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug'), 'quiz-master-next' , array($this, 'cpt_slug_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array($this, 'facebook_app_id'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	/**
@@ -74,13 +58,11 @@ class QMNGlobalSettingsPage
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function global_section()
-	{
-		echo 'These settings are applied to the entire plugin and all quizzes.';
-		if (isset($_GET["settings-updated"]) && $_GET["settings-updated"])
-		{
-			flush_rewrite_rules(true);
-			echo "<span style='color:red;'>Settings have been updated!</span>";
+	public function global_section() {
+		_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
+		if ( isset( $_GET["settings-updated"] ) && $_GET["settings-updated"] ) {
+			flush_rewrite_rules( true );
+			echo "<span style='color:red;'>" . __( 'Settings have been updated!', 'quiz-master-next' ) . "</span>";
 		}
 	}
 
@@ -90,8 +72,7 @@ class QMNGlobalSettingsPage
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function facebook_app_id()
-	{
+	public function facebook_app_id() {
 		$settings = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '483815031724529';
 		if (isset($settings['facebook_app_id']))
@@ -212,7 +193,7 @@ class QMNGlobalSettingsPage
 			$checked = " checked='checked'";
 		}
 		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked />";
-		echo "<label for='qmn-settings[tracking_allowed]'>Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.</label>";
+		echo "<label for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . "</label>";
 	}
 
 	/**
@@ -221,11 +202,10 @@ class QMNGlobalSettingsPage
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public static function display_page()
-	{
+	public static function display_page() {
 		?>
 		<div class="wrap">
-        <h2>Global Settings</h2>
+        <h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
         <form action="options.php" method="POST">
             <?php settings_fields( 'qmn-settings-group' ); ?>
             <?php do_settings_sections( 'qmn_global_settings' ); ?>
