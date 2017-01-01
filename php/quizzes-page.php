@@ -283,10 +283,10 @@ function mlw_generate_quiz_admin()
 			{
 				?>
 				<div class="qsm-news-ads">
-					<h3 class="qsm-news-ads-title">Quiz And Survey Master News</h3>
+					<h3 class="qsm-news-ads-title">QSM News</h3>
 					<div class="qsm-news-ads-widget">
 						<h3>Subscribe to our newsletter!</h3>
-						<p>Join our mailing list and recevie a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
+						<p>Join our mailing list and receive a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
 						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary">Subscribe Now</a>
 					</div>
 					<?php
