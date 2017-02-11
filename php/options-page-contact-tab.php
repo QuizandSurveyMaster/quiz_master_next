@@ -26,10 +26,10 @@ function qsm_options_contact_tab_content() {
   global $mlwQuizMasterNext;
   $quiz_id = intval( $_GET["quiz_id"] );
 
-  $contact_form = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( "contact_form" );
+  $contact_form = QSM_Contact_Manager::load_fields();
 
   wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
-  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => unserialize( $contact_form ), 'quizID' => $quiz_id ) );
+  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id ) );
   wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../css/qsm-admin-contact.css' , __FILE__ ) );
 
   /**
@@ -68,9 +68,8 @@ add_action( 'wp_ajax_nopriv_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 function qsm_contact_form_admin_ajax() {
   global $wpdb;
   global $mlwQuizMasterNext;
-  $mlwQuizMasterNext->quizCreator->set_id( intval( $_POST["quiz_id"] ) );
-  $contact_ajax["status"] = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( "contact_form", serialize( $_POST["contact_form"] ) );
-  echo json_encode( $contact_ajax );
+	$results["status"] =  QSM_Contact_Manager::save_fields( $_POST["quiz_id"], $_POST["contact_form"] );
+  echo json_encode( $results );
   die();
 }
 

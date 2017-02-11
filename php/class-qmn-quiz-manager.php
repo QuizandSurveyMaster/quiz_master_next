@@ -337,9 +337,8 @@ class QMNQuizManager
 
       $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
 
-      if ($qmn_quiz_options->contact_info_location == 0)
-      {
-				$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
+      if ( 0 === $qmn_quiz_options->contact_info_location ) {
+				$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
       }
       $section_display .= "</div>";
     } else {
@@ -449,9 +448,8 @@ class QMNQuizManager
 			$section_display .= "<span class='mlw_qmn_message_end'>$message_end</span>";
 			$section_display .= "<br /><br />";
 		}
-		if ($qmn_quiz_options->contact_info_location == 1)
-		{
-			$section_display .= mlwDisplayContactInfo($qmn_quiz_options);
+		if ( 1 === $qmn_quiz_options->contact_info_location ) {
+			$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 		}
 
 		//Legacy Code
@@ -540,15 +538,30 @@ class QMNQuizManager
 			return $result_display;
 		}
 
-		$mlw_user_name = isset($_POST["mlwUserName"]) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None';
-		$mlw_user_comp = isset($_POST["mlwUserComp"]) ? sanitize_text_field( $_POST["mlwUserComp"] ) : 'None';
-		$mlw_user_email = isset($_POST["mlwUserEmail"]) ? sanitize_text_field( $_POST["mlwUserEmail"] ) : 'None';
-		$mlw_user_phone = isset($_POST["mlwUserPhone"]) ? sanitize_text_field( $_POST["mlwUserPhone"] ) : 'None';
+		// Gather contact information
+		$qmn_array_for_variables['user_name'] = 'None';
+		$qmn_array_for_variables['user_business'] = 'None';
+		$qmn_array_for_variables['user_email'] = 'None';
+		$qmn_array_for_variables['user_phone'] = 'None';
+		$contact_responses = QSM_Contact_Manager::process_fields();
+		foreach ( $contact_responses as $field ) {
+      if ( isset( $field['use-for'] ) ) {
+        if ( 'name' === $field['use-for'] ) {
+          $qmn_array_for_variables['user_name'] = $field["value"];
+        }
+        if ( 'comp' === $field['use-for'] ) {
+          $qmn_array_for_variables['user_business'] = $field["value"];
+        }
+        if ( 'email' === $field['use-for'] ) {
+          $qmn_array_for_variables['user_email'] = $field["value"];
+        }
+        if ( 'phone' === $field['use-for'] ) {
+          $qmn_array_for_variables['user_phone'] = $field["value"];
+        }
+      }
+    }
+
 		$mlw_qmn_timer = isset($_POST["timer"]) ? intval( $_POST["timer"] ) : 0;
-		$qmn_array_for_variables['user_name'] = $mlw_user_name;
-		$qmn_array_for_variables['user_business'] = $mlw_user_comp;
-		$qmn_array_for_variables['user_email'] = $mlw_user_email;
-		$qmn_array_for_variables['user_phone'] = $mlw_user_phone;
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
 
@@ -574,7 +587,8 @@ class QMNQuizManager
 			$mlw_quiz_results_array = array(
 				intval($qmn_array_for_variables['timer']),
 				$qmn_array_for_variables['question_answers_array'],
-				htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES)
+				htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
+				'contact' => $contact_responses
 			);
 			$mlw_quiz_results = serialize($mlw_quiz_results_array);
 
@@ -1322,126 +1336,6 @@ function qmn_update_taken($display, $qmn_quiz_options, $qmn_array_for_variables)
 		array( '%d' )
 	);
 	return $display;
-}
-
-/*
-This function displays fields to ask for contact information
-*/
-function mlwDisplayContactInfo($mlw_quiz_options)
-{
-	$mlw_contact_display = "";
-	//Check to see if user is logged in, then ask for contact if not
-	if ( is_user_logged_in() )
-	{
-		//If this quiz does not let user edit contact information we hide this section
-		if ($mlw_quiz_options->loggedin_user_contact == 1)
-		{
-			$mlw_contact_display .= "<div style='display:none;'>";
-		}
-
-		//Retrieve current user information and save into text fields for contact information
-		$current_user = wp_get_current_user();
-		if ($mlw_quiz_options->user_name != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_name == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='".$current_user->display_name."' />";
-			$mlw_contact_display .= "<br /><br />";
-
-		}
-		if ($mlw_quiz_options->user_comp != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_comp == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-		if ($mlw_quiz_options->user_email != 2)
-		{
-			$mlw_contact_class = "class=\"mlwEmail\"";
-			if ($mlw_quiz_options->user_email == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
-			{
-				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='".$current_user->user_email."' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-		if ($mlw_quiz_options->user_phone != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_phone == 1 && $mlw_quiz_options->loggedin_user_contact != 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-
-		//End of hidden section div
-		if ($mlw_quiz_options->loggedin_user_contact == 1)
-		{
-			$mlw_contact_display .= "</div>";
-		}
-	}
-	else
-	{
-		//See if the site wants to ask for any contact information, then ask for it
-		if ($mlw_quiz_options->user_name != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_name == 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->name_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserName' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-		if ($mlw_quiz_options->user_comp != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_comp == 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->business_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserComp' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-		if ($mlw_quiz_options->user_email != 2)
-		{
-			$mlw_contact_class = "class=\"mlwEmail\"";
-			if ($mlw_quiz_options->user_email == 1)
-			{
-				$mlw_contact_class = "class=\"mlwEmail mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->email_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserEmail' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-		if ($mlw_quiz_options->user_phone != 2)
-		{
-			$mlw_contact_class = "class=\"\"";
-			if ($mlw_quiz_options->user_phone == 1)
-			{
-				$mlw_contact_class = "class=\"mlwRequiredText\"";
-			}
-			$mlw_contact_display .= "<span class='mlw_qmn_question'>".htmlspecialchars_decode($mlw_quiz_options->phone_field_text, ENT_QUOTES)."</span>";
-			$mlw_contact_display .= "<input type='text' $mlw_contact_class x-webkit-speech name='mlwUserPhone' value='' />";
-			$mlw_contact_display .= "<br /><br />";
-		}
-	}
-	return $mlw_contact_display;
 }
 
 /*
