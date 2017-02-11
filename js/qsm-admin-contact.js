@@ -11,7 +11,7 @@ var QSMContact;
       });
     },
     addField : function( fieldArray ) {
-      var contactField = $( '<div class="contact-form-field">' +
+      var contactField = $( '<div class="contact-form-field new">' +
           '<div class="contact-form-group">' +
             '<select class="contact-form-control wide type-control">' +
               '<option value="none">Select a type...</option>' +
@@ -28,7 +28,8 @@ var QSMContact;
             '<input type="checkbox" class="required-control">' +
           '</div>' +
           '<div class="contact-form-group">' +
-            '<a href="#" class="delete-field">Delete</a>' +
+            '<a href="#" class="delete-field">Delete</a> | ' +
+            '<a href="#" class="copy-field">Duplicate</a>' +
           '</div>' +
         '</div>'
       );
@@ -46,11 +47,26 @@ var QSMContact;
 
       }
       $( '.contact-form' ).append( contactField );
+      setTimeout( QSMContact.removeNew, 250 );
+    },
+    removeNew: function() {
+      $( '.contact-form-field' ).removeClass( 'new' );
+    },
+    duplicateField: function( linkClicked ) {
+      var field = linkClicked.parents( '.contact-form-field' );
+      var fieldArray = {
+        label: field.find( '.label-control' ).val(),
+        type: field.find( '.type-control' ).val(),
+        required: field.find( '.required-control' ).prop( 'checked' )
+      };
+      QSMContact.addField( fieldArray );
     },
     deleteField: function( field ) {
-      console.log('inside function' );
-      console.log(field);
-      field.parents( '.contact-form-field' ).remove();
+      var parent = field.parents( '.contact-form-field' );
+      parent.addClass( 'deleting' );
+      setTimeout( function() {
+        parent.remove();
+      }, 250 );
     },
     newField : function() {
       var fieldArray = {
@@ -62,7 +78,7 @@ var QSMContact;
       QSMContact.addField( fieldArray );
     },
     save : function() {
-      $( '.contact-message' ).empty();
+      QSMContact.displayAlert( 'Saving contact fields...', 'info' );
       var contactFields = $( '.contact-form-field' );
       var contactForm = [];
       var contactEach;
@@ -74,7 +90,6 @@ var QSMContact;
         };
         contactForm.push( contactEach );
       });
-      console.log( contactForm );
       var data = {
     		action: 'qsm_save_contact',
     		contact_form: contactForm,
@@ -86,14 +101,31 @@ var QSMContact;
     	});
     },
     saved : function( response ) {
-      $( '.contact-message' ).removeClass( 'updated' ).removeClass( 'error' );
       if ( response.status ) {
-        $( '.contact-message' ).addClass( 'updated' );
-        $( '.contact-message' ).append( '<p><strong>Success</strong> Your rules have been saved!</p>' );
+        QSMContact.displayAlert( '<strong>Success</strong> Your rules have been saved!', 'success' );
       } else {
-        $( '.contact-message' ).addClass( 'error' );
-        $( '.contact-message' ).append( '<p><strong>Error</strong> There was an error encountered when saving your rules. Please try again.</p>' );
+        QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your rules. Please try again.', 'error' );
       }
+    },
+    displayAlert: function( message, type ) {
+      QSMContact.clearAlerts();
+      $( '.contact-message' ).addClass( 'notice' );
+      switch ( type ) {
+        case 'info':
+          $( '.contact-message' ).addClass( 'notice-info' );
+          break;
+        case 'error':
+          $( '.contact-message' ).addClass( 'notice-error' );
+          break;
+        case 'success':
+          $( '.contact-message' ).addClass( 'notice-success' );
+          break;
+        default:
+      }
+      $( '.contact-message' ).append( '<p>' + message + '</p>' );
+    },
+    clearAlerts: function() {
+      $( '.contact-message' ).empty().removeClass().addClass( 'contact-message' );
     }
   };
   $(function() {
@@ -105,9 +137,12 @@ var QSMContact;
       QSMContact.save();
     });
     $( '.contact-form' ).on( 'click', '.delete-field', function( event ) {
-      console.log( 'clicked' );
       event.preventDefault();
       QSMContact.deleteField( $( this ) );
+    })
+    $( '.contact-form' ).on( 'click', '.copy-field', function( event ) {
+      event.preventDefault();
+      QSMContact.duplicateField( $( this ) );
     })
     $( '.contact-form' ).sortable({
       containment: "parent",

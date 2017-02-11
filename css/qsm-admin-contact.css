@@ -4,6 +4,14 @@
   background: #fff;
 }
 
+.contact-form-field.new {
+  background: #ffff66;
+}
+
+.contact-form-field.deleting {
+  background: #ff6666;
+}
+
 .contact-form-group {
   margin: 0px 0px 15px;
 }
