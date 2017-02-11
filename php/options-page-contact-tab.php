@@ -28,7 +28,7 @@ function qsm_options_contact_tab_content() {
 
   $contact_form = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( "contact_form" );
 
-  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery' ) );
+  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
   wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => unserialize( $contact_form ), 'quizID' => $quiz_id ) );
   wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../css/qsm-admin-contact.css' , __FILE__ ) );
 
@@ -50,9 +50,9 @@ function qsm_options_contact_tab_content() {
   ?>
   <h2>Contact</h2>
   <div class="contact-message"></div>
-  <a class="save-contact button-primary">Save Contact Form</a> <a class="add-contact-field button-primary">Add New Field</a>
-  <div class="contact-form"></div>
   <a class="save-contact button-primary">Save Contact Form</a>
+  <div class="contact-form"></div>
+   <a class="add-contact-field button-primary">Add New Field</a>
   <?php
 }
 
