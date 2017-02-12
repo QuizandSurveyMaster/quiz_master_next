@@ -1,3 +1,15 @@
+= 4.7.7 (September 10, 2016) =
+  * Closed Bug: From Email Bug Causing 500 Error On WP 4.6 - Issue #473
+  * Closed Enhancement: Table Styles Don't Match Default WordPress Styles. - Issue #471
+  * Closed Bug: Tracking manager causes admin server error when request error occurs. - Issue #470
+  
+= 4.7.6 (July 11, 2016) =
+  * Closed: Add language and error logs to usage tracking - Issue #457
+
+= 4.7.5 (June 15, 2016) =
+  * Closed Enhancement: Change Text Block To Text/HTML - Issue #451
+  * Closed Enhancement: Create alert warning about removal of certificate - Issue #382
+
 = 4.7.4 (June 3, 2016) =
   * Closed Bug: Results page will not load on some sites - Issue #445
 
@@ -33,7 +45,7 @@
   * Closed User Request: Randomize Answers But Not Questions - Issue #330
   * Closed User Request: Add Date Taken Variable - Issue #310
   * Closed User Request: Copy Questions Between Quizzes - Issue #166
-  
+
 = 4.6.7 (January 22, 2016) =
  * Fixes bug causing multiple response to be on a single line for some users
  * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly

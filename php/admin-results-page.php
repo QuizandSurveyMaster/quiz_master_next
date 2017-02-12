@@ -140,8 +140,8 @@ function qsm_results_overview_tab_content() {
 	$order_by_sql = 'ORDER BY result_id DESC';
 	if ( isset( $_GET["qmn_search_phrase"] ) && !empty( $_GET["qmn_search_phrase"] ) ) {
 		$search_phrase = $_GET["qmn_search_phrase"];
-		$mlw_qmn_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s)", '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%' ) );
-		$search_phrase_sql = " AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%')";
+		$mlw_qmn_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)", '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%', '%' . $wpdb->esc_like($search_phrase) . '%' ) );
+		$search_phrase_sql = " AND (quiz_name LIKE '%$search_phrase%' OR name LIKE '%$search_phrase%' OR business LIKE '%$search_phrase%' OR email LIKE '%$search_phrase%' OR phone LIKE '%$search_phrase%')";
 	} else {
 		$mlw_qmn_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0'" );
 	}

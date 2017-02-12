@@ -403,9 +403,10 @@ class QMNQuizManager
 				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment".$mlw_question->question_id."' name='mlwComment".$mlw_question->question_id."' onclick='qmnClearField(this)'>".htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)."</textarea>";
 				$question_display .= "<br />";
 			}
-			if ($mlw_question->hints != "")
-			{
-				$question_display .= "<span title=\"".htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)."\" class='mlw_qmn_hint_link'>".__('Hint', 'quiz-master-next')."</span>";
+
+			// Checks if a hint is entered
+			if ( ! empty( $mlw_question->hints ) ) {
+				$question_display .= "<span title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>" . __( 'Hint', 'quiz-master-next' ) . "</span>";
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
@@ -1022,6 +1023,14 @@ EOC;
 					);
 				}
 
+				if ( ! is_email( $from_email_array["from_email"] ) ) {
+					if ( is_email( $qmn_quiz_options->admin_email ) ) {
+						$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					} else {
+						$from_email_array["from_email"] = get_option( 'admin_email ', 'test@example.com' );
+					}
+				}
+
 				//Prepare email attachments
 				$attachments = array();
 				$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $qmn_array_for_variables );
@@ -1107,10 +1116,8 @@ EOC;
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 
 		$mlw_message = "";
-		if ($qmn_quiz_options->send_admin_email == "0")
-		{
-			if ($qmn_quiz_options->admin_email != "")
-			{
+		if ( $qmn_quiz_options->send_admin_email == "0" ) {
+			if ( $qmn_quiz_options->admin_email != "" ) {
 				$from_email_array = maybe_unserialize( $qmn_quiz_options->email_from_text );
 				if ( ! isset( $from_email_array["from_email"] ) ) {
 					$from_email_array = array(
@@ -1119,6 +1126,15 @@ EOC;
 						'reply_to' => 1
 					);
 				}
+
+				if ( ! is_email( $from_email_array["from_email"] ) ) {
+					if ( is_email( $qmn_quiz_options->admin_email ) ) {
+						$from_email_array["from_email"] = $qmn_quiz_options->admin_email;
+					} else {
+						$from_email_array["from_email"] = get_option( 'admin_email ', 'test@example.com' );
+					}
+				}
+
 				$mlw_message = "";
 				$mlw_subject = "";
 				if (is_serialized($qmn_quiz_options->admin_email_template) && is_array(@unserialize($qmn_quiz_options->admin_email_template)))
@@ -1192,9 +1208,11 @@ EOC;
 			if ( $from_email_array["reply_to"] == 0 ) {
 				$headers[] = 'Reply-To: '.$qmn_array_for_variables["user_name"]." <".$qmn_array_for_variables["user_email"].">";
 			}
-			$mlw_qmn_admin_emails = explode( ",", $qmn_quiz_options->admin_email );
-			foreach( $mlw_qmn_admin_emails as $admin_email ) {
-				wp_mail( $admin_email, $mlw_subject, $mlw_message, $headers );
+			$admin_emails = explode( ",", $qmn_quiz_options->admin_email );
+			foreach( $admin_emails as $admin_email ) {
+				if ( is_email( $admin_email ) ) {
+					wp_mail( $admin_email, $mlw_subject, $mlw_message, $headers );
+				}
 			}
 		}
 

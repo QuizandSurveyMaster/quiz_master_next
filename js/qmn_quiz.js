@@ -51,8 +51,8 @@ function qmnValidation( element, quiz_form_id ) {
 					result = false;
 				}
 			}
-			if ( window.sessionStorage.getItem( 'mlw_time_quiz' + quiz_id ) === null ||
-			window.sessionStorage.getItem( 'mlw_time_quiz'+quiz_id ) > 0.08 ) {
+			if ( window.localStorage.getItem( 'mlw_time_quiz' + quiz_id ) === null ||
+			window.localStorage.getItem( 'mlw_time_quiz'+quiz_id ) > 0.08 ) {
 
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredNumber' ) > -1 && this.value === "" && +this.value != NaN ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
@@ -192,9 +192,9 @@ function qmnActivateTimer( quiz_id ) {
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').show();
 	qmn_timer_activated = true;
 	var minutes = 0;
-	if ( window.sessionStorage.getItem( 'mlw_started_quiz' + quiz_id ) == "yes" &&
-	window.sessionStorage.getItem( 'mlw_time_quiz' + quiz_id ) >= 0 ) {
-		minutes = window.sessionStorage.getItem( 'mlw_time_quiz' + quiz_id );
+	if ( window.localStorage.getItem( 'mlw_started_quiz' + quiz_id ) == "yes" &&
+	window.localStorage.getItem( 'mlw_time_quiz' + quiz_id ) >= 0 ) {
+		minutes = window.localStorage.getItem( 'mlw_time_quiz' + quiz_id );
 	} else {
 		minutes = qmn_quiz_data[quiz_id].timer_limit;
 	}
@@ -209,8 +209,8 @@ function qmnTimer( quiz_id ) {
 	if (window.amount < 0) {
 		window.amount = 0;
 	}
-	window.sessionStorage.setItem( 'mlw_time_quiz' + quiz_id, window.amount / 60 );
-	window.sessionStorage.setItem( 'mlw_started_quiz' + quiz_id, "yes" );
+	window.localStorage.setItem( 'mlw_time_quiz' + quiz_id, window.amount / 60 );
+	window.localStorage.setItem( 'mlw_started_quiz' + quiz_id, "yes" );
 	jQuery( '#quizForm' + quiz_id + ' .mlw_qmn_timer').html( qmnMinToSec( window.amount ) );
 	window.document.title = qmnMinToSec( window.amount ) + " " + qsmTitleText;
 	if ( window.amount <= 0 ) {
@@ -228,8 +228,8 @@ function qmnTimer( quiz_id ) {
 }
 
 function qmnEndTimer( quiz_id ) {
-	window.sessionStorage.setItem('mlw_time_quiz' + quiz_id, 'completed');
-	window.sessionStorage.setItem('mlw_started_quiz' + quiz_id, 'no');
+	window.localStorage.setItem('mlw_time_quiz' + quiz_id, 'completed');
+	window.localStorage.setItem('mlw_started_quiz' + quiz_id, 'no');
 	window.document.title = qsmTitleText;
 	if ( typeof window.qsmCounter != 'undefined' ) {
 		clearInterval( window.qsmCounter );

@@ -16,7 +16,7 @@ function mlw_generate_quiz_options() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'questions';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
 	$quiz_id = intval($_GET["quiz_id"]);
 	if ( isset( $_GET["quiz_id"] ) ) {
 		$table_name = $wpdb->prefix . "mlw_quizzes";
