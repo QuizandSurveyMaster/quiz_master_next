@@ -170,9 +170,6 @@ function mlw_options_results_tab_content()
 				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent taking quiz in seconds', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
 				<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">

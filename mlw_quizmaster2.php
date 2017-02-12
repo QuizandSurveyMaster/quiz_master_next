@@ -128,7 +128,6 @@ class MLWQuizMasterNext {
 			include( "php/options-page-text-tab.php" );
 			include( "php/options-page-option-tab.php" );
 			include( "php/options-page-leaderboard-tab.php" );
-			include( "php/options-page-certificate-tab.php" );
 			include( "php/options-page-email-tab.php" );
 			include( "php/options-page-results-page-tab.php" );
 			include( "php/options-page-style-tab.php" );
