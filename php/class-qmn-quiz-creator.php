@@ -264,10 +264,10 @@ class QMNQuizCreator
 				'message_before' => 'Welcome to your %QUIZ_NAME%',
 				'message_after' => '%QUESTIONS_ANSWERS%',
 				'message_comment' => 'Please fill in the comment box below.',
-				'message_end_template' => 'Be sure to click Submit Quiz to see your results!',
+				'message_end_template' => '',
 				'user_email_template' => '%QUESTIONS_ANSWERS%',
 				'admin_email_template' => '%QUESTIONS_ANSWERS%',
-				'submit_button_text' => 'Submit Quiz',
+				'submit_button_text' => 'Submit',
 				'name_field_text' => 'Name',
 				'business_field_text' => 'Business',
 				'email_field_text' => 'Email',
@@ -306,7 +306,7 @@ class QMNQuizCreator
 				'require_log_in' => 0,
 				'require_log_in_text' => 'This quiz is for logged in users only.',
 				'limit_total_entries' => 0,
-				'limit_total_entries_text' => 'Unfortunately, this quiz is limited the amount of entries it can recieve and has already reached that limit.',
+				'limit_total_entries_text' => 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.',
 				'scheduled_timeframe' => '',
 				'scheduled_timeframe_text' => '',
 				'quiz_views' => 0,
@@ -371,8 +371,7 @@ class QMNQuizCreator
 		if ($results != false)
 		{
 			$new_quiz = $wpdb->insert_id;
-			global $current_user;
-			get_currentuserinfo();
+			$current_user = wp_get_current_user();
 			$quiz_post = array(
 			  'post_title'    => $quiz_name,
 			  'post_content'  => "[mlw_quizmaster quiz=$new_quiz]",
@@ -384,22 +383,7 @@ class QMNQuizCreator
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'quiz-master-next'), 'success');
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "New Quiz Has Been Created: $quiz_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz Has Been Created: $quiz_name" );
 			do_action('qmn_quiz_created', $new_quiz);
 		}
 		else
@@ -459,23 +443,7 @@ class QMNQuizCreator
 			}
 			wp_reset_postdata();
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been deleted successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Quiz Has Been Deleted: $quiz_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Has Been Deleted: $quiz_name" );
 		}
 		else
 		{
@@ -507,26 +475,9 @@ class QMNQuizCreator
  			),
  			array( '%d' )
  		);
-		if ($results != false)
-		{
+		if ( false != $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz name has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Quiz Name Has Been Edited: $quiz_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Name Has Been Edited: $quiz_name" );
 		}
 		else
 		{
@@ -662,10 +613,8 @@ class QMNQuizCreator
 				)
 			);
 		$mlw_new_id = $wpdb->insert_id;
-		if ($results != false)
-		{
-			global $current_user;
-			get_currentuserinfo();
+		if ( false != $results ) {
+			$current_user = wp_get_current_user();
 			$quiz_post = array(
 				'post_title'    => $quiz_name,
 				'post_content'  => "[mlw_quizmaster quiz=$mlw_new_id]",
@@ -676,23 +625,7 @@ class QMNQuizCreator
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been duplicated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "New Quiz Has Been Created: $quiz_name",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz Has Been Created: $quiz_name" );
 			do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 		}
 		else

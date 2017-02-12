@@ -1,0 +1,144 @@
+.edit_link,
+.duplicate_link {
+  color: #0074a2 !important;
+  font-size: 14px !important;
+}
+.delete_link {
+  color: red !important;
+  font-size: 14px !important;
+}
+.edit_link:hover,
+.duplicate_link:hover,
+.delete_link:hover {
+  background-color: black;
+}
+
+.row:after,
+.answers:after,
+.answers_single:after {
+  clear:both;
+  display:table;
+  content: " ";
+}
+.row {
+  margin-bottom: 15px;
+}
+.row .option_label {
+  width:15%;
+  float:left;
+  font-weight: bold;
+}
+.row .option_input {
+  width:84%;
+  float:left;
+}
+.question_form {
+
+}
+.question_form fieldset {
+  margin: 20px 0px;
+  background: #fff;
+  padding: 5px;
+}
+.question_form legend {
+  font-size: 16px;
+  font-weight: bold;
+  background: #f1f1f1;
+  padding: 5px;
+}
+.answer_number,
+.answer_text,
+.answer_points,
+.answer_correct {
+  font-weight: bold;
+  float:left;
+  margin: 1%;
+}
+.answer_number {
+  width:10%;
+}
+.answer_text {
+  width:60%;
+}
+.answer_points {
+  width:10%;
+}
+.answer_correct {
+  width:10%;
+}
+.answer_input {
+  width: 100%;
+}
+.question_area_header_text {
+  padding: 40px 0 0 !important;
+}
+
+.other_quiz_question {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+}
+
+.import_question_button,
+.other_quiz_question_text {
+  margin-right: 15px !important;
+}
+
+@-moz-keyframes qsm-spinner-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes qsm-spinner-loader {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes qsm-spinner-loader {
+  0% {
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+/* :not(:required) hides this rule from IE9 and below */
+.qsm-spinner-loader:not(:required) {
+  -moz-animation: qsm-spinner-loader 1500ms infinite linear;
+  -webkit-animation: qsm-spinner-loader 1500ms infinite linear;
+  animation: qsm-spinner-loader 1500ms infinite linear;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  border-radius: 0.5em;
+  -moz-box-shadow: rgba(0, 0, 51, 0.3) 1.5em 0 0 0, rgba(0, 0, 51, 0.3) 1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) 0 1.5em 0 0, rgba(0, 0, 51, 0.3) -1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) -1.5em 0 0 0, rgba(0, 0, 51, 0.3) -1.1em -1.1em 0 0, rgba(0, 0, 51, 0.3) 0 -1.5em 0 0, rgba(0, 0, 51, 0.3) 1.1em -1.1em 0 0;
+  -webkit-box-shadow: rgba(0, 0, 51, 0.3) 1.5em 0 0 0, rgba(0, 0, 51, 0.3) 1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) 0 1.5em 0 0, rgba(0, 0, 51, 0.3) -1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) -1.5em 0 0 0, rgba(0, 0, 51, 0.3) -1.1em -1.1em 0 0, rgba(0, 0, 51, 0.3) 0 -1.5em 0 0, rgba(0, 0, 51, 0.3) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 51, 0.3) 1.5em 0 0 0, rgba(0, 0, 51, 0.3) 1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) 0 1.5em 0 0, rgba(0, 0, 51, 0.3) -1.1em 1.1em 0 0, rgba(0, 0, 51, 0.3) -1.5em 0 0 0, rgba(0, 0, 51, 0.3) -1.1em -1.1em 0 0, rgba(0, 0, 51, 0.3) 0 -1.5em 0 0, rgba(0, 0, 51, 0.3) 1.1em -1.1em 0 0;
+  display: inline-block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin: 1.5em;
+  overflow: hidden;
+  text-indent: 100%;
+}

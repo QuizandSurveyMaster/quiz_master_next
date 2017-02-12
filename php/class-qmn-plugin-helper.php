@@ -1,15 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
 * This class is a helper class to be used for extending the plugin
 *
 * This class contains many functions for extending the plugin
 *
-*
 * @since 4.0.0
 */
-class QMNPluginHelper
-{
+class QMNPluginHelper {
+
 	/**
 	 * Addon Page tabs array
 	 *
@@ -27,7 +27,15 @@ class QMNPluginHelper
 	public $stats_tabs = array();
 
 	/**
-	 * Results Page tabs array
+	 * Admin Results Page tabs array
+	 *
+	 * @var array
+	 * @since 4.8.0
+	 */
+	public $admin_results_tabs = array();
+
+	/**
+	 * Results Details Page tabs array
 	 *
 	 * @var array
 	 * @since 4.1.0
@@ -66,10 +74,58 @@ class QMNPluginHelper
 	  * @since 4.0.0
 	  * @return void
 	  */
-	public function __construct()
-	{
+	public function __construct() {
 		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
 	}
+
+	/**
+	 * Registers a quiz setting
+	 *
+	 * @since 4.8.0
+	 * @param array $field_array An array of the components for the settings field
+	 */
+	public function register_quiz_setting( $field_array, $section = 'quiz_options' ) {
+		global $mlwQuizMasterNext;
+		$mlwQuizMasterNext->quiz_settings->register_setting( $field_array, $section );
+	}
+
+	/**
+   * Retrieves setting value based on name of setting
+   *
+   * @since 4.0.0
+   * @param string $setting The name of the setting whose value we need to retrieve
+   * @param mixed $default What we need to return if no setting exists with given $setting
+   * @return $mixed Value set for $setting or $default if setting does not exist
+   */
+	public function get_quiz_setting( $setting, $default = false ) {
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quiz_settings->get_setting( $setting, $default );
+	}
+
+
+	/**
+   * Updates a settings value, adding it if it didn't already exist
+   *
+   * @since 4.0.0
+   * @param string $setting The name of the setting whose value we need to retrieve
+   * @param mixed $value The value that needs to be stored for the setting
+   * @return bool True if successful or false if fails
+   */
+	public function update_quiz_setting( $setting, $value ) {
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quiz_settings->update_setting( $setting, $value );
+	}
+
+	/**
+   * Outputs the section of input fields
+   *
+   * @since 4.8.0
+   * @param string $section The section that the settings were registered with
+   */
+  public function generate_settings_section( $section = 'quiz_options' ) {
+		global $mlwQuizMasterNext;
+    QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
+  }
 
 	/**
 	 * Registers Quiz Templates
@@ -325,37 +381,6 @@ class QMNPluginHelper
 	}
 
 	/**
-	  * Retrieves A Quiz Setting
-	  *
-	  * Retrieves a setting stored in the quiz settings array
-	  *
-	  * @since 4.0.0
-		* @param string $setting The name of the setting
-		* @return string The value stored for the setting
-	  */
-	public function get_quiz_setting($setting)
-	{
-		global $mlwQuizMasterNext;
-		return $mlwQuizMasterNext->quizCreator->get_setting($setting);
-	}
-
-	/**
-	  * Updates A Quiz Setting
-	  *
-	  * Sets the value of a setting stored in the quiz settings array
-	  *
-	  * @since 4.0.0
-		* @param string $setting The name of the setting
-		* @param any $value The value to be store in the setting
-		* @return bool True if update was successful
-	  */
-	public function update_quiz_setting($setting, $value)
-	{
-		global $mlwQuizMasterNext;
-		return $mlwQuizMasterNext->quizCreator->update_setting($setting, $value);
-	}
-
-	/**
 	  * Registers Addon Settings Tab
 	  *
 	  * Registers a new tab on the addon settings page
@@ -421,6 +446,38 @@ class QMNPluginHelper
 	public function get_stats_tabs()
 	{
 		return $this->stats_tabs;
+	}
+
+	/**
+	 * Registers tabs for the Admin Results page
+	 *
+	 * Registers a new tab on the admin results page
+	 *
+	 * @since 4.8.0
+	 * @param string $title The name of the tab
+	 * @param string $function The function that displays the tab's content
+	 * @return void
+	 */
+	public function register_admin_results_tab( $title, $function) {
+		$slug = strtolower( str_replace( " ", "-", $title ) );
+		$new_tab = array(
+			'title' => $title,
+			'function' => $function,
+			'slug' => $slug
+		);
+		$this->admin_results_tabs[] = $new_tab;
+	}
+
+	/**
+	 * Retrieves Admin Results Tab Array
+	 *
+	 * Retrieves the array of titles and functions for the tabs registered for the admin results page
+	 *
+	 * @since 4.8.0
+	 * @return array The array of registered tabs
+	 */
+	public function get_admin_results_tabs() {
+		return $this->admin_results_tabs;
 	}
 
 	/**

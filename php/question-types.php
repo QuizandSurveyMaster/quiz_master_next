@@ -215,7 +215,7 @@ function qmn_drop_down_display($id, $question, $answers)
 	}
   $question_display .= "<span class='mlw_qmn_question'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . "</span>";
   $question_display .= "<select class='qsm_select $require_class' name='question".$id."'>";
-	$question_display .= "<option value='No Answer Provided' selected='selected'>Select an answer...</option>";
+	$question_display .= "<option value='No Answer Provided' selected='selected'>&nbsp;</option>";
   if (is_array($answers))
   {
     $mlw_answer_total = 0;
@@ -532,7 +532,7 @@ function qmn_question_type_text_block()
 		'extra_inputs' => array(),
 		'function' => ''
 	);
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Text Block", 'quiz-master-next'), 'qmn_text_block_display', false, null, $edit_args, null, 6);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Text/HTML Section", 'quiz-master-next'), 'qmn_text_block_display', false, null, $edit_args, null, 6);
 }
 
 

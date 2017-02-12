@@ -1,10 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
-Contributors: mylocalwebstop, fpcorso, elrath
+Contributors: mylocalwebstop, fpcorso, elrath, dukeran
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
-Requires at least: 4.0.1
-Tested up to: 4.4.1
-Stable tag: 4.6.7
+Requires at least: 4.1
+Tested up to: 4.5.3
+Stable tag: 4.7.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,7 +45,6 @@ You can assign categories to your questions. You can then show the user their sc
 * Schedule when the quiz or survey should be active
 * **Require** certain or all questions to be answered
 * Limit amount of total entries to quiz or survey
-* Allows for you to create **certificates** for the user
 * Can set amount of tries a user has to take the quiz or survey
 * Can enable **comment boxes** for each question and/or comment section at the end of the quiz or survey
 * Can enable **hints** for questions
@@ -59,8 +58,14 @@ You can assign categories to your questions. You can then show the user their sc
 = Make Suggestions Or Contribute =
 Quiz And Survey Master is now on [GitHub](https://github.com/fpcorso/quiz_master_next/)!
 
-= Premium Quiz And Survey Master Add-ons =
+= Quiz And Survey Master Add-ons =
 While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
+
+**Free Add-ons**
+
+* [Certificates](http://quizandsurveymaster.com/downloads/certificate/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate)
+
+**Premium Add-ons**
 
 * [Landing Page](http://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [Export Results](http://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
@@ -104,41 +109,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 4.6.7 (January 22, 2015) =
- * Fixes bug causing multiple response to be on a single line for some users
- * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
- * Fixes bug causing unexpected output error when activating plugin
- * Changes comment section to default to off in newer quizzes
- * Adds link to online academy to help page
- * Cleans up installation function code
+= 4.7.6 (July 11, 2016) =
+  * Closed: Add language and error logs to usage tracking - Issue #457
 
-= 4.6.6 (January 11, 2015) =
- * Fixes bug preventing some users to not be able to submit quiz
- * Fixes bug causing undefined titles for some users
-
-= 4.6.5 (January 9, 2015) =
- * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
- * Fixes theme conflict between QSM and some Bootstrap based themes
- * Fixes Quizzes/Surveys page table width issue
- * Fixes bug preventing editing of quiz post settings
- * Minor design changes
-
-= 4.6.4 (December 15, 2015) =
- * Fixes undefined results notice displayed on admin results for some users
- * Fixes bug that was causing the disable radio buttons option to not work in all browsers
- * Minor design changes
-
-= 4.6.3 (November 4, 2015) =
- * Fixes certificate bug that was preventing quiz/survey submissions
- * Fixes undefined quiz id bug that was affecting some addons
- * Fixes tooltip bug that was affecting required question validation on a few sites
-
-= 4.6.2 (October 21, 2015) =
- * Bug fix for browsers with JavaScript turned off
+= 4.7.5 (June 15, 2016) =
+  * Closed Enhancement: Change Text Block To Text/HTML - Issue #451
+  * Closed Enhancement: Create alert warning about removal of certificate - Issue #382
 
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.6.7 =
-Upgrade to fix bugs that affected the appearance of the multiple response questions and other minor bugs
+= 4.7.6 =
+Upgrade for minor design changes

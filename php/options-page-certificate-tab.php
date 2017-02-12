@@ -7,12 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return type description
 * @since 4.4.0
 */
-function qmn_settings_certificate_tab()
-{
+function qmn_settings_certificate_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Certificate (Beta)", 'quiz-master-next'), 'mlw_options_certificate_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Certificate (Beta)", 'quiz-master-next' ), 'qsm_options_certificate_tab_content' );
 }
-add_action("plugins_loaded", 'qmn_settings_certificate_tab', 5);
+add_action( "plugins_loaded", 'qmn_settings_certificate_tab', 5 );
 
 /**
 * Creates the content that is in the certificate tab.
@@ -20,8 +19,8 @@ add_action("plugins_loaded", 'qmn_settings_certificate_tab', 5);
 * @return void
 * @since 4.4.0
 */
-function mlw_options_certificate_tab_content()
-{
+function qsm_options_certificate_tab_content() {
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET["quiz_id"];
@@ -60,23 +59,7 @@ function mlw_options_certificate_tab_content()
 		if ( $update_results ) {
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('The certificate has been updated successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Certificate Options Have Been Edited For Quiz Number $mlw_certificate_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
+			$mlwQuizMasterNext->audit_manager->new_audit( "Certificate Options Have Been Edited For Quiz Number $mlw_certificate_id" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0012'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0012", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
@@ -97,9 +80,13 @@ function mlw_options_certificate_tab_content()
 	{
 		$mlw_certificate_options = array(__('Enter title here', 'quiz-master-next'), __('Enter text here', 'quiz-master-next'), '', '', 1);
 	}
+
 	?>
 	<div id="tabs-5" class="mlw_tab_content">
 		<h3><?php _e('Quiz Certificate (Beta)', 'quiz-master-next'); ?></h3>
+		<div style="background:#fff;border-left: 4px solid #fff;padding: 1px 12px;margin: 5px 0 15px;border-left-color: #dc3232;">
+			<p style="font-weight:bold;">Warning: This feature is being removed from the core version. Please use our new free Certificate addon. You can read more about this change in <a href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=certificate_removal_notice&utm_medium=plugin&utm_campaign=qsm_plugin" target="_blank">our post about the certificate being moved.</a></p>
+		</div>
 		<p><?php _e('Enter in your text here to fill in the certificate for this quiz. Be sure to enter in the link variable into the templates on the Emails and Results Page tabs so the user can access the certificate.', 'quiz-master-next'); ?></p>
 		<p><?php _e('These fields cannot contain HTML.', 'quiz-master-next'); ?></p>
 		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
@@ -109,58 +96,12 @@ function mlw_options_certificate_tab_content()
 			echo "<input type='hidden' name='certificate_quiz_id' value='".$quiz_id."' />";
 		?>
 		<table class="form-table">
-			<tr valign="top">
-				<td><label for="enableCertificates"><?php _e('Enable Certificates For This Quiz?', 'quiz-master-next'); ?></label></td>
-				<td>
-				    <input type="radio" id="radio30" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 0) {echo 'checked="checked"';} ?> value='0' /><label for="radio30"><?php _e('Yes', 'quiz-master-next'); ?></label><br>
-				    <input type="radio" id="radio31" name="enableCertificates" <?php if ($mlw_certificate_options[4] == 1) {echo 'checked="checked"';} ?> value='1' /><label for="radio31"><?php _e('No', 'quiz-master-next'); ?></label><br>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%">
-					<strong><?php _e('Certificate Title', 'quiz-master-next'); ?></strong>
-				</td>
-				<td><textarea cols="80" rows="15" id="certificate_title" name="certificate_title"><?php echo $mlw_certificate_options[0]; ?></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%">
-					<strong><?php _e('Message Displayed On Certificate', 'quiz-master-next'); ?></strong>
-					<br />
-					<p><?php _e('Allowed Variables:', 'quiz-master-next'); ?></p>
-					<p style="margin: 2px 0">- %POINT_SCORE%</p>
-					<p style="margin: 2px 0">- %AVERAGE_POINT%</p>
-					<p style="margin: 2px 0">- %AMOUNT_CORRECT%</p>
-					<p style="margin: 2px 0">- %TOTAL_QUESTIONS%</p>
-					<p style="margin: 2px 0">- %CORRECT_SCORE%</p>
-					<p style="margin: 2px 0">- %QUIZ_NAME%</p>
-					<p style="margin: 2px 0">- %USER_NAME%</p>
-					<p style="margin: 2px 0">- %USER_BUSINESS%</p>
-					<p style="margin: 2px 0">- %USER_PHONE%</p>
-					<p style="margin: 2px 0">- %USER_EMAIL%</p>
-					<p style="margin: 2px 0">- %CURRENT_DATE%</p>
-				</td>
-				<td><label for="certificate_template">Allowed tags: &lt;b&gt; - bold, &lt;i&gt;-italics, &lt;u&gt;-underline, &lt;br&gt;-New Line or start a new line by pressing enter</label><textarea cols="80" rows="15" id="certificate_template" name="certificate_template"><?php echo $mlw_certificate_options[1]; ?></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%">
-					<strong><?php _e('URL To Logo (Must be JPG, JPEG, PNG or GIF)', 'quiz-master-next'); ?></strong>
-				</td>
-				<td><textarea cols="80" rows="15" id="certificate_logo" name="certificate_logo"><?php echo $mlw_certificate_options[2]; ?></textarea>
-				</td>
-			</tr>
-			<tr>
-				<td width="30%">
-					<strong><?php _e('URL To Background Img (Must be JPG, JPEG, PNG or GIF)', 'quiz-master-next'); ?></strong>
-				</td>
-				<td><textarea cols="80" rows="15" id="certificate_background" name="certificate_background"><?php echo $mlw_certificate_options[3]; ?></textarea>
-				</td>
-			</tr>
+
 		</table>
 		<button id="save_certificate_button" class="button-primary" onclick="javascript: document.quiz_certificate_options_form.submit();"><?php _e('Save Certificate Options', 'quiz-master-next'); ?></button>
 		</form>
 	</div>
 	<?php
+	$mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_certificate' );
 }
 ?>

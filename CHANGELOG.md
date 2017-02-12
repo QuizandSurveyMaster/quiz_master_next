@@ -1,3 +1,71 @@
+= 4.7.4 (June 3, 2016) =
+  * Closed Bug: Results page will not load on some sites - Issue #445
+
+= 4.7.3 (May 31, 2016) =
+  * Closed Enhancement: Create new question section id CSS class for each question - Issue #440
+  * Closed Bug: Creating/Editing questions throw PHP notice of undefined index - Issue #436
+
+= 4.7.2 (May 23, 2016) =
+  * Closed Bug: Multiple quizzes on page causes plugin to scroll to top quiz when submitting - Issue #428
+
+= 4.7.1 (May 10, 2016) =
+  * Closed Enhancement: Create new audit trail class - Issue #425
+  * Closed Enhancement: Raise minimum WordPress version to 4.1 - Issue #423
+  * Closed Enhancement: WordPress Compatibility with 4.5.2 - Issue #422
+  * Closed Enhancement: Move installation process into new QSM_Install class - Issue #416
+  * Closed Enhancement: Update links for plugin on Plugins page - Issue #415
+  * Closed Bug: Activating plugin on fresh install causes unexpected output warning - Issue #414
+  * Closed User Request: Shortcode parameter to override amount of questions - Issue #345
+  * Closed Enhancement: Limit per user - upgrade to include non-logged in users - Issue #301
+
+= 4.7.0 (April 4, 2016) =
+  * Closed Bug: Slash Added Before Quotation Mark When Editing Quiz/Survey Name - Issue #401
+  * Closed User Request: Add CSS Class To Container When Timer Runs Out - Issue #400
+  * Closed Bug: Validation breaks on second time through quiz - Issue #398
+  * Closed Bug: Validation not working when more than one question per page - Issue #395
+  * Closed Enhancement: Add Spinner/De-activate Submit Button Once Submitted - Issue #387
+  * Closed Enhancement: Pull changelog from GitHub API - Issue #377
+  * Closed Bug: Theme Conflict With Button Class (btn) - Issue #370
+  * Closed User Request: Add Average Points Per Category Variable - Issue #369
+  * Closed Bug: Mixed content SSL error - Issue #367
+  * Closed Enhancement: Default Option For Drop Down - Issue #334
+  * Closed Bug: Disable Answer On Change Not Working - Issue #331
+  * Closed User Request: Randomize Answers But Not Questions - Issue #330
+  * Closed User Request: Add Date Taken Variable - Issue #310
+  * Closed User Request: Copy Questions Between Quizzes - Issue #166
+  
+= 4.6.7 (January 22, 2016) =
+ * Fixes bug causing multiple response to be on a single line for some users
+ * Fixes bug causing the incorrect/correct CSS class from being not added on results page correctly
+ * Fixes bug causing unexpected output error when activating plugin
+ * Changes comment section to default to off in newer quizzes
+ * Adds link to online academy to help page
+ * Cleans up installation function code
+
+= 4.6.6 (January 11, 2016) =
+ * Fixes bug preventing some users to not be able to submit quiz
+ * Fixes bug causing undefined titles for some users
+
+= 4.6.5 (January 9, 2016) =
+ * Fixes timer bug that caused the timer to continue counting down after quiz has been submitted
+ * Fixes theme conflict between QSM and some Bootstrap based themes
+ * Fixes Quizzes/Surveys page table width issue
+ * Fixes bug preventing editing of quiz post settings
+ * Minor design changes
+
+= 4.6.4 (December 15, 2015) =
+ * Fixes undefined results notice displayed on admin results for some users
+ * Fixes bug that was causing the disable radio buttons option to not work in all browsers
+ * Minor design changes
+
+= 4.6.3 (November 4, 2015) =
+ * Fixes certificate bug that was preventing quiz/survey submissions
+ * Fixes undefined quiz id bug that was affecting some addons
+ * Fixes tooltip bug that was affecting required question validation on a few sites
+
+= 4.6.2 (October 21, 2015) =
+ * Bug fix for browsers with JavaScript turned off
+
 = 4.6.1 (October 20, 2015) =
  * Bug fix for rare bug preventing IE usage on a small number of sites
 

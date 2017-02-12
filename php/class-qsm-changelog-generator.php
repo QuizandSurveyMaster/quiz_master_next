@@ -23,18 +23,33 @@ class QSM_Changelog_Generator {
     // Gets the changelog array
     $changelog = QSM_Changelog_Generator::get_changelog( $repo, $milestone );
 
-    // Converts the array into HTML list
-    $display = '<ul class="changelog">';
-    foreach ( $changelog as $change ) {
-      $display .= "<li class='closed'><div class='two'>Closed</div>* $change</li>";
-    }
-    $display = .'</ul>';
+    if ( $changelog && is_array( $changelog ) ) {
 
-    // Echos or returns HTML list based on $echo parameter
-    if ( true === $echo ) {
-      echo $display;
-    } else {
-      return $display;
+      // Creates header for milestone
+      $display = "<h3>{$changelog["milestone"]["title"]}</h3>";
+
+      // Creates paragraph for description
+      if ( ! empty( $changelog["milestone"]["description"] ) ) {
+        $display .= "<p>{$changelog["milestone"]["description"]}</p>";
+      }
+
+      // Creates paragraph for closed date
+      $display .= "<p>Closed on {$changelog["milestone"]["closed_date"]}</p>";
+
+      // Converts the issues array into HTML list
+      $display .= '<ul class="changelog">';
+      foreach ( $changelog["issues"] as $change ) {
+        $label_type = $change["labels"][0]["name"];
+        $display .= "<li class='fixed'><div class='two'>Closed</div>$label_type: {$change['title']} - <a target='_blank' href='{$change['url']}'>Issue #{$change['issue']}</a></li>";
+      }
+      $display .= '</ul>';
+
+      // Echos or returns HTML list based on $echo parameter
+      if ( true === $echo ) {
+        echo $display;
+      } else {
+        return $display;
+      }
     }
   }
 
@@ -53,16 +68,46 @@ class QSM_Changelog_Generator {
     $changelog = get_transient( "changelog-$repo-$milestone" );
     if ( false === $changelog ) {
 
-      // Constructs url and then calls the api
-      $url = "https://api.github.com/repos/$repo/issues?milestone=$milestone&state=all";
-      $changes = QSM_Changelog_Generator::api_call( $url );
-
-      // Creates an array of all issues that are closed
       $changelog = array();
-      foreach ( $changes as $issue ) {
-        if ( ! isset( $issue["pull_request"] ) ) {
-          if ( "closed" === $issue["state"] ) {
-            $changelog[] = $issue["title"];
+
+      // Constructs url and then calls the api
+      $issue_url = "https://api.github.com/repos/$repo/issues?milestone=$milestone&state=all";
+      $issue_data = QSM_Changelog_Generator::api_call( $issue_url );
+
+      if ( $issue_data ) {
+
+        // Constructs url and then calls the api
+        $milestone_url = "https://api.github.com/repos/$repo/milestones/$milestone";
+        $milestone_data = QSM_Changelog_Generator::api_call( $milestone_url );
+
+        if ( $milestone_data ) {
+          $milestone_array = array(
+            'title' => $milestone_data["title"],
+            'description' => $milestone_data["description"],
+            'closed_date' => $milestone_data["closed_at"]
+          );
+        } else {
+          $milestone_array = array(
+            'title' => '',
+            'description' => '',
+            'closed_date' => ''
+          );
+        }
+
+        $changelog["milestone"] = $milestone_array;
+        $changelog["issues"] = array();
+
+        // Creates an array of all issues that are closed
+        foreach ( $issue_data as $issue ) {
+          if ( ! isset( $issue["pull_request"] ) ) {
+            if ( "closed" === $issue["state"] ) {
+              $changelog["issues"][] = array(
+                'title' => $issue["title"],
+                'labels' => $issue["labels"],
+                'issue' => $issue["number"],
+                'url' => $issue["html_url"]
+              );
+            }
           }
         }
       }

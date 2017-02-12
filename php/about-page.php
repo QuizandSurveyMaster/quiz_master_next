@@ -23,7 +23,7 @@ function mlw_generate_about_page()
 	<style>
 		div.mlw_qmn_icon_wrap
 		{
-			background: <?php echo 'url("'.plugins_url( 'images/quiz_icon.png' , __FILE__ ).'")'; ?> no-repeat;
+			background: <?php echo 'url("'.plugins_url( '../assets/icon-128x128.png' , __FILE__ ).'")'; ?> no-repeat;
 		}
 	</style>
 	<div class="wrap about-wrap">
@@ -36,32 +36,19 @@ function mlw_generate_about_page()
 			<a href="javascript:qmn_select_tab(2, 'mlw_quiz_changelog');" id="mlw_qmn_tab_2" class="nav-tab">
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
 			<a href="javascript:qmn_select_tab(3, 'qmn_contributors');" id="mlw_qmn_tab_3" class="nav-tab">
-				<?php _e('People Who Make QMN Possible', 'quiz-master-next'); ?></a>
+				<?php _e('People Who Make QSM Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div id="mlw_quiz_what_new" class="qmn_tab">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">New Dynamic Form Submission</h2>
-			<p style="text-align: center;">Rather than making a user wait for an entire page submission, now the plugin dynamically calculates the results and displays the results page.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Notice: Certificates Are Being Moved</h2>
+			<p style="text-align: center;">The certificate feature is being moved from core to a free addon. If you use certificates, please <a target="_blank" href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate_removal_notice">read our post about certificates being moved.</a></p>
 			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Specify From Email Address And Reply-To</h2>
-			<p style="text-align: center;">After several requests, I have finally added the option to specify a from email address for sending emails. I also added the option to add a reply-to email to the admin emails using the user email.</p>
-			<br />
-			<hr />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">For Developers:</h2>
-			<br />
-      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">JavaScript Re-write</h2>
-			<p style="text-align: center;">I re-wrote all the JavaScript files and combined them into one file.</p>
-      <br />
-      <h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Renamed files/functions</h2>
-			<p style="text-align: center;">I renamed many files and functions to align with WordPress standards. None of these were externally used and will not affect your customizations/code.</p>
-      <br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">We Are On GitHub Now</h2>
-			<p style="text-align: center;">We love github and use it for all of our plugins! Be sure to <a href="https://github.com/fpcorso/quiz_master_next/">make suggestions or contribute</a> to our Quiz And Survey Master repository.</p>
+			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Major Coming Changes In 5.0.0</h2>
+			<p style="text-align: center;">We have several major changes and features we are planning for version 5.0.0. To keep up with the changes and be notified when the beta becomes available. Please <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe_for_beta_notices">subscribe to our newsletter</a>.</p>
 			<br />
 		</div>
 		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
 			<h2>Changelog</h2>
-			<h3><?php echo $mlw_quiz_version; ?> (January 22, 2015)</h3>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 15 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 27 ); ?>
 		</div>
 		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
 			<h2>GitHub Contributors</h2>

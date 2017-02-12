@@ -9,12 +9,6 @@
 	color:rgb(0,0,255);
 }
 
-.qmn_quiz_container .spinner-loader {
-	right: 50%;
-  position: absolute;
-  bottom: 40%;
-}
-
 @-moz-keyframes spinner-loader {
   0% {
     -moz-transform: rotate(0deg);
@@ -52,7 +46,7 @@
 }
 
 /* :not(:required) hides this rule from IE9 and below */
-.spinner-loader:not(:required) {
+.qsm-spinner-loader:not(:required) {
   -moz-animation: spinner-loader 1500ms infinite linear;
   -webkit-animation: spinner-loader 1500ms infinite linear;
   animation: spinner-loader 1500ms infinite linear;
@@ -263,7 +257,7 @@ border: 1px solid #e3e3e3;
         border-radius: 3px;
 }
 
-.qmn_btn, .btn {
+.qmn_btn, .qmn_quiz_container .btn {
   display: relative;
   display: inline-block;
   color: #666 !important;
@@ -282,7 +276,7 @@ border: 1px solid #e3e3e3;
         transition: background .25s ease-out;
 }
 
-.qmn_btn:hover, .btn:hover {
+.qmn_btn:hover, .qmn_quiz_container .btn:hover {
   color: #fff;
   background: #666;
 }

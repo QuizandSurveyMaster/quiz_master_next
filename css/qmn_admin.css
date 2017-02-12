@@ -107,8 +107,8 @@ div.mlw_qmn_icon_wrap {
   position: absolute;
   top: 0;
   right: 0;
-  background-color: #0d97d8;
-  color: yellow;
+  background-color: rgba(54, 58, 66, 1);
+  color: #1DD969;
   background-position: center 24px;
   background-size: 85px 85px;
   font-size: 14px;

@@ -50,29 +50,10 @@ function mlw_options_results_tab_content()
 
 		//Update message_after with new array then check to see if worked
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
-		if ($mlw_new_landing_results != false)
-		{
+		if ( false != $mlw_new_landing_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been added successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "New Results Page Has Been Created For Quiz Number $mlw_qmn_landing_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Results Page Has Been Created For Quiz Number $mlw_qmn_landing_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0013'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0013", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -99,29 +80,10 @@ function mlw_options_results_tab_content()
 		}
 		$mlw_qmn_new_landing_array = serialize($mlw_qmn_new_landing_array);
 		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
-		if ($mlw_new_landing_results != false)
-		{
+		if ( false != $mlw_new_landing_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been saved successfully.', 'quiz-master-next'), 'success');
-
-			//Insert Action Into Audit Trail
-			global $current_user;
-			get_currentuserinfo();
-			$wpdb->insert(
-				$wpdb->prefix . "mlw_qm_audit_trail",
-				array(
-					'action_user' => $current_user->display_name,
-					'action' => "Results Pages Have Been Saved For Quiz Number $mlw_qmn_landing_id",
-					'time' => date("h:i:s A m/d/Y")
-				),
-				array(
-					'%s',
-					'%s',
-					'%s'
-				)
-			);
-		}
-		else
-		{
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Pages Have Been Saved For Quiz Number $mlw_qmn_landing_id" );
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0014'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0014", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
@@ -201,7 +163,7 @@ function mlw_options_results_tab_content()
 			<div class="template_variable">
 				<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
 			</div>
-                        <div class="template_variable">
+			<div class="template_variable">
 				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent taking quiz in minutes', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
@@ -212,6 +174,9 @@ function mlw_options_results_tab_content()
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<spane class="template_name">%AVERAGE_CATEGORY_POINTS%%/AVERAGE_CATEGORY_POINTS%</span> - <?php _e('The average amount of points a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_SCORE%%/CATEGORY_SCORE%</span> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?>
