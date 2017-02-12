@@ -124,6 +124,7 @@ class MLWQuizMasterNext {
 			include( "php/help-page.php" );
 			include( "php/dashboard-widgets.php" );
 			include( "php/options-page-questions-tab.php" );
+      include("php/options-page-contact-tab.php");
 			include( "php/options-page-text-tab.php" );
 			include( "php/options-page-option-tab.php" );
 			include( "php/options-page-leaderboard-tab.php" );
