@@ -23,7 +23,7 @@ define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
   * @since 3.6.1
   */
 class MLWQuizMasterNext {
-  
+
 	/**
 	 * QMN Version Number
 	 *
@@ -139,6 +139,7 @@ class MLWQuizMasterNext {
 			include( "php/class-qmn-tracking.php" );
 			include( "php/class-qmn-review-message.php" );
 		}
+    include( "php/class-qsm-contact-manager.php" );
 		include( "php/class-qmn-quiz-manager.php" );
 
 		include( "php/leaderboard-shortcode.php" );
