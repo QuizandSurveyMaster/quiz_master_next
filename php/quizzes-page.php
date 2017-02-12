@@ -19,7 +19,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Enqueue our styles and scripts
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'jquery-ui-core' ) );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ) );
 	wp_enqueue_style( 'qsm_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 	// Create new quiz
@@ -87,7 +87,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 		$quiz_json_array[] = array(
 			'id' => $quiz->quiz_id,
-			'name' => esc_js( $quiz->quiz_name ),
+			'name' => esc_html( $quiz->quiz_name ),
 			'link' => $post_to_quiz_array[ $quiz->quiz_id ]['link'],
 			'postID' => $post_to_quiz_array[ $quiz->quiz_id ]['id'],
 			'views' => $quiz->quiz_views,
