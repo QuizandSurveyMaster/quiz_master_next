@@ -139,11 +139,11 @@ var QSMContact;
     $( '.contact-form' ).on( 'click', '.delete-field', function( event ) {
       event.preventDefault();
       QSMContact.deleteField( $( this ) );
-    })
+    });
     $( '.contact-form' ).on( 'click', '.copy-field', function( event ) {
       event.preventDefault();
       QSMContact.duplicateField( $( this ) );
-    })
+    });
     $( '.contact-form' ).sortable({
       containment: "parent",
       cursor: 'move',
