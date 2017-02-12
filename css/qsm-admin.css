@@ -1,0 +1,212 @@
+/********************
+Quizzes/Surveys Page
+*********************/
+
+.qsm-quizes-page .widefat td {
+  font-size: 16px !important;
+}
+
+.qsm-quizzes-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.qsm-quiz-page-wrapper {
+  flex-grow: 1;
+}
+
+.qsm-quiz-page-wrapper-with-ads {
+  flex-grow: 1;
+}
+
+.qsm-news-ads {
+  background-color: white;
+}
+
+.qsm-news-ads-title {
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.qsm-news-ads-widget {
+  text-align: center;
+  border-top: 2px solid black;
+  border-bottom: 5px solid black;
+  margin: 10px 0;
+  background: #ddd;
+  padding: 10px 5px;
+}
+
+.qsm-edit-name {
+  font-size: 12px !important;
+}
+
+.qsm-action-link {
+  font-size: 14px !important;
+}
+
+.qsm-action-links:hover {
+  background-color: black;
+}
+
+.qsm-action-link-delete {
+  color: red !important;
+}
+
+.qsm-dialog-form {
+
+}
+
+.qsm-dialog-form label {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  padding-right: 30px;
+}
+
+@media screen and (min-width: 1200px) {
+  .qsm-quizzes-page-content {
+    flex-direction: row;
+  }
+
+  .qsm-quiz-page-wrapper-with-ads {
+    margin-right: 10px;
+  }
+
+  .qsm-news-ads {
+    flex-basis: 15%;
+  }
+}
+
+
+
+/********************
+Options Page
+*********************/
+
+.template_list_holder {
+  width: 100%;
+}
+.template_variable {
+  width: 50%;
+  float: left;
+  font-size: 14px;
+}
+.template_name {
+  font-weight: bold;
+}
+
+
+
+/********************
+About/Credits Page
+*********************/
+
+div.mlw_qmn_icon_wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(54, 58, 66, 1);
+  color: #1DD969;
+  background-position: center 24px;
+  background-size: 85px 85px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+  margin: 5px 0 0;
+  padding-top: 120px;
+  height: 40px;
+  display: inline-block;
+  width: 150px;
+  text-rendering: optimizeLegibility;
+  border: 5px solid #106daa;
+  -moz-border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -khtml-border-radius: 20px;
+  border-radius: 20px;
+}
+
+ul.changelog {
+  background-color: #fff;
+  padding: 10px 10px;
+}
+
+ul.changelog li {
+  padding: 4px 0px;
+}
+
+ul.changelog li div.two{
+  width: 70%;
+  float: left;
+  display: inline-block;
+  height: 25px;
+  margin-right: 20px;
+  background: #D9E0E4;
+  text-align: center;
+  line-height: 25px;
+}
+
+ul.changelog li.fixed > div {
+  background:#F0FFE1;
+  color: #444;
+  border-right:1px solid #5cb85c;
+  width: 20%;
+}
+
+ul.changelog li.fixed div.two:before {
+  content: "\f147";
+  font-family: "dashicons";
+  color:#5CB85C;
+  margin-right: 5px;
+}
+
+ul.changelog li.add > div{
+  background:#FFEED0;
+  color: #444;
+  border-right:1px solid #EFA537;
+  width: 20%;
+}
+
+ul.changelog li.add div.two:before {
+  content: "\f155";
+  font-family: "dashicons";
+  color:#EFA537;
+  margin-right: 5px;
+}
+
+ul.changelog li.update > div{
+  background:#bde7ff;
+  color: #444;
+  border-right:1px solid #106daa;
+  width: 20%;
+}
+
+ul.changelog li.update div.two:before {
+  content: "\f463";
+  font-family: "dashicons";
+  color:#106daa;
+  margin-right: 5px;
+}
+
+
+/********************
+Help Page
+*********************/
+
+.quiz_email_support p#mlw_support_message {
+  color: red;
+  font-size: 20px;
+}
+
+.quiz_email_support input, .quiz_email_support textarea {
+  width: 100% !important;
+}
+
+.quiz_email_support textarea {
+  min-height: 200px;
+}
+
+.quiz_email_support label {
+  font-weight: bold;
+}

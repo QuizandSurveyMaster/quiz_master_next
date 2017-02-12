@@ -236,7 +236,7 @@ function mlw_options_emails_tab_content()
 			"subject" => 'Quiz Results For %QUIZ_NAME%'
 		 ));
 	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 	?>
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();

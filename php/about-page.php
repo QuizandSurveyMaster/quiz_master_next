@@ -17,7 +17,7 @@ function mlw_generate_about_page() {
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ));
 	?>
 	<style>

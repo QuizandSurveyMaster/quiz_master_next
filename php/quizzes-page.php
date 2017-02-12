@@ -50,7 +50,7 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Load our quizzes
-	$quizzes = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0' ORDER BY quiz_id DESC" ) );
+	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0' ORDER BY quiz_id DESC" );
 
 	// Load quiz posts
 	$post_to_quiz_array = array();
@@ -95,7 +95,7 @@ function qsm_generate_quizzes_surveys_page() {
 			'lastActivity' => $quiz->last_activity
 		);
 	}
-
+	$total_count = count( $quiz_json_array );
 	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
 	?>
 	<div class="wrap qsm-quizes-page">
@@ -110,7 +110,7 @@ function qsm_generate_quizzes_surveys_page() {
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
-						<span class="displaying-num"><?php echo sprintf( _n( 'One quiz or survey', '%s quizzes or surveys', $mlw_qmn_quiz_count, 'quiz-master-next' ), number_format_i18n( $mlw_qmn_quiz_count ) ); ?></span>
+						<span class="displaying-num"><?php echo sprintf( _n( 'One quiz or survey', '%s quizzes or surveys', $total_count, 'quiz-master-next' ), number_format_i18n( $total_count ) ); ?></span>
 						<br class="clear">
 					</div>
 				</div>

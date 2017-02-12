@@ -104,7 +104,7 @@ function mlw_options_results_tab_content()
 	{
 		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after, "redirect_url" => ''));
 	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 	?>
 	<div id="tabs-6" class="mlw_tab_content">
 		<script>
