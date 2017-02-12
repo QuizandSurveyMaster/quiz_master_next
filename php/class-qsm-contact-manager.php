@@ -184,6 +184,7 @@ class QSM_Contact_Manager {
     }
     global $mlwQuizMasterNext;
     $mlwQuizMasterNext->quizCreator->set_id( intval( $quiz_id ) );
+    $mlwQuizMasterNext->quiz_settings->prepare_quiz( intval( $quiz_id ) );
     return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( "contact_form", serialize( $fields ) );
   }
 }
