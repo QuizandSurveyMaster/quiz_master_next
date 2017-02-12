@@ -1,5 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
 * This function allows for the editing of quiz options.
 *
@@ -7,21 +8,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return void
 * @since 4.4.0
 */
-function mlw_generate_quiz_options()
-{
-	if ( !current_user_can('moderate_comments') )
-	{
+function mlw_generate_quiz_options() {
+	if ( ! current_user_can('moderate_comments') ) {
 		return;
 	}
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
 	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
 	$quiz_id = intval($_GET["quiz_id"]);
-	if (isset($_GET["quiz_id"]))
-	{
+	if ( isset( $_GET["quiz_id"] ) ) {
 		$table_name = $wpdb->prefix . "mlw_quizzes";
 		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+		$mlwQuizMasterNext->quiz_settings->prepare_quiz( $_GET["quiz_id"] );
 	}
 
 	?>
