@@ -236,7 +236,7 @@ function mlw_options_emails_tab_content()
 			"subject" => 'Quiz Results For %QUIZ_NAME%'
 		 ));
 	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 	?>
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
@@ -312,9 +312,6 @@ function mlw_options_emails_tab_content()
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>

@@ -32,6 +32,7 @@ class QMNQuizManager
 	public function add_hooks()
 	{
 		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
+		add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 	}
@@ -355,7 +356,6 @@ class QMNQuizManager
       $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
       $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
-
       if ( 0 === $qmn_quiz_options->contact_info_location ) {
 				$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
       }
@@ -540,7 +540,6 @@ class QMNQuizManager
 		* @param array $qmn_array_for_variables The array of results for the quiz
 		* @uses QMNQuizManager:check_answers() Creates display for beginning section
 		* @uses QMNQuizManager:check_comment_section() Creates display for questions
-		* @uses QMNQuizManager:generate_certificate() Creates display for comment section
 		* @uses QMNQuizManager:display_results_text() Creates display for end section
 		* @uses QMNQuizManager:display_social() Creates display for comment section
 		* @uses QMNQuizManager:send_user_email() Creates display for end section
@@ -599,8 +598,6 @@ class QMNQuizManager
 			$result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-			$qmn_array_for_variables['certificate_link'] = $this->generate_certificate($qmn_quiz_options, $qmn_array_for_variables);
-			$result_display = apply_filters('qmn_after_generate_certificate', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$result_display .= $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
@@ -835,59 +832,6 @@ class QMNQuizManager
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
 	}
 
-	/**
-	  * Generates Certificate
-	  *
-	  * Generates the certificate for the user using fpdf
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @return string The link to the certificate
-	  */
-	public function generate_certificate($qmn_quiz_options, $qmn_array_for_variables)
-	{
-		$mlw_certificate_link = "";
-		if (is_serialized($qmn_quiz_options->certificate_template) && is_array(@unserialize($qmn_quiz_options->certificate_template)))
-		{
-			$mlw_certificate_options = unserialize($qmn_quiz_options->certificate_template);
-		}
-		else
-		{
-			$mlw_certificate_options = array('Enter title here', 'Enter text here', '', '', 1);
-		}
-    if ($mlw_certificate_options[4] == 0)
-    {
-		$mlw_message_certificate = $mlw_certificate_options[1];
-		$mlw_message_certificate = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_certificate, $qmn_array_for_variables);
-		$mlw_message_certificate = str_replace( "\n" , "<br>", $mlw_message_certificate);
-		$path_to_fpdf = plugin_dir_path( __FILE__ )."fpdf/WriteHTML.php";
-		$mlw_qmn_certificate_file=<<<EOC
-<?php
-include("$path_to_fpdf");
-\$pdf=new PDF_HTML();
-\$pdf->AddPage('L');
-EOC;
-			$mlw_qmn_certificate_file.=$mlw_certificate_options[3] != '' ? '$pdf->Image("'.$mlw_certificate_options[3].'",0,0,$pdf->w, $pdf->h);' : '';
-			$mlw_qmn_certificate_file.=<<<EOC
-\$pdf->Ln(20);
-\$pdf->SetFont('Arial','B',24);
-\$pdf->MultiCell(280,20,'$mlw_certificate_options[0]',0,'C');
-\$pdf->Ln(15);
-\$pdf->SetFont('Arial','',16);
-\$pdf->WriteHTML("<p align='center'>$mlw_message_certificate</p>");
-EOC;
-			$mlw_qmn_certificate_file.=$mlw_certificate_options[2] != '' ? '$pdf->Image("'.$mlw_certificate_options[2].'",110,130);' : '';
-			$mlw_qmn_certificate_file.=<<<EOC
-\$pdf->Output('mlw_qmn_certificate.pdf','D');
-EOC;
-			$mlw_qmn_certificate_filename = plugin_dir_path( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
-			file_put_contents($mlw_qmn_certificate_filename, $mlw_qmn_certificate_file);
-			$mlw_qmn_certificate_filename = plugin_dir_url( __FILE__ )."certificates/mlw_qmn_quiz".date("YmdHis").$qmn_array_for_variables['timer'].".php";
-			$mlw_certificate_link = "<a href='".$mlw_qmn_certificate_filename."' class='qmn_certificate_link'>Download Certificate</a>";
-	    }
-			return $mlw_certificate_link;
-	}
 
 	/**
 	  * Displays Results Text

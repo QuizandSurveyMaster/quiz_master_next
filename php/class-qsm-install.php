@@ -642,6 +642,51 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+    // Registers hint_text setting
+    $field_array = array(
+      'id' => 'hint_text',
+      'label' => __('Text for hint', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Hint'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers empty_error_text setting
+    $field_array = array(
+      'id' => 'empty_error_text',
+      'label' => __('Text for when user has not filled in all required fields', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Please complete all required fields!'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers email_error_text setting
+    $field_array = array(
+      'id' => 'email_error_text',
+      'label' => __('Text for when user filled in email field with invalid email', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Not a valid e-mail address!'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers number_error_text setting
+    $field_array = array(
+      'id' => 'number_error_text',
+      'label' => __('Text for when user has filled in number field with invalid number', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'This field must be a number!'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers incorrect_error_text setting
+    $field_array = array(
+      'id' => 'incorrect_error_text',
+      'label' => __('Text for when user has not filled in captcha correctly', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'The entered text is not correct!'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
     // Registers template setting
     $field_array = array(
       'id' => 'template',

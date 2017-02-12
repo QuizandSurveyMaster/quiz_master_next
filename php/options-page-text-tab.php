@@ -22,7 +22,7 @@ add_action( "plugins_loaded", 'qmn_settings_text_tab', 5 );
 function mlw_options_text_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qmn_admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 	?>
 	<h3 style="text-align: center;"><?php _e("Template Variables", 'quiz-master-next'); ?></h3>
 	<div class="template_list_holder">
@@ -68,9 +68,6 @@ function mlw_options_text_tab_content() {
     <div class="template_variable">
 			<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent on quiz in minutes', 'quiz-master-next'); ?>
     </div>
-		<div class="template_variable">
-			<span class="template_name">%CERTIFICATE_LINK%</span> - <?php _e('The link to the certificate after completing the quiz', 'quiz-master-next'); ?>
-		</div>
 		<div class="template_variable">
 			<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
 		</div>

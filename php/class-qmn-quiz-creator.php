@@ -292,7 +292,7 @@ class QMNQuizCreator
 				'question_from_total' => 0,
 				'total_user_tries' => 0,
 				'total_user_tries_text' => 'You are only allowed 1 try and have already submitted your quiz.',
-				'certificate_template' => 'Enter Your Text Here!',
+				'certificate_template' => '',
 				'social_media' => 0,
 				'social_media_text' => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!',
 				'pagination' => 0,

@@ -23,7 +23,7 @@ define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
   * @since 3.6.1
   */
 class MLWQuizMasterNext {
-  
+
 	/**
 	 * QMN Version Number
 	 *
@@ -128,7 +128,6 @@ class MLWQuizMasterNext {
 			include( "php/options-page-text-tab.php" );
 			include( "php/options-page-option-tab.php" );
 			include( "php/options-page-leaderboard-tab.php" );
-			include( "php/options-page-certificate-tab.php" );
 			include( "php/options-page-email-tab.php" );
 			include( "php/options-page-results-page-tab.php" );
 			include( "php/options-page-style-tab.php" );
@@ -139,6 +138,7 @@ class MLWQuizMasterNext {
 			include( "php/class-qmn-tracking.php" );
 			include( "php/class-qmn-review-message.php" );
 		}
+    include( "php/class-qsm-contact-manager.php" );
 		include( "php/class-qmn-quiz-manager.php" );
 
 		include( "php/leaderboard-shortcode.php" );
@@ -253,7 +253,7 @@ class MLWQuizMasterNext {
 	  */
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
-			add_menu_page( 'Quiz And Survey Master', __( 'Quizzes/Surveys', 'quiz-master-next' ), 'moderate_comments', __FILE__, 'mlw_generate_quiz_admin', 'dashicons-feedback' );
+			add_menu_page( 'Quiz And Survey Master', __( 'Quizzes/Surveys', 'quiz-master-next' ), 'moderate_comments', __FILE__, 'qsm_generate_quizzes_surveys_page', 'dashicons-feedback' );
 			add_submenu_page( __FILE__, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_options', 'mlw_generate_quiz_options' );
 			add_submenu_page( __FILE__, __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			add_submenu_page( __FILE__, __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_result_details', 'mlw_generate_result_details' );
