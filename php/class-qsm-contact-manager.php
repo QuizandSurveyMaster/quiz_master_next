@@ -103,7 +103,7 @@ class QSM_Contact_Manager {
 
     // If logged in user should see fields
     if ( 1 == $options->loggedin_user_contact ) {
-      $return = '</div>';
+      $return .= '</div>';
     }
 
     // Return contact field HTML
