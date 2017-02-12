@@ -32,6 +32,7 @@ class QMNQuizManager
 	public function add_hooks()
 	{
 		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
+		add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 		add_action( 'wp_ajax_nopriv_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
 	}

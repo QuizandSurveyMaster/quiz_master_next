@@ -255,7 +255,7 @@ function mlw_generate_quiz_admin()
 							{
 								$quotes_list .= "<td></td>";
 							}
-							$quotes_list .= "<td>[mlw_quizmaster quiz=".$mlw_quiz_info->quiz_id."]</td>";
+							$quotes_list .= "<td>[qsm quiz=".$mlw_quiz_info->quiz_id."]</td>";
 							$quotes_list .= "<td>[mlw_quizmaster_leaderboard mlw_quiz=".$mlw_quiz_info->quiz_id."]</td>";
 							$quotes_list .= "<td>" . $mlw_quiz_info->quiz_views . "</td>";
 							$quotes_list .= "<td>" . $mlw_quiz_info->quiz_taken ."</td>";
