@@ -1,9 +1,23 @@
-function qmn_select_tab(tab, content) {
-  jQuery("a.nav-tab-active").toggleClass("nav-tab-active");
-  jQuery(".qmn_tab").hide();
-  jQuery("#"+content).show();
-  jQuery("#mlw_qmn_tab_"+tab).toggleClass("nav-tab-active");
-}
+
+var QSMAdmin;
+(function ($) {
+
+  QSMAdmin = {
+    selectTab: function( tab ) {
+      $( '.qsm-tab' ).removeClass( 'nav-tab-active' );
+      $( '.qsm-tab-content' ).hide();
+      tab.addClass( 'nav-tab-active' );
+      tabID = tab.data( 'tab' );
+      $( '.tab-' + tabID ).hide();
+    }
+  };
+  $(function() {
+    $( '.qsm-tab' ).on( 'click', function( event ) {
+      event.preventDefault();
+      QSMAdmin.selectTab( $( this ) );
+    });
+  });
+}(jQuery));
 
 jQuery("#qmn_check_all").change( function() {
 	jQuery('.qmn_delete_checkbox').prop( 'checked', jQuery('#qmn_check_all').prop('checked') );
