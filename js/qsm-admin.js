@@ -13,7 +13,9 @@ var QSMQuizzesSurveys;
         $( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
       } else {
         $( '.qsm-quizzes-page-content' ).hide();
-        $( '#new_quiz_button' ).parent().after( '<h2>You do not have any quizzes or surveys. Click "Add New" to get started.' );
+        $( '#new_quiz_button' ).parent().after( '<h2>You do not have any quizzes or surveys. Click "Add New" to get started.</h2> ' +
+          '<h2>Is this your first time using this plugin? Check out our <a href="#">Documentation</a> or watch our Getting Started Video below</h2>' +
+          '<iframe width="560" height="315" src="https://www.youtube.com/embed/n8xfNk490Wg" frameborder="0" allowfullscreen></iframe>' );
       }
     },
     addQuizRow: function( quizData ) {
