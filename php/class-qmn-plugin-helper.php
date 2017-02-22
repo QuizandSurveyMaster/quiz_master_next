@@ -79,6 +79,16 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Calls all class functions to initialize quiz
+	 */
+	public function prepare_quiz( $quiz_id ) {
+		$quiz_id = intval( $quiz_id );
+		global $mlwQuizMasterNext;
+		$mlwQuizMasterNext->quizCreator->set_id( $quiz_id );
+		$mlwQuizMasterNext->quiz_settings->prepare_quiz( intval( $quiz_id ) );
+	}
+
+	/**
 	 * Registers a quiz setting
 	 *
 	 * @since 4.8.0

@@ -1,12 +1,13 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
 * This class generates the contents of the quiz shortcode
 *
 * @since 4.0.0
 */
-class QMNQuizManager
-{
+class QMNQuizManager {
+
 	/**
 	  * Main Construct Function
 	  *
@@ -16,8 +17,7 @@ class QMNQuizManager
 	  * @uses QMNQuizManager::add_hooks() Adds actions to hooks and filters
 	  * @return void
 	  */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->add_hooks();
 	}
 
@@ -29,8 +29,7 @@ class QMNQuizManager
 	  * @since 4.0.0
 	  * @return void
 	  */
-	public function add_hooks()
-	{
+	public function add_hooks() {
 		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
 		add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
 		add_action( 'wp_ajax_qmn_process_quiz', array( $this, 'ajax_submit_results' ) );
@@ -43,15 +42,13 @@ class QMNQuizManager
 	  * Generates the content for the [mlw_quizmaster] shortcode
 	  *
 	  * @since 4.0.0
-		* @uses QMNQuizManager:load_quiz_options() Loads quiz
 		* @uses QMNQuizManager:load_questions() Loads questions
 		* @uses QMNQuizManager:create_answer_array() Prepares answers
 		* @uses QMNQuizManager:display_quiz() Generates and prepares quiz page
 		* @uses QMNQuizManager:display_results() Generates and prepares results page
 	  * @return string The content for the shortcode
 	  */
-	public function display_shortcode($atts)
-	{
+	public function display_shortcode( $atts ) {
 		extract(shortcode_atts(array(
 			'quiz' => 0,
 			'question_amount' => 0
@@ -63,7 +60,7 @@ class QMNQuizManager
 		global $qmn_json_data;
 		$qmn_json_data = array();
 		$qmn_allowed_visit = true;
-		$mlwQuizMasterNext->quizCreator->set_id($quiz);
+		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$question_amount = intval( $question_amount );
 
 		//Legacy variable
@@ -75,7 +72,7 @@ class QMNQuizManager
 			date_default_timezone_set(get_option('timezone_string'));
 		}
 		$return_display = '';
-		$qmn_quiz_options = $this->load_quiz_options($quiz);
+		$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
 		//If quiz options isn't found, stop function
 		if (is_null($qmn_quiz_options) || $qmn_quiz_options->quiz_name == '')
@@ -157,21 +154,6 @@ class QMNQuizManager
 
 		$return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
 		return $return_display;
-	}
-
-	/**
-	  * Loads Quiz
-	  *
-	  * Retrieves the quiz from the database
-	  *
-	  * @since 4.0.0
-		* @param int $quiz_id The id for the quiz
-		* @return array Columns for the row from the database of the quiz
-	  */
-	public function load_quiz_options($quiz_id)
-	{
-		global $wpdb;
-		return $wpdb->get_row($wpdb->prepare('SELECT * FROM '.$wpdb->prefix.'mlw_quizzes WHERE quiz_id=%d AND deleted=0', $quiz_id));
 	}
 
 	/**
@@ -515,8 +497,8 @@ class QMNQuizManager
 		parse_str( $_POST["quizData"], $_POST );
 		$qmn_allowed_visit = true;
 		$quiz = intval( $_POST["qmn_quiz_id"] );
-		$mlwQuizMasterNext->quizCreator->set_id($quiz);
-		$qmn_quiz_options = $this->load_quiz_options( $quiz );
+		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
+		$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 		$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
 		$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions, true );
 		$qmn_array_for_variables = array(

@@ -326,6 +326,24 @@ class QSM_Quiz_Settings {
 
     $this->settings = $settings_array;
   }
+
+  /**
+   * Loads the old object model of options for backwards compatibility
+   *
+   * @since 5.0.0
+   */
+  public function get_quiz_options() {
+    global $wpdb;
+
+    // Load the old options system
+    $quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
+
+    // Merge all settings into old object
+    $quiz_override = array_merge( (array) $quiz_options, $this->get_setting( 'quiz_leaderboards' ), $this->get_setting( 'quiz_options' ), $this->get_setting( 'quiz_text' ) );
+
+    // Return as old object model
+    return (object) $quiz_override;
+  }
 }
 
 ?>
