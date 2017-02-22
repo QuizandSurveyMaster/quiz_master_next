@@ -274,10 +274,10 @@ class QMNQuizManager {
 
 		global $qmn_json_data;
 		$qmn_json_data["error_messages"] = array(
-			'email' => __('Not a valid e-mail address!', 'quiz-master-next'),
-			'number' => __('This field must be a number!', 'quiz-master-next'),
-			'incorrect' => __('The entered text is not correct!', 'quiz-master-next'),
-			'empty' => __('Please complete all required fields!', 'quiz-master-next')
+			'email' => $qmn_quiz_options->email_error_text,
+			'number' => $qmn_quiz_options->number_error_text,
+			'incorrect' => $qmn_quiz_options->incorrect_error_text,
+			'empty' => $qmn_quiz_options->empty_error_text
 		);
 
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ) );
@@ -388,7 +388,7 @@ class QMNQuizManager {
 
 			// Checks if a hint is entered
 			if ( ! empty( $mlw_question->hints ) ) {
-				$question_display .= "<span title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>" . __( 'Hint', 'quiz-master-next' ) . "</span>";
+				$question_display .= "<span title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</span>";
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
