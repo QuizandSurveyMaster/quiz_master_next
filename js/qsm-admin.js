@@ -6,10 +6,15 @@ var QSMQuizzesSurveys;
 (function ($) {
   QSMQuizzesSurveys = {
     load: function() {
-      $.each( qsmQuizObject, function( i, val ) {
-        QSMQuizzesSurveys.addQuizRow( val );
-      });
-      $( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
+      if ( 0 !== qsmQuizObject.length ) {
+        $.each( qsmQuizObject, function( i, val ) {
+          QSMQuizzesSurveys.addQuizRow( val );
+        });
+        $( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
+      } else {
+        $( '.qsm-quizzes-page-content' ).hide();
+        $( '#new_quiz_button' ).parent().after( '<h2>You do not have any quizzes or surveys. Click "Add New" to get started.' );
+      }
     },
     addQuizRow: function( quizData ) {
       var row = $( '<tr class="qsm-quiz-row" data-id="' + quizData.id + '">' +
