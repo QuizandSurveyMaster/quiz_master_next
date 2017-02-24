@@ -44,6 +44,20 @@ class QMNQuizCreator
 	 	$this->quiz_id = intval($quiz_id);
 	 }
 
+	 /**
+	  * Gets the quiz ID stored (for backwards compatibility)
+		*
+		* @since 5.0.0
+		* @return int|false The ID of the quiz stored or false
+	  */
+	 public function get_id() {
+		 if ( $this->quiz_id ) {
+			 return intval( $this->quiz_id );
+		 } else {
+			 return false;
+		 }
+	 }
+
 	/**
 	* Retrieves setting store in quiz_settings
 	*
