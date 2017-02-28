@@ -525,22 +525,6 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
-    // Registers question_answer_template setting
-    $field_array = array(
-      'id' => 'question_answer_template',
-      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
-      'type' => 'editor',
-      'default' => 0,
-      'variables' => array(
-        '%QUESTION%',
-        '%USER_ANSWER%',
-        '%CORRECT_ANSWER%',
-        '%USER_COMMENTS%',
-        '%CORRECT_ANSWER_INFO%'
-      )
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
     // Registers twitter_sharing_text setting
     $field_array = array(
       'id' => 'twitter_sharing_text',
