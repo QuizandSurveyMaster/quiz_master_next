@@ -38,9 +38,9 @@ class QSM_Contact_Manager {
     if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== $options->user_name || 2 !== $options->user_comp || 2 !== $options->user_email || 2 !== $options->user_phone ) ) {
 
       // Check for name field
-      if ( 2 !== $options->user_name ) {
+      if ( 2 != $options->user_name ) {
         $class = '';
-        if ( 1 === $options->user_name && 1 !== $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_name && 1 != $options->loggedin_user_contact ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ) . "</span>";
@@ -48,9 +48,9 @@ class QSM_Contact_Manager {
       }
 
       // Check for comp field
-      if ( 2 !== $options->user_comp ) {
+      if ( 2 != $options->user_comp ) {
         $class = '';
-        if ( 1 === $options->user_comp && 1 !== $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_comp && 1 != $options->loggedin_user_contact ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ) . "</span>";
@@ -58,9 +58,9 @@ class QSM_Contact_Manager {
       }
 
       // Check for email field
-      if ( 2 !== $options->user_email ) {
+      if ( 2 != $options->user_email ) {
         $class = '';
-        if ( 1 === $options->user_email && 1 !== $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_email && 1 != $options->loggedin_user_contact ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ) . "</span>";
@@ -68,9 +68,9 @@ class QSM_Contact_Manager {
       }
 
       // Check for phone field
-      if ( 2 !== $options->user_phone ) {
+      if ( 2 != $options->user_phone ) {
         $class = '';
-        if ( 1 === $options->user_phone && 1 !== $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_phone && 1 != $options->loggedin_user_contact ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ) . "</span>";
