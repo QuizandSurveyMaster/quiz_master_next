@@ -64,7 +64,7 @@ class QSM_Contact_Manager {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ) . "</span>";
-        $return .= "<input type='text' class='$class' x-webkit-speech name='mlwUserEmail' value='$email' />";
+        $return .= "<input type='email' class='mlwEmail $class' x-webkit-speech name='mlwUserEmail' value='$email' />";
       }
 
       // Check for phone field
