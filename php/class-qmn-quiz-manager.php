@@ -338,7 +338,7 @@ class QMNQuizManager {
       $message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
       $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
-      if ( 0 === $qmn_quiz_options->contact_info_location ) {
+      if ( 0 == $qmn_quiz_options->contact_info_location ) {
 				$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
       }
       $section_display .= "</div>";
@@ -449,7 +449,7 @@ class QMNQuizManager {
 			$section_display .= "<span class='mlw_qmn_message_end'>$message_end</span>";
 			$section_display .= "<br /><br />";
 		}
-		if ( 1 === $qmn_quiz_options->contact_info_location ) {
+		if ( 1 == $qmn_quiz_options->contact_info_location ) {
 			$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 		}
 
