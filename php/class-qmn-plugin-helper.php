@@ -100,6 +100,20 @@ class QMNPluginHelper {
 	}
 
 	/**
+   * Retrieves a setting value from a section based on name of section and setting
+   *
+   * @since 5.0.0
+   * @param string $section The name of the section the setting is registered in
+   * @param string $setting The name of the setting whose value we need to retrieve
+   * @param mixed $default What we need to return if no setting exists with given $setting
+   * @return $mixed Value set for $setting or $default if setting does not exist
+   */
+  public function get_section_setting( $section, $setting, $default = false ) {
+		global $mlwQuizMasterNext;
+		return $mlwQuizMasterNext->quiz_settings->get_section_setting( $section, $setting, $default );
+	}
+
+	/**
    * Retrieves setting value based on name of setting
    *
    * @since 4.0.0

@@ -1261,20 +1261,12 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 		}
 		$display .= "<style>.quiz_section { display: none; }</style>";
 
-		//Gather text for pagination buttons
-		$mlw_qmn_pagination_text = "";
-		if ( is_serialized( $qmn_quiz_options->pagination_text ) && is_array( @unserialize( $qmn_quiz_options->pagination_text ) ) ) {
-			$mlw_qmn_pagination_text = @unserialize($qmn_quiz_options->pagination_text);
-		} else {
-			$mlw_qmn_pagination_text = array(__('Previous', 'quiz-master-next'), $qmn_quiz_options->pagination_text);
-		}
-
 		$qmn_json_data["pagination"] = array(
 			'amount' => $qmn_quiz_options->pagination,
 			'section_comments' => $qmn_quiz_options->comment_section,
 			'total_questions' => $total_questions,
-			'previous_text' => $mlw_qmn_pagination_text[0],
-			'next_text' => $mlw_qmn_pagination_text[1]
+			'previous_text' => $qmn_quiz_options->previous_button_text,
+			'next_text' => $qmn_quiz_options->next_button_text
 		);
 	}
 	return $display;
