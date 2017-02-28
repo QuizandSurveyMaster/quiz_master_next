@@ -572,6 +572,15 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+    // Registers name_field_text setting
+    $field_array = array(
+      'id' => 'name_field_text',
+      'label' => __('Text for name  field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
     // Registers business_field_text setting
     $field_array = array(
       'id' => 'business_field_text',
