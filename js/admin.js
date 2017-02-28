@@ -8,7 +8,7 @@ var QSMAdmin;
       $( '.qsm-tab-content' ).hide();
       tab.addClass( 'nav-tab-active' );
       tabID = tab.data( 'tab' );
-      $( '.tab-' + tabID ).hide();
+      $( '.tab-' + tabID ).show();
     }
   };
   $(function() {

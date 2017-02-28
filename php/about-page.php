@@ -39,11 +39,11 @@ function mlw_generate_about_page() {
 			<p style="text-align: center;">We have several major changes and features we are planning for version 5.0.0. To keep up with the changes and be notified when the beta becomes available. Please <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe_for_beta_notices">subscribe to our newsletter</a>.</p>
 			<br />
 		</div>
-		<div class="qsm-tab-content tab-1" style="display: none;">
+		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
 			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 31 ); ?>
 		</div>
-		<div class="qsm-tab-content tab-1" style="display:none;">
+		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>
 			<?php
 			$contributors = get_transient( 'qmn_contributors' );
