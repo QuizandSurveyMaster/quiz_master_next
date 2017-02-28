@@ -35,7 +35,7 @@ class QSM_Contact_Manager {
     $fields = self::load_fields();
 
     // If fields are empty, check for backwards compatibility
-    if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== $options->user_name || 2 !== $options->user_comp || 2 !== $options->user_email || 2 !== $options->user_phone ) ) {
+    if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
 
       // Check for name field
       if ( 2 != $options->user_name ) {
@@ -118,7 +118,7 @@ class QSM_Contact_Manager {
     $fields = self::load_fields();
 
     // If fields are empty, check for backwards compatibility
-    if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== $options->user_name || 2 !== $options->user_comp || 2 !== $options->user_email || 2 !== $options->user_phone ) ) {
+    if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
       $responses[] = array(
         'label' => 'Name',
         'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None',

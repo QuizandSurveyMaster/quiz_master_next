@@ -572,6 +572,7 @@ class QMNQuizManager {
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
 		$qmn_array_for_variables['time_taken'] = date("h:i:s A m/d/Y");
+		$qmn_array_for_variables['contact'] = $contact_responses;
 
 		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
 		{
