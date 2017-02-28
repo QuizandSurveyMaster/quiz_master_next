@@ -231,98 +231,6 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers user_name setting
-    $field_array = array(
-      'id' => 'user_name',
-      'label' => __('Should we ask for users name?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_comp setting
-    $field_array = array(
-      'id' => 'user_comp',
-      'label' => __('Should we ask for users business?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 2
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_email setting
-    $field_array = array(
-      'id' => 'user_email',
-      'label' => __('Should we ask for users email?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_phone setting
-    $field_array = array(
-      'id' => 'user_phone',
-      'label' => __('Should we ask for users phone number?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 2
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
     // Registers comment_section setting
     $field_array = array(
       'id' => 'comment_section',
@@ -415,6 +323,98 @@ class QSM_Install {
         )
       ),
       'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_name setting
+    $field_array = array(
+      'id' => 'user_name',
+      'label' => __("Should we ask for the user's name? (Only here for older versions. Use Contact tab for this.)", 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_comp setting
+    $field_array = array(
+      'id' => 'user_comp',
+      'label' => __('Should we ask for users business? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_email setting
+    $field_array = array(
+      'id' => 'user_email',
+      'label' => __('Should we ask for users email? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_phone setting
+    $field_array = array(
+      'id' => 'user_phone',
+      'label' => __('Should we ask for users phone number? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
