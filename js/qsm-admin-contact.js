@@ -16,7 +16,7 @@ var QSMContact;
             '<select class="contact-form-control wide type-control">' +
               '<option value="none">Select a type...</option>' +
               '<option value="text">Small Open Answer</option>' +
-              '<option value="email">Small Open Answer</option>' +
+              '<option value="email">Email</option>' +
               '<option value="checkbox">Checkbox</option>' +
             '</select>' +
           '</div>' +
@@ -25,7 +25,8 @@ var QSMContact;
             '<input type="text" class="contact-form-control label-control" value="' + fieldArray.label + '">' +
           '</div>' +
           '<div class="contact-form-group">' +
-            '<select class="contact-form-control wide use-control">' +
+            '<label class="contact-form-label">Used For</label>' +
+            '<select class="contact-form-control use-control">' +
               '<option value="none"></option>' +
               '<option value="name">Name</option>' +
               '<option value="email">Email</option>' +
