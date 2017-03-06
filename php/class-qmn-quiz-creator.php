@@ -450,7 +450,7 @@ class QMNQuizCreator
 			    $my_query->the_post();
 					$my_post = array(
 				      'ID'           => get_the_ID(),
-				      'post_status' => 'draft'
+				      'post_status' => 'trash'
 				  );
 					wp_update_post( $my_post );
 			  }
