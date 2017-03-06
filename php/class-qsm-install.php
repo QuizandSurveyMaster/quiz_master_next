@@ -1265,13 +1265,33 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 
-  		// Update 5.0.0
+  		// Update 4.7.0
   		if( $wpdb->get_var( "SHOW COLUMNS FROM $table_name LIKE 'user_ip'" ) != "user_ip" ) {
   			$sql = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
   			$results = $wpdb->query( $update_sql );
   		}
+
+      // Update 5.0.0
+      $settings = (array) get_option( 'qmn-settings', array() );
+      if ( isset( $settings['results_details_template'] ) ) {
+        $settings['results_details_template'] .= "<p>%CONTACT_ALL%</p>";
+      } else {
+        $settings['results_details_template'] = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+     		<p>%CONTACT_ALL%</p>
+     		<p>Name Provided: %USER_NAME%</p>
+     		<p>Business Provided: %USER_BUSINESS%</p>
+     		<p>Phone Provided: %USER_PHONE%</p>
+     		<p>Email Provided: %USER_EMAIL%</p>
+     		<p>Score Received: %AMOUNT_CORRECT%/%TOTAL_QUESTIONS% or %CORRECT_SCORE%% or %POINT_SCORE% points</p>
+     		<h2>Answers Provided:</h2>
+     		<p>The user took %TIMER% to complete quiz.</p>
+     		<p>Comments entered were: %COMMENT_SECTION%</p>
+     		<p>The answers were as follows:</p>
+     		%QUESTIONS_ANSWERS%";
+      }
+      update_option( 'qmn-settings' , $settings );
 
 
   		update_option('mlw_quiz_master_version' , $data);

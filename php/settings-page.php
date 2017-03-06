@@ -159,6 +159,7 @@ class QMNGlobalSettingsPage {
 		else
 		{
 			$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+			<p>%CONTACT_ALL%</p>
 			<p>Name Provided: %USER_NAME%</p>
 			<p>Business Provided: %USER_BUSINESS%</p>
 			<p>Phone Provided: %USER_PHONE%</p>
