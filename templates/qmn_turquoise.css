@@ -361,6 +361,11 @@ border: 1px solid #e3e3e3;
 
 .qmn_quiz_container .qmn_btn:hover, .qmn_quiz_container .btn:hover { background: #16a085 !important; }
 
+.quiz_section.quiz_end .qsm-submit-btn {
+	display: block;
+	margin: 10px 0;
+}
+
 /* Helper classes */
 
 .border-none { border: 0; }
