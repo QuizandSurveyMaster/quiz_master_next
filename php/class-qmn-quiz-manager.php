@@ -407,8 +407,7 @@ class QMNQuizManager {
 		* @param array $qmn_array_for_variables The array of results for the quiz
 		* @return string The content for the comment section
 	  */
-	public function display_comment_section($qmn_quiz_options, $qmn_array_for_variables)
-	{
+	public function display_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;
 		$comment_display = '';
 		if ($qmn_quiz_options->comment_section == 0)
@@ -420,7 +419,6 @@ class QMNQuizManager {
 			$comment_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$message_comments</label><br />";
 			$comment_display .= "<textarea cols='60' rows='10' id='mlwQuizComments' name='mlwQuizComments' class='qmn_comment_section'></textarea>";
 			$comment_display .= "</div>";
-			if ( $qmn_quiz_options->pagination == 0) { $comment_display .= "<br /><br />"; }
 		}
 		return $comment_display;
 	}
