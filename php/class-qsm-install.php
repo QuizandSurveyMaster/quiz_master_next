@@ -34,7 +34,7 @@ class QSM_Install {
   /**
    * Adds the default quiz settings
    *
-   * @since 4.8.0
+   * @since 5.0.0
    */
   public function register_default_settings() {
 
@@ -1265,7 +1265,7 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 
-  		// Update 4.8.0
+  		// Update 5.0.0
   		if( $wpdb->get_var( "SHOW COLUMNS FROM $table_name LIKE 'user_ip'" ) != "user_ip" ) {
   			$sql = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
   			$results = $wpdb->query( $sql );

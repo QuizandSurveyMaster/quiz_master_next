@@ -55,7 +55,7 @@ function qsm_generate_admin_results_page() {
 /**
  * Adds Overview Tab To Admin Results Page
  *
- * @since 4.8.0
+ * @since 5.0.0
  * @return void
  */
 function qsm_results_overview_tab() {
@@ -67,7 +67,7 @@ add_action( 'plugins_loaded', 'qsm_results_overview_tab' );
 /**
  * Generates HTML For Overview Tab
  *
- * @since 4.8.0
+ * @since 5.0.0
  * @return void
  */
 function qsm_results_overview_tab_content() {

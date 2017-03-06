@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * This handles all of the settings data for each individual quiz.
  *
- * @since 4.8.0
+ * @since 5.0.0
  */
 class QSM_Quiz_Settings {
 
@@ -13,7 +13,7 @@ class QSM_Quiz_Settings {
    * ID of the quiz
    *
    * @var int
-   * @since 4.8.0
+   * @since 5.0.0
    */
   private $quiz_id;
 
@@ -21,7 +21,7 @@ class QSM_Quiz_Settings {
    * The settings for the quiz
    *
    * @var array
-   * @since 4.8.0
+   * @since 5.0.0
    */
   private $settings;
 
@@ -29,14 +29,14 @@ class QSM_Quiz_Settings {
    * The fields that have been registered
    *
    * @var array
-   * @since 4.8.0
+   * @since 5.0.0
    */
   private $registered_fields;
 
   /**
    * Prepares the settings for the supplied quiz
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param int $quiz_id the ID of the quiz that we are handling the settings data for
    */
   public function prepare_quiz( $quiz_id ) {
@@ -48,7 +48,7 @@ class QSM_Quiz_Settings {
   /**
    * Registers a setting be shown on the Options or Text tab
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field_array An array of the components for the settings field
    */
   public function register_setting( $field_array, $section = 'quiz_options' ) {
@@ -80,7 +80,7 @@ class QSM_Quiz_Settings {
   /**
    * Retrieves the registered setting fields
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param string $section The section whose fields that are being retrieved
    * @return array All the fields registered the the section provided
    */
@@ -136,7 +136,7 @@ class QSM_Quiz_Settings {
   /**
    * Retrieves setting value based on name of setting
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param string $setting The name of the setting whose value we need to retrieve
    * @param mixed $default What we need to return if no setting exists with given $setting
    * @return $mixed Value set for $setting or $default if setting does not exist
@@ -163,7 +163,7 @@ class QSM_Quiz_Settings {
   /**
    * Updates a settings value, adding it if it didn't already exist
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param string $setting The name of the setting whose value we need to retrieve
    * @param mixed $value The value that needs to be stored for the setting
    * @return bool True if successful or false if fails
@@ -223,7 +223,7 @@ class QSM_Quiz_Settings {
   /**
    * Loads the settings for the quiz
    *
-   * @since 4.8.0
+   * @since 5.0.0
    */
   private function load_settings() {
 

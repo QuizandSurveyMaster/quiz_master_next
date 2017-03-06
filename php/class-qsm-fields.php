@@ -5,14 +5,14 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * This class handles creating form fields based on supplied arrays
  *
- * @since 4.8.0
+ * @since 5.0.0
  */
 class QSM_Fields {
 
   /**
    * Cycles through the fields in the array and generates each field
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $fields The array that contains the data for all fields
    * @param array $settings The array that holds the settings for this section
    */
@@ -91,7 +91,7 @@ class QSM_Fields {
   /**
    * Prepares the field and calls the correct generate field function based on field's type
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    * @return bool False if the field is invalid, true if successful
@@ -128,7 +128,7 @@ class QSM_Fields {
   /**
    * Generates a text field
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
@@ -146,7 +146,7 @@ class QSM_Fields {
   /**
    * Generates a textarea field using the WP Editor
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
@@ -180,7 +180,7 @@ class QSM_Fields {
   /**
    * Generates a date field
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
@@ -204,7 +204,7 @@ class QSM_Fields {
   /**
    * Generates a number field
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
@@ -222,7 +222,7 @@ class QSM_Fields {
   /**
    * Generates radio inputs
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */

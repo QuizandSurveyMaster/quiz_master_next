@@ -1194,7 +1194,7 @@ add_filter('qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3);
 /**
  * Checks if user has already reach the user limit of the quiz
  *
- * @since 4.8.0
+ * @since 5.0.0
  * @param string $display The HTML displayed for the quiz
  * @param array $qmn_quiz_options The settings for the quiz
  * @param array $qmn_array_for_variables The array of data by the quiz

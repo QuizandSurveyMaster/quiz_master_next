@@ -30,7 +30,7 @@ class QMNPluginHelper {
 	 * Admin Results Page tabs array
 	 *
 	 * @var array
-	 * @since 4.8.0
+	 * @since 5.0.0
 	 */
 	public $admin_results_tabs = array();
 
@@ -91,7 +91,7 @@ class QMNPluginHelper {
 	/**
 	 * Registers a quiz setting
 	 *
-	 * @since 4.8.0
+	 * @since 5.0.0
 	 * @param array $field_array An array of the components for the settings field
 	 */
 	public function register_quiz_setting( $field_array, $section = 'quiz_options' ) {
@@ -143,7 +143,7 @@ class QMNPluginHelper {
 	/**
    * Outputs the section of input fields
    *
-   * @since 4.8.0
+   * @since 5.0.0
    * @param string $section The section that the settings were registered with
    */
   public function generate_settings_section( $section = 'quiz_options' ) {
@@ -477,7 +477,7 @@ class QMNPluginHelper {
 	 *
 	 * Registers a new tab on the admin results page
 	 *
-	 * @since 4.8.0
+	 * @since 5.0.0
 	 * @param string $title The name of the tab
 	 * @param string $function The function that displays the tab's content
 	 * @return void
@@ -497,7 +497,7 @@ class QMNPluginHelper {
 	 *
 	 * Retrieves the array of titles and functions for the tabs registered for the admin results page
 	 *
-	 * @since 4.8.0
+	 * @since 5.0.0
 	 * @return array The array of registered tabs
 	 */
 	public function get_admin_results_tabs() {
