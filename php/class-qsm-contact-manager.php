@@ -92,7 +92,7 @@ class QSM_Contact_Manager {
             if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
               $class = 'mlwRequiredText qsm_required_text';
             }
-            $return .= "<input type='email' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='' />";
+            $return .= "<input type='text' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='' />";
             break;
 
           case 'checkbox':
