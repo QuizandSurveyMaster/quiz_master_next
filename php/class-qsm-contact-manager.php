@@ -90,10 +90,10 @@ class QSM_Contact_Manager {
         $class = '';
         $return .= "<span class='mlw_qmn_question qsm_question'>{$fields[ $i ]['label']}</span>";
         $value = '';
-        if ( 'name' == $fields[ $i ]['type'] ) {
+        if ( 'name' == $fields[ $i ]['use'] ) {
           $value = $name;
         }
-        if ( 'email' == $fields[ $i ]['type'] ) {
+        if ( 'email' == $fields[ $i ]['use'] ) {
           $value = $email;
         }
 
