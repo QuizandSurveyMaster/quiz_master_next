@@ -14,6 +14,13 @@ class QSM_Contact_Manager {
     # code...
   }
 
+  /**
+   * Displays the contact fields during form
+   *
+   * @since 5.0.0
+   * @param $options The quiz options
+   * @return string The HTML for the contact fields
+   */
   public static function display_fields( $options ) {
     $return = '';
 
@@ -77,22 +84,33 @@ class QSM_Contact_Manager {
         $return .= "<input type='text' class='$class' x-webkit-speech name='mlwUserPhone' value='' />";
       }
     } elseif ( ! empty( $fields ) && is_array( $fields ) ) {
-      for ( $i=0; $i < count( $fields ); $i++ ) {
+
+      // Cycle through each of the contact fields
+      for ( $i = 0; $i < count( $fields ); $i++ ) {
         $class = '';
         $return .= "<span class='mlw_qmn_question qsm_question'>{$fields[ $i ]['label']}</span>";
+        $value = '';
+        if ( 'name' == $fields[ $i ]['type'] ) {
+          $value = $name;
+        }
+        if ( 'email' == $fields[ $i ]['type'] ) {
+          $value = $email;
+        }
+
+        // Switch for contact field type
         switch ( $fields[ $i ]['type'] ) {
           case 'text':
             if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
               $class = 'mlwRequiredText qsm_required_text';
             }
-            $return .= "<input type='text' class='$class' x-webkit-speech name='contact_field_$i' value='' />";
+            $return .= "<input type='text' class='$class' x-webkit-speech name='contact_field_$i' value='$value' />";
             break;
 
           case 'email':
             if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
               $class = 'mlwRequiredText qsm_required_text';
             }
-            $return .= "<input type='text' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='' />";
+            $return .= "<input type='text' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='$value' />";
             break;
 
           case 'checkbox':
@@ -117,6 +135,12 @@ class QSM_Contact_Manager {
   	return $return;
   }
 
+  /**
+   * Process the contact fields and return the values
+   *
+   * @since 5.0.0
+   * @return array An array of all labels and values for the contact fields
+   */
   public static function process_fields() {
 
     $responses = array();
@@ -180,11 +204,25 @@ class QSM_Contact_Manager {
     return $responses;
   }
 
+  /**
+   * Loads the fields
+   *
+   * @since 5.0.0
+   * @uses QMNPluginHelper::get_quiz_setting
+   * @return array The array of contact fields
+   */
   public static function load_fields() {
     global $mlwQuizMasterNext;
     return maybe_unserialize( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( "contact_form" ) );
   }
 
+  /**
+   * Saves the contact fields
+   *
+   * @since 5.0.0
+   * @uses QMNPluginHelper::prepare_quiz
+   * @uses QMNPluginHelper::update_quiz_setting
+   */
   public static function save_fields( $quiz_id, $fields ) {
     if ( self::load_fields() === $fields ) {
       return true;
