@@ -275,6 +275,9 @@ function mlw_options_emails_tab_content()
 				<span class="template_name">%CONTACT_X%</span> - <?php _e( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ); ?>
 			</div>
 			<div class="template_variable">
+				<span class="template_name">%CONTACT_ALL%</span> - <?php _e( 'List user values for all contact fields', 'quiz-master-next' ); ?>
+			</div>
+			<div class="template_variable">
 				<span class="template_name">%POINT_SCORE%</span> - <?php _e('Score for the quiz when using points', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
