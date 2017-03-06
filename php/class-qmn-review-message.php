@@ -28,7 +28,7 @@ class QMN_Review_Message {
 	/**
 	 * Adds check message to admin_init hook
 	 *
-	 * @since 4.8.0
+	 * @since 5.0.0
 	 */
 	 public function add_hooks() {
 		 add_action( 'admin_init', array( $this, 'check_message_display' ) );

@@ -10,35 +10,28 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function mlw_generate_about_page() {
 
 	global $mlwQuizMasterNext;
-	$mlw_quiz_version = $mlwQuizMasterNext->version;
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-effects-blind' );
-	wp_enqueue_script( 'jquery-effects-explode' );
+	$version = $mlwQuizMasterNext->version;
 	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
-	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ));
+	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ) );
 	?>
 	<style>
-		div.mlw_qmn_icon_wrap
-		{
+		div.qsm_icon_wrap {
 			background: <?php echo 'url("'.plugins_url( '../assets/icon-128x128.png' , __FILE__ ).'")'; ?> no-repeat;
 		}
 	</style>
 	<div class="wrap about-wrap">
 		<h1><?php _e('Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next'); ?></h1>
 		<div class="about-text"><?php _e('Thank you for updating!', 'quiz-master-next'); ?></div>
-		<div class="mlw_qmn_icon_wrap"><?php echo $mlw_quiz_version; ?></div>
+		<div class="qsm_icon_wrap"><?php echo $version; ?></div>
 		<h2 class="nav-tab-wrapper">
-			<a href="javascript:qmn_select_tab(1, 'mlw_quiz_what_new');" id="mlw_qmn_tab_1" class="nav-tab nav-tab-active">
+			<a href="#" data-tab='1' class="nav-tab nav-tab-active qsm-tab">
 				<?php _e("What's New!", 'quiz-master-next'); ?></a>
-			<a href="javascript:qmn_select_tab(2, 'mlw_quiz_changelog');" id="mlw_qmn_tab_2" class="nav-tab">
+			<a href="#" data-tab='2' class="nav-tab qsm-tab">
 				<?php _e('Changelog', 'quiz-master-next'); ?></a>
-			<a href="javascript:qmn_select_tab(3, 'qmn_contributors');" id="mlw_qmn_tab_3" class="nav-tab">
+			<a href="#" data-tab='3' class="nav-tab qsm-tab">
 				<?php _e('People Who Make QSM Possible', 'quiz-master-next'); ?></a>
 		</h2>
-		<div id="mlw_quiz_what_new" class="qmn_tab">
+		<div class="qsm-tab-content tab-1">
 			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Notice: Certificates Are Being Moved</h2>
 			<p style="text-align: center;">The certificate feature is being moved from core to a free addon. If you use certificates, please <a target="_blank" href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate_removal_notice">read our post about certificates being moved.</a></p>
 			<br />
@@ -46,11 +39,11 @@ function mlw_generate_about_page() {
 			<p style="text-align: center;">We have several major changes and features we are planning for version 5.0.0. To keep up with the changes and be notified when the beta becomes available. Please <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe_for_beta_notices">subscribe to our newsletter</a>.</p>
 			<br />
 		</div>
-		<div id="mlw_quiz_changelog" class="qmn_tab" style="display: none;">
+		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 31 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 19 ); ?>
 		</div>
-		<div id="qmn_contributors" class="qmn_tab" style="display:none;">
+		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>
 			<?php
 			$contributors = get_transient( 'qmn_contributors' );

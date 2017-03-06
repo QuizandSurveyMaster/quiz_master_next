@@ -34,7 +34,7 @@ class QSM_Install {
   /**
    * Adds the default quiz settings
    *
-   * @since 4.8.0
+   * @since 5.0.0
    */
   public function register_default_settings() {
 
@@ -231,98 +231,6 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-    // Registers user_name setting
-    $field_array = array(
-      'id' => 'user_name',
-      'label' => __('Should we ask for users name?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_comp setting
-    $field_array = array(
-      'id' => 'user_comp',
-      'label' => __('Should we ask for users business?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 2
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_email setting
-    $field_array = array(
-      'id' => 'user_email',
-      'label' => __('Should we ask for users email?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-    // Registers user_phone setting
-    $field_array = array(
-      'id' => 'user_phone',
-      'label' => __('Should we ask for users phone number?', 'quiz-master-next'),
-      'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 0
-        ),
-        array(
-          'label' => __('Require', 'quiz-master-next'),
-          'value' => 1
-        ),
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 2
-        )
-      ),
-      'default' => 2
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
     // Registers comment_section setting
     $field_array = array(
       'id' => 'comment_section',
@@ -415,6 +323,98 @@ class QSM_Install {
         )
       ),
       'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_name setting
+    $field_array = array(
+      'id' => 'user_name',
+      'label' => __("Should we ask for the user's name? (Only here for older versions. Use Contact tab for this.)", 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_comp setting
+    $field_array = array(
+      'id' => 'user_comp',
+      'label' => __('Should we ask for users business? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_email setting
+    $field_array = array(
+      'id' => 'user_email',
+      'label' => __('Should we ask for users email? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    // Registers user_phone setting
+    $field_array = array(
+      'id' => 'user_phone',
+      'label' => __('Should we ask for users phone number? (Only here for older versions. Use Contact tab for this.)', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Require', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 2
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -525,22 +525,6 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
-    // Registers question_answer_template setting
-    $field_array = array(
-      'id' => 'question_answer_template',
-      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
-      'type' => 'editor',
-      'default' => 0,
-      'variables' => array(
-        '%QUESTION%',
-        '%USER_ANSWER%',
-        '%CORRECT_ANSWER%',
-        '%USER_COMMENTS%',
-        '%CORRECT_ANSWER_INFO%'
-      )
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
     // Registers twitter_sharing_text setting
     $field_array = array(
       'id' => 'twitter_sharing_text',
@@ -583,6 +567,15 @@ class QSM_Install {
     $field_array = array(
       'id' => 'submit_button_text',
       'label' => __('Text for submit button', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers name_field_text setting
+    $field_array = array(
+      'id' => 'name_field_text',
+      'label' => __('Text for name  field', 'quiz-master-next'),
       'type' => 'text',
       'default' => 0
     );
@@ -1272,13 +1265,33 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 
-  		// Update 4.8.0
+  		// Update 4.7.0
   		if( $wpdb->get_var( "SHOW COLUMNS FROM $table_name LIKE 'user_ip'" ) != "user_ip" ) {
   			$sql = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
   			$results = $wpdb->query( $update_sql );
   		}
+
+      // Update 5.0.0
+      $settings = (array) get_option( 'qmn-settings', array() );
+      if ( isset( $settings['results_details_template'] ) ) {
+        $settings['results_details_template'] .= "<p>%CONTACT_ALL%</p>";
+      } else {
+        $settings['results_details_template'] = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+     		<p>%CONTACT_ALL%</p>
+     		<p>Name Provided: %USER_NAME%</p>
+     		<p>Business Provided: %USER_BUSINESS%</p>
+     		<p>Phone Provided: %USER_PHONE%</p>
+     		<p>Email Provided: %USER_EMAIL%</p>
+     		<p>Score Received: %AMOUNT_CORRECT%/%TOTAL_QUESTIONS% or %CORRECT_SCORE%% or %POINT_SCORE% points</p>
+     		<h2>Answers Provided:</h2>
+     		<p>The user took %TIMER% to complete quiz.</p>
+     		<p>Comments entered were: %COMMENT_SECTION%</p>
+     		<p>The answers were as follows:</p>
+     		%QUESTIONS_ANSWERS%";
+      }
+      update_option( 'qmn-settings' , $settings );
 
 
   		update_option('mlw_quiz_master_version' , $data);

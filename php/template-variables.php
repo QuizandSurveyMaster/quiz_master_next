@@ -32,6 +32,8 @@ $mlw_qmn_result_array = array(
 		);
 
 */
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_average_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_score',10,2);
@@ -189,13 +191,44 @@ function mlw_qmn_variable_user_email($content, $mlw_quiz_array)
 	$content = str_replace( "%USER_EMAIL%" , $mlw_quiz_array["user_email"], $content);
 	return $content;
 }
+
+/**
+ * Returns user value for supplied contact field
+ *
+ * @since 5.0.0
+ * @return string The HTML for the content
+ */
+function qsm_contact_field_variable( $content, $results_array ) {
+	preg_match_all( "~%CONTACT_(.*?)%~i", $content, $matches );
+	for ( $i = 0; $i < count( $matches[0] ); $i++ ) {
+		$content = str_replace( "%CONTACT_" . $matches[1][ $i ] . "%" , $results_array["contact"][ $matches[1][ $i ] - 1 ]["value"], $content);
+	}
+	return $content;
+}
+
+/**
+ * Returns user values for all contact fields
+ *
+ * @since 5.0.0
+ * @return string The HTML for the content
+ */
+function qsm_all_contact_fields_variable( $content, $results ) {
+	$return = '';
+	for ( $i = 0; $i < count( $results["contact"] ); $i++ ) {
+		$return .= $results["contact"][ $i ]["label"] . ": " . $results["contact"][ $i ]["value"] . "<br>";
+	}
+	$content = str_replace( "%CONTACT_ALL%" , $return, $content );
+	return $content;
+}
+
 function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 {
 	while (strpos($content, '%QUESTIONS_ANSWERS%') !== false)
 	{
+		global $mlwQuizMasterNext;
 		global $wpdb;
 		$display = '';
-		$qmn_question_answer_template = $wpdb->get_var( $wpdb->prepare( "SELECT question_answer_template FROM " . $wpdb->prefix . "mlw_quizzes WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
+		$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br>%USER_ANSWER%' );
 		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
 		$qmn_questions = array();
 		foreach($qmn_questions_sql as $question)

@@ -44,6 +44,20 @@ class QMNQuizCreator
 	 	$this->quiz_id = intval($quiz_id);
 	 }
 
+	 /**
+	  * Gets the quiz ID stored (for backwards compatibility)
+		*
+		* @since 5.0.0
+		* @return int|false The ID of the quiz stored or false
+	  */
+	 public function get_id() {
+		 if ( $this->quiz_id ) {
+			 return intval( $this->quiz_id );
+		 } else {
+			 return false;
+		 }
+	 }
+
 	/**
 	* Retrieves setting store in quiz_settings
 	*
@@ -283,10 +297,10 @@ class QMNQuizCreator
 				'send_user_email' => 0,
 				'send_admin_email' => 0,
 				'contact_info_location' => 0,
-				'user_name' => 0,
-				'user_comp' => 0,
-				'user_email' => 0,
-				'user_phone' => 0,
+				'user_name' => 2,
+				'user_comp' => 2,
+				'user_email' => 2,
+				'user_phone' => 2,
 				'admin_email' => get_option( 'admin_email', 'Enter email' ),
 				'comment_section' => 1,
 				'question_from_total' => 0,
@@ -436,7 +450,7 @@ class QMNQuizCreator
 			    $my_query->the_post();
 					$my_post = array(
 				      'ID'           => get_the_ID(),
-				      'post_status' => 'draft'
+				      'post_status' => 'trash'
 				  );
 					wp_update_post( $my_post );
 			  }

@@ -9,14 +9,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @since 4.4.0
 */
 function mlw_generate_quiz_options() {
+
+	// Check if current user can
 	if ( ! current_user_can('moderate_comments') ) {
 		return;
 	}
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
+
+	// Get registered tabs for the options page and set current tab
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
 	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
+
+	// Prepare quiz
 	$quiz_id = intval($_GET["quiz_id"]);
 	if ( isset( $_GET["quiz_id"] ) ) {
 		$table_name = $wpdb->prefix . "mlw_quizzes";
@@ -54,17 +60,18 @@ function mlw_generate_quiz_options() {
 	echo sprintf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
 	?></h1>
 	<?php
+	// Put all output from tab into ob_get_contents below.
 	ob_start();
-	if ($quiz_id != "")
-	{
+
+	// If the quiz is set and not empty
+	if ( ! empty( $quiz_id ) ) {
 		?>
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach($tab_array as $tab)
-			{
+			// Cycle through registered tabs to create navigation
+			foreach( $tab_array as $tab ) {
 				$active_class = '';
-				if ($active_tab == $tab['slug'])
-				{
+				if ( $active_tab == $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
 				echo "<a href=\"?page=mlw_quiz_options&quiz_id=$quiz_id&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
@@ -73,19 +80,16 @@ function mlw_generate_quiz_options() {
 		</h2>
 		<div class="mlw_tab_content">
 			<?php
-				foreach($tab_array as $tab)
-				{
-					if ($active_tab == $tab['slug'])
-					{
-						call_user_func($tab['function']);
+				// Cycle through tabs looking for current tab to create tab's content
+				foreach( $tab_array as $tab ) {
+					if ( $active_tab == $tab['slug'] ) {
+						call_user_func( $tab['function'] );
 					}
 				}
 			?>
 		</div>
 		<?php
-	}
-	else
-	{
+	} else {
 		?>
 		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -95,6 +99,8 @@ function mlw_generate_quiz_options() {
 	}
 	$mlw_output = ob_get_contents();
 	ob_end_clean();
+
+	// Shows alerts, ads, then tab content
 	$mlwQuizMasterNext->alertManager->showAlerts();
 	echo mlw_qmn_show_adverts();
 	echo $mlw_output;

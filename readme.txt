@@ -2,9 +2,9 @@
 Contributors: fpcorso
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
-Requires at least: 4.5
+Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 4.7.10
+Stable tag: 5.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,23 +109,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.0.0 (X) =
+  *
+
 = 4.7.10 (January 1, 2017) =
   * Closed Bug: Edit question not working when visual editor is off - Issue #497
   * Closed Bug: Localization incomplete on Global Settings page - Issue #478
-
-= 4.7.9 (December 13, 2016) =
-  * Closed Security: CSRF vulnerability on Questions tab
-
-= 4.7.8 (November 2, 2016) =
-  * Closed Bug: Apostrophe in translation for tab name text causing errors - Issue #490
-  * Closed Bug: Timer resets if user copies link, opens new tab, and pastes link - Issue #489
-  * Closed Enhancement: Add Business, Email, And Phone To Quiz Results Search - Issue #485
-  * Closed Bug: "You Deserve It" button in review message leads to 404 - Issue #476
-  * Closed Bug: In the Hint dropdown text, the 'apostrophe' does not display properly - Issue #453
 
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 4.7.10 =
-Upgrade to fix visual editor bug preventing some users from being able to edit their questions
+= 5.0.0 =
+Upgrade to x

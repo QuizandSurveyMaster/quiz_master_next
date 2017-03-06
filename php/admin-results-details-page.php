@@ -67,6 +67,7 @@ function qmn_generate_results_details_tab() {
 		$template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
 	} else {
 		$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+		<p>%CONTACT_ALL%</p>
 		<p>Name Provided: %USER_NAME%</p>
 		<p>Business Provided: %USER_BUSINESS%</p>
 		<p>Phone Provided: %USER_PHONE%</p>
@@ -87,7 +88,8 @@ function qmn_generate_results_details_tab() {
 		$results = array(
 			0,
 			array(),
-			''
+			'',
+			'contact' => array()
 		);
 	}
 	$qmn_array_for_variables = array(
@@ -106,7 +108,8 @@ function qmn_generate_results_details_tab() {
 		'total_correct' => $mlw_results_data->correct,
 		'total_questions' => $mlw_results_data->total,
 		'comments' => $results[2],
-		'question_answers_array' => $results[1]
+		'question_answers_array' => $results[1],
+		'contact' => $results["contact"]
 	);
 	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $qmn_array_for_variables );
 	$template = str_replace( "\n" , "<br>", $template );

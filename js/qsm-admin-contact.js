@@ -16,12 +16,23 @@ var QSMContact;
             '<select class="contact-form-control wide type-control">' +
               '<option value="none">Select a type...</option>' +
               '<option value="text">Small Open Answer</option>' +
+              '<option value="email">Email</option>' +
               '<option value="checkbox">Checkbox</option>' +
             '</select>' +
           '</div>' +
           '<div class="contact-form-group">' +
             '<label class="contact-form-label">Label</label>' +
             '<input type="text" class="contact-form-control label-control" value="' + fieldArray.label + '">' +
+          '</div>' +
+          '<div class="contact-form-group">' +
+            '<label class="contact-form-label">Used For</label>' +
+            '<select class="contact-form-control use-control">' +
+              '<option value="none"></option>' +
+              '<option value="name">Name</option>' +
+              '<option value="email">Email</option>' +
+              '<option value="comp">Business</option>' +
+              '<option value="phone">Phone</option>' +
+            '</select>' +
           '</div>' +
           '<div class="contact-form-group">' +
             '<label class="contact-form-label">Required?</label>' +
@@ -40,8 +51,27 @@ var QSMContact;
         case 'text':
           contactField.find( '.type-control option[value="text"]').prop( 'selected', true );
           break;
+        case 'email':
+          contactField.find( '.type-control option[value="email"]').prop( 'selected', true );
+          break;
         case 'checkbox':
           contactField.find( '.type-control option[value="checkbox"]').prop( 'selected', true );
+          break;
+        default:
+
+      }
+      switch ( fieldArray.use ) {
+        case 'name':
+          contactField.find( '.use-control option[value="name"]').prop( 'selected', true );
+          break;
+        case 'email':
+          contactField.find( '.use-control option[value="email"]').prop( 'selected', true );
+          break;
+        case 'comp':
+          contactField.find( '.use-control option[value="comp"]').prop( 'selected', true );
+          break;
+        case 'phone':
+          contactField.find( '.use-control option[value="phone"]').prop( 'selected', true );
           break;
         default:
 
@@ -57,7 +87,8 @@ var QSMContact;
       var fieldArray = {
         label: field.find( '.label-control' ).val(),
         type: field.find( '.type-control' ).val(),
-        required: field.find( '.required-control' ).prop( 'checked' )
+        required: field.find( '.required-control' ).prop( 'checked' ),
+        use: field.find( '.use-control' ).val()
       };
       QSMContact.addField( fieldArray );
     },
@@ -73,7 +104,8 @@ var QSMContact;
         label : '',
         type : 'text',
         answers : [],
-        required : false
+        required : false,
+        use: ''
       };
       QSMContact.addField( fieldArray );
     },
@@ -86,7 +118,8 @@ var QSMContact;
         contactEach = {
           label: $( this ).find( '.label-control' ).val(),
           type: $( this ).find( '.type-control' ).val(),
-          required: $( this ).find( '.required-control' ).prop( 'checked' )
+          required: $( this ).find( '.required-control' ).prop( 'checked' ),
+          use: $( this ).find( '.use-control' ).val()
         };
         contactForm.push( contactEach );
       });

@@ -66,7 +66,7 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( incorrect_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
-				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredAccept' ) > -1 && !this.checked ) {
+				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredAccept' ) > -1 && ! jQuery( this ).prop( 'checked' ) ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
