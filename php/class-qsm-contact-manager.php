@@ -141,7 +141,7 @@ class QSM_Contact_Manager {
    * @since 5.0.0
    * @return array An array of all labels and values for the contact fields
    */
-  public static function process_fields() {
+  public static function process_fields( $options ) {
 
     $responses = array();
 

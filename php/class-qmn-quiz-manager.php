@@ -548,7 +548,7 @@ class QMNQuizManager {
 		$qmn_array_for_variables['user_business'] = 'None';
 		$qmn_array_for_variables['user_email'] = 'None';
 		$qmn_array_for_variables['user_phone'] = 'None';
-		$contact_responses = QSM_Contact_Manager::process_fields();
+		$contact_responses = QSM_Contact_Manager::process_fields( $qmn_quiz_options );
 		foreach ( $contact_responses as $field ) {
       if ( isset( $field['use'] ) ) {
         if ( 'name' === $field['use'] ) {
