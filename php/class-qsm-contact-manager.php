@@ -87,6 +87,8 @@ class QSM_Contact_Manager {
 
       // Cycle through each of the contact fields
       for ( $i = 0; $i < count( $fields ); $i++ ) {
+
+        $return .= '<div class="qsm_contact_div">';
         $class = '';
         $return .= "<span class='mlw_qmn_question qsm_question'>{$fields[ $i ]['label']}</span>";
         $value = '';
@@ -123,6 +125,8 @@ class QSM_Contact_Manager {
           default:
             break;
         }
+
+        $return .= '</div>';
       }
     }
 
