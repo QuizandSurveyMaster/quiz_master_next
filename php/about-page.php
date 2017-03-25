@@ -11,8 +11,8 @@ function mlw_generate_about_page() {
 
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
-	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ) );
+	wp_enqueue_style( 'qsn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.0.0' );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ), '5.0.0' );
 	?>
 	<style>
 		div.qsm_icon_wrap {
