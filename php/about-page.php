@@ -38,8 +38,8 @@ function mlw_generate_about_page() {
 			</div>
 			<div class="feature">
 				<h2 class="feature-headline">New Contact Fields System</h2>
-				<p class="feature-text">The biggest change is our new contact fields. Instead of having to edit some of the options on one tab, the text on another tab, and final settings on another tab, all of the contact field options are on the new "Contact"" tab.</p>
-				<p class="feature-text">Even better, you can now create new contact fields for any thing you need! Need an "Age" field or a "Attendee ID" field? Now you can!</p>
+				<p class="feature-text">The biggest change is our new contact fields. Instead of having to edit some of the options on one tab, the text on another tab, and final settings on another tab, all of the contact field options are on the new "Contact" tab.</p>
+				<p class="feature-text">Even better, you can now create new contact fields for anything you need! Need an "Age" field or an "Attendee ID" field? Now you can!</p>
 				<p class="feature-text">You can now choose from three different contact field types: Small Open Answer, Email, or Checkbox.</p>
 			</div>
 			<div class="feature">
@@ -61,7 +61,7 @@ function mlw_generate_about_page() {
 			<hr />
 			<div class="feature">
 				<h2 class="feature-headline">For Developers: New Settings System</h2>
-				<p class="feature-text">The settings system has been completely rewritten and are now stored as serialized arrays that can be extended instead of hardcoded as columns in the database. You can now "register" settings with defaults and assign which tab they belong to. Documentation coming soon.</p>
+				<p class="feature-text">The settings system has been completely rewritten and is now stored as serialized arrays that can be extended instead of hardcoded as columns in the database. You can now "register" settings with defaults and assign which tab they belong to. Documentation coming soon.</p>
 			</div>
 			<div class="feature">
 				<h2 class="feature-headline">For Developers: New Results Page Tabs</h2>
