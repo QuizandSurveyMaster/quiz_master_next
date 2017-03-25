@@ -54,7 +54,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Load quiz posts
 	$post_to_quiz_array = array();
-	$my_query = new WP_Query( array( 'post_type' => 'quiz' ) );
+	$my_query = new WP_Query( array( 'post_type' => 'quiz', 'posts_per_page' => -1, 'post_status' => 'publish' ) );
 	if ( $my_query->have_posts() ) {
 	  while ( $my_query->have_posts() ) {
 	    $my_query->the_post();

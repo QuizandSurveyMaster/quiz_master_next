@@ -81,6 +81,9 @@ function qmn_generate_results_details_tab() {
 	}
 	if ( is_serialized( $mlw_results_data->quiz_results ) && is_array( @unserialize( $mlw_results_data->quiz_results ) ) ) {
 		$results = unserialize($mlw_results_data->quiz_results);
+		if ( ! isset( $results["contact"] ) ) {
+			$results["contact"] = array();
+		}
 	} else {
 		$template = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_results_data->quiz_results, $template);
 		$template = str_replace( "%TIMER%" , '', $template);

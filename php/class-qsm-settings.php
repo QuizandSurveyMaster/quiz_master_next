@@ -143,9 +143,23 @@ class QSM_Quiz_Settings {
    */
   public function get_setting( $setting, $default = false ) {
 
+    global $mlwQuizMasterNext;
+
     // Return if empty
     if ( empty( $setting ) ) {
       return false;
+    }
+
+    // Check if ID is not set, for backwards compatibility
+    if ( ! $this->quiz_id ) {
+      $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
+
+      // If get_id doesn't work, return false
+      if ( ! $quiz_id ) {
+        return false;
+      } else {
+        $this->prepare_quiz( $quiz_id );
+      }
     }
 
     // Check if setting exists

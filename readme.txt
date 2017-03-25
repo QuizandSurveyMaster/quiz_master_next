@@ -25,7 +25,7 @@ You can easily create surveys for your users. Everything from customer satisfact
 = Different Types Of Questions =
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, and **accept**. More types are being supported in future updates!
 
-= Multiple Landing Pages For Each Quiz =
+= Multiple Results Pages For Each Quiz =
 Each quiz or survey can have **unlimited** results pages that can be customized with your text. Show different results pages based on the users score!
 
 = Emails After Completion Of Quiz And Survey =
@@ -109,8 +109,23 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.0.0 (X) =
-  *
+= 5.0.0 (March 25, 2017) =
+  * Closed: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/fpcorso/quiz_master_next/issues/527))
+  * Closed: Change Shortcode To QSM ([Issue #515](https://github.com/fpcorso/quiz_master_next/issues/515))
+  * Closed: Search function for quizzes/surveys ([Issue #492](https://github.com/fpcorso/quiz_master_next/issues/492))
+  * Closed: Create new fields class to handle creation/post data of settings fields ([Issue #450](https://github.com/fpcorso/quiz_master_next/issues/450))
+  * Closed: Create new settings class to handle the settings data ([Issue #449](https://github.com/fpcorso/quiz_master_next/issues/449))
+  * Closed: Rewrite options system to allow for extendibility ([Issue #448](https://github.com/fpcorso/quiz_master_next/issues/448))
+  * Closed: Enable tabs for the admin results page ([Issue #408](https://github.com/fpcorso/quiz_master_next/issues/408))
+  * Closed: Create onboarding process ([Issue #397](https://github.com/fpcorso/quiz_master_next/issues/397))
+  * Closed: Create new contact tab to allow form creation ([Issue #394](https://github.com/fpcorso/quiz_master_next/issues/394))
+  * Closed: Move Certificate to free addon ([Issue #381](https://github.com/fpcorso/quiz_master_next/issues/381))
+  * Closed: Ability to add check box for privacy statement with the contact fields ([Issue #372](https://github.com/fpcorso/quiz_master_next/issues/372))
+  * Closed: Customize the "Please complete all required fields!" text ([Issue #371](https://github.com/fpcorso/quiz_master_next/issues/371))
+  * Closed: Allow admins to customize the validation error messages ([Issue #346](https://github.com/fpcorso/quiz_master_next/issues/346))
+  * Closed: Hint field cannot be customized ([Issue #262](https://github.com/fpcorso/quiz_master_next/issues/262))
+  * Closed: Add custom fields to the contact form ([Issue #211](https://github.com/fpcorso/quiz_master_next/issues/211))
+  * Closed: Scrollable List of Quizzes ([Issue #46](https://github.com/fpcorso/quiz_master_next/issues/46))
 
 = 4.7.10 (January 1, 2017) =
   * Closed Bug: Edit question not working when visual editor is off - Issue #497
@@ -121,4 +136,4 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Upgrade Notice ==
 
 = 5.0.0 =
-Upgrade to x
+Upgrade to use a variety of new features including new contact fields system, new options to customize hint and error messages, and more!
