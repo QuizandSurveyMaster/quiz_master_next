@@ -11,7 +11,7 @@ function mlw_generate_about_page() {
 
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qsn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.0.0' );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.0.0' );
 	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ), '5.0.0' );
 	?>
 	<style>
@@ -32,12 +32,41 @@ function mlw_generate_about_page() {
 				<?php _e('People Who Make QSM Possible', 'quiz-master-next'); ?></a>
 		</h2>
 		<div class="qsm-tab-content tab-1">
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Notice: Certificates Are Being Moved</h2>
-			<p style="text-align: center;">The certificate feature is being moved from core to a free addon. If you use certificates, please <a target="_blank" href="http://quizandsurveymaster.com/certificate-feature-moved/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate_removal_notice">read our post about certificates being moved.</a></p>
-			<br />
-			<h2 style="margin: 1.1em 0 .2em;font-size: 2.4em;font-weight: 300;line-height: 1.3;text-align: center;">Major Coming Changes In 5.0.0</h2>
-			<p style="text-align: center;">We have several major changes and features we are planning for version 5.0.0. To keep up with the changes and be notified when the beta becomes available. Please <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=about_page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe_for_beta_notices">subscribe to our newsletter</a>.</p>
-			<br />
+			<div class="feature">
+				<h2 class="feature-headline">Welcome to QSM 5.0!</h2>
+				<p class="feature-text">There are many changes in version 5.0. From a contact fields system to new developer functions, there are a lot to see.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">New Contact Fields System</h2>
+				<p class="feature-text">The biggest change is our new contact fields. Instead of having to edit some of the options on one tab, the text on another tab, and final settings on another tab, all of the contact field options are on the new "Contact"" tab.</p>
+				<p class="feature-text">Even better, you can now create new contact fields for any thing you need! Need an "Age" field or a "Attendee ID" field? Now you can!</p>
+				<p class="feature-text">You can now choose from three different contact field types: Small Open Answer, Email, or Checkbox.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">More Text Is Editable</h2>
+				<p class="feature-text">You can now edit the text for the "Hint" as well as all 4 of the error messages that are used when validating a user's responses. You can edit these on the "Text" tab.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">Scrollable And Searchable Quizzes/Surveys</h2>
+				<p class="feature-text">For the users who have many quizzes and surveys on their site, it has been difficult and frustrating to find a particular quiz/survey to edit it on the Quizzes page. Now, the quizzes/surveys can be searched using the new searchbox in the top-right! Also, there are no more pages of quizzes/surveys to look through as the quizzes/surveys load as you scroll down making editing much quicker and more efficient.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">Introduction Of Onboarding Process</h2>
+				<p class="feature-text">New users of this plugin will now see a getting started video and documentation when first accessing the Quizzes/Surveys page.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">Certificate Is Now An Addon</h2>
+				<p class="feature-text">As we stated 8 months ago, the certificate feature is no longer built into the plugin and is available as a free addon.</p>
+			</div>
+			<hr />
+			<div class="feature">
+				<h2 class="feature-headline">For Developers: New Settings System</h2>
+				<p class="feature-text">The settings system has been completely rewritten and are now stored as serialized arrays that can be extended instead of hardcoded as columns in the database. You can now "register" settings with defaults and assign which tab they belong to. Documentation coming soon.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">For Developers: New Results Page Tabs</h2>
+				<p class="feature-text">The "Results" page in the admin can now be extended with tabs. A great location for adding features that affect or analyze the results.</p>
+			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
