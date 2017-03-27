@@ -34,7 +34,7 @@ class QSM_Contact_Manager {
     }
 
     // If logged in user should see fields
-    if ( 1 == $options->loggedin_user_contact ) {
+    if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
       $return = '<div style="display:none;">';
     }
 
@@ -131,7 +131,7 @@ class QSM_Contact_Manager {
     }
 
     // If logged in user should see fields
-    if ( 1 == $options->loggedin_user_contact ) {
+    if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
       $return .= '</div>';
     }
 
