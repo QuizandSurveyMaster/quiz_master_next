@@ -1,10 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
-Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points, results
+Tags: quiz, survey, test, score, exam, questionnaire, email, answer, question, certificate, points
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 5.0.0
+Stable tag: 5.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.0.1 (March 27, 2017) =
+
 
 = 5.0.0 (March 25, 2017) =
   * Closed: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/fpcorso/quiz_master_next/issues/527))
