@@ -87,7 +87,7 @@ class QMNTracking {
    * @return void
    */
   private function send_data() {
-    $response = wp_remote_post( 'http://quizandsurveymaster.com/?usage_track=confirmation', array(
+    $response = wp_remote_post( 'https://data.quizandsurveymaster.com/?usage_track=confirmation', array(
 			'method'      => 'POST',
 			'timeout'     => 45,
 			'redirection' => 5,
