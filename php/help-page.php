@@ -7,19 +7,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return void
 * @since 4.4.0
 */
-function mlw_generate_help_page()
-{
-	if ( !current_user_can('moderate_comments') )
-	{
+function mlw_generate_help_page() {
+	if ( !current_user_can('moderate_comments') ) {
 		return;
 	}
 
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
 
 	///Creates the widgets
-	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qmn_documentation_meta_box_content", "meta_box_help");
-	add_meta_box("wpss_mrts", __('Support', 'quiz-master-next'), "qmn_support_meta_box_content", "meta_box_support");
-	add_meta_box("wpss_mrts", __('System Info', 'quiz-master-next'), "qmn_system_meta_box_content", "meta_box_sys_info");
+	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qsm_documentation_meta_box_content", "meta_box_help");
+	add_meta_box("wpss_mrts", __('Support', 'quiz-master-next'), "qsm_support_meta_box_content", "meta_box_support");
+	add_meta_box("wpss_mrts", __('System Info', 'quiz-master-next'), "qsm_system_meta_box_content", "meta_box_sys_info");
 	?>
 	<div class="wrap">
 	<h2><?php _e('Help Page', 'quiz-master-next'); ?></h2>
@@ -49,16 +47,12 @@ function mlw_generate_help_page()
 * @return void
 * @since 4.4.0
 */
-function qmn_documentation_meta_box_content()
-{
+function qsm_documentation_meta_box_content() {
 	?>
 	<p><?php _e('Need help with the plugin? Try any of the following:', 'quiz-master-next'); ?></p>
 	<ul>
-		<li>To report a bug, issue, or make a feature request, please create an issue in our <a href="https://github.com/fpcorso/quiz_master_next/issues">Github Issue Tracker</a></li>
 		<li>For assistance in using the plugin, read our <a href="http://quizandsurveymaster.com/documentation/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">documentation</a> or view videos in our <a href="http://quizandsurveymaster.com/online-academy/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=online_academy" target="_blank">online academy</a></li>
-		<li>For support, fill out the form in the Support widget to send us an email</li>
-		<li>For support, fill out the form on our <a href="http://quizandsurveymaster.com/contact-us/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
-		<li>For support, create a topic in the <a href="https://wordpress.org/support/plugin/quiz-master-next">WordPress Support Forums</a></li>
+		<li>For support, fill out the form in the Support widget to send us an email or fill out the form on our <a href="http://quizandsurveymaster.com/contact-us/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }
@@ -69,8 +63,7 @@ function qmn_documentation_meta_box_content()
 * @return void
 * @since 4.4.0
 */
-function qmn_support_meta_box_content()
-{
+function qsm_support_meta_box_content() {
 	$quiz_master_email_message = "";
 	$mlw_quiz_version = get_option('mlw_quiz_master_version');
 	if ( isset( $_POST["support_email"] ) && wp_verify_nonce( $_POST['send_support_ticket_nonce'], 'send_support_ticket') )
@@ -84,7 +77,7 @@ function qmn_support_meta_box_content()
 			$quiz_master_email_message = "Invalid email address";
 		} else {
 			$current_user = wp_get_current_user();
-			$mlw_site_info = qmn_get_system_info();
+			$mlw_site_info = qsm_get_system_info();
 			$mlw_message = "$user_message<br> Version: $mlw_quiz_version<br> Quiz URL Provided: $user_quiz_url<br> User ".$current_user->display_name." from ".$current_user->user_email."<br> Wordpress Info: $mlw_site_info";
 			$response = wp_remote_post( "http://quizandsurveymaster.com/contact-us/", array(
 				'method' => 'POST',
@@ -175,95 +168,93 @@ function qmn_support_meta_box_content()
 * @return void
 * @since 4.4.0
 */
-function qmn_system_meta_box_content()
-{
-	echo qmn_get_system_info();
+function qsm_system_meta_box_content() {
+	echo qsm_get_system_info();
 }
 
 /**
 * This function gets the content that is in the system info
 *
-* @return return $qmn_sys_info This variable contains all of the system info from the admins server.
+* @return return string This contains all of the system info from the admins server.
 * @since 4.4.0
 */
-function qmn_get_system_info()
-{
+function qsm_get_system_info() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	$qmn_sys_info = "";
+	$sys_info = "";
 
 	$theme_data = wp_get_theme();
 	$theme      = $theme_data->Name . ' ' . $theme_data->Version;
 
-	$qmn_sys_info .= "<h3>Site Information</h3><br />";
-	$qmn_sys_info .= "Site URL: ".site_url()."<br />";
-	$qmn_sys_info .= "Home URL: ".home_url()."<br />";
-	$qmn_sys_info .= "Multisite: ".( is_multisite() ? 'Yes' : 'No' )."<br />";
+	$sys_info .= "<h3>Site Information</h3><br />";
+	$sys_info .= "Site URL: ".site_url()."<br />";
+	$sys_info .= "Home URL: ".home_url()."<br />";
+	$sys_info .= "Multisite: ".( is_multisite() ? 'Yes' : 'No' )."<br />";
 
-	$qmn_sys_info .= "<h3>WordPress Information</h3><br />";
-	$qmn_sys_info .= "Version: ".get_bloginfo( 'version' )."<br />";
-	$qmn_sys_info .= "Language: ".( defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US' )."<br />";
-	$qmn_sys_info .= "Active Theme: ".$theme."<br />";
-	$qmn_sys_info .= "Debug Mode: ".( defined( 'WP_DEBUG' ) ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set' )."<br />";
-	$qmn_sys_info .= "Memory Limit: ".WP_MEMORY_LIMIT."<br />";
+	$sys_info .= "<h3>WordPress Information</h3><br />";
+	$sys_info .= "Version: ".get_bloginfo( 'version' )."<br />";
+	$sys_info .= "Language: ".( defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US' )."<br />";
+	$sys_info .= "Active Theme: ".$theme."<br />";
+	$sys_info .= "Debug Mode: ".( defined( 'WP_DEBUG' ) ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set' )."<br />";
+	$sys_info .= "Memory Limit: ".WP_MEMORY_LIMIT."<br />";
 
-	$qmn_sys_info .= "<h3>Plugins Information</h3><br />";
-	$qmn_plugin_mu = get_mu_plugins();
-    	if( count( $qmn_plugin_mu > 0 ) ) {
-    		$qmn_sys_info .= "<h4>Must Use</h4><br />";
-	        foreach( $qmn_plugin_mu as $plugin => $plugin_data ) {
-	            $qmn_sys_info .= $plugin_data['Name'] . ': ' . $plugin_data['Version'] . "<br />";
+	$sys_info .= "<h3>Plugins Information</h3><br />";
+	$plugin_mu = get_mu_plugins();
+    	if( count( $plugin_mu > 0 ) ) {
+    		$sys_info .= "<h4>Must Use</h4><br />";
+	        foreach( $plugin_mu as $plugin => $plugin_data ) {
+	            $sys_info .= $plugin_data['Name'] . ': ' . $plugin_data['Version'] . "<br />";
 	        }
     	}
-    	$qmn_sys_info .= "<h4>Active</h4><br />";
+    	$sys_info .= "<h4>Active</h4><br />";
 	$plugins = get_plugins();
 	$active_plugins = get_option( 'active_plugins', array() );
 	foreach( $plugins as $plugin_path => $plugin ) {
 		if( !in_array( $plugin_path, $active_plugins ) )
 			continue;
-		$qmn_sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . "<br />";
+		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . "<br />";
 	}
-	$qmn_sys_info .= "<h4>Inactive</h4><br />";
+	$sys_info .= "<h4>Inactive</h4><br />";
 	foreach( $plugins as $plugin_path => $plugin ) {
 		if( in_array( $plugin_path, $active_plugins ) )
 			continue;
-		$qmn_sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . "<br />";
+		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . "<br />";
 	}
 
-	$qmn_sys_info .= "<h3>Server Information</h3><br />";
-	$qmn_sys_info .= "PHP : ".PHP_VERSION."<br />";
-	$qmn_sys_info .= "MySQL : ".$wpdb->db_version()."<br />";
-	$qmn_sys_info .= "Webserver : ".$_SERVER['SERVER_SOFTWARE']."<br />";
+	$sys_info .= "<h3>Server Information</h3><br />";
+	$sys_info .= "PHP : ".PHP_VERSION."<br />";
+	$sys_info .= "MySQL : ".$wpdb->db_version()."<br />";
+	$sys_info .= "Webserver : ".$_SERVER['SERVER_SOFTWARE']."<br />";
 
 	$mlw_stat_total_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes LIMIT 1" );
 	$mlw_stat_total_active_quiz = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_quizzes WHERE deleted=0 LIMIT 1" );
 	$mlw_stat_total_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions LIMIT 1" );
 	$mlw_stat_total_active_questions = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 LIMIT 1" );
-	$qmn_total_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results LIMIT 1" );
-	$qmn_total_active_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE deleted=0 LIMIT 1" );
+	$total_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results LIMIT 1" );
+	$total_active_results = $wpdb->get_var( "SELECT COUNT(*) FROM ".$wpdb->prefix."mlw_results WHERE deleted=0 LIMIT 1" );
 
-	$qmn_sys_info .= "<h3>QMN Information</h3><br />";
-	$qmn_sys_info .= "Initial Version : ".get_option('qmn_original_version')."<br />";
-	$qmn_sys_info .= "Current Version : ".$mlwQuizMasterNext->version."<br />";
-	$qmn_sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
-	$qmn_sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
-	$qmn_sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
-	$qmn_sys_info .= "Total Active Questions : ".$mlw_stat_total_active_questions."<br />";
-	$qmn_sys_info .= "Total Results : ".$qmn_total_results."<br />";
-	$qmn_sys_info .= "Total Active Results : ".$qmn_total_active_results."<br />";
+	$sys_info .= "<h3>QSM Information</h3><br />";
+	$sys_info .= "Initial Version : ".get_option('qmn_original_version')."<br />";
+	$sys_info .= "Current Version : ".$mlwQuizMasterNext->version."<br />";
+	$sys_info .= "Total Quizzes : ".$mlw_stat_total_quiz."<br />";
+	$sys_info .= "Total Active Quizzes : ".$mlw_stat_total_active_quiz."<br />";
+	$sys_info .= "Total Questions : ".$mlw_stat_total_questions."<br />";
+	$sys_info .= "Total Active Questions : ".$mlw_stat_total_active_questions."<br />";
+	$sys_info .= "Total Results : ".$total_results."<br />";
+	$sys_info .= "Total Active Results : ".$total_active_results."<br />";
 
-	$qmn_sys_info .= "<h3>QMN Recent Logs</h3><br />";
+	$sys_info .= "<h3>QSM Recent Logs</h3><br />";
 	$recent_errors = $mlwQuizMasterNext->log_manager->get_logs();
 	if ( $recent_errors ) {
 		foreach( $recent_errors as $error ) {
-			$qmn_sys_info .= "Log created at ". $error->post_date . " : " . $error->post_title . " - " . $error->post_content . "<br />";
+			$sys_info .= "Log created at ". $error->post_date . " : " . $error->post_title . " - " . $error->post_content . "<br />";
 		}
 	} else {
-		$qmn_sys_info .= "No recent logs<br />";
+		$sys_info .= "No recent logs<br />";
 	}
 
-	return $qmn_sys_info;
+	return $sys_info;
 }
 
 ?>
