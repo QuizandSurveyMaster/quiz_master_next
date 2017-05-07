@@ -74,8 +74,8 @@ function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {
 			$facebook_app_id = esc_js( $settings['facebook_app_id'] );
 		}
 
-		global $mlw_quizmaster;
-		$sharing = $mlw_quizmaster->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );
+		global $mlwQuizMasterNext;
+		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );
 
 		$sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id');\">Facebook</a>";
@@ -91,8 +91,8 @@ function qsm_variable_twitter_share( $content, $mlw_quiz_array ) {
 	while ( false !== strpos($content, '%TWITTER_SHARE%') ) {
 		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
 
-		global $mlw_quizmaster;
-		$sharing = $mlw_quizmaster->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '' );
+		global $mlwQuizMasterNext;
+		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '' );
 		$sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
 
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."');\">Twitter</a>";
