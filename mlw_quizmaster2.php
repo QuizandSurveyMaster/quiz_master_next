@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Quiz And Survey Master
 * Description: Easily and quickly add quizzes and surveys to your website.
-* Version: 5.0.2
+* Version: 5.0.3
 * Author: Frank Corso
 * Author URI: http://www.quizandsurveymaster.com/
 * Plugin URI: http://www.quizandsurveymaster.com/
@@ -10,7 +10,7 @@
 * Domain Path: /languages
 *
 * @author Frank Corso
-* @version 5.0.2
+* @version 5.0.3
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -30,7 +30,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '5.0.2';
+	public $version = '5.0.3';
 
 	/**
 	 * QSM Alert Manager Object
