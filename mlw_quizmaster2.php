@@ -25,7 +25,7 @@ define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 class MLWQuizMasterNext {
 
 	/**
-	 * QMN Version Number
+	 * QSM Version Number
 	 *
 	 * @var string
 	 * @since 4.0.0
@@ -33,7 +33,7 @@ class MLWQuizMasterNext {
 	public $version = '5.0.2';
 
 	/**
-	 * QMN Alert Manager Object
+	 * QSM Alert Manager Object
 	 *
 	 * @var object
 	 * @since 3.7.1
@@ -41,7 +41,7 @@ class MLWQuizMasterNext {
 	public $alertManager;
 
 	/**
-	 * QMN Plugin Helper Object
+	 * QSM Plugin Helper Object
 	 *
 	 * @var object
 	 * @since 4.0.0
@@ -49,7 +49,7 @@ class MLWQuizMasterNext {
 	public $pluginHelper;
 
 	/**
-	 * QMN Quiz Creator Object
+	 * QSM Quiz Creator Object
 	 *
 	 * @var object
 	 * @since 3.7.1
@@ -57,7 +57,7 @@ class MLWQuizMasterNext {
 	public $quizCreator;
 
 	/**
-	 * QMN Log Manager Object
+	 * QSM Log Manager Object
 	 *
 	 * @var object
 	 * @since 4.5.0
