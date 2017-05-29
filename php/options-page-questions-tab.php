@@ -91,18 +91,18 @@ function qsm_options_questions_tab_content() {
 		}
 
     // Retrieves question settings and sets required field
-		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $edit_question_id ) );
-		if ( is_serialized( $mlw_row_settings->question_settings ) && is_array( @unserialize( $mlw_row_settings->question_settings ) ) ) {
-			$mlw_settings = @unserialize( $mlw_row_settings->question_settings );
+		$row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $edit_question_id ) );
+		if ( is_serialized( $row_settings->question_settings ) && is_array( @unserialize( $row_settings->question_settings ) ) ) {
+			$question_settings = @unserialize( $row_settings->question_settings );
 		} else {
-			$mlw_settings = array();
-			$mlw_settings['required'] = intval( $_POST["required"] );
+			$question_settings = array();
+			$question_settings['required'] = intval( $_POST["required"] );
 		}
-		if ( ! isset( $mlw_settings['required'] ) ) {
-			$mlw_settings['required'] = intval( $_POST["required"] );
+		if ( ! isset( $question_settings['required'] ) ) {
+			$question_settings['required'] = intval( $_POST["required"] );
 		}
-		$mlw_settings['required'] = intval( $_POST["required"] );
-		$mlw_settings = serialize( $mlw_settings );
+		$question_settings['required'] = intval( $_POST["required"] );
+		$question_settings = serialize( $question_settings );
 
     // Cycles through answers
 		$i = 1;
@@ -142,7 +142,7 @@ function qsm_options_questions_tab_content() {
 				'hints' => $edit_hint,
 				'question_order' => $edit_question_order,
 				'question_type_new' => $edit_question_type,
-				'question_settings' => $mlw_settings,
+				'question_settings' => $question_settings,
 				'category' => $edit_category
 			),
 			array( 'question_id' => $edit_question_id ),
@@ -295,9 +295,9 @@ function qsm_options_questions_tab_content() {
 		}
 
     // Creates question settings array
-		$mlw_settings = array();
-		$mlw_settings['required'] = intval($_POST["required"]);
-		$mlw_settings = serialize($mlw_settings);
+		$question_settings = array();
+		$question_settings['required'] = intval($_POST["required"]);
+		$question_settings = serialize($question_settings);
 
     // Cycles through answers
 		$i = 1;
@@ -338,7 +338,7 @@ function qsm_options_questions_tab_content() {
   			'hints' => $hint,
   			'question_order' => $new_question_order,
   			'question_type_new' => $question_type,
-  			'question_settings' => $mlw_settings,
+  			'question_settings' => $question_settings,
   			'category' => $qmn_category,
   			'deleted' => 0
   		),
