@@ -7,11 +7,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return void
 * @since 4.4.0
 */
-function qmn_settings_questions_tab() {
+function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Questions", 'quiz-master-next' ), 'mlw_options_questions_tab_content' );
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Questions", 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
-add_action( "plugins_loaded", 'qmn_settings_questions_tab', 5 );
+add_action( "plugins_loaded", 'qsm_settings_questions_tab', 5 );
 
 
 /**
@@ -20,15 +20,13 @@ add_action( "plugins_loaded", 'qmn_settings_questions_tab', 5 );
 * @return void
 * @since 4.4.0
 */
-function mlw_options_questions_tab_content() {
+function qsm_options_questions_tab_content() {
 	?>
 
 	<script>
 		var answer_text = '<?php _e('Answer', 'quiz-master-next'); ?>';
 	</script>
 	<?php
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-sortable' );
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/qsm-admin-question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
 	wp_enqueue_style('qmn_admin_question_css', plugins_url( '../css/qsm-admin-question.css' , __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
@@ -72,8 +70,8 @@ function mlw_options_questions_tab_content() {
 		// Variables from edit question form
 		$edit_question_name = trim( preg_replace( '/\s+/',' ', htmlspecialchars( nl2br( wp_kses_post( stripslashes( $_POST["question_name"] ) ) ), ENT_QUOTES ) ) );
 		$edit_question_answer_info = htmlspecialchars( stripslashes( $_POST["correct_answer_info"] ), ENT_QUOTES );
-		$mlw_edit_question_id = intval( $_POST["question_id"] );
-		$mlw_edit_question_type = sanitize_text_field( $_POST["question_type"] );
+		$edit_question_id = intval( $_POST["question_id"] );
+		$edit_question_type = sanitize_text_field( $_POST["question_type"] );
 		$edit_comments = htmlspecialchars( $_POST["comments"], ENT_QUOTES );
 		$edit_hint = htmlspecialchars( stripslashes( $_POST["hint"] ), ENT_QUOTES );
 		$edit_question_order = intval( $_POST["new_question_order"] );
@@ -82,29 +80,29 @@ function mlw_options_questions_tab_content() {
     // Checks if a category was selected or entered
 		if ( isset( $_POST["new_category"] ) ) {
 
-			$qmn_edit_category = sanitize_text_field( $_POST["new_category"] );
+			$edit_category = sanitize_text_field( $_POST["new_category"] );
 
       // Checks if the new category radio was selected
-			if ( 'new_category' == $qmn_edit_category ) {
-				$qmn_edit_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
+			if ( 'new_category' == $edit_category ) {
+				$edit_category = sanitize_text_field( stripslashes( $_POST["new_new_category"] ) );
 			}
 		} else {
-			$qmn_edit_category = '';
+			$edit_category = '';
 		}
 
     // Retrieves question settings and sets required field
-		$mlw_row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $mlw_edit_question_id ) );
-		if ( is_serialized( $mlw_row_settings->question_settings ) && is_array( @unserialize( $mlw_row_settings->question_settings ) ) ) {
-			$mlw_settings = @unserialize( $mlw_row_settings->question_settings );
+		$row_settings = $wpdb->get_row( $wpdb->prepare( "SELECT question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $edit_question_id ) );
+		if ( is_serialized( $row_settings->question_settings ) && is_array( @unserialize( $row_settings->question_settings ) ) ) {
+			$question_settings = @unserialize( $row_settings->question_settings );
 		} else {
-			$mlw_settings = array();
-			$mlw_settings['required'] = intval( $_POST["required"] );
+			$question_settings = array();
+			$question_settings['required'] = intval( $_POST["required"] );
 		}
-		if ( ! isset( $mlw_settings['required'] ) ) {
-			$mlw_settings['required'] = intval( $_POST["required"] );
+		if ( ! isset( $question_settings['required'] ) ) {
+			$question_settings['required'] = intval( $_POST["required"] );
 		}
-		$mlw_settings['required'] = intval( $_POST["required"] );
-		$mlw_settings = serialize( $mlw_settings );
+		$question_settings['required'] = intval( $_POST["required"] );
+		$question_settings = serialize( $question_settings );
 
     // Cycles through answers
 		$i = 1;
@@ -143,11 +141,11 @@ function mlw_options_questions_tab_content() {
 				'comments' => $edit_comments,
 				'hints' => $edit_hint,
 				'question_order' => $edit_question_order,
-				'question_type_new' => $mlw_edit_question_type,
-				'question_settings' => $mlw_settings,
-				'category' => $qmn_edit_category
+				'question_type_new' => $edit_question_type,
+				'question_settings' => $question_settings,
+				'category' => $edit_category
 			),
-			array( 'question_id' => $mlw_edit_question_id ),
+			array( 'question_id' => $edit_question_id ),
 			array(
 				'%s',
 				'%s',
@@ -297,9 +295,9 @@ function mlw_options_questions_tab_content() {
 		}
 
     // Creates question settings array
-		$mlw_settings = array();
-		$mlw_settings['required'] = intval($_POST["required"]);
-		$mlw_settings = serialize($mlw_settings);
+		$question_settings = array();
+		$question_settings['required'] = intval($_POST["required"]);
+		$question_settings = serialize($question_settings);
 
     // Cycles through answers
 		$i = 1;
@@ -340,7 +338,7 @@ function mlw_options_questions_tab_content() {
   			'hints' => $hint,
   			'question_order' => $new_question_order,
   			'question_type_new' => $question_type,
-  			'question_settings' => $mlw_settings,
+  			'question_settings' => $question_settings,
   			'category' => $qmn_category,
   			'deleted' => 0
   		),

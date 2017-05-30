@@ -4,7 +4,7 @@ Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 5.0.2
+Stable tag: 5.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,8 +108,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.0.3 (May 29, 2017) =
+	* Minor code changes
+
 = 5.0.2 (May 7, 2017) =
-  * Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/fpcorso/quiz_master_next/issues/541))
+	* Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/fpcorso/quiz_master_next/issues/541))
 
 = 5.0.1 (March 27, 2017) =
   * Closed Bug: The setting to hide contact fields from logged-in users is hiding fields from visitors too ([Issue #535](https://github.com/fpcorso/quiz_master_next/issues/535))
