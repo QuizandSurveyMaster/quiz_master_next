@@ -44,7 +44,7 @@ class QMN_Log_Manager
   public function register_post_type() {
 		/* logs post type */
 		$log_args = array(
-			'labels'          => array( 'name' => 'QMN Logs' ),
+			'labels'          => array( 'name' => 'QSM Logs' ),
 			'public'          => defined( 'WP_DEBUG' ) && WP_DEBUG,
 			'query_var'       => false,
 			'rewrite'         => false,
