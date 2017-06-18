@@ -39,16 +39,10 @@ function mlw_qmn_show_adverts() {
 			{
 				display: block;
 				text-align:center;
-				letter-spacing: 1px;
-				margin: auto;
-				text-shadow: 0 1px 1px #000000;
 				background: #0d97d8;
-				border: 5px solid #106daa;
-				-moz-border-radius: 20px;
-				-webkit-border-radius: 20px;
-				-khtml-border-radius: 20px;
-				border-radius: 20px;
-				color: #FFFFFF;
+				border: 5px solid #1DD969;
+				color: #000;
+				font-weight: bold;
 			}
 			div.help_decide a
 			{
