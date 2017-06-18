@@ -1,3 +1,7 @@
+= 4.7.10 (January 1, 2017) =
+  * Closed Bug: Edit question not working when visual editor is off - Issue #497
+  * Closed Bug: Localization incomplete on Global Settings page - Issue #478
+
 = 4.7.9 (December 13, 2016) =
   * Closed Security: CSRF vulnerability on Questions tab
 

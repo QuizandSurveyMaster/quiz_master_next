@@ -2,9 +2,9 @@
 Contributors: fpcorso
 Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
-Requires at least: 4.6
-Tested up to: 4.7
-Stable tag: 5.0.3
+Requires at least: 4.7
+Tested up to: 4.8
+Stable tag: 5.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,36 +108,36 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.0.2 (June 19, 2017) =
+* Closed Bug: Required fields are not checked 2nd time user takes quiz when timer is turned on ([Issue #528](https://github.com/fpcorso/quiz_master_next/issues/528))
+* Closed Enhancement: Ensure compatibility with WordPress 4.8 ([Issue #554](https://github.com/fpcorso/quiz_master_next/issues/554))
+
 = 5.0.3 (May 29, 2017) =
-	* Minor code changes
+* Minor code changes
 
 = 5.0.2 (May 7, 2017) =
-	* Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/fpcorso/quiz_master_next/issues/541))
+* Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/fpcorso/quiz_master_next/issues/541))
 
 = 5.0.1 (March 27, 2017) =
-  * Closed Bug: The setting to hide contact fields from logged-in users is hiding fields from visitors too ([Issue #535](https://github.com/fpcorso/quiz_master_next/issues/535))
+* Closed Bug: The setting to hide contact fields from logged-in users is hiding fields from visitors too ([Issue #535](https://github.com/fpcorso/quiz_master_next/issues/535))
 
 = 5.0.0 (March 25, 2017) =
-  * Closed Bug: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/fpcorso/quiz_master_next/issues/527))
-  * Closed Enhancement: Change Shortcode To QSM ([Issue #515](https://github.com/fpcorso/quiz_master_next/issues/515))
-  * Closed Enhancement: Search function for quizzes/surveys ([Issue #492](https://github.com/fpcorso/quiz_master_next/issues/492))
-  * Closed Enhancement: Create new fields class to handle creation/post data of settings fields ([Issue #450](https://github.com/fpcorso/quiz_master_next/issues/450))
-  * Closed Enhancement: Create new settings class to handle the settings data ([Issue #449](https://github.com/fpcorso/quiz_master_next/issues/449))
-  * Closed Enhancement: Rewrite options system to allow for extendibility ([Issue #448](https://github.com/fpcorso/quiz_master_next/issues/448))
-  * Closed Enhancement: Enable tabs for the admin results page ([Issue #408](https://github.com/fpcorso/quiz_master_next/issues/408))
-  * Closed Enhancement: Create onboarding process ([Issue #397](https://github.com/fpcorso/quiz_master_next/issues/397))
-  * Closed Enhancement: Create new contact tab to allow form creation ([Issue #394](https://github.com/fpcorso/quiz_master_next/issues/394))
-  * Closed Enhancement: Move Certificate to free addon ([Issue #381](https://github.com/fpcorso/quiz_master_next/issues/381))
-  * Closed Enhancement: Ability to add check box for privacy statement with the contact fields ([Issue #372](https://github.com/fpcorso/quiz_master_next/issues/372))
-  * Closed Enhancement: Customize the "Please complete all required fields!" text ([Issue #371](https://github.com/fpcorso/quiz_master_next/issues/371))
-  * Closed Enhancement: Allow admins to customize the validation error messages ([Issue #346](https://github.com/fpcorso/quiz_master_next/issues/346))
-  * Closed Enhancement: Hint field cannot be customized ([Issue #262](https://github.com/fpcorso/quiz_master_next/issues/262))
-  * Closed Enhancement: Add custom fields to the contact form ([Issue #211](https://github.com/fpcorso/quiz_master_next/issues/211))
-  * Closed Enhancement: Scrollable List of Quizzes ([Issue #46](https://github.com/fpcorso/quiz_master_next/issues/46))
-
-= 4.7.10 (January 1, 2017) =
-  * Closed Bug: Edit question not working when visual editor is off - Issue #497
-  * Closed Bug: Localization incomplete on Global Settings page - Issue #478
+* Closed Bug: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/fpcorso/quiz_master_next/issues/527))
+* Closed Enhancement: Change Shortcode To QSM ([Issue #515](https://github.com/fpcorso/quiz_master_next/issues/515))
+* Closed Enhancement: Search function for quizzes/surveys ([Issue #492](https://github.com/fpcorso/quiz_master_next/issues/492))
+* Closed Enhancement: Create new fields class to handle creation/post data of settings fields ([Issue #450](https://github.com/fpcorso/quiz_master_next/issues/450))
+* Closed Enhancement: Create new settings class to handle the settings data ([Issue #449](https://github.com/fpcorso/quiz_master_next/issues/449))
+* Closed Enhancement: Rewrite options system to allow for extendibility ([Issue #448](https://github.com/fpcorso/quiz_master_next/issues/448))
+* Closed Enhancement: Enable tabs for the admin results page ([Issue #408](https://github.com/fpcorso/quiz_master_next/issues/408))
+* Closed Enhancement: Create onboarding process ([Issue #397](https://github.com/fpcorso/quiz_master_next/issues/397))
+* Closed Enhancement: Create new contact tab to allow form creation ([Issue #394](https://github.com/fpcorso/quiz_master_next/issues/394))
+* Closed Enhancement: Move Certificate to free addon ([Issue #381](https://github.com/fpcorso/quiz_master_next/issues/381))
+* Closed Enhancement: Ability to add check box for privacy statement with the contact fields ([Issue #372](https://github.com/fpcorso/quiz_master_next/issues/372))
+* Closed Enhancement: Customize the "Please complete all required fields!" text ([Issue #371](https://github.com/fpcorso/quiz_master_next/issues/371))
+* Closed Enhancement: Allow admins to customize the validation error messages ([Issue #346](https://github.com/fpcorso/quiz_master_next/issues/346))
+* Closed Enhancement: Hint field cannot be customized ([Issue #262](https://github.com/fpcorso/quiz_master_next/issues/262))
+* Closed Enhancement: Add custom fields to the contact form ([Issue #211](https://github.com/fpcorso/quiz_master_next/issues/211))
+* Closed Enhancement: Scrollable List of Quizzes ([Issue #46](https://github.com/fpcorso/quiz_master_next/issues/46))
 
  ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
