@@ -51,8 +51,8 @@ function qmnValidation( element, quiz_form_id ) {
 					result = false;
 				}
 			}
-			if ( window.localStorage.getItem( 'mlw_time_quiz' + quiz_id ) === null ||
-			window.localStorage.getItem( 'mlw_time_quiz'+quiz_id ) > 0.08 ) {
+			if ( ( qmn_quiz_data[quiz_id].hasOwnProperty('pagination') && qmn_quiz_data[quiz_id].first_page ) || ( window.localStorage.getItem( 'mlw_time_quiz' + quiz_id ) === null ||
+			window.localStorage.getItem( 'mlw_time_quiz'+quiz_id ) > 0.08 ) ) {
 
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredNumber' ) > -1 && this.value === "" && +this.value != NaN ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
