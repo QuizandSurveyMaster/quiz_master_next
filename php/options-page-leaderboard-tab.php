@@ -24,6 +24,9 @@ function qsm_options_leaderboard_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	?>
+	<div style="background:#fff;border-left: 4px solid #fff;padding: 1px 12px;margin: 5px 0 15px;border-left-color: #dc3232;">
+		<p style="font-weight:bold;">Warning: This feature is being removed from the core version. Please use our new free Leaderboards addon. You can read more about this change in <a href="http://bit.ly/2sPOKxw" target="_blank">our post about the leaderboards being moved.</a></p>
+	</div>
 	<h3><?php _e( 'Template Variables', 'quiz-master-next' ); ?></h3>
 	<table class="form-table">
 		<tr>
