@@ -107,7 +107,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.0.2 (June 19, 2017) =
+= 5.0.5 (July 8, 2017) =
+* Closed Enhancement: Add notice for leaderboard removal - ([Issue #562](https://github.com/fpcorso/quiz_master_next/issues/562))
+* Closed Bug: Scheduled timeframe options are not working - ([Issue #558](https://github.com/fpcorso/quiz_master_next/issues/558))
+
+= 5.0.4 (June 19, 2017) =
 * Closed Bug: Required fields are not checked 2nd time user takes quiz when timer is turned on ([Issue #528](https://github.com/fpcorso/quiz_master_next/issues/528))
 * Closed Enhancement: Ensure compatibility with WordPress 4.8 ([Issue #554](https://github.com/fpcorso/quiz_master_next/issues/554))
 
