@@ -22,7 +22,7 @@ function qmn_generate_stats_page()
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'quiz-taken-stats';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">
@@ -65,7 +65,7 @@ function qmn_generate_stats_page()
 function qmn_stats_overview_tab()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_stats_settings_tab(__("Quiz/Survey Submissions", 'quiz-master-next'), "qmn_stats_overview_content");
+	$mlwQuizMasterNext->pluginHelper->register_stats_settings_tab(__("Quiz And Survey Submissions", 'quiz-master-next'), "qmn_stats_overview_content");
 }
 add_action("plugins_loaded", 'qmn_stats_overview_tab');
 
