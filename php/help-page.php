@@ -150,7 +150,7 @@ function qsm_support_meta_box_content() {
 			<input type='text' name='username' value='' /><br />
 			<label>Email (Required):</label><br />
 			<input type='text' name='email' value='' /><br />
-			<label>URL To Quiz (Not Required):</label><br />
+			<label>URL To Quiz Or Survey (Not Required):</label><br />
 			<input type='text' name='quiz_url' value='' /><br />
 			<label>Message (Required):</label><br />
 			<textarea name="message"></textarea><br />

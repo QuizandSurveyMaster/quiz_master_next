@@ -1,11 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
-Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 5.0.4
-License: GPLv2 or later
+Stable tag: 5.0.5
+License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Easily and quickly add unlimited quizzes and surveys to your website.
@@ -108,7 +107,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.0.2 (June 19, 2017) =
+= 5.0.5 (July 8, 2017) =
+* Closed Enhancement: Add notice for leaderboard removal - ([Issue #562](https://github.com/fpcorso/quiz_master_next/issues/562))
+* Closed Bug: Scheduled timeframe options are not working - ([Issue #558](https://github.com/fpcorso/quiz_master_next/issues/558))
+
+= 5.0.4 (June 19, 2017) =
 * Closed Bug: Required fields are not checked 2nd time user takes quiz when timer is turned on ([Issue #528](https://github.com/fpcorso/quiz_master_next/issues/528))
 * Closed Enhancement: Ensure compatibility with WordPress 4.8 ([Issue #554](https://github.com/fpcorso/quiz_master_next/issues/554))
 
