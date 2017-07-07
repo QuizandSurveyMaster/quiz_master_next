@@ -1168,7 +1168,7 @@ function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 		$end = strtotime( $options->scheduled_time_end ) + 86399;
 
 		// Checks if the current timestamp is outside of scheduled timeframe
-		if ( time() < $start || $time() > $end ) {
+		if ( time() < $start || time() > $end ) {
 			$qmn_allowed_visit = false;
 			$message = wpautop( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ) );
 			$message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message, $variable_data );
