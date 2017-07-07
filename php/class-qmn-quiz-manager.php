@@ -1158,25 +1158,21 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
 	return $display;
 }
 
-add_filter('qmn_begin_shortcode', 'qmn_scheduled_timeframe_check', 10, 3);
-function qmn_scheduled_timeframe_check($display, $qmn_quiz_options, $qmn_array_for_variables)
-{
+add_filter( 'qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 10, 3 );
+function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 	global $qmn_allowed_visit;
-	if (is_serialized($qmn_quiz_options->scheduled_timeframe) && is_array(@unserialize($qmn_quiz_options->scheduled_timeframe)))
-	{
-		$qmn_scheduled_timeframe = @unserialize($qmn_quiz_options->scheduled_timeframe);
-		if ($qmn_scheduled_timeframe["start"] != '' && $qmn_scheduled_timeframe["end"] != '')
-		{
-			$qmn_scheduled_start = strtotime($qmn_scheduled_timeframe["start"]);
-			$qmn_scheduled_end = strtotime($qmn_scheduled_timeframe["end"]) + 86399; ///Added seconds to bring time to 11:59:59 PM of given day
-			if (time() < $qmn_scheduled_start | time() > $qmn_scheduled_end)
-			{
-				$qmn_allowed_visit = false;
-				$mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->scheduled_timeframe_text, ENT_QUOTES));
-				$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
-				$mlw_message = str_replace( "\n" , "<br>", $mlw_message);
-				$display .= $mlw_message;
-			}
+
+	// Checks if the start and end dates have data
+	if ( ! empty( $options->scheduled_time_start ) && ! empty( $options->scheduled_time_end ) ) {
+		$start = strtotime( $options->scheduled_time_start );
+		$end = strtotime( $options->scheduled_time_end ) + 86399;
+
+		// Checks if the current timestamp is outside of scheduled timeframe
+		if ( time() < $start || $time() > $end ) {
+			$qmn_allowed_visit = false;
+			$message = wpautop( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ) );
+			$message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message, $variable_data );
+			$display .= str_replace( "\n" , "<br>", $message );
 		}
 	}
 	return $display;
