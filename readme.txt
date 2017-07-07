@@ -1,11 +1,10 @@
 ﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
-Donate link: http://mylocalwebstop.com/downloads/donation-service-payment/
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 5.0.4
-License: GPLv2 or later
+Stable tag: 5.0.5
+License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Easily and quickly add unlimited quizzes and surveys to your website.
