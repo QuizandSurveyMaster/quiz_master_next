@@ -3,7 +3,7 @@ Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 5.0.5
+Stable tag: 5.0.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.0.6 (August 1, 2017) =
+* Closed Bug: HTML Entities causing incorrect answers and missing user answer - ([Issue #565](https://github.com/fpcorso/quiz_master_next/issues/565))
 
 = 5.0.5 (July 8, 2017) =
 * Closed Enhancement: Add notice for leaderboard removal - ([Issue #562](https://github.com/fpcorso/quiz_master_next/issues/562))
