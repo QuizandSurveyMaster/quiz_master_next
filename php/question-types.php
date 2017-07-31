@@ -68,7 +68,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+    $mlw_user_answer = stripslashes( $_POST["question".$id] );
   } else {
     $mlw_user_answer = " ";
   }
