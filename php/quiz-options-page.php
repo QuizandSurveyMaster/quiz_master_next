@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return void
 * @since 4.4.0
 */
-function mlw_generate_quiz_options() {
+function qsm_generate_quiz_options() {
 
 	// Check if current user can
 	if ( ! current_user_can('moderate_comments') ) {
@@ -23,13 +23,11 @@ function mlw_generate_quiz_options() {
 	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
 
 	// Prepare quiz
-	$quiz_id = intval($_GET["quiz_id"]);
+	$quiz_id = intval( $_GET["quiz_id"] );
 	if ( isset( $_GET["quiz_id"] ) ) {
-		$table_name = $wpdb->prefix . "mlw_quizzes";
-		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		$mlwQuizMasterNext->quiz_settings->prepare_quiz( $_GET["quiz_id"] );
 	}
-
 	?>
 
 	<script type="text/javascript"
@@ -47,64 +45,60 @@ function mlw_generate_quiz_options() {
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	?>
 	<style>
-		.mlw_tab_content
-		{
+		.mlw_tab_content {
 			padding: 20px 20px 20px 20px;
 			margin: 20px 20px 20px 20px;
 		}
 	</style>
 	<div class="wrap">
 	<div class='mlw_quiz_options'>
-	<h1><?php
-	/* translators: The %s corresponds to the name of the quiz */
-	echo sprintf(__('Quiz Settings For %s', 'quiz-master-next'), $mlw_quiz_options->quiz_name);
-	?></h1>
-	<?php
-	// Put all output from tab into ob_get_contents below.
-	ob_start();
+		<h1><?php echo $quiz_name; ?></h1>
+		<?php
+		// Put all output from tab into ob_get_contents below.
+		ob_start();
 
-	// If the quiz is set and not empty
-	if ( ! empty( $quiz_id ) ) {
-		?>
-		<h2 class="nav-tab-wrapper">
-			<?php
-			// Cycle through registered tabs to create navigation
-			foreach( $tab_array as $tab ) {
-				$active_class = '';
-				if ( $active_tab == $tab['slug'] ) {
-					$active_class = 'nav-tab-active';
-				}
-				echo "<a href=\"?page=mlw_quiz_options&quiz_id=$quiz_id&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
-			}
+		// If the quiz is set and not empty
+		if ( ! empty( $quiz_id ) ) {
 			?>
-		</h2>
-		<div class="mlw_tab_content">
-			<?php
-				// Cycle through tabs looking for current tab to create tab's content
+			<h2 class="nav-tab-wrapper">
+				<?php
+				// Cycle through registered tabs to create navigation
 				foreach( $tab_array as $tab ) {
+					$active_class = '';
 					if ( $active_tab == $tab['slug'] ) {
-						call_user_func( $tab['function'] );
+						$active_class = 'nav-tab-active';
 					}
+					echo "<a href=\"?page=mlw_quiz_options&quiz_id=$quiz_id&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
 				}
+				?>
+			</h2>
+			<div class="mlw_tab_content">
+				<?php
+					// Cycle through tabs looking for current tab to create tab's content
+					foreach( $tab_array as $tab ) {
+						if ( $active_tab == $tab['slug'] ) {
+							call_user_func( $tab['function'] );
+						}
+					}
+				?>
+			</div>
+			<?php
+		} else {
 			?>
-		</div>
-		<?php
-	} else {
-		?>
-		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-		<strong><?php _e('Error!', 'quiz-master-next'); ?></strong> <?php _e('Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next'); ?></p>
-		</div>
-		<?php
-	}
-	$mlw_output = ob_get_contents();
-	ob_end_clean();
+			<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+			<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+			<strong><?php _e('Error!', 'quiz-master-next'); ?></strong> <?php _e('Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next'); ?></p>
+			</div>
+			<?php
+		}
+		$mlw_output = ob_get_contents();
+		ob_end_clean();
 
-	// Shows alerts, ads, then tab content
-	$mlwQuizMasterNext->alertManager->showAlerts();
-	echo mlw_qmn_show_adverts();
-	echo $mlw_output;
-	?>
+		// Shows alerts, ads, then tab content
+		$mlwQuizMasterNext->alertManager->showAlerts();
+		echo mlw_qmn_show_adverts();
+		echo $mlw_output;
+		?>
 	</div>
 	</div>
 <?php
