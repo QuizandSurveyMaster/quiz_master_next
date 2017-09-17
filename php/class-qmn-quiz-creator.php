@@ -396,8 +396,8 @@ class QMNQuizCreator
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
 
-			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz has been created successfully. To begin editing your quiz, click the Edit link on the new quiz.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz Has Been Created: $quiz_name" );
+			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next'), 'success');
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
 			do_action('qmn_quiz_created', $new_quiz);
 		}
 		else
@@ -456,8 +456,8 @@ class QMNQuizCreator
 			  }
 			}
 			wp_reset_postdata();
-			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been deleted successfully.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Has Been Deleted: $quiz_name" );
+			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz or survey has been deleted successfully.', 'quiz-master-next'), 'success');
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name" );
 		}
 		else
 		{
@@ -490,8 +490,8 @@ class QMNQuizCreator
  			array( '%d' )
  		);
 		if ( false != $results ) {
-			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz name has been updated successfully.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Name Has Been Edited: $quiz_name" );
+			$mlwQuizMasterNext->alertManager->newAlert(__('The name of your quiz or survey has been updated successfully.', 'quiz-master-next'), 'success');
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
 		}
 		else
 		{
@@ -638,8 +638,8 @@ class QMNQuizCreator
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
-			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz has been duplicated successfully.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz Has Been Created: $quiz_name" );
+			$mlwQuizMasterNext->alertManager->newAlert(__('Your quiz or survey has been duplicated successfully.', 'quiz-master-next'), 'success');
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
 			do_action('qmn_quiz_duplicated', $quiz_id, $mlw_new_id);
 		}
 		else
