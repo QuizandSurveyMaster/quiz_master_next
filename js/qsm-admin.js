@@ -28,7 +28,7 @@ var QSMQuizzesSurveys;
             '<a class="qsm-action-link qsm-action-link-delete" href="#">Delete</a>' +
           '</div>' +
         '</td>' +
-        '<td><a href="' + quizData.link + '">View Quiz</a>' +
+        '<td><a href="' + quizData.link + '">View Quiz/Survey</a>' +
           '<div class="row-actions">' +
             '<a class="qsm-action-link" href="post.php?post=' + quizData.postID + '&action=edit">Edit Post Settings</a>' +
           '</div>' +

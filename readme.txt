@@ -1,9 +1,9 @@
-﻿=== Quiz And Survey Master (Formerly Quiz Master Next) ===
+=== Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 5.0.6
+Stable tag: 5.0.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,7 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 **Free Add-ons**
 
 * [Certificates](https://quizandsurveymaster.com/downloads/certificate/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=certificate)
+* [Leaderboards](https://quizandsurveymaster.com/downloads/leaderboards/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=leaderboads)
 
 **Premium Add-ons**
 
@@ -106,6 +107,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.0.7 (September 18, 2017) =
+* Closed Bug: Answers of "0" disappear when adding or editing questions - ([Issue #531](https://github.com/fpcorso/quiz_master_next/issues/531))
 
 = 5.0.6 (August 1, 2017) =
 * Closed Bug: HTML Entities causing incorrect answers and missing user answer - ([Issue #565](https://github.com/fpcorso/quiz_master_next/issues/565))
