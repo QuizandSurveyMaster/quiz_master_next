@@ -50,8 +50,8 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Load our quizzes
-	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0' ORDER BY quiz_id DESC" );
-
+	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+	
 	// Load quiz posts
 	$post_to_quiz_array = array();
 	$my_query = new WP_Query( array( 'post_type' => 'quiz', 'posts_per_page' => -1, 'post_status' => 'publish' ) );
