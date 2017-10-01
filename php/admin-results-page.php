@@ -364,7 +364,9 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone ."</span></td>";
-				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->time_taken ."</span></td>";
+				$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
+				$time = date( "H:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
+				$quotes_list .= "<td><span style='font-size:16px;'>$date $time</span></td>";
 				$quotes_list .= "</tr>";
 			}
 			$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";

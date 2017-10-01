@@ -148,7 +148,7 @@ class QMNPluginHelper {
    */
   public function generate_settings_section( $section = 'quiz_options' ) {
 		global $mlwQuizMasterNext;
-    QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
+		QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
   }
 
 	/**
