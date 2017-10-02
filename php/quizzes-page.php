@@ -50,8 +50,8 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Load our quizzes
-	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name, quiz_views, quiz_taken, last_activity FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0' ORDER BY quiz_id DESC" );
-
+	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+	
 	// Load quiz posts
 	$post_to_quiz_array = array();
 	$my_query = new WP_Query( array( 'post_type' => 'quiz', 'posts_per_page' => -1, 'post_status' => 'publish' ) );
@@ -85,6 +85,8 @@ function qsm_generate_quizzes_surveys_page() {
 			);
 		}
 
+		$activity_date = date_i18n( get_option( 'date_format' ), strtotime( $quiz->last_activity ) );
+		$activity_time = date( "h:i:s A", strtotime( $quiz->last_activity ) );
 		$quiz_json_array[] = array(
 			'id' => $quiz->quiz_id,
 			'name' => esc_html( $quiz->quiz_name ),
@@ -92,7 +94,7 @@ function qsm_generate_quizzes_surveys_page() {
 			'postID' => $post_to_quiz_array[ $quiz->quiz_id ]['id'],
 			'views' => $quiz->quiz_views,
 			'taken' => $quiz->quiz_taken,
-			'lastActivity' => $quiz->last_activity
+			'lastActivity' => $activity_date . ' ' . $activity_time
 		);
 	}
 	$total_count = count( $quiz_json_array );
@@ -120,7 +122,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Leaderboard Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
@@ -134,7 +136,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Leaderboard Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>

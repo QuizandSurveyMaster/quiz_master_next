@@ -564,7 +564,7 @@ class QMNQuizManager {
 		$mlw_qmn_timer = isset($_POST["timer"]) ? intval( $_POST["timer"] ) : 0;
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
-		$qmn_array_for_variables['time_taken'] = date("h:i:s A m/d/Y");
+		$qmn_array_for_variables['time_taken'] = date("h:i:s A m/d/Y", current_time( 'timestamp' ) );
 		$qmn_array_for_variables['contact'] = $contact_responses;
 
 		if (!isset($_POST["mlw_code_captcha"]) || (isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"]))
@@ -1168,7 +1168,7 @@ function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 		$end = strtotime( $options->scheduled_time_end ) + 86399;
 
 		// Checks if the current timestamp is outside of scheduled timeframe
-		if ( time() < $start || time() > $end ) {
+		if ( current_time( 'timestamp' ) < $start || current_time( 'timestamp' ) > $end ) {
 			$qmn_allowed_visit = false;
 			$message = wpautop( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ) );
 			$message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message, $variable_data );

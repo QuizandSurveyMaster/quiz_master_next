@@ -48,8 +48,8 @@ class Mlw_Qmn_Leaderboard_Widget extends WP_Widget {
     // widget display
     function widget($args, $instance) {
         extract( $args );
-   		// these are the widget options
-   		$title = apply_filters('widget_title', $instance['title']);
+   		// Filter to alter leadboard widget title
+   		$title = apply_filters('qsm_leaderboard_widget_title', $instance['title']);
    		$quiz_id = $instance['quiz_id'];
     	echo $before_widget;
    		// Display the widget

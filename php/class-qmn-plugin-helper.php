@@ -89,6 +89,53 @@ class QMNPluginHelper {
 	}
 
 	/**
+	 * Retrieves all quizzes.
+	 *
+	 * @param bool $include_deleted If set to true, returned array will include all deleted quizzes
+	 * @param string $order_by The column the quizzes should be ordered by
+	 * @param string $order whether the $order_by should be ordered as ascending or decending. Can be "ASC" or "DESC"
+	 * @return array All of the quizzes as a numerical array of objects
+	 */
+	public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC' ) {
+		global $wpdb;
+
+		// Set order direction
+		$order_direction = 'DESC';
+		if ( 'ASC' == $order ) {
+			$order_direction = 'ASC';
+		}
+
+		// Set field to sort by
+		switch ( $order_by ) {
+			case 'last_activity':
+				$order_field = 'last_activity';
+				break;
+
+			case 'quiz_views':
+				$order_field = 'quiz_views';
+				break;
+
+			case 'quiz_taken':
+				$order_field = 'quiz_taken';
+				break;
+			
+			default:
+				$order_field = 'quiz_id';
+				break;
+		}
+
+		// Should we include deleted?
+		$delete = "WHERE deleted='0'";
+		if ( $include_deleted ) {
+			$delete = '';
+		}
+
+		// Get quizzes and return them
+		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete ORDER BY $order_field $order_direction" );
+		return $quizzes;
+	}
+
+	/**
 	 * Registers a quiz setting
 	 *
 	 * @since 5.0.0
@@ -148,7 +195,7 @@ class QMNPluginHelper {
    */
   public function generate_settings_section( $section = 'quiz_options' ) {
 		global $mlwQuizMasterNext;
-    QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
+		QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
   }
 
 	/**

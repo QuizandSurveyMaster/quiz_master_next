@@ -398,6 +398,8 @@ class QMNQuizCreator
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
+
+			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action('qmn_quiz_created', $new_quiz);
 		}
 		else
@@ -464,6 +466,8 @@ class QMNQuizCreator
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0002'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0002", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
+
+		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action('qmn_quiz_deleted', $quiz_id);
 	 }
 

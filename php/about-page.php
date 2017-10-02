@@ -11,8 +11,8 @@ function mlw_generate_about_page() {
 
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.0.0' );
-	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ), '5.0.0' );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.1.0' );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ), '5.1.0' );
 	?>
 	<style>
 		div.qsm_icon_wrap {
@@ -33,50 +33,28 @@ function mlw_generate_about_page() {
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 5.0!</h2>
-				<p class="feature-text">There are many changes in version 5.0. From a contact fields system to new developer functions, there are a lot to see.</p>
+				<h2 class="feature-headline">Welcome to QSM 5.1!</h2>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">New Contact Fields System</h2>
-				<p class="feature-text">The biggest change is our new contact fields. Instead of having to edit some of the options on one tab, the text on another tab, and final settings on another tab, all of the contact field options are on the new "Contact" tab.</p>
-				<p class="feature-text">Even better, you can now create new contact fields for anything you need! Need an "Age" field or an "Attendee ID" field? Now you can!</p>
-				<p class="feature-text">You can now choose from three different contact field types: Small Open Answer, Email, or Checkbox.</p>
+				<h2 class="feature-headline">New Shortcode For Quiz/Survey Link</h2>
+				<p class="feature-text">There has always been a shortcode for displaying your quizzes and surveys. However, adding a link directly to the quiz or survey has been difficult.</p>
+				<p class="feature-text">Before, if you place a direct link and the permalink changed, your link would break.</p>
+				<p class="feature-text">Now, you can use the new "qsm_link" shortcode for creating links. The shortcode has been added to the "Quizzes/Surveys" page so it can easily be copied to be pasted anywhere on your site!</p>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">More Text Is Editable</h2>
-				<p class="feature-text">You can now edit the text for the "Hint" as well as all 4 of the error messages that are used when validating a user's responses. You can edit these on the "Text" tab.</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">Scrollable And Searchable Quizzes/Surveys</h2>
-				<p class="feature-text">For the users who have many quizzes and surveys on their site, it has been difficult and frustrating to find a particular quiz/survey to edit it on the Quizzes page. Now, the quizzes/surveys can be searched using the new searchbox in the top-right! Also, there are no more pages of quizzes/surveys to look through as the quizzes/surveys load as you scroll down making editing much quicker and more efficient.</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">Introduction Of Onboarding Process</h2>
-				<p class="feature-text">New users of this plugin will now see a getting started video and documentation when first accessing the Quizzes/Surveys page.</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">Certificate Is Now An Addon</h2>
-				<p class="feature-text">As we stated 8 months ago, the certificate feature is no longer built into the plugin and is available as a free addon.</p>
+				<h2 class="feature-headline">Dates Are Now Localized</h2>
+				<p class="feature-text">You may have noticed that the dates in your results as well as variables such as %DATE_TAKEN% and %CURRENT_DATE% never followed the format you set your WordPress to.</p>
+				<p class="feature-text">With this update, all dates will follow the format set on the "General" page of the "Settings" menu in your WordPress dashboard.</p>
 			</div>
 			<hr />
 			<div class="feature">
-				<h2 class="feature-headline">For Developers: New Settings System</h2>
-				<p class="feature-text">The settings system has been completely rewritten and is now stored as serialized arrays that can be extended instead of hardcoded as columns in the database. You can now "register" settings with defaults and assign which tab they belong to. Documentation coming soon.</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">For Developers: New Results Page Tabs</h2>
-				<p class="feature-text">The "Results" page in the admin can now be extended with tabs. A great location for adding features that affect or analyze the results.</p>
+				<h2 class="feature-headline">For Developers: New All Quizzes Function</h2>
+				<p class="feature-text">There is a new function "get_quizzes" in the plugin helper API that returns all quizzes. With the functions parameters, you can get the quizzes ordered by a certain field and include deleted quizzes if needed.</p>
 			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 39 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 38 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 37 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 34 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 33 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 26 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 19 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 25 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>
