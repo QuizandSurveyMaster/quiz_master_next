@@ -122,7 +122,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Leaderboard Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
@@ -136,7 +136,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Leaderboard Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>

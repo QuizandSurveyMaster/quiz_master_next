@@ -34,7 +34,7 @@ var QSMQuizzesSurveys;
           '</div>' +
         '</td>' +
         '<td>[qsm quiz=' + quizData.id + ']</td>' +
-        '<td>[mlw_quizmaster_leaderboard mlw_quiz=' + quizData.id + ']</td>' +
+        '<td>[qsm_link id=' + quizData.id + ']Click here[/qsm_link]</td>' +
         '<td>' + quizData.views + '</td>' +
         '<td>' + quizData.taken + '</td>' +
         '<td>' + quizData.lastActivity + '</td>' +
