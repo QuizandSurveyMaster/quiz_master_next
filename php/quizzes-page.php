@@ -86,7 +86,7 @@ function qsm_generate_quizzes_surveys_page() {
 		}
 
 		$activity_date = date_i18n( get_option( 'date_format' ), strtotime( $quiz->last_activity ) );
-		$activity_time = date( "H:i:s A", strtotime( $quiz->last_activity ) );
+		$activity_time = date( "h:i:s A", strtotime( $quiz->last_activity ) );
 		$quiz_json_array[] = array(
 			'id' => $quiz->quiz_id,
 			'name' => esc_html( $quiz->quiz_name ),
