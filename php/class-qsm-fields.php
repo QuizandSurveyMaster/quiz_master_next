@@ -19,6 +19,7 @@ class QSM_Fields {
   public static function generate_section( $fields, $section ) {
 
     global $mlwQuizMasterNext;
+    global $wpdb;
 
     // If nonce is correct, save settings
     if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
