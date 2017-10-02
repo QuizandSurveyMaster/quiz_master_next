@@ -916,15 +916,17 @@ function qmn_fill_blank_review($id, $question, $answers)
 		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $mlw_user_answer = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_user_answer ) ) );
   } else {
     $mlw_user_answer = " ";
   }
   $return_array['user_text'] = $mlw_user_answer;
   foreach($answers as $answer)
   {
-    $return_array['correct_text'] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
-    if (strtoupper($return_array['user_text']) == strtoupper($return_array['correct_text']))
+    $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+    $return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_correct_text ) ) );
+    if (mb_strtoupper($return_array['user_text']) == mb_strtoupper($return_array['correct_text']))
     {
       $return_array['correct'] = "correct";
       $return_array['points'] = $answer[1];
