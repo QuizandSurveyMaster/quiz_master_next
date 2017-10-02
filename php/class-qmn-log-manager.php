@@ -30,10 +30,10 @@ class QMN_Log_Manager
    * @since 4.5.0
    */
   private function log_types() {
-    $terms = array(
-			'error', 'event'
-		);
-		return apply_filters( 'qmn_log_types', $terms );
+	$terms = array( 'error', 'event' );
+
+	// Filters the taxomony for the QSM logs
+	return apply_filters( 'qmn_log_types', $terms );
   }
 
   /**
@@ -52,6 +52,8 @@ class QMN_Log_Manager
 			'supports'        => array( 'title', 'editor' ),
 			'can_export'      => false
 		);
+
+		// Registers QSM logs post type with filtered $args
 		register_post_type( 'qmn_log', apply_filters( 'qmn_log_post_type_args', $log_args ) );
 	}
 
@@ -118,7 +120,10 @@ class QMN_Log_Manager
 			'log_type'     => false
 		);
 		$args = wp_parse_args( $log_data, $defaults );
-		do_action( 'wp_pre_insert_log' );
+
+		// Hook called before a QSM log is inserted
+		do_action( 'wp_pre_insert_qmn_log' );
+
 		// store the log entry
 		$log_id = wp_insert_post( $args );
 		// set the log type, if any
@@ -131,6 +136,8 @@ class QMN_Log_Manager
 				update_post_meta( $log_id, '_qmn_log_' . sanitize_key( $key ), $meta );
 			}
 		}
+
+		// Hook called after a QSM log is inserted
 		do_action( 'wp_post_insert_qmn_log', $log_id );
 		return $log_id;
 	}
