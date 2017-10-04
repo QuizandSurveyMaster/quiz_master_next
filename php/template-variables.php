@@ -53,13 +53,13 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question_
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes',10,2);
-add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_date',10,2);
-add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_date_taken',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
-add_filter('mlw_qmn_template_variable_quiz_page', 'qsm_variable_date',10,2);
+add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user',10,2);
 
 /**
@@ -254,7 +254,7 @@ function mlw_qmn_variable_timer_minutes($content, $mlw_quiz_array)
  * @param array $results The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-function qsm_variable_date( $content, $results ) {
+function mlw_qmn_variable_date( $content, $results ) {
 	$date = date_i18n( get_option( 'date_format' ), time() );
 	$content = str_replace( "%CURRENT_DATE%" , $date, $content);
 	return $content;
@@ -267,7 +267,7 @@ function qsm_variable_date( $content, $results ) {
  * @param array $results The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-function qsm_variable_date_taken( $content, $results ) {
+function mlw_qmn_variable_date_taken( $content, $results ) {
 	$date = date_i18n( get_option( 'date_format' ), strtotime( $results["time_taken"] ) );
 	$content = str_replace( "%DATE_TAKEN%" , $date, $content);
 	return $content;

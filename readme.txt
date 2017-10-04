@@ -3,7 +3,7 @@ Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.7
 Tested up to: 4.8
-Stable tag: 5.1.0
+Stable tag: 5.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.1.1 (October 4, 2017) =
+* Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/fpcorso/quiz_master_next/issues/578))
+
 = 5.1.0 (October 2, 2017) =
 * Closed Enhancement: Add all active quizzes function to API - ([Issue #552](https://github.com/fpcorso/quiz_master_next/issues/552))
 * Closed User Request: Shortcode or variable for dynamic link to specific quiz/survey - ([Issue #524](https://github.com/fpcorso/quiz_master_next/issues/524))
@@ -115,7 +118,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Closed User Request: Allow users to change the date to European Date DD.MM.YYYY - ([Issue #439](https://github.com/fpcorso/quiz_master_next/issues/439))
 * Closed User Request: More Space in the Correct Answer Info textbox - ([Issue #417](https://github.com/fpcorso/quiz_master_next/issues/417))
 
-= ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md)) =
+([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
