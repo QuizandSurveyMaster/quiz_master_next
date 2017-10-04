@@ -1,3 +1,6 @@
+= 5.1.1 (October 4, 2017) =
+* Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/fpcorso/quiz_master_next/issues/578))
+
 = 5.1.0 (October 2, 2017) =
 * Closed Enhancement: Add all active quizzes function to API - ([Issue #552](https://github.com/fpcorso/quiz_master_next/issues/552))
 * Closed User Request: Shortcode or variable for dynamic link to specific quiz/survey - ([Issue #524](https://github.com/fpcorso/quiz_master_next/issues/524))
