@@ -4,10 +4,9 @@
 * Description: Easily and quickly add quizzes and surveys to your website.
 * Version: 5.1.2
 * Author: Frank Corso
-* Author URI: http://www.quizandsurveymaster.com/
-* Plugin URI: http://www.quizandsurveymaster.com/
+* Author URI: https://www.quizandsurveymaster.com/
+* Plugin URI: https://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
-* Domain Path: /languages
 *
 * @author Frank Corso
 * @version 5.1.2
@@ -175,7 +174,6 @@ class MLWQuizMasterNext {
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'widgets_init', create_function( '', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");' ) );
 		add_shortcode( 'mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode' );
-		add_action( 'plugins_loaded',  array( $this, 'setup_translations' ) );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 	}
 
@@ -286,16 +284,6 @@ class MLWQuizMasterNext {
 		remove_submenu_page( 'index.php', 'qsm_about' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_result_details' );
-	}
-
-	/**
-	  * Loads the plugin language files
-	  *
-	  * @since 3.6.1
-	  * @return void
-	  */
-	public function setup_translations() {
-		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 }
 
