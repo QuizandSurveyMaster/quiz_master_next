@@ -148,11 +148,11 @@ function qsm_generate_quizzes_surveys_page() {
 			if ( 'true' == get_option( 'mlw_advert_shows' ) ) {
 				?>
 				<div class="qsm-news-ads">
-					<h3 class="qsm-news-ads-title">QSM News</h3>
+					<h3 class="qsm-news-ads-title"><?php _e( 'QSM News', 'quiz-master-next' ); ?></h3>
 					<div class="qsm-news-ads-widget">
-						<h3>Subscribe to our newsletter!</h3>
-						<p>Join our mailing list and receive a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
-						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary">Subscribe Now</a>
+						<h3><?php _e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
+						<p><?php _e( 'Join our mailing list and receive a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
+						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e( 'Subscribe Now', 'quiz-master-next' ); ?></a>
 					</div>
 					<?php
 					$qmn_rss = array();

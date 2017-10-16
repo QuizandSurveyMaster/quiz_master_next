@@ -232,7 +232,7 @@ class MLWQuizMasterNext {
 			'labels' => $quiz_labels,
 			'publicly_queryable' => true,
 			'exclude_from_search' => $exclude_search,
-			'label'  => 'Quizzes',
+			'label'  => __( 'Quizzes', 'quiz-master-next' ),
 			'rewrite' => array( 'slug' => $cpt_slug ),
 			'has_archive'        => $has_archive,
 			'supports'           => array( 'title', 'author', 'comments' )
@@ -263,8 +263,8 @@ class MLWQuizMasterNext {
 			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page' );
 
 			add_dashboard_page(
-				__( 'QSM About', 'quiz' ),
-				__( 'QSM About', 'quiz' ),
+				__( 'QSM About', 'quiz-master-next' ),
+				__( 'QSM About', 'quiz-master-next' ),
 				'manage_options',
 				'qsm_about',
 				'mlw_generate_about_page'
