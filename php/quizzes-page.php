@@ -19,7 +19,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Enqueue our styles and scripts
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ) );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'underscore', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qsm_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 	// Create new quiz
@@ -106,9 +106,9 @@ function qsm_generate_quizzes_surveys_page() {
 		<div class="qsm-quizzes-page-content">
 			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 				<p class="search-box">
-					<label class="screen-reader-text" for="quiz_search">Search:</label>
+					<label class="screen-reader-text" for="quiz_search"><?php _e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
-					<a href="#" class="button">Search</a>
+					<a href="#" class="button"><?php _e( 'Search', 'quiz-master-next' ); ?></a>
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
@@ -148,11 +148,11 @@ function qsm_generate_quizzes_surveys_page() {
 			if ( 'true' == get_option( 'mlw_advert_shows' ) ) {
 				?>
 				<div class="qsm-news-ads">
-					<h3 class="qsm-news-ads-title">QSM News</h3>
+					<h3 class="qsm-news-ads-title"><?php _e( 'QSM News', 'quiz-master-next' ); ?></h3>
 					<div class="qsm-news-ads-widget">
-						<h3>Subscribe to our newsletter!</h3>
-						<p>Join our mailing list and receive a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
-						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary">Subscribe Now</a>
+						<h3><?php _e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
+						<p><?php _e( 'Join our mailing list and receive a discount on your next purchase! Learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
+						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e( 'Subscribe Now', 'quiz-master-next' ); ?></a>
 					</div>
 					<?php
 					$qmn_rss = array();
@@ -177,7 +177,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<div>
 								<?php echo $item['description']; ?>
 							</div>
-							<a target='_blank' href="<?php echo $item['link']; ?>" class="button-primary">Read More</a>
+							<a target='_blank' href="<?php echo $item['link']; ?>" class="button-primary"><?php _e( 'Read More' ); ?></a>
 						</div>
 						<?php
 					}
@@ -189,7 +189,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--New Quiz Dialog-->
-		<div id="new_quiz_dialog" title="Create New Quiz Or Survey" style="display:none;">
+		<div id="new_quiz_dialog" title="<?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action="" method="post" class="qsm-dialog-form">
 				<?php wp_nonce_field( 'qsm_new_quiz','qsm_new_quiz_nonce' ); ?>
 				<h3><?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h3>
@@ -199,7 +199,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Edit Quiz Name Dialog-->
-		<div id="edit_dialog" title="Edit Name" style="display:none;">
+		<div id="edit_dialog" title="<?php _e( 'Edit Name', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action='' method='post' class="qsm-dialog-form">
 				<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
 				<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
@@ -210,7 +210,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Duplicate Quiz Dialog-->
-		<div id="duplicate_dialog" title="Duplicate Quiz Or Survey" style="display:none;">
+		<div id="duplicate_dialog" title="<?php _e( 'Duplicate', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action='' method='post' class="qsm-dialog-form">
 				<label for="duplicate_questions"><?php _e( 'Duplicate questions also?', 'quiz-master-next' ); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
 				<br />
@@ -222,15 +222,47 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Delete Quiz Dialog-->
-		<div id="delete_dialog" title="Delete Quiz Or Survey?" style="display:none;">
-		<form action='' method='post' class="qsm-dialog-form">
-			<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
-			<?php wp_nonce_field( 'qsm_delete_quiz','qsm_delete_quiz_nonce' ); ?>
-			<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
-			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Delete', 'quiz-master-next' ); ?>' /></p>
-		</form>
+		<div id="delete_dialog" title="<?php _e( 'Delete', 'quiz-master-next' ); ?>" style="display:none;">
+			<form action='' method='post' class="qsm-dialog-form">
+				<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
+				<?php wp_nonce_field( 'qsm_delete_quiz','qsm_delete_quiz_nonce' ); ?>
+				<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
+				<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Delete', 'quiz-master-next' ); ?>' /></p>
+			</form>
 		</div>
+
+		<!-- Templates -->
+		<script type="text/template" id="no-quiz-info-tmpl">
+			<h2><?php _e( 'You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next' ); ?></h2>
+        	<h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/documentation/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
+        	<iframe width="560" height="315" src="https://www.youtube.com/embed/n8xfNk490Wg" frameborder="0" allowfullscreen></iframe>
+		</script>
+
+		<script type="text/template" id="quiz-row-tmpl">
+			<tr class="qsm-quiz-row" data-id="<%= id %>">
+				<td class="post-title column-title">
+					<span class="qsm-quiz-name"><%= name %></span> <a class="qsm-edit-name" href="#"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></a>
+					<div class="row-actions">
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<%= id %>"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id=<%= id %>"><?php _e( 'Results', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
+				<td>
+					<a href="<%= link %>"><?php _e( 'View Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<div class="row-actions">
+						<a class="qsm-action-link" href="post.php?post=<%= postID %>&action=edit"><?php _e( 'Edit Post Settings', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
+				<td>[qsm quiz=<%= id %>]</td>
+				<td>[qsm_link id=<%= id %>]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</td>
+				<td><%= views %></td>
+				<td><%= taken %></td>
+				<td><%= lastActivity %></td>
+        	</tr>
+		</script>
 	</div>
 <?php
 }

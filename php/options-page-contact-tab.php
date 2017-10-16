@@ -48,11 +48,11 @@ function qsm_options_contact_tab_content() {
    */
 
   ?>
-  <h2>Contact</h2>
+  <h2><?php _e( 'Contact', 'quiz-master-next' ); ?></h2>
   <div class="contact-message"></div>
-  <a class="save-contact button-primary">Save Contact Form</a>
+  <a class="save-contact button-primary"><?php _e( 'Save Contact Fields', 'quiz-master-next' ); ?></a>
   <div class="contact-form"></div>
-   <a class="add-contact-field button-primary">Add New Field</a>
+   <a class="add-contact-field button-primary"><?php _e( 'Add New Field', 'quiz-master-next' ); ?></a>
   <?php
 }
 

@@ -1,4 +1,8 @@
-//Global Variables
+/**************************
+ * Quiz And Survey Master 
+ *************************/
+
+// Global Variables
 var qmn_timer_activated = false;
 var qsmTitleText = window.document.title;
 

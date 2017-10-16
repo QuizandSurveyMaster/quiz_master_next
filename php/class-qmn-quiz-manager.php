@@ -122,6 +122,7 @@ class QMNQuizManager {
 		</script>";
 		$qmn_json_data = array(
 			'quiz_id' => $qmn_array_for_variables['quiz_id'],
+			'quiz_name' => $qmn_array_for_variables['quiz_name'],
 			'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
 			'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct
 		);

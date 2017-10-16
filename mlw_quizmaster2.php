@@ -2,15 +2,14 @@
 /**
 * Plugin Name: Quiz And Survey Master
 * Description: Easily and quickly add quizzes and surveys to your website.
-* Version: 5.1.1
+* Version: 5.1.2
 * Author: Frank Corso
-* Author URI: http://www.quizandsurveymaster.com/
-* Plugin URI: http://www.quizandsurveymaster.com/
+* Author URI: https://www.quizandsurveymaster.com/
+* Plugin URI: https://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
-* Domain Path: /languages
 *
 * @author Frank Corso
-* @version 5.1.1
+* @version 5.1.2
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -30,7 +29,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '5.1.1';
+	public $version = '5.1.2';
 
 	/**
 	 * QSM Alert Manager Object
@@ -175,7 +174,6 @@ class MLWQuizMasterNext {
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'widgets_init', create_function( '', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");' ) );
 		add_shortcode( 'mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode' );
-		add_action( 'plugins_loaded',  array( $this, 'setup_translations' ) );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 	}
 
@@ -234,7 +232,7 @@ class MLWQuizMasterNext {
 			'labels' => $quiz_labels,
 			'publicly_queryable' => true,
 			'exclude_from_search' => $exclude_search,
-			'label'  => 'Quizzes',
+			'label'  => __( 'Quizzes', 'quiz-master-next' ),
 			'rewrite' => array( 'slug' => $cpt_slug ),
 			'has_archive'        => $has_archive,
 			'supports'           => array( 'title', 'author', 'comments' )
@@ -265,8 +263,8 @@ class MLWQuizMasterNext {
 			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page' );
 
 			add_dashboard_page(
-				__( 'QSM About', 'quiz' ),
-				__( 'QSM About', 'quiz' ),
+				__( 'QSM About', 'quiz-master-next' ),
+				__( 'QSM About', 'quiz-master-next' ),
 				'manage_options',
 				'qsm_about',
 				'mlw_generate_about_page'
@@ -286,16 +284,6 @@ class MLWQuizMasterNext {
 		remove_submenu_page( 'index.php', 'qsm_about' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_result_details' );
-	}
-
-	/**
-	  * Loads the plugin language files
-	  *
-	  * @since 3.6.1
-	  * @return void
-	  */
-	public function setup_translations() {
-		load_plugin_textdomain( 'quiz-master-next', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 }
 

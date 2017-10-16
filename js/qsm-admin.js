@@ -12,34 +12,23 @@ var QSMQuizzesSurveys;
         });
         $( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
       } else {
+        var template = _.template( $( '#no-quiz-info-tmpl' ).html() );
         $( '.qsm-quizzes-page-content' ).hide();
-        $( '#new_quiz_button' ).parent().after( '<h2>You do not have any quizzes or surveys. Click "Add New" to get started.</h2> ' +
-          '<h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/documentation/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>' +
-          '<iframe width="560" height="315" src="https://www.youtube.com/embed/n8xfNk490Wg" frameborder="0" allowfullscreen></iframe>' );
+        $( '#new_quiz_button' ).parent().after( template() );
       }
     },
     addQuizRow: function( quizData ) {
-      var row = $( '<tr class="qsm-quiz-row" data-id="' + quizData.id + '">' +
-        '<td class="post-title column-title"><span class="qsm-quiz-name">' + quizData.name + '</span> <a class="qsm-edit-name" href="#">Edit Name</a>' +
-          '<div class="row-actions">' +
-            '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=' + quizData.id + '">Edit</a> | ' +
-            '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id' + quizData.id + '">Results</a> | ' +
-            '<a class="qsm-action-link qsm-action-link-duplicate" href="#">Duplicate</a> | ' +
-            '<a class="qsm-action-link qsm-action-link-delete" href="#">Delete</a>' +
-          '</div>' +
-        '</td>' +
-        '<td><a href="' + quizData.link + '">View Quiz/Survey</a>' +
-          '<div class="row-actions">' +
-            '<a class="qsm-action-link" href="post.php?post=' + quizData.postID + '&action=edit">Edit Post Settings</a>' +
-          '</div>' +
-        '</td>' +
-        '<td>[qsm quiz=' + quizData.id + ']</td>' +
-        '<td>[qsm_link id=' + quizData.id + ']Click here[/qsm_link]</td>' +
-        '<td>' + quizData.views + '</td>' +
-        '<td>' + quizData.taken + '</td>' +
-        '<td>' + quizData.lastActivity + '</td>' +
-        '</tr>'
-      );
+      var template = _.template( $( '#quiz-row-tmpl' ).html() );
+      var values = {
+        'id': quizData.id,
+        'name': quizData.name,
+        'link': quizData.link,
+        'postID': quizData.postID,
+        'views': quizData.views,
+        'taken': quizData.taken,
+        'lastActivity': quizData.lastActivity
+      };
+      var row = $( template( values ) );
       $( '#the-list' ).append( row );
     },
     searchQuizzes: function( query ) {
