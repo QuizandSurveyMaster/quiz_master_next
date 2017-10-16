@@ -233,7 +233,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!-- Templates -->
-		<div type="text/template" id="no-quiz-info-tmpl">
+		<script type="text/template" id="no-quiz-info-tmpl">
 			<h2><?php _e( 'You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next' ); ?></h2>
         	<h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/documentation/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
         	<iframe width="560" height="315" src="https://www.youtube.com/embed/n8xfNk490Wg" frameborder="0" allowfullscreen></iframe>
@@ -245,7 +245,7 @@ function qsm_generate_quizzes_surveys_page() {
 					<span class="qsm-quiz-name"><%= name %></span> <a class="qsm-edit-name" href="#"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></a>
 					<div class="row-actions">
 						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<%= id %>"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> | 
-						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id<%= id %>"><?php _e( 'Results', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id=<%= id %>"><?php _e( 'Results', 'quiz-master-next' ); ?></a> | 
 						<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
 						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a>
 					</div>
