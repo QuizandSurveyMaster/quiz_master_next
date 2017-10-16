@@ -106,9 +106,9 @@ function qsm_generate_quizzes_surveys_page() {
 		<div class="qsm-quizzes-page-content">
 			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 				<p class="search-box">
-					<label class="screen-reader-text" for="quiz_search">Search:</label>
+					<label class="screen-reader-text" for="quiz_search"><?php _e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
-					<a href="#" class="button">Search</a>
+					<a href="#" class="button"><?php _e( 'Search', 'quiz-master-next' ); ?></a>
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
@@ -177,7 +177,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<div>
 								<?php echo $item['description']; ?>
 							</div>
-							<a target='_blank' href="<?php echo $item['link']; ?>" class="button-primary">Read More</a>
+							<a target='_blank' href="<?php echo $item['link']; ?>" class="button-primary"><?php _e( 'Read More' ); ?></a>
 						</div>
 						<?php
 					}
@@ -189,7 +189,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--New Quiz Dialog-->
-		<div id="new_quiz_dialog" title="Create New Quiz Or Survey" style="display:none;">
+		<div id="new_quiz_dialog" title="<?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action="" method="post" class="qsm-dialog-form">
 				<?php wp_nonce_field( 'qsm_new_quiz','qsm_new_quiz_nonce' ); ?>
 				<h3><?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h3>
@@ -199,7 +199,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Edit Quiz Name Dialog-->
-		<div id="edit_dialog" title="Edit Name" style="display:none;">
+		<div id="edit_dialog" title="<?php _e( 'Edit Name', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action='' method='post' class="qsm-dialog-form">
 				<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
 				<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
@@ -210,7 +210,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Duplicate Quiz Dialog-->
-		<div id="duplicate_dialog" title="Duplicate Quiz Or Survey" style="display:none;">
+		<div id="duplicate_dialog" title="<?php _e( 'Duplicate', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action='' method='post' class="qsm-dialog-form">
 				<label for="duplicate_questions"><?php _e( 'Duplicate questions also?', 'quiz-master-next' ); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
 				<br />
@@ -222,7 +222,7 @@ function qsm_generate_quizzes_surveys_page() {
 		</div>
 
 		<!--Delete Quiz Dialog-->
-		<div id="delete_dialog" title="Delete Quiz Or Survey?" style="display:none;">
+		<div id="delete_dialog" title="<?php _e( 'Delete', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action='' method='post' class="qsm-dialog-form">
 				<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
 				<?php wp_nonce_field( 'qsm_delete_quiz','qsm_delete_quiz_nonce' ); ?>

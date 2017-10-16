@@ -1,3 +1,6 @@
+= 5.1.2 (October 17, 2017) =
+* Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/fpcorso/quiz_master_next/issues/580))
+
 = 5.1.1 (October 4, 2017) =
 * Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/fpcorso/quiz_master_next/issues/578))
 

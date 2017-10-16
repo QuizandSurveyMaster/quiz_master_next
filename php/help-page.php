@@ -144,7 +144,7 @@ function qsm_support_meta_box_content() {
 	<div class='quiz_email_support'>
 		<form action="" method='post' name='emailForm' onsubmit='return mlw_validateForm()'>
 			<input type='hidden' name='support_email' value='confirmation' />
-			<p>We would love to hear from you. Fill out the form below and we will contact you shortly.</p>
+			<p><?php _e( 'We would love to hear from you. Fill out the form below and we will contact you shortly.', 'quiz-master-next' ); ?></p>
 			<p name='mlw_support_message' id='mlw_support_message'><?php echo $quiz_master_email_message; ?></p>
 			<label>Name (Required):</label><br />
 			<input type='text' name='username' value='' /><br />
