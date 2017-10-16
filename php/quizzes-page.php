@@ -19,7 +19,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Enqueue our styles and scripts
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ) );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js' , __FILE__ ), array( 'underscore', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qsm_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 	// Create new quiz
@@ -223,14 +223,46 @@ function qsm_generate_quizzes_surveys_page() {
 
 		<!--Delete Quiz Dialog-->
 		<div id="delete_dialog" title="Delete Quiz Or Survey?" style="display:none;">
-		<form action='' method='post' class="qsm-dialog-form">
-			<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
-			<?php wp_nonce_field( 'qsm_delete_quiz','qsm_delete_quiz_nonce' ); ?>
-			<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
-			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Delete', 'quiz-master-next' ); ?>' /></p>
-		</form>
+			<form action='' method='post' class="qsm-dialog-form">
+				<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
+				<?php wp_nonce_field( 'qsm_delete_quiz','qsm_delete_quiz_nonce' ); ?>
+				<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
+				<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Delete', 'quiz-master-next' ); ?>' /></p>
+			</form>
 		</div>
+
+		<!-- Templates -->
+		<div type="text/template" id="no-quiz-info-tmpl">
+			<h2><?php _e( 'You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next' ); ?></h2>
+        	<h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/documentation/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
+        	<iframe width="560" height="315" src="https://www.youtube.com/embed/n8xfNk490Wg" frameborder="0" allowfullscreen></iframe>
+		</script>
+
+		<script type="text/template" id="quiz-row-tmpl">
+			<tr class="qsm-quiz-row" data-id="<%= id %>">
+				<td class="post-title column-title">
+					<span class="qsm-quiz-name"><%= name %></span> <a class="qsm-edit-name" href="#"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></a>
+					<div class="row-actions">
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<%= id %>"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id<%= id %>"><?php _e( 'Results', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
+						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
+				<td>
+					<a href="<%= link %>"><?php _e( 'View Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<div class="row-actions">
+						<a class="qsm-action-link" href="post.php?post=<%= postID %>&action=edit"><?php _e( 'Edit Post Settings', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
+				<td>[qsm quiz=<%= id %>]</td>
+				<td>[qsm_link id=<%= id %>]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</td>
+				<td><%= views %></td>
+				<td><%= taken %></td>
+				<td><%= lastActivity %></td>
+        	</tr>
+		</script>
 	</div>
 <?php
 }
