@@ -29,7 +29,7 @@ function qsm_options_questions_tab_content() {
 	<?php
 	wp_enqueue_script('qmn_admin_question_js', plugins_url( '../js/qsm-admin-question.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
 	wp_enqueue_style('qmn_admin_question_css', plugins_url( '../css/qsm-admin-question.css' , __FILE__ ) );
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
 	global $wpdb;
 	global $mlwQuizMasterNext;

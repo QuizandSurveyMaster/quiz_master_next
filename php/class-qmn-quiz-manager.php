@@ -278,7 +278,7 @@ class QMNQuizManager {
 
 		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
-		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
