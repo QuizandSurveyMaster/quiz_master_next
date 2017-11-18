@@ -28,12 +28,7 @@ function qsm_generate_quiz_options() {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		$mlwQuizMasterNext->quiz_settings->prepare_quiz( $_GET["quiz_id"] );
 	}
-	?>
 
-	<script type="text/javascript"
-	  src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-	</script>
-	<?php
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
@@ -43,6 +38,7 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 	?>
 	<style>
 		.mlw_tab_content {
