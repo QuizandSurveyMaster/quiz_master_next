@@ -108,6 +108,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.1.3 (November 18, 2017) =
+* Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
+* Closed Bug: Fatal error: Call to a member function register_question_type - ([Issue #509](https://github.com/fpcorso/quiz_master_next/issues/509))
+
 = 5.1.2 (October 17, 2017) =
 * Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/fpcorso/quiz_master_next/issues/580))
 
