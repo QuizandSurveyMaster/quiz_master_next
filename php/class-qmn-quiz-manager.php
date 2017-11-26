@@ -37,22 +37,24 @@ class QMNQuizManager {
 	}
 
 	/**
-	  * Generates Content For Quiz Shortcode
-	  *
-	  * Generates the content for the [mlw_quizmaster] shortcode
-	  *
-	  * @since 4.0.0
-		* @uses QMNQuizManager:load_questions() Loads questions
-		* @uses QMNQuizManager:create_answer_array() Prepares answers
-		* @uses QMNQuizManager:display_quiz() Generates and prepares quiz page
-		* @uses QMNQuizManager:display_results() Generates and prepares results page
-	  * @return string The content for the shortcode
-	  */
+	 * Generates Content For Quiz Shortcode
+	 *
+	 * Generates the content for the [mlw_quizmaster] shortcode
+	 *
+	 * @since 4.0.0
+	 * @uses QMNQuizManager:load_questions() Loads questions
+	 * @uses QMNQuizManager:create_answer_array() Prepares answers
+	 * @uses QMNQuizManager:display_quiz() Generates and prepares quiz page
+	 * @uses QMNQuizManager:display_results() Generates and prepares results page
+	 * @return string The content for the shortcode
+	 */
 	public function display_shortcode( $atts ) {
 		extract(shortcode_atts(array(
 			'quiz' => 0,
 			'question_amount' => 0
 		), $atts));
+
+		ob_start();
 
 		global $wpdb;
 		global $mlwQuizMasterNext;
@@ -67,16 +69,14 @@ class QMNQuizManager {
 		global $mlw_qmn_quiz;
 		$mlw_qmn_quiz = $quiz;
 
-		if (get_option('timezone_string') != '' && get_option('timezone_string') !== false)
-		{
-			date_default_timezone_set(get_option('timezone_string'));
+		if ( ! empty( get_option( 'timezone_string' ) ) ) {
+			date_default_timezone_set( get_option( 'timezone_string' ) );
 		}
 		$return_display = '';
 		$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
 		//If quiz options isn't found, stop function
-		if (is_null($qmn_quiz_options) || $qmn_quiz_options->quiz_name == '')
-		{
+		if ( is_null( $qmn_quiz_options ) || $qmn_quiz_options->quiz_name == '' ) {
 			return __("It appears that this quiz is not set up correctly", 'quiz-master-next');
 		}
 
@@ -153,6 +153,7 @@ class QMNQuizManager {
 			window.qmn_quiz_data["'.$qmn_json_data["quiz_id"].'"] = '.json_encode( $qmn_json_data ).'
 		</script>';
 
+		$return_display .= ob_get_clean();
 		$return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
 		return $return_display;
 	}
