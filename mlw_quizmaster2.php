@@ -2,14 +2,14 @@
 /**
 * Plugin Name: Quiz And Survey Master
 * Description: Easily and quickly add quizzes and surveys to your website.
-* Version: 5.1.3
+* Version: 5.1.4
 * Author: Frank Corso
 * Author URI: https://www.quizandsurveymaster.com/
 * Plugin URI: https://www.quizandsurveymaster.com/
 * Text Domain: quiz-master-next
 *
 * @author Frank Corso
-* @version 5.1.3
+* @version 5.1.4
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -29,7 +29,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '5.1.3';
+	public $version = '5.1.4';
 
 	/**
 	 * QSM Alert Manager Object
@@ -259,7 +259,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( __FILE__, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( __FILE__, __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools' );
 			add_submenu_page( __FILE__, __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
-			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), __( 'Addon Settings', 'quiz-master-next' ), 'manage_options', 'qmn_addons', 'qmn_addons_page' );
+			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), __( 'Addon Settings', 'quiz-master-next' ), 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
 			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page' );
 
 			add_dashboard_page(

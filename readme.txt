@@ -3,7 +3,7 @@ Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
 Requires at least: 4.8
 Tested up to: 4.9
-Stable tag: 5.1.3
+Stable tag: 5.1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,6 +107,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.1.4 (November 27, 2017) =
+*
 
 = 5.1.3 (November 18, 2017) =
 * Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
