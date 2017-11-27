@@ -69,7 +69,7 @@ class QMNQuizManager {
 		global $mlw_qmn_quiz;
 		$mlw_qmn_quiz = $quiz;
 
-		if ( ! empty( get_option( 'timezone_string' ) ) ) {
+		if ( ! get_option( 'timezone_string' ) ) {
 			date_default_timezone_set( get_option( 'timezone_string' ) );
 		}
 		$return_display = '';
