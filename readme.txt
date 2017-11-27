@@ -1,8 +1,9 @@
 === Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
-Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question, points
+Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question
 Requires at least: 4.8
 Tested up to: 4.9
+Requires PHP: 5.2
 Stable tag: 5.1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -66,6 +67,7 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 
 **Premium Add-ons**
 
+* [Google Analytics Tracking](http://bit.ly/2AAgABs)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
 * [Reporting & Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
@@ -109,7 +111,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 5.1.4 (November 27, 2017) =
-*
+* Closed Bug: Headers already sent message - ([Issue #596](https://github.com/fpcorso/quiz_master_next/issues/596))
+* Closed Bug: Styling for hints is missing causing them to be hard to read - ([Issue #587](https://github.com/fpcorso/quiz_master_next/issues/587))
 
 = 5.1.3 (November 18, 2017) =
 * Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
