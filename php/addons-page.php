@@ -1,18 +1,18 @@
 <?php
 
-/**
-*Creates the add on page that is displayed in the add on settings page
-*
-* @return void
-* @since 4.4.0
-*/
 if ( ! defined( 'ABSPATH' ) ) exit;
-function qmn_addons_page()
-{
-	if ( !current_user_can('moderate_comments') )
-	{
+
+/**
+ *Creates the add on page that is displayed in the add on settings page
+ *
+ * @return void
+ * @since 4.4.0
+ */
+function qmn_addons_page() {
+	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
+
 	global $mlwQuizMasterNext;
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'featured-addons';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
@@ -21,24 +21,20 @@ function qmn_addons_page()
 		<h2>Quiz And Survey Master Addon Settings</h2>
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach($tab_array as $tab)
-			{
+			foreach( $tab_array as $tab ) {
 				$active_class = '';
-				if ($active_tab == $tab['slug'])
-				{
+				if ( $active_tab == $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
-				echo "<a href=\"?page=qmn_addons&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+				echo "<a href=\"?page=qmn_addons&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
 			}
 			?>
 		</h2>
 		<div>
 		<?php
-			foreach($tab_array as $tab)
-			{
-				if ($active_tab == $tab['slug'])
-				{
-					call_user_func($tab['function']);
+			foreach( $tab_array as $tab ) {
+				if ( $active_tab == $tab['slug'] ) {
+					call_user_func( $tab['function'] );
 				}
 			}
 		?>
@@ -53,9 +49,8 @@ function qmn_addons_page()
 * @return void
 * @since 4.4.0
 */
-function qmn_generate_featured_addons()
-{
-	wp_enqueue_style( 'qmn_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
+function qsm_generate_featured_addons() {
+	wp_enqueue_style( 'qsm_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
 	?>
 	<p><?php _e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
 	<a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
@@ -113,10 +108,9 @@ function qmn_generate_featured_addons()
 * @return void
 * @since 4.4.0
 */
-function qmn_featured_addons_tab()
-{
+function qsm_featured_addons_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab(__("Featured Addons", 'quiz-master-next'), "qmn_generate_featured_addons");
+	$mlwQuizMasterNext->pluginHelper->register_addon_settings_tab( __( "Featured Addons", 'quiz-master-next' ), "qsm_generate_featured_addons" );
 }
-add_action("plugins_loaded", 'qmn_featured_addons_tab');
+add_action( "plugins_loaded", 'qsm_featured_addons_tab') ;
 ?>
