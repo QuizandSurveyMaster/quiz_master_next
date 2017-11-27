@@ -115,7 +115,7 @@ class QMNQuizManager {
 			$qmn_array_for_variables['user_ip'] = "Unknown";
 		}
 
-		echo "<script>
+		$return_display .= "<script>
 			if (window.qmn_quiz_data === undefined) {
 				window.qmn_quiz_data = new Object();
 			}
