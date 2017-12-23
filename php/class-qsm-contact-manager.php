@@ -8,11 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class QSM_Contact_Manager {
 
-  private static $fields = array();
+	private static $fields = array();
 
-  function __construct() {
-    # code...
-  }
+	function __construct() {
+		# code...
+	}
 
   /**
    * Displays the contact fields during form
@@ -22,7 +22,9 @@ class QSM_Contact_Manager {
    * @return string The HTML for the contact fields
    */
   public static function display_fields( $options ) {
-    $return = '';
+	
+	$return = '';
+	$fields_hidden = false;
 
     // Prepare name and email values from profile if logged in
     $name = '';
@@ -35,7 +37,8 @@ class QSM_Contact_Manager {
 
     // If logged in user should see fields
     if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
-      $return = '<div style="display:none;">';
+		$fields_hidden = true;
+		$return = '<div style="display:none;">';
     }
 
     // Loads fields
@@ -47,7 +50,7 @@ class QSM_Contact_Manager {
       // Check for name field
       if ( 2 != $options->user_name ) {
         $class = '';
-        if ( 1 == $options->user_name && 1 != $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_name && ! $fields_hidden ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ) . "</span>";
@@ -57,7 +60,7 @@ class QSM_Contact_Manager {
       // Check for comp field
       if ( 2 != $options->user_comp ) {
         $class = '';
-        if ( 1 == $options->user_comp && 1 != $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_comp && ! $fields_hidden ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ) . "</span>";
@@ -67,7 +70,7 @@ class QSM_Contact_Manager {
       // Check for email field
       if ( 2 != $options->user_email ) {
         $class = '';
-        if ( 1 == $options->user_email && 1 != $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_email && ! $fields_hidden ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ) . "</span>";
@@ -77,7 +80,7 @@ class QSM_Contact_Manager {
       // Check for phone field
       if ( 2 != $options->user_phone ) {
         $class = '';
-        if ( 1 == $options->user_phone && 1 != $options->loggedin_user_contact ) {
+        if ( 1 == $options->user_phone && ! $fields_hidden ) {
           $class = 'mlwRequiredText qsm_required_text';
         }
         $return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ) . "</span>";
@@ -102,21 +105,21 @@ class QSM_Contact_Manager {
         // Switch for contact field type
         switch ( $fields[ $i ]['type'] ) {
           case 'text':
-            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
+            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
               $class = 'mlwRequiredText qsm_required_text';
             }
             $return .= "<input type='text' class='$class' x-webkit-speech name='contact_field_$i' value='$value' />";
             break;
 
           case 'email':
-            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
+            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
               $class = 'mlwRequiredText qsm_required_text';
             }
             $return .= "<input type='text' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='$value' />";
             break;
 
           case 'checkbox':
-            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && 1 != $options->loggedin_user_contact ) {
+            if ( ( "true" === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
               $class = 'mlwRequiredAccept qsm_required_accept';
             }
             $return .= "<input type='checkbox' class='$class' x-webkit-speech name='contact_field_$i' value='checked' />";
