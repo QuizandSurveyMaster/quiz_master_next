@@ -1,34 +1,38 @@
 <?php
+/**
+ * File for the QMNQuizManager class
+ */
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* This class generates the contents of the quiz shortcode
-*
-* @since 4.0.0
-*/
+ * This class generates the contents of the quiz shortcode
+ *
+ * @since 4.0.0
+ */
 class QMNQuizManager {
 
 	/**
-	  * Main Construct Function
-	  *
-	  * Call functions within class
-	  *
-	  * @since 4.0.0
-	  * @uses QMNQuizManager::add_hooks() Adds actions to hooks and filters
-	  * @return void
-	  */
+	 * Main Construct Function
+	 *
+	 * Call functions within class
+	 *
+	 * @since 4.0.0
+	 * @uses QMNQuizManager::add_hooks() Adds actions to hooks and filters
+	 * @return void
+	 */
 	public function __construct() {
 		$this->add_hooks();
 	}
 
 	/**
-	  * Add Hooks
-	  *
-	  * Adds functions to relavent hooks and filters
-	  *
-	  * @since 4.0.0
-	  * @return void
-	  */
+	 * Add Hooks
+	 *
+	 * Adds functions to relavent hooks and filters
+	 *
+	 * @since 4.0.0
+	 * @return void
+	 */
 	public function add_hooks() {
 		add_shortcode( 'mlw_quizmaster', array( $this, 'display_shortcode' ) );
 		add_shortcode( 'qsm', array( $this, 'display_shortcode' ) );
@@ -42,6 +46,7 @@ class QMNQuizManager {
 	 * Generates the content for the [mlw_quizmaster] shortcode
 	 *
 	 * @since 4.0.0
+	 * @param array $atts The attributes passed from the shortcode
 	 * @uses QMNQuizManager:load_questions() Loads questions
 	 * @uses QMNQuizManager:create_answer_array() Prepares answers
 	 * @uses QMNQuizManager:display_quiz() Generates and prepares quiz page
@@ -65,44 +70,38 @@ class QMNQuizManager {
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$question_amount = intval( $question_amount );
 
-		//Legacy variable
+		// Legacy variable.
 		global $mlw_qmn_quiz;
 		$mlw_qmn_quiz = $quiz;
 
-		if ( ! get_option( 'timezone_string' ) ) {
-			date_default_timezone_set( get_option( 'timezone_string' ) );
-		}
 		$return_display = '';
 		$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
-		//If quiz options isn't found, stop function
-		if ( is_null( $qmn_quiz_options ) || $qmn_quiz_options->quiz_name == '' ) {
-			return __("It appears that this quiz is not set up correctly", 'quiz-master-next');
+		// If quiz options isn't found, stop function.
+		if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
+			return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
 		}
 
-		// Loads Quiz Template
-		if ($qmn_quiz_options->theme_selected == "default")
-		{
-			echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
-			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css' , __FILE__ ) );
-		}
-		else
-		{
-			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
+		// Loads Quiz Template.
+		if ( 'default' == $qmn_quiz_options->theme_selected ) {
+			$return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
+			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css', __FILE__ ) );
+		} else {
+			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
 			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
-			// If all fails, then load custom styling instead
+			// If all fails, then load custom styling instead.
 			if ( $registered_template && file_exists( $registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', $registered_template["path"], array(), $mlwQuizMasterNext->version );
-			} elseif ( $registered_template && file_exists( plugin_dir_path(__FILE__).'../templates/'.$registered_template["path"] ) ) {
+			} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ).'../templates/'.$registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/'.$registered_template["path"], __FILE__ ), array(), $mlwQuizMasterNext->version );
 			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri().'/templates/'.$registered_template["path"] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri().'/templates/'.$registered_template["path"], array(), $mlwQuizMasterNext->version );
 			} else {
-				echo "<style type='text/css'>".$qmn_quiz_options->quiz_stye."</style>";
+				echo "<style type='text/css'>" . $qmn_quiz_options->quiz_stye . "</style>";
 			}
 		}
 
-		//Start to prepare variable array for filters
+		// Start to prepare variable array for filters.
 		$qmn_array_for_variables = array(
 			'quiz_id' => $qmn_quiz_options->quiz_id,
 			'quiz_name' => $qmn_quiz_options->quiz_name,
@@ -564,7 +563,7 @@ class QMNQuizManager {
 		$mlw_qmn_timer = isset($_POST["timer"]) ? intval( $_POST["timer"] ) : 0;
 		$qmn_array_for_variables['user_id'] = get_current_user_id();
 		$qmn_array_for_variables['timer'] = $mlw_qmn_timer;
-		$qmn_array_for_variables['time_taken'] = date("h:i:s A m/d/Y", current_time( 'timestamp' ) );
+		$qmn_array_for_variables['time_taken'] = current_time( 'h:i:s A m/d/Y' );
 		$qmn_array_for_variables['contact'] = $contact_responses;
 
 		if ( !isset( $_POST["mlw_code_captcha"] ) || ( isset( $_POST["mlw_code_captcha"] ) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] ) ) {
