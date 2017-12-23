@@ -1,12 +1,16 @@
 <?php
+/**
+ * This file handles the "Questions" tab when editing a quiz/survey
+ */
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* Adds the settings for questions tab to the Quiz Settings page.
-*
-* @return void
-* @since 4.4.0
-*/
+ * Adds the settings for questions tab to the Quiz Settings page.
+ *
+ * @return void
+ * @since 4.4.0
+ */
 function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Questions", 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
@@ -15,30 +19,29 @@ add_action( "plugins_loaded", 'qsm_settings_questions_tab', 5 );
 
 
 /**
-* Adds the content for the options for questions tab.
-*
-* @return void
-* @since 4.4.0
-*/
+ * Adds the content for the options for questions tab.
+ *
+ * @return void
+ * @since 4.4.0
+ */
 function qsm_options_questions_tab_content() {
 
-	// Globals
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( $_GET["quiz_id"] );
 
 	$json_data = array(
-		'quizID' => $quiz_id,
-		'answerText' => __('Answer', 'quiz-master-next')
+		'quizID'     => $quiz_id,
+		'answerText' => __( 'Answer', 'quiz-master-next' )
 	);
 
-	// Scripts and styles
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../js/qsm-admin-question.js' , __FILE__ ), array( 'underscore', 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
+	// Scripts and styles.
+	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../js/qsm-admin-question.js', __FILE__ ), array( 'underscore', 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
-	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../css/qsm-admin-question.css' , __FILE__ ) );
+	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../css/qsm-admin-question.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 
-	// Load Question Types
+	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 	?>
 	<div class="questions-message"></div>
@@ -57,29 +60,29 @@ function qsm_options_questions_tab_content() {
 		<div class="notice notice-<%= type %>">
 			<p><%= msg %></p>
 		</div>
-  </script>
+	</script>
 
 	<!-- View for Page -->
-	<script type="text/template" id="page-tmpl">
+	<script type="text/template" id="tmpl-page">
 		<div class="page page-new">
 			<a href="#" class="new-question-button button">Create New Question</a>
 		</div>
 	</script>
 
 	<!-- View for Question -->
-	<script type="text/template" id="question-tmpl">
+	<script type="text/template" id="tmpl-question">
 		<div class="question question-new">
-			<%= type %> | <%= category %> | <%= question %>
+			{{type}} | {{category}} | {{question}}
 		</div>
 	</script>
 
 	<!-- View for editing question -->
-	<script type="text/template" id="edit-question-tmpl">
+	<script type="text/template" id="tmpl-edit-question">
 		<div class="edit-question">
 			<div class="row">
 				<select class="option_input" name="question_type" id="question_type">
 					<?php
-					foreach( $question_types as $type ) {
+					foreach ( $question_types as $type ) {
 						echo "<option value='{$type['slug']}'>{$type['name']}</option>";
 					}
 					?>
@@ -134,7 +137,7 @@ function qsm_options_questions_tab_content() {
 	</script>
 
 	<!-- View for single answer -->
-	<script type="text/template" id="single-answer-tmpl">
+	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers_single">
 			<div class="answer_number"><button class="button delete_answer">Delete</button> '+answer_text+'</div>'+
 			<div class="answer_text"><input type="text" class="answer_input" name="answer_'+total_answers+'" id="answer_'+total_answers+'" value="'+answer+'" /></div>'+
@@ -155,26 +158,26 @@ add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_que
  * @return void
  */
 function qsm_load_all_quiz_questions_ajax() {
-  global $wpdb;
-  global $mlwQuizMasterNext;
+	global $wpdb;
+	global $mlwQuizMasterNext;
 
-	// Loads questions
+	// Loads questions.
 	$questions = $wpdb->get_results( "SELECT {$wpdb->prefix}mlw_questions.question_id, {$wpdb->prefix}mlw_questions.question_name, {$wpdb->prefix}mlw_quizzes.quiz_name FROM {$wpdb->prefix}mlw_questions
 		LEFT JOIN {$wpdb->prefix}mlw_quizzes ON {$wpdb->prefix}mlw_questions.quiz_id={$wpdb->prefix}mlw_quizzes.quiz_id WHERE {$wpdb->prefix}mlw_questions.deleted='0' ORDER BY {$wpdb->prefix}mlw_questions.question_id DESC" );
 
-	// Creates question array
+	// Creates question array.
 	$question_json = array();
 	foreach ( $questions as $question ) {
 		$question_json[] = array(
-			'id' => $question->question_id,
+			'id'       => $question->question_id,
 			'question' => $question->question_name,
-			'quiz' => $question->quiz_name
+			'quiz'     => $question->quiz_name
 		);
 	}
 
-	// Echos JSON and dies
-  echo json_encode( $question_json );
-  die();
+	// Echos JSON and dies.
+	echo json_encode( $question_json );
+	die();
 }
 
 ?>

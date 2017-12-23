@@ -6,7 +6,7 @@ var QSMQuestion;
 (function ($) {
 	QSMQuestion = {
 		addNewPage: function() {
-			var template = _.template( jQuery( '#page-tmpl' ).html() );
+			var template = wp.template( 'page' );
 			$( '.questions' ).append( template() );
 			$( '.page' ).sortable({
 				opacity: 70,
@@ -17,14 +17,13 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		createNewQuestion: function( page ) {
-			var template = _.template( jQuery( '#question-tmpl' ).html() );
+			var template = wp.template( 'question' );
 			page.append( template( { type : 'Large Open Answer', category : 'Math', question: 'Some random question' } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		editQuestion: function( $question ) {
-			var template = _.template( jQuery( '#edit-question-tmpl' ).html() );
+			var template = wp.template( 'edit-question' );
 			$question.append( template() )
-
 		},
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
@@ -43,7 +42,7 @@ var QSMQuestion;
 			QSMQuestion.createNewQuestion( $( this ).parent() );
 		});
 
-			$( '.questions' ).on( 'click', '.question', function( event ) {
+		$( '.questions' ).on( 'click', '.question', function( event ) {
 			event.preventDefault();
 			QSMQuestion.editQuestion( $( this ) );
 		});
