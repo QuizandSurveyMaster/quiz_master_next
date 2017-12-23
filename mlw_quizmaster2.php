@@ -1,26 +1,27 @@
 <?php
 /**
-* Plugin Name: Quiz And Survey Master
-* Description: Easily and quickly add quizzes and surveys to your website.
-* Version: 5.1.5
-* Author: Frank Corso
-* Author URI: https://www.quizandsurveymaster.com/
-* Plugin URI: https://www.quizandsurveymaster.com/
-* Text Domain: quiz-master-next
-*
-* @author Frank Corso
-* @version 5.1.5
-*/
+ * Plugin Name: Quiz And Survey Master
+ * Description: Easily and quickly add quizzes and surveys to your website.
+ * Version: 5.1.6
+ * Author: Frank Corso
+ * Author URI: https://www.quizandsurveymaster.com/
+ * Plugin URI: https://www.quizandsurveymaster.com/
+ * Text Domain: quiz-master-next
+ *
+ * @author Frank Corso
+ * @version 5.1.6
+ */
+
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
-  * This class is the main class of the plugin
-  *
-  * When loaded, it loads the included plugin files and add functions to hooks or filters. The class also handles the admin menu
-  *
-  * @since 3.6.1
-  */
+ * This class is the main class of the plugin
+ *
+ * When loaded, it loads the included plugin files and add functions to hooks or filters. The class also handles the admin menu
+ *
+ * @since 3.6.1
+ */
 class MLWQuizMasterNext {
 
 	/**
@@ -29,7 +30,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '5.1.5';
+	public $version = '5.1.6';
 
 	/**
 	 * QSM Alert Manager Object

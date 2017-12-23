@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.1.5
+Stable tag: 5.1.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.1.6 (December 25, 2017) =
+* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/fpcorso/quiz_master_next/issues/606))
+* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/fpcorso/quiz_master_next/issues/603))
 
 = 5.1.5 (November 27, 2017) =
 * IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
