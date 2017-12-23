@@ -90,7 +90,7 @@ function mlw_generate_about_page() {
 					$contributor_list .= '</li>';
 				}
 				$contributor_list .= '</ul>';
-				echo esc_html( $contributor_list );
+				echo $contributor_list;
 			}
 			?>
 			<a href="https://github.com/fpcorso/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>

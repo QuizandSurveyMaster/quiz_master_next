@@ -111,7 +111,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 5.1.6 (December 25, 2017) =
-
+* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/fpcorso/quiz_master_next/issues/606))
+* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/fpcorso/quiz_master_next/issues/603))
 
 = 5.1.5 (November 27, 2017) =
 * IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
