@@ -36,7 +36,7 @@ function qsm_options_questions_tab_content() {
 	);
 
 	// Scripts and styles.
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../js/qsm-admin-question.js', __FILE__ ), array( 'underscore', 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
+	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../js/qsm-admin-question.js', __FILE__ ), array( 'underscore', 'jquery-ui-sortable', 'wp-util' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
 	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../css/qsm-admin-question.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
@@ -72,7 +72,7 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new">
-			{{type}} | {{category}} | {{question}}
+			{{data.type}} | {{data.category}} | {{data.question}}
 		</div>
 	</script>
 

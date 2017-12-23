@@ -6,12 +6,12 @@
 	border: 1px solid;
 }
 
-.page-new {
-	background-color: yellow;
-}
-
 .question {
 	padding: 10px;
 	background-color: #eee;
 	margin: 10px 0;
+}
+
+.page-new, .question-new {
+	background-color: yellow !important;
 }

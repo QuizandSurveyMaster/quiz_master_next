@@ -29,7 +29,7 @@ var QSMQuestion;
 			$( '.page-new' ).removeClass( 'page-new' );
 			$( '.question-new' ).removeClass( 'question-new' );
 		}
-	}
+	};
 
 	$(function() {
 		$( '.new-page-button' ).on( 'click', function( event ) {
