@@ -126,98 +126,91 @@ class QMNQuizManager {
 			'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct
 		);
 
-		$return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
 
-		//Check if we should be showing quiz or results page
-		if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && $qmn_quiz_options->quiz_name != '')
-		{
+		// Check if we should be showing quiz or results page.
+		if ( $qmn_allowed_visit && ! isset( $_POST["complete_quiz"] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
 			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, true, $question_amount );
-			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
-			$return_display .= $this->display_quiz($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
-		}
-		elseif (isset($_POST["complete_quiz"]) && $_POST["complete_quiz"] == "confirmation" && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] )
-		{
-			$qmn_quiz_questions = $this->load_questions($quiz, $qmn_quiz_options, false);
-			$qmn_quiz_answers = $this->create_answer_array($qmn_quiz_questions);
-			$return_display .= $this->display_results($qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables);
-		}
-		else
-		{
-			//return $return_display;
+			$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions );
+			$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables );
+		} elseif ( isset( $_POST["complete_quiz"] ) && 'confirmation' == $_POST["complete_quiz"] && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] ) {
+			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
+			$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions );
+			$return_display .= $this->display_results( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables );
+		} else {
+			// @todo Do something else here
 		}
 
 		$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables );
 
 		$return_display .= '<script>
-			window.qmn_quiz_data["'.$qmn_json_data["quiz_id"].'"] = '.json_encode( $qmn_json_data ).'
+			window.qmn_quiz_data["' . $qmn_json_data["quiz_id"] . '"] = ' . json_encode( $qmn_json_data ) . '
 		</script>';
 
 		$return_display .= ob_get_clean();
-		$return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+		$return_display = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
 		return $return_display;
 	}
 
 	/**
-	  * Loads Questions
-	  *
-	  * Retrieves the questions from the database
-	  *
-	  * @since 4.0.0
-		* @param int $quiz_id The id for the quiz
-		* @param array $quiz_options The database row for the quiz
-		* @param bool $is_quiz_page If the page being loaded is the quiz page or not
-		* @param int $question_amount The amount of questions entered using the shortcode attribute
-		* @return array The questions for the quiz
-	  */
+	 * Loads Questions
+	 *
+	 * Retrieves the questions from the database
+	 *
+	 * @since 4.0.0
+	 * @param int   $quiz_id The id for the quiz.
+	 * @param array $quiz_options The database row for the quiz.
+	 * @param bool  $is_quiz_page If the page being loaded is the quiz page or not.
+	 * @param int   $question_amount The amount of questions entered using the shortcode attribute.
+	 * @return array The questions for the quiz
+	 */
 	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
-		// Prepare variables
+		// Prepare variables.
 		global $wpdb;
-		$order_by_sql = "ORDER BY question_order ASC";
+		$order_by_sql = 'ORDER BY question_order ASC';
 		$limit_sql = '';
 
-		// Checks if the questions should be randomized
-		if ( $quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2 ) {
-			$order_by_sql = "ORDER BY rand()";
+		// Checks if the questions should be randomized.
+		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+			$order_by_sql = 'ORDER BY rand()';
 		}
 
-		// Check if we should load all questions or only a selcted amount
-		if ($is_quiz_page && ( $quiz_options->question_from_total != 0 || $question_amount !== 0 ) ) {
-			if ( $question_amount !== 0 ) {
+		// Check if we should load all questions or only a selcted amount.
+		if ( $is_quiz_page && ( 0 != $quiz_options->question_from_total || 0 !== $question_amount ) ) {
+			if ( 0 !== $question_amount ) {
 				$limit_sql = " LIMIT $question_amount";
 			} else {
-				$limit_sql = " LIMIT " . intval( $quiz_options->question_from_total );
+				$limit_sql = ' LIMIT ' . intval( $quiz_options->question_from_total );
 			}
 		}
 
-		// Returns an array of all the loaded questions
+		// Returns an array of all the loaded questions.
 		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
 	}
 
 	/**
-	  * Prepares Answers
-	  *
-	  * Prepares or creates the answer array for the quiz
-	  *
-	  * @since 4.0.0
-		* @param array $questions The questions for the quiz
-		* @return array The answers for the quiz
-	  */
-	public function create_answer_array($questions, $is_ajax = false)
-	{
-		//Load and prepare answer arrays
+	 * Prepares Answers
+	 *
+	 * Prepares or creates the answer array for the quiz
+	 *
+	 * @since 4.0.0
+	 * @param array $questions The questions for the quiz.
+	 * @param bool  $is_ajax Pass true if this is an ajax call.
+	 * @return array The answers for the quiz
+	 */
+	public function create_answer_array( $questions, $is_ajax = false ) {
+
+		// Load and prepare answer arrays.
 		$mlw_qmn_answer_arrays = array();
 		$question_list = array();
-		foreach($questions as $mlw_question_info) {
-			$question_list[$mlw_question_info->question_id] = get_object_vars($mlw_question_info);
-			if (is_serialized($mlw_question_info->answer_array) && is_array(@unserialize($mlw_question_info->answer_array)))
-			{
-				$mlw_qmn_answer_array_each = @unserialize($mlw_question_info->answer_array);
-				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = $mlw_qmn_answer_array_each;
-				$question_list[$mlw_question_info->question_id]["answers"] = $mlw_qmn_answer_array_each;
-			}
-			else
-			{
+		foreach ( $questions as $mlw_question_info ) {
+			$question_list[ $mlw_question_info->question_id ] = get_object_vars( $mlw_question_info );
+			if ( is_serialized( $mlw_question_info->answer_array ) && is_array( @unserialize( $mlw_question_info->answer_array ) ) ) {
+				$mlw_qmn_answer_array_each = @unserialize( $mlw_question_info->answer_array );
+				$mlw_qmn_answer_arrays[ $mlw_question_info->question_id ] = $mlw_qmn_answer_array_each;
+				$question_list[ $mlw_question_info->question_id ]["answers"] = $mlw_qmn_answer_array_each;
+			} else {
 				$mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
 				$mlw_answer_array_correct[$mlw_question_info->correct_answer-1] = 1;
 				$mlw_qmn_answer_arrays[$mlw_question_info->question_id] = array(
@@ -238,21 +231,21 @@ class QMNQuizManager {
 	}
 
 	/**
-	  * Generates Content Quiz Page
-	  *
-	  * Generates the content for the quiz page part of the shortcode
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_quiz_questions The questions of the quiz
-		* @param array $qmn_quiz_answers The answers of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @uses QMNQuizManager:display_begin_section() Creates display for beginning section
-		* @uses QMNQuizManager:display_questions() Creates display for questions
-		* @uses QMNQuizManager:display_comment_section() Creates display for comment section
-		* @uses QMNQuizManager:display_end_section() Creates display for end section
-		* @return string The content for the quiz page section
-	  */
+	 * Generates Content Quiz Page
+	 *
+	 * Generates the content for the quiz page part of the shortcode
+	 *
+	 * @since 4.0.0
+	 * @param array $qmn_quiz_options The database row of the quiz.
+	 * @param array $qmn_quiz_questions The questions of the quiz.
+	 * @param array $qmn_quiz_answers The answers of the quiz.
+	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @uses QMNQuizManager:display_begin_section() Creates display for beginning section
+	 * @uses QMNQuizManager:display_questions() Creates display for questions
+	 * @uses QMNQuizManager:display_comment_section() Creates display for comment section
+	 * @uses QMNQuizManager:display_end_section() Creates display for end section
+	 * @return string The content for the quiz page section
+	 */
 	public function display_quiz( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables ) {
 
 		global $qmn_allowed_visit;
@@ -276,7 +269,7 @@ class QMNQuizManager {
 			'empty' => $qmn_quiz_options->empty_error_text
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js' , __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
