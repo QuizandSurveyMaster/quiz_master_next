@@ -22,8 +22,12 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		editQuestion: function( $question ) {
-			var template = wp.template( 'edit-question' );
-			$question.append( template() )
+			MicroModal.show( 'modal-1' );
+			settings = {
+				'tinymce': true,
+				'quicktags': true
+			}
+			wp.editor.initialize( 'question-text', settings );
 		},
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
