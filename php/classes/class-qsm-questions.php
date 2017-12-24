@@ -35,7 +35,7 @@ class QSM_Questions {
 			}
 			$questions[ $key ]['answers'] = $answers;
 
-			$settings = maybe_serialize( $question['question_settings'] );
+			$settings = maybe_unserialize( $question['question_settings'] );
 			if ( ! is_array( $settings ) ) {
 				$settings = array( 'required' => 1 );
 			}

@@ -22,6 +22,25 @@ var QSMQuestion;
 		}),
 		questions: null,
 		questionCollection: null,
+		categories: [],
+		prepareCategories: function() {
+			QSMQuestion.categories = [];
+			QSMQuestion.questions.each(function( question ) {
+				if ( 0 !== question.get( 'category' ) ) {
+					QSMQuestion.categories.push( question.get( 'category' ) );
+				}
+			});
+		},
+		processCategories: function() {
+			$( '.category' ).remove();
+			_.each( QSMQuestion.categories, function( category ) {
+				QSMQuestion.addCategory( category );
+			});
+		},
+		addCategory: function( category ) {
+			var template = wp.template( 'single-category' );
+			$( '#categories' ).prepend( template( { category: category } ) );
+		},
 		loadQuestions: function() {
 			QSMQuestion.displayAlert( 'Loading questions...', 'info' );
 			QSMQuestion.questions.fetch({ 
@@ -102,7 +121,25 @@ var QSMQuestion;
 			var model = QSMQuestion.questions.get( questionID );
 			var hint = $( '#hint' ).val();
 			var name = wp.editor.getContent( 'question-text' );
-			model.save( { name: name, hint: hint }, 
+			var answerInfo = $( '#correct_answer_info' ).val();
+			var type = $( "#question_type" ).val();
+			var comments = $( ".comments-radio:checked" ).val();
+			var required = $( "#required" ).val();
+			var category = $( ".category-radio:checked" ).val();
+			if ( 'new_category' == category ) {
+				category = $( '#new_category' ).val();
+			}
+			model.save( 
+				{ 
+					type: type,
+					name: name,
+					answerInfo: answerInfo,
+					comments: comments,
+					hint: hint,
+					category: category,
+					required: required,
+					answers: [],
+				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.saveSuccess,
@@ -119,6 +156,8 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		openEditPopup: function( questionID ) {
+			QSMQuestion.prepareCategories();
+			QSMQuestion.processCategories();
 			var question = QSMQuestion.questions.get( questionID );
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
@@ -129,6 +168,14 @@ var QSMQuestion;
 				jQuery( "#question-text" ).val( questionText );
 			}
 			$( '#hint' ).val( question.get( 'hint' ) );
+			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
+			$( "#question_type" ).val( question.get( 'type' ) );
+			$( ".comments-radio" ).val( [question.get( 'comments' )] );
+			$( "#required" ).val( question.get( 'required' ) );
+			$( ".category-radio" ).removeAttr( 'checked' );
+			if ( 0 !== question.get( 'category' ).length ) {
+				$( ".category-radio" ).val( [question.get( 'category' )] );
+			}
 			MicroModal.show( 'modal-1' );
 		},
 		displayError: function( jqXHR, textStatus, errorThrown ) {
