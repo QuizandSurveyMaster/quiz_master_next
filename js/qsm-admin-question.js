@@ -72,7 +72,10 @@ var QSMQuestion;
 		createQuestion: function( page ) {
 			QSMQuestion.displayAlert( 'Creating question...', 'info' );
 			QSMQuestion.questions.create( 
-				{ page: page },
+				{ 
+					quizID: qsmQuestionSettings.quizID,
+					page: page
+				},
 				{
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.addNewQuestion,
