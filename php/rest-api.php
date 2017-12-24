@@ -6,7 +6,14 @@
  * @package QSM
  */
 
-add_action( 'rest_api_init', function () {
+add_action( 'rest_api_init', 'qsm_register_rest_routes' );
+
+/**
+ * Registers REST API endpoints
+ *
+ * @since 5.2.0
+ */
+function qsm_register_rest_routes() {
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => 'POST',
 		'callback' => 'qsm_rest_create_question',
@@ -15,7 +22,7 @@ add_action( 'rest_api_init', function () {
 		'methods'  => 'PUT',
 		'callback' => 'qsm_rest_save_question',
 	) );
-});
+}
 
 /**
  * REST API endpoint function for creating questions
