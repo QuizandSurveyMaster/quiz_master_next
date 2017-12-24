@@ -15,6 +15,10 @@ add_action( 'rest_api_init', 'qsm_register_rest_routes' );
  */
 function qsm_register_rest_routes() {
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
+		'methods'  => 'GET',
+		'callback' => 'qsm_rest_get_questions',
+	) );
+	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => 'POST',
 		'callback' => 'qsm_rest_create_question',
 	) );
@@ -22,6 +26,45 @@ function qsm_register_rest_routes() {
 		'methods'  => 'PUT',
 		'callback' => 'qsm_rest_save_question',
 	) );
+}
+
+/**
+ * Gets all questions
+ *
+ * @since 5.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array Something.
+ */
+function qsm_rest_get_questions( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			$quiz_id   = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
+			$questions = QSM_Questions::load_questions( $quiz_id );
+
+			foreach ( $questions as $key => $question ) {
+				$questions[ $key ] = array(
+					'id'         => $question['question_id'],
+					'quizID'     => $question['quiz_id'],
+					'type'       => $question['question_type_new'],
+					'name'       => $question['question_name'],
+					'answerInfo' => $question['question_answer_info'],
+					'comments'   => $question['comments'],
+					'hint'       => $question['hints'],
+					'category'   => $question['category'],
+					'required'   => $question['settings']['required'],
+					'answers'    => $question['answers'],
+					'page'       => 0,
+				);
+			}
+			return $questions;
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
 }
 
 /**
