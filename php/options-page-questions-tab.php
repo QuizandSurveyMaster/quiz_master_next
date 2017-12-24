@@ -147,14 +147,14 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new" data-question-id="{{data.id }}">
-			<div>
+			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
-				<div><a href="#"><span class="dashicons dashicons-edit"></span></a></div>
-				<div><a href="#"><span class="dashicons dashicons-controls-repeat"></span></a></div>
-				<div>{{{data.question}}}</div>
+				<div><a href="#" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
+				<div><a href="#" class="duplicate-question-button"><span class="dashicons dashicons-controls-repeat"></span></a></div>
+				<div class="question-content-text">{{{data.question}}}</div>
 				<div>{{data.type}}</div>
 				<div>{{data.category}}</div>
-				<div><a href="#"><span class="dashicons dashicons-trash"></span></a><div>
+				<div><a href="#" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a><div>
 			</div>
 		</div>
 	</script>

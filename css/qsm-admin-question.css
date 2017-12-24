@@ -12,18 +12,26 @@
 	margin: 10px 0;
 }
 
+.question a {
+	text-decoration: none;
+}
+
+.question-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.question-content > div {
+	margin: 0 10px;
+}
+
+.question-content-text {
+	flex-grow: 1;
+}
+
 .page-new, .question-new {
 	background-color: yellow !important;
-}
-
-.popup-row td {
-    font-size: 16px;
-    padding: 15px 10px;
-}
-
-.popup-row-delete,
-.popup-row-edit {
-	cursor: pointer;
 }
 
 .qsm-row {

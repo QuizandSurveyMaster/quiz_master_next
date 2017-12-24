@@ -179,9 +179,19 @@ var QSMQuestion;
 			QSMQuestion.createQuestion( $( this ).parent().index() );
 		});
 
-		$( '.questions' ).on( 'click', '.question', function( event ) {
+		$( '.questions' ).on( 'click', '.edit-question-button', function( event ) {
 			event.preventDefault();
-			QSMQuestion.openEditPopup( $( this ).data( 'question-id' ) );
+			QSMQuestion.openEditPopup( $( this ).parents( '.question' ).data( 'question-id' ) );
+		});
+
+		$( '.questions' ).on( 'click', '.duplicate-question-button', function( event ) {
+			event.preventDefault();
+			QSMQuestion.duplicateQuestion( $( this ).parents( '.question' ).data( 'question-id' ) );
+		});
+
+		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
+			event.preventDefault();
+			$( this ).parents( '.question' ).remove();
 		});
 
 		$( '#save-popup-button' ).on( 'click', function( event ) {
