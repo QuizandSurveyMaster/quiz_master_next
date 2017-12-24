@@ -70,9 +70,9 @@
 .qsm-popup__container {
 	background-color: #fff;
 	padding: 30px;
-	min-width: 300px;
-	max-width: 500px;
-	max-height: 100vh;
+	min-width: 500px;
+	max-width: 700px;
+	max-height: 95vh;
 	border-radius: 4px;
 	overflow-y: auto;
 	box-sizing: border-box;

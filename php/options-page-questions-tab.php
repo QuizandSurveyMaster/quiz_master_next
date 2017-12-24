@@ -108,7 +108,7 @@ function qsm_options_questions_tab_content() {
 					</div>
 					<div id="required_area" class="qsm-row">
 						<label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
-						<selectname="required" id="required">
+						<select name="required" id="required">
 							<option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
 							<option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
 						</select>

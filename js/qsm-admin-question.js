@@ -26,7 +26,7 @@ var QSMQuestion;
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
 			QSMQuestion.questions.each(function( question ) {
-				if ( 0 !== question.get( 'category' ) ) {
+				if ( 0 !== question.get( 'category' ).length ) {
 					QSMQuestion.categories.push( question.get( 'category' ) );
 				}
 			});
@@ -167,6 +167,13 @@ var QSMQuestion;
 			} else {
 				jQuery( "#question-text" ).val( questionText );
 			}
+
+			$( '#answers' ).empty();
+			var answers = question.get( 'answers' );
+			var answerTemplate = wp.template( 'single-answer' );
+			_.each( answers, function( answer ) {
+				$( '#answers' ).append( answerTemplate() );
+			});
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
