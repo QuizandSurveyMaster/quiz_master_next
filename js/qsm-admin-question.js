@@ -40,6 +40,7 @@ var QSMQuestion;
 			var page = model.get( 'page' ) + 1;
 			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
+			QSMQuestion.openEditPopup( model.id );
 		},
 		createQuestion: function( page ) {
 			QSMQuestion.displayAlert( 'Creating question...', 'info' );
@@ -52,7 +53,9 @@ var QSMQuestion;
 				}
 			);
 		},
-		editQuestion: function( $question ) {
+		openEditPopup: function( questionID ) {
+			var question = QSMQuestion.questions.get( questionID );
+			$( '#question-text' ).text( question.get( 'name' ) );
 			MicroModal.show( 'modal-1' );
 			var settings = {
 				'tinymce': true,
@@ -100,7 +103,7 @@ var QSMQuestion;
 
 		$( '.questions' ).on( 'click', '.question', function( event ) {
 			event.preventDefault();
-			QSMQuestion.editQuestion( $( this ) );
+			QSMQuestion.openEditPopup( $( this ).data( 'question-id' ) );
 		});
 
 		$( '.questions' ).sortable({
