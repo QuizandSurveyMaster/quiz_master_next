@@ -13,6 +13,38 @@
 class QSM_Questions {
 
 	/**
+	 * Loads questions for a quiz
+	 *
+	 * @since 5.2.0
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of questions.
+	 */
+	public static function load_questions( $quiz_id ) {
+		global $wpdb;
+
+		// Get all questions.
+		$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ), 'ARRAY_A' );
+
+		// Loop through questions and prepare serialized data.
+		foreach ( $questions as $question ) {
+
+			// Prepare answers.
+			$answers = maybe_unserialize( $question['answer_array'] );
+			if ( ! is_array( $answers ) ) {
+				$answers = array();
+			}
+			$questions['answers'] = $answers;
+
+			$settings = maybe_serialize( $question['question_settings'] );
+			if ( ! is_array( $settings ) ) {
+				$settings = array( 'required' => 1 );
+			}
+			$questions['settings'] = $settings;
+		}
+		return $questions;
+	}
+
+	/**
 	 * Creates a new question
 	 *
 	 * @since 5.2.0
