@@ -138,6 +138,14 @@ class QSM_Questions {
 		);
 		$settings = wp_parse_args( $settings, $defaults );
 
+		foreach ( $answers as $key => $answer ) {
+			$answers[ $key ] = array(
+				htmlspecialchars( stripslashes( $answer[0] ), ENT_QUOTES ),
+				floatval( $answer[1] ),
+				intval( $answer[2] ),
+			);
+		}
+
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
 			'question_name'        => trim( preg_replace( '/\s+/', ' ', htmlspecialchars( nl2br( wp_kses_post( stripslashes( $data['name'] ) ) ), ENT_QUOTES ) ) ),
@@ -184,7 +192,7 @@ class QSM_Questions {
 
 		if ( false === $results ) {
 			$msg = $wpdb->last_error . ' from ' . $wpdb->last_query;
-			$mlwQuizMasterNext->log_manager->add( 'Error when creating question', $msg, 0, 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error when creating/saving question', $msg, 0, 'error' );
 			throw new Exception( $msg );
 		}
 

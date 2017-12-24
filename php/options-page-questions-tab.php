@@ -32,7 +32,8 @@ function qsm_options_questions_tab_content() {
 
 	$json_data = array(
 		'quizID'     => $quiz_id,
-		'answerText' => __( 'Answer', 'quiz-master-next' )
+		'answerText' => __( 'Answer', 'quiz-master-next' ),
+		'nonce' => wp_create_nonce( 'wp_rest' ),
 	);
 
 	// Scripts and styles.
@@ -129,7 +130,7 @@ function qsm_options_questions_tab_content() {
 	<!--Views-->
 
 	<!-- View for Notices -->
-	<script type="text/template" id="notice-tmpl">
+	<script type="text/template" id="tmpl-notice">
 		<div class="notice notice-{{data.type}}">
 			<p>{{data.msg}}</p>
 		</div>
@@ -145,7 +146,7 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new">
-			{{data.type}} | {{data.category}} | {{data.question}}
+			{{data.id }} | {{data.question}} | {{data.type}} | {{data.category}} | 
 		</div>
 	</script>
 
