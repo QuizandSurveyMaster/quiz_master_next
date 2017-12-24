@@ -53,9 +53,30 @@ var QSMQuestion;
 				}
 			);
 		},
+		saveQuestion: function( questionID ) {
+			QSMQuestion.displayAlert( 'Saving question...', 'info' );
+			var model = QSMQuestion.questions.get( questionID );
+			var hint = $( '#hint' ).val();
+			model.save( { hint: hint }, 
+				{ 
+					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+					success: QSMQuestion.saveSuccess,
+					error: QSMQuestion.displayError
+				} 
+			);
+			MicroModal.close('modal-1');
+		},
+		saveSuccess: function() {
+			QSMQuestion.displayAlert( 'Question was saved!', 'success' );
+			var template = wp.template( 'question' );
+			var page = model.get( 'page' ) + 1;
+			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
+			setTimeout( QSMQuestion.removeNew, 250 );
+		},
 		openEditPopup: function( questionID ) {
 			var question = QSMQuestion.questions.get( questionID );
 			$( '#question-text' ).text( question.get( 'name' ) );
+			$( '#hint' ).val( question.get( 'hint' ) );
 			MicroModal.show( 'modal-1' );
 			var settings = {
 				'tinymce': true,
@@ -104,6 +125,11 @@ var QSMQuestion;
 		$( '.questions' ).on( 'click', '.question', function( event ) {
 			event.preventDefault();
 			QSMQuestion.openEditPopup( $( this ).data( 'question-id' ) );
+		});
+
+		$( '#save-popup-button' ).on( 'click', function( event ) {
+			event.preventDefault();
+			QSMQuestion.saveQuestion( $( this ).parent().siblings( 'main' ).children( '#edit_question_id' ).val() );
 		});
 
 		$( '.questions' ).sortable({

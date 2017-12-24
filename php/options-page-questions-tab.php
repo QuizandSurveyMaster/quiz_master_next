@@ -64,6 +64,7 @@ function qsm_options_questions_tab_content() {
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-1-content">
+					<input type="hidden" name="edit_question_id" id="edit_question_id" value="">
 					<div class="qsm-row">
 						<select class="option_input" name="question_type" id="question_type">
 							<?php
