@@ -17,7 +17,7 @@ var QSMQuestion;
 				category: '',
 				required: 1,
 				answers: [],
-				page: 1
+				page: 0
 			}
 		}),
 		questions: null,
@@ -37,7 +37,8 @@ var QSMQuestion;
 			QSMQuestion.clearAlerts();
 			QSMQuestion.displayAlert( 'Question created!', 'success' );
 			var template = wp.template( 'question' );
-			$( '.page:nth-child(' + model.page + ')' ).append( template( { id: model.id, type : model.type, category : model.category, question: model.name } ) );
+			var page = model.get( 'page' ) + 1;
+			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		createQuestion: function( page ) {
@@ -53,10 +54,10 @@ var QSMQuestion;
 		},
 		editQuestion: function( $question ) {
 			MicroModal.show( 'modal-1' );
-			settings = {
+			var settings = {
 				'tinymce': true,
 				'quicktags': true
-			}
+			};
 			wp.editor.initialize( 'question-text', settings );
 		},
 		displayError: function( jqXHR, textStatus, errorThrown ) {
@@ -70,10 +71,10 @@ var QSMQuestion;
 				message: message,
 				type: type
 			};
-			$( '.alert-messages' ).append( template( data ) );
+			$( '.questions-messages' ).append( template( data ) );
 		},
 		clearAlerts: function() {
-			$( '.alert-messages' ).empty();
+			$( '.questions-messages' ).empty();
 		},
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
@@ -83,7 +84,7 @@ var QSMQuestion;
 
 	$(function() {
 		QSMQuestion.questionCollection = Backbone.Collection.extend({
-			url: '/wp-json/qsm-simple-popups/v1/popups',
+			url: '/wp-json/quiz-survey-master/v1/questions',
 			model: QSMQuestion.question
 		});
 		QSMQuestion.questions = new QSMQuestion.questionCollection();
@@ -94,7 +95,7 @@ var QSMQuestion;
 
 		$( '.questions' ).on( 'click', '.new-question-button', function( event ) {
 			event.preventDefault();
-			QSMQuestion.createQuestion( $( this ).parent() );
+			QSMQuestion.createQuestion( $( this ).parent().index() );
 		});
 
 		$( '.questions' ).on( 'click', '.question', function( event ) {

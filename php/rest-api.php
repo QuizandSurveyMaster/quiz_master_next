@@ -45,10 +45,10 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 				if ( is_array( $intial_answers ) ) {
 					$answers = $intial_answers;
 				}
-				QSM_Questions::create_question( $data, $answers, $settings );
+				$question_id = QSM_Questions::create_question( $data, $answers, $settings );
 				return array(
 					'status' => 'success',
-					'id'     => $popup_id,
+					'id'     => $question_id,
 				);
 			} catch ( Exception $e ) {
 				$msg = $e->getMessage();

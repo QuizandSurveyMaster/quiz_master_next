@@ -52,7 +52,7 @@ class QSM_Questions {
 	 * @param array $answers The answers for the question.
 	 * @param array $settings Any settings for the question.
 	 * @throws Exception Throws exception if wpdb query results in error.
-	 * @return bool True is successful, false if not.
+	 * @return int The ID of the question that was created.
 	 */
 	public static function create_question( $data, $answers = array(), $settings = array() ) {
 		return self::create_save_question( $data, $answers, $settings );
@@ -67,7 +67,7 @@ class QSM_Questions {
 	 * @param array $answers The answers for the question.
 	 * @param array $settings Any settings for the question.
 	 * @throws Exception Throws exception if wpdb query results in error.
-	 * @return bool True is successful, false if not.
+	 * @return int The ID of the question that was saved.
 	 */
 	public static function save_question( $question_id, $data, $answers = array(), $settings = array() ) {
 		$data['ID'] = intval( $question_id );
@@ -115,7 +115,7 @@ class QSM_Questions {
 	 * @param array $settings Any settings for the question.
 	 * @param bool  $is_creating True if question is being created, false if being saved.
 	 * @throws Exception Throws exception if wpdb query results in error.
-	 * @return bool True is successful, false if not.
+	 * @return int The ID of the question that was created/saved.
 	 */
 	private static function create_save_question( $data, $answers, $settings, $is_creating = true ) {
 		global $wpdb;
@@ -196,6 +196,10 @@ class QSM_Questions {
 			throw new Exception( $msg );
 		}
 
-		return true;
+		if ( $is_creating ) {
+			return $wpdb->insert_id;
+		} else {
+			return $data['ID'];
+		}
 	}
 }
