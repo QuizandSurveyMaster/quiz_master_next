@@ -65,7 +65,8 @@ var QSMQuestion;
 					console.log( 'count reached' );
 				}
 			}
-			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
+			var questionName = QSMQuestion.prepareQuestionText( model.get( 'name' ) );
+			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		createQuestion: function( page ) {
@@ -116,12 +117,13 @@ var QSMQuestion;
 		},
 		openEditPopup: function( questionID ) {
 			var question = QSMQuestion.questions.get( questionID );
+			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
 			var question_editor = tinyMCE.get( 'question-text' );
 			if ( question_editor ) {
-				tinyMCE.get( 'question-text' ).setContent( question.get( 'name' ) );
+				tinyMCE.get( 'question-text' ).setContent( questionText );
 			} else {
-				jQuery( "#question-text" ).val( question.get( 'name' ) );
+				jQuery( "#question-text" ).val( questionText );
 			}
 			$( '#hint' ).val( question.get( 'hint' ) );
 			MicroModal.show( 'modal-1' );
@@ -145,6 +147,9 @@ var QSMQuestion;
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
 			$( '.question-new' ).removeClass( 'question-new' );
+		},
+		prepareQuestionText: function( question ) {
+			return jQuery('<textarea />').html( question ).text();
 		},
 		prepareEditor: function() {
 			var settings = {
