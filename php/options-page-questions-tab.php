@@ -147,7 +147,7 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new" data-question-id="{{data.id }}">
-			{{data.id }} | {{data.question}} | {{data.type}} | {{data.category}} | 
+			{{data.id }} | {{{data.question}}} | {{data.type}} | {{data.category}} | 
 		</div>
 	</script>
 

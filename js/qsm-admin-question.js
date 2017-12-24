@@ -53,11 +53,26 @@ var QSMQuestion;
 				}
 			);
 		},
+		duplicateQuestion: function( questionID ) {
+			QSMQuestion.displayAlert( 'Duplicating question...', 'info' );
+			var model = QSMQuestion.questions.get( questionID );
+			var newModel = _.clone(model.attributes);
+			newModel.id = null;
+			QSMQuestion.questions.create( 
+				newModel,
+				{
+					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+					success: QSMQuestion.addNewQuestion,
+					error: QSMQuestion.displayError
+				}
+			);
+		},
 		saveQuestion: function( questionID ) {
 			QSMQuestion.displayAlert( 'Saving question...', 'info' );
 			var model = QSMQuestion.questions.get( questionID );
 			var hint = $( '#hint' ).val();
-			model.save( { hint: hint }, 
+			var name = wp.editor.getContent( 'question-text' );
+			model.save( { name: name, hint: hint }, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.saveSuccess,
@@ -66,7 +81,7 @@ var QSMQuestion;
 			);
 			MicroModal.close('modal-1');
 		},
-		saveSuccess: function() {
+		saveSuccess: function( model ) {
 			QSMQuestion.displayAlert( 'Question was saved!', 'success' );
 			var template = wp.template( 'question' );
 			var page = model.get( 'page' ) + 1;
@@ -75,14 +90,15 @@ var QSMQuestion;
 		},
 		openEditPopup: function( questionID ) {
 			var question = QSMQuestion.questions.get( questionID );
-			$( '#question-text' ).text( question.get( 'name' ) );
+			$( '#edit_question_id' ).val( questionID );
+			var question_editor = tinyMCE.get( 'question-text' );
+			if ( question_editor ) {
+				tinyMCE.get( 'question-text' ).setContent( question.get( 'name' ) );
+			} else {
+				jQuery( "#question-text" ).val( question.get( 'name' ) );
+			}
 			$( '#hint' ).val( question.get( 'hint' ) );
 			MicroModal.show( 'modal-1' );
-			var settings = {
-				'tinymce': true,
-				'quicktags': true
-			};
-			wp.editor.initialize( 'question-text', settings );
 		},
 		displayError: function( jqXHR, textStatus, errorThrown ) {
 			QSMQuestion.clearAlerts();
@@ -103,6 +119,13 @@ var QSMQuestion;
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
 			$( '.question-new' ).removeClass( 'question-new' );
+		},
+		prepareEditor: function() {
+			var settings = {
+				'tinymce': true,
+				'quicktags': true
+			};
+			wp.editor.initialize( 'question-text', settings );
 		}
 	};
 
@@ -143,5 +166,6 @@ var QSMQuestion;
 			placeholder: "ui-state-highlight",
 			connectWith: '.page'
 		});
+		QSMQuestion.prepareEditor();
 	});
 }(jQuery));
