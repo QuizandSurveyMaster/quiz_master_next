@@ -22,6 +22,19 @@ var QSMQuestion;
 		}),
 		questions: null,
 		questionCollection: null,
+		loadQuestions: function() {
+			QSMQuestion.displayAlert( 'Loading questions...', 'info' );
+			QSMQuestion.questions.fetch({ 
+				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+				data: { quizID: qsmQuestionSettings.quizID },
+				success: QSMQuestion.loadSuccess,
+				error: QSMQuestion.displayError
+			});
+		},
+		loadSuccess: function() {
+			QSMQuestion.clearAlerts();
+			QSMQuestion.questions.each( QSMQuestion.addQuestionToPage )
+		},
 		addNewPage: function() {
 			var template = wp.template( 'page' );
 			$( '.questions' ).append( template() );
@@ -34,13 +47,26 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewQuestion: function( model ) {
-			QSMQuestion.clearAlerts();
 			QSMQuestion.displayAlert( 'Question created!', 'success' );
-			var template = wp.template( 'question' );
+			QSMQuestion.addQuestionToPage( model );
+			QSMQuestion.openEditPopup( model.id );
+		},
+		addQuestionToPage: function( model ) {
 			var page = model.get( 'page' ) + 1;
+			var template = wp.template( 'question' );
+			var page_exists = $( '.page:nth-child(' + page + ')' ).length;
+			var count = 0;
+			while ( ! page_exists ) {
+				QSMQuestion.addNewPage();
+				page_exists = $( '.page:nth-child(' + page + ')' );
+				count++;
+				if ( count > 5 ) {
+					page_exists = true;
+					console.log( 'count reached' );
+				}
+			}
 			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
-			QSMQuestion.openEditPopup( model.id );
 		},
 		createQuestion: function( page ) {
 			QSMQuestion.displayAlert( 'Creating question...', 'info' );
@@ -167,5 +193,6 @@ var QSMQuestion;
 			connectWith: '.page'
 		});
 		QSMQuestion.prepareEditor();
+		QSMQuestion.loadQuestions();
 	});
 }(jQuery));

@@ -26,20 +26,20 @@ class QSM_Questions {
 		$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ), 'ARRAY_A' );
 
 		// Loop through questions and prepare serialized data.
-		foreach ( $questions as $question ) {
+		foreach ( $questions as $key => $question ) {
 
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
 				$answers = array();
 			}
-			$questions['answers'] = $answers;
+			$questions[ $key ]['answers'] = $answers;
 
 			$settings = maybe_serialize( $question['question_settings'] );
 			if ( ! is_array( $settings ) ) {
 				$settings = array( 'required' => 1 );
 			}
-			$questions['settings'] = $settings;
+			$questions[ $key ]['settings'] = $settings;
 		}
 		return $questions;
 	}
