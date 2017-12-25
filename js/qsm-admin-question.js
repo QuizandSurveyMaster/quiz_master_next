@@ -85,7 +85,7 @@ var QSMQuestion;
 				}
 			}
 			var questionName = QSMQuestion.prepareQuestionText( model.get( 'name' ) );
-			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
+			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, category : model.get('category'), question: questionName } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		createQuestion: function( page ) {
@@ -129,6 +129,21 @@ var QSMQuestion;
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
+			if ( ! category ) {
+				category = '';
+			}
+			var answers = [];
+			var $answers = jQuery( '.answers-single');
+			_.each( $answers, function( answer ) {
+				var $answer = jQuery( answer );
+				var answer = $answer.find( '.answer-text' ).val();
+				var points = $answer.find( '.answer-points' ).val();
+				var correct = 0;
+				if ( $answer.find( '.answer-correct' ).prop( 'checked' ) ) {
+					correct = 1;
+				}
+				answers.push( [ answer, points, correct ] );
+			});
 			model.save( 
 				{ 
 					type: type,
@@ -138,7 +153,7 @@ var QSMQuestion;
 					hint: hint,
 					category: category,
 					required: required,
-					answers: [],
+					answers: answers,
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -155,6 +170,10 @@ var QSMQuestion;
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
+		addNewAnswer: function( answer ) {
+			var answerTemplate = wp.template( 'single-answer' );
+			$( '#answers' ).append( answerTemplate( { answer: answer[0], points: answer[1], correct: answer[2] } ) );
+		},
 		openEditPopup: function( questionID ) {
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
@@ -170,9 +189,8 @@ var QSMQuestion;
 
 			$( '#answers' ).empty();
 			var answers = question.get( 'answers' );
-			var answerTemplate = wp.template( 'single-answer' );
 			_.each( answers, function( answer ) {
-				$( '#answers' ).append( answerTemplate() );
+				QSMQuestion.addNewAnswer( answer );
 			});
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
@@ -242,15 +260,22 @@ var QSMQuestion;
 			event.preventDefault();
 			QSMQuestion.duplicateQuestion( $( this ).parents( '.question' ).data( 'question-id' ) );
 		});
-
 		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
 			event.preventDefault();
 			$( this ).parents( '.question' ).remove();
 		});
-
+		$( '#answers' ).on( 'click', '.delete-answer-button', function( event ) {
+			event.preventDefault();
+			$( this ).parents( '.answers-single' ).remove();
+		});
 		$( '#save-popup-button' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMQuestion.saveQuestion( $( this ).parent().siblings( 'main' ).children( '#edit_question_id' ).val() );
+		});
+		$( '#new-answer-button' ).on( 'click', function( event ) {
+			event.preventDefault();
+			var answer = [ '', '', 0 ];
+			QSMQuestion.addNewAnswer( answer );
 		});
 
 		$( '.questions' ).sortable({

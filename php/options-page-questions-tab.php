@@ -79,16 +79,15 @@ function qsm_options_questions_tab_content() {
 						<textarea id="question-text"></textarea>
 					</div>
 					<div class="qsm-row">
-						<div class="answer_headers">
-							<div class="answer_number">&nbsp;</div>
-							<div class="answer_text"><?php _e( 'Answers', 'quiz-master-next' ); ?></div>
+						<label><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
+						<div class="answer-headers">
 							<div class="answer_points"><?php _e( 'Points Worth', 'quiz-master-next' ); ?></div>
 							<div class="answer_correct"><?php _e( 'Correct Answer', 'quiz-master-next' ); ?></div>
 						</div>
 						<div class="answers" id="answers">
 
 						</div>
-						<a href="#" class="button" id="new_answer_button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
+						<a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
 					</div>
 					<div id="correct_answer_area" class="qsm-row">
 						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
@@ -152,8 +151,7 @@ function qsm_options_questions_tab_content() {
 				<div><a href="#" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
 				<div><a href="#" class="duplicate-question-button"><span class="dashicons dashicons-controls-repeat"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
-				<div>{{data.type}}</div>
-				<div>{{data.category}}</div>
+				<div><# if ( 0 !== data.category.length ) { #> Category: {{data.category}} <# } #></div>
 				<div><a href="#" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a><div>
 			</div>
 		</div>
@@ -168,11 +166,11 @@ function qsm_options_questions_tab_content() {
 
 	<!-- View for single answer -->
 	<script type="text/template" id="tmpl-single-answer">
-		<div class="answers_single">
-			<div class="answer_number"><button class="button delete_answer">Delete</button> '+answer_text+'</div>'+
-			<div class="answer_text"><input type="text" class="answer_input" name="answer_'+total_answers+'" id="answer_'+total_answers+'" value="'+answer+'" /></div>'+
-			<div class="answer_points"><input type="text" class="answer_input" name="answer_'+total_answers+'_points" id="answer_'+total_answers+'_points" value="'+points+'" /></div>'+
-			<div class="answer_correct"><input type="checkbox" id="answer_'+total_answers+'_correct" name="answer_'+total_answers+'_correct"'+correct_text+' value=1 /></div>'+
+		<div class="answers-single">
+			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
+			<div><input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/></div>
+			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points worth"/></div>
+			<div><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #></div>
 		</div>
 	</script>
 	<?php
