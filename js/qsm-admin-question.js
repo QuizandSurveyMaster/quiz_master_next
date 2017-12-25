@@ -54,6 +54,17 @@ var QSMQuestion;
 			QSMQuestion.clearAlerts();
 			QSMQuestion.questions.each( QSMQuestion.addQuestionToPage )
 		},
+		savePages: function() {
+			var pages = [];
+			_.each( jQuery( '.page' ), function( page ) {
+				var singlePage = [];
+				_.each( jQuery( page ).children( '.question' ), function( question ){
+					singlePage.push( jQuery( question ).data( 'question-id' ) )
+				});
+				pages.push( singlePage );
+			});
+			console.log( pages );
+		},
 		addNewPage: function() {
 			var template = wp.template( 'page' );
 			$( '.questions' ).append( template() );
@@ -228,8 +239,11 @@ var QSMQuestion;
 		},
 		prepareEditor: function() {
 			var settings = {
-				'tinymce': true,
-				'quicktags': true
+				mediaButtons: true,
+				tinymce:      {
+					toolbar1: 'formatselect,bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
+				},
+				quicktags:    true,
 			};
 			wp.editor.initialize( 'question-text', settings );
 		}

@@ -43,6 +43,7 @@ function qsm_options_questions_tab_content() {
 	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../css/qsm-admin-question.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 	wp_enqueue_editor();
+	wp_enqueue_media();
 
 	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
