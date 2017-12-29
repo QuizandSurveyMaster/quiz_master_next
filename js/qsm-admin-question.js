@@ -65,6 +65,7 @@ var QSMQuestion;
 			}
 		},
 		savePages: function() {
+			QSMQuestion.displayAlert( 'Saving pages and questions...', 'info' );
 			var pages = [];
 			_.each( jQuery( '.page' ), function( page ) {
 				var singlePage = [];

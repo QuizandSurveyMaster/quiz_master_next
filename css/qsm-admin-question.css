@@ -1,14 +1,14 @@
 .page {
 	width: 100%;
-	background-color: white;
+	background-color: #0d97d8;
 	margin: 20px 0;
 	padding: 20px 10px;
-	border: 1px solid;
 }
 
 .question {
 	padding: 10px;
-	background-color: #eee;
+	background-color: #fff;
+	border: 5px solid #1DD969;
 	margin: 10px 0;
 }
 
