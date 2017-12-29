@@ -67,8 +67,16 @@ var QSMQuestion;
 		savePages: function() {
 			QSMQuestion.displayAlert( 'Saving pages and questions...', 'info' );
 			var pages = [];
+
+			// Cycles through each page and add page + questions to pages variable
 			_.each( jQuery( '.page' ), function( page ) {
+
+				// If page is empty, do not add it.
+				if( 0 == jQuery( page ).children( '.question' ).length ) {
+					return;
+				}
 				var singlePage = [];
+				// Cycle through each question and add to the page.
 				_.each( jQuery( page ).children( '.question' ), function( question ){
 					singlePage.push( jQuery( question ).data( 'question-id' ) )
 				});
