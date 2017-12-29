@@ -54,6 +54,26 @@ function qsm_options_questions_tab_content() {
 	<a href="#" class="save-page-button button-primary">Save Questions</a>
 	<div class="questions"></div>
 
+	<!-- Popup for question bank -->
+	<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-2" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-2-title">Add Question From Question Bank</h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-2-content">
+					<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
+					<div id="question-bank"></div>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+				</footer>
+			</div>
+		</div>
+	</div>
+
+
 	<!-- Popup for editing question -->
 	<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -139,6 +159,7 @@ function qsm_options_questions_tab_content() {
 	<script type="text/template" id="tmpl-page">
 		<div class="page page-new">
 			<a href="#" class="new-question-button button">Create New Question</a>
+			<a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
 		</div>
 	</script>
 
@@ -153,6 +174,14 @@ function qsm_options_questions_tab_content() {
 				<div><# if ( 0 !== data.category.length ) { #> Category: {{data.category}} <# } #></div>
 				<div><a href="#" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a><div>
 			</div>
+		</div>
+	</script>
+
+	<!-- View for question in question bank -->
+	<script type="text/template" id="tmpl-single-category">
+		<div class="question-bank-question" data-question-id="{{data.id}}">
+			<div><a href="#" class="import-button button">Add This Question</a></div>
+			<div><p>{{data.question}}</p></div>
 		</div>
 	</script>
 

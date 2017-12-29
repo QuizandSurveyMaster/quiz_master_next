@@ -23,6 +23,24 @@ var QSMQuestion;
 		questions: null,
 		questionCollection: null,
 		categories: [],
+		openQuestionBank: function( pageID ) {
+			QSMQuestion.loadQuestionBank();
+			jQuery( '#add-question-bank-page' ).val( pageID );
+			MicroModal.show( 'modal-2' );
+		},
+		loadQuestionBank: function() {
+			// Load questions from endpoint
+		},
+		addQuestionFromQuestionBank: function( questionID ) {
+			MicroModal.close( 'modal-2' );
+			QSMQuestion.displayAlert( 'Adding question...', 'info' );
+			// Add question to collection...
+			// Add question to page
+		},
+		questionBankSuccess: function( model ) {
+			QSMQuestion.displayAlert( 'Question added!', 'success' );
+			QSMQuestion.addQuestionToPage( model );
+		},
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
 			QSMQuestion.questions.each(function( question ) {
@@ -325,6 +343,11 @@ var QSMQuestion;
 			event.preventDefault();
 			var answer = [ '', '', 0 ];
 			QSMQuestion.addNewAnswer( answer );
+		});
+
+		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
+			event.preventDefault();
+			QSMQuestion.addQuestionFromQuestionBank( $( this ).parents( '.question-bank-question' ).data( 'question-id' ) );
 		});
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
