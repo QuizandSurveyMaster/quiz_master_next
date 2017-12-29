@@ -13,6 +13,76 @@
 class QSM_Questions {
 
 	/**
+	 * Loads questions for a quiz using the new page system
+	 *
+	 * @since 5.2.0
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of questions.
+	 */
+	public static function load_questions_by_pages( $quiz_id ) {
+
+		// Prepares our variables.
+		global $wpdb;
+		global $mlwQuizMasterNext;
+		$quiz_id      = intval( $quiz_id );
+		$question_ids = array();
+		$questions    = array();
+		$page_for_ids = array();
+
+		// Gets the pages for the quiz.
+		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+
+		// Get all question IDs needed.
+		$total_pages = count( $pages );
+		for ( $i = 0; $i < $total_pages; $i++ ) {
+			foreach ( $pages[ $i ] as $question ) {
+				$question_id                  = intval( $question );
+				$question_ids[]               = $question_id;
+				$page_for_ids[ $question_id ] = $i;
+			}
+		}
+
+		// If we have any question IDs, get the questions.
+		if ( count( $question_ids ) > 0 ) {
+
+			$question_sql = implode( ', ', $question_ids );
+
+			// Get all questions.
+			$questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql)", 'ARRAY_A' );
+
+			// Loop through questions and prepare serialized data.
+			foreach ( $questions as $key => $question ) {
+
+				// Prepare answers.
+				$answers = maybe_unserialize( $question['answer_array'] );
+				if ( ! is_array( $answers ) ) {
+					$answers = array();
+				}
+				$questions[ $key ]['answers'] = $answers;
+
+				// Prepares settings.
+				$settings = maybe_unserialize( $question['question_settings'] );
+				if ( ! is_array( $settings ) ) {
+					$settings = array( 'required' => 1 );
+				}
+				$questions[ $key ]['settings'] = $settings;
+
+				// Get the page.
+				$question_id               = intval( $question['question_id'] );
+				$questions[ $key ]['page'] = intval( $page_for_ids[ $question_id ] );
+			}
+		} else {
+			// If we do not have pages on this quiz yet, use older load_questions and add page to them.
+			$questions = self::load_questions( $quiz_id );
+			foreach ( $questions as $key => $question ) {
+				$questions[ $key ]['page'] = isset( $question['page'] ) ? $question['page'] : 0;
+			}
+		}
+		return $questions;
+	}
+
+	/**
 	 * Loads questions for a quiz
 	 *
 	 * @since 5.2.0

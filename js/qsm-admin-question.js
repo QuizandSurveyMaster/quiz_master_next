@@ -52,7 +52,17 @@ var QSMQuestion;
 		},
 		loadSuccess: function() {
 			QSMQuestion.clearAlerts();
-			QSMQuestion.questions.each( QSMQuestion.addQuestionToPage )
+			var question;
+			if ( qsmQuestionSettings.pages.length > 0 ) {
+				for ( var i = 0; i < qsmQuestionSettings.pages.length; i++ ) {
+					for ( var j = 0; j < qsmQuestionSettings.pages[ i ].length; j++ ) {
+						question = QSMQuestion.questions.get( qsmQuestionSettings.pages[ i ][ j ] );
+						QSMQuestion.addQuestionToPage( question );
+					}
+				}
+			} else {
+				QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
+			}
 		},
 		savePages: function() {
 			var pages = [];
@@ -63,7 +73,21 @@ var QSMQuestion;
 				});
 				pages.push( singlePage );
 			});
-			console.log( pages );
+			var data = {
+				action: 'qsm_save_pages',
+				pages: pages,
+				quiz_id : qsmQuestionSettings.quizID
+			};
+	
+			jQuery.ajax( ajaxurl, {
+				data: data,
+				method: 'POST',
+				success: QSMQuestion.savePagesSuccess,
+				error: QSMQuestion.displayjQueryError
+			});
+		},
+		savePagesSuccess: function() {
+			QSMQuestion.displayAlert( 'Questions and pages were saved!', 'success' );
 		},
 		addNewPage: function() {
 			var template = wp.template( 'page' );
@@ -214,8 +238,10 @@ var QSMQuestion;
 			}
 			MicroModal.show( 'modal-1' );
 		},
+		displayjQueryError: function( jqXHR, textStatus, errorThrown ) {
+			QSMQuestion.displayAlert( 'Error: ' + errorThrown + '! Please try again.', 'error' );
+		},
 		displayError: function( jqXHR, textStatus, errorThrown ) {
-			QSMQuestion.clearAlerts();
 			QSMQuestion.displayAlert( 'Error: ' + errorThrown.errorThrown + '! Please try again.', 'error' );
 		},
 		displayAlert: function( message, type ) {
@@ -291,6 +317,11 @@ var QSMQuestion;
 			var answer = [ '', '', 0 ];
 			QSMQuestion.addNewAnswer( answer );
 		});
+
+		$( '.save-page-button' ).on( 'click', function( event ) {
+			event.preventDefault();
+			QSMQuestion.savePages();
+		});		
 
 		$( '.questions' ).sortable({
 			opacity: 70,

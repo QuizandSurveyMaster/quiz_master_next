@@ -41,7 +41,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$quiz_id   = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
-			$questions = QSM_Questions::load_questions( $quiz_id );
+			$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
 
 			foreach ( $questions as $key => $question ) {
 				$questions[ $key ] = array(
@@ -55,7 +55,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'category'   => esc_js( $question['category'] ),
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
-					'page'       => 0,
+					'page'       => $question['page'],
 				);
 			}
 			return $questions;

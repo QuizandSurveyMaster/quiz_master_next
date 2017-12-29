@@ -34,6 +34,7 @@ function qsm_options_questions_tab_content() {
 		'quizID'     => $quiz_id,
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
 		'nonce' => wp_create_nonce( 'wp_rest' ),
+		'pages' => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
 	);
 
 	// Scripts and styles.
@@ -49,12 +50,9 @@ function qsm_options_questions_tab_content() {
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 	?>
 	<div class="questions-messages"></div>
-	<a href="#" class="button-primary">Save Questions</a>
-	<div class="questions">
-
-	</div>
 	<a href="#" class="new-page-button button">Create New Page</a>
-	<a href="#" class="button-primary">Save Questions</a>
+	<a href="#" class="save-page-button button-primary">Save Questions</a>
+	<div class="questions"></div>
 
 	<!-- Popup for editing question -->
 	<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
@@ -177,6 +175,31 @@ function qsm_options_questions_tab_content() {
 	<?php
 }
 
+
+add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
+add_action( 'wp_ajax_nopriv_qsm_save_pages', 'qsm_ajax_save_pages' );
+
+
+/**
+ * Saves the pages and order from the Questions tab
+ *
+ * @since 5.2.0
+ */
+function qsm_ajax_save_pages() {
+	global $mlwQuizMasterNext;
+	$json = array(
+		'status' => 'error',
+	);
+	$quiz_id = intval( $_POST['quiz_id'] );
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $_POST['pages'] );
+	if ( $response ) {
+		$json['status'] = 'success';
+	}
+	echo wp_json_encode( $json );
+	wp_die();
+}
+
 add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
 add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
 
@@ -191,22 +214,20 @@ function qsm_load_all_quiz_questions_ajax() {
 	global $mlwQuizMasterNext;
 
 	// Loads questions.
-	$questions = $wpdb->get_results( "SELECT {$wpdb->prefix}mlw_questions.question_id, {$wpdb->prefix}mlw_questions.question_name, {$wpdb->prefix}mlw_quizzes.quiz_name FROM {$wpdb->prefix}mlw_questions
-		LEFT JOIN {$wpdb->prefix}mlw_quizzes ON {$wpdb->prefix}mlw_questions.quiz_id={$wpdb->prefix}mlw_quizzes.quiz_id WHERE {$wpdb->prefix}mlw_questions.deleted='0' ORDER BY {$wpdb->prefix}mlw_questions.question_id DESC" );
+	$questions = $wpdb->get_results( "SELECT question_id, question_name FROM {$wpdb->prefix}mlw_questions WHERE deleted = '0' ORDER BY question_id DESC" );
 
 	// Creates question array.
 	$question_json = array();
 	foreach ( $questions as $question ) {
 		$question_json[] = array(
 			'id'       => $question->question_id,
-			'question' => $question->question_name,
-			'quiz'     => $question->quiz_name
+			'question' => $question->question_name
 		);
 	}
 
 	// Echos JSON and dies.
-	echo json_encode( $question_json );
-	die();
+	echo wp_json_encode( $question_json );
+	wp_die();
 }
 
 ?>
