@@ -58,10 +58,10 @@ class QSM_Fields {
       // Update the settings and show alert based on outcome
       $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
       if ( false !== $results ) {
-  			$mlwQuizMasterNext->alertManager->newAlert(__('The settings has been updated successfully.', 'quiz-master-next'), 'success');
-  			$mlwQuizMasterNext->audit_manager->new_audit( "Settings Have Been Edited" );
+  			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
+  			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
   		} else {
-  			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0008'), 'error');
+  			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
   		}
     }
 
