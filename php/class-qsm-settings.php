@@ -205,10 +205,10 @@ class QSM_Quiz_Settings {
 
     $old_value = $this->get_setting( $setting );
 
-    // If the old value and new value are the same, return false
-    if ( $value === $old_value ) {
-      return false;
-    }
+		// If the old value and new value are the same, return false.
+		if ( $value === $old_value ) {
+			return true;
+		}
 
     // Try to serialize the value
     $serialized_value = maybe_serialize( $value );
