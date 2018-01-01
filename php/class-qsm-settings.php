@@ -174,65 +174,68 @@ class QSM_Quiz_Settings {
     }
   }
 
-  /**
-   * Updates a settings value, adding it if it didn't already exist
-   *
-   * @since 5.0.0
-   * @param string $setting The name of the setting whose value we need to retrieve
-   * @param mixed $value The value that needs to be stored for the setting
-   * @return bool True if successful or false if fails
-   */
-  public function update_setting( $setting, $value ) {
+	/**
+	 * Updates a settings value, adding it if it didn't already exist
+	 *
+	 * @since 5.0.0
+	 * @param string $setting The name of the setting whose value we need to retrieve.
+	 * @param mixed  $value The value that needs to be stored for the setting.
+	 * @return bool True if successful or false if fails
+	 */
+	public function update_setting( $setting, $value ) {
 
-    global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext;
 
-    // Return if empty
-    if ( empty( $setting ) ) {
-      return false;
-    }
+		// Return if empty.
+		if ( empty( $setting ) ) {
+			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', 'Setting was empty with value equal to ' . print_r( $value, true ), 0, 'error' );
+			return false;
+		}
 
-    // Check if ID is not set, for backwards compatibility
-    if ( ! $this->quiz_id ) {
-      $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
+		// Check if ID is not set, for backwards compatibility.
+		if ( ! $this->quiz_id ) {
+			$quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
 
-      // If get_id doesn't work, return false
-      if ( ! $quiz_id ) {
-        return false;
-      } else {
-        $this->prepare_quiz( $quiz_id );
-      }
-    }
+			// If get_id doesn't work, return false.
+			if ( ! $quiz_id ) {
+				$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', 'Quiz ID was not found', 0, 'error' );
+				return false;
+			} else {
+				$this->prepare_quiz( $quiz_id );
+			}
+		}
 
-    $old_value = $this->get_setting( $setting );
+		$old_value = $this->get_setting( $setting );
 
 		// If the old value and new value are the same, return false.
 		if ( $value === $old_value ) {
 			return true;
 		}
 
-    // Try to serialize the value
-    $serialized_value = maybe_serialize( $value );
+		// Try to serialize the value.
+		$serialized_value = maybe_serialize( $value );
 
-    // Set the new value
-    $this->settings[ $setting ] = $serialized_value;
+		// Set the new value.
+		$this->settings[ $setting ] = $serialized_value;
 
-    // Update the database
-    global $wpdb;
-    $serialized_settings = serialize( $this->settings );
-    $results = $wpdb->update(
-      $wpdb->prefix . "mlw_quizzes",
-      array( 'quiz_settings' => $serialized_settings ),
-      array( 'quiz_id' => $this->quiz_id ),
-      array( '%s' ),
-      array( '%d' )
-    );
+		// Update the database.
+		global $wpdb;
+		$serialized_settings = serialize( $this->settings );
+		$results = $wpdb->update(
+			$wpdb->prefix . 'mlw_quizzes',
+			array( 'quiz_settings' => $serialized_settings ),
+			array( 'quiz_id' => $this->quiz_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
 
-    if ( ! $results ) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+		if ( false === $results ) {
+			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+			return false;
+		} else {
+			return true;
+		}
+	}
 
   /**
    * Loads the settings for the quiz
