@@ -74,8 +74,9 @@ var QSMQuestion;
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
 			QSMQuestion.questions.each(function( question ) {
-				if ( 0 !== question.get( 'category' ).length ) {
-					QSMQuestion.categories.push( question.get( 'category' ) );
+				var category = question.get( 'category' );
+				if ( 0 !== category.length && ! _.contains( QSMQuestion.categories, category ) ) {
+					QSMQuestion.categories.push( category );
 				}
 			});
 		},
