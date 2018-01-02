@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( "Questions", 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
 add_action( "plugins_loaded", 'qsm_settings_questions_tab', 5 );
 
@@ -28,17 +28,18 @@ function qsm_options_questions_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = intval( $_GET["quiz_id"] );
+	$quiz_id = intval( $_GET['quiz_id'] );
 
 	$json_data = array(
 		'quizID'     => $quiz_id,
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
-		'nonce' => wp_create_nonce( 'wp_rest' ),
-		'pages' => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+		'nonce'      => wp_create_nonce( 'wp_rest' ),
+		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+		'restURL'    => get_rest_url(),
 	);
 
 	// Scripts and styles.
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../js/micromodal.min.js' , __FILE__ ) );
+	wp_enqueue_script( 'micromodal_script', plugins_url( '../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
 	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../css/qsm-admin-question.css', __FILE__ ) );
@@ -250,7 +251,7 @@ function qsm_load_all_quiz_questions_ajax() {
 	foreach ( $questions as $question ) {
 		$question_json[] = array(
 			'id'       => $question->question_id,
-			'question' => $question->question_name
+			'question' => $question->question_name,
 		);
 	}
 

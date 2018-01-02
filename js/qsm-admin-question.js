@@ -304,7 +304,7 @@ var QSMQuestion;
 
 	$(function() {
 		QSMQuestion.questionCollection = Backbone.Collection.extend({
-			url: '/wp-json/quiz-survey-master/v1/questions',
+			url: qsmQuestionSettings.restURL + 'quiz-survey-master/v1/questions',
 			model: QSMQuestion.question
 		});
 		QSMQuestion.questions = new QSMQuestion.questionCollection();
