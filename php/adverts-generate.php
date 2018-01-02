@@ -35,8 +35,7 @@ function mlw_qmn_show_adverts() {
 		}
 		$mlw_advert .= "
 			<style>
-			div.help_decide
-			{
+			div.help_decide {
 				display: block;
 				text-align:center;
 				background: #0d97d8;
@@ -44,8 +43,10 @@ function mlw_qmn_show_adverts() {
 				color: #000;
 				font-weight: bold;
 			}
-			div.help_decide a
-			{
+			div.help_decide p {
+				font-size: 14px;
+			}
+			div.help_decide a {
 				color: yellow;
 			}
 			</style>";
