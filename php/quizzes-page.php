@@ -117,7 +117,7 @@ function qsm_generate_quizzes_surveys_page() {
 		if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
 			?>
 			<div class="qsm-info-box">
-				<p>Your site is using PHP version <?php echo esc_html( PHP_VERSION ); ?>! Starting in QSM 6.0, your version of PHP will no longer be supported. <a href="" target="_blank">Click here to learn more about QSM's minimum PHP version change.</a></p>
+				<p>Your site is using PHP version <?php echo esc_html( PHP_VERSION ); ?>! Starting in QSM 6.0, your version of PHP will no longer be supported. <a href="http://bit.ly/2lyrrm8" target="_blank">Click here to learn more about QSM's minimum PHP version change.</a></p>
 			</div>
 			<?php
 		}
