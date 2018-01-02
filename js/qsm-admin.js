@@ -12,13 +12,13 @@ var QSMQuizzesSurveys;
         });
         $( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
       } else {
-        var template = _.template( $( '#no-quiz-info-tmpl' ).html() );
+        var template = wp.template( 'no-quiz' );
         $( '.qsm-quizzes-page-content' ).hide();
         $( '#new_quiz_button' ).parent().after( template() );
       }
     },
     addQuizRow: function( quizData ) {
-      var template = _.template( $( '#quiz-row-tmpl' ).html() );
+      var template = wp.template( 'quiz-row' );
       var values = {
         'id': quizData.id,
         'name': quizData.name,

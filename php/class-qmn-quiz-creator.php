@@ -316,7 +316,7 @@ class QMNQuizCreator
 				'question_numbering' => 0,
 				'quiz_settings' => '',
 				'theme_selected' => 'primary',
-				'last_activity' => date("Y-m-d H:i:s"),
+				'last_activity' => current_time( 'mysql' ),
 				'require_log_in' => 0,
 				'require_log_in_text' => 'This quiz is for logged in users only.',
 				'limit_total_entries' => 0,
