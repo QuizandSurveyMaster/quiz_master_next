@@ -25,20 +25,50 @@ var QSMQuestion;
 		categories: [],
 		openQuestionBank: function( pageID ) {
 			QSMQuestion.loadQuestionBank();
-			jQuery( '#add-question-bank-page' ).val( pageID );
+			$( '#add-question-bank-page' ).val( pageID );
 			MicroModal.show( 'modal-2' );
 		},
 		loadQuestionBank: function() {
-			// Load questions from endpoint
+			$( '#question-bank' ).empty();
+			$( '#question-bank' ).append( '<div class="qsm-spinner-loader"></div>' );
+			$.ajax( {
+				url: wpApiSettings.root + 'quiz-survey-master/v1/questions',
+				method: 'GET',
+				beforeSend: function ( xhr ) {
+					xhr.setRequestHeader( 'X-WP-Nonce', qsmQuestionSettings.nonce );
+				},
+				data: {
+					'quizID' : 0
+				},
+				success: QSMQuestion.questionBankLoadSuccess
+			});
+		},
+		questionBankLoadSuccess: function( questions ) {
+			$( '#question-bank' ).empty();
+			for ( var i = 0; i < questions.length; i++) {
+				QSMQuestion.addQuestionToQuestionBank( questions[i] );
+			}
+		},
+		addQuestionToQuestionBank: function( question ) {
+			var template = wp.template( 'single-question-bank-question' );
+			$( '#question-bank' ).append( template( { id: question.id, question: question.name } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
 			MicroModal.close( 'modal-2' );
 			QSMQuestion.displayAlert( 'Adding question...', 'info' );
-			// Add question to collection...
-			// Add question to page
+			var model = new QSMQuestion.question( { id: questionID } );
+			model.fetch({ 
+				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+				url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
+				success: QSMQuestion.questionBankSuccess,
+				error: QSMQuestion.displayError
+			});	
 		},
 		questionBankSuccess: function( model ) {
+			var page = parseInt( $( '#add-question-bank-page' ).val(), 10 );
+			model.set( 'page', page );
 			QSMQuestion.displayAlert( 'Question added!', 'success' );
+			QSMQuestion.questions.add( model );
 			QSMQuestion.addQuestionToPage( model );
 		},
 		prepareCategories: function() {
@@ -139,7 +169,7 @@ var QSMQuestion;
 			var count = 0;
 			while ( ! page_exists ) {
 				QSMQuestion.addNewPage();
-				page_exists = $( '.page:nth-child(' + page + ')' );
+				page_exists = $( '.page:nth-child(' + page + ')' ).length;
 				count++;
 				if ( count > 5 ) {
 					page_exists = true;
@@ -304,7 +334,7 @@ var QSMQuestion;
 
 	$(function() {
 		QSMQuestion.questionCollection = Backbone.Collection.extend({
-			url: qsmQuestionSettings.restURL + 'quiz-survey-master/v1/questions',
+			url: wpApiSettings.root + 'quiz-survey-master/v1/questions',
 			model: QSMQuestion.question
 		});
 		QSMQuestion.questions = new QSMQuestion.questionCollection();
@@ -316,6 +346,11 @@ var QSMQuestion;
 		$( '.questions' ).on( 'click', '.new-question-button', function( event ) {
 			event.preventDefault();
 			QSMQuestion.createQuestion( $( this ).parent().index() );
+		});
+		
+		$( '.questions' ).on( 'click', '.add-question-bank-button', function( event ) {
+			event.preventDefault();
+			QSMQuestion.openQuestionBank( $( this ).parent().index() );
 		});
 
 		$( '.questions' ).on( 'click', '.edit-question-button', function( event ) {

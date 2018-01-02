@@ -13,6 +13,36 @@
 class QSM_Questions {
 
 	/**
+	 * Loads single question using question ID
+	 *
+	 * @since 5.2.0
+	 * @param int $question_id The ID of the question.
+	 * @return array The data for the question.
+	 */
+	public static function load_question( $question_id ) {
+		global $wpdb;
+		$question_id = intval( $question_id );
+		$question = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id ), 'ARRAY_A' );
+		if ( ! is_null( $question ) ) {
+			// Prepare answers.
+			$answers = maybe_unserialize( $question['answer_array'] );
+			if ( ! is_array( $answers ) ) {
+				$answers = array();
+			}
+			$question['answers'] = $answers;
+
+			$settings = maybe_unserialize( $question['question_settings'] );
+			if ( ! is_array( $settings ) ) {
+				$settings = array( 'required' => 1 );
+			}
+			$question['settings'] = $settings;
+
+			return $question;
+		}
+		return array();
+	}
+
+	/**
 	 * Loads questions for a quiz using the new page system
 	 *
 	 * @since 5.2.0
@@ -93,7 +123,12 @@ class QSM_Questions {
 		global $wpdb;
 
 		// Get all questions.
-		$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ), 'ARRAY_A' );
+		if ( 0 !== $quiz_id ) {
+			$quiz_id = intval( $quiz_id );
+			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ), 'ARRAY_A' );
+		} else {
+			$questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' ORDER BY question_order ASC", 'ARRAY_A' );
+		}
 
 		// Loop through questions and prepare serialized data.
 		foreach ( $questions as $key => $question ) {

@@ -26,6 +26,48 @@ function qsm_register_rest_routes() {
 		'methods'  => 'PUT',
 		'callback' => 'qsm_rest_save_question',
 	) );
+	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
+		'methods'  => 'GET',
+		'callback' => 'qsm_rest_get_question',
+	) );
+}
+
+/**
+ * Gets a single questions
+ *
+ * @since 5.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array Something.
+ */
+function qsm_rest_get_question( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			$question = QSM_Questions::load_question( $request['id'] );
+			if ( ! empty( $question ) ) {
+				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
+				$question = array(
+					'id'         => $question['question_id'],
+					'quizID'     => $question['quiz_id'],
+					'type'       => $question['question_type_new'],
+					'name'       => esc_js( $question['question_name'] ),
+					'answerInfo' => esc_js( $question['question_answer_info'] ),
+					'comments'   => $question['comments'],
+					'hint'       => esc_js( $question['hints'] ),
+					'category'   => esc_js( $question['category'] ),
+					'required'   => $question['settings']['required'],
+					'answers'    => $question['answers'],
+					'page'       => $question['page'],
+				);
+			}
+			return $question;
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
 }
 
 /**
@@ -40,10 +82,15 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
-			$quiz_id   = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
-			$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
+			$quiz_id = isset( $request['quizID'] ) ? intval( $request['quizID'] ) : 0;
+			if ( 0 !== $quiz_id ) {
+				$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
+			} else {
+				$questions = QSM_Questions::load_questions( 0 );
+			}
 
 			foreach ( $questions as $key => $question ) {
+				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
 				$questions[ $key ] = array(
 					'id'         => $question['question_id'],
 					'quizID'     => $question['quiz_id'],

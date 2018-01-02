@@ -35,7 +35,6 @@ function qsm_options_questions_tab_content() {
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
 		'nonce'      => wp_create_nonce( 'wp_rest' ),
 		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
-		'restURL'    => get_rest_url(),
 	);
 
 	// Scripts and styles.
@@ -179,7 +178,7 @@ function qsm_options_questions_tab_content() {
 	</script>
 
 	<!-- View for question in question bank -->
-	<script type="text/template" id="tmpl-single-category">
+	<script type="text/template" id="tmpl-single-question-bank-question">
 		<div class="question-bank-question" data-question-id="{{data.id}}">
 			<div><a href="#" class="import-button button">Add This Question</a></div>
 			<div><p>{{data.question}}</p></div>
