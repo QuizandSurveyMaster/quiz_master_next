@@ -113,6 +113,15 @@ function qsm_generate_quizzes_surveys_page() {
 	<div class="wrap qsm-quizes-page">
 		<h1><?php _e( 'Quizzes/Surveys', 'quiz-master-next' ); ?><a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a></h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
+		<?php
+		if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
+			?>
+			<div class="qsm-info-box">
+				<p>Your site is using PHP version <?php echo esc_html( PHP_VERSION ); ?>! Starting in QSM 6.0, your version of PHP will no longer be supported. <a href="" target="_blank">Click here to learn more about QSM's minimum PHP version change.</a></p>
+			</div>
+			<?php
+		}
+		?>
 		<div class="qsm-quizzes-page-content">
 			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 				<p class="search-box">

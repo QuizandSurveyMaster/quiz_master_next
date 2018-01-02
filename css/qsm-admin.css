@@ -227,3 +227,26 @@ Help Page
 .quiz_email_support label {
   font-weight: bold;
 }
+
+
+/********************
+Misc.
+*********************/
+
+.qsm-info-box {
+	display: block;
+	text-align:center;
+	background: #0d97d8;
+	border: 5px solid #1DD969;
+	color: #000;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.qsm-info-box p {
+	font-size: 14px;
+}
+
+.qsm-info-box a {
+	color: yellow;
+}
