@@ -137,8 +137,6 @@ class QMNQuizManager {
 			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
 			$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions );
 			$return_display .= $this->display_results( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables );
-		} else {
-			// @todo Do something else here
 		}
 
 		$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables );
