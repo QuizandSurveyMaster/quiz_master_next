@@ -85,6 +85,7 @@ function qsm_options_questions_tab_content() {
 				<main class="qsm-popup__content" id="modal-1-content">
 					<input type="hidden" name="edit_question_id" id="edit_question_id" value="">
 					<div class="qsm-row">
+						<label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
 						<select name="question_type" id="question_type">
 							<?php
 							foreach ( $question_types as $type ) {
@@ -99,10 +100,7 @@ function qsm_options_questions_tab_content() {
 					</div>
 					<div class="qsm-row">
 						<label><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
-						<div class="answer-headers">
-							<div class="answer_points"><?php _e( 'Points Worth', 'quiz-master-next' ); ?></div>
-							<div class="answer_correct"><?php _e( 'Correct Answer', 'quiz-master-next' ); ?></div>
-						</div>
+						<div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
 						<div class="answers" id="answers">
 
 						</div>
@@ -118,11 +116,11 @@ function qsm_options_questions_tab_content() {
 					</div>
 					<div id="comment_area" class="qsm-row">
 						<label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
-						<div>
-							<input type="radio" class="comments-radio" id="commentsRadio1" name="comments" value="0" /><label for="commentsRadio1"><?php _e('Small Text Field', 'quiz-master-next'); ?></label><br>
-							<input type="radio" class="comments-radio" id="commentsRadio3" name="comments" value="2" /><label for="commentsRadio3"><?php _e('Large Text Field', 'quiz-master-next'); ?></label><br>
-							<input type="radio" class="comments-radio" id="commentsRadio2" name="comments" checked="checked" value="1" /><label for="commentsRadio2"><?php _e('None', 'quiz-master-next'); ?></label><br>
-						</div>
+						<select name="comments" id="comments">
+							<option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
+							<option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
+							<option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
+						<select>
 					</div>
 					<div id="required_area" class="qsm-row">
 						<label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
@@ -196,8 +194,8 @@ function qsm_options_questions_tab_content() {
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
 			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
-			<div><input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/></div>
-			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points worth"/></div>
+			<div class="answer-text-div"><input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/></div>
+			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<div><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #></div>
 		</div>
 	</script>

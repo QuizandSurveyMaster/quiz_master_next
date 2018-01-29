@@ -216,7 +216,7 @@ var QSMQuestion;
 			var name = wp.editor.getContent( 'question-text' );
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
-			var comments = $( ".comments-radio:checked" ).val();
+			var comments = $( "#comments" ).val();
 			var required = $( "#required" ).val();
 			var category = $( ".category-radio:checked" ).val();
 			if ( 'new_category' == category ) {
@@ -288,7 +288,7 @@ var QSMQuestion;
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
-			$( ".comments-radio" ).val( [question.get( 'comments' )] );
+			$( "#comments" ).val( question.get( 'comments' ) );
 			$( "#required" ).val( question.get( 'required' ) );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			if ( 0 !== question.get( 'category' ).length ) {

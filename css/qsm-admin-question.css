@@ -44,6 +44,24 @@
 	background-color: yellow !important;
 }
 
+.correct-header {
+	text-align: right;
+}
+
+.answers-single {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.answers-single div {
+    margin-left: 5px;
+}
+
+.answer-text-div {
+	width: 100%;
+}
+
 .qsm-row {
 	display: block;
 	width: 100%;
