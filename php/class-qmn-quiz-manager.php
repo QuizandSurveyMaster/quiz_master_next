@@ -165,6 +165,7 @@ class QMNQuizManager {
 	 * @param bool  $is_quiz_page If the page being loaded is the quiz page or not.
 	 * @param int   $question_amount The amount of questions entered using the shortcode attribute.
 	 * @return array The questions for the quiz
+	 * @deprecated 5.2.0 Use new class: QSM_Questions instead
 	 */
 	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
@@ -200,6 +201,7 @@ class QMNQuizManager {
 	 * @param array $questions The questions for the quiz.
 	 * @param bool  $is_ajax Pass true if this is an ajax call.
 	 * @return array The answers for the quiz
+	 * @deprecated 5.2.0 Use new class: QSM_Questions instead
 	 */
 	public function create_answer_array( $questions, $is_ajax = false ) {
 
@@ -238,22 +240,22 @@ class QMNQuizManager {
 	 * Generates the content for the quiz page part of the shortcode
 	 *
 	 * @since 4.0.0
-	 * @param array $qmn_quiz_options The database row of the quiz.
-	 * @param array $qmn_quiz_questions The questions of the quiz.
-	 * @param array $qmn_quiz_answers The answers of the quiz.
-	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @param array $options The database row of the quiz.
+	 * @param array $questions The questions of the quiz.
+	 * @param array $answers The answers of the quiz.
+	 * @param array $quiz_data The array of results for the quiz.
 	 * @uses QMNQuizManager:display_begin_section() Creates display for beginning section
 	 * @uses QMNQuizManager:display_questions() Creates display for questions
 	 * @uses QMNQuizManager:display_comment_section() Creates display for comment section
 	 * @uses QMNQuizManager:display_end_section() Creates display for end section
 	 * @return string The content for the quiz page section
 	 */
-	public function display_quiz( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables ) {
+	public function display_quiz( $options, $questions, $answers, $quiz_data ) {
 
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
 		$quiz_display = '';
-		$quiz_display = apply_filters( 'qmn_begin_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
+		$quiz_display = apply_filters( 'qmn_begin_quiz', $quiz_display, $options, $quiz_data );
 		if ( ! $qmn_allowed_visit ) {
 			return $quiz_display;
 		}
@@ -265,13 +267,13 @@ class QMNQuizManager {
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
-			'email' => $qmn_quiz_options->email_error_text,
-			'number' => $qmn_quiz_options->number_error_text,
-			'incorrect' => $qmn_quiz_options->incorrect_error_text,
-			'empty' => $qmn_quiz_options->empty_error_text,
+			'email' => $options->email_error_text,
+			'number' => $options->number_error_text,
+			'incorrect' => $options->incorrect_error_text,
+			'empty' => $options->empty_error_text,
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscores', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
@@ -281,36 +283,221 @@ class QMNQuizManager {
 		$mlw_qmn_section_count = 0;
 
 		$quiz_display .= "<div class='qmn_quiz_container mlw_qmn_quiz'>";
-		$quiz_display .= "<form name='quizForm{$qmn_array_for_variables['quiz_id']}' id='quizForm".$qmn_array_for_variables["quiz_id"]."' action='' method='post' class='qmn_quiz_form mlw_quiz_form' novalidate >";
-		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qmn_error_message_section'></div>";
+		$quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='' method='post' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate >";
+		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
-		$quiz_display = apply_filters( 'qmn_begin_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
+		$quiz_display = apply_filters( 'qmn_begin_quiz_form', $quiz_display, $options, $quiz_data );
 
 		// If deprecated pagination setting is not used, use new system...
-		if ( 0 == $qmn_quiz_options->pagination ) {
-			$quiz_display .= $this->display_pages();
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+		if ( 0 == $options->pagination && 0 !== count( $pages ) ) {
+			$quiz_display .= $this->display_pages( $options, $quiz_data );
 		} else {
 			// ... else, use older system.
-			$quiz_display .= $this->display_begin_section( $qmn_quiz_options, $qmn_array_for_variables );
-			$quiz_display = apply_filters( 'qmn_begin_quiz_questions', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$quiz_display .= $this->display_questions( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers );
-			$quiz_display = apply_filters( 'qmn_before_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$quiz_display .= $this->display_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
-			$quiz_display = apply_filters( 'qmn_after_comment_section', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$quiz_display .= $this->display_end_section( $qmn_quiz_options, $qmn_array_for_variables );
+			$quiz_display .= $this->display_begin_section( $options, $quiz_data );
+			$quiz_display = apply_filters( 'qmn_begin_quiz_questions', $quiz_display, $options, $quiz_data );
+			$quiz_display .= $this->display_questions( $options, $questions, $answers );
+			$quiz_display = apply_filters( 'qmn_before_comment_section', $quiz_display, $options, $quiz_data );
+			$quiz_display .= $this->display_comment_section( $options, $quiz_data );
+			$quiz_display = apply_filters( 'qmn_after_comment_section', $quiz_display, $options, $quiz_data );
+			$quiz_display .= $this->display_end_section( $options, $quiz_data );
 		}
 
 		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error_message_section'></div>";
-		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='".$qmn_total_questions."'/>";
+		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='$qmn_total_questions'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
-		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='".$qmn_array_for_variables["quiz_id"]."'/>";
+		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
-		$quiz_display = apply_filters( 'qmn_end_quiz_form', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
-		$quiz_display .= "</form>";
-		$quiz_display .= "</div>";
+		$quiz_display = apply_filters( 'qmn_end_quiz_form', $quiz_display, $options, $quiz_data );
+		$quiz_display .= '</form>';
+		$quiz_display .= '</div>';
 
-		$quiz_display = apply_filters( 'qmn_end_quiz', $quiz_display, $qmn_quiz_options, $qmn_array_for_variables );
+		$quiz_display = apply_filters( 'qmn_end_quiz', $quiz_display, $options, $quiz_data );
 		return $quiz_display;
+	}
+
+	/**
+	 * Creates the pages of content for the quiz/survey
+	 *
+	 * @since 5.2.0
+	 * @param array $options The settings for the quiz.
+	 * @param array $quiz_data The array of quiz data.
+	 * @return string The HTML for the pages
+	 */
+	public function display_pages( $options, $quiz_data ) {
+		global $mlwQuizMasterNext;
+		ob_start();
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
+		$question_list = '';
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) ) {
+			$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
+			$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
+			?>
+			<section class="qsm-page">
+				<div class="quiz_section quiz_begin">
+					<div class='qsm-before-message mlw_qmn_message_before'><?php echo esc_html( $message_before ); ?></div>
+					<?php
+					if ( 0 == $options->contact_info_location ) {
+						echo QSM_Contact_Manager::display_fields( $options );
+					}
+					?>
+				</div>
+			</section>
+			<?php
+		}
+
+		// If there is only one page.
+		if ( 1 == count( $pages ) ) {
+			?>
+			<section class="qsm-page">
+				<?php
+				if ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) {
+					$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
+					$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
+					?>
+					<div class="quiz_section quiz_begin">
+						<div class='qsm-before-message mlw_qmn_message_before'><?php echo esc_html( $message_before ); ?></div>
+						<?php
+						if ( 0 == $options->contact_info_location ) {
+							echo QSM_Contact_Manager::display_fields( $options );
+						}
+						?>
+					</div>
+					<?php
+				}
+				foreach ( $page[0] as $question_id ) {
+					$question_list .= $question_id . 'Q';
+					$question = $questions[ $question_id ];
+					?>
+					<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+						<?php 
+						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
+						if ( 0 == $question['comments'] ) {
+							echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' x-webkit-speech id='mlwComment$question_id' name='mlwComment$question_id' value='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+						}
+						if ( 2 == $question['comments'] ) {
+							echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' onclick='qmnClearField(this)'>" . htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) . "</textarea>";
+						}
+						// Checks if a hint is entered.
+						if ( ! empty( $question['hints'] ) ) {
+							echo '<span title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</span>';
+						}
+						?>
+					</div>
+					<?php
+				}
+				if ( 0 == $options->comment_section ) {
+					$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
+					$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data );
+					?>
+					<div class="quiz_section quiz_begin">
+						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
+						<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
+					</div>
+					<?php
+				}
+				if ( ! empty( $options->message_end_template ) || 1 == $options->contact_info_location ) {
+					$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
+					$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
+					?>
+					<div class="quiz_section">
+						<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+						<?php
+						if ( 1 == $options->contact_info_location ) {
+							echo QSM_Contact_Manager::display_fields( $options );
+						}
+						?>
+					</div>
+					<?php
+				}
+				?>
+			</section>
+			<?php
+		} else {
+			foreach ( $pages as $page ) {
+				?>
+				<section class="qsm-page">
+					<?php
+					foreach ( $page as $question_id ) {
+						$question_list .= $question_id . 'Q';
+						$question = $questions[ $question_id ];
+						?>
+						<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+							<?php 
+							echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
+							if ( 0 == $question['comments'] ) {
+								echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' x-webkit-speech id='mlwComment$question_id' name='mlwComment$question_id' value='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+							}
+							if ( 2 == $question['comments'] ) {
+								echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' onclick='qmnClearField(this)'>" . htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) . "</textarea>";
+							}
+							// Checks if a hint is entered.
+							if ( ! empty( $question['hints'] ) ) {
+								echo '<span title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</span>';
+							}
+							?>
+						</div>
+						<?php
+					}
+					?>
+				</section>
+				<?php
+			}
+			?>
+			<!-- View for pagination -->
+			<script type="text/template" id="tmpl-qsm-pagination">
+				<div class="qsm-pagination qmn_pagination border margin-bottom">
+					<input type="hidden" value="0" name="slide_number" class="slide_number_hidden" />
+					<input type="hidden" value="0" name="current_page" class="current_page_hidden" />
+					<input type="hidden" value="' + qmn_total_pages + '" name="total_pages" class="total_pages_hidden" />
+					<input type="hidden" value="' + qmn_section_total + '" name="total_sections" class="total_sections_hidden" />
+					<input type="hidden" value="0" name="previous_amount" class="previous_amount_hidden" />
+					<a class="qsm-btn qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">' + qmn_quiz_data[quiz_id].pagination.previous_text + '</a>
+					<span class="qmn_page_message"></span>
+					<div class="qmn_page_counter_message"></div>
+					<a class="qsm-btn qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>
+				</div>
+			</script>
+			<?php
+		}
+
+		if ( count( $pages ) > 1 && 0 == $options->comment_section ) {
+			$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
+			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data );
+			?>
+			<section class="qsm-page">
+				<div class="quiz_section quiz_begin">
+					<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
+					<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
+				</div>
+			</section>
+			<?php
+		}
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || 1 == $options->contact_info_location ) ) {
+			$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
+			$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
+			?>
+			<section class="qsm-page">
+				<div class="quiz_section">
+					<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+					<?php
+					if ( 1 == $options->contact_info_location ) {
+						echo QSM_Contact_Manager::display_fields( $options );
+					}
+					?>
+				</div>
+				<?php
+				// Legacy code.
+				do_action( 'mlw_qmn_end_quiz_section' );
+				?>
+			</section>
+			<?php
+		}
+		?>
+		<input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
+		<?php
+		return ob_get_clean();
 	}
 
 	/**
@@ -322,6 +509,7 @@ class QMNQuizManager {
 	 * @param array $qmn_quiz_options The database row of the quiz.
 	 * @param array $qmn_array_for_variables The array of results for the quiz.
 	 * @return string The content for the beginning section
+	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_begin_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$section_display = '';
@@ -357,6 +545,7 @@ class QMNQuizManager {
 	 * @param array $qmn_quiz_answers The answers of the quiz.
 	 * @uses QMNPluginHelper:display_question() Displays a question
 	 * @return string The content for the questions section
+	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_questions( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers ) {
 		$question_display = '';
@@ -400,6 +589,7 @@ class QMNQuizManager {
 	 * @param array $qmn_quiz_options The database row of the quiz.
 	 * @param array $qmn_array_for_variables The array of results for the quiz.
 	 * @return string The content for the comment section
+	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;
@@ -425,6 +615,7 @@ class QMNQuizManager {
 	 * @param array $qmn_quiz_options The database row of the quiz.
 	 * @param array $qmn_array_for_variables The array of results for the quiz.
 	 * @return string The content for the end section
+	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_end_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;

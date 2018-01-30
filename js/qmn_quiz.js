@@ -2,6 +2,39 @@
  * Quiz And Survey Master 
  *************************/
 
+/**************************
+ * This object is the newer functions. All global functions under are slowing 
+ * being deprecated and replaced with rewritten newer functions
+ **************************/
+var QSM;
+(function ($) {
+	QSM = {
+		/**
+		 * Sets up pagination for a quiz
+		 * 
+		 * @param int quizID The ID of the quiz.
+		 */
+		initPagination: function( quizID ) {
+
+			// Gets the form element as a jQuery object
+			$quizForm = jQuery( '#quizForm' + quizID );
+
+			$quizForm.children( '.qsm-page' ).hide();
+			template = wp.template( 'qsm-pagination' );
+			$quizForm.append( template() );
+			QSM.nextPage( quizID );
+		},
+		nextPage: function( quizID ) {
+
+		}
+	};
+
+	// On load code
+	$(function() {
+
+	});
+}(jQuery));
+
 // Global Variables
 var qmn_timer_activated = false;
 var qsmTitleText = window.document.title;
@@ -403,7 +436,7 @@ function qmnUpdatePageNumber( amount, quiz_form_id ) {
 	var current_page = +jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.current_page_hidden' ).val();
 	var total_pages = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.total_pages_hidden' ).val();
 	current_page += amount;
-	jQuery( quiz_form_id + " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
+	jQuery( quiz_form_id ).siblings( '.qmn_pagination' ).find( " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
 }
 
 function qmnInitPagination( quiz_id ) {

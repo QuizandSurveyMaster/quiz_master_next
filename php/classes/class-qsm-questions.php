@@ -79,28 +79,30 @@ class QSM_Questions {
 			$question_sql = implode( ', ', $question_ids );
 
 			// Get all questions.
-			$questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql)", 'ARRAY_A' );
+			$question_array = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql)", 'ARRAY_A' );
 
 			// Loop through questions and prepare serialized data.
-			foreach ( $questions as $key => $question ) {
+			foreach ( $question_array as $question ) {
 
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {
 					$answers = array();
 				}
-				$questions[ $key ]['answers'] = $answers;
+				$question['answers'] = $answers;
 
 				// Prepares settings.
 				$settings = maybe_unserialize( $question['question_settings'] );
 				if ( ! is_array( $settings ) ) {
 					$settings = array( 'required' => 1 );
 				}
-				$questions[ $key ]['settings'] = $settings;
+				$question['settings'] = $settings;
 
 				// Get the page.
-				$question_id               = intval( $question['question_id'] );
-				$questions[ $key ]['page'] = intval( $page_for_ids[ $question_id ] );
+				$question_id      = intval( $question['question_id'] );
+				$question['page'] = intval( $page_for_ids[ $question_id ] );
+
+				$questions[ $question_id ] = $question;
 			}
 		} else {
 			// If we do not have pages on this quiz yet, use older load_questions and add page to them.
@@ -120,7 +122,9 @@ class QSM_Questions {
 	 * @return array The array of questions.
 	 */
 	public static function load_questions( $quiz_id ) {
+
 		global $wpdb;
+		$question_array = array();
 
 		// Get all questions.
 		if ( 0 !== $quiz_id ) {
@@ -131,22 +135,24 @@ class QSM_Questions {
 		}
 
 		// Loop through questions and prepare serialized data.
-		foreach ( $questions as $key => $question ) {
+		foreach ( $questions as $question ) {
 
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
 				$answers = array();
 			}
-			$questions[ $key ]['answers'] = $answers;
+			$question['answers'] = $answers;
 
 			$settings = maybe_unserialize( $question['question_settings'] );
 			if ( ! is_array( $settings ) ) {
 				$settings = array( 'required' => 1 );
 			}
-			$questions[ $key ]['settings'] = $settings;
+			$question['settings'] = $settings;
+
+			$question_array[ $question['question_id'] ] = $question;
 		}
-		return $questions;
+		return $question_array;
 	}
 
 	/**

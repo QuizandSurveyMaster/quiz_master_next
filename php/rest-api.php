@@ -89,9 +89,10 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$questions = QSM_Questions::load_questions( 0 );
 			}
 
-			foreach ( $questions as $key => $question ) {
+			$question_array = array();
+			foreach ( $questions as $question ) {
 				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
-				$questions[ $key ] = array(
+				$question_array[] = array(
 					'id'         => $question['question_id'],
 					'quizID'     => $question['quiz_id'],
 					'type'       => $question['question_type_new'],
@@ -105,7 +106,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'page'       => $question['page'],
 				);
 			}
-			return $questions;
+			return $question_array;
 		}
 	}
 	return array(
