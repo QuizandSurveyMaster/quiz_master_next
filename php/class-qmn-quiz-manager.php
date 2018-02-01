@@ -273,7 +273,7 @@ class QMNQuizManager {
 			'empty' => $options->empty_error_text,
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscores', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
@@ -366,7 +366,7 @@ class QMNQuizManager {
 					</div>
 					<?php
 				}
-				foreach ( $page[0] as $question_id ) {
+				foreach ( $pages[0] as $question_id ) {
 					$question_list .= $question_id . 'Q';
 					$question = $questions[ $question_id ];
 					?>
@@ -444,22 +444,6 @@ class QMNQuizManager {
 				</section>
 				<?php
 			}
-			?>
-			<!-- View for pagination -->
-			<script type="text/template" id="tmpl-qsm-pagination">
-				<div class="qsm-pagination qmn_pagination border margin-bottom">
-					<input type="hidden" value="0" name="slide_number" class="slide_number_hidden" />
-					<input type="hidden" value="0" name="current_page" class="current_page_hidden" />
-					<input type="hidden" value="' + qmn_total_pages + '" name="total_pages" class="total_pages_hidden" />
-					<input type="hidden" value="' + qmn_section_total + '" name="total_sections" class="total_sections_hidden" />
-					<input type="hidden" value="0" name="previous_amount" class="previous_amount_hidden" />
-					<a class="qsm-btn qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">' + qmn_quiz_data[quiz_id].pagination.previous_text + '</a>
-					<span class="qmn_page_message"></span>
-					<div class="qmn_page_counter_message"></div>
-					<a class="qsm-btn qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>
-				</div>
-			</script>
-			<?php
 		}
 
 		if ( count( $pages ) > 1 && 0 == $options->comment_section ) {
@@ -495,6 +479,16 @@ class QMNQuizManager {
 			<?php
 		}
 		?>
+		<!-- View for pagination -->
+		<script type="text/template" id="tmpl-qsm-pagination">
+			<div class="qsm-pagination qmn_pagination border margin-bottom">
+				<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
+				<span class="qmn_page_message"></span>
+				<div class="qmn_page_counter_message"></div>
+				<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
+				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( htmlspecialchars_decode( $options->submit_button_text, ENT_QUOTES ) ); ?>' />
+			</div>
+		</script>
 		<input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
 		<?php
 		return ob_get_clean();
