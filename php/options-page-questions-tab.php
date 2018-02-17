@@ -156,8 +156,14 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">
 		<div class="page page-new">
-			<a href="#" class="new-question-button button">Create New Question</a>
-			<a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
+			<div class="page-header">
+				<div><span class="dashicons dashicons-move"></span></div>
+				<div class="page-header-buttons">
+					<a href="#" class="new-question-button button">Create New Question</a>
+					<a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
+				</div>
+				<div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
+			</div>
 		</div>
 	</script>
 

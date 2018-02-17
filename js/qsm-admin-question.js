@@ -151,6 +151,7 @@ var QSMQuestion;
 			var template = wp.template( 'page' );
 			$( '.questions' ).append( template() );
 			$( '.page' ).sortable({
+				items: '.question',
 				opacity: 70,
 				cursor: 'move',
 				placeholder: "ui-state-highlight",
@@ -346,12 +347,12 @@ var QSMQuestion;
 
 		$( '.questions' ).on( 'click', '.new-question-button', function( event ) {
 			event.preventDefault();
-			QSMQuestion.createQuestion( $( this ).parent().index() );
+			QSMQuestion.createQuestion( $( this ).parents( '.page' ).index() );
 		});
 		
 		$( '.questions' ).on( 'click', '.add-question-bank-button', function( event ) {
 			event.preventDefault();
-			QSMQuestion.openQuestionBank( $( this ).parent().index() );
+			QSMQuestion.openQuestionBank( $( this ).parents( '.page' ).index() );
 		});
 
 		$( '.questions' ).on( 'click', '.edit-question-button', function( event ) {
@@ -366,6 +367,10 @@ var QSMQuestion;
 		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
 			event.preventDefault();
 			$( this ).parents( '.question' ).remove();
+		});
+		$( '.questions' ).on( 'click', '.delete-page-button', function( event ) {
+			event.preventDefault();
+			$( this ).parents( '.page' ).remove();
 		});
 		$( '#answers' ).on( 'click', '.delete-answer-button', function( event ) {
 			event.preventDefault();
@@ -397,6 +402,7 @@ var QSMQuestion;
 			placeholder: "ui-state-highlight"
 		});
 		$( '.page' ).sortable({
+			items: '.question',
 			opacity: 70,
 			cursor: 'move',
 			placeholder: "ui-state-highlight",
