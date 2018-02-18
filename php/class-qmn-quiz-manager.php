@@ -132,9 +132,7 @@ class QMNQuizManager {
 
 		// Check if we should be showing quiz or results page.
 		if ( $qmn_allowed_visit && ! isset( $_POST["complete_quiz"] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
-			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, true, $question_amount );
-			$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions );
-			$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_quiz_questions, $qmn_quiz_answers, $qmn_array_for_variables );
+			$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_array_for_variables, $question_amount );
 		} elseif ( isset( $_POST["complete_quiz"] ) && 'confirmation' == $_POST["complete_quiz"] && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] ) {
 			$qmn_quiz_questions = $this->load_questions( $quiz, $qmn_quiz_options, false );
 			$qmn_quiz_answers = $this->create_answer_array( $qmn_quiz_questions );
@@ -171,6 +169,8 @@ class QMNQuizManager {
 
 		// Prepare variables.
 		global $wpdb;
+		global $mlwQuizMasterNext;
+		$questions = array();
 		$order_by_sql = 'ORDER BY question_order ASC';
 		$limit_sql = '';
 
@@ -188,8 +188,25 @@ class QMNQuizManager {
 			}
 		}
 
+		// If using newer pages system from 5.2.
+		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+		// Get all question IDs needed.
+		$total_pages = count( $pages );
+		if ( $total_pages > 0 ) {
+			for ( $i = 0; $i < $total_pages; $i++ ) {
+				foreach ( $pages[ $i ] as $question ) {
+					$question_ids[] = intval( $question );
+				}
+			}
+			$question_sql = implode( ', ', $question_ids );
+			$questions = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id IN ($question_sql) " . $order_by_sql . $limit_sql );
+		} else {
+			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
+		}
+		
+
 		// Returns an array of all the loaded questions.
-		return $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
+		return $questions;
 	}
 
 	/**
@@ -241,8 +258,6 @@ class QMNQuizManager {
 	 *
 	 * @since 4.0.0
 	 * @param array $options The database row of the quiz.
-	 * @param array $questions The questions of the quiz.
-	 * @param array $answers The answers of the quiz.
 	 * @param array $quiz_data The array of results for the quiz.
 	 * @uses QMNQuizManager:display_begin_section() Creates display for beginning section
 	 * @uses QMNQuizManager:display_questions() Creates display for questions
@@ -250,7 +265,7 @@ class QMNQuizManager {
 	 * @uses QMNQuizManager:display_end_section() Creates display for end section
 	 * @return string The content for the quiz page section
 	 */
-	public function display_quiz( $options, $questions, $answers, $quiz_data ) {
+	public function display_quiz( $options, $quiz_data, $question_amount ) {
 
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
@@ -290,10 +305,12 @@ class QMNQuizManager {
 
 		// If deprecated pagination setting is not used, use new system...
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-		if ( 0 == $options->pagination && 0 !== count( $pages ) ) {
+		if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && 0 !== count( $pages ) ) {
 			$quiz_display .= $this->display_pages( $options, $quiz_data );
 		} else {
 			// ... else, use older system.
+			$questions = $this->load_questions( $quiz_data['quiz_id'], $options, true, $question_amount );
+			$answers = $this->create_answer_array( $questions );
 			$quiz_display .= $this->display_begin_section( $options, $quiz_data );
 			$quiz_display = apply_filters( 'qmn_begin_quiz_questions', $quiz_display, $options, $quiz_data );
 			$quiz_display .= $this->display_questions( $options, $questions, $answers );
