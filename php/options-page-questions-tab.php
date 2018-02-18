@@ -31,10 +31,10 @@ function qsm_options_questions_tab_content() {
 	$quiz_id = intval( $_GET['quiz_id'] );
 
 	$json_data = array(
-		'quizID'     => $quiz_id,
-		'answerText' => __( 'Answer', 'quiz-master-next' ),
-		'nonce'      => wp_create_nonce( 'wp_rest' ),
-		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+		'quizID'         => $quiz_id,
+		'answerText'     => __( 'Answer', 'quiz-master-next' ),
+		'nonce'          => wp_create_nonce( 'wp_rest' ),
+		'pages'          => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
 	);
 
 	// Scripts and styles.
@@ -48,6 +48,32 @@ function qsm_options_questions_tab_content() {
 
 	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+
+	// Display warning if using competing options.
+	$pagination = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' );
+	if ( 0 != $pagination ) {
+		?>
+		<div class="notice notice-warning">
+			<p>This quiz has the "How many questions per page would you like?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.</p>
+		</div>
+		<?php
+	}
+	$from_total = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'question_from_total' );
+	if ( 0 != $from_total ) {
+		?>
+		<div class="notice notice-warning">
+			<p>This quiz has the "How many questions should be loaded for quiz?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.</p>
+		</div>
+		<?php
+	}
+	$randomness = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'randomness_order' );
+	if ( 0 != $randomness ) {
+		?>
+		<div class="notice notice-warning">
+			<p>This quiz has the "Are the questions random?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to "No".</p>
+		</div>
+		<?php
+	}
 	?>
 	<div class="questions-messages"></div>
 	<a href="#" class="new-page-button button">Create New Page</a>
