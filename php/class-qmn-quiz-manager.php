@@ -336,7 +336,7 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page">
 				<div class="quiz_section quiz_begin">
-					<div class='qsm-before-message mlw_qmn_message_before'><?php echo esc_html( $message_before ); ?></div>
+					<div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
 					<?php
 					if ( 0 == $options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $options );
@@ -357,7 +357,7 @@ class QMNQuizManager {
 					$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
 					?>
 					<div class="quiz_section quiz_begin">
-						<div class='qsm-before-message mlw_qmn_message_before'><?php echo esc_html( $message_before ); ?></div>
+						<div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
 						<?php
 						if ( 0 == $options->contact_info_location ) {
 							echo QSM_Contact_Manager::display_fields( $options );
@@ -402,7 +402,7 @@ class QMNQuizManager {
 					$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 					?>
 					<div class="quiz_section">
-						<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+						<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
 						<?php
 						if ( 1 == $options->contact_info_location ) {
 							echo QSM_Contact_Manager::display_fields( $options );
@@ -452,7 +452,7 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page">
 				<div class="quiz_section quiz_begin">
-					<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
+					<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
 					<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 				</div>
 			</section>
@@ -464,7 +464,7 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page">
 				<div class="quiz_section">
-					<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+					<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
 					<?php
 					if ( 1 == $options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $options );
