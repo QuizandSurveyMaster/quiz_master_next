@@ -286,21 +286,20 @@ border: 1px solid #e3e3e3;
 
 .qmn_pagination {
   position: relative;
-  display: block;
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
   padding: 15px 0 15px 0;
   border-top: 1px solid #f3f3f3;
 }
 
-.mlw_previous,
-.mlw_next {
-  position: absolute;
-  top: 15px;
-  font-size: 14px;
-  text-transform: uppercase;
+@media screen and (min-width: 500px) {
+	.qmn_pagination {
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: row;
+	}
 }
-
-.mlw_previous { left: 0; }
-.mlw_next { right: 0; }
 
 .qmn_page_counter_message {
   font-size: 14px;
@@ -401,7 +400,6 @@ border: 1px solid #e3e3e3;
   .mlw_next,
   .qmn_page_counter_message {
     display: inline-block;
-    max-width: 100px;
     text-align: center;
     position: relative;
     top: 0;
