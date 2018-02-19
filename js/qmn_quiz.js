@@ -72,7 +72,9 @@ var QSM;
 			QSM.goToPage( quizID, page );
 		},
 		nextPage: function( quizID ) {
-			QSM.changePage( quizID, 1 );
+			if ( qmnValidatePage( 'quizForm' + quizID ) ) {
+				QSM.changePage( quizID, 1 );
+			}			
 		},
 		prevPage: function( quizID ) {
 			QSM.changePage( quizID, -1 );
