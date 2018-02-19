@@ -394,7 +394,29 @@ var QSMQuestion;
 		$( '.save-page-button' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMQuestion.savePages();
-		});		
+		});
+
+		// Adds event handlers for searching questions
+		$( '#question_search' ).on( 'keyup', function() {
+			$( '.question' ).each(function() {
+				if ( $(this).text().toLowerCase().indexOf( $( '#question_search' ).val().toLowerCase()) === -1 ) {
+					$(this).hide();
+				} else {
+					$(this).show();
+				}
+			});
+			$( '.page' ).each(function() {
+				if ( 0 === $(this).children( '.question:visible' ).length ) {
+					$(this).hide();
+				} else {
+					$(this).show();
+				}
+			});
+			if ( 0 === $( '#question_search' ).val().length ) {
+				$( '.page' ).show();
+				$( '.question' ).show();
+			}
+		});
 
 		$( '.questions' ).sortable({
 			opacity: 70,

@@ -78,6 +78,11 @@ function qsm_options_questions_tab_content() {
 	<div class="questions-messages"></div>
 	<a href="#" class="new-page-button button">Create New Page</a>
 	<a href="#" class="save-page-button button-primary">Save Questions</a>
+	<p class="search-box">
+		<label class="screen-reader-text" for="question_search">Search Questions:</label>
+		<input type="search" id="question_search" name="question_search" value="">
+		<a href="#" class="button">Search Questions</a>
+	</p>
 	<div class="questions"></div>
 
 	<!-- Popup for question bank -->
