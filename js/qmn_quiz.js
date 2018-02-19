@@ -2,6 +2,119 @@
  * Quiz And Survey Master 
  *************************/
 
+/**************************
+ * This object is the newer functions. All global functions under are slowing 
+ * being deprecated and replaced with rewritten newer functions
+ **************************/
+var QSM;
+(function ($) {
+	QSM = {
+		init: function() {
+			_.each( qmn_quiz_data, function( quiz ) {
+				quizID = parseInt( quiz.quiz_id );
+				QSM.initPagination( quizID );
+			});
+		},
+		/**
+		 * Sets up pagination for a quiz
+		 * 
+		 * @param int quizID The ID of the quiz.
+		 */
+		initPagination: function( quizID ) {
+			$quizForm = QSM.getQuizForm( quizID );
+			if ( 0 < $quizForm.children( '.qsm-page' ).length ) {
+				$quizForm.children( '.qsm-page' ).hide();
+				template = wp.template( 'qsm-pagination' );
+				$quizForm.append( template() );
+				QSM.goToPage( quizID, 1 );
+				$quizForm.find( '.qsm-pagination .qsm-next' ).on( 'click', function( event ) {
+					event.preventDefault();
+					QSM.nextPage( quizID );
+				});
+				$quizForm.find( '.qsm-pagination .qsm-previous' ).on( 'click', function( event ) {
+					event.preventDefault();
+					QSM.prevPage( quizID );
+				});
+			}			
+		},
+		/**
+		 * Navigates quiz to specific page
+		 *
+		 * @param int pageNumber The number of the page
+		 */
+		goToPage: function( quizID, pageNumber ) {
+			var $quizForm = QSM.getQuizForm( quizID );
+			var $pages = $quizForm.children( '.qsm-page' );
+			$pages.hide();
+			$quizForm.children( '.qsm-page:nth-of-type(' + pageNumber + ')' ).show();
+			$quizForm.find( '.qsm-previous' ).hide();
+			$quizForm.find( '.qsm-next' ).hide();
+			$quizForm.find( '.qsm-submit-btn' ).hide();
+			if ( pageNumber < $pages.length ) {
+				$quizForm.find( '.qsm-next' ).show();
+			} else {
+				$quizForm.find( '.qsm-submit-btn' ).show();
+			}
+			if ( 1 < pageNumber ) {
+				$quizForm.find( '.qsm-previous' ).show();
+			}
+			QSM.savePage( quizID, pageNumber );
+		},
+		/**
+		 * Moves forward or backwards through the pages
+		 *
+		 * @param int quizID The ID of the quiz
+		 * @param int difference The number of pages to forward or back
+		 */
+		changePage: function( quizID, difference ) {
+			var page = QSM.getPage( quizID );
+			page += difference;
+			QSM.goToPage( quizID, page );
+		},
+		nextPage: function( quizID ) {
+			if ( qmnValidatePage( 'quizForm' + quizID ) ) {
+				QSM.changePage( quizID, 1 );
+			}			
+		},
+		prevPage: function( quizID ) {
+			QSM.changePage( quizID, -1 );
+		},
+		savePage: function( quizID, pageNumber ) {
+			sessionStorage.setItem( 'quiz' + quizID + 'page', pageNumber );
+		},
+		getPage: function( quizID ) {
+			pageNumber = parseInt( sessionStorage.getItem( 'quiz' + quizID + 'page' ) );
+			if ( isNaN( pageNumber ) || null == pageNumber ) {
+				pageNumber = 1;
+			}
+			return pageNumber;
+		},
+		/**
+		 * Scrolls to the top of supplied element
+		 *
+		 * @param jQueryObject The jQuery version of an element. i.e. $('#quizForm3')
+		 */
+		scrollTo: function( $element ) {
+			jQuery( 'html, body' ).animate( 
+				{ 
+					scrollTop: $element.offset().top - 150
+				}, 
+			1000 );
+		},
+		/**
+		 * Gets the jQuery object of the quiz form
+		 */
+		getQuizForm: function( quizID ) {
+			return $( '#quizForm' + quizID );
+		}
+	};
+
+	// On load code
+	$(function() {
+		QSM.init();
+	});
+}(jQuery));
+
 // Global Variables
 var qmn_timer_activated = false;
 var qsmTitleText = window.document.title;
@@ -403,7 +516,7 @@ function qmnUpdatePageNumber( amount, quiz_form_id ) {
 	var current_page = +jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.current_page_hidden' ).val();
 	var total_pages = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.total_pages_hidden' ).val();
 	current_page += amount;
-	jQuery( quiz_form_id + " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
+	jQuery( quiz_form_id ).siblings( '.qmn_pagination' ).find( " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
 }
 
 function qmnInitPagination( quiz_id ) {

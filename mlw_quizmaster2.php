@@ -138,6 +138,7 @@ class MLWQuizMasterNext {
 			include( "php/class-qmn-tracking.php" );
 			include( "php/class-qmn-review-message.php" );
 		}
+		include( 'php/classes/class-qsm-questions.php' );
 		include( "php/class-qsm-contact-manager.php" );
 		include( "php/class-qmn-quiz-manager.php" );
 
@@ -160,6 +161,8 @@ class MLWQuizMasterNext {
 
 		include( "php/class-qsm-settings.php" );
 		$this->quiz_settings = new QSM_Quiz_Settings();
+
+		include 'php/rest-api.php';
 	}
 
 	/**
