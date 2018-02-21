@@ -89,15 +89,15 @@ class QMNQuizManager {
 		// Loads Quiz Template.
 		if ( 'default' == $qmn_quiz_options->theme_selected ) {
 			$return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_style . '</style>';
-			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../css/qmn_quiz.css', __FILE__ ) );
+			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../../css/qmn_quiz.css', __FILE__ ) );
 		} else {
 			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
 			// Check direct file first, then check templates folder in plugin, then check templates file in theme.
 			// If all fails, then load custom styling instead.
 			if ( $registered_template && file_exists( $registered_template['path'] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version );
-			} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ) . '../templates/' . $registered_template['path'] ) ) {
-				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
+			} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ) . '../../templates/' . $registered_template['path'] ) ) {
+				wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
 			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 			} else {
@@ -288,7 +288,7 @@ class QMNQuizManager {
 			'empty' => $options->empty_error_text,
 		);
 
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qmn_quiz', plugins_url( '../../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
 		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
 		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 

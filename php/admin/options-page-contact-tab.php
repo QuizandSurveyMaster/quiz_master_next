@@ -28,9 +28,9 @@ function qsm_options_contact_tab_content() {
 
   $contact_form = QSM_Contact_Manager::load_fields();
 
-  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
+  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ) );
   wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id ) );
-  wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../css/qsm-admin-contact.css' , __FILE__ ) );
+  wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ) );
 
   /**
    * Example contact form array

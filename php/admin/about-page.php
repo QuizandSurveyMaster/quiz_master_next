@@ -11,12 +11,12 @@ function mlw_generate_about_page() {
 
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ), array(), '5.1.0' );
-	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../js/admin.js' , __FILE__ ), array( 'jquery' ), '5.1.0' );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ), array(), $version );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js' , __FILE__ ), array( 'jquery' ), $version );
 	?>
 	<style>
 		div.qsm_icon_wrap {
-			background: <?php echo 'url("' . plugins_url( '../assets/icon-128x128.png', __FILE__ ) . '" )'; ?> no-repeat;
+			background: <?php echo 'url("' . plugins_url( '../../assets/icon-128x128.png', __FILE__ ) . '" )'; ?> no-repeat;
 		}
 	</style>
 	<div class="wrap about-wrap">
