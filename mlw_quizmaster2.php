@@ -10,9 +10,12 @@
  *
  * @author Frank Corso
  * @version 5.1.7
+ * @package QSM
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
@@ -81,98 +84,98 @@ class MLWQuizMasterNext {
 	public $quiz_settings;
 
 	/**
-	  * Main Construct Function
-	  *
-	  * Call functions within class
-	  *
-	  * @since 3.6.1
-	  * @uses MLWQuizMasterNext::load_dependencies() Loads required filed
-	  * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
-	  * @return void
-	  */
+	 * Main Construct Function
+	 *
+	 * Call functions within class
+	 *
+	 * @since 3.6.1
+	 * @uses MLWQuizMasterNext::load_dependencies() Loads required filed
+	 * @uses MLWQuizMasterNext::add_hooks() Adds actions to hooks and filters
+	 * @return void
+	 */
 	public function __construct() {
 		$this->load_dependencies();
 		$this->add_hooks();
 	}
 
 	/**
-	  * Load File Dependencies
-	  *
-	  * @since 3.6.1
-	  * @return void
-	  */
+	 * Load File Dependencies
+	 *
+	 * @since 3.6.1
+	 * @return void
+	 */
 	private function load_dependencies() {
 
-		include( "php/class-qsm-install.php" );
-		include( "php/class-qsm-fields.php" );
+		include 'php/classes/class-qsm-install.php';
+		include 'php/classes/class-qsm-fields.php';
 
-		include( "php/class-qmn-log-manager.php" );
-		$this->log_manager = new QMN_Log_Manager;
+		include 'php/classes/class-qmn-log-manager.php';
+		$this->log_manager = new QMN_Log_Manager();
 
-		include( "php/class-qsm-audit.php" );
+		include 'php/classes/class-qsm-audit.php';
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
-			include( "php/stats-page.php" );
-			include( "php/quizzes-page.php" );
-			include( "php/quiz-options-page.php" );
-			include( "php/admin-results-page.php" );
-			include( "php/admin-results-details-page.php" );
-			include( "php/tools-page.php" );
-			include( "php/class-qsm-changelog-generator.php" );
-			include( "php/about-page.php" );
-			include( "php/help-page.php" );
-			include( "php/dashboard-widgets.php" );
-			include( "php/options-page-questions-tab.php" );
-			include("php/options-page-contact-tab.php");
-			include( "php/options-page-text-tab.php" );
-			include( "php/options-page-option-tab.php" );
-			include( "php/options-page-leaderboard-tab.php" );
-			include( "php/options-page-email-tab.php" );
-			include( "php/options-page-results-page-tab.php" );
-			include( "php/options-page-style-tab.php" );
-			include( "php/options-page-tools-tab.php" );
-			include( "php/options-page-preview-tab.php" );
-			include( "php/addons-page.php" );
-			include( "php/settings-page.php" );
-			include( "php/class-qmn-tracking.php" );
-			include( "php/class-qmn-review-message.php" );
+			include 'php/admin/stats-page.php';
+			include 'php/admin/quizzes-page.php';
+			include 'php/admin/quiz-options-page.php';
+			include 'php/admin/admin-results-page.php';
+			include 'php/admin/admin-results-details-page.php';
+			include 'php/admin/tools-page.php';
+			include 'php/classes/class-qsm-changelog-generator.php';
+			include 'php/admin/about-page.php';
+			include 'php/admin/help-page.php';
+			include 'php/admin/dashboard-widgets.php';
+			include 'php/admin/options-page-questions-tab.php';
+			include 'php/admin/options-page-contact-tab.php';
+			include 'php/admin/options-page-text-tab.php';
+			include 'php/admin/options-page-option-tab.php';
+			include 'php/admin/options-page-leaderboard-tab.php';
+			include 'php/admin/options-page-email-tab.php';
+			include 'php/admin/options-page-results-page-tab.php';
+			include 'php/admin/options-page-style-tab.php';
+			include 'php/admin/options-page-tools-tab.php';
+			include 'php/admin/options-page-preview-tab.php';
+			include 'php/admin/addons-page.php';
+			include 'php/admin/settings-page.php';
+			include 'php/classes/class-qmn-tracking.php';
+			include 'php/classes/class-qmn-review-message.php';
 		}
-		include( 'php/classes/class-qsm-questions.php' );
-		include( "php/class-qsm-contact-manager.php" );
-		include( "php/class-qmn-quiz-manager.php" );
+		include 'php/classes/class-qsm-questions.php';
+		include 'php/classes/class-qsm-contact-manager.php';
+		include 'php/classes/class-qmn-quiz-manager.php';
 
-		include( "php/leaderboard-shortcode.php" );
-		include( "php/widgets.php" );
-		include( "php/template-variables.php" );
-		include( "php/adverts-generate.php" );
-		include( "php/question-types.php" );
-		include( "php/default-templates.php" );
-		include( "php/shortcodes.php" );
+		include 'php/leaderboard-shortcode.php';
+		include 'php/widgets.php';
+		include 'php/template-variables.php';
+		include 'php/adverts-generate.php';
+		include 'php/question-types.php';
+		include 'php/default-templates.php';
+		include 'php/shortcodes.php';
 
-		include( "php/class-qmn-alert-manager.php" );
+		include 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();
 
-		include( "php/class-qmn-quiz-creator.php" );
+		include 'php/classes/class-qmn-quiz-creator.php';
 		$this->quizCreator = new QMNQuizCreator();
 
-		include( "php/class-qmn-plugin-helper.php" );
+		include 'php/classes/class-qmn-plugin-helper.php';
 		$this->pluginHelper = new QMNPluginHelper();
 
-		include( "php/class-qsm-settings.php" );
+		include 'php/classes/class-qsm-settings.php';
 		$this->quiz_settings = new QSM_Quiz_Settings();
 
 		include 'php/rest-api.php';
 	}
 
 	/**
-	  * Add Hooks
-	  *
-	  * Adds functions to relavent hooks and filters
-	  *
-	  * @since 3.6.1
-	  * @return void
-	  */
+	 * Add Hooks
+	 *
+	 * Adds functions to relavent hooks and filters
+	 *
+	 * @since 3.6.1
+	 * @return void
+	 */
 	private function add_hooks() {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
@@ -189,7 +192,7 @@ class MLWQuizMasterNext {
 	 */
 	public function register_quiz_post_types() {
 
-		// Prepares labels
+		// Prepares labels.
 		$quiz_labels = array(
 			'name'               => 'Quizzes',
 			'singular_name'      => 'Quiz',
@@ -204,56 +207,56 @@ class MLWQuizMasterNext {
 			'search_items'       => 'Search Quizzes',
 			'parent_item_colon'  => 'Parent Quiz:',
 			'not_found'          => 'No Quiz Found',
-			'not_found_in_trash' => 'No Quiz Found In Trash'
+			'not_found_in_trash' => 'No Quiz Found In Trash',
 		);
 
-		// Checks settings to see if we need to alter the defaults
-		$has_archive = true;
+		// Checks settings to see if we need to alter the defaults.
+		$has_archive    = true;
 		$exclude_search = false;
-		$cpt_slug = 'quiz';
-		$settings = (array) get_option( 'qmn-settings' );
+		$cpt_slug       = 'quiz';
+		$settings       = (array) get_option( 'qmn-settings' );
 
-		// Checks if admin turned off archive
+		// Checks if admin turned off archive.
 		if ( isset( $settings['cpt_archive'] ) && '1' == $settings['cpt_archive'] ) {
 			$has_archive = false;
 		}
 
-		// Checks if admin turned off search
+		// Checks if admin turned off search.
 		if ( isset( $settings['cpt_search'] ) && '1' == $settings['cpt_search'] ) {
 			$exclude_search = true;
 		}
 
-		// Checks if admin changed slug
+		// Checks if admin changed slug.
 		if ( isset( $settings['cpt_slug'] ) ) {
-			$cpt_slug = trim( strtolower( str_replace( " ", "-", $settings['cpt_slug'] ) ) );
+			$cpt_slug = trim( strtolower( str_replace( ' ', '-', $settings['cpt_slug'] ) ) );
 		}
 
-		// Prepares post type array
+		// Prepares post type array.
 		$quiz_args = array(
-			'show_ui'           => true,
-			'show_in_menu'      => false,
-			'show_in_nav_menus' => true,
-			'labels' => $quiz_labels,
-			'publicly_queryable' => true,
+			'show_ui'             => true,
+			'show_in_menu'        => false,
+			'show_in_nav_menus'   => true,
+			'labels'              => $quiz_labels,
+			'publicly_queryable'  => true,
 			'exclude_from_search' => $exclude_search,
-			'label'  => __( 'Quizzes', 'quiz-master-next' ),
-			'rewrite' => array( 'slug' => $cpt_slug ),
-			'has_archive'        => $has_archive,
-			'supports'           => array( 'title', 'author', 'comments' )
+			'label'               => __( 'Quizzes', 'quiz-master-next' ),
+			'rewrite'             => array( 'slug' => $cpt_slug ),
+			'has_archive'         => $has_archive,
+			'supports'            => array( 'title', 'author', 'comments' )
 		);
 
-		// Registers post type
+		// Registers post type.
 		register_post_type( 'quiz', $quiz_args );
 	}
 
 	/**
-	  * Setup Admin Menu
-	  *
-	  * Creates the admin menu and pages for the plugin and attaches functions to them
-	  *
-	  * @since 3.6.1
-	  * @return void
-	  */
+	 * Setup Admin Menu
+	 *
+	 * Creates the admin menu and pages for the plugin and attaches functions to them
+	 *
+	 * @since 3.6.1
+	 * @return void
+	 */
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
 			add_menu_page( 'Quiz And Survey Master', __( 'Quizzes/Surveys', 'quiz-master-next' ), 'moderate_comments', __FILE__, 'qsm_generate_quizzes_surveys_page', 'dashicons-feedback' );

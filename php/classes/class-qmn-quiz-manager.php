@@ -1,6 +1,8 @@
 <?php
 /**
  * File for the QMNQuizManager class
+ *
+ * @package QSM
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -110,10 +112,10 @@ class QMNQuizManager {
 			'quiz_system' => $qmn_quiz_options->system,
 		);
 
-		if ( $_SERVER["REMOTE_ADDR"] ) {
-			$qmn_array_for_variables['user_ip'] = $_SERVER["REMOTE_ADDR"];
+		if ( $_SERVER['REMOTE_ADDR'] ) {
+			$qmn_array_for_variables['user_ip'] = $_SERVER['REMOTE_ADDR'];
 		} else {
-			$qmn_array_for_variables['user_ip'] = "Unknown";
+			$qmn_array_for_variables['user_ip'] = 'Unknown';
 		}
 
 		$return_display .= "<script>
@@ -122,10 +124,10 @@ class QMNQuizManager {
 			}
 		</script>";
 		$qmn_json_data = array(
-			'quiz_id' => $qmn_array_for_variables['quiz_id'],
-			'quiz_name' => $qmn_array_for_variables['quiz_name'],
-			'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
-			'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct
+			'quiz_id'           => $qmn_array_for_variables['quiz_id'],
+			'quiz_name'         => $qmn_array_for_variables['quiz_name'],
+			'disable_answer'    => $qmn_quiz_options->disable_answer_onselect,
+			'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
 		);
 
 		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -201,7 +203,6 @@ class QMNQuizManager {
 		} else {
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
 		}
-		
 
 		// Returns an array of all the loaded questions.
 		return $questions;
@@ -257,6 +258,7 @@ class QMNQuizManager {
 	 * @since 4.0.0
 	 * @param array $options The database row of the quiz.
 	 * @param array $quiz_data The array of results for the quiz.
+	 * @param int $question_amount The number of questions to load for quiz.
 	 * @uses QMNQuizManager:display_begin_section() Creates display for beginning section
 	 * @uses QMNQuizManager:display_questions() Creates display for questions
 	 * @uses QMNQuizManager:display_comment_section() Creates display for comment section
@@ -772,27 +774,28 @@ class QMNQuizManager {
 			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
-			// Save the results into database
-			$mlw_quiz_results_array = array(
-				intval($qmn_array_for_variables['timer']),
+			// Creates our results array.
+			$results_array = array(
+				intval( $qmn_array_for_variables['timer'] ),
 				$qmn_array_for_variables['question_answers_array'],
-				htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
-				'contact' => $contact_responses
+				htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
+				'contact' => $contact_responses,
 			);
-			$mlw_quiz_results = serialize($mlw_quiz_results_array);
+			$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
+			$serialized_results = serialize( $results_array );
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . "mlw_results";
 			$results_insert = $wpdb->insert(
 				$table_name,
 				array(
-					'quiz_id' => $qmn_array_for_variables['quiz_id'],
-					'quiz_name' => $qmn_array_for_variables['quiz_name'],
-					'quiz_system' => $qmn_array_for_variables['quiz_system'],
-					'point_score' => $qmn_array_for_variables['total_points'],
+					'quiz_id'       => $qmn_array_for_variables['quiz_id'],
+					'quiz_name'     => $qmn_array_for_variables['quiz_name'],
+					'quiz_system'   => $qmn_array_for_variables['quiz_system'],
+					'point_score'   => $qmn_array_for_variables['total_points'],
 					'correct_score' => $qmn_array_for_variables['total_score'],
-					'correct' => $qmn_array_for_variables['total_correct'],
-					'total' => $qmn_array_for_variables['total_questions'],
+					'correct'       => $qmn_array_for_variables['total_correct'],
+					'total'         => $qmn_array_for_variables['total_questions'],
 					'name' => $qmn_array_for_variables['user_name'],
 					'business' => $qmn_array_for_variables['user_business'],
 					'email' => $qmn_array_for_variables['user_email'],
@@ -801,7 +804,7 @@ class QMNQuizManager {
 					'user_ip' => $qmn_array_for_variables['user_ip'],
 					'time_taken' => $qmn_array_for_variables['time_taken'],
 					'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
-					'quiz_results' => $mlw_quiz_results,
+					'quiz_results' => $serialized_results,
 					'deleted' => 0
 				),
 				array(
