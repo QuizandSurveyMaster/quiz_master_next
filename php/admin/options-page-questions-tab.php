@@ -163,7 +163,7 @@ function qsm_options_questions_tab_content() {
 					<div id="category_area" class="qsm-row">
 						<label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
 						<div id="categories">
-							<input type="radio" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
+							<input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
 						</div>
 					</div>
 				</main>
@@ -223,7 +223,7 @@ function qsm_options_questions_tab_content() {
 	<!-- View for single category -->
 	<script type="text/template" id="tmpl-single-category">
 		<div class="category">
-			<input type="radio" class="category-radio" value="{{data.category}}"><label>{{data.category}}</label>
+			<input type="radio" name="category" class="category-radio" value="{{data.category}}"><label>{{data.category}}</label>
 		</div>
 	</script>
 
