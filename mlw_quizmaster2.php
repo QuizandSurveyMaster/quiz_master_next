@@ -233,6 +233,7 @@ class MLWQuizMasterNext {
 
 		// Prepares post type array.
 		$quiz_args = array(
+			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => false,
 			'show_in_nav_menus'   => true,
