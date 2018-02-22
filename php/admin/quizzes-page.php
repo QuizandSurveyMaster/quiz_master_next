@@ -196,7 +196,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<div>
 								<?php echo esc_html( $item['description'] ); ?>
 							</div>
-							<a target='_blank' href="<?php echo esc_attr( $item['link'] ); ?>" class="button-primary"><?php _e( 'Read More', 'quiz-master-next' ); ?></a>
+							<a target='_blank' href="<?php echo esc_attr( $item['link'] ); ?>?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin" class="button-primary"><?php _e( 'Read More', 'quiz-master-next' ); ?></a>
 						</div>
 						<?php
 					}
