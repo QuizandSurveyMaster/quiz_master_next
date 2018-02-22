@@ -1,7 +1,15 @@
+.contact-form {
+	background-color: #0d97d8;
+    box-sizing: border-box;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
 .contact-form-field {
   padding: 25px 10px 10px;
-  margin: 15px 0;
+  margin: 15px 10px;
   background: #fff;
+  border: 5px solid #1DD969;
 }
 
 .contact-form-field.new {
@@ -19,6 +27,7 @@
 .contact-form-label {
   font-weight: bold;
   margin-right: 10px;
+  display: block;
 }
 
 .contact-form-control {
@@ -26,8 +35,5 @@
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.4;
-}
-
-.contact-form-control.wide {
   width: 100%;
 }
