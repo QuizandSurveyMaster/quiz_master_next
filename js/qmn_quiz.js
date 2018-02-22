@@ -25,15 +25,29 @@ var QSM;
 		 * @param int quizID The ID of the quiz
 		 */
 		initTimer: function( quizID ) {
-			if ( qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page ) {
-				jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
-					event.preventDefault();
-					if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quizID ) ) {
-						qmnActivateTimer( quizID );
-					}
-				});
+			$quizForm = QSM.getQuizForm( quizID );
+			if ( 0 < $quizForm.children( '.qsm-page' ).length ) {
+				if ( qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page ) {
+					jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
+						event.preventDefault();
+						if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quizID ) ) {
+							qmnActivateTimer( quizID );
+						}
+					});
+				} else {
+					qmnActivateTimer( quizID );
+				}
 			} else {
-				qmnActivateTimer( quizID );
+				if ( qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page ) {
+					jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
+						event.preventDefault();
+						if ( !qmn_timer_activated && ( 0 == $( '.quiz_begin:visible' ).length || ( 1 == $( '.quiz_begin:visible' ).length && qmnValidatePage( 'quizForm' + quizID ) ) ) ) {
+							qmnActivateTimer( quizID );
+						}
+					});
+				} else {
+					qmnActivateTimer( quizID );
+				}
 			}
 		},
 		/**
@@ -319,10 +333,6 @@ function qmnInit() {
 		if ( qmn_quiz_data[key].hasOwnProperty('pagination') ) {
 	    qmnInitPagination( qmn_quiz_data[key].quiz_id );
 		}
-
-		if ( qmn_quiz_data[key].hasOwnProperty('timer_limit') ) {
-	    qmnInitTimer( qmn_quiz_data[key].quiz_id );
-		}
 	}
 }
 
@@ -371,19 +381,6 @@ function qmnEndTimer( quiz_id ) {
 	window.document.title = qsmTitleText;
 	if ( typeof window.qsmCounter != 'undefined' ) {
 		clearInterval( window.qsmCounter );
-	}
-}
-
-function qmnInitTimer( quiz_id ) {
-	if ( qmn_quiz_data[quiz_id].hasOwnProperty('pagination') && qmn_quiz_data[quiz_id].first_page ) {
-		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
-			event.preventDefault();
-			if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quiz_id ) ) {
-				qmnActivateTimer( quiz_id );
-			}
-		});
-	} else {
-		qmnActivateTimer( quiz_id );
 	}
 }
 
