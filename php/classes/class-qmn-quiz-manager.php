@@ -398,7 +398,7 @@ class QMNQuizManager {
 						}
 						// Checks if a hint is entered.
 						if ( ! empty( $question['hints'] ) ) {
-							echo '<span title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</span>';
+							echo '<div title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
 						}
 						?>
 					</div>
@@ -451,7 +451,7 @@ class QMNQuizManager {
 							}
 							// Checks if a hint is entered.
 							if ( ! empty( $question['hints'] ) ) {
-								echo '<span title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</span>';
+								echo '<div title="' . esc_attr( htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
 							}
 							?>
 						</div>
@@ -582,7 +582,7 @@ class QMNQuizManager {
 
 			// Checks if a hint is entered.
 			if ( ! empty( $mlw_question->hints ) ) {
-				$question_display .= "<span title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</span>";
+				$question_display .= "<div title=\"" . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
 				$question_display .= "<br /><br />";
 			}
 			$question_display .= "</div>";
