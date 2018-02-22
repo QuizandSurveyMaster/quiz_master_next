@@ -33,34 +33,23 @@ function mlw_generate_about_page() {
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 5.1!</h2>
+				<h2 class="feature-headline">Welcome to QSM 5.2!</h2>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">New Shortcode For Quiz/Survey Link</h2>
-				<p class="feature-text">There has always been a shortcode for displaying your quizzes and surveys. However, adding a link directly to the quiz or survey has been difficult.</p>
-				<p class="feature-text">Before, if you place a direct link and the permalink changed, your link would break.</p>
-				<p class="feature-text">Now, you can use the new "qsm_link" shortcode for creating links. The shortcode has been added to the "Quizzes/Surveys" page so it can easily be copied to be pasted anywhere on your site!</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">Dates Are Now Localized</h2>
-				<p class="feature-text">You may have noticed that the dates in your results as well as variables such as %DATE_TAKEN% and %CURRENT_DATE% never followed the format you set your WordPress to.</p>
-				<p class="feature-text">With this update, all dates will follow the format set on the "General" page of the "Settings" menu in your WordPress dashboard.</p>
+				<h2 class="feature-headline">New Question Editor!</h2>
+				<p class="feature-text">The "Questions" tab has had a major new redesign. Now, it is much easier to drag-and-drop to reorder all of your questions.</p>
+				<p class="feature-text">Even better, with this new editor, you can create pages for your quiz or survey and drag questions between pages as well as reorder the pages!</p>
 			</div>
 			<hr />
 			<div class="feature">
-				<h2 class="feature-headline">For Developers: New All Quizzes Function</h2>
-				<p class="feature-text">There is a new function "get_quizzes" in the plugin helper API that returns all quizzes. With the functions parameters, you can get the quizzes ordered by a certain field and include deleted quizzes if needed.</p>
+				<h2 class="feature-headline">For Developers: Results Now Extendable</h2>
+				<p class="feature-text">There have been ways to add extra data to quizzes/surveys and questions for a while. However, there hasn't been an easy way for developers to add additional data to the results prior to them being stored in the database.</p>
+				<p class="feature-text">Now, the results array is passed through a new "qsm_results_array" filter so developers can add data to the results. Then, using the template variable system, a developer can have this data shown in the admin details as well.</p>
 			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 47 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 45 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 44 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 43 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 41 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 40 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 25 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 32 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>

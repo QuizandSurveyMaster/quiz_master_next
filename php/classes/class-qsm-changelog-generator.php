@@ -1,5 +1,13 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Changelog class
+ *
+ * @package QSM
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * This class pings the GitHub API to load in the changelog for a particular milestone
@@ -8,50 +16,50 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 class QSM_Changelog_Generator {
 
-  /**
-   * Gets the changelog as an HTML list. Either echos or returns the list
-   *
-   * @since 4.7.0
-   * @uses QSM_Changelog_Generator::get_changelog Used to retrieve the changelog from GitHub
-   * @param string $repo The name of the GitHub repo. Should be similar to 'fpcorso/quiz_master_next'
-   * @param int $milestone The number of the milestone in your GitHub repo
-   * @param bool $echo Whether to echo or return the HTML list. Defaults to true
-   * @return string The HTML list is returned if $echo is set to false
-   */
-  public static function get_changelog_list( $repo, $milestone, $echo = true ) {
+	/**
+	 * Gets the changelog as an HTML list. Either echos or returns the list
+	 *
+	 * @since 4.7.0
+	 * @uses QSM_Changelog_Generator::get_changelog Used to retrieve the changelog from GitHub
+	 * @param string $repo The name of the GitHub repo. Should be similar to 'fpcorso/quiz_master_next'
+	 * @param int $milestone The number of the milestone in your GitHub repo
+	 * @param bool $echo Whether to echo or return the HTML list. Defaults to true
+	 * @return string The HTML list is returned if $echo is set to false
+	 */
+	public static function get_changelog_list( $repo, $milestone, $echo = true ) {
 
-    // Gets the changelog array
-    $changelog = QSM_Changelog_Generator::get_changelog( $repo, $milestone );
+		// Gets the changelog array
+		$changelog = QSM_Changelog_Generator::get_changelog( $repo, $milestone );
 
-    if ( $changelog && is_array( $changelog ) ) {
+		if ( $changelog && is_array( $changelog ) ) {
 
-      // Creates header for milestone
-      $display = "<h3>{$changelog["milestone"]["title"]}</h3>";
+			// Creates header for milestone
+			$display = "<h3>{$changelog["milestone"]["title"]}</h3>";
 
-      // Creates paragraph for description
-      if ( ! empty( $changelog["milestone"]["description"] ) ) {
-        $display .= "<p>{$changelog["milestone"]["description"]}</p>";
-      }
+			// Creates paragraph for description
+			if ( ! empty( $changelog["milestone"]["description"] ) ) {
+				$display .= "<p>{$changelog["milestone"]["description"]}</p>";
+			}
 
-      // Creates paragraph for closed date
-      $display .= "<p>Closed on {$changelog["milestone"]["closed_date"]}</p>";
+			// Creates paragraph for closed date
+			$display .= "<p>Closed on {$changelog["milestone"]["closed_date"]}</p>";
 
-      // Converts the issues array into HTML list
-      $display .= '<ul class="changelog">';
-      foreach ( $changelog["issues"] as $change ) {
-        $label_type = $change["labels"][0]["name"];
-        $display .= "<li class='fixed'><div class='two'>Closed</div>$label_type: {$change['title']} - <a target='_blank' href='{$change['url']}'>Issue #{$change['issue']}</a></li>";
-      }
-      $display .= '</ul>';
+			// Converts the issues array into HTML list
+			$display .= '<ul class="changelog">';
+			foreach ( $changelog["issues"] as $change ) {
+				$label_type = $change["labels"][0]["name"];
+				$display .= "<li class='fixed'><div class='two'>Closed</div>$label_type: {$change['title']} - <a target='_blank' href='{$change['url']}'>Issue #{$change['issue']}</a></li>";
+			}
+			$display .= '</ul>';
 
-      // Echos or returns HTML list based on $echo parameter
-      if ( true === $echo ) {
-        echo $display;
-      } else {
-        return $display;
-      }
-    }
-  }
+			// Echos or returns HTML list based on $echo parameter
+			if ( true === $echo ) {
+				echo $display;
+			} else {
+				return $display;
+			}
+		}
+	}
 
   /**
    * Gets the changelog from GitHub and returns as an array

@@ -1,10 +1,10 @@
 === Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
-Tags: quiz, survey, lead, test, score, exam, questionnaire, answer, question
+Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.1.7
+Stable tag: 5.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,40 +110,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.1.7 (January 2, 2018) =
-* Closed Bug: Quizzes/Surveys table not working on certain installs - ([Issue #598](https://github.com/fpcorso/quiz_master_next/issues/598))
-
-= 5.1.6 (December 25, 2017) =
-* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/fpcorso/quiz_master_next/issues/606))
-* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/fpcorso/quiz_master_next/issues/603))
-
-= 5.1.5 (November 27, 2017) =
-* IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
-
-= 5.1.4 (November 27, 2017) =
-* Closed Bug: Headers already sent message - ([Issue #596](https://github.com/fpcorso/quiz_master_next/issues/596))
-* Closed Bug: Styling for hints is missing causing them to be hard to read - ([Issue #587](https://github.com/fpcorso/quiz_master_next/issues/587))
-
-= 5.1.3 (November 18, 2017) =
-* Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
-* Closed Bug: Fatal error: Call to a member function register_question_type - ([Issue #509](https://github.com/fpcorso/quiz_master_next/issues/509))
-
-= 5.1.2 (October 17, 2017) =
-* Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/fpcorso/quiz_master_next/issues/580))
-
-= 5.1.1 (October 4, 2017) =
-* Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/fpcorso/quiz_master_next/issues/578))
-
-= 5.1.0 (October 2, 2017) =
-* Closed Enhancement: Add all active quizzes function to API - ([Issue #552](https://github.com/fpcorso/quiz_master_next/issues/552))
-* Closed User Request: Shortcode or variable for dynamic link to specific quiz/survey - ([Issue #524](https://github.com/fpcorso/quiz_master_next/issues/524))
-* Closed Enhancement: Use locale's date to generate date strings - ([Issue #479](https://github.com/fpcorso/quiz_master_next/issues/479))
-* Closed User Request: Allow users to change the date to European Date DD.MM.YYYY - ([Issue #439](https://github.com/fpcorso/quiz_master_next/issues/439))
-* Closed User Request: More Space in the Correct Answer Info textbox - ([Issue #417](https://github.com/fpcorso/quiz_master_next/issues/417))
+= 5.2.0 (February 25, 2018) =
+* Closed Enhancement: Make Quiz Results Extendable/Filterable - ([Issue #622](https://github.com/fpcorso/quiz_master_next/issues/622))
+* Closed Enhancement: New Question Editor - ([Issue #568](https://github.com/fpcorso/quiz_master_next/issues/568))
+* Closed Bug: Pagination Bug - ([Issue #477](https://github.com/fpcorso/quiz_master_next/issues/477))
+* Closed Bug: Questions shift - ([Issue #467](https://github.com/fpcorso/quiz_master_next/issues/467))
+* Closed User Request: Remove duplicate question popup confirmation - ([Issue #396](https://github.com/fpcorso/quiz_master_next/issues/396))
+* Closed User Request: Question Grouping - ([Issue #356](https://github.com/fpcorso/quiz_master_next/issues/356))
+* Closed User Request: Ability To Move Submit Button To Last Question Page - ([Issue #321](https://github.com/fpcorso/quiz_master_next/issues/321))
 
 ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 5.1.5 =
-IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
+= 5.2.0 =
+Update for a new question editor! Includes a variety of bug fixes and minor changes too.
