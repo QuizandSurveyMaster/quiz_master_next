@@ -375,7 +375,7 @@ function qmnEndTimer( quiz_id ) {
 }
 
 function qmnInitTimer( quiz_id ) {
-	if ( qmn_quiz_data[quiz_id].hasOwnProperty('first_page') && qmn_quiz_data[quiz_id].first_page ) {
+	if ( qmn_quiz_data[quiz_id].hasOwnProperty('pagination') && qmn_quiz_data[quiz_id].first_page ) {
 		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 			event.preventDefault();
 			if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quiz_id ) ) {

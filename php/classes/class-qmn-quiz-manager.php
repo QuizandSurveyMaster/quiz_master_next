@@ -372,7 +372,7 @@ class QMNQuizManager {
 			<section class="qsm-page">
 				<?php
 				if ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) {
-					$qmn_json_data['first_page'] = true;
+					$qmn_json_data['first_page'] = false;
 					$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 					$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
 					?>
