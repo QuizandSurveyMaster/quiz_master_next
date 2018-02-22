@@ -13,7 +13,28 @@ var QSM;
 			_.each( qmn_quiz_data, function( quiz ) {
 				quizID = parseInt( quiz.quiz_id );
 				QSM.initPagination( quizID );
+				if ( quiz.hasOwnProperty( 'timer_limit' ) && 0 != quiz.timer_limit ) {
+					QSM.initTimer( quizID );
+				}				
 			});
+		},
+
+		/**
+		 * Sets up timer for a quiz
+		 * 
+		 * @param int quizID The ID of the quiz
+		 */
+		initTimer: function( quizID ) {
+			if ( qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page ) {
+				jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
+					event.preventDefault();
+					if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quizID ) ) {
+						qmnActivateTimer( quizID );
+					}
+				});
+			} else {
+				qmnActivateTimer( quizID );
+			}
 		},
 		/**
 		 * Sets up pagination for a quiz
@@ -354,7 +375,7 @@ function qmnEndTimer( quiz_id ) {
 }
 
 function qmnInitTimer( quiz_id ) {
-	if ( qmn_quiz_data[quiz_id].hasOwnProperty('pagination') && qmn_quiz_data[quiz_id].first_page ) {
+	if ( qmn_quiz_data[quiz_id].hasOwnProperty('first_page') && qmn_quiz_data[quiz_id].first_page ) {
 		jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 			event.preventDefault();
 			if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quiz_id ) ) {
@@ -516,7 +537,7 @@ function qmnUpdatePageNumber( amount, quiz_form_id ) {
 	var current_page = +jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.current_page_hidden' ).val();
 	var total_pages = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.total_pages_hidden' ).val();
 	current_page += amount;
-	jQuery( quiz_form_id ).siblings( '.qmn_pagination' ).find( " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
+	//jQuery( quiz_form_id ).siblings( '.qmn_pagination' ).find( " .qmn_page_counter_message" ).text( current_page + "/" + total_pages );
 }
 
 function qmnInitPagination( quiz_id ) {
@@ -569,7 +590,6 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	window.open( url, "Share", sqShareOptions );
 	return false;
 }
-
 
 qmnInit();
 
