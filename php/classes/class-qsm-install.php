@@ -855,7 +855,11 @@ class QSM_Install {
 
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
-  	}
+	  }
+	
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->register_quiz_post_types();
+	flush_rewrite_rules();
   }
 
   /**

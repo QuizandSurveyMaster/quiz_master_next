@@ -17,16 +17,17 @@ function qsm_generate_quiz_options() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
+	$quiz_name = '';
 
 	// Get registered tabs for the options page and set current tab
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
 	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
 
-	// Prepare quiz
-	$quiz_id = intval( $_GET["quiz_id"] );
+	// Prepares quiz.
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	if ( isset( $_GET["quiz_id"] ) ) {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
-		$mlwQuizMasterNext->quiz_settings->prepare_quiz( $_GET["quiz_id"] );
+		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $_GET["quiz_id"] );
 	}
 
 	wp_enqueue_script( 'jquery' );

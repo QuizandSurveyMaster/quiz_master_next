@@ -12,7 +12,7 @@ function mlw_generate_help_page() {
 		return;
 	}
 
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
 
 	///Creates the widgets
 	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qsm_documentation_meta_box_content", "meta_box_help");

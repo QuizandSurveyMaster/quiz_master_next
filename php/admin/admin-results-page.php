@@ -187,7 +187,7 @@ function qsm_results_overview_tab_content() {
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
-	wp_enqueue_script('qmn_admin_js', plugins_url( '../js/admin.js' , __FILE__ ));
+	wp_enqueue_script('qmn_admin_js', plugins_url( '../../js/admin.js' , __FILE__ ));
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	?>
 	<script type="text/javascript">

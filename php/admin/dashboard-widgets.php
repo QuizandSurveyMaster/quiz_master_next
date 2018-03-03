@@ -183,11 +183,11 @@ function qmn_snapshot_dashboard_widget()
 					echo $mlw_qmn_analyze_today."% ";
 					if ($mlw_qmn_analyze_today >= 0)
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
 					}
 					else
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/red_triangle.png'/>";
 					}
 					?>
 				</span>
@@ -202,11 +202,11 @@ function qmn_snapshot_dashboard_widget()
 					echo $mlw_qmn_analyze_week."% ";
 					if ($mlw_qmn_analyze_week >= 0)
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
 					}
 					else
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/red_triangle.png'/>";
 					}
 					?>
 				</span>
@@ -221,11 +221,11 @@ function qmn_snapshot_dashboard_widget()
 					echo $mlw_qmn_analyze_month."% ";
 					if ($mlw_qmn_analyze_month >= 0)
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
 					}
 					else
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/red_triangle.png'/>";
 					}
 					?>
 				</span>
@@ -240,11 +240,11 @@ function qmn_snapshot_dashboard_widget()
 					echo $mlw_qmn_analyze_quater."% ";
 					if ($mlw_qmn_analyze_quater >= 0)
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/green_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
 					}
 					else
 					{
-						echo "<img src='".plugin_dir_url( __FILE__ )."images/red_triangle.png'/>";
+						echo "<img src='".plugin_dir_url( __FILE__ )."../images/red_triangle.png'/>";
 					}
 					?>
 				</span>

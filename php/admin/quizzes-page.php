@@ -24,8 +24,8 @@ function qsm_generate_quizzes_surveys_page() {
 	global $mlwQuizMasterNext;
 
 	// Enqueue our styles and scripts.
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css', __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ), $mlwQuizMasterNext->version );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qsm_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 
 	// Create new quiz.
@@ -196,7 +196,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<div>
 								<?php echo esc_html( $item['description'] ); ?>
 							</div>
-							<a target='_blank' href="<?php echo esc_attr( $item['link'] ); ?>" class="button-primary"><?php _e( 'Read More', 'quiz-master-next' ); ?></a>
+							<a target='_blank' href="<?php echo esc_attr( $item['link'] ); ?>?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin" class="button-primary"><?php _e( 'Read More', 'quiz-master-next' ); ?></a>
 						</div>
 						<?php
 					}

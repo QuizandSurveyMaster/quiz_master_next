@@ -1,3 +1,21 @@
+= 5.1.7 (January 2, 2018) =
+* Closed Bug: Quizzes/Surveys table not working on certain installs - ([Issue #598](https://github.com/fpcorso/quiz_master_next/issues/598))
+
+= 5.1.6 (December 25, 2017) =
+* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/fpcorso/quiz_master_next/issues/606))
+* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/fpcorso/quiz_master_next/issues/603))
+
+= 5.1.5 (November 27, 2017) =
+* IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
+
+= 5.1.4 (November 27, 2017) =
+* Closed Bug: Headers already sent message - ([Issue #596](https://github.com/fpcorso/quiz_master_next/issues/596))
+* Closed Bug: Styling for hints is missing causing them to be hard to read - ([Issue #587](https://github.com/fpcorso/quiz_master_next/issues/587))
+
+= 5.1.3 (November 18, 2017) =
+* Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
+* Closed Bug: Fatal error: Call to a member function register_question_type - ([Issue #509](https://github.com/fpcorso/quiz_master_next/issues/509))
+
 = 5.1.2 (October 17, 2017) =
 * Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/fpcorso/quiz_master_next/issues/580))
 

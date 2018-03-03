@@ -50,7 +50,7 @@ function qmn_addons_page() {
 * @since 4.4.0
 */
 function qsm_generate_featured_addons() {
-	wp_enqueue_style( 'qsm_addons_style', plugins_url( '../css/qmn_addons_page.css' , __FILE__ ) );
+	wp_enqueue_style( 'qsm_addons_style', plugins_url( '../../css/qmn_addons_page.css' , __FILE__ ) );
 	?>
 	<p><?php _e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
 	<a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>

@@ -67,7 +67,7 @@ add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user
  */
 function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {
 	while ( false !== strpos($content, '%FACEBOOK_SHARE%') ) {
-		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
 		$settings = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '483815031724529';
 		if ( isset( $settings['facebook_app_id'] ) ) {
@@ -89,7 +89,7 @@ function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {
  */
 function qsm_variable_twitter_share( $content, $mlw_quiz_array ) {
 	while ( false !== strpos($content, '%TWITTER_SHARE%') ) {
-		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../js/qmn_social_share.js' , __FILE__ ) );
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
 
 		global $mlwQuizMasterNext;
 		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '' );

@@ -21,21 +21,28 @@ Quizzes/Surveys Page
 }
 
 .qsm-news-ads {
-  background-color: white;
+  background-color: #0d97d8;
 }
 
 .qsm-news-ads-title {
   text-align: center;
-  border-bottom: 1px solid black;
+  border-bottom: 5px solid #1DD969;
+  margin: 0;
+  padding: 10px 0;
+  background-color: #fff;
 }
 
 .qsm-news-ads-widget {
   text-align: center;
-  border-top: 2px solid black;
-  border-bottom: 5px solid black;
-  margin: 10px 0;
-  background: #ddd;
+  border: 5px solid #1DD969;
+  margin: 10px 5px;
+  background: #fff;
   padding: 10px 5px;
+  transition-duration: 0.5s;
+}
+
+.qsm-news-ads-widget:hover {
+	transform: scale(1.1);
 }
 
 .qsm-edit-name {

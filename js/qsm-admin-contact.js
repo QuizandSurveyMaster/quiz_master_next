@@ -12,7 +12,8 @@ var QSMContact;
     },
     addField : function( fieldArray ) {
       var contactField = $( '<div class="contact-form-field new">' +
-          '<div class="contact-form-group">' +
+		  '<div class="contact-form-group">' +
+		  	'<label class="contact-form-label">Field Type</label>' +
             '<select class="contact-form-control wide type-control">' +
               '<option value="none">Select a type...</option>' +
               '<option value="text">Small Open Answer</option>' +
@@ -178,9 +179,9 @@ var QSMContact;
       QSMContact.duplicateField( $( this ) );
     });
     $( '.contact-form' ).sortable({
-      containment: "parent",
       cursor: 'move',
-      opacity: 0.6
+	  opacity: 60,
+	  placeholder: "ui-state-highlight"
     });
   });
 }(jQuery));
