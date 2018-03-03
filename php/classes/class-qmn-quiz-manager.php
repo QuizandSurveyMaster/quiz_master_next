@@ -343,11 +343,13 @@ class QMNQuizManager {
 	 */
 	public function display_pages( $options, $quiz_data ) {
 		global $mlwQuizMasterNext;
+		global $qmn_json_data;
 		ob_start();
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 		$question_list = '';
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) ) {
+			$qmn_json_data['first_page'] = true;
 			$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 			$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
 			?>
@@ -370,6 +372,7 @@ class QMNQuizManager {
 			<section class="qsm-page">
 				<?php
 				if ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) {
+					$qmn_json_data['first_page'] = false;
 					$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 					$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
 					?>
@@ -1445,7 +1448,8 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 		if ( $qmn_quiz_options->question_from_total != 0 ) {
 			$total_questions = $qmn_quiz_options->question_from_total;
 		} else {
-			$total_questions = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM ".$wpdb->prefix."mlw_questions WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables["quiz_id"]));
+			$questions = QSM_Questions::load_questions_by_pages( $qmn_quiz_options->quiz_id );
+			$total_questions = count( $questions );
 		}
 		$display .= "<style>.quiz_section { display: none; }</style>";
 

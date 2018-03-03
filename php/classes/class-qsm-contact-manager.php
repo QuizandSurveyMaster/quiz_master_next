@@ -23,23 +23,26 @@ class QSM_Contact_Manager {
 	 */
 	public static function display_fields( $options ) {
 
-		$return = '';
 		$fields_hidden = false;
+		$name          = '';
+		$email         = '';
 
-		// Prepare name and email values from profile if logged in.
-		$name = '';
-		$email = '';
+		ob_start();
+
+		// Prepares name and email if user is logged in.
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			$name = $current_user->display_name;
-			$email = $current_user->user_email;
+			$name         = $current_user->display_name;
+			$email        = $current_user->user_email;
 		}
 
 		// If user is logged in and the option to allow users to edit is set to no...
 		if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
 			// ..then, hide the fields.
 			$fields_hidden = true;
-			$return = '<div style="display:none;">';
+			?>
+			<div style="display:none;">
+			<?php
 		}
 
 		// Loads fields.
@@ -54,8 +57,10 @@ class QSM_Contact_Manager {
 				if ( 1 == $options->user_name && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
-				$return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ) . "</span>";
-				$return .= "<input type='text' class='$class' x-webkit-speech name='mlwUserName' value='$name' />";
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?></span>
+				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserName' value='<?php echo esc_attr( $name ); ?>' />
+				<?php
 			}
 
 			// Check for comp field.
@@ -64,8 +69,10 @@ class QSM_Contact_Manager {
 				if ( 1 == $options->user_comp && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
-				$return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ) . "</span>";
-				$return .= "<input type='text' class='$class' x-webkit-speech name='mlwUserComp' value='' />";
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?></span>
+				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserComp' value='' />
+				<?php
 			}
 
 			// Check for email field.
@@ -74,8 +81,10 @@ class QSM_Contact_Manager {
 				if ( 1 == $options->user_email && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
-				$return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ) . "</span>";
-				$return .= "<input type='email' class='mlwEmail $class' x-webkit-speech name='mlwUserEmail' value='$email' />";
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?></span>
+				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserEmail' value='<?php echo esc_attr( $email ); ?>' />
+				<?php
 			}
 
 			// Check for phone field.
@@ -84,8 +93,10 @@ class QSM_Contact_Manager {
 				if ( 1 == $options->user_phone && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
-				$return .= "<span class='mlw_qmn_question qsm_question'>" . htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ) . "</span>";
-				$return .= "<input type='text' class='$class' x-webkit-speech name='mlwUserPhone' value='' />";
+				?>
+				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?></span>
+				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserPhone' value='' />
+				<?php
 			}
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
 
@@ -93,55 +104,69 @@ class QSM_Contact_Manager {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 
-				$return .= '<div class="qsm_contact_div">';
 				$class = '';
-				$return .= "<span class='mlw_qmn_question qsm_question'>{$fields[ $i ]['label']}</span>";
 				$value = '';
-				if ( 'name' == $fields[ $i ]['use'] ) {
-					$value = $name;
-				}
-				if ( 'email' == $fields[ $i ]['use'] ) {
-					$value = $email;
-				}
+				?>
+				<div class="qsm_contact_div">
+					<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+					<?php
+					if ( 'name' == $fields[ $i ]['use'] ) {
+						$value = $name;
+					}
+					if ( 'email' == $fields[ $i ]['use'] ) {
+						$value = $email;
+					}
 
-				// Switch for contact field type.
-				switch ( $fields[ $i ]['type'] ) {
-					case 'text':
-						if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
-							$class = 'mlwRequiredText qsm_required_text';
-						}
-						$return .= "<input type='text' class='$class' x-webkit-speech name='contact_field_$i' value='$value' />";
-						break;
+					// Switch for contact field type.
+					switch ( $fields[ $i ]['type'] ) {
+						case 'text':
+							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
+								$class = 'mlwRequiredText qsm_required_text';
+							}
+							?>
+							<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
+							<?php
+							break;
 
-					case 'email':
-						if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
-							$class = 'mlwRequiredText qsm_required_text';
-						}
-						$return .= "<input type='text' class='mlwEmail $class' x-webkit-speech name='contact_field_$i' value='$value' />";
-						break;
+						case 'email':
+							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
+								$class = 'mlwRequiredText qsm_required_text';
+							}
+							?>
+							<input type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
+							<?php
+							break;
 
-					case 'checkbox':
-						if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
-							$class = 'mlwRequiredAccept qsm_required_accept';
-						}
-						$return .= "<input type='checkbox' class='$class' x-webkit-speech name='contact_field_$i' value='checked' />";
-						break;
+						case 'checkbox':
+							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
+								$class = 'mlwRequiredAccept qsm_required_accept';
+							}
+							?>
+							<input type='checkbox' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='checked' />
+							<?php
+							break;
 
-					default:
-						break;
-				}
-
-				$return .= '</div>';
+						default:
+							break;
+					}
+				?>
+				</div>
+				<?php
 			}
 		}
 
+		// Extend contact fields section.
+		do_action( 'qsm_contact_fields_end' );
+
 		// If logged in user should see fields.
 		if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
-			$return .= '</div>';
+			?>
+			</div>
+			<?php
 		}
 
 		// Return contact field HTML.
-		return $return;
+		return ob_get_clean();
 	}
 
 	/**
