@@ -194,7 +194,7 @@ class MLWQuizMasterNext {
 
 		// Prepares labels.
 		$quiz_labels = array(
-			'name'               => 'Quizzes',
+			'name'               => 'Quizzes & Surveys',
 			'singular_name'      => 'Quiz',
 			'menu_name'          => 'Quiz',
 			'name_admin_bar'     => 'Quiz',
