@@ -50,8 +50,9 @@ var QSMQuestion;
 			}
 		},
 		addQuestionToQuestionBank: function( question ) {
+			var questionText = QSMQuestion.prepareQuestionText( question.name );
 			var template = wp.template( 'single-question-bank-question' );
-			$( '#question-bank' ).append( template( { id: question.id, question: question.name } ) );
+			$( '#question-bank' ).append( template( { id: question.id, question: questionText } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
 			MicroModal.close( 'modal-2' );
