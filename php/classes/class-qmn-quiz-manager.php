@@ -87,8 +87,9 @@ class QMNQuizManager {
 		}
 
 		// Loads Quiz Template.
+		// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 		if ( 'default' == $qmn_quiz_options->theme_selected ) {
-			$return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_style . '</style>';
+			$return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
 			wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../../css/qmn_quiz.css', __FILE__ ) );
 		} else {
 			$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
@@ -101,7 +102,7 @@ class QMNQuizManager {
 			} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 				wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 			} else {
-				echo "<style type='text/css'>{$qmn_quiz_options->quiz_style}</style>";
+				echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
 			}
 		}
 
