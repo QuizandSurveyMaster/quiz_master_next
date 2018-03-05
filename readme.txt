@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.2.0
+Stable tag: 5.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,7 +110,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.2.0 (February 25, 2018) =
+= 5.2.1 (March 5, 2018) =
+* Fixes broken "Custom" styles
+* Fixes minor bugs in new question editor
+* Makes minor style adjustments
+
+= 5.2.0 (March 3, 2018) =
 * Closed Enhancement: Make Quiz Results Extendable/Filterable - ([Issue #622](https://github.com/fpcorso/quiz_master_next/issues/622))
 * Closed Enhancement: New Question Editor - ([Issue #568](https://github.com/fpcorso/quiz_master_next/issues/568))
 * Closed Bug: Pagination Bug - ([Issue #477](https://github.com/fpcorso/quiz_master_next/issues/477))
