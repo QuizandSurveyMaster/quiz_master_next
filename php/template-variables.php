@@ -195,22 +195,28 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	return $content;
 }
 
-function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
-{
-	while (strpos($content, '%QUESTIONS_ANSWERS%') !== false)
-	{
+/**
+ * Converts the %QUESTIONS_ANSWERS% into the template
+ *
+ * @param string $content The content to be checked for the template
+ * @param array  $mlw_quiz_array The array for the response data
+ */
+function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
+
+	// Checks if the variable is present in the content.
+	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 		$display = '';
 		$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br>%USER_ANSWER%' );
-		$qmn_questions_sql = $wpdb->get_results( $wpdb->prepare( "SELECT question_id, question_answer_info FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d", $mlw_quiz_array['quiz_id'] ) );
+		$questions = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
 		$qmn_questions = array();
-		foreach($qmn_questions_sql as $question)
-		{
-			$qmn_questions[$question->question_id] = $question->question_answer_info;
+		foreach ( $questions as $question ) {
+			$qmn_questions[ $question['question_id'] ] = $question['question_answer_info'];
 		}
-		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
-		{
+
+		// Cycles through each answer in the responses.
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["correct"] === "correct" ){
 				$user_answer_class = "qmn_user_correct_answer";
 				$question_answer_class = "qmn_question_answer_correct";
@@ -230,6 +236,7 @@ function mlw_qmn_variable_question_answers($content, $mlw_quiz_array)
 	}
 	return $content;
 }
+
 function mlw_qmn_variable_comments($content, $mlw_quiz_array)
 {
 	$content = str_replace( "%COMMENT_SECTION%" , $mlw_quiz_array["comments"], $content);

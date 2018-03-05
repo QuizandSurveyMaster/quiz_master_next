@@ -59,8 +59,8 @@ class QMN_Review_Message {
 	public function check_message_trigger() {
 		$trigger = get_option( 'qmn_review_message_trigger' );
 		if ( empty( $trigger ) || is_null( $trigger ) ) {
-			add_option('qmn_review_message_trigger', 10 );
-			return 10;
+			add_option('qmn_review_message_trigger', 20 );
+			return 20;
 		}
 		return intval( $trigger );
 	}
@@ -112,7 +112,7 @@ class QMN_Review_Message {
 			$update_trigger = -1;
 			if ( $this->trigger === -1 ) {
 				exit;
-			} else if ( $this->trigger === 10 ) {
+			} else if ( $this->trigger === 20 ) {
 				$update_trigger = 100;
 			} else if ( $this->trigger === 100 ) {
 				$update_trigger = 1000;

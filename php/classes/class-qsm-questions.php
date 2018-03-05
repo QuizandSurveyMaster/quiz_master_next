@@ -251,7 +251,7 @@ class QSM_Questions {
 
 		foreach ( $answers as $key => $answer ) {
 			$answers[ $key ] = array(
-				htmlspecialchars( stripslashes( $answer[0] ), ENT_QUOTES ),
+				htmlspecialchars( $answer[0], ENT_QUOTES ),
 				floatval( $answer[1] ),
 				intval( $answer[2] ),
 			);
@@ -259,11 +259,11 @@ class QSM_Questions {
 
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
-			'question_name'        => trim( preg_replace( '/\s+/', ' ', htmlspecialchars( nl2br( wp_kses_post( stripslashes( $data['name'] ) ) ), ENT_QUOTES ) ) ),
+			'question_name'        => trim( preg_replace( '/\s+/', ' ', htmlspecialchars( nl2br( wp_kses_post( $data['name'] ) ), ENT_QUOTES ) ) ),
 			'answer_array'         => serialize( $answers ),
-			'question_answer_info' => htmlspecialchars( stripslashes( $data['answer_info'] ), ENT_QUOTES ),
-			'comments'             => htmlspecialchars( stripslashes( $data['comments'] ), ENT_QUOTES ),
-			'hints'                => htmlspecialchars( stripslashes( $data['hint'] ), ENT_QUOTES ),
+			'question_answer_info' => htmlspecialchars( $data['answer_info'], ENT_QUOTES ),
+			'comments'             => htmlspecialchars( $data['comments'], ENT_QUOTES ),
+			'hints'                => htmlspecialchars( $data['hint'], ENT_QUOTES ),
 			'question_order'       => intval( $data['order'] ),
 			'question_type_new'    => sanitize_text_field( $data['type'] ),
 			'question_settings'    => serialize( $settings ),
