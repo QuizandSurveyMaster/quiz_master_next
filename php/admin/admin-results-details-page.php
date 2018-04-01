@@ -104,23 +104,24 @@ function qsm_generate_results_details_tab() {
 
 	// Prepare full results array.
 	$results_array = array(
-		'quiz_id' => $results_data->quiz_id,
-		'quiz_name' => $results_data->quiz_name,
-		'quiz_system' => $results_data->quiz_system,
-		'user_name' => $results_data->name,
-		'user_business' => $results_data->business,
-		'user_email' => $results_data->email,
-		'user_phone' => $results_data->phone,
-		'user_id' => $results_data->user,
-		'timer' => $results[0],
-		'time_taken' => $results_data->time_taken,
-		'total_points' => $results_data->point_score,
-		'total_score' => $results_data->correct_score,
-		'total_correct' => $results_data->correct,
-		'total_questions' => $results_data->total,
-		'comments' => $results[2],
+		'quiz_id'                => $results_data->quiz_id,
+		'quiz_name'              => $results_data->quiz_name,
+		'quiz_system'            => $results_data->quiz_system,
+		'user_name'              => $results_data->name,
+		'user_business'          => $results_data->business,
+		'user_email'             => $results_data->email,
+		'user_phone'             => $results_data->phone,
+		'user_id'                => $results_data->user,
+		'timer'                  => $results[0],
+		'time_taken'             => $results_data->time_taken,
+		'total_points'           => $results_data->point_score,
+		'total_score'            => $results_data->correct_score,
+		'total_correct'          => $results_data->correct,
+		'total_questions'        => $results_data->total,
+		'comments'               => $results[2],
 		'question_answers_array' => $results[1],
-		'contact' => $results["contact"]
+		'contact'                => $results["contact"],
+		'results'                => $results,
 	);
 
 	// Pass through template variable filter
