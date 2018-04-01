@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 * @return type void
 * @since 4.4.0
 */
-function mlw_generate_result_details() {
+function qsm_generate_result_details() {
 	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
@@ -23,7 +23,7 @@ function mlw_generate_result_details() {
 				if ( $active_tab == $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
-				echo "<a href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . $tab['slug'] . "\" class=\"nav-tab $active_class\">" . $tab['title'] . "</a>";
+				echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . $tab['slug'] . "\" class=\"nav-tab $active_class\">" . $tab['title'] . "</a>";
 			}
 			?>
 		</h2>
@@ -48,20 +48,24 @@ function mlw_generate_result_details() {
 * @return void
 * @since 4.4.0
 */
-function qmn_generate_results_details_tab() {
-	echo "<br><br>";
-	$mlw_result_id = intval( $_GET["result_id"] );
-	global $wpdb;
-	$mlw_results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE result_id=%d", $mlw_result_id ) );
+function qsm_generate_results_details_tab() {
 
-	$previous_results = $wpdb->get_var( "SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MAX(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id < ".$mlw_result_id.")" );
-	$next_results = $wpdb->get_var( "SELECT result_id FROM " . $wpdb->prefix . "mlw_results WHERE result_id = (SELECT MIN(result_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted=0 AND result_id > ".$mlw_result_id.")" );
+	global $wpdb;
+
+	$result_id        = intval( $_GET["result_id"] );
+	$results_data     = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
+	$previous_results = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id < $result_id)" );
+	$next_results     = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > $result_id)" );
+
+	// If there is previous or next results, show buttons.
 	if ( ! is_null( $previous_results ) && $previous_results ) {
-		echo "<a class='button' href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
+		echo "<a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
 	}
 	if ( ! is_null( $next_results ) && $next_results ) {
-		echo " <a class='button' href=\"?page=mlw_quiz_result_details&&result_id=" . intval( $next_results ) . "\" >View Next Results</a>";
+		echo " <a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $next_results ) . "\" >View Next Results</a>";
 	}
+
+	// Get template for admin results.
 	$settings = (array) get_option( 'qmn-settings' );
 	if ( isset( $settings['results_details_template'] ) ) {
 		$template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
@@ -79,13 +83,15 @@ function qmn_generate_results_details_tab() {
 		<p>The answers were as follows:</p>
 		%QUESTIONS_ANSWERS%";
 	}
-	if ( is_serialized( $mlw_results_data->quiz_results ) && is_array( @unserialize( $mlw_results_data->quiz_results ) ) ) {
-		$results = unserialize($mlw_results_data->quiz_results);
+
+	// Prepare responses array.
+	if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
+		$results = unserialize($results_data->quiz_results);
 		if ( ! isset( $results["contact"] ) ) {
 			$results["contact"] = array();
 		}
 	} else {
-		$template = str_replace( "%QUESTIONS_ANSWERS%" , $mlw_results_data->quiz_results, $template);
+		$template = str_replace( "%QUESTIONS_ANSWERS%" , $results_data->quiz_results, $template);
 		$template = str_replace( "%TIMER%" , '', $template);
 		$template = str_replace( "%COMMENT_SECTION%" , '', $template);
 		$results = array(
@@ -95,28 +101,35 @@ function qmn_generate_results_details_tab() {
 			'contact' => array()
 		);
 	}
-	$qmn_array_for_variables = array(
-		'quiz_id' => $mlw_results_data->quiz_id,
-		'quiz_name' => $mlw_results_data->quiz_name,
-		'quiz_system' => $mlw_results_data->quiz_system,
-		'user_name' => $mlw_results_data->name,
-		'user_business' => $mlw_results_data->business,
-		'user_email' => $mlw_results_data->email,
-		'user_phone' => $mlw_results_data->phone,
-		'user_id' => $mlw_results_data->user,
+
+	// Prepare full results array.
+	$results_array = array(
+		'quiz_id' => $results_data->quiz_id,
+		'quiz_name' => $results_data->quiz_name,
+		'quiz_system' => $results_data->quiz_system,
+		'user_name' => $results_data->name,
+		'user_business' => $results_data->business,
+		'user_email' => $results_data->email,
+		'user_phone' => $results_data->phone,
+		'user_id' => $results_data->user,
 		'timer' => $results[0],
-		'time_taken' => $mlw_results_data->time_taken,
-		'total_points' => $mlw_results_data->point_score,
-		'total_score' => $mlw_results_data->correct_score,
-		'total_correct' => $mlw_results_data->correct,
-		'total_questions' => $mlw_results_data->total,
+		'time_taken' => $results_data->time_taken,
+		'total_points' => $results_data->point_score,
+		'total_score' => $results_data->correct_score,
+		'total_correct' => $results_data->correct,
+		'total_questions' => $results_data->total,
 		'comments' => $results[2],
 		'question_answers_array' => $results[1],
 		'contact' => $results["contact"]
 	);
-	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $qmn_array_for_variables );
+
+	// Pass through template variable filter
+	$template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $results_array );
 	$template = str_replace( "\n" , "<br>", $template );
 	echo $template;
+
+	// Hook for below admin results
+	do_action( 'qsm_below_admin_results', $results_array );
 }
 
 
@@ -126,9 +139,9 @@ function qmn_generate_results_details_tab() {
 * @return void
 * @since 4.4.0
 */
-function qmn_results_details_tab() {
+function qsm_results_details_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Results", 'quiz-master-next' ), "qmn_generate_results_details_tab" );
+	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Results", 'quiz-master-next' ), "qsm_generate_results_details_tab" );
 }
-add_action( "plugins_loaded", 'qmn_results_details_tab' );
+add_action( "plugins_loaded", 'qsm_results_details_tab' );
 ?>

@@ -95,14 +95,17 @@ function qsm_results_overview_tab_content() {
 			array( '%d' )
 		);
 
-		if ( $results ) {
-			$mlwQuizMasterNext->alertManager->newAlert(__('Your results has been deleted successfully.','quiz-master-next'), 'success');
+		if ( false === $results ) {
+			$error = $wpdb->last_error;
+			if ( empty( $error ) ) {
+				$error = __( 'Unknown error', 'quiz-master-next' );
+			}
+			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There was an error when deleting this result. Error from WordPress: %s', 'quiz-master-next' ), $error ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __('Your results has been deleted successfully.','quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name" );
-		}
-		else
-		{
-			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0021'), 'error');
-			$mlwQuizMasterNext->log_manager->add("Error 0021", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
+			
 		}
 	}
 
@@ -345,7 +348,7 @@ function qsm_results_overview_tab_content() {
 
 				$quotes_list .= "<tr{$alternate}>";
 				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";
-				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=mlw_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
+				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
 				if ($mlw_quiz_info->quiz_system == 0)
 				{

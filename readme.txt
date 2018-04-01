@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.2.1
+Stable tag: 5.2.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -109,6 +109,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.2.2 (April 1, 2018) =
+* Makes minor style adjustments
+* Adds additional hook to admin results details page
+* Modifies a few error messages
 
 = 5.2.1 (March 5, 2018) =
 * Fixes broken "Custom" styles

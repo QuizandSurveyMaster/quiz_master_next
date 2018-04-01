@@ -44,16 +44,18 @@ function mlw_options_emails_tab_content()
 			array_unshift($mlw_qmn_email_array , $mlw_new_landing_array);
 			$mlw_qmn_email_array = serialize($mlw_qmn_email_array);
 		}
-		//Update email template with new array then check to see if worked
+		// Update email template with new array then check to see if worked.
 		$mlw_new_email_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET user_email_template='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_email_array, $mlw_qmn_add_email_id ) );
-		if ( false != $mlw_new_email_results ) {
+		if ( false !== $mlw_new_email_results ) {
 			$mlwQuizMasterNext->alertManager->newAlert(__('The email has been added successfully.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "New User Email Has Been Created For Quiz Number $mlw_qmn_add_email_id" );
-		}
-		else
-		{
-			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0016'), 'error');
-			$mlwQuizMasterNext->log_manager->add("Error 0016", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
+		} else {
+			$error = $wpdb->last_error;
+			if ( empty( $error ) ) {
+				$error = __( 'Unknown error', 'quiz-master-next' );
+			}
+			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please try again. Error from WordPress: %s', 'quiz-master-next'), $error ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error creating new user email', "Tried {$wpdb->last_query} but got $error.", 0, 'error');
 		}
 	}
 
