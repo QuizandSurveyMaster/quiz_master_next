@@ -348,7 +348,7 @@ function qsm_results_overview_tab_content() {
 
 				$quotes_list .= "<tr{$alternate}>";
 				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";
-				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=mlw_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
+				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
 				if ($mlw_quiz_info->quiz_system == 0)
 				{
