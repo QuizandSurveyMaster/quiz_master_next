@@ -175,39 +175,47 @@ class QMNTracking {
     $this->data = $data;
   }
 
-  /**
-   * Adds Admin Notice To Dashboard
-   *
-   * Adds an admin notice asking for authorization to send data home
-   *
-   * @since 4.1.0
-   * @return void
-   */
-  public function admin_notice() {
-    $show_notice = get_option( 'qmn-tracking-notice' );
-    $settings = (array) get_option( 'qmn-settings' );
+	/**
+	 * Adds Admin Notice To Dashboard
+	 *
+	 * Adds an admin notice asking for authorization to send data home
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function admin_notice() {
+		$show_notice = get_option( 'qmn-tracking-notice' );
+		$settings = (array) get_option( 'qmn-settings' );
 
-    if ($show_notice)
-      return;
-
-    if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' )
-      return;
-
-    if( ! current_user_can( 'manage_options' ) )
+		// If the notice has already been shown, return.
+		if ( $show_notice ) {
 			return;
+		}		
 
-    if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
+		// If the tracking variable has already been set, return.
+		if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' ) {
+			return;
+		}			
+
+		// If the user does not have the required permissions, return.
+		if( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}			
+
+		if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
 			update_option( 'qmn-tracking-notice', '1' );
 		} else {
-      $optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
-  		$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
-  		echo '<div class="updated"><p>';
-  			echo __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better? Opt-in to tracking and our newsletter and immediately be emailed a coupon to the QSM store, valid towards the purchase of addons. No sensitive data is tracked.", 'quiz-master-next' );
-  			echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
-  			echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
-  		echo '</p></div>';
-    }
-  }
+			$optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
+			$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
+			echo '<div class="updated">';
+				echo '<p>' . __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better? Opt-in to tracking and our newsletter and immediately be emailed a coupon to the QSM store, valid towards the purchase of addons.", 'quiz-master-next' ) . '<p>';
+				echo '<p>' . __( "Only feature usage and data about quizzes, surveys, and questions are collected. No user responses or data is ever collected.", 'quiz-master-next' ) . '<p>';
+				echo '<p>' . __( "This data is never sold or shared with any 3rd party. No sensitive data is tracked.", 'quiz-master-next' ) . '<p>';
+				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
+				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
+			echo '</div>';
+		}
+	}
 
   /**
    * Checks If User Has Clicked On Notice
