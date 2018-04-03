@@ -142,8 +142,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Views/Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
 					</thead>
@@ -156,8 +155,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Views', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Taken', 'quiz-master-next' ); ?></th>
+							<th><?php _e( 'Views/Taken', 'quiz-master-next' ); ?></th>
 							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
 					</tfoot>
@@ -277,8 +275,7 @@ function qsm_generate_quizzes_surveys_page() {
 				</td>
 				<td>[qsm quiz={{ data.id }}]</td>
 				<td>[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</td>
-				<td>{{ data.views }}</td>
-				<td>{{ data.taken }}</td>
+				<td>{{ data.views }}/{{ data.taken }}</td>
 				<td>{{ data.lastActivity }}</td>
 			</tr>
 		</script>

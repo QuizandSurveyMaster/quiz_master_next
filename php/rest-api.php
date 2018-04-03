@@ -15,19 +15,19 @@ add_action( 'rest_api_init', 'qsm_register_rest_routes' );
  */
 function qsm_register_rest_routes() {
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
-		'methods'  => 'GET',
+		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_questions',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
-		'methods'  => 'POST',
+		'methods'  => WP_REST_Server::CREATABLE,
 		'callback' => 'qsm_rest_create_question',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
-		'methods'  => 'PUT',
+		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_question',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
-		'methods'  => 'GET',
+		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_question',
 	) );
 }

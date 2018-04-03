@@ -253,7 +253,8 @@ var QSMQuestion;
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.saveSuccess,
-					error: QSMQuestion.displayError
+					error: QSMQuestion.displayError,
+					type: 'POST'
 				} 
 			);
 			MicroModal.close('modal-1');
