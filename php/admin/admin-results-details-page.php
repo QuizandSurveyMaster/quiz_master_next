@@ -51,9 +51,16 @@ function qsm_generate_result_details() {
 function qsm_generate_results_details_tab() {
 
 	global $wpdb;
+	global $mlwQuizMasterNext;
 
-	$result_id        = intval( $_GET["result_id"] );
-	$results_data     = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
+	// Gets results data.
+	$result_id    = intval( $_GET["result_id"] );
+	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
+
+	// Prepare plugin helper.
+	$quiz_id = intval( $results_data->quiz_id );
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
+
 	$previous_results = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id < $result_id)" );
 	$next_results     = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > $result_id)" );
 
