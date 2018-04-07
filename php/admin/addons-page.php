@@ -14,7 +14,7 @@ function qmn_addons_page() {
 	}
 
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'featured-addons';
+	$active_tab = strtolower(str_replace( " ", "-", isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : __( "Featured Addons", 'quiz-master-next' )));
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 	<div class="wrap">
