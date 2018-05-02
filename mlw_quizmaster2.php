@@ -138,7 +138,7 @@ class MLWQuizMasterNext {
 			include 'php/admin/options-page-preview-tab.php';
 			include 'php/admin/addons-page.php';
 			include 'php/admin/settings-page.php';
-			include 'php/classes/class-qmn-tracking.php';
+			include 'php/classes/class-qsm-tracking.php';
 			include 'php/classes/class-qmn-review-message.php';
 		}
 		include 'php/classes/class-qsm-questions.php';
