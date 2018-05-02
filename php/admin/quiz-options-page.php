@@ -21,7 +21,7 @@ function qsm_generate_quiz_options() {
 
 	// Get registered tabs for the options page and set current tab
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
-	$active_tab = isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : 'questions';
+	$active_tab = strtolower(str_replace( " ", "-", isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : __( 'Questions', 'quiz-master-next' )));
 
 	// Prepares quiz.
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
