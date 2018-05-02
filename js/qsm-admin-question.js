@@ -277,7 +277,9 @@ var QSMQuestion;
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
 			var question_editor = tinyMCE.get( 'question-text' );
-			if ( question_editor ) {
+			if ($('#wp-question-text-wrap').hasClass('html-active')) {
+				jQuery( "#question-text" ).val( questionText );
+			} else if ( question_editor ) {
 				tinyMCE.get( 'question-text' ).setContent( questionText );
 			} else {
 				jQuery( "#question-text" ).val( questionText );
@@ -328,6 +330,7 @@ var QSMQuestion;
 			var settings = {
 				mediaButtons: true,
 				tinymce:      {
+      				forced_root_block : '',
 					toolbar1: 'formatselect,bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
 				},
 				quicktags:    true,
