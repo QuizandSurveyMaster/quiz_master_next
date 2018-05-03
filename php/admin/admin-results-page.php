@@ -319,6 +319,7 @@ function qsm_results_overview_tab_content() {
 					<th><?php _e('Email','quiz-master-next'); ?></th>
 					<th><?php _e('Phone','quiz-master-next'); ?></th>
 					<th><?php _e('Time Taken','quiz-master-next'); ?></th>
+					<th><?php _e('IP Address','quiz-master-next'); ?></th>
 				</tr>
 			</thead>
 			<?php
@@ -370,6 +371,7 @@ function qsm_results_overview_tab_content() {
 				$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 				$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 				$quotes_list .= "<td><span style='font-size:16px;'>$date $time</span></td>";
+				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
 				$quotes_list .= "</tr>";
 			}
 			$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
