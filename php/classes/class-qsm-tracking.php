@@ -194,7 +194,7 @@ class QSM_Tracking {
 			echo '<div class="updated">';
 				echo '<p>' . __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
 				echo '<p>' . __( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
-				echo '<p><a href="http://bit.ly/2w6f34x">' . __( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
+				echo '<p><a href="http://bit.ly/2w6f34x" target="_blank">' . __( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
 				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
 				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
 			echo '</div>';
