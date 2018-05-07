@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.2.3
+Stable tag: 5.2.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,7 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 
 **Premium Add-ons**
 
+* [URL Parameters](http://bit.ly/2I1ZM6g)
 * [Google Analytics Tracking](http://bit.ly/2AAgABs)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
@@ -109,6 +110,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 5.2.4 (May 7, 2018) =
+* Closed Bug: %QUESTIONS_ANSWERS% variable is displaying questions in order of creation - ([Issue #660](https://github.com/fpcorso/quiz_master_next/issues/660))
+* Closed Bug: Extra spacing is being added to questions when multiple lines are in question - ([Issue #659](https://github.com/fpcorso/quiz_master_next/issues/659))
+* Closed Bug: Tabs pages stop working when translated - ([Issue #582](https://github.com/fpcorso/quiz_master_next/issues/582))
 
 = 5.2.3 (April 3, 2018) =
 * Closed Bug: Cannot save question on certain servers - ([Issue #651](https://github.com/fpcorso/quiz_master_next/issues/651))
