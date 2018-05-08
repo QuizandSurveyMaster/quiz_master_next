@@ -770,60 +770,64 @@ class QMNQuizManager {
 			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
-			// Creates our results array.
-			$results_array = array(
-				intval( $qmn_array_for_variables['timer'] ),
-				$qmn_array_for_variables['question_answers_array'],
-				htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
-				'contact' => $contact_responses,
-			);
-			$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
-			$serialized_results = serialize( $results_array );
+			// If the store responses in database option is set to Yes.
+			if ( 0 != $qmn_quiz_options->store_responses ) {
 
-			global $wpdb;
-			$table_name = $wpdb->prefix . "mlw_results";
-			$results_insert = $wpdb->insert(
-				$table_name,
-				array(
-					'quiz_id'         => $qmn_array_for_variables['quiz_id'],
-					'quiz_name'       => $qmn_array_for_variables['quiz_name'],
-					'quiz_system'     => $qmn_array_for_variables['quiz_system'],
-					'point_score'     => $qmn_array_for_variables['total_points'],
-					'correct_score'   => $qmn_array_for_variables['total_score'],
-					'correct'         => $qmn_array_for_variables['total_correct'],
-					'total'           => $qmn_array_for_variables['total_questions'],
-					'name'            => $qmn_array_for_variables['user_name'],
-					'business'        => $qmn_array_for_variables['user_business'],
-					'email'           => $qmn_array_for_variables['user_email'],
-					'phone'           => $qmn_array_for_variables['user_phone'],
-					'user'            => $qmn_array_for_variables['user_id'],
-					'user_ip'         => $qmn_array_for_variables['user_ip'],
-					'time_taken'      => $qmn_array_for_variables['time_taken'],
-					'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
-					'quiz_results'    => $serialized_results,
-					'deleted'         => 0
-				),
-				array(
-					'%d',
-					'%s',
-					'%d',
-					'%d',
-					'%d',
-					'%d',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d',
-					'%s',
-					'%s',
-					'%s',
-					'%s',
-					'%d'
-				)
-			);
+				// Creates our results array.
+				$results_array = array(
+					intval( $qmn_array_for_variables['timer'] ),
+					$qmn_array_for_variables['question_answers_array'],
+					htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
+					'contact' => $contact_responses,
+				);
+				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
+				$serialized_results = serialize( $results_array );
 
+				// Inserts the responses in the database
+				global $wpdb;
+				$table_name = $wpdb->prefix . "mlw_results";
+				$results_insert = $wpdb->insert(
+					$table_name,
+					array(
+						'quiz_id'         => $qmn_array_for_variables['quiz_id'],
+						'quiz_name'       => $qmn_array_for_variables['quiz_name'],
+						'quiz_system'     => $qmn_array_for_variables['quiz_system'],
+						'point_score'     => $qmn_array_for_variables['total_points'],
+						'correct_score'   => $qmn_array_for_variables['total_score'],
+						'correct'         => $qmn_array_for_variables['total_correct'],
+						'total'           => $qmn_array_for_variables['total_questions'],
+						'name'            => $qmn_array_for_variables['user_name'],
+						'business'        => $qmn_array_for_variables['user_business'],
+						'email'           => $qmn_array_for_variables['user_email'],
+						'phone'           => $qmn_array_for_variables['user_phone'],
+						'user'            => $qmn_array_for_variables['user_id'],
+						'user_ip'         => $qmn_array_for_variables['user_ip'],
+						'time_taken'      => $qmn_array_for_variables['time_taken'],
+						'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
+						'quiz_results'    => $serialized_results,
+						'deleted'         => 0
+					),
+					array(
+						'%d',
+						'%s',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d'
+					)
+				);
+			}
 
 			$this->send_user_email($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
