@@ -64,7 +64,7 @@ var QSM;
 				template = wp.template( 'qsm-pagination' );
 				$quizForm.append( template() );
 				if ( qmn_quiz_data[ quizID ].progress_bar ) {
-					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line(container, {
+					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line('#qsm-progress-bar', {
 						strokeWidth: 4,
 						easing: 'easeInOut',
 						duration: 1400,
