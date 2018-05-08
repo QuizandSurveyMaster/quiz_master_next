@@ -192,29 +192,12 @@ class MLWQuizMasterNext {
 	 */
 	public function register_quiz_post_types() {
 
-		// Prepares labels.
-		$quiz_labels = array(
-			'name'               => 'Quizzes & Surveys',
-			'singular_name'      => 'Quiz',
-			'menu_name'          => 'Quiz',
-			'name_admin_bar'     => 'Quiz',
-			'add_new'            => 'Add New',
-			'add_new_item'       => 'Add New Quiz',
-			'new_item'           => 'New Quiz',
-			'edit_item'          => 'Edit Quiz',
-			'view_item'          => 'View Quiz',
-			'all_items'          => 'All Quizzes',
-			'search_items'       => 'Search Quizzes',
-			'parent_item_colon'  => 'Parent Quiz:',
-			'not_found'          => 'No Quiz Found',
-			'not_found_in_trash' => 'No Quiz Found In Trash',
-		);
-
 		// Checks settings to see if we need to alter the defaults.
 		$has_archive    = true;
 		$exclude_search = false;
 		$cpt_slug       = 'quiz';
 		$settings       = (array) get_option( 'qmn-settings' );
+		$plural_name    = __( 'Quizzes & Surveys', 'quiz-master-next' );
 
 		// Checks if admin turned off archive.
 		if ( isset( $settings['cpt_archive'] ) && '1' == $settings['cpt_archive'] ) {
@@ -231,6 +214,29 @@ class MLWQuizMasterNext {
 			$cpt_slug = trim( strtolower( str_replace( ' ', '-', $settings['cpt_slug'] ) ) );
 		}
 
+		// Checks if admin changed plural name.
+		if ( isset( $settings['plural_name'] ) ) {
+			$plural_name = trim( $settings['plural_name'] );
+		}
+
+		// Prepares labels.
+		$quiz_labels = array(
+			'name'               => $plural_name,
+			'singular_name'      => __( 'Quiz', 'quiz-master-next' ),
+			'menu_name'          => __( 'Quiz', 'quiz-master-next' ),
+			'name_admin_bar'     => __( 'Quiz', 'quiz-master-next' ),
+			'add_new'            => __( 'Add New', 'quiz-master-next' ),
+			'add_new_item'       => __( 'Add New Quiz', 'quiz-master-next' ),
+			'new_item'           => __( 'New Quiz', 'quiz-master-next' ),
+			'edit_item'          => __( 'Edit Quiz', 'quiz-master-next' ),
+			'view_item'          => __( 'View Quiz', 'quiz-master-next' ),
+			'all_items'          => __( 'All Quizzes', 'quiz-master-next' ),
+			'search_items'       => __( 'Search Quizzes', 'quiz-master-next' ),
+			'parent_item_colon'  => __( 'Parent Quiz:', 'quiz-master-next' ),
+			'not_found'          => __( 'No Quiz Found', 'quiz-master-next' ),
+			'not_found_in_trash' => __( 'No Quiz Found In Trash', 'quiz-master-next' ),
+		);
+
 		// Prepares post type array.
 		$quiz_args = array(
 			'public'              => true,
@@ -240,7 +246,7 @@ class MLWQuizMasterNext {
 			'labels'              => $quiz_labels,
 			'publicly_queryable'  => true,
 			'exclude_from_search' => $exclude_search,
-			'label'               => __( 'Quizzes', 'quiz-master-next' ),
+			'label'               => $plural_name,
 			'rewrite'             => array( 'slug' => $cpt_slug ),
 			'has_archive'         => $has_archive,
 			'supports'            => array( 'title', 'author', 'comments' )

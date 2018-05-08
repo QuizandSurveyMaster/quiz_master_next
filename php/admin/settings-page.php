@@ -1,5 +1,6 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Generates The Settings Page For The Plugin
  *
@@ -18,8 +19,8 @@ class QMNGlobalSettingsPage {
 	  * @return void
 	  */
 	function __construct() {
-    $this->add_hooks();
-  }
+		$this->add_hooks();
+	}
 
 	/**
 	  * Add Hooks
@@ -29,9 +30,9 @@ class QMNGlobalSettingsPage {
 	  * @since 4.1.0
 	  * @return void
 	  */
-  private function add_hooks() {
+	private function add_hooks() {
 		add_action( "admin_init", array( $this, 'init' ) );
-  }
+	}
 
 	/**
 	 * Prepares Settings Fields And Sections
@@ -41,11 +42,12 @@ class QMNGlobalSettingsPage {
 	 */
 	public function init() {
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
-    add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array($this, 'global_section'), 'qmn_global_settings' );
-    add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
+    	add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array($this, 'global_section'), 'qmn_global_settings' );
+    	add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array($this, 'usage_tracker_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array($this, 'cpt_search_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array($this, 'cpt_archive_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ) , array($this, 'cpt_slug_field'), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'plural-name', __( 'Quiz Post Type Plural Name', 'quiz-master-next' ) , array( $this, 'plural_name_field'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array($this, 'facebook_app_id'), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array($this, 'results_details_template'), 'qmn_global_settings', 'qmn-global-section' );
 	}
@@ -88,15 +90,28 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function cpt_slug_field()
-	{
+	public function cpt_slug_field() {
 		$settings = (array) get_option( 'qmn-settings' );
 		$cpt_slug = 'quiz';
-		if (isset($settings['cpt_slug']))
-		{
+		if ( isset( $settings['cpt_slug'] ) ) {
 			$cpt_slug = esc_attr( $settings['cpt_slug'] );
 		}
 		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";
+	}
+
+	/**
+	 * Generates Setting Field For Plural name
+	 *
+	 * @since 5.3.0
+	 * @return void
+	 */
+	public function plural_name_field() {
+		$settings = (array) get_option( 'qmn-settings' );
+		$plural_name = __( 'Quizzes & Surveys', 'quiz-master-next' );
+		if ( isset( $settings['plural_name'] ) ) {
+			$plural_name = esc_attr( $settings['plural_name'] );
+		}
+		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";
 	}
 
 	/**
