@@ -63,6 +63,36 @@ var QSM;
 				$quizForm.children( '.qsm-page' ).hide();
 				template = wp.template( 'qsm-pagination' );
 				$quizForm.append( template() );
+				if ( qmn_quiz_data[ quizID ].progress_bar ) {
+					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line(container, {
+						strokeWidth: 4,
+						easing: 'easeInOut',
+						duration: 1400,
+						color: '#FFEA82',
+						trailColor: '#eee',
+						trailWidth: 1,
+						svgStyle: {width: '100%', height: '100%'},
+						// text: {
+						//   style: {
+						// 	// Text color.
+						// 	// Default: same as stroke color (options.color)
+						// 	color: '#999',
+						// 	position: 'absolute',
+						// 	right: '0',
+						// 	top: '30px',
+						// 	padding: 0,
+						// 	margin: 0,
+						// 	transform: null
+						//   },
+						//   autoStyleContainer: false
+						// },
+						from: {color: '#FFEA82'},
+						to: {color: '#ED6A5A'},
+						step: (state, bar) => {
+						  bar.setText(Math.round(bar.value() * 100) + ' %');
+						}
+					});
+				}
 				QSM.goToPage( quizID, 1 );
 				$quizForm.find( '.qsm-pagination .qsm-next' ).on( 'click', function( event ) {
 					event.preventDefault();
@@ -94,6 +124,9 @@ var QSM;
 			}
 			if ( 1 < pageNumber ) {
 				$quizForm.find( '.qsm-previous' ).show();
+			}
+			if ( qmn_quiz_data[ quizID ].progress_bar ) {
+				qmn_quiz_data[ quizID ].bar.animate( pageNumber / $pages.length );
 			}
 			QSM.savePage( quizID, pageNumber );
 		},

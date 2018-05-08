@@ -61,7 +61,26 @@ class QSM_Install {
       ),
       'default' => 0
     );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+	$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+	
+	// Registers progress_bar setting
+    $field_array = array(
+		'id' => 'progress_bar',
+		'label' => __( 'Show a progress bar?', 'quiz-master-next' ),
+		'type' => 'radio',
+		'options' => array(
+		  array(
+			'label' => __( 'Yes', 'quiz-master-next' ),
+			'value' => 1
+		  ),
+		  array(
+			'label' => __( 'No', 'quiz-master-next' ),
+			'value' => 0
+		  )
+		),
+		'default' => 0
+	);
+	$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers require_log_in setting
     $field_array = array(
