@@ -63,9 +63,9 @@ var QSM;
 				$quizForm.children( '.qsm-page' ).hide();
 				template = wp.template( 'qsm-pagination' );
 				$quizForm.append( template() );
-				if ( qmn_quiz_data[ quizID ].progress_bar ) {
+				if ( '1' == qmn_quiz_data[ quizID ].progress_bar ) {
 					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line('#qsm-progress-bar', {
-						strokeWidth: 4,
+						strokeWidth: 2,
 						easing: 'easeInOut',
 						duration: 1400,
 						color: '#3498db',
@@ -78,6 +78,10 @@ var QSM;
 							position: 'absolute',
 							padding: 0,
 							margin: 0,
+							top: 0,
+							right: '10px',
+							'font-size': '13px',
+							'font-weight': 'bold',
 							transform: null
 						  },
 						  autoStyleContainer: false
@@ -121,7 +125,7 @@ var QSM;
 			if ( 1 < pageNumber ) {
 				$quizForm.find( '.qsm-previous' ).show();
 			}
-			if ( qmn_quiz_data[ quizID ].progress_bar ) {
+			if ( '1' == qmn_quiz_data[ quizID ].progress_bar ) {
 				qmn_quiz_data[ quizID ].bar.animate( pageNumber / $pages.length );
 			}
 			QSM.savePage( quizID, pageNumber );
