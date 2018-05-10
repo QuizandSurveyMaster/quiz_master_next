@@ -1,3 +1,9 @@
+#qsm-progress-bar {
+  position: relative;
+  flex-grow: 2;
+  padding: 0 10px;
+}
+
 .ui-tooltip {
 	max-width: 500px !important;
 }
@@ -300,14 +306,14 @@ border: 1px solid #e3e3e3;
 	}
 }
 
-.qmn_page_counter_message {
+/* .qmn_page_counter_message {
   font-size: 14px;
   color: #999;
   width: 100px;
   padding: 10px 20px 10px 20px;
   margin: 0 auto;
 	text-align: center;
-}
+} */
 
 .mlw_qmn_timer {
   z-index: 999;
