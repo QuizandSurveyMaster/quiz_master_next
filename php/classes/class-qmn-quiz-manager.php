@@ -199,7 +199,22 @@ class QMNQuizManager {
 				}
 			}
 			$question_sql = implode( ', ', $question_ids );
-			$questions = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id IN ($question_sql) " . $order_by_sql . $limit_sql );
+			$questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $order_by_sql . $limit_sql );
+			
+			// If we are not using randomization, we need to put the questions in the order of the new question editor.
+			// If a user has saved the pages in the question editor but still uses the older pagination options
+			// Then they will make it here. So, we need to order the questions based on the new editor.
+			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order ) {
+				$ordered_questions = array();
+				foreach ( $questions as $question ) {
+					$key = array_search( $question->question_id, $question_ids );
+					if ( false !== $key ) {
+						$ordered_questions[ $key ] = $question;
+					}
+				}
+				ksort( $ordered_questions );
+				$questions = $ordered_questions;
+			}
 		} else {
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id ) );
 		}
