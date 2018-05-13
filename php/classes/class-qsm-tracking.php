@@ -55,13 +55,13 @@ class QSM_Tracking {
    	 * @return void
    	 */
   	public function track_check() {
-    	$settings = (array) get_option( 'qmn-settings' );
+		$settings = (array) get_option( 'qmn-settings' );
     	$tracking_allowed = '0';
 		if ( isset( $settings['tracking_allowed'] ) ) {
 			$tracking_allowed = $settings['tracking_allowed'];
 		}
 		$last_time = get_option( 'qmn_tracker_last_time' );
-		
+
 		// We only send data if opted in. Opt-in designated by a value of 1 or 2.
 		// We send data once a week.
     	if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {

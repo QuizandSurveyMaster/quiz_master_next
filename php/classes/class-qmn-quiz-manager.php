@@ -111,13 +111,8 @@ class QMNQuizManager {
 			'quiz_id'     => $qmn_quiz_options->quiz_id,
 			'quiz_name'   => $qmn_quiz_options->quiz_name,
 			'quiz_system' => $qmn_quiz_options->system,
+			'user_ip'     => $this->get_user_ip(),
 		);
-
-		if ( $_SERVER['REMOTE_ADDR'] ) {
-			$qmn_array_for_variables['user_ip'] = $_SERVER['REMOTE_ADDR'];
-		} else {
-			$qmn_array_for_variables['user_ip'] = 'Unknown';
-		}
 
 		$return_display .= "<script>
 			if (window.qmn_quiz_data === undefined) {
@@ -737,11 +732,7 @@ class QMNQuizManager {
 		global $qmn_allowed_visit;
 		$result_display = '';
 
-		if ( $_SERVER["REMOTE_ADDR"] ) {
-			$qmn_array_for_variables['user_ip'] = $_SERVER["REMOTE_ADDR"];
-		} else {
-			$qmn_array_for_variables['user_ip'] = "Unknown";
-		}
+		$qmn_array_for_variables['user_ip'] = $this->get_user_ip();
 
 		$result_display = apply_filters( 'qmn_begin_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 		if ( ! $qmn_allowed_visit ) {
@@ -1445,6 +1436,29 @@ class QMNQuizManager {
 
 		//Remove HTML type for emails
 		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
+	}
+
+	/**
+	 * Returns the quiz taker's IP if IP collection is enabled
+	 * 
+	 * @since 5.3.0
+	 * @return string The IP address or a phrase if not collected
+	 */
+	private function get_user_ip() {
+		$ip = __( 'Not collected', 'quiz-master-next' );
+		$settings = (array) get_option( 'qmn-settings' );
+    	$ip_collection = '0';
+		if ( isset( $settings['ip_collection'] ) ) {
+			$ip_collection = $settings['ip_collection'];
+		}
+		if ( '1' != $ip_collection ) {
+			if ( $_SERVER['REMOTE_ADDR'] ) {
+				$ip = $_SERVER['REMOTE_ADDR'];
+			} else {
+				$ip = __( 'Unknown', 'quiz-master-next' );
+			}
+		}
+		return $ip;	
 	}
 }
 $qmnQuizManager = new QMNQuizManager();
