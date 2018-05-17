@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.2.4
+Stable tag: 5.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,37 +111,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.2.4 (May 7, 2018) =
-* Closed Bug: %QUESTIONS_ANSWERS% variable is displaying questions in order of creation - ([Issue #660](https://github.com/fpcorso/quiz_master_next/issues/660))
-* Closed Bug: Extra spacing is being added to questions when multiple lines are in question - ([Issue #659](https://github.com/fpcorso/quiz_master_next/issues/659))
-* Closed Bug: Tabs pages stop working when translated - ([Issue #582](https://github.com/fpcorso/quiz_master_next/issues/582))
-
-= 5.2.3 (April 3, 2018) =
-* Closed Bug: Cannot save question on certain servers - ([Issue #651](https://github.com/fpcorso/quiz_master_next/issues/651))
-* Closed Bug: Questions/Answers Template Not Loaded In Admin Results Page - ([Issue #636](https://github.com/fpcorso/quiz_master_next/issues/636))
-
-= 5.2.2 (April 1, 2018) =
-* Makes minor style adjustments
-* Adds additional hook to admin results details page
-* Modifies a few error messages
-
-= 5.2.1 (March 5, 2018) =
-* Fixes broken "Custom" styles
-* Fixes minor bugs in new question editor
-* Makes minor style adjustments
-
-= 5.2.0 (March 3, 2018) =
-* Closed Enhancement: Make Quiz Results Extendable/Filterable - ([Issue #622](https://github.com/fpcorso/quiz_master_next/issues/622))
-* Closed Enhancement: New Question Editor - ([Issue #568](https://github.com/fpcorso/quiz_master_next/issues/568))
-* Closed Bug: Pagination Bug - ([Issue #477](https://github.com/fpcorso/quiz_master_next/issues/477))
-* Closed Bug: Questions shift - ([Issue #467](https://github.com/fpcorso/quiz_master_next/issues/467))
-* Closed User Request: Remove duplicate question popup confirmation - ([Issue #396](https://github.com/fpcorso/quiz_master_next/issues/396))
-* Closed User Request: Question Grouping - ([Issue #356](https://github.com/fpcorso/quiz_master_next/issues/356))
-* Closed User Request: Ability To Move Submit Button To Last Question Page - ([Issue #321](https://github.com/fpcorso/quiz_master_next/issues/321))
+= 5.3.0 (May 16, 2018) =
+* Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/fpcorso/quiz_master_next/issues/670))
+* Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/fpcorso/quiz_master_next/issues/666))
+* Closed User Request: Progress Bar - ([Issue #412](https://github.com/fpcorso/quiz_master_next/issues/412))
+* Closed User Request: Disable Results Being Stored In Database - ([Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
+* Closed Bug: Question ordering doesn't work when using older pagination option - ([Issue #657](https://github.com/fpcorso/quiz_master_next/issues/657))
 
 ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 5.2.0 =
-Update for a new question editor! Includes a variety of bug fixes and minor changes too.
+= 5.3.0 =
+Update for new features including progress bar, the ability to disable IP collection, and more!

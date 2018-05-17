@@ -33,25 +33,25 @@ function mlw_generate_about_page() {
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 5.2!</h2>
+				<h2 class="feature-headline">Welcome to QSM 5.3!</h2>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">New Question Editor!</h2>
-				<p class="feature-text">The "Questions" tab has had a major new redesign. Now, it is much easier to drag-and-drop to reorder all of your questions.</p>
-				<p class="feature-text">Even better, with this new editor, you can create pages for your quiz or survey and drag questions between pages as well as reorder the pages!</p>
+				<h2 class="feature-headline">New Progress Bar!</h2>
+				<p class="feature-text">You can now enable a progress bar on quizzes and surveys that are using the new pages and questions editor from the 5.2.0 update!</p>
+				<p class="feature-text">When editing your quiz or survey, go to the "Options" tab and set the "Show a progress bar?" option to "Yes".</p>
 			</div>
-			<hr />
 			<div class="feature">
-				<h2 class="feature-headline">For Developers: Results Now Extendable</h2>
-				<p class="feature-text">There have been ways to add extra data to quizzes/surveys and questions for a while. However, there hasn't been an easy way for developers to add additional data to the results prior to them being stored in the database.</p>
-				<p class="feature-text">Now, the results array is passed through a new "qsm_results_array" filter so developers can add data to the results. Then, using the template variable system, a developer can have this data shown in the admin details as well.</p>
+				<h2 class="feature-headline">Disable IP Address Collection</h2>
+				<p class="feature-text">You can now disable the plugin from collecting IP addresses, if needed. To do so, go to the "Settings" page and check the "Disable collecting and storing IP addresses?" checkbox.</p>
+			</div>
+			<div class="feature">
+				<h2 class="feature-headline">Disable Storing Results In The Database</h2>
+				<p class="feature-text">For the quizzes and surveys that do not need to actually store any responses, you can now turn off the results being stored in the database. To do so, go to the "Options" tab when editing your quiz or survey and set the "Store the responses in the database?" option to "No".</p>
 			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 49 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 48 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 32 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 50 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>
