@@ -84,6 +84,8 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	$export_items = array();
 	$done         = false;
 	$user         = get_user_by( 'email', $email );
+	$group_id     = 'qsm-form-response';
+	$group_label  = __( 'Form Responses', 'quiz-master-next' );
 
 	// Get all results by user ID and email.
 	$user_sql = '';
@@ -94,7 +96,111 @@ function qsm_data_exporter( $email, $page = 1 ) {
 
 	// Cycle through adding to array.
 	foreach ( $results as $result ) {
-		// Do stuff...
+		// Set the ID.
+		$item_id = 'qsm-form-response-' . $result->result_id;
+
+		// Prepares our results array.
+		if ( is_serialized( $result->quiz_results ) ) {
+			$results_array = @unserialize( $result->quiz_results );
+			if ( is_array( $results_array ) ) {
+				if ( ! isset( $results['contact'] ) ) {
+					$results['contact'] = array();
+				}
+			}
+		}
+		if ( ! is_array( $results_array ) ) {
+			$results_array = array(
+				0,
+				array(),
+				'',
+				'contact' => array(),
+			);
+		}
+
+		// Create the data array.
+		$data = array(
+			array(
+				'name'  => __( 'Form Name', 'quiz-master-next' ),
+				'value' => $result->quiz_name,
+			),
+			array(
+				'name'  => __( 'Time Submitted', 'quiz-master-next' ),
+				'value' => $result->time_taken,
+			),
+			array(
+				'name'  => __( 'Points Earned', 'quiz-master-next' ),
+				'value' => $result->point_score,
+			),
+			array(
+				'name'  => __( 'Score Earned', 'quiz-master-next' ),
+				'value' => $result->correct_score,
+			),
+			array(
+				'name'  => __( 'Questions Answered Correctly', 'quiz-master-next' ),
+				'value' => $result->correct,
+			),
+			array(
+				'name'  => __( 'Total Questions', 'quiz-master-next' ),
+				'value' => $result->total,
+			),
+			array(
+				'name'  => __( 'Name Field', 'quiz-master-next' ),
+				'value' => $result->name,
+			),
+			array(
+				'name'  => __( 'Business Field', 'quiz-master-next' ),
+				'value' => $result->business,
+			),
+			array(
+				'name'  => __( 'Email Field', 'quiz-master-next' ),
+				'value' => $result->email,
+			),
+			array(
+				'name'  => __( 'Phone Field', 'quiz-master-next' ),
+				'value' => $result->phone,
+			),
+			array(
+				'name'  => __( 'User ID', 'quiz-master-next' ),
+				'value' => $result->user,
+			),
+			array(
+				'name'  => __( 'IP Address', 'quiz-master-next' ),
+				'value' => $result->user_ip,
+			),
+			array(
+				'name'  => __( 'Time to complete form', 'quiz-master-next' ),
+				'value' => $results_array[0] . ' seconds',
+			),
+			array(
+				'name'  => __( 'Form comments', 'quiz-master-next' ),
+				'value' => $results_array[2],
+			),
+		);
+
+		// Adds contact fields.
+		$contact_count = count( $results_array['contact'] );
+		for ( $i = 0; $i < $contact_count; $i++ ) {
+			$data[] = array(
+				'name'  => $results['contact'][ $i ]['label'],
+				'value' => $results['contact'][ $i ]['value'],
+			);
+		}
+
+		// Adds all answer data.
+		foreach ( $results_array[1] as $question ) {
+			$data[] = array(
+				'name'  => $question[0],
+				'value' => "Answer: {$question[1]}. Comments: {$question[3]}",
+			);
+		}
+
+		// Add to export array.
+		$export_items[] = array(
+			'group_id'    => $group_id,
+			'group_label' => $group_label,
+			'item_id'     => $item_id,
+			'data'        => $data,
+		);
 	}
 
 	return array(
