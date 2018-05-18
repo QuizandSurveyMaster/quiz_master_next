@@ -87,12 +87,20 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	$group_id     = 'qsm-form-response';
 	$group_label  = __( 'Form Responses', 'quiz-master-next' );
 
-	// Get all results by user ID and email.
+	// Prepare SQL for finding by user.
 	$user_sql = '';
 	if ( $user && isset( $user->ID ) && 0 !== $user->ID ) {
 		$user_sql = "user = {$user->ID} OR ";
 	}
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s' ORDER BY result_id DESC", $email ) );
+
+	// Calculate query range.
+	$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s'", $email ) );
+	$per_page  = 25;
+	$begin     = $per_page * $page;
+	$remaining = $total - ( $page * $per_page );
+
+	// Get the results.
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s' ORDER BY result_id DESC LIMIT %d, %d", $email, $begin, $per_page ) );
 
 	// Cycle through adding to array.
 	foreach ( $results as $result ) {
@@ -201,6 +209,10 @@ function qsm_data_exporter( $email, $page = 1 ) {
 			'item_id'     => $item_id,
 			'data'        => $data,
 		);
+	}
+
+	if ( 0 >= $remaining ) {
+		$done = true;
 	}
 
 	return array(
