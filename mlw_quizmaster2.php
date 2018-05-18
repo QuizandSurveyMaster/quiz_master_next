@@ -140,6 +140,10 @@ class MLWQuizMasterNext {
 			include 'php/admin/settings-page.php';
 			include 'php/classes/class-qsm-tracking.php';
 			include 'php/classes/class-qmn-review-message.php';
+
+			if ( function_exists( 'wp_add_privacy_policy_content' ) ) {
+				include 'php/gdpr.php';
+			}
 		}
 		include 'php/classes/class-qsm-questions.php';
 		include 'php/classes/class-qsm-contact-manager.php';

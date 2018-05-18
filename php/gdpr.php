@@ -12,7 +12,8 @@
 
 // Add our actions and filters to functions below.
 add_action( 'admin_init', 'qsm_register_suggested_privacy_content', 20 );
-add_filter( 'wp_privacy_personal_data_exporters', 'qsm_register_data_exporters' );
+add_filter( 'wp_privacy_personal_data_exporters', 'qsm_register_data_exporters', 20 );
+add_filter( 'wp_privacy_personal_data_erasers', 'qsm_register_data_erasers', 20 );
 
 /**
  * 1. Privacy Policy
@@ -62,7 +63,7 @@ function qsm_register_suggested_privacy_content() {
 function qsm_register_data_exporters( $exporters ) {
 	$exporters[] = array(
 		'exporter_friendly_name' => 'Quiz And Survey Master',
-		'callback'               => '',
+		'callback'               => 'qsm_data_exporter',
 	);
 	return $exporters;
 }
@@ -218,5 +219,71 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	return array(
 		'data' => $export_items,
 		'done' => $done,
+	);
+}
+
+/**
+ * 3. Data Eraser
+ */
+
+/**
+ * Register the plugin's data eraser
+ *
+ * @since 5.3.1
+ * @param array $erasers The erasers registered for WordPress.
+ * @return array The erasers with ours appended.
+ */
+function qsm_register_data_erasers( $erasers ) {
+	$erasers[] = array(
+		'eraser_friendly_name' => 'Quiz And Survey Master',
+		'callback'             => 'qsm_data_eraser',
+	);
+	return $erasers;
+}
+
+/**
+ * Erases all data for the user
+ *
+ * @see https://developer.wordpress.org/plugins/privacy/adding-the-personal-data-eraser-to-your-plugin/
+ *
+ * @since 5.3.1
+ * @param string $email The email of the user who wants to erase his or her data.
+ * @param int    $page The page we are on in the erasing.
+ * @return array The status of erasing the data
+ */
+function qsm_data_eraser( $email, $page = 1 ) {
+
+	// Sets up variables.
+	global $wpdb;
+	$items_removed = false;
+	$user          = get_user_by( 'email', $email );
+
+	// Deletes all results attached to user.
+	$user_sql = '';
+	if ( $user && isset( $user->ID ) && 0 !== $user->ID ) {
+		$user_count = $wpdb->delete(
+			"{$wpdb->prefix}mlw_results",
+			array( 'user' => $user->ID )
+		);
+	}
+
+	// Deletes all results attached email address not attached to user.
+	$email_count = $wpdb->delete(
+		"{$wpdb->prefix}mlw_results",
+		array( 'email' => $email )
+	);
+
+	// If we deleted any, then set removed to true.
+	$total = intval( $user_count ) + intval( $email_count );
+	if ( 0 < $total ) {
+		$items_removed = true;
+	}
+
+	// Needed array to be returned.
+	return array(
+		'items_removed'  => $items_removed,
+		'items_retained' => false,
+		'messages'       => array(),
+		'done'           => true,
 	);
 }
