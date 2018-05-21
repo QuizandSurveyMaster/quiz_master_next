@@ -12,8 +12,8 @@
 
 // Add our actions and filters to functions below.
 add_action( 'admin_init', 'qsm_register_suggested_privacy_content', 20 );
-add_filter( 'wp_privacy_personal_data_exporters', 'qsm_register_data_exporters', 20 );
-add_filter( 'wp_privacy_personal_data_erasers', 'qsm_register_data_erasers', 20 );
+add_filter( 'wp_privacy_personal_data_exporters', 'qsm_register_data_exporters' );
+add_filter( 'wp_privacy_personal_data_erasers', 'qsm_register_data_erasers' );
 
 /**
  * 1. Privacy Policy
@@ -28,14 +28,14 @@ add_filter( 'wp_privacy_personal_data_erasers', 'qsm_register_data_erasers', 20 
 function qsm_get_our_suggested_privacy_content() {
 	$content  = '<p>' . __( 'Many of our quizzes, surveys, and forms are created using Quiz And Survey Master.', 'quiz-master-next' ) . '</p>';
 	$content .= '<h2>' . __( 'The data the software collects', 'quiz-master-next' ) . '</h2>';
-	$content .= '<p>' . __( 'In order to distinguish individual users, IP addresses are collected and store with the responses.', 'quiz-master-next' ) . '</p>';
+	$content .= '<p>' . __( 'In order to distinguish individual users, IP addresses are collected and stored with the responses.', 'quiz-master-next' ) . '</p>';
 	$content .= '<p>' . __( 'Each individual form may have fields for a variety of other personal information, such as name and email. This data is needed to identify and possibly communicate with the user. There may be other fields asking for personal information and this data may be for different purposes for each quiz, survey, or form. If any data is to be used for purposes other than grading or survey purposes, this will be disclosed on the form itself.', 'quiz-master-next' ) . '</p>';
 	$content .= '<h2>' . __( 'How long we retain your data', 'quiz-master-next' ) . '</h2>';
-	$content  = '<p>' . __( 'The responses and data attached to the responses are stored indefinitely until an administrator of this site deletes the responses.', 'quiz-master-next' ) . '</p>';
-	$content  = '<p>' . __( 'Change This! If you are using an addon or custom software to sync data with a 3rd party (such as MailChimp), data is retained there which should be mentioned here.', 'quiz-master-next' ) . '</p>';
+	$content .= '<p>' . __( 'The responses and data attached to the responses are stored indefinitely until an administrator of this site deletes the responses.', 'quiz-master-next' ) . '</p>';
+	$content .= '<p>' . __( 'Change This! If you are using an addon or custom software to sync data with a 3rd party (such as MailChimp), data is retained there which should be mentioned here.', 'quiz-master-next' ) . '</p>';
 	$content .= '<h2>' . __( 'Where we send your data', 'quiz-master-next' ) . '</h2>';
-	$content  = '<p>' . __( 'Quiz And Survey Master does not send any of your data to anywhere outside of this site by default.', 'quiz-master-next' ) . '</p>';
-	$content  = '<p>' . __( 'Change This! If you are sharing the responses with anyone and do not list it anywhere else in your privacy policy, enter information about that here. ', 'quiz-master-next' ) . '</p>';
+	$content .= '<p>' . __( 'Quiz And Survey Master does not send any of your data to anywhere outside of this site by default.', 'quiz-master-next' ) . '</p>';
+	$content .= '<p>' . __( 'Change This! If you are sharing the responses with anyone and do not list it anywhere else in your privacy policy, enter information about that here. ', 'quiz-master-next' ) . '</p>';
 	return $content;
 }
 
@@ -45,8 +45,10 @@ function qsm_get_our_suggested_privacy_content() {
  * @since 5.3.1
  */
 function qsm_register_suggested_privacy_content() {
-	$content = qsm_get_our_suggested_privacy_content();
-	wp_add_privacy_policy_content( 'Quiz And Survey Master', $content );
+	if ( function_exists( 'wp_add_privacy_policy_content' ) ) {
+		$content = qsm_get_our_suggested_privacy_content();
+		wp_add_privacy_policy_content( 'Quiz And Survey Master', $content );
+	}
 }
 
 /**
@@ -61,7 +63,7 @@ function qsm_register_suggested_privacy_content() {
  * @return array The exporters with ours appended.
  */
 function qsm_register_data_exporters( $exporters ) {
-	$exporters[] = array(
+	$exporters['quiz-master-next'] = array(
 		'exporter_friendly_name' => 'Quiz And Survey Master',
 		'callback'               => 'qsm_data_exporter',
 	);
@@ -97,7 +99,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	// Calculate query range.
 	$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s'", $email ) );
 	$per_page  = 25;
-	$begin     = $per_page * $page;
+	$begin     = $per_page * ( $page - 1 );
 	$remaining = $total - ( $page * $per_page );
 
 	// Get the results.
@@ -190,8 +192,8 @@ function qsm_data_exporter( $email, $page = 1 ) {
 		$contact_count = count( $results_array['contact'] );
 		for ( $i = 0; $i < $contact_count; $i++ ) {
 			$data[] = array(
-				'name'  => $results['contact'][ $i ]['label'],
-				'value' => $results['contact'][ $i ]['value'],
+				'name'  => $results_array['contact'][ $i ]['label'],
+				'value' => $results_array['contact'][ $i ]['value'],
 			);
 		}
 
@@ -234,7 +236,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
  * @return array The erasers with ours appended.
  */
 function qsm_register_data_erasers( $erasers ) {
-	$erasers[] = array(
+	$erasers['quiz-master-next'] = array(
 		'eraser_friendly_name' => 'Quiz And Survey Master',
 		'callback'             => 'qsm_data_eraser',
 	);
