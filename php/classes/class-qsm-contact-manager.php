@@ -107,8 +107,7 @@ class QSM_Contact_Manager {
 				$class = '';
 				$value = '';
 				?>
-				<div class="qsm_contact_div">
-					<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+				<div class="qsm_contact_div qsm-contact-type-<?php echo esc_attr( $fields[ $i ]['type'] ); ?>">
 					<?php
 					if ( 'name' == $fields[ $i ]['use'] ) {
 						$value = $name;
@@ -124,6 +123,7 @@ class QSM_Contact_Manager {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
 							?>
+							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
 							<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
 							<?php
 							break;
@@ -133,6 +133,7 @@ class QSM_Contact_Manager {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
 							?>
+							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
 							<input type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
 							<?php
 							break;
@@ -142,7 +143,8 @@ class QSM_Contact_Manager {
 								$class = 'mlwRequiredAccept qsm_required_accept';
 							}
 							?>
-							<input type='checkbox' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='checked' />
+							<input type='checkbox' id='contact_field_<?php echo $i; ?>' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='checked' />
+							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo $i; ?>'><?php echo $fields[ $i ]['label']; ?></label>
 							<?php
 							break;
 
