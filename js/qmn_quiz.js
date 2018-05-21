@@ -88,7 +88,7 @@ var QSM;
 						},
 						from: {color: '#3498db'},
 						to: {color: '#ED6A5A'},
-						step: (state, bar) => {
+						step: function(state, bar) {
 						  bar.setText(Math.round(bar.value() * 100) + ' %');
 						}
 					});
