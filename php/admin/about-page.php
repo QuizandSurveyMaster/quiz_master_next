@@ -51,6 +51,7 @@ function mlw_generate_about_page() {
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 51 ); ?>
 			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 50 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
