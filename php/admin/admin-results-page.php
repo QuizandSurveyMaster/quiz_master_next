@@ -318,6 +318,7 @@ function qsm_results_overview_tab_content() {
 					<th><?php _e('Business','quiz-master-next'); ?></th>
 					<th><?php _e('Email','quiz-master-next'); ?></th>
 					<th><?php _e('Phone','quiz-master-next'); ?></th>
+					<th><?php _e('User','quiz-master-next'); ?></th>
 					<th><?php _e('Time Taken','quiz-master-next'); ?></th>
 					<th><?php _e('IP Address','quiz-master-next'); ?></th>
 				</tr>
@@ -368,6 +369,11 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone ."</span></td>";
+				if ( 0 == $mlw_quiz_info->user ) {
+					$quotes_list .= "<td><span style='font-size:16px;'>Visitor</span></td>";
+				} else {
+					$quotes_list .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user ."'>" . $mlw_quiz_info->user ."</a></span></td>";
+				}
 				$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 				$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 				$quotes_list .= "<td><span style='font-size:16px;'>$date $time</span></td>";

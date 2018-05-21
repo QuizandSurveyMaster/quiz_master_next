@@ -101,8 +101,17 @@
   margin: 0 0 5px 0;
   font-weight: bold;
   -webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
-        box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.qsm_contact_div {
+	margin: 10px 0;
+}
+
+.quiz_section .qsm-contact-type-checkbox label,
+.quiz_section .qsm-contact-type-checkbox input {
+	display: inline;
 }
 
 label.inline,

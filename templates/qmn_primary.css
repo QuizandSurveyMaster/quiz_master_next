@@ -105,6 +105,15 @@
         box-sizing: border-box;
 }
 
+.qsm_contact_div {
+	margin: 10px 0;
+}
+
+.quiz_section .qsm-contact-type-checkbox label,
+.quiz_section .qsm-contact-type-checkbox input {
+	display: inline;
+}
+
 label.inline,
 label.inline .mlw_qmn_question,
 .quiz_section.inline .mlw_horizontal_multiple {

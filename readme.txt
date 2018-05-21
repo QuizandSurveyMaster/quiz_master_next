@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.3.0
+Stable tag: 5.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.3.1 (May 21, 2018) =
+* Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/fpcorso/quiz_master_next/issues/682))
+* Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/fpcorso/quiz_master_next/issues/681))
+
 = 5.3.0 (May 16, 2018) =
 * Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/fpcorso/quiz_master_next/issues/670))
 * Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/fpcorso/quiz_master_next/issues/666))
@@ -122,5 +126,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 5.3.0 =
-Update for new features including progress bar, the ability to disable IP collection, and more!
+= 5.3.1 =
+Update for integrations with WordPress 4.9.6 GDPR features
