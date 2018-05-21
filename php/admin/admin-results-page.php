@@ -369,7 +369,7 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone ."</span></td>";
-				if ( 0 === $mlw_quiz_info->user ) {
+				if ( 0 == $mlw_quiz_info->user ) {
 					$quotes_list .= "<td><span style='font-size:16px;'>Visitor</span></td>";
 				} else {
 					$quotes_list .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user ."'>" . $mlw_quiz_info->user ."</a></span></td>";
