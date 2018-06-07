@@ -190,9 +190,12 @@ var qmn_timer_activated = false;
 var qsmTitleText = window.document.title;
 
 function qmnTimeTakenTimer() {
-	var x = +document.getElementById("timer").value;
+	var x = +jQuery( '#timer' ).val();
+	if ( NaN === x ) {
+		x = 0;
+	}
 	x = x + 1;
-	document.getElementById("timer").value = x;
+	jQuery( '#timer' ).val( x );
 }
 
 function qsmEndTimeTakenTimer() {
