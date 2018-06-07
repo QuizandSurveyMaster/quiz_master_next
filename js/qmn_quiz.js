@@ -10,7 +10,7 @@ var QSM;
 (function ($) {
 	QSM = {
 		init: function() {
-			if (qmn_quiz_data) {
+			if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
 				_.each( qmn_quiz_data, function( quiz ) {
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
@@ -335,7 +335,7 @@ function qmnDisplayResults( results, quiz_form_id, $container ) {
 }
 
 function qmnInit() {
-	if (qmn_quiz_data) {
+	if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data ) {
 		for ( var key in qmn_quiz_data ) {
 			if ( qmn_quiz_data[key].ajax_show_correct === '1' ) {
 				jQuery( '#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function() {
@@ -625,7 +625,9 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	return false;
 }
 
-qmnInit();
+jQuery(function() {
+	qmnInit();
+});
 
 jQuery(".mlw_next").click(function(event) {
 	event.preventDefault();
