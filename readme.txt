@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 5.3.1
+Stable tag: 5.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 5.3.2 (June 7, 2018) =
+* Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://api.github.com/repos/fpcorso/quiz_master_next/issues/686))
+
 = 5.3.1 (May 21, 2018) =
 * Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/fpcorso/quiz_master_next/issues/682))
 * Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/fpcorso/quiz_master_next/issues/681))
@@ -125,6 +128,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
+
+= 5.3.2 =
+Upgrade for fix for Divi conflict
 
 = 5.3.1 =
 Update for integrations with WordPress 4.9.6 GDPR features

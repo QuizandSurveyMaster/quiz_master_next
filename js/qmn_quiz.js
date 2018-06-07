@@ -10,7 +10,7 @@ var QSM;
 (function ($) {
 	QSM = {
 		init: function() {
-			if (qmn_quiz_data) {
+			if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
 				_.each( qmn_quiz_data, function( quiz ) {
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
@@ -64,6 +64,7 @@ var QSM;
 				template = wp.template( 'qsm-pagination' );
 				$quizForm.append( template() );
 				if ( '1' == qmn_quiz_data[ quizID ].progress_bar ) {
+					$( '#qsm-progress-bar' ).show();
 					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line('#qsm-progress-bar', {
 						strokeWidth: 2,
 						easing: 'easeInOut',
@@ -190,9 +191,12 @@ var qmn_timer_activated = false;
 var qsmTitleText = window.document.title;
 
 function qmnTimeTakenTimer() {
-	var x = +document.getElementById("timer").value;
+	var x = +jQuery( '#timer' ).val();
+	if ( NaN === x ) {
+		x = 0;
+	}
 	x = x + 1;
-	document.getElementById("timer").value = x;
+	jQuery( '#timer' ).val( x );
 }
 
 function qsmEndTimeTakenTimer() {
@@ -335,7 +339,7 @@ function qmnDisplayResults( results, quiz_form_id, $container ) {
 }
 
 function qmnInit() {
-	if (qmn_quiz_data) {
+	if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data ) {
 		for ( var key in qmn_quiz_data ) {
 			if ( qmn_quiz_data[key].ajax_show_correct === '1' ) {
 				jQuery( '#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function() {
@@ -599,10 +603,24 @@ function qmnInitPagination( quiz_id ) {
 		.append( '<div class="qmn_page_counter_message"></div>' )
 		.append( '<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>' );
 
+	jQuery(".mlw_next").click(function(event) {
+		event.preventDefault();
+		var quiz_id = +jQuery( this ).closest( '.qmn_quiz_container' ).find( '.qmn_quiz_id' ).val();
+		if ( qmnValidatePage( 'quizForm' + quiz_id ) ) {
+			qmnNextSlide( qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id );
+		}
+	});
+	
+	jQuery(".mlw_previous").click(function(event) {
+		event.preventDefault();
+		var quiz_id = +jQuery( this ).closest( '.qmn_quiz_container' ).find( '.qmn_quiz_id' ).val();
+		qmnPrevSlide( qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id );
+	});
+	
 	if ( qmn_quiz_data[quiz_id].first_page ) {
-	  qmnNextSlide( 1, 0, '#quizForm' + quiz_id );
+		qmnNextSlide( 1, 0, '#quizForm' + quiz_id );
 	} else {
-	  qmnNextSlide( qmn_quiz_data[quiz_id].pagination.amount, 0, '#quizForm' + quiz_id );
+		qmnNextSlide( qmn_quiz_data[quiz_id].pagination.amount, 0, '#quizForm' + quiz_id );
 	}
 }
 
@@ -625,33 +643,21 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	return false;
 }
 
-qmnInit();
-
-jQuery(".mlw_next").click(function(event) {
-	event.preventDefault();
-	var quiz_id = +jQuery( this ).closest( '.qmn_quiz_container' ).find( '.qmn_quiz_id' ).val();
-	if ( qmnValidatePage( 'quizForm' + quiz_id ) ) {
-		qmnNextSlide( qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id );
-	}
-});
-
-jQuery(".mlw_previous").click(function(event) {
-	event.preventDefault();
-	var quiz_id = +jQuery( this ).closest( '.qmn_quiz_container' ).find( '.qmn_quiz_id' ).val();
-	qmnPrevSlide( qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id );
-});
-
-jQuery( '.qmn_quiz_container' ).tooltip();
-
-jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {
-	if ( e.which === 13 ) {
-		e.preventDefault();
-	}
-});
-
-jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
-  event.preventDefault();
-	qmnFormSubmit( this.id );
+jQuery(function() {
+	qmnInit();
+	
+	jQuery( '.qmn_quiz_container' ).tooltip();
+	
+	jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {
+		if ( e.which === 13 ) {
+			e.preventDefault();
+		}
+	});
+	
+	jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
+	  event.preventDefault();
+		qmnFormSubmit( this.id );
+	});
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
