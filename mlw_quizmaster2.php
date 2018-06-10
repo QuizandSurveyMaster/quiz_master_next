@@ -133,7 +133,6 @@ class MLWQuizMasterNext {
 			include 'php/admin/options-page-email-tab.php';
 			include 'php/admin/options-page-results-page-tab.php';
 			include 'php/admin/options-page-style-tab.php';
-			include 'php/admin/options-page-tools-tab.php';
 			include 'php/admin/options-page-preview-tab.php';
 			include 'php/admin/addons-page.php';
 			include 'php/admin/settings-page.php';
