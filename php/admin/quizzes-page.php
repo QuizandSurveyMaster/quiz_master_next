@@ -55,6 +55,33 @@ function qsm_generate_quizzes_surveys_page() {
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) );
 	}
 
+	// Resets stats for a quiz.
+	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( $_POST['qsm_reset_stats_nonce'] , 'qsm_reset_stats' ) ) {
+		$quiz_id = intval( $_POST['reset_quiz_id'] );
+		$results = $wpdb->update(
+			$wpdb->prefix . 'mlw_quizzes',
+			array(
+				'quiz_views'    => 0,
+				'quiz_taken'    => 0,
+				'last_activity' => date( 'Y-m-d H:i:s' ),
+			),
+			array( 'quiz_id' => $quiz_id ),
+			array(
+				'%d',
+				'%d',
+				'%s',
+			),
+			array( '%d' )
+		);
+		if ( false === $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Stats Have Been Reset For Quiz Number $quiz_id" );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error trying to reset stats. Please try again.', 'quiz-master-next' ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
+	}
+
 	// Load our quizzes.
 	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
 
@@ -205,6 +232,29 @@ function qsm_generate_quizzes_surveys_page() {
 			?>
 		</div>
 
+		<!-- Popup for resetting stats -->
+		<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-1" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-1-title">Reset stats for this quiz?</h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-1-content">
+						<p><?php _e('Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone.', 'quiz-master-next'); ?></p>
+						<form action="" method="post" id="reset_quiz_form">
+							<?php wp_nonce_field( 'qsm_reset_stats', 'qsm_reset_stats_nonce' ); ?>
+							<input type="hidden" name="reset_quiz_id" value="0" />
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Reset All Stats For Quiz', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+
 		<!--New Quiz Dialog-->
 		<div id="new_quiz_dialog" title="<?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?>" style="display:none;">
 			<form action="" method="post" class="qsm-dialog-form">
@@ -275,7 +325,12 @@ function qsm_generate_quizzes_surveys_page() {
 				</td>
 				<td>[qsm quiz={{ data.id }}]</td>
 				<td>[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</td>
-				<td>{{ data.views }}/{{ data.taken }}</td>
+				<td>
+					{{ data.views }}/{{ data.taken }}
+					<div class="row-actions">
+						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
 				<td>{{ data.lastActivity }}</td>
 			</tr>
 		</script>
