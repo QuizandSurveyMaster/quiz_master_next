@@ -130,7 +130,6 @@ class MLWQuizMasterNext {
 			include 'php/admin/options-page-contact-tab.php';
 			include 'php/admin/options-page-text-tab.php';
 			include 'php/admin/options-page-option-tab.php';
-			include 'php/admin/options-page-leaderboard-tab.php';
 			include 'php/admin/options-page-email-tab.php';
 			include 'php/admin/options-page-results-page-tab.php';
 			include 'php/admin/options-page-style-tab.php';
@@ -146,8 +145,6 @@ class MLWQuizMasterNext {
 		include 'php/classes/class-qsm-contact-manager.php';
 		include 'php/classes/class-qmn-quiz-manager.php';
 
-		include 'php/leaderboard-shortcode.php';
-		include 'php/widgets.php';
 		include 'php/template-variables.php';
 		include 'php/adverts-generate.php';
 		include 'php/question-types.php';
@@ -180,8 +177,6 @@ class MLWQuizMasterNext {
 	private function add_hooks() {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
-		add_action( 'widgets_init', create_function( '', 'return register_widget("Mlw_Qmn_Leaderboard_Widget");' ) );
-		add_shortcode( 'mlw_quizmaster_leaderboard', 'mlw_quiz_leaderboard_shortcode' );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 	}
 
