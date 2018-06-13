@@ -73,7 +73,7 @@ function qsm_generate_quizzes_surveys_page() {
 			),
 			array( '%d' )
 		);
-		if ( false === $results ) {
+		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Stats Have Been Reset For Quiz Number $quiz_id" );
 		} else {
@@ -266,7 +266,6 @@ function qsm_generate_quizzes_surveys_page() {
 					<main class="qsm-popup__content" id="modal-2-content">
 						<form action="" method="post" id="new-quiz-form">
 							<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
-							<h3><?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h3>
 							<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
 							<input type="text" name="quiz_name" value="" />
 						</form>

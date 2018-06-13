@@ -47,7 +47,7 @@ var QSMQuizzesSurveys;
           $( '#delete_quiz_name' ).val( val.name );
         }
       });
-      $( '#delete_dialog' ).dialog( 'open' );
+      MicroModal.show( 'modal-5' );
     },
     editQuizName: function( quiz_id ) {
       $( '#edit_quiz_id' ).val( quiz_id );
@@ -56,11 +56,11 @@ var QSMQuizzesSurveys;
           $( '#edit_quiz_name' ).val( val.name );
         }
       });
-      $( '#edit_dialog' ).dialog( 'open' );
+      MicroModal.show( 'modal-3' );
     },
     duplicateQuiz: function( quiz_id ) {
       $( '#duplicate_quiz_id' ).val( quiz_id );
-      $( '#duplicate_dialog' ).dialog( 'open' );
+      MicroModal.show( 'modal-4' );
     },
     /**
      * Opens the popup to reset quiz stats
@@ -74,41 +74,9 @@ var QSMQuizzesSurveys;
     },
   };
   $(function() {
-    $( '#new_quiz_dialog' ).dialog({
-      autoOpen: false,
-      buttons: {
-        Cancel: function() {
-          $( this ).dialog( 'close' );
-        }
-      }
-    });
-    $( '#delete_dialog' ).dialog({
-      autoOpen: false,
-      buttons: {
-        Cancel: function() {
-          $( this ).dialog( 'close' );
-        }
-      }
-    });
-    $( '#edit_dialog' ).dialog({
-      autoOpen: false,
-      buttons: {
-        Cancel: function() {
-          $( this ).dialog( 'close' );
-        }
-      }
-    });
-    $( '#duplicate_dialog' ).dialog({
-      autoOpen: false,
-      buttons: {
-        Cancel: function() {
-          $( this ).dialog( 'close' );
-        }
-      }
-    });
     $( '#new_quiz_button, #new_quiz_button_two' ).on( 'click', function( event ) {
       event.preventDefault();
-      $( '#new_quiz_dialog' ).dialog( 'open' );
+      MicroModal.show( 'modal-2' );
     });
     $( '#quiz_search' ).keyup( function() {
       QSMQuizzesSurveys.searchQuizzes( $( this ).val() );
