@@ -24,9 +24,9 @@ function qsm_generate_quizzes_surveys_page() {
 	global $mlwQuizMasterNext;
 
 	// Enqueue our styles and scripts.
+	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-button' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qsm_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'micromodal_script' ), $mlwQuizMasterNext->version );
 
 	// Create new quiz.
 	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
@@ -53,6 +53,33 @@ function qsm_generate_quizzes_surveys_page() {
 		$quiz_id   = intval( $_POST['duplicate_quiz_id'] );
 		$quiz_name = htmlspecialchars( $_POST['duplicate_new_quiz_name'], ENT_QUOTES );
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) );
+	}
+
+	// Resets stats for a quiz.
+	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( $_POST['qsm_reset_stats_nonce'] , 'qsm_reset_stats' ) ) {
+		$quiz_id = intval( $_POST['reset_quiz_id'] );
+		$results = $wpdb->update(
+			$wpdb->prefix . 'mlw_quizzes',
+			array(
+				'quiz_views'    => 0,
+				'quiz_taken'    => 0,
+				'last_activity' => date( 'Y-m-d H:i:s' ),
+			),
+			array( 'quiz_id' => $quiz_id ),
+			array(
+				'%d',
+				'%d',
+				'%s',
+			),
+			array( '%d' )
+		);
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Stats Have Been Reset For Quiz Number $quiz_id" );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error trying to reset stats. Please try again.', 'quiz-master-next' ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		}
 	}
 
 	// Load our quizzes.
@@ -205,48 +232,123 @@ function qsm_generate_quizzes_surveys_page() {
 			?>
 		</div>
 
-		<!--New Quiz Dialog-->
-		<div id="new_quiz_dialog" title="<?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?>" style="display:none;">
-			<form action="" method="post" class="qsm-dialog-form">
-				<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
-				<h3><?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h3>
-				<label><?php _e( 'Name', 'quiz-master-next' ); ?></label><input type="text" name="quiz_name" value="" />
-				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Create', 'quiz-master-next' ); ?>' /></p>
-			</form>
+		<!-- Popup for resetting stats -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-1-title">Reset stats for this quiz?</h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-1-content">
+						<p><?php _e('Are you sure you want to reset the stats to 0? All views and taken stats for this quiz will be reset. This is permanent and cannot be undone.', 'quiz-master-next'); ?></p>
+						<form action="" method="post" id="reset_quiz_form">
+							<?php wp_nonce_field( 'qsm_reset_stats', 'qsm_reset_stats_nonce' ); ?>
+							<input type="hidden" id="reset_quiz_id" name="reset_quiz_id" value="0" />
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="reset-stats-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Reset All Stats For Quiz', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
 		</div>
 
-		<!--Edit Quiz Name Dialog-->
-		<div id="edit_dialog" title="<?php _e( 'Edit Name', 'quiz-master-next' ); ?>" style="display:none;">
-			<form action='' method='post' class="qsm-dialog-form">
-				<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
-				<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
-				<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" />
-				<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
-				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Edit', 'quiz-master-next' ); ?>' /></p>
-			</form>
+		<!-- Popup for new quiz -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-2" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-2-title"><?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-2-content">
+						<form action="" method="post" id="new-quiz-form">
+							<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
+							<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
+							<input type="text" name="quiz_name" value="" />
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="create-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Create', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
 		</div>
 
-		<!--Duplicate Quiz Dialog-->
-		<div id="duplicate_dialog" title="<?php _e( 'Duplicate', 'quiz-master-next' ); ?>" style="display:none;">
-			<form action='' method='post' class="qsm-dialog-form">
-				<label for="duplicate_questions"><?php _e( 'Duplicate questions also?', 'quiz-master-next' ); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
-				<br />
-				<label for="duplicate_new_quiz_name"><?php _e( 'Name Of New Quiz Or Survey:', 'quiz-master-next' ); ?></label><input type="text" id="duplicate_new_quiz_name" name="duplicate_new_quiz_name" />
-				<input type="hidden" id="duplicate_quiz_id" name="duplicate_quiz_id" />
-				<?php wp_nonce_field( 'qsm_duplicate_quiz', 'qsm_duplicate_quiz_nonce' ); ?>
-				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Duplicate', 'quiz-master-next' ); ?>' /></p>
-			</form>
+		<!-- Popup for edit quiz name -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-3-title"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-3-content">
+						<form action='' method='post' id="edit-name-form">
+							<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
+							<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
+							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" />
+							<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Edit', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
 		</div>
 
-		<!--Delete Quiz Dialog-->
-		<div id="delete_dialog" title="<?php _e( 'Delete', 'quiz-master-next' ); ?>" style="display:none;">
-			<form action='' method='post' class="qsm-dialog-form">
-				<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
-				<?php wp_nonce_field( 'qsm_delete_quiz', 'qsm_delete_quiz_nonce' ); ?>
-				<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
-				<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-				<p class='submit'><input type='submit' class='button-primary' value='<?php _e( 'Delete', 'quiz-master-next' ); ?>' /></p>
-			</form>
+		<!-- Popup for duplicate quiz -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-4-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-4-title"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-4-content">
+						<form action='' method='post' id="duplicate-quiz-form">
+							<label for="duplicate_questions"><?php _e( 'Duplicate questions also?', 'quiz-master-next' ); ?></label><input type="checkbox" name="duplicate_questions" id="duplicate_questions"/><br />
+							<br />
+							<label for="duplicate_new_quiz_name"><?php _e( 'Name Of New Quiz Or Survey:', 'quiz-master-next' ); ?></label><input type="text" id="duplicate_new_quiz_name" name="duplicate_new_quiz_name" />
+							<input type="hidden" id="duplicate_quiz_id" name="duplicate_quiz_id" />
+							<?php wp_nonce_field( 'qsm_duplicate_quiz', 'qsm_duplicate_quiz_nonce' ); ?>
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="duplicate-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Duplicate', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+
+		<!-- Popup for delete quiz -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-5" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-5-title"><?php _e( 'Delete', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-5-content">
+						<form action='' method='post' id="delete-quiz-form">
+							<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b></h3>
+							<?php wp_nonce_field( 'qsm_delete_quiz', 'qsm_delete_quiz_nonce' ); ?>
+							<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
+							<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
+						</form>
+					</main>
+					<footer class="qsm-popup__footer">
+						<button id="delete-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Delete', 'quiz-master-next'); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
 		</div>
 
 		<!-- Templates -->
@@ -275,7 +377,12 @@ function qsm_generate_quizzes_surveys_page() {
 				</td>
 				<td>[qsm quiz={{ data.id }}]</td>
 				<td>[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</td>
-				<td>{{ data.views }}/{{ data.taken }}</td>
+				<td>
+					{{ data.views }}/{{ data.taken }}
+					<div class="row-actions">
+						<a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a>
+					</div>
+				</td>
 				<td>{{ data.lastActivity }}</td>
 			</tr>
 		</script>
