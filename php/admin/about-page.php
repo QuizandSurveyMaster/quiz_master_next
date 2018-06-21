@@ -33,27 +33,20 @@ function mlw_generate_about_page() {
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 5.3!</h2>
+				<h2 class="feature-headline">Welcome to QSM 6.0!</h2>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">New Progress Bar!</h2>
-				<p class="feature-text">You can now enable a progress bar on quizzes and surveys that are using the new pages and questions editor from the 5.2.0 update!</p>
-				<p class="feature-text">When editing your quiz or survey, go to the "Options" tab and set the "Show a progress bar?" option to "Yes".</p>
+				<h2 class="feature-headline">New PHP Minimum</h2>
+				<p class="feature-text">As planned, all versions of Quiz And Survey Master starting with this version will require a minimum of PHP 5.4.</p>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">Disable IP Address Collection</h2>
-				<p class="feature-text">You can now disable the plugin from collecting IP addresses, if needed. To do so, go to the "Settings" page and check the "Disable collecting and storing IP addresses?" checkbox.</p>
-			</div>
-			<div class="feature">
-				<h2 class="feature-headline">Disable Storing Results In The Database</h2>
-				<p class="feature-text">For the quizzes and surveys that do not need to actually store any responses, you can now turn off the results being stored in the database. To do so, go to the "Options" tab when editing your quiz or survey and set the "Store the responses in the database?" option to "No".</p>
+				<h2 class="feature-headline">Removing Of Deprecated Features</h2>
+				<p class="feature-text">As planned, the Leaderboards is now in our free addon instead of being built into the main plugin. The old "Tools" tab has also been removed.</p>
 			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 52 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 51 ); ?>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 50 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 36 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>

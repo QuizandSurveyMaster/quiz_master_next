@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 5.3.2
+Stable tag: 6.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,19 +111,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 5.3.2 (June 7, 2018) =
-* Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://api.github.com/repos/fpcorso/quiz_master_next/issues/686))
-
-= 5.3.1 (May 21, 2018) =
-* Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/fpcorso/quiz_master_next/issues/682))
-* Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/fpcorso/quiz_master_next/issues/681))
-
-= 5.3.0 (May 16, 2018) =
-* Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/fpcorso/quiz_master_next/issues/670))
-* Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/fpcorso/quiz_master_next/issues/666))
-* Closed User Request: Progress Bar - ([Issue #412](https://github.com/fpcorso/quiz_master_next/issues/412))
-* Closed User Request: Disable Results Being Stored In Database - ([Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
-* Closed Bug: Question ordering doesn't work when using older pagination option - ([Issue #657](https://github.com/fpcorso/quiz_master_next/issues/657))
+= 6.0.0 (June 20, 2018) =
+* Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/fpcorso/quiz_master_next/issues/689))
+* Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/fpcorso/quiz_master_next/issues/607))
+* Closed Enhancement: Move Leaderboards to free addon ([Issue #380](https://github.com/fpcorso/quiz_master_next/issues/380))
 
 ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 

@@ -1,3 +1,17 @@
+= 5.3.2 (June 7, 2018) =
+* Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://github.com/fpcorso/quiz_master_next/issues/686))
+
+= 5.3.1 (May 21, 2018) =
+* Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/fpcorso/quiz_master_next/issues/682))
+* Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/fpcorso/quiz_master_next/issues/681))
+
+= 5.3.0 (May 16, 2018) =
+* Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/fpcorso/quiz_master_next/issues/670))
+* Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/fpcorso/quiz_master_next/issues/666))
+* Closed User Request: Progress Bar - ([Issue #412](https://github.com/fpcorso/quiz_master_next/issues/412))
+* Closed User Request: Disable Results Being Stored In Database - ([Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
+* Closed Bug: Question ordering doesn't work when using older pagination option - ([Issue #657](https://github.com/fpcorso/quiz_master_next/issues/657))
+
 = 5.2.4 (May 7, 2018) =
 * Closed Bug: %QUESTIONS_ANSWERS% variable is displaying questions in order of creation - ([Issue #660](https://github.com/fpcorso/quiz_master_next/issues/660))
 * Closed Bug: Extra spacing is being added to questions when multiple lines are in question - ([Issue #659](https://github.com/fpcorso/quiz_master_next/issues/659))
