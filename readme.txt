@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.0.1 (July 11, 2018) =
+* Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/fpcorso/quiz_master_next/issues/704))
+
 = 6.0.0 (June 20, 2018) =
 * Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/fpcorso/quiz_master_next/issues/689))
 * Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/fpcorso/quiz_master_next/issues/607))
@@ -120,8 +123,5 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Upgrade Notice ==
 
-= 5.3.2 =
-Upgrade for fix for Divi conflict
-
-= 5.3.1 =
-Update for integrations with WordPress 4.9.6 GDPR features
+= 6.0.1 =
+Upgrade for fix quiz comments displaying HTML
