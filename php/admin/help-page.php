@@ -1,34 +1,42 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Creates the Help page within the admin area
+ *
+ * @package QSM
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
-* This function generates the help page.
-*
-* @return void
-* @since 4.4.0
-*/
+ * This function generates the help page.
+ *
+ * @return void
+ * @since 4.4.0
+ */
 function mlw_generate_help_page() {
-	if ( !current_user_can('moderate_comments') ) {
+	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
 
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
 
-	///Creates the widgets
-	add_meta_box("wpss_mrts", __('Need Help?', 'quiz-master-next'), "qsm_documentation_meta_box_content", "meta_box_help");
-	add_meta_box("wpss_mrts", __('System Info', 'quiz-master-next'), "qsm_system_meta_box_content", "meta_box_sys_info");
+	// Creates the widgets.
+	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
+	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 	<div class="wrap">
-	<h2><?php _e('Help Page', 'quiz-master-next'); ?></h2>
+	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
 	<?php echo mlw_qmn_show_adverts(); ?>
 
 	<!--Display Widget Boxes-->
 	<div style="width:100%;" class="inner-sidebar1">
-		<?php do_meta_boxes('meta_box_help','advanced','');  ?>
+		<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
 	</div>
 
 	<div style="width:100%;" class="inner-sidebar1">
-		<?php do_meta_boxes('meta_box_sys_info','advanced','');  ?>
+		<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
 	</div>
 
 	</div>
@@ -36,38 +44,37 @@ function mlw_generate_help_page() {
 }
 
 /**
-* This function creates the text that is displayed on the help page.
-*
-* @param type description
-* @return void
-* @since 4.4.0
-*/
+ * This function creates the text that is displayed on the help page.
+ *
+ * @return void
+ * @since 4.4.0
+ */
 function qsm_documentation_meta_box_content() {
 	?>
-	<p><?php _e('Need help with the plugin? Try any of the following:', 'quiz-master-next'); ?></p>
+	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
 	<ul>
 		<li>For assistance in using the plugin, read our <a href="http://quizandsurveymaster.com/documentation/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=documentation" target="_blank">documentation</a> or view videos in our <a href="http://quizandsurveymaster.com/online-academy/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=online_academy" target="_blank">video tutorials</a></li>
-		<li>For support, fill out the form on our <a href="http://quizandsurveymaster.com/contact-us/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
+		<li>For support, fill out the form on our <a href="https://quizandsurveymaster.com/quiz/contact/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }
 
 /**
-* This function echoes out the system info for the user.
-*
-* @return void
-* @since 4.4.0
-*/
+ * This function echoes out the system info for the user.
+ *
+ * @return void
+ * @since 4.4.0
+ */
 function qsm_system_meta_box_content() {
 	echo qsm_get_system_info();
 }
 
 /**
-* This function gets the content that is in the system info
-*
-* @return return string This contains all of the system info from the admins server.
-* @since 4.4.0
-*/
+ * This function gets the content that is in the system info
+ *
+ * @return return string This contains all of the system info from the admins server.
+ * @since 4.4.0
+ */
 function qsm_get_system_info() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
