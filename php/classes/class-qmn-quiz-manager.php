@@ -359,7 +359,8 @@ class QMNQuizManager {
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 		$question_list = '';
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) ) {
+		$contact_fields = QSM_Contact_Manager::load_fields();
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 			$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
@@ -382,7 +383,7 @@ class QMNQuizManager {
 			?>
 			<section class="qsm-page">
 				<?php
-				if ( ! empty( $options->message_before ) || 0 == $options->contact_info_location ) {
+				if ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) {
 					$qmn_json_data['first_page'] = false;
 					$message_before = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 					$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
@@ -428,7 +429,7 @@ class QMNQuizManager {
 					</div>
 					<?php
 				}
-				if ( ! empty( $options->message_end_template ) || 1 == $options->contact_info_location ) {
+				if ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) {
 					$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
 					$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 					?>
@@ -489,7 +490,7 @@ class QMNQuizManager {
 			</section>
 			<?php
 		}
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || 1 == $options->contact_info_location ) ) {
+		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
 			$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
 			$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 			?>
@@ -540,7 +541,8 @@ class QMNQuizManager {
 	public function display_begin_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$section_display = '';
 		global $qmn_json_data;
-		if ( ! empty( $qmn_quiz_options->message_before ) || $qmn_quiz_options->contact_info_location == 0) {
+		$contact_fields = QSM_Contact_Manager::load_fields();
+		if ( ! empty( $qmn_quiz_options->message_before ) || ( 0 == $qmn_quiz_options->contact_info_location && $contact_fields ) ) {
 			$qmn_json_data["first_page"] = true;
 			global $mlw_qmn_section_count;
 			$mlw_qmn_section_count +=1;
@@ -646,26 +648,26 @@ class QMNQuizManager {
 	public function display_end_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;
 		$section_display = '';
-		$section_display .= "<br />";
+		$section_display .= '<br />';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$section_display .= "<div class='quiz_section slide$mlw_qmn_section_count quiz_end'>";
-		if (! empty( $qmn_quiz_options->message_end_template ) ) {
-			$message_end = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES));
-			$message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables);
+		if ( ! empty( $qmn_quiz_options->message_end_template ) ) {
+			$message_end = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ) );
+			$message_end = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables );
 			$section_display .= "<span class='mlw_qmn_message_end'>$message_end</span>";
-			$section_display .= "<br /><br />";
+			$section_display .= '<br /><br />';
 		}
 		if ( 1 == $qmn_quiz_options->contact_info_location ) {
 			$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 		}
 
-		//Legacy Code
+		// Legacy Code.
 		ob_start();
 		do_action( 'mlw_qmn_end_quiz_section' );
 		$section_display .= ob_get_contents();
 		ob_end_clean();
 
-		$section_display .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='".esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES))."' />";
+		$section_display .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->submit_button_text, ENT_QUOTES ) ) . "' />";
 		$section_display .= "</div>";
 
 		return $section_display;
