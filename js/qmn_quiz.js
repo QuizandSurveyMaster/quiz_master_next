@@ -182,6 +182,11 @@ var QSM;
 
 	// On load code
 	$(function() {
+
+		// Legacy init.
+		qmnInit();
+
+		// Call main initialization.
 		QSM.init();
 	});
 }(jQuery));
@@ -643,9 +648,7 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	return false;
 }
 
-jQuery(function() {
-	qmnInit();
-	
+jQuery(function() {	
 	jQuery( '.qmn_quiz_container' ).tooltip();
 	
 	jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {
