@@ -188,25 +188,14 @@ function qsm_results_overview_tab_content() {
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-effects-blind' );
-	wp_enqueue_script( 'jquery-effects-explode' );
-	wp_enqueue_script('qmn_admin_js', plugins_url( '../../js/admin.js' , __FILE__ ));
+	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ) );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	?>
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
-		// increase the default animation speed to exaggerate the effect
-		$j.fx.speeds._default = 1000;
-
-		$j(function() {
-			$j("button, #prev_page, #next_page").button();
-
-		});
 		function deleteResults(id,quizName){
 			$j("#delete_dialog").dialog({
 				autoOpen: false,
-				show: 'blind',
-				hide: 'explode',
 				buttons: {
 				Cancel: function() {
 					$j(this).dialog('close');

@@ -3,14 +3,19 @@
  *************************/
 
 /**************************
- * This object is the newer functions. All global functions under are slowing 
+ * This object contains the newer functions. All global functions under are slowly 
  * being deprecated and replaced with rewritten newer functions
  **************************/
 var QSM;
 (function ($) {
 	QSM = {
+		/**
+		 * Initializes all quizzes or surveys on the page
+		 */
 		init: function() {
+			// Makes sure we have quizzes on this page
 			if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
+				// Cycle through all quizzes
 				_.each( qmn_quiz_data, function( quiz ) {
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
@@ -27,18 +32,26 @@ var QSM;
 		 * @param int quizID The ID of the quiz
 		 */
 		initTimer: function( quizID ) {
+
+			// Gets our form
 			$quizForm = QSM.getQuizForm( quizID );
+
+			// If we are using the newer pagination system...
 			if ( 0 < $quizForm.children( '.qsm-page' ).length ) {
+				// If there is a first page...
 				if ( qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page ) {
+					// ... attach an event handler to the click event to activate the timer.
 					jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 						event.preventDefault();
 						if ( !qmn_timer_activated && qmnValidatePage( 'quizForm' + quizID ) ) {
 							qmnActivateTimer( quizID );
 						}
 					});
+				// ...else, activate the timer on page load.
 				} else {
 					qmnActivateTimer( quizID );
 				}
+			// ...else, we must be using the questions per page option.
 			} else {
 				if ( qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page ) {
 					jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
@@ -182,6 +195,11 @@ var QSM;
 
 	// On load code
 	$(function() {
+
+		// Legacy init.
+		qmnInit();
+
+		// Call main initialization.
 		QSM.init();
 	});
 }(jQuery));
@@ -643,9 +661,7 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	return false;
 }
 
-jQuery(function() {
-	qmnInit();
-	
+jQuery(function() {	
 	jQuery( '.qmn_quiz_container' ).tooltip();
 	
 	jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {

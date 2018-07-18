@@ -105,13 +105,13 @@ function qsm_get_system_info() {
 
 	$sys_info .= "<h3>Plugins Information</h3><br />";
 	$plugin_mu = get_mu_plugins();
-    	if( count( $plugin_mu > 0 ) ) {
-    		$sys_info .= "<h4>Must Use</h4><br />";
-	        foreach( $plugin_mu as $plugin => $plugin_data ) {
-	            $sys_info .= $plugin_data['Name'] . ': ' . $plugin_data['Version'] . "<br />";
-	        }
-    	}
-    	$sys_info .= "<h4>Active</h4><br />";
+	if ( count( $plugin_mu ) > 0 ) {
+		$sys_info .= "<h4>Must Use</h4><br />";
+		foreach ( $plugin_mu as $plugin => $plugin_data ) {
+			$sys_info .= $plugin_data['Name'] . ': ' . $plugin_data['Version'] . "<br />";
+		}
+	}
+	$sys_info .= "<h4>Active</h4><br />";
 	$plugins = get_plugins();
 	$active_plugins = get_option( 'active_plugins', array() );
 	foreach( $plugins as $plugin_path => $plugin ) {

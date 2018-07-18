@@ -87,6 +87,22 @@ Options Page
   font-weight: bold;
 }
 
+/********************
+Quiz Styles Tab
+*********************/
+
+.qsm-styles {
+	display: flex;
+	flex-direction: column;
+}
+
+@media screen and (min-width:700px) {
+	.qsm-styles {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
 
 
 /********************

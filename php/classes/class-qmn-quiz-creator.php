@@ -165,167 +165,67 @@ class QMNQuizCreator
 	 *
 	 * @access public
 	 * @since 3.7.1
+	 * @param string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
-	public function create_quiz($quiz_name)
-	{
+	public function create_quiz( $quiz_name ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
-		$mlw_leaderboard_default = "<h3>Leaderboard for %QUIZ_NAME%</h3>
-			1. %FIRST_PLACE_NAME%-%FIRST_PLACE_SCORE%<br />
-			2. %SECOND_PLACE_NAME%-%SECOND_PLACE_SCORE%<br />
-			3. %THIRD_PLACE_NAME%-%THIRD_PLACE_SCORE%<br />
-			4. %FOURTH_PLACE_NAME%-%FOURTH_PLACE_SCORE%<br />
-			5. %FIFTH_PLACE_NAME%-%FIFTH_PLACE_SCORE%<br />";
-		$mlw_style_default = ".mlw_qmn_quiz label {
-				display: inline;
-			}
-			.ui-tooltip
-			{
-				max-width: 500px !important;
-			}
-			.ui-tooltip-content
-			{
-				max-width: 500px !important;
-			}
-			.qmn_error, .qmn_page_error_message
-			{
-				color: red;
-			}
-			.mlw_qmn_hint_link
-			{
-			text-decoration:underline;
-			color:rgb(0,0,255);
-			}
-			.mlw_qmn_quiz_link
-			{
-				display: inline;
-				vertical-align:top !important;
-				text-decoration: none;
-			}
-			div.mlw_qmn_quiz input[type=radio],
-			div.mlw_qmn_quiz input[type=submit],
-			div.mlw_qmn_quiz label {
-				cursor: pointer;
-			}
-			div.mlw_qmn_quiz input:not([type=submit]):focus,
-			div.mlw_qmn_quiz textarea:focus {
-				background: #eaeaea;
-			}
-			div.mlw_qmn_quiz {
-				text-align: left;
-			}
-			div.quiz_section {
-
-			}
-			.mlw_horizontal_choice
-			{
-				margin-right: 20px;
-			}
-			div.mlw_qmn_timer {
-				position:fixed;
-				top:200px;
-				right:0px;
-				width:130px;
-				color:#00CCFF;
-				border-radius: 15px;
-				background:#000000;
-				text-align: center;
-				padding: 15px 15px 15px 15px
-			}
-			div.mlw_qmn_quiz input[type=submit],
-			a.mlw_qmn_quiz_link
-			{
-				border-radius: 4px;
-				position: relative;
-				background-image: linear-gradient(#fff,#dedede);
-				background-color: #eee;
-				border: #ccc solid 1px;
-				color: #333;
-				text-shadow: 0 1px 0 rgba(255,255,255,.5);
-				box-sizing: border-box;
-				display: inline-block;
-				padding: 7px 7px 7px 7px;
-				margin: auto;
-				font-weight: bold;
-				cursor: pointer;
-			}
-			.mlw_qmn_question, .mlw_qmn_question_number, .mlw_qmn_comment_section_text
-			{
-				font-weight: bold;
-			}
-			.mlw_next
-			{
-				float: right;
-			}
-			.mlw_previous
-			{
-				float: left;
-			}
-			.mlw_qmn_question_comment, .mlw_answer_open_text, .qmn_comment_section {
-				width: 100%;
-				border-radius: 7px;
-				padding: 2px 10px;
-				-webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-				box-shadow: inset 0 3px 3px rgba(0,0,0,.075);
-				border: 1px solid #ccc;
-			}
-		";
 		$results = $wpdb->insert(
-			$wpdb->prefix . "mlw_quizzes",
+			$wpdb->prefix . 'mlw_quizzes',
 			array(
-				'quiz_name' => $quiz_name,
-				'message_before' => 'Welcome to your %QUIZ_NAME%',
-				'message_after' => 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%',
-				'message_comment' => 'Please fill in the comment box below.',
-				'message_end_template' => '',
-				'user_email_template' => '%QUESTIONS_ANSWERS%',
-				'admin_email_template' => '%QUESTIONS_ANSWERS%',
-				'submit_button_text' => 'Submit',
-				'name_field_text' => 'Name',
-				'business_field_text' => 'Business',
-				'email_field_text' => 'Email',
-				'phone_field_text' => 'Phone Number',
-				'comment_field_text' => 'Comments',
-				'email_from_text' => 'Wordpress',
+				'quiz_name'                => $quiz_name,
+				'message_before'           => 'Welcome to your %QUIZ_NAME%',
+				'message_after'            => 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%',
+				'message_comment'          => 'Please fill in the comment box below.',
+				'message_end_template'     => '',
+				'user_email_template'      => '%QUESTIONS_ANSWERS%',
+				'admin_email_template'     => '%QUESTIONS_ANSWERS%',
+				'submit_button_text'       => 'Submit',
+				'name_field_text'          => 'Name',
+				'business_field_text'      => 'Business',
+				'email_field_text'         => 'Email',
+				'phone_field_text'         => 'Phone Number',
+				'comment_field_text'       => 'Comments',
+				'email_from_text'          => 'Wordpress',
 				'question_answer_template' => '%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />',
-				'leaderboard_template' => $mlw_leaderboard_default,
-				'system' => 0,
-				'randomness_order' => 0,
-				'loggedin_user_contact' => 0,
-				'show_score' => 0,
-				'send_user_email' => 0,
-				'send_admin_email' => 0,
-				'contact_info_location' => 0,
-				'user_name' => 2,
-				'user_comp' => 2,
-				'user_email' => 2,
-				'user_phone' => 2,
-				'admin_email' => get_option( 'admin_email', 'Enter email' ),
-				'comment_section' => 1,
-				'question_from_total' => 0,
-				'total_user_tries' => 0,
-				'total_user_tries_text' => 'You are only allowed 1 try and have already submitted your quiz.',
-				'certificate_template' => '',
-				'social_media' => 0,
-				'social_media_text' => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!',
-				'pagination' => 0,
-				'pagination_text' => 'Next',
-				'timer_limit' => 0,
-				'quiz_stye' => $mlw_style_default,
-				'question_numbering' => 0,
-				'quiz_settings' => '',
-				'theme_selected' => 'primary',
-				'last_activity' => current_time( 'mysql' ),
-				'require_log_in' => 0,
-				'require_log_in_text' => 'This quiz is for logged in users only.',
-				'limit_total_entries' => 0,
+				'leaderboard_template'     => '',
+				'system'                   => 0,
+				'randomness_order'         => 0,
+				'loggedin_user_contact'    => 0,
+				'show_score'               => 0,
+				'send_user_email'          => 0,
+				'send_admin_email'         => 0,
+				'contact_info_location'    => 0,
+				'user_name'                => 2,
+				'user_comp'                => 2,
+				'user_email'               => 2,
+				'user_phone'               => 2,
+				'admin_email'              => get_option( 'admin_email', 'Enter email' ),
+				'comment_section'          => 1,
+				'question_from_total'      => 0,
+				'total_user_tries'         => 0,
+				'total_user_tries_text'    => 'You are only allowed 1 try and have already submitted your quiz.',
+				'certificate_template'     => '',
+				'social_media'             => 0,
+				'social_media_text'        => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!',
+				'pagination'               => 0,
+				'pagination_text'          => 'Next',
+				'timer_limit'              => 0,
+				'quiz_stye'                => '',
+				'question_numbering'       => 0,
+				'quiz_settings'            => '',
+				'theme_selected'           => 'primary',
+				'last_activity'            => current_time( 'mysql' ),
+				'require_log_in'           => 0,
+				'require_log_in_text'      => 'This quiz is for logged in users only.',
+				'limit_total_entries'      => 0,
 				'limit_total_entries_text' => 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.',
-				'scheduled_timeframe' => '',
+				'scheduled_timeframe'      => '',
 				'scheduled_timeframe_text' => '',
-				'quiz_views' => 0,
-				'quiz_taken' => 0,
-				'deleted' => 0
+				'quiz_views'               => 0,
+				'quiz_taken'               => 0,
+				'deleted'                  => 0,
 			),
 			array(
 				'%s',
@@ -379,19 +279,18 @@ class QMNQuizCreator
 				'%s',
 				'%d',
 				'%d',
-				'%d'
+				'%d',
 			)
 		);
-		if ($results != false)
-		{
+		if ( false !== $results ) {
 			$new_quiz = $wpdb->insert_id;
 			$current_user = wp_get_current_user();
 			$quiz_post = array(
-			  'post_title'    => $quiz_name,
-			  'post_content'  => "[mlw_quizmaster quiz=$new_quiz]",
-			  'post_status'   => 'publish',
-			  'post_author'   => $current_user->ID,
-			  'post_type' => 'quiz'
+				'post_title'   => $quiz_name,
+				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
+				'post_status'  => 'publish',
+				'post_author'  => $current_user->ID,
+				'post_type'    => 'quiz',
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
@@ -401,9 +300,7 @@ class QMNQuizCreator
 
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action('qmn_quiz_created', $new_quiz);
-		}
-		else
-		{
+		} else {
 			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0001'), 'error');
 			$mlwQuizMasterNext->log_manager->add("Error 0001", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 		}
