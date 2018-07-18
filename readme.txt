@@ -112,6 +112,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 6.0.2 (July 18, 2018) =
+* Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/fpcorso/quiz_master_next/issues/711))
+* Closed Bug: Timer not working on certain sites when using questions per page option ([Issue #709](https://github.com/fpcorso/quiz_master_next/issues/709))
+* Closed Bug: Blank page shown when contact fields and message fields are empty ([Issue #707](https://github.com/fpcorso/quiz_master_next/issues/707))
 
 = 6.0.1 (July 11, 2018) =
 * Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/fpcorso/quiz_master_next/issues/704))
