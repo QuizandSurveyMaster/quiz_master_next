@@ -104,7 +104,7 @@ class QSM_Install {
     // Registers pagination setting
     $field_array = array(
       'id' => 'pagination',
-      'label' => __('How many questions per page would you like? (Leave 0 for all questions on one page)', 'quiz-master-next'),
+      'label' => __('How many questions per page would you like? (Leave 0 to use pages created on Questions tab)', 'quiz-master-next'),
       'type' => 'number',
       'options' => array(
 
