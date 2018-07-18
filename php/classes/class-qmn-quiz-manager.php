@@ -308,7 +308,7 @@ class QMNQuizManager {
 		global $mlw_qmn_section_count;
 		$mlw_qmn_section_count = 0;
 
-		$quiz_display .= "<div class='qmn_quiz_container mlw_qmn_quiz'>";
+		$quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz'>";
 		$quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='' method='post' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate >";
 		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
@@ -331,7 +331,7 @@ class QMNQuizManager {
 			$quiz_display .= $this->display_end_section( $options, $quiz_data );
 		}
 
-		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qmn_error_message_section'></div>";
+		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qsm-error-message qmn_error_message_section'></div>";
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='$qmn_total_questions'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
