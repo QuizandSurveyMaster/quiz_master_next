@@ -137,6 +137,11 @@ var QSM;
 				return;
 			}
 		},
+		/**
+		 * Clears timer interval
+		 *
+		 * @param int quizID The ID of the quiz
+		 */
 		endTimer: function( quizID ) {
 			localStorage.setItem( 'mlw_time_quiz' + quizID, 'completed' );
 			localStorage.setItem( 'mlw_started_quiz' + quizID, 'no' );
@@ -333,7 +338,6 @@ var QSM;
 }(jQuery));
 
 // Global Variables
-var qmn_timer_activated = false;
 var qsmTitleText = document.title;
 
 function qmnTimeTakenTimer() {
