@@ -115,6 +115,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/fpcorso/quiz_master_next/issues/583))
 * Closed Bug: If user refreshes quiz page when timer is at 0, cannot submit ([Issue #501](https://github.com/fpcorso/quiz_master_next/issues/501))
 * Closed Bug: Saving quiz name when editing results in error if no changes are made ([Issue #391](https://github.com/fpcorso/quiz_master_next/issues/391))
+* Adds deprecated notice to the quiz setting functions found in the quizCreator object
+* Adds hook after results are stored in the database
 
 = 6.0.2 (July 18, 2018) =
 * Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/fpcorso/quiz_master_next/issues/711))
