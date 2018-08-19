@@ -1,7 +1,16 @@
+**IF YOU DO NOT FOLLOW THIS TEMPLATE, YOUR ISSUE MAY BE CLOSED!!**
+
 Please provide the following information when creating your issues:
+
+## Site Info
+WordPress Version: 
+QSM Version: 
+Browser: 
 
 ## General description
 If this is a bug, give a general description of what you are experiencing. If this is a feature request, include what the feature is that you are requesting.
+
+Link to quiz or screenshot (if relevant): 
 
 ## Expected behavior
 If you are reporting a bug, please describe what you are expecting the plugin to do. If this is a feature request, delete this section.
