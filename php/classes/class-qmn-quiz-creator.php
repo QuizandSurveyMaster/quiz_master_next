@@ -280,7 +280,7 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 		$results = $wpdb->update(
-			$wpdb->prefix . "mlw_quizzes",
+			$wpdb->prefix . 'mlw_quizzes',
 			array(
 				'quiz_name' => $quiz_name,
 			),
@@ -290,16 +290,23 @@ class QMNQuizCreator {
 			),
 			array( '%d' )
 		);
-		if ( false != $results ) {
-		$mlwQuizMasterNext->alertManager->newAlert(__('The name of your quiz or survey has been updated successfully.', 'quiz-master-next'), 'success');
-		$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
+		} else {
+			$error = $wpdb->last_error;
+			if ( empty( $error ) ) {
+				$error = __( 'Unknown error', 'quiz-master-next' );
+			}
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'An error occurred while trying to update the name of your quiz or survey. Please try again.', 'quiz-master-next' ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz name', "Tried {$wpdb->last_query} but got $error", 0, 'error' );
 		}
-		else
-		{
-		$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0003'), 'error');
-		$mlwQuizMasterNext->log_manager->add("Error 0003", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
-		}
-		do_action('qmn_quiz_name_edited', $quiz_id);
+
+		// Fires when the name of a quiz/survey is edited.
+		do_action( 'qsm_quiz_name_edited', $quiz_id, $quiz_name );
+
+		// Legacy code.
+		do_action( 'qmn_quiz_name_edited', $quiz_id );
 	}
 
 	 /**
