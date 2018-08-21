@@ -106,7 +106,7 @@ class QMNQuizManager {
 			}
 		}
 
-		// Start to prepare variable array for filters.
+		// Starts to prepare variable array for filters.
 		$qmn_array_for_variables = array(
 			'quiz_id'     => $qmn_quiz_options->quiz_id,
 			'quiz_name'   => $qmn_quiz_options->quiz_name,
@@ -129,7 +129,7 @@ class QMNQuizManager {
 
 		$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
 
-		// Check if we should be showing quiz or results page.
+		// Checks if we should be showing quiz or results page.
 		if ( $qmn_allowed_visit && ! isset( $_POST["complete_quiz"] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
 			$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_array_for_variables, $question_amount );
 		} elseif ( isset( $_POST["complete_quiz"] ) && 'confirmation' == $_POST["complete_quiz"] && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"] ) {
@@ -299,8 +299,8 @@ class QMNQuizManager {
 		);
 
 		wp_enqueue_script( 'progress-bar', plugins_url( '../../js/progressbar.min.js', __FILE__ ) );
-		wp_enqueue_script( 'qmn_quiz', plugins_url( '../../js/qmn_quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version );
-		wp_localize_script( 'qmn_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) ); // setting ajaxurl
+		wp_enqueue_script( 'qsm_quiz', plugins_url( '../../js/qsm-quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version );
+		wp_localize_script( 'qsm_quiz', 'qmn_ajax_object', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 		wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 
 		global $qmn_total_questions;
@@ -741,7 +741,7 @@ class QMNQuizManager {
 			return $result_display;
 		}
 
-		// Gather contact information
+		// Gathers contact information.
 		$qmn_array_for_variables['user_name'] = 'None';
 		$qmn_array_for_variables['user_business'] = 'None';
 		$qmn_array_for_variables['user_email'] = 'None';
@@ -794,7 +794,7 @@ class QMNQuizManager {
 				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
 				$serialized_results = serialize( $results_array );
 
-				// Inserts the responses in the database
+				// Inserts the responses in the database.
 				global $wpdb;
 				$table_name = $wpdb->prefix . "mlw_results";
 				$results_insert = $wpdb->insert(
@@ -814,9 +814,9 @@ class QMNQuizManager {
 						'user'            => $qmn_array_for_variables['user_id'],
 						'user_ip'         => $qmn_array_for_variables['user_ip'],
 						'time_taken'      => $qmn_array_for_variables['time_taken'],
-						'time_taken_real' => date( "Y-m-d H:i:s", strtotime( $qmn_array_for_variables['time_taken'] ) ),
+						'time_taken_real' => date( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
 						'quiz_results'    => $serialized_results,
-						'deleted'         => 0
+						'deleted'         => 0,
 					),
 					array(
 						'%d',
@@ -835,35 +835,44 @@ class QMNQuizManager {
 						'%s',
 						'%s',
 						'%s',
-						'%d'
+						'%d',
 					)
 				);
 			}
 
-			$this->send_user_email($qmn_quiz_options, $qmn_array_for_variables);
-			$result_display = apply_filters('qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
+			$results_id = $wpdb->insert_id;
+
+			// Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
+			do_action( 'qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables );
+
+			// Sends user email.
+			$this->send_user_email( $qmn_quiz_options, $qmn_array_for_variables );
+			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+
+			// Sends admin email.
 			$this->send_admin_email($qmn_quiz_options, $qmn_array_for_variables);
-			$result_display = apply_filters('qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-			$result_display = apply_filters('qmn_end_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-			//Legacy Code
-			do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings);
+			$result_display = apply_filters( 'qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+			
+			// Last time to filter the HTML results page.
+			$result_display = apply_filters( 'qmn_end_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+
+			// Legacy Code.
+			do_action( 'mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings );
 		} else {
-			$result_display .= "Thank you.";
+			$result_display .= 'Thank you.';
 		}
 
-		//Check to see if we need to set up a redirect
-		$redirect = false;
+		// Checks to see if we need to set up a redirect.
+		$redirect     = false;
 		$redirect_url = '';
-		if (is_serialized($qmn_quiz_options->message_after) && is_array(@unserialize($qmn_quiz_options->message_after))) {
-			$mlw_message_after_array = @unserialize($qmn_quiz_options->message_after);
+		if ( is_serialized( $qmn_quiz_options->message_after ) && is_array( @unserialize( $qmn_quiz_options->message_after ) ) ) {
+			$mlw_message_after_array = @unserialize( $qmn_quiz_options->message_after );
 
-			//Cycle through landing pages
-			foreach($mlw_message_after_array as $mlw_each)
-			{
-				//Check to see if not default
-				if ($mlw_each[0] != 0 || $mlw_each[1] != 0)
-				{
-					//Check to see if points fall in correct range
+			// Cycles through landing pages.
+			foreach( $mlw_message_after_array as $mlw_each ) {
+				// Checks to see if not default.
+				if ( $mlw_each[0] != 0 || $mlw_each[1] != 0 ) {
+					// Checks to see if points fall in correct range.
 					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
 					{
 						if (esc_url($mlw_each["redirect_url"]) != '')
@@ -896,11 +905,11 @@ class QMNQuizManager {
 			}
 		}
 
-		//Prepare data to be sent back to front-end
+		// Prepares data to be sent back to front-end.
 		$return_array = array(
-			'display' => $result_display,
-			'redirect' => $redirect,
-			'redirect_url' => $redirect_url
+			'display'      => $result_display,
+			'redirect'     => $redirect,
+			'redirect_url' => $redirect_url,
 		);
 
 		return $return_array;

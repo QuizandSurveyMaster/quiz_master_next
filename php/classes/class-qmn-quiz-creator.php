@@ -1,5 +1,8 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * QMN Quiz Creator Class
  *
@@ -9,8 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 3.7.1
  */
-class QMNQuizCreator
-{
+class QMNQuizCreator {
+
 	/**
 	 * QMN ID of quiz
 	 *
@@ -24,11 +27,9 @@ class QMNQuizCreator
 	 *
 	 * @since 3.7.1
 	 */
-	public function __construct()
-	{
-		if (isset($_GET["quiz_id"]))
-		{
-			$this->quiz_id = intval($_GET["quiz_id"]);
+	public function __construct() {
+		if ( isset( $_GET['quiz_id'] ) ) {
+			$this->quiz_id = intval( $_GET['quiz_id'] );
 		}
 	}
 
@@ -36,129 +37,27 @@ class QMNQuizCreator
 	 * Sets quiz ID
 	 *
 	 * @since 3.8.1
+	 * @param int $quiz_id The ID of the quiz.
 	 * @access public
 	 * @return void
 	 */
-	 public function set_id($quiz_id)
-	 {
-	 	$this->quiz_id = intval($quiz_id);
-	 }
-
-	 /**
-	  * Gets the quiz ID stored (for backwards compatibility)
-		*
-		* @since 5.0.0
-		* @return int|false The ID of the quiz stored or false
-	  */
-	 public function get_id() {
-		 if ( $this->quiz_id ) {
-			 return intval( $this->quiz_id );
-		 } else {
-			 return false;
-		 }
-	 }
-
-	/**
-	* Retrieves setting store in quiz_settings
-	*
-	* @since 3.8.1
-	* @access public
-	* @return string The value of the setting
-	*/
-	public function get_setting($setting_name)
-	{
-		global $wpdb;
-		$qmn_settings_array = '';
-		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
-		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings)))
-		{
-			$qmn_settings_array = @unserialize($qmn_quiz_settings);
-		}
-		if (is_array($qmn_settings_array) && isset($qmn_settings_array[$setting_name]))
-		{
-			return $qmn_settings_array[$setting_name];
-		}
-		else
-		{
-			return '';
-		}
-
+	public function set_id( $quiz_id ) {
+		$this->quiz_id = intval( $quiz_id );
 	}
 
 	/**
-	* Updates setting stored in quiz_settings
-	*
-	* @since 3.8.1
-	* @access public
-	* @return bool True if update was successful
-	*/
-	public function update_setting($setting_name, $setting_value)
-	{
-		global $wpdb;
-		$qmn_settings_array = array();
-		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
-		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings)))
-		{
-			$qmn_settings_array = @unserialize($qmn_quiz_settings);
-		}
-		$qmn_settings_array[$setting_name] = $setting_value;
-		$qmn_serialized_array = serialize($qmn_settings_array);
-		$results = $wpdb->update(
-			$wpdb->prefix . "mlw_quizzes",
-			array(
-			 	'quiz_settings' => $qmn_serialized_array
-			),
-			array( 'quiz_id' => $this->quiz_id ),
-			array(
-			 	'%s'
-			),
-			array( '%d' )
-		);
-		if ($results != false)
-		{
-			return true;
-		}
-		else
-		{
+	 * Gets the quiz ID stored (for backwards compatibility)
+	 *
+	 * @since 5.0.0
+	 * @return int|false The ID of the quiz stored or false
+	 */
+	public function get_id() {
+		if ( $this->quiz_id ) {
+			return intval( $this->quiz_id );
+		} else {
 			return false;
 		}
 	}
-
-	/**
-	 * Deletes setting stored in quiz_settings
-	 *
-	 * @since 3.8.1
-	 * @access public
-	 * @return void
-	 */
-	public function delete_setting($setting_name)
-	{
-		global $wpdb;
-		$qmn_settings_array = array();
-		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
-		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings)))
-		{
-			$qmn_settings_array = @unserialize($qmn_quiz_settings);
-		}
-		if (is_array($qmn_settings_array) && isset($qmn_settings_array[$setting_name]))
-		{
-			unset($qmn_settings_array[$setting_name]);
-		}
-		$qmn_serialized_array = serialize($qmn_settings_array);
-		$results = $wpdb->update(
-			$wpdb->prefix . "mlw_quizzes",
-			array(
-			 	'quiz_settings' => $qmn_serialized_array
-			),
-			array( 'quiz_id' => $this->quiz_id ),
-			array(
-			 	'%s'
-			),
-			array( '%d' )
-		);
-	}
-
-
 
 	/**
 	 * Creates a new quiz with the default settings
@@ -368,39 +267,47 @@ class QMNQuizCreator
 		do_action('qmn_quiz_deleted', $quiz_id);
 	 }
 
-	 /**
+	/**
 	 * Edits the name of the quiz with the given ID
 	 *
 	 * @access public
 	 * @since 3.7.1
+	 * @param int    $quiz_id The ID of the quiz.
+	 * @param string $quiz_name The new name of the quiz.
 	 * @return void
 	 */
-	 public function edit_quiz_name($quiz_id, $quiz_name)
-	 {
-	 	global $mlwQuizMasterNext;
+	public function edit_quiz_name( $quiz_id, $quiz_name ) {
+		global $mlwQuizMasterNext;
 		global $wpdb;
 		$results = $wpdb->update(
- 			$wpdb->prefix . "mlw_quizzes",
- 			array(
- 				'quiz_name' => $quiz_name
- 			),
- 			array( 'quiz_id' => $quiz_id ),
- 			array(
- 				'%s'
- 			),
- 			array( '%d' )
- 		);
-		if ( false != $results ) {
-			$mlwQuizMasterNext->alertManager->newAlert(__('The name of your quiz or survey has been updated successfully.', 'quiz-master-next'), 'success');
+			$wpdb->prefix . 'mlw_quizzes',
+			array(
+				'quiz_name' => $quiz_name,
+			),
+			array( 'quiz_id' => $quiz_id ),
+			array(
+				'%s',
+			),
+			array( '%d' )
+		);
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
+		} else {
+			$error = $wpdb->last_error;
+			if ( empty( $error ) ) {
+				$error = __( 'Unknown error', 'quiz-master-next' );
+			}
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'An error occurred while trying to update the name of your quiz or survey. Please try again.', 'quiz-master-next' ), 'error' );
+			$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz name', "Tried {$wpdb->last_query} but got $error", 0, 'error' );
 		}
-		else
-		{
-			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0003'), 'error');
-			$mlwQuizMasterNext->log_manager->add("Error 0003", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
-		}
-		do_action('qmn_quiz_name_edited', $quiz_id);
-	 }
+
+		// Fires when the name of a quiz/survey is edited.
+		do_action( 'qsm_quiz_name_edited', $quiz_id, $quiz_name );
+
+		// Legacy code.
+		do_action( 'qmn_quiz_name_edited', $quiz_id );
+	}
 
 	 /**
 	 * Duplicates the quiz with the given ID and gives new quiz the given quiz name
@@ -616,6 +523,104 @@ class QMNQuizCreator
 				}
 			}
 		}
-	 }
+	}
+
+	/**
+	 * Retrieves setting store in quiz_settings
+	 *
+	 * @deprecated 6.0.3 Use the get_quiz_setting function in the pluginHelper object.
+	 * @since 3.8.1
+	 * @access public
+	 * @param string $setting_name The slug of the setting.
+	 * @return string The value of the setting
+	 */
+	public function get_setting( $setting_name ) {
+		global $wpdb;
+		$qmn_settings_array = '';
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
+			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
+		}
+		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
+			return $qmn_settings_array[ $setting_name ];
+		} else {
+			return '';
+		}
+
+	}
+
+	/**
+	 * Updates setting stored in quiz_settings
+	 *
+	 * @deprecated 6.0.3 Use the update_quiz_setting function in the pluginHelper object.
+	 * @since 3.8.1
+	 * @access public
+	 * @param string $setting_name The slug of the setting.
+	 * @param mixed  $setting_value The value for the setting.
+	 * @return bool True if update was successful
+	 */
+	public function update_setting( $setting_name, $setting_value ) {
+		global $wpdb;
+		$qmn_settings_array = array();
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings)))
+		{
+			$qmn_settings_array = @unserialize($qmn_quiz_settings);
+		}
+		$qmn_settings_array[$setting_name] = $setting_value;
+		$qmn_serialized_array = serialize($qmn_settings_array);
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+			 	'quiz_settings' => $qmn_serialized_array
+			),
+			array( 'quiz_id' => $this->quiz_id ),
+			array(
+			 	'%s'
+			),
+			array( '%d' )
+		);
+		if ($results != false)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/**
+	 * Deletes setting stored in quiz_settings
+	 *
+	 * @deprecated 6.0.3
+	 * @since 3.8.1
+	 * @access public
+	 * @return void
+	 */
+	public function delete_setting( $setting_name ) {
+		global $wpdb;
+		$qmn_settings_array = array();
+		$qmn_quiz_settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM " . $wpdb->prefix . "mlw_quizzes" . " WHERE quiz_id=%d", $this->quiz_id ) );
+		if (is_serialized($qmn_quiz_settings) && is_array(@unserialize($qmn_quiz_settings)))
+		{
+			$qmn_settings_array = @unserialize($qmn_quiz_settings);
+		}
+		if (is_array($qmn_settings_array) && isset($qmn_settings_array[$setting_name]))
+		{
+			unset($qmn_settings_array[$setting_name]);
+		}
+		$qmn_serialized_array = serialize($qmn_settings_array);
+		$results = $wpdb->update(
+			$wpdb->prefix . "mlw_quizzes",
+			array(
+			 	'quiz_settings' => $qmn_serialized_array
+			),
+			array( 'quiz_id' => $this->quiz_id ),
+			array(
+			 	'%s'
+			),
+			array( '%d' )
+		);
+	}
 }
-?>

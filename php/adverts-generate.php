@@ -18,8 +18,8 @@ function mlw_qmn_show_adverts() {
 		$mlw_random_int = rand( 0, 3 );
 		switch ( $mlw_random_int ) {
 			case 0:
-				// Subscribe Newsletter 1
-				$mlw_advert_text = "Want a discount on your next addon purchase? Keep updated on our news, updated, and more by <a href=\"http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=subscribe-newsletter-1&utm_campaign=qsm_plugin\">subscribing to our mailing list</a> and receive a discount on your next purchase!";
+				// WP Health
+				$mlw_advert_text = 'Want to make sure your site is healthy, secure, and live? Check out our new free WordPress plugin: <a href="https://wordpress.org/plugins/my-wp-health-check/" target="_blank">WP Health</a>!';
 				break;
 			case 1:
 				// Continued development 1
@@ -28,6 +28,10 @@ function mlw_qmn_show_adverts() {
 			case 2:
 				// Reporting and anaylsis 1
 				$mlw_advert_text = "Are you receiving a lot of responses to your quizzes and surveys? Consider our Reporting and Anaylsis addon which analyzes the data for you and allows you to filter the data as well as export it! <a href=\"http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=reporting-analysis-1&utm_campaign=qsm_plugin\">Click here for more details!</a>";
+				break;
+			case 3:
+				// Email marketing integrations.
+				$mlw_advert_text = 'Want to grow your email list? Check out our addons for adding your quiz or survey takers to your email lists! <a href="http://bit.ly/2Bsw0Je" target="_blank">View our addon store</a>.';
 				break;
 			default:
 				// Reporting and anaylsis 2
@@ -38,16 +42,13 @@ function mlw_qmn_show_adverts() {
 			div.help_decide {
 				display: block;
 				text-align:center;
-				background: #0d97d8;
+				background: #fff;
 				border: 5px solid #1DD969;
 				color: #000;
 				font-weight: bold;
 			}
 			div.help_decide p {
 				font-size: 14px;
-			}
-			div.help_decide a {
-				color: yellow;
 			}
 			</style>";
 		$mlw_advert .= "
