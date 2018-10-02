@@ -336,21 +336,6 @@ function qsm_options_emails_tab_content() {
 				<span class="template_name">%CATEGORY_AVERAGE_SCORE%</span> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<span class="template_name">%QUESTION%</span> - <?php _e('The question that the user answered', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_ANSWER%</span> - <?php _e('The answer the user gave for the question', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CORRECT_ANSWER%</span> - <?php _e('The correct answer for the question', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_COMMENTS%</span> - <?php _e('The comments the user provided in the comment field for the question', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CORRECT_ANSWER_INFO%</span> - <?php _e('Reason why the correct answer is the correct answer', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
 				<span class="template_name">%CURRENT_DATE%</span> - <?php _e('The Current Date', 'quiz-master-next'); ?>
 			</div>
 			<?php do_action('qmn_template_variable_list'); ?>

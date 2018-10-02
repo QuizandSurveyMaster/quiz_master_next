@@ -205,7 +205,7 @@ function qsm_generate_quizzes_surveys_page() {
 					</div>
 					<?php
 					$qmn_rss = array();
-					$qmn_feed = fetch_feed( 'http://quizandsurveymaster.com/feed' );
+					$qmn_feed = fetch_feed( 'https://quizandsurveymaster.com/feed' );
 					if ( ! is_wp_error( $qmn_feed ) ) {
 						$qmn_feed_items = $qmn_feed->get_items( 0, 5 );
 						foreach ( $qmn_feed_items as $feed_item ) {
