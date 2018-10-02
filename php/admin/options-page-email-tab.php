@@ -2,30 +2,28 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* Creates the email tab in the Quiz Settings Page
-*
-* @return void
-* @since 4.4.0
-*/
-function qmn_settings_email_tab()
-{
+ * Creates the email tab in the Quiz Settings Page
+ *
+ * @return void
+ * @since 4.4.0
+ */
+function qmn_settings_email_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Emails", 'quiz-master-next'), 'mlw_options_emails_tab_content');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Emails', 'quiz-master-next'), 'qsm_options_emails_tab_content' );
 }
-add_action("plugins_loaded", 'qmn_settings_email_tab', 5);
+add_action( 'plugins_loaded', 'qmn_settings_email_tab', 5 );
 
 /**
-* Creates the email content that is displayed on the email tab.
-*
-* @return void
-* @since 4.4.0
-*/
-function mlw_options_emails_tab_content()
-{
+ * Creates the email content that is displayed on the email tab.
+ *
+ * @return void
+ * @since 4.4.0
+ */
+function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
-	//Check to add new user email template
+	$quiz_id = $_GET['quiz_id'];
+	// Checks to add new user email template.
 	if ( isset( $_POST["mlw_add_email_page"] ) && $_POST["mlw_add_email_page"] == "confirmation" ) {
 		//Function variables
 		$mlw_qmn_add_email_id = intval($_POST["mlw_add_email_quiz_id"]);
@@ -59,7 +57,7 @@ function mlw_options_emails_tab_content()
 		}
 	}
 
-	//Check to add new admin email template
+	// Checks to add new admin email template.
 	if (isset($_POST["mlw_add_admin_email_page"]) && $_POST["mlw_add_admin_email_page"] == "confirmation")
 	{
 		//Function variables
@@ -245,7 +243,6 @@ function mlw_options_emails_tab_content()
 		// increase the default animation speed to exaggerate the effect
 		$j.fx.speeds._default = 1000;
 	</script>
-	<div id="tabs-9" class="mlw_tab_content">
 	<script>
                 /**
                 * This deletes the user email from the list of emails.
@@ -271,6 +268,8 @@ function mlw_options_emails_tab_content()
 			document.mlw_quiz_save_email_form.submit();
 		}
 	</script>
+		<h2><?php esc_html_e( 'Emails', 'quiz-master-next'); ?></h2>
+		<p>Need assistance with this tab? <a href="https://docs.quizandsurveymaster.com/article/17-sending-emails" target="_blank">Check out the documentation</a> for this tab!</p>
 		<h3 style="text-align: center;"><?php _e('Template Variables', 'quiz-master-next'); ?></h3>
 		<div class="template_list_holder">
 			<div class="template_variable">
@@ -578,7 +577,6 @@ function mlw_options_emails_tab_content()
 		<br />
 		<br />
 		<button id="save_email_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_email_form.submit();"><?php _e('Save Email Templates And Settings', 'quiz-master-next'); ?></button>
-	</div>
 	<?php
 }
 ?>
