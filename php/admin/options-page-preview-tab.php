@@ -24,7 +24,7 @@ function mlw_options_preview_tab_content()
 {
 	?>
 	<div id="tabs-preview" class="mlw_tab_content">
-		<p>If your quiz looks different on the front end compared to this preview, then there is a conflict with your theme. Check out our <a href="http://quizandsurveymaster.com/common-theme-conflict-fixes/?utm_source=qsm-preview-tab&utm_medium=plugin&utm_campaign=qsm_plugin">Common Theme Conflict Fixes</a>.</a></p>
+		<p>If your quiz looks different on the front end compared to this preview, then there is a conflict with your theme. Check out our <a href="https://docs.quizandsurveymaster.com/article/21-common-theme-conflict-fixes">Common Theme Conflict Fixes</a>.</a></p>
 		<?php
 		echo do_shortcode( '[mlw_quizmaster quiz='.intval($_GET["quiz_id"]).']' );
 		?>
