@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.8
 Tested up to: 4.9
 Requires PHP: 5.4
-Stable tag: 6.0.3
+Stable tag: 6.0.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,7 +85,7 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have begun creating documentation for the plugin. You can view the documentation here: [Documentation](https://quizandsurveymaster.com/documentation/?utm_source=readme&utm_medium=plugin&utm_content=faq-documentation&utm_campaign=qsm_plugin) If you still have any trouble, feel free to use the widget on the quiz dashboard within the plugin to contact me and I will help you.
+We have extensive documentation and videos for the plugin. You can view the documentation here: [Documentation](https://docs.quizandsurveymaster.com). If you still need assistance, feel free to reach out to us!
 
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
@@ -97,7 +97,7 @@ To make these changes, you will edit the %QUESTIONS_ANSWERS% variable. To do tha
 
 = My preview looks different than my quiz. What can I do? =
 
-This is usually a theme conflict. You can [checkout out our common conflict solutions](https://quizandsurveymaster.com/common-theme-conflict-fixes/?utm_source=readme&utm_medium=plugin&utm_content=faq-common-theme-conflicts&utm_campaign=qsm_plugin) or feel free to contact us.
+This is usually a theme conflict. You can [checkout out our common conflict solutions](https://docs.quizandsurveymaster.com/article/21-common-theme-conflict-fixes) or feel free to contact us.
 
 == Screenshots ==
 
@@ -110,6 +110,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.0.4 (October 2, 2018) =
+* Changes links from old documentation to newer documentation
 
 = 6.0.3 (August 20, 2018) =
 * Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/fpcorso/quiz_master_next/issues/583))
@@ -137,9 +140,3 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 6.0.3 =
 Upgrade for several bug fixes
-
-= 6.0.2 =
-Upgrade for fix for timer and blank pages
-
-= 6.0.1 =
-Upgrade for fix quiz comments displaying HTML
