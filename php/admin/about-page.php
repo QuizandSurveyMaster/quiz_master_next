@@ -1,18 +1,24 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Generates the content for the about page.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * This function shows the about page. It also shows the changelog information.
  *
  * @return void
- * @since 4.4.0
+ * @since 6.1.0
  */
-function mlw_generate_about_page() {
+function qsm_generate_about_page() {
 
 	global $mlwQuizMasterNext;
 	$version = $mlwQuizMasterNext->version;
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ), array(), $version );
-	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js' , __FILE__ ), array( 'jquery' ), $version );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $version );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $version );
 	?>
 	<style>
 		div.qsm_icon_wrap {
@@ -20,16 +26,16 @@ function mlw_generate_about_page() {
 		}
 	</style>
 	<div class="wrap about-wrap">
-		<h1><?php _e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?></h1>
-		<div class="about-text"><?php _e( 'Thank you for updating!', 'quiz-master-next' ); ?></div>
-		<div class="qsm_icon_wrap"><?php echo $version; ?></div>
+		<h1><?php esc_html_e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?></h1>
+		<div class="about-text"><?php esc_html_e( 'Thank you for updating!', 'quiz-master-next' ); ?></div>
+		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
 		<h2 class="nav-tab-wrapper">
 			<a href="#" data-tab='1' class="nav-tab nav-tab-active qsm-tab">
-				<?php _e( "What's New!", 'quiz-master-next' ); ?></a>
+				<?php esc_html_e( "What's New!", 'quiz-master-next' ); ?></a>
 			<a href="#" data-tab='2' class="nav-tab qsm-tab">
-				<?php _e( 'Changelog', 'quiz-master-next' ); ?></a>
+				<?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></a>
 			<a href="#" data-tab='3' class="nav-tab qsm-tab">
-				<?php _e( 'People Who Make QSM Possible', 'quiz-master-next' ); ?></a>
+				<?php esc_html_e( 'People Who Make QSM Possible', 'quiz-master-next' ); ?></a>
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">

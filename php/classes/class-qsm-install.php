@@ -1300,10 +1300,6 @@ class QSM_Install {
 
 
   		update_option('mlw_quiz_master_version' , $data);
-  		if( ! isset( $_GET['activate-multi'] ) ) {
-				wp_safe_redirect( admin_url( 'index.php?page=qsm_about' ) );
-				exit;
-      }
   	}
   	if ( ! get_option('mlw_advert_shows') ) {
   		add_option( 'mlw_advert_shows' , 'true' );
