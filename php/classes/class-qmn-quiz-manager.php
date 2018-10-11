@@ -1119,17 +1119,15 @@ class QMNQuizManager {
 
 
 	/**
-	  * Displays Results Text
-	  *
-	  * Prepares and display text for the results page
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @return string The contents for the results text
-	  */
-	public function display_results_text($qmn_quiz_options, $qmn_array_for_variables)
-	{
+	 * Displays Results Text
+	 *
+	 * @since 4.0.0
+	 * @deprecated 6.1.0 Use the newer results page class instead.
+	 * @param array $qmn_quiz_options The database row of the quiz.
+	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @return string The contents for the results text
+	 */
+	public function display_results_text( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$results_text_display = '';
 		if (is_serialized($qmn_quiz_options->message_after) && is_array(@unserialize($qmn_quiz_options->message_after)))
 		{
@@ -1181,45 +1179,41 @@ class QMNQuizManager {
 	}
 
 	/**
-	  * Display Social Media Buttons
-	  *
-	  * Prepares and displays social media buttons for sharing results
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @return string The content of the social media button section
-	  */
-	public function display_social($qmn_quiz_options, $qmn_array_for_variables)
-	{
+	 * Displays social media buttons
+	 *
+	 * @deprecated 6.1.0 Use the social media template variables instead.
+	 * @since 4.0.0
+	 * @param array $qmn_quiz_options The database row of the quiz.
+	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @return string The content of the social media button section
+	 */
+	public function display_social( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$social_display = '';
-		if ($qmn_quiz_options->social_media == 1)
-		{
+		if ( $qmn_quiz_options->social_media == 1 ) {
 			$settings = (array) get_option( 'qmn-settings' );
 			$facebook_app_id = '483815031724529';
-			if (isset($settings['facebook_app_id']))
-			{
+			if ( isset( $settings['facebook_app_id'] ) ) {
 				$facebook_app_id = esc_js( $settings['facebook_app_id'] );
 			}
 
-			//Load Social Media Text
+			// Loads Social Media Text.
 			$qmn_social_media_text = "";
 			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( @unserialize( $qmn_quiz_options->social_media_text ) ) ) {
 				$qmn_social_media_text = @unserialize($qmn_quiz_options->social_media_text);
 			} else {
 				$qmn_social_media_text = array(
-		        		'twitter' => $qmn_quiz_options->social_media_text,
-		        		'facebook' => $qmn_quiz_options->social_media_text
-		        	);
+					'twitter'  => $qmn_quiz_options->social_media_text,
+					'facebook' => $qmn_quiz_options->social_media_text,
+				);
 			}
-			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
+			$qmn_social_media_text["twitter"]  = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
 			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $qmn_array_for_variables);
 			$social_display .= "<br />
 			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($qmn_quiz_options->quiz_name)."', '$facebook_app_id');\">Facebook</a>
 			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($qmn_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
-		return apply_filters('qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables);
+		return apply_filters( 'qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables );
 	}
 
 	/**
