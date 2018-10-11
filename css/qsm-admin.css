@@ -255,6 +255,18 @@ Help Page
 Misc.
 *********************/
 
+/* Ads */
+.help-decide {
+	display: block;
+	text-align:center;
+	background: #fff;
+	border: 5px solid #1DD969;
+	color: #000;
+	font-weight: bold;
+}
+.help-decide p {
+	font-size: 14px;
+}
 
 /* Info Bar */
 .qsm-info-box {

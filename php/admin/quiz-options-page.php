@@ -93,7 +93,7 @@ function qsm_generate_quiz_options() {
 
 		// Shows alerts, ads, then tab content
 		$mlwQuizMasterNext->alertManager->showAlerts();
-		echo mlw_qmn_show_adverts();
+		qsm_show_adverts();
 		echo $mlw_output;
 		?>
 	</div>

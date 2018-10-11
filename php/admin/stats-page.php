@@ -27,7 +27,7 @@ function qmn_generate_stats_page()
 	?>
 	<div class="wrap">
 		<h2><?php _e('Quiz/Survey Statistics', 'quiz-master-next'); ?></h2>
-		<?php echo mlw_qmn_show_adverts(); ?>
+		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
 			foreach($tab_array as $tab)

@@ -30,7 +30,7 @@ function qsm_generate_quiz_tools() {
 
 	<div style="clear:both"></div>
 
-	<?php echo mlw_qmn_show_adverts(); ?>
+	<?php qsm_show_adverts(); ?>
 
 	</div>
 	<?php

@@ -23,7 +23,7 @@ function qsm_generate_admin_results_page() {
 	<div class="wrap">
 		<h2><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-		<?php echo mlw_qmn_show_adverts(); ?>
+		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
 			// Cycles through the tabs and creates the navigation

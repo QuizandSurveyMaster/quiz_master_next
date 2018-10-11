@@ -28,7 +28,7 @@ function qsm_generate_help_page() {
 	?>
 	<div class="wrap">
 		<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-		<?php echo mlw_qmn_show_adverts(); ?>
+		<?php qsm_show_adverts(); ?>
 
 		<!--Display Widget Boxes-->
 		<div style="width:100%;" class="inner-sidebar1">
