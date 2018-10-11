@@ -1,30 +1,36 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
-* Adds the Results tab to the Quiz Settings page.
-*
-* @return void
-* @since 4.4.0
-*/
-function qmn_settings_results_tab()
-{
-	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Results Pages", 'quiz-master-next'), 'mlw_options_results_tab_content');
+ * Creates the results page tab when editing quizzes.
+ *
+ * @package QSM
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
-add_action("plugins_loaded", 'qmn_settings_results_tab', 5);
 
 /**
-* Adds the Results page content to the Results tab.
-*
-* @return void
-* @since 4.4.0
-*/
-function mlw_options_results_tab_content()
-{
+ * Adds the Results Page tab to the Quiz Settings page.
+ *
+ * @since 6.1.0
+ */
+function qsm_options_results_tab() {
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Results Pages', 'quiz-master-next' ), 'qsm_options_results_tab_content' );
+}
+add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
+
+/**
+ * Adds the Results page content to the Results tab.
+ *
+ * @since 6.1.0
+ */
+function qsm_options_results_tab_content() {
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
+	$quiz_id = $_GET['quiz_id'];
+
 	//Check to add new results page
 	if (isset($_POST["mlw_add_landing_page"]) && $_POST["mlw_add_landing_page"] == "confirmation")
 	{
@@ -98,13 +104,12 @@ function mlw_options_results_tab_content()
 	//Load Landing Pages
 	if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after)))
 	{
-    		$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
+			$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
 	}
 	else
 	{
 		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after, "redirect_url" => ''));
 	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
 	?>
 	<script>
 		var $j = jQuery.noConflict();
@@ -124,6 +129,8 @@ function mlw_options_results_tab_content()
 			document.mlw_quiz_save_landing_form.submit();
 		}
 	</script>
+	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
+	<p></p>
 	<h3 style="text-align: center;"><?php _e("Template Variables", 'quiz-master-next'); ?></h3>
 	<div class="template_list_holder">
 		<div class="template_variable">

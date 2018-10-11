@@ -54,7 +54,7 @@ function qsm_generate_quiz_options() {
 			// If the quiz is set and not empty
 			if ( ! empty( $quiz_id ) ) {
 				?>
-				<h2 class="nav-tab-wrapper">
+				<nav class="nav-tab-wrapper">
 					<?php
 					// Cycle through registered tabs to create navigation
 					foreach( $tab_array as $tab ) {
@@ -65,7 +65,7 @@ function qsm_generate_quiz_options() {
 						echo "<a href=\"?page=mlw_quiz_options&quiz_id=$quiz_id&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
 					}
 					?>
-				</h2>
+				</nav>
 				<div class="qsm_tab_content">
 					<?php
 						// Cycle through tabs looking for current tab to create tab's content
