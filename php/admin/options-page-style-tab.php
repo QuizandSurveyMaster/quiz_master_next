@@ -55,53 +55,51 @@ function qsm_options_styling_tab_content() {
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>
-	<div id="tabs-7" class="mlw_tab_content">
-		<script>
-			function mlw_qmn_theme(theme)
-			{
-				document.getElementById('save_quiz_theme').value = theme;
-				jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
-				jQuery("#mlw_qmn_theme_block_"+theme).toggleClass("mlw_qmn_themeBlockActive");
+	<script>
+		function mlw_qmn_theme(theme)
+		{
+			document.getElementById('save_quiz_theme').value = theme;
+			jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
+			jQuery("#mlw_qmn_theme_block_"+theme).toggleClass("mlw_qmn_themeBlockActive");
 
+		}
+	</script>
+	<form action='' method='post' name='quiz_style_form'>
+		<input type='hidden' name='save_style_options' value='confirmation' />
+		<input type='hidden' name='style_quiz_id' value='<?php echo esc_attr( $quiz_id ); ?>' />
+		<input type='hidden' name='save_quiz_theme' id='save_quiz_theme' value='<?php echo esc_attr( $mlw_quiz_options->theme_selected ); ?>' />
+		<h3><?php _e( 'Quiz Styles', 'quiz-master-next' ); ?></h3>
+		<p><?php _e( 'Choose your style:', 'quiz-master-next' ); ?></p>
+		<style>
+			div.mlw_qmn_themeBlockActive {
+				background-color: yellow;
 			}
-		</script>
-		<form action='' method='post' name='quiz_style_form'>
-			<input type='hidden' name='save_style_options' value='confirmation' />
-			<input type='hidden' name='style_quiz_id' value='<?php echo esc_attr( $quiz_id ); ?>' />
-			<input type='hidden' name='save_quiz_theme' id='save_quiz_theme' value='<?php echo esc_attr( $mlw_quiz_options->theme_selected ); ?>' />
-			<h3><?php _e( 'Quiz Styles', 'quiz-master-next' ); ?></h3>
-			<p><?php _e( 'Choose your style:', 'quiz-master-next' ); ?></p>
-			<style>
-				div.mlw_qmn_themeBlockActive {
-					background-color: yellow;
-				}
-			</style>
-			<div class="qsm-styles">
-				<?php
-				foreach ( $registered_templates as $slug => $template ) {
-					?>
-					<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="qsm-info-widget <?php if ($mlw_quiz_options->theme_selected == $slug) {echo 'mlw_qmn_themeBlockActive';} ?>"><?php echo $template["name"]; ?></div>
-					<?php
-				}
+		</style>
+		<div class="qsm-styles">
+			<?php
+			foreach ( $registered_templates as $slug => $template ) {
 				?>
-				<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
-				<script>
-					mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
-				</script>
-			</div>
-			<button id="save_styles_button" class="button-primary"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
-			<hr />
-			<h3><?php _e('Custom Style CSS', 'quiz-master-next'); ?></h3>
-			<p><?php _e('For help and guidance along with a list of different classes used in this plugin, please visit the following link:', 'quiz-master-next'); ?>
-			<a target="_blank" href="https://docs.quizandsurveymaster.com/article/34-css-in-qsm">CSS in QSM</a></p>
-			<table class="form-table">
-				<tr>
-					<td><textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
-				</tr>
-			</table>
-			<button id="save_styles_button" class="button-primary"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
-		</form>
-	</div>
+				<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="qsm-info-widget <?php if ($mlw_quiz_options->theme_selected == $slug) {echo 'mlw_qmn_themeBlockActive';} ?>"><?php echo $template["name"]; ?></div>
+				<?php
+			}
+			?>
+			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget <?php if ($mlw_quiz_options->theme_selected == 'default') {echo 'mlw_qmn_themeBlockActive';} ?>"><?php _e('Custom', 'quiz-master-next'); ?></div>
+			<script>
+				mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
+			</script>
+		</div>
+		<button id="save_styles_button" class="button-primary"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
+		<hr />
+		<h3><?php _e('Custom Style CSS', 'quiz-master-next'); ?></h3>
+		<p><?php _e('For help and guidance along with a list of different classes used in this plugin, please visit the following link:', 'quiz-master-next'); ?>
+		<a target="_blank" href="https://docs.quizandsurveymaster.com/article/34-css-in-qsm">CSS in QSM</a></p>
+		<table class="form-table">
+			<tr>
+				<td><textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
+			</tr>
+		</table>
+		<button id="save_styles_button" class="button-primary"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
+	</form>
 	<?php
 }
 ?>

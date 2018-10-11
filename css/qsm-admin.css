@@ -302,6 +302,12 @@ Misc.
 	transform: scale(1.1);
 }
 
+/* Options tabs */
+.qsm_tab_content,
+.mlw_tab_content {
+	padding: 20px 20px 20px 20px;
+}
+
 /* Popup */
 
 .qsm-popup {
