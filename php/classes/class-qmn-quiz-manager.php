@@ -742,10 +742,10 @@ class QMNQuizManager {
 		}
 
 		// Gathers contact information.
-		$qmn_array_for_variables['user_name'] = 'None';
+		$qmn_array_for_variables['user_name']     = 'None';
 		$qmn_array_for_variables['user_business'] = 'None';
-		$qmn_array_for_variables['user_email'] = 'None';
-		$qmn_array_for_variables['user_phone'] = 'None';
+		$qmn_array_for_variables['user_email']    = 'None';
+		$qmn_array_for_variables['user_phone']    = 'None';
 		$contact_responses = QSM_Contact_Manager::process_fields( $qmn_quiz_options );
 		foreach ( $contact_responses as $field ) {
 			if ( isset( $field['use'] ) ) {
@@ -850,9 +850,9 @@ class QMNQuizManager {
 			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			// Sends admin email.
-			$this->send_admin_email($qmn_quiz_options, $qmn_array_for_variables);
+			$this->send_admin_email( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display = apply_filters( 'qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			
+
 			// Last time to filter the HTML results page.
 			$result_display = apply_filters( 'qmn_end_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
@@ -1123,59 +1123,12 @@ class QMNQuizManager {
 	 *
 	 * @since 4.0.0
 	 * @deprecated 6.1.0 Use the newer results page class instead.
-	 * @param array $qmn_quiz_options The database row of the quiz.
-	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @param array $options The quiz settings.
+	 * @param array $response_data The array of results for the quiz.
 	 * @return string The contents for the results text
 	 */
-	public function display_results_text( $qmn_quiz_options, $qmn_array_for_variables ) {
-		$results_text_display = '';
-		if (is_serialized($qmn_quiz_options->message_after) && is_array(@unserialize($qmn_quiz_options->message_after)))
-		{
-			$mlw_message_after_array = @unserialize($qmn_quiz_options->message_after);
-			//Cycle through landing pages
-			foreach($mlw_message_after_array as $mlw_each)
-			{
-				//Check to see if default
-				if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
-				{
-					$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-					$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-					$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-					$results_text_display .= $mlw_message_after;
-					break;
-				}
-				else
-				{
-					//Check to see if points fall in correct range
-					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
-					{
-						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-						$results_text_display .= $mlw_message_after;
-						break;
-					}
-					//Check to see if score fall in correct range
-					if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
-					{
-						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-						$results_text_display .= $mlw_message_after;
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			//Prepare the after quiz message
-			$mlw_message_after = htmlspecialchars_decode($qmn_quiz_options->message_after, ENT_QUOTES);
-			$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-			$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-			$results_text_display .= $mlw_message_after;
-		}
-		return do_shortcode( $results_text_display );
+	public function display_results_text( $options, $response_data ) {
+		return QSM_Results_Pages::generate_pages( $response_data );
 	}
 
 	/**
