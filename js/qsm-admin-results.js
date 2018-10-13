@@ -21,7 +21,7 @@ var QSMAdminResults;
 		},
 		addCondition: function( $page, criteria, operator, value ) {
 			var template = wp.template( 'results-page-condition' );
-			$page.children( '.results-page-when-conditions' ).append( template({
+			$page.find( '.results-page-when-conditions' ).append( template({
 				'criteria': criteria,
 				'operator': operator,
 				'value': value
@@ -43,11 +43,11 @@ var QSMAdminResults;
 			});
 		},
 		newResultsPage: function() {
-			var conditions = array({
+			var conditions = [{
 				'criteria': 'score',
 				'operator': 'greater',
 				'value': '0'
-			});
+			}];
 			var page = '%QUESTIONS_ANSWERS%';
 			QSMAdminResults.addResultsPage( conditions, page );
 		}
@@ -63,7 +63,7 @@ var QSMAdminResults;
 			event.preventDefault();
 			QSMAdminResults.saveResults();
 		});
-		$( '.results-pages' ).on( 'click', '.new-condition', function( event ) {
+		$( '#results-pages' ).on( 'click', '.new-condition', function( event ) {
 			event.preventDefault();
 			$page = $( this ).closest( '.results-page' );
 			QSMAdminResults.newCondition( $page );

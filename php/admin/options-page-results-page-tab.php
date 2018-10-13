@@ -31,6 +31,8 @@ function qsm_options_results_tab_content() {
 	$quiz_id = intval( $_GET['quiz_id'] );
 	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', array( 'quizID' => $quiz_id ) );
+	wp_enqueue_editor();
+	wp_enqueue_media();
 	?>
 	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
 	<p></p>
