@@ -135,7 +135,7 @@ function qsm_options_results_tab_content() {
 					<div class="results-page-when-conditions">
 						<!-- Conditions go here. Review template below. -->
 					</div>
-					<button class="button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+					<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
 				</div>
 				<div class="results-page-show">
 					<h4>...Show</h4>
@@ -161,7 +161,7 @@ function qsm_options_results_tab_content() {
 				<option value="less">is less than</option>
 				<?php do_action( 'qsm_results_page_condition_operator' ); ?>
 			</select>
-			<input type="text" class="results-page-condition-value" value="0">
+			<input type="text" class="results-page-condition-value" value="{{ data.value }}">
 		</div>
 	</script>
 	<?php

@@ -19,9 +19,28 @@ var QSMAdminResults;
 					});
 				});
 		},
+		addCondition: function( $page, criteria, operator, value ) {
+			var template = wp.template( 'results-page-condition' );
+			$page.children( '.results-page-when-conditions' ).append( template({
+				'criteria': criteria,
+				'operator': operator,
+				'value': value
+			}));
+		},
+		newCondition: function( $page ) {
+			QSMAdminResults.addCondition( $page, 'score', 'equal', 0 );
+		},
 		addResultsPage: function( conditions, page ) {
 			var template = wp.template( 'results-page' );
 			$( '#results-pages' ).append( template( { page: page } ) );
+			conditions.forEach( function( condition, i, conditions) {
+				QSMAdminResults.addCondition( 
+					$( '.results-page' ), 
+					condition.criteria,
+					condition.operater,
+					condition.value
+				);
+			});
 		},
 		newResultsPage: function() {
 			var conditions = array({
@@ -43,6 +62,11 @@ var QSMAdminResults;
 		$( '.save-pages' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMAdminResults.saveResults();
+		});
+		$( '.results-pages' ).on( 'click', '.new-condition', function( event ) {
+			event.preventDefault();
+			$page = $( this ).closest( '.results-page' );
+			QSMAdminResults.newCondition( $page );
 		});
 	});
 }(jQuery));
