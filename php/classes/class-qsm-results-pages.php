@@ -20,6 +20,7 @@ class QSM_Results_Pages {
 	 * Creates the HTML for the results page.
 	 *
 	 * @since 6.1.0
+	 * @param array $response_data The data for the user's submission.
 	 * @return string The HTML for the page to be displayed.
 	 */
 	public static function generate_pages( $response_data ) {

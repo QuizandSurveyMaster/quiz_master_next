@@ -6,7 +6,7 @@ var QSMAdminResults;
 (function ($) {
 	QSMAdminResults = {
 		saveResults: function() {
-			$( '.results-page' ).each();
+			alert('saving...');
 		},
 		loadResults: function() {
 			$.ajax({
