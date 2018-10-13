@@ -30,6 +30,7 @@ function qsm_options_results_tab_content() {
 	global $mlwQuizMasterNext;
 	$quiz_id = $_GET['quiz_id'];
 	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
+	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', array( 'quizID' => $quiz_id ) );
 	?>
 	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
 	<p></p>
@@ -138,7 +139,7 @@ function qsm_options_results_tab_content() {
 				</div>
 				<div class="results-page-show">
 					<h4>...Show</h4>
-					<textarea class="results-page-template"></textarea>
+					<textarea class="results-page-template">{{{ data.page }}}</textarea>
 				</div>
 			</main>
 		</div>
@@ -154,7 +155,9 @@ function qsm_options_results_tab_content() {
 			<select class="results-page-condition-operator">
 				<option value="equal">is equal to</option>
 				<option value="not-equal">is not equal to</option>
+				<option value="greater-equal">is greater than or equal to</option>
 				<option value="greater">is greater than</option>
+				<option value="less-equal">is less than or equal to</option>
 				<option value="less">is less than</option>
 				<?php do_action( 'qsm_results_page_condition_operator' ); ?>
 			</select>
