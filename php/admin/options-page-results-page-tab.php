@@ -29,8 +29,12 @@ function qsm_options_results_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( $_GET['quiz_id'] );
+	$js_data = array(
+		'quizID' => $quiz_id,
+		'nonce' => wp_create_nonce( 'wp_rest' ),
+	);
 	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
-	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', array( 'quizID' => $quiz_id ) );
+	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	wp_enqueue_editor();
 	wp_enqueue_media();
 	?>
@@ -128,10 +132,10 @@ function qsm_options_results_tab_content() {
 	<!-- Templates -->
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
-			<header class="page-header">
+			<header class="results-page-header">
 				<div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
 			</header>
-			<main>
+			<main class="results-page-content">
 				<div class="results-page-when">
 					<h4>When...</h4>
 					<div class="results-page-when-conditions">

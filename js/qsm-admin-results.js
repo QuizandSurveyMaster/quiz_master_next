@@ -10,10 +10,10 @@ var QSMAdminResults;
 		},
 		loadResults: function() {
 			$.ajax({
-				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results'
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
+				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
 			})
-				.done(function( data ) {
-					var pages = JSON.parse( data );
+				.done(function( pages ) {
 					pages.forEach( function( page, i, pages ) {
 						QSMAdminResults.addResultsPage( page.conditions, page.page );
 					});
