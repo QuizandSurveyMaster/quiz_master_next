@@ -35,7 +35,7 @@ var QSMAdminResults;
 			$( '#results-pages' ).append( template( { page: page } ) );
 			conditions.forEach( function( condition, i, conditions) {
 				QSMAdminResults.addCondition( 
-					$( '.results-page' ), 
+					$( '.results-page:last-child' ), 
 					condition.criteria,
 					condition.operater,
 					condition.value
@@ -68,5 +68,9 @@ var QSMAdminResults;
 			$page = $( this ).closest( '.results-page' );
 			QSMAdminResults.newCondition( $page );
 		});
+		$( '#results-pages' ).on( 'click', '.delete-page-button', function( event ) {
+			event.preventDefault();
+			$( this ).closest( '.results-page' ).remove();
+		})
 	});
 }(jQuery));

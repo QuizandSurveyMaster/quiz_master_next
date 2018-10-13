@@ -133,7 +133,7 @@ function qsm_options_results_tab_content() {
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
 			<header class="results-page-header">
-				<div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
+				<div><button class="delete-page-button"><span class="dashicons dashicons-trash"></span></button></div>
 			</header>
 			<main class="results-page-content">
 				<div class="results-page-when">

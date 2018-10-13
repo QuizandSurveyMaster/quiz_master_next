@@ -107,6 +107,18 @@ Results Pages Tab
 	border-bottom: 5px solid #1DD969;
 }
 
+.delete-page-button {
+	background: none;
+	border: none;
+	color: #1DD969;
+	cursor: pointer;
+	transition-duration: 200ms;
+}
+
+.delete-page-button:hover {
+	transform: scale(1.2);
+}
+
 .results-page-content {
 	display: flex;
 	flex-direction: column;
