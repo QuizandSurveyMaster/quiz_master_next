@@ -49,7 +49,7 @@ function qsm_show_adverts() {
 		}
 		?>
 		<div class="help-decide">
-			<p><?php echo esc_html( $ad_text ); ?></p>
+			<p><?php echo $ad_text; ?></p>
 		</div>
 		<?php
 	}
