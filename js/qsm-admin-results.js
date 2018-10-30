@@ -9,11 +9,17 @@ var QSMAdminResults;
 			alert('saving...');
 			var pages = [];
 			var page = {};
+			var redirect_value = '';
 			$( '.results-page' ).each( function() {
 				page = {
 					'conditions': [],
-					'page':  $( this ).find( '.results-page-template' ).val()
+					'page':  $( this ).find( '.results-page-template' ).val(),
+					'redirect': false,
 				};
+				redirect_value = $( this ).find( '.results-page-redirect' ).val();
+				if ( '' != redirect_value ) {
+					page.redirect = redirect_value;
+				}
 				$( this ).find( '.results-page-condition' ).each( function() {
 					page.conditions.push({
 						'criteria': $( this ).children( '.results-page-condition-criteria' ).val(),

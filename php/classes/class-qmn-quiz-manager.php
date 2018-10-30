@@ -776,8 +776,12 @@ class QMNQuizManager {
 			$result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-			$result_display .= $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
+
+			// Determines redirect/results page.
+			$results_pages = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
+			$result_display .= $results_pages['display'];
 			$result_display = apply_filters('qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
+
 			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
@@ -862,54 +866,10 @@ class QMNQuizManager {
 			$result_display .= 'Thank you.';
 		}
 
-		// Checks to see if we need to set up a redirect.
-		$redirect     = false;
-		$redirect_url = '';
-		if ( is_serialized( $qmn_quiz_options->message_after ) && is_array( @unserialize( $qmn_quiz_options->message_after ) ) ) {
-			$mlw_message_after_array = @unserialize( $qmn_quiz_options->message_after );
-
-			// Cycles through landing pages.
-			foreach( $mlw_message_after_array as $mlw_each ) {
-				// Checks to see if not default.
-				if ( $mlw_each[0] != 0 || $mlw_each[1] != 0 ) {
-					// Checks to see if points fall in correct range.
-					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
-					{
-						if (esc_url($mlw_each["redirect_url"]) != '')
-						{
-							$redirect = true;
-							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-						}
-						break;
-					}
-					//Check to see if score fall in correct range
-					if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
-					{
-						if (esc_url($mlw_each["redirect_url"]) != '')
-						{
-							$redirect = true;
-							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-						}
-						break;
-					}
-				}
-				else
-				{
-					if (esc_url($mlw_each["redirect_url"]) != '')
-					{
-						$redirect = true;
-						$redirect_url = esc_url( $mlw_each["redirect_url"] );
-					}
-					break;
-				}
-			}
-		}
-
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'display'      => $result_display,
-			'redirect'     => $redirect,
-			'redirect_url' => $redirect_url,
+			'redirect'     => $results_pages['redirect'],
 		);
 
 		return $return_array;

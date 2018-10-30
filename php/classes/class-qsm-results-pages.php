@@ -24,8 +24,10 @@ class QSM_Results_Pages {
 	 * @return string The HTML for the page to be displayed.
 	 */
 	public static function generate_pages( $response_data ) {
-		$pages   = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
-		$default = '%QUESTIONS_ANSWERS%';
+		$pages            = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
+		$default          = '%QUESTIONS_ANSWERS%';
+		$redirect         = false;
+		$default_redirect = false;
 		ob_start();
 		?>
 		<div class="qsm-results-page">
@@ -121,15 +123,26 @@ class QSM_Results_Pages {
 					// If we passed all conditions, show this page.
 					if ( $show ) {
 						$content = $page['page'];
+						if ( $page['redirect'] ) {
+							$redirect = $page['redirect'];
+						}
 					}
 				} else {
 					$default = $page['page'];
+					if ( $page['redirect'] ) {
+						$default_redirect = $page['redirect'];
+					}
 				}
 			}
 
 			// If no page was set to the content, set to the page that was a default page.
 			if ( empty( $content ) ) {
 				$content = $default;
+			}
+
+			// If no redirect was set, set to default redirect.
+			if ( ! $redirect ) {
+				$redirect = $default_redirect;
 			}
 
 			// Decodes special characters, runs through our template
@@ -141,7 +154,10 @@ class QSM_Results_Pages {
 			?>
 		</div>
 		<?php
-		return do_shortcode( ob_get_clean() );
+		return array(
+			'display'  => do_shortcode( ob_get_clean() ),
+			'redirect' => $redirect,
+		);
 	}
 
 	/**
@@ -175,7 +191,12 @@ class QSM_Results_Pages {
 					$new_page = array(
 						'conditions' => array(),
 						'page'       => $page[2],
+						'redirect'   => false,
 					);
+
+					if ( ! empty( $page['redirect_url'] ) ) {
+						$new_page['redirect'] = $page['redirect_url'];
+					}
 
 					// Checks to see if the page is not the older version's default page.
 					if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
@@ -225,6 +246,7 @@ class QSM_Results_Pages {
 				array(
 					'conditions' => array(),
 					'page'       => $results,
+					'redirect'   => false,
 				),
 			);
 		}
