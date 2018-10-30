@@ -152,7 +152,7 @@ function qsm_options_results_tab_content() {
 						<p>Create the results page that should be shown when the conditions are met.</p>
 					</div>
 					<textarea class="results-page-template">{{{ data.page }}}</textarea>
-					<p>Or, redirect the user to the URL below:</p>
+					<p>Or, redirect the user by entering the URL below:</p>
 					<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
 				</div>
 			</main>

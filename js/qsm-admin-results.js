@@ -6,7 +6,6 @@ var QSMAdminResults;
 (function ($) {
 	QSMAdminResults = {
 		saveResults: function() {
-			alert('saving...');
 			var pages = [];
 			var page = {};
 			var redirect_value = '';
@@ -53,7 +52,7 @@ var QSMAdminResults;
 			})
 				.done(function( pages ) {
 					pages.forEach( function( page, i, pages ) {
-						QSMAdminResults.addResultsPage( page.conditions, page.page );
+						QSMAdminResults.addResultsPage( page.conditions, page.page, page.redirect );
 					});
 				});
 		},
@@ -68,9 +67,9 @@ var QSMAdminResults;
 		newCondition: function( $page ) {
 			QSMAdminResults.addCondition( $page, 'score', 'equal', 0 );
 		},
-		addResultsPage: function( conditions, page ) {
+		addResultsPage: function( conditions, page, redirect ) {
 			var template = wp.template( 'results-page' );
-			$( '#results-pages' ).append( template( { page: page } ) );
+			$( '#results-pages' ).append( template( { page: page, redirect: redirect } ) );
 			conditions.forEach( function( condition, i, conditions) {
 				QSMAdminResults.addCondition( 
 					$( '.results-page:last-child' ), 

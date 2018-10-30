@@ -272,6 +272,12 @@ class QSM_Results_Pages {
 			return false;
 		}
 
+		foreach ( $pages as $key => $page ) {
+			if ( 'false' === $page['redirect'] ) {
+				$pages[ $key ]['redirect'] = false;
+			}
+		}
+
 		global $wpdb;
 
 		$results = $wpdb->update(
