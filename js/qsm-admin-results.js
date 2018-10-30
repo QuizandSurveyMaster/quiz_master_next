@@ -103,6 +103,10 @@ var QSMAdminResults;
 		$( '#results-pages' ).on( 'click', '.delete-page-button', function( event ) {
 			event.preventDefault();
 			$( this ).closest( '.results-page' ).remove();
-		})
+		});
+		$( '#results-pages' ).on( 'click', '.delete-condition-button', function( event ) {
+			event.preventDefault();
+			$( this ).closest( '.results-page-condition' ).remove();
+		});
 	});
 }(jQuery));

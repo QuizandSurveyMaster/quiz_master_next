@@ -137,14 +137,20 @@ function qsm_options_results_tab_content() {
 			</header>
 			<main class="results-page-content">
 				<div class="results-page-when">
-					<h4>When...</h4>
+					<div class="results-page-content-header">
+						<h4>When...</h4>
+						<p>Set conditions for when this page should be shown. Leave empty to set this as the default page.</p>
+					</div>
 					<div class="results-page-when-conditions">
 						<!-- Conditions go here. Review template below. -->
 					</div>
 					<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
 				</div>
 				<div class="results-page-show">
-					<h4>...Show</h4>
+					<div class="results-page-content-header">
+						<h4>...Show</h4>
+						<p>Create the results page that should be shown when the conditions are met.</p>
+					</div>
 					<textarea class="results-page-template">{{{ data.page }}}</textarea>
 				</div>
 			</main>
@@ -153,6 +159,7 @@ function qsm_options_results_tab_content() {
 
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
+			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
 			<select class="results-page-condition-criteria">
 				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>>Total points earned</option>
 				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>>Correct score percentage</option>

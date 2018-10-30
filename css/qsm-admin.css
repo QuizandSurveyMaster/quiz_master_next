@@ -133,11 +133,45 @@ Results Pages Tab
 	min-width: 60%;
 }
 
+.results-page-content-header {
+	margin-bottom: 10px;
+}
+
+.results-page-content-header h4,
+.results-page-content-header p {
+	margin: 0;
+}
+
+.results-page-condition {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+	justify-content: space-around;
+}
+
+.results-page-condition > select, 
+.results-page-condition > input{
+	max-width: 100%;
+}
+
+.delete-condition-button {
+	background: none;
+	border: 1px solid #1DD969;
+	color: #1DD969;
+	cursor: pointer;
+	transition-duration: 200ms;
+	padding: 6px;
+}
+
+.delete-condition-button:hover {
+	transform: scale(1.1);
+}
+
 .results-page-show textarea {
 	width: 100%;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 760px) {
 	.results-page-content {
 		flex-direction: row;
 		justify-content: space-around;
@@ -146,6 +180,26 @@ Results Pages Tab
 	.results-page-when,
 	.results-page-show {
 		min-width: 35%;
+	}
+
+	.results-page-condition {
+		align-items: center;
+		flex-direction: row;
+	}
+	.results-page-condition > select, 
+	.results-page-condition > input{
+		max-width: 30%;
+	}
+
+	.delete-condition-button {
+		border: none;
+	}
+}
+
+@media screen and (min-width: 1000px) {
+	.results-page-condition > select, 
+	.results-page-condition > input{
+		max-width: 100%;
 	}
 }
 
