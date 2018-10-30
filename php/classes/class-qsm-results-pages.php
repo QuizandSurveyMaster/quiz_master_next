@@ -24,7 +24,8 @@ class QSM_Results_Pages {
 	 * @return string The HTML for the page to be displayed.
 	 */
 	public static function generate_pages( $response_data ) {
-		$pages = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
+		$pages   = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
+		$default = '%QUESTIONS_ANSWERS%';
 		ob_start();
 		?>
 		<div class="qsm-results-page">
@@ -34,98 +35,108 @@ class QSM_Results_Pages {
 			// Cycles through each possible page.
 			foreach ( $pages as $page ) {
 
-				/**
-				 * Since we have many conditions to test, we set this to true first.
-				 * Then, we test each condition to see if it fails.
-				 * If one condition fails, the value will be set to false.
-				 * If all conditions pass, this will still be true and the page will
-				 * be shown.
-				 */
-				$show = true;
-
-				// Cycle through each condition to see if we should show this page.
-				foreach ( $page['conditions'] as $condition ) {
-					$value = $condition['value'];
-
-					// First, determine which value we need to test.
-					switch ( $condition['criteria'] ) {
-						case 'score':
-							$test = $response_data['total_score'];
-							break;
-
-						case 'points':
-							$test = $response_data['total_points'];
-							break;
-
-						default:
-							$test = 0;
-							break;
-					}
-
-					// Then, determine how to test the vaue.
-					switch ( $condition['operator'] ) {
-						case 'greater-equal':
-							if ( $test < $value ) {
-								$show = false;
-							}
-							break;
-
-						case 'greater':
-							if ( $test <= $value ) {
-								$show = false;
-							}
-							break;
-
-						case 'less-equal':
-							if ( $test > $value ) {
-								$show = false;
-							}
-							break;
-
-						case 'less':
-							if ( $test >= $value ) {
-								$show = false;
-							}
-							break;
-
-						case 'not-equal':
-							if ( $test == $value ) {
-								$show = false;
-							}
-							break;
-
-						case 'equal':
-						default:
-							if ( $test != $value ) {
-								$show = false;
-							}
-							break;
-					}
-
+				// Checks if any conditions are present. Else, set it as the default.
+				if ( ! empty( $page['conditions'] ) ) {
 					/**
-					 * Added custom criterias/operators to the results pages?
-					 * Use this filter to check if the condition passed.
-					 * If it fails your conditions, return false to prevent the
-					 * page from showing.
-					 * If it passes your condition or is not your custom criterias
-					 * or operators, then return the value as-is.
-					 * DO NOT RETURN TRUE IF IT PASSES THE CONDITION!!!
-					 * The value may have been set to false when failing a previous condition.
+					 * Since we have many conditions to test, we set this to true first.
+					 * Then, we test each condition to see if it fails.
+					 * If one condition fails, the value will be set to false.
+					 * If all conditions pass, this will still be true and the page will
+					 * be shown.
 					 */
-					$show = apply_filters( 'qsm_results_page_condition_check', $show, $condition, $response_data );
-				}
+					$show = true;
 
-				// If we passed all conditions, show this page.
-				if ( $show ) {
+					// Cycle through each condition to see if we should show this page.
+					foreach ( $page['conditions'] as $condition ) {
+						$value = $condition['value'];
 
-					// Decodes special characters, runs through our template
-					// variables, and then outputs the text.
-					$page = htmlspecialchars_decode( $page, ENT_QUOTES );
-					$page = apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
-					$page = str_replace( "\n", '<br>', $page );
-					echo $page;
+						// First, determine which value we need to test.
+						switch ( $condition['criteria'] ) {
+							case 'score':
+								$test = $response_data['total_score'];
+								break;
+
+							case 'points':
+								$test = $response_data['total_points'];
+								break;
+
+							default:
+								$test = 0;
+								break;
+						}
+
+						// Then, determine how to test the vaue.
+						switch ( $condition['operator'] ) {
+							case 'greater-equal':
+								if ( $test < $value ) {
+									$show = false;
+								}
+								break;
+
+							case 'greater':
+								if ( $test <= $value ) {
+									$show = false;
+								}
+								break;
+
+							case 'less-equal':
+								if ( $test > $value ) {
+									$show = false;
+								}
+								break;
+
+							case 'less':
+								if ( $test >= $value ) {
+									$show = false;
+								}
+								break;
+
+							case 'not-equal':
+								if ( $test == $value ) {
+									$show = false;
+								}
+								break;
+
+							case 'equal':
+							default:
+								if ( $test != $value ) {
+									$show = false;
+								}
+								break;
+						}
+
+						/**
+						 * Added custom criterias/operators to the results pages?
+						 * Use this filter to check if the condition passed.
+						 * If it fails your conditions, return false to prevent the
+						 * page from showing.
+						 * If it passes your condition or is not your custom criterias
+						 * or operators, then return the value as-is.
+						 * DO NOT RETURN TRUE IF IT PASSES THE CONDITION!!!
+						 * The value may have been set to false when failing a previous condition.
+						 */
+						$show = apply_filters( 'qsm_results_page_condition_check', $show, $condition, $response_data );
+					}
+
+					// If we passed all conditions, show this page.
+					if ( $show ) {
+						$content = $page['page'];
+					}
+				} else {
+					$default = $page['page'];
 				}
 			}
+
+			// If no page was set to the content, set to the page that was a default page.
+			if ( empty( $content ) ) {
+				$content = $default;
+			}
+
+			// Decodes special characters, runs through our template
+			// variables, and then outputs the text.
+			$page = htmlspecialchars_decode( $content, ENT_QUOTES );
+			$page = apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
+			echo str_replace( "\n", '<br>', $page );
 			do_action( 'qsm_after_results_page' );
 			?>
 		</div>
@@ -166,29 +177,33 @@ class QSM_Results_Pages {
 						'page'       => $page[2],
 					);
 
-					// Checks if the system is points.
-					if ( 1 === intval( $system ) ) {
-						$new_page['conditions'][] = array(
-							'criteria' => 'points',
-							'operator' => 'greater-equal',
-							'value'    => $page[0],
-						);
-						$new_page['conditions'][] = array(
-							'criteria' => 'points',
-							'operator' => 'less-equal',
-							'value'    => $page[1],
-						);
-					} else {
-						$new_page['conditions'][] = array(
-							'criteria' => 'score',
-							'operator' => 'greater-equal',
-							'value'    => $page[0],
-						);
-						$new_page['conditions'][] = array(
-							'criteria' => 'score',
-							'operator' => 'less-equal',
-							'value'    => $page[1],
-						);
+					// Checks to see if the page is not the older version's default page.
+					if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
+
+						// Checks if the system is points.
+						if ( 1 === intval( $system ) ) {
+							$new_page['conditions'][] = array(
+								'criteria' => 'points',
+								'operator' => 'greater-equal',
+								'value'    => $page[0],
+							);
+							$new_page['conditions'][] = array(
+								'criteria' => 'points',
+								'operator' => 'less-equal',
+								'value'    => $page[1],
+							);
+						} else {
+							$new_page['conditions'][] = array(
+								'criteria' => 'score',
+								'operator' => 'greater-equal',
+								'value'    => $page[0],
+							);
+							$new_page['conditions'][] = array(
+								'criteria' => 'score',
+								'operator' => 'less-equal',
+								'value'    => $page[1],
+							);
+						}
 					}
 
 					$pages[] = $new_page;

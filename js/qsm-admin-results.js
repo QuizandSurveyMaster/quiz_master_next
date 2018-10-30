@@ -7,6 +7,38 @@ var QSMAdminResults;
 	QSMAdminResults = {
 		saveResults: function() {
 			alert('saving...');
+			var pages = [];
+			var page = {};
+			$( '.results-page' ).each( function() {
+				page = {
+					'conditions': [],
+					'page':  $( this ).find( '.results-page-template' ).val()
+				};
+				$( this ).find( '.results-page-condition' ).each( function() {
+					page.conditions.push({
+						'criteria': $( this ).children( '.results-page-condition-criteria' ).val(),
+						'operator': $( this ).children( '.results-page-condition-operator' ).val(),
+						'value': $( this ).children( '.results-page-condition-value' ).val()
+					});
+				});
+				pages.push( page );
+			});
+			var data = {
+				'pages': pages
+			}
+			$.ajax({
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
+				method: 'POST',
+				data: data,
+				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
+			})
+				.done(function( results ) {
+					if ( results.status ) {
+						alert( 'Saved!' );
+					} else {
+						alert( 'Not Saved!' );
+					}
+				});
 		},
 		loadResults: function() {
 			$.ajax({
