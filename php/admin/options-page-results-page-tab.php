@@ -154,17 +154,17 @@ function qsm_options_results_tab_content() {
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
 			<select class="results-page-condition-criteria">
-				<option value="points">Total points earned</option>
-				<option value="score">Correct score percentage</option>
+				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>>Total points earned</option>
+				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>>Correct score percentage</option>
 				<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
 			</select>
 			<select class="results-page-condition-operator">
-				<option value="equal">is equal to</option>
-				<option value="not-equal">is not equal to</option>
-				<option value="greater-equal">is greater than or equal to</option>
-				<option value="greater">is greater than</option>
-				<option value="less-equal">is less than or equal to</option>
-				<option value="less">is less than</option>
+				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>>is equal to</option>
+				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>>is not equal to</option>
+				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>>is greater than or equal to</option>
+				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>>is greater than</option>
+				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>>is less than or equal to</option>
+				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>>is less than</option>
 				<?php do_action( 'qsm_results_page_condition_operator' ); ?>
 			</select>
 			<input type="text" class="results-page-condition-value" value="{{ data.value }}">

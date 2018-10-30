@@ -69,7 +69,7 @@ var QSMAdminResults;
 				QSMAdminResults.addCondition( 
 					$( '.results-page:last-child' ), 
 					condition.criteria,
-					condition.operater,
+					condition.operator,
 					condition.value
 				);
 			});

@@ -250,6 +250,8 @@ class QSM_Results_Pages {
 			return false;
 		}
 
+		global $wpdb;
+
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'message_after' => serialize( $pages ) ),
