@@ -194,6 +194,8 @@ class QSM_Questions {
 	 * @return bool True if successful
 	 */
 	public static function delete_question( $question_id ) {
+		global $wpdb;
+		
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_questions',
 			array(
