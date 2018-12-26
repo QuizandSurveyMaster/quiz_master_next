@@ -149,6 +149,7 @@ class MLWQuizMasterNext {
 		include 'php/question-types.php';
 		include 'php/default-templates.php';
 		include 'php/shortcodes.php';
+		include 'blocks/block.php';
 
 		include 'php/classes/class-qmn-alert-manager.php';
 		$this->alertManager = new MlwQmnAlertManager();

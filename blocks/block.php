@@ -39,5 +39,6 @@ add_action( 'init', 'qsm_block_init' );
  * @param array $attributes The attributes that were set on the block.
  */
 function qsm_block_render( $attributes ) {
+	global $qmnQuizManager;
 	return $qmnQuizManager->display_shortcode( $attributes );
 }
