@@ -1,6 +1,6 @@
 <?php
 /**
- * Handles relevant functions for results pages
+ * Handles relevant functions for emails
  *
  * @package QSM
  */
@@ -10,11 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * This class contains functions for loading, saving, and generating results pages.
+ * This class contains functions for loading, saving, and send quiz emails.
  *
  * @since 6.1.0
  */
-class QSM_Results_Pages {
+class QSM_Emails {
 
 	/**
 	 * Creates the HTML for the results page.
@@ -161,11 +161,11 @@ class QSM_Results_Pages {
 	}
 
 	/**
-	 * Loads the results pages for a single quiz.
+	 * Loads the emails for a single quiz.
 	 *
 	 * @since 6.1.0
 	 * @param int $quiz_id The ID for the quiz.
-	 * @return bool|array The array of pages or false.
+	 * @return bool|array The array of emails or false.
 	 */
 	public static function load_pages( $quiz_id ) {
 		$pages   = array();
@@ -251,19 +251,19 @@ class QSM_Results_Pages {
 			);
 		}
 
-		return $pages;
+		return $emails;
 	}
 
 	/**
-	 * Saves the results pages for a quiz.
+	 * Saves the emails for a quiz.
 	 *
 	 * @since 6.1.0
 	 * @param int   $quiz_id The ID for the quiz.
-	 * @param array $pages The results pages to be saved.
+	 * @param array $emails The emails to be saved.
 	 * @return bool True or false depending on success.
 	 */
-	public static function save_pages( $quiz_id, $pages ) {
-		if ( ! is_array( $pages ) ) {
+	public static function save_emails( $quiz_id, $emails ) {
+		if ( ! is_array( $emails ) ) {
 			return false;
 		}
 
@@ -272,17 +272,11 @@ class QSM_Results_Pages {
 			return false;
 		}
 
-		foreach ( $pages as $key => $page ) {
-			if ( 'false' === $page['redirect'] ) {
-				$pages[ $key ]['redirect'] = false;
-			}
-		}
-
 		global $wpdb;
 
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => serialize( $emails ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
