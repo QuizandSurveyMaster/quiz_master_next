@@ -248,7 +248,11 @@ class QSM_Quiz_Settings {
 		$settings_array = array();
 
     // Loads the settings from the database
-		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
+    $settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
+    
+    if ( is_null( $settings ) ) {
+      return;
+    }
 
     // Unserializes array
 		if ( is_serialized( $settings ) && is_array( @unserialize( $settings ) ) ) {
