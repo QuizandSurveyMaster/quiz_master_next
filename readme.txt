@@ -1,10 +1,10 @@
 === Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
-Requires at least: 4.8
-Tested up to: 4.9
+Requires at least: 4.9
+Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 6.0.4
+Stable tag: 6.1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.1.0 (December 26, 2018) =
+* Adds new Gutenberg blocks
+* Fixes undefined access at delete_question static function
 
 = 6.0.4 (October 2, 2018) =
 * Changes links from old documentation to newer documentation
