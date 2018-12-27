@@ -113,7 +113,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 6.1.0 (December 26, 2018) =
 * Adds new Gutenberg blocks
-* Fixes undefined access at delete_question static function
+* Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/fpcorso/quiz_master_next/pull/746)!
 
 = 6.0.4 (October 2, 2018) =
 * Changes links from old documentation to newer documentation
