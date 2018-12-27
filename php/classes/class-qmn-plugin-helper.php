@@ -80,12 +80,25 @@ class QMNPluginHelper {
 
 	/**
 	 * Calls all class functions to initialize quiz
+	 *
+	 * @param int $quiz_id The ID of the quiz or survey to load.
+	 * @return bool True or False if ID is valid.
 	 */
 	public function prepare_quiz( $quiz_id ) {
 		$quiz_id = intval( $quiz_id );
+
+		// Tries to load quiz name to ensure this is a valid ID.
+		global $wpdb;
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
+		if ( is_null( $quiz_name ) ) {
+			return false;
+		}
+
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->quizCreator->set_id( $quiz_id );
-		$mlwQuizMasterNext->quiz_settings->prepare_quiz( intval( $quiz_id ) );
+		$mlwQuizMasterNext->quiz_settings->prepare_quiz( $quiz_id );
+
+		return True;
 	}
 
 	/**
