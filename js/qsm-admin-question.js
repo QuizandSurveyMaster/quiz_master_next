@@ -394,6 +394,7 @@ var QSMQuestion;
 		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
 			event.preventDefault();
 			$( this ).parents( '.question' ).remove();
+			QSMQuestion.countTotal();
 		});
 		$( '.questions' ).on( 'click', '.delete-page-button', function( event ) {
 			event.preventDefault();
