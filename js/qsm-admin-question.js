@@ -23,6 +23,26 @@ var QSMQuestion;
 		questions: null,
 		questionCollection: null,
 		categories: [],
+		/**
+		 * Counts the total number of questions and then updates #total-questions span.
+		 */
+		countTotal: function() {
+			var total = 0;
+
+			// Cycles through each page.
+			_.each( jQuery( '.page' ), function( page ) {
+
+				// If page is empty, continue to the next.
+				if( 0 == jQuery( page ).children( '.question' ).length ) {
+					return;
+				}
+				// Cycle through each question and add to our total.
+				_.each( jQuery( page ).children( '.question' ), function( question ){
+					total += 1;
+				});
+			});
+			$( '#total-questions' ).text( total );
+		},
 		openQuestionBank: function( pageID ) {
 			QSMQuestion.loadQuestionBank();
 			$( '#add-question-bank-page' ).val( pageID );
@@ -113,6 +133,7 @@ var QSMQuestion;
 			} else {
 				QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
 			}
+			QSMQuestion.countTotal();
 		},
 		savePages: function() {
 			QSMQuestion.displayAlert( 'Saving pages and questions...', 'info' );
@@ -164,6 +185,7 @@ var QSMQuestion;
 			QSMQuestion.displayAlert( 'Question created!', 'success' );
 			QSMQuestion.addQuestionToPage( model );
 			QSMQuestion.openEditPopup( model.id );
+			QSMQuestion.countTotal();
 		},
 		addQuestionToPage: function( model ) {
 			var page = model.get( 'page' ) + 1;
