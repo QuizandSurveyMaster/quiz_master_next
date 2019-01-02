@@ -78,7 +78,7 @@ function qsm_options_questions_tab_content() {
 	<h3>Questions</h3>
 	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://docs.quizandsurveymaster.com/article/19-creating-pages-and-questions" target="_blank">documentation for this tab!</a></p>
 	<div class="questions-messages"></div>
-	<div>
+	<div class="question-controls">
 		<div>
 			<a href="#" class="new-page-button button">Create New Page</a>
 			<a href="#" class="save-page-button button-primary">Save Questions and Pages</a>
