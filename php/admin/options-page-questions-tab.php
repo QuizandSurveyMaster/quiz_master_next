@@ -1,10 +1,13 @@
 <?php
 /**
  * This file handles the "Questions" tab when editing a quiz/survey
+ *
+ * @package QSM
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Adds the settings for questions tab to the Quiz Settings page.
  *
@@ -15,7 +18,7 @@ function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
-add_action( "plugins_loaded", 'qsm_settings_questions_tab', 5 );
+add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 
 
 /**
@@ -31,10 +34,10 @@ function qsm_options_questions_tab_content() {
 	$quiz_id = intval( $_GET['quiz_id'] );
 
 	$json_data = array(
-		'quizID'         => $quiz_id,
-		'answerText'     => __( 'Answer', 'quiz-master-next' ),
-		'nonce'          => wp_create_nonce( 'wp_rest' ),
-		'pages'          => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+		'quizID'     => $quiz_id,
+		'answerText' => __( 'Answer', 'quiz-master-next' ),
+		'nonce'      => wp_create_nonce( 'wp_rest' ),
+		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
 	);
 
 	// Scripts and styles.
@@ -80,8 +83,8 @@ function qsm_options_questions_tab_content() {
 	<div class="questions-messages"></div>
 	<div class="question-controls">
 		<div>
-			<a href="#" class="new-page-button button">Create New Page</a>
-			<a href="#" class="save-page-button button-primary">Save Questions and Pages</a>
+			<button class="new-page-button button">Create New Page</button>
+			<button class="save-page-button button-primary">Save Questions and Pages</button>
 		</div>
 		<span>Total Questions: <span id="total-questions"></span></span>
 		<p class="search-box">
