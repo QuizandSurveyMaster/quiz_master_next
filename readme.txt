@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 6.1.1
+Stable tag: 6.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.1.2 (January 2, 2019) =
 
 = 6.1.1 (December 28, 2018) =
 * Fixes issue causing broken quizzes on sites using older versions of WordPress
