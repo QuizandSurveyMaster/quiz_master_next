@@ -147,15 +147,16 @@ function qsm_options_emails_tab_content() {
 				</div>
 				<div class="email-show">
 					<div class="email-content-header">
-						<h4>...Show</h4>
+						<h4>...Send</h4>
 						<p>Create the email that should be sent when the conditions are met.</p>
 					</div>
 					<label>Who to send the email to? Put %USER_EMAIL% to send to user</label>
-					<input type="email">
+					<input type="email" class="to-email">
 					<label>Email Subject</label>
-					<input class="text">
+					<input type="text" class="subject">
 					<label>Email Content</label>
 					<textarea class="email-template">{{{ data.page }}}</textarea>
+					<label><input type="checkbox" class="reply-to">Add user email as Reply-To</label>
 				</div>
 			</main>
 		</div>

@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This class contains functions for loading, saving, and send quiz emails.
  *
- * @since 6.1.0
+ * @since 6.2.0
  */
 class QSM_Emails {
 
@@ -163,7 +163,7 @@ class QSM_Emails {
 	/**
 	 * Loads the emails for a single quiz.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param int $quiz_id The ID for the quiz.
 	 * @return bool|array The array of emails or false.
 	 */
@@ -218,10 +218,10 @@ class QSM_Emails {
 		global $wpdb;
 		$data = $wpdb->get_var( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
-			QSM_Emails::convert_emails( $data['user_email_template'] );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['user_email_template'] ) );
 		}
 		if ( 0 === intval( $data['send_admin_email'] ) ) {
-			QSM_Emails::convert_emails( $data['admin_email_template'] );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['admin_email_template'] ) );
 		}
 
 		// Updates the database with new array to prevent running this step next time.
@@ -247,42 +247,44 @@ class QSM_Emails {
 		$new_emails = array();
 		if ( is_array( $emails ) ) {
 			foreach ( $emails as $email ) {
-				$new_page = array(
+				$new_email = array(
 					'conditions' => array(),
-					'page'       => $page[2],
-					'redirect'   => false,
+					'to'         => '',
+					'subject'    => $email[3],
+					'content'    => $email[2],
+					'replyTo'    => '',
 				);
-	
-				// Checks to see if the page is not the older version's default page.
-				if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
-	
+
+				// Checks to see if the email is not the older version's default page.
+				if ( 0 !== intval( $email[0] ) || 0 !== intval( $email[1] ) ) {
+
 					// Checks if the system is points.
 					if ( 1 === intval( $system ) ) {
-						$new_page['conditions'][] = array(
+						$new_email['conditions'][] = array(
 							'criteria' => 'points',
 							'operator' => 'greater-equal',
-							'value'    => $page[0],
+							'value'    => $email[0],
 						);
-						$new_page['conditions'][] = array(
+						$new_email['conditions'][] = array(
 							'criteria' => 'points',
 							'operator' => 'less-equal',
-							'value'    => $page[1],
+							'value'    => $email[1],
 						);
 					} else {
-						$new_page['conditions'][] = array(
+						$new_email['conditions'][] = array(
 							'criteria' => 'score',
 							'operator' => 'greater-equal',
-							'value'    => $page[0],
+							'value'    => $email[0],
 						);
-						$new_page['conditions'][] = array(
+						$new_email['conditions'][] = array(
 							'criteria' => 'score',
 							'operator' => 'less-equal',
-							'value'    => $page[1],
+							'value'    => $email[1],
 						);
 					}
 				}
-	
-				$pages[] = $new_page;
+
+				$new_emails[] = $new_email;
 			}
 		} else {
 			$new_emails[] = array(
@@ -296,7 +298,7 @@ class QSM_Emails {
 	/**
 	 * Saves the emails for a quiz.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param int   $quiz_id The ID for the quiz.
 	 * @param array $emails The emails to be saved.
 	 * @return bool True or false depending on success.
