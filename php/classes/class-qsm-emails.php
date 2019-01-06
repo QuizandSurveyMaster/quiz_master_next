@@ -167,8 +167,8 @@ class QSM_Emails {
 	 * @param int $quiz_id The ID for the quiz.
 	 * @return bool|array The array of emails or false.
 	 */
-	public static function load_pages( $quiz_id ) {
-		$pages   = array();
+	public static function load_emails( $quiz_id ) {
+		$emails  = array();
 		$quiz_id = intval( $quiz_id );
 
 		// If the parameter supplied turns to 0 after intval, returns false.
@@ -177,81 +177,120 @@ class QSM_Emails {
 		}
 
 		global $wpdb;
-		$data    = $wpdb->get_row( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
-		$results = $data['message_after'];
-		$system  = $data['system'];
+		$data = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
 
-		// Checks if the results is an array.
-		if ( is_serialized( $results ) && is_array( maybe_unserialize( $results ) ) ) {
-			$results = maybe_unserialize( $results );
+		// Checks if the emails is an array.
+		if ( is_serialized( $data ) && is_array( maybe_unserialize( $data ) ) ) {
+			$data = maybe_unserialize( $data );
 
-			// Checks if the results array is not the newer version.
-			if ( ! isset( $results[0]['conditions'] ) ) {
-				foreach ( $results as $page ) {
-					$new_page = array(
-						'conditions' => array(),
-						'page'       => $page[2],
-						'redirect'   => false,
-					);
-
-					if ( ! empty( $page['redirect_url'] ) ) {
-						$new_page['redirect'] = $page['redirect_url'];
-					}
-
-					// Checks to see if the page is not the older version's default page.
-					if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
-
-						// Checks if the system is points.
-						if ( 1 === intval( $system ) ) {
-							$new_page['conditions'][] = array(
-								'criteria' => 'points',
-								'operator' => 'greater-equal',
-								'value'    => $page[0],
-							);
-							$new_page['conditions'][] = array(
-								'criteria' => 'points',
-								'operator' => 'less-equal',
-								'value'    => $page[1],
-							);
-						} else {
-							$new_page['conditions'][] = array(
-								'criteria' => 'score',
-								'operator' => 'greater-equal',
-								'value'    => $page[0],
-							);
-							$new_page['conditions'][] = array(
-								'criteria' => 'score',
-								'operator' => 'less-equal',
-								'value'    => $page[1],
-							);
-						}
-					}
-
-					$pages[] = $new_page;
-				}
-
-				// Updates the database with new array to prevent running this step next time.
-				$wpdb->update(
-					$wpdb->prefix . 'mlw_quizzes',
-					array( 'message_after' => serialize( $pages ) ),
-					array( 'quiz_id' => $quiz_id ),
-					array( '%s' ),
-					array( '%d' )
-				);
+			// Checks if the emails array is not the newer version.
+			if ( ! isset( $data[0]['conditions'] ) ) {
+				$emails = QSM_Emails::convert_to_new_system();
 			} else {
-				$pages = $results;
+				$emails = $data;
 			}
 		} else {
-			$pages = array(
-				array(
-					'conditions' => array(),
-					'page'       => $results,
-					'redirect'   => false,
-				),
-			);
+			$emails = QSM_Emails::convert_to_new_system();
 		}
 
 		return $emails;
+	}
+
+	/**
+	 * Loads and converts emails from the old system to new system
+	 *
+	 * @since 6.2.0
+	 * @param int $quiz_id The ID for the quiz.
+	 * @return array The combined newer versions of the emails.
+	 */
+	public static function convert_to_new_system( $quiz_id ) {
+		$emails  = array();
+		$quiz_id = intval( $quiz_id );
+
+		// If the parameter supplied turns to 0 after intval, returns empty array.
+		if ( 0 === $quiz_id ) {
+			return $emails;
+		}
+
+		/**
+		 * Loads the old user and admin emails. Checks if they are enabled and converts them.
+		 */
+		global $wpdb;
+		$data = $wpdb->get_var( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		if ( 0 === intval( $data['send_user_email'] ) ) {
+			QSM_Emails::convert_emails( $data['user_email_template'] );
+		}
+		if ( 0 === intval( $data['send_admin_email'] ) ) {
+			QSM_Emails::convert_emails( $data['admin_email_template'] );
+		}
+
+		// Updates the database with new array to prevent running this step next time.
+		$wpdb->update(
+			$wpdb->prefix . 'mlw_quizzes',
+			array( 'user_email_template' => serialize( $emails ) ),
+			array( 'quiz_id' => $quiz_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+
+		return $emails;
+	}
+
+	/**
+	 * Converts emails to new system.
+	 *
+	 * @since 6.2.0
+	 * @param array $emails The emails to convert.
+	 * @return array The emails that have been converted.
+	 */
+	public static function convert_emails( $emails ) {
+		$new_emails = array();
+		if ( is_array( $emails ) ) {
+			foreach ( $emails as $email ) {
+				$new_page = array(
+					'conditions' => array(),
+					'page'       => $page[2],
+					'redirect'   => false,
+				);
+	
+				// Checks to see if the page is not the older version's default page.
+				if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
+	
+					// Checks if the system is points.
+					if ( 1 === intval( $system ) ) {
+						$new_page['conditions'][] = array(
+							'criteria' => 'points',
+							'operator' => 'greater-equal',
+							'value'    => $page[0],
+						);
+						$new_page['conditions'][] = array(
+							'criteria' => 'points',
+							'operator' => 'less-equal',
+							'value'    => $page[1],
+						);
+					} else {
+						$new_page['conditions'][] = array(
+							'criteria' => 'score',
+							'operator' => 'greater-equal',
+							'value'    => $page[0],
+						);
+						$new_page['conditions'][] = array(
+							'criteria' => 'score',
+							'operator' => 'less-equal',
+							'value'    => $page[1],
+						);
+					}
+				}
+	
+				$pages[] = $new_page;
+			}
+		} else {
+			$new_emails[] = array(
+				'conditions' => array(),
+				'page'       => $emails,
+			);
+		}
+		return $new_emails;
 	}
 
 	/**
