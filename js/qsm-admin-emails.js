@@ -1,11 +1,11 @@
 /**
- * QSM - Admin results pages
+ * QSM - Admin emails
  */
 
-var QSMAdminResults;
+var QSMAdminEmails;
 (function ($) {
-	QSMAdminResults = {
-		saveResults: function() {
+	QSMAdminEmails = {
+		saveEmails: function() {
 			var pages = [];
 			var page = {};
 			var redirect_value = '';
@@ -32,10 +32,10 @@ var QSMAdminResults;
 				'pages': pages
 			}
 			$.ajax({
-				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/results',
 				method: 'POST',
 				data: data,
-				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
+				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( results ) {
 					if ( results.status ) {
@@ -45,14 +45,14 @@ var QSMAdminResults;
 					}
 				});
 		},
-		loadResults: function() {
+		loadEmails: function() {
 			$.ajax({
-				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
-				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/results',
+				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( pages ) {
 					pages.forEach( function( page, i, pages ) {
-						QSMAdminResults.addResultsPage( page.conditions, page.page, page.redirect );
+						QSMAdminEmails.addEmail( page.conditions, page.page, page.redirect );
 					});
 				});
 		},
@@ -65,13 +65,13 @@ var QSMAdminResults;
 			}));
 		},
 		newCondition: function( $page ) {
-			QSMAdminResults.addCondition( $page, 'score', 'equal', 0 );
+			QSMAdminEmails.addCondition( $page, 'score', 'equal', 0 );
 		},
-		addResultsPage: function( conditions, page, redirect ) {
+		addEmail: function( conditions, page, redirect ) {
 			var template = wp.template( 'results-page' );
 			$( '#results-pages' ).append( template( { page: page, redirect: redirect } ) );
 			conditions.forEach( function( condition, i, conditions) {
-				QSMAdminResults.addCondition( 
+				QSMAdminEmails.addCondition( 
 					$( '.results-page:last-child' ), 
 					condition.criteria,
 					condition.operator,
@@ -79,31 +79,31 @@ var QSMAdminResults;
 				);
 			});
 		},
-		newResultsPage: function() {
+		newEmail: function() {
 			var conditions = [{
 				'criteria': 'score',
 				'operator': 'greater',
 				'value': '0'
 			}];
 			var page = '%QUESTIONS_ANSWERS%';
-			QSMAdminResults.addResultsPage( conditions, page );
+			QSMAdminEmails.addEmail( conditions, page );
 		}
 	};
 	$(function() {
-		QSMAdminResults.loadResults();
+		QSMAdminEmails.loadEmails();
 
 		$( '.add-new-page' ).on( 'click', function( event ) {
 			event.preventDefault();
-			QSMAdminResults.newResultsPage();
+			QSMAdminEmails.newEmail();
 		});
 		$( '.save-pages' ).on( 'click', function( event ) {
 			event.preventDefault();
-			QSMAdminResults.saveResults();
+			QSMAdminEmails.saveEmails();
 		});
 		$( '#results-pages' ).on( 'click', '.new-condition', function( event ) {
 			event.preventDefault();
 			$page = $( this ).closest( '.results-page' );
-			QSMAdminResults.newCondition( $page );
+			QSMAdminEmails.newCondition( $page );
 		});
 		$( '#results-pages' ).on( 'click', '.delete-page-button', function( event ) {
 			event.preventDefault();
