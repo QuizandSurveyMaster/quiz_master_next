@@ -29,7 +29,7 @@ var QSMAdminEmails;
 				'emails': emails
 			}
 			$.ajax({
-				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/results',
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
 				method: 'POST',
 				data: data,
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
@@ -44,7 +44,7 @@ var QSMAdminEmails;
 		},
 		loadEmails: function() {
 			$.ajax({
-				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/results',
+				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( emails ) {

@@ -17,147 +17,171 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QSM_Emails {
 
 	/**
-	 * Creates the HTML for the results page.
+	 * Sends the emails for the quiz.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param array $response_data The data for the user's submission.
-	 * @return string The HTML for the page to be displayed.
 	 */
-	public static function generate_pages( $response_data ) {
-		$pages            = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
-		$default          = '%QUESTIONS_ANSWERS%';
-		$redirect         = false;
-		$default_redirect = false;
-		ob_start();
-		?>
-		<div class="qsm-results-page">
-			<?php
-			do_action( 'qsm_before_results_page' );
+	public static function send_emails( $response_data ) {
+		$emails = QSM_Emails::load_emails( $response_data['quiz_id'] );
 
-			// Cycles through each possible page.
-			foreach ( $pages as $page ) {
+		if ( ! is_array( $emails ) || empty( $emails ) ) {
+			return;
+		}
 
-				// Checks if any conditions are present. Else, set it as the default.
-				if ( ! empty( $page['conditions'] ) ) {
+		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
+
+		// Cycles through each possible email.
+		foreach ( $emails as $email ) {
+
+			// Checks if any conditions are present. Else, send it always.
+			if ( ! empty( $email['conditions'] ) ) {
+				/**
+				 * Since we have many conditions to test, we set this to true first.
+				 * Then, we test each condition to see if it fails.
+				 * If one condition fails, the value will be set to false.
+				 * If all conditions pass, this will still be true and the email will
+				 * be sent.
+				 */
+				$show = true;
+
+				// Cycle through each condition to see if we should sent this email.
+				foreach ( $email['conditions'] as $condition ) {
+					$value = $condition['value'];
+
+					// First, determine which value we need to test.
+					switch ( $condition['criteria'] ) {
+						case 'score':
+							$test = $response_data['total_score'];
+							break;
+
+						case 'points':
+							$test = $response_data['total_points'];
+							break;
+
+						default:
+							$test = 0;
+							break;
+					}
+
+					// Then, determine how to test the vaue.
+					switch ( $condition['operator'] ) {
+						case 'greater-equal':
+							if ( $test < $value ) {
+								$show = false;
+							}
+							break;
+
+						case 'greater':
+							if ( $test <= $value ) {
+								$show = false;
+							}
+							break;
+
+						case 'less-equal':
+							if ( $test > $value ) {
+								$show = false;
+							}
+							break;
+
+						case 'less':
+							if ( $test >= $value ) {
+								$show = false;
+							}
+							break;
+
+						case 'not-equal':
+							if ( $test == $value ) {
+								$show = false;
+							}
+							break;
+
+						case 'equal':
+						default:
+							if ( $test != $value ) {
+								$show = false;
+							}
+							break;
+					}
+
 					/**
-					 * Since we have many conditions to test, we set this to true first.
-					 * Then, we test each condition to see if it fails.
-					 * If one condition fails, the value will be set to false.
-					 * If all conditions pass, this will still be true and the page will
-					 * be shown.
+					 * Added custom criterias/operators to the email?
+					 * Use this filter to check if the condition passed.
+					 * If it fails your conditions, return false to prevent the
+					 * email from sending.
+					 * If it passes your condition or is not your custom criterias
+					 * or operators, then return the value as-is.
+					 * DO NOT RETURN TRUE IF IT PASSES THE CONDITION!!!
+					 * The value may have been set to false when failing a previous condition.
 					 */
-					$show = true;
-
-					// Cycle through each condition to see if we should show this page.
-					foreach ( $page['conditions'] as $condition ) {
-						$value = $condition['value'];
-
-						// First, determine which value we need to test.
-						switch ( $condition['criteria'] ) {
-							case 'score':
-								$test = $response_data['total_score'];
-								break;
-
-							case 'points':
-								$test = $response_data['total_points'];
-								break;
-
-							default:
-								$test = 0;
-								break;
-						}
-
-						// Then, determine how to test the vaue.
-						switch ( $condition['operator'] ) {
-							case 'greater-equal':
-								if ( $test < $value ) {
-									$show = false;
-								}
-								break;
-
-							case 'greater':
-								if ( $test <= $value ) {
-									$show = false;
-								}
-								break;
-
-							case 'less-equal':
-								if ( $test > $value ) {
-									$show = false;
-								}
-								break;
-
-							case 'less':
-								if ( $test >= $value ) {
-									$show = false;
-								}
-								break;
-
-							case 'not-equal':
-								if ( $test == $value ) {
-									$show = false;
-								}
-								break;
-
-							case 'equal':
-							default:
-								if ( $test != $value ) {
-									$show = false;
-								}
-								break;
-						}
-
-						/**
-						 * Added custom criterias/operators to the results pages?
-						 * Use this filter to check if the condition passed.
-						 * If it fails your conditions, return false to prevent the
-						 * page from showing.
-						 * If it passes your condition or is not your custom criterias
-						 * or operators, then return the value as-is.
-						 * DO NOT RETURN TRUE IF IT PASSES THE CONDITION!!!
-						 * The value may have been set to false when failing a previous condition.
-						 */
-						$show = apply_filters( 'qsm_results_page_condition_check', $show, $condition, $response_data );
-					}
-
-					// If we passed all conditions, show this page.
-					if ( $show ) {
-						$content = $page['page'];
-						if ( $page['redirect'] ) {
-							$redirect = $page['redirect'];
-						}
-					}
-				} else {
-					$default = $page['page'];
-					if ( $page['redirect'] ) {
-						$default_redirect = $page['redirect'];
-					}
+					$show = apply_filters( 'qsm_email_condition_check', $show, $condition, $response_data );
 				}
-			}
 
-			// If no page was set to the content, set to the page that was a default page.
-			if ( empty( $content ) ) {
-				$content = $default;
+				if ( $show ) {
+					QSM_Emails::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+				}
+			} else {
+				QSM_Emails::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
 			}
+		}
 
-			// If no redirect was set, set to default redirect.
-			if ( ! $redirect ) {
-				$redirect = $default_redirect;
-			}
+		remove_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
+	}
 
-			// Decodes special characters, runs through our template
-			// variables, and then outputs the text.
-			$page = htmlspecialchars_decode( $content, ENT_QUOTES );
-			$page = apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
-			echo str_replace( "\n", '<br>', $page );
-			do_action( 'qsm_after_results_page' );
-			?>
-		</div>
-		<?php
-		return array(
-			'display'  => do_shortcode( ob_get_clean() ),
-			'redirect' => $redirect,
+	/**
+	 * Sends the results email.
+	 *
+	 * @since 6.2.0
+	 * @param array  $response_data The data for the user's submission.
+	 * @param string $to The email(s) to send to. Can be separated with commas.
+	 * @param string $subject The subject of the email.
+	 * @param string $content The body of the email.
+	 * @param bool   $reply_to True if set user email as Reply To header.
+	 */
+	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
+		// Sets up our to email addresses.
+		$user_email = sanitize_email( $response_data['user_email'] );
+		$count      = 0;
+		if ( is_email( $user_email ) ) {
+			$to = str_replace( '%USER_EMAIL%', $response_data['user_email'], $to, $count );
+		} else {
+			$to = str_replace( '%USER_EMAIL%', '', $to );
+		}
+		$to_array = explode( ',', $to );
+
+		// Prepares our subject.
+		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
+
+		// Prepares our content.
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
+		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
+		$content = str_replace( "\n", '<br>', $content );
+		$content = str_replace( '<br/>', '<br>', $content );
+		$content = str_replace( '<br />', '<br>', $content );
+
+		// Prepares our headers.
+		$headers = array(
+			'From: ' . $from_email_array['from_name'] . ' <' . $from_email_array['from_email'] . '>',
 		);
+		if ( is_email( $user_email ) && boolval( $reply_to ) ) {
+			$name      = sanitize_text_field( $response_data['user_name'] );
+			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
+		}
+
+		// Prepares our attachments. If %USER_EMAIL% was in the $to, then use the user email attachment filter.
+		$attachments = array();
+		if ( 0 < intval( $count ) ) {
+			$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $response_data );
+		} else {
+			$attachments = apply_filters( 'qsm_admin_email_attachments', $attachments, $response_data );
+		}
+
+		// Cycle through each to email address and send the email.
+		foreach ( $to as $to_email ) {
+			if ( is_email( $to_email ) ) {
+				wp_mail( $to_email, $subject, $content, $headers, $attachments );
+			}
+		}
 	}
 
 	/**
@@ -216,12 +240,18 @@ class QSM_Emails {
 		 * Loads the old user and admin emails. Checks if they are enabled and converts them.
 		 */
 		global $wpdb;
-		$data = $wpdb->get_var( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		$data = $wpdb->get_var( $wpdb->prepare( "SELECT system, send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['user_email_template'] ) );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['user_email_template'] ) );
 		}
 		if ( 0 === intval( $data['send_admin_email'] ) ) {
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['admin_email_template'] ) );
+			$from_email_array = maybe_unserialize( $data['email_from_text'] );
+			if ( ! is_array( $from_email_array ) || ! isset( $from_email_array['reply_to'] ) ) {
+				$from_email_array = array(
+					'reply_to' => 1,
+				);
+			}
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['admin_email_template'] ), $data['admin_email'], $from_email_array['reply_to'] );
 		}
 
 		// Updates the database with new array to prevent running this step next time.
@@ -240,46 +270,83 @@ class QSM_Emails {
 	 * Converts emails to new system.
 	 *
 	 * @since 6.2.0
-	 * @param array $emails The emails to convert.
+	 * @param int    $system The grading system of the quiz.
+	 * @param array  $emails The emails to convert.
+	 * @param string $admin_emails The emails to send admin emails to, separated by comma.
+	 * @param int    $reply_to Whether to add user email as Reply-To header (0 is enabled).
 	 * @return array The emails that have been converted.
 	 */
-	public static function convert_emails( $emails ) {
+	public static function convert_emails( $system, $emails, $admin_emails = false, $reply_to = false ) {
 		$new_emails = array();
+
+		// Checks if emails is an array to cycle through.
 		if ( is_array( $emails ) ) {
+
+			// Cycles through the emails.
 			foreach ( $emails as $email ) {
+
+				// Because I didn't appreciate consistency as a young developer...
+				if ( isset( $email['subject'] ) ) {
+					$subject = $email['subject'];
+					$message = $email['message'];
+					$begin   = $email['begin_score'];
+					$end     = $email['end_score'];
+				} else {
+					$subject = $email[3];
+					$message = $email[2];
+					$begin   = $email[0];
+					$end     = $email[1];
+				}
+
+				// Sets up our basic email.
 				$new_email = array(
 					'conditions' => array(),
-					'to'         => '',
-					'subject'    => $email[3],
-					'content'    => $email[2],
-					'replyTo'    => '',
+					'subject'    => $subject,
+					'content'    => $message,
+					'replyTo'    => false,
 				);
 
+				// Prepares the to email.
+				if ( false === $admin_emails ) {
+					$new_email['to'] = '%USER_EMAIL%';
+				} elseif ( is_string( $admin_emails ) ) {
+					$new_email['to'] = $admin_emails;
+				} else {
+					$new_email['to'] = get_option( 'admin_email ', 'test@example.com' );
+				}
+
+				// Sets reply to option to True if was enabled previously.
+				if ( false !== $reply_to ) {
+					if ( 0 === intval( $reply_to ) ) {
+						$new_email['replyTo'] = true;
+					}
+				}
+
 				// Checks to see if the email is not the older version's default page.
-				if ( 0 !== intval( $email[0] ) || 0 !== intval( $email[1] ) ) {
+				if ( 0 !== intval( $begin ) || 0 !== intval( $end ) ) {
 
 					// Checks if the system is points.
 					if ( 1 === intval( $system ) ) {
 						$new_email['conditions'][] = array(
 							'criteria' => 'points',
 							'operator' => 'greater-equal',
-							'value'    => $email[0],
+							'value'    => $begin,
 						);
 						$new_email['conditions'][] = array(
 							'criteria' => 'points',
 							'operator' => 'less-equal',
-							'value'    => $email[1],
+							'value'    => $end,
 						);
 					} else {
 						$new_email['conditions'][] = array(
 							'criteria' => 'score',
 							'operator' => 'greater-equal',
-							'value'    => $email[0],
+							'value'    => $begin,
 						);
 						$new_email['conditions'][] = array(
 							'criteria' => 'score',
 							'operator' => 'less-equal',
-							'value'    => $email[1],
+							'value'    => $end,
 						);
 					}
 				}
@@ -313,8 +380,20 @@ class QSM_Emails {
 			return false;
 		}
 
-		global $wpdb;
+		// Sanitizes data in emails.
+		$total = count( $emails );
+		for ( $i = 0; $i < $total; $i++ ) {
+			$emails[ $i ]['to']      = sanitize_email( $emails[ $i ]['to'] );
+			$emails[ $i ]['subject'] = sanitize_text_field( $emails[ $i ]['subject'] );
 
+			// Sanitizes the conditions.
+			$total_conditions = count( $emails[ $i ]['conditions'] );
+			for ( $j = 0; $j < $total_conditions; $j++ ) {
+				$emails[ $i ]['conditions'][ $j ]['value'] = sanitize_text_field( $emails[ $i ]['conditions'][ $j ]['value'] );
+			}
+		}
+
+		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'message_after' => serialize( $emails ) ),
