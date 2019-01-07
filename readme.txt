@@ -111,7 +111,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.1.2 (January 2, 2019) =
+= 6.1.2 (January 7, 2019) =
+* Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/fpcorso/quiz_master_next/issues/750))
+* Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/fpcorso/quiz_master_next/issues/749))
+* Updated getting started video
 
 = 6.1.1 (December 28, 2018) =
 * Fixes issue causing broken quizzes on sites using older versions of WordPress
