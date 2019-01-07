@@ -71,7 +71,10 @@ class QMNQuizManager {
 		global $qmn_json_data;
 		$qmn_json_data = array();
 		$qmn_allowed_visit = true;
-		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
+		$success = $mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
+		if ( false === $success ) {
+			return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );
+		}
 		$question_amount = intval( $question_amount );
 
 		// Legacy variable.
@@ -1385,6 +1388,7 @@ class QMNQuizManager {
 		return $ip;	
 	}
 }
+global $qmnQuizManager;
 $qmnQuizManager = new QMNQuizManager();
 
 add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);

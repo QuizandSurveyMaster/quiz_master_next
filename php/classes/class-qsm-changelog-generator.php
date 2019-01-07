@@ -88,7 +88,7 @@ class QSM_Changelog_Generator {
         $milestone_url = "https://api.github.com/repos/$repo/milestones/$milestone";
         $milestone_data = QSM_Changelog_Generator::api_call( $milestone_url );
 
-        if ( $milestone_data ) {
+        if ( $milestone_data && isset( $milestone_data['title'] ) ) {
           $milestone_array = array(
             'title' => $milestone_data["title"],
             'description' => $milestone_data["description"],

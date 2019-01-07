@@ -1,10 +1,10 @@
 === Quiz And Survey Master (Formerly Quiz Master Next) ===
 Contributors: fpcorso
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
-Requires at least: 4.8
-Tested up to: 4.9
+Requires at least: 4.9
+Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 6.0.4
+Stable tag: 6.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.1.2 (January 7, 2019) =
+* Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/fpcorso/quiz_master_next/issues/750))
+* Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/fpcorso/quiz_master_next/issues/749))
+* Updated getting started video
+
+= 6.1.1 (December 28, 2018) =
+* Fixes issue causing broken quizzes on sites using older versions of WordPress
+
+= 6.1.0 (December 26, 2018) =
+* Adds new Gutenberg blocks
+* Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/fpcorso/quiz_master_next/pull/746)!
 
 = 6.0.4 (October 2, 2018) =
 * Changes links from old documentation to newer documentation

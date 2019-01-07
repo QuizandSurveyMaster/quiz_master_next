@@ -1,10 +1,13 @@
 <?php
 /**
  * This file handles the "Questions" tab when editing a quiz/survey
+ *
+ * @package QSM
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Adds the settings for questions tab to the Quiz Settings page.
  *
@@ -15,7 +18,7 @@ function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
-add_action( "plugins_loaded", 'qsm_settings_questions_tab', 5 );
+add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 
 
 /**
@@ -31,17 +34,17 @@ function qsm_options_questions_tab_content() {
 	$quiz_id = intval( $_GET['quiz_id'] );
 
 	$json_data = array(
-		'quizID'         => $quiz_id,
-		'answerText'     => __( 'Answer', 'quiz-master-next' ),
-		'nonce'          => wp_create_nonce( 'wp_rest' ),
-		'pages'          => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+		'quizID'     => $quiz_id,
+		'answerText' => __( 'Answer', 'quiz-master-next' ),
+		'nonce'      => wp_create_nonce( 'wp_rest' ),
+		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
 	);
 
 	// Scripts and styles.
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
-	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version  );
+	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 	wp_enqueue_editor();
 	wp_enqueue_media();
@@ -78,13 +81,18 @@ function qsm_options_questions_tab_content() {
 	<h3>Questions</h3>
 	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://docs.quizandsurveymaster.com/article/19-creating-pages-and-questions" target="_blank">documentation for this tab!</a></p>
 	<div class="questions-messages"></div>
-	<a href="#" class="new-page-button button">Create New Page</a>
-	<a href="#" class="save-page-button button-primary">Save Questions and Pages</a>
-	<p class="search-box">
-		<label class="screen-reader-text" for="question_search">Search Questions:</label>
-		<input type="search" id="question_search" name="question_search" value="">
-		<a href="#" class="button">Search Questions</a>
-	</p>
+	<div class="question-controls">
+		<div>
+			<button class="new-page-button button">Create New Page</button>
+			<button class="save-page-button button-primary">Save Questions and Pages</button>
+		</div>
+		<span>Total Questions: <span id="total-questions"></span></span>
+		<p class="search-box">
+			<label class="screen-reader-text" for="question_search">Search Questions:</label>
+			<input type="search" id="question_search" name="question_search" value="">
+			<a href="#" class="button">Search Questions</a>
+		</p>
+	</div>
 	<div class="questions"></div>
 
 	<!-- Popup for question bank -->
