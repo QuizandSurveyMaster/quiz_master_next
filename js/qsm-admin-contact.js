@@ -136,9 +136,9 @@ var QSMContact;
     },
     saved : function( response ) {
       if ( response.status ) {
-        QSMContact.displayAlert( '<strong>Success</strong> Your rules have been saved!', 'success' );
+        QSMContact.displayAlert( '<strong>Success</strong> Your contact fields have been saved!', 'success' );
       } else {
-        QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your rules. Please try again.', 'error' );
+        QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your contact fields. Please try again.', 'error' );
       }
     },
     displayAlert: function( message, type ) {
