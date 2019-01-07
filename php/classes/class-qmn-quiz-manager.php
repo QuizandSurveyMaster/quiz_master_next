@@ -849,12 +849,16 @@ class QMNQuizManager {
 			// Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
 			do_action( 'qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables );
 
-			// Sends user email.
-			$this->send_user_email( $qmn_quiz_options, $qmn_array_for_variables );
-			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+			// Sends the emails.
+			QSM_Emails::send_emails( $qmn_array_for_variables );
 
-			// Sends admin email.
-			$this->send_admin_email( $qmn_quiz_options, $qmn_array_for_variables );
+			/**
+			 * Filters for filtering the results text after emails are sent.
+			 *
+			 * @deprecated 6.2.0 There's no reason to use these over the actions
+			 * in the QSM_Results_Pages class or the other filters in this function.
+			 */
+			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display = apply_filters( 'qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
 			// Last time to filter the HTML results page.
@@ -1134,6 +1138,7 @@ class QMNQuizManager {
 	  *
 	  * Prepares the email to the user and then sends the email
 	  *
+	  * @deprecated 6.2.0 Use the newer QSM_Emails class instead.
 	  * @since 4.0.0
 		* @param array $qmn_quiz_options The database row of the quiz
 		* @param array $qmn_array_for_variables The array of results for the quiz
@@ -1242,6 +1247,7 @@ class QMNQuizManager {
 	  *
 	  * Prepares the email to the admin and then sends the email
 	  *
+	  * @deprecated 6.2.0 Use the newer QSM_Emails class instead.
 	  * @since 4.0.0
 		* @param array $qmn_quiz_options The database row of the quiz
 		* @param arrar $qmn_array_for_variables The array of results for the quiz
