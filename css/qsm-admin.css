@@ -88,9 +88,10 @@ Options Page
 }
 
 /********************
-Results Pages Tab
+Results Pages & Emails Tab
 *********************/
-.results-page {
+.results-page,
+.email {
 	width: 100%;
 	background-color: #0d97d8;
 	margin: 20px 0;
@@ -98,7 +99,8 @@ Results Pages Tab
 	box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4)
 }
 
-.results-page-header {
+.results-page-header,
+.email-header {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -107,7 +109,8 @@ Results Pages Tab
 	border-bottom: 5px solid #1DD969;
 }
 
-.delete-page-button {
+.delete-page-button,
+.delete-email-button {
 	background: none;
 	border: none;
 	color: #1DD969;
@@ -115,17 +118,21 @@ Results Pages Tab
 	transition-duration: 200ms;
 }
 
-.delete-page-button:hover {
+.delete-page-button:hover,
+.delete-email-button:hover {
 	transform: scale(1.2);
 }
 
-.results-page-content {
+.results-page-content,
+.email-content {
 	display: flex;
 	flex-direction: column;
 }
 
 .results-page-when,
-.results-page-show {
+.results-page-show,
+.email-when,
+.email-show {
 	padding: 10px;
 	background-color: #fff;
 	border: 5px solid #1DD969;
@@ -133,16 +140,20 @@ Results Pages Tab
 	min-width: 60%;
 }
 
-.results-page-content-header {
+.results-page-content-header,
+.email-content-header {
 	margin-bottom: 10px;
 }
 
 .results-page-content-header h4,
-.results-page-content-header p {
+.results-page-content-header p,
+.email-content-header h4,
+.email-content-header p {
 	margin: 0;
 }
 
-.results-page-condition {
+.results-page-condition,
+.email-condition {
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 15px;
@@ -150,7 +161,9 @@ Results Pages Tab
 }
 
 .results-page-condition > select, 
-.results-page-condition > input{
+.results-page-condition > input,
+.email-condition > select,
+.email-condition > input {
 	max-width: 100%;
 }
 
@@ -167,27 +180,41 @@ Results Pages Tab
 	transform: scale(1.1);
 }
 
-.results-page-show textarea {
+.email-show .label {
+	display: block;
+}
+
+.results-page-show textarea,
+.to-email,
+.subject,
+.email-template {
 	width: 100%;
+	margin-bottom: 10px;
 }
 
 @media screen and (min-width: 760px) {
-	.results-page-content {
+	.results-page-content,
+	.email-content {
 		flex-direction: row;
 		justify-content: space-around;
 	}
 
 	.results-page-when,
-	.results-page-show {
+	.results-page-show,
+	.email-when,
+	.email-show {
 		min-width: 35%;
 	}
 
-	.results-page-condition {
+	.results-page-condition,
+	.email-condition {
 		align-items: center;
 		flex-direction: row;
 	}
 	.results-page-condition > select, 
-	.results-page-condition > input{
+	.results-page-condition > input,
+	.email-condition > select,
+	.email-condition > input {
 		max-width: 30%;
 	}
 
@@ -198,7 +225,9 @@ Results Pages Tab
 
 @media screen and (min-width: 1000px) {
 	.results-page-condition > select, 
-	.results-page-condition > input{
+	.results-page-condition > input,
+	.email-condition > select,
+	.email-condition > input {
 		max-width: 100%;
 	}
 }
