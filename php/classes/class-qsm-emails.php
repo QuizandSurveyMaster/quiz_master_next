@@ -209,12 +209,12 @@ class QSM_Emails {
 
 			// Checks if the emails array is not the newer version.
 			if ( ! isset( $data[0]['conditions'] ) ) {
-				$emails = QSM_Emails::convert_to_new_system();
+				$emails = QSM_Emails::convert_to_new_system( $quiz_id );
 			} else {
 				$emails = $data;
 			}
 		} else {
-			$emails = QSM_Emails::convert_to_new_system();
+			$emails = QSM_Emails::convert_to_new_system( $quiz_id );
 		}
 
 		return $emails;
@@ -240,7 +240,7 @@ class QSM_Emails {
 		 * Loads the old user and admin emails. Checks if they are enabled and converts them.
 		 */
 		global $wpdb;
-		$data = $wpdb->get_var( $wpdb->prepare( "SELECT system, send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		$data = $wpdb->get_row( $wpdb->prepare( "SELECT system, send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
 			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['user_email_template'] ) );
 		}
@@ -251,7 +251,7 @@ class QSM_Emails {
 					'reply_to' => 1,
 				);
 			}
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['admin_email_template'] ), $data['admin_email'], $from_email_array['reply_to'] );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
 		}
 
 		// Updates the database with new array to prevent running this step next time.
@@ -356,8 +356,19 @@ class QSM_Emails {
 		} else {
 			$new_emails[] = array(
 				'conditions' => array(),
-				'page'       => $emails,
+				'content'    => $emails,
+				'subject'    => 'Quiz results for %QUIZ_NAME%',
+				'replyTo'    => false,
 			);
+
+			// Prepares the to email.
+			if ( false === $admin_emails ) {
+				$new_emails[0]['to'] = '%USER_EMAIL%';
+			} elseif ( is_string( $admin_emails ) ) {
+				$new_emails[0]['to'] = $admin_emails;
+			} else {
+				$new_emails[0]['to'] = get_option( 'admin_email ', 'test@example.com' );
+			}
 		}
 		return $new_emails;
 	}
