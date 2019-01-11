@@ -92,11 +92,11 @@ var QSMAdminEmails;
 	$(function() {
 		QSMAdminEmails.loadEmails();
 
-		$( '.add-new-page' ).on( 'click', function( event ) {
+		$( '.add-new-email' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMAdminEmails.newEmail();
 		});
-		$( '.save-pages' ).on( 'click', function( event ) {
+		$( '.save-emails' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMAdminEmails.saveEmails();
 		});
