@@ -144,6 +144,7 @@ class MLWQuizMasterNext {
 		include 'php/classes/class-qsm-questions.php';
 		include 'php/classes/class-qsm-contact-manager.php';
 		include 'php/classes/class-qsm-results-pages.php';
+		include 'php/classes/class-qsm-emails.php';
 		include 'php/classes/class-qmn-quiz-manager.php';
 
 		include 'php/template-variables.php';
