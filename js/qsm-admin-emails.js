@@ -105,7 +105,7 @@ var QSMAdminEmails;
 			$page = $( this ).closest( '.email' );
 			QSMAdminEmails.newCondition( $page );
 		});
-		$( '#emails' ).on( 'click', '.delete-page-button', function( event ) {
+		$( '#emails' ).on( 'click', '.delete-email-button', function( event ) {
 			event.preventDefault();
 			$( this ).closest( '.email' ).remove();
 		});

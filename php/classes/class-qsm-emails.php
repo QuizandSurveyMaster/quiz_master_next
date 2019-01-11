@@ -383,7 +383,7 @@ class QSM_Emails {
 		// Sanitizes data in emails.
 		$total = count( $emails );
 		for ( $i = 0; $i < $total; $i++ ) {
-			$emails[ $i ]['to']      = sanitize_email( $emails[ $i ]['to'] );
+			$emails[ $i ]['to']      = sanitize_text_field( $emails[ $i ]['to'] );
 			$emails[ $i ]['subject'] = sanitize_text_field( $emails[ $i ]['subject'] );
 
 			// Sanitizes the conditions.
@@ -396,7 +396,7 @@ class QSM_Emails {
 		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $emails ) ),
+			array( 'user_email_template' => serialize( $emails ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
