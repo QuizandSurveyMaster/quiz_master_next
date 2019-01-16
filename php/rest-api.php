@@ -85,6 +85,9 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
+			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
+				$request['emails'] = array();
+			}
 			$result = QSM_Emails::save_emails( $request['id'], $request['emails'] );
 			return array(
 				'status' => $result,

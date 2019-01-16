@@ -208,7 +208,7 @@ class QSM_Emails {
 			$data = maybe_unserialize( $data );
 
 			// Checks if the emails array is not the newer version.
-			if ( ! isset( $data[0]['conditions'] ) ) {
+			if ( ! empty( $data ) && ! isset( $data[0]['conditions'] ) ) {
 				$emails = QSM_Emails::convert_to_new_system( $quiz_id );
 			} else {
 				$emails = $data;
@@ -397,10 +397,19 @@ class QSM_Emails {
 			$emails[ $i ]['to']      = sanitize_text_field( $emails[ $i ]['to'] );
 			$emails[ $i ]['subject'] = sanitize_text_field( $emails[ $i ]['subject'] );
 
-			// Sanitizes the conditions.
-			$total_conditions = count( $emails[ $i ]['conditions'] );
-			for ( $j = 0; $j < $total_conditions; $j++ ) {
-				$emails[ $i ]['conditions'][ $j ]['value'] = sanitize_text_field( $emails[ $i ]['conditions'][ $j ]['value'] );
+			/**
+			 * The jQuery AJAX function won't send the conditions key
+			 * if it's empty. So, check if it's set. If set, sanitize
+			 * data. If not set, set to empty array.
+			 */
+			if ( isset( $emails[ $i ]['conditions'] ) ) {
+				// Sanitizes the conditions.
+				$total_conditions = count( $emails[ $i ]['conditions'] );
+				for ( $j = 0; $j < $total_conditions; $j++ ) {
+					$emails[ $i ]['conditions'][ $j ]['value'] = sanitize_text_field( $emails[ $i ]['conditions'][ $j ]['value'] );
+				}
+			} else {
+				$emails[ $i ]['conditions'] = array();
 			}
 		}
 

@@ -223,15 +223,6 @@ Results Pages & Emails Tab
 	}
 }
 
-@media screen and (min-width: 1000px) {
-	.results-page-condition > select, 
-	.results-page-condition > input,
-	.email-condition > select,
-	.email-condition > input {
-		max-width: 100%;
-	}
-}
-
 /********************
 Quiz Styles Tab
 *********************/
