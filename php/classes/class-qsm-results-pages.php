@@ -184,13 +184,13 @@ class QSM_Results_Pages {
 			$results = maybe_unserialize( $results );
 
 			// Checks if the results array is not the newer version.
-			if ( ! isset( $results[0]['conditions'] ) ) {
-				QSM_Results_Pages::convert_to_new_system( $quiz_id );
+			if ( ! empty( $results ) && ! isset( $results[0]['conditions'] ) ) {
+				$pages = QSM_Results_Pages::convert_to_new_system( $quiz_id );
 			} else {
 				$pages = $results;
 			}
 		} else {
-			QSM_Results_Pages::convert_to_new_system( $quiz_id );
+			$pages = QSM_Results_Pages::convert_to_new_system( $quiz_id );
 		}
 
 		return $pages;
@@ -209,14 +209,14 @@ class QSM_Results_Pages {
 
 		// If the parameter supplied turns to 0 after intval, returns empty array.
 		if ( 0 === $quiz_id ) {
-			return $emails;
+			return $pages;
 		}
 
 		/**
 		 * Loads the old results pages and converts them.
 		 */
 		global $wpdb;
-		$data = $wpdb->get_var( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+		$data = $wpdb->get_row( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 
 		// If the value is an array, convert it.
 		// If not, use it as the contents of the results page.
