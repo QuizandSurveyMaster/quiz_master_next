@@ -177,9 +177,7 @@ class QSM_Results_Pages {
 		}
 
 		global $wpdb;
-		$data    = $wpdb->get_row( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
-		$results = $data['message_after'];
-		$system  = $data['system'];
+		$results = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
 
 		// Checks if the results is an array.
 		if ( is_serialized( $results ) && is_array( maybe_unserialize( $results ) ) ) {
@@ -187,69 +185,103 @@ class QSM_Results_Pages {
 
 			// Checks if the results array is not the newer version.
 			if ( ! isset( $results[0]['conditions'] ) ) {
-				foreach ( $results as $page ) {
-					$new_page = array(
-						'conditions' => array(),
-						'page'       => $page[2],
-						'redirect'   => false,
-					);
-
-					if ( ! empty( $page['redirect_url'] ) ) {
-						$new_page['redirect'] = $page['redirect_url'];
-					}
-
-					// Checks to see if the page is not the older version's default page.
-					if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
-
-						// Checks if the system is points.
-						if ( 1 === intval( $system ) ) {
-							$new_page['conditions'][] = array(
-								'criteria' => 'points',
-								'operator' => 'greater-equal',
-								'value'    => $page[0],
-							);
-							$new_page['conditions'][] = array(
-								'criteria' => 'points',
-								'operator' => 'less-equal',
-								'value'    => $page[1],
-							);
-						} else {
-							$new_page['conditions'][] = array(
-								'criteria' => 'score',
-								'operator' => 'greater-equal',
-								'value'    => $page[0],
-							);
-							$new_page['conditions'][] = array(
-								'criteria' => 'score',
-								'operator' => 'less-equal',
-								'value'    => $page[1],
-							);
-						}
-					}
-
-					$pages[] = $new_page;
-				}
-
-				// Updates the database with new array to prevent running this step next time.
-				$wpdb->update(
-					$wpdb->prefix . 'mlw_quizzes',
-					array( 'message_after' => serialize( $pages ) ),
-					array( 'quiz_id' => $quiz_id ),
-					array( '%s' ),
-					array( '%d' )
-				);
+				QSM_Results_Pages::convert_to_new_system( $quiz_id );
 			} else {
 				$pages = $results;
 			}
 		} else {
-			$pages = array(
-				array(
+			QSM_Results_Pages::convert_to_new_system( $quiz_id );
+		}
+
+		return $pages;
+	}
+
+	/**
+	 * Loads and converts results pages from the old system to new system
+	 *
+	 * @since 6.2.0
+	 * @param int $quiz_id The ID for the quiz.
+	 * @return array The combined newer versions of the pages.
+	 */
+	public static function convert_to_new_system( $quiz_id ) {
+		$pages   = array();
+		$quiz_id = intval( $quiz_id );
+
+		// If the parameter supplied turns to 0 after intval, returns empty array.
+		if ( 0 === $quiz_id ) {
+			return $emails;
+		}
+
+		/**
+		 * Loads the old results pages and converts them.
+		 */
+		global $wpdb;
+		$data = $wpdb->get_var( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+
+		// If the value is an array, convert it.
+		// If not, use it as the contents of the results page.
+		if ( is_array( $data['message_after'] ) ) {
+
+			// Cycle through the older version of results pages.
+			foreach ( $data['message_after'] as $page ) {
+				$new_page = array(
 					'conditions' => array(),
-					'page'       => $results,
+					'page'       => $page[2],
 					'redirect'   => false,
-				),
+				);
+
+				// If the page used the older version of the redirect, add it.
+				if ( ! empty( $page['redirect_url'] ) ) {
+					$new_page['redirect'] = $page['redirect_url'];
+				}
+
+				// Checks to see if the page is not the older version's default page.
+				if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
+
+					// Checks if the system is points.
+					if ( 1 === intval( $data['system'] ) ) {
+						$new_page['conditions'][] = array(
+							'criteria' => 'points',
+							'operator' => 'greater-equal',
+							'value'    => $page[0],
+						);
+						$new_page['conditions'][] = array(
+							'criteria' => 'points',
+							'operator' => 'less-equal',
+							'value'    => $page[1],
+						);
+					} else {
+						$new_page['conditions'][] = array(
+							'criteria' => 'score',
+							'operator' => 'greater-equal',
+							'value'    => $page[0],
+						);
+						$new_page['conditions'][] = array(
+							'criteria' => 'score',
+							'operator' => 'less-equal',
+							'value'    => $page[1],
+						);
+					}
+				}
+
+				$pages[] = $new_page;
+			}
+		} else {
+			$pages[] = array(
+				'conditions' => array(),
+				'page'       => $data['message_after'],
+				'redirect'   => false,
 			);
 		}
+
+		// Updates the database with new array to prevent running this step next time.
+		$wpdb->update(
+			$wpdb->prefix . 'mlw_quizzes',
+			array( 'message_after' => serialize( $pages ) ),
+			array( 'quiz_id' => $quiz_id ),
+			array( '%s' ),
+			array( '%d' )
+		);
 
 		return $pages;
 	}
@@ -272,14 +304,32 @@ class QSM_Results_Pages {
 			return false;
 		}
 
-		foreach ( $pages as $key => $page ) {
-			if ( 'false' === $page['redirect'] ) {
-				$pages[ $key ]['redirect'] = false;
+		// Sanitizes data in pages.
+		$total = count( $pages );
+		for ( $i = 0; $i < $total; $i++ ) {
+
+			// jQuery AJAX will send a string version of false.
+			if ( 'false' === $pages[ $i ]['redirect'] ) {
+				$pages[ $i ]['redirect'] = false;
+			}
+
+			/**
+			 * The jQuery AJAX function won't send the conditions key
+			 * if it's empty. So, check if it's set. If set, sanitize
+			 * data. If not set, set to empty array.
+			 */
+			if ( isset( $pages[ $i ]['conditions'] ) ) {
+				// Sanitizes the conditions.
+				$total_conditions = count( $pages[ $i ]['conditions'] );
+				for ( $j = 0; $j < $total_conditions; $j++ ) {
+					$pages[ $i ]['conditions'][ $j ]['value'] = sanitize_text_field( $pages[ $i ]['conditions'][ $j ]['value'] );
+				}
+			} else {
+				$pages[ $i ]['conditions'] = array();
 			}
 		}
 
 		global $wpdb;
-
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'message_after' => serialize( $pages ) ),

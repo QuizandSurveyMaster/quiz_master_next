@@ -137,6 +137,9 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
+			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
+				$request['pages'] = array();
+			}
 			$result = QSM_Results_Pages::save_pages( $request['id'], $request['pages'] );
 			return array(
 				'status' => $result,
