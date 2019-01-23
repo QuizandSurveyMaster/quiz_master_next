@@ -177,7 +177,7 @@ class QSM_Emails {
 		}
 
 		// Cycle through each to email address and send the email.
-		foreach ( $to as $to_email ) {
+		foreach ( $to_array as $to_email ) {
 			if ( is_email( $to_email ) ) {
 				wp_mail( $to_email, $subject, $content, $headers, $attachments );
 			}
