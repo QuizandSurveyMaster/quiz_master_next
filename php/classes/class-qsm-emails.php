@@ -160,8 +160,19 @@ class QSM_Emails {
 		$content = str_replace( '<br />', '<br>', $content );
 
 		// Prepares our headers.
+		$qsm_settings = (array) get_option( 'qmn-settings' );
+		if ( isset( $settings['from_email'] ) ) {
+			$from_email = $settings['from_email'];
+		} else {
+			$from_email = '';
+		}
+		if ( isset( $settings['from_name'] ) ) {
+			$from_name = $settings['from_name'];
+		} else {
+			$from_name = '';
+		}
 		$headers = array(
-			'From: ' . $from_email_array['from_name'] . ' <' . $from_email_array['from_email'] . '>',
+			'From: ' . $from_name . ' <' . $from_email . '>',
 		);
 		if ( is_email( $user_email ) && boolval( $reply_to ) ) {
 			$name      = sanitize_text_field( $response_data['user_name'] );
