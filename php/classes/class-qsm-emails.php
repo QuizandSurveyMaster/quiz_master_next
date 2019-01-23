@@ -159,18 +159,32 @@ class QSM_Emails {
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
 
+		// Prepares our from name and email.
+		$settings   = (array) get_option( 'qmn-settings' );
+		$from_email = get_option( 'admin_email', 'a@example.com' );
+		$from_name  = get_bloginfo( 'name' );
+		if ( ! isset( $settings['from_email'] ) && ! isset( $settings['from_name'] ) ) {
+			$options    = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			$from_array = maybe_unserialize( $options->email_from_text );
+			if ( isset( $from_array['from_email'] ) ) {
+				$from_email = $from_array['from_email'];
+				$from_name  = $from_array['from_name'];
+
+				// Updates option with this quiz's from values.
+				$settings['from_email'] = $from_email;
+				$settings['from_name']  = $from_name;
+				update_option( 'qsm-settings', $settings );
+			}
+		} else {
+			if ( isset( $settings['from_email'] ) ) {
+				$from_email = $settings['from_email'];
+			}
+			if ( isset( $settings['from_name'] ) ) {
+				$from_name = $settings['from_name'];
+			}
+		}
+
 		// Prepares our headers.
-		$qsm_settings = (array) get_option( 'qmn-settings' );
-		if ( isset( $settings['from_email'] ) ) {
-			$from_email = $settings['from_email'];
-		} else {
-			$from_email = get_option( 'admin_email', 'a@example.com' );
-		}
-		if ( isset( $settings['from_name'] ) ) {
-			$from_name = $settings['from_name'];
-		} else {
-			$from_name = get_bloginfo( 'name' );
-		}
 		$headers = array(
 			'From: ' . $from_name . ' <' . $from_email . '>',
 		);
