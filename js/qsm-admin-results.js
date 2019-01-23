@@ -13,7 +13,7 @@ var QSMAdminResults;
 			$( '.results-page' ).each( function() {
 				page = {
 					'conditions': [],
-					'page':  $( this ).find( '.results-page-template' ).val(),
+					'page':  wp.editor.getContent( $( this ).find( '.results-page-template' ).attr( 'id' ) ),
 					'redirect': false,
 				};
 				redirect_value = $( this ).find( '.results-page-redirect' ).val();
