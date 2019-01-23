@@ -164,12 +164,12 @@ class QSM_Emails {
 		if ( isset( $settings['from_email'] ) ) {
 			$from_email = $settings['from_email'];
 		} else {
-			$from_email = '';
+			$from_email = get_option( 'admin_email', 'a@example.com' );
 		}
 		if ( isset( $settings['from_name'] ) ) {
 			$from_name = $settings['from_name'];
 		} else {
-			$from_name = '';
+			$from_name = get_bloginfo( 'name' );
 		}
 		$headers = array(
 			'From: ' . $from_name . ' <' . $from_email . '>',

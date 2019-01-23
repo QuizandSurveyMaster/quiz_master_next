@@ -96,7 +96,7 @@ class QMNGlobalSettingsPage {
 	 */
 	public function from_name() {
 		$settings  = (array) get_option( 'qmn-settings' );
-		$from_name = 'WordPress';
+		$from_name = get_bloginfo( 'name' );
 		if ( isset( $settings['from_name'] ) ) {
 			$from_name = $settings['from_name'];
 		}
