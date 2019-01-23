@@ -5,6 +5,7 @@
 var QSMAdminEmails;
 (function ($) {
 	QSMAdminEmails = {
+		total: 0,
 		saveEmails: function() {
 			var emails = [];
 			var email = {};
@@ -13,7 +14,7 @@ var QSMAdminEmails;
 					'conditions': [],
 					'to': $( this ).find( '.to-email' ).val(),
 					'subject': $( this ).find( '.subject' ).val(),
-					'content': $( this ).find( '.email-template' ).val(),
+					'content': wp.editor.getContent( $( this ).find( '.email-template' ).attr( 'id' ) ),
 					'replyTo': $( this ).find( '.reply-to' ).prop( 'checked' ),
 				};
 				$( this ).find( '.email-condition' ).each( function() {
@@ -65,8 +66,9 @@ var QSMAdminEmails;
 			QSMAdminEmails.addCondition( $email, 'score', 'equal', 0 );
 		},
 		addEmail: function( conditions, to, subject, content, replyTo ) {
+			QSMAdminEmails.total += 1;
 			var template = wp.template( 'email' );
-			$( '#emails' ).append( template( { to: to, subject: subject, content: content, replyTo: replyTo } ) );
+			$( '#emails' ).append( template( { id: QSMAdminEmails.total, to: to, subject: subject, content: content, replyTo: replyTo } ) );
 			conditions.forEach( function( condition, i, conditions) {
 				QSMAdminEmails.addCondition( 
 					$( '.email:last-child' ), 
@@ -75,6 +77,15 @@ var QSMAdminEmails;
 					condition.value
 				);
 			});
+			var settings = {
+				mediaButtons: true,
+				tinymce:      {
+					forced_root_block : '',
+					toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+				},
+				quicktags:    true,
+			};
+			wp.editor.initialize( 'email-template-' + QSMAdminResults.total, settings );
 		},
 		newEmail: function() {
 			var conditions = [{
