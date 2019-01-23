@@ -39,20 +39,20 @@ function qsm_generate_about_page() {
 		</h2>
 		<div class="qsm-tab-content tab-1">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 6.0!</h2>
+				<h2 class="feature-headline">Welcome to QSM 6.2!</h2>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">New PHP Minimum</h2>
-				<p class="feature-text">As planned, all versions of Quiz And Survey Master starting with this version will require a minimum of PHP 5.4.</p>
+				<h2 class="feature-headline">New Email System</h2>
+				<p class="feature-text">All of the email system has been entirely re-written. The newer system is much more intuitive and allows for more granular conditions allowing us to add in more conditions types in future versions.</p>
 			</div>
 			<div class="feature">
-				<h2 class="feature-headline">Removing Of Deprecated Features</h2>
-				<p class="feature-text">As planned, the Leaderboards is now in our free addon instead of being built into the main plugin. The old "Tools" tab has also been removed.</p>
+				<h2 class="feature-headline">New Results Page System</h2>
+				<p class="feature-text">All of the results page has been entirely re-written. The newer system is much more intuitive and allows for more granular conditions allowing us to add in more conditions types in future versions.</p>
 			</div>
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 57 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 56 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>

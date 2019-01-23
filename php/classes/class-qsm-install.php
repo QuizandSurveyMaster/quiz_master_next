@@ -1280,9 +1280,7 @@ class QSM_Install {
 
       // Update 5.0.0
       $settings = (array) get_option( 'qmn-settings', array() );
-      if ( isset( $settings['results_details_template'] ) ) {
-        $settings['results_details_template'] .= "<p>%CONTACT_ALL%</p>";
-      } else {
+      if ( ! isset( $settings['results_details_template'] ) ) {
         $settings['results_details_template'] = "<h2>Quiz Results for %QUIZ_NAME%</h2>
      		<p>%CONTACT_ALL%</p>
      		<p>Name Provided: %USER_NAME%</p>
@@ -1294,11 +1292,10 @@ class QSM_Install {
      		<p>The user took %TIMER% to complete quiz.</p>
      		<p>Comments entered were: %COMMENT_SECTION%</p>
      		<p>The answers were as follows:</p>
-     		%QUESTIONS_ANSWERS%";
+         %QUESTIONS_ANSWERS%";
+         update_option( 'qmn-settings' , $settings );
       }
-      update_option( 'qmn-settings' , $settings );
-
-
+      
   		update_option('mlw_quiz_master_version' , $data);
   	}
   	if ( ! get_option('mlw_advert_shows') ) {
