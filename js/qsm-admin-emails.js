@@ -85,7 +85,7 @@ var QSMAdminEmails;
 				},
 				quicktags:    true,
 			};
-			wp.editor.initialize( 'email-template-' + QSMAdminResults.total, settings );
+			wp.editor.initialize( 'email-template-' + QSMAdminEmails.total, settings );
 		},
 		newEmail: function() {
 			var conditions = [{
