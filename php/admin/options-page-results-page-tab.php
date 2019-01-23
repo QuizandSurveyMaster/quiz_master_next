@@ -31,7 +31,7 @@ function qsm_options_results_tab_content() {
 	$quiz_id = intval( $_GET['quiz_id'] );
 	$js_data = array(
 		'quizID' => $quiz_id,
-		'nonce' => wp_create_nonce( 'wp_rest' ),
+		'nonce'  => wp_create_nonce( 'wp_rest' ),
 	);
 	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
@@ -151,7 +151,7 @@ function qsm_options_results_tab_content() {
 						<h4>...Show</h4>
 						<p>Create the results page that should be shown when the conditions are met.</p>
 					</div>
-					<textarea class="results-page-template">{{{ data.page }}}</textarea>
+					<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
 					<p>Or, redirect the user by entering the URL below:</p>
 					<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
 				</div>
