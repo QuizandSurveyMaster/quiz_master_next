@@ -139,6 +139,9 @@ class QSM_Emails {
 	 * @param bool   $reply_to True if set user email as Reply To header.
 	 */
 	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
+
+		global $mlwQuizMasterNext;
+
 		// Sets up our to email addresses.
 		$user_email = sanitize_email( $response_data['user_email'] );
 		$count      = 0;
