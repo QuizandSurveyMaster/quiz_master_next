@@ -33,7 +33,7 @@ function qsm_options_results_tab_content() {
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
 	);
-	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	wp_enqueue_editor();
 	wp_enqueue_media();
