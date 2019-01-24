@@ -7,6 +7,7 @@ var QSMAdminResults;
 	QSMAdminResults = {
 		total: 0,
 		saveResults: function() {
+			QSMAdmin.displayAlert( 'Saving results pages...', 'info' );
 			var pages = [];
 			var page = {};
 			var redirect_value = '';
@@ -38,15 +39,17 @@ var QSMAdminResults;
 				data: data,
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
 			})
-				.done(function( results ) {
-					if ( results.status ) {
-						alert( 'Saved!' );
-					} else {
-						alert( 'Not Saved!' );
-					}
-				});
+			.done(function( results ) {
+				if ( results.status ) {
+					QSMAdmin.displayAlert( 'Results pages were saved!', 'success' );
+				} else {
+					QSMAdmin.displayAlert( 'There was an error when saving the results pages. Please try again.', 'error' );
+				}
+			})
+			.fail(QSMAdmin.displayjQueryError);
 		},
 		loadResults: function() {
+			QSMAdmin.displayAlert( 'Loading results pages...', 'info' );
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
@@ -55,7 +58,9 @@ var QSMAdminResults;
 					pages.forEach( function( page, i, pages ) {
 						QSMAdminResults.addResultsPage( page.conditions, page.page, page.redirect );
 					});
-				});
+					QSMAdmin.clearAlerts();
+				})
+				.fail(QSMAdmin.displayjQueryError);
 		},
 		addCondition: function( $page, criteria, operator, value ) {
 			var template = wp.template( 'results-page-condition' );

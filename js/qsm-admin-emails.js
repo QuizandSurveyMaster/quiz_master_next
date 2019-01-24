@@ -7,6 +7,7 @@ var QSMAdminEmails;
 	QSMAdminEmails = {
 		total: 0,
 		saveEmails: function() {
+			QSMAdmin.displayAlert( 'Saving emails...', 'info' );
 			var emails = [];
 			var email = {};
 			$( '.email' ).each( function() {
@@ -37,13 +38,15 @@ var QSMAdminEmails;
 			})
 				.done(function( results ) {
 					if ( results.status ) {
-						alert( 'Saved!' );
+						QSMAdmin.displayAlert( 'Emails were saved!', 'success' );
 					} else {
-						alert( 'Not Saved!' );
+						QSMAdmin.displayAlert( 'There was an error when saving the emails. Please try again.', 'error' );
 					}
-				});
+				})
+				.fail(QSMAdmin.displayjQueryError);
 		},
 		loadEmails: function() {
+			QSMAdmin.displayAlert( 'Loading emails...', 'info' );
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
@@ -52,7 +55,9 @@ var QSMAdminEmails;
 					emails.forEach( function( email, i, emails ) {
 						QSMAdminEmails.addEmail( email.conditions, email.to, email.subject, email.content, email.replyTo );
 					});
-				});
+					QSMAdmin.clearAlerts();
+				})
+				.fail(QSMAdmin.displayjQueryError);
 		},
 		addCondition: function( $email, criteria, operator, value ) {
 			var template = wp.template( 'email-condition' );
