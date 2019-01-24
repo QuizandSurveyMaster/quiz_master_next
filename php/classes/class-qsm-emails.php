@@ -191,7 +191,7 @@ class QSM_Emails {
 		$headers = array(
 			'From: ' . $from_name . ' <' . $from_email . '>',
 		);
-		if ( is_email( $user_email ) && boolval( $reply_to ) ) {
+		if ( is_email( $user_email ) && 'true' == $reply_to ) {
 			$name      = sanitize_text_field( $response_data['user_name'] );
 			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
 		}
