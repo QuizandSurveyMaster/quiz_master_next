@@ -47,7 +47,7 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
 
-	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util', 'micromodal_script' ), $mlwQuizMasterNext->version, true );
+	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/redmond/jquery-ui.css' );
 	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
@@ -116,7 +116,7 @@ function qsm_generate_quiz_options() {
 
 	<!-- View for Notices -->
 	<script type="text/template" id="tmpl-notice">
-		<div class="notice notice-{{data.type}}">
+		<div class="notice notice-large notice-{{data.type}}">
 			<p>{{data.message}}</p>
 		</div>
 	</script>
