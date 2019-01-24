@@ -218,12 +218,14 @@ class QSM_Results_Pages {
 		global $wpdb;
 		$data = $wpdb->get_row( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 
+		$old_pages = maybe_unserialize( $data['message_after'] );
+
 		// If the value is an array, convert it.
 		// If not, use it as the contents of the results page.
-		if ( is_array( $data['message_after'] ) ) {
+		if ( is_array( $old_pages ) ) {
 
 			// Cycle through the older version of results pages.
-			foreach ( $data['message_after'] as $page ) {
+			foreach ( $old_pages as $page ) {
 				$new_page = array(
 					'conditions' => array(),
 					'page'       => $page[2],
@@ -269,7 +271,7 @@ class QSM_Results_Pages {
 		} else {
 			$pages[] = array(
 				'conditions' => array(),
-				'page'       => $data['message_after'],
+				'page'       => $old_pages,
 				'redirect'   => false,
 			);
 		}

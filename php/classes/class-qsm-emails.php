@@ -306,6 +306,7 @@ class QSM_Emails {
 	 */
 	public static function convert_emails( $system, $emails, $admin_emails = false, $reply_to = false ) {
 		$new_emails = array();
+		$emails     = maybe_unserialize( $emails );
 
 		// Checks if emails is an array to cycle through.
 		if ( is_array( $emails ) ) {
