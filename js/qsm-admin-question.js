@@ -121,7 +121,7 @@ var QSMQuestion;
 			});
 		},
 		loadSuccess: function() {
-			QSMQuestion.clearAlerts();
+			QSMAdmin.clearAlerts();
 			var question;
 			if ( qsmQuestionSettings.pages.length > 0 ) {
 				for ( var i = 0; i < qsmQuestionSettings.pages.length; i++ ) {
