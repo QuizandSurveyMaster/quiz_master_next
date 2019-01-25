@@ -156,7 +156,7 @@ function qsm_options_emails_tab_content() {
 					<input type="text" class="subject" value="{{ data.subject }}">
 					<label>Email Content</label>
 					<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
-					<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
+					<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				</div>
 			</main>
 		</div>
