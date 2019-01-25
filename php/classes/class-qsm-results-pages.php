@@ -216,6 +216,7 @@ class QSM_Results_Pages {
 		 * Loads the old results pages and converts them.
 		 */
 		global $wpdb;
+		global $mlwQuizMasterNext;
 		$data      = $wpdb->get_row( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$system    = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		$old_pages = maybe_unserialize( $data['message_after'] );

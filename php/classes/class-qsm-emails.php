@@ -268,6 +268,7 @@ class QSM_Emails {
 		 * Loads the old user and admin emails. Checks if they are enabled and converts them.
 		 */
 		global $wpdb;
+		global $mlwQuizMasterNext;
 		$data   = $wpdb->get_row( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
