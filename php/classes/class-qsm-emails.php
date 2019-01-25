@@ -176,7 +176,7 @@ class QSM_Emails {
 				// Updates option with this quiz's from values.
 				$settings['from_email'] = $from_email;
 				$settings['from_name']  = $from_name;
-				update_option( 'qsm-settings', $settings );
+				update_option( 'qmn-settings', $settings );
 			}
 		} else {
 			if ( isset( $settings['from_email'] ) ) {
