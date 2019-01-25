@@ -268,9 +268,10 @@ class QSM_Emails {
 		 * Loads the old user and admin emails. Checks if they are enabled and converts them.
 		 */
 		global $wpdb;
-		$data = $wpdb->get_row( $wpdb->prepare( "SELECT system, send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+		$data   = $wpdb->get_row( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+		$system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['user_email_template'] ) );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $system, $data['user_email_template'] ) );
 		}
 		if ( 0 === intval( $data['send_admin_email'] ) ) {
 			$from_email_array = maybe_unserialize( $data['email_from_text'] );
@@ -279,7 +280,7 @@ class QSM_Emails {
 					'reply_to' => 1,
 				);
 			}
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $data['system'], $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
+			$emails = array_merge( $emails, QSM_Emails::convert_emails( $system, $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
 		}
 
 		// Updates the database with new array to prevent running this step next time.

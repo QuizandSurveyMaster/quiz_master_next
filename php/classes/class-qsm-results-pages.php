@@ -216,8 +216,8 @@ class QSM_Results_Pages {
 		 * Loads the old results pages and converts them.
 		 */
 		global $wpdb;
-		$data = $wpdb->get_row( $wpdb->prepare( "SELECT system, message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
-
+		$data      = $wpdb->get_row( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
+		$system    = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		$old_pages = maybe_unserialize( $data['message_after'] );
 
 		// If the value is an array, convert it.
@@ -241,7 +241,7 @@ class QSM_Results_Pages {
 				if ( 0 !== intval( $page[0] ) || 0 !== intval( $page[1] ) ) {
 
 					// Checks if the system is points.
-					if ( 1 === intval( $data['system'] ) ) {
+					if ( 1 === intval( $system ) ) {
 						$new_page['conditions'][] = array(
 							'criteria' => 'points',
 							'operator' => 'greater-equal',
