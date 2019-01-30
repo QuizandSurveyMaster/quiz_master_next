@@ -479,7 +479,7 @@ function qsmDisplayLoading( $container ) {
 function qmnDisplayResults( results, quiz_form_id, $container ) {
 	$container.empty();
 	if ( results.redirect ) {
-		window.location.replace( results.redirect_url );
+		window.location.replace( results.redirect );
 	} else {
 		$container.append( '<div class="qmn_results_page"></div>' );
 		$container.find( '.qmn_results_page' ).html( results.display );

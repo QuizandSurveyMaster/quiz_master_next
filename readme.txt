@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 6.1.2
+Stable tag: 6.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.2.0 (January 31, 2019) =
+* Closed Enhancement: Create new alert system on quiz options page ([Issue #754](https://github.com/fpcorso/quiz_master_next/issues/754))
+* Closed Bug: No access allowed when clicking "Support" from plugins page ([Issue #753](https://github.com/fpcorso/quiz_master_next/issues/753))
+* Closed Bug: To many redirects ([Issue #745](https://github.com/fpcorso/quiz_master_next/issues/745))
+* Closed User Request: Allow default email to be deleted or turned off ([Issue #735](https://github.com/fpcorso/quiz_master_next/issues/735))
+* Closed Enhancement: Rewrite emails to allow for different conditions ([Issue #379](https://github.com/fpcorso/quiz_master_next/issues/379))
+* Closed Enhancement: Rewrite results pages to allow for different conditions ([Issue #378](https://github.com/fpcorso/quiz_master_next/issues/378))
+
 = 6.1.2 (January 7, 2019) =
 * Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/fpcorso/quiz_master_next/issues/750))
 * Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/fpcorso/quiz_master_next/issues/749))
@@ -122,29 +130,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 6.1.0 (December 26, 2018) =
 * Adds new Gutenberg blocks
 * Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/fpcorso/quiz_master_next/pull/746)!
-
-= 6.0.4 (October 2, 2018) =
-* Changes links from old documentation to newer documentation
-
-= 6.0.3 (August 20, 2018) =
-* Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/fpcorso/quiz_master_next/issues/583))
-* Closed Bug: If user refreshes quiz page when timer is at 0, cannot submit ([Issue #501](https://github.com/fpcorso/quiz_master_next/issues/501))
-* Closed Bug: Saving quiz name when editing results in error if no changes are made ([Issue #391](https://github.com/fpcorso/quiz_master_next/issues/391))
-* Adds deprecated notice to the quiz setting functions found in the quizCreator object
-* Adds hook after results are stored in the database
-
-= 6.0.2 (July 18, 2018) =
-* Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/fpcorso/quiz_master_next/issues/711))
-* Closed Bug: Timer not working on certain sites when using questions per page option ([Issue #709](https://github.com/fpcorso/quiz_master_next/issues/709))
-* Closed Bug: Blank page shown when contact fields and message fields are empty ([Issue #707](https://github.com/fpcorso/quiz_master_next/issues/707))
-
-= 6.0.1 (July 11, 2018) =
-* Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/fpcorso/quiz_master_next/issues/704))
-
-= 6.0.0 (June 20, 2018) =
-* Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/fpcorso/quiz_master_next/issues/689))
-* Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/fpcorso/quiz_master_next/issues/607))
-* Closed Enhancement: Move Leaderboards to free addon ([Issue #380](https://github.com/fpcorso/quiz_master_next/issues/380))
 
 ([Read Full Changelog](https://github.com/fpcorso/quiz_master_next/blob/master/CHANGELOG.md))
 

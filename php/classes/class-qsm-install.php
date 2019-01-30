@@ -1280,9 +1280,7 @@ class QSM_Install {
 
       // Update 5.0.0
       $settings = (array) get_option( 'qmn-settings', array() );
-      if ( isset( $settings['results_details_template'] ) ) {
-        $settings['results_details_template'] .= "<p>%CONTACT_ALL%</p>";
-      } else {
+      if ( ! isset( $settings['results_details_template'] ) ) {
         $settings['results_details_template'] = "<h2>Quiz Results for %QUIZ_NAME%</h2>
      		<p>%CONTACT_ALL%</p>
      		<p>Name Provided: %USER_NAME%</p>
@@ -1294,16 +1292,11 @@ class QSM_Install {
      		<p>The user took %TIMER% to complete quiz.</p>
      		<p>Comments entered were: %COMMENT_SECTION%</p>
      		<p>The answers were as follows:</p>
-     		%QUESTIONS_ANSWERS%";
+         %QUESTIONS_ANSWERS%";
+         update_option( 'qmn-settings' , $settings );
       }
-      update_option( 'qmn-settings' , $settings );
-
-
+      
   		update_option('mlw_quiz_master_version' , $data);
-  		if( ! isset( $_GET['activate-multi'] ) ) {
-				wp_safe_redirect( admin_url( 'index.php?page=qsm_about' ) );
-				exit;
-      }
   	}
   	if ( ! get_option('mlw_advert_shows') ) {
   		add_option( 'mlw_advert_shows' , 'true' );
@@ -1331,7 +1324,7 @@ class QSM_Install {
     if ( $file == QSM_PLUGIN_BASENAME ) {
       $row_meta = array(
         'docs'    => '<a href="' . esc_url( 'https://docs.quizandsurveymaster.com/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
-        'support' => '<a href="' . admin_url( 'admin.php?page=mlw_quiz_help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
+        'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
       );
       return array_merge( $links, $row_meta );
     }

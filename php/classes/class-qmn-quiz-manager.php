@@ -745,10 +745,10 @@ class QMNQuizManager {
 		}
 
 		// Gathers contact information.
-		$qmn_array_for_variables['user_name'] = 'None';
+		$qmn_array_for_variables['user_name']     = 'None';
 		$qmn_array_for_variables['user_business'] = 'None';
-		$qmn_array_for_variables['user_email'] = 'None';
-		$qmn_array_for_variables['user_phone'] = 'None';
+		$qmn_array_for_variables['user_email']    = 'None';
+		$qmn_array_for_variables['user_phone']    = 'None';
 		$contact_responses = QSM_Contact_Manager::process_fields( $qmn_quiz_options );
 		foreach ( $contact_responses as $field ) {
 			if ( isset( $field['use'] ) ) {
@@ -779,8 +779,12 @@ class QMNQuizManager {
 			$result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			$qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-			$result_display .= $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
+
+			// Determines redirect/results page.
+			$results_pages = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
+			$result_display .= $results_pages['display'];
 			$result_display = apply_filters('qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
+
 			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
 			$result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
@@ -848,14 +852,18 @@ class QMNQuizManager {
 			// Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
 			do_action( 'qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables );
 
-			// Sends user email.
-			$this->send_user_email( $qmn_quiz_options, $qmn_array_for_variables );
-			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
+			// Sends the emails.
+			QSM_Emails::send_emails( $qmn_array_for_variables );
 
-			// Sends admin email.
-			$this->send_admin_email($qmn_quiz_options, $qmn_array_for_variables);
+			/**
+			 * Filters for filtering the results text after emails are sent.
+			 *
+			 * @deprecated 6.2.0 There's no reason to use these over the actions
+			 * in the QSM_Results_Pages class or the other filters in this function.
+			 */
+			$result_display = apply_filters( 'qmn_after_send_user_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display = apply_filters( 'qmn_after_send_admin_email', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			
+
 			// Last time to filter the HTML results page.
 			$result_display = apply_filters( 'qmn_end_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 
@@ -865,54 +873,10 @@ class QMNQuizManager {
 			$result_display .= 'Thank you.';
 		}
 
-		// Checks to see if we need to set up a redirect.
-		$redirect     = false;
-		$redirect_url = '';
-		if ( is_serialized( $qmn_quiz_options->message_after ) && is_array( @unserialize( $qmn_quiz_options->message_after ) ) ) {
-			$mlw_message_after_array = @unserialize( $qmn_quiz_options->message_after );
-
-			// Cycles through landing pages.
-			foreach( $mlw_message_after_array as $mlw_each ) {
-				// Checks to see if not default.
-				if ( $mlw_each[0] != 0 || $mlw_each[1] != 0 ) {
-					// Checks to see if points fall in correct range.
-					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
-					{
-						if (esc_url($mlw_each["redirect_url"]) != '')
-						{
-							$redirect = true;
-							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-						}
-						break;
-					}
-					//Check to see if score fall in correct range
-					if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
-					{
-						if (esc_url($mlw_each["redirect_url"]) != '')
-						{
-							$redirect = true;
-							$redirect_url = esc_url( $mlw_each["redirect_url"] );
-						}
-						break;
-					}
-				}
-				else
-				{
-					if (esc_url($mlw_each["redirect_url"]) != '')
-					{
-						$redirect = true;
-						$redirect_url = esc_url( $mlw_each["redirect_url"] );
-					}
-					break;
-				}
-			}
-		}
-
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'display'      => $result_display,
-			'redirect'     => $redirect,
-			'redirect_url' => $redirect_url,
+			'redirect'     => $results_pages['redirect'],
 		);
 
 		return $return_array;
@@ -1122,107 +1086,54 @@ class QMNQuizManager {
 
 
 	/**
-	  * Displays Results Text
-	  *
-	  * Prepares and display text for the results page
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @return string The contents for the results text
-	  */
-	public function display_results_text($qmn_quiz_options, $qmn_array_for_variables)
-	{
-		$results_text_display = '';
-		if (is_serialized($qmn_quiz_options->message_after) && is_array(@unserialize($qmn_quiz_options->message_after)))
-		{
-			$mlw_message_after_array = @unserialize($qmn_quiz_options->message_after);
-			//Cycle through landing pages
-			foreach($mlw_message_after_array as $mlw_each)
-			{
-				//Check to see if default
-				if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
-				{
-					$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-					$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-					$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-					$results_text_display .= $mlw_message_after;
-					break;
-				}
-				else
-				{
-					//Check to see if points fall in correct range
-					if ($qmn_quiz_options->system == 1 && $qmn_array_for_variables['total_points'] >= $mlw_each[0] && $qmn_array_for_variables['total_points'] <= $mlw_each[1])
-					{
-						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-						$results_text_display .= $mlw_message_after;
-						break;
-					}
-					//Check to see if score fall in correct range
-					if ($qmn_quiz_options->system == 0 && $qmn_array_for_variables['total_score'] >= $mlw_each[0] && $qmn_array_for_variables['total_score'] <= $mlw_each[1])
-					{
-						$mlw_message_after = htmlspecialchars_decode($mlw_each[2], ENT_QUOTES);
-						$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-						$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-						$results_text_display .= $mlw_message_after;
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			//Prepare the after quiz message
-			$mlw_message_after = htmlspecialchars_decode($qmn_quiz_options->message_after, ENT_QUOTES);
-			$mlw_message_after = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message_after, $qmn_array_for_variables);
-			$mlw_message_after = str_replace( "\n" , "<br>", $mlw_message_after);
-			$results_text_display .= $mlw_message_after;
-		}
-		return do_shortcode( $results_text_display );
+	 * Displays Results Text
+	 *
+	 * @since 4.0.0
+	 * @deprecated 6.1.0 Use the newer results page class instead.
+	 * @param array $options The quiz settings.
+	 * @param array $response_data The array of results for the quiz.
+	 * @return string The contents for the results text
+	 */
+	public function display_results_text( $options, $response_data ) {
+		return QSM_Results_Pages::generate_pages( $response_data );
 	}
 
 	/**
-	  * Display Social Media Buttons
-	  *
-	  * Prepares and displays social media buttons for sharing results
-	  *
-	  * @since 4.0.0
-		* @param array $qmn_quiz_options The database row of the quiz
-		* @param array $qmn_array_for_variables The array of results for the quiz
-		* @return string The content of the social media button section
-	  */
-	public function display_social($qmn_quiz_options, $qmn_array_for_variables)
-	{
+	 * Displays social media buttons
+	 *
+	 * @deprecated 6.1.0 Use the social media template variables instead.
+	 * @since 4.0.0
+	 * @param array $qmn_quiz_options The database row of the quiz.
+	 * @param array $qmn_array_for_variables The array of results for the quiz.
+	 * @return string The content of the social media button section
+	 */
+	public function display_social( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$social_display = '';
-		if ($qmn_quiz_options->social_media == 1)
-		{
+		if ( $qmn_quiz_options->social_media == 1 ) {
 			$settings = (array) get_option( 'qmn-settings' );
 			$facebook_app_id = '483815031724529';
-			if (isset($settings['facebook_app_id']))
-			{
+			if ( isset( $settings['facebook_app_id'] ) ) {
 				$facebook_app_id = esc_js( $settings['facebook_app_id'] );
 			}
 
-			//Load Social Media Text
+			// Loads Social Media Text.
 			$qmn_social_media_text = "";
 			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( @unserialize( $qmn_quiz_options->social_media_text ) ) ) {
 				$qmn_social_media_text = @unserialize($qmn_quiz_options->social_media_text);
 			} else {
 				$qmn_social_media_text = array(
-		        		'twitter' => $qmn_quiz_options->social_media_text,
-		        		'facebook' => $qmn_quiz_options->social_media_text
-		        	);
+					'twitter'  => $qmn_quiz_options->social_media_text,
+					'facebook' => $qmn_quiz_options->social_media_text,
+				);
 			}
-			$qmn_social_media_text["twitter"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
+			$qmn_social_media_text["twitter"]  = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
 			$qmn_social_media_text["facebook"] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $qmn_array_for_variables);
 			$social_display .= "<br />
 			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js($qmn_social_media_text["facebook"])."', '".esc_js($qmn_quiz_options->quiz_name)."', '$facebook_app_id');\">Facebook</a>
 			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js($qmn_social_media_text["twitter"])."', '".esc_js($qmn_quiz_options->quiz_name)."');\">Twitter</a>
 			<br />";
 		}
-		return apply_filters('qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables);
+		return apply_filters( 'qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables );
 	}
 
 	/**
@@ -1230,6 +1141,7 @@ class QMNQuizManager {
 	  *
 	  * Prepares the email to the user and then sends the email
 	  *
+	  * @deprecated 6.2.0 Use the newer QSM_Emails class instead.
 	  * @since 4.0.0
 		* @param array $qmn_quiz_options The database row of the quiz
 		* @param array $qmn_array_for_variables The array of results for the quiz
@@ -1338,6 +1250,7 @@ class QMNQuizManager {
 	  *
 	  * Prepares the email to the admin and then sends the email
 	  *
+	  * @deprecated 6.2.0 Use the newer QSM_Emails class instead.
 	  * @since 4.0.0
 		* @param array $qmn_quiz_options The database row of the quiz
 		* @param arrar $qmn_array_for_variables The array of results for the quiz

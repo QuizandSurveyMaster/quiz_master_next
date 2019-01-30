@@ -30,6 +30,126 @@ function qsm_register_rest_routes() {
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_question',
 	) );
+	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
+		'methods'  => WP_REST_Server::READABLE,
+		'callback' => 'qsm_rest_get_results',
+	) );
+	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
+		'methods'  => WP_REST_Server::EDITABLE,
+		'callback' => 'qsm_rest_save_results',
+	) );
+	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
+		'methods'  => WP_REST_Server::READABLE,
+		'callback' => 'qsm_rest_get_emails',
+	) );
+	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
+		'methods'  => WP_REST_Server::EDITABLE,
+		'callback' => 'qsm_rest_save_emails',
+	) );
+}
+
+/**
+ * Gets emails for a quiz.
+ *
+ * @since 6.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array The emails for the quiz.
+ */
+function qsm_rest_get_emails( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			$emails = QSM_Emails::load_emails( $request['id'] );
+			if ( false === $emails || ! is_array( $emails ) ) {
+				$emails = array();
+			}
+			return $emails;
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
+}
+
+/**
+ * Saves emails for a quiz.
+ *
+ * @since 6.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array The status of saving the emails.
+ */
+function qsm_rest_save_emails( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
+				$request['emails'] = array();
+			}
+			$result = QSM_Emails::save_emails( $request['id'], $request['emails'] );
+			return array(
+				'status' => $result,
+			);
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
+}
+
+/**
+ * Gets results pages for a quiz.
+ *
+ * @since 6.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array The pages for the quiz.
+ */
+function qsm_rest_get_results( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			$pages = QSM_Results_Pages::load_pages( $request['id'] );
+			if ( false === $pages || ! is_array( $pages ) ) {
+				$pages = array();
+			}
+			return $pages;
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
+}
+
+/**
+ * Gets results pages for a quiz.
+ *
+ * @since 6.2.0
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array The results from saving the pages.
+ */
+function qsm_rest_save_results( WP_REST_Request $request ) {
+	// Makes sure user is logged in.
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
+				$request['pages'] = array();
+			}
+			$result = QSM_Results_Pages::save_pages( $request['id'], $request['pages'] );
+			return array(
+				'status' => $result,
+			);
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'    => 'User not logged in',
+	);
 }
 
 /**

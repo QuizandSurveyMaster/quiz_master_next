@@ -1,131 +1,49 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
-* Adds the Results tab to the Quiz Settings page.
-*
-* @return void
-* @since 4.4.0
-*/
-function qmn_settings_results_tab()
-{
-	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs(__("Results Pages", 'quiz-master-next'), 'mlw_options_results_tab_content');
+ * Creates the results page tab when editing quizzes.
+ *
+ * @package QSM
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
-add_action("plugins_loaded", 'qmn_settings_results_tab', 5);
 
 /**
-* Adds the Results page content to the Results tab.
-*
-* @return void
-* @since 4.4.0
-*/
-function mlw_options_results_tab_content()
-{
+ * Adds the Results Page tab to the Quiz Settings page.
+ *
+ * @since 6.1.0
+ */
+function qsm_options_results_tab() {
+	global $mlwQuizMasterNext;
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Results Pages', 'quiz-master-next' ), 'qsm_options_results_tab_content' );
+}
+add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
+
+/**
+ * Adds the Results page content to the Results tab.
+ *
+ * @since 6.1.0
+ */
+function qsm_options_results_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = $_GET["quiz_id"];
-	//Check to add new results page
-	if (isset($_POST["mlw_add_landing_page"]) && $_POST["mlw_add_landing_page"] == "confirmation")
-	{
-		//Function variables
-		$mlw_qmn_landing_id = intval($_POST["mlw_add_landing_quiz_id"]);
-		$mlw_qmn_message_after = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM ".$wpdb->prefix."mlw_quizzes WHERE quiz_id=%d", $mlw_qmn_landing_id ) );
-		//Load message_after and check if it is array already. If not, turn it into one
-		if (is_serialized($mlw_qmn_message_after) && is_array(@unserialize($mlw_qmn_message_after)))
-		{
-			$mlw_qmn_landing_array = @unserialize($mlw_qmn_message_after);
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', "redirect_url" => '');
-			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
-			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
-
-		}
-		else
-		{
-			$mlw_qmn_landing_array = array(array(0, 0, $mlw_qmn_message_after));
-			$mlw_new_landing_array = array(0, 100, 'Enter Your Text Here', "redirect_url" => '');
-			array_unshift($mlw_qmn_landing_array , $mlw_new_landing_array);
-			$mlw_qmn_landing_array = serialize($mlw_qmn_landing_array);
-		}
-
-		//Update message_after with new array then check to see if worked
-		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after=%s, last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_landing_array, $mlw_qmn_landing_id ) );
-		if ( false != $mlw_new_landing_results ) {
-			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been added successfully.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Results Page Has Been Created For Quiz Number $mlw_qmn_landing_id" );
-		} else {
-			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0013'), 'error');
-			$mlwQuizMasterNext->log_manager->add("Error 0013", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
-		}
-	}
-
-	//Check to save landing pages
-	if (isset($_POST["mlw_save_landing_pages"]) && $_POST["mlw_save_landing_pages"] == "confirmation")
-	{
-		//Function Variables
-		$mlw_qmn_landing_id = intval($_POST["mlw_landing_quiz_id"]);
-		$mlw_qmn_landing_total = intval($_POST["mlw_landing_page_total"]);
-
-		//Create new array
-		$i = 1;
-		$mlw_qmn_new_landing_array = array();
-		while ($i <= $mlw_qmn_landing_total)
-		{
-			if ($_POST["message_after_".$i] != "Delete")
-			{
-				$mlw_qmn_landing_each = array(intval($_POST["message_after_begin_".$i]), intval($_POST["message_after_end_".$i]), htmlspecialchars(stripslashes($_POST["message_after_".$i]), ENT_QUOTES), "redirect_url" => esc_url_raw($_POST["redirect_".$i]));
-				$mlw_qmn_new_landing_array[] = $mlw_qmn_landing_each;
-			}
-			$i++;
-		}
-		$mlw_qmn_new_landing_array = serialize($mlw_qmn_new_landing_array);
-		$mlw_new_landing_results = $wpdb->query( $wpdb->prepare( "UPDATE ".$wpdb->prefix."mlw_quizzes SET message_after='%s', last_activity='".date("Y-m-d H:i:s")."' WHERE quiz_id=%d", $mlw_qmn_new_landing_array, $mlw_qmn_landing_id ) );
-		if ( false != $mlw_new_landing_results ) {
-			$mlwQuizMasterNext->alertManager->newAlert(__('The results page has been saved successfully.', 'quiz-master-next'), 'success');
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Pages Have Been Saved For Quiz Number $mlw_qmn_landing_id" );
-		} else {
-			$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0014'), 'error');
-			$mlwQuizMasterNext->log_manager->add("Error 0014", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
-		}
-	}
-
-	if (isset($_GET["quiz_id"]))
-	{
-		$table_name = $wpdb->prefix . "mlw_quizzes";
-		$mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $_GET["quiz_id"]));
-	}
-
-	//Load Landing Pages
-	if (is_serialized($mlw_quiz_options->message_after) && is_array(@unserialize($mlw_quiz_options->message_after)))
-	{
-    		$mlw_message_after_array = @unserialize($mlw_quiz_options->message_after);
-	}
-	else
-	{
-		$mlw_message_after_array = array(array(0, 0, $mlw_quiz_options->message_after, "redirect_url" => ''));
-	}
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
+	$quiz_id = intval( $_GET['quiz_id'] );
+	$js_data = array(
+		'quizID' => $quiz_id,
+		'nonce'  => wp_create_nonce( 'wp_rest' ),
+	);
+	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
+	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
+	wp_enqueue_editor();
+	wp_enqueue_media();
 	?>
-	<div id="tabs-6" class="mlw_tab_content">
-		<script>
-			var $j = jQuery.noConflict();
-			// increase the default animation speed to exaggerate the effect
-			$j.fx.speeds._default = 1000;
-			function delete_landing(id)
-			{
-				var qmn_results_editor = tinyMCE.get('message_after_'+id);
-				if (qmn_results_editor)
-				{
-					tinyMCE.get('message_after_'+id).setContent('Delete');
-				}
-				else
-				{
-					document.getElementById('message_after_'+id).value = "Delete";
-				}
-				document.mlw_quiz_save_landing_form.submit();
-			}
-		</script>
-		<h3 style="text-align: center;"><?php _e("Template Variables", 'quiz-master-next'); ?></h3>
+	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
+	<p>Need assistance with this tab? <a href="https://docs.quizandsurveymaster.com/article/25-setting-up-results-pages-and-thank-you-pages" target="_blank">Check out the documentation</a> for this tab!</p>
+
+	<!-- Template Variables Section -->
+	<section>
+		<h3 style="text-align: center;"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h3>
 		<div class="template_list_holder">
 			<div class="template_variable">
 				<span class="template_name">%CONTACT_X%</span> - <?php _e( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ); ?>
@@ -199,95 +117,68 @@ function mlw_options_results_tab_content()
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>
 		<div style="clear:both;"></div>
-		<button id="save_landing_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
-		<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
-		<form method="post" action="" name="mlw_quiz_save_landing_form" style=" display:inline!important;">
-		<table class="widefat">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
-					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
-					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
-					<th><?php _e('Redirect URL (Beta)', 'quiz-master-next'); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-				$mlw_each_count = 0;
-				$alternate = "";
-				foreach($mlw_message_after_array as $mlw_each)
-				{
-					if($alternate) $alternate = "";
-					else $alternate = " class=\"alternate\"";
-					$mlw_each_count += 1;
-					if ($mlw_each[0] == 0 && $mlw_each[1] == 0)
-					{
-						echo "<tr{$alternate}>";
-							echo "<td>";
-								echo "Default";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='hidden' id='message_after_begin_".$mlw_each_count."' name='message_after_begin_".$mlw_each_count."' value='0'/>-";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='hidden' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' value='0'/>-";
-							echo "</td>";
-							echo "<td>";
-								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
-								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='text' id='redirect_".$mlw_each_count."' name='redirect_".$mlw_each_count."' value='".esc_url($mlw_each["redirect_url"])."'/>";
-							echo "</td>";
-						echo "</tr>";
-						break;
-					}
-					else
-					{
-						echo "<tr{$alternate}>";
-							echo "<td>";
-								echo $mlw_each_count."<div><span style='color:green;font-size:12px;'><a onclick=\"\$j('#trying_delete_".$mlw_each_count."').show();\">".__('Delete', 'quiz-master-next')."</a></span></div><div style=\"display: none;\" id='trying_delete_".$mlw_each_count."'>".__('Are you sure?', 'quiz-master-next')."<br /><a onclick=\"delete_landing(".$mlw_each_count.")\">".__('Yes', 'quiz-master-next')."</a>|<a onclick=\"\$j('#trying_delete_".$mlw_each_count."').hide();\">".__('No', 'quiz-master-next')."</a></div>";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='text' id='message_after_begin_".$mlw_each_count."' name='message_after_begin_".$mlw_each_count."' title='What score must the user score better than to see this page' value='".$mlw_each[0]."'/>";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='text' id='message_after_end_".$mlw_each_count."' name='message_after_end_".$mlw_each_count."' title='What score must the user score worse than to see this page' value='".$mlw_each[1]."' />";
-							echo "</td>";
-							echo "<td>";
-								wp_editor( htmlspecialchars_decode($mlw_each[2], ENT_QUOTES), "message_after_".$mlw_each_count );
-								//echo "<textarea cols='80' rows='15' id='message_after_".$mlw_each_count."' title='What text will the user see when reaching this page' name='message_after_".$mlw_each_count."'>".$mlw_each[2]."</textarea>";
-							echo "</td>";
-							echo "<td>";
-								echo "<input type='text' id='redirect_".$mlw_each_count."' name='redirect_".$mlw_each_count."' value='".esc_url($mlw_each["redirect_url"])."'/>";
-							echo "</td>";
-						echo "</tr>";
-					}
-				}
-				?>
-			</tbody>
-			<tfoot>
-				<tr>
-					<th>ID</th>
-					<th><?php _e('Score Greater Than Or Equal To', 'quiz-master-next'); ?></th>
-					<th><?php _e('Score Less Than Or Equal To', 'quiz-master-next'); ?></th>
-					<th><?php _e('Results Page Shown', 'quiz-master-next'); ?></th>
-					<th><?php _e('Redirect URL (Beta)', 'quiz-master-next'); ?></th>
-				</tr>
-			</tfoot>
-		</table>
-		<input type='hidden' name='mlw_save_landing_pages' value='confirmation' />
-		<input type='hidden' name='mlw_landing_quiz_id' value='<?php echo $quiz_id; ?>' />
-		<input type='hidden' name='mlw_landing_page_total' value='<?php echo $mlw_each_count; ?>' />
-		<button id="save_landing_button" class="button-primary" onclick="javascript: document.mlw_quiz_save_landing_form.submit();"><?php _e('Save Results Pages', 'quiz-master-next'); ?></button>
-		</form>
-		<form method="post" action="" name="mlw_quiz_add_landing_form" style=" display:inline!important;">
-			<input type='hidden' name='mlw_add_landing_page' value='confirmation' />
-			<input type='hidden' name='mlw_add_landing_quiz_id' value='<?php echo $quiz_id; ?>' />
-			<button id="new_landing_button" class="button" onclick="javascript: document.mlw_quiz_add_landing_form.submit();"><?php _e('Add New Results Page', 'quiz-master-next'); ?></button>
-		</form>
-	</div>
+	</section>
+
+	<!-- Results Page Section -->
+	<section>
+		<h3>Your Pages</h3>
+		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
+		<div id="results-pages"></div>
+		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
+	</section>
+
+	<!-- Templates -->
+	<script type="text/template" id="tmpl-results-page">
+		<div class="results-page">
+			<header class="results-page-header">
+				<div><button class="delete-page-button"><span class="dashicons dashicons-trash"></span></button></div>
+			</header>
+			<main class="results-page-content">
+				<div class="results-page-when">
+					<div class="results-page-content-header">
+						<h4>When...</h4>
+						<p>Set conditions for when this page should be shown. Leave empty to set this as the default page.</p>
+					</div>
+					<div class="results-page-when-conditions">
+						<!-- Conditions go here. Review template below. -->
+					</div>
+					<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+				</div>
+				<div class="results-page-show">
+					<div class="results-page-content-header">
+						<h4>...Show</h4>
+						<p>Create the results page that should be shown when the conditions are met.</p>
+					</div>
+					<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
+					<p>Or, redirect the user by entering the URL below:</p>
+					<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
+				</div>
+			</main>
+		</div>
+	</script>
+
+	<script type="text/template" id="tmpl-results-page-condition">
+		<div class="results-page-condition">
+			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+			<select class="results-page-condition-criteria">
+				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>>Total points earned</option>
+				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>>Correct score percentage</option>
+				<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
+			</select>
+			<select class="results-page-condition-operator">
+				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>>is equal to</option>
+				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>>is not equal to</option>
+				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>>is greater than or equal to</option>
+				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>>is greater than</option>
+				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>>is less than or equal to</option>
+				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>>is less than</option>
+				<?php do_action( 'qsm_results_page_condition_operator' ); ?>
+			</select>
+			<input type="text" class="results-page-condition-value" value="{{ data.value }}">
+		</div>
+	</script>
 	<?php
 }
 ?>

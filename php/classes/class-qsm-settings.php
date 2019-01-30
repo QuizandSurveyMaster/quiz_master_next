@@ -244,15 +244,11 @@ class QSM_Quiz_Settings {
    */
   private function load_settings() {
 
-    global $wpdb;
+		global $wpdb;
 		$settings_array = array();
 
     // Loads the settings from the database
     $settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
-    
-    if ( is_null( $settings ) ) {
-      return;
-    }
 
     // Unserializes array
 		if ( is_serialized( $settings ) && is_array( @unserialize( $settings ) ) ) {
@@ -401,23 +397,38 @@ class QSM_Quiz_Settings {
     $this->settings = $settings_array;
   }
 
-  /**
-   * Loads the old object model of options for backwards compatibility
-   *
-   * @since 5.0.0
-   */
-  public function get_quiz_options() {
-    global $wpdb;
+	/**
+	 * Loads the old object model of options for backwards compatibility
+	 *
+	 * @since 5.0.0
+	 */
+	public function get_quiz_options() {
+		global $wpdb;
 
-    // Load the old options system
-    $quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
+		// Load the old options system
+		$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ), ARRAY_A );
 
-    // Merge all settings into old object
-    $quiz_override = array_merge( (array) $quiz_options, $this->get_setting( 'quiz_leaderboards' ), $this->get_setting( 'quiz_options' ), $this->get_setting( 'quiz_text' ) );
+		/**
+		 * Merges all options and settings
+		 */
+		$leaderboards = $this->get_setting( 'quiz_leaderboards' );
+		if ( is_array( $leaderboards ) ) {
+			$quiz_options = array_merge( $quiz_options, $leaderboards );
+		}
 
-    // Return as old object model
-    return (object) $quiz_override;
-  }
+		$options = $this->get_setting( 'quiz_options' );
+		if ( is_array( $options ) ) {
+			$quiz_options = array_merge( $quiz_options, $options );
+		}
+
+		$text = $this->get_setting( 'quiz_text' );
+		if ( is_array( $text ) ) {
+			$quiz_options = array_merge( $quiz_options, $text );
+		}
+
+		// Return as old object model
+		return (object) $quiz_options;
+	}
 }
 
 ?>

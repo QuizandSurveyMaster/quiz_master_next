@@ -42,7 +42,7 @@ function qsm_options_questions_tab_content() {
 
 	// Scripts and styles.
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script' ), $mlwQuizMasterNext->version, true );
+	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
 	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
@@ -80,7 +80,6 @@ function qsm_options_questions_tab_content() {
 	?>
 	<h3>Questions</h3>
 	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://docs.quizandsurveymaster.com/article/19-creating-pages-and-questions" target="_blank">documentation for this tab!</a></p>
-	<div class="questions-messages"></div>
 	<div class="question-controls">
 		<div>
 			<button class="new-page-button button">Create New Page</button>
@@ -186,13 +185,6 @@ function qsm_options_questions_tab_content() {
 	</div>
 
 	<!--Views-->
-
-	<!-- View for Notices -->
-	<script type="text/template" id="tmpl-notice">
-		<div class="notice notice-{{data.type}}">
-			<p>{{data.message}}</p>
-		</div>
-	</script>
 
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">

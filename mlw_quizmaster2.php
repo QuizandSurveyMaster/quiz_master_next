@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 6.1.2
+ * Version: 6.2.0
  * Author: Frank Corso
  * Author URI: https://www.quizandsurveymaster.com/
  * Plugin URI: https://www.quizandsurveymaster.com/
  * Text Domain: quiz-master-next
  *
  * @author Frank Corso
- * @version 6.1.2
+ * @version 6.2.0
  * @package QSM
  */
 
@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
 /**
  * This class is the main class of the plugin
  *
@@ -33,7 +34,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '6.1.2';
+	public $version = '6.2.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -142,6 +143,8 @@ class MLWQuizMasterNext {
 		}
 		include 'php/classes/class-qsm-questions.php';
 		include 'php/classes/class-qsm-contact-manager.php';
+		include 'php/classes/class-qsm-results-pages.php';
+		include 'php/classes/class-qsm-emails.php';
 		include 'php/classes/class-qmn-quiz-manager.php';
 
 		include 'php/template-variables.php';
@@ -270,18 +273,11 @@ class MLWQuizMasterNext {
 			add_submenu_page( __FILE__, __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			add_submenu_page( __FILE__, __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
 			add_submenu_page( __FILE__, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
-			add_submenu_page( __FILE__, __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'mlw_quiz_tools', 'mlw_generate_quiz_tools' );
+			add_submenu_page( __FILE__, __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( __FILE__, __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
 			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), __( 'Addon Settings', 'quiz-master-next' ), 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
-			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_help', 'mlw_generate_help_page' );
-
-			add_dashboard_page(
-				__( 'QSM About', 'quiz-master-next' ),
-				__( 'QSM About', 'quiz-master-next' ),
-				'manage_options',
-				'qsm_about',
-				'mlw_generate_about_page'
-			);
+			add_submenu_page( __FILE__, __( 'QSM About', 'quiz-master-next' ), __( 'QSM About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
+			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_help', 'qsm_generate_help_page' );
 		}
 	}
 
@@ -294,7 +290,6 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	public function admin_head() {
-		remove_submenu_page( 'index.php', 'qsm_about' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'qsm_quiz_result_details' );
 	}

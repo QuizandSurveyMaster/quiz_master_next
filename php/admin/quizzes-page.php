@@ -5,7 +5,9 @@
  * @package QSM
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Generates the quizzes and surveys page
@@ -87,7 +89,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Load quiz posts.
 	$post_to_quiz_array = array();
-	$my_query = new WP_Query( array(
+	$my_query           = new WP_Query( array(
 		'post_type'      => 'quiz',
 		'posts_per_page' => -1,
 		'post_status'    => 'publish',
@@ -138,7 +140,7 @@ function qsm_generate_quizzes_surveys_page() {
 	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
 	?>
 	<div class="wrap qsm-quizes-page">
-		<h1><?php _e( 'Quizzes/Surveys', 'quiz-master-next' ); ?><a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a></h1>
+		<h1><?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?><a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a></h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
 		if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
@@ -152,9 +154,9 @@ function qsm_generate_quizzes_surveys_page() {
 		<div class="qsm-quizzes-page-content">
 			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 				<p class="search-box">
-					<label class="screen-reader-text" for="quiz_search"><?php _e( 'Search', 'quiz-master-next' ); ?></label>
+					<label class="screen-reader-text" for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
-					<a href="#" class="button"><?php _e( 'Search', 'quiz-master-next' ); ?></a>
+					<a href="#" class="button"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></a>
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
@@ -165,12 +167,12 @@ function qsm_generate_quizzes_surveys_page() {
 				<table class="widefat">
 					<thead>
 						<tr>
-							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Views/Taken', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'URL', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
 					</thead>
 					<tbody id="the-list">
@@ -178,12 +180,12 @@ function qsm_generate_quizzes_surveys_page() {
 					</tbody>
 					<tfoot>
 						<tr>
-							<th><?php _e( 'Name', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'URL', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Views/Taken', 'quiz-master-next' ); ?></th>
-							<th><?php _e( 'Last Modified', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'URL', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Link Shortcode', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
 					</tfoot>
 				</table>
@@ -192,19 +194,19 @@ function qsm_generate_quizzes_surveys_page() {
 			if ( 'true' == get_option( 'mlw_advert_shows' ) ) {
 				?>
 				<div class="qsm-news-ads">
-					<h3 class="qsm-news-ads-title"><?php _e( 'QSM News', 'quiz-master-next' ); ?></h3>
+					<h3 class="qsm-news-ads-title"><?php esc_html_e( 'QSM News', 'quiz-master-next' ); ?></h3>
 					<div class="qsm-info-widget">
 						<h3>Keep your WordPress site healthy and secure!</h3>
 						<p>Easily monitor your WordPress sites to ensure they stay up, healthy, and secure with our new WordPress plugin, WP Health!</p>
 						<a target="_blank" href="http://bit.ly/2Mr2SqC" class="button-primary"><?php esc_html_e( 'Learn More', 'quiz-master-next' ); ?></a>
 					</div>
 					<div class="qsm-info-widget">
-						<h3><?php _e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
-						<p><?php _e( 'Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
+						<h3><?php esc_html_e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
+						<p><?php esc_html_e( 'Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
 						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e( 'Subscribe Now', 'quiz-master-next' ); ?></a>
 					</div>
 					<?php
-					$qmn_rss = array();
+					$qmn_rss  = array();
 					$qmn_feed = fetch_feed( 'https://quizandsurveymaster.com/feed' );
 					if ( ! is_wp_error( $qmn_feed ) ) {
 						$qmn_feed_items = $qmn_feed->get_items( 0, 5 );

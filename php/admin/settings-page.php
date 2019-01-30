@@ -42,7 +42,7 @@ class QMNGlobalSettingsPage {
 	 */
 	public function init() {
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
-    	add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
+		add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
 		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -50,6 +50,8 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'plural-name', __( 'Post Type Plural Name (Shown in various places such as on archive pages)', 'quiz-master-next' ), array( $this, 'plural_name_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'from-name', __( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'from-email', __( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
@@ -67,6 +69,40 @@ class QMNGlobalSettingsPage {
 			flush_rewrite_rules( true );
 			echo "<span style='color:red;'>" . __( 'Settings have been updated!', 'quiz-master-next' ) . "</span>";
 		}
+	}
+
+	/**
+	 * Generates Setting Field For From Email
+	 *
+	 * @since 6.2.0
+	 * @return void
+	 */
+	public function from_email() {
+		$settings   = (array) get_option( 'qmn-settings' );
+		$from_email = get_option( 'admin_email', '' );
+		if ( isset( $settings['from_email'] ) ) {
+			$from_email = $settings['from_email'];
+		}
+		?>
+		<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]' value='<?php echo esc_attr( $from_email ); ?>' />
+		<?php
+	}
+
+	/**
+	 * Generates Setting Field For From Name
+	 *
+	 * @since 6.2.0
+	 * @return void
+	 */
+	public function from_name() {
+		$settings  = (array) get_option( 'qmn-settings' );
+		$from_name = get_bloginfo( 'name' );
+		if ( isset( $settings['from_name'] ) ) {
+			$from_name = $settings['from_name'];
+		}
+		?>
+		<input type='text' name='qmn-settings[from_name]' id='qmn-settings[from_name]' value='<?php echo esc_attr( $from_name ); ?>' />
+		<?php
 	}
 
 	/**

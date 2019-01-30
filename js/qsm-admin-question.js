@@ -76,19 +76,19 @@ var QSMQuestion;
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
 			MicroModal.close( 'modal-2' );
-			QSMQuestion.displayAlert( 'Adding question...', 'info' );
+			QSMAdmin.displayAlert( 'Adding question...', 'info' );
 			var model = new QSMQuestion.question( { id: questionID } );
 			model.fetch({ 
 				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 				url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
 				success: QSMQuestion.questionBankSuccess,
-				error: QSMQuestion.displayError
+				error: QSMAdmin.displayError
 			});	
 		},
 		questionBankSuccess: function( model ) {
 			var page = parseInt( $( '#add-question-bank-page' ).val(), 10 );
 			model.set( 'page', page );
-			QSMQuestion.displayAlert( 'Question added!', 'success' );
+			QSMAdmin.displayAlert( 'Question added!', 'success' );
 			QSMQuestion.questions.add( model );
 			QSMQuestion.addQuestionToPage( model );
 		},
@@ -112,16 +112,16 @@ var QSMQuestion;
 			$( '#categories' ).prepend( template( { category: category } ) );
 		},
 		loadQuestions: function() {
-			QSMQuestion.displayAlert( 'Loading questions...', 'info' );
+			QSMAdmin.displayAlert( 'Loading questions...', 'info' );
 			QSMQuestion.questions.fetch({ 
 				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 				data: { quizID: qsmQuestionSettings.quizID },
 				success: QSMQuestion.loadSuccess,
-				error: QSMQuestion.displayError
+				error: QSMAdmin.displayError
 			});
 		},
 		loadSuccess: function() {
-			QSMQuestion.clearAlerts();
+			QSMAdmin.clearAlerts();
 			var question;
 			if ( qsmQuestionSettings.pages.length > 0 ) {
 				for ( var i = 0; i < qsmQuestionSettings.pages.length; i++ ) {
@@ -136,7 +136,7 @@ var QSMQuestion;
 			QSMQuestion.countTotal();
 		},
 		savePages: function() {
-			QSMQuestion.displayAlert( 'Saving pages and questions...', 'info' );
+			QSMAdmin.displayAlert( 'Saving pages and questions...', 'info' );
 			var pages = [];
 
 			// Cycles through each page and add page + questions to pages variable
@@ -163,11 +163,11 @@ var QSMQuestion;
 				data: data,
 				method: 'POST',
 				success: QSMQuestion.savePagesSuccess,
-				error: QSMQuestion.displayjQueryError
+				error: QSMAdmin.displayjQueryError
 			});
 		},
 		savePagesSuccess: function() {
-			QSMQuestion.displayAlert( 'Questions and pages were saved!', 'success' );
+			QSMAdmin.displayAlert( 'Questions and pages were saved!', 'success' );
 		},
 		addNewPage: function() {
 			var template = wp.template( 'page' );
@@ -182,7 +182,7 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewQuestion: function( model ) {
-			QSMQuestion.displayAlert( 'Question created!', 'success' );
+			QSMAdmin.displayAlert( 'Question created!', 'success' );
 			QSMQuestion.addQuestionToPage( model );
 			QSMQuestion.openEditPopup( model.id );
 			QSMQuestion.countTotal();
@@ -206,7 +206,7 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		createQuestion: function( page ) {
-			QSMQuestion.displayAlert( 'Creating question...', 'info' );
+			QSMAdmin.displayAlert( 'Creating question...', 'info' );
 			QSMQuestion.questions.create( 
 				{ 
 					quizID: qsmQuestionSettings.quizID,
@@ -215,12 +215,12 @@ var QSMQuestion;
 				{
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.addNewQuestion,
-					error: QSMQuestion.displayError
+					error: QSMAdmin.displayError
 				}
 			);
 		},
 		duplicateQuestion: function( questionID ) {
-			QSMQuestion.displayAlert( 'Duplicating question...', 'info' );
+			QSMAdmin.displayAlert( 'Duplicating question...', 'info' );
 			var model = QSMQuestion.questions.get( questionID );
 			var newModel = _.clone(model.attributes);
 			newModel.id = null;
@@ -229,12 +229,12 @@ var QSMQuestion;
 				{
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.addNewQuestion,
-					error: QSMQuestion.displayError
+					error: QSMAdmin.displayError
 				}
 			);
 		},
 		saveQuestion: function( questionID ) {
-			QSMQuestion.displayAlert( 'Saving question...', 'info' );
+			QSMAdmin.displayAlert( 'Saving question...', 'info' );
 			var model = QSMQuestion.questions.get( questionID );
 			var hint = $( '#hint' ).val();
 			var name = wp.editor.getContent( 'question-text' );
@@ -275,14 +275,14 @@ var QSMQuestion;
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 					success: QSMQuestion.saveSuccess,
-					error: QSMQuestion.displayError,
+					error: QSMAdmin.displayError,
 					type: 'POST'
 				} 
 			);
 			MicroModal.close('modal-1');
 		},
 		saveSuccess: function( model ) {
-			QSMQuestion.displayAlert( 'Question was saved!', 'success' );
+			QSMAdmin.displayAlert( 'Question was saved!', 'success' );
 			var template = wp.template( 'question' );
 			var page = model.get( 'page' ) + 1;
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: model.get('name') } ) );
@@ -322,24 +322,6 @@ var QSMQuestion;
 				$( ".category-radio" ).val( [question.get( 'category' )] );
 			}
 			MicroModal.show( 'modal-1' );
-		},
-		displayjQueryError: function( jqXHR, textStatus, errorThrown ) {
-			QSMQuestion.displayAlert( 'Error: ' + errorThrown + '! Please try again.', 'error' );
-		},
-		displayError: function( jqXHR, textStatus, errorThrown ) {
-			QSMQuestion.displayAlert( 'Error: ' + errorThrown.errorThrown + '! Please try again.', 'error' );
-		},
-		displayAlert: function( message, type ) {
-			QSMQuestion.clearAlerts();
-			var template = wp.template( 'notice' );
-			var data = {
-				message: message,
-				type: type
-			};
-			$( '.questions-messages' ).append( template( data ) );
-		},
-		clearAlerts: function() {
-			$( '.questions-messages' ).empty();
 		},
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );

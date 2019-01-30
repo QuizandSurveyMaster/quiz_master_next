@@ -1,3 +1,26 @@
+= 6.0.4 (October 2, 2018) =
+* Changes links from old documentation to newer documentation
+
+= 6.0.3 (August 20, 2018) =
+* Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/fpcorso/quiz_master_next/issues/583))
+* Closed Bug: If user refreshes quiz page when timer is at 0, cannot submit ([Issue #501](https://github.com/fpcorso/quiz_master_next/issues/501))
+* Closed Bug: Saving quiz name when editing results in error if no changes are made ([Issue #391](https://github.com/fpcorso/quiz_master_next/issues/391))
+* Adds deprecated notice to the quiz setting functions found in the quizCreator object
+* Adds hook after results are stored in the database
+
+= 6.0.2 (July 18, 2018) =
+* Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/fpcorso/quiz_master_next/issues/711))
+* Closed Bug: Timer not working on certain sites when using questions per page option ([Issue #709](https://github.com/fpcorso/quiz_master_next/issues/709))
+* Closed Bug: Blank page shown when contact fields and message fields are empty ([Issue #707](https://github.com/fpcorso/quiz_master_next/issues/707))
+
+= 6.0.1 (July 11, 2018) =
+* Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/fpcorso/quiz_master_next/issues/704))
+
+= 6.0.0 (June 20, 2018) =
+* Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/fpcorso/quiz_master_next/issues/689))
+* Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/fpcorso/quiz_master_next/issues/607))
+* Closed Enhancement: Move Leaderboards to free addon ([Issue #380](https://github.com/fpcorso/quiz_master_next/issues/380))
+
 = 5.3.2 (June 7, 2018) =
 * Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://github.com/fpcorso/quiz_master_next/issues/686))
 
