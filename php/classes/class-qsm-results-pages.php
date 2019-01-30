@@ -12,14 +12,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This class contains functions for loading, saving, and generating results pages.
  *
- * @since 6.1.0
+ * @since 6.2.0
  */
 class QSM_Results_Pages {
 
 	/**
 	 * Creates the HTML for the results page.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param array $response_data The data for the user's submission.
 	 * @return string The HTML for the page to be displayed.
 	 */
@@ -163,7 +163,7 @@ class QSM_Results_Pages {
 	/**
 	 * Loads the results pages for a single quiz.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param int $quiz_id The ID for the quiz.
 	 * @return bool|array The array of pages or false.
 	 */
@@ -292,7 +292,7 @@ class QSM_Results_Pages {
 	/**
 	 * Saves the results pages for a quiz.
 	 *
-	 * @since 6.1.0
+	 * @since 6.2.0
 	 * @param int   $quiz_id The ID for the quiz.
 	 * @param array $pages The results pages to be saved.
 	 * @return bool True or false depending on success.

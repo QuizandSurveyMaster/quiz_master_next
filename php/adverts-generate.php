@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * The advertisements are randomly generated every time the page is loaded. The function also handles the CSS for this.
  *
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_show_adverts() {
 

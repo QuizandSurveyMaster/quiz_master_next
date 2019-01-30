@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This function generates the help page.
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_generate_help_page() {
 	if ( ! current_user_can( 'moderate_comments' ) ) {

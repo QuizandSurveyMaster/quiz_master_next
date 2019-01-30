@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds the Options tab to the Quiz Settings page.
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_settings_options_tab() {
 	global $mlwQuizMasterNext;
@@ -19,7 +19,7 @@ add_action( 'plugins_loaded', 'qsm_settings_options_tab', 5 );
  * Adds the options content to the Quiz Settings page.
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_options_option_tab_content() {
 	global $wpdb;

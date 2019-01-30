@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * This function shows the about page. It also shows the changelog information.
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_generate_about_page() {
 

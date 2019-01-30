@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Adds the Settings Preview tab to the Quiz Settings page.
  *
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_settings_preview_tab() {
 	global $mlwQuizMasterNext;
@@ -23,7 +23,7 @@ add_action( 'plugins_loaded', 'qsm_settings_preview_tab', 5 );
 /**
  * Adds the options preview content to the Options preview tab.
  *
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_options_preview_tab_content() {
 	?>

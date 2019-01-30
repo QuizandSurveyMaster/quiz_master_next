@@ -103,7 +103,7 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 /**
  * Gets results pages for a quiz.
  *
- * @since 6.1.0
+ * @since 6.2.0
  * @param WP_REST_Request $request The request sent from WP REST API.
  * @return array The pages for the quiz.
  */
@@ -128,7 +128,7 @@ function qsm_rest_get_results( WP_REST_Request $request ) {
 /**
  * Gets results pages for a quiz.
  *
- * @since 6.1.0
+ * @since 6.2.0
  * @param WP_REST_Request $request The request sent from WP REST API.
  * @return array The results from saving the pages.
  */

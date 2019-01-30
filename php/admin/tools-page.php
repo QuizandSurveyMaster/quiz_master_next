@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Generates all of the quiz tools that are used
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_generate_quiz_tools() {
 	if ( ! current_user_can( 'moderate_comments' ) ) {
@@ -40,7 +40,7 @@ function qsm_generate_quiz_tools() {
  * Allows the admin to restore a deleted quiz
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_restore_function() {
 	global $wpdb;
@@ -111,7 +111,7 @@ function qsm_restore_function() {
  * Creates the tools page that is used to make audits on the quizzes.
  *
  * @return void
- * @since 6.1.0
+ * @since 6.2.0
  */
 function qsm_audit_box() {
 	global $wpdb;
