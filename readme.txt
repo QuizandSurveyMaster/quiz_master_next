@@ -111,7 +111,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.2.0 (January 25, 2019) =
+= 6.2.0 (January 31, 2019) =
 * Closed Enhancement: Create new alert system on quiz options page ([Issue #754](https://github.com/fpcorso/quiz_master_next/issues/754))
 * Closed Bug: No access allowed when clicking "Support" from plugins page ([Issue #753](https://github.com/fpcorso/quiz_master_next/issues/753))
 * Closed Bug: To many redirects ([Issue #745](https://github.com/fpcorso/quiz_master_next/issues/745))
