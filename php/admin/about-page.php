@@ -52,14 +52,14 @@ function qsm_generate_about_page() {
 		</div>
 		<div class="qsm-tab-content tab-2" style="display: none;">
 			<h2>Changelog</h2>
-			<?php QSM_Changelog_Generator::get_changelog_list( 'fpcorso/quiz_master_next', 56 ); ?>
+			<?php QSM_Changelog_Generator::get_changelog_list( 'QuizandSurveyMaster/quiz_master_next', 56 ); ?>
 		</div>
 		<div class="qsm-tab-content tab-3" style="display:none;">
 			<h2>GitHub Contributors</h2>
 			<?php
 			$contributors = get_transient( 'qmn_contributors' );
 			if ( false === $contributors ) {
-				$response = wp_remote_get( 'https://api.github.com/repos/fpcorso/quiz_master_next/contributors', array( 'sslverify' => false ) );
+				$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
 				if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
 					$contributors = array();
 				} else {
@@ -86,7 +86,7 @@ function qsm_generate_about_page() {
 				echo $contributor_list;
 			}
 			?>
-			<a href="https://github.com/fpcorso/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
+			<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
 		</div>
 	</div>
 <?php

@@ -10,7 +10,7 @@ __Please Note:__ GitHub is not intended for support based questions. For those, 
 * Make sure you have a free [GitHub Account](https://github.com/signup/free)
 
 ## Creating Issues
-* If you have a bug report or feature request, please [create an issue](https://github.com/fpcorso/quiz_master_next/issues).
+* If you have a bug report or feature request, please [create an issue](https://github.com/QuizandSurveyMaster/quiz_master_next/issues).
 * For bug reports:
 	* Please follow the debug guidlines below and report findings
 	* Include what version of WordPress and what version of Quiz And Survey Master you are using
