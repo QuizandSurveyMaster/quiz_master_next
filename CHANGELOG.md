@@ -1,3 +1,15 @@
+= 6.1.2 (January 7, 2019) =
+* Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/750))
+* Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/749))
+* Updated getting started video
+
+= 6.1.1 (December 28, 2018) =
+* Fixes issue causing broken quizzes on sites using older versions of WordPress
+
+= 6.1.0 (December 26, 2018) =
+* Adds new Gutenberg blocks
+* Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/QuizandSurveyMaster/quiz_master_next/pull/746)!
+
 = 6.0.4 (October 2, 2018) =
 * Changes links from old documentation to newer documentation
 

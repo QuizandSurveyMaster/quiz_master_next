@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.0.2
 Requires PHP: 5.4
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,6 +111,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.2.1 (February 20, 2019) =
+* Fixes cut off submit button on mobile phone issue
+* Switches "Frank Corso" with "QSM Team" in relevant places
+
 = 6.2.0 (January 31, 2019) =
 * Closed Enhancement: Create new alert system on quiz options page ([Issue #754](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/754))
 * Closed Bug: No access allowed when clicking "Support" from plugins page ([Issue #753](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/753))
@@ -119,21 +123,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Closed Enhancement: Rewrite emails to allow for different conditions ([Issue #379](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/379))
 * Closed Enhancement: Rewrite results pages to allow for different conditions ([Issue #378](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/378))
 
-= 6.1.2 (January 7, 2019) =
-* Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/750))
-* Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/749))
-* Updated getting started video
-
-= 6.1.1 (December 28, 2018) =
-* Fixes issue causing broken quizzes on sites using older versions of WordPress
-
-= 6.1.0 (December 26, 2018) =
-* Adds new Gutenberg blocks
-* Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/QuizandSurveyMaster/quiz_master_next/pull/746)!
-
 ([Read Full Changelog](https://github.com/QuizandSurveyMaster/quiz_master_next/blob/master/CHANGELOG.md))
 
 == Upgrade Notice ==
 
-= 6.0.3 =
-Upgrade for several bug fixes
+= 6.2.1 =
+Upgrade to fix cut submit button on mobile issue
