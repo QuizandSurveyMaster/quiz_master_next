@@ -1,48 +1,60 @@
+= 6.1.2 (January 7, 2019) =
+* Closed User Request: Add special character selector to question editor ([Issue #750](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/750))
+* Closed User Request: Add total questions and total pages to Questions tab ([Issue #749](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/749))
+* Updated getting started video
+
+= 6.1.1 (December 28, 2018) =
+* Fixes issue causing broken quizzes on sites using older versions of WordPress
+
+= 6.1.0 (December 26, 2018) =
+* Adds new Gutenberg blocks
+* Fixes undefined access at delete_question static function (Thanks [bpanatta](https://github.com/QuizandSurveyMaster/quiz_master_next/pull/746)!
+
 = 6.0.4 (October 2, 2018) =
 * Changes links from old documentation to newer documentation
 
 = 6.0.3 (August 20, 2018) =
-* Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/fpcorso/quiz_master_next/issues/583))
-* Closed Bug: If user refreshes quiz page when timer is at 0, cannot submit ([Issue #501](https://github.com/fpcorso/quiz_master_next/issues/501))
-* Closed Bug: Saving quiz name when editing results in error if no changes are made ([Issue #391](https://github.com/fpcorso/quiz_master_next/issues/391))
+* Closed Bug: User gets 'trapped' if timer runs out on required question when questions are paginated ([Issue #583](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/583))
+* Closed Bug: If user refreshes quiz page when timer is at 0, cannot submit ([Issue #501](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/501))
+* Closed Bug: Saving quiz name when editing results in error if no changes are made ([Issue #391](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/391))
 * Adds deprecated notice to the quiz setting functions found in the quizCreator object
 * Adds hook after results are stored in the database
 
 = 6.0.2 (July 18, 2018) =
-* Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/fpcorso/quiz_master_next/issues/711))
-* Closed Bug: Timer not working on certain sites when using questions per page option ([Issue #709](https://github.com/fpcorso/quiz_master_next/issues/709))
-* Closed Bug: Blank page shown when contact fields and message fields are empty ([Issue #707](https://github.com/fpcorso/quiz_master_next/issues/707))
+* Closed Bug: PHP warning thrown on Help page ([Issue #711](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/711))
+* Closed Bug: Timer not working on certain sites when using questions per page option ([Issue #709](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/709))
+* Closed Bug: Blank page shown when contact fields and message fields are empty ([Issue #707](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/707))
 
 = 6.0.1 (July 11, 2018) =
-* Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/fpcorso/quiz_master_next/issues/704))
+* Closed Bug: Quiz comment box shows HTML in label when using newer pagination system ([Issue #704](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/704))
 
 = 6.0.0 (June 20, 2018) =
-* Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/fpcorso/quiz_master_next/issues/689))
-* Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/fpcorso/quiz_master_next/issues/607))
-* Closed Enhancement: Move Leaderboards to free addon ([Issue #380](https://github.com/fpcorso/quiz_master_next/issues/380))
+* Closed Enhancement: Remove Tools tab ([Issue #689](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/689))
+* Closed Enhancement: Bump Minimum PHP Version To 5.4 ([Issue #607](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/607))
+* Closed Enhancement: Move Leaderboards to free addon ([Issue #380](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/380))
 
 = 5.3.2 (June 7, 2018) =
-* Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://github.com/fpcorso/quiz_master_next/issues/686))
+* Closed Plugin Compatibility: Conflict with Divi Builder ([Issue #686](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/686))
 
 = 5.3.1 (May 21, 2018) =
-* Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/fpcorso/quiz_master_next/issues/682))
-* Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/fpcorso/quiz_master_next/issues/681))
+* Closed Enhancement: Add user ID to admin results page table - ([Issue #682](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/682))
+* Closed Enhancement: Integrate with WordPress 4.9.6 GDPR features - ([Issue #681](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/681))
 
 = 5.3.0 (May 16, 2018) =
-* Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/fpcorso/quiz_master_next/issues/670))
-* Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/fpcorso/quiz_master_next/issues/666))
-* Closed User Request: Progress Bar - ([Issue #412](https://github.com/fpcorso/quiz_master_next/issues/412))
-* Closed User Request: Disable Results Being Stored In Database - ([Issue #215](https://github.com/fpcorso/quiz_master_next/issues/215))
-* Closed Bug: Question ordering doesn't work when using older pagination option - ([Issue #657](https://github.com/fpcorso/quiz_master_next/issues/657))
+* Closed Enhancement: Ability to disable IP address collection - ([Issue #670](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/670))
+* Closed User Request: Ability to customize name of QSM archive name - ([Issue #666](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/666))
+* Closed User Request: Progress Bar - ([Issue #412](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/412))
+* Closed User Request: Disable Results Being Stored In Database - ([Issue #215](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/215))
+* Closed Bug: Question ordering doesn't work when using older pagination option - ([Issue #657](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/657))
 
 = 5.2.4 (May 7, 2018) =
-* Closed Bug: %QUESTIONS_ANSWERS% variable is displaying questions in order of creation - ([Issue #660](https://github.com/fpcorso/quiz_master_next/issues/660))
-* Closed Bug: Extra spacing is being added to questions when multiple lines are in question - ([Issue #659](https://github.com/fpcorso/quiz_master_next/issues/659))
-* Closed Bug: Tabs pages stop working when translated - ([Issue #582](https://github.com/fpcorso/quiz_master_next/issues/582))
+* Closed Bug: %QUESTIONS_ANSWERS% variable is displaying questions in order of creation - ([Issue #660](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/660))
+* Closed Bug: Extra spacing is being added to questions when multiple lines are in question - ([Issue #659](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/659))
+* Closed Bug: Tabs pages stop working when translated - ([Issue #582](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/582))
 
 = 5.2.3 (April 3, 2018) =
-* Closed Bug: Cannot save question on certain servers - ([Issue #651](https://github.com/fpcorso/quiz_master_next/issues/651))
-* Closed Bug: Questions/Answers Template Not Loaded In Admin Results Page - ([Issue #636](https://github.com/fpcorso/quiz_master_next/issues/636))
+* Closed Bug: Cannot save question on certain servers - ([Issue #651](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/651))
+* Closed Bug: Questions/Answers Template Not Loaded In Admin Results Page - ([Issue #636](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/636))
 
 = 5.2.2 (April 1, 2018) =
 * Makes minor style adjustments
@@ -55,85 +67,85 @@
 * Makes minor style adjustments
 
 = 5.2.0 (March 3, 2018) =
-* Closed Enhancement: Make Quiz Results Extendable/Filterable - ([Issue #622](https://github.com/fpcorso/quiz_master_next/issues/622))
-* Closed Enhancement: New Question Editor - ([Issue #568](https://github.com/fpcorso/quiz_master_next/issues/568))
-* Closed Bug: Pagination Bug - ([Issue #477](https://github.com/fpcorso/quiz_master_next/issues/477))
-* Closed Bug: Questions shift - ([Issue #467](https://github.com/fpcorso/quiz_master_next/issues/467))
-* Closed User Request: Remove duplicate question popup confirmation - ([Issue #396](https://github.com/fpcorso/quiz_master_next/issues/396))
-* Closed User Request: Question Grouping - ([Issue #356](https://github.com/fpcorso/quiz_master_next/issues/356))
-* Closed User Request: Ability To Move Submit Button To Last Question Page - ([Issue #321](https://github.com/fpcorso/quiz_master_next/issues/321))
+* Closed Enhancement: Make Quiz Results Extendable/Filterable - ([Issue #622](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/622))
+* Closed Enhancement: New Question Editor - ([Issue #568](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/568))
+* Closed Bug: Pagination Bug - ([Issue #477](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/477))
+* Closed Bug: Questions shift - ([Issue #467](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/467))
+* Closed User Request: Remove duplicate question popup confirmation - ([Issue #396](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/396))
+* Closed User Request: Question Grouping - ([Issue #356](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/356))
+* Closed User Request: Ability To Move Submit Button To Last Question Page - ([Issue #321](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/321))
 
 = 5.1.7 (January 2, 2018) =
-* Closed Bug: Quizzes/Surveys table not working on certain installs - ([Issue #598](https://github.com/fpcorso/quiz_master_next/issues/598))
+* Closed Bug: Quizzes/Surveys table not working on certain installs - ([Issue #598](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/598))
 
 = 5.1.6 (December 25, 2017) =
-* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/fpcorso/quiz_master_next/issues/606))
-* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/fpcorso/quiz_master_next/issues/603))
+* Closed Bug: Timezone ID '' is invalid - ([Issue #606](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/606))
+* Closed Bug: Required contact fields not working correctly when the loggedin_user_contact option is set to no - ([Issue #603](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/603))
 
 = 5.1.5 (November 27, 2017) =
 * IMPORTANT FIX: 5.1.4 had a fatal error for sites using out of date PHP versions. Please update to this!
 
 = 5.1.4 (November 27, 2017) =
-* Closed Bug: Headers already sent message - ([Issue #596](https://github.com/fpcorso/quiz_master_next/issues/596))
-* Closed Bug: Styling for hints is missing causing them to be hard to read - ([Issue #587](https://github.com/fpcorso/quiz_master_next/issues/587))
+* Closed Bug: Headers already sent message - ([Issue #596](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/596))
+* Closed Bug: Styling for hints is missing causing them to be hard to read - ([Issue #587](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/587))
 
 = 5.1.3 (November 18, 2017) =
-* Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/fpcorso/quiz_master_next/issues/590))
-* Closed Bug: Fatal error: Call to a member function register_question_type - ([Issue #509](https://github.com/fpcorso/quiz_master_next/issues/509))
+* Closed Bug: MathJax library not loading - ([Issue #590](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/590))
+* Closed Bug: Fatal error: Call to a member function register_question_type - ([Issue #509](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/509))
 
 = 5.1.2 (October 17, 2017) =
-* Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/fpcorso/quiz_master_next/issues/580))
+* Closed Bug: Special characters fail the uppercase validation in open answer/fill in the blank questions - ([Issue #580](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/580))
 
 = 5.1.1 (October 4, 2017) =
-* Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/fpcorso/quiz_master_next/issues/578))
+* Closed Bug: Variable function names break Certificate addon - ([Issue #578](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/578))
 
 = 5.1.0 (October 2, 2017) =
-* Closed Enhancement: Add all active quizzes function to API - ([Issue #552](https://github.com/fpcorso/quiz_master_next/issues/552))
-* Closed User Request: Shortcode or variable for dynamic link to specific quiz/survey - ([Issue #524](https://github.com/fpcorso/quiz_master_next/issues/524))
-* Closed Enhancement: Use locale's date to generate date strings - ([Issue #479](https://github.com/fpcorso/quiz_master_next/issues/479))
-* Closed User Request: Allow users to change the date to European Date DD.MM.YYYY - ([Issue #439](https://github.com/fpcorso/quiz_master_next/issues/439))
-* Closed User Request: More Space in the Correct Answer Info textbox - ([Issue #417](https://github.com/fpcorso/quiz_master_next/issues/417))
+* Closed Enhancement: Add all active quizzes function to API - ([Issue #552](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/552))
+* Closed User Request: Shortcode or variable for dynamic link to specific quiz/survey - ([Issue #524](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/524))
+* Closed Enhancement: Use locale's date to generate date strings - ([Issue #479](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/479))
+* Closed User Request: Allow users to change the date to European Date DD.MM.YYYY - ([Issue #439](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/439))
+* Closed User Request: More Space in the Correct Answer Info textbox - ([Issue #417](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/417))
 
 = 5.0.7 (September 18, 2017) =
-* Closed Bug: Answers of "0" disappear when adding or editing questions - ([Issue #531](https://github.com/fpcorso/quiz_master_next/issues/531))
+* Closed Bug: Answers of "0" disappear when adding or editing questions - ([Issue #531](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/531))
 
 = 5.0.6 (August 1, 2017) =
-* Closed Bug: HTML Entities causing incorrect answers and missing user answer - ([Issue #565](https://github.com/fpcorso/quiz_master_next/issues/565))
+* Closed Bug: HTML Entities causing incorrect answers and missing user answer - ([Issue #565](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/565))
 
 = 5.0.5 (July 8, 2017) =
-* Closed Enhancement: Add notice for leaderboard removal - ([Issue #562](https://github.com/fpcorso/quiz_master_next/issues/562))
-* Closed Bug: Scheduled timeframe options are not working - ([Issue #558](https://github.com/fpcorso/quiz_master_next/issues/558))
+* Closed Enhancement: Add notice for leaderboard removal - ([Issue #562](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/562))
+* Closed Bug: Scheduled timeframe options are not working - ([Issue #558](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/558))
 
 = 5.0.4 (June 19, 2017) =
-* Closed Bug: Required fields are not checked 2nd time user takes quiz when timer is turned on ([Issue #528](https://github.com/fpcorso/quiz_master_next/issues/528))
-* Closed Enhancement: Ensure compatibility with WordPress 4.8 ([Issue #554](https://github.com/fpcorso/quiz_master_next/issues/554))
+* Closed Bug: Required fields are not checked 2nd time user takes quiz when timer is turned on ([Issue #528](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/528))
+* Closed Enhancement: Ensure compatibility with WordPress 4.8 ([Issue #554](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/554))
 
 = 5.0.3 (May 29, 2017) =
 * Minor code changes
 
 = 5.0.2 (May 7, 2017) =
-* Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/fpcorso/quiz_master_next/issues/541))
+* Closed Bug: Social sharing text not updating when user changes the text ([Issue #541](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/541))
 
 = 5.0.1 (March 27, 2017) =
-* Closed Bug: The setting to hide contact fields from logged-in users is hiding fields from visitors too ([Issue #535](https://github.com/fpcorso/quiz_master_next/issues/535))
+* Closed Bug: The setting to hide contact fields from logged-in users is hiding fields from visitors too ([Issue #535](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/535))
 
 = 5.0.0 (March 25, 2017) =
-* Closed Bug: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/fpcorso/quiz_master_next/issues/527))
-* Closed Enhancement: Change Shortcode To QSM ([Issue #515](https://github.com/fpcorso/quiz_master_next/issues/515))
-* Closed Enhancement: Search function for quizzes/surveys ([Issue #492](https://github.com/fpcorso/quiz_master_next/issues/492))
-* Closed Enhancement: Create new fields class to handle creation/post data of settings fields ([Issue #450](https://github.com/fpcorso/quiz_master_next/issues/450))
-* Closed Enhancement: Create new settings class to handle the settings data ([Issue #449](https://github.com/fpcorso/quiz_master_next/issues/449))
-* Closed Enhancement: Rewrite options system to allow for extendibility ([Issue #448](https://github.com/fpcorso/quiz_master_next/issues/448))
-* Closed Enhancement: Enable tabs for the admin results page ([Issue #408](https://github.com/fpcorso/quiz_master_next/issues/408))
-* Closed Enhancement: Create onboarding process ([Issue #397](https://github.com/fpcorso/quiz_master_next/issues/397))
-* Closed Enhancement: Create new contact tab to allow form creation ([Issue #394](https://github.com/fpcorso/quiz_master_next/issues/394))
-* Closed Enhancement: Move Certificate to free addon ([Issue #381](https://github.com/fpcorso/quiz_master_next/issues/381))
-* Closed Enhancement: Ability to add check box for privacy statement with the contact fields ([Issue #372](https://github.com/fpcorso/quiz_master_next/issues/372))
-* Closed Enhancement: Customize the "Please complete all required fields!" text ([Issue #371](https://github.com/fpcorso/quiz_master_next/issues/371))
-* Closed Enhancement: Allow admins to customize the validation error messages ([Issue #346](https://github.com/fpcorso/quiz_master_next/issues/346))
-* Closed Enhancement: Hint field cannot be customized ([Issue #262](https://github.com/fpcorso/quiz_master_next/issues/262))
-* Closed Enhancement: Add custom fields to the contact form ([Issue #211](https://github.com/fpcorso/quiz_master_next/issues/211))
-* Closed Enhancement: Scrollable List of Quizzes ([Issue #46](https://github.com/fpcorso/quiz_master_next/issues/46))
+* Closed Bug: Fix delete custom post types during uninstall bug ([Issue #527](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/527))
+* Closed Enhancement: Change Shortcode To QSM ([Issue #515](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/515))
+* Closed Enhancement: Search function for quizzes/surveys ([Issue #492](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/492))
+* Closed Enhancement: Create new fields class to handle creation/post data of settings fields ([Issue #450](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/450))
+* Closed Enhancement: Create new settings class to handle the settings data ([Issue #449](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/449))
+* Closed Enhancement: Rewrite options system to allow for extendibility ([Issue #448](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/448))
+* Closed Enhancement: Enable tabs for the admin results page ([Issue #408](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/408))
+* Closed Enhancement: Create onboarding process ([Issue #397](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/397))
+* Closed Enhancement: Create new contact tab to allow form creation ([Issue #394](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/394))
+* Closed Enhancement: Move Certificate to free addon ([Issue #381](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/381))
+* Closed Enhancement: Ability to add check box for privacy statement with the contact fields ([Issue #372](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/372))
+* Closed Enhancement: Customize the "Please complete all required fields!" text ([Issue #371](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/371))
+* Closed Enhancement: Allow admins to customize the validation error messages ([Issue #346](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/346))
+* Closed Enhancement: Hint field cannot be customized ([Issue #262](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/262))
+* Closed Enhancement: Add custom fields to the contact form ([Issue #211](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/211))
+* Closed Enhancement: Scrollable List of Quizzes ([Issue #46](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/46))
 
 = 4.7.10 (January 1, 2017) =
   * Closed Bug: Edit question not working when visual editor is off - Issue #497
@@ -233,21 +245,21 @@
  * Bug fix for rare bug preventing IE usage on a small number of sites
 
 = 4.6.0 (October 20, 2015) =
- * Adds new dynamic form submission ([Github Issue #206](https://github.com/fpcorso/quiz_master_next/issues/206))
- * Adds new From email address option ([Github Issue #312](https://github.com/fpcorso/quiz_master_next/issues/312))
+ * Adds new dynamic form submission ([Github Issue #206](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/206))
+ * Adds new From email address option ([Github Issue #312](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/312))
  * Adds new Reply-To admin email option
- * Fixed timer issue that started timer but prevent access to next page ([Github Issue #302](https://github.com/fpcorso/quiz_master_next/issues/302))
- * Fixes redirect bug that prevented submissions from saving ([Github Issue #201](https://github.com/fpcorso/quiz_master_next/issues/201))
- * Fixes required question bug that prevented multiple quizzes/surveys on one page ([Github Issue #304](https://github.com/fpcorso/quiz_master_next/issues/304))
+ * Fixed timer issue that started timer but prevent access to next page ([Github Issue #302](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/302))
+ * Fixes redirect bug that prevented submissions from saving ([Github Issue #201](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/201))
+ * Fixes required question bug that prevented multiple quizzes/surveys on one page ([Github Issue #304](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/304))
  * Re-wrote front-end JavaScript to fix a variety of smaller bugs
  * Renamed several file names and functions to align more with WordPress coding standards
 
 = 4.5.5 (October 1, 2015) =
  * Adds 4 new style templates to choose from
- * Fixes Dutch translation ([Github Issue #285](https://github.com/fpcorso/quiz_master_next/issues/285))
- * Fixes quiz results losing search filters after first page ([Github Issue #293](https://github.com/fpcorso/quiz_master_next/issues/293))
- * Fixes question drag and drop not working on certain installs ([Github Issue #295](https://github.com/fpcorso/quiz_master_next/issues/295))
- * Fixes Required? question setting where the Yes or No value did not show when editing ([Github Issue #296](https://github.com/fpcorso/quiz_master_next/issues/296))
+ * Fixes Dutch translation ([Github Issue #285](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/285))
+ * Fixes quiz results losing search filters after first page ([Github Issue #293](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/293))
+ * Fixes question drag and drop not working on certain installs ([Github Issue #295](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/295))
+ * Fixes Required? question setting where the Yes or No value did not show when editing ([Github Issue #296](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/296))
 
 = 4.5.4 (September 3, 2015) =
  * Rebrand as Quiz And Survey Master
@@ -255,22 +267,22 @@
  * Fixes leaderboard widget bug
 
 = 4.5.3 (August 21, 2015) =
- * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #277](https://github.com/fpcorso/quiz_master_next/issues/277))
+ * Fixed an issue where Quiz Views and Quiz Taken stats in the Quizzes screen was reseting to 1 instead of 0. ([Github Issue #277](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/277))
 
 = 4.5.2 (August 14, 2015) =
  * Ensured compatibility with Wordpress version 4.3
- * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/fpcorso/quiz_master_next/issues/270))
+ * Fixed an issue when Contact details are set to Required and the user leaves the fields blank the quiz is still allowed to gets submitted in IE. ([Github Issue #270](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/270))
 
 = 4.5.1 (August 12, 2015) =
  * Fixes parse error on hosts with older PHP versions
 
 = 4.5.0 (August 11, 2015) =
-  * Added a brand new log system to track errors in the plugin. ([Github Issue #233](https://github.com/fpcorso/quiz_master_next/issues/233))
-  * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/fpcorso/quiz_master_next/issues/235))
-  * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/fpcorso/quiz_master_next/issues/234))
-  * Added new classes for Correct/Incorrect Answers. ([Github Issue #228](https://github.com/fpcorso/quiz_master_next/issues/228))
-  * Added ability to sort the results. ([Github Issue #167](https://github.com/fpcorso/quiz_master_next/issues/167))
-  * Added the ability to search quiz results by quiz name, score, time taken, and completion time. ([Github Issue #70](https://github.com/fpcorso/quiz_master_next/issues/70))
+  * Added a brand new log system to track errors in the plugin. ([Github Issue #233](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/233))
+  * Added the ability to drag and drop questions when creating your quiz. ([Github Issue #235](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/235))
+  * Added new CSS template system for quizzes. ([Github Issue #234](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/234))
+  * Added new classes for Correct/Incorrect Answers. ([Github Issue #228](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/228))
+  * Added ability to sort the results. ([Github Issue #167](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/167))
+  * Added the ability to search quiz results by quiz name, score, time taken, and completion time. ([Github Issue #70](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/70))
   * Added the ability for developers to show only relevant fields when adding/editing questions on different question types.
   * Added new register template functions to the API.
   * Added a new contributor tab to the credits page.
@@ -287,8 +299,8 @@
   * Security Fix: Fixed possible sql injection from authenticated users on text and tools tabs
 
 = 4.4.2 (June 26, 2015) =
-  * Bug Fix: Fixed bug that caused issues with validation ([Github Issue #254](https://github.com/fpcorso/quiz_master_next/issues/254))
-  * Bug Fix: Fixed a rare permalink issue ([Github Issue #253](https://github.com/fpcorso/quiz_master_next/issues/253))
+  * Bug Fix: Fixed bug that caused issues with validation ([Github Issue #254](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/254))
+  * Bug Fix: Fixed a rare permalink issue ([Github Issue #253](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/253))
 
 = 4.4.1 (June 21, 2015) =
   * Bug Fix: Fixes validation bug from missing first page
@@ -297,13 +309,13 @@
   * Bug Fix: Fixes certificate site_url bug
 
 = 4.4.0 (June 11, 2015) =
- * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209](https://github.com/fpcorso/quiz_master_next/issues/209))
- * Eliminates first page if empty ([GitHub Issue #182](https://github.com/fpcorso/quiz_master_next/issues/182))
- * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181](https://github.com/fpcorso/quiz_master_next/issues/181))
- * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21](https://github.com/fpcorso/quiz_master_next/issues/21))
- * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220](https://github.com/fpcorso/quiz_master_next/issues/220))
- * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/fpcorso/quiz_master_next/issues/204))
- * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/fpcorso/quiz_master_next/issues/202))
+ * Added new template variable %TIMER_MINUTES% ([GitHub Issue #209](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/209))
+ * Eliminates first page if empty ([GitHub Issue #182](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/182))
+ * Timer now begins counting down after starting quiz if using pagination ([GitHub Issue #181](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/181))
+ * Amount Finished Compared To Amount In Quiz ([GitHub Issue #21](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/21))
+ * Bug Fix: Required Answers And Timer Doesn't Work Well Together ([GitHub Issue #220](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/220))
+ * Bug Fix: FPDF WriteHTML Path Not Being Created Correctly On Windows ([GitHub Issue #204](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/204))
+ * Bug Fix: Long quiz URL mangles page layout ([GitHub Issue #202](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/202))
  * Bug Fix: Fixed Support Widget bug where the support widget was not always submitting correctly.
 
 = 4.2.4 (April 1, 2015) =
@@ -323,29 +335,29 @@
  * Moved Redirect URL Back To Beta
 
 = 4.2.0 (March 7, 2015) =
- * Added Fill In The Blank Questions ([GitHub Issue #132](https://github.com/fpcorso/quiz_master_next/issues/132))
- * Created New Template Variables For Social Sharing ([GitHub Issue #121](https://github.com/fpcorso/quiz_master_next/issues/121))
- * Added Ability To Redirect To Other Page Upon Completion ([GitHub Issue #35](https://github.com/fpcorso/quiz_master_next/issues/35))
+ * Added Fill In The Blank Questions ([GitHub Issue #132](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/132))
+ * Created New Template Variables For Social Sharing ([GitHub Issue #121](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/121))
+ * Added Ability To Redirect To Other Page Upon Completion ([GitHub Issue #35](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/35))
  * Added Several Translations: da_DK, es_ES, nl_NL, pt_BR, and th
- * Bug Fix: Duplicate Quizzes Not Having URL ([GitHub Issue #144](https://github.com/fpcorso/quiz_master_next/issues/144))
- * Bug Fix: Message Sent Text ([GitHub Issue #142](https://github.com/fpcorso/quiz_master_next/issues/142))
- * Bug Fix: Missing Footer Column ([GitHub Issue #145](https://github.com/fpcorso/quiz_master_next/issues/145))
+ * Bug Fix: Duplicate Quizzes Not Having URL ([GitHub Issue #144](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/144))
+ * Bug Fix: Message Sent Text ([GitHub Issue #142](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/142))
+ * Bug Fix: Missing Footer Column ([GitHub Issue #145](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/145))
 
 = 4.1.0 (February 11, 2015) =
- * Added Ability To Restore Deleted Quizzes ([GitHub Issue #107](https://github.com/fpcorso/quiz_master_next/issues/107))
- * Added Ability To Multi-Delete Results ([GitHub Issue #4](https://github.com/fpcorso/quiz_master_next/issues/4))
- * Redesigned Admin Results Pages ([GitHub Issue #106](https://github.com/fpcorso/quiz_master_next/issues/106))
- * Added Ability To Go To Next/Previous Results ([GitHub Issue #71](https://github.com/fpcorso/quiz_master_next/issues/71))
- * Quizzes Now Have Direct URL And Archive ([GitHub Issue #104](https://github.com/fpcorso/quiz_master_next/issues/104))
- * Added Ability To Use Own Facebook App ID ([GitHub Issue #137](https://github.com/fpcorso/quiz_master_next/issues/137))
+ * Added Ability To Restore Deleted Quizzes ([GitHub Issue #107](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/107))
+ * Added Ability To Multi-Delete Results ([GitHub Issue #4](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/4))
+ * Redesigned Admin Results Pages ([GitHub Issue #106](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/106))
+ * Added Ability To Go To Next/Previous Results ([GitHub Issue #71](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/71))
+ * Quizzes Now Have Direct URL And Archive ([GitHub Issue #104](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/104))
+ * Added Ability To Use Own Facebook App ID ([GitHub Issue #137](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/137))
  * In Code: New Hook For Template Variable List
  * In Code: Certificate On Admin Results Now Hooked Into New Template Variable System
- * In Code: Converted Support Widget To Remote Post ([GitHub Issue #114](https://github.com/fpcorso/quiz_master_next/issues/114))
+ * In Code: Converted Support Widget To Remote Post ([GitHub Issue #114](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/114))
  * In Code: Added Uninstall File Direct Access Check
- * Bug Fix: Fixed Dashboard Widget No Quiz Bug ([GitHub Issue #119](https://github.com/fpcorso/quiz_master_next/issues/119))
- * Bug Fix: Fixed Shortcode No Quiz Bug ([GitHub Issue #120](https://github.com/fpcorso/quiz_master_next/issues/120))
- * Bug Fix: Fixed Required Contact User Bug ([GitHub Issue #123](https://github.com/fpcorso/quiz_master_next/issues/123))
- * Bug Fix: Fixed Text Template Bug ([GitHub Issue #117](https://github.com/fpcorso/quiz_master_next/issues/117))
+ * Bug Fix: Fixed Dashboard Widget No Quiz Bug ([GitHub Issue #119](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/119))
+ * Bug Fix: Fixed Shortcode No Quiz Bug ([GitHub Issue #120](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/120))
+ * Bug Fix: Fixed Required Contact User Bug ([GitHub Issue #123](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/123))
+ * Bug Fix: Fixed Text Template Bug ([GitHub Issue #117](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/117))
 
 = 4.0.1 (January 21, 2015) =
  * Results HTML Bug Fix

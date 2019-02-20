@@ -93,7 +93,7 @@ class QMN_Review_Message {
 		awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This
 		will help us by helping other users discover this plugin. %s', 'quiz_master_next'),
 			$this->trigger,
-			'<br /><strong><em>~ Frank Corso</em></strong><br /><br />'
+			'<br /><strong><em>~ QSM Team</em></strong><br /><br />'
 		);
 		echo '&nbsp;<a target="_blank" href="https://wordpress.org/support/plugin/quiz-master-next/reviews/#new-topic-0" class="button-primary">' . __( 'Yeah, you deserve it!', 'quiz-master-next' ) . '</a>';
 		echo '&nbsp;<a href="' . esc_url( $already_url ) . '" class="button-secondary">' . __( 'I already did!', 'quiz-master-next' ) . '</a>';

@@ -21,7 +21,7 @@ class QSM_Changelog_Generator {
 	 *
 	 * @since 4.7.0
 	 * @uses QSM_Changelog_Generator::get_changelog Used to retrieve the changelog from GitHub
-	 * @param string $repo The name of the GitHub repo. Should be similar to 'fpcorso/quiz_master_next'
+	 * @param string $repo The name of the GitHub repo. Should be similar to 'QuizandSurveyMaster/quiz_master_next'
 	 * @param int $milestone The number of the milestone in your GitHub repo
 	 * @param bool $echo Whether to echo or return the HTML list. Defaults to true
 	 * @return string The HTML list is returned if $echo is set to false
@@ -66,7 +66,7 @@ class QSM_Changelog_Generator {
    *
    * @since 4.7.0
    * @uses QSM_Changelog_Generator::api_call Used to retrieve the changelog from GitHub
-   * @param string $repo The name of the GitHub repo. Should be similar to 'fpcorso/quiz_master_next'
+   * @param string $repo The name of the GitHub repo. Should be similar to 'QuizandSurveyMaster/quiz_master_next'
    * @param int $milestone The number of the milestone in your GitHub repo
    * @return array An array of all the titles of closed issues for the milestone
    */

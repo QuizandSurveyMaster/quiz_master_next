@@ -305,7 +305,6 @@ border: 1px solid #e3e3e3;
 	flex-direction: column;
 	padding: 15px 0 15px 0;
 	border-top: 1px solid #f3f3f3;
-	max-height: 50px;
 }
 
 @media screen and (min-width: 500px) {
