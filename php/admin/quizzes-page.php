@@ -195,11 +195,11 @@ function qsm_generate_quizzes_surveys_page() {
 				?>
 				<div class="qsm-news-ads">
 					<h3 class="qsm-news-ads-title"><?php esc_html_e( 'QSM News', 'quiz-master-next' ); ?></h3>
-					<div class="qsm-info-widget">
+<!--					<div class="qsm-info-widget">
 						<h3>Keep your WordPress site healthy and secure!</h3>
 						<p>Easily monitor your WordPress sites to ensure they stay up, healthy, and secure with our new WordPress plugin, WP Health!</p>
 						<a target="_blank" href="http://bit.ly/2Mr2SqC" class="button-primary"><?php esc_html_e( 'Learn More', 'quiz-master-next' ); ?></a>
-					</div>
+					</div>-->
 					<div class="qsm-info-widget">
 						<h3><?php esc_html_e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
 						<p><?php esc_html_e( 'Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
