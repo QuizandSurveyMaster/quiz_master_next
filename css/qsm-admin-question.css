@@ -85,7 +85,7 @@
     margin-bottom: 5px;
 }
 
-.answers-single div {
+.answers-single > div {
     margin-left: 5px;
 }
 
@@ -312,4 +312,17 @@ from { transform: translateY(15%); }
 	margin: 1.5em;
 	overflow: hidden;
 	text-indent: 100%;
+}
+
+/**
+* Css for change-answer-editor-label
+*/
+.change-answer-editor-label{
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    font-weight: normal !important;
+}
+.change-answer-editor-label > #change-answer-editor{
+    width: auto;
 }

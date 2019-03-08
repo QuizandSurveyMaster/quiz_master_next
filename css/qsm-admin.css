@@ -594,3 +594,31 @@ from { transform: translateY(15%); }
 .qsm-popup-slide .qsm-popup__overlay {
 	will-change: transform;
 }
+
+/**
+* Shortcode accordion
+*/
+.sc-opener:after{
+    position: absolute;
+    content: '>';
+    top: 0;
+    left:0;
+}
+.sc-opener.active:after{
+    position: absolute;
+    content: '^';
+    top: 0;
+    left:0;
+}
+.sc-opener{
+    position: relative;
+    padding-left: 20px;
+}
+.sc-content{
+    display: none;
+}
+.quiz-preview-link{
+    margin-left: 10px;
+    position: relative;
+    top: 3px;
+}

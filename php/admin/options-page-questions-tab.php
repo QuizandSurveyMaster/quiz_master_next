@@ -145,6 +145,13 @@ function qsm_options_questions_tab_content() {
 
 						</div>
 						<a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
+                                                <label class="change-answer-editor-label">
+                                                    <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
+                                                    <select id="change-answer-editor">
+                                                        <option value="text">Text Answers</option>
+                                                        <option value="rich">Rich Answers</option>
+                                                    </select>
+                                                </label>                             
 					</div>
 					<div id="correct_answer_area" class="qsm-row">
 						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
@@ -233,7 +240,13 @@ function qsm_options_questions_tab_content() {
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
 			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
-			<div class="answer-text-div"><input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/></div>
+			<div class="answer-text-div">
+                            <# if ( 'rich' == data.answerType ) { #>
+                                <textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
+                            <# } else { #>
+                                <input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+                            <# } #>                                                        
+                        </div>
 			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<div><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #></div>
 		</div>

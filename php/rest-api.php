@@ -224,6 +224,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
 					'page'       => $question['page'],
+                                        'answerEditor'   => $question['settings']['answerEditor'],
 				);
 			}
 			return $question_array;
@@ -261,6 +262,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 				);
 				$settings = array(
 					'required' => $request['required'],
+                                        'answerEditor' => 'text'
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();
@@ -314,6 +316,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				);
 				$settings = array(
 					'required' => $request['required'],
+                                        'answerEditor' => $request['answer_editor']
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();

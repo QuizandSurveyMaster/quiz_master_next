@@ -118,5 +118,11 @@ var QSMQuizzesSurveys;
       $( '#delete-quiz-form' ).submit();
     });
     QSMQuizzesSurveys.load();
+    $(document).on('click','.sc-opener',function(){  
+        var $this = $(this);
+        $(this).next('.sc-content').slideToggle('slow', function() {
+            $this.toggleClass('active');
+        });
+    })
   });
 }(jQuery));

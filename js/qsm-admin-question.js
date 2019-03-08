@@ -249,18 +249,26 @@ var QSMQuestion;
 			if ( ! category ) {
 				category = '';
 			}
+                        var answerType = $('#change-answer-editor').val();
 			var answers = [];
 			var $answers = jQuery( '.answers-single');
 			_.each( $answers, function( answer ) {
 				var $answer = jQuery( answer );
-				var answer = $answer.find( '.answer-text' ).val();
+                                var answer = '';
+                                if(answerType == 'rich'){
+                                    var ta_id = $answer.find('textarea').attr('id')
+                                    answer = wp.editor.getContent( ta_id );                                    
+                                }else{
+                                    answer = $answer.find( '.answer-text' ).val();
+                                }
+				
 				var points = $answer.find( '.answer-points' ).val();
 				var correct = 0;
 				if ( $answer.find( '.answer-correct' ).prop( 'checked' ) ) {
 					correct = 1;
 				}
 				answers.push( [ answer, points, correct ] );
-			});
+			});                   
 			model.save( 
 				{ 
 					type: type,
@@ -271,6 +279,7 @@ var QSMQuestion;
 					category: category,
 					required: required,
 					answers: answers,
+                                        answer_editor: answerType,
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -289,8 +298,24 @@ var QSMQuestion;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewAnswer: function( answer ) {
-			var answerTemplate = wp.template( 'single-answer' );
-			$( '#answers' ).append( answerTemplate( { answer: answer[0], points: answer[1], correct: answer[2] } ) );
+			var answerTemplate = wp.template( 'single-answer' );                        
+			$( '#answers' ).append( answerTemplate( { answer: answer[0], points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
+                        if(answer[5] == 'rich'){
+                            var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
+                            wp.editor.remove( textarea_id );
+                            var settings = {
+                                mediaButtons: true,
+                                tinymce:      {
+                                        forced_root_block : '',
+                                        toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                                },
+                                quicktags:    true,
+                            };
+                            wp.editor.initialize( textarea_id, settings );
+                            var anser = QSMQuestion.prepareQuestionText(answer[0]);
+                            $( textarea_id ).val(anser);
+                            tinyMCE.get( textarea_id ).setContent( anser );
+                        }
 		},
 		openEditPopup: function( questionID ) {
 			QSMQuestion.prepareCategories();
@@ -298,7 +323,7 @@ var QSMQuestion;
 			var question = QSMQuestion.questions.get( questionID );
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
-			var question_editor = tinyMCE.get( 'question-text' );
+			var question_editor = tinyMCE.get( 'question-text' );                        
 			if ($('#wp-question-text-wrap').hasClass('html-active')) {
 				jQuery( "#question-text" ).val( questionText );
 			} else if ( question_editor ) {
@@ -309,14 +334,24 @@ var QSMQuestion;
 
 			$( '#answers' ).empty();
 			var answers = question.get( 'answers' );
+                        var answerEditor = question.get( 'answerEditor' );                        
+                        if( answerEditor === null || typeof answerEditor === "undefined" ){
+                            answerEditor = 'text';
+                        }
+                        var al = 0;
 			_.each( answers, function( answer ) {
-				QSMQuestion.addNewAnswer( answer );
+                            answer.push(al + 1);
+                            answer.push(questionID);
+                            answer.push(answerEditor);
+                            QSMQuestion.addNewAnswer( answer );
+                            al++;
 			});
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
 			$( "#comments" ).val( question.get( 'comments' ) );
 			$( "#required" ).val( question.get( 'required' ) );
+			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
@@ -392,8 +427,11 @@ var QSMQuestion;
 		});
 		$( '#new-answer-button' ).on( 'click', function( event ) {
 			event.preventDefault();
-			var answer = [ '', '', 0 ];
-			QSMQuestion.addNewAnswer( answer );
+                        var answer_length = $( '#answers' ).find('.answers-single').length;
+                        var question_id = $('#edit_question_id').val();
+                        var answerType = $('#change-answer-editor').val();
+			var answer = [ '', '', 0, answer_length + 1, question_id, answerType];
+			QSMQuestion.addNewAnswer( answer );                        
 		});
 
 		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
@@ -405,7 +443,21 @@ var QSMQuestion;
 			event.preventDefault();
 			QSMQuestion.savePages();
 		});
-
+                
+                $( document ).on( 'change', '#change-answer-editor', function( event ) {                    
+                    var newVal = $(this).val();
+                    if(confirm('All answer will be reset, Do you want to still continue?')){
+                        $('#answers').find( '.answers-single' ).remove();
+                    }else{
+                        if(newVal == 'rich'){
+                            $(this).val('text');
+                        }else{
+                            $(this).val('rich');
+                        }   
+                        return false;
+                    }
+		});
+                
 		// Adds event handlers for searching questions
 		$( '#question_search' ).on( 'keyup', function() {
 			$( '.question' ).each(function() {
