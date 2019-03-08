@@ -273,7 +273,7 @@ function qsm_results_overview_tab_content() {
 		<?php
 		if ( isset( $_GET["quiz_id"] ) ) {
 			?>
-			<input type="hidden" name="quiz_id" value="<?php echo $_GET["quiz_id"]; ?>" />
+			<input type="hidden" name="quiz_id" value="<?php echo intval($_GET["quiz_id"]); ?>" />
 			<?php
 		}
 		?>
