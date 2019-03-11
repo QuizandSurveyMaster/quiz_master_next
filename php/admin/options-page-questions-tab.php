@@ -153,35 +153,38 @@ function qsm_options_questions_tab_content() {
                                                     </select>
                                                 </label>                             
 					</div>
-					<div id="correct_answer_area" class="qsm-row">
+                                        <p id="show-advanced-option">Show advance option >></p>
+                                        <div class="advanced-content" style="display: none;">
+                                            <div id="correct_answer_area" class="qsm-row">
 						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
 						<input type="text" name="correct_answer_info" value="" id="correct_answer_info" />
-					</div>
-					<div id="hint_area" class="qsm-row">
-						<label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
-						<input type="text" name="hint" value="" id="hint"/>
-					</div>
-					<div id="comment_area" class="qsm-row">
-						<label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
-						<select name="comments" id="comments">
-							<option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
-							<option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
-							<option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
-						<select>
-					</div>
-					<div id="required_area" class="qsm-row">
-						<label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
-						<select name="required" id="required">
-							<option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-							<option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-						</select>
-					</div>
-					<div id="category_area" class="qsm-row">
-						<label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
-						<div id="categories">
-							<input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
-						</div>
-					</div>
+                                            </div>
+                                            <div id="hint_area" class="qsm-row">
+                                                    <label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
+                                                    <input type="text" name="hint" value="" id="hint"/>
+                                            </div>
+                                            <div id="comment_area" class="qsm-row">
+                                                    <label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
+                                                    <select name="comments" id="comments">
+                                                            <option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
+                                                            <option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
+                                                            <option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
+                                                    <select>
+                                            </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
+                                                    <select name="required" id="required">
+                                                            <option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                            <option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                    </select>
+                                            </div>
+                                            <div id="category_area" class="qsm-row">
+                                                    <label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
+                                                    <div id="categories">
+                                                            <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
+                                                    </div>
+                                            </div>
+                                        </div>					
 				</main>
 				<footer class="qsm-popup__footer">
 					<button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>

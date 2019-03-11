@@ -29,7 +29,7 @@ function qsm_show_adverts() {
 		switch ( $rand_int ) {
 			case 0:
 				// WP Health.
-				$ad_text = 'Want to make sure your site is healthy, secure, and live? Check out our new free WordPress plugin: <a href="https://wordpress.org/plugins/my-wp-health-check/" target="_blank">WP Health</a>!';
+				$ad_text = '';
 				break;
 			case 1:
 				// Continued development 1.

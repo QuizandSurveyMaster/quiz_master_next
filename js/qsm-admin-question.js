@@ -494,5 +494,19 @@ var QSMQuestion;
 		});
 		QSMQuestion.prepareEditor();
 		QSMQuestion.loadQuestions();
+                
+                /**
+                 * Hide/show advanced option
+                 */
+                $(document).on('click','#show-advanced-option',function(){
+                    var $this = $(this);
+                    $(this).next('div.advanced-content').slideToggle('slow',function(){
+                        if ($(this).is(':visible')) {
+                            $this.text('').text('Hide advance option >>');                
+                        } else {
+                            $this.text('').text('Show advance option >>');
+                        }  
+                    });
+                });
 	});
 }(jQuery));

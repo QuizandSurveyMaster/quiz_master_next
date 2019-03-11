@@ -622,3 +622,10 @@ from { transform: translateY(15%); }
     position: relative;
     top: 3px;
 }
+
+#show-advanced-option{
+    font-size: 16px;
+    cursor: pointer;
+    color: #0073aa;
+    margin-bottom: 15px;
+}
