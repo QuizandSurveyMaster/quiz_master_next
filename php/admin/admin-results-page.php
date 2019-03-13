@@ -23,7 +23,7 @@ function qsm_generate_admin_results_page() {
 
 	?>
 	<div class="wrap">
-		<h2><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
+		<h2><?php esc_html_e( 'Quiz Results', 'quiz-master-next' ); ?></h2>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
@@ -108,7 +108,7 @@ function qsm_results_overview_tab_content() {
 			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There was an error when deleting this result. Error from WordPress: %s', 'quiz-master-next' ), $error ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( __('Your results has been deleted successfully.','quiz-master-next'), 'success');
+			$mlwQuizMasterNext->alertManager->newAlert( __('Your results has been deleted successfully.','quiz-master-next' ), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name" );
 			
 		}
@@ -221,7 +221,7 @@ function qsm_results_overview_tab_content() {
 			<a href="javascript: document.bulk_delete_form.submit();" class="button action">Bulk Delete</a>
 		</div>
 		<div class="tablenav-pages">
-			<span class="displaying-num"><?php echo sprintf(_n('One result', '%s results', $qsm_results_count, 'quiz-master-next'), number_format_i18n($qsm_results_count)); ?></span>
+			<span class="displaying-num"><?php echo sprintf(_n('One result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n($qsm_results_count)); ?></span>
 			<span class="pagination-links">
 				<?php
 				$mlw_qmn_previous_page = 0;
@@ -278,66 +278,66 @@ function qsm_results_overview_tab_content() {
 	</div>
 	<form action='' method="get">
 		<?php
-		if ( isset( $_GET["quiz_id"] ) ) {
+		if ( isset( $_GET['quiz_id'] ) ) {
 			?>
-			<input type="hidden" name="quiz_id" value="<?php echo intval($_GET["quiz_id"]); ?>" />
+			<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
 			<?php
 		}
 		?>
 		<input type="hidden" name="page" value="mlw_quiz_results">
 		<p class="search-box">
-			<label for="qsm_search_phrase"><?php _e( 'Search Results', 'quiz-master-next' ); ?></label>
+			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
 			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
-			<label for="qmn_order_by"><?php _e( 'Order By', 'quiz-master-next' ); ?></label>
+			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
 			<select id="qmn_order_by" name="qmn_order_by">
-				<option value="quiz_name"><?php _e( 'Quiz Name', 'quiz-master-next' ); ?></option>
-				<option value="name"><?php _e( 'User Name', 'quiz-master-next' ); ?></option>
-				<option value="point_score"><?php _e( 'Points', 'quiz-master-next' ); ?></option>
-				<option value="correct_score"><?php _e( 'Correct Percent', 'quiz-master-next' ); ?></option>
-				<option value="default"><?php _e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+				<option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
+				<option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
+				<option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
+				<option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
+				<option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
 			</select>
-			<button class="button"><?php _e( 'Search Results', 'quiz-master-next' ); ?></button>
+			<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
 		</p>
 	</form>
 	<form action="" method="post" name="bulk_delete_form">
 		<input type="hidden" name="bulk_delete" value="confirmation" />
-		<?php wp_nonce_field('bulk_delete','bulk_delete_nonce'); ?>
+		<?php wp_nonce_field( 'bulk_delete','bulk_delete_nonce' ); ?>
 		<table class=widefat>
 			<thead>
 				<tr>
 					<th><input type="checkbox" id="qmn_check_all" /></th>
-					<th><?php _e('Actions','quiz-master-next'); ?></th>
-					<th><?php _e('Quiz Name','quiz-master-next'); ?></th>
-					<th><?php _e('Score','quiz-master-next'); ?></th>
-					<th><?php _e('Time To Complete','quiz-master-next'); ?></th>
-					<th><?php _e('Name','quiz-master-next'); ?></th>
-					<th><?php _e('Business','quiz-master-next'); ?></th>
-					<th><?php _e('Email','quiz-master-next'); ?></th>
-					<th><?php _e('Phone','quiz-master-next'); ?></th>
-					<th><?php _e('User','quiz-master-next'); ?></th>
-					<th><?php _e('Time Taken','quiz-master-next'); ?></th>
-					<th><?php _e('IP Address','quiz-master-next'); ?></th>
+					<th><?php esc_html_e( 'Actions','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Quiz Name','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Score','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Time To Complete','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Name','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Business','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Email','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Phone','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'User','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'Time Taken','quiz-master-next' ); ?></th>
+					<th><?php esc_html_e( 'IP Address','quiz-master-next' ); ?></th>
 				</tr>
 			</thead>
 			<?php
 			$quotes_list = "";
 			$display = "";
 			$alternate = "";
-			foreach($mlw_quiz_data as $mlw_quiz_info) {
-				if($alternate) $alternate = "";
-				else $alternate = " class=\"alternate\"";
+			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
+				if ( $alternate ) {
+					$alternate = '';
+				} else {
+					$alternate = ' class="alternate"';
+				}
 				$mlw_complete_time = '';
 				$mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);
-				if (is_array($mlw_qmn_results_array))
-				{
+				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
-					if ($mlw_complete_hours > 0)
-					{
+					if ( $mlw_complete_hours > 0 ) {
 						$mlw_complete_time .= "$mlw_complete_hours hours ";
 					}
 					$mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
-					if ($mlw_complete_minutes > 0)
-					{
+					if ( $mlw_complete_minutes > 0 ) {
 						$mlw_complete_time .= "$mlw_complete_minutes minutes ";
 					}
 					$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
@@ -348,17 +348,14 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";
 				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
-				if ($mlw_quiz_info->quiz_system == 0)
-				{
+				if ( $mlw_quiz_info->quiz_system == 0 ) {
 					$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
 				}
-				if ($mlw_quiz_info->quiz_system == 1)
-				{
+				if ( $mlw_quiz_info->quiz_system == 1 ) {
 					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
 				}
-				if ($mlw_quiz_info->quiz_system == 2)
-				{
-					$quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next')."</span></td>";
+				if ( $mlw_quiz_info->quiz_system == 2 ) {
+					$quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next' )."</span></td>";
 				}
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name ."</span></td>";
@@ -383,12 +380,12 @@ function qsm_results_overview_tab_content() {
 	</form>
 
 	<div id="delete_dialog" title="Delete Results?" style="display:none;">
-		<h3><b><?php _e('Are you sure you want to delete these results?','quiz-master-next'); ?></b></h3>
+		<h3><b><?php esc_html_e( 'Are you sure you want to delete these results?','quiz-master-next' ); ?></b></h3>
 		<form action='' method='post'>
 			<?php wp_nonce_field( 'delete_results','delete_results_nonce' ); ?>
 			<input type='hidden' id='result_id' name='result_id' value='' />
 			<input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />
-			<p class='submit'><input type='submit' class='button-primary' value='<?php _e('Delete Results','quiz-master-next'); ?>' /></p>
+			<p class='submit'><input type='submit' class='button-primary' value='<?php esc_html_e( 'Delete Results','quiz-master-next' ); ?>' /></p>
 		</form>
 	</div>
 <?php
