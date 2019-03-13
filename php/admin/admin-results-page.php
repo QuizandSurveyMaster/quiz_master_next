@@ -148,10 +148,10 @@ function qsm_results_overview_tab_content() {
 	$order_by_sql        = 'ORDER BY result_id DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
-		$search_phrase          = sanitize_text_field( $_GET['qsm_search_phrase'] );
-		$search_phrase_percents = '%' . $wpdb->esc_like( $search_phrase ) . '%';
-		$search_phrase_sql      = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
-		$qsm_results_count      = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)", $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents ) );
+		$sanitized_search_phrase = sanitize_text_field( $_GET['qsm_search_phrase'] );
+		$search_phrase_percents  = '%' . $wpdb->esc_like( $sanitized_search_phrase ) . '%';
+		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
+		$qsm_results_count       = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)", $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents ) );
 	} else {
 		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = '0'" );
 	}
@@ -160,18 +160,23 @@ function qsm_results_overview_tab_content() {
 	if ( isset( $_GET['qmn_order_by'] ) ) {
 		switch ( $_GET['qmn_order_by'] ) {
 			case 'quiz_name':
+				$order_by     = 'quiz_name';
 				$order_by_sql = ' ORDER BY quiz_name DESC';
 				break;
 			case 'name':
+				$order_by     = 'name';
 				$order_by_sql = ' ORDER BY name DESC';
 				break;
 			case 'point_score':
+				$order_by     = 'point_score';
 				$order_by_sql = ' ORDER BY point_score DESC';
 				break;
 			case 'correct_score':
+				$order_by     = 'correct_score';
 				$order_by_sql = ' ORDER BY correct_score DESC';
 				break;
 			default:
+				$order_by     = 'quiz_name';
 				$order_by_sql = ' ORDER BY result_id DESC';
 		}
 	}
@@ -226,50 +231,46 @@ function qsm_results_overview_tab_content() {
 				<?php
 				$mlw_qmn_previous_page = 0;
 				$mlw_current_page = $result_page+1;
-				$mlw_total_pages = ceil($qsm_results_count/$table_limit);
+				$mlw_total_pages = ceil( $qsm_results_count / $table_limit );
 
 				$url_query_string = '';
-				if ( isset( $_GET["quiz_id"] ) && $_GET["quiz_id"] != "" ) {
-					$url_query_string .= '&&quiz_id='.intval( $_GET["quiz_id"] );
+				if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
+					$url_query_string .= '&&quiz_id=' . intval( $_GET['quiz_id'] );
 				}
 
-				if ( isset( $_GET["qsm_search_phrase"] ) && !empty( $_GET["qsm_search_phrase"] ) ) {
-					$url_query_string .= '&&qsm_search_phrase='.$_GET["qsm_search_phrase"];
+				if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
+					$url_query_string .= "&&qsm_search_phrase=$sanitized_search_phrase";
 				}
 
-				if ( isset( $_GET["qmn_order_by"] ) && !empty( $_GET["qmn_order_by"] ) ) {
-					$url_query_string .= '&&qmn_order_by='.$_GET["qmn_order_by"];
+				if ( isset( $_GET['qmn_order_by'] ) && !empty( $_GET['qmn_order_by'] ) ) {
+					$url_query_string .= "&&qmn_order_by=$order_by";
 				}
 
-				if( $result_page > 0 )
-				{
-						$mlw_qmn_previous_page = $result_page - 2;
-						echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						if( $results_left > $table_limit )
-						{
-							echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string\">></a>";
-						}
-					else
-					{
-						echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string\">></a>";
-					}
-				}
-				else if( $result_page == 0 )
-				{
-					if( $results_left > $table_limit )
-					{
-						echo "<a class=\"prev-page disabled\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
-						echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-						echo "<a class=\"next-page\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string\">></a>";
-					}
-				}
-				else if( $results_left < $table_limit )
-				{
+				if ( $result_page > 0 ) {
 					$mlw_qmn_previous_page = $result_page - 2;
-					echo "<a class=\"prev-page\" title=\"Go to the previous page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string\"><</a>";
-					echo "<span class=\"paging-input\">$mlw_current_page of $mlw_total_pages</span>";
-					echo "<a class=\"next-page disabled\" title=\"Go to the next page\" href=\"?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string\">></a>";
+					?>
+					<a class="prev-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
+					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
+					<?php
+					if ( $results_left > $table_limit ) {
+						?>
+						<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<?php
+					}
+				} elseif ( 0 == $result_page ) {
+					if ( $results_left > $table_limit ) {
+						?>
+						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
+						<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<?php
+					}
+				} elseif ( $results_left < $table_limit ) {
+					$mlw_qmn_previous_page = $result_page - 2;
+					?>
+					<a class="prev-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
+					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
+					<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+					<?php
 				}
 				?>
 			</span>
