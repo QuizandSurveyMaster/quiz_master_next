@@ -249,27 +249,27 @@ function qsm_results_overview_tab_content() {
 				if ( $result_page > 0 ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
-					<a class="prev-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
+					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php
 					if ( $results_left > $table_limit ) {
 						?>
-						<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
 				} elseif ( 0 == $result_page ) {
 					if ( $results_left > $table_limit ) {
 						?>
 						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-						<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
 				} elseif ( $results_left < $table_limit ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
-					<a class="prev-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
+					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-					<a class="next-page" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 					<?php
 				}
 				?>
