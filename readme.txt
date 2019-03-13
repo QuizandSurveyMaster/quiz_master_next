@@ -1,5 +1,5 @@
 === Quiz And Survey Master (Formerly Quiz Master Next) ===
-Contributors: quizsurvey, fpcorso
+Contributors: quizsurvey
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.0.2
