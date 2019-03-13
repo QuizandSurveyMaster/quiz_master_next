@@ -1,4 +1,4 @@
 <?php
 
-die("Error: Unauthorized Access");
+die("Error: Unauthorized Access.");
 ?>
