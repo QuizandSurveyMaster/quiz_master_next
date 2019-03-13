@@ -233,8 +233,8 @@ function qsm_results_overview_tab_content() {
 					$url_query_string .= '&&quiz_id='.intval( $_GET["quiz_id"] );
 				}
 
-				if ( isset( $_GET["qmn_search_phrase"] ) && !empty( $_GET["qmn_search_phrase"] ) ) {
-					$url_query_string .= '&&qmn_search_phrase='.$_GET["qmn_search_phrase"];
+				if ( isset( $_GET["qsm_search_phrase"] ) && !empty( $_GET["qsm_search_phrase"] ) ) {
+					$url_query_string .= '&&qsm_search_phrase='.$_GET["qsm_search_phrase"];
 				}
 
 				if ( isset( $_GET["qmn_order_by"] ) && !empty( $_GET["qmn_order_by"] ) ) {
