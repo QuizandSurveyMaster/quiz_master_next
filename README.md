@@ -13,9 +13,7 @@ Please read [CONTRIBUTING.md](https://github.com/QuizandSurveyMaster/quiz_master
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see [the releases in this repository](https://github.com/QuizandSurveyMaster/quiz_master_next/releases).
 
 ## Developers
-* Frank Corso - Lead Developer
-
-See also [the list of contributors](https://github.com/QuizandSurveyMaster/quiz_master_next/graphs/contributors) who participated in this project.
+See [the list of contributors](https://github.com/QuizandSurveyMaster/quiz_master_next/graphs/contributors) who participated in this project.
 
 ## License
 This project is licensed under the GPLv2 License - see the [LICENSE.md file](https://github.com/QuizandSurveyMaster/quiz_master_next/blob/master/LICENSE.md) for details.
