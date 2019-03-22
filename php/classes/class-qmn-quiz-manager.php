@@ -312,6 +312,7 @@ class QMNQuizManager {
 		$mlw_qmn_section_count = 0;
 
 		$quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz'>";
+                $quiz_display .= apply_filters('qsm_display_before_form', $quiz_display);
 		$quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='' method='post' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate >";
 		$quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
 		$quiz_display .= "<span id='mlw_top_of_quiz'></span>";
@@ -339,8 +340,11 @@ class QMNQuizManager {
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
 		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
+                if(isset($_GET['payment_id']) && $_GET['payment_id'] != ''){
+                    $quiz_display .= "<input type='hidden' name='main_payment_id' value='". $_GET['payment_id'] ."' />";
+                }
 		$quiz_display = apply_filters( 'qmn_end_quiz_form', $quiz_display, $options, $quiz_data );
-		$quiz_display .= '</form>';
+		$quiz_display .= '</form>';                
 		$quiz_display .= '</div>';
 
 		$quiz_display = apply_filters( 'qmn_end_quiz', $quiz_display, $options, $quiz_data );
@@ -712,6 +716,7 @@ class QMNQuizManager {
 			'quiz_id' => $options->quiz_id,
 			'quiz_name' => $options->quiz_name,
 			'quiz_system' => $options->system,
+                        'quiz_payment_id' => isset($_POST['main_payment_id']) ? $_POST['main_payment_id'] : ''
 		);
 		echo json_encode( $this->submit_results( $options, $data ) );
 		die();
@@ -798,7 +803,7 @@ class QMNQuizManager {
 					htmlspecialchars( stripslashes( $qmn_array_for_variables['comments'] ), ENT_QUOTES ),
 					'contact' => $contact_responses,
 				);
-				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
+				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );                                
 				$serialized_results = serialize( $results_array );
 
 				// Inserts the responses in the database.
