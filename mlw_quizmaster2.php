@@ -4,8 +4,8 @@
  * Description: Easily and quickly add quizzes and surveys to your website.
  * Version: 6.2.2
  * Author: QSM Team
- * Author URI: https://www.quizandsurveymaster.com/
- * Plugin URI: https://www.quizandsurveymaster.com/
+ * Author URI: https://quizandsurveymaster.com/
+ * Plugin URI: https://quizandsurveymaster.com/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
