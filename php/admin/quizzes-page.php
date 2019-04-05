@@ -375,9 +375,9 @@ function qsm_generate_quizzes_surveys_page() {
 					</div>
 				</td>				
 				<td>
-                                        <h3 class="sc-opener">Embed</h3>
+                                        <p class="sc-opener">Embed</p>
                                         <div class="sc-content">[qsm quiz={{ data.id }}]</div>
-                                        <h3 class="sc-opener">Link</h3>
+                                        <p class="sc-opener">Link</p>
                                         <div class="sc-content">[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</div>
                                 </td>				
 				<td>
