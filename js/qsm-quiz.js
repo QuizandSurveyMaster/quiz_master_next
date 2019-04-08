@@ -381,7 +381,7 @@ function qmnValidation( element, quiz_form_id ) {
 	var empty_error = qmn_quiz_data[ quiz_id ].error_messages.empty;
 	var incorrect_error = qmn_quiz_data[ quiz_id ].error_messages.incorrect;
 	qmnResetError( quiz_form_id );
-	jQuery( element ).each(function(){
+	jQuery( element ).each(function(){                
 		if ( jQuery( this ).attr( 'class' )) {
 			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) > -1 && this.value !== "" ) {
 				var x = this.value;
@@ -398,6 +398,7 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
+                                
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
@@ -429,6 +430,13 @@ function qmnValidation( element, quiz_form_id ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
 					}
+				}
+                                //Google recaptcha validation
+				if( jQuery( this ).attr( 'class' ).indexOf( 'g-recaptcha-response' ) > -1 ) {
+                                        if(grecaptcha.getResponse() == "") {
+                                            alert('ReCaptcha is missing');                                            
+                                            result =  false;
+                                        }					
 				}
 			}
 		}

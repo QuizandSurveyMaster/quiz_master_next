@@ -334,7 +334,7 @@ class QMNQuizManager {
 			$quiz_display = apply_filters( 'qmn_after_comment_section', $quiz_display, $options, $quiz_data );
 			$quiz_display .= $this->display_end_section( $options, $quiz_data );
 		}
-
+                $quiz_display = apply_filters( 'qmn_before_error_message', $quiz_display, $options, $quiz_data );
 		$quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qsm-error-message qmn_error_message_section'></div>";
 		$quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='$qmn_total_questions'/>";
 		$quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
