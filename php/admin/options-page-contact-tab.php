@@ -67,11 +67,12 @@ add_action( 'wp_ajax_nopriv_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
  * @return void
  */
 function qsm_contact_form_admin_ajax() {
-  global $wpdb;
-  global $mlwQuizMasterNext;
-	$results["status"] =  QSM_Contact_Manager::save_fields( $_POST["quiz_id"], $_POST["contact_form"] );
-  echo json_encode( $results );
-  die();
+	global $wpdb;
+	global $mlwQuizMasterNext;
+	// Sends posted form data to Contact Manager to sanitize and save.
+	$results['status'] =  QSM_Contact_Manager::save_fields( intval( $_POST['quiz_id'] ), $_POST['contact_form'] );
+	echo wp_json_encode( $results );
+	die();
 }
 
 ?>

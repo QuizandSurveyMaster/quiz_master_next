@@ -272,6 +272,25 @@ class QSM_Contact_Manager {
 		if ( self::load_fields() === $fields ) {
 			return true;
 		}
+
+		if ( ! is_array( $fields ) || empty( $fields ) ) {
+			return false;
+		}
+
+		$quiz_id = intval( $quiz_id );
+		if ( 0 === $quiz_id ) {
+			return false;
+		}
+
+		$total_fields = count( $fields );
+		for ( $i = 0; $i < $total_fields; $i++ ) { 
+			$fields[ $i ] = array(
+				'label'    => sanitize_text_field( $fields[ $i ]['label'] ),
+				'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
+				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
+				'required' => sanitize_text_field( $fields[ $i ]['required'] ),
+			);
+		}
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', serialize( $fields ) );
