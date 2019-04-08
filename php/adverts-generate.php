@@ -29,7 +29,7 @@ function qsm_show_adverts() {
 		switch ( $rand_int ) {
 			case 0:
 				// WP Health.
-				$ad_text = '';
+				$ad_text = 'New content for ad.';
 				break;
 			case 1:
 				// Continued development 1.
@@ -49,7 +49,7 @@ function qsm_show_adverts() {
 		}
 		?>
 		<div class="help-decide">
-			<p><?php echo $ad_text; ?></p>
+			<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/">Remove Ads</a>'; ?></p>
 		</div>
 		<?php
 	}

@@ -26,7 +26,8 @@ var QSMQuizzesSurveys;
         'postID': quizData.postID,
         'views': quizData.views,
         'taken': quizData.taken,
-        'lastActivity': quizData.lastActivity
+        'lastActivity': quizData.lastActivity,
+        'lastActivityDateTime': quizData.lastActivityDateTime
       };
       var row = $( template( values ) );
       $( '#the-list' ).append( row );
@@ -118,11 +119,11 @@ var QSMQuizzesSurveys;
       $( '#delete-quiz-form' ).submit();
     });
     QSMQuizzesSurveys.load();
-    $(document).on('click','.sc-opener',function(){  
+    $(document).on('click','.sc-opener',function(){ 
         var $this = $(this);
-        $(this).next('.sc-content').slideToggle('slow', function() {
-            $this.toggleClass('active');
-        });
+        var shortcode_text = $this.next('.sc-content').text();
+        $('#sc-shortcode-model-text').val(shortcode_text);
+        MicroModal.show( 'modal-6' );        
     })
   });
 }(jQuery));
