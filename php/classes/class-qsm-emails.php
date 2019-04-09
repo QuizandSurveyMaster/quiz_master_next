@@ -188,9 +188,10 @@ class QSM_Emails {
 		}
 
 		// Prepares our headers.
-		$headers = array(
-			'From: ' . $from_name . ' <' . $from_email . '>',
-		);
+		$headers = array();
+		if ( is_email( $from_email ) ) {
+			$headers[] = 'From: ' . $from_name . ' <' . $from_email . '>';
+		}
 		if ( is_email( $user_email ) && true === $reply_to ) {
 			$name      = sanitize_text_field( $response_data['user_name'] );
 			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
