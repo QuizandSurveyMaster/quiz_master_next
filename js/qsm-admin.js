@@ -106,10 +106,6 @@ var QSMQuizzesSurveys;
       event.preventDefault();
       $( '#new-quiz-form' ).submit();
     });
-    $( '#edit-name-button' ).on( 'click', function( event ) {
-      event.preventDefault();
-      $( '#edit-name-form' ).submit();
-    });
     $( '#duplicate-quiz-button' ).on( 'click', function( event ) {
       event.preventDefault();
       $( '#duplicate-quiz-form' ).submit();

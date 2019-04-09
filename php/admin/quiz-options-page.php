@@ -48,13 +48,22 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_script( 'jquery-effects-explode' );
 
 	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
+        wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
+        
+        // Edit Quiz Name.
+	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
+            $quiz_id   = intval( $_POST['edit_quiz_id'] );
+            $quiz_name = htmlspecialchars( stripslashes( $_POST['edit_quiz_name'] ), ENT_QUOTES );
+            $mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
+	}
 	?>
-	<div class="wrap">
+	<div class="wrap">            
 		<div class='mlw_quiz_options'>
-			<h1><?php echo $quiz_name; ?></h1>
+                    <h1 style="display: inline-block;"><?php echo $quiz_name; ?></h1>
+                    <a style="display: inline-block;margin-top: 10px;margin-bottom: 15px;margin-left: 10px;" hre="#" class="edit-quiz-name button button-primary">Edit Name</a>
 			<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();
@@ -109,6 +118,28 @@ function qsm_generate_quiz_options() {
 			qsm_show_adverts();
 			echo $mlw_output;
 			?>
+		</div>
+                <div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
+                    <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+                        <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+                            <header class="qsm-popup__header">
+                                    <h2 class="qsm-popup__title" id="modal-3-title">Edit Name</h2>
+                                    <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+                            </header>
+                            <main class="qsm-popup__content" id="modal-3-content">
+                                    <form action='' method='post' id="edit-name-form">
+                                            <label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
+                                            <input type="text" id="edit_quiz_name" name="edit_quiz_name" value="<?php echo $quiz_name; ?>" />
+                                            <input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset($_GET['quiz_id']) ? $_GET['quiz_id'] : ''; ?>" />
+                                            <?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
+                                    </form>
+                            </main>
+                            <footer class="qsm-popup__footer">
+                                    <button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary">Edit</button>
+                                    <button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>
+                            </footer>
+                        </div>
+                    </div>
 		</div>
 	</div>
 

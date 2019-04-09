@@ -52,5 +52,14 @@ var QSMAdmin;
 		$( '#qmn_check_all' ).change( function() {
 			$( '.qmn_delete_checkbox' ).prop( 'checked', jQuery( '#qmn_check_all' ).prop( 'checked' ) );
 		});
+                
+                $( '.edit-quiz-name' ).click( function(e){
+                    e.preventDefault();
+                    MicroModal.show( 'modal-3' );
+                });
+                $( '#edit-name-button' ).on( 'click', function( event ) {
+                    event.preventDefault();
+                    $( '#edit-name-form' ).submit();
+                });
 	});
 }(jQuery));

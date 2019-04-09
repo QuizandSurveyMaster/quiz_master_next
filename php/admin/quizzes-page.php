@@ -43,13 +43,6 @@ function qsm_generate_quizzes_surveys_page() {
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
 
-	// Edit Quiz Name.
-	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
-		$quiz_id   = intval( $_POST['edit_quiz_id'] );
-		$quiz_name = htmlspecialchars( stripslashes( $_POST['edit_quiz_name'] ), ENT_QUOTES );
-		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
-	}
-
 	// Duplicate Quiz.
 	if ( isset( $_POST['qsm_duplicate_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
 		$quiz_id   = intval( $_POST['duplicate_quiz_id'] );
@@ -168,8 +161,8 @@ function qsm_generate_quizzes_surveys_page() {
 				<table class="widefat">
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>							
-							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>							
+							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
@@ -179,8 +172,8 @@ function qsm_generate_quizzes_surveys_page() {
 					</tbody>
 					<tfoot>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>							
-							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>							
+							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
 						</tr>
@@ -232,7 +225,7 @@ function qsm_generate_quizzes_surveys_page() {
 					?>
                                         <div class="remove-ads-adv-link">
                                             <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/">Remove Ads</a>
-                                        </div>                                        
+                                        </div>
 				</div>
 				<?php
 			}
@@ -279,30 +272,6 @@ function qsm_generate_quizzes_surveys_page() {
 					</main>
 					<footer class="qsm-popup__footer">
 						<button id="create-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Create', 'quiz-master-next'); ?></button>
-						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
-					</footer>
-				</div>
-			</div>
-		</div>
-
-		<!-- Popup for edit quiz name -->
-		<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="true">
-			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
-				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
-					<header class="qsm-popup__header">
-						<h2 class="qsm-popup__title" id="modal-3-title"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></h2>
-						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-					</header>
-					<main class="qsm-popup__content" id="modal-3-content">
-						<form action='' method='post' id="edit-name-form">
-							<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
-							<input type="text" id="edit_quiz_name" name="edit_quiz_name" />
-							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" />
-							<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
-						</form>
-					</main>
-					<footer class="qsm-popup__footer">
-						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Edit', 'quiz-master-next'); ?></button>
 						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
 					</footer>
 				</div>
@@ -357,7 +326,7 @@ function qsm_generate_quizzes_surveys_page() {
 				</div>
 			</div>
 		</div>
-                
+
                 <!-- Popup for delete quiz -->
 		<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -372,7 +341,7 @@ function qsm_generate_quizzes_surveys_page() {
 				</div>
 			</div>
 		</div>
-                
+
 		<!-- Templates -->
 		<script type="text/template" id="tmpl-no-quiz">
 			<h2><?php _e( 'You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next' ); ?></h2>
@@ -383,21 +352,21 @@ function qsm_generate_quizzes_surveys_page() {
 		<script type="text/template" id="tmpl-quiz-row">
 			<tr class="qsm-quiz-row" data-id="{{ data.id }}">
 				<td class="post-title column-title">
-					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }}</a> <a class="qsm-edit-name" href="#"><?php _e( 'Edit Name', 'quiz-master-next' ); ?></a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
+					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }}</a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
 					<div class="row-actions">
-						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> | 
-                                                <a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> | 						 
-						<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
-						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a> |                                                 
+						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> |
+                                                <a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> |
+						<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> |
+						<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a> |
                                                 <a class="qsm-action-link" target="_blank" href="{{ data.link }}"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
 					</div>
-				</td>				
+				</td>
 				<td>
                                         <p class="sc-opener"><span class="dashicons dashicons-editor-contract"></span> Embed</p>
                                         <div class="sc-content">[qsm quiz={{ data.id }}]</div>
                                         <p class="sc-opener"><span class="dashicons dashicons-admin-links"></span> Link</p>
                                         <div class="sc-content">[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</div>
-                                </td>				
+                                </td>
 				<td>
 					{{ data.views }}/{{ data.taken }}
 					<div class="row-actions">
