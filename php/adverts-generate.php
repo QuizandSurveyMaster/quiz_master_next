@@ -49,7 +49,7 @@ function qsm_show_adverts() {
 		}
 		?>
 		<div class="help-decide">
-			<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/">Remove Ads</a>'; ?></p>
+			<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?></p>
 		</div>
 		<?php
 	}

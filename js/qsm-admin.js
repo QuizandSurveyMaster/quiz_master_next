@@ -120,6 +120,15 @@ var QSMQuizzesSurveys;
         var shortcode_text = $this.next('.sc-content').text();
         $('#sc-shortcode-model-text').val(shortcode_text);
         MicroModal.show( 'modal-6' );        
-    })
+    });
+    $(document).on('click','#sc-copy-shortcode', function(){
+        
+        var copyText = document.getElementById("sc-shortcode-model-text");
+        
+        copyText.select();
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        
+    });
   });
 }(jQuery));
