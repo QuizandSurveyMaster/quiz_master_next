@@ -224,7 +224,7 @@ function qsm_generate_quizzes_surveys_page() {
 					}
 					?>
                                         <div class="remove-ads-adv-link">
-                                            <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/">Remove Ads</a>
+                                            <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>
                                         </div>
 				</div>
 				<?php
@@ -336,7 +336,8 @@ function qsm_generate_quizzes_surveys_page() {
 						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 					</header>
 					<main class="qsm-popup__content" id="modal-5-content">
-                                            <input type="text" value="" id="sc-shortcode-model-text">
+                                            <input type="text" value="" id="sc-shortcode-model-text" style="width: 72%;padding: 5px;">
+                                            <button class="button button-primary" id="sc-copy-shortcode">Copy Shortcode</button>
 					</main>
 				</div>
 			</div>
