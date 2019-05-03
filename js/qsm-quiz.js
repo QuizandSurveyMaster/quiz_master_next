@@ -699,7 +699,7 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	if ( network == 'facebook' ) {
 		url = "https://www.facebook.com/dialog/feed?"	+ "display=popup&" + "app_id="+facebook_id +
 			"&" + "link=" + pageUrlEncoded + "&" + "name=" + encodeURIComponent(mlw_qmn_social_text) +
-			"&" + "description=  &" + "redirect_uri=http://www.mylocalwebstop.com/mlw_qmn_close.html";
+			"&" + "description=";
 	}
 	if ( network == 'twitter' )	{
 		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
