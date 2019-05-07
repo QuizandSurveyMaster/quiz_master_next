@@ -184,6 +184,13 @@ function qsm_options_questions_tab_content() {
                                                             <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
                                                     </div>
                                             </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Hide Autofill?', 'quiz-master-next' ); ?></label>
+                                                    <select name="hide_autofill" id="hide_autofill">
+                                                            <option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                            <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                    </select>
+                                            </div>
                                         </div>					
 				</main>
 				<footer class="qsm-popup__footer">

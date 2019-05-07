@@ -243,6 +243,7 @@ var QSMQuestion;
 			var comments = $( "#comments" ).val();
 			var required = $( "#required" ).val();
 			var category = $( ".category-radio:checked" ).val();
+                        var autofill =  $( "#hide_autofill" ).val();
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -280,6 +281,7 @@ var QSMQuestion;
 					required: required,
 					answers: answers,
                                         answer_editor: answerType,
+                                        autofill: autofill
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -338,6 +340,11 @@ var QSMQuestion;
                         if( answerEditor === null || typeof answerEditor === "undefined" ){
                             answerEditor = 'text';
                         }
+                        //Check autofill setting
+                        var disableAutofill = question.get( 'autofill' );                        
+                        if( disableAutofill === null || typeof disableAutofill === "undefined" ){
+                            disableAutofill = '0';
+                        }
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
@@ -351,6 +358,7 @@ var QSMQuestion;
 			$( "#question_type" ).val( question.get( 'type' ) );
 			$( "#comments" ).val( question.get( 'comments' ) );
 			$( "#required" ).val( question.get( 'required' ) );
+			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			if ( 0 !== question.get( 'category' ).length ) {
@@ -424,6 +432,7 @@ var QSMQuestion;
 		$( '#save-popup-button' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMQuestion.saveQuestion( $( this ).parent().siblings( 'main' ).children( '#edit_question_id' ).val() );
+                        $('.save-page-button').trigger('click');
 		});
 		$( '#new-answer-button' ).on( 'click', function( event ) {
 			event.preventDefault();

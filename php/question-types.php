@@ -301,9 +301,11 @@ function qmn_small_open_display($id, $question, $answers)
   $question_display = '';
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
-  if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
+  $autofill = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'autofill');
+  $autofill_att = $autofill ? "autocomplete='off'" : '';
+  if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}  
   $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
-  $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' name='question".$id."' />";
+  $question_display .= "<input ". $autofill_att ." type='text' class='mlw_answer_open_text $mlw_requireClass' name='question".$id."' />";
   return $question_display;
 }
 
@@ -886,8 +888,10 @@ function qmn_fill_blank_display($id, $question, $answers)
   $question_display = '';
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $autofill = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'autofill');
+  $autofill_att = $autofill ? "autocomplete='off'" : '';
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
-	$input_text = "<input type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
+	$input_text = "<input ". $autofill_att ." type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
 	if (strpos($question, '%BLANK%') !== false)
 	{
 		$question = str_replace( "%BLANK%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));

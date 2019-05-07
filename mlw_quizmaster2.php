@@ -251,7 +251,7 @@ class MLWQuizMasterNext {
 			'label'               => $plural_name,
 			'rewrite'             => array( 'slug' => $cpt_slug ),
 			'has_archive'         => $has_archive,
-			'supports'            => array( 'title', 'author', 'comments' )
+			'supports'            => array( 'title', 'author', 'comments', 'thumbnail' )
 		);
 
 		// Registers post type.

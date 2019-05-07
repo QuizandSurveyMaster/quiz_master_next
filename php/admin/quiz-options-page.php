@@ -64,6 +64,35 @@ function qsm_generate_quiz_options() {
 		<div class='mlw_quiz_options'>
                     <h1 style="display: inline-block;"><?php echo $quiz_name; ?></h1>
                     <a style="display: inline-block;margin-top: 10px;margin-bottom: 15px;margin-left: 10px;" hre="#" class="edit-quiz-name button button-primary">Edit Name</a>
+                    <?php
+                    // Get quiz post based on quiz id
+                    $args = array(
+                        'posts_per_page' => 1,
+                        'post_type' => 'quiz',
+                        'meta_query' => array(
+                            array(
+                                'key' => 'quiz_id',
+                                'value' => $quiz_id,
+                                'compare' => '=',
+                            ),
+                        ),
+                    );
+                    $the_query = new WP_Query($args);
+
+                    // The Loop
+                    $post_permalink = '';
+                    if ($the_query->have_posts()) {            
+                        while ($the_query->have_posts()) {                
+                            $the_query->the_post();
+                            $post_permalink = get_the_permalink(get_the_ID());
+                        }
+                        /* Restore original Post Data */
+                        wp_reset_postdata();
+                    }
+                    ?>
+                    <a style="text-decoration: none; position: relative; top: 9px; left: 5px;" target="_blank" href="<?php echo $post_permalink; ?>">
+                        <span style="font-size: 30px;" class="dashicons dashicons-external"></span>
+                    </a>
 			<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();
