@@ -47,6 +47,8 @@ class QSM_Contact_Manager {
 
 		// Loads fields.
 		$fields = self::load_fields();
+                
+                $contact_disable_autofill = $options->contact_disable_autofill;                        
 
 		// If fields are empty and backwards-compatible fields are turned on then, use older system.
 		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
@@ -59,7 +61,7 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?></span>
-				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserName' value='<?php echo esc_attr( $name ); ?>' />
+                                <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserName' value='<?php echo esc_attr( $name ); ?>' />
 				<?php
 			}
 
@@ -71,10 +73,10 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?></span>
-				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserComp' value='' />
+				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserComp' value='' />
 				<?php
 			}
-
+                        
 			// Check for email field.
 			if ( 2 != $options->user_email ) {
 				$class = '';
@@ -83,7 +85,7 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?></span>
-				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserEmail' value='<?php echo esc_attr( $email ); ?>' />
+				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserEmail' value='<?php echo esc_attr( $email ); ?>' />
 				<?php
 			}
 
@@ -95,12 +97,12 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?></span>
-				<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserPhone' value='' />
+				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='mlwUserPhone' value='' />
 				<?php
 			}
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
 
-			// Cycle through each of the contact fields.
+			// Cycle through each of the contact fields.                    
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 
@@ -124,7 +126,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
-							<input type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
+							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
 							<?php
 							break;
 
@@ -134,7 +136,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
-							<input type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
+							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' />
 							<?php
 							break;
 

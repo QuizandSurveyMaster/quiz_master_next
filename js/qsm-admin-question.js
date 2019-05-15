@@ -361,6 +361,7 @@ var QSMQuestion;
 			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
+			$( "#edit-question-id" ).text('').text(questionID);
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
 			}
@@ -420,6 +421,7 @@ var QSMQuestion;
 			event.preventDefault();
 			$( this ).parents( '.question' ).remove();
 			QSMQuestion.countTotal();
+                        $('.save-page-button').trigger('click');
 		});
 		$( '.questions' ).on( 'click', '.delete-page-button', function( event ) {
 			event.preventDefault();

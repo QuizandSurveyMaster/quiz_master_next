@@ -114,6 +114,9 @@ function qsm_options_results_tab_content() {
 			<div class="template_variable">
 				<span class="template_name">%TWITTER_SHARE%</span> - <?php _e('Displays button to share on Twitter.', 'quiz-master-next'); ?>
 			</div>
+			<div class="template_variable">
+				<span class="template_name">%POLL_RESULTS_X%</span> - <?php _e('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next'); ?>
+			</div>
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>
 		<div style="clear:both;"></div>

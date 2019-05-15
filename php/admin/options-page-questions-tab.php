@@ -119,7 +119,7 @@ function qsm_options_questions_tab_content() {
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-1-title">Edit Question</h2>
+                                    <h2 class="qsm-popup__title" id="modal-1-title">Edit Question [ ID: <span id="edit-question-id"></span>  ]</h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-1-content">

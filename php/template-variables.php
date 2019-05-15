@@ -57,10 +57,64 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result',10,2);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user',10,2);
+
+/**
+ * Show poll result
+ * @param str $content
+ * @param arr $mlw_quiz_array
+ */
+function qsm_variable_poll_result($content, $mlw_quiz_array){    
+    while ( false !== strpos($content, '%POLL_RESULTS_') ) {        
+        $question_id = mlw_qmn_get_string_between($content, '%POLL_RESULTS_', '%');
+        $quiz_id = $mlw_quiz_array['quiz_id'];
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'mlw_results';
+        $table_question = $wpdb->prefix . 'mlw_questions';
+        $total_query = $wpdb->get_row('SELECT count(*) AS total_count FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
+        $total_result = $total_query['total_count'];
+        $ser_answer = $wpdb->get_row('SELECT answer_array FROM ' . $table_question . ' WHERE question_id = ' . $question_id,ARRAY_A);
+        $ser_answer_arry = unserialize($ser_answer['answer_array']);
+        $total_quiz_results = $wpdb->get_results('SELECT quiz_results FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
+        $answer_array = array();
+        if($total_quiz_results){
+            foreach ($total_quiz_results as $key => $value) {                
+                $userdb = unserialize($value['quiz_results']);
+                if(!empty($userdb)){
+                    $key = array_search($question_id, array_column($userdb[1], 'id'));
+                    $answer_array[] = isset($userdb[1][$key]) ? $userdb[1][$key][1] : '';
+                }
+            }
+        }
+        $vals = array_count_values($answer_array);
+        $str = '';
+        if($vals){
+            $str .= '<h4>Poll Result:</h4>';
+            foreach ($vals as $answer_str => $answer_count) {
+                if($answer_str != ''){
+                    $percentage = number_format($answer_count / $total_result * 100,2) ;
+                    $str .= $answer_str . ' : ' . $percentage .'%<br/>';
+                    $str .= '<progress value="'. $percentage .'" max="100">'. $percentage .' %</progress><br/>';
+                }
+            }
+        }
+        $content = str_replace( "%POLL_RESULTS_". $question_id ."%" , $str, $content);
+    }
+    return $content;
+}
+
+function mlw_qmn_get_string_between($string, $start, $end){
+    $string = ' ' . $string;
+    $ini = strpos($string, $start);
+    if ($ini == 0) return '';
+    $ini += strlen($start);
+    $len = strpos($string, $end, $ini) - $ini;
+    return substr($string, $ini, $len);
+}
 
 /**
  * Adds Facebook sharing link using the %FACEBOOK_SHARE% variable
