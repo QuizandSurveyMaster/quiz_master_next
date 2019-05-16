@@ -29,8 +29,8 @@ function qsm_show_adverts() {
 		switch ( $rand_int ) {
 			case 0:
 				// WP Health.
-				$ad_text = 'New content for ad.';
-				break;
+				// $ad_text = 'New content for ad.';
+				// break;
 			case 1:
 				// Continued development 1.
 				$ad_text = 'Are you finding this plugin very beneficial? Please consider checking out our premium addons which help support continued development of this plugin. Visit our <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-plugin-ads&utm_medium=plugin&utm_content=continued-development-1&utm_campaign=qsm_plugin">Addon Store</a> for details!';
