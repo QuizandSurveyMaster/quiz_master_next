@@ -513,9 +513,9 @@ var QSMQuestion;
                     var $this = $(this);
                     $(this).next('div.advanced-content').slideToggle('slow',function(){
                         if ($(this).is(':visible')) {
-                            $this.text('').text('Hide advance option >>');                
+                            $this.text('').html('Hide advance options &laquo;');                
                         } else {
-                            $this.text('').text('Show advance option >>');
+                            $this.text('').html('Show advance options &raquo;');
                         }  
                     });
                 });

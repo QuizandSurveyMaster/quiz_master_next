@@ -1,14 +1,14 @@
-=== Quiz And Survey Master (Formerly Quiz Master Next) ===
+=== Quiz And Survey Master - Best Quiz Plugin for WordPress ===
 Contributors: quizsurvey
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.1.1
 Requires PHP: 5.4
-Stable tag: 6.2.2
+Stable tag: 6.3.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily and quickly add unlimited quizzes and surveys to your website.
+Native quiz and surveys for your WordPress site. Easily and quickly add unlimited quizzes and surveys to your website. Customizable and professional quizzes are now at your finger tips.
 
 == Description ==
 
@@ -110,6 +110,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.3.0 (April 20, 2019) =
+* Massive UI update
+* Closed Enhancement: Support for Image and Rich answers
+([Issue #146](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/146))
+
+= 6.2.2 (March 14, 2019) =
+* Security update as suggested by WordPress team.
 
 = 6.2.1 (February 20, 2019) =
 * Fixes cut off submit button on mobile phone issue

@@ -153,7 +153,7 @@ function qsm_options_questions_tab_content() {
                                                     </select>
                                                 </label>                             
 					</div>
-                                        <p id="show-advanced-option">Show advance option >></p>
+                                        <p id="show-advanced-option">Show advance options &raquo;</p>
                                         <div class="advanced-content" style="display: none;">
                                             <div id="correct_answer_area" class="qsm-row">
 						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
