@@ -429,7 +429,7 @@ class QMNQuizManager {
                 }
                 foreach ($pages[0] as $question_id) {
                     $question_list .= $question_id . 'Q';
-                    $question = $questions[$question_id];
+                    $question = $questions[$question_id];                    
                     ?>
                     <div class='quiz_section question-section-id-<?php echo esc_attr($question_id); ?>'>
                         <?php

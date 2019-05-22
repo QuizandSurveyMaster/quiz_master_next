@@ -105,6 +105,17 @@
         box-sizing: border-box;
 }
 
+.quiz_section > .mlw_qmn_question,
+.quiz_section > .quiz-cat{
+    display: inline-block;
+}
+
+.quiz_section > .quiz-cat{
+    margin-right: 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .qsm_contact_div {
 	margin: 10px 0;
 }

@@ -276,7 +276,7 @@ class QSM_Contact_Manager {
 		}
 
 		if ( ! is_array( $fields ) || empty( $fields ) ) {
-			return false;
+			//return false;
 		}
 
 		$quiz_id = intval( $quiz_id );

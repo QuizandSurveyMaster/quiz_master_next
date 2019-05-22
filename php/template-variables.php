@@ -423,11 +423,11 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 	$total_questions = 0;
 	$amount_correct = 0;
 	while (strpos($content, '%CATEGORY_SCORE%') !== false)
-	{
+	{            
 		$return_score = 0;
 		$total_questions = 0;
 		$amount_correct = 0;
-		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);
+		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);                
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
 			if ($answer["category"] == $answer_text[1])

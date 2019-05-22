@@ -115,6 +115,7 @@ var QSMAdminResults;
 		$( '.save-pages' ).on( 'click', function( event ) {
 			event.preventDefault();
 			QSMAdminResults.saveResults();
+                        $("html, body").animate({ scrollTop: 0 }, "slow");
 		});
 		$( '#results-pages' ).on( 'click', '.new-condition', function( event ) {
 			event.preventDefault();
