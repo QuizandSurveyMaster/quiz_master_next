@@ -72,7 +72,7 @@ var QSMQuestion;
 		addQuestionToQuestionBank: function( question ) {
 			var questionText = QSMQuestion.prepareQuestionText( question.name );
 			var template = wp.template( 'single-question-bank-question' );
-			$( '#question-bank' ).append( template( { id: question.id, question: questionText } ) );
+			$( '#question-bank' ).append( template( { id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name  } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
 			MicroModal.close( 'modal-2' );

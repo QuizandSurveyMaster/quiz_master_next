@@ -105,10 +105,10 @@
         box-sizing: border-box;
 }
 
-.quiz_section > .mlw_qmn_question,
+/*.quiz_section > .mlw_qmn_question,
 .quiz_section > .quiz-cat{
     display: inline-block;
-}
+}*/
 
 .quiz_section > .quiz-cat{
     margin-left: 15px;

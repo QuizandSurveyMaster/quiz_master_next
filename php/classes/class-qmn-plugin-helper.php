@@ -380,7 +380,7 @@ class QMNPluginHelper {
 						$display .= "<span class='mlw_qmn_question_number'>$qmn_total_questions. </span>";
 					}
 				}
-                                if($question->category != ''){
+                                if($quiz_options->show_category_on_front && $question->category != ''){
                                     $display .= '<div class="quiz-cat">[ ' . $question->category  .' ]</div>';
                                 }
 				$display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
