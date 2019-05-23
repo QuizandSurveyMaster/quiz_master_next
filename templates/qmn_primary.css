@@ -111,9 +111,10 @@
 }
 
 .quiz_section > .quiz-cat{
-    margin-right: 15px;
+    margin-left: 15px;
     font-size: 14px;
     font-weight: bold;
+    float: right;
 }
 
 .qsm_contact_div {

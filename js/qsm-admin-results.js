@@ -45,6 +45,7 @@ var QSMAdminResults;
 				} else {
 					QSMAdmin.displayAlert( 'There was an error when saving the results pages. Please try again.', 'error' );
 				}
+                                $('.save-pages').next('.spinner').removeClass('is-active');
 			})
 			.fail(QSMAdmin.displayjQueryError);
 		},
@@ -114,8 +115,8 @@ var QSMAdminResults;
 		});
 		$( '.save-pages' ).on( 'click', function( event ) {
 			event.preventDefault();
-			QSMAdminResults.saveResults();
-                        $("html, body").animate({ scrollTop: 0 }, "slow");
+                        $(this).next('.spinner').addClass('is-active');
+			QSMAdminResults.saveResults();                        
 		});
 		$( '#results-pages' ).on( 'click', '.new-condition', function( event ) {
 			event.preventDefault();

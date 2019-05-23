@@ -359,18 +359,28 @@ function mlw_qmn_variable_date_taken( $content, $results ) {
 function qmn_variable_category_points($content, $mlw_quiz_array)
 {
 	$return_points = 0;
-	while (strpos($content, '%CATEGORY_POINTS%') !== false)
+	while (strpos($content, '%CATEGORY_POINTS%') !== false || false !== strpos($content, '%CATEGORY_POINTS_'))
 	{
 		$return_points = 0;
 		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%CATEGORY_POINTS_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
+                
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			if ($answer["category"] == $answer_text[1])
+			if ($answer["category"] == $category_name)
 			{
 				$return_points += $answer["points"];
 			}
 		}
-		$content = str_replace( $answer_text[0] , $return_points, $content);
+                if(empty($answer_text)){
+                    $content = str_replace( '%CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_points, $content);
+                }		
 	}
 	return $content;
 }
@@ -387,12 +397,17 @@ function qmn_variable_category_points($content, $mlw_quiz_array)
 */
 function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 	$return_points = 0;
-	while ( strpos( $content, '%AVERAGE_CATEGORY_POINTS%' ) !== false ) {
+	while ( strpos( $content, '%AVERAGE_CATEGORY_POINTS%' ) !== false || false !== strpos($content, '%AVERAGE_CATEGORY_POINTS_') ) {
 		$return_points = 0;
 		$total_questions = 0;
 		preg_match( "~%AVERAGE_CATEGORY_POINTS%(.*?)%/AVERAGE_CATEGORY_POINTS%~i", $content, $answer_text );
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%AVERAGE_CATEGORY_POINTS_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $answer["category"] == $answer_text[1] ) {
+			if ( $answer["category"] == $category_name ) {
 				$total_questions += 1;
 				$return_points += $answer["points"];
 			}
@@ -402,7 +417,11 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$return_points = 0;
 		}
-		$content = str_replace( $answer_text[0], $return_points, $content );
+                if(empty($answer_text)){
+                    $content = str_replace( '%AVERAGE_CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_points, $content);
+                }		
 	}
 	return $content;
 }
@@ -422,15 +441,20 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 	$return_score = 0;
 	$total_questions = 0;
 	$amount_correct = 0;
-	while (strpos($content, '%CATEGORY_SCORE%') !== false)
+	while (strpos($content, '%CATEGORY_SCORE%') !== false || false !== strpos($content, '%CATEGORY_SCORE_'))
 	{            
 		$return_score = 0;
 		$total_questions = 0;
 		$amount_correct = 0;
-		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);                
+		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%CATEGORY_SCORE_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			if ($answer["category"] == $answer_text[1])
+			if ($answer["category"] == $category_name)
 			{
 				$total_questions += 1;
 				if ($answer["correct"] == 'correct')
@@ -447,8 +471,13 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 		{
 			$return_score = 0;
 		}
-
-		$content = str_replace( $answer_text[0] , $return_score, $content);
+                
+                if(empty($answer_text)){
+                    $content = str_replace( '%CATEGORY_SCORE_'.$category_name.'%' , $return_score, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_score, $content);
+                }	
+		
 	}
 	return $content;
 }
