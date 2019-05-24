@@ -3,6 +3,7 @@
  */
 
 var QSMQuestion;
+var import_button;
 (function ($) {
 	QSMQuestion = {
 		question: Backbone.Model.extend({
@@ -65,9 +66,22 @@ var QSMQuestion;
 		},
 		questionBankLoadSuccess: function( questions ) {
 			$( '#question-bank' ).empty();
+                        var category_arr = [];
 			for ( var i = 0; i < questions.length; i++) {
 				QSMQuestion.addQuestionToQuestionBank( questions[i] );
-			}
+                                if(category_arr.indexOf(questions[i].category) == -1 && questions[i].category != ''){                                    
+                                    category_arr.push(questions[i].category);                                    
+                                }
+			}                        
+                        if(category_arr.length > 0){
+                            $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
+                            $cat_html += '<option value="">All Questions</option>';
+                            $.each(category_arr, function(index, value){
+                                $cat_html += '<option value="'+ value +'">'+ value +' Questions</option>';
+                            });
+                            $cat_html += '</select>';
+                            $( '#question-bank' ).prepend($cat_html);
+                        }
 		},
 		addQuestionToQuestionBank: function( question ) {
 			var questionText = QSMQuestion.prepareQuestionText( question.name );
@@ -75,8 +89,8 @@ var QSMQuestion;
 			$( '#question-bank' ).append( template( { id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name  } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
-			MicroModal.close( 'modal-2' );
-			QSMAdmin.displayAlert( 'Adding question...', 'info' );
+			//MicroModal.close( 'modal-2' );
+			//QSMAdmin.displayAlert( 'Adding question...', 'info' );
 			var model = new QSMQuestion.question( { id: questionID } );
 			model.fetch({ 
 				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -88,9 +102,16 @@ var QSMQuestion;
 		questionBankSuccess: function( model ) {
 			var page = parseInt( $( '#add-question-bank-page' ).val(), 10 );
 			model.set( 'page', page );
-			QSMAdmin.displayAlert( 'Question added!', 'success' );
+			//QSMAdmin.displayAlert( 'Question added!', 'success' );
 			QSMQuestion.questions.add( model );
 			QSMQuestion.addQuestionToPage( model );
+                        $('.import-button').removeClass('disable_import');
+                        import_button.html('').html('<span style="position: relative;top: 4px;" class="dashicons dashicons-yes"></span> Added Question');
+                        import_button.addClass('button-primary');
+                        setTimeout(function() {
+                            import_button.removeClass('button-primary');
+                            import_button.html('').html('Add Question');
+                        }, 1500);                        
 		},
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
@@ -444,9 +465,12 @@ var QSMQuestion;
 			var answer = [ '', '', 0, answer_length + 1, question_id, answerType];
 			QSMQuestion.addNewAnswer( answer );                        
 		});
-
+                
 		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
 			event.preventDefault();
+                        $(this).text('').text('Adding Question');
+                        $('.import-button').addClass('disable_import');
+                        import_button = $(this);
 			QSMQuestion.addQuestionFromQuestionBank( $( this ).parents( '.question-bank-question' ).data( 'question-id' ) );
 		});
 
@@ -518,6 +542,20 @@ var QSMQuestion;
                             $this.text('').html('Show advance options &raquo;');
                         }  
                     });
+                });
+                $(document).on('change','#question-bank-cat', function(){
+                    var val = $(this).val();
+                    if(val == ''){
+                        $('.question-bank-question').show();
+                    }else{
+                        $('.question-bank-question').each(function (){
+                            if($(this).attr("data-category-name") == val){
+                                $(this).show();
+                            }else{
+                                $(this).hide();
+                            }
+                        });
+                    }                    
                 });
 	});
 }(jQuery));

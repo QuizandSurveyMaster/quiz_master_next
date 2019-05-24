@@ -65,6 +65,7 @@
 	display: flex;
     align-items: center;
     justify-content: space-between;
+    clear: both;
 }
 
 .question-bank-question div {
@@ -325,4 +326,26 @@ from { transform: translateY(15%); }
 }
 .change-answer-editor-label > #change-answer-editor{
     width: auto;
+}
+
+a.import-button.button.disable_import{
+    position: relative;
+    z-index: 0;
+}
+
+a.import-button.button.disable_import::before {
+    content: '';
+    background: rgba(255,255,255,0.5);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 5;
+}
+
+#question-bank-cat{
+    float: right;
 }

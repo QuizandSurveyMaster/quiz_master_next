@@ -107,7 +107,7 @@ function qsm_options_questions_tab_content() {
 					<div id="question-bank"></div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
 				</footer>
 			</div>
 		</div>
@@ -233,7 +233,7 @@ function qsm_options_questions_tab_content() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}">
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
                         <div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p>
                                 </div>
 			<div><a href="#" class="import-button button">Add Question</a></div>			
