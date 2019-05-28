@@ -133,6 +133,8 @@ var QSM;
 
 				var $quizForm = QSM.getQuizForm( quizID );
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
+                                $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Please reload the quiz and start again</p>');
+                                $( ".qsm-submit-btn" ).remove();
 				//document.quizForm.submit();
 				return;
 			}
@@ -721,6 +723,57 @@ jQuery(function() {
 	  event.preventDefault();
 		qmnFormSubmit( this.id );
 	});
+        
+        jQuery(document).on('click','.btn-reload-quiz',function(e){
+            e.preventDefault();
+            var quiz_id = jQuery(this).data('quiz_id');
+            var parent_div = jQuery(this).parents('.qsm-quiz-container');
+            qsmDisplayLoading( parent_div );
+            jQuery.ajax({
+                type: 'POST',
+                url: qmn_ajax_object.ajaxurl,
+                data: {
+                    action: "qsm_get_quiz_to_reload",                    
+                    quiz_id: quiz_id,
+                },
+                success: function (response) {                    
+                    parent_div.replaceWith(response);
+                    QSM.initPagination( quiz_id );
+                },
+                error: function (errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+        
+        jQuery(document).on('change','.qmn_radio_answers input',function(e){
+            if(qmn_ajax_object.enable_quick_result_mc == 1){
+                var question_id = jQuery(this).attr('name').split('question')[1], 
+                    value = jQuery(this).val(),
+                    $this = jQuery(this).parents('.quiz_section');
+                
+                jQuery.ajax({
+                    type: 'POST',
+                    url: qmn_ajax_object.ajaxurl,
+                    data: {
+                        action: "qsm_get_question_quick_result",                    
+                        question_id: question_id,
+                        answer: value,
+                    },
+                    success: function (response) {
+                        $this.find('.quick-question-res-p').remove();
+                        if(response == 'correct'){
+                            $this.append('<p style="color: green" class="quick-question-res-p"><b>Correct!</b> You have selected correct answer.</p>')
+                        }else if(response == 'incorrect'){
+                            $this.append('<p style="color: red" class="quick-question-res-p"><b>Wrong!</b> You have selected wrong answer.</p>')
+                        }                        
+                    },
+                    error: function (errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

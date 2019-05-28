@@ -437,3 +437,10 @@ border: 1px solid #e3e3e3;
   .mlw_qmn_timer { top: 20px; }
 
 }
+
+.quick-question-res-p {
+    border: 2px solid;
+    padding: 5px 10px;
+    margin: 0;
+    border-radius: 5px;
+}

@@ -493,6 +493,25 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_quick_result_mc',
+      'label' => __('Enable quick result for multiple choice?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers message_before setting
     $field_array = array(
