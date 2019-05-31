@@ -135,6 +135,9 @@ var QSM;
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
                                 $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Please reload the quiz and start again</p>');
                                 $( ".qsm-submit-btn" ).remove();
+                                if(qmn_ajax_object.enable_result_after_timer_end == 1){
+                                    $quizForm.closest( '.qmn_quiz_container' ).find('form').submit();
+                                }
 				//document.quizForm.submit();
 				return;
 			}
