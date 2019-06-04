@@ -678,3 +678,9 @@ from { transform: translateY(15%); }
     font-weight: bold;
     margin-left: 10px;
 }
+
+h3.addon_category_name {
+    width: 100%;
+    background: #d7d1d1;
+    padding: 15px;
+}
