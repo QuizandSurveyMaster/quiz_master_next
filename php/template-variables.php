@@ -57,6 +57,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -163,6 +164,19 @@ function qsm_variable_twitter_share( $content, $mlw_quiz_array ) {
 
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."');\">Twitter</a>";
 		$content = str_replace( "%TWITTER_SHARE%" , $social_display, $content);
+	}
+	return $content;
+}
+
+/**
+ * Adds result id using the %RESULT_ID% variable
+ */
+function qsm_variable_result_id( $content, $mlw_quiz_array ) {
+	while ( false !== strpos($content, '%RESULT_ID%') ) {
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'mlw_results';
+                $get_last_id = $wpdb->get_row("SELECT result_id FROM $table_name ORDER BY result_id DESC",ARRAY_A);
+		$content = str_replace( "%RESULT_ID%" , $get_last_id['result_id'], $content);
 	}
 	return $content;
 }
