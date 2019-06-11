@@ -39,6 +39,7 @@ class QMNQuizManager {
     public function add_hooks() {
         add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
         add_shortcode('qsm', array($this, 'display_shortcode'));
+        add_shortcode('qsm_result', array($this, 'shortcode_display_result'));
         add_action('wp_ajax_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_nopriv_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_qsm_get_quiz_to_reload', array($this, 'qsm_get_quiz_to_reload'));
@@ -174,6 +175,41 @@ class QMNQuizManager {
         $return_display .= ob_get_clean();
         $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
         return $return_display;
+    }
+    
+    public function shortcode_display_result($atts){
+        extract(shortcode_atts(array(
+            'id' => 0,            
+                        ), $atts));
+        ob_start();
+        global $wpdb;
+        $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
+        $quiz_result = unserialize($result_data['quiz_results']);
+        $response_data = array(
+            'quiz_id' => $result_data['quiz_id'],
+            'quiz_name' => $result_data['quiz_name'],
+            'quiz_system' => $result_data['quiz_system'],
+            'quiz_payment_id' => '',
+            'user_ip' => $result_data['user_ip'],
+            'user_name' => $result_data['name'],
+            'user_business' => $result_data['business'],
+            'user_email' => $result_data['email'],
+            'user_phone' => $result_data['phone'],
+            'user_id' => $result_data['user'],
+            'timer' => 0,
+            'time_taken' => $result_data['time_taken'],
+            'contact' => $quiz_result['contact'],
+            'total_points' => $result_data['point_score'],
+            'total_score' => $result_data['correct_score'],
+            'total_correct' => $result_data['correct'],
+            'total_questions' => $result_data['total'],
+            'question_answers_array' => $quiz_result[1],
+            'comments' => ''
+        );        
+        $data = QSM_Results_Pages::generate_pages($response_data);
+        echo htmlspecialchars_decode($data['display']);
+        $content = ob_get_clean();
+        return $content;
     }
 
     /**
