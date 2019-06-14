@@ -191,6 +191,10 @@ function qsm_options_questions_tab_content() {
                                                             <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
                                                     </select>
                                             </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Limit Text( Only work for text or textarea )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="limit_text" value="" id="limit_text"/>
+                                            </div>
                                         </div>					
 				</main>
 				<footer class="qsm-popup__footer">

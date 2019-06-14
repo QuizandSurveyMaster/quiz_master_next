@@ -265,6 +265,7 @@ var import_button;
 			var required = $( "#required" ).val();
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
+                        var limit_text =  $( "#limit_text" ).val();
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -302,7 +303,8 @@ var import_button;
 					required: required,
 					answers: answers,
                                         answer_editor: answerType,
-                                        autofill: autofill
+                                        autofill: autofill,
+                                        limit_text: limit_text
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -366,6 +368,11 @@ var import_button;
                         if( disableAutofill === null || typeof disableAutofill === "undefined" ){
                             disableAutofill = '0';
                         }
+                        //Get text limit value
+                        var get_limit_text = question.get( 'limit_text' );                        
+                        if( get_limit_text === null || typeof get_limit_text === "undefined" ){
+                            get_limit_text = '0';
+                        }
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
@@ -380,6 +387,7 @@ var import_button;
 			$( "#comments" ).val( question.get( 'comments' ) );
 			$( "#required" ).val( question.get( 'required' ) );
 			$( "#hide_autofill" ).val( disableAutofill );
+			$( "#limit_text" ).val( get_limit_text );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			$( "#edit-question-id" ).text('').text(questionID);
