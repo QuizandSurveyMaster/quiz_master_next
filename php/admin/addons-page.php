@@ -162,24 +162,23 @@ function qsm_display_optin_page() {
             <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"'); ?></p>
 
             <div id="wpas-mailchimp-signup-form-wrapper">
-                <form action="<?php echo add_query_arg(array('post_type' => 'ticket', 'page' => 'wpas-optin'), admin_url('edit.php')); ?>" method="post" id="wpas-mailchimp-signup-form" name="wpas-mailchimp-signup-form">
+                <form action="http://sendy.expresstech.io/subscribe" method="POST" accept-charset="utf-8">
                     <table class="form-table">
                         <tr>
-                            <td class="row-title"><label for="mce-FNAME">First Name</label> <input type="text" value="" name="FNAME" class="medium-text" id="mce-FNAME"></td>
+                            <td class="row-title"><label for="name">First Name</label> <input type="text" name="name" id="name"/></td>
                             <td class="row-title">
-                                <label for="mce-EMAIL">Email Address</label>
-                                <input type="email" value="" name="EMAIL" class="regular-text required email" id="mce-EMAIL">
-                                <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button-secondary">
+                                <label for="email">Email Address</label>
+                                <input type="email" name="email" id="email"/>
+                                <div style="display:none;">
+                                    <label for="hp">HP</label><br/>
+                                    <input type="text" name="hp" id="hp"/>
+                                </div>
+                                <input type="hidden" name="list" value="4v8zvoyXyTHSS80jeavOpg"/>
+                                <input type="hidden" name="subform" value="yes"/>
+                                <input type="submit" name="submit" id="submit" value="Subscribe" class="button-secondary"/>
                             </td>
                         </tr>
                     </table>
-                    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-                        <input type="text" name="b_46ccfe899f0d2648a8b74454a_ad9db57f69" tabindex="-1" value="">
-                    </div>
-                    <div id="mce-responses" class="clear">
-                        <div class="wpas-alert-danger" id="wpas-mailchimp-signup-result-error" style="display:none;">Error</div>
-                        <div class="wpas-alert-success" id="wpas-mailchimp-signup-result-success" style="display:none; color: green;"><?php esc_html_e('Thanks for your subscription! You will need to confirm the double opt-in e-mail that you will receive in a coupe of minutes. After you confirmed it, you will receive the free addon directly in your inbox.', 'quiz-master-next'); ?></div>
-                    </div>
                 </form>
             </div>
         </div>

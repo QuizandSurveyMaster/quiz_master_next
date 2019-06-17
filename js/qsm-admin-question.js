@@ -111,7 +111,7 @@ var import_button;
                         setTimeout(function() {
                             import_button.removeClass('button-primary');
                             import_button.html('').html('Add Question');
-                        }, 1500);                        
+                        }, 150);
 		},
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
@@ -476,10 +476,10 @@ var import_button;
                 
 		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
 			event.preventDefault();
-                        $(this).text('').text('Adding Question');
-                        $('.import-button').addClass('disable_import');
+                        $(this).text('').text('Adding Question');                        
                         import_button = $(this);
 			QSMQuestion.addQuestionFromQuestionBank( $( this ).parents( '.question-bank-question' ).data( 'question-id' ) );
+                        $('.import-button').addClass('disable_import');
 		});
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
