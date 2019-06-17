@@ -51,7 +51,7 @@ function qmn_addons_page() {
  * @since 4.4.0
  */
 function qsm_generate_featured_addons() {
-    wp_enqueue_style('qsm_addons_style', plugins_url('../../css/qsm-admin.css', __FILE__));
+    wp_enqueue_style('qsm_addons_style', plugins_url('../../css/qsm-admin.css', __FILE__));    
     ?>
     <p><?php esc_html_e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
     <div class="qsm-quiz-page-addon">
@@ -133,6 +133,7 @@ add_action('plugins_loaded', 'qsm_featured_addons_tab');
  * Display get a free addon page
  */
 function qsm_display_optin_page() {
+    wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
     ?>
     <div class="wrap about-wrap">
 
@@ -162,7 +163,8 @@ function qsm_display_optin_page() {
             <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"'); ?></p>
 
             <div id="wpas-mailchimp-signup-form-wrapper">
-                <form action="http://sendy.expresstech.io/subscribe" method="POST" accept-charset="utf-8">
+                <div id="status"></div>
+                <form id="sendySignupForm" action="http://sendy.expresstech.io/subscribe" method="POST" accept-charset="utf-8">
                     <table class="form-table">
                         <tr>
                             <td class="row-title"><label for="name">First Name</label> <input type="text" name="name" id="name"/></td>
@@ -175,7 +177,7 @@ function qsm_display_optin_page() {
                                 </div>
                                 <input type="hidden" name="list" value="4v8zvoyXyTHSS80jeavOpg"/>
                                 <input type="hidden" name="subform" value="yes"/>
-                                <input type="submit" name="submit" id="submit" value="Subscribe" class="button-secondary"/>
+                                <input type="submit" name="submit" id="submit" value="Subscribe" class="button-secondary"/>                                
                             </td>
                         </tr>
                     </table>

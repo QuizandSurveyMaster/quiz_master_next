@@ -324,4 +324,32 @@ function qsm_load_all_quiz_questions_ajax() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+
+/**
+ * @version 6.3.2
+ * Send data to sendy
+ */
+function qsm_send_data_sendy(){
+    $sendy_url = 'http://sendy.expresstech.io';
+    $list = '4v8zvoyXyTHSS80jeavOpg';
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+
+    //subscribe
+    $postdata = http_build_query(
+        array(
+        'name' => $name,
+        'email' => $email,
+        'list' => $list,
+        'boolean' => 'true'
+        )
+    );
+    $opts = array('http' => array('method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $postdata));
+    $context  = stream_context_create($opts);
+    $result = file_get_contents($sendy_url.'/subscribe', false, $context);
+    echo $result;
+    exit;
+}
 ?>
