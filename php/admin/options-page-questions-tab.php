@@ -192,7 +192,7 @@ function qsm_options_questions_tab_content() {
                                                     </select>
                                             </div>
                                             <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Limit Text( Only work for text or textarea )', 'quiz-master-next' ); ?></label>
+                                                    <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
                                                     <input type="number" name="limit_text" value="" id="limit_text"/>
                                             </div>
                                         </div>					

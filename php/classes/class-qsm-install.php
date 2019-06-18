@@ -516,7 +516,7 @@ class QSM_Install {
     // Settings for quick result
     $field_array = array(
       'id' => 'enable_quick_result_mc',
-      'label' => __('Enable quick result for multiple choice?', 'quiz-master-next'),
+      'label' => __('Show live results for questions inline', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
         array(

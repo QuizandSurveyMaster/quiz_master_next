@@ -58,7 +58,7 @@ function qsm_generate_featured_addons() {
         <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
         <div class="qsm-addons">
             <?php
-            $file = esc_url('http://localhost/work/et/wp-dev/addon_list.xml');
+            $file = esc_url('https://quizandsurveymaster.com/addons.xml');
             $response = wp_remote_post($file, array('sslverify' => false));
             if (is_wp_error($response)) {
                 $error_message = $response->get_error_message();
@@ -100,17 +100,20 @@ function qsm_generate_featured_addons() {
         <h3 class="qsm-news-ads-title">QSM Bundle</h3>
         <div class="qsm-info-widget">
             <h3>Starter Bundle</h3>
-            <p>Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
-            <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&amp;utm_medium=plugin&amp;utm_campaign=qsm_plugin&amp;utm_content=subscribe-to-newsletter" class="button-primary">Get Now</a>
+            <p>Get a bundle of 10 addons together which would cost over $225. With the Starter Plan, you get to use all the included addons on one site for only $49 per year. That is over 70% off compared to purchasing the addons individually.
+             </p>
+            <button class="button button-default">$69</button>
+            <a target="_blank" href="https://quizandsurveymaster.com/downloads/starter-plan/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
         </div>
         <div class="qsm-info-widget">
             <h3>Premium Bundle</h3>
-            <p>Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!</p>
-            <a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&amp;utm_medium=plugin&amp;utm_campaign=qsm_plugin&amp;utm_content=subscribe-to-newsletter" class="button-primary">Get Now</a>
+            <p>Buy our Premium Bundle and save over 95% on addon costs. You will get all 30+ plugins included in the Premium Bundle which is worth over $1500. View our pricing page for more details.!</p>
+            <button class="button button-default">$99</button>
+            <a target="_blank" href="http://quizandsurveymaster.com/downloads/premium-plan/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
         </div>
-        <div class="remove-ads-adv-link">
+       <!--  <div class="remove-ads-adv-link">
             <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>
-        </div>
+        </div> -->
     </div>
     <?php
 }
