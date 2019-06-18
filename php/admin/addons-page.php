@@ -58,23 +58,15 @@ function qsm_generate_featured_addons() {
         <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
         <div class="qsm-addons">
             <?php
-            $file = esc_url('https://quizandsurveymaster.com/addons.xml');
-            $response = wp_remote_post($file, array('sslverify' => false));
-            if (is_wp_error($response)) {
-                $error_message = $response->get_error_message();
-                echo "<p>" . __('Something went wrong', BLOGDESIGNERPRO_TEXTDOMAIN) . " : $error_message" . "</p>";
-            } else {
-                $body = wp_remote_retrieve_body($response);
-                $xml = simplexml_load_string($body);
-                if ($xml->item) {
-                    $cateory_arr = array();
-                    foreach ($xml->item as $key => $value) {
-                        $category_addon = trim($value->category);
-                        if (!array_key_exists($category_addon, $cateory_arr)) {
-                            $cateory_arr[$category_addon] = array();
-                        }
-                        $cateory_arr[$category_addon][] = $value;
+            $xml = qsm_fetch_data_from_xml();
+            $cateory_arr = array();
+            if (isset($xml->item) && $xml->item) {
+                foreach ($xml->item as $key => $value) {
+                    $category_addon = trim($value->category);
+                    if (!array_key_exists($category_addon, $cateory_arr)) {
+                        $cateory_arr[$category_addon] = array();
                     }
+                    $cateory_arr[$category_addon][] = $value;
                 }
             }
             if ($cateory_arr) {
@@ -98,19 +90,22 @@ function qsm_generate_featured_addons() {
     </div>
     <div class="qsm-news-ads">
         <h3 class="qsm-news-ads-title">QSM Bundle</h3>
+        <?php
+        if(isset($xml->qsm_bundle)){
+        ?>
         <div class="qsm-info-widget">
-            <h3>Starter Bundle</h3>
-            <p>Get a bundle of 10 addons together which would cost over $225. With the Starter Plan, you get to use all the included addons on one site for only $49 per year. That is over 70% off compared to purchasing the addons individually.
-             </p>
-            <button class="button button-default">$69</button>
-            <a target="_blank" href="https://quizandsurveymaster.com/downloads/starter-plan/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
+            <h3><?php echo $xml->qsm_bundle->starter_bundle->name; ?></h3>
+            <p><?php echo $xml->qsm_bundle->starter_bundle->desc; ?></p>
+            <button class="button button-default">$<?php echo $xml->qsm_bundle->starter_bundle->price; ?></button>
+            <a target="_blank" href="<?php echo $xml->qsm_bundle->starter_bundle->link; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
         </div>
         <div class="qsm-info-widget">
-            <h3>Premium Bundle</h3>
-            <p>Buy our Premium Bundle and save over 95% on addon costs. You will get all 30+ plugins included in the Premium Bundle which is worth over $1500. View our pricing page for more details.!</p>
-            <button class="button button-default">$99</button>
-            <a target="_blank" href="http://quizandsurveymaster.com/downloads/premium-plan/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
+            <h3><?php echo $xml->qsm_bundle->premium_bundle->name; ?></h3>
+            <p><?php echo $xml->qsm_bundle->premium_bundle->desc; ?></p>
+            <button class="button button-default">$<?php echo $xml->qsm_bundle->premium_bundle->price; ?></button>
+            <a target="_blank" href="<?php echo $xml->qsm_bundle->premium_bundle->link; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
         </div>
+        <?php } ?>
        <!--  <div class="remove-ads-adv-link">
             <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>
         </div> -->

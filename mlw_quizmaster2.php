@@ -117,6 +117,7 @@ class MLWQuizMasterNext {
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
+			include 'php/admin/functions.php';
 			include 'php/admin/stats-page.php';
 			include 'php/admin/quizzes-page.php';
 			include 'php/admin/quiz-options-page.php';
