@@ -128,7 +128,7 @@ class QSM_Install {
     // Settings for quick result
     $field_array = array(
       'id' => 'enable_result_after_timer_end',
-      'label' => __('Enable result after the timer end?', 'quiz-master-next'),
+      'label' => __('Force submit after timer expiry?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
         array(

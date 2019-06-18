@@ -92,10 +92,10 @@ var QSMAdmin;
                                 $("#status").css("color", "red");
                             } else
                             {
-                                $("#status").text("You're subscribed!");
+                                $("#status").text("Thanks, you are now subscribed to our mailing list!");
                                 $("#status").css("color", "green");
                             }                            
-                            $form.find('.spinner').hide();
+                            $form.find('#submit').attr('disabled', false);
                         } else
                         {
                             alert("Sorry, unable to subscribe. Please try again later!");

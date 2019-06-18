@@ -133,10 +133,12 @@ var QSM;
 
 				var $quizForm = QSM.getQuizForm( quizID );
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
-                                $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Please reload the quiz and start again</p>');
-                                $( ".qsm-submit-btn" ).remove();
+                                $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
+                                //$( ".qsm-submit-btn" ).remove();
                                 if(qmn_ajax_object.enable_result_after_timer_end == 1){
                                     $quizForm.closest( '.qmn_quiz_container' ).find('form').submit();
+                                }else{
+                                    alert('You are not able to attemp remaining part of quiz but you can submit the quiz!')
                                 }
 				//document.quizForm.submit();
 				return;
@@ -363,7 +365,9 @@ function qmnClearField( field ) {
 }
 
 function qsmScrollTo( $element ) {
-	jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        if($element.length > 0){
+            jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        }
 }
 
 function qmnDisplayError( message, field, quiz_form_id ) {
