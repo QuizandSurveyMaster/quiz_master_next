@@ -106,12 +106,7 @@ var import_button;
 			QSMQuestion.questions.add( model );
 			QSMQuestion.addQuestionToPage( model );
                         $('.import-button').removeClass('disable_import');
-                        import_button.html('').html('<span style="position: relative;top: 4px;" class="dashicons dashicons-yes"></span> Added Question');
-                        import_button.addClass('button-primary');
-                        setTimeout(function() {
-                            import_button.removeClass('button-primary');
-                            import_button.html('').html('Add Question');
-                        }, 150);
+                        import_button.html('').html('Add Question');
 		},
 		prepareCategories: function() {
 			QSMQuestion.categories = [];

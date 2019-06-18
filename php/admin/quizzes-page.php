@@ -190,12 +190,17 @@ function qsm_generate_quizzes_surveys_page() {
 						<p>Easily monitor your WordPress sites to ensure they stay up, healthy, and secure with our new WordPress plugin, WP Health!</p>
 						<a target="_blank" href="http://bit.ly/2Mr2SqC" class="button-primary"><?php esc_html_e( 'Learn More', 'quiz-master-next' ); ?></a>
 					</div>-->
+                                        <?php
+                                        $xml = qsm_fetch_data_from_xml();
+                                        if(isset($xml->qsm_news)){
+                                        ?>
 					<div class="qsm-info-widget">
-						<h3><?php esc_html_e( 'Subscribe to our newsletter!', 'quiz-master-next' ); ?></h3>
-						<p><?php esc_html_e( 'Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!', 'quiz-master-next' ); ?></p>
-						<a target="_blank" href="http://quizandsurveymaster.com/subscribe-to-our-newsletter/?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e( 'Subscribe Now', 'quiz-master-next' ); ?></a>
+                                            <h3><?php echo $xml->qsm_news->title; ?></h3>
+                                            <p><?php echo $xml->qsm_news->desc; ?></p>
+                                            <a target="_blank" href="<?php echo $xml->qsm_news->link; ?>?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e( 'Subscribe Now', 'quiz-master-next' ); ?></a>
 					</div>
 					<?php
+                                        }
 					$qmn_rss  = array();
 					$qmn_feed = fetch_feed( 'https://quizandsurveymaster.com/feed' );
 					if ( ! is_wp_error( $qmn_feed ) ) {

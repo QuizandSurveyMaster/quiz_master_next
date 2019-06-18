@@ -348,4 +348,6 @@ a.import-button.button.disable_import::before {
 
 #question-bank-cat{
     float: right;
+    margin-bottom: 20px;
+    margin-right: 10px;
 }
