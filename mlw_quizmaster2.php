@@ -34,7 +34,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '6.3.1';
+	public $version = '6.3.2';
 
 	/**
 	 * QSM Alert Manager Object
