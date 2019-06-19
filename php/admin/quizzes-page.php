@@ -202,19 +202,24 @@ function qsm_generate_quizzes_surveys_page() {
 					<?php
                                         }
 					$qmn_rss  = array();
-					$qmn_feed = fetch_feed( 'https://quizandsurveymaster.com/feed' );
-					if ( ! is_wp_error( $qmn_feed ) ) {
-						$qmn_feed_items = $qmn_feed->get_items( 0, 5 );
-						foreach ( $qmn_feed_items as $feed_item ) {
-							$qmn_rss[] = array(
-								'link'        => $feed_item->get_link(),
-								'title'       => $feed_item->get_title(),
-								'description' => $feed_item->get_description(),
-								'date'        => $feed_item->get_date( 'F j Y' ),
-								'author'      => $feed_item->get_author()->get_name(),
-							);
-						}
-					}
+                                        if( false === get_transient('qsm_sidebar_feed_data') ){
+                                            $qmn_feed = fetch_feed( 'https://quizandsurveymaster.com/feed' );                                        
+                                            if ( ! is_wp_error( $qmn_feed ) ) {
+                                                    $qmn_feed_items = $qmn_feed->get_items( 0, 5 );
+                                                    foreach ( $qmn_feed_items as $feed_item ) {
+                                                            $qmn_rss[] = array(
+                                                                    'link'        => $feed_item->get_link(),
+                                                                    'title'       => $feed_item->get_title(),
+                                                                    'description' => $feed_item->get_description(),
+                                                                    'date'        => $feed_item->get_date( 'F j Y' ),
+                                                                    'author'      => $feed_item->get_author()->get_name(),
+                                                            );
+                                                    }
+                                            }
+                                            set_transient( 'qsm_sidebar_feed_data', $qmn_rss, 60*60*24 );
+                                        }else{
+                                            $qmn_rss = get_transient('qsm_sidebar_feed_data');
+                                        }                                        
 					foreach ( $qmn_rss as $item ) {
 						?>
 						<div class="qsm-info-widget">
