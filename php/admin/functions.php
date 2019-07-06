@@ -1,7 +1,7 @@
 <?php
 
 function qsm_fetch_data_from_xml() {
-    $file = esc_url('http://localhost/work/et/wp-dev/addons.xml');
+    $file = esc_url('https://quizandsurveymaster.com/addons.xml');
     $response = wp_remote_post($file, array('sslverify' => false));
     
     if (is_wp_error($response) || $response['response']['code'] === 404 ) {

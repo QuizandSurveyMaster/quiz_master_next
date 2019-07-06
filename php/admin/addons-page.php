@@ -137,28 +137,28 @@ function qsm_display_optin_page() {
 
         <h1><?php esc_html_e('Get Your Free Addon!', 'quiz-master-next'); ?></h1>
 
-        <div class="about-text"><?php esc_html_e('Wanna get more out of Awesome Support, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next'); ?></div>
+        <div class="about-text"><?php esc_html_e('Wanna get more out of Quiz and Survey Master, but not yet ready to spend the cash? Get one free addon today!', 'quiz-master-next'); ?></div>
 
         <div class="changelog">
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="about-body">
                         <img src="" alt="Improved Custom Fields">
                     </div>
-                </div>
+                </div> -->
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <div class="about-body">
-                        <h3><?php esc_attr_e('Custom Status', 'quiz-master-next'); ?></h3>
-                        <p><?php esc_attr_e('Need more than the three default statuses?  Maybe you need to tag certain tickets for “Development” or  move them to certain support levels such as “Level 1” and “Level 2”.  With the Custom Status addon you can create the perfect set of ticket statuses for your organization.', 'quiz-master-next'); ?></p>
-                        <p><a href="https://getawesomesupport.com/addons/custom-status/?utm_source=plugin&utm_medium=optin&utm_campaign=activation" target="_blank"><?php esc_attr_e('Read more about this addon on our site >', 'quiz-master-next'); ?></a></p>
+                        <h3><?php esc_attr_e('Advertisment Be Gone', 'quiz-master-next'); ?></h3>
+                        <p><?php esc_attr_e('The Quiz And Survey Master News widgets from the Quizzes/Surveys page as well as all the green bordered ads at the top of pages will disappear when you activate this addon!', 'quiz-master-next'); ?></p>
+                        <p><a href="https://quizandsurveymaster.com/downloads/advertisement-gone/" target="_blank"><?php esc_attr_e('Read more about this addon on our site >', 'quiz-master-next'); ?></a></p>
                     </div>
                 </div>
             </div>
 
             <h2><?php esc_html_e('How to Get Your Free Addon', 'quiz-master-next'); ?></h2>
 
-            <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"'); ?></p>
+            <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://quizandsurveymaster.com/privacy-policy/', 'target="_blank"'); ?></p>
 
             <div id="wpas-mailchimp-signup-form-wrapper">
                 <div id="status"></div>
