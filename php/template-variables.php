@@ -57,7 +57,8 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date',10,
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
-add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
+add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
@@ -68,18 +69,19 @@ add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user
  * @param str $content
  * @param arr $mlw_quiz_array
  */
-function qsm_variable_poll_result($content, $mlw_quiz_array){    
-    while ( false !== strpos($content, '%POLL_RESULTS_') ) {        
-        $question_id = mlw_qmn_get_string_between($content, '%POLL_RESULTS_', '%');
-        $quiz_id = $mlw_quiz_array['quiz_id'];
+function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
+    $quiz_id = is_object($mlw_quiz_array) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];       
+    while ( false !== strpos($content, '%POLL_RESULTS_') ) {
+        $question_id = mlw_qmn_get_string_between($content, '%POLL_RESULTS_', '%');        
         global $wpdb;
         $table_name = $wpdb->prefix . 'mlw_results';
         $table_question = $wpdb->prefix . 'mlw_questions';
         $total_query = $wpdb->get_row('SELECT count(*) AS total_count FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
         $total_result = $total_query['total_count'];
         $ser_answer = $wpdb->get_row('SELECT answer_array FROM ' . $table_question . ' WHERE question_id = ' . $question_id,ARRAY_A);
-        $ser_answer_arry = unserialize($ser_answer['answer_array']);
-        $total_quiz_results = $wpdb->get_results('SELECT quiz_results FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
+        $ser_answer_arry = unserialize($ser_answer['answer_array']);        
+        $ser_answer_arry_change = array_filter(array_merge(array(0), $ser_answer_arry));       
+        $total_quiz_results = $wpdb->get_results('SELECT quiz_results FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);        
         $answer_array = array();
         if($total_quiz_results){
             foreach ($total_quiz_results as $key => $value) {                
@@ -89,13 +91,13 @@ function qsm_variable_poll_result($content, $mlw_quiz_array){
                     $answer_array[] = isset($userdb[1][$key]) ? $userdb[1][$key][1] : '';
                 }
             }
-        }
+        }        
         $vals = array_count_values($answer_array);
-        $str = '';
+        $str = '';        
         if($vals){
             $str .= '<h4>Poll Result:</h4>';
-            foreach ($vals as $answer_str => $answer_count) {
-                if($answer_str != ''){
+            foreach ($vals as $answer_str => $answer_count) {                
+                if($answer_str != '' && qsm_find_key_from_array($answer_str, $ser_answer_arry_change)){
                     $percentage = number_format($answer_count / $total_result * 100,2) ;
                     $str .= $answer_str . ' : ' . $percentage .'%<br/>';
                     $str .= '<progress value="'. $percentage .'" max="100">'. $percentage .' %</progress><br/>';
@@ -103,7 +105,7 @@ function qsm_variable_poll_result($content, $mlw_quiz_array){
             }
         }
         $content = str_replace( "%POLL_RESULTS_". $question_id ."%" , $str, $content);
-    }
+    }    
     return $content;
 }
 
@@ -114,6 +116,17 @@ function mlw_qmn_get_string_between($string, $start, $end){
     $ini += strlen($start);
     $len = strpos($string, $end, $ini) - $ini;
     return substr($string, $ini, $len);
+}
+
+function qsm_find_key_from_array($search_value,$array){
+    if($array){
+        foreach ($array as $key => $value) {
+            if($value[0] == $search_value){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /**
@@ -132,7 +145,8 @@ function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {
 		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );
 
 		$sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
-		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id');\">Facebook</a>";
+                $fb_image = plugins_url('', dirname(__FILE__) ) . '/assets/facebook.png';
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id');\"><img src='". $fb_image ."' alt='Facebbok Share' /></a>";
 		$content = str_replace( "%FACEBOOK_SHARE%" , $social_display, $content);
 	}
 	return $content;
@@ -148,9 +162,22 @@ function qsm_variable_twitter_share( $content, $mlw_quiz_array ) {
 		global $mlwQuizMasterNext;
 		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '' );
 		$sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
-
-		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."');\">Twitter</a>";
+                $tw_image = plugins_url('', dirname(__FILE__) ) . '/assets/twitter.png';
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."');\"><img src='". $tw_image ."' alt='Twitter Share' /></a>";
 		$content = str_replace( "%TWITTER_SHARE%" , $social_display, $content);
+	}
+	return $content;
+}
+
+/**
+ * Adds result id using the %RESULT_ID% variable
+ */
+function qsm_variable_result_id( $content, $mlw_quiz_array ) {
+	while ( false !== strpos($content, '%RESULT_ID%') ) {
+                global $wpdb;
+                $table_name = $wpdb->prefix . 'mlw_results';
+                $get_last_id = $wpdb->get_row("SELECT result_id FROM $table_name ORDER BY result_id DESC",ARRAY_A);
+		$content = str_replace( "%RESULT_ID%" , $get_last_id['result_id'], $content);
 	}
 	return $content;
 }
@@ -347,18 +374,28 @@ function mlw_qmn_variable_date_taken( $content, $results ) {
 function qmn_variable_category_points($content, $mlw_quiz_array)
 {
 	$return_points = 0;
-	while (strpos($content, '%CATEGORY_POINTS%') !== false)
+	while (strpos($content, '%CATEGORY_POINTS%') !== false || false !== strpos($content, '%CATEGORY_POINTS_'))
 	{
 		$return_points = 0;
 		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%CATEGORY_POINTS_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
+                
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			if ($answer["category"] == $answer_text[1])
+			if ($answer["category"] == $category_name)
 			{
 				$return_points += $answer["points"];
 			}
 		}
-		$content = str_replace( $answer_text[0] , $return_points, $content);
+                if(empty($answer_text)){
+                    $content = str_replace( '%CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_points, $content);
+                }		
 	}
 	return $content;
 }
@@ -375,12 +412,17 @@ function qmn_variable_category_points($content, $mlw_quiz_array)
 */
 function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 	$return_points = 0;
-	while ( strpos( $content, '%AVERAGE_CATEGORY_POINTS%' ) !== false ) {
+	while ( strpos( $content, '%AVERAGE_CATEGORY_POINTS%' ) !== false || false !== strpos($content, '%AVERAGE_CATEGORY_POINTS_') ) {
 		$return_points = 0;
 		$total_questions = 0;
 		preg_match( "~%AVERAGE_CATEGORY_POINTS%(.*?)%/AVERAGE_CATEGORY_POINTS%~i", $content, $answer_text );
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%AVERAGE_CATEGORY_POINTS_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $answer["category"] == $answer_text[1] ) {
+			if ( $answer["category"] == $category_name ) {
 				$total_questions += 1;
 				$return_points += $answer["points"];
 			}
@@ -390,7 +432,11 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$return_points = 0;
 		}
-		$content = str_replace( $answer_text[0], $return_points, $content );
+                if(empty($answer_text)){
+                    $content = str_replace( '%AVERAGE_CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_points, $content);
+                }		
 	}
 	return $content;
 }
@@ -410,15 +456,20 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 	$return_score = 0;
 	$total_questions = 0;
 	$amount_correct = 0;
-	while (strpos($content, '%CATEGORY_SCORE%') !== false)
-	{
+	while (strpos($content, '%CATEGORY_SCORE%') !== false || false !== strpos($content, '%CATEGORY_SCORE_'))
+	{            
 		$return_score = 0;
 		$total_questions = 0;
 		$amount_correct = 0;
 		preg_match("~%CATEGORY_SCORE%(.*?)%/CATEGORY_SCORE%~i",$content,$answer_text);
+                if(empty($answer_text)){
+                    $category_name = mlw_qmn_get_string_between($content, '%CATEGORY_SCORE_', '%');
+                }else{
+                    $category_name = $answer_text[1];
+                }
 		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
 		{
-			if ($answer["category"] == $answer_text[1])
+			if ($answer["category"] == $category_name)
 			{
 				$total_questions += 1;
 				if ($answer["correct"] == 'correct')
@@ -435,8 +486,13 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 		{
 			$return_score = 0;
 		}
-
-		$content = str_replace( $answer_text[0] , $return_score, $content);
+                
+                if(empty($answer_text)){
+                    $content = str_replace( '%CATEGORY_SCORE_'.$category_name.'%' , $return_score, $content);
+                }else{
+                    $content = str_replace( $answer_text[0] , $return_score, $content);
+                }	
+		
 	}
 	return $content;
 }

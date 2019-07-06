@@ -124,6 +124,25 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_result_after_timer_end',
+      'label' => __('Force submit after timer expiry?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers total_user_tries setting
     $field_array = array(
@@ -460,6 +479,44 @@ class QSM_Install {
     $field_array = array(
       'id' => 'contact_disable_autofill',
       'label' => __('Disable auto fill for contact input?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Registers show category on front setting
+    $field_array = array(
+      'id' => 'show_category_on_front',
+      'label' => __('Show category on front?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_quick_result_mc',
+      'label' => __('Show live results for questions inline', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
         array(

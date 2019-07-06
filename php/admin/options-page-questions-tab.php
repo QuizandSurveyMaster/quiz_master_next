@@ -107,7 +107,7 @@ function qsm_options_questions_tab_content() {
 					<div id="question-bank"></div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
 				</footer>
 			</div>
 		</div>
@@ -191,6 +191,10 @@ function qsm_options_questions_tab_content() {
                                                             <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
                                                     </select>
                                             </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="limit_text" value="" id="limit_text"/>
+                                            </div>
                                         </div>					
 				</main>
 				<footer class="qsm-popup__footer">
@@ -233,9 +237,10 @@ function qsm_options_questions_tab_content() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}">
-			<div><a href="#" class="import-button button">Add This Question</a></div>
-			<div><p>{{{data.question}}}</p></div>
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+                        <div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p>
+                                </div>
+			<div><a href="#" class="import-button button">Add Question</a></div>			
 		</div>
 	</script>
 
@@ -319,4 +324,32 @@ function qsm_load_all_quiz_questions_ajax() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+
+/**
+ * @version 6.3.2
+ * Send data to sendy
+ */
+function qsm_send_data_sendy(){
+    $sendy_url = 'http://sendy.expresstech.io';
+    $list = '4v8zvoyXyTHSS80jeavOpg';
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+
+    //subscribe
+    $postdata = http_build_query(
+        array(
+        'name' => $name,
+        'email' => $email,
+        'list' => $list,
+        'boolean' => 'true'
+        )
+    );
+    $opts = array('http' => array('method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $postdata));
+    $context  = stream_context_create($opts);
+    $result = file_get_contents($sendy_url.'/subscribe', false, $context);
+    echo $result;
+    exit;
+}
 ?>

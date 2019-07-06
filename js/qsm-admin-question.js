@@ -3,6 +3,7 @@
  */
 
 var QSMQuestion;
+var import_button;
 (function ($) {
 	QSMQuestion = {
 		question: Backbone.Model.extend({
@@ -65,18 +66,31 @@ var QSMQuestion;
 		},
 		questionBankLoadSuccess: function( questions ) {
 			$( '#question-bank' ).empty();
+                        var category_arr = [];
 			for ( var i = 0; i < questions.length; i++) {
 				QSMQuestion.addQuestionToQuestionBank( questions[i] );
-			}
+                                if(category_arr.indexOf(questions[i].category) == -1 && questions[i].category != ''){                                    
+                                    category_arr.push(questions[i].category);                                    
+                                }
+			}                        
+                        if(category_arr.length > 0){
+                            $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
+                            $cat_html += '<option value="">All Questions</option>';
+                            $.each(category_arr, function(index, value){
+                                $cat_html += '<option value="'+ value +'">'+ value +' Questions</option>';
+                            });
+                            $cat_html += '</select>';
+                            $( '#question-bank' ).prepend($cat_html);
+                        }
 		},
 		addQuestionToQuestionBank: function( question ) {
 			var questionText = QSMQuestion.prepareQuestionText( question.name );
 			var template = wp.template( 'single-question-bank-question' );
-			$( '#question-bank' ).append( template( { id: question.id, question: questionText } ) );
+			$( '#question-bank' ).append( template( { id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name  } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
-			MicroModal.close( 'modal-2' );
-			QSMAdmin.displayAlert( 'Adding question...', 'info' );
+			//MicroModal.close( 'modal-2' );
+			//QSMAdmin.displayAlert( 'Adding question...', 'info' );
 			var model = new QSMQuestion.question( { id: questionID } );
 			model.fetch({ 
 				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -88,9 +102,11 @@ var QSMQuestion;
 		questionBankSuccess: function( model ) {
 			var page = parseInt( $( '#add-question-bank-page' ).val(), 10 );
 			model.set( 'page', page );
-			QSMAdmin.displayAlert( 'Question added!', 'success' );
+			//QSMAdmin.displayAlert( 'Question added!', 'success' );
 			QSMQuestion.questions.add( model );
 			QSMQuestion.addQuestionToPage( model );
+                        $('.import-button').removeClass('disable_import');
+                        import_button.html('').html('Add Question');
 		},
 		prepareCategories: function() {
 			QSMQuestion.categories = [];
@@ -244,6 +260,7 @@ var QSMQuestion;
 			var required = $( "#required" ).val();
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
+                        var limit_text =  $( "#limit_text" ).val();
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -281,7 +298,8 @@ var QSMQuestion;
 					required: required,
 					answers: answers,
                                         answer_editor: answerType,
-                                        autofill: autofill
+                                        autofill: autofill,
+                                        limit_text: limit_text
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -345,6 +363,11 @@ var QSMQuestion;
                         if( disableAutofill === null || typeof disableAutofill === "undefined" ){
                             disableAutofill = '0';
                         }
+                        //Get text limit value
+                        var get_limit_text = question.get( 'limit_text' );                        
+                        if( get_limit_text === null || typeof get_limit_text === "undefined" ){
+                            get_limit_text = '0';
+                        }
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
@@ -359,6 +382,7 @@ var QSMQuestion;
 			$( "#comments" ).val( question.get( 'comments' ) );
 			$( "#required" ).val( question.get( 'required' ) );
 			$( "#hide_autofill" ).val( disableAutofill );
+			$( "#limit_text" ).val( get_limit_text );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			$( "#edit-question-id" ).text('').text(questionID);
@@ -444,10 +468,13 @@ var QSMQuestion;
 			var answer = [ '', '', 0, answer_length + 1, question_id, answerType];
 			QSMQuestion.addNewAnswer( answer );                        
 		});
-
+                
 		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
 			event.preventDefault();
+                        $(this).text('').text('Adding Question');                        
+                        import_button = $(this);
 			QSMQuestion.addQuestionFromQuestionBank( $( this ).parents( '.question-bank-question' ).data( 'question-id' ) );
+                        $('.import-button').addClass('disable_import');
 		});
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
@@ -518,6 +545,20 @@ var QSMQuestion;
                             $this.text('').html('Show advance options &raquo;');
                         }  
                     });
+                });
+                $(document).on('change','#question-bank-cat', function(){
+                    var val = $(this).val();
+                    if(val == ''){
+                        $('.question-bank-question').show();
+                    }else{
+                        $('.question-bank-question').each(function (){
+                            if($(this).attr("data-category-name") == val){
+                                $(this).show();
+                            }else{
+                                $(this).hide();
+                            }
+                        });
+                    }                    
                 });
 	});
 }(jQuery));

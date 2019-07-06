@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 6.3.0
+ * Version: 6.3.2
  * Author: QSM Team
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://quizandsurveymaster.com/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 6.3.0
+ * @version 6.3.2
  * @package QSM
  */
 
@@ -34,7 +34,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '6.3.0';
+	public $version = '6.3.2';
 
 	/**
 	 * QSM Alert Manager Object
@@ -117,6 +117,7 @@ class MLWQuizMasterNext {
 		$this->audit_manager = new QSM_Audit();
 
 		if ( is_admin() ) {
+			include 'php/admin/functions.php';
 			include 'php/admin/stats-page.php';
 			include 'php/admin/quizzes-page.php';
 			include 'php/admin/quiz-options-page.php';
@@ -275,7 +276,8 @@ class MLWQuizMasterNext {
 			add_submenu_page( __FILE__, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
 			add_submenu_page( __FILE__, __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
 			add_submenu_page( __FILE__, __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
-			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), __( 'Addon Settings', 'quiz-master-next' ), 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
+			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
+                        add_submenu_page( __FILE__, __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
 			add_submenu_page( __FILE__, __( 'QSM About', 'quiz-master-next' ), __( 'QSM About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
 			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_help', 'qsm_generate_help_page' );                        
 		}

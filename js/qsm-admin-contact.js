@@ -6,7 +6,7 @@ var QSMContact;
 (function ($) {
   QSMContact = {
     load : function() {
-        if(qsmContactObject.contactForm.length > 0){
+        if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){
             $.each( qsmContactObject.contactForm, function( i, val ) {
               QSMContact.addField( val );
             });

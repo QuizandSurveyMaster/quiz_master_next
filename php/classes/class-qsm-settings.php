@@ -164,7 +164,7 @@ class QSM_Quiz_Settings {
 
     // Check if setting exists
     if ( isset( $this->settings[ $setting ] ) ) {
-
+        
       // Try to unserialize it and then return it
       return maybe_unserialize( $this->settings[ $setting ] );
     } else {

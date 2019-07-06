@@ -133,6 +133,13 @@ var QSM;
 
 				var $quizForm = QSM.getQuizForm( quizID );
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
+                                $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
+                                //$( ".qsm-submit-btn" ).remove();
+                                if(qmn_ajax_object.enable_result_after_timer_end == 1){
+                                    $quizForm.closest( '.qmn_quiz_container' ).find('form').submit();
+                                }else{
+                                    alert('You are not able to attemp remaining part of quiz but you can submit the quiz!')
+                                }
 				//document.quizForm.submit();
 				return;
 			}
@@ -358,7 +365,9 @@ function qmnClearField( field ) {
 }
 
 function qsmScrollTo( $element ) {
-	jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        if($element.length > 0){
+            jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        }
 }
 
 function qmnDisplayError( message, field, quiz_form_id ) {
@@ -721,6 +730,57 @@ jQuery(function() {
 	  event.preventDefault();
 		qmnFormSubmit( this.id );
 	});
+        
+        jQuery(document).on('click','.btn-reload-quiz',function(e){
+            e.preventDefault();
+            var quiz_id = jQuery(this).data('quiz_id');
+            var parent_div = jQuery(this).parents('.qsm-quiz-container');
+            qsmDisplayLoading( parent_div );
+            jQuery.ajax({
+                type: 'POST',
+                url: qmn_ajax_object.ajaxurl,
+                data: {
+                    action: "qsm_get_quiz_to_reload",                    
+                    quiz_id: quiz_id,
+                },
+                success: function (response) {                    
+                    parent_div.replaceWith(response);
+                    QSM.initPagination( quiz_id );
+                },
+                error: function (errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+        
+        jQuery(document).on('change','.qmn_radio_answers input',function(e){
+            if(qmn_ajax_object.enable_quick_result_mc == 1){
+                var question_id = jQuery(this).attr('name').split('question')[1], 
+                    value = jQuery(this).val(),
+                    $this = jQuery(this).parents('.quiz_section');
+                
+                jQuery.ajax({
+                    type: 'POST',
+                    url: qmn_ajax_object.ajaxurl,
+                    data: {
+                        action: "qsm_get_question_quick_result",                    
+                        question_id: question_id,
+                        answer: value,
+                    },
+                    success: function (response) {
+                        $this.find('.quick-question-res-p').remove();
+                        if(response == 'correct'){
+                            $this.append('<p style="color: green" class="quick-question-res-p"><b>Correct!</b> You have selected correct answer.</p>')
+                        }else if(response == 'incorrect'){
+                            $this.append('<p style="color: red" class="quick-question-res-p"><b>Wrong!</b> You have selected wrong answer.</p>')
+                        }                        
+                    },
+                    error: function (errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

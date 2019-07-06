@@ -39,8 +39,36 @@ class QMNQuizManager {
     public function add_hooks() {
         add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
         add_shortcode('qsm', array($this, 'display_shortcode'));
+        add_shortcode('qsm_result', array($this, 'shortcode_display_result'));
         add_action('wp_ajax_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_nopriv_qmn_process_quiz', array($this, 'ajax_submit_results'));
+        add_action('wp_ajax_qsm_get_quiz_to_reload', array($this, 'qsm_get_quiz_to_reload'));
+        add_action('wp_ajax_nopriv_qsm_get_quiz_to_reload', array($this, 'qsm_get_quiz_to_reload'));
+        add_action('wp_ajax_qsm_get_question_quick_result', array($this, 'qsm_get_question_quick_result'));
+        add_action('wp_ajax_nopriv_qsm_get_question_quick_result', array($this, 'qsm_get_question_quick_result'));
+    }
+    
+    /**
+     * @version 6.3.2
+     * Get question quick result
+     */
+    public function qsm_get_question_quick_result(){
+        global $wpdb;
+        $question_id = isset($_POST['question_id']) ? $_POST['question_id'] : 0;
+        $answer = isset($_POST['answer']) ? $_POST['answer'] : '';
+        $question_array = $wpdb->get_row( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
+        $answer_array = unserialize($question_array['answer_array']);
+        $got_ans = false;
+        if($answer_array && $got_ans === false){
+            foreach ($answer_array as $key => $value) {
+                if($value[0] == $answer && $value[2] == 1){
+                    $got_ans = true;
+                    break;
+                }
+            }
+        }
+        echo $got_ans ? 'correct' : 'incorrect';
+        exit;
     }
 
     /**
@@ -147,6 +175,41 @@ class QMNQuizManager {
         $return_display .= ob_get_clean();
         $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
         return $return_display;
+    }
+    
+    public function shortcode_display_result($atts){
+        extract(shortcode_atts(array(
+            'id' => 0,            
+                        ), $atts));
+        ob_start();
+        global $wpdb;
+        $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
+        $quiz_result = unserialize($result_data['quiz_results']);
+        $response_data = array(
+            'quiz_id' => $result_data['quiz_id'],
+            'quiz_name' => $result_data['quiz_name'],
+            'quiz_system' => $result_data['quiz_system'],
+            'quiz_payment_id' => '',
+            'user_ip' => $result_data['user_ip'],
+            'user_name' => $result_data['name'],
+            'user_business' => $result_data['business'],
+            'user_email' => $result_data['email'],
+            'user_phone' => $result_data['phone'],
+            'user_id' => $result_data['user'],
+            'timer' => 0,
+            'time_taken' => $result_data['time_taken'],
+            'contact' => $quiz_result['contact'],
+            'total_points' => $result_data['point_score'],
+            'total_score' => $result_data['correct_score'],
+            'total_correct' => $result_data['correct'],
+            'total_questions' => $result_data['total'],
+            'question_answers_array' => $quiz_result[1],
+            'comments' => ''
+        );        
+        $data = QSM_Results_Pages::generate_pages($response_data);
+        echo htmlspecialchars_decode($data['display']);
+        $content = ob_get_clean();
+        return $content;
     }
 
     /**
@@ -302,7 +365,7 @@ class QMNQuizManager {
 
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
-        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php')));
+        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
         wp_enqueue_script('math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML');
 
         global $qmn_total_questions;
@@ -334,7 +397,7 @@ class QMNQuizManager {
             /* Restore original Post Data */
             wp_reset_postdata();
         }
-        $quiz_display .= apply_filters('qsm_display_before_form', $quiz_display);
+        $quiz_display = apply_filters('qsm_display_before_form', $quiz_display);
         $quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='' method='post' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate >";
         $quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
         $quiz_display .= "<span id='mlw_top_of_quiz'></span>";
@@ -429,7 +492,7 @@ class QMNQuizManager {
                 }
                 foreach ($pages[0] as $question_id) {
                     $question_list .= $question_id . 'Q';
-                    $question = $questions[$question_id];
+                    $question = $questions[$question_id];                    
                     ?>
                     <div class='quiz_section question-section-id-<?php echo esc_attr($question_id); ?>'>
                         <?php
@@ -743,6 +806,16 @@ class QMNQuizManager {
         echo json_encode($this->submit_results($options, $data));
         die();
     }
+    
+    /**
+     * @version 6.3.2
+     * Show quiz on button click
+     */
+    public function qsm_get_quiz_to_reload(){
+        $quiz_id = $_POST['quiz_id'];
+        echo do_shortcode('[qsm quiz="'. $quiz_id .'"]');
+        exit;
+    }
 
     /**
      * Perform The Quiz/Survey Submission
@@ -814,7 +887,10 @@ class QMNQuizManager {
 
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-
+            
+            if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 ) {
+                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >Retake Quiz</a>';
+            }
             // If the store responses in database option is set to Yes.
             if (0 != $qmn_quiz_options->store_responses) {
 
