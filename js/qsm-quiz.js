@@ -781,6 +781,18 @@ jQuery(function() {
                 });
             }
         });
+        
+        jQuery('.qmn_radio_answers > .qmn_mc_answer_wrap').on('click',function(event){
+            var radButton = jQuery(this).find('input[type=radio]');                        
+            if(event.target.className == 'qmn_quiz_radio'){
+                return true;
+            }
+            if(radButton.is(':checked')){
+              jQuery(radButton).prop("checked", false);
+            } else {
+              jQuery(radButton).prop("checked", true);
+            }
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

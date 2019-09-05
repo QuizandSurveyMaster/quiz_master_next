@@ -887,9 +887,8 @@ class QMNQuizManager {
 
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-            
-            if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 ) {
-                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >Retake Quiz</a>';
+            if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
+                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. __('Retake Quiz','quiz-master-next') .'</a>';
             }
             // If the store responses in database option is set to Yes.
             if (0 != $qmn_quiz_options->store_responses) {
@@ -1227,10 +1226,7 @@ class QMNQuizManager {
             }
             $qmn_social_media_text["twitter"] = apply_filters('mlw_qmn_template_variable_results_page', $qmn_social_media_text["twitter"], $qmn_array_for_variables);
             $qmn_social_media_text["facebook"] = apply_filters('mlw_qmn_template_variable_results_page', $qmn_social_media_text["facebook"], $qmn_array_for_variables);
-            $social_display .= "<br />
-			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js($qmn_social_media_text["facebook"]) . "', '" . esc_js($qmn_quiz_options->quiz_name) . "', '$facebook_app_id');\">Facebook</a>
-			<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js($qmn_social_media_text["twitter"]) . "', '" . esc_js($qmn_quiz_options->quiz_name) . "');\">Twitter</a>
-			<br />";
+            $social_display .= "<br /><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js($qmn_social_media_text["facebook"]) . "', '" . esc_js($qmn_quiz_options->quiz_name) . "', '$facebook_app_id');\">Facebook</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js($qmn_social_media_text["twitter"]) . "', '" . esc_js($qmn_quiz_options->quiz_name) . "');\">Twitter</a><br />";
         }
         return apply_filters('qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables);
     }
