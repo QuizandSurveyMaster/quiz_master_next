@@ -803,6 +803,17 @@ class QMNQuizManager {
             'quiz_system' => $options->system,
             'quiz_payment_id' => isset($_POST['main_payment_id']) ? $_POST['main_payment_id'] : ''
         );
+        $post_data = $_POST;
+        if(class_exists('QSM_Recaptcha')){            
+            $verified = qsm_verify_recaptcha($post_data);
+            if(!$verified){
+                echo json_encode(array(
+                    'display' => htmlspecialchars_decode('ReCaptcha Validation failed'),
+                    'redirect' => FALSE,
+                ));
+                exit;
+            }
+        }
         echo json_encode($this->submit_results($options, $data));
         die();
     }
