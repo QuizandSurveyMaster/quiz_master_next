@@ -145,6 +145,10 @@ label.inline .mlw_qmn_question,
   margin: 5px 0 5px 0;
 }
 
+.qmn_radio_answers .qmn_mc_answer_wrap {
+    cursor: pointer;
+}
+
 .quiz_section .qmn_radio_answers label,
 .quiz_section .qmn_check_answers label,
 .quiz_section .qmn_accept_answers label {
@@ -443,4 +447,12 @@ border: 1px solid #e3e3e3;
     padding: 5px 10px;
     margin: 0;
     border-radius: 5px;
+}
+
+.mlw_qmn_quiz_link{
+    cursor: pointer;
+}
+
+.qsm-results-page .qmn_question_answer{
+    margin-bottom: 30px;
 }

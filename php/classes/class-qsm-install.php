@@ -531,7 +531,27 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
+    
+    //Setting for retake quiz
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_retake_quiz_button',
+      'label' => __('Show RETAKE QUIZ button on result page', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     // Registers message_before setting
     $field_array = array(
       'id' => 'message_before',

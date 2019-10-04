@@ -27,8 +27,23 @@ function qsm_generate_result_details() {
 			}
 			?>
 		</h2>
-		<div>
-		<?php
+                <style type="text/css">
+                    .result-tab-content p{
+                        font-size: 16px;
+                    }
+                    .qmn_question_answer b {
+                        font-size: 18px;
+                        margin-bottom: 0;
+                        display: block;
+                    }
+                    .qmn_question_answer{
+                        margin-bottom: 30px;
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+                </style>
+                <div class="result-tab-content">
+		<?php                                        
 			foreach( $tab_array as $tab ) {
 				if ( $active_tab == $tab['slug'] ) {
 					call_user_func( $tab['function'] );
@@ -65,16 +80,18 @@ function qsm_generate_results_details_tab() {
 	$next_results     = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > $result_id)" );
 
 	// If there is previous or next results, show buttons.
+        echo '<div style="text-align:right; margin-top: 10px;">';
 	if ( ! is_null( $previous_results ) && $previous_results ) {
 		echo "<a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
 	}
 	if ( ! is_null( $next_results ) && $next_results ) {
 		echo " <a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $next_results ) . "\" >View Next Results</a>";
 	}
+        echo '</div>';
 
 	// Get template for admin results.
 	$settings = (array) get_option( 'qmn-settings' );
-	if ( isset( $settings['results_details_template'] ) ) {
+	if ( isset( $settings['results_details_template'] ) ) {            
 		$template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
 	} else {
 		$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>

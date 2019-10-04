@@ -295,7 +295,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 		foreach ( $questions as $question ) {
 			$qmn_questions[ $question['question_id'] ] = $question['question_answer_info'];
 		}
-
+                
 		// Cycles through each answer in the responses.
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["correct"] === "correct" ){
@@ -306,7 +306,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 				$question_answer_class = "qmn_question_answer_incorrect";
 			}
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
-			$mlw_question_answer_display = str_replace( "%QUESTION%" , htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+			$mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , htmlspecialchars_decode($answer[2], ENT_QUOTES), $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
