@@ -26,7 +26,8 @@ var QSMQuizzesSurveys;
         'postID': quizData.postID,
         'views': quizData.views,
         'taken': quizData.taken,
-        'lastActivity': quizData.lastActivity
+        'lastActivity': quizData.lastActivity,
+        'lastActivityDateTime': quizData.lastActivityDateTime
       };
       var row = $( template( values ) );
       $( '#the-list' ).append( row );
@@ -105,10 +106,6 @@ var QSMQuizzesSurveys;
       event.preventDefault();
       $( '#new-quiz-form' ).submit();
     });
-    $( '#edit-name-button' ).on( 'click', function( event ) {
-      event.preventDefault();
-      $( '#edit-name-form' ).submit();
-    });
     $( '#duplicate-quiz-button' ).on( 'click', function( event ) {
       event.preventDefault();
       $( '#duplicate-quiz-form' ).submit();
@@ -118,5 +115,20 @@ var QSMQuizzesSurveys;
       $( '#delete-quiz-form' ).submit();
     });
     QSMQuizzesSurveys.load();
+    $(document).on('click','.sc-opener',function(){ 
+        var $this = $(this);
+        var shortcode_text = $this.next('.sc-content').text();
+        $('#sc-shortcode-model-text').val(shortcode_text);
+        MicroModal.show( 'modal-6' );        
+    });
+    $(document).on('click','#sc-copy-shortcode', function(){
+        
+        var copyText = document.getElementById("sc-shortcode-model-text");
+        
+        copyText.select();
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        
+    });
   });
 }(jQuery));

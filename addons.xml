@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<addon-list>
+    <item>
+        <name>Landing Page</name>
+        <desc>Display your quizzes and surveys in their own standalone page without distracting menus, themes, or other content from your site.</desc>
+        <img></img>
+        <link>https://quizandsurveymaster.com/downloads/landing-page/?utm_source=qsm-addons-page</link>
+        <category>Frontend</category>
+        <price>25</price>
+        <slug>landing-page</slug>
+    </item>
+    <item>
+        <name>Reporting and Analysis</name>
+        <desc>Analyze your quiz's or survey's results to see the percentage of users who chose each answer displayed on useful charts. You can then filter that data or export it.</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=qsm-addons-page</link>
+        <category>Analytics</category>
+        <price>35</price>
+        <slug>reporting-and-analysis</slug>
+    </item>
+    <item>
+        <name>Export Results</name>
+        <desc>This addon gives you the ability to export your quiz results as a CSV file.</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/export-results/?utm_source=qsm-addons-page</link>
+        <category>Utility</category>
+        <price>25</price>
+        <slug>export-results</slug>
+    </item>
+    <item>
+        <name>Advertisement Be Gone</name>
+        <desc>This addon will remove all services/addon advertisements throughout the plugin.</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/advertisement-gone/?utm_source=qsm-addons-page</link>
+        <category>Utility</category>
+        <price>10</price>
+        <slug>advertisement-be-gone</slug>
+    </item>
+    <item>
+        <name>MailChimp Integration</name>
+        <desc>Grow your list of subscribers in MailChimp by using this addon to add users who take your quizzes and surveys!</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=qsm-addons-page</link>
+        <category>Integrations</category>
+        <price>25</price>
+        <slug>mailchimp-integration</slug>
+    </item>
+    <item>
+        <name>User Dashboard</name>
+        <desc>This addon gives you the ability to set up a page where users can review their results from all the quizzes they have taken.</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=qsm-addons-page</link>
+        <category>Frontend</category>
+        <price>25</price>
+        <slug>user-dashboard</slug>
+    </item>
+    <item>
+        <name>Aweber Integration</name>
+        <desc>Grow your list of subscribers in AWeber by using this addon to add users who take your quizzes!</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/aweber-integration/?utm_source=qsm-addons-page</link>
+        <category>Integrations</category>
+        <price>25   </price>
+        <slug>aweber-integration</slug>
+    </item>
+    <item>
+        <name>Extra Template Variables</name>
+        <desc>This addon gives you several more template variables to use in your emails and results pages.</desc>
+        <img></img>
+        <link>http://quizandsurveymaster.com/downloads/extra-template-variables/?utm_source=qsm-addons-page</link>
+        <category>Developer</category>
+        <price>8</price>
+        <slug>extra-template-variables</slug>
+    </item>
+    <qsm_bundle>
+        <starter_bundle>
+            <name>Starter Bundle</name>
+            <desc>Get a bundle of 10 addons together which would cost over $225. With the Starter Plan, you get to use all the included addons on one site for only $49 per year. That is over 70% off compared to purchasing the addons individually.</desc>
+            <price>69</price>
+            <link>https://quizandsurveymaster.com/downloads/starter-plan/</link>
+        </starter_bundle>
+        <premium_bundle>
+            <name>Premium Bundle</name>
+            <desc>Buy our Premium Bundle and save over 95% on addon costs. You will get all 30+ plugins included in the Premium Bundle which is worth over $1500. View our pricing page for more details.!</desc>
+            <price>99</price>
+            <link>https://quizandsurveymaster.com/downloads/starter-plan/</link>
+            <slug>all-addons-top</slug>
+        </premium_bundle>
+    </qsm_bundle>
+    <qsm_news>
+        <title>Subscribe to our newsletter!</title>
+        <desc>Join our mailing list to learn about our newest features, receive email-only promotions, receive tips and guides, and more!</desc>
+        <link>http://quizandsurveymaster.com/subscribe-to-our-newsletter/</link>
+    </qsm_news>
+    <qsm_ads>
+        <ads>
+            <text>Are you finding this plugin very beneficial? Please consider checking out our premium addons which help support continued development of this plugin. Visit our [link] for details!</text>
+            <link>http://quizandsurveymaster.com/addons/?utm_source=qsm-plugin-ads#38utm_medium=plugin#38utm_content=#38utm_campaign=qsm_plugin</link>
+            <link_text>Addon Store</link_text>
+        </ads>
+        <ads>
+            <text>Are you receiving a lot of responses to your quizzes and surveys? Consider our Reporting and Anaylsis addon which analyzes the data for you and allows you to filter the data as well as export it! [link]</text>
+            <link>http://quizandsurveymaster.com/downloads/results-analysis/?utm_source=qsm-plugin-ads#38utm_medium=plugin#38utm_content=reporting-analysis-1#38utm_campaign=qsm_plugin</link>
+            <link_text>Click here for more details!</link_text>
+        </ads>
+        <ads>
+            <text>Want to grow your email list? Check out our addons for adding your quiz or survey takers to your email lists! [link].</text>
+            <link>http://bit.ly/2Bsw0Je</link>
+            <link_text>View our addon store</link_text>
+        </ads>        
+    </qsm_ads>
+</addon-list>

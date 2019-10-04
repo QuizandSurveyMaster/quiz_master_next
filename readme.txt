@@ -1,14 +1,14 @@
-=== Quiz And Survey Master (Formerly Quiz Master Next) ===
+=== Quiz And Survey Master - Best Quiz Plugin for WordPress ===
 Contributors: quizsurvey
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
-Tested up to: 5.0.2
+Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 6.2.1
+Stable tag: 6.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Easily and quickly add unlimited quizzes and surveys to your website.
+Native quiz and surveys for your WordPress site. Easily and quickly add unlimited quizzes and surveys to your website. Customizable and professional quizzes are now at your finger tips.
 
 == Description ==
 
@@ -110,6 +110,24 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.3.1 (May 19, 2019) =
+* Closed Bug: Duplicate post issue ([Issue #758](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/758))
+* Closed Enhancement: Option to turn off autofill ([WP Issue](https://wordpress.org/support/topic/can-you-add-an-option-to-turn-off-autofill-on-galaxy-phones-and-other-devices/))
+* Added Feature: Preview quiz within the quiz edit page. 
+* Added Feature: Auto save quiz and questions 
+* Closed Enhancement: Disable autofill for contact fields ([Issue #718](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/718))
+* Closed Enhancement: Added %POLL_RESULTS_X% tag for results page to show poll results ([Issue #458](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/458))
+* Closed Bug: Facebook Share not working properly ([WP Issue](https://wordpress.org/support/topic/facebook-share-40/))
+
+
+= 6.3.0 (April 20, 2019) =
+* Massive UI update
+* Closed Enhancement: Support for Image and Rich answers
+([Issue #146](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/146))
+
+= 6.2.2 (March 14, 2019) =
+* Security update as suggested by WordPress team.
 
 = 6.2.1 (February 20, 2019) =
 * Fixes cut off submit button on mobile phone issue

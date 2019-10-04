@@ -435,6 +435,11 @@ class QMNQuizCreator {
 				)
 			);
 		$mlw_new_id = $wpdb->insert_id;
+                
+                //Update quiz settings
+                $update_quiz_settings = unserialize($mlw_qmn_duplicate_data->quiz_settings);
+                $update_pages = unserialize($update_quiz_settings['pages']);
+                
 		if ( false != $results ) {
 			$current_user = wp_get_current_user();
 			$quiz_post = array(
@@ -516,12 +521,29 @@ class QMNQuizCreator {
 						'%d'
 					)
 				);
+                                foreach ($update_pages as $pages_key => $pages_value) {
+                                    foreach ($pages_value as $pages_k_q => $page_q_id) {
+                                        if($page_q_id == $mlw_question->question_id){
+                                            $update_pages[$pages_key][$pages_k_q] = $wpdb->insert_id;
+                                        }
+                                    }
+                                }   
 				if ($question_results == false)
 				{
 					$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0020'), 'error');
 					$mlwQuizMasterNext->log_manager->add("Error 0020", $wpdb->last_error.' from '.$wpdb->last_query, 0, 'error');
 				}
 			}
+                        $update_quiz_settings['pages'] = serialize($update_pages);
+                        $wpdb->update(
+                            $wpdb->prefix . "mlw_quizzes",
+                            array(
+                                'quiz_settings' => serialize($update_quiz_settings),
+                            ),
+                            array(
+                                'quiz_id' => $mlw_new_id
+                            )
+                        );
 		}
 	}
 

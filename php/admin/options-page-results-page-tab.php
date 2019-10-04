@@ -94,13 +94,13 @@ function qsm_options_results_tab_content() {
 				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent taking quiz in seconds', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<span class="template_name">%CATEGORY_POINTS%%/CATEGORY_POINTS%</span> - <?php _e('The amount of points a specific category earned.', 'quiz-master-next'); ?>
+				<span class="template_name">%CATEGORY_POINTS_X%</span> - <?php _e('X: Category name - The amount of points a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<spane class="template_name">%AVERAGE_CATEGORY_POINTS%%/AVERAGE_CATEGORY_POINTS%</span> - <?php _e('The average amount of points a specific category earned.', 'quiz-master-next'); ?>
+				<span class="template_name">%AVERAGE_CATEGORY_POINTS_X%</span> - <?php _e('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
-				<span class="template_name">%CATEGORY_SCORE%%/CATEGORY_SCORE%</span> - <?php _e('The score a specific category earned.', 'quiz-master-next'); ?>
+				<span class="template_name">%CATEGORY_SCORE_X%</span> - <?php _e('X: Category name - The score a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
 				<span class="template_name">%CATEGORY_AVERAGE_POINTS%</span> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?>
@@ -114,6 +114,12 @@ function qsm_options_results_tab_content() {
 			<div class="template_variable">
 				<span class="template_name">%TWITTER_SHARE%</span> - <?php _e('Displays button to share on Twitter.', 'quiz-master-next'); ?>
 			</div>
+			<div class="template_variable">
+				<span class="template_name">%POLL_RESULTS_X%</span> - <?php _e('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next'); ?>
+			</div>
+                        <div class="template_variable">
+				<span class="template_name">%RESULT_ID%</span> - <?php _e('Show result id', 'quiz-master-next'); ?>
+			</div>
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>
 		<div style="clear:both;"></div>
@@ -123,9 +129,11 @@ function qsm_options_results_tab_content() {
 	<section>
 		<h3>Your Pages</h3>
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+                <span class="spinner" style="float: none;"></span>
 		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
 		<div id="results-pages"></div>
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
+                <span class="spinner" style="float: none;"></span>
 		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
 	</section>
 

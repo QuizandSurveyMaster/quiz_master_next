@@ -107,7 +107,7 @@ function qsm_options_questions_tab_content() {
 					<div id="question-bank"></div>
 				</main>
 				<footer class="qsm-popup__footer">
-					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
 				</footer>
 			</div>
 		</div>
@@ -119,7 +119,7 @@ function qsm_options_questions_tab_content() {
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-1-title">Edit Question</h2>
+                                    <h2 class="qsm-popup__title" id="modal-1-title">Edit Question [ ID: <span id="edit-question-id"></span>  ]</h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-1-content">
@@ -145,36 +145,57 @@ function qsm_options_questions_tab_content() {
 
 						</div>
 						<a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
+                                                <label class="change-answer-editor-label">
+                                                    <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
+                                                    <select id="change-answer-editor">
+                                                        <option value="text">Text Answers</option>
+                                                        <option value="rich">Rich Answers</option>
+                                                    </select>
+                                                </label>                             
 					</div>
-					<div id="correct_answer_area" class="qsm-row">
+                                        <p id="show-advanced-option">Show advance options &raquo;</p>
+                                        <div class="advanced-content" style="display: none;">
+                                            <div id="correct_answer_area" class="qsm-row">
 						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
 						<input type="text" name="correct_answer_info" value="" id="correct_answer_info" />
-					</div>
-					<div id="hint_area" class="qsm-row">
-						<label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
-						<input type="text" name="hint" value="" id="hint"/>
-					</div>
-					<div id="comment_area" class="qsm-row">
-						<label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
-						<select name="comments" id="comments">
-							<option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
-							<option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
-							<option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
-						<select>
-					</div>
-					<div id="required_area" class="qsm-row">
-						<label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
-						<select name="required" id="required">
-							<option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-							<option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-						</select>
-					</div>
-					<div id="category_area" class="qsm-row">
-						<label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
-						<div id="categories">
-							<input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
-						</div>
-					</div>
+                                            </div>
+                                            <div id="hint_area" class="qsm-row">
+                                                    <label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
+                                                    <input type="text" name="hint" value="" id="hint"/>
+                                            </div>
+                                            <div id="comment_area" class="qsm-row">
+                                                    <label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
+                                                    <select name="comments" id="comments">
+                                                            <option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
+                                                            <option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
+                                                            <option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
+                                                    <select>
+                                            </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
+                                                    <select name="required" id="required">
+                                                            <option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                            <option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                    </select>
+                                            </div>
+                                            <div id="category_area" class="qsm-row">
+                                                    <label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
+                                                    <div id="categories">
+                                                            <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
+                                                    </div>
+                                            </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Hide Autofill?', 'quiz-master-next' ); ?></label>
+                                                    <select name="hide_autofill" id="hide_autofill">
+                                                            <option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                            <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                    </select>
+                                            </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="limit_text" value="" id="limit_text"/>
+                                            </div>
+                                        </div>					
 				</main>
 				<footer class="qsm-popup__footer">
 					<button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
@@ -216,9 +237,10 @@ function qsm_options_questions_tab_content() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}">
-			<div><a href="#" class="import-button button">Add This Question</a></div>
-			<div><p>{{{data.question}}}</p></div>
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+                        <div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p>
+                                </div>
+			<div><a href="#" class="import-button button">Add Question</a></div>			
 		</div>
 	</script>
 
@@ -233,7 +255,13 @@ function qsm_options_questions_tab_content() {
 	<script type="text/template" id="tmpl-single-answer">
 		<div class="answers-single">
 			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
-			<div class="answer-text-div"><input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/></div>
+			<div class="answer-text-div">
+                            <# if ( 'rich' == data.answerType ) { #>
+                                <textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
+                            <# } else { #>
+                                <input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+                            <# } #>                                                        
+                        </div>
 			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<div><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #></div>
 		</div>
@@ -296,4 +324,32 @@ function qsm_load_all_quiz_questions_ajax() {
 	wp_die();
 }
 
+add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
+
+/**
+ * @version 6.3.2
+ * Send data to sendy
+ */
+function qsm_send_data_sendy(){
+    $sendy_url = 'http://sendy.expresstech.io';
+    $list = '4v8zvoyXyTHSS80jeavOpg';
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+
+    //subscribe
+    $postdata = http_build_query(
+        array(
+        'name' => $name,
+        'email' => $email,
+        'list' => $list,
+        'boolean' => 'true'
+        )
+    );
+    $opts = array('http' => array('method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $postdata));
+    $context  = stream_context_create($opts);
+    $result = file_get_contents($sendy_url.'/subscribe', false, $context);
+    echo $result;
+    exit;
+}
 ?>

@@ -105,6 +105,18 @@
         box-sizing: border-box;
 }
 
+/*.quiz_section > .mlw_qmn_question,
+.quiz_section > .quiz-cat{
+    display: inline-block;
+}*/
+
+.quiz_section > .quiz-cat{
+    margin-left: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    float: right;
+}
+
 .qsm_contact_div {
 	margin: 10px 0;
 }
@@ -131,6 +143,10 @@ label.inline .mlw_qmn_question,
 .qmn_mc_answer_wrap {
   display: block;
   margin: 5px 0 5px 0;
+}
+
+.qmn_radio_answers .qmn_mc_answer_wrap {
+    cursor: pointer;
 }
 
 .quiz_section .qmn_radio_answers label,
@@ -424,4 +440,19 @@ border: 1px solid #e3e3e3;
 
   .mlw_qmn_timer { top: 20px; }
 
+}
+
+.quick-question-res-p {
+    border: 2px solid;
+    padding: 5px 10px;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.mlw_qmn_quiz_link{
+    cursor: pointer;
+}
+
+.qsm-results-page .qmn_question_answer{
+    margin-bottom: 30px;
 }

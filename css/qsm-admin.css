@@ -2,8 +2,13 @@
 Quizzes/Surveys Page
 *********************/
 
-.qsm-quizes-page .widefat td {
+/*.qsm-quizes-page .widefat td {
   font-size: 16px !important;
+}*/
+
+span.qsm-quiz-name {
+    font-size: 14px;
+    font-weight: 600;
 }
 
 .qsm-quizzes-page-content {
@@ -55,6 +60,16 @@ Quizzes/Surveys Page
   padding-right: 30px;
 }
 
+.qsm-quiz-page-addon{
+    width: 83%;
+    float: left;
+}
+
+.quizzes-surveys_page_qmn_addons .qsm-news-ads{
+    width: 15%;
+    float: right;
+}
+
 @media screen and (min-width: 1200px) {
   .qsm-quizzes-page-content {
     flex-direction: row;
@@ -69,6 +84,15 @@ Quizzes/Surveys Page
   }
 }
 
+@media screen and (max-width: 767px) {
+    .qsm-quiz-page-addon{
+        width: 100%;
+    }
+
+    .quizzes-surveys_page_qmn_addons .qsm-news-ads{
+        width: 100%;
+    }
+}
 
 
 /********************
@@ -431,7 +455,7 @@ Misc.
 	background: #fff;
 	padding: 10px 5px;
 	transition-duration: 0.5s;
-	max-width: 400px;
+	max-width: 330px;
 }
 
 .qsm-info-widget:hover {
@@ -593,4 +617,70 @@ from { transform: translateY(15%); }
 .qsm-popup-slide .qsm-popup__container,
 .qsm-popup-slide .qsm-popup__overlay {
 	will-change: transform;
+}
+
+/**
+* Shortcode accordion
+*/
+.sc-opener{
+    position: relative;
+    font-size: 14px !important;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.sc-opener span.dashicons{
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+}
+.sc-content{
+    display: none;
+}
+.quiz-preview-link{
+    margin-left: 10px;
+    position: relative;
+    top: 3px;
+}
+
+#show-advanced-option{
+    font-size: 16px;
+    cursor: pointer;
+    color: #0073aa;
+    margin-bottom: 15px;
+}
+
+.remove-ads-adv-link{
+    text-align: center;
+}
+
+.remove-ads-adv-link a{
+    background: #1DD969;
+    text-align: center;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.help-decide a.remove-adv-button{
+    background: #1DD969;
+    text-align: center;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+h3.addon_category_name {
+    width: 100%;
+    background: #d7d1d1;
+    padding: 15px;
 }

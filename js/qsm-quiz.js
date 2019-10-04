@@ -133,6 +133,13 @@ var QSM;
 
 				var $quizForm = QSM.getQuizForm( quizID );
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
+                                $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
+                                //$( ".qsm-submit-btn" ).remove();
+                                if(qmn_ajax_object.enable_result_after_timer_end == 1){
+                                    $quizForm.closest( '.qmn_quiz_container' ).find('form').submit();
+                                }else{
+                                    alert('You are not able to attemp remaining part of quiz but you can submit the quiz!')
+                                }
 				//document.quizForm.submit();
 				return;
 			}
@@ -358,7 +365,9 @@ function qmnClearField( field ) {
 }
 
 function qsmScrollTo( $element ) {
-	jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        if($element.length > 0){
+            jQuery( 'html, body' ).animate( { scrollTop: $element.offset().top - 150 }, 1000 );
+        }
 }
 
 function qmnDisplayError( message, field, quiz_form_id ) {
@@ -381,7 +390,7 @@ function qmnValidation( element, quiz_form_id ) {
 	var empty_error = qmn_quiz_data[ quiz_id ].error_messages.empty;
 	var incorrect_error = qmn_quiz_data[ quiz_id ].error_messages.incorrect;
 	qmnResetError( quiz_form_id );
-	jQuery( element ).each(function(){
+	jQuery( element ).each(function(){                
 		if ( jQuery( this ).attr( 'class' )) {
 			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) > -1 && this.value !== "" ) {
 				var x = this.value;
@@ -398,6 +407,7 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
+                                
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
@@ -429,6 +439,13 @@ function qmnValidation( element, quiz_form_id ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
 					}
+				}
+                                //Google recaptcha validation
+				if( jQuery( this ).attr( 'class' ).indexOf( 'g-recaptcha-response' ) > -1 ) {
+                                        if(grecaptcha.getResponse() == "") {
+                                            alert('ReCaptcha is missing');                                            
+                                            result =  false;
+                                        }					
 				}
 			}
 		}
@@ -691,7 +708,7 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	if ( network == 'facebook' ) {
 		url = "https://www.facebook.com/dialog/feed?"	+ "display=popup&" + "app_id="+facebook_id +
 			"&" + "link=" + pageUrlEncoded + "&" + "name=" + encodeURIComponent(mlw_qmn_social_text) +
-			"&" + "description=  &" + "redirect_uri=http://www.mylocalwebstop.com/mlw_qmn_close.html";
+			"&" + "description=";
 	}
 	if ( network == 'twitter' )	{
 		url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(mlw_qmn_social_text);
@@ -713,6 +730,69 @@ jQuery(function() {
 	  event.preventDefault();
 		qmnFormSubmit( this.id );
 	});
+        
+        jQuery(document).on('click','.btn-reload-quiz',function(e){
+            e.preventDefault();
+            var quiz_id = jQuery(this).data('quiz_id');
+            var parent_div = jQuery(this).parents('.qsm-quiz-container');
+            qsmDisplayLoading( parent_div );
+            jQuery.ajax({
+                type: 'POST',
+                url: qmn_ajax_object.ajaxurl,
+                data: {
+                    action: "qsm_get_quiz_to_reload",                    
+                    quiz_id: quiz_id,
+                },
+                success: function (response) {                    
+                    parent_div.replaceWith(response);
+                    QSM.initPagination( quiz_id );
+                },
+                error: function (errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+        
+        jQuery(document).on('change','.qmn_radio_answers input',function(e){
+            if(qmn_ajax_object.enable_quick_result_mc == 1){
+                var question_id = jQuery(this).attr('name').split('question')[1], 
+                    value = jQuery(this).val(),
+                    $this = jQuery(this).parents('.quiz_section');
+                
+                jQuery.ajax({
+                    type: 'POST',
+                    url: qmn_ajax_object.ajaxurl,
+                    data: {
+                        action: "qsm_get_question_quick_result",                    
+                        question_id: question_id,
+                        answer: value,
+                    },
+                    success: function (response) {
+                        $this.find('.quick-question-res-p').remove();
+                        if(response == 'correct'){
+                            $this.append('<p style="color: green" class="quick-question-res-p"><b>Correct!</b> You have selected correct answer.</p>')
+                        }else if(response == 'incorrect'){
+                            $this.append('<p style="color: red" class="quick-question-res-p"><b>Wrong!</b> You have selected wrong answer.</p>')
+                        }                        
+                    },
+                    error: function (errorThrown) {
+                        alert(errorThrown);
+                    }
+                });
+            }
+        });
+        
+        jQuery('.qmn_radio_answers > .qmn_mc_answer_wrap').on('click',function(event){
+            var radButton = jQuery(this).find('input[type=radio]');                        
+            if(event.target.className == 'qmn_quiz_radio'){
+                return true;
+            }
+            if(radButton.is(':checked')){
+              jQuery(radButton).prop("checked", false);
+            } else {
+              jQuery(radButton).prop("checked", true);
+            }
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

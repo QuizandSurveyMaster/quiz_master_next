@@ -6,9 +6,11 @@ var QSMContact;
 (function ($) {
   QSMContact = {
     load : function() {
-      $.each( qsmContactObject.contactForm, function( i, val ) {
-        QSMContact.addField( val );
-      });
+        if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){
+            $.each( qsmContactObject.contactForm, function( i, val ) {
+              QSMContact.addField( val );
+            });
+        }
     },
     addField : function( fieldArray ) {
       var contactField = $( '<div class="contact-form-field new">' +
