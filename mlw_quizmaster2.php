@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 6.3.2
+ * Version: 6.3.3
  * Author: QSM Team
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://quizandsurveymaster.com/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 6.3.2
+ * @version 6.3.3
  * @package QSM
  */
 
@@ -34,7 +34,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '6.3.2';
+	public $version = '6.3.3';
 
 	/**
 	 * QSM Alert Manager Object

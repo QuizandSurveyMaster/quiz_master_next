@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 6.3.1
+Stable tag: 6.3.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,25 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.3.3 (Oct 04, 2019) =
+* Option to disable "retake" quiz option.
+* Mouse pointer over the FB / TW buttons
+* Translate for "Retake Quiz" ([Issue #773] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/773)
+* Radio buttons hard to select ([WP Issue] (https://wordpress.org/support/topic/radio-buttons-are-hard-to-select-on-mobile-devices/))
+* Results page enhancements
+* Skipped 6.3.2, by mistake.
+
+= 6.3.2 (July 06, 2019) = 
+* UI Changes
+* Addons Pricing Page Update
+* Free Addon Page Added
+* Show results of quiz in realtime - #646
+* Timer Enhacements - Auto submit at expiry and show message on expiry
+* Personality Quiz Enhancements - Show category on frontend and Show results per category
+* Retake Quiz - #661
+* Question Bank Enhacements - #39
+* Facebook Button Icons
 
 = 6.3.1 (May 19, 2019) =
 * Closed Bug: Duplicate post issue ([Issue #758](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/758))
