@@ -443,7 +443,7 @@ function qmnValidation( element, quiz_form_id ) {
                                 //Google recaptcha validation
 				if( jQuery( this ).attr( 'class' ).indexOf( 'g-recaptcha-response' ) > -1 ) {
                                         if(grecaptcha.getResponse() == "") {
-                                            alert('ReCaptcha is missing');                                            
+                                            alert('ReCaptcha is missing');
                                             result =  false;
                                         }					
 				}
