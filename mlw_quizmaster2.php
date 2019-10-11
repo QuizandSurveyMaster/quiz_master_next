@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-
+define( 'QSM_SUBMENU', __FILE__);
 /**
  * This class is the main class of the plugin
  *
