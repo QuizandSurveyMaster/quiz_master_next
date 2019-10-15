@@ -41,7 +41,7 @@ function qsm_generate_admin_results_page() {
 			}
 			?>
 		</h2>
-		<div>
+                <div class="result-page-wrapper">
 		<?php
 		// Locates the active tab and calls its content function.
 		foreach ( $tab_array as $tab ) {
@@ -202,6 +202,7 @@ function qsm_results_overview_tab_content() {
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ) );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+        wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array() );
 	?>
 	<script type="text/javascript">
 		var $j = jQuery.noConflict();
