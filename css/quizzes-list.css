@@ -1,0 +1,23 @@
+.ind-quiz
+{
+	width: 100%;
+	border-bottom: 1px solid #ccc
+}
+.quiz-heading
+{
+	width: 75%;
+	float: left;
+	padding: 15px 5px;
+	font-weight: bold;
+	font-size:20px;
+	
+}
+.quiz-url
+{
+	width: 20%;
+	float: left;
+	padding: 15px 5px;
+}
+.clear {
+	clear: both
+}
