@@ -318,9 +318,10 @@ var import_button;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewAnswer: function( answer ) {
+                        
 			var answerTemplate = wp.template( 'single-answer' );                        
-			$( '#answers' ).append( answerTemplate( { answer: answer[0], points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
-                        if(answer[5] == 'rich'){
+			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
+                        if(answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true'){
                             var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
                             wp.editor.remove( textarea_id );
                             var settings = {
@@ -343,7 +344,10 @@ var import_button;
 			var question = QSMQuestion.questions.get( questionID );
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
-			var question_editor = tinyMCE.get( 'question-text' );                        
+                        var question_editor = ''
+                        if(qsmQuestionSettings.qsm_user_ve === 'true'){
+                            question_editor = tinyMCE.get( 'question-text' );
+                        }			
 			if ($('#wp-question-text-wrap').hasClass('html-active')) {
 				jQuery( "#question-text" ).val( questionText );
 			} else if ( question_editor ) {
@@ -359,7 +363,7 @@ var import_button;
                             answerEditor = 'text';
                         }
                         //Check autofill setting
-                        var disableAutofill = question.get( 'autofill' );                        
+                        var disableAutofill = question.get( 'autofill' );
                         if( disableAutofill === null || typeof disableAutofill === "undefined" ){
                             disableAutofill = '0';
                         }
@@ -530,7 +534,9 @@ var import_button;
 			placeholder: "ui-state-highlight",
 			connectWith: '.page'
 		});
-		QSMQuestion.prepareEditor();
+                if(qsmQuestionSettings.qsm_user_ve === 'true'){
+                    QSMQuestion.prepareEditor();
+                }		
 		QSMQuestion.loadQuestions();
                 
                 /**
@@ -561,4 +567,28 @@ var import_button;
                     }                    
                 });
 	});
+        var decodeEntities = (function () {
+                //create a new html document (doesn't execute script tags in child elements)
+                var doc = document.implementation.createHTMLDocument("");
+                var element = doc.createElement('div');
+
+                function getText(str) {
+                    element.innerHTML = str;
+                    str = element.textContent;
+                    element.textContent = '';
+                    return str;
+                }
+
+                function decodeHTMLEntities(str) {
+                    if (str && typeof str === 'string') {
+                        var x = getText(str);
+                        while (str !== x) {
+                            str = x;
+                            x = getText(x);
+                        }
+                        return x;
+                    }
+                }
+                return decodeHTMLEntities;
+            })();
 }(jQuery));

@@ -899,7 +899,7 @@ class QMNQuizManager {
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
             if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
-                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. __('Retake Quiz','quiz-master-next') .'</a>';
+                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. apply_filters('qsm_retake_quiz_text', 'Retake Quiz') .'</a>';
             }
             // If the store responses in database option is set to Yes.
             if (0 != $qmn_quiz_options->store_responses) {
