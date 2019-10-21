@@ -196,6 +196,10 @@ function qsm_options_questions_tab_content() {
                                                     <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
                                                     <input type="number" name="limit_text" value="" id="limit_text"/>
                                             </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
+                                            </div>
                                         </div>					
 				</main>
 				<footer class="qsm-popup__footer">
