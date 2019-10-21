@@ -690,7 +690,9 @@ h3.addon_category_name {
         display: none;
     }
     .qsm-quiz-page-wrapper thead th:nth-of-type(2n),
-    .qsm-quiz-page-wrapper tfoot th:nth-of-type(2n){
+    .qsm-quiz-page-wrapper tfoot th:nth-of-type(2n),
+    .qsm-quiz-page-wrapper-with-ads thead th:nth-of-type(2n),
+    .qsm-quiz-page-wrapper-with-ads tfoot th:nth-of-type(2n){
         display: none;
     }
     .qsm-quiz-page-wrapper .row-actions{

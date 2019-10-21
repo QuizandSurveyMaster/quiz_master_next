@@ -265,6 +265,7 @@ var import_button;
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
+                        var limit_multiple_response =  $( "#limit_multiple_response" ).val();
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -303,7 +304,8 @@ var import_button;
 					answers: answers,
                                         answerEditor: answerType,
                                         autofill: autofill,
-                                        limit_text: limit_text
+                                        limit_text: limit_text,
+                                        limit_multiple_response: limit_multiple_response
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -377,6 +379,11 @@ var import_button;
                         if( get_limit_text === null || typeof get_limit_text === "undefined" ){
                             get_limit_text = '0';
                         }
+                        //Get limit multiple response value
+                        var get_limit_mr = question.get( 'limit_multiple_response' );                        
+                        if( get_limit_mr === null || typeof get_limit_mr === "undefined" ){
+                            get_limit_mr = '0';
+                        }
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
@@ -392,6 +399,7 @@ var import_button;
 			$( "#required" ).val( question.get( 'required' ) );
 			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#limit_text" ).val( get_limit_text );
+			$( "#limit_multiple_response" ).val( get_limit_mr );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			$( "#edit-question-id" ).text('').text(questionID);

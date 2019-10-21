@@ -330,7 +330,7 @@ var QSM;
 		 */
 		getQuizForm: function( quizID ) {
 			return $( '#quizForm' + quizID );
-		}
+		}                
 	};
 
 	// On load code
@@ -340,12 +340,24 @@ var QSM;
 		qmnInit();
 
 		// Call main initialization.
-		QSM.init();
+		QSM.init();               
 	});
+
 }(jQuery));
 
 // Global Variables
 var qsmTitleText = document.title;
+
+/**
+* Limit multiple response based on question limit
+* @returns {undefined}
+*/
+function qsmCheckMR(event, limit){
+   var checked = jQuery(event).parents('.quiz_section').find(':checkbox:checked').length;   
+   if (checked > limit) {
+        event.checked = false;
+    }
+}
 
 function qmnTimeTakenTimer() {
 	var x = +jQuery( '#timer' ).val();
@@ -782,7 +794,7 @@ jQuery(function() {
             }
         });
         
-        jQuery('.qmn_radio_answers > .qmn_mc_answer_wrap').on('click',function(event){
+        /*jQuery('.qmn_radio_answers > .qmn_mc_answer_wrap').on('click',function(event){
             var radButton = jQuery(this).find('input[type=radio]');                        
             if(event.target.className == 'qmn_quiz_radio'){
                 return true;
@@ -792,7 +804,7 @@ jQuery(function() {
             } else {
               jQuery(radButton).prop("checked", true);
             }
-        });
+        });*/
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
