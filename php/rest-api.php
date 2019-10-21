@@ -321,7 +321,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				);
 				$settings = array(
 					'required' => $request['required'],
-                                        'answerEditor' => $request['answer_editor'],
+                                        'answerEditor' => $request['answerEditor'],
                                         'autofill' => $request['autofill'],
                                         'limit_text' => $request['limit_text'],
 				);

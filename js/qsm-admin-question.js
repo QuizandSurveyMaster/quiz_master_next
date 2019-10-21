@@ -254,6 +254,10 @@ var import_button;
 			var model = QSMQuestion.questions.get( questionID );
 			var hint = $( '#hint' ).val();
 			var name = wp.editor.getContent( 'question-text' );
+                        if(name == ''){
+                            alert('Enter question title');
+                            return false;
+                        }
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
 			var comments = $( "#comments" ).val();
@@ -297,7 +301,7 @@ var import_button;
 					category: category,
 					required: required,
 					answers: answers,
-                                        answer_editor: answerType,
+                                        answerEditor: answerType,
                                         autofill: autofill,
                                         limit_text: limit_text
 				}, 
@@ -342,6 +346,7 @@ var import_button;
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
 			var question = QSMQuestion.questions.get( questionID );
+                        console.log(question)
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
                         var question_editor = ''
