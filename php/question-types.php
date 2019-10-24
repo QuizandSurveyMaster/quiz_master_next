@@ -215,7 +215,7 @@ function qmn_drop_down_display($id, $question, $answers)
 	}
   $question_display .= "<span class='mlw_qmn_question'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . "</span>";
   $question_display .= "<select class='qsm_select $require_class' name='question".$id."'>";
-	$question_display .= "<option value='No Answer Provided' selected='selected'>&nbsp;</option>";
+	$question_display .= "<option value='' selected='selected'>" . __('Please select your answer','quiz-master-next') . "</option>";
   if (is_array($answers))
   {
     $mlw_answer_total = 0;
@@ -374,9 +374,12 @@ function qmn_question_type_multiple_response()
 */
 function qmn_multiple_response_display($id, $question, $answers)
 {
-  $question_display = '';
+  $question_display = $limit_mr_text = '';
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_multiple_response');
+  if($limit_multiple_response > 0)
+      $limit_mr_text = 'onchange="qsmCheckMR(this,'. $limit_multiple_response .')"';
   if ($required == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
   $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
   $question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
@@ -390,7 +393,7 @@ function qmn_multiple_response_display($id, $question, $answers)
       {
 				$question_display .= '<div class="qsm_check_answer">';
         $question_display .= "<input type='hidden' name='question".$id."' value='This value does not matter' />";
-        $question_display .= "<input type='checkbox' name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
+        $question_display .= "<input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
 				$question_display .= '</div>';
       }
     }

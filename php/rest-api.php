@@ -229,6 +229,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'answerEditor'   => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : 'text',
                                         'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
                                         'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
+                                        'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
 				);
 			}                        
@@ -321,9 +322,10 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				);
 				$settings = array(
 					'required' => $request['required'],
-                                        'answerEditor' => $request['answer_editor'],
+                                        'answerEditor' => $request['answerEditor'],
                                         'autofill' => $request['autofill'],
                                         'limit_text' => $request['limit_text'],
+                                        'limit_multiple_response' => $request['limit_multiple_response'],
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();

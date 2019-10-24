@@ -254,6 +254,10 @@ var import_button;
 			var model = QSMQuestion.questions.get( questionID );
 			var hint = $( '#hint' ).val();
 			var name = wp.editor.getContent( 'question-text' );
+                        if(name == ''){
+                            alert('Enter question title');
+                            return false;
+                        }
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
 			var comments = $( "#comments" ).val();
@@ -261,6 +265,7 @@ var import_button;
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
+                        var limit_multiple_response =  $( "#limit_multiple_response" ).val();
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -297,9 +302,10 @@ var import_button;
 					category: category,
 					required: required,
 					answers: answers,
-                                        answer_editor: answerType,
+                                        answerEditor: answerType,
                                         autofill: autofill,
-                                        limit_text: limit_text
+                                        limit_text: limit_text,
+                                        limit_multiple_response: limit_multiple_response
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -318,9 +324,10 @@ var import_button;
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewAnswer: function( answer ) {
+                        
 			var answerTemplate = wp.template( 'single-answer' );                        
-			$( '#answers' ).append( answerTemplate( { answer: answer[0], points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
-                        if(answer[5] == 'rich'){
+			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
+                        if(answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true'){
                             var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
                             wp.editor.remove( textarea_id );
                             var settings = {
@@ -341,9 +348,13 @@ var import_button;
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
 			var question = QSMQuestion.questions.get( questionID );
+                        console.log(question)
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
-			var question_editor = tinyMCE.get( 'question-text' );                        
+                        var question_editor = ''
+                        if(qsmQuestionSettings.qsm_user_ve === 'true'){
+                            question_editor = tinyMCE.get( 'question-text' );
+                        }			
 			if ($('#wp-question-text-wrap').hasClass('html-active')) {
 				jQuery( "#question-text" ).val( questionText );
 			} else if ( question_editor ) {
@@ -359,7 +370,7 @@ var import_button;
                             answerEditor = 'text';
                         }
                         //Check autofill setting
-                        var disableAutofill = question.get( 'autofill' );                        
+                        var disableAutofill = question.get( 'autofill' );
                         if( disableAutofill === null || typeof disableAutofill === "undefined" ){
                             disableAutofill = '0';
                         }
@@ -367,6 +378,11 @@ var import_button;
                         var get_limit_text = question.get( 'limit_text' );                        
                         if( get_limit_text === null || typeof get_limit_text === "undefined" ){
                             get_limit_text = '0';
+                        }
+                        //Get limit multiple response value
+                        var get_limit_mr = question.get( 'limit_multiple_response' );                        
+                        if( get_limit_mr === null || typeof get_limit_mr === "undefined" ){
+                            get_limit_mr = '0';
                         }
                         var al = 0;
 			_.each( answers, function( answer ) {
@@ -383,6 +399,7 @@ var import_button;
 			$( "#required" ).val( question.get( 'required' ) );
 			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#limit_text" ).val( get_limit_text );
+			$( "#limit_multiple_response" ).val( get_limit_mr );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			$( "#edit-question-id" ).text('').text(questionID);
@@ -530,7 +547,9 @@ var import_button;
 			placeholder: "ui-state-highlight",
 			connectWith: '.page'
 		});
-		QSMQuestion.prepareEditor();
+                if(qsmQuestionSettings.qsm_user_ve === 'true'){
+                    QSMQuestion.prepareEditor();
+                }		
 		QSMQuestion.loadQuestions();
                 
                 /**
@@ -561,4 +580,28 @@ var import_button;
                     }                    
                 });
 	});
+        var decodeEntities = (function () {
+                //create a new html document (doesn't execute script tags in child elements)
+                var doc = document.implementation.createHTMLDocument("");
+                var element = doc.createElement('div');
+
+                function getText(str) {
+                    element.innerHTML = str;
+                    str = element.textContent;
+                    element.textContent = '';
+                    return str;
+                }
+
+                function decodeHTMLEntities(str) {
+                    if (str && typeof str === 'string') {
+                        var x = getText(str);
+                        while (str !== x) {
+                            str = x;
+                            x = getText(x);
+                        }
+                        return x;
+                    }
+                }
+                return decodeHTMLEntities;
+            })();
 }(jQuery));

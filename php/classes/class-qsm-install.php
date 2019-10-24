@@ -26,6 +26,7 @@ class QSM_Install {
    */
   public function add_hooks() {
     add_action( 'admin_init', array( $this, 'update' ) );
+    add_action( 'admin_init', array( $this, 'update' ) );
     add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
     add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
     add_action( 'plugins_loaded', array( $this, 'register_default_settings' ) );

@@ -32,12 +32,13 @@ function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( $_GET['quiz_id'] );
-
+        $user_id = get_current_user_id();         
 	$json_data = array(
 		'quizID'     => $quiz_id,
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
 		'nonce'      => wp_create_nonce( 'wp_rest' ),
 		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
+                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true)
 	);
 
 	// Scripts and styles.
@@ -194,6 +195,10 @@ function qsm_options_questions_tab_content() {
                                             <div id="required_area" class="qsm-row">
                                                     <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
                                                     <input type="number" name="limit_text" value="" id="limit_text"/>
+                                            </div>
+                                            <div id="required_area" class="qsm-row">
+                                                    <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
                                             </div>
                                         </div>					
 				</main>
