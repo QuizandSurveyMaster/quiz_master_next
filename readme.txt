@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 6.3.3
+Stable tag: 6.3.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -111,13 +111,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.3.4 (Oct 24, 2019) =
+* Massive overhaule for being responsive in admin panel. 
+* Checkbox limit ([Issue #743] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/743)
+* Logic addon bug ([Issue #760] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/760)
+* Add filter to results array ([Issue #785] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/785)
+
 = 6.3.3 (Oct 04, 2019) =
 * Option to disable "retake" quiz option.
 * Mouse pointer over the FB / TW buttons
 * Translate for "Retake Quiz" ([Issue #773] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/773)
 * Radio buttons hard to select ([WP Issue] (https://wordpress.org/support/topic/radio-buttons-are-hard-to-select-on-mobile-devices/))
 * Results page enhancements
-* Skipped 6.3.2, by mistake.
 
 = 6.3.2 (July 06, 2019) = 
 * UI Changes
