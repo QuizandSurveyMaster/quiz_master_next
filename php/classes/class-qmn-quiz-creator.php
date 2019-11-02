@@ -70,6 +70,11 @@ class QMNQuizCreator {
 	public function create_quiz( $quiz_name ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
+		if((current_user_can('administrator'))){
+			$admin_set = 1;
+		}else{
+			$admin_set = 0;
+		}
 		$results = $wpdb->insert(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
@@ -125,6 +130,7 @@ class QMNQuizCreator {
 				'quiz_views'               => 0,
 				'quiz_taken'               => 0,
 				'deleted'                  => 0,
+				'admin_created'			   => $admin_set,
 			),
 			array(
 				'%s',

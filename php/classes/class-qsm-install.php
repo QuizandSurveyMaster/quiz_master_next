@@ -888,6 +888,7 @@ class QSM_Install {
   			quiz_views INT NOT NULL,
   			quiz_taken INT NOT NULL,
   			deleted INT NOT NULL,
+        admin_created INT NOT NULL,
   			PRIMARY KEY  (quiz_id)
   		) $charset_collate;";
 
