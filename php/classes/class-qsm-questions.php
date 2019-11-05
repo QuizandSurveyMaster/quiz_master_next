@@ -37,7 +37,7 @@ class QSM_Questions {
 			}
 			$question['settings'] = $settings;
 
-			return $question;
+			return apply_filters('qsm_load_question',$question, $question_id);
 		}
 		return array();
 	}
@@ -111,7 +111,7 @@ class QSM_Questions {
 				$questions[ $key ]['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 			}
 		}
-		return $questions;
+		return apply_filters('qsm_load_questions_by_pages',$questions,$quiz_id);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class QSM_Questions {
 
 			$question_array[ $question['question_id'] ] = $question;
 		}
-		return $question_array;
+		return apply_filters('qsm_load_questions',$question_array,$quiz_id);
 	}
 
 	/**

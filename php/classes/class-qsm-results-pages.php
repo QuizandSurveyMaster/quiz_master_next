@@ -340,6 +340,7 @@ class QSM_Results_Pages {
 			array( '%s' ),
 			array( '%d' )
 		);
+                do_action('qsm_save_result_pages');
 		if ( false !== $results ) {
 			return true;
 		} else {

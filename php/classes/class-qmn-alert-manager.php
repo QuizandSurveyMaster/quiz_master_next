@@ -41,7 +41,7 @@ class MlwQmnAlertManager {
 				$alert_list .= "<div id=\"message\" class=\"error below-h2\"><p><strong>".__('Error!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
 			}
 		}
-		echo $alert_list;
+		echo apply_filters( 'qsm_alert_messages', $alert_list );
 	}
 
 }
