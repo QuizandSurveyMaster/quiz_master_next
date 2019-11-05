@@ -135,6 +135,7 @@ class QMNQuizManager {
                 echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
             }
         }
+        wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/animate.css', __FILE__));
 
         // Starts to prepare variable array for filters.
         $qmn_array_for_variables = array(
@@ -472,8 +473,9 @@ class QMNQuizManager {
 
         // If there is only one page.
         if (1 == count($pages)) {
+            $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';            
             ?>
-            <section class="qsm-page">
+            <section class="qsm-page <?php echo $animation_effect; ?>">
                 <?php
                 if (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields )) {
                     $qmn_json_data['first_page'] = false;
@@ -638,7 +640,8 @@ class QMNQuizManager {
             $qmn_json_data["first_page"] = true;
             global $mlw_qmn_section_count;
             $mlw_qmn_section_count += 1;
-            $section_display .= "<div class='quiz_section  quiz_begin slide$mlw_qmn_section_count'>";
+            $animation_effect = isset($qmn_quiz_options->quiz_animation) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
+            $section_display .= "<div class='quiz_section $animation_effect quiz_begin slide$mlw_qmn_section_count'>";
 
             $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
             $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
@@ -673,10 +676,11 @@ class QMNQuizManager {
         global $qmn_total_questions;
         global $mlw_qmn_section_count;
         $question_id_list = '';
+        $animation_effect = isset($qmn_quiz_options->quiz_animation) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
         foreach ($qmn_quiz_questions as $mlw_question) {
             $question_id_list .= $mlw_question->question_id . "Q";
             $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-            $question_display .= "<div class='quiz_section question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
+            $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
 
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 

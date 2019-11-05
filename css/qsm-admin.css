@@ -468,6 +468,10 @@ Misc.
     padding: 10px 10px 10px 10px;
 }
 
+.qsm_tab_content label{
+    margin-right: 20px;
+}
+
 /* Popup */
 
 .qsm-popup {

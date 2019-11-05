@@ -47,7 +47,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
   }
   $question_display .= "</div>";
-  return $question_display;
+  return apply_filters('qmn_multiple_choice_display_front',$question_display,$id, $question, $answers);
 }
 
 /**
@@ -136,7 +136,8 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
   }
   $question_display .= "</div>";
-  return $question_display;
+  
+  return apply_filters('qmn_horizontal_multiple_choice_display_front',$question_display,$id, $question, $answers);
 }
 
 /**
@@ -229,7 +230,7 @@ function qmn_drop_down_display($id, $question, $answers)
     }
   }
   $question_display .= "</select>";
-  return $question_display;
+  return apply_filters('qmn_drop_down_display_front',$question_display,$id, $question, $answers);
 }
 
 /**
@@ -308,7 +309,7 @@ function qmn_small_open_display($id, $question, $answers)
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}  
   $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
   $question_display .= "<input ". $autofill_att . $limit_text_att . " type='text' class='mlw_answer_open_text $mlw_requireClass' name='question".$id."' />";
-  return $question_display;
+  return apply_filters('qmn_small_open_display_front',$question_display,$id, $question, $answers);  
 }
 
 /**
@@ -399,7 +400,7 @@ function qmn_multiple_response_display($id, $question, $answers)
     }
   }
   $question_display .= "</div>";
-  return $question_display;
+  return apply_filters('qmn_multiple_response_display_front',$question_display,$id, $question, $answers);
 }
 
 /**
@@ -483,7 +484,7 @@ function qmn_large_open_display($id, $question, $answers)
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
   $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
   $question_display .= "<textarea class='mlw_answer_open_text $mlw_requireClass' cols='70' rows='5' name='question".$id."' /></textarea>";
-  return $question_display;
+  return apply_filters('qmn_large_open_display_front',$question_display,$id, $question, $answers);
 }
 
 /**
@@ -598,7 +599,7 @@ function qmn_number_display($id, $question, $answers)
   if ($required == 0) {$mlw_requireClass = "mlwRequiredNumber";} else {$mlw_requireClass = "";}
   $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
   $question_display .= "<input type='number' class='mlw_answer_number $mlw_requireClass' name='question".$id."' />";
-  return $question_display;
+  return apply_filters('qmn_number_display_front',$question_display,$id, $question, $answers);  
 }
 
 
@@ -680,7 +681,7 @@ function qmn_accept_display($id, $question, $answers)
   $question_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
   $question_display .= "<label for='mlwAcceptance'><span class='qmn_accept_text'>".do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span></label>";
   $question_display .= "</div>";
-  return $question_display;
+  return apply_filters('qmn_accept_display_front',$question_display,$id, $question, $answers);
 }
 
 add_action("plugins_loaded", 'qmn_question_type_captcha');
@@ -745,8 +746,8 @@ function qmn_captcha_display($id, $question, $answers)
       mlw_captchaCTX.textBaseline = 'middle';
       document.getElementById('mlw_code_captcha').value = mlw_code;
       </script>
-      ";
-  return $question_display;
+      ";  
+  return apply_filters('qmn_captcha_display_front',$question_display,$id, $question, $answers);
 }
 
 add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_response');
@@ -795,7 +796,7 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
     }
   }
   $question_display .= "</div>";
-  return $question_display;
+  return apply_filters('qmn_horizontal_multiple_response_display_front',$question_display,$id, $question, $answers);  
 }
 
 
@@ -904,8 +905,7 @@ function qmn_fill_blank_display($id, $question, $answers)
 		$question = str_replace( "%BLANK%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   $question_display = "<span class='mlw_qmn_question'>$question</span>";
-
-  return $question_display;
+    return apply_filters('qmn_fill_blank_display_front',$question_display,$id, $question, $answers);  
 }
 
 
