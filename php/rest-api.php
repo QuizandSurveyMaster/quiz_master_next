@@ -46,6 +46,97 @@ function qsm_register_rest_routes() {
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_emails',
 	) );
+        //Register rest api to get quiz list
+        register_rest_route('qsm', '/list_quiz', array(
+            'methods' => 'GET',
+            'callback' => 'qsm_get_basic_info_quiz',
+        ));
+        //Register rest api to get result of quiz
+        register_rest_route('qsm', '/list_results/(?P<id>\d+)', array(
+            'methods' => 'GET',
+            'callback' => 'qsm_get_result_of_quiz',
+        ));
+}
+
+/**
+ * Get the result of quiz from quiz id
+ * 
+ * @since 6.3.5
+ * @param WP_REST_Request $request
+ */
+function qsm_get_result_of_quiz( WP_REST_Request $request ){    
+    $quiz_id = isset($request['id']) ? $request['id'] : 0;    
+    if($quiz_id > 0){
+        global $wpdb;
+        $mlw_quiz_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND quiz_id = $quiz_id LIMIT 0,40" );
+        if($mlw_quiz_data){
+            $result_data = array();
+            foreach ($mlw_quiz_data as $mlw_quiz_info) {
+                if ( $mlw_quiz_info->quiz_system == 0 ) {
+                    $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%";
+                }
+                if ( $mlw_quiz_info->quiz_system == 1 ) {
+                    $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
+                }
+                if ( $mlw_quiz_info->quiz_system == 2 ) {
+                    $quotes_list = "".__('Not Graded','quiz-master-next' )."";
+                }
+                //Time to complete
+                $mlw_complete_time = '';
+                $mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);
+                if ( is_array( $mlw_qmn_results_array ) ) {
+                        $mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
+                        if ( $mlw_complete_hours > 0 ) {
+                                $mlw_complete_time .= "$mlw_complete_hours hours ";
+                        }
+                        $mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
+                        if ( $mlw_complete_minutes > 0 ) {
+                                $mlw_complete_time .= "$mlw_complete_minutes minutes ";
+                        }
+                        $mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+                        $mlw_complete_time .=  "$mlw_complete_seconds seconds";
+                }
+                //Time taken
+                $date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
+                $time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
+                $result_data[] = array(
+                    'score' => $quotes_list,
+                    'time_to_complete' => $mlw_complete_time,
+                    'time_taken' => $date . ' ' .$time,
+                );
+            }
+            print_r($result_data);
+            exit;
+        }else{
+            return rest_ensure_response('No record found.');
+        }
+    }else{
+        return rest_ensure_response('Quiz id is missing.');
+    }
+}
+
+/**
+ * Get the list of quizes
+ * @since 6.3.5
+ * @param WP_REST_Request $request
+ */
+function qsm_get_basic_info_quiz( WP_REST_Request $request ){
+    global $mlwQuizMasterNext;
+    $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+    if($quizzes){
+        $quiz_data = array();
+        foreach ($quizzes as $quiz) {
+            $quiz_data[] = array(
+                'quiz_name' => $quiz->quiz_name,
+                'last_activity' => $quiz->last_activity,
+                'quiz_views' => $quiz->quiz_views,
+                'quiz_taken' => $quiz->quiz_taken,
+            );
+        }
+        return rest_ensure_response($quiz_data);
+    }else{
+        return rest_ensure_response('No quiz found.');
+    }
 }
 
 /**

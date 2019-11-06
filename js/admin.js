@@ -103,5 +103,7 @@ var QSMAdmin;
                     }
             );
         });
+        /**/
+        jQuery('.buttonset').buttonset();
     });
 }(jQuery));

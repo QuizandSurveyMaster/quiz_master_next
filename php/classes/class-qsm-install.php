@@ -597,9 +597,13 @@ class QSM_Install {
         array(
           'label' => __('heartBeat', 'quiz-master-next'),
           'value' => 'heartBeat'
+        ),
+        array(
+          'label' => __('No animation', 'quiz-master-next'),
+          'value' => ''
         )
       ),
-      'default' => 0
+      'default' => ''
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
