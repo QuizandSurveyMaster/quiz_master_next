@@ -135,7 +135,8 @@ class QMNQuizManager {
                 echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
             }
         }
-        wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/animate.css', __FILE__));
+        wp_enqueue_style('qmn_quiz_animation_style', plugins_url('../../css/animate.css', __FILE__));
+        wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
 
         // Starts to prepare variable array for filters.
         $qmn_array_for_variables = array(
@@ -541,6 +542,8 @@ class QMNQuizManager {
             </section>
             <?php
         } else {
+            $total_pages_count = count($pages);
+            $pages_count = 1;
             foreach ($pages as $page) {
                 ?>
                 <section class="qsm-page">
@@ -565,10 +568,17 @@ class QMNQuizManager {
                             ?>
                         </div>
                         <?php
-                    }
-                    ?>
+                    }                   
+                    ?>                    
+                    <span class="pages_count">
+                        <?php
+                        $text_c = $pages_count . ' out of ' .$total_pages_count;
+                        echo apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
+                        ?>
+                    </span>
                 </section>
                 <?php
+                $pages_count++;
             }
         }
 
@@ -677,6 +687,8 @@ class QMNQuizManager {
         global $mlw_qmn_section_count;
         $question_id_list = '';
         $animation_effect = isset($qmn_quiz_options->quiz_animation) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
+        $total_pages_count = count($qmn_quiz_questions);
+        $pages_count = 1;
         foreach ($qmn_quiz_questions as $mlw_question) {
             $question_id_list .= $mlw_question->question_id . "Q";
             $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
@@ -698,7 +710,12 @@ class QMNQuizManager {
                 $question_display .= "<div title=\"" . esc_attr(htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
                 $question_display .= "<br /><br />";
             }
+            $question_display .=  "<span class='pages_count'>";                        
+            $text_c = $pages_count . ' out of ' .$total_pages_count;
+            $question_display .= apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
+            $question_display .=  "</span>";
             $question_display .= "</div>";
+            $pages_count++;
         }
         $question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
         return $question_display;

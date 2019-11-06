@@ -21,6 +21,13 @@ function qsm_generate_quiz_tools() {
 	add_meta_box( 'qsm_restore_box', 'Restore Quiz', 'qsm_restore_function', 'quiz_wpss' );
 	add_meta_box( 'qsm_audit_box', 'Audit Trail', 'qsm_audit_box', 'quiz_wpss' );
 	?>
+        <style type="text/css">
+            #qsm_restore_box .hndle,
+            #qsm_audit_box .hndle{
+                padding-left: 15px;                
+                padding-bottom: 15px;
+            }
+        </style>
 	<div class="wrap">
 	<h2><?php esc_html_e('Tools', 'quiz-master-next'); ?></h2>
 

@@ -1,0 +1,8 @@
+/**
+* Created by dev: 06-11-2019
+*/
+.qsm-page .pages_count,
+.quiz_section .pages_count{
+    display: block;
+    text-align: center;
+}

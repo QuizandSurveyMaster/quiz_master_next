@@ -63,12 +63,14 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function global_section() {
+	public function global_section() {                
 		_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
 		if ( isset( $_GET["settings-updated"] ) && $_GET["settings-updated"] ) {
 			flush_rewrite_rules( true );
-			echo "<span style='color:red;'>" . __( 'Settings have been updated!', 'quiz-master-next' ) . "</span>";
-		}
+                        echo '<div class="updated" style="padding: 10px;">';
+			echo "<span style='color:red;'>" . __( ' Settings have been updated!', 'quiz-master-next' ) . "</span>";
+                        echo '</div>';
+		}                
 	}
 
 	/**
@@ -83,8 +85,8 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['from_email'] ) ) {
 			$from_email = $settings['from_email'];
 		}
-		?>
-		<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]' value='<?php echo esc_attr( $from_email ); ?>' />
+		?>                
+		<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]' value='<?php echo esc_attr( $from_email ); ?>' />                
 		<?php
 	}
 
@@ -100,8 +102,8 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['from_name'] ) ) {
 			$from_name = $settings['from_name'];
 		}
-		?>
-		<input type='text' name='qmn-settings[from_name]' id='qmn-settings[from_name]' value='<?php echo esc_attr( $from_name ); ?>' />
+		?>                
+		<input type='text' name='qmn-settings[from_name]' id='qmn-settings[from_name]' value='<?php echo esc_attr( $from_name ); ?>' />                
 		<?php
 	}
 
@@ -117,8 +119,8 @@ class QMNGlobalSettingsPage {
 		if (isset($settings['facebook_app_id']))
 		{
 			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
-		}
-		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";
+		}                
+		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";                
 	}
 
 	/**
@@ -132,8 +134,8 @@ class QMNGlobalSettingsPage {
 		$cpt_slug = 'quiz';
 		if ( isset( $settings['cpt_slug'] ) ) {
 			$cpt_slug = esc_attr( $settings['cpt_slug'] );
-		}
-		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";
+		}                
+		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";                
 	}
 
 	/**
@@ -147,8 +149,8 @@ class QMNGlobalSettingsPage {
 		$plural_name = __( 'Quizzes & Surveys', 'quiz-master-next' );
 		if ( isset( $settings['plural_name'] ) ) {
 			$plural_name = esc_attr( $settings['plural_name'] );
-		}
-		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";
+		}                
+		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";                
 	}
 
 	/**
@@ -170,7 +172,9 @@ class QMNGlobalSettingsPage {
 		{
 			$checked = " checked='checked'";
 		}
+                echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[cpt_search]' id='qmn-settings[cpt_search]' value='1'$checked />";
+                echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -192,7 +196,9 @@ class QMNGlobalSettingsPage {
 		{
 			$checked = " checked='checked'";
 		}
+                echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[cpt_archive]' id='qmn-settings[cpt_archive]' value='1'$checked />";
+                echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -244,9 +250,11 @@ class QMNGlobalSettingsPage {
 		if ($tracking_allowed == '2')
 		{
 			$checked = " checked='checked'";
-		}
-		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked />";
-		echo "<label for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . "</label>";
+		}                
+                echo '<label class="switch">';
+		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked /><span class='slider round'></span>";		
+                echo '</label>';
+                echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . "</span>";
 	}
 
 	/**
@@ -265,7 +273,9 @@ class QMNGlobalSettingsPage {
 		if ( '1' == $ip_collection ) {
 			$checked = " checked='checked'";
 		}
+                echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[ip_collection]' id='qmn-settings[ip_collection]' value='1'$checked />";
+                echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -275,15 +285,16 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public static function display_page() {
+                wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 		?>
 		<div class="wrap">
-        <h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
-        <form action="options.php" method="POST">
-            <?php settings_fields( 'qmn-settings-group' ); ?>
-            <?php do_settings_sections( 'qmn_global_settings' ); ?>
-            <?php submit_button(); ?>
-        </form>
-    </div>
+                    <h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
+                    <form action="options.php" method="POST" class="qsm_global_settings">
+                        <?php settings_fields( 'qmn-settings-group' ); ?>
+                        <?php do_settings_sections( 'qmn_global_settings' ); ?>
+                        <?php submit_button(); ?>
+                    </form>
+                </div>
 		<?php
 	}
 }
