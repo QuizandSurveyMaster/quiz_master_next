@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_show_adverts() {
 
 	// Checks if the option for showing ads if True. Will be false if the No Ads addon is installed.
-	if ( 'true' == get_option( 'mlw_advert_shows' ) ) {
+	if ( 'true' == get_option( 'mlw_advert_shows' ) && hide_qsm_adv !== TRUE ) {
 
 		global $mlwQuizMasterNext;
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );

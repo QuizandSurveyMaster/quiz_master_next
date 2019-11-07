@@ -195,7 +195,7 @@ function qsm_results_overview_tab_content() {
 	} else {
 		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted = '0' $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
 	}
-
+        
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
@@ -307,8 +307,7 @@ function qsm_results_overview_tab_content() {
 		<table class=widefat>
 			<thead>
 				<tr>
-					<th><input type="checkbox" id="qmn_check_all" /></th>
-					<th><?php esc_html_e( 'Actions','quiz-master-next' ); ?></th>
+					<th><input type="checkbox" id="qmn_check_all" /></th>					
 					<th><?php esc_html_e( 'Quiz Name','quiz-master-next' ); ?></th>
 					<th><?php esc_html_e( 'Score','quiz-master-next' ); ?></th>
 					<th><?php esc_html_e( 'Time To Complete','quiz-master-next' ); ?></th>
@@ -321,11 +320,12 @@ function qsm_results_overview_tab_content() {
 					<th><?php esc_html_e( 'IP Address','quiz-master-next' ); ?></th>
 				</tr>
 			</thead>
-			<?php
+			<?php                        
 			$quotes_list = "";
 			$display = "";
 			$alternate = "";
-			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
+                        if($mlw_quiz_data){
+                            foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
@@ -347,9 +347,8 @@ function qsm_results_overview_tab_content() {
 				}
 
 				$quotes_list .= "<tr{$alternate}>";
-				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";
-				$quotes_list .= "<td><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a>|<a onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></td>";
-				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span></td>";
+				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";				
+				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a> | <a style='color: red;' onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></div></td>";
 				if ( $mlw_quiz_info->quiz_system == 0 ) {
 					$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
 				}
@@ -371,10 +370,13 @@ function qsm_results_overview_tab_content() {
 				}
 				$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 				$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
-				$quotes_list .= "<td><span style='font-size:16px;'>$date $time</span></td>";
+				$quotes_list .= "<td><span style='font-size:16px;'><abbr title='$date $time'>$date</abbr></span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
 				$quotes_list .= "</tr>";
-			}
+                            }
+                        }else{
+                            $quotes_list .= "<tr{$alternate}><td colspan='12' style='text-align: center;'>". __('No record found.','quiz_master_next') ."</td></tr>";
+                        }
 			$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
 			echo $display;
 			?>
