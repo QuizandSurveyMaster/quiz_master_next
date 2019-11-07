@@ -6,3 +6,6 @@
     display: block;
     text-align: center;
 }
+.mlw_qmn_question p:empty{
+    display: none;
+}
