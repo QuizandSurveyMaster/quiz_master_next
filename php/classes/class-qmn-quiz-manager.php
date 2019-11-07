@@ -454,12 +454,13 @@ class QMNQuizManager {
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
         $question_list = '';
         $contact_fields = QSM_Contact_Manager::load_fields();
+        $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
         if (count($pages) > 1 && (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields ) )) {
             $qmn_json_data['first_page'] = true;
             $message_before = wpautop(htmlspecialchars_decode($options->message_before, ENT_QUOTES));
-            $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data);
+            $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data);            
             ?>
-            <section class="qsm-page">
+            <section class="qsm-page <?php echo $animation_effect; ?>">
                 <div class="quiz_section quiz_begin">
                     <div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
                     <?php
@@ -473,8 +474,7 @@ class QMNQuizManager {
         }
 
         // If there is only one page.
-        if (1 == count($pages)) {
-            $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';            
+        if (1 == count($pages)) {            
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
                 <?php
@@ -546,7 +546,7 @@ class QMNQuizManager {
             $pages_count = 1;
             foreach ($pages as $page) {
                 ?>
-                <section class="qsm-page">
+                <section class="qsm-page <?php echo $animation_effect; ?>">
                     <?php
                     foreach ($page as $question_id) {
                         $question_list .= $question_id . 'Q';

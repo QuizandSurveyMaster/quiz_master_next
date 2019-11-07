@@ -401,8 +401,8 @@ function qmnValidation( element, quiz_form_id ) {
 	var number_error = qmn_quiz_data[ quiz_id ].error_messages.number;
 	var empty_error = qmn_quiz_data[ quiz_id ].error_messages.empty;
 	var incorrect_error = qmn_quiz_data[ quiz_id ].error_messages.incorrect;
-	qmnResetError( quiz_form_id );
-	jQuery( element ).each(function(){                
+	qmnResetError( quiz_form_id );        
+	jQuery( element ).each(function(){
 		if ( jQuery( this ).attr( 'class' )) {
 			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) > -1 && this.value !== "" ) {
 				var x = this.value;
@@ -440,7 +440,7 @@ function qmnValidation( element, quiz_form_id ) {
 					}
 				}
 				if( jQuery( this ).attr( 'class' ).indexOf( 'qsmRequiredSelect' ) > -1 ) {
-					check_val = jQuery( this ).val();
+					check_val = jQuery( this ).val();                                        
 					if ( check_val == "No Answer Provided" ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
