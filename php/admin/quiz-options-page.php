@@ -159,7 +159,7 @@ function qsm_generate_quiz_options() {
                                     <form action='' method='post' id="edit-name-form">
                                             <label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
                                             <input type="text" id="edit_quiz_name" name="edit_quiz_name" value="<?php echo $quiz_name; ?>" />
-                                            <input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset($_GET['quiz_id']) ? $_GET['quiz_id'] : ''; ?>" />
+                                             <input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset($_GET['quiz_id']) ? $_GET['quiz_id'] : ''; ?>" />
                                             <?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
                                     </form>
                             </main>
