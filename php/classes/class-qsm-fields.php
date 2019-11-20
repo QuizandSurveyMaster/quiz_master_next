@@ -231,14 +231,19 @@ class QSM_Fields {
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
-        <?php
-          foreach ( $field["options"] as $option ) {
-            ?>
-            <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
-            <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br>
-            <?php
-          }
+        <?php   
+        $green_class = count($field["options"]) > 2 ? 'green' : '';
         ?>
+        <fieldset class="buttonset buttonset-hide <?php echo $green_class; ?>" data-hide='1'>
+            <?php
+              foreach ( $field["options"] as $option ) {
+                ?>                
+                <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
+                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label>
+                <?php
+              }
+            ?>
+        </fieldset>  
       </td>
     </tr>
     <?php

@@ -534,7 +534,6 @@ class QSM_Install {
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     //Setting for retake quiz
-    // Settings for quick result
     $field_array = array(
       'id' => 'enable_retake_quiz_button',
       'label' => __('Show RETAKE QUIZ button on result page', 'quiz-master-next'),
@@ -550,6 +549,61 @@ class QSM_Install {
         )
       ),
       'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    //Setting for animation
+    $field_array = array(
+      'id' => 'quiz_animation',
+      'label' => __('Select quiz animation', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
+        array(
+          'label' => __('bounce', 'quiz-master-next'),
+          'value' => 'bounce'
+        ),
+        array(
+          'label' => __('flash', 'quiz-master-next'),
+          'value' => 'flash'
+        ),
+        array(
+          'label' => __('pulse', 'quiz-master-next'),
+          'value' => 'pulse'
+        ),
+        array(
+          'label' => __('rubberBand', 'quiz-master-next'),
+          'value' => 'rubberBand'
+        ),
+        array(
+          'label' => __('shake', 'quiz-master-next'),
+          'value' => 'shake'
+        ),
+        array(
+          'label' => __('swing', 'quiz-master-next'),
+          'value' => 'swing'
+        ),
+        array(
+          'label' => __('tada', 'quiz-master-next'),
+          'value' => 'tada'
+        ),
+        array(
+          'label' => __('wobble', 'quiz-master-next'),
+          'value' => 'wobble'
+        ),
+        array(
+          'label' => __('jello', 'quiz-master-next'),
+          'value' => 'jello'
+        ),
+        array(
+          'label' => __('heartBeat', 'quiz-master-next'),
+          'value' => 'heartBeat'
+        ),
+        array(
+          'label' => __('No animation', 'quiz-master-next'),
+          'value' => ''
+        )
+      ),
+      'default' => ''
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     

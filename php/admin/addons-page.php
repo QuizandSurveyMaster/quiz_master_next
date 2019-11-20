@@ -17,8 +17,9 @@ function qmn_addons_page() {
     global $mlwQuizMasterNext;
     $active_tab = strtolower(str_replace(" ", "-", isset($_GET['tab']) ? $_GET['tab'] : __('Featured Addons', 'quiz-master-next')));
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
+    wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
     ?>
-    <div class="wrap">
+    <div class="wrap qsm-addon-setting-wrap">
         <h2>Quiz And Survey Master Addon Settings</h2>
         <h2 class="nav-tab-wrapper">
             <?php
