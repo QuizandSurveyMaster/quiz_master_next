@@ -75,6 +75,9 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
+**About Us**
+QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](expresstech.io)
+
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
