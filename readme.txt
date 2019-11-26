@@ -1,5 +1,5 @@
 === Quiz And Survey Master - Best Quiz Plugin for WordPress ===
-Contributors: quizsurvey
+Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.2
