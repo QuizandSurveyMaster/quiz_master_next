@@ -1,10 +1,10 @@
 === Quiz And Survey Master - Best Quiz Plugin for WordPress ===
 Contributors: quizsurvey,expresstech
-Tags: quiz, survey, lead, test, score, exam, questionnaire, question
+Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.4
-Stable tag: 6.3.5
+Stable tag: 6.3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.3.6 (Nov 28, 2019) =
+* Included all the suggestions made by WordPress.org team
+* Made external files loading from local website
+* Security updates - type safe for all $_GET and $_POST vars
+* Update out of date library (Chart.min.js)
 
 = 6.3.5 (Nov 22, 2019) =
 * New Design Elements
