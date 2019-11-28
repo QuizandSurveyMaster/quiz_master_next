@@ -36,7 +36,7 @@ function qsm_options_styling_tab_content() {
 
 		$style_quiz_id = intval( $_POST['style_quiz_id'] );
 		$quiz_theme = sanitize_text_field( $_POST['save_quiz_theme'] );
-		$quiz_style = htmlspecialchars( stripslashes( $_POST['quiz_css'] ), ENT_QUOTES );
+		$quiz_style = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST['quiz_css'] ), ENT_QUOTES ) );
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='" . date( 'Y-m-d H:i:s' ) . "' WHERE quiz_id=%d", $quiz_style, $quiz_theme, $style_quiz_id ) );

@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'QSM_SUBMENU', __FILE__);
+define('QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define( 'hide_qsm_adv', true);
 
 /**

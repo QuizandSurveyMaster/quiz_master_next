@@ -79,7 +79,7 @@ function qmn_stats_overview_content()
 {
 	wp_enqueue_script('ChartJS', plugins_url( '../../js/Chart.min.js' , __FILE__ ));
 	$range = "daily";
-	if (isset($_POST["range"])) {
+	if (isset($_POST["range"]) && $_POST["range"] != '') {
 		$range = sanitize_text_field( $_POST["range"] );
 	}
 	$data = qmn_load_stats($range, 7);
