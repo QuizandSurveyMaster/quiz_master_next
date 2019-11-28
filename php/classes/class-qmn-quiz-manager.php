@@ -54,8 +54,8 @@ class QMNQuizManager {
      */
     public function qsm_get_question_quick_result(){
         global $wpdb;
-        $question_id = isset($_POST['question_id']) ? $_POST['question_id'] : 0;
-        $answer = isset($_POST['answer']) ? $_POST['answer'] : '';
+        $question_id = isset($_POST['question_id']) ? intval($_POST['question_id']) : 0;
+        $answer = isset($_POST['answer']) ? sanitize_text_field($_POST['answer']) : '';
         $question_array = $wpdb->get_row( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
         $got_ans = false;
@@ -343,7 +343,7 @@ class QMNQuizManager {
      * @return string The content for the quiz page section
      */
     public function display_quiz($options, $quiz_data, $question_amount) {
-
+        
         global $qmn_allowed_visit;
         global $mlwQuizMasterNext;
         $quiz_display = '';
@@ -368,8 +368,7 @@ class QMNQuizManager {
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
         wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
-        wp_enqueue_script('math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML');
-
+        wp_enqueue_script( 'math_jax', QSM_PLUGIN_URL . 'js/MathJax.js' );
         global $qmn_total_questions;
         $qmn_total_questions = 0;
         global $mlw_qmn_section_count;
@@ -1088,7 +1087,7 @@ class QMNQuizManager {
 
                                 // If a comment was submitted
                                 if (isset($_POST["mlwComment" . $question['question_id']])) {
-                                    $comment = htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES);
+                                    $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
                                 } else {
                                     $comment = "";
                                 }
@@ -1150,7 +1149,7 @@ class QMNQuizManager {
 
                             // If a comment was submitted
                             if (isset($_POST["mlwComment" . $question['question_id']])) {
-                                $comment = htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES);
+                                $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
                             } else {
                                 $comment = "";
                             }
