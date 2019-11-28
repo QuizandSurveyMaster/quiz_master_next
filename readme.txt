@@ -1,10 +1,10 @@
 === Quiz And Survey Master - Best Quiz Plugin for WordPress ===
-Contributors: quizsurvey
+Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question
 Requires at least: 4.9
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 6.3.4
+Stable tag: 6.3.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,9 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
+**About Us**
+QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](expresstech.io)
+
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
@@ -110,6 +113,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.3.5 (Nov 22, 2019) =
+* New Design Elements
+* Show page count for multipage quizzes
+* Get Quiz and Survey Data Using Wordpress API (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/769)
+* Filters and hooks listed on documentation
+* Animations/transition options for questions (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/719)
+* Bug: WordPress embed shortcode does not work in question
+* Remove advertisement from top bar in quizzes
+* Results table design change
+* XSS Vulnerability (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/795)
 
 = 6.3.4 (Oct 24, 2019) =
 * Massive overhaule for being responsive in admin panel. 

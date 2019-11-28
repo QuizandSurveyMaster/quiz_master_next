@@ -146,7 +146,7 @@ function qsm_generate_quizzes_surveys_page() {
 		}
 		?>
 		<div class="qsm-quizzes-page-content">
-			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) && hide_qsm_adv !== TRUE ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
+			<div class="<?php if ( 'false' != get_option( 'mlw_advert_shows' ) ) { echo 'qsm-quiz-page-wrapper-with-ads'; } else { echo 'qsm-quiz-page-wrapper'; } ?>">
 				<p class="search-box">
 					<label class="screen-reader-text" for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
@@ -181,7 +181,7 @@ function qsm_generate_quizzes_surveys_page() {
 				</table>
 			</div>
 			<?php
-			if ( 'true' == get_option( 'mlw_advert_shows' ) && hide_qsm_adv !== TRUE ) {
+			if ( 'true' == get_option( 'mlw_advert_shows' ) ) {
 				?>
 				<div class="qsm-news-ads">
 					<h3 class="qsm-news-ads-title"><?php esc_html_e( 'QSM News', 'quiz-master-next' ); ?></h3>
