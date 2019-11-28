@@ -69,7 +69,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = stripslashes( $_POST["question".$id] );
+    $mlw_user_answer = sanitize_textarea_field( stripslashes( $_POST["question".$id] ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -160,7 +160,7 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+    $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -254,7 +254,7 @@ function qmn_drop_down_review($id, $question, $answers)
     'correct_text' => ''
   );
   if (isset($_POST["question".$id])) {
-    $mlw_user_answer = htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES );
+    $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -334,7 +334,7 @@ function qmn_small_open_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
     $mlw_user_answer = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_user_answer ) ) );
   } else {
     $mlw_user_answer = " ";
@@ -432,10 +432,10 @@ function qmn_multiple_response_review($id, $question, $answers)
   {
     for ($i = 1; $i <= $total_answers; $i++)
     {
-        if (isset($_POST["question".$id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) == esc_attr($answer[0]))
+        if (isset($_POST["question".$id."_".$i]) && sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) ) == esc_attr($answer[0]))
         {
           $return_array["points"] += $answer[1];
-          $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
+          $return_array["user_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) .".";
           if ($answer[2] == 1)
           {
             $user_correct += 1;
@@ -511,7 +511,7 @@ function qmn_large_open_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
     $mlw_user_answer = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_user_answer ) ) );
   } else {
     $mlw_user_answer = " ";
@@ -628,7 +628,7 @@ function qmn_number_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $mlw_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -832,7 +832,7 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
   {
     for ($i = 1; $i <= $total_answers; $i++)
     {
-        if (isset($_POST["question".$id."_".$i]) && htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) == esc_attr($answer[0]))
+        if (isset($_POST["question".$id."_".$i]) && sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) ) == esc_attr($answer[0]))
         {
           $return_array["points"] += $answer[1];
           $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
@@ -940,7 +940,7 @@ function qmn_fill_blank_review($id, $question, $answers)
 		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   if ( isset( $_POST["question".$id] ) ) {
-    $decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) );
+    $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
     $mlw_user_answer = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_user_answer ) ) );
   } else {
     $mlw_user_answer = " ";
