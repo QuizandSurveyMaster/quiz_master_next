@@ -352,9 +352,14 @@ function qsm_send_data_sendy(){
         )
     );
     $opts = array('http' => array('method'  => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => $postdata));
-    $context  = stream_context_create($opts);
-    $result = file_get_contents($sendy_url.'/subscribe', false, $context);
-    echo $result;
+    $context  = stream_context_create($opts);    
+    $result = wp_remote_post($sendy_url.'/subscribe', [ 'body' => array(
+        'name' => $name,
+        'email' => $email,
+        'list' => $list,
+        'boolean' => 'true'
+        ) ] );
+    echo isset($result['response']) && isset($result['response']['code']) && $result['response']['code'] == 200 ? $result['body'] : '';
     exit;
 }
 ?>
