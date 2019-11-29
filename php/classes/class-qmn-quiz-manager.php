@@ -821,7 +821,7 @@ class QMNQuizManager {
             'quiz_id' => $options->quiz_id,
             'quiz_name' => $options->quiz_name,
             'quiz_system' => $options->system,
-            'quiz_payment_id' => isset($_POST['main_payment_id']) ? $_POST['main_payment_id'] : ''
+            'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field(intval($_POST['main_payment_id'])) : ''
         );
         $post_data = $_POST;
         if(class_exists('QSM_Recaptcha')){            
@@ -843,7 +843,7 @@ class QMNQuizManager {
      * Show quiz on button click
      */
     public function qsm_get_quiz_to_reload(){
-        $quiz_id = $_POST['quiz_id'];
+        $quiz_id = sanitize_text_field(intval($_POST['quiz_id']));
         echo do_shortcode('[qsm quiz="'. $quiz_id .'"]');
         exit;
     }
@@ -898,7 +898,7 @@ class QMNQuizManager {
             }
         }
 
-        $mlw_qmn_timer = isset($_POST["timer"]) ? intval($_POST["timer"]) : 0;
+        $mlw_qmn_timer = isset($_POST["timer"]) ? sanitize_text_field(intval($_POST["timer"])) : 0;
         $qmn_array_for_variables['user_id'] = get_current_user_id();
         $qmn_array_for_variables['timer'] = $mlw_qmn_timer;
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
@@ -1033,8 +1033,12 @@ class QMNQuizManager {
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
 
         // Retrieve data from submission
-        $total_questions = isset($_POST["total_questions"]) ? intval($_POST["total_questions"]) : 0;
-        $question_list = isset($_POST["qmn_question_list"]) ? explode('Q', $_POST["qmn_question_list"]) : array();
+        $total_questions = isset($_POST["total_questions"]) ? sanitize_text_field(intval($_POST["total_questions"])) : 0;
+        $question_list =  array();
+        if(isset($_POST["qmn_question_list"])){
+            $qmn_question_list = sanitize_text_field($_POST["qmn_question_list"]);
+            $question_list = explode('Q', $qmn_question_list);
+        }
 
         // Prepare variables
         $points_earned = 0;
