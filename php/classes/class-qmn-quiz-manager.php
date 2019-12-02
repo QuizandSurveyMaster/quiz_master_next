@@ -823,8 +823,10 @@ class QMNQuizManager {
             'quiz_system' => $options->system,
             'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field(intval($_POST['main_payment_id'])) : ''
         );
-        $post_data = $_POST;
-        if(class_exists('QSM_Recaptcha')){            
+        $post_data = array(
+            'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
+        );
+        if(class_exists('QSM_Recaptcha')){
             $verified = qsm_verify_recaptcha($post_data);
             if(!$verified){
                 echo json_encode(array(
