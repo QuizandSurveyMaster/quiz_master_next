@@ -454,6 +454,7 @@ class QMNQuizManager {
         $question_list = '';
         $contact_fields = QSM_Contact_Manager::load_fields();
         $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
+        $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz != '' ? true : false;
         if (count($pages) > 1 && (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields ) )) {
             $qmn_json_data['first_page'] = true;
             $message_before = wpautop(htmlspecialchars_decode($options->message_before, ENT_QUOTES));
@@ -567,14 +568,16 @@ class QMNQuizManager {
                             ?>
                         </div>
                         <?php
-                    }                   
+                    }    
+                    if($enable_pagination_quiz){
                     ?>                    
-                    <span class="pages_count">
-                        <?php
-                        $text_c = $pages_count . ' out of ' .$total_pages_count;
-                        echo apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
-                        ?>
-                    </span>
+                        <span class="pages_count">
+                            <?php
+                            $text_c = $pages_count . ' out of ' .$total_pages_count;
+                            echo apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
+                            ?>
+                        </span>
+                    <?php } ?>
                 </section>
                 <?php
                 $pages_count++;
@@ -686,7 +689,10 @@ class QMNQuizManager {
         global $mlw_qmn_section_count;
         $question_id_list = '';
         $animation_effect = isset($qmn_quiz_options->quiz_animation) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
+        $enable_pagination_quiz = isset($qmn_quiz_options->enable_pagination_quiz) && $qmn_quiz_options->enable_pagination_quiz != '' ? true : false;
         $total_pages_count = count($qmn_quiz_questions);
+        $pagination_optoin = $qmn_quiz_options->pagination;        
+        $total_pagination = ceil($total_pages_count / $pagination_optoin);        
         $pages_count = 1;
         foreach ($qmn_quiz_questions as $mlw_question) {
             $question_id_list .= $mlw_question->question_id . "Q";
@@ -708,13 +714,15 @@ class QMNQuizManager {
             if (!empty($mlw_question->hints)) {
                 $question_display .= "<div title=\"" . esc_attr(htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
                 $question_display .= "<br /><br />";
-            }
-            $question_display .=  "<span class='pages_count'>";                        
-            $text_c = $pages_count . ' out of ' .$total_pages_count;
-            $question_display .= apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
-            $question_display .=  "</span>";
+            }           
             $question_display .= "</div>";
             $pages_count++;
+        }
+        if($enable_pagination_quiz){
+            $question_display .=  "<span class='pages_count' style='display: none;'>";
+            $text_c = $pages_count . ' out of ' .$total_pagination;
+            $question_display .= apply_filters('qsm_total_pages_count',$text_c,$pages_count,$total_pages_count);
+            $question_display .=  "</span>";
         }
         $question_display .= "<input type='hidden' name='qmn_question_list' value='$question_id_list' />";
         return $question_display;
