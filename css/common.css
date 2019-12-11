@@ -1,6 +1,7 @@
 /**
 * Created by dev: 06-11-2019
 */
+.pages_count,
 .qsm-page .pages_count,
 .quiz_section .pages_count{
     display: block;
