@@ -833,16 +833,19 @@ class QMNQuizManager {
         );
         $post_data = array(
             'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
-        );
+        );        
         if(class_exists('QSM_Recaptcha')){
-            $verified = qsm_verify_recaptcha($post_data);
-            if(!$verified){
-                echo json_encode(array(
-                    'display' => htmlspecialchars_decode('ReCaptcha Validation failed'),
-                    'redirect' => FALSE,
-                ));
-                exit;
-            }
+            $recaptcha_data = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( "recaptcha_integration_settings" );
+            if(isset($recaptcha_data['enable_recaptcha']) && $recaptcha_data['enable_recaptcha'] != 'no'){
+                $verified = qsm_verify_recaptcha($post_data);
+                if(!$verified){
+                    echo json_encode(array(
+                        'display' => htmlspecialchars_decode('ReCaptcha Validation failed'),
+                        'redirect' => FALSE,
+                    ));
+                    exit;
+                }
+            }            
         }
         echo json_encode($this->submit_results($options, $data));
         die();
