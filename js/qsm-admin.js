@@ -27,7 +27,8 @@ var QSMQuizzesSurveys;
         'views': quizData.views,
         'taken': quizData.taken,
         'lastActivity': quizData.lastActivity,
-        'lastActivityDateTime': quizData.lastActivityDateTime
+        'lastActivityDateTime': quizData.lastActivityDateTime,
+        'post_status' : quizData.post_status != 'publish' ? '— ' + quizData.post_status : ''
       };
       var row = $( template( values ) );
       $( '#the-list' ).append( row );

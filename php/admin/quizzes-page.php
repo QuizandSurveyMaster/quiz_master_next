@@ -85,19 +85,19 @@ function qsm_generate_quizzes_surveys_page() {
 	$my_query           = new WP_Query( array(
 		'post_type'      => 'quiz',
 		'posts_per_page' => -1,
-		'post_status'    => 'publish',
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
 	));
 	if ( $my_query->have_posts() ) {
 		while ( $my_query->have_posts() ) {
 			$my_query->the_post();
 			$post_to_quiz_array[ get_post_meta( get_the_ID(), 'quiz_id', true ) ] = array(
-				'link' => get_permalink(),
+				'link' => get_the_permalink(get_the_ID()),
 				'id'   => get_the_ID(),
+				'post_status'   => get_post_status(get_the_ID()),
 			);
 		}
 	}
-	wp_reset_postdata();
-
+	wp_reset_postdata();        
 	$quiz_json_array = array();
 	foreach ( $quizzes as $quiz ) {
 		if ( ! isset( $post_to_quiz_array[ $quiz->quiz_id ] ) ) {
@@ -105,7 +105,7 @@ function qsm_generate_quizzes_surveys_page() {
 			$quiz_post    = array(
 				'post_title'   => $quiz->quiz_name,
 				'post_content' => "[qsm quiz={$quiz->quiz_id}]",
-				'post_status'  => 'publish',
+				//'post_status'  => 'publish',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'quiz',
 			);
@@ -114,6 +114,7 @@ function qsm_generate_quizzes_surveys_page() {
 			$post_to_quiz_array[ $quiz->quiz_id ] = array(
 				'link' => get_permalink( $quiz_post_id ),
 				'id'   => $quiz_post_id,
+                                'post_status'   => get_post_status($quiz_post_id),
 			);
 		}
 
@@ -128,9 +129,10 @@ function qsm_generate_quizzes_surveys_page() {
 			'taken'        => $quiz->quiz_taken,
 			'lastActivity' => $activity_date,
 			'lastActivityDateTime' => $activity_date . ' ' .$activity_time,
+                        'post_status' => $post_to_quiz_array[ $quiz->quiz_id ]['post_status'],
 		);
 	}
-	$total_count = count( $quiz_json_array );
+	$total_count = count( $quiz_json_array );        
 	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
 	?>
 	<div class="wrap qsm-quizes-page">
@@ -363,7 +365,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<script type="text/template" id="tmpl-quiz-row">
 			<tr class="qsm-quiz-row" data-id="{{ data.id }}">
 				<td class="post-title column-title">
-					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }}</a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
+					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }} <b style="color: #222; text-transform: capitalize;">{{ data.post_status }}</b></a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
 					<div class="row-actions">
 						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> |
                                                 <a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> |

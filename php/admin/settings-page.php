@@ -285,6 +285,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public static function display_page() {
+                global $mlwQuizMasterNext;
                 wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 		?>
 		<div class="wrap">
