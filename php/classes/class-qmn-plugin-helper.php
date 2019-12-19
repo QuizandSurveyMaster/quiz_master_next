@@ -367,9 +367,9 @@ class QMNPluginHelper {
 		}
 		if ( 2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order ) {
 			shuffle( $answers );
-		}
+		}                
 		foreach($this->question_types as $type)
-		{
+		{                    
 			if ($type["slug"] == strtolower(str_replace( " ", "-", $slug)))
 			{
 				if ($type["graded"])
@@ -382,7 +382,7 @@ class QMNPluginHelper {
 				}
                                 if($quiz_options->show_category_on_front && $question->category != ''){
                                     $display .= '<div class="quiz-cat">[ ' . $question->category  .' ]</div>';
-                                }
+                                }                                
 				$display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
 			}
 		}

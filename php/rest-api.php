@@ -321,6 +321,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
                                         'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
                                         'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
+                                        'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
+                                        'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
 				);
 			}                        
@@ -417,6 +419,8 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
                                         'autofill' => $request['autofill'],
                                         'limit_text' => $request['limit_text'],
                                         'limit_multiple_response' => $request['limit_multiple_response'],
+                                        'file_upload_limit' => $request['file_upload_limit'],
+                                        'file_upload_type' => $request['file_upload_type'],
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();
