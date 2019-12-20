@@ -354,8 +354,7 @@ var import_button;
 		openEditPopup: function( questionID ) {
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
-			var question = QSMQuestion.questions.get( questionID );
-                        console.log(question)
+			var question = QSMQuestion.questions.get( questionID );                        
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
                         var question_editor = ''
@@ -398,11 +397,14 @@ var import_button;
                         }
                         //Get checked question type
                         var get_file_upload_type = question.get( 'file_upload_type' );
-                        var fut_arr = get_file_upload_type.split(",");
                         $("input[name='file_upload_type[]']:checkbox").attr("checked",false);
-                        $.each(fut_arr,function(i){
-                            $("input[name='file_upload_type[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
-                        });
+                        if( get_file_upload_type === null || typeof get_file_upload_type === "undefined" ){                            
+                        }else{
+                            var fut_arr = get_file_upload_type.split(",");
+                            $.each(fut_arr,function(i){
+                                $("input[name='file_upload_type[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
+                            });
+                        }
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
