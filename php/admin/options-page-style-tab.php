@@ -92,7 +92,7 @@ function qsm_options_styling_tab_content() {
 		<hr />
 		<h3><?php _e('Custom Style CSS', 'quiz-master-next'); ?></h3>
 		<p><?php _e('For help and guidance along with a list of different classes used in this plugin, please visit the following link:', 'quiz-master-next'); ?>
-		<a target="_blank" href="https://docs.quizandsurveymaster.com/article/34-css-in-qsm">CSS in QSM</a></p>
+		<a target="_blank" href="https://quizandsurveymaster.com/docs/advanced-topics/editing-design-styles-css/">CSS in QSM</a></p>
 		<table class="form-table">
 			<tr>
 				<td><textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
