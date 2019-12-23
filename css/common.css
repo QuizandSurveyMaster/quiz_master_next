@@ -10,3 +10,6 @@
 .mlw_qmn_question p:empty{
     display: none;
 }
+.MJXc-display{
+    display: inline-block !important;
+}

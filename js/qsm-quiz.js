@@ -520,6 +520,7 @@ function qmnDisplayResults( results, quiz_form_id, $container ) {
 		$container.append( '<div class="qmn_results_page"></div>' );
 		$container.find( '.qmn_results_page' ).html( results.display );
 		qsmScrollTo( $container );
+                MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 	}
 }
 
