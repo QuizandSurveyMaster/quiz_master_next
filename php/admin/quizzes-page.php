@@ -136,7 +136,13 @@ function qsm_generate_quizzes_surveys_page() {
 	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
 	?>
 	<div class="wrap qsm-quizes-page">
-		<h1><?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?><a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a></h1>
+		<h1>
+                    <?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?>
+                    <a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a>
+                    <?php if(class_exists('QSM_Export_Import')){ ?>
+                    <a class="button button-primary" href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>" target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+                    <?php } ?>
+                </h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
 		if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {

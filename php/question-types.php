@@ -144,7 +144,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = sanitize_textarea_field( stripslashes( $_POST["question".$id] ) );
+    $mlw_user_answer = sanitize_textarea_field( $_POST["question".$id] );
   } else {
     $mlw_user_answer = " ";
   }
@@ -153,7 +153,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     if ( $mlw_user_answer == esc_attr( $answer[0] ) )
     {
       $return_array["points"] = $answer[1];
-      $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+      $return_array["user_text"] = $answer[0];
       if ($answer[2] == 1)
       {
         $return_array["correct"] = "correct";
