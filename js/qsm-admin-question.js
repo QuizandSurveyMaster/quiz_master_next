@@ -609,6 +609,17 @@ var import_button;
                         });
                     }                    
                 });
+                //Hide the question settings based on question type
+                $(document).on('change','#question_type', function(){
+                    var question_val = $(this).val();
+                    if(question_val == 11){
+                        jQuery('#file-upload-type-div').show();
+                        jQuery('#file-upload-limit').show();
+                    }else{
+                        jQuery('#file-upload-type-div').hide();
+                        jQuery('#file-upload-limit').hide();
+                    }
+                });                
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)
