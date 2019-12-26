@@ -235,6 +235,7 @@ class QMNQuizManager {
         }
         wp_enqueue_style('qmn_quiz_animation_style', plugins_url('../../css/animate.css', __FILE__));
         wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+        wp_enqueue_style('dashicons');
 
         // Starts to prepare variable array for filters.
         $qmn_array_for_variables = array(
