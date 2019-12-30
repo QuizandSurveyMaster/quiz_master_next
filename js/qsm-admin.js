@@ -80,6 +80,10 @@ var QSMQuizzesSurveys;
       event.preventDefault();
       MicroModal.show( 'modal-2' );
     });
+    $( '#show_import_export_popup' ).on( 'click', function( event ) {
+        event.preventDefault();
+        MicroModal.show( 'modal-export-import' );
+    });
     $( '#quiz_search' ).keyup( function() {
       QSMQuizzesSurveys.searchQuizzes( $( this ).val() );
     });

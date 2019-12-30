@@ -139,9 +139,6 @@ function qsm_generate_quizzes_surveys_page() {
 		<h1>
                     <?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?>
                     <a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a>
-                    <?php if(class_exists('QSM_Export_Import')){ ?>
-                    <a class="button button-primary" href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>" target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
-                    <?php } ?>
                 </h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
@@ -159,6 +156,11 @@ function qsm_generate_quizzes_surveys_page() {
 					<label class="screen-reader-text" for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
 					<a href="#" class="button"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></a>
+                                        <?php if(class_exists('QSM_Export_Import')){ ?>
+                                            <a class="button button-primary" href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>" target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+                                        <?php } else{ ?>
+                                            <a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+                                        <?php } ?>
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
@@ -340,6 +342,25 @@ function qsm_generate_quizzes_surveys_page() {
 					<footer class="qsm-popup__footer">
 						<button id="delete-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Delete', 'quiz-master-next'); ?></button>
 						<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
+                
+                <!-- Popup for export import upsell -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-export-import" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-5-title"><?php _e( 'Extend QSM', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-5-content">						
+                                            <h3><b><?php _e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></b></h3>													
+					</main>
+					<footer class="qsm-popup__footer">
+                                            <a style="color: white;    text-decoration: none;" href="https://quizandsurveymaster.com/downloads/export-import/" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Buy Now', 'quiz-master-next'); ?></a>
+                                            <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
 					</footer>
 				</div>
 			</div>
