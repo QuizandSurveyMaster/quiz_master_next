@@ -1632,7 +1632,11 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->require_log_in == 1 && !is_user_logged_in()) {
         $qmn_allowed_visit = false;
-        $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
+        if(isset($qmn_quiz_options->require_log_in_text_msg) && $qmn_quiz_options->require_log_in_text_msg != ''){
+            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text_msg, ENT_QUOTES));
+        }else{
+            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
+        }        
         $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
         $mlw_message = str_replace("\n", "<br>", $mlw_message);
         $display .= $mlw_message;

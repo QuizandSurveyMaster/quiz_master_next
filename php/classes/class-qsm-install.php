@@ -101,6 +101,15 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Registers required text setting
+    $field_array = array(
+      'id' => 'require_log_in_text_msg',
+      'label' => __('Text for non logged in user. Note: This option will work if above option set to yes', 'quiz-master-next'),
+      'type' => 'text',      
+      'default' => 'This quiz is for logged in users only.'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers pagination setting
     $field_array = array(
@@ -131,14 +140,14 @@ class QSM_Install {
       'id' => 'enable_result_after_timer_end',
       'label' => __('Force submit after timer expiry?', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
+      'options' => array(        
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
