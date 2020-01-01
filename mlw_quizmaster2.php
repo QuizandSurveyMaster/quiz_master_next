@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 6.3.6
+ * Version: 6.4
  * Author: ExpressTech
- * Author URI: https://expresstech.io/
- * Plugin URI: https://quizandsurveymaster.com/
+ * Author URI: https://quizandsurveymaster.com/
+ * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
