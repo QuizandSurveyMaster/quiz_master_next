@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.3
+Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.3.6
+Stable tag: 6.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -113,6 +113,19 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4 (Jan 1, 2020) =
+* Bug: Result summary page is not displaying Math problems
+* Feature: Client wants users to upload images/attachments to the survey
+* Bug: Edit question popup not working
+* Bug: PHP Warnings
+* Bug: Quiz post setting not working properly
+* Bug: Broken links to documentation pages in quiz setting
+* Bug: Export & Import addon bug
+* Bug: Customising form with CSS is not easy
+* Bug: Bug Regarding Pagination Feature
+* Feature: User wants a logic to work in the same way for Checkbox & Multiple choice questions
+* Feature: Provide an export button on top of quiz index
 
 = 6.3.6 (Nov 28, 2019) =
 * Included all the suggestions made by WordPress.org team

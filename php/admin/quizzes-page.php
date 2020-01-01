@@ -85,19 +85,19 @@ function qsm_generate_quizzes_surveys_page() {
 	$my_query           = new WP_Query( array(
 		'post_type'      => 'quiz',
 		'posts_per_page' => -1,
-		'post_status'    => 'publish',
+                'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
 	));
 	if ( $my_query->have_posts() ) {
 		while ( $my_query->have_posts() ) {
 			$my_query->the_post();
 			$post_to_quiz_array[ get_post_meta( get_the_ID(), 'quiz_id', true ) ] = array(
-				'link' => get_permalink(),
+				'link' => get_the_permalink(get_the_ID()),
 				'id'   => get_the_ID(),
+				'post_status'   => get_post_status(get_the_ID()),
 			);
 		}
 	}
-	wp_reset_postdata();
-
+	wp_reset_postdata();        
 	$quiz_json_array = array();
 	foreach ( $quizzes as $quiz ) {
 		if ( ! isset( $post_to_quiz_array[ $quiz->quiz_id ] ) ) {
@@ -105,7 +105,7 @@ function qsm_generate_quizzes_surveys_page() {
 			$quiz_post    = array(
 				'post_title'   => $quiz->quiz_name,
 				'post_content' => "[qsm quiz={$quiz->quiz_id}]",
-				'post_status'  => 'publish',
+				//'post_status'  => 'publish',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'quiz',
 			);
@@ -114,6 +114,7 @@ function qsm_generate_quizzes_surveys_page() {
 			$post_to_quiz_array[ $quiz->quiz_id ] = array(
 				'link' => get_permalink( $quiz_post_id ),
 				'id'   => $quiz_post_id,
+                                'post_status'   => get_post_status($quiz_post_id),
 			);
 		}
 
@@ -128,13 +129,17 @@ function qsm_generate_quizzes_surveys_page() {
 			'taken'        => $quiz->quiz_taken,
 			'lastActivity' => $activity_date,
 			'lastActivityDateTime' => $activity_date . ' ' .$activity_time,
+                        'post_status' => $post_to_quiz_array[ $quiz->quiz_id ]['post_status'],
 		);
 	}
-	$total_count = count( $quiz_json_array );
+	$total_count = count( $quiz_json_array );        
 	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
 	?>
 	<div class="wrap qsm-quizes-page">
-		<h1><?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?><a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a></h1>
+		<h1>
+                    <?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?>
+                    <a id="new_quiz_button" href="#" class="add-new-h2"><?php _e( 'Add New', 'quiz-master-next' ); ?></a>
+                </h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
 		if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
@@ -151,6 +156,11 @@ function qsm_generate_quizzes_surveys_page() {
 					<label class="screen-reader-text" for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<input type="search" id="quiz_search" name="quiz_search" value="">
 					<a href="#" class="button"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></a>
+                                        <?php if(class_exists('QSM_Export_Import')){ ?>
+                                            <a class="button button-primary" href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>" target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+                                        <?php } else{ ?>
+                                            <a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+                                        <?php } ?>
 				</p>
 				<div class="tablenav top">
 					<div class="tablenav-pages">
@@ -336,6 +346,25 @@ function qsm_generate_quizzes_surveys_page() {
 				</div>
 			</div>
 		</div>
+                
+                <!-- Popup for export import upsell -->
+		<div class="qsm-popup qsm-popup-slide" id="modal-export-import" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-5-title"><?php _e( 'Extend QSM', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="modal-5-content">						
+                                            <h3><b><?php _e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></b></h3>													
+					</main>
+					<footer class="qsm-popup__footer">
+                                            <a style="color: white;    text-decoration: none;" href="https://quizandsurveymaster.com/downloads/export-import/" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Buy Now', 'quiz-master-next'); ?></a>
+                                            <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+					</footer>
+				</div>
+			</div>
+		</div>
 
                 <!-- Popup for delete quiz -->
 		<div class="qsm-popup qsm-popup-slide" id="modal-6" aria-hidden="true">
@@ -363,7 +392,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<script type="text/template" id="tmpl-quiz-row">
 			<tr class="qsm-quiz-row" data-id="{{ data.id }}">
 				<td class="post-title column-title">
-					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }}</a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
+					<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }} <b style="color: #222; text-transform: capitalize;">{{ data.post_status }}</b></a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
 					<div class="row-actions">
 						<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> |
                                                 <a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> |

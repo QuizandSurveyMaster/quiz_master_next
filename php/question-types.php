@@ -14,6 +14,81 @@ function qmn_question_type_multiple_choice()
 	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0);
 }
 
+add_action("plugins_loaded", 'qmn_question_type_file_upload');
+/**
+* Registers the file upload type
+*
+* @return void
+* @since 6.3.7
+*/
+function qmn_question_type_file_upload(){
+    global $mlwQuizMasterNext;
+    $mlwQuizMasterNext->pluginHelper->register_question_type(__("File Upload", 'quiz-master-next'), 'qmn_file_upload_display', true, 'qmn_file_upload_review', null, null, 11);
+}
+
+/**
+* This function shows the content of the file upload
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 6.3.7
+*/
+function qmn_file_upload_display($id, $question, $answers)
+{
+    $question_display = '';
+    global $mlwQuizMasterNext;
+    $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+    if ($required == 0) {$mlw_requireClass = "mlwRequiredFileUpload";} else {$mlw_requireClass = "";}    
+    $question_title = apply_filters('the_content', $question);
+    $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question_title, ENT_QUOTES))."</span>";
+    $question_display .= "<input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
+    $question_display .= "<div style='display: none;' class='remove-uploaded-file'><span class='dashicons dashicons-trash'></span></div>";
+    $question_display .= "<input class='mlw_file_upload_hidden_value' type='hidden' name='question".$id."' value='' />";
+    $question_display .= "<span style='display: none;' class='mlw-file-upload-error-msg'></span>";
+    $question_display .= "<input class='mlw_file_upload_hidden_path' type='hidden' value='' />";
+    return apply_filters('qmn_file_upload_display_front',$question_display,$id, $question, $answers);
+}
+
+/**
+* This function determines how the file upload will work.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 5.3.7
+*/
+function qmn_file_upload_review($id, $question, $answers){
+        $return_array = array(
+            'points' => 0,
+            'correct' => 'incorrect',
+            'user_text' => '',
+            'correct_text' => '',
+            'question_type' => 'file_upload'
+        );        
+        if ( isset( $_POST["question".$id] ) ) {
+            $decode_user_answer = sanitize_text_field( $_POST["question".$id] );
+            $mlw_user_answer = trim( $decode_user_answer );            
+        } else {
+            $mlw_user_answer = " ";
+        }
+        $return_array['user_text'] = $mlw_user_answer;
+        foreach($answers as $answer)
+        {
+          $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+          $return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_correct_text ) ) );
+          if (mb_strtoupper($return_array['user_text']) == mb_strtoupper($return_array['correct_text']))
+          {
+            $return_array['correct'] = "correct";
+            $return_array['points'] = $answer[1];
+            break;
+          }
+        }
+        return $return_array;
+}
+
 /**
 * This function shows the content of the multiple choice question.
 *
@@ -69,7 +144,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = sanitize_textarea_field( stripslashes( $_POST["question".$id] ) );
+    $mlw_user_answer = sanitize_textarea_field( $_POST["question".$id] );
   } else {
     $mlw_user_answer = " ";
   }
@@ -78,7 +153,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
     if ( $mlw_user_answer == esc_attr( $answer[0] ) )
     {
       $return_array["points"] = $answer[1];
-      $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+      $return_array["user_text"] = $answer[0];
       if ($answer[2] == 1)
       {
         $return_array["correct"] = "correct";
@@ -90,6 +165,75 @@ function qmn_multiple_choice_review($id, $question, $answers)
     }
   }
   return $return_array;
+}
+
+add_action("plugins_loaded", 'qmn_question_type_date');
+/**
+* Registers the date type
+*
+* @return void
+* @since 6.3.7
+*/
+function qmn_question_type_date(){
+    global $mlwQuizMasterNext;
+    $mlwQuizMasterNext->pluginHelper->register_question_type(__("Date", 'quiz-master-next'), 'qmn_date_display', true, 'qmn_date_review', null, null, 12);
+}
+
+/**
+* This function shows the content of the date field
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $question_display Contains all the content of the question
+* @since 6.3.7
+*/
+function qmn_date_display($id, $question, $answers)
+{
+    $question_display = '';
+    global $mlwQuizMasterNext;
+    $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+    if ($required == 0) {$mlw_requireClass = "mlwRequiredDate";} else {$mlw_requireClass = "";}
+    $question_title = apply_filters('the_content', $question);
+    $question_display .= "<span class='mlw_qmn_question'>".do_shortcode(htmlspecialchars_decode($question_title, ENT_QUOTES))."</span>";
+    $question_display .= "<input type='date' class='mlw_answer_date $mlw_requireClass' name='question".$id."' id='question".$id."' value=''/>";
+    //$question_display .= "<script>jQuery(document).ready(function () { jQuery('#question".$id."').datepicker();  });</script>";
+    return apply_filters('qmn_date_display_front',$question_display,$id, $question, $answers);
+}
+
+/**
+* This function reviews the date type.
+*
+* @params $id The ID of the multiple choice question
+* @params $question The question that is being edited.
+* @params @answers The array that contains the answers to the question.
+* @return $return_array Returns the graded question to the results page
+* @since 6.3.7
+*/
+function qmn_date_review($id, $question, $answers) {
+    $return_array = array(
+        'points' => 0,
+        'correct' => 'incorrect',
+        'user_text' => '',
+        'correct_text' => ''
+    );
+    if (isset($_POST["question" . $id])) {
+        $decode_user_answer = sanitize_textarea_field(strval(stripslashes(htmlspecialchars_decode($_POST["question" . $id], ENT_QUOTES))));
+        $mlw_user_answer = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", $decode_user_answer)));
+    } else {
+        $mlw_user_answer = " ";
+    }
+    $return_array['user_text'] = $mlw_user_answer;
+    foreach ($answers as $answer) {
+        $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+        $return_array['correct_text'] = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", $decode_correct_text)));
+        if (mb_strtoupper($return_array['user_text']) == mb_strtoupper($return_array['correct_text'])) {
+            $return_array['correct'] = "correct";
+            $return_array['points'] = $answer[1];
+            break;
+        }
+    }
+    return $return_array;
 }
 
 add_action("plugins_loaded", 'qmn_question_type_horizontal_multiple_choice');

@@ -1,6 +1,7 @@
 /**
 * Created by dev: 06-11-2019
 */
+.pages_count,
 .qsm-page .pages_count,
 .quiz_section .pages_count{
     display: block;
@@ -8,4 +9,7 @@
 }
 .mlw_qmn_question p:empty{
     display: none;
+}
+.MJXc-display{
+    display: inline-block !important;
 }

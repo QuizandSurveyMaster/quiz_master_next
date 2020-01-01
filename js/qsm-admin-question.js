@@ -266,6 +266,11 @@ var import_button;
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
                         var limit_multiple_response =  $( "#limit_multiple_response" ).val();
+                        var file_upload_limit =  $( "#file_upload_limit" ).val();
+                        var type_arr = [];
+                        $.each($("input[name='file_upload_type[]']:checked"), function(){
+                            type_arr.push($(this).val());
+                        });
 			if ( 'new_category' == category ) {
 				category = $( '#new_category' ).val();
 			}
@@ -305,7 +310,9 @@ var import_button;
                                         answerEditor: answerType,
                                         autofill: autofill,
                                         limit_text: limit_text,
-                                        limit_multiple_response: limit_multiple_response
+                                        limit_multiple_response: limit_multiple_response,
+                                        file_upload_limit: file_upload_limit,
+                                        file_upload_type: type_arr.join(","),
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -347,8 +354,7 @@ var import_button;
 		openEditPopup: function( questionID ) {
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
-			var question = QSMQuestion.questions.get( questionID );
-                        console.log(question)
+			var question = QSMQuestion.questions.get( questionID );                        
 			var questionText = QSMQuestion.prepareQuestionText( question.get( 'name' ) );
 			$( '#edit_question_id' ).val( questionID );
                         var question_editor = ''
@@ -380,9 +386,24 @@ var import_button;
                             get_limit_text = '0';
                         }
                         //Get limit multiple response value
-                        var get_limit_mr = question.get( 'limit_multiple_response' );                        
+                        var get_limit_mr = question.get( 'limit_multiple_response' );
                         if( get_limit_mr === null || typeof get_limit_mr === "undefined" ){
                             get_limit_mr = '0';
+                        }
+                        //Get file upload limit
+                        var get_limit_fu = question.get( 'file_upload_limit' );
+                        if( get_limit_fu === null || typeof get_limit_fu === "undefined" ){
+                            get_limit_fu = '0';
+                        }
+                        //Get checked question type
+                        var get_file_upload_type = question.get( 'file_upload_type' );
+                        $("input[name='file_upload_type[]']:checkbox").attr("checked",false);
+                        if( get_file_upload_type === null || typeof get_file_upload_type === "undefined" ){                            
+                        }else{
+                            var fut_arr = get_file_upload_type.split(",");
+                            $.each(fut_arr,function(i){
+                                $("input[name='file_upload_type[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
+                            });
                         }
                         var al = 0;
 			_.each( answers, function( answer ) {
@@ -392,6 +413,14 @@ var import_button;
                             QSMQuestion.addNewAnswer( answer );
                             al++;
 			});
+                        //Hide the question settings based on question type
+                        if(question.get( 'type' ) == 11){
+                            jQuery('#file-upload-type-div').show();
+                            jQuery('#file-upload-limit').show();
+                        }else{
+                            jQuery('#file-upload-type-div').hide();
+                            jQuery('#file-upload-limit').hide();
+                        }
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
@@ -400,6 +429,7 @@ var import_button;
 			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#limit_text" ).val( get_limit_text );
 			$( "#limit_multiple_response" ).val( get_limit_mr );
+			$( "#file_upload_limit" ).val( get_limit_fu );
 			$( "#change-answer-editor" ).val( answerEditor );
 			$( ".category-radio" ).removeAttr( 'checked' );
 			$( "#edit-question-id" ).text('').text(questionID);
@@ -579,6 +609,17 @@ var import_button;
                         });
                     }                    
                 });
+                //Hide the question settings based on question type
+                $(document).on('change','#question_type', function(){
+                    var question_val = $(this).val();
+                    if(question_val == 11){
+                        jQuery('#file-upload-type-div').show();
+                        jQuery('#file-upload-limit').show();
+                    }else{
+                        jQuery('#file-upload-type-div').hide();
+                        jQuery('#file-upload-limit').hide();
+                    }
+                });                
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)

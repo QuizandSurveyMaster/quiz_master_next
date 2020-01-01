@@ -101,6 +101,15 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    // Registers required text setting
+    $field_array = array(
+      'id' => 'require_log_in_text_msg',
+      'label' => __('Text for non logged in user. Note: This option will work if above option set to yes', 'quiz-master-next'),
+      'type' => 'text',      
+      'default' => 'This quiz is for logged in users only.'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers pagination setting
     $field_array = array(
@@ -131,14 +140,14 @@ class QSM_Install {
       'id' => 'enable_result_after_timer_end',
       'label' => __('Force submit after timer expiry?', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
+      'options' => array(        
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
         )
       ),
       'default' => 0
@@ -481,15 +490,15 @@ class QSM_Install {
       'id' => 'contact_disable_autofill',
       'label' => __('Disable auto fill for contact input?', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
+      'options' => array(        
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
-        )
+        ),
+        array(
+            'label' => __('No', 'quiz-master-next'),
+            'value' => 0
+        ),
       ),
       'default' => 0
     );
@@ -500,15 +509,15 @@ class QSM_Install {
       'id' => 'show_category_on_front',
       'label' => __('Show category on front?', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
+      'options' => array(        
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
-        )
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),  
       ),
       'default' => 0
     );
@@ -519,15 +528,15 @@ class QSM_Install {
       'id' => 'enable_quick_result_mc',
       'label' => __('Show live results for questions inline', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
-        array(
-          'label' => __('No', 'quiz-master-next'),
-          'value' => 0
-        ),
+      'options' => array(        
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
-        )
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        )  
       ),
       'default' => 0
     );
@@ -538,15 +547,34 @@ class QSM_Install {
       'id' => 'enable_retake_quiz_button',
       'label' => __('Show RETAKE QUIZ button on result page', 'quiz-master-next'),
       'type' => 'radio',
-      'options' => array(
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+            'label' => __('No', 'quiz-master-next'),
+            'value' => 0
+        ),
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    //Setting for pagination of quiz
+    $field_array = array(
+      'id' => 'enable_pagination_quiz',
+      'label' => __('Enable pagination of quiz', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
         array(
           'label' => __('No', 'quiz-master-next'),
           'value' => 0
         ),
-        array(
-          'label' => __('Yes', 'quiz-master-next'),
-          'value' => 1
-        )
       ),
       'default' => 0
     );

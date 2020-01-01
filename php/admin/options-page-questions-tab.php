@@ -80,7 +80,7 @@ function qsm_options_questions_tab_content() {
 	}
 	?>
 	<h3>Questions</h3>
-	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://docs.quizandsurveymaster.com/article/19-creating-pages-and-questions" target="_blank">documentation for this tab!</a></p>
+	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">documentation for this tab!</a></p>
 	<div class="question-controls">
 		<div>
 			<button class="new-page-button button">Create New Page</button>
@@ -199,6 +199,19 @@ function qsm_options_questions_tab_content() {
                                             <div id="required_area" class="qsm-row">
                                                     <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
                                                     <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
+                                            </div>
+                                            <div id="file-upload-limit" class="qsm-row">
+                                                    <label><?php _e( 'File upload limit ( in MB )', 'quiz-master-next' ); ?></label>
+                                                    <input type="number" name="file_upload_limit" value="" id="file_upload_limit"/>
+                                            </div>
+                                            <div id="file-upload-type-div" class="qsm-row">
+                                                <label><?php _e( 'Allow File type', 'quiz-master-next' ); ?></label>
+                                                <input type="checkbox" name="file_upload_type[]" value="text/plain" /> <?php _e( 'Text File', 'quiz-master-next' ); ?><br/>
+                                                <input type="checkbox" name="file_upload_type[]" value="image" /> <?php _e( 'Image', 'quiz-master-next' ); ?><br/>
+                                                <input type="checkbox" name="file_upload_type[]" value="application/pdf" /> <?php _e( 'PDF', 'quiz-master-next' ); ?><br/>
+                                                <input type="checkbox" name="file_upload_type[]" value="doc" /> <?php _e( 'Doc', 'quiz-master-next' ); ?><br/>
+                                                <input type="checkbox" name="file_upload_type[]" value="excel" /> <?php _e( 'Excel', 'quiz-master-next' ); ?><br/>
+                                                <input type="checkbox" name="file_upload_type[]" value="video/mp4" /> <?php _e( 'Video', 'quiz-master-next' ); ?>
                                             </div>
                                         </div>					
 				</main>
