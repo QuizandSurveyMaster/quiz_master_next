@@ -32,7 +32,7 @@ function qsm_options_styling_tab_content() {
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 
 	$quiz_id = intval( $_GET['quiz_id'] );
-	if ( isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
+	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
 
 		$style_quiz_id = intval( $_POST['style_quiz_id'] );
 		$quiz_theme = sanitize_text_field( $_POST['save_quiz_theme'] );
@@ -98,6 +98,7 @@ function qsm_options_styling_tab_content() {
 				<td><textarea style="width: 100%; height: 700px;" id="quiz_css" name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
 			</tr>
 		</table>
+                <?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
 		<button id="save_styles_button" class="button-primary"><?php _e('Save Quiz Style', 'quiz-master-next'); ?></button>
 	</form>
 	<?php

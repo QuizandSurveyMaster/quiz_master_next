@@ -918,8 +918,8 @@ class QMNQuizManager {
      */
     public function ajax_submit_results() {
         global $qmn_allowed_visit;
-        global $mlwQuizMasterNext;
-        parse_str($_POST["quizData"], $_POST);
+        global $mlwQuizMasterNext;        
+        parse_str(sanitize_textarea_field($_POST["quizData"]), $_POST);
         $qmn_allowed_visit = true;
         $quiz = intval($_POST["qmn_quiz_id"]);
         $mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz);
