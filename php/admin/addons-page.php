@@ -132,6 +132,7 @@ add_action('plugins_loaded', 'qsm_featured_addons_tab');
  * Display get a free addon page
  */
 function qsm_display_optin_page() {
+    global $mlwQuizMasterNext;
     wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
     ?>
     <div class="wrap about-wrap">

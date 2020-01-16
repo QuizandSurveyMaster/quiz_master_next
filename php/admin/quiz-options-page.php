@@ -55,7 +55,7 @@ function qsm_generate_quiz_options() {
         
         // Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
-            $quiz_id   = intval( $_POST['edit_quiz_id'] );
+            //$quiz_id   = intval( $_POST['edit_quiz_id'] );
             $quiz_name = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['edit_quiz_name'] ), ENT_QUOTES ) );
             $mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
@@ -81,7 +81,7 @@ function qsm_generate_quiz_options() {
 
                     // The Loop
                     $post_permalink = '';
-                    if ($the_query->have_posts()) {            
+                    if ($the_query->have_posts()) {
                         while ($the_query->have_posts()) {                
                             $the_query->the_post();
                             $post_permalink = get_the_permalink(get_the_ID());
@@ -98,7 +98,7 @@ function qsm_generate_quiz_options() {
 			ob_start();
 
 			// If the quiz is set and not empty.
-			if ( ! empty( $quiz_id ) ) {
+			if ( $quiz_id ) {
 				?>
 				<nav class="nav-tab-wrapper">
 					<?php
@@ -125,7 +125,7 @@ function qsm_generate_quiz_options() {
 					?>
 				</div>
 				<?php
-			} else {
+			} else {                            
 				?>
 				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 					<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
