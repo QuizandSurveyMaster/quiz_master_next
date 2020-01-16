@@ -789,9 +789,11 @@ class QMNQuizManager {
         $question_id_list = '';
         $animation_effect = isset($qmn_quiz_options->quiz_animation) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
         $enable_pagination_quiz = isset($qmn_quiz_options->enable_pagination_quiz) && $qmn_quiz_options->enable_pagination_quiz ? $qmn_quiz_options->enable_pagination_quiz : 0;
-        $total_pages_count = count($qmn_quiz_questions);
-        $pagination_optoin = $qmn_quiz_options->pagination;        
-        $total_pagination = ceil($total_pages_count / $pagination_optoin);        
+        $pagination_optoin = $qmn_quiz_options->pagination;
+        if($enable_pagination_quiz && $pagination_optoin){
+            $total_pages_count = count($qmn_quiz_questions);            
+            $total_pagination = ceil($total_pages_count / $pagination_optoin);                
+        }
         $pages_count = 1;
         foreach ($qmn_quiz_questions as $mlw_question) {
             $question_id_list .= $mlw_question->question_id . "Q";
