@@ -290,7 +290,7 @@ class QMNQuizCreator {
 			),
 			array( '%d' )
 		);
-		if ( false !== $results ) {
+		if ( false !== $results ) {                        
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
 		} else {
