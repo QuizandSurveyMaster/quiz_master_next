@@ -35,7 +35,7 @@ var QSMQuizzesSurveys;
     },
     searchQuizzes: function( query ) {
       $( ".qsm-quiz-row" ).each(function() {
-        if ( -1 === $( this ).find( '.qsm-quiz-name' ).text().toLowerCase().indexOf( query.toLowerCase() ) ) {
+        if ( -1 === $( this ).find( '.row-title' ).text().toLowerCase().indexOf( query.toLowerCase() ) ) {
           $( this ).hide();
         } else {
           $( this ).show();
