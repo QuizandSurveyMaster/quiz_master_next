@@ -463,8 +463,10 @@ class QMNQuizManager {
             'incorrect' => $options->incorrect_error_text,
             'empty' => $options->empty_error_text,
         );
-
+        
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
+        wp_enqueue_script( 'range-slider-js', '//www.jqueryscript.net/demo/Customizable-Range-Slider-Plugin-For-jQuery-Range-Control/range/jquery.range-control.js' );
+        wp_enqueue_style( 'range-slider-css', '//www.jqueryscript.net/demo/Customizable-Range-Slider-Plugin-For-jQuery-Range-Control/range/jquery.range-control.css' );
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
         wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );                

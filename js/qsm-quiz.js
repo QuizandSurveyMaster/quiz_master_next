@@ -904,7 +904,7 @@ jQuery(function() {
                 }
             });
             return false;
-        });
+        });        
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

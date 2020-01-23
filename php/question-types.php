@@ -1104,6 +1104,125 @@ function qmn_fill_blank_review($id, $question, $answers)
   return $return_array;
 }
 
+
+//Start polar question
+add_action("plugins_loaded", 'qmn_question_type_polar');
+
+/**
+ * This function registers the fill in the blank question type
+ *
+ * @return void
+ * @since 6.4.1
+ */
+function qmn_question_type_polar() {
+    global $mlwQuizMasterNext;
+    $mlwQuizMasterNext->pluginHelper->register_question_type(__("Polar", 'quiz-master-next'), 'qmn_polar_display', true, 'qmn_polar_review', null, null, 13);
+}
+
+/**
+ * This function displays the fill in the blank question
+ *
+ * @params $id The ID of the multiple choice question
+ * @params $question The question that is being edited.
+ * @params @answers The array that contains the answers to the question.
+ * @return $question_display Returns the content of the question
+ * @since 6.4.1
+ */
+function qmn_polar_display($id, $question, $answers) {
+    $question_display = '';
+    global $mlwQuizMasterNext;
+    $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+    $autofill = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'autofill');
+    $limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_text');
+    $autofill_att = $autofill ? "autocomplete='off' " : '';
+    $limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
+    $input_text = '';
+    $total_answer = count($answers);
+    $polar_id = 'question' . $id;
+    ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                if(jQuery('#' + '<?php echo $polar_id; ?>').length > 0){
+                    jQuery('#' + '<?php echo $polar_id; ?>').rangeControl({
+            <?php if ($total_answer == 2) { ?>
+                            min: '<?php echo $answers[0][0]; ?>',
+                            max: '<?php echo $answers[1][0]; ?>',
+            <?php } ?>
+                        step: 1,
+                        delim: ',',
+                        orientation: 'horizontal',
+                        disabled: false,
+                        rangeType: 'single',
+                        minHandles: 1,
+                        maxHandles: 1,
+                        allowPaging: true,
+                        stepsPerPage: 1,
+                        currentValue: {
+                          position: 'top'
+                        },
+                        scale: {
+                          position: 'bottom',
+                          labels: false,
+                          interval: 1
+                        },
+                        className: ''
+                    });
+                }
+            });        
+        </script>
+    <?php
+    if ($required == 0) {
+        $mlw_requireClass = "mlwRequiredText";
+    } else {
+        $mlw_requireClass = "";
+    }
+    $input_text .= "<input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
+    if (strpos($question, '%POLAR_SLIDER%') !== false) {
+        $question = str_replace("%POLAR_SLIDER%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+    }
+    //$question_title = apply_filters('the_content', $question);
+    $question_display .= qsm_question_title_func($question);
+    return apply_filters('qmn_polar_display_front', $question_display, $id, $question, $answers);
+}
+
+/**
+ * This function determines how the fill in the blank question is graded.
+ *
+ * @params $id The ID of the multiple choice question
+ * @params $question The question that is being edited.
+ * @params @answers The array that contains the answers to the question.
+ * @return $return_array Returns the graded question to the results page
+ * @since 6.4.1
+ */
+function qmn_polar_review($id, $question, $answers) {
+    $return_array = array(
+        'points' => 0,
+        'correct' => 'incorrect',
+        'user_text' => '',
+        'correct_text' => ''
+    );
+    if (strpos($question, '%POLAR_SLIDER%') !== false) {
+        $return_array['question_text'] = str_replace("%POLAR_SLIDER%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+    }
+    if (isset($_POST["question" . $id])) {
+        $decode_user_answer = sanitize_textarea_field(strval(stripslashes(htmlspecialchars_decode($_POST["question" . $id], ENT_QUOTES))));
+        $mlw_user_answer = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", $decode_user_answer)));
+    } else {
+        $mlw_user_answer = " ";
+    }
+    $return_array['user_text'] = $mlw_user_answer;
+    
+    foreach($answers as $answer)  {
+        $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));        
+        if (mb_strtoupper($return_array['user_text']) == mb_strtoupper( trim ($decode_correct_text) ) )        {
+          $return_array['correct'] = "correct";
+          $return_array['points'] = $answer[1];          
+          break;
+        }
+    }    
+    return $return_array;
+}
+
 function qsm_question_title_func($question){
     //$question_title = apply_filters('the_content', $question);
     $question_title = $question;

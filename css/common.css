@@ -16,3 +16,11 @@
 .mlw_qmn_question{
     display: block;
 }
+.range-control-widget{
+    display: inline-block;
+    width: 50%;
+    position: relative;
+    top: 40px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
