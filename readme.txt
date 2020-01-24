@@ -69,16 +69,18 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 
 **Premium Add-ons**
 
+* [Reporting & Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
+* [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
+* [Logic](https://quizandsurveymaster.com/downloads/logic/?utm_source=readme&utm_medium=plugin&utm_content=logic&utm_campaign=qsm_plugin)
+* [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=readme&utm_medium=plugin&utm_content=user-dashboard&utm_campaign=qsm_plugin)
 * [URL Parameters](http://bit.ly/2I1ZM6g)
 * [Google Analytics Tracking](http://bit.ly/2AAgABs)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
-* [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
-* [Reporting & Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
 **About Us**
-QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](expresstech.io)
+QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https://expresstech.io)
 
 == Installation ==
 
