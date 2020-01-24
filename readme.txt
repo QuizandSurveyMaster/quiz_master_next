@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4
+Stable tag: 6.4.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.1 (Jan 24, 2020) =
+* Bug: Solve vulnerability issues reported by wordfence
+* Bug: PHP notices in Settings page
+* Bug: Audio files does not show and play in the Question
+* Bug: Unable to rename quiz
+* Bug: Thumbnail and Medium size image does not show up in Question
+* Bug: PHP warnings in get free adon page
+* Bug: Video Shortcode does not work in Question
+* Feature: WordPress 5.3 compatability
 
 = 6.4 (Jan 1, 2020) =
 * Bug: Result summary page is not displaying Math problems
