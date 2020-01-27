@@ -1138,37 +1138,39 @@ function qmn_polar_display($id, $question, $answers) {
     $limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
     $input_text = '';
     $total_answer = count($answers);
-    $polar_id = 'question' . $id;
+    $polar_id = 'question' . $id;    
     ?>
         <script type="text/javascript">
-            jQuery(document).ready(function(){
-                if(jQuery('#' + '<?php echo $polar_id; ?>').length > 0){
-                    jQuery('#' + '<?php echo $polar_id; ?>').rangeControl({
-            <?php if ($total_answer == 2) { ?>
-                            min: '<?php echo $answers[0][0]; ?>',
-                            max: '<?php echo $answers[1][0]; ?>',
-            <?php } ?>
-                        step: 1,
-                        delim: ',',
-                        orientation: 'horizontal',
-                        disabled: false,
-                        rangeType: 'single',
-                        minHandles: 1,
-                        maxHandles: 1,
-                        allowPaging: true,
-                        stepsPerPage: 1,
-                        currentValue: {
-                          position: 'top'
-                        },
-                        scale: {
-                          position: 'bottom',
-                          labels: false,
-                          interval: 1
-                        },
-                        className: ''
-                    });
-                }
-            });        
+            (function($) {
+                $(document).ready(function() {                    
+                    if($('#' + '<?php echo $polar_id; ?>').length > 0){
+                        $('#' + '<?php echo $polar_id; ?>').rangeControl({
+                        <?php if ($total_answer == 2) { ?>
+                                min: '<?php echo $answers[0][0]; ?>',
+                                max: '<?php echo $answers[1][0]; ?>',
+                        <?php } ?>
+                            step: 1,
+                            delim: ',',
+                            orientation: 'horizontal',
+                            disabled: false,
+                            rangeType: 'single',
+                            minHandles: 1,
+                            maxHandles: 1,
+                            allowPaging: true,
+                            stepsPerPage: 1,
+                            currentValue: {
+                              position: 'top'
+                            },
+                            scale: {
+                              position: 'bottom',
+                              labels: false,
+                              interval: 1
+                            },
+                            className: ''
+                        });
+                    }
+                });
+            })(jQuery);               
         </script>
     <?php
     if ($required == 0) {

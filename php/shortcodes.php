@@ -94,3 +94,12 @@ function qsm_display_recent_quizzes($attrs) {
 
 }
 add_shortcode('qsm_recent_quizzes', 'qsm_display_recent_quizzes');
+
+/**
+ * @since 6.4.1
+ */
+
+function qsm_load_main_scripts() {
+    wp_enqueue_script( 'jquery' );
+}
+add_action( 'wp_enqueue_scripts', 'qsm_load_main_scripts' );
