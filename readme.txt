@@ -118,6 +118,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.4.1 () =
+* Bug: Solved Email without @ ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831 )
+* Bug: QSM is not sending email to user
+
+== Changelog ==
+
 = 6.4.1 (Jan 24, 2020) =
 * Bug: Solve vulnerability issues reported by wordfence
 * Bug: PHP notices in Settings page
