@@ -118,6 +118,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.4.3 =
+* Bug: Solved user limit issue with ip address
+
 = 6.4.2 (Jan 27, 2020) =
 * Bug: Solved Email without (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831)
 
