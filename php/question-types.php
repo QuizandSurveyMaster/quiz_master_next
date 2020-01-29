@@ -1137,38 +1137,45 @@ function qmn_polar_display($id, $question, $answers) {
     $autofill_att = $autofill ? "autocomplete='off' " : '';
     $limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
     $input_text = '';
-    $total_answer = count($answers);
-    $polar_id = 'question' . $id;    
+    $total_answer = count($answers);    
     ?>
         <script type="text/javascript">
             (function($) {
                 $(document).ready(function() {                    
-                    if($('#' + '<?php echo $polar_id; ?>').length > 0){
-                        $('#' + '<?php echo $polar_id; ?>').rangeControl({
-                        <?php if ($total_answer == 2) { ?>
-                                min: '<?php echo $answers[0][0]; ?>',
-                                max: '<?php echo $answers[1][0]; ?>',
+                    $('#slider-' + '<?php echo $id; ?>').slider({
+                         <?php if ($total_answer == 2) { ?>
+                                min: <?php echo $answers[0][0]; ?>,
+                                max: <?php echo $answers[1][0]; ?>,
                         <?php } ?>
                             step: 1,
-                            delim: ',',
-                            orientation: 'horizontal',
-                            disabled: false,
-                            rangeType: 'single',
-                            minHandles: 1,
-                            maxHandles: 1,
-                            allowPaging: true,
-                            stepsPerPage: 1,
-                            currentValue: {
-                              position: 'top'
+                            change: function( event, ui ) {
+                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(ui.value);
+                                if(ui.value == <?php echo $answers[0][0]; ?>){
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','900');
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','100');
+                                } else if(ui.value == <?php echo $answers[1][0]; ?>){
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','100');
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','900');
+                                } else if(ui.value == <?php echo $answers[1][0] / 2; ?>){
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','400');
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','400');
+                                } else if(ui.value > <?php echo $answers[1][0] / 2; ?>){
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','400');
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','600');
+                                } else if(ui.value < <?php echo $answers[1][0] / 2; ?>){
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','600');
+                                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','400');
+                                }
                             },
-                            scale: {
-                              position: 'bottom',
-                              labels: false,
-                              interval: 1
-                            },
-                            className: ''
-                        });
-                    }
+                            create: function( event, ui ) {
+                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','900');
+                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','100');
+                            }    
+                    });
+                    var maxHeight = Math.max.apply(null, $(".question-section-id-<?php echo $id; ?> .question-type-polar-s > div").map(function (){
+                        return $(this).height();
+                    }).get());
+                    $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').height(maxHeight);
                 });
             })(jQuery);               
         </script>
@@ -1178,12 +1185,13 @@ function qmn_polar_display($id, $question, $answers) {
     } else {
         $mlw_requireClass = "";
     }
-    $input_text .= "<input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
+    $input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
+    $input_text .= '<div id="slider-'. $id .'"></div></div>';
     if (strpos($question, '%POLAR_SLIDER%') !== false) {
         $question = str_replace("%POLAR_SLIDER%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
     }
     //$question_title = apply_filters('the_content', $question);
-    $question_display .= qsm_question_title_func($question);
+    $question_display .= qsm_question_title_func($question,'polar');
     return apply_filters('qmn_polar_display_front', $question_display, $id, $question, $answers);
 }
 
@@ -1225,12 +1233,16 @@ function qmn_polar_review($id, $question, $answers) {
     return $return_array;
 }
 
-function qsm_question_title_func($question){
+function qsm_question_title_func($question,$question_type = ''){
     //$question_title = apply_filters('the_content', $question);
     $question_title = $question;
     global $wp_embed;
     $question_title = $wp_embed->run_shortcode($question_title);
-    $question_display = "<span class='mlw_qmn_question'>" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . "</span>";
+    $polar_extra_class = '';
+    if($question_type == 'polar'){
+        $polar_extra_class = 'question-type-polar-s';
+    }
+    $question_display = "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . "</span>";
     return $question_display;
 }
 ?>
