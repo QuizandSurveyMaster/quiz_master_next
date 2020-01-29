@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4
+Stable tag: 6.4.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -69,16 +69,18 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 
 **Premium Add-ons**
 
+* [Reporting & Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
+* [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
+* [Logic](https://quizandsurveymaster.com/downloads/logic/?utm_source=readme&utm_medium=plugin&utm_content=logic&utm_campaign=qsm_plugin)
+* [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=readme&utm_medium=plugin&utm_content=user-dashboard&utm_campaign=qsm_plugin)
 * [URL Parameters](http://bit.ly/2I1ZM6g)
 * [Google Analytics Tracking](http://bit.ly/2AAgABs)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
-* [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
-* [Reporting & Analysis](https://quizandsurveymaster.com/downloads/results-analysis/?utm_source=readme&utm_medium=plugin&utm_content=reporting-analysis&utm_campaign=qsm_plugin)
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
 **About Us**
-QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](expresstech.io)
+QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https://expresstech.io)
 
 == Installation ==
 
@@ -115,6 +117,22 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.1 () =
+* Bug: Solved Email without @ ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831 )
+* Bug: QSM is not sending email to user
+
+== Changelog ==
+
+= 6.4.1 (Jan 24, 2020) =
+* Bug: Solve vulnerability issues reported by wordfence
+* Bug: PHP notices in Settings page
+* Bug: Audio files does not show and play in the Question
+* Bug: Unable to rename quiz
+* Bug: Thumbnail and Medium size image does not show up in Question
+* Bug: PHP warnings in get free adon page
+* Bug: Video Shortcode does not work in Question
+* Feature: WordPress 5.3 compatability
 
 = 6.4 (Jan 1, 2020) =
 * Bug: Result summary page is not displaying Math problems

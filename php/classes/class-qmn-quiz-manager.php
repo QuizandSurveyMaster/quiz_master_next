@@ -923,7 +923,7 @@ class QMNQuizManager {
     public function ajax_submit_results() {
         global $qmn_allowed_visit;
         global $mlwQuizMasterNext;        
-        parse_str(sanitize_textarea_field($_POST["quizData"]), $_POST);
+        parse_str($_POST["quizData"], $_POST);
         $qmn_allowed_visit = true;
         $quiz = intval($_POST["qmn_quiz_id"]);
         $mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz);
@@ -1621,6 +1621,21 @@ class QMNQuizManager {
             } else {
                 $ip = __('Unknown', 'quiz-master-next');
             }
+            
+            if (getenv('HTTP_CLIENT_IP'))
+                $ip = getenv('HTTP_CLIENT_IP');
+            else if (getenv('HTTP_X_FORWARDED_FOR'))
+                $ip = getenv('HTTP_X_FORWARDED_FOR');
+            else if (getenv('HTTP_X_FORWARDED'))
+                $ip = getenv('HTTP_X_FORWARDED');
+            else if (getenv('HTTP_FORWARDED_FOR'))
+                $ip = getenv('HTTP_FORWARDED_FOR');
+            else if (getenv('HTTP_FORWARDED'))
+                $ip = getenv('HTTP_FORWARDED');
+            else if (getenv('REMOTE_ADDR'))
+                $ip = getenv('REMOTE_ADDR');
+            else
+                $ip = $_SERVER['REMOTE_ADDR'];
         }
         return $ip;
     }
@@ -1682,7 +1697,7 @@ add_filter('qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3);
  * @return string The altered HTML display for the quiz
  */
 function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
-
+    
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->total_user_tries != 0) {
 
