@@ -16,6 +16,11 @@
 .mlw_qmn_question{
     display: block;
 }
+.polar-question-title{
+    margin-bottom: 50px;
+    font-size: 20px;
+    line-height: 20px;
+}
 .question-type-polar-s{
     display: inline-block !important;
     position: relative;
