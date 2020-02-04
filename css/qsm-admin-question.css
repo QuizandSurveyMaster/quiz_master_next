@@ -358,3 +358,7 @@ a.import-button.button.disable_import::before {
         max-width: 100%;
     }
 }
+
+.question_info_tag{
+    float: right;    
+}
