@@ -39,7 +39,7 @@ function qsm_options_results_tab_content() {
 	wp_enqueue_media();
 	?>
 	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
-	<p>Need assistance with this tab? <a href="https://docs.quizandsurveymaster.com/article/25-setting-up-results-pages-and-thank-you-pages" target="_blank">Check out the documentation</a> for this tab!</p>
+	<p>Need assistance with this tab? <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-results-pages/" target="_blank">Check out the documentation</a> for this tab!</p>
 
 	<!-- Template Variables Section -->
 	<section>

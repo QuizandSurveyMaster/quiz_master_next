@@ -92,7 +92,7 @@ QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https:
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have extensive documentation and videos for the plugin. You can view the documentation here: [Documentation](https://docs.quizandsurveymaster.com). If you still need assistance, feel free to reach out to us!
+We have extensive documentation and videos for the plugin. You can view the documentation here: [Documentation](https://quizandsurveymaster.com/docs). If you still need assistance, feel free to reach out to us!
 
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
@@ -104,7 +104,7 @@ To make these changes, you will edit the %QUESTIONS_ANSWERS% variable. To do tha
 
 = My preview looks different than my quiz. What can I do? =
 
-This is usually a theme conflict. You can [checkout out our common conflict solutions](https://docs.quizandsurveymaster.com/article/21-common-theme-conflict-fixes) or feel free to contact us.
+This is usually a theme conflict. You can [checkout out our common conflict solutions](https://quizandsurveymaster.com/docs/advanced-topics/common-theme-conflict-fixes/) or feel free to contact us.
 
 == Screenshots ==
 
@@ -120,6 +120,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 6.4.3 =
 * Bug: Solved user limit issue with ip address
+* Feature: added question type help link and changed the old documentation in whole plugin
 
 = 6.4.2 (Jan 27, 2020) =
 * Bug: Solved Email without (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831)
