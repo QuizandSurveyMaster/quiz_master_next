@@ -385,7 +385,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<!-- Templates -->
 		<script type="text/template" id="tmpl-no-quiz">
 			<h2><?php _e( 'You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next' ); ?></h2>
-			<h2>Is this your first time using this plugin? Check out our <a href="https://docs.quizandsurveymaster.com" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
+			<h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/docs" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
 			<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</script>
 

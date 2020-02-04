@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds the settings for questions tab to the Quiz Settings page.
  *
  * @return void
- * @since 4.4.0
+ * @since 4.4.0 
  */
 function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;

@@ -41,7 +41,7 @@ function qsm_options_emails_tab_content() {
 	wp_enqueue_media();
 	?>
 	<h2><?php esc_html_e( 'Emails', 'quiz-master-next' ); ?></h2>
-	<p>Need assistance with this tab? <a href="https://docs.quizandsurveymaster.com/article/17-sending-emails" target="_blank">Check out the documentation</a> for this tab!</p>
+	<p>Need assistance with this tab? <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-emails/" target="_blank">Check out the documentation</a> for this tab!</p>
 
 	<!-- Template Variable Section -->
 	<section>

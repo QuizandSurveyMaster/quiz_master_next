@@ -1502,7 +1502,7 @@ class QSM_Install {
   public function plugin_row_meta( $links, $file ) {
     if ( $file == QSM_PLUGIN_BASENAME ) {
       $row_meta = array(
-        'docs'    => '<a href="' . esc_url( 'https://docs.quizandsurveymaster.com/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
+        'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
         'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
       );
       return array_merge( $links, $row_meta );
