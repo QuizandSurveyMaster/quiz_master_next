@@ -118,7 +118,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.3 ()=
+= 6.4.3 (Feb 6, 2020)=
 * Bug: Solved user limit issue with ip address
 * Bug: Solved Search input issue on Quizzes/Surveys
 * Added: added question type help link and changed the old documentation in whole plugin
