@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4.2
+Stable tag: 6.4.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,7 +92,7 @@ QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https:
 == Frequently Asked Questions ==
 
 = How do you use that feature? =
-We have extensive documentation and videos for the plugin. You can view the documentation here: [Documentation](https://docs.quizandsurveymaster.com). If you still need assistance, feel free to reach out to us!
+We have extensive documentation and videos for the plugin. You can view the documentation here: [Documentation](https://quizandsurveymaster.com/docs). If you still need assistance, feel free to reach out to us!
 
 = I want to edit the output for %QUESTIONS_ANSWERS%. Can I do that? =
 
@@ -104,7 +104,7 @@ To make these changes, you will edit the %QUESTIONS_ANSWERS% variable. To do tha
 
 = My preview looks different than my quiz. What can I do? =
 
-This is usually a theme conflict. You can [checkout out our common conflict solutions](https://docs.quizandsurveymaster.com/article/21-common-theme-conflict-fixes) or feel free to contact us.
+This is usually a theme conflict. You can [checkout out our common conflict solutions](https://quizandsurveymaster.com/docs/advanced-topics/common-theme-conflict-fixes/) or feel free to contact us.
 
 == Screenshots ==
 
@@ -118,10 +118,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 6.4.3 (Feb 6, 2020)=
+* Bug: Solved user limit issue with ip address
+* Bug: Solved Search input issue on Quizzes/Surveys
+* Added: added question type help link and changed the old documentation in whole plugin
+* Feature: Added polar question type
+
+
 = 6.4.2 (Jan 27, 2020) =
 * Bug: Solved Email without (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831)
-
-== Changelog ==
 
 = 6.4.1 (Jan 24, 2020) =
 * Bug: Solve vulnerability issues reported by wordfence

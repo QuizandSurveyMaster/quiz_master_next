@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds the settings for questions tab to the Quiz Settings page.
  *
  * @return void
- * @since 4.4.0
+ * @since 4.4.0 
  */
 function qsm_settings_questions_tab() {
 	global $mlwQuizMasterNext;
@@ -134,6 +134,7 @@ function qsm_options_questions_tab_content() {
 							}
 							?>
 						</select>
+                                                <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
 					</div>
 					<p id="question_type_info"></p>
 					<div class="qsm-row">

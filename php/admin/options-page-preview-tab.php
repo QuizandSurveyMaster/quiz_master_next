@@ -27,7 +27,7 @@ add_action( 'plugins_loaded', 'qsm_settings_preview_tab', 5 );
  */
 function qsm_options_preview_tab_content() {
 	?>
-	<p>If your quiz looks different on the front end compared to this preview, then there is a conflict with your theme. Check out our <a href="https://docs.quizandsurveymaster.com/article/21-common-theme-conflict-fixes" target="_blank">Common Theme Conflict Fixes</a>.</p>
+	<p>If your quiz looks different on the front end compared to this preview, then there is a conflict with your theme. Check out our <a href="https://quizandsurveymaster.com/docs/advanced-topics/common-theme-conflict-fixes/" target="_blank">Common Theme Conflict Fixes</a>.</p>
 	<?php
 	echo do_shortcode( '[qsm quiz=' . intval( $_GET['quiz_id'] ) . ']' );
 	?>

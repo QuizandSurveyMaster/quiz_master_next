@@ -576,7 +576,9 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
 	var slide_number = +$container.find( '.slide_number_hidden' ).val();
 	var previous = +$container.find( '.previous_amount_hidden' ).val();
 	var section_totals = +$container.find( '.total_sections_hidden' ).val();
-
+        if(pagination == 1){
+            section_totals = section_totals - 1;
+        }
 	jQuery( quiz_form_id + " .quiz_section" ).hide();
 	for ( var i = 0; i < pagination; i++ ) {
 		if (i === 0 && previous === 1 && slide_number > 1) {
@@ -588,24 +590,27 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
 			slide_number = 1;
 		}
 		$container.find( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-
-    if ( qmn_quiz_data[ quiz_id ].first_page ) {
-      if (slide_number > 1) {
-				$container.find( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-      }
-    } else {
-			if (slide_number > pagination) {
-				$container.find( ".mlw_qmn_quiz_link.mlw_previous" ).show();
-			}
-    }
-		if (slide_number == section_totals) {
-			$container.find( ".mlw_qmn_quiz_link.mlw_next" ).hide();
-		}
-		if (slide_number < section_totals) {
-			$container.find( ".mlw_qmn_quiz_link.mlw_next" ).show();
-		}
-		jQuery( quiz_form_id + " .quiz_section.slide" + slide_number ).show();
-	}
+                
+                if (qmn_quiz_data[ quiz_id ].first_page) {
+                    if (slide_number > 1) {
+                        $container.find(".mlw_qmn_quiz_link.mlw_previous").show();
+                    }
+                } else {
+                    if (slide_number > pagination) {
+                        $container.find(".mlw_qmn_quiz_link.mlw_previous").show();
+                    }
+                }
+                if (slide_number == section_totals) {
+                    $container.find(".mlw_qmn_quiz_link.mlw_next").hide();
+                    if(pagination == 1){
+                        jQuery(quiz_form_id + " .quiz_section.quiz_end").show();
+                    }
+                }
+                if (slide_number < section_totals) {
+                    $container.find(".mlw_qmn_quiz_link.mlw_next").show();
+                }
+                jQuery(quiz_form_id + " .quiz_section.slide" + slide_number).show();
+        }
 
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.slide_number_hidden' ).val( slide_number );
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.previous_amount_hidden' ).val( 0 );
@@ -904,7 +909,7 @@ jQuery(function() {
                 }
             });
             return false;
-        });
+        });        
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
