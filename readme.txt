@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4.2
+Stable tag: 6.4.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,14 +118,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.3 =
+= 6.4.3 ()=
 * Bug: Solved user limit issue with ip address
-* Feature: added question type help link and changed the old documentation in whole plugin
+* Bug: Solved Search input issue on Quizzes/Surveys
+* Added: added question type help link and changed the old documentation in whole plugin
+* Feature: Added polar question type
+
 
 = 6.4.2 (Jan 27, 2020) =
 * Bug: Solved Email without (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/831)
-
-== Changelog ==
 
 = 6.4.1 (Jan 24, 2020) =
 * Bug: Solve vulnerability issues reported by wordfence
