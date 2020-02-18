@@ -134,6 +134,7 @@ add_action('plugins_loaded', 'qsm_featured_addons_tab');
 function qsm_display_optin_page() {
     global $mlwQuizMasterNext;
     wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+    wp_localize_script( 'qsm_admin_script', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce('ajax-nonce-sendy-save') ) );
     ?>
     <div class="wrap about-wrap">
 

@@ -69,7 +69,7 @@ var QSMAdmin;
                     email = $form.find('input[name="email"]').val(),
                     action = 'qsm_send_data_sendy';
                     $form.find('#submit').attr('disabled', true);
-            $.post(ajaxurl, {name: name, email: email, action: action},
+                    $.post(ajaxurl, {name: name, email: email, nonce: qsmAdminObject.saveNonce, action: action},
                     function (data) {
                         if (data)
                         {
@@ -103,7 +103,9 @@ var QSMAdmin;
                     }
             );
         });
-        /**/
-        jQuery('.buttonset').buttonset();
+        /**/        
+        if(jQuery('.buttonset').length > 0){
+            jQuery('.buttonset').buttonset();
+        }
     });
 }(jQuery));

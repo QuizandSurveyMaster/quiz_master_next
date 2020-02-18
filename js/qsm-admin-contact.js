@@ -129,7 +129,8 @@ var QSMContact;
       var data = {
     		action: 'qsm_save_contact',
     		contact_form: contactForm,
-        quiz_id : qsmContactObject.quizID
+                quiz_id : qsmContactObject.quizID,
+                nonce : qsmContactObject.saveNonce,
     	};
 
     	jQuery.post( ajaxurl, data, function( response ) {
