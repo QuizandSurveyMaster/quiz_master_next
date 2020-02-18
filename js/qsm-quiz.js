@@ -472,6 +472,17 @@ function qmnValidation( element, quiz_form_id ) {
 	return result;
 }
 
+function getFormData($form){
+    var unindexed_array = $form.serializeArray();
+    var indexed_array = {};
+
+    jQuery.map(unindexed_array, function(n, i){
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return indexed_array;
+}
+
 function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
@@ -484,25 +495,32 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_qmn_quiz select' ).attr( 'disabled', false );
 	jQuery( '.mlw_qmn_question_comment' ).attr( 'disabled', false );
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
-
-	var data = {
-		action: 'qmn_process_quiz',
-		quizData: jQuery( '#' + quiz_form_id ).serialize()
-	};
-
+        
+        //Convert serialize data into index array
+        var unindexed_array = jQuery( '#' + quiz_form_id ).serializeArray();        
+        var fd = new FormData();
+        jQuery.each(unindexed_array,function(key,input){            
+            fd.append(input.name,input.value);
+        });
+        fd.append("action", 'qmn_process_quiz');
+        
 	qsmEndTimeTakenTimer();
-
 	if ( qmn_quiz_data[quiz_id].hasOwnProperty( 'timer_limit' ) ) {
 		QSM.endTimer( quiz_id );
 	}
-
 	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
 	qsmDisplayLoading( $container );
-
-	jQuery.post( qmn_ajax_object.ajaxurl, data, function( response ) {
-		qmnDisplayResults( JSON.parse( response ), quiz_form_id, $container );
-	});
-
+        jQuery.ajax({
+            url: qmn_ajax_object.ajaxurl,
+            data: fd,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function( response ){
+                qmnDisplayResults( JSON.parse( response ), quiz_form_id, $container );
+            }
+        });
+        
 	return false;
 }
 

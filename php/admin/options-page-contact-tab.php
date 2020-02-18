@@ -29,7 +29,7 @@ function qsm_options_contact_tab_content() {
   $contact_form = QSM_Contact_Manager::load_fields();
 
   wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
-  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id ) );
+  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce('ajax-nonce-contact-save') ) );
   wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ), array(), $mlwQuizMasterNext->version );
 
   /**
@@ -67,6 +67,10 @@ add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
  * @return void
  */
 function qsm_contact_form_admin_ajax() {
+        $nonce = $_POST['nonce'];
+        if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-contact-save' ) )
+            die ( 'Busted!');
+    
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	// Sends posted form data to Contact Manager to sanitize and save.

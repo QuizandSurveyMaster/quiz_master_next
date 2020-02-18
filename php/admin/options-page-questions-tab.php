@@ -38,7 +38,8 @@ function qsm_options_questions_tab_content() {
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
 		'nonce'      => wp_create_nonce( 'wp_rest' ),
 		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
-                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true)
+                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
+                'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page')
 	);
 
 	// Scripts and styles.
@@ -299,6 +300,11 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
+    
+        $nonce = $_POST['nonce'];
+        if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) )
+            die ( 'Busted!');
+        
 	global $mlwQuizMasterNext;
 	$json = array(
 		'status' => 'error',
@@ -351,6 +357,11 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  * Send data to sendy
  */
 function qsm_send_data_sendy(){
+    
+    $nonce = $_POST['nonce'];
+    if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sendy-save' ) )
+        die ( 'Busted!');
+    
     $sendy_url = 'http://sendy.expresstech.io';
     $list = '4v8zvoyXyTHSS80jeavOpg';
     $name = sanitize_text_field($_POST['name']);
