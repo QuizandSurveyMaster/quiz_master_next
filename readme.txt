@@ -82,6 +82,9 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 **About Us**
 QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https://expresstech.io)
 
+**Facebook Group**
+Join our [offical FB group](https://www.facebook.com/groups/516958552587745) for quicker response time on your technical queries
+
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
