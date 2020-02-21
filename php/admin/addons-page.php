@@ -209,7 +209,7 @@ function qsm_display_optin_page() {
 <!--  END - We recommend to place the above code in head tag of your website html -->
 
 <!-- START - We recommend to place the below code where you want the form in your website html  -->
-<div class="sib-form" style="text-align: center;background-color: #EFF2F7;                                 ">
+<div class="sib-form" style="text-align: center;">
             <div id="sib-form-container" class="sib-form-container">
               <div id="error-message" class="sib-form-message-panel" style="font-size:16px; text-align:left; font-family:&quot;Helvetica&quot;, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;max-width:540px; border-width:px;">
                 <div class="sib-form-message-panel__text sib-form-message-panel__text--center">
@@ -237,19 +237,7 @@ function qsm_display_optin_page() {
               <div></div>
               <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(255,255,255,1); max-width:540px; border-radius:3px; border-width:1px; border-color:#C0CCD9; border-style:solid;">
                 <form id="sib-form" method="POST" action="https://cddf18fd.sibforms.com/serve/MUIEAO9t8eOB2GOqY73EWqFatPi328RiosfYMKieZ_8IxVL2jyEazmQ9LlkDj6pYrTlvB7JBsx3su8WdK5A4l445X0P-0r0Qf82LWXLSFa3yK0YZuypiIxy8hZfBXClZMANBeEVpBkswLw0RxDt2uWrN7B7zHTFXWY0W4mftpWo3Nqen7SQW1L9DYnXrex6lyw5EfHvZ3ZwsU6Xp"
-                  data-type="subscription">
-                  <div style="padding: 16px 0;">
-                    <div class="sib-form-block" style="font-size:32px; text-align:left; font-weight:700; font-family:&quot;Helvetica&quot;, sans-serif; color:#3C4858; background-color:transparent; border-width:px;">
-                      <p>Newsletter</p>
-                    </div>
-                  </div>
-                  <div style="padding: 16px 0;">
-                    <div class="sib-form-block" style="font-size:16px; text-align:left; font-family:&quot;Helvetica&quot;, sans-serif; color:#3C4858; background-color:transparent; border-width:px;">
-                      <div class="sib-text-form-block">
-                        <p>Subscribe to our newsletter and stay updated.</p>
-                      </div>
-                    </div>
-                  </div>
+                  data-type="subscription">                                   
                   <div style="padding: 16px 0;">
                     <div class="sib-input sib-form-block">
                       <div class="form__entry entry_block">
