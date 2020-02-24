@@ -82,6 +82,9 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 **About Us**
 QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https://expresstech.io)
 
+**Facebook Group**
+Join our [offical FB group](https://www.facebook.com/groups/516958552587745) for quicker response time on your technical queries
+
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
@@ -118,10 +121,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.4 ()=
-* Fixed: Security Issues reported by WORDFENCE
-* Changed: Change text in Get a Free Addon page
-* Changed: Change sendy to sendinblue in free addon page
+= 6.4.4 (Feb 24, 2020)=
+* Bug: Security Issues reported by WORDFENCE
+* Bug: Change text in Get a Free Addon page
+* Feature: Change sendy to sendinblue in free addon page
 * Feature: Added sorting functionality on name and last activity
 
 = 6.4.3 (Feb 6, 2020)=
