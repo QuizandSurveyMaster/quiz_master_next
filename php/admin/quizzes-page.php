@@ -76,20 +76,35 @@ function qsm_generate_quizzes_surveys_page() {
 			$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
-
-	// Load our quizzes.
-	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
-
-	// Load quiz posts.
-	$post_to_quiz_array = array();
-	$my_query           = new WP_Query( array(
+        
+        //Query for post
+        $post_arr = array(
 		'post_type'      => 'quiz',
 		'posts_per_page' => -1,
                 'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
-	));
+	);
+        if(isset($_GET['order']) && $_GET['order'] == 'asc'){
+            $post_arr['orderby'] = isset($_GET['orderby']) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
+            $post_arr['order'] = 'ASC';
+            // Load our quizzes.
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'ASC');
+        }else if( isset($_GET['order']) && $_GET['order'] == 'desc' ){
+            $post_arr['orderby'] = isset($_GET['orderby']) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
+            $post_arr['order'] = 'DESC';
+            // Load our quizzes.
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'DESC');
+        } else{
+            // Load our quizzes.
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+        }	
+
+	// Load quiz posts.
+	$post_to_quiz_array = array();        
+	$my_query           = new WP_Query( $post_arr );
+        
 	if ( $my_query->have_posts() ) {
 		while ( $my_query->have_posts() ) {
-			$my_query->the_post();
+			$my_query->the_post();                        
 			$post_to_quiz_array[ get_post_meta( get_the_ID(), 'quiz_id', true ) ] = array(
 				'link' => get_the_permalink(get_the_ID()),
 				'id'   => get_the_ID(),
@@ -97,7 +112,7 @@ function qsm_generate_quizzes_surveys_page() {
 			);
 		}
 	}
-	wp_reset_postdata();        
+	wp_reset_postdata();                
 	$quiz_json_array = array();
 	foreach ( $quizzes as $quiz ) {
 		if ( ! isset( $post_to_quiz_array[ $quiz->quiz_id ] ) ) {
@@ -169,12 +184,45 @@ function qsm_generate_quizzes_surveys_page() {
 					</div>
 				</div>
 				<table class="widefat">
+                                        <?php
+                                        $orderby_slug = '&orderby=title&order=asc';
+                                        $orderby_date_slug = '&orderby=date&order=asc';
+                                        $orderby_class = $orderby_date_class = 'sortable desc';
+                                        //Title order
+                                        if( isset($_GET['orderby']) && $_GET['orderby'] === 'title' ){
+                                            if(isset($_GET['order']) && $_GET['order'] === 'asc'){
+                                                $orderby_slug = '&orderby=title&order=desc';                                                
+                                                $orderby_class = 'sorted asc';
+                                            }else if( isset($_GET['order']) && $_GET['order'] === 'desc' ){
+                                                $orderby_slug = '&orderby=title&order=asc';                                                
+                                                $orderby_class = 'sorted desc';
+                                            }
+                                        } else if( isset($_GET['orderby']) && $_GET['orderby'] === 'date' ){
+                                            if(isset($_GET['order']) && $_GET['order'] === 'asc'){
+                                                $orderby_date_slug = '&orderby=date&order=desc';
+                                                $orderby_date_class = 'sorted asc';
+                                            }else if( isset($_GET['order']) && $_GET['order'] === 'desc' ){                                                
+                                                $orderby_date_slug = '&orderby=date&order=asc';
+                                                $orderby_date_class = 'sorted desc';
+                                            }
+                                        }                                        
+                                        ?>
 					<thead>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+                                                    <th class="<?php echo $orderby_class; ?>">
+                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_slug; ?>">
+                                                                <span><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></span>
+                                                                <span class="sorting-indicator"></span>
+                                                            </a>
+                                                        </th>
 							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
-							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
+                                                        <th class="<?php echo $orderby_date_class; ?>">
+                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_date_slug; ?>">
+                                                                <span><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></span>
+                                                                <span class="sorting-indicator"></span>
+                                                            </a>                                                            
+                                                        </th>
 						</tr>
 					</thead>
 					<tbody id="the-list">
@@ -182,10 +230,20 @@ function qsm_generate_quizzes_surveys_page() {
 					</tbody>
 					<tfoot>
 						<tr>
-							<th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
+							<th class="<?php echo $orderby_class; ?>">
+                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_slug; ?>">
+                                                                <span><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></span>
+                                                                <span class="sorting-indicator"></span>
+                                                            </a>
+                                                        </th>
 							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
-							<th><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></th>
+							<th class="<?php echo $orderby_date_class; ?>">
+                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_date_slug; ?>">
+                                                                <span><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></span>
+                                                                <span class="sorting-indicator"></span>
+                                                            </a>                                                            
+                                                        </th>
 						</tr>
 					</tfoot>
 				</table>

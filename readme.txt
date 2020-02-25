@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4.3
+Stable tag: 6.4.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.4 (Feb 24, 2020)=
+* Bug: Security Issues reported by WORDFENCE
+* Bug: Change text in Get a Free Addon page
+* Feature: Change sendy to sendinblue in free addon page
+* Feature: Added sorting functionality on name and last activity
 
 = 6.4.3 (Feb 6, 2020)=
 * Bug: Solved user limit issue with ip address
