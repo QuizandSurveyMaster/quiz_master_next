@@ -231,7 +231,7 @@ function qsm_generate_quizzes_surveys_page() {
 					<tfoot>
 						<tr>
 							<th class="<?php echo $orderby_class; ?>">
-                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_slug; ?>">
+                                                            <a href="<?php echo '?page=' . QSM_PLUGIN_BASENAME . $orderby_slug; ?>">
                                                                 <span><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></span>
                                                                 <span class="sorting-indicator"></span>
                                                             </a>
@@ -239,7 +239,7 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views/Taken', 'quiz-master-next' ); ?></th>
 							<th class="<?php echo $orderby_date_class; ?>">
-                                                            <a href="<?php echo '?page=quiz_master_next%2Fmlw_quizmaster2.php' . $orderby_date_slug; ?>">
+                                                            <a href="<?php echo '?page=' . QSM_PLUGIN_BASENAME . $orderby_date_slug; ?>">
                                                                 <span><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></span>
                                                                 <span class="sorting-indicator"></span>
                                                             </a>                                                            
