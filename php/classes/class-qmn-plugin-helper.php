@@ -131,6 +131,10 @@ class QMNPluginHelper {
 			case 'quiz_taken':
 				$order_field = 'quiz_taken';
 				break;
+                            
+			case 'title':
+				$order_field = 'quiz_name';
+				break;
 			
 			default:
 				$order_field = 'quiz_id';

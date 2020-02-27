@@ -172,7 +172,8 @@ var import_button;
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
-				quiz_id : qsmQuestionSettings.quizID
+				quiz_id : qsmQuestionSettings.quizID,
+				nonce : qsmQuestionSettings.saveNonce,
 			};
 	
 			jQuery.ajax( ajaxurl, {
