@@ -269,9 +269,11 @@ function qsm_contact_field_variable( $content, $results_array ) {
  */
 function qsm_all_contact_fields_variable( $content, $results ) {
 	$return = '';
-	for ( $i = 0; $i < count( $results["contact"] ); $i++ ) {
-		$return .= $results["contact"][ $i ]["label"] . ": " . $results["contact"][ $i ]["value"] . "<br>";
-	}
+        if( isset( $results["contact"] ) && ( is_array($results["contact"]) || is_object( $results["contact"] ) ) ){
+            for ( $i = 0; $i < count( $results["contact"] ); $i++ ) {
+                    $return .= $results["contact"][ $i ]["label"] . ": " . $results["contact"][ $i ]["value"] . "<br>";
+            }
+        }
 	$content = str_replace( "%CONTACT_ALL%" , $return, $content );
 	return $content;
 }
