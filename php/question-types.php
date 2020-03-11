@@ -102,6 +102,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
 {
   $question_display = '';
   global $mlwQuizMasterNext;
+  $answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
@@ -115,9 +116,13 @@ function qmn_multiple_choice_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
-				$question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
-        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".htmlentities(esc_attr($answer[0]))."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
-				$question_display .= "</div>";
+        if($answerEditor === 'rich'){
+            $question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
+        }else{
+            $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
+        }	
+        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlentities(esc_attr($answer[0])) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
+	$question_display .= "</div>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
@@ -150,7 +155,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
   }
   foreach($answers as $answer)
   {
-    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
+    if ( $mlw_user_answer == trim( esc_attr( $answer[0] ) ) )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = $answer[0];
