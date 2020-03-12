@@ -298,7 +298,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 			$qmn_questions[ $question['question_id'] ] = $question['question_answer_info'];
 		}
                 
-		// Cycles through each answer in the responses.
+		// Cycles through each answer in the responses.                
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["correct"] === "correct" ){
 				$user_answer_class = "qmn_user_correct_answer";
@@ -314,7 +314,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                             if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
                                 $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
                             }else{
-                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
+                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".trim( htmlspecialchars_decode($answer[1], ENT_QUOTES) ).'</span>', $mlw_question_answer_display);
                             }                            
                         }else{
                             $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
