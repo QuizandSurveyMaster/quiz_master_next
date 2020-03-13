@@ -11,3 +11,16 @@ function qsm_fetch_data_from_xml() {
         return $xml = simplexml_load_string($body);
     }    
 }
+
+add_action('qmn_quiz_created','qsm_redirect_to_edit_page',10,1);
+/**
+ * @since 6.4.5
+ * @param int $quiz_id Quiz id.
+ */
+function qsm_redirect_to_edit_page($quiz_id){
+    $url = admin_url( 'admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id ); ?>
+    <script>
+        window.location.href = '<?php echo $url; ?>';
+    </script>
+    <?php
+}

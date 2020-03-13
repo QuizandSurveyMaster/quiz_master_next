@@ -65,6 +65,9 @@
     top: -7px;
     border-radius: 0px;
 }
+.qsm-deselect-answer{
+    float: right;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

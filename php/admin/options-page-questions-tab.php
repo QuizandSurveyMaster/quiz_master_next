@@ -258,6 +258,9 @@ function qsm_options_questions_tab_content() {
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
 		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+                        <div class="question-bank-selection">
+                            <input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
+                        </div>
                         <div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p>
                                 </div>
 			<div><a href="#" class="import-button button">Add Question</a></div>			
