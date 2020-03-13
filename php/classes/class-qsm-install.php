@@ -580,6 +580,25 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
+    //Setting for pagination of quiz
+    $field_array = array(
+      'id' => 'enable_deselect_option',
+      'label' => __('Enable Deselect Option <br/> Note: This option is only for Multiple Choice and Horizontal Multiple Choice', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     //Setting for animation
     $field_array = array(
       'id' => 'quiz_animation',

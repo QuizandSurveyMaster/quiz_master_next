@@ -103,11 +103,11 @@ function qmn_multiple_choice_display($id, $question, $answers)
   $question_display = '';
   global $mlwQuizMasterNext;
   $answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
-  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');  
   if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
-  $question_display .= qsm_question_title_func($question);
-  $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
+  $question_display .= qsm_question_title_func($question,'multiple_choice');
+  $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";  
   if (is_array($answers))
   {
     $mlw_answer_total = 0;
@@ -271,7 +271,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredRadio";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
-  $question_display .= qsm_question_title_func($question);
+  $question_display .= qsm_question_title_func($question,'horizontal_multiple_choice');
   $question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
   if (is_array($answers))
   {
@@ -1263,13 +1263,18 @@ function qmn_polar_review($id, $question, $answers) {
 function qsm_question_title_func($question,$question_type = ''){
     //$question_title = apply_filters('the_content', $question);
     $question_title = $question;
-    global $wp_embed;
+    global $wp_embed,$mlwQuizMasterNext;
     $question_title = $wp_embed->run_shortcode($question_title);
     $polar_extra_class = '';
     if($question_type == 'polar'){
         $polar_extra_class = 'question-type-polar-s';
     }
-    $question_display = "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . "</span>";
+    $qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+    $deselect_answer = '';
+    if( isset($qmn_quiz_options->enable_deselect_option) && $qmn_quiz_options->enable_deselect_option == 1 && ($question_type == 'multiple_choice' || $question_type == 'horizontal_multiple_choice') ){
+       $deselect_answer = '<a href="#" class="qsm-deselect-answer">Deselect Answer</a>';
+    }
+    $question_display = "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . "</span>";
     return $question_display;
 }
 ?>

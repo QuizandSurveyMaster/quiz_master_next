@@ -82,6 +82,7 @@ var import_button;
                             $cat_html += '</select>';
                             $( '#question-bank' ).prepend($cat_html);
                         }
+                        $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
 		},
 		addQuestionToQuestionBank: function( question ) {
 			var questionText = QSMQuestion.prepareQuestionText( question.name );
@@ -519,11 +520,29 @@ var import_button;
                 
 		$( '.qsm-popup-bank' ).on( 'click', '.import-button', function( event) {
 			event.preventDefault();
-                        $(this).text('').text('Adding Question');                        
+                        $(this).text('').text('Adding Question');
                         import_button = $(this);
 			QSMQuestion.addQuestionFromQuestionBank( $( this ).parents( '.question-bank-question' ).data( 'question-id' ) );
                         $('.import-button').addClass('disable_import');
 		});
+                
+                //Click on selected question button.
+                $( '.qsm-popup-bank' ).on( 'click', '#qsm-import-selected-question', function( event) {
+                    var $total_selction = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
+                    if($total_selction === 0){
+                        alert('No question is selected.');
+                    }else{
+                        $.fn.reverse = [].reverse;                    	
+                        $($('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').reverse()).each(function(){
+                            $(this).find('.import-button').text('').text('Adding Question');
+                            import_button = $(this).find('.import-button');
+                            QSMQuestion.addQuestionFromQuestionBank( $( this ).data( 'question-id' ) );
+                            $(this).find('.import-button').text('').text('Add Question');
+                        });
+                        $('.import-button').addClass('disable_import');
+                        $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked',false)
+                    }
+                });
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
 			event.preventDefault();
