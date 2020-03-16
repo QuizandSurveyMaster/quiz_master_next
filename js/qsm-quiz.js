@@ -927,7 +927,13 @@ jQuery(function() {
                 }
             });
             return false;
-        });        
+        });
+        
+        //Deselect all answer on select
+        jQuery('.qsm-deselect-answer').click(function(e){
+            e.preventDefault();
+            jQuery(this).parents('.quiz_section').find('input[type="radio"]').prop('checked', false);
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

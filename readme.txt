@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.3.2
 Requires PHP: 5.4
-Stable tag: 6.4.4
+Stable tag: 6.4.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.5 (March 16, 2020)=
+* Bug: Hint not readable
+* Bug: Full html of the option is being output in the ID of wrapper div and in the value of the option ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/849 )
+* Bug: QSM not picking up user select answer when empty spaces at the end
+* Feature: Added checkbox for selecting questions from question bank ( https://wordpress.org/support/topic/adding-questions-from-question-bank/ )
+* Feature: Take to quiz edit after creating a new quiz
+* Feature: added 'deselect answer' button for multiple choice and horizontal multiple choice question type
 
 = 6.4.4 (Feb 24, 2020)=
 * Bug: Security Issues reported by WORDFENCE

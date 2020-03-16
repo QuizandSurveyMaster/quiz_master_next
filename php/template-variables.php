@@ -269,9 +269,11 @@ function qsm_contact_field_variable( $content, $results_array ) {
  */
 function qsm_all_contact_fields_variable( $content, $results ) {
 	$return = '';
-	for ( $i = 0; $i < count( $results["contact"] ); $i++ ) {
-		$return .= $results["contact"][ $i ]["label"] . ": " . $results["contact"][ $i ]["value"] . "<br>";
-	}
+        if( isset( $results["contact"] ) && ( is_array($results["contact"]) || is_object( $results["contact"] ) ) ){
+            for ( $i = 0; $i < count( $results["contact"] ); $i++ ) {
+                    $return .= $results["contact"][ $i ]["label"] . ": " . $results["contact"][ $i ]["value"] . "<br>";
+            }
+        }
 	$content = str_replace( "%CONTACT_ALL%" , $return, $content );
 	return $content;
 }
@@ -296,7 +298,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 			$qmn_questions[ $question['question_id'] ] = $question['question_answer_info'];
 		}
                 
-		// Cycles through each answer in the responses.
+		// Cycles through each answer in the responses.                
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["correct"] === "correct" ){
 				$user_answer_class = "qmn_user_correct_answer";
@@ -312,7 +314,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                             if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
                                 $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
                             }else{
-                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
+                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".trim( htmlspecialchars_decode($answer[1], ENT_QUOTES) ).'</span>', $mlw_question_answer_display);
                             }                            
                         }else{
                             $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
