@@ -121,7 +121,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.5 ( )=
+= 6.4.5 (March 16, 2020)=
 * Bug: Hint not readable
 * Bug: Full html of the option is being output in the ID of wrapper div and in the value of the option ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/849 )
 * Bug: QSM not picking up user select answer when empty spaces at the end
