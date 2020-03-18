@@ -611,6 +611,8 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
 				$time_taken = $mlw_qmn_results_array[0];
 				if (isset($mlw_qmn_results_array['timer_ms']) && $mlw_qmn_results_array['timer_ms'] > 0) {
 					$time_taken = $mlw_qmn_results_array['timer_ms'];
+				} else {
+					$time_taken = ($time_taken * 1000);
 				}
 			}
 			$mlw_result_data[$key]->total_time_taken = $time_taken;
