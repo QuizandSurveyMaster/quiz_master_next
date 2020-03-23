@@ -278,7 +278,7 @@ var import_button;
 			}
 			if ( ! category ) {
 				category = '';
-			}
+			} 
                         var answerType = $('#change-answer-editor').val();
 			var answers = [];
 			var $answers = jQuery( '.answers-single');
@@ -298,8 +298,8 @@ var import_button;
 					correct = 1;
 				}
 				answers.push( [ answer, points, correct ] );
-			});                   
-			model.save( 
+			});                        
+			model.save(
 				{ 
 					type: type,
 					name: name,
@@ -308,13 +308,9 @@ var import_button;
 					hint: hint,
 					category: category,
 					required: required,
-					answers: answers,
+                            		answers: answers,
                                         answerEditor: answerType,
-                                        autofill: autofill,
-                                        limit_text: limit_text,
-                                        limit_multiple_response: limit_multiple_response,
-                                        file_upload_limit: file_upload_limit,
-                                        file_upload_type: type_arr.join(","),
+                                        other_setting: all_values
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -397,8 +393,9 @@ var import_button;
                         if( get_limit_fu === null || typeof get_limit_fu === "undefined" ){
                             get_limit_fu = '0';
                         }
+                        
                         //Get checked question type
-                        var get_file_upload_type = question.get( 'file_upload_type' );
+                        /*var get_file_upload_type = question.get( 'file_upload_type' );
                         $("input[name='file_upload_type[]']:checkbox").attr("checked",false);
                         if( get_file_upload_type === null || typeof get_file_upload_type === "undefined" ){                            
                         }else{
@@ -406,7 +403,7 @@ var import_button;
                             $.each(fut_arr,function(i){
                                 $("input[name='file_upload_type[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
                             });
-                        }
+                        }  */                      
                         var al = 0;
 			_.each( answers, function( answer ) {
                             answer.push(al + 1);
@@ -415,14 +412,13 @@ var import_button;
                             QSMQuestion.addNewAnswer( answer );
                             al++;
 			});
-                        //Hide the question settings based on question type
-                        if(question.get( 'type' ) == 11){
-                            jQuery('#file-upload-type-div').show();
-                            jQuery('#file-upload-limit').show();
-                        }else{
-                            jQuery('#file-upload-type-div').hide();
-                            jQuery('#file-upload-limit').hide();
-                        }
+            
+			//Hide the question settings based on question type
+			$('.qsm_hide_for_other').hide();
+			if( $('.qsm_show_question_type_' + question.get('type')).length > 0 ){
+				$('.qsm_show_question_type_' + question.get('type')).show();
+			}
+                        
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
@@ -438,6 +434,24 @@ var import_button;
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
 			}
+                        
+                        //Append extra settings
+                        var all_setting = question.get('settings');
+                        if( all_setting === null || typeof all_setting === "undefined" ){
+                        }else{                            
+                            $.each(all_setting, function( index, value ) {
+                                if($('#' + index + '_area').length > 0){
+                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 0){
+                                        var fut_arr = value.split(",");
+                                        $.each(fut_arr,function(i){                                            
+                                            $("input[name='"+ index +"[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
+                                        });
+                                    }else{
+                                        $('#' + index).val(value);
+                                    }                             
+                                }
+                            });
+                        }
 			MicroModal.show( 'modal-1' );
 		},
 		removeNew: function() {
@@ -632,13 +646,10 @@ var import_button;
                 //Hide the question settings based on question type
                 $(document).on('change','#question_type', function(){
                     var question_val = $(this).val();
-                    if(question_val == 11){
-                        jQuery('#file-upload-type-div').show();
-                        jQuery('#file-upload-limit').show();
-                    }else{
-                        jQuery('#file-upload-type-div').hide();
-                        jQuery('#file-upload-limit').hide();
-                    }
+                    $('.qsm_hide_for_other').hide();
+					if( $('.qsm_show_question_type_' + question_val).length > 0 ){
+						$('.qsm_show_question_type_' + question_val).show();
+					}
                 });                
 	});
         var decodeEntities = (function () {

@@ -324,6 +324,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
                                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
+                                        'settings' => $question['settings']
 				);
 			}                        
 			return $question_array;
@@ -397,7 +398,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
  */
 function qsm_rest_save_question( WP_REST_Request $request ) {
 
-	// Makes sure user is logged in.
+	// Makes sure user is logged in.        
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
@@ -413,6 +414,14 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'order'       => 1,
 					'category'    => $request['category'],
 				);
+                                $settings = array();
+                                $settings['answerEditor'] = $request['answerEditor'];
+                                if(isset($request['other_setting']) && is_array($request['other_setting'])){
+                                    foreach ($request['other_setting'] as $setting_key => $setting_value) {
+                                        $settings[$setting_key] = $setting_value;
+                                    }
+                                }
+                                /*
 				$settings = array(
 					'required' => $request['required'],
                                         'answerEditor' => $request['answerEditor'],
@@ -421,7 +430,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
                                         'limit_multiple_response' => $request['limit_multiple_response'],
                                         'file_upload_limit' => $request['file_upload_limit'],
                                         'file_upload_type' => $request['file_upload_type'],
-				);
+				);*/
 				$intial_answers = $request['answers'];
 				$answers = array();
 				if ( is_array( $intial_answers ) ) {

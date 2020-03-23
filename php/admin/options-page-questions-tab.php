@@ -158,63 +158,99 @@ function qsm_options_questions_tab_content() {
 					</div>
                                         <p id="show-advanced-option">Show advance options &raquo;</p>
                                         <div class="advanced-content" style="display: none;">
-                                            <div id="correct_answer_area" class="qsm-row">
-						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
-						<input type="text" name="correct_answer_info" value="" id="correct_answer_info" />
-                                            </div>
-                                            <div id="hint_area" class="qsm-row">
-                                                    <label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
-                                                    <input type="text" name="hint" value="" id="hint"/>
-                                            </div>
-                                            <div id="comment_area" class="qsm-row">
-                                                    <label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
-                                                    <select name="comments" id="comments">
-                                                            <option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
-                                                            <option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
-                                                            <option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
-                                                    <select>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
-                                                    <select name="required" id="required">
-                                                            <option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-                                                            <option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-                                                    </select>
-                                            </div>
-                                            <div id="category_area" class="qsm-row">
-                                                    <label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
-                                                    <div id="categories">
-                                                            <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
-                                                    </div>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Hide Autofill?', 'quiz-master-next' ); ?></label>
-                                                    <select name="hide_autofill" id="hide_autofill">
-                                                            <option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-                                                            <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-                                                    </select>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="limit_text" value="" id="limit_text"/>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
-                                            </div>
-                                            <div id="file-upload-limit" class="qsm-row">
-                                                    <label><?php _e( 'File upload limit ( in MB )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="file_upload_limit" value="" id="file_upload_limit"/>
-                                            </div>
-                                            <div id="file-upload-type-div" class="qsm-row">
-                                                <label><?php _e( 'Allow File type', 'quiz-master-next' ); ?></label>
-                                                <input type="checkbox" name="file_upload_type[]" value="text/plain" /> <?php _e( 'Text File', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="image" /> <?php _e( 'Image', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="application/pdf" /> <?php _e( 'PDF', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="doc" /> <?php _e( 'Doc', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="excel" /> <?php _e( 'Excel', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="video/mp4" /> <?php _e( 'Video', 'quiz-master-next' ); ?>
-                                            </div>
+                                            <?php
+                                            $advanced_question_option = array(
+                                                'correct_answer_info' => array(
+                                                    'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
+                                                    'type' => 'text',
+                                                    'priority' => '1',
+                                                    'default' => ''
+                                                ),
+                                                'hint' => array(
+                                                    'label' => __( 'Hint', 'quiz-master-next' ),
+                                                    'type' => 'text',
+                                                    'priority' => '2',
+                                                    'default' => ''
+                                                ),
+                                                'comments' => array(
+                                                    'label' => __( 'Comment Field', 'quiz-master-next' ),
+                                                    'type' => 'select',
+                                                    'priority' => '3',
+                                                    'options' => array(
+                                                        '0' => __( 'Small Text Field', 'quiz-master-next' ),
+                                                        '2' => __( 'Large Text Field', 'quiz-master-next' ),
+                                                        '1' => __( 'None', 'quiz-master-next' )
+                                                    ),
+                                                    'default' => '1'
+                                                ),
+                                                'required' => array(
+                                                    'label' => __( 'Required?', 'quiz-master-next' ),
+                                                    'type' => 'select',
+                                                    'priority' => '4',
+                                                    'options' => array(
+                                                        '0' => __( 'No', 'quiz-master-next' ),                                                        
+                                                        '1' => __( 'Yes', 'quiz-master-next' )
+                                                    ),
+                                                    'default' => '0'
+                                                ),
+                                                'categories' => array(
+                                                    'label' => __( 'Category', 'quiz-master-next' ),
+                                                    'type' => 'category',
+                                                    'priority' => '5',                                                    
+                                                    'default' => ''
+                                                ),
+                                                'autofill' => array(
+                                                    'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
+                                                    'type' => 'select',
+                                                    'priority' => '6',
+                                                    'options' => array(
+                                                        '0' => __( 'No', 'quiz-master-next' ),                                                        
+                                                        '1' => __( 'Yes', 'quiz-master-next' )
+                                                    ),
+                                                    'default' => '0'
+                                                ),
+                                                'limit_text' => array(
+                                                    'label' => __('Limit Text( Works for text fields )', 'quiz-master-next' ),
+                                                    'type' => 'text',
+                                                    'priority' => '7',                                                    
+                                                    'default' => ''
+                                                ),
+                                                'limit_multiple_response' => array(
+                                                    'label' => __('Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ),
+                                                    'type' => 'text',
+                                                    'priority' => '8',
+                                                    'default' => ''
+                                                ),                                                
+                                                'file_upload_type' => array(
+                                                    'label' => __('Allow File type', 'quiz-master-next' ),
+                                                    'type' => 'multi_checkbox',
+                                                    'priority' => '10',
+                                                    'options' => array(
+                                                        'text/plain' => __( 'Text File', 'quiz-master-next' ),
+                                                        'image' => __( 'Image', 'quiz-master-next' ),
+                                                        'application/pdf' => __( 'PDF File', 'quiz-master-next' ),
+                                                        'doc' => __( 'Doc File', 'quiz-master-next' ),
+                                                        'excel' => __( 'Excel File', 'quiz-master-next' ),
+                                                        'video/mp4' => __( 'Video', 'quiz-master-next' ),
+                                                    ),
+                                                    'default' => 'image',
+													'show' => '11,13'
+                                                ),
+                                                'file_upload_limit' => array(
+                                                    'label' => __('File upload limit ( in MB )', 'quiz-master-next' ),
+                                                    'type' => 'number',
+                                                    'priority' => '9',
+                                                    'default' => '',
+													'show' => '11,13'
+                                                ),
+                                            );
+                                            $advanced_question_option = apply_filters('qsm_question_advanced_option', $advanced_question_option);
+                                            $keys = array_column($advanced_question_option, 'priority');
+                                            array_multisort($keys, SORT_ASC, $advanced_question_option);
+                                            foreach($advanced_question_option as $qo_key => $single_option){
+                                                echo qsm_display_question_option($qo_key, $single_option);
+                                            }
+                                            ?>                                            
                                         </div>					
 				</main>
 				<footer class="qsm-popup__footer">
