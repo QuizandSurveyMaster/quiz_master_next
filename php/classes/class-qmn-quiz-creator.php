@@ -70,6 +70,7 @@ class QMNQuizCreator {
 	public function create_quiz( $quiz_name ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
+                $current_user = wp_get_current_user();
 		$results = $wpdb->insert(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
@@ -125,6 +126,7 @@ class QMNQuizCreator {
 				'quiz_views'               => 0,
 				'quiz_taken'               => 0,
 				'deleted'                  => 0,
+				'quiz_author_id'           => $current_user->ID,
 			),
 			array(
 				'%s',
@@ -179,11 +181,11 @@ class QMNQuizCreator {
 				'%d',
 				'%d',
 				'%d',
+				'%d',
 			)
 		);
 		if ( false !== $results ) {
-			$new_quiz = $wpdb->insert_id;
-			$current_user = wp_get_current_user();
+			$new_quiz = $wpdb->insert_id;			
 			$quiz_post = array(
 				'post_title'   => $quiz_name,
 				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
@@ -192,7 +194,7 @@ class QMNQuizCreator {
 				'post_type'    => 'quiz',
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
-			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );
+			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );			
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );

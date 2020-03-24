@@ -24,3 +24,17 @@ function qsm_redirect_to_edit_page($quiz_id){
     </script>
     <?php
 }
+
+add_action('admin_init','qsm_add_author_column_in_db');
+/**
+ * @since 6.4.6
+ * Insert new column in quiz table
+ */
+function qsm_add_author_column_in_db(){
+    global $wpdb;
+    $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
+    $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$quiz_table_name' AND column_name = 'quiz_author_id'");
+    if (empty($row)) {
+        $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
+    }
+}
