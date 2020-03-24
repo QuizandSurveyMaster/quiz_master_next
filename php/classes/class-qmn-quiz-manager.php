@@ -467,7 +467,7 @@ class QMNQuizManager {
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
         wp_enqueue_script( 'jquery-ui-slider-js', '//code.jquery.com/ui/1.12.1/jquery-ui.js' );
         wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url('../../js/jquery.ui.slider-rtl.js', __FILE__) );
-        wp_enqueue_script( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
+        wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
         wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
         wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
@@ -1653,12 +1653,12 @@ $qmnQuizManager = new QMNQuizManager();
 
 add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);
 
-function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
+function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {    
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->require_log_in == 1 && !is_user_logged_in()) {
         $qmn_allowed_visit = false;
-        if(isset($qmn_quiz_options->require_log_in_text_msg) && $qmn_quiz_options->require_log_in_text_msg != ''){
-            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text_msg, ENT_QUOTES));
+        if(isset($qmn_quiz_options->require_log_in_text) && $qmn_quiz_options->require_log_in_text != ''){
+            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
         }else{
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
         }        

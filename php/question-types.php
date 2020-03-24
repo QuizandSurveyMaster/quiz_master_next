@@ -1265,6 +1265,7 @@ function qsm_question_title_func($question,$question_type = ''){
     $question_title = $question;
     global $wp_embed,$mlwQuizMasterNext;
     $question_title = $wp_embed->run_shortcode($question_title);
+    $question_title = preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","<iframe width=\"420\" height=\"315\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe>",$question_title);
     $polar_extra_class = '';
     if($question_type == 'polar'){
         $polar_extra_class = 'question-type-polar-s';
