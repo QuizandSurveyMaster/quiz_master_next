@@ -769,12 +769,12 @@ function qmnInitPagination( quiz_id ) {
 	}
 }
 
-function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_id ) {
+function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url ) {
 	var sTop = window.screen.height / 2 - ( 218 );
 	var sLeft = window.screen.width / 2 - ( 313 );
 	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
 	var pageUrl = window.location.href;
-	var pageUrlEncoded = encodeURIComponent( pageUrl );
+	var pageUrlEncoded = encodeURIComponent( share_url );
 	var url = '';
 	if ( network == 'facebook' ) {
 		url = "https://www.facebook.com/dialog/feed?"	+ "display=popup&" + "app_id="+facebook_id +

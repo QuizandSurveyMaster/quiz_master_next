@@ -103,3 +103,86 @@ function qsm_load_main_scripts() {
     wp_enqueue_script( 'jquery' );
 }
 add_action( 'wp_enqueue_scripts', 'qsm_load_main_scripts' );
+
+/**
+ * Add Meta data for facebook share
+ * @global obj $mlwQuizMasterNext
+ * @global obj $wpdb
+ * @global obj $wp_query
+ */
+function qsm_generate_fb_header_metadata() {
+    if (isset($_GET['result_id']) && $_GET['result_id'] > 0) {
+        $settings = (array) get_option('qmn-settings');
+        $facebook_app_id = '483815031724529';
+        if (isset($settings['facebook_app_id'])) {
+            $facebook_app_id = esc_js($settings['facebook_app_id']);
+        }
+        global $mlwQuizMasterNext, $wpdb, $wp_query;
+        $result_id = sanitize_text_field($_GET['result_id']);
+        $results_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = '$result_id'");
+        if ($results_data) {
+            // Prepare responses array.
+            if (is_serialized($results_data->quiz_results) && is_array(@unserialize($results_data->quiz_results))) {
+                $results = unserialize($results_data->quiz_results);
+                if (!isset($results["contact"])) {
+                    $results["contact"] = array();
+                }
+            } else {
+                $template = str_replace("%QUESTIONS_ANSWERS%", $results_data->quiz_results, $template);
+                $template = str_replace("%TIMER%", '', $template);
+                $template = str_replace("%COMMENT_SECTION%", '', $template);
+                $results = array(
+                    0,
+                    array(),
+                    '',
+                    'contact' => array()
+                );
+            }
+            // Prepare full results array.
+            $results_array = array(
+                'quiz_id' => $results_data->quiz_id,
+                'quiz_name' => $results_data->quiz_name,
+                'quiz_system' => $results_data->quiz_system,
+                'user_name' => $results_data->name,
+                'user_business' => $results_data->business,
+                'user_email' => $results_data->email,
+                'user_phone' => $results_data->phone,
+                'user_id' => $results_data->user,
+                'timer' => $results[0],
+                'time_taken' => $results_data->time_taken,
+                'total_points' => $results_data->point_score,
+                'total_score' => $results_data->correct_score,
+                'total_correct' => $results_data->correct,
+                'total_questions' => $results_data->total,
+                'comments' => $results[2],
+                'question_answers_array' => $results[1],
+                'contact' => $results["contact"],
+                'results' => $results,
+            );
+
+            $mlwQuizMasterNext->pluginHelper->prepare_quiz($results_data->quiz_id);
+            $sharing_page_id = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_id', '');
+
+            //Fb share description
+            $sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'facebook_sharing_text', '');
+            $sharing = apply_filters('mlw_qmn_template_variable_results_page', $sharing, $results_array);
+            $default_fb_image = QSM_PLUGIN_URL . 'assets/icon-200x200.png';
+            $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_fb_image', '');
+            if( $get_fb_sharing_image !== '' ){
+                $default_fb_image = $get_fb_sharing_image;
+            }
+            $post = $wp_query->get_queried_object();
+            $pagename = $post->post_title;
+?>
+                    <meta property="og:url"                content="<?php echo $sharing_page_id . '?result_id=' . $_GET['result_id']; ?>" />
+<meta property="og:type"               content="article" />
+<meta property="og:title"              content="<?php echo $pagename; ?>" />
+<meta property="og:description"        content="<?php echo $sharing; ?>" />
+<meta property="og:image"              content="<?php echo $default_fb_image; ?>" />
+                    <meta property="fb:app_id"        content="<?php echo $facebook_app_id; ?>" />
+            <?php
+        }
+    }
+}
+
+add_action('wp_head', 'qsm_generate_fb_header_metadata');

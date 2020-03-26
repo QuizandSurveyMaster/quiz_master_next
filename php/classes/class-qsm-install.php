@@ -906,6 +906,25 @@ class QSM_Install {
       'default' => 'The entered text is not correct!'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_id',
+      'label' => __('Select result page for facebook sharing', 'quiz-master-next'),
+      'type' => 'select_page',
+      'default' => '',
+      'note' => 'Please add [qsm_result] shortcode in selected page'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_fb_image',
+      'label' => __('Add image link for facebook sharing', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
   }
 
   /**

@@ -283,6 +283,9 @@ class QMNQuizManager {
             'id' => 0,            
                         ), $atts));
         ob_start();
+        if($id == 0){
+            $id = isset($_GET['result_id']) ? $_GET['result_id'] : 0;
+        }        
         global $wpdb;
         $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
         $quiz_result = unserialize($result_data['quiz_results']);
@@ -306,7 +309,7 @@ class QMNQuizManager {
             'total_questions' => $result_data['total'],
             'question_answers_array' => $quiz_result[1],
             'comments' => ''
-        );        
+        );
         $data = QSM_Results_Pages::generate_pages($response_data);
         echo htmlspecialchars_decode($data['display']);
         $content = ob_get_clean();
@@ -551,7 +554,7 @@ class QMNQuizManager {
     public function display_pages($options, $quiz_data) {
         global $mlwQuizMasterNext;
         global $qmn_json_data;
-        ob_start();
+        ob_start();        
         $pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
         $question_list = '';
@@ -1121,7 +1124,9 @@ class QMNQuizManager {
         } else {
             $result_display .= 'Thank you.';
         }
-
+        
+        $result_display = str_replace('%FB_RESULT_ID%', $results_id, $result_display);
+        
         // Prepares data to be sent back to front-end.
         $return_array = array(
             'display' => htmlspecialchars_decode($result_display),
