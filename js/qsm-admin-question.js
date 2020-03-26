@@ -512,6 +512,10 @@ var import_button;
 		$( '#new-answer-button' ).on( 'click', function( event ) {
 			event.preventDefault();
                         var answer_length = $( '#answers' ).find('.answers-single').length;
+                        if( answer_length > 1 && $('#question_type').val() == 13 ){
+                            alert('You can not add more than 2 answer for Polar Question type');
+                            return;
+                        }
                         var question_id = $('#edit_question_id').val();
                         var answerType = $('#change-answer-editor').val();
 			var answer = [ '', '', 0, answer_length + 1, question_id, answerType];
@@ -639,7 +643,7 @@ var import_button;
                         jQuery('#file-upload-type-div').hide();
                         jQuery('#file-upload-limit').hide();
                     }
-                });                
+                });                  
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)
