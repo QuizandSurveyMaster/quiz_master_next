@@ -37,4 +37,9 @@ function qsm_add_author_column_in_db(){
     if (empty($row)) {
         $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
     }
+//    $result_table = $wpdb->prefix . "mlw_results";
+//    $get_column_schema = $wpdb->get_results("SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '$result_table' AND COLUMN_NAME = 'quiz_results'", ARRAY_A);
+//    if($get_column_schema && isset($get_column_schema[0]) && $get_column_schema[0]['DATA_TYPE'] == 'text'){
+//        $wpdb->query("ALTER TABLE wp_mlw_results ALTER COLUMN quiz_results MEDIUMTEXT(16M)");
+//    }
 }

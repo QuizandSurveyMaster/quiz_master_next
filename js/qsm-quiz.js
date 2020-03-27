@@ -6,6 +6,15 @@
  * This object contains the newer functions. All global functions under are slowly 
  * being deprecated and replaced with rewritten newer functions
  **************************/
+
+//Display JS error
+showJSError.init({
+    copyText: 'Copy to clipboard',
+    sendText: 'Send 🐛',
+    sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}',
+    userAgent: navigator.userAgent,
+    helpLinks: true
+});
 var QSM;
 (function ($) {
 	QSM = {
