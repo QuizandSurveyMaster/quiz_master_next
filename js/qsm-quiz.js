@@ -9,9 +9,10 @@
 
 //Display JS error
 showJSError.init({
+    title: 'Javascript error detected by QSM Plugin',
     copyText: 'Copy to clipboard',
-    sendText: 'Send 🐛',
-    sendUrl: 'https://github.com/hcodes/show-js-error/issues/new?title={title}&body={body}',
+    sendText: 'Create Issue',
+    sendUrl: 'https://github.com/QuizandSurveyMaster/quiz_master_next/issues/new?title={title}&body={body}',
     userAgent: navigator.userAgent,
     helpLinks: true
 });
