@@ -124,6 +124,9 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
+                                                        if($fields[ $i ]['use'] == 'phone'){
+                                                            $class = 'mlwRequiredNumber qsm_required_text';
+                                                        }
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
                                                         <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo $fields[ $i ]['use'] == 'phone' ? 'number' : 'text'; ?>' class='<?php echo esc_attr( $class ); ?>' x-webkit-speech name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo $fields[ $i ]['label']; ?>" />
