@@ -7,15 +7,6 @@
  * being deprecated and replaced with rewritten newer functions
  **************************/
 
-//Display JS error
-showJSError.init({
-    title: 'Javascript error detected by QSM Plugin',
-    copyText: 'Copy to clipboard',
-    sendText: 'Create Issue',
-    sendUrl: 'https://github.com/QuizandSurveyMaster/quiz_master_next/issues/new?title={title}&body={body}',
-    userAgent: navigator.userAgent,
-    helpLinks: true
-});
 var QSM;
 (function ($) {
 	QSM = {
