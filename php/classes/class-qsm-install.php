@@ -1059,7 +1059,7 @@ class QSM_Install {
   			user_ip TEXT NOT NULL,
   			time_taken TEXT NOT NULL,
   			time_taken_real DATETIME NOT NULL,
-  			quiz_results MEDIUMTEXT (16M) NOT NULL,
+  			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
