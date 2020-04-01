@@ -283,6 +283,9 @@ class QMNQuizManager {
             'id' => 0,            
                         ), $atts));
         ob_start();
+        if($id == 0){
+            $id = isset($_GET['result_id']) ? $_GET['result_id'] : 0;
+        }        
         global $wpdb;
         $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
         $quiz_result = unserialize($result_data['quiz_results']);
@@ -306,7 +309,7 @@ class QMNQuizManager {
             'total_questions' => $result_data['total'],
             'question_answers_array' => $quiz_result[1],
             'comments' => ''
-        );        
+        );
         $data = QSM_Results_Pages::generate_pages($response_data);
         echo htmlspecialchars_decode($data['display']);
         $content = ob_get_clean();
@@ -467,8 +470,8 @@ class QMNQuizManager {
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
         wp_enqueue_script( 'jquery-ui-slider-js', '//code.jquery.com/ui/1.12.1/jquery-ui.js' );
         wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url('../../js/jquery.ui.slider-rtl.js', __FILE__) );
-        wp_enqueue_script( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
-        wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );
+        wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
+        wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );        
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
         wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );                
@@ -527,6 +530,7 @@ class QMNQuizManager {
         $quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qsm-error-message qmn_error_message_section'></div>";
         $quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='$qmn_total_questions'/>";
         $quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
+        $quiz_display .= "<input type='hidden' name='timer_ms' id='timer_ms' value='0'/>";
         $quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
         $quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
         if (isset($_GET['payment_id']) && $_GET['payment_id'] != '') {
@@ -551,7 +555,7 @@ class QMNQuizManager {
     public function display_pages($options, $quiz_data) {
         global $mlwQuizMasterNext;
         global $qmn_json_data;
-        ob_start();
+        ob_start();        
         $pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
         $question_list = '';
@@ -951,7 +955,7 @@ class QMNQuizManager {
                     exit;
                 }
             }            
-        }
+        }        
         echo json_encode($this->submit_results($options, $data));
         die();
     }
@@ -1017,8 +1021,10 @@ class QMNQuizManager {
         }
 
         $mlw_qmn_timer = isset($_POST["timer"]) ? sanitize_text_field(intval($_POST["timer"])) : 0;
+        $mlw_qmn_timer_ms = isset($_POST["timer_ms"]) ? sanitize_text_field(intval($_POST["timer_ms"])) : 0;
         $qmn_array_for_variables['user_id'] = get_current_user_id();
         $qmn_array_for_variables['timer'] = $mlw_qmn_timer;
+        $qmn_array_for_variables['timer_ms'] = $mlw_qmn_timer_ms;
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
         $qmn_array_for_variables['contact'] = $contact_responses;
 
@@ -1048,6 +1054,7 @@ class QMNQuizManager {
                     $qmn_array_for_variables['question_answers_array'],
                     htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
                     'contact' => $contact_responses,
+                    'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
                 $serialized_results = serialize($results_array);
@@ -1121,7 +1128,9 @@ class QMNQuizManager {
         } else {
             $result_display .= 'Thank you.';
         }
-
+        
+        $result_display = str_replace('%FB_RESULT_ID%', $results_id, $result_display);
+        
         // Prepares data to be sent back to front-end.
         $return_array = array(
             'display' => htmlspecialchars_decode($result_display),
@@ -1649,17 +1658,18 @@ $qmnQuizManager = new QMNQuizManager();
 
 add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);
 
-function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
+function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {    
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->require_log_in == 1 && !is_user_logged_in()) {
         $qmn_allowed_visit = false;
-        if(isset($qmn_quiz_options->require_log_in_text_msg) && $qmn_quiz_options->require_log_in_text_msg != ''){
-            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text_msg, ENT_QUOTES));
+        if(isset($qmn_quiz_options->require_log_in_text) && $qmn_quiz_options->require_log_in_text != ''){
+            $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
         }else{
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
         }        
         $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
         $mlw_message = str_replace("\n", "<br>", $mlw_message);
+        $display .= do_shortcode($mlw_message);
         $display .= $mlw_message;
         $display .= wp_login_form(array('echo' => false));
     }
@@ -1823,4 +1833,7 @@ function mlw_qmn_set_html_content_type() {
 
     return 'text/html';
 }
-?>
+
+function qsm_time_in_milliseconds() {
+	return round(microtime(true) * 1000);
+}

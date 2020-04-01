@@ -107,9 +107,11 @@ class QMNPluginHelper {
 	 * @param bool $include_deleted If set to true, returned array will include all deleted quizzes
 	 * @param string $order_by The column the quizzes should be ordered by
 	 * @param string $order whether the $order_by should be ordered as ascending or decending. Can be "ASC" or "DESC"
+	 * @param arr $user_role role of current user
+	 * @param int $user_id Get the quiz based on user id
 	 * @return array All of the quizzes as a numerical array of objects
 	 */
-	public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC' ) {
+	public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC', $user_role = array(), $user_id = '' ) {
 		global $wpdb;
 
 		// Set order direction
@@ -146,9 +148,17 @@ class QMNPluginHelper {
 		if ( $include_deleted ) {
 			$delete = '';
 		}
+                $user_str = '';
+                if ( in_array( 'author', (array) $user_role ) ) {
+                    if( $user_id && $delete == '' ){
+                        $user_str = "WHERE quiz_author_id = '$user_id'";
+                    }else if( $user_id && $delete !== '' ){
+                        $user_str = " AND quiz_author_id = '$user_id'";
+                    }   
+                }
 
 		// Get quizzes and return them
-		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete ORDER BY $order_field $order_direction" );
+		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete $user_str ORDER BY $order_field $order_direction" );
 		return $quizzes;
 	}
 

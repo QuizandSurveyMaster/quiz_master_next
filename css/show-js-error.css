@@ -1,0 +1,120 @@
+.show-js-error {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  position: fixed;
+  z-index: 16000000;
+  bottom: 15px;
+  left: 15px;
+  visibility: hidden;
+  min-width: 15em;
+  max-width: 40em;
+  transition: all 0.2s ease-out;
+  opacity: 0;
+  color: #000;
+  background: #ffc1cc;
+}
+.show-js-error_visible {
+  visibility: visible;
+  opacity: 1;
+}
+.show-js-error input {
+  padding: 1px 2px;
+}
+.show-js-error__title {
+  font-weight: bold;
+  padding: 4px 7px;
+  color: #fff;
+  background: #f66;
+}
+.show-js-error__message {
+  display: inline;
+  cursor: pointer;
+  border-bottom: 1px dotted #000;
+}
+.show-js-error a,
+.show-js-error a:visited {
+  text-decoration: underline;
+  color: #000;
+}
+.show-js-error a:hover {
+  text-decoration: underline;
+}
+.show-js-error__close {
+  font-size: 20px;
+  line-height: 20px;
+  position: absolute;
+  top: -1px;
+  right: 2px;
+  padding: 3px;
+  cursor: pointer;
+  color: #fff;
+}
+.show-js-error__body {
+  line-height: 19px;
+  padding: 5px 8px 5px 8px;
+}
+.show-js-error .show-js-error__filename,
+.show-js-error .show-js-error__ua,
+.show-js-error .show-js-error__help {
+  display: none;
+}
+.show-js-error__body_detailed .show-js-error__filename,
+.show-js-error__body_detailed .show-js-error__ua,
+.show-js-error__body_detailed .show-js-error__help {
+  display: block;
+}
+.show-js-error .show-js-error__additional-text {
+  color: #666;
+}
+.show-js-error .show-js-error__filename {
+  overflow-y: auto;
+  max-height: 15em;
+  margin: 3px 0 3px -2px;
+  padding: 5px;
+  white-space: pre-wrap;
+  border: 1px solid #faa;
+  background: #ffe1ec;
+}
+.show-js-error__help a {
+  font-size: 11px;
+  margin-right: 6px;
+}
+.show-js-error__actions {
+  padding: 3px 5px;
+  border-top: 1px solid #faa;
+}
+.show-js-error__actions::after {
+  font-size: 0;
+  display: block;
+  visibility: hidden;
+  clear: both;
+  height: 0;
+  content: ' ';
+}
+.show-js-error__arrows {
+  display: none;
+  float: left;
+  margin-left: 8px;
+}
+.show-js-error__arrows_visible {
+  display: block;
+}
+.show-js-error__copy,
+.show-js-error__send,
+.show-js-error__prev,
+.show-js-error__next,
+.show-js-error__num {
+  font-size: 11px;
+}
+.show-js-error__next {
+  margin-left: 1px;
+}
+.show-js-error__num {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.show-js-error__copy,
+.show-js-error__send {
+  float: left;
+  margin-right: 3px;
+}

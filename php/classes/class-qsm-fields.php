@@ -142,6 +142,26 @@ class QSM_Fields {
     </tr>
     <?php
   }
+  
+  public static function generate_select_page_field( $field, $value ) {
+    ?>
+    <tr valign="top">
+      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <td>
+          <select id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>">
+              <option value="">Select Page</option>
+              <?php
+              $pages = get_pages(); 
+              foreach ( $pages as $page ) { ?>
+              <option value="<?php echo get_page_link( $page->ID ) ?>" <?php selected($value, get_page_link( $page->ID )); ?> ><?php echo $page->post_title ?></option>;
+              <?php } ?>
+          </select>
+          <br/>
+          <b style="color: red;">Note: </b><?php echo isset($field['note']) ? $field['note'] : ''; ?>
+      </td>
+    </tr>
+    <?php
+  }
 
   /**
    * Generates a textarea field using the WP Editor

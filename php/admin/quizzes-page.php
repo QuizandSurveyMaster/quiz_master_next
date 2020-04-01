@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_generate_quizzes_surveys_page() {
 
 	// Only let admins and editors see this page.
-	if ( ! current_user_can( 'moderate_comments' ) ) {
+	if ( ! current_user_can( 'edit_posts' ) ) {
 		return;
 	}
 
@@ -83,19 +83,24 @@ function qsm_generate_quizzes_surveys_page() {
 		'posts_per_page' => -1,
                 'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
 	);
+        //Check user role and fetch the quiz
+        $user = wp_get_current_user();        
+        if ( in_array( 'author', (array) $user->roles ) ) {
+            $post_arr['author__in'] = [$user->ID];
+        }
         if(isset($_GET['order']) && $_GET['order'] == 'asc'){
             $post_arr['orderby'] = isset($_GET['orderby']) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
             $post_arr['order'] = 'ASC';
             // Load our quizzes.
-            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'ASC');
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'ASC', (array) $user->roles, $user->ID);
         }else if( isset($_GET['order']) && $_GET['order'] == 'desc' ){
             $post_arr['orderby'] = isset($_GET['orderby']) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
             $post_arr['order'] = 'DESC';
             // Load our quizzes.
-            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'DESC');
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, $post_arr['orderby'], 'DESC',(array) $user->roles, $user->ID);
         } else{
             // Load our quizzes.
-            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+            $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, '', '',(array) $user->roles, $user->ID);
         }	
 
 	// Load quiz posts.

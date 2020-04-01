@@ -100,16 +100,7 @@ class QSM_Install {
       ),
       'default' => 0
     );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-    
-    // Registers required text setting
-    $field_array = array(
-      'id' => 'require_log_in_text_msg',
-      'label' => __('Text for non logged in user. Note: This option will work if above option set to yes', 'quiz-master-next'),
-      'type' => 'text',      
-      'default' => 'This quiz is for logged in users only.'
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );        
 
     // Registers pagination setting
     $field_array = array(
@@ -915,6 +906,25 @@ class QSM_Install {
       'default' => 'The entered text is not correct!'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_id',
+      'label' => __('Select result page for facebook sharing', 'quiz-master-next'),
+      'type' => 'select_page',
+      'default' => '',
+      'note' => 'Please add [qsm_result] shortcode in selected page'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_fb_image',
+      'label' => __('Add image link for facebook sharing', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
   }
 
   /**
@@ -1049,7 +1059,7 @@ class QSM_Install {
   			user_ip TEXT NOT NULL,
   			time_taken TEXT NOT NULL,
   			time_taken_real DATETIME NOT NULL,
-  			quiz_results TEXT NOT NULL,
+  			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";

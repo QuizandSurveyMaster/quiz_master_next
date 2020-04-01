@@ -6,6 +6,7 @@
  * This object contains the newer functions. All global functions under are slowly 
  * being deprecated and replaced with rewritten newer functions
  **************************/
+
 var QSM;
 (function ($) {
 	QSM = {
@@ -342,7 +343,11 @@ var QSM;
 		// Call main initialization.
 		QSM.init();               
 	});
-
+	
+	jQuery("input[name='timer_ms']").each(function(){
+		var timems = qsmTimeInMS();
+		jQuery(this).val(timems);
+	});
 }(jQuery));
 
 // Global Variables
@@ -370,6 +375,12 @@ function qmnTimeTakenTimer() {
 
 function qsmEndTimeTakenTimer() {
 	clearInterval( qsmTimerInterval );
+}
+
+function qsmTimeInMS() {
+	var d = new Date();
+	var n = d.getTime();
+	return n;
 }
 
 function qmnClearField( field ) {
@@ -487,6 +498,12 @@ function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
+	/**
+	 * Update Timer in MS
+	 */
+	var timer_ms = jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val();
+	var new_timer_ms = qsmTimeInMS();
+	jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val(Math.abs(new_timer_ms - timer_ms));
 
 	if ( ! result ) { return result; }
 
@@ -769,12 +786,12 @@ function qmnInitPagination( quiz_id ) {
 	}
 }
 
-function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_id ) {
+function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_id, share_url ) {
 	var sTop = window.screen.height / 2 - ( 218 );
 	var sLeft = window.screen.width / 2 - ( 313 );
 	var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
 	var pageUrl = window.location.href;
-	var pageUrlEncoded = encodeURIComponent( pageUrl );
+	var pageUrlEncoded = encodeURIComponent( share_url );
 	var url = '';
 	if ( network == 'facebook' ) {
 		url = "https://www.facebook.com/dialog/feed?"	+ "display=popup&" + "app_id="+facebook_id +
@@ -788,7 +805,7 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 	return false;
 }
 
-jQuery(function() {	
+jQuery(function() {
 	jQuery( '.qmn_quiz_container' ).tooltip();
 	
 	jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {
