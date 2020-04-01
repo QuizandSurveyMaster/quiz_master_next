@@ -530,6 +530,7 @@ class QMNQuizManager {
         $quiz_display .= "<div name='mlw_error_message_bottom' id='mlw_error_message_bottom' class='qsm-error-message qmn_error_message_section'></div>";
         $quiz_display .= "<input type='hidden' name='total_questions' id='total_questions' value='$qmn_total_questions'/>";
         $quiz_display .= "<input type='hidden' name='timer' id='timer' value='0'/>";
+        $quiz_display .= "<input type='hidden' name='timer_ms' id='timer_ms' value='0'/>";
         $quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
         $quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
         if (isset($_GET['payment_id']) && $_GET['payment_id'] != '') {
@@ -1020,8 +1021,10 @@ class QMNQuizManager {
         }
 
         $mlw_qmn_timer = isset($_POST["timer"]) ? sanitize_text_field(intval($_POST["timer"])) : 0;
+        $mlw_qmn_timer_ms = isset($_POST["timer_ms"]) ? sanitize_text_field(intval($_POST["timer_ms"])) : 0;
         $qmn_array_for_variables['user_id'] = get_current_user_id();
         $qmn_array_for_variables['timer'] = $mlw_qmn_timer;
+        $qmn_array_for_variables['timer_ms'] = $mlw_qmn_timer_ms;
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
         $qmn_array_for_variables['contact'] = $contact_responses;
 
@@ -1051,6 +1054,7 @@ class QMNQuizManager {
                     $qmn_array_for_variables['question_answers_array'],
                     htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
                     'contact' => $contact_responses,
+                    'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
                 $serialized_results = serialize($results_array);
@@ -1829,4 +1833,7 @@ function mlw_qmn_set_html_content_type() {
 
     return 'text/html';
 }
-?>
+
+function qsm_time_in_milliseconds() {
+	return round(microtime(true) * 1000);
+}
