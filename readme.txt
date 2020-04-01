@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.3.2
+Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.5
+Stable tag: 6.4.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.6 (April 01, 2020)=
+* Bug: Solved jquery UI error
+* Bug: Customized text using the "Text tab" and remove from "Options Tab" for user is not logged in
+* Bug: Fixed share Quizz's results on Social Media ( https://wordpress.org/support/topic/sharing-to-social-media/ )
+* Bug: For polar question type added the validation while creating option
+* Bug: Solved phone number field validation 
+* Bug: Solved User Dashboard addon issue for first row
+* Feature: Special capabilities #810 ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/810 )
+* Feature: Added Show JS Error library to show the JS Error in quiz page
+* Feature: Added Show JS Error library to show the JS Error in quiz page
+* Feature: Changed type of quiz_results to MEDIUMTEXT (16M size) ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/522 )
 
 = 6.4.5 (March 16, 2020)=
 * Bug: Hint not readable
