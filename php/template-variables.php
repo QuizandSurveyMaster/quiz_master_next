@@ -302,7 +302,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 		}
                 
 		// Cycles through each answer in the responses.                
-		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {                        
 			if ( $answer["correct"] === "correct" ){
 				$user_answer_class = "qmn_user_correct_answer";
 				$question_answer_class = "qmn_question_answer_correct";
@@ -321,6 +321,9 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                             }                            
                         }else{
                             $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
+                        }			
+                        if(isset($answer['points'])){
+                            $mlw_question_answer_display = str_replace( "%POINT_SCORE%" , htmlspecialchars_decode($answer['points'], ENT_QUOTES), $mlw_question_answer_display);
                         }			
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , htmlspecialchars_decode($answer[2], ENT_QUOTES), $mlw_question_answer_display);
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer[3], $mlw_question_answer_display);
