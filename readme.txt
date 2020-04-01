@@ -130,7 +130,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Solved User Dashboard addon issue for first row
 * Feature: Special capabilities #810 ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/810 )
 * Feature: Added Show JS Error library to show the JS Error in quiz page
-* Feature: Added Show JS Error library to show the JS Error in quiz page
 * Feature: Changed type of quiz_results to MEDIUMTEXT (16M size) ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/522 )
 
 = 6.4.5 (March 16, 2020)=
