@@ -133,7 +133,7 @@ function qsm_find_key_from_array($search_value,$array){
  * Adds Facebook sharing link using the %FACEBOOK_SHARE% variable
  */
 function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {        
-	while ( false !== strpos($content, '%FACEBOOK_SHARE%') ) {
+	if ( false !== strpos($content, '%FACEBOOK_SHARE%') ) {
 		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
 		$settings = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '483815031724529';
