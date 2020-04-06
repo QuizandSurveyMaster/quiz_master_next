@@ -112,15 +112,15 @@ add_action('wp_enqueue_scripts', 'qsm_load_main_scripts');
  * @global obj $wp_query
  */
 function qsm_generate_fb_header_metadata() {
-    if (isset($_GET['result_id']) && $_GET['result_id'] > 0) {
+    if (isset($_GET['result_id']) && $_GET['result_id'] != '') {
         $settings = (array) get_option('qmn-settings');
         $facebook_app_id = '483815031724529';
         if (isset($settings['facebook_app_id'])) {
             $facebook_app_id = esc_js($settings['facebook_app_id']);
         }
         global $mlwQuizMasterNext, $wpdb, $wp_query;
-        $result_id = sanitize_text_field($_GET['result_id']);
-        $results_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = '$result_id'");
+        $result_id = sanitize_text_field($_GET['result_id']);        
+        $results_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = '$result_id'");
         if ($results_data) {
             // Prepare responses array.
             if (is_serialized($results_data->quiz_results) && is_array(@unserialize($results_data->quiz_results))) {
@@ -162,7 +162,7 @@ function qsm_generate_fb_header_metadata() {
             );
 
             $mlwQuizMasterNext->pluginHelper->prepare_quiz($results_data->quiz_id);
-            $sharing_page_id = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_id', '');
+            $sharing_page_id = qsm_get_post_id_from_quiz_id($results_data->quiz_id);
 
             //Fb share description
             $sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'facebook_sharing_text', '');
@@ -209,4 +209,37 @@ function qsm_check_script_error() {
         </script>
         <?php
     }
+}
+
+/**
+ * @since QSM 6.4.6
+ * @param int $quiz_id
+ * 
+ * Get the post id from quiz id
+ */
+function qsm_get_post_id_from_quiz_id($quiz_id){
+    $args = array(
+        'posts_per_page' => 1,
+        'post_type' => 'quiz',
+        'meta_query' => array(
+            array(
+                'key' => 'quiz_id',
+                'value' => $quiz_id,
+                'compare' => '=',
+            ),
+        ),
+    );
+    $the_query = new WP_Query($args);
+
+    // The Loop
+    $post_permalink = '';
+    if ($the_query->have_posts()) {
+        while ($the_query->have_posts()) {                
+            $the_query->the_post();
+            $post_permalink = get_the_permalink(get_the_ID());
+        }
+        /* Restore original Post Data */
+        wp_reset_postdata();
+    }
+    return $post_permalink;
 }

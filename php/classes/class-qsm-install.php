@@ -905,17 +905,7 @@ class QSM_Install {
       'type' => 'text',
       'default' => 'The entered text is not correct!'
     );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-    
-    // result page for sharing
-    $field_array = array(
-      'id' => 'result_page_id',
-      'label' => __('Select result page for facebook sharing', 'quiz-master-next'),
-      'type' => 'select_page',
-      'default' => '',
-      'note' => 'Please add [qsm_result] shortcode in selected page'
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );        
     
     // result page for sharing
     $field_array = array(

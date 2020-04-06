@@ -132,8 +132,8 @@ function qsm_find_key_from_array($search_value,$array){
 /**
  * Adds Facebook sharing link using the %FACEBOOK_SHARE% variable
  */
-function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {        
-	while ( false !== strpos($content, '%FACEBOOK_SHARE%') ) {
+function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {            
+	if ( false !== strpos($content, '%FACEBOOK_SHARE%') ) {
 		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
 		$settings = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '483815031724529';
@@ -142,15 +142,13 @@ function qsm_variable_facebook_share( $content, $mlw_quiz_array ) {
 		}
 
 		global $mlwQuizMasterNext;
-		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );
-                $sharing_page_id = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_id', '' );
-                if($sharing_page_id !== ''){
-                    $page_link = $sharing_page_id . '?result_id=' . '%FB_RESULT_ID%';
-                    $sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
-                    $fb_image = plugins_url('', dirname(__FILE__) ) . '/assets/facebook.png';                
-                    $social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id', '$page_link');\"><img src='". $fb_image ."' alt='Facebbok Share' /></a>";
-                    $content = str_replace( "%FACEBOOK_SHARE%" , $social_display, $content);
-                }                
+		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '' );                                
+                $url = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);                
+                $page_link = $url . '?result_id=' . '%FB_RESULT_ID%';
+                $sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
+                $fb_image = plugins_url('', dirname(__FILE__) ) . '/assets/facebook.png';                
+                $social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id', '$page_link');\"><img src='". $fb_image ."' alt='Facebbok Share' /></a>";
+                $content = str_replace( "%FACEBOOK_SHARE%" , $social_display, $content);                                
 	}
 	return $content;
 }
