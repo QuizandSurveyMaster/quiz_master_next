@@ -189,92 +189,105 @@ class QMNQuizManager {
                         ), $atts));
 
         ob_start();
-
-        global $wpdb;
-        global $mlwQuizMasterNext;
-        global $qmn_allowed_visit;
-        global $qmn_json_data;
-        $qmn_json_data = array();
-        $qmn_allowed_visit = true;
-        $success = $mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz);
-        if (false === $success) {
-            return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
-        }
-        $question_amount = intval($question_amount);
-
-        // Legacy variable.
-        global $mlw_qmn_quiz;
-        $mlw_qmn_quiz = $quiz;
-
-        $return_display = '';
-        $qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-
-        // If quiz options isn't found, stop function.
-        if (is_null($qmn_quiz_options) || empty($qmn_quiz_options->quiz_name)) {
-            return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
-        }
-
-        // Loads Quiz Template.
-        // The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
-        if ('default' == $qmn_quiz_options->theme_selected) {
-            $return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
-            wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/qmn_quiz.css', __FILE__));
-        } else {
-            $registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
-            // Check direct file first, then check templates folder in plugin, then check templates file in theme.
-            // If all fails, then load custom styling instead.
-            if ($registered_template && file_exists($registered_template['path'])) {
-                wp_enqueue_style('qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version);
-            } elseif ($registered_template && file_exists(plugin_dir_path(__FILE__) . '../../templates/' . $registered_template['path'])) {
-                wp_enqueue_style('qmn_quiz_template', plugins_url('../../templates/' . $registered_template['path'], __FILE__), array(), $mlwQuizMasterNext->version);
-            } elseif ($registered_template && file_exists(get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'])) {
-                wp_enqueue_style('qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version);
-            } else {
-                echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
+        if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
+            global $wpdb;
+            $result_unique_id = $_GET['result_id'];            
+            $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
+            $result = $wpdb->get_row($query,ARRAY_A);            
+            if( !empty($result) && isset($result['result_id']) ){
+                $result_id = $result['result_id'];
+                $return_display = do_shortcode( '[qsm_result id="'. $result_id .'"]' );
+            }else{
+                $return_display = 'Result id is wrong!';
+            }                  
+            $return_display .= ob_get_clean();
+        }else{
+            global $wpdb;
+            global $mlwQuizMasterNext;
+            global $qmn_allowed_visit;
+            global $qmn_json_data;
+            $qmn_json_data = array();
+            $qmn_allowed_visit = true;
+            $success = $mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz);
+            if (false === $success) {
+                return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
             }
-        }
-        wp_enqueue_style('qmn_quiz_animation_style', plugins_url('../../css/animate.css', __FILE__));
-        wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
-        wp_enqueue_style('dashicons');
+            $question_amount = intval($question_amount);
 
-        // Starts to prepare variable array for filters.
-        $qmn_array_for_variables = array(
-            'quiz_id' => $qmn_quiz_options->quiz_id,
-            'quiz_name' => $qmn_quiz_options->quiz_name,
-            'quiz_system' => $qmn_quiz_options->system,
-            'user_ip' => $this->get_user_ip(),
-        );
+            // Legacy variable.
+            global $mlw_qmn_quiz;
+            $mlw_qmn_quiz = $quiz;
 
-        $return_display .= "<script>
-			if (window.qmn_quiz_data === undefined) {
-				window.qmn_quiz_data = new Object();
-			}
-		</script>";
-        $qmn_json_data = array(
-            'quiz_id' => $qmn_array_for_variables['quiz_id'],
-            'quiz_name' => $qmn_array_for_variables['quiz_name'],
-            'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
-            'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
-            'progress_bar' => $qmn_quiz_options->progress_bar,
-        );
+            $return_display = '';
+            $qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 
-        $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+            // If quiz options isn't found, stop function.
+            if (is_null($qmn_quiz_options) || empty($qmn_quiz_options->quiz_name)) {
+                return __('It appears that this quiz is not set up correctly', 'quiz-master-next');
+            }
 
-        // Checks if we should be showing quiz or results page.
-        if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && !empty($qmn_quiz_options->quiz_name)) {
-            $return_display .= $this->display_quiz($qmn_quiz_options, $qmn_array_for_variables, $question_amount);
-        } elseif (isset($_POST["complete_quiz"]) && 'confirmation' == $_POST["complete_quiz"] && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"]) {
-            $return_display .= $this->display_results($qmn_quiz_options, $qmn_array_for_variables);
-        }
+            // Loads Quiz Template.
+            // The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
+            if ('default' == $qmn_quiz_options->theme_selected) {
+                $return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
+                wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/qmn_quiz.css', __FILE__));
+            } else {
+                $registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
+                // Check direct file first, then check templates folder in plugin, then check templates file in theme.
+                // If all fails, then load custom styling instead.
+                if ($registered_template && file_exists($registered_template['path'])) {
+                    wp_enqueue_style('qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version);
+                } elseif ($registered_template && file_exists(plugin_dir_path(__FILE__) . '../../templates/' . $registered_template['path'])) {
+                    wp_enqueue_style('qmn_quiz_template', plugins_url('../../templates/' . $registered_template['path'], __FILE__), array(), $mlwQuizMasterNext->version);
+                } elseif ($registered_template && file_exists(get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'])) {
+                    wp_enqueue_style('qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version);
+                } else {
+                    echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
+                }
+            }
+            wp_enqueue_style('qmn_quiz_animation_style', plugins_url('../../css/animate.css', __FILE__));
+            wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+            wp_enqueue_style('dashicons');
 
-        $qmn_filtered_json = apply_filters('qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables);
+            // Starts to prepare variable array for filters.
+            $qmn_array_for_variables = array(
+                'quiz_id' => $qmn_quiz_options->quiz_id,
+                'quiz_name' => $qmn_quiz_options->quiz_name,
+                'quiz_system' => $qmn_quiz_options->system,
+                'user_ip' => $this->get_user_ip(),
+            );
 
-        $return_display .= '<script>
-			window.qmn_quiz_data["' . $qmn_json_data["quiz_id"] . '"] = ' . json_encode($qmn_json_data) . '
-		</script>';
+            $return_display .= "<script>
+                            if (window.qmn_quiz_data === undefined) {
+                                    window.qmn_quiz_data = new Object();
+                            }
+                    </script>";
+            $qmn_json_data = array(
+                'quiz_id' => $qmn_array_for_variables['quiz_id'],
+                'quiz_name' => $qmn_array_for_variables['quiz_name'],
+                'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
+                'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
+                'progress_bar' => $qmn_quiz_options->progress_bar,
+            );
 
-        $return_display .= ob_get_clean();
-        $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+            $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+
+            // Checks if we should be showing quiz or results page.
+            if ($qmn_allowed_visit && !isset($_POST["complete_quiz"]) && !empty($qmn_quiz_options->quiz_name)) {
+                $return_display .= $this->display_quiz($qmn_quiz_options, $qmn_array_for_variables, $question_amount);
+            } elseif (isset($_POST["complete_quiz"]) && 'confirmation' == $_POST["complete_quiz"] && $_POST["qmn_quiz_id"] == $qmn_array_for_variables["quiz_id"]) {
+                $return_display .= $this->display_results($qmn_quiz_options, $qmn_array_for_variables);
+            }
+
+            $qmn_filtered_json = apply_filters('qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables);
+
+            $return_display .= '<script>
+                            window.qmn_quiz_data["' . $qmn_json_data["quiz_id"] . '"] = ' . json_encode($qmn_json_data) . '
+                    </script>';
+
+            $return_display .= ob_get_clean();
+            $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
+        }        
         return $return_display;
     }
     
@@ -938,7 +951,7 @@ class QMNQuizManager {
             'quiz_id' => $options->quiz_id,
             'quiz_name' => $options->quiz_name,
             'quiz_system' => $options->system,
-            'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field(intval($_POST['main_payment_id'])) : ''
+            'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field($_POST['main_payment_id']) : ''
         );
         $post_data = array(
             'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
@@ -1045,6 +1058,7 @@ class QMNQuizManager {
             if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
                 $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. apply_filters('qsm_retake_quiz_text', 'Retake Quiz') .'</a>';
             }
+            $unique_id = md5(date("Y-m-d H:i:s"));
             // If the store responses in database option is set to Yes.
             if (0 != $qmn_quiz_options->store_responses) {
 
@@ -1062,6 +1076,7 @@ class QMNQuizManager {
                 // Inserts the responses in the database.
                 global $wpdb;
                 $table_name = $wpdb->prefix . "mlw_results";
+                
                 $results_insert = $wpdb->insert(
                         $table_name, array(
                     'quiz_id' => $qmn_array_for_variables['quiz_id'],
@@ -1081,6 +1096,7 @@ class QMNQuizManager {
                     'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
                     'quiz_results' => $serialized_results,
                     'deleted' => 0,
+                    'unique_id' => $unique_id,
                         ), array(
                     '%d',
                     '%s',
@@ -1099,6 +1115,7 @@ class QMNQuizManager {
                     '%s',
                     '%s',
                     '%d',
+                    '%s',
                         )
                 );
             }
@@ -1129,7 +1146,7 @@ class QMNQuizManager {
             $result_display .= 'Thank you.';
         }
         
-        $result_display = str_replace('%FB_RESULT_ID%', $results_id, $result_display);
+        $result_display = str_replace('%FB_RESULT_ID%', $unique_id, $result_display);
         
         // Prepares data to be sent back to front-end.
         $return_array = array(
