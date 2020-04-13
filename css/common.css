@@ -68,6 +68,12 @@
 .qsm-deselect-answer{
     float: right;
 }
+.qsm-popup__close {
+    text-decoration: none !important;
+}
+.qsm-popup__btn-primary{
+    margin-right: 30px;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
