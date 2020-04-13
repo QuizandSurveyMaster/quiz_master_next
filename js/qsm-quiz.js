@@ -60,9 +60,17 @@ var QSM;
 				if ( qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page ) {
 					$( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 						event.preventDefault();
-						if ( ! qmn_quiz_data[ quizID ].timerStatus && ( 0 == $( '.quiz_begin:visible' ).length || ( 1 == $( '.quiz_begin:visible' ).length && qmnValidatePage( 'quizForm' + quizID ) ) ) ) {
-							QSM.activateTimer( quizID );
-						}
+                                                if(qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')){
+                                                    var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page) + 1;                                                    
+                                                    if( $( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.qmn_pagination > .slide_number_hidden').val() == start_timer){                                                        
+                                                        QSM.activateTimer( quizID );
+                                                        $( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.stoptimer-p').show();
+                                                    }
+                                                }else{
+                                                    if ( ! qmn_quiz_data[ quizID ].timerStatus && ( 0 == $( '.quiz_begin:visible' ).length || ( 1 == $( '.quiz_begin:visible' ).length && qmnValidatePage( 'quizForm' + quizID ) ) ) ) {
+                                                            QSM.activateTimer( quizID );
+                                                    }
+                                                }						
 					});
 				} else {
 					QSM.activateTimer( quizID );
@@ -92,7 +100,10 @@ var QSM;
 				seconds = parseFloat( qmn_quiz_data[ quizID ].timer_limit ) * 60;
 			}
 			qmn_quiz_data[ quizID ].timerRemaning = seconds;
-
+                        
+                        //hidden timer
+                        jQuery(".hiddentimer").html(seconds);
+                        
 			// Makes the timer appear.
 			$timer.show();
 			$timer.text( QSM.secondsToTimer( seconds ) );
@@ -121,7 +132,28 @@ var QSM;
 			var $timer = QSM.getTimer( quizID );
 			$timer.text( display );
 			document.title = display + ' ' + qsmTitleText;
-
+                        
+                        /*CUSTOM TIMER*/                        
+                        if(qmn_quiz_data[quizID].hasOwnProperty('advanced_timer') && qmn_quiz_data[quizID].advanced_timer.timer_design == 'big_timer'){
+                            $(".second.circle").parent('.mlw_quiz_form').addClass('qsm_big_timer');
+                            $(".second.circle").show();
+                            $(".second.circle strong").html(display);
+                            var datashow =( $(".hiddentimer").html() - secondsRemaining ) / $(".hiddentimer").html();
+                            $(".second.circle").circleProgress({
+                                    startAngle: 11,
+                                    value: datashow,
+                                    animation: false,
+                                    fill: {gradient: ["#00bb40", "#00511c"]}
+                            });
+                        }
+                        
+                        var $quizForm = QSM.getQuizForm( quizID );
+                        var total_seconds = parseFloat( qmn_quiz_data[ quizID ].timer_limit ) * 60;
+                        var ninety_sec = total_seconds - ( total_seconds * 90 / 100 );
+                        if(ninety_sec == secondsRemaining){
+                            $quizForm.closest( '.qmn_quiz_container' ).find('.qsm_ninety_warning').fadeIn();
+                        }
+                        
 			// If timer is run out, disable fields.
 			if ( 0 >= secondsRemaining ) {
 				clearInterval( qmn_quiz_data[ quizID ].timerInterval );
@@ -131,15 +163,14 @@ var QSM;
 				$( ".mlw_qmn_question_comment" ).attr( 'disabled', true );
 				$( ".mlw_answer_open_text" ).attr( 'disabled', true );
 				$( ".mlw_answer_number" ).attr( 'disabled', true );
-
-				var $quizForm = QSM.getQuizForm( quizID );
+				
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
                                 $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
                                 //$( ".qsm-submit-btn" ).remove();
                                 if(qmn_ajax_object.enable_result_after_timer_end == 1){
                                     $quizForm.closest( '.qmn_quiz_container' ).find('form').submit();
                                 }else{
-                                    alert('You are not able to attemp remaining part of quiz but you can submit the quiz!')
+                                    MicroModal.show( 'modal-3' );
                                 }
 				//document.quizForm.submit();
 				return;
@@ -950,6 +981,14 @@ jQuery(function() {
         jQuery('.qsm-deselect-answer').click(function(e){
             e.preventDefault();
             jQuery(this).parents('.quiz_section').find('input[type="radio"]').prop('checked', false);
+        });
+        
+        //Submit the form on popup click
+        jQuery('.submit-the-form').click(function(e){
+            e.preventDefault();
+            var quiz_id = jQuery(this).data('quiz_id');
+            jQuery('#quizForm' + quiz_id ).submit();
+            jQuery('#modal-3').removeClass('is-open');
         });
 });
 
