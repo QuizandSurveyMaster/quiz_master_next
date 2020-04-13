@@ -199,10 +199,8 @@ function qsm_check_script_error() {
         <script>
             //Display JS error
             showJSError.init({
-                title: 'Javascript error detected by QSM Plugin',
-                copyText: 'Copy to clipboard',
-                sendText: 'Create Issue',
-                sendUrl: 'https://github.com/QuizandSurveyMaster/quiz_master_next/issues/new?title={title}&body={body}',
+                title: 'Javascript error detected by QSM Plugin. Try deactivating other plugins and themes. If the error still persists, please report the same on our support forums',
+                copyText: 'Copy to clipboard',                
                 userAgent: navigator.userAgent,
                 helpLinks: true
             });

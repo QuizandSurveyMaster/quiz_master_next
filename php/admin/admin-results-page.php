@@ -125,17 +125,24 @@ function qsm_results_overview_tab_content() {
 
 				// Santize by ensuring the value is an int
 				$result_id = intval( $result );
-				$wpdb->update(
-					$wpdb->prefix."mlw_results",
-					array(
-						'deleted' => 1,
-					),
-					array( 'result_id' => $result_id ),
-					array(
-						'%d'
-					),
-					array( '%d' )
-				);
+                                if(isset($_POST['bulk_permanent_delete']) && $_POST['bulk_permanent_delete'] == 1){
+                                    $wpdb->delete(
+                                            $wpdb->prefix."mlw_results",
+                                            array( 'result_id' => $result_id )                                            
+                                    );
+                                }else{
+                                    $wpdb->update(
+                                            $wpdb->prefix."mlw_results",
+                                            array(
+                                                    'deleted' => 1,
+                                            ),
+                                            array( 'result_id' => $result_id ),
+                                            array(
+                                                    '%d'
+                                            ),
+                                            array( '%d' )
+                                    );
+                                }
 			}
 
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted" );
@@ -220,11 +227,12 @@ function qsm_results_overview_tab_content() {
 			var idHiddenName = document.getElementById("delete_quiz_name");
 			idHidden.value = id;
 			idHiddenName.value = quizName;
-		};
+		};                
 	</script>
 	<div class="tablenav top">
 		<div class="alignleft actions bulkactions">
-			<a href="javascript: document.bulk_delete_form.submit();" class="button action">Bulk Delete</a>
+                    <a id="result_bulkaction" href="javascript: void(0);" onclick="if( confirm('Are you sure?') ){ document.bulk_delete_form.submit(); }" class="button action">Bulk Delete</a>&nbsp;&nbsp;&nbsp;
+                    <a href="javascript: void(0);" onclick="if( confirm('Are you sure?') ){ document.getElementById('bulk_permanent_delete').value = '1'; document.bulk_delete_form.submit(); }" class="button action">Bulk Permanent Delete</a>
 		</div>
 		<div class="tablenav-pages">
 			<span class="displaying-num"><?php echo sprintf(_n('One result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n($qsm_results_count)); ?></span>
@@ -303,6 +311,7 @@ function qsm_results_overview_tab_content() {
 	</form>
 	<form action="" method="post" name="bulk_delete_form">
 		<input type="hidden" name="bulk_delete" value="confirmation" />
+		<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 		<?php wp_nonce_field( 'bulk_delete','bulk_delete_nonce' ); ?>
 		<table class=widefat>
 			<thead>

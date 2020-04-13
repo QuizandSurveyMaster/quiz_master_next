@@ -8,6 +8,7 @@
  **************************/
 
 var QSM;
+alert(test)
 (function ($) {
 	QSM = {
 		/**
