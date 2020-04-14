@@ -44,3 +44,31 @@ function qsm_add_author_column_in_db(){
     }
 
 }
+
+add_action('admin_init', 'qsm_change_the_post_type');
+function qsm_change_the_post_type(){
+    if( get_option('qsm_change_the_post_type', '') != '1' ){
+        $post_arr = array(
+            'post_type'      => 'quiz',
+            'posts_per_page' => -1,
+            'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'trash')
+        );
+        $my_query = new WP_Query( $post_arr );
+        
+        if ( $my_query->have_posts() ) {
+            while ( $my_query->have_posts() ) {
+                $my_query->the_post();
+
+                $post_id = get_the_ID();
+                $post_obj = get_post( $post_id );                
+                if($post_obj->post_status == 'trash'){
+                    $post_obj->post_status = 'draft';
+                }
+                $post_obj->post_type = 'qsm_quiz';
+                wp_update_post( $post_obj ); 
+            }
+            wp_reset_postdata();
+        }
+        update_option('qsm_change_the_post_type', '1');
+    }
+}
