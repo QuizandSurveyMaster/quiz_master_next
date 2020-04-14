@@ -18,7 +18,7 @@ function qsm_quiz_link_shortcode($atts, $content = '') {
 
     // Find the permalink by finding the post with the meta_key 'quiz_id' of supplied quiz
     $permalink = '';
-    $my_query = new WP_Query(array('post_type' => 'quiz', 'meta_key' => 'quiz_id', 'meta_value' => $id, 'posts_per_page' => 1, 'post_status' => 'publish'));
+    $my_query = new WP_Query(array('post_type' => 'qsm_quiz', 'meta_key' => 'quiz_id', 'meta_value' => $id, 'posts_per_page' => 1, 'post_status' => 'publish'));
     if ($my_query->have_posts()) {
         while ($my_query->have_posts()) {
             $my_query->the_post();
@@ -218,7 +218,7 @@ function qsm_check_script_error() {
 function qsm_get_post_id_from_quiz_id($quiz_id){
     $args = array(
         'posts_per_page' => 1,
-        'post_type' => 'quiz',
+        'post_type' => 'qsm_quiz',
         'meta_query' => array(
             array(
                 'key' => 'quiz_id',

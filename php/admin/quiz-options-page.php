@@ -77,7 +77,7 @@ function qsm_generate_quiz_options() {
                     // Get quiz post based on quiz id
                     $args = array(
                         'posts_per_page' => 1,
-                        'post_type' => 'quiz',
+                        'post_type' => 'qsm_quiz',
                         'meta_query' => array(
                             array(
                                 'key' => 'quiz_id',

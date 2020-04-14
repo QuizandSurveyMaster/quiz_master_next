@@ -259,7 +259,7 @@ class MLWQuizMasterNext {
 		);
 
 		// Registers post type.
-		register_post_type( 'quiz', $quiz_args );
+		register_post_type( 'qsm_quiz', $quiz_args );
 	}
 
 	/**

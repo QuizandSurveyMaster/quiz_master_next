@@ -191,7 +191,7 @@ class QMNQuizCreator {
 				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
 				'post_status'  => 'publish',
 				'post_author'  => $current_user->ID,
-				'post_type'    => 'quiz',
+				'post_type'    => 'qsm_quiz',
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );			
@@ -242,7 +242,7 @@ class QMNQuizCreator {
  		);
 		if ($results != false)
 		{
-			$my_query = new WP_Query( array('post_type' => 'quiz', 'meta_key' => 'quiz_id', 'meta_value' => $quiz_id) );
+			$my_query = new WP_Query( array('post_type' => 'qsm_quiz', 'meta_key' => 'quiz_id', 'meta_value' => $quiz_id) );
 			if( $my_query->have_posts() )
 			{
 			  while( $my_query->have_posts() )
@@ -449,7 +449,7 @@ class QMNQuizCreator {
 				'post_content'  => "[mlw_quizmaster quiz=$mlw_new_id]",
 				'post_status'   => 'publish',
 				'post_author'   => $current_user->ID,
-				'post_type' => 'quiz'
+				'post_type' => 'qsm_quiz'
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
