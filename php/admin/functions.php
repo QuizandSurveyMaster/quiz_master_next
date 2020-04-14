@@ -33,19 +33,23 @@ add_action('admin_init','qsm_add_author_column_in_db');
 function qsm_add_author_column_in_db(){
     global $wpdb;
     $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-    $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$quiz_table_name' AND column_name = 'quiz_author_id'");
-    if (empty($row)) {
+    $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
+    if (!isset($row->quiz_author_id)) {
         $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
     }
     $result_table_name = $wpdb->prefix . "mlw_results";
-    $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '$result_table_name' AND column_name = 'unique_id'");
-    if (empty($row)) {
+    $row = $wpdb->get_row("SELECT * FROM $result_table_name");
+    if ( !isset($row->unique_id) ) {
         $wpdb->query("ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL");
     }
 
 }
 
 add_action('admin_init', 'qsm_change_the_post_type');
+/**
+ * @since version 6.4.8
+ * Transfer all quiz post to new cpt 'qsm_quiz'
+ */
 function qsm_change_the_post_type(){
     if( get_option('qsm_change_the_post_type', '') != '1' ){
         $post_arr = array(
