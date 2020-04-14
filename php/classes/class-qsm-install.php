@@ -989,6 +989,7 @@ class QSM_Install {
   			quiz_views INT NOT NULL,
   			quiz_taken INT NOT NULL,
   			deleted INT NOT NULL,
+                        quiz_author_id INT NOT NULL,
   			PRIMARY KEY  (quiz_id)
   		) $charset_collate;";
 
@@ -1051,6 +1052,7 @@ class QSM_Install {
   			time_taken_real DATETIME NOT NULL,
   			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
+                        unique_id varchar(255) NOT NULL,
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
 
