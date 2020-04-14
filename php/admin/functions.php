@@ -70,5 +70,6 @@ function qsm_change_the_post_type(){
             wp_reset_postdata();
         }
         update_option('qsm_change_the_post_type', '1');
+        flush_rewrite_rules();
     }
 }
