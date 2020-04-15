@@ -254,7 +254,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
         $return_display .= '<main class="qsm-popup__content" id="modal-3-content">';
         $return_display .= '<p>You are not able to attemp remaining part of quiz but you can submit the quiz!</p>';
         $return_display .= '</main>';
-        $return_display .= '<footer class="qsm-popup__footer"><button class="submit-the-form" data-quiz_id="'. $qmn_quiz_options->quiz_id .'" class="qsm-popup__btn qsm-popup__btn-primary">Submit</button><button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button></footer>';        
+        $return_display .= '<footer class="qsm-popup__footer"><button data-quiz_id="'. $qmn_quiz_options->quiz_id .'" class="submit-the-form qsm-popup__btn qsm-popup__btn-primary">Submit</button><button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button></footer>';
         $return_display .= '</div>';
         $return_display .= '</div>';
         $return_display .= '</div>';
