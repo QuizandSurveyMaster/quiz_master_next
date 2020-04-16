@@ -268,6 +268,36 @@ class QSM_Fields {
     </tr>
     <?php
   }
+  
+  /**
+   * Generates category checkbox
+   *
+   * @since 6.4.8
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_category_field( $field, $value ) {
+	global $wpdb;
+	$quiz_id = isset($_GET['quiz_id']) ? $_GET['quiz_id'] : 0;	
+	$explode_cat = explode(',', $value);
+    ?>
+    <tr valign="top">
+      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <td>
+        <?php		
+		$categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d", $quiz_id ) );		
+		if($categories){
+			foreach( $categories as $single_cat ){ ?>
+				<label><input <?php if( in_array($single_cat->category, $explode_cat) ){ echo "checked"; } ?> class="category_selection_random" type="checkbox" value="<?php echo $single_cat->category; ?>"><?php echo $single_cat->category; ?></label>&nbsp;
+			<?php
+			}
+		}
+        ?>
+		<input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
+      </td>
+    </tr>
+    <?php
+  }
 }
 
 ?>

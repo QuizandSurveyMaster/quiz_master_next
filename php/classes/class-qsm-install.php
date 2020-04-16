@@ -231,7 +231,16 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
+	
+	// Registers category setting
+    $field_array = array(
+		  'id' => 'randon_category',
+		  'label' => __('Select category for random question', 'quiz-master-next'),
+		  'type' => 'category',
+           'default' => ''
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+	
     // Registers contact_info_location setting
     $field_array = array(
       'id' => 'contact_info_location',
