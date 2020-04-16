@@ -352,8 +352,15 @@ class QMNQuizManager {
         $limit_sql = '';
 
         // Checks if the questions should be randomized.
+		$cat_query = '';
         if (1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order) {
             $order_by_sql = 'ORDER BY rand()';
+			$categories = isset($quiz_options->randon_category) ? $quiz_options->randon_category : '';			
+			if($categories){
+				$exploded_arr = explode(',', $quiz_options->randon_category);
+				$cat_str = "'" . implode ( "', '", $exploded_arr ) . "'";
+				$cat_query = " AND category IN ( $cat_str ) ";
+			}
         }
 
         // Check if we should load all questions or only a selcted amount.
@@ -376,7 +383,7 @@ class QMNQuizManager {
                 }
             }
             $question_sql = implode(', ', $question_ids);
-            $questions = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $order_by_sql . $limit_sql);
+            $questions = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $cat_query . $order_by_sql . $limit_sql);
 
             // If we are not using randomization, we need to put the questions in the order of the new question editor.
             // If a user has saved the pages in the question editor but still uses the older pagination options
@@ -393,7 +400,7 @@ class QMNQuizManager {
                 $questions = $ordered_questions;
             }
         } else {
-            $questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $order_by_sql . $limit_sql, $quiz_id));
+            $questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $cat_query . $order_by_sql . $limit_sql, $quiz_id));
         }
 
         // Returns an array of all the loaded questions.
