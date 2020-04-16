@@ -107,9 +107,9 @@ var QSMAdmin;
         if(jQuery('.buttonset').length > 0){
             jQuery('.buttonset').buttonset();
         }
-		jQuery('.category_selection_random').change(function(){
-			var checked_data = jQuery('.category_selection_random:checked').map(function() {return this.value;}).get().join(',');
-			jQuery('.catergory_comma_values').val(checked_data);
-		});
+        jQuery('.category_selection_random').change(function(){
+                var checked_data = jQuery(this).val().toString();                
+                jQuery('.catergory_comma_values').val(checked_data);
+        });
     });
 }(jQuery));

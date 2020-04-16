@@ -285,15 +285,22 @@ class QSM_Fields {
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
       <td>
         <?php		
-		$categories = $wpdb->get_results( $wpdb->prepare( "SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d", $quiz_id ) );		
-		if($categories){
+		$categories = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d", $quiz_id ) );		
+		if($categories){ ?>
+                    <select class="category_selection_random" multiple="">
+                        <option value="">Select Categories</option>
+                        <?php
 			foreach( $categories as $single_cat ){ ?>
-				<label><input <?php if( in_array($single_cat->category, $explode_cat) ){ echo "checked"; } ?> class="category_selection_random" type="checkbox" value="<?php echo $single_cat->category; ?>"><?php echo $single_cat->category; ?></label>&nbsp;
+                            <option <?php if( in_array($single_cat->category, $explode_cat) ){ echo "selected"; } ?> value="<?php echo $single_cat->category; ?>"><?php echo $single_cat->category; ?></option>
 			<?php
-			}
-		}
+			} ?>
+                    </select>
+                <?php
+		}else{
+                    echo 'No catergory found.';
+                }
         ?>
-		<input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
+        <input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
       </td>
     </tr>
     <?php
