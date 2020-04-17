@@ -190,9 +190,12 @@ add_action('wp_head', 'qsm_generate_fb_header_metadata');
 
 
 add_action('wp_head', 'qsm_check_script_error');
-
+/**
+ * @since 6.4.8
+ * Show the JS error
+ */
 function qsm_check_script_error() {
-    if (is_singular('quiz')) {                
+    if (is_singular('qsm_quiz') && is_user_logged_in() && current_user_can('administrator')) {
         ?>
         <script src="<?php echo QSM_PLUGIN_URL . 'js/show-js-error.custom.js'; ?>"></script>
         <link rel='stylesheet' href='<?php echo QSM_PLUGIN_URL . 'css/show-js-error.css'; ?>' type='text/css' media='all' />
