@@ -76,7 +76,7 @@ function qsm_restore_function() {
 		} else {
 			// Restores the quiz post type for the quiz.
 			$my_query = new WP_Query( array(
-				'post_type'  => 'quiz',
+				'post_type'  => 'qsm_quiz',
 				'meta_key'   => 'quiz_id',
 				'meta_value' => sanitize_text_field( intval( $_POST['restore_quiz'] ) ),
 			));

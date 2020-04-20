@@ -268,6 +268,53 @@ class QSM_Fields {
     </tr>
     <?php
   }
+  
+  /**
+   * Generates category checkbox
+   *
+   * @since 6.4.8
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_category_field( $field, $value ) {
+	global $wpdb;
+	$quiz_id = isset($_GET['quiz_id']) ? $_GET['quiz_id'] : 0;	
+	$explode_cat = explode(',', $value);
+    ?>
+    <tr valign="top">
+      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <td>
+        <?php		
+		$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
+                $cat_array = array();
+		if($questions){ 
+                    foreach( $questions as $single_question ){
+                        $cat_array[] = $single_question['category'];
+                    }
+                    $cat_array = array_unique($cat_array);
+                    if($cat_array){
+                    ?>
+                    <select class="category_selection_random" multiple="">
+                        <option value="">Select Categories</option>
+                        <?php
+			foreach( $cat_array as $single_cat ){ ?>
+                            <option <?php if( in_array($single_cat, $explode_cat) ){ echo "selected"; } ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option>
+			<?php
+			} ?>
+                    </select>
+                <?php
+                    }else{
+                        echo 'No catergory found.';
+                    }
+		}else{
+                    echo 'No catergory found.';
+                }
+        ?>
+        <input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
+      </td>
+    </tr>
+    <?php
+  }
 }
 
 ?>

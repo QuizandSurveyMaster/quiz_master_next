@@ -79,7 +79,7 @@ function qsm_generate_quizzes_surveys_page() {
         
         //Query for post
         $post_arr = array(
-		'post_type'      => 'quiz',
+		'post_type'      => 'qsm_quiz',
 		'posts_per_page' => -1,
                 'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
 	);
@@ -116,7 +116,7 @@ function qsm_generate_quizzes_surveys_page() {
 				'post_status'   => get_post_status(get_the_ID()),
 			);
 		}
-	}
+	}        
 	wp_reset_postdata();                
 	$quiz_json_array = array();
 	foreach ( $quizzes as $quiz ) {
@@ -127,7 +127,7 @@ function qsm_generate_quizzes_surveys_page() {
 				'post_content' => "[qsm quiz={$quiz->quiz_id}]",
 				//'post_status'  => 'publish',
 				'post_author'  => $current_user->ID,
-				'post_type'    => 'quiz',
+				'post_type'    => 'qsm_quiz',
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $quiz->quiz_id );

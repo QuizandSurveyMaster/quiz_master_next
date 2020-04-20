@@ -24,7 +24,7 @@ $results    = $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 
 // Taken from Easy Digital Downloads. Much better way of doing it than I was doing :)
 // Cycle through custom post type array, retreive all posts, delete each one.
-$qsm_post_types = array( 'quiz', 'qmn_log' );
+$qsm_post_types = array( 'qsm_quiz', 'qmn_log' );
 foreach ( $qsm_post_types as $post_type ) {
 	$items = get_posts(
 		array(
