@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.7
+Stable tag: 6.4.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.8 (April 20, 2020)=
+* Bug: Changed the quiz post type slug to solve the conflict with LMS plugin
+* Feature: Added the button to remove the result data permanent
+* Feature: Added supporting code for new advanced timer
+* Feature: Option to select categories for random questions
+* Enhancement: JavaScript error messages will show up only for WordPress admins.
 
 = 6.4.7 (April 07, 2020)=
 * Bug: Solved jquery UI error
