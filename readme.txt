@@ -121,12 +121,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.8 (April 17, 2020)=
+= 6.4.8 (April 20, 2020)=
 * Bug: Changed the quiz post type slug to solve the conflict with LMS plugin
 * Feature: Added the button to remove the result data permanent
-* Feature: Added few code to make advanced timer compatible with core plugin
-* Feature: Random questions from categories
-* Changed: Javascript error message shows up for login WordPress administrator and not for visitor.
+* Feature: Added supporting code for new advanced timer
+* Feature: Option to select categories for random questions
+* Enhancement: JavaScript error messages will show up only for WordPress admins.
 
 = 6.4.7 (April 07, 2020)=
 * Bug: Solved jquery UI error
