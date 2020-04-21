@@ -536,7 +536,7 @@ Misc.
     color: rgba(0,0,0,.8);
 }
 
-.qsm-popup__btn {
+body .qsm-popup__btn {
     font-size: .875rem;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -569,7 +569,7 @@ Misc.
     transform: scale(1.05);
 }
 
-.qsm-popup__btn-primary {
+body .qsm-popup__btn-primary {
     background-color: #00449e;
     color: #fff;
 }
