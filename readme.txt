@@ -121,8 +121,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.9 (April 20, 2020)=
-* Bug: Solved the popup design issue.
+= 6.4.9 (April 21, 2020)=
+* Bug: Fixed popup design issues.
 
 = 6.4.8 (April 20, 2020)=
 * Bug: Changed the quiz post type slug to solve the conflict with LMS plugin
