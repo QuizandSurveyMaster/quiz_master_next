@@ -75,7 +75,11 @@
     margin-right: 30px;
 }
 .submit-the-form {
-    margin-right: 15px !important;
+    margin-left: 15px !important;
+}
+body .qsm-popup__container{
+    padding-top: 40px;
+    padding-bottom: 50px;
 }
 body .qsm-popup__header{
     text-align: left;
@@ -86,6 +90,29 @@ body .qsm-popup .qsm-popup__btn {
     padding-right: 15px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+body .qsm-popup__content{
+    text-align: center;
+}
+body .qsm-popup__content > img{
+    display: inline-block;
+    width: 70px;
+}
+body .qsm-popup__content > p.qsm-time-up-text{
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: 10px;
+    font-family: inherit;
+}
+footer.qsm-popup__footer{
+    text-align: center;
+}
+footer.qsm-popup__footer button.qsm-popup-secondary-button{
+    background-color: #808080 !important;
+}
+footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
+    background-color: #808080 !important;
+    opacity: 0.9;
 }
 
 @media screen and (max-width: 767px){

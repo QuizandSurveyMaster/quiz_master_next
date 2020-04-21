@@ -250,12 +250,12 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
     if($qmn_quiz_options->enable_result_after_timer_end == 0){
         $return_display .= '<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
         $return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
-        $return_display .= '<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';        
-        $return_display .= '<main class="qsm-popup__content" id="modal-3-content">';
-        $return_display .= '<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>';
-        $return_display .= '<p>Time is Up!</p>';
+        $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';
+        $return_display .= '<main class="qsm-popup__content">';        
+        $return_display .= '<img src="' . QSM_PLUGIN_URL . '/assets/clock.png' .'"/>';
+        $return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
         $return_display .= '</main>';
-        $return_display .= '<footer class="qsm-popup__footer"><button data-quiz_id="'. $qmn_quiz_options->quiz_id .'" class="submit-the-form qsm-popup__btn qsm-popup__btn-primary">Submit Quiz Now</button><button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Submit Later</button></footer>';
+        $return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button><button data-quiz_id="'. $qmn_quiz_options->quiz_id .'" class="submit-the-form qmn_btn">Submit Quiz</button></footer>';
         $return_display .= '</div>';
         $return_display .= '</div>';
         $return_display .= '</div>';
