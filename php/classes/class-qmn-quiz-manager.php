@@ -229,7 +229,7 @@ class QMNQuizManager {
             // Loads Quiz Template.
             // The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
             if ('default' == $qmn_quiz_options->theme_selected) {
-                $return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
+                $return_display .= '<style type="text/css">' . htmlspecialchars_decode($qmn_quiz_options->quiz_stye) . '</style>';                
                 wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/qmn_quiz.css', __FILE__));
             } else {
                 $registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
@@ -1133,10 +1133,10 @@ class QMNQuizManager {
 
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
-
+            
             // Sends the emails.
             QSM_Emails::send_emails($qmn_array_for_variables);
-
+            
             /**
              * Filters for filtering the results text after emails are sent.
              *
