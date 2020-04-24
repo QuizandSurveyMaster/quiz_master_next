@@ -114,7 +114,9 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     background-color: #808080 !important;
     opacity: 0.9;
 }
-
+.qsm-quiz-container .qsm-contact-type-checkbox input{
+    display: inline-block;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
