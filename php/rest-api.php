@@ -56,6 +56,86 @@ function qsm_register_rest_routes() {
             'methods' => 'GET',
             'callback' => 'qsm_get_result_of_quiz',
         ));
+        //Get questions for question bank
+        register_rest_route( 'quiz-survey-master/v1', '/bank_questions/(?P<id>\d+)', array(
+		'methods'  => WP_REST_Server::READABLE,
+		'callback' => 'qsm_rest_get_bank_questions',
+	) );
+}
+
+/**
+ * Get questions for question bank
+ * @since 6.4.10
+ * @param WP_REST_Request $request
+ */
+function qsm_rest_get_bank_questions( WP_REST_Request $request ){
+    if(is_user_logged_in()){
+        global $wpdb;
+        $category = isset($_REQUEST['category']) ? $_REQUEST['category'] : '';
+        $category_query = '';
+        if($category){
+            $category_query = ' AND category = "' . $category . '"';
+        }
+        $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0'$category_query", 'ARRAY_A' );
+        $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
+        $limit = 20;
+        $total_pages = ceil($total_count / $limit);
+        $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;        
+        $offset = ($pageno-1) * $limit;
+        $questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0'$category_query ORDER BY question_order ASC LIMIT $offset, $limit", 'ARRAY_A' );
+        $quiz_table = $wpdb->prefix . 'mlw_quizzes';
+        $question_array = array();        
+        $question_array['pagination'] = array(
+                'total_pages' => $total_pages,
+                'current_page' => $pageno,
+                'category' => $category
+        );        
+        
+        $question_array['questions'] = array();
+        foreach ( $questions as $question ) {
+                $quiz_name = $wpdb->get_row('SELECT quiz_name FROM '. $quiz_table . ' WHERE quiz_id = ' . $question['quiz_id'], ARRAY_A );
+                $question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
+                
+                $answers = maybe_unserialize( $question['answer_array'] );
+                if ( ! is_array( $answers ) ) {
+                        $answers = array();
+                }
+                $question['answers'] = $answers;
+
+                $settings = maybe_unserialize( $question['question_settings'] );
+                if ( ! is_array( $settings ) ) {
+                        $settings = array( 'required' => 1 );
+                }
+                $question['settings'] = $settings;
+                
+                $question_array['questions'][] = array(
+                        'id'         => $question['question_id'],
+                        'quizID'     => $question['quiz_id'],
+                        'type'       => $question['question_type_new'],
+                        'name'       => $question['question_name'],
+                        'answerInfo' => $question['question_answer_info'],
+                        'comments'   => $question['comments'],
+                        'hint'       => $question['hints'],
+                        'category'   => $question['category'],
+                        'required'   => $question['settings']['required'],
+                        'answers'    => $question['answers'],
+                        'page'       => $question['page'],
+                        'answerEditor'   => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : 'text',
+                        'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
+                        'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
+                        'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
+                        'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
+                        'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
+                        'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
+                );
+        }        
+        return $question_array;
+    }else{
+        return array(
+            'status' => 'error',
+            'msg'    => 'User not logged in',
+	);
+    }
 }
 
 /**
