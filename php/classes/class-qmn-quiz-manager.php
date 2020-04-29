@@ -1695,8 +1695,8 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
         }        
         $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
         $mlw_message = str_replace("\n", "<br>", $mlw_message);
+        //$display .= do_shortcode($mlw_message);
         $display .= do_shortcode($mlw_message);
-        $display .= $mlw_message;
         $display .= wp_login_form(array('echo' => false));
     }
     return $display;
