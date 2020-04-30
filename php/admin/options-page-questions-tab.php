@@ -392,4 +392,27 @@ function qsm_send_data_sendy(){
     echo isset($result['response']) && isset($result['response']['code']) && $result['response']['code'] == 200 ? $result['body'] : '';
     exit;
 }
+    
+add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
+function qsm_dashboard_delete_result(){
+    $result_id = isset($_POST['result_id']) ? sanitize_text_field($_POST['result_id']) : 0;    
+    if($result_id){        
+        global $wpdb;
+        $wpdb->update(
+                $wpdb->prefix."mlw_results",
+                array(
+                        'deleted' => 1,
+                ),
+                array( 'result_id' => $result_id ),
+                array(
+                        '%d'
+                ),
+                array( '%d' )
+        );
+        echo 'success';
+        exit;
+    }
+    echo 'failed';
+    exit;
+}
 ?>

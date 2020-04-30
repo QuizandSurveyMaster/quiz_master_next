@@ -111,5 +111,23 @@ var QSMAdmin;
                 var checked_data = jQuery(this).val().toString();                
                 jQuery('.catergory_comma_values').val(checked_data);
         });
+        jQuery('.row-actions-c > .rtq-delete-result').click(function(e){
+            e.preventDefault();
+            var $this = jQuery(this);
+            if(confirm('are you sure?')){   
+                var action = 'qsm_dashboard_delete_result';
+                var result_id = jQuery(this).data('result_id');
+                $.post(ajaxurl, {result_id: result_id, action: action },
+                    function (data) {
+                        if(data == 'failed'){
+                            alert('Error to delete the result!');
+                        }else{
+                            $this.parents('li').slideUp();
+                            $this.parents('li').remove();
+                        }                 
+                    }
+                );
+            }
+        });
     });
 }(jQuery));
