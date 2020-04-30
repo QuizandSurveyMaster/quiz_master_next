@@ -495,6 +495,7 @@ function qsm_generate_dashboard_page() {
         return;
     }
     global $mlwQuizMasterNext,$wpdb;
+    wp_enqueue_script('qsm_admin_script', plugins_url('../../js/admin.js', __FILE__), array('jquery'), $mlwQuizMasterNext->version);
     ?>
     <style>
         .welcome-panel-column .dashicons {
@@ -596,16 +597,30 @@ function qsm_generate_dashboard_page() {
             position: relative;
             min-height: 50px;
             margin: 0;
-            padding: 12px;
+            border-bottom: 1px solid #ede8e8;
+            padding: 0 12px 12px 0;
+            margin-bottom: 20px; 
+        }
+        .recently-taken-quiz-ul li:last-child{
+            margin-bottom: 0; 
+            border-bottom: medium none;
+            padding-bottom: 0;
         }
         .recently-taken-quiz-ul li img.avatar{
             position: absolute;
-            top: 12px;
+            top: 0px;
             width: 60px;
-        }        
+        }                
         .recently-taken-quiz-ul li .row-actions-c{
             margin: 0;
             padding: 0;
+            visibility: hidden;
+        }
+        .recently-taken-quiz-ul li .row-actions-c .rtq-delete-result{
+            color: #a00;
+        }
+        .recently-taken-quiz-ul li:hover .row-actions-c{
+            visibility: visible;
         }
         .recently-taken-quiz-ul li .rtq-main-wrapper{
             padding-left: 75px;
@@ -613,8 +628,15 @@ function qsm_generate_dashboard_page() {
         .recently-taken-quiz-ul li .rtq-main-wrapper .rtq_user_info,
         .recently-taken-quiz-ul li .rtq-main-wrapper .rtq-result-info{
             display: block;
+            margin-bottom: 3px;
         }
-        
+        .recently-taken-quiz-ul li .rtq-main-wrapper span {
+            font-size: 14px;
+            color: #837878;
+        }
+        .recently-taken-quiz-ul li .rtq-main-wrapper .rtq_user_info a:first-child{
+            text-transform: capitalize;
+        }
         @media only screen and (max-width: 1800px) and (min-width: 1500px){
             #wpbody-content #dashboard-widgets #postbox-container-1 {
                 width: 50%;
@@ -708,7 +730,7 @@ function qsm_generate_dashboard_page() {
                                 <div class="main">
                                     <ul class="recently-taken-quiz-ul">
                                         <?php                                        
-                                        $mlw_resutl_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' ORDER BY result_id DESC LIMIT 2", ARRAY_A );                                        
+                                        $mlw_resutl_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' ORDER BY result_id DESC LIMIT 2", ARRAY_A );
                                         if($mlw_resutl_data){
                                             foreach ($mlw_resutl_data as $key => $single_result_arr) {                                                
                                                 ?>
@@ -768,15 +790,26 @@ function qsm_generate_dashboard_page() {
                                                         </span>
                                                         <span class="rtq-time-taken"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ); ?></span>
                                                         <p class="row-actions-c">
-                                                            <a href="#">View</a> | <a href="#">Delete</a>
+                                                            <a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo $single_result_arr['result_id']; ?>">View</a> | <a href="#" data-result_id="<?php echo $single_result_arr['result_id']; ?>" class="trash rtq-delete-result">Delete</a>
                                                         </p>
                                                     </div>                                                    
                                                 </li>
                                             <?php                                        
                                             }
-                                        }                                 
+                                        }              
                                         ?>                                        
-                                    </ul>                                    
+                                    </ul>
+                                    <p>
+                                        <a href="admin.php?page=mlw_quiz_results">
+                                            <?php                                            
+                                            $mlw_resutl_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted='0'", ARRAY_A );
+                                            echo isset($mlw_resutl_data['total_result']) ? __('See All Results ', 'quiz-master-next') : '';
+                                            ?>
+                                        </a>
+                                        <?php
+                                        echo isset($mlw_resutl_data['total_result']) ? '(' . $mlw_resutl_data['total_result'] . ')' : '';
+                                        ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
