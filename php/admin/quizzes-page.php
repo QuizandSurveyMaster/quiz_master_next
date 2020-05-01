@@ -486,390 +486,65 @@ function qsm_generate_quizzes_surveys_page() {
 }
 
 /**
- * @since 7.0
- * @return HTMl Dashboard for QSM
+ * 
+ * @param str $status
+ * @param obj $args
+ * @return type
  */
-function qsm_generate_dashboard_page() {
-    // Only let admins and editors see this page.
-    if (!current_user_can('edit_posts')) {
-        return;
-    }
-    global $mlwQuizMasterNext,$wpdb;
-    wp_enqueue_script('qsm_admin_script', plugins_url('../../js/admin.js', __FILE__), array('jquery'), $mlwQuizMasterNext->version);
+function qsm_dashboard_screen_options($status, $args){
+    $screen = get_current_screen();
+ 
+    // get out of here if we are not on our settings page
+    if(!is_object($screen))
+        return $status;
+    
+    ob_start();
     ?>
-    <style>
-        .welcome-panel-column .dashicons {
-            /* font-size: 30px; */
-            color: #606a73;
-            font-size: 23px;
-            margin-right: 5px;
-        }
-        .welcome-panel .welcome-panel-close{
-            top: -20px;
-        }
-        .welcome-panel .welcome-panel-close img{
-            width: 100px;
-        }
-        .welcome-panel .welcome-panel-close:before{
-            content: none !important;
-        }
-        .welcome-panel .current_version{
-            color: #344AD4;
-            text-align: center;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0;
-            padding: 0;
-            position: relative;
-            top: -30px;
-        }
-        .popuar-addon-ul{
-            columns: 2;
-            -webkit-columns: 2;
-            -moz-columns: 2;
-        }
-        .popuar-addon-ul li img{
-            max-width: 100%;
-        }
-        .pa-all-addon {
-            text-align: right;            
-            margin-bottom: 10px;
-        }
-        .pa-all-addon a{
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .what-new-ul li {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ccbfbf;
-            padding-bottom: 20px;
-        }
-        .what-new-ul li:last-child{
-            border-bottom: medium none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        .what-new-ul li a{
-            font-size: 14px;
-            color: #222;
-            font-weight: 500;
-            transition: 0.2 all;
-            -webkit-transition: 0.2 all;
-            -ms-transition: 0.2 all;
-        }
-        .what-new-ul li a:hover{
-            color: #0073aa;
-        }
-        .what-new-ul li .post-description{
-            margin-top: 10px;
-        }
-        .what-new-ul li .post-description p{
-            margin: 0;
-            padding: 0;
-        }
-        .changelog-ul li{
-            border-bottom: 1px solid #ede8e8;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-        .changelog-ul li:last-child{
-            border-bottom: medium none;
-            padding-bottom: 0;
-            margin-bottom: 0;
-        }
-        .changelog-ul li span{
-            padding: 3px 5px;
-            border-radius: 5px;
-            display: inline-block;
-            color: #fff;
-        }
-        .changelog-ul li .enhancement{
-            background: #FEB325;            
-        }
-        .changelog-ul li .bug{
-            background: #FE2525;            
-        }
-        .changelog-ul li .user_request{
-            background: #25BDFE;            
-        }
-        .recently-taken-quiz-ul li{
-            position: relative;
-            min-height: 50px;
-            margin: 0;
-            border-bottom: 1px solid #ede8e8;
-            padding: 0 12px 12px 0;
-            margin-bottom: 20px; 
-        }
-        .recently-taken-quiz-ul li:last-child{
-            margin-bottom: 0; 
-            border-bottom: medium none;
-            padding-bottom: 0;
-        }
-        .recently-taken-quiz-ul li img.avatar{
-            position: absolute;
-            top: 0px;
-            width: 60px;
-        }                
-        .recently-taken-quiz-ul li .row-actions-c{
-            margin: 0;
-            padding: 0;
-            visibility: hidden;
-        }
-        .recently-taken-quiz-ul li .row-actions-c .rtq-delete-result{
-            color: #a00;
-        }
-        .recently-taken-quiz-ul li:hover .row-actions-c{
-            visibility: visible;
-        }
-        .recently-taken-quiz-ul li .rtq-main-wrapper{
-            padding-left: 75px;
-        }
-        .recently-taken-quiz-ul li .rtq-main-wrapper .rtq_user_info,
-        .recently-taken-quiz-ul li .rtq-main-wrapper .rtq-result-info{
-            display: block;
-            margin-bottom: 3px;
-        }
-        .recently-taken-quiz-ul li .rtq-main-wrapper span {
-            font-size: 14px;
-            color: #837878;
-        }
-        .recently-taken-quiz-ul li .rtq-main-wrapper .rtq_user_info a:first-child{
-            text-transform: capitalize;
-        }
-        @media only screen and (max-width: 1800px) and (min-width: 1500px){
-            #wpbody-content #dashboard-widgets #postbox-container-1 {
-                width: 50%;
-            }
-            #wpbody-content #dashboard-widgets #postbox-container-2 {
-                width: 50%;
-            }
-        }
-    </style>
-    <div class="wrap">
-        <h1><?php _e('QSM Dashboard', 'quiz-master-next'); ?></h1>
-        <div id="welcome-panel" class="welcome-panel">
-            <div class="welcome-panel-close">
-                <img src="<?php echo QSM_PLUGIN_URL . '/assets/icon-128x128.png'; ?>">
-                <p class="current_version"><?php echo $mlwQuizMasterNext->version; ?></p>
-            </div>
-            <div class="welcome-panel-content">
-                <h2><?php _e('Welcome to Quiz And Survey Master!', 'quiz-master-next'); ?></h2>
-                <p class="about-description"><?php _e('Formerly Quiz Master Next', 'quiz-master-next'); ?></p>
-                <div class="welcome-panel-column-container">
-                    <div class="welcome-panel-column">
-                        <h3><?php _e('Get Started', 'quiz-master-next'); ?></h3>
-                        <a class="button button-primary button-hero load-customize hide-if-no-customize" href="#"><?php _e('Create New Quiz/Survery', 'quiz-master-next'); ?></a>
-                        <p class="hide-if-no-customize">
-                            or, <a href="admin.php?page=mlw_quiz_list"><?php _e('Edit previously created quizzes', 'quiz-master-next'); ?></a>
-                        </p>
-                    </div>
-                    <div class="welcome-panel-column">
-                        <h3><?php _e('Next Steps', 'quiz-master-next'); ?></h3>
-                        <ul>
-                            <li><a target="_blank" href="https://quizandsurveymaster.com/docs/" class="welcome-icon"><span class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e('Read Documentation', 'quiz-master-next'); ?></a></li>
-                            <li><a target="_blank" href="https://quizandsurveymaster.com/" class="welcome-icon"><span class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e('See demos', 'quiz-master-next'); ?></a></li>
-                            <li><a target="_blank" href="https://quizandsurveymaster.com/addons/" class="welcome-icon"><span class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e('Extend QSM with PRO Addons', 'quiz-master-next'); ?></a></li>
-                        </ul>
-                    </div>
-                    <div class="welcome-panel-column welcome-panel-last">
-                        <h3><?php _e('Usefull Links', 'quiz-master-next'); ?></h3>
-                        <ul>
-                            <li><a target="_blank" href="https://support.quizandsurveymaster.com/" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e('Support Forum', 'quiz-master-next'); ?></a></li>
-                            <li><a target="_blank" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e('Github Repository', 'quiz-master-next'); ?></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-        $file = esc_url('http://localhost/work/et/qsm/qsm_dashboard.json');
-        $response = wp_remote_get($file, array('sslverify' => false));
-        $body = wp_remote_retrieve_body($response);
-        $addon_array = json_decode($body, TRUE);        
-        ?>
-        <div id="dashboard-widgets-wrap">
-            <div id="dashboard-widgets" class="metabox-holder">
-                <div id="postbox-container-1" class="postbox-container">
-                    <div id="normal-sortables" class="meta-box-sortables ui-sortable">
-                        <div id="dashboard_popular_addon" class="postbox">
-                            <button type="button" class="handlediv" aria-expanded="true">
-                                <span class="screen-reader-text">Toggle panel: <?php _e('Most Popular Addon this Week', 'quiz-master-next'); ?></span>
-                                <span class="toggle-indicator" aria-hidden="true"></span>
-                            </button>
-                            <h2 class="hndle ui-sortable-handle"><span><?php _e('Most Popular Addon this Week','quiz-master-next'); ?></span></h2>
-                            <div class="inside">
-                                <div class="main">
-                                    <ul class="popuar-addon-ul">                                
-                                        <?php
-                                        if(isset($addon_array['most_popular_addon'])){
-                                            foreach ($addon_array['most_popular_addon'] as $key => $single_arr) { ?>
-                                                <li>
-                                                    <a href="<?php echo $single_arr['link'] ?>" target="_blank">
-                                                        <img src="<?php echo $single_arr['image']; ?>" title="<?php echo $single_arr['name']; ?>">
-                                                    </a>
-                                                </li>
-                                            <?php                                        
-                                            }
-                                        }                                    
-                                        ?>                                        
-                                    </ul>
-                                    <div class="pa-all-addon">
-                                        <a href="https://quizandsurveymaster.com/addons/" target="_blank"><?php _e('SEE ALL ADDONS','quiz-master-next'); ?></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="dashboard_recent_taken_quiz" class="postbox">
-                            <button type="button" class="handlediv" aria-expanded="true">
-                                <span class="screen-reader-text">Toggle panel: <?php _e('Recently Taken Quizzes', 'quiz-master-next'); ?></span>
-                                <span class="toggle-indicator" aria-hidden="true"></span>
-                            </button>
-                            <h2 class="hndle ui-sortable-handle"><span><?php _e('Recently Taken Quizzes','quiz-master-next'); ?></span></h2>
-                            <div class="inside">
-                                <div class="main">
-                                    <ul class="recently-taken-quiz-ul">
-                                        <?php                                        
-                                        $mlw_resutl_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' ORDER BY result_id DESC LIMIT 2", ARRAY_A );
-                                        if($mlw_resutl_data){
-                                            foreach ($mlw_resutl_data as $key => $single_result_arr) {                                                
-                                                ?>
-                                                <li>
-                                                    <?php
-                                                    if(isset($single_result_arr['user']) && $single_result_arr['user'] != ''){
-                                                        echo '<img src="'. get_avatar_url($single_result_arr['user']) .'" class="avatar avatar-50 photo">';
-                                                    }else{
-                                                        echo '<img src="'. QSM_PLUGIN_URL .'/assets/default_image.png" class="avatar avatar-50 photo">';
-                                                    }
-                                                    ?>
-                                                    <div class="rtq-main-wrapper">
-                                                        <span class="rtq_user_info">
-                                                            <?php if(isset($single_result_arr['user']) && $single_result_arr['user'] != ''){
-                                                                $edit_link = get_edit_profile_url( $single_result_arr['user'] );
-                                                                echo '<a href="'. $edit_link .'">' . $single_result_arr['name'] . '</a>';
-                                                            } else{
-                                                                echo $single_result_arr['name'];
-                                                            }
-                                                            _e(' took quiz ', 'quiz-master-next');
-                                                            echo '<a href="admin.php?page=mlw_quiz_options&quiz_id='. $single_result_arr['quiz_id'] .'">' . $single_result_arr['quiz_name'] . '</a>';                                                    
-                                                            ?>
-                                                        </span>    
-                                                        <span class="rtq-result-info">
-                                                            <?php
-                                                            $quotes_list = '';
-                                                            if ($single_result_arr['quiz_system'] == 0) {
-                                                                $quotes_list .= $single_result_arr['correct'] . " out of " . $single_result_arr['total'] . " or " . $single_result_arr['correct_score'] . "%";
-                                                            }
-                                                            if ($single_result_arr['quiz_system'] == 1) {
-                                                                $quotes_list .= $single_result_arr['point_score'] . " Points";
-                                                            }
-                                                            if ($single_result_arr['quiz_system'] == 2) {
-                                                                $quotes_list .= __('Not Graded', 'quiz-master-next');
-                                                            }
-                                                            echo $quotes_list;
-                                                            ?>
-                                                            |
-                                                            <?php
-                                                            $mlw_complete_time = '';
-                                                            $mlw_qmn_results_array = @unserialize($single_result_arr['quiz_results']);
-                                                            if ( is_array( $mlw_qmn_results_array ) ) {
-                                                                    $mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
-                                                                    if ( $mlw_complete_hours > 0 ) {
-                                                                            $mlw_complete_time .= "$mlw_complete_hours hours ";
-                                                                    }
-                                                                    $mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
-                                                                    if ( $mlw_complete_minutes > 0 ) {
-                                                                            $mlw_complete_time .= "$mlw_complete_minutes minutes ";
-                                                                    }
-                                                                    $mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
-                                                                    $mlw_complete_time .=  "$mlw_complete_seconds seconds";
-                                                            }
-                                                            _e(' Time to complete ', 'quiz-master-next');
-                                                            echo $mlw_complete_time;
-                                                            ?>
-                                                        </span>
-                                                        <span class="rtq-time-taken"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ); ?></span>
-                                                        <p class="row-actions-c">
-                                                            <a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo $single_result_arr['result_id']; ?>">View</a> | <a href="#" data-result_id="<?php echo $single_result_arr['result_id']; ?>" class="trash rtq-delete-result">Delete</a>
-                                                        </p>
-                                                    </div>                                                    
-                                                </li>
-                                            <?php                                        
-                                            }
-                                        }              
-                                        ?>                                        
-                                    </ul>
-                                    <p>
-                                        <a href="admin.php?page=mlw_quiz_results">
-                                            <?php                                            
-                                            $mlw_resutl_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted='0'", ARRAY_A );
-                                            echo isset($mlw_resutl_data['total_result']) ? __('See All Results ', 'quiz-master-next') : '';
-                                            ?>
-                                        </a>
-                                        <?php
-                                        echo isset($mlw_resutl_data['total_result']) ? '(' . $mlw_resutl_data['total_result'] . ')' : '';
-                                        ?>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                </div>
-                <div id="postbox-container-2" class="postbox-container">
-                    <div id="side-sortables" class="meta-box-sortables ui-sortable">
-                        <div id="dashboard_what_new" class="postbox">
-                            <button type="button" class="handlediv" aria-expanded="true">
-                                <span class="screen-reader-text">Toggle panel: <?php _e("'what's New", 'quiz-master-next'); ?></span>
-                                <span class="toggle-indicator" aria-hidden="true"></span>
-                            </button>
-                            <h2 class="hndle ui-sortable-handle"><span><?php _e("What's New",'quiz-master-next'); ?></span></h2>
-                            <div class="inside">
-                                <div class="main">
-                                    <ul class="what-new-ul">                                        
-                                        <?php                                        
-                                        $feeds = esc_url('https://quizandsurveymaster.com/wp-json/wp/v2/posts?per_page=2');
-                                        $feed_posts = wp_remote_get($feeds, array('sslverify' => false));
-                                        $feed_posts_body = wp_remote_retrieve_body($feed_posts);
-                                        $feed_posts_array = json_decode($feed_posts_body, TRUE);                                        
-                                        if(!empty($feed_posts_array)){
-                                            foreach ($feed_posts_array as $key => $single_feed_arr) { ?>
-                                                <li>
-                                                    <a href="<?php echo $single_feed_arr['link']; ?>" target="_blank">
-                                                        <?php echo $single_feed_arr['title']['rendered']; ?>
-                                                    </a>
-                                                    <div class="post-description">
-                                                        <?php echo $single_feed_arr['excerpt']['rendered']; ?>
-                                                    </div>
-                                                </li>
-                                            <?php
-                                            }
-                                        }                            
-                                        ?>                                        
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="dashboard_what_new" class="postbox">
-                            <button type="button" class="handlediv" aria-expanded="true">
-                                <span class="screen-reader-text">Toggle panel: <?php _e("Changelog", 'quiz-master-next'); ?></span>
-                                <span class="toggle-indicator" aria-hidden="true"></span>
-                            </button>
-                            <h2 class="hndle ui-sortable-handle"><span><?php _e("Changelog (6.4.8)",'quiz-master-next'); ?></span></h2>
-                            <div class="inside">
-                                <div class="main">
-                                    <ul class="changelog-ul">
-                                        <li><span class="enhancement">Enhancement</span> JavaScript error messages will show up only for WordPress admins - <a href="#">Issue#754</a></li>
-                                        <li><span class="bug">Bug</span> Changed the quiz post type slug to solve the conflict with LMS plugin - <a href="#">Issue#768</a></li>
-                                        <li><span class="user_request">User Request</span> Added the button to remove the result data permanent - <a href="#">Issue#778</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>            
-        </div><!-- dashboard-widgets-wrap -->
-    </div>
+    <fieldset>
+        <input type="hidden" name="wp_screen_options_nonce" value="<?php echo esc_textarea( wp_create_nonce( 'wp_screen_options_nonce' ) ); ?>">
+        <legend><?php esc_html_e( 'WordPress Screen Options Demo', 'wp-screen-options-framework' ); ?></legend>
+        <div class="metabox-prefs">
+                <div><input type="hidden" name="wp_screen_options[option]" value="wordpress_screen_options_demo_options" /></div>
+                <div><input type="hidden" name="wp_screen_options[value]" value="yes" /></div>
+                <div class="wordpress_screen_options_demo_custom_fields">
     <?php
+    $screen_options = array(
+        array(
+            'option' => 'testing',
+            'title' => 'Testing',
+        ),
+        array(
+            'option' => 'testing_second',
+            'title' => 'Testing Second',
+        ),
+    );
+    foreach ( $screen_options as $screen_option ) { 
+            
+            $option = $screen_option['option'];
+            $title = $screen_option['title'];
+            $screen    = get_current_screen();
+		$id        = "wordpress_screen_options_demo_$option";
+		$user_meta = get_usermeta( get_current_user_id(), 'wordpress_screen_options_demo_options' );                
+		// Check if the screen options have been saved. If so, use the saved value. Otherwise, use the default values.
+		if ( $user_meta ) {
+			$checked = array_key_exists( $option, $user_meta );
+		} else {
+			//$checked = $screen->get_option( $id, 'value' ) ? true : false;
+		}
+
+		?>
+
+		<label for="<?php echo esc_textarea( $id ); ?>"><input type="checkbox" name="wordpress_screen_options_demo[<?php echo esc_textarea( $option ); ?>]" class="wordpress-screen-options-demo" id="<?php echo esc_textarea( $id ); ?>" <?php checked( $checked ); ?>/> <?php echo esc_html( $title ); ?></label>
+                <?php
+    }
+    $button = get_submit_button( __( 'Apply', 'wp-screen-options-framework' ), 'button', 'screen-options-apply', false );
+		?>
+                    </div><!-- wordpress_screen_options_demo_custom_fields -->
+            </div><!-- metabox-prefs -->
+    </fieldset>
+    <br class="clear">
+    <?php
+    echo $button; // WPCS: XSS ok.
+    return ob_get_clean();    
 }
 ?>
