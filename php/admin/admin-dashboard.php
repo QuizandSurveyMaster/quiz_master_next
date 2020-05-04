@@ -1,11 +1,59 @@
 <?php
-function qsm_check_close_box($widget_id){
-    global $hook;
+/**
+ * @since 7.0
+ * @param str $widget_id
+ */
+function qsm_check_close_hidden_box($widget_id){
     $current_screen = get_current_screen();
-    echo $page_id = $current_screen->id;
+    $page_id = $current_screen->id;
     $user = wp_get_current_user();
     $closed_div = get_user_option("closedpostboxes_$page_id", $user->ID);
+    if($closed_div && is_array($closed_div)){
+        echo in_array($widget_id, $closed_div) ? 'closed' : '';
+    }
+    
+    $hidden_box = get_user_option("metaboxhidden_$page_id", $user->ID);
+    if($hidden_box && is_array($hidden_box)){
+        echo in_array($widget_id, $hidden_box) ? ' hide-if-js' : '';
+    }
 }
+
+/**
+ * 
+ * @param str $status
+ * @param obj $args
+ * @return type
+ */
+function qsm_dashboard_screen_options($status, $args){
+    $screen = get_current_screen();
+    if( is_object($screen) && trim($screen->id) == 'toplevel_page_qsm_dashboard' ){
+        ob_start();
+        $page_id = $screen->id;
+        $user = wp_get_current_user();
+        ?>
+        <form id="adv-settings" method="post">
+            <fieldset class="metabox-prefs">
+                <legend>Boxes</legend>
+                <?php
+                $hidden_box = get_user_option( "metaboxhidden_$page_id", $user->ID);
+                $hidden_box_arr = !empty($hidden_box) ? $hidden_box : array();
+                $registered_widget = get_option('qsm_dashboard_widget_arr', array());
+                if($registered_widget){
+                    foreach ($registered_widget as $key => $value) { ?>
+                        <label for="<?php echo $key; ?>-hide"><input class="hide-postbox-tog" name="<?php echo $key; ?>-hide" type="checkbox" id="<?php echo $key; ?>-hide" value="<?php echo $key; ?>" <?php if(!in_array($key, $hidden_box_arr)){ ?>checked="checked"<?php } ?>><?php echo $value['title']; ?></label>
+                    <?php
+                    }
+                }
+                ?>
+            </fieldset>
+            <?php wp_nonce_field( 'screen-options-nonce', 'screenoptionnonce', false, false ); ?>
+        </form>    
+        <?php    
+        return ob_get_clean();    
+    }
+    return $status;        
+}
+
 /**
  * @since 7.0
  * @return HTMl Dashboard for QSM
@@ -22,7 +70,7 @@ function qsm_generate_dashboard_page() {
     if ( wp_is_mobile() ) {
 	wp_enqueue_script( 'jquery-touch-punch' );
     }
-    ?>    
+    ?>
     <div class="wrap">
         <h1><?php _e('QSM Dashboard', 'quiz-master-next'); ?></h1>
         <div id="welcome-panel" class="welcome-panel">
@@ -64,32 +112,55 @@ function qsm_generate_dashboard_page() {
         $qsm_dashboard_widget = array(
             'dashboard_popular_addon' => array(
                 'sidebar' => 'normal',
-                'callback' => 'qsm_dashboard_popular_addon'
+                'callback' => 'qsm_dashboard_popular_addon',
+                'title' => 'Popular Addons'
             ),
             'dashboard_recent_taken_quiz' => array(
                 'sidebar' => 'normal',
-                'callback' => 'qsm_dashboard_recent_taken_quiz'
+                'callback' => 'qsm_dashboard_recent_taken_quiz',
+                'title' => 'Recent Taken Quiz'
             ),
             'dashboard_what_new' => array(
                 'sidebar' => 'side',
-                'callback' => 'qsm_dashboard_what_new'
+                'callback' => 'qsm_dashboard_what_new',
+                'title' => 'Latest news'
             ),
             'dashboard_chagelog' => array(
                 'sidebar' => 'side',
-                'callback' => 'qsm_dashboard_chagelog'
+                'callback' => 'qsm_dashboard_chagelog',
+                'title' => 'Changelog'
             )
         );
         $qsm_dashboard_widget = apply_filters('qsm_dashboard_widget', $qsm_dashboard_widget);
         update_option('qsm_dashboard_widget_arr', $qsm_dashboard_widget);
+
+        //Get the metabox positions
+        $current_screen = get_current_screen();
+        $page_id = $current_screen->id;
+        $user = wp_get_current_user();
+        $box_positions = get_user_option("meta-box-order_$page_id", $user->ID);
         ?>
         <div id="dashboard-widgets-wrap">
             <div id="dashboard-widgets" class="metabox-holder">
                 <div id="postbox-container-1" class="postbox-container">
                     <div id="normal-sortables" class="meta-box-sortables ui-sortable">
                         <?php
+                        $normal_widgets = $side_widgets = array();
+                        if($box_positions && is_array($box_positions) && isset($box_positions['normal']) && $box_positions['normal'] != ''){
+                            $normal_widgets = explode(',', $box_positions['normal']);
+                            foreach ($normal_widgets as $value) {
+                                if(isset($qsm_dashboard_widget[$value])){
+                                    call_user_func($qsm_dashboard_widget[$value]['callback'], $value);
+                                }
+                            }
+                        }
+                        if($box_positions && is_array($box_positions) && isset($box_positions['side']) && $box_positions['side'] != ''){
+                            $side_widgets = explode(',', $box_positions['side']);
+                        }
+                        $all_widgets = array_merge($normal_widgets,$side_widgets);
                         if ($qsm_dashboard_widget) {
                             foreach ($qsm_dashboard_widget as $widgte_id => $normal_widget) {
-                                if ($normal_widget['sidebar'] == 'normal') {
+                                if (!in_array($widgte_id, $all_widgets) && $normal_widget['sidebar'] == 'normal') {
                                     call_user_func($normal_widget['callback'], $widgte_id);
                                 }
                             }
@@ -100,20 +171,29 @@ function qsm_generate_dashboard_page() {
                 <div id="postbox-container-2" class="postbox-container">
                     <div id="side-sortables" class="meta-box-sortables ui-sortable">
                         <?php
-                        if ($qsm_dashboard_widget) {
-                            foreach ($qsm_dashboard_widget as $widgte_id => $normal_widget) {
-                                if ($normal_widget['sidebar'] == 'side') {
-                                    call_user_func($normal_widget['callback'], $widgte_id);
+                        $normal_widgets = array();
+                        if($box_positions && is_array($box_positions) && isset($box_positions['side']) && $box_positions['side'] != ''){
+                            $normal_widgets = explode(',', $box_positions['side']);
+                            foreach ($normal_widgets as $value) {
+                                if(isset($qsm_dashboard_widget[$value])){
+                                    call_user_func($qsm_dashboard_widget[$value]['callback'], $value);
                                 }
                             }
                         }
+                        if ($qsm_dashboard_widget) {
+                            foreach ($qsm_dashboard_widget as $widgte_id => $normal_widget) {
+                                if (!in_array($widgte_id, $all_widgets) && $normal_widget['sidebar'] == 'side') {
+                                    call_user_func($normal_widget['callback'], $widgte_id);
+                                }
+                            }
+                        }                        
                         ?>
                     </div>
                 </div>
-            </div>  
+            </div>
             <?php
             wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
-            wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );            
+            wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
             ?>
         </div><!-- dashboard-widgets-wrap -->
     </div>
@@ -124,9 +204,9 @@ function qsm_dashboard_popular_addon($widget_id) {
     $file = esc_url('http://localhost/work/et/qsm/qsm_dashboard.json');
     $response = wp_remote_get($file, array('sslverify' => false));
     $body = wp_remote_retrieve_body($response);
-    $addon_array = json_decode($body, TRUE);    
+    $addon_array = json_decode($body, TRUE);
     ?>
-    <div id="dashboard_popular_addon" class="postbox <?php qsm_check_close_box($widget_id); ?>">
+    <div id="<?php echo $widget_id; ?>" class="postbox <?php qsm_check_close_hidden_box($widget_id); ?>">
         <button type="button" class="handlediv" aria-expanded="true">
             <span class="screen-reader-text">Toggle panel: <?php _e('Most Popular Addon this Week', 'quiz-master-next'); ?></span>
             <span class="toggle-indicator" aria-hidden="true"></span>
@@ -134,7 +214,7 @@ function qsm_dashboard_popular_addon($widget_id) {
         <h2 class="hndle ui-sortable-handle"><span><?php _e('Most Popular Addon this Week', 'quiz-master-next'); ?></span></h2>
         <div class="inside">
             <div class="main">
-                <ul class="popuar-addon-ul">                                
+                <ul class="popuar-addon-ul">
                     <?php
                     if (isset($addon_array['most_popular_addon'])) {
                         foreach ($addon_array['most_popular_addon'] as $key => $single_arr) {
@@ -147,7 +227,7 @@ function qsm_dashboard_popular_addon($widget_id) {
                             <?php
                         }
                     }
-                    ?>                                        
+                    ?>
                 </ul>
                 <div class="pa-all-addon">
                     <a href="https://quizandsurveymaster.com/addons/" target="_blank"><?php _e('SEE ALL ADDONS', 'quiz-master-next'); ?></a>
@@ -158,10 +238,10 @@ function qsm_dashboard_popular_addon($widget_id) {
     <?php
 }
 
-function qsm_dashboard_recent_taken_quiz() {
+function qsm_dashboard_recent_taken_quiz($widget_id) {
     global $wpdb;
     ?>
-    <div id="dashboard_recent_taken_quiz" class="postbox">
+    <div id="<?php echo $widget_id; ?>" class="postbox <?php qsm_check_close_hidden_box($widget_id); ?>">
         <button type="button" class="handlediv" aria-expanded="true">
             <span class="screen-reader-text">Toggle panel: <?php _e('Recently Taken Quizzes', 'quiz-master-next'); ?></span>
             <span class="toggle-indicator" aria-hidden="true"></span>
@@ -195,7 +275,7 @@ function qsm_dashboard_recent_taken_quiz() {
                                         _e(' took quiz ', 'quiz-master-next');
                                         echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . $single_result_arr['quiz_id'] . '">' . $single_result_arr['quiz_name'] . '</a>';
                                         ?>
-                                    </span>    
+                                    </span>
                                     <span class="rtq-result-info">
                                         <?php
                                         $quotes_list = '';
@@ -234,12 +314,12 @@ function qsm_dashboard_recent_taken_quiz() {
                                     <p class="row-actions-c">
                                         <a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo $single_result_arr['result_id']; ?>">View</a> | <a href="#" data-result_id="<?php echo $single_result_arr['result_id']; ?>" class="trash rtq-delete-result">Delete</a>
                                     </p>
-                                </div>                                                    
+                                </div>
                             </li>
                             <?php
                         }
                     }
-                    ?>                                        
+                    ?>
                 </ul>
                 <p>
                     <a href="admin.php?page=mlw_quiz_results">
@@ -258,9 +338,9 @@ function qsm_dashboard_recent_taken_quiz() {
     <?php
 }
 
-function qsm_dashboard_what_new() {
+function qsm_dashboard_what_new($widget_id) {
     ?>
-    <div id="dashboard_what_new" class="postbox">
+    <div id="<?php echo $widget_id; ?>" class="postbox <?php qsm_check_close_hidden_box($widget_id); ?>">
         <button type="button" class="handlediv" aria-expanded="true">
             <span class="screen-reader-text">Toggle panel: <?php _e("'what's New", 'quiz-master-next'); ?></span>
             <span class="toggle-indicator" aria-hidden="true"></span>
@@ -268,7 +348,7 @@ function qsm_dashboard_what_new() {
         <h2 class="hndle ui-sortable-handle"><span><?php _e("What's New", 'quiz-master-next'); ?></span></h2>
         <div class="inside">
             <div class="main">
-                <ul class="what-new-ul">                                        
+                <ul class="what-new-ul">
                     <?php
                     $feeds = esc_url('https://quizandsurveymaster.com/wp-json/wp/v2/posts?per_page=2');
                     $feed_posts = wp_remote_get($feeds, array('sslverify' => false));
@@ -288,7 +368,7 @@ function qsm_dashboard_what_new() {
                             <?php
                         }
                     }
-                    ?>                                        
+                    ?>
                 </ul>
             </div>
         </div>
@@ -296,9 +376,9 @@ function qsm_dashboard_what_new() {
     <?php
 }
 
-function qsm_dashboard_chagelog() {
+function qsm_dashboard_chagelog($widget_id) {
     ?>
-    <div id="dashboard_what_new" class="postbox">
+    <div id="<?php echo $widget_id; ?>" class="postbox <?php qsm_check_close_hidden_box($widget_id); ?>">
         <button type="button" class="handlediv" aria-expanded="true">
             <span class="screen-reader-text">Toggle panel: <?php _e("Changelog", 'quiz-master-next'); ?></span>
             <span class="toggle-indicator" aria-hidden="true"></span>
@@ -315,4 +395,30 @@ function qsm_dashboard_chagelog() {
         </div>
     </div>
     <?php
+}
+
+
+add_filter('qsm_dashboard_widget', 'simple_html_testing', 10, 1);
+function simple_html_testing($array){
+    $array['simple_html'] = array(
+        'sidebar' => 'normal',
+        'callback' => 'qsm_dashboard_simple_html',
+        'title' => 'Simple Html'
+    );
+    update_option('qsm_dashboard_widget_arr', $array);
+    return $array;
+}
+function qsm_dashboard_simple_html($widget_id){ ?>
+    <div id="<?php echo $widget_id; ?>" class="postbox <?php qsm_check_close_hidden_box($widget_id); ?>">
+        <button type="button" class="handlediv" aria-expanded="true">
+            <span class="screen-reader-text">Toggle panel: <?php _e("Testing Stucture", 'quiz-master-next'); ?></span>
+            <span class="toggle-indicator" aria-hidden="true"></span>
+        </button>
+        <h2 class="hndle ui-sortable-handle"><span><?php _e("Testing Stucture", 'quiz-master-next'); ?></span></h2>
+        <div class="inside">
+            <div class="main">
+                Perfect testing of dashboard
+            </div>
+        </div>
+    </div><?php
 }
