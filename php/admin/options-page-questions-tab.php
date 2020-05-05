@@ -31,6 +31,7 @@ function qsm_options_questions_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
+        $question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$quiz_id = intval( $_GET['quiz_id'] );
         $user_id = get_current_user_id();         
 	$json_data = array(
@@ -39,7 +40,8 @@ function qsm_options_questions_tab_content() {
 		'nonce'      => wp_create_nonce( 'wp_rest' ),
 		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
                 'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
-                'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page')
+                'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
+                'categories' => $question_categories
 	);
 
 	// Scripts and styles.

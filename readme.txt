@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.9
+Stable tag: 6.4.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.10 (May 05, 2020) =
+* Bug: Fixed issue while using quotes in CSS  (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/874).
+* Bug: Fixed issue where text label overrides checkbox.
+* Bug: Fixed duplicate messages when login is required.
+* Bug: Fixed unwanted appearance of timer popup (https://wordpress.org/support/topic/time-is-up-message-is-displayed-for-odd-reason/#post-12749059).
+* Bug: Fixed issue with latex syntax on result page.
+* Enhancement: Added pagination while importing questions from question bank to increase performance
 
 = 6.4.9 (April 21, 2020)=
 * Bug: Fixed popup design issues.

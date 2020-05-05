@@ -49,40 +49,64 @@ var import_button;
 			$( '#add-question-bank-page' ).val( pageID );
 			MicroModal.show( 'modal-2' );
 		},
-		loadQuestionBank: function() {
-			$( '#question-bank' ).empty();
-			$( '#question-bank' ).append( '<div class="qsm-spinner-loader"></div>' );
+		loadQuestionBank: function( action = '' ) {
+                        if( action == 'change' ){
+                            $( '.qb-load-more-wrapper' ).remove();
+                            $( '#question-bank' ).find( '.question-bank-question' ).remove();
+                            $( '#question-bank' ).append( '<div style="top: 45px;position: relative;" class="qsm-spinner-loader"></div>' );
+                        }else if($('.qb-load-more-wrapper').length > 0){
+                            $( '.qb-load-more-question' ).hide();
+                            $( '.qb-load-more-wrapper' ).append( '<div class="qsm-spinner-loader"></div>' );
+                        }else{
+                            $( '#question-bank' ).empty();
+                            $( '#question-bank' ).append( '<div class="qsm-spinner-loader"></div>' );
+                        }			
 			$.ajax( {
-				url: wpApiSettings.root + 'quiz-survey-master/v1/questions',
+				url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
 				method: 'GET',
 				beforeSend: function ( xhr ) {
 					xhr.setRequestHeader( 'X-WP-Nonce', qsmQuestionSettings.nonce );
 				},
 				data: {
-					'quizID' : 0
+					'quizID' : 0,
+                                        'page' : $('#question_back_page_number').length > 0 ? parseInt( $('#question_back_page_number').val() ) + 1 : 1,
+                                        'category' : $('#question-bank-cat').val()
 				},
 				success: QSMQuestion.questionBankLoadSuccess
 			});
 		},
 		questionBankLoadSuccess: function( questions ) {
-			$( '#question-bank' ).empty();
-                        var category_arr = [];
+                        var pagination = questions.pagination;
+                        var questions = questions.questions;
+                        if($('.qb-load-more-wrapper').length > 0){
+                            $('.qb-load-more-wrapper').remove();
+                        }else{
+                            $( '#question-bank' ).empty();
+                        }                        
 			for ( var i = 0; i < questions.length; i++) {
-				QSMQuestion.addQuestionToQuestionBank( questions[i] );
-                                if(category_arr.indexOf(questions[i].category) == -1 && questions[i].category != ''){                                    
-                                    category_arr.push(questions[i].category);                                    
-                                }
-			}                        
-                        if(category_arr.length > 0){
+				QSMQuestion.addQuestionToQuestionBank( questions[i] );                                
+			}
+                        if( pagination.total_pages > pagination.current_page){
+                            var pagination_html = '<div class="qb-load-more-wrapper" style="text-align: center;margin: 20px 0 10px 0;"><input type="hidden" id="question_back_page_number" value="' + pagination.current_page + '"/>';
+                            pagination_html += '<input type="hidden" id="question_back_total_pages" value="'+ pagination.total_pages +'"/>';
+                            pagination_html += '<a href="#" class="button button-primary qb-load-more-question">Load More Questions</a></div>';
+                            $( '#question-bank' ).append( pagination_html );
+                        }                        
+                        if(pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0){
+                            var category_arr = qsmQuestionSettings.categories;                            
                             $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
                             $cat_html += '<option value="">All Questions</option>';
                             $.each(category_arr, function(index, value){
-                                $cat_html += '<option value="'+ value +'">'+ value +' Questions</option>';
+                                if(value.category !== '')
+                                    $cat_html += '<option value="'+ value.category +'">'+ value.category +' Questions</option>';
                             });
                             $cat_html += '</select>';
                             $( '#question-bank' ).prepend($cat_html);
+                            $('#question-bank-cat').val(pagination.category);
                         }
-                        $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
+                        if(pagination.current_page == 1){
+                            $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
+                        }                        
 		},
 		addQuestionToQuestionBank: function( question ) {
 			var questionText = QSMQuestion.prepareQuestionText( question.name );
@@ -480,6 +504,18 @@ var import_button;
 			event.preventDefault();
 			QSMQuestion.openQuestionBank( $( this ).parents( '.page' ).index() );
 		});
+                
+                //Show more question on load more
+                $( document ).on( 'click', '.qb-load-more-question', function( event ) {
+			event.preventDefault();
+			QSMQuestion.loadQuestionBank();
+		});
+                
+                //Show category related question
+                $( document ).on( 'change', '#question-bank-cat', function( event ) {
+			event.preventDefault();
+			QSMQuestion.loadQuestionBank('change');
+		});
 
 		$( '.questions' ).on( 'click', '.edit-question-button', function( event ) {
 			event.preventDefault();
@@ -618,21 +654,7 @@ var import_button;
                             $this.text('').html('Show advance options &raquo;');
                         }  
                     });
-                });
-                $(document).on('change','#question-bank-cat', function(){
-                    var val = $(this).val();
-                    if(val == ''){
-                        $('.question-bank-question').show();
-                    }else{
-                        $('.question-bank-question').each(function (){
-                            if($(this).attr("data-category-name") == val){
-                                $(this).show();
-                            }else{
-                                $(this).hide();
-                            }
-                        });
-                    }                    
-                });
+                });                
                 //Hide the question settings based on question type
                 $(document).on('change','#question_type', function(){
                     var question_val = $(this).val();

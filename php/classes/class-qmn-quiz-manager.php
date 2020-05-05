@@ -229,7 +229,7 @@ class QMNQuizManager {
             // Loads Quiz Template.
             // The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
             if ('default' == $qmn_quiz_options->theme_selected) {
-                $return_display .= '<style type="text/css">' . $qmn_quiz_options->quiz_stye . '</style>';
+                $return_display .= '<style type="text/css">' . htmlspecialchars_decode($qmn_quiz_options->quiz_stye) . '</style>';                
                 wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/qmn_quiz.css', __FILE__));
             } else {
                 $registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
@@ -488,7 +488,7 @@ class QMNQuizManager {
         );
         
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
-        wp_enqueue_script( 'jquery-ui-slider-js', '//code.jquery.com/ui/1.12.1/jquery-ui.js' );
+        wp_enqueue_script( 'jquery-ui-slider-js', plugins_url('../../js/jquery-ui.js', __FILE__));
         wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url('../../js/jquery.ui.slider-rtl.js', __FILE__) );
         wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
         wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );        
@@ -752,7 +752,7 @@ class QMNQuizManager {
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
             <div class="qmn_page_counter_message"></div>
-            <div id="qsm-progress-bar" style="display:none;"></div>
+            <div class="qsm-progress-bar" style="display:none;"></div>
             <a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html($options->next_button_text); ?></a>
             <input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr(htmlspecialchars_decode($options->submit_button_text, ENT_QUOTES)); ?>' />
             </div>
@@ -1133,10 +1133,10 @@ class QMNQuizManager {
 
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
-
+            
             // Sends the emails.
             QSM_Emails::send_emails($qmn_array_for_variables);
-
+            
             /**
              * Filters for filtering the results text after emails are sent.
              *
@@ -1695,8 +1695,8 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
         }        
         $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
         $mlw_message = str_replace("\n", "<br>", $mlw_message);
+        //$display .= do_shortcode($mlw_message);
         $display .= do_shortcode($mlw_message);
-        $display .= $mlw_message;
         $display .= wp_login_form(array('echo' => false));
     }
     return $display;
