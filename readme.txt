@@ -122,12 +122,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 6.4.10 (May 05, 2020) =
-* Bug: Solved quotes in custom CSS (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/874).
-* Bug: Solved checkbox overriding text.
-* Bug: Solved requires login message appears twice issue.
-* Bug: Solved "Time is up" message coming on the quiz for fraction of seconds(https://wordpress.org/support/topic/time-is-up-message-is-displayed-for-odd-reason/#post-12749059).
-* Bug: Solved the latex issue on result page.
-* Enhancement: Added load more pagination in question bank popup
+* Bug: Fixed issue while using quotes in CSS  (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/874).
+* Bug: Fixed issue where text label overrides checkbox.
+* Bug: Fixed duplicate messages when login is required.
+* Bug: Fixed unwanted appearance of timer popup (https://wordpress.org/support/topic/time-is-up-message-is-displayed-for-odd-reason/#post-12749059).
+* Bug: Fixed issue with latex syntax on result page.
+* Enhancement: Added pagination while importing questions from question bank to increase performance
 
 = 6.4.9 (April 21, 2020)=
 * Bug: Fixed popup design issues.
