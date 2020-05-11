@@ -1,4 +1,4 @@
-=== Quiz And Survey Master - Best Quiz Plugin for WordPress ===
+=== Quiz And Survey Master - Best Quiz, Exam and Survey Plugin for WordPress ===
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9

@@ -266,8 +266,8 @@ var QSM;
                                     $quizForm.find( '.qsm-pagination' ).append( '<input type="hidden" value="0" name="current_page" class="current_page_hidden" />');
                                 }
 				if ( '1' == qmn_quiz_data[ quizID ].progress_bar ) {
-					$( '#qsm-progress-bar' ).show();
-					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line('#qsm-progress-bar', {
+                                        $('#quizForm' + quizID).find('.qsm-progress-bar').show();
+					qmn_quiz_data[ quizID ].bar = new ProgressBar.Line('#quizForm' + quizID + ' .qsm-progress-bar', {
 						strokeWidth: 2,
 						easing: 'easeInOut',
 						duration: 1400,
