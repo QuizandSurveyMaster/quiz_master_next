@@ -129,5 +129,41 @@ var QSMAdmin;
                 );
             }
         });
+        jQuery('.load-quiz-wizard').click(function(e){
+            e.preventDefault();            
+            MicroModal.show('model-wizard');
+            var height = jQuery(".qsm-wizard-template-section").css("height");
+            jQuery(".qsm-wizard-setting-section").css("height", height);
+            if(jQuery( "#accordion" ).length > 0){
+                var icons = {
+                    header: "iconClosed",    // custom icon class
+                    activeHeader: "iconOpen" // custom icon class
+                };
+                jQuery( "#accordion" ).accordion({
+                        collapsible: true,
+                        icons: icons,
+                        heightStyle: "content"
+                });
+                jQuery('.template-list .template-list-inner:first-child').trigger('click');                
+            }
+        });
+        //Get quiz options
+        jQuery('.template-list-inner').click(function(){
+            var action = 'qsm_wizard_template_quiz_options';
+            var settings = jQuery(this).data('settings');
+            var addons = jQuery(this).data('addons');
+            jQuery('.template-list .template-list-inner').removeClass('selected-quiz-template');
+            jQuery(this).addClass('selected-quiz-template');
+            $.post(ajaxurl, {settings: settings, addons: addons, action: action },
+                function (data) {
+                    var diff_html = data.split('=====');                    
+                    jQuery('#quiz_settings_wrapper').html('');      
+                    jQuery('#quiz_settings_wrapper').html(diff_html[0]);
+                    jQuery('#recomm_addons_wrapper').html('');
+                    jQuery('#recomm_addons_wrapper').html(diff_html[1]);
+                    jQuery( "#accordion" ).accordion();
+                }
+            );
+        });
     });
 }(jQuery));
