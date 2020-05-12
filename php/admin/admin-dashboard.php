@@ -607,3 +607,25 @@ function qsm_dashboard_chagelog($widget_id) {
     </div>
     <?php
 }
+
+
+add_action('admin_init','qsm_create_new_quiz_from_wizard');
+/**
+ * @since 7.0
+ * 
+ * Create new quiz and redirect to newly created quiz
+ */
+
+function qsm_create_new_quiz_from_wizard(){
+    // Create new quiz.
+    if (isset($_POST['qsm_new_quiz_nonce']) && wp_verify_nonce($_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz')) {
+        global $mlwQuizMasterNext;
+        $quiz_name = sanitize_textarea_field(htmlspecialchars(stripslashes($_POST['quiz_name']), ENT_QUOTES));
+        unset($_POST['qsm_new_quiz_nonce']);
+        unset($_POST['_wp_http_referer']);
+        $setting_arr = array(
+            'quiz_options' => serialize($_POST)
+        );
+        $mlwQuizMasterNext->quizCreator->create_quiz($quiz_name, serialize($setting_arr));
+    }
+}

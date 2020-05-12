@@ -165,5 +165,10 @@ var QSMAdmin;
                 }
             );
         });
+        
+        jQuery( '#create-quiz-button' ).on( 'click', function( event ) {
+            event.preventDefault();
+            jQuery( '#new-quiz-form' ).submit();
+        });
     });
 }(jQuery));

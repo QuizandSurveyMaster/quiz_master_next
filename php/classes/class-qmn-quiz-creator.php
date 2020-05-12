@@ -67,7 +67,7 @@ class QMNQuizCreator {
 	 * @param string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
-	public function create_quiz( $quiz_name ) {
+	public function create_quiz( $quiz_name, $quiz_settings = '' ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
                 $current_user = wp_get_current_user();
@@ -114,7 +114,7 @@ class QMNQuizCreator {
 				'timer_limit'              => 0,
 				'quiz_stye'                => '',
 				'question_numbering'       => 0,
-				'quiz_settings'            => '',
+				'quiz_settings'            => $quiz_settings,
 				'theme_selected'           => 'primary',
 				'last_activity'            => current_time( 'mysql' ),
 				'require_log_in'           => 0,
