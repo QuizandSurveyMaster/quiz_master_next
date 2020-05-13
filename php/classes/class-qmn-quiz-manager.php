@@ -1134,7 +1134,9 @@ class QMNQuizManager {
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
             
-            // Sends the emails.
+            $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
+
+			// Sends the emails.
             QSM_Emails::send_emails($qmn_array_for_variables);
             
             /**
