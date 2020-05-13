@@ -232,27 +232,29 @@ function qsm_options_questions_tab_content() {
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">
 		<div class="page page-new">
-			<div class="page-header">
-				<div><span class="dashicons dashicons-move"></span></div>
-				<div class="page-header-buttons">
-					<a href="#" class="new-question-button button">Create New Question</a>
-					<a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
-				</div>
-				<div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
-			</div>
-		</div>
+                    <div class="page-header">
+                            <div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
+                            <div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
+                    </div>
+                    <div class="page-footer">
+                        <div class="page-header-buttons">
+                            <a href="#" class="new-question-button button">Create New Question</a>
+                            <a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
+                        </div>
+                    </div>
+		</div>                
 	</script>
-
+        	
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
 		<div class="question question-new" data-question-id="{{data.id }}">
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
-				<div><a href="#" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
-				<div><a href="#" class="duplicate-question-button"><span class="dashicons dashicons-controls-repeat"></span></a></div>
+				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>                                
+				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-controls-repeat"></span></a></div>
+                                <div><a href="#" title="Delete Question" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
-				<div><# if ( 0 !== data.category.length ) { #> Category: {{data.category}} <# } #></div>
-				<div><a href="#" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a><div>
+				<div class="question-category"><# if ( 0 !== data.category.length ) { #> Category: {{data.category}} <# } #></div>				
 			</div>
 		</div>
 	</script>

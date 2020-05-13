@@ -236,6 +236,7 @@ var import_button;
 			var count = 0;
 			while ( ! page_exists ) {
 				QSMQuestion.addNewPage();
+                                $('.page:nth-child(' + page + ')').find('.page-number').text('Page ' + page);
 				page_exists = $( '.page:nth-child(' + page + ')' ).length;
 				count++;
 				if ( count > 5 ) {
