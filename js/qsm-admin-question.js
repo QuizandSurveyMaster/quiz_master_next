@@ -153,16 +153,17 @@ var import_button;
 			$( '#categories' ).prepend( template( { category: category } ) );
 		},
 		loadQuestions: function() {
-			QSMAdmin.displayAlert( 'Loading questions...', 'info' );
+			QSMAdmin.displayAlert( 'Loading questions...', 'info' );                        
 			QSMQuestion.questions.fetch({ 
 				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
 				data: { quizID: qsmQuestionSettings.quizID },
 				success: QSMQuestion.loadSuccess,
 				error: QSMAdmin.displayError
-			});
+			});                        
 		},
 		loadSuccess: function() {
 			QSMAdmin.clearAlerts();
+                        $('.qsm-showing-loader').remove();
 			var question;
 			if ( qsmQuestionSettings.pages.length > 0 ) {
 				for ( var i = 0; i < qsmQuestionSettings.pages.length; i++ ) {
@@ -212,8 +213,10 @@ var import_button;
 			QSMAdmin.displayAlert( 'Questions and pages were saved!', 'success' );
 		},
 		addNewPage: function() {
-			var template = wp.template( 'page' );
+			var template = wp.template( 'page' );                        
 			$( '.questions' ).append( template() );
+                        var page = $( '.questions' ).find('.page').length;
+                        $('.page:nth-child(' + page + ')').find('.page-number').text('Page ' + page);
 			$( '.page' ).sortable({
 				items: '.question',
 				opacity: 70,
@@ -235,8 +238,7 @@ var import_button;
 			var page_exists = $( '.page:nth-child(' + page + ')' ).length;
 			var count = 0;
 			while ( ! page_exists ) {
-				QSMQuestion.addNewPage();
-                                $('.page:nth-child(' + page + ')').find('.page-number').text('Page ' + page);
+				QSMQuestion.addNewPage();                                
 				page_exists = $( '.page:nth-child(' + page + ')' ).length;
 				count++;
 				if ( count > 5 ) {

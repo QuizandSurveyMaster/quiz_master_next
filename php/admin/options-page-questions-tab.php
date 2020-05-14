@@ -84,20 +84,21 @@ function qsm_options_questions_tab_content() {
 	?>
 	<h3>Questions</h3>
 	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">documentation for this tab!</a></p>
-	<div class="question-controls">
-		<div>
-			<button class="new-page-button button">Create New Page</button>
-			<button class="save-page-button button-primary">Save Questions and Pages</button>
-		</div>
-		<span>Total Questions: <span id="total-questions"></span></span>
-		<p class="search-box">
-			<label class="screen-reader-text" for="question_search">Search Questions:</label>
-			<input type="search" id="question_search" name="question_search" value="">
-			<a href="#" class="button">Search Questions</a>
-		</p>
+	<div class="question-controls">		
+            <span><b>Total Questions:</b> <span id="total-questions"></span></span>
+            <p class="search-box">
+                    <label class="screen-reader-text" for="question_search">Search Questions:</label>
+                    <input type="search" id="question_search" name="question_search" value="">
+                    <a href="#" class="button">Search Questions</a>
+            </p>
 	</div>
-	<div class="questions"></div>
-
+        <div class="questions"><div class="qsm-showing-loader" style="text-align: center;"><div class="qsm-spinner-loader"></div></div></div>
+        <div class="question-create-page">
+            <div>
+                    <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> Create New Page</button>
+                    <button  style="display: none;" class="save-page-button button-primary">Save Questions and Pages</button>
+            </div>
+        </div>
 	<!-- Popup for question bank -->
 	<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-2" aria-hidden="true">
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -238,8 +239,8 @@ function qsm_options_questions_tab_content() {
                     </div>
                     <div class="page-footer">
                         <div class="page-header-buttons">
-                            <a href="#" class="new-question-button button">Create New Question</a>
-                            <a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
+                            <a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> Create New Question</a>
+                            <a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> Add Question From Question Bank</a>
                         </div>
                     </div>
 		</div>                
