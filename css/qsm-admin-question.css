@@ -18,6 +18,9 @@
 	padding-bottom: 60px;
 	/*box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4)*/
         position: relative;
+        padding-left: 15px;
+        padding-right: 15px;
+        box-sizing: border-box;
 }
 
 .page-header {
@@ -51,7 +54,26 @@
     position: absolute;
     bottom: 15px;
     width: 100%;    
-    right: 10px;
+    right: 25px;
+}
+
+.page-footer a.button {
+    border: 1px solid #cbcbcb;
+    color: #7b7575;
+    background: #F7F7F7;
+}
+
+.page-footer a.button .dashicons{
+    line-height: 32px;
+}
+
+.question-create-page{
+    text-align: right;
+}
+
+.question-create-page .new-page-button .dashicons{
+    line-height: 30px;
+    font-size: 16px;    
 }
 
 .page-header a {
@@ -63,7 +85,7 @@
 }
 
 .question, .question-bank-question {
-	padding: 10px;
+	padding: 15px 10px;
 	background-color: #F3F3F3;
 	border: 1px solid #cbcbcb;
 	margin: 15px 10px 0;
@@ -96,13 +118,13 @@
 .question-content .question-content-text{
     color: #1F8CBE;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .question-content .question-category{
     color: #939697;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: normal;
     font-style: italic;
 }
 
@@ -126,7 +148,7 @@
 }
 
 .page-new, .question-new {
-	background-color: yellow !important;
+	background-color: #fff !important;
 }
 
 .correct-header {
@@ -405,6 +427,13 @@ a.import-button.button.disable_import::before {
     margin-right: 10px;
 }
 
+.ui-state-highlight {    
+    background: #F3F3F3;
+    border: 1px solid #cbcbcb;
+    height: 50px;
+    margin: 15px 10px 0;
+}
+ 
 @media screen and (max-width: 575px){
     .qsm-popup__container{
         min-width: auto;
