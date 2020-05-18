@@ -300,10 +300,14 @@ var QSM;
 				$quizForm.find( '.qsm-pagination .qsm-next' ).on( 'click', function( event ) {
 					event.preventDefault();
 					QSM.nextPage( quizID );
+                                        var $container = jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' );
+                                        qsmScrollTo( $container );
 				});
 				$quizForm.find( '.qsm-pagination .qsm-previous' ).on( 'click', function( event ) {
 					event.preventDefault();
 					QSM.prevPage( quizID );
+                                        var $container = jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' );
+                                        qsmScrollTo( $container );
 				});
 			}			
 		},
