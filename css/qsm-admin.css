@@ -599,7 +599,7 @@ body .qsm-popup__btn-primary {
 }
 
 .qsm-popup-slide.is-open {
-    display: block;
+    display: block !important;
 }
 
 .qsm-popup-slide[aria-hidden="false"] .qsm-popup__overlay {

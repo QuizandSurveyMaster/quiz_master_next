@@ -117,6 +117,10 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm-quiz-container .qsm-contact-type-checkbox input{
     display: inline-block;
 }
+.quiz_section iframe{    
+    width: 100% !important;
+    min-height: 315px !important;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
