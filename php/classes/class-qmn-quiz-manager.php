@@ -1064,7 +1064,7 @@ class QMNQuizManager {
 
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-            if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
+            if ( $this->qsm_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
                 $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. apply_filters('qsm_retake_quiz_text', 'Retake Quiz') .'</a>';
             }
             $unique_id = md5(date("Y-m-d H:i:s"));
@@ -1678,7 +1678,39 @@ class QMNQuizManager {
         }
         return $ip;
     }
+    
+    /**
+    * Determines whether a plugin is active.
+    *
+    * @since 6.4.11
+    *
+    * @param string $plugin Path to the plugin file relative to the plugins directory.
+    * @return bool True, if in the active plugins list. False, not in the list.
+    */
+    private function qsm_plugin_active( $plugin ){
+        return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || $this->qsm_plugin_active_for_network( $plugin );
+    }
+    
+    /**
+    * Determines whether the plugin is active for the entire network.
+    *
+    * @since 6.4.11
+    *
+    * @param string $plugin Path to the plugin file relative to the plugins directory.
+    * @return bool True if active for the network, otherwise false.
+    */
+    private function qsm_plugin_active_for_network(){
+        if ( ! is_multisite() ) {
+		return false;
+	}
 
+	$plugins = get_site_option( 'active_sitewide_plugins' );
+	if ( isset( $plugins[ $plugin ] ) ) {
+		return true;
+	}
+
+	return false;
+    }
 }
 
 global $qmnQuizManager;

@@ -310,6 +310,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 			}
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
 			$mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
+                        $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);
                         if($answer['question_type'] == 11){
                             $file_extension = substr($answer[1], -4);
                             if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
