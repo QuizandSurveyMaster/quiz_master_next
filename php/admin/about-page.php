@@ -30,16 +30,16 @@ function qsm_generate_about_page() {
 		<div class="about-text"><?php esc_html_e( 'Thank you for updating!', 'quiz-master-next' ); ?></div>
 		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
 		<h2 class="nav-tab-wrapper">
-			<a href="#" data-tab='1' class="nav-tab nav-tab-active qsm-tab">
+                    <a style="display: none;" href="#" data-tab='1' class="nav-tab qsm-tab">
 				<?php esc_html_e( "What's New!", 'quiz-master-next' ); ?></a>
-			<a href="#" data-tab='2' class="nav-tab qsm-tab">
+			<a style="display: none;" href="#" data-tab='2' class="nav-tab qsm-tab">
 				<?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></a>
-			<a href="#" data-tab='3' class="nav-tab qsm-tab">
+			<a href="#" data-tab='3' class="nav-tab qsm-tab nav-tab-active ">
 				<?php esc_html_e( 'People Who Make QSM Possible', 'quiz-master-next' ); ?></a>
 		</h2>
-		<div class="qsm-tab-content tab-1">
+		<div class="qsm-tab-content tab-1" style="display:none;">
 			<div class="feature">
-				<h2 class="feature-headline">Welcome to QSM 6.2!</h2>
+				<h2 class="feature-headline">Welcome to QSM <?php echo esc_html( $version ); ?>!</h2>
 			</div>
 			<div class="feature">
 				<h2 class="feature-headline">New Email System</h2>
@@ -54,7 +54,7 @@ function qsm_generate_about_page() {
 			<h2>Changelog</h2>
 			<?php QSM_Changelog_Generator::get_changelog_list( 'QuizandSurveyMaster/quiz_master_next', 56 ); ?>
 		</div>
-		<div class="qsm-tab-content tab-3" style="display:none;">
+		<div class="qsm-tab-content tab-3" >
 			<h2>GitHub Contributors</h2>
 			<?php
 			$contributors = get_transient( 'qmn_contributors' );
