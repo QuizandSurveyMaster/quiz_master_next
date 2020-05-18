@@ -313,7 +313,7 @@ var import_button;
                                     var ta_id = $answer.find('textarea').attr('id')
                                     answer = wp.editor.getContent( ta_id );                                    
                                 }else{
-                                    answer = $answer.find( '.answer-text' ).val();
+                                    answer = $answer.find( '.answer-text' ).val().trim();
                                 }
 				
 				var points = $answer.find( '.answer-points' ).val();
