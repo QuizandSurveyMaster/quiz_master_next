@@ -184,6 +184,12 @@ function qsm_generate_quizzes_surveys_page() {
                     <?php } ?>
                 </p>
                 <div class="tablenav top">
+                    <select name="qsm-ql-action-top">
+                        <option selected="selected" value="none"><?php _e('Bulk Actions', BLOGDESIGNERPRO_TEXTDOMAIN); ?></option>
+                        <option value="delete_pr"><?php _e('Delete Permanently', BLOGDESIGNERPRO_TEXTDOMAIN); ?></option>
+                        <option value="bdp_export"><?php _e('Export Layout', BLOGDESIGNERPRO_TEXTDOMAIN); ?></option>
+                    </select>
+                    <input id="take_action" name="take_action" class="button action" type="submit" value="<?php esc_attr_e('Apply', BLOGDESIGNERPRO_TEXTDOMAIN); ?>" >
                     <div class="tablenav-pages">
                         <span class="displaying-num"><?php echo sprintf(_n('One quiz or survey', '%s quizzes or surveys', $total_count, 'quiz-master-next'), number_format_i18n($total_count)); ?></span>
                         <br class="clear">
@@ -215,6 +221,7 @@ function qsm_generate_quizzes_surveys_page() {
                     ?>
                     <thead>
                         <tr>
+                            <td class="manage-column column-cb check-column" id="cb"><input type="checkbox" name="delete-all-shortcodes-1" id="delete-all-shortcodes-1" value="0"></td>
                             <th class="<?php echo $orderby_class; ?>">
                                 <a href="<?php echo '?page=' . QSM_PLUGIN_BASENAME . $orderby_slug; ?>">
                                     <span><?php esc_html_e('Name', 'quiz-master-next'); ?></span>
@@ -231,8 +238,42 @@ function qsm_generate_quizzes_surveys_page() {
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="the-list">
-
+                    <tbody id="the-list-test">
+                        <?php
+                        if($quiz_json_array){
+                            foreach ($quiz_json_array as $key => $single_arr) { ?>
+                                <tr class="qsm-quiz-row" data-id="<?php echo $single_arr['id']; ?>">
+                                    <td class="post-title column-title">
+                                        <a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>" aria-label="<?php echo $single_arr['name']; ?>"><?php echo $single_arr['name']; ?> <b style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status']; ?></b></a><a target="_blank" class="quiz-preview-link" href="<?php echo $single_arr['link']; ?>"><span class="dashicons dashicons-external"></span></a>
+                                        <div class="row-actions">
+                                            <a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('Edit', 'quiz-master-next'); ?></a> |
+                                            <a class="qsm-action-link" href="post.php?post=<?php echo $single_arr['postID']; ?>&action=edit"><?php _e('Post Settings', 'quiz-master-next'); ?></a> |
+                                            <a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e('Duplicate', 'quiz-master-next'); ?></a> |
+                                            <a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e('Delete', 'quiz-master-next'); ?></a> |
+                                            <a class="qsm-action-link" target="_blank" href="<?php echo $single_arr['link']; ?>"><?php _e('Preview', 'quiz-master-next'); ?></a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="sc-opener"><span class="dashicons dashicons-editor-contract"></span> Embed</p>
+                                        <div class="sc-content">[qsm quiz=<?php echo $single_arr['id']; ?>]</div>
+                                        <p class="sc-opener"><span class="dashicons dashicons-admin-links"></span> Link</p>
+                                        <div class="sc-content">[qsm_link id=<?php echo $single_arr['id']; ?>]<?php _e('Click here', 'quiz-master-next'); ?>[/qsm_link]</div>
+                                    </td>
+                                    <td>
+                                        <?php echo $single_arr['views']; ?>/<?php echo $single_arr['taken']; ?>
+                                        <div class="row-actions">
+                                        <a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e('Reset', 'quiz-master-next'); ?></a> |
+                                        <a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id={{ data.id }}"><?php _e('Results', 'quiz-master-next'); ?></a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <abbr title="{{ data.lastActivityDateTime }}">{{ data.lastActivity }}</abbr>
+                                    </td>
+                                </tr>
+                            <?php                            
+                            }
+                        }
+                        ?>
                     </tbody>
                     <tfoot>
                         <tr>
