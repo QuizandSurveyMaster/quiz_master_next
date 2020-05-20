@@ -34,8 +34,9 @@ class InstallPluginCest
         $I->wait(1);
         $I->click('Create New Question');
 
+        $I->amGoingTo('save the newly created question');
         $I->wait(1);
-        $I->click('button[id="save-popup-button"]');
+        $I->click('button[id="1save-popup-button"]');
         $I->wait(1);
         $I->see('Your new question!');
 
