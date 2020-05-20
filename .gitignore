@@ -1,0 +1,7 @@
+vendor
+tests/_output
+tests/_support
+.env.testing
+composer.lock
+tests/_data
+chromedriver
