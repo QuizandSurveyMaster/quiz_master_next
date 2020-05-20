@@ -40,7 +40,7 @@ modules:
                 os: Windows
                 os_version: 10
                 chromeOptions:
-                    args: ["--headless", "--disable-gpu", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--ignore-certificate-errors", "--disable-web-security", "--ignore-urlfetcher-cert-requests"]
+                    args: ["%TESTING_HEADLESS%", "--disable-gpu", "--proxy-server='direct://'", "--proxy-bypass-list=*", "--ignore-certificate-errors", "--disable-web-security", "--ignore-urlfetcher-cert-requests"]
         WPDb:
             dsn: '%TEST_SITE_DB_DSN%'
             user: '%TEST_SITE_DB_USER%'
