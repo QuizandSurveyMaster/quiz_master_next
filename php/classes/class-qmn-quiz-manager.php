@@ -268,6 +268,7 @@ class QMNQuizManager {
                 'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
                 'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
                 'progress_bar' => $qmn_quiz_options->progress_bar,
+                'contact_info_location' => $qmn_quiz_options->contact_info_location,
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -752,7 +753,7 @@ class QMNQuizManager {
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
             <div class="qmn_page_counter_message"></div>
-            <div class="qsm-progress-bar" style="display:none;"></div>
+            <div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
             <a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html($options->next_button_text); ?></a>
             <input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr(htmlspecialchars_decode($options->submit_button_text, ENT_QUOTES)); ?>' />
             </div>

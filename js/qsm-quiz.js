@@ -292,7 +292,7 @@ var QSM;
 						from: {color: '#3498db'},
 						to: {color: '#ED6A5A'},
 						step: function(state, bar) {
-						  bar.setText(Math.round(bar.value() * 100) + ' %');
+                                                    //bar.setText(Math.round(bar.value() * 100) + ' %');                                                    
 						}
 					});
 				}
@@ -334,7 +334,30 @@ var QSM;
 				$quizForm.find( '.qsm-previous' ).show();
 			}
 			if ( '1' == qmn_quiz_data[ quizID ].progress_bar ) {
-				qmn_quiz_data[ quizID ].bar.animate( pageNumber / $pages.length );
+                                var current_page = jQuery('#quizForm' + quizID).find('.current_page_hidden').val();
+                                var total_page_length = $pages.length - 1;
+                                if( qmn_quiz_data[ quizID ].contact_info_location == 0 ){
+                                    //Do nothing.
+                                }else if( qmn_quiz_data[ quizID ].contact_info_location == 1 ){
+                                    if($quizForm.children( '.qsm-page' ).find('.qsm_contact_div ').length > 0){
+                                        total_page_length = total_page_length - 1;
+                                    }                                    
+                                }
+                                var animate_value = current_page / total_page_length;
+				qmn_quiz_data[ quizID ].bar.animate( animate_value );
+                                var old_text = jQuery( '#quizForm' + quizID ).find( '.progressbar-text' ).text().replace(' %', '');
+                                var new_text = Math.round(animate_value * 100);
+                                jQuery({
+                                    Counter: old_text
+                                }).animate({
+                                    Counter: new_text
+                                }, {
+                                    duration: 1000,
+                                    easing: 'swing',
+                                    step: function () {
+                                        jQuery( '#quizForm' + quizID ).find( '.progressbar-text' ).text(Math.round(this.Counter) + ' %');
+                                    }
+                                });  
 			}
 			QSM.savePage( quizID, pageNumber );
 		},
