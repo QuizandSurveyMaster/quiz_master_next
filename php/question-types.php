@@ -153,7 +153,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
   } else {
     $mlw_user_answer = " ";
   }
-  $return_array['user_text'] = $mlw_user_answer = stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
+  $return_array['user_text'] = stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
   foreach($answers as $answer)
   {
     if ( $mlw_user_answer == trim( esc_attr( $answer[0] ) ) )
