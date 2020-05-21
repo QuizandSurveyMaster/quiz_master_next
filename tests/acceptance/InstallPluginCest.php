@@ -93,6 +93,7 @@ class InstallPluginCest
         $I->selectOption("//input[@class='qmn_quiz_radio']", $answers[0]);
         // $I->wait(3);
         $I->click('Submit');
+        $I->waitForJqueryAjax();
         $I->see('Answer Provided: '. $answers[0]);
         $I->see('Correct Answer: ' . $answers[0]);
         // $I->wait(3);
