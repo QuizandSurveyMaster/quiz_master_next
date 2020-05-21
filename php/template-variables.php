@@ -73,6 +73,10 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
     $quiz_id = is_object($mlw_quiz_array) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];       
     while ( false !== strpos($content, '%POLL_RESULTS_') ) {
         $question_id = mlw_qmn_get_string_between($content, '%POLL_RESULTS_', '%');        
+        if( $question_id === 'X'){
+            $content = str_replace( "%POLL_RESULTS_". $question_id ."%" , '', $content);
+            return $content;
+        }
         global $wpdb;
         $table_name = $wpdb->prefix . 'mlw_results';
         $table_question = $wpdb->prefix . 'mlw_questions';
