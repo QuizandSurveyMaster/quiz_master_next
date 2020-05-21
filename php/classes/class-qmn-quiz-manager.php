@@ -584,7 +584,7 @@ class QMNQuizManager {
         $question_list = '';
         $contact_fields = QSM_Contact_Manager::load_fields();
         $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
-        $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz != '' ? true : false;
+        $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz == 1 ? true : false;
         if (count($pages) > 1 && (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields ) )) {
             $qmn_json_data['first_page'] = true;
             $message_before = wpautop(htmlspecialchars_decode($options->message_before, ENT_QUOTES));
@@ -698,7 +698,7 @@ class QMNQuizManager {
                             ?>
                         </div>
                         <?php
-                    }    
+                    }                    
                     if($enable_pagination_quiz){
                     ?>                    
                         <span class="pages_count">
