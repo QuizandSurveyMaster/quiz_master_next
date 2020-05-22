@@ -142,17 +142,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issue with latex syntax on result page.
 * Enhancement: Added pagination while importing questions from question bank to increase performance
 
-= 6.4.9 (April 21, 2020)=
+= 6.4.9 (April 21, 2020) =
 * Bug: Fixed popup design issues.
 
-= 6.4.8 (April 20, 2020)=
+= 6.4.8 (April 20, 2020) =
 * Bug: Changed the quiz post type slug to solve the conflict with LMS plugin
 * Feature: Added the button to remove the result data permanent
 * Feature: Added supporting code for new advanced timer
 * Feature: Option to select categories for random questions
 * Enhancement: JavaScript error messages will show up only for WordPress admins.
 
-= 6.4.7 (April 07, 2020)=
+= 6.4.7 (April 07, 2020) =
 * Bug: Solved jquery UI error
 * Bug: Customized text using the "Text tab" and remove from "Options Tab" for user is not logged in
 * Bug: Fixed share Quizz's results on Social Media ( https://wordpress.org/support/topic/sharing-to-social-media/ )
@@ -163,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Added Show JS Error library to show the JS Error in quiz page
 * Feature: Changed type of quiz_results to MEDIUMTEXT (16M size) ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/522 )
 
-= 6.4.5 (March 16, 2020)=
+= 6.4.5 (March 16, 2020) =
 * Bug: Hint not readable
 * Bug: Full html of the option is being output in the ID of wrapper div and in the value of the option ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/849 )
 * Bug: QSM not picking up user select answer when empty spaces at the end
@@ -171,13 +171,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Take to quiz edit after creating a new quiz
 * Feature: added 'deselect answer' button for multiple choice and horizontal multiple choice question type
 
-= 6.4.4 (Feb 24, 2020)=
+= 6.4.4 (Feb 24, 2020) =
 * Bug: Security Issues reported by WORDFENCE
 * Bug: Change text in Get a Free Addon page
 * Feature: Change sendy to sendinblue in free addon page
 * Feature: Added sorting functionality on name and last activity
 
-= 6.4.3 (Feb 6, 2020)=
+= 6.4.3 (Feb 6, 2020) =
 * Bug: Solved user limit issue with ip address
 * Bug: Solved Search input issue on Quizzes/Surveys
 * Added: added question type help link and changed the old documentation in whole plugin
