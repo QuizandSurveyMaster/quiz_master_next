@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.10
+Stable tag: 6.4.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.11 (May 22, 2020) =
+* Bug: Removed static data from about us page.
+* Bug: Fixed progress bar JS error and its calculation issues.
+* Bug: Fixed issue with spaces before tables in questions.
+* Bug: Fixed scroll to top issue for pagination.
+* Bug: Fixed incorrect calculation with %AMOUNT_CORRECT% and %POINT_SCORE% variables.
+* Enhancement: Added filter to add additional data to email content.
+* Enhancement: Trim white space at the end of text answers.
+* Enhancement: Created new function to check whether plugin is activated or not (https://wordpress.org/support/topic/error-on-submitting-quiz/#post-12821263)
+* Enhancement: Added progress bar support for options tab pagination.
+* Enhancement: Added new variable %QUESTION_ANSWER_X% to show specific question’s answer.
 
 = 6.4.10 (May 05, 2020) =
 * Bug: Fixed issue while using quotes in CSS  (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/874).
