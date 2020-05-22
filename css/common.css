@@ -117,6 +117,20 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm-quiz-container .qsm-contact-type-checkbox input{
     display: inline-block;
 }
+.quiz_section iframe{    
+    width: 100% !important;
+    min-height: 315px !important;
+}
+.qsm-progress-bar .progressbar-text{
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    top: 10px !important;
+    right: 10px;
+    font-size: 13px;
+    font-weight: bold;
+    color: rgb(52, 152, 219);
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

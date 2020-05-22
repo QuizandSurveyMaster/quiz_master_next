@@ -268,6 +268,7 @@ class QMNQuizManager {
                 'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
                 'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
                 'progress_bar' => $qmn_quiz_options->progress_bar,
+                'contact_info_location' => $qmn_quiz_options->contact_info_location,
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -583,7 +584,7 @@ class QMNQuizManager {
         $question_list = '';
         $contact_fields = QSM_Contact_Manager::load_fields();
         $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
-        $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz != '' ? true : false;
+        $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz == 1 ? true : false;
         if (count($pages) > 1 && (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields ) )) {
             $qmn_json_data['first_page'] = true;
             $message_before = wpautop(htmlspecialchars_decode($options->message_before, ENT_QUOTES));
@@ -697,7 +698,7 @@ class QMNQuizManager {
                             ?>
                         </div>
                         <?php
-                    }    
+                    }                    
                     if($enable_pagination_quiz){
                     ?>                    
                         <span class="pages_count">
@@ -752,7 +753,7 @@ class QMNQuizManager {
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
             <div class="qmn_page_counter_message"></div>
-            <div class="qsm-progress-bar" style="display:none;"></div>
+            <div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
             <a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html($options->next_button_text); ?></a>
             <input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr(htmlspecialchars_decode($options->submit_button_text, ENT_QUOTES)); ?>' />
             </div>
@@ -1064,7 +1065,7 @@ class QMNQuizManager {
 
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-            if ( is_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
+            if ( $this->qsm_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
                 $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. apply_filters('qsm_retake_quiz_text', 'Retake Quiz') .'</a>';
             }
             $unique_id = md5(date("Y-m-d H:i:s"));
@@ -1134,7 +1135,9 @@ class QMNQuizManager {
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
             
-            // Sends the emails.
+            $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
+
+			// Sends the emails.
             QSM_Emails::send_emails($qmn_array_for_variables);
             
             /**
@@ -1676,7 +1679,39 @@ class QMNQuizManager {
         }
         return $ip;
     }
+    
+    /**
+    * Determines whether a plugin is active.
+    *
+    * @since 6.4.11
+    *
+    * @param string $plugin Path to the plugin file relative to the plugins directory.
+    * @return bool True, if in the active plugins list. False, not in the list.
+    */
+    private function qsm_plugin_active( $plugin ){
+        return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || $this->qsm_plugin_active_for_network( $plugin );
+    }
+    
+    /**
+    * Determines whether the plugin is active for the entire network.
+    *
+    * @since 6.4.11
+    *
+    * @param string $plugin Path to the plugin file relative to the plugins directory.
+    * @return bool True if active for the network, otherwise false.
+    */
+    private function qsm_plugin_active_for_network(){
+        if ( ! is_multisite() ) {
+		return false;
+	}
 
+	$plugins = get_site_option( 'active_sitewide_plugins' );
+	if ( isset( $plugins[ $plugin ] ) ) {
+		return true;
+	}
+
+	return false;
+    }
 }
 
 global $qmnQuizManager;

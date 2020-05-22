@@ -1,0 +1,8 @@
+{
+    "require-dev": {
+        "lucatume/wp-browser": "^2.5",
+        "codeception/module-asserts": "^1.2",
+        "codeception/module-webdriver": "^1.0",
+        "fzaninotto/faker": "^1.9"
+    }
+}

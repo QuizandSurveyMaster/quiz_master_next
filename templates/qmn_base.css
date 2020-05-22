@@ -1,4 +1,4 @@
-#qsm-progress-bar {
+.qsm-progress-bar {
   position: relative;
   flex-grow: 2;
   padding: 0 10px;
