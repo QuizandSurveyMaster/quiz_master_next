@@ -113,6 +113,9 @@ function qsm_options_emails_tab_content() {
 			<div class="template_variable">
 				<span class="template_name">%CURRENT_DATE%</span> - <?php _e('The Current Date', 'quiz-master-next'); ?>
 			</div>
+                        <div class="template_variable">
+				<span class="template_name">%QUESTION_ANSWER_X%</span> - <?php _e('X = Question ID. It will show result of particular question.', 'quiz-master-next'); ?>
+			</div>
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>
 		<div style="clear:both;"></div>
