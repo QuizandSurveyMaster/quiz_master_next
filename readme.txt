@@ -127,6 +127,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issue with spaces before tables in questions.
 * Bug: Fixed scroll to top issue for pagination.
 * Bug: Fixed incorrect calculation with %AMOUNT_CORRECT% and %POINT_SCORE% variables.
+* Bug: Removed unnecessary query repetitions.
 * Enhancement: Added filter to add additional data to email content.
 * Enhancement: Trim white space at the end of text answers.
 * Enhancement: Created new function to check whether plugin is activated or not (https://wordpress.org/support/topic/error-on-submitting-quiz/#post-12821263)
