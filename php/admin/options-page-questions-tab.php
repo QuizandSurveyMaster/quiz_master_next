@@ -129,18 +129,58 @@ function qsm_options_questions_tab_content() {
 				</header>
 				<main class="qsm-popup__content" id="modal-1-content">
 					<input type="hidden" name="edit_question_id" id="edit_question_id" value="">
-					<div class="qsm-row">
-						<label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
-						<select name="question_type" id="question_type">
-							<?php
-							foreach ( $question_types as $type ) {
-								echo "<option value='{$type['slug']}'>{$type['name']}</option>";
-							}
-							?>
-						</select>
-                                                <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
+                                        <div id="poststuff">
+                                            <div id="post-body" class="metabox-holder columns-2">
+                                                <div id="post-body-content" style="position: relative;">
+                                                    
+                                                </div>
+                                                <div id="postbox-container-1" class="postbox-container">
+                                                    <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
+                                                        <div id="submitdiv" class="postbox ">
+                                                            <button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Publish</span><span class="toggle-indicator" aria-hidden="true"></span></button><h2 class="hndle ui-sortable-handle"><span>Publish</span></h2>
+                                                            <div class="inside">
+                                                                <div class="submitbox" id="submitpost">
+                                                                    <div id="minor-publishing">                                                                            
+                                                                        <div class="qsm-row">
+                                                                                <label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
+                                                                                <select name="question_type" id="question_type">
+                                                                                        <?php
+                                                                                        foreach ( $question_types as $type ) {
+                                                                                                echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+                                                                                        }
+                                                                                        ?>
+                                                                                </select>
+                                                                                <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
+                                                                                <p id="question_type_info"></p>
+                                                                        </div>                                                                        
+                                                                        <div class="qsm-row">
+                                                                            <label class="change-answer-editor-label">
+                                                                                <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
+                                                                                <select id="change-answer-editor">
+                                                                                    <option value="text">Text Answers</option>
+                                                                                    <option value="rich">Rich Answers</option>
+                                                                                </select>
+                                                                            </label>     
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="major-publishing-actions">
+                                                                        <div id="delete-action">
+                                                                            <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+                                                                        </div>
+                                                                        <div id="publishing-action">
+                                                                            <button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
+                                                                        </div>                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>					
+                                        <div class="qsm-row">
+                                            <input type="text" name="" value="question-title" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
 					</div>
-					<p id="question_type_info"></p>
 					<div class="qsm-row">
 						<textarea id="question-text"></textarea>
 					</div>
