@@ -380,7 +380,7 @@ var import_button;
                             tinyMCE.get( textarea_id ).setContent( anser );
                         }
 		},
-		openEditPopup: function( questionID ) {
+		openEditPopup: function( questionID, CurrentElement ) {
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
 			var question = QSMQuestion.questions.get( questionID );                        
@@ -465,7 +465,9 @@ var import_button;
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
 			}
-			MicroModal.show( 'modal-1' );
+                        var questionElements = $('#modal-1-content').html();
+                        CurrentElement.parents('.question').after( "<div style='display: none;' class='questionElements'>"+ questionElements +"</div>" ).slideDown('slow');
+			//MicroModal.show( 'modal-1' );
 		},
 		removeNew: function() {
 			$( '.page-new' ).removeClass( 'page-new' );
@@ -522,7 +524,7 @@ var import_button;
 
 		$( '.questions' ).on( 'click', '.edit-question-button', function( event ) {
 			event.preventDefault();
-			QSMQuestion.openEditPopup( $( this ).parents( '.question' ).data( 'question-id' ) );
+			QSMQuestion.openEditPopup( $( this ).parents( '.question' ).data( 'question-id' ), $(this) );
 		});
 
 		$( '.questions' ).on( 'click', '.duplicate-question-button', function( event ) {
