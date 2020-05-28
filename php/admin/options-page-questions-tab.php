@@ -128,142 +128,144 @@ function qsm_options_questions_tab_content() {
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-1-content">
-					<input type="hidden" name="edit_question_id" id="edit_question_id" value="">
-                                        <div id="poststuff">
-                                            <div id="post-body" class="metabox-holder columns-2">
-                                                <div id="post-body-content" style="position: relative;">
-                                                    
+                                    <input type="hidden" name="edit_question_id" id="edit_question_id" value="">
+                                    <div id="poststuff">
+                                        <div id="post-body" class="metabox-holder columns-2">
+                                            <div id="post-body-content" style="position: relative;">
+                                                <div class="qsm-row">
+                                                    <input type="text" class="question-title" name="question-title" value="" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
                                                 </div>
-                                                <div id="postbox-container-1" class="postbox-container">
-                                                    <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
-                                                        <div id="submitdiv" class="postbox ">
-                                                            <button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Publish</span><span class="toggle-indicator" aria-hidden="true"></span></button><h2 class="hndle ui-sortable-handle"><span>Publish</span></h2>
-                                                            <div class="inside">
-                                                                <div class="submitbox" id="submitpost">
-                                                                    <div id="minor-publishing">                                                                            
-                                                                        <div class="qsm-row">
-                                                                                <label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
-                                                                                <select name="question_type" id="question_type">
-                                                                                        <?php
-                                                                                        foreach ( $question_types as $type ) {
-                                                                                                echo "<option value='{$type['slug']}'>{$type['name']}</option>";
-                                                                                        }
-                                                                                        ?>
-                                                                                </select>
-                                                                                <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
-                                                                                <p id="question_type_info"></p>
-                                                                        </div>                                                                        
-                                                                        <div class="qsm-row">
-                                                                            <label class="change-answer-editor-label">
-                                                                                <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
-                                                                                <select id="change-answer-editor">
-                                                                                    <option value="text">Text Answers</option>
-                                                                                    <option value="rich">Rich Answers</option>
-                                                                                </select>
-                                                                            </label>     
-                                                                        </div>
+                                                <div class="qsm-row">
+                                                        <textarea id="question-text"></textarea>
+                                                </div>
+                                                <div class="qsm-row">
+                                                    <label><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
+                                                    <div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
+                                                    <div class="answers" id="answers">
+
+                                                    </div>
+                                                    <a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
+                                                    <label class="change-answer-editor-label">
+                                                        <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
+                                                        <select id="change-answer-editor">
+                                                            <option value="text">Text Answers</option>
+                                                            <option value="rich">Rich Answers</option>
+                                                        </select>
+                                                    </label>                             
+                                                </div>
+                                            </div>
+                                            <div id="postbox-container-1" class="postbox-container">
+                                                <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
+                                                    <div id="submitdiv" class="postbox ">
+                                                        <button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Publish</span><span class="toggle-indicator" aria-hidden="true"></span></button><h2 class="hndle ui-sortable-handle"><span>Publish</span></h2>
+                                                        <div class="inside">
+                                                            <div class="submitbox" id="submitpost">
+                                                                <div id="minor-publishing">                                                                            
+                                                                    <div class="qsm-row">
+                                                                            <label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
+                                                                            <select name="question_type" id="question_type">
+                                                                                    <?php
+                                                                                    foreach ( $question_types as $type ) {
+                                                                                            echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+                                                                                    }
+                                                                                    ?>
+                                                                            </select>
+                                                                            <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
+                                                                            <p id="question_type_info"></p>
+                                                                    </div>                                                                        
+                                                                    <div class="qsm-row">
+                                                                        <label class="change-answer-editor-label">
+                                                                            <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
+                                                                            <select id="change-answer-editor">
+                                                                                <option value="text">Text Answers</option>
+                                                                                <option value="rich">Rich Answers</option>
+                                                                            </select>
+                                                                        </label>     
                                                                     </div>
-                                                                    <div id="major-publishing-actions">
-                                                                        <div id="delete-action">
-                                                                            <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
-                                                                        </div>
-                                                                        <div id="publishing-action">
-                                                                            <button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
-                                                                        </div>                                                                        
+                                                                </div>
+                                                                <div id="major-publishing-actions">
+                                                                    <div id="delete-action">
+                                                                        <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
                                                                     </div>
+                                                                    <div id="publishing-action">
+                                                                        <button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
+                                                                    </div>                                                                        
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div id="advanceddiv" class="postbox ">
+                                                        <button type="button" class="handlediv" aria-expanded="true">
+                                                            <span class="screen-reader-text">Toggle panel: Advanced Option</span><span class="toggle-indicator" aria-hidden="true"></span>
+                                                        </button>
+                                                        <h2 class="hndle ui-sortable-handle"><span>Advanced Option</span></h2>
+                                                        <div class="inside">
+                                                            <div class="advanced-content">
+                                                                <div id="correct_answer_area" class="qsm-row">
+                                                                    <label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
+                                                                    <input type="text" name="correct_answer_info" value="" id="correct_answer_info" />
+                                                                </div>
+                                                                <div id="hint_area" class="qsm-row">
+                                                                        <label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
+                                                                        <input type="text" name="hint" value="" id="hint"/>
+                                                                </div>
+                                                                <div id="comment_area" class="qsm-row">
+                                                                        <label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
+                                                                        <select name="comments" id="comments">
+                                                                                <option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
+                                                                                <option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
+                                                                                <option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
+                                                                        </select>
+                                                                </div>
+                                                                <div id="required_area" class="qsm-row">
+                                                                        <label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
+                                                                        <select name="required" id="required">
+                                                                                <option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                                                <option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                                        </select>
+                                                                </div>
+                                                                <div id="category_area" class="qsm-row">
+                                                                        <label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
+                                                                        <div id="categories">
+                                                                                <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
+                                                                        </div>
+                                                                </div>
+                                                                <div id="required_area" class="qsm-row">
+                                                                        <label><?php _e( 'Hide Autofill?', 'quiz-master-next' ); ?></label>
+                                                                        <select name="hide_autofill" id="hide_autofill">
+                                                                                <option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+                                                                                <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+                                                                        </select>
+                                                                </div>
+                                                                <div id="required_area" class="qsm-row">
+                                                                        <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
+                                                                        <input type="number" name="limit_text" value="" id="limit_text"/>
+                                                                </div>
+                                                                <div id="required_area" class="qsm-row">
+                                                                        <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
+                                                                        <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
+                                                                </div>
+                                                                <div id="file-upload-limit" class="qsm-row">
+                                                                        <label><?php _e( 'File upload limit ( in MB )', 'quiz-master-next' ); ?></label>
+                                                                        <input type="number" name="file_upload_limit" value="" id="file_upload_limit"/>
+                                                                </div>
+                                                                <div id="file-upload-type-div" class="qsm-row">
+                                                                    <label><?php _e( 'Allow File type', 'quiz-master-next' ); ?></label>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="text/plain" /> <?php _e( 'Text File', 'quiz-master-next' ); ?><br/>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="image" /> <?php _e( 'Image', 'quiz-master-next' ); ?><br/>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="application/pdf" /> <?php _e( 'PDF', 'quiz-master-next' ); ?><br/>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="doc" /> <?php _e( 'Doc', 'quiz-master-next' ); ?><br/>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="excel" /> <?php _e( 'Excel', 'quiz-master-next' ); ?><br/>
+                                                                    <input type="checkbox" name="file_upload_type[]" value="video/mp4" /> <?php _e( 'Video', 'quiz-master-next' ); ?>
+                                                                </div>
+                                                            </div>	
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>					
-                                        <div class="qsm-row">
-                                            <input type="text" name="" value="question-title" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
-					</div>
-					<div class="qsm-row">
-						<textarea id="question-text"></textarea>
-					</div>
-					<div class="qsm-row">
-						<label><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
-						<div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
-						<div class="answers" id="answers">
-
-						</div>
-						<a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
-                                                <label class="change-answer-editor-label">
-                                                    <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
-                                                    <select id="change-answer-editor">
-                                                        <option value="text">Text Answers</option>
-                                                        <option value="rich">Rich Answers</option>
-                                                    </select>
-                                                </label>                             
-					</div>
-                                        <p id="show-advanced-option">Show advance options &raquo;</p>
-                                        <div class="advanced-content" style="display: none;">
-                                            <div id="correct_answer_area" class="qsm-row">
-						<label><?php _e( 'Correct Answer Info', 'quiz-master-next' ); ?></label>
-						<input type="text" name="correct_answer_info" value="" id="correct_answer_info" />
-                                            </div>
-                                            <div id="hint_area" class="qsm-row">
-                                                    <label><?php _e( 'Hint', 'quiz-master-next' ); ?></label>
-                                                    <input type="text" name="hint" value="" id="hint"/>
-                                            </div>
-                                            <div id="comment_area" class="qsm-row">
-                                                    <label><?php _e( 'Comment Field', 'quiz-master-next' ); ?></label>
-                                                    <select name="comments" id="comments">
-                                                            <option value="0"><?php _e('Small Text Field', 'quiz-master-next'); ?></option>
-                                                            <option value="2"><?php _e('Large Text Field', 'quiz-master-next'); ?></option>
-                                                            <option value="1" selected="selected"><?php _e('None', 'quiz-master-next'); ?></option>
-                                                    <select>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Required?', 'quiz-master-next' ); ?></label>
-                                                    <select name="required" id="required">
-                                                            <option value="0" selected="selected"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-                                                            <option value="1"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-                                                    </select>
-                                            </div>
-                                            <div id="category_area" class="qsm-row">
-                                                    <label><?php _e( 'Category', 'quiz-master-next' ); ?></label>
-                                                    <div id="categories">
-                                                            <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
-                                                    </div>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Hide Autofill?', 'quiz-master-next' ); ?></label>
-                                                    <select name="hide_autofill" id="hide_autofill">
-                                                            <option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
-                                                            <option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
-                                                    </select>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Limit Text( Works for text fields )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="limit_text" value="" id="limit_text"/>
-                                            </div>
-                                            <div id="required_area" class="qsm-row">
-                                                    <label><?php _e( 'Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="limit_multiple_response" value="" id="limit_multiple_response"/>
-                                            </div>
-                                            <div id="file-upload-limit" class="qsm-row">
-                                                    <label><?php _e( 'File upload limit ( in MB )', 'quiz-master-next' ); ?></label>
-                                                    <input type="number" name="file_upload_limit" value="" id="file_upload_limit"/>
-                                            </div>
-                                            <div id="file-upload-type-div" class="qsm-row">
-                                                <label><?php _e( 'Allow File type', 'quiz-master-next' ); ?></label>
-                                                <input type="checkbox" name="file_upload_type[]" value="text/plain" /> <?php _e( 'Text File', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="image" /> <?php _e( 'Image', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="application/pdf" /> <?php _e( 'PDF', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="doc" /> <?php _e( 'Doc', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="excel" /> <?php _e( 'Excel', 'quiz-master-next' ); ?><br/>
-                                                <input type="checkbox" name="file_upload_type[]" value="video/mp4" /> <?php _e( 'Video', 'quiz-master-next' ); ?>
-                                            </div>
-                                        </div>					
-				</main>
-				<footer class="qsm-popup__footer">
-					<button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
-					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
-				</footer>
+                                        </div>
+                                    </div>					
+				</main>				
 			</div>
 		</div>
 	</div>
