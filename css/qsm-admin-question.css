@@ -57,13 +57,19 @@
     right: 25px;
 }
 
-.page-footer a.button {
+.page-footer a.button,
+.new-answer-button a#new-answer-button{
     border: 1px solid #cbcbcb;
     color: #7b7575;
     background: #F7F7F7;
 }
 
-.page-footer a.button .dashicons{
+.new-answer-button a#new-answer-button:hover{
+    opacity: 0.9;
+}
+
+.page-footer a.button .dashicons,
+.new-answer-button a#new-answer-button .dashicons{
     line-height: 32px;
 }
 
@@ -153,12 +159,19 @@
 
 .correct-header {
 	text-align: right;
+        display: none;
 }
 
 .answers-single {
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
+    padding: 20px 10px;
+    background: #FAFAFA;
+}
+
+.answers-single:nth-child(2n+2){
+    background: #FFF;
 }
 
 .answers-single > div {
@@ -166,19 +179,21 @@
 }
 
 .answer-text-div {
-	width: 100%;
+	width: 65%;
 }
 
 .qsm-row {
-	display: block;
+	display: inline-block;
 	width: 100%;
 	margin-bottom: 10px;
 	font-size: 16px;
 }
 
 .qsm-row > label {
-	font-weight: bold;
+	font-weight: normal;
 	display: block;
+        margin-bottom: 5px;
+        color: #7b7575;
 }
 
 .qsm-row select, .qsm-row input[type=text], .qsm-row textarea {
@@ -393,12 +408,12 @@ from { transform: translateY(15%); }
 /**
 * Css for change-answer-editor-label
 */
-.change-answer-editor-label{
+/*.change-answer-editor-label{
     display: inline-block;
     float: right;
     font-size: 14px;
     font-weight: normal !important;
-}
+}*/
 .change-answer-editor-label > #change-answer-editor{
     width: auto;
 }
@@ -433,7 +448,85 @@ a.import-button.button.disable_import::before {
     height: 50px;
     margin: 15px 10px 0;
 }
- 
+
+.questionElements #poststuff{
+    display: inline-block;
+    width: 100%;    
+    background: #fff;
+    padding: 10px;
+    box-sizing: border-box;
+    padding-bottom: 0;
+}
+
+.questionElements{
+    padding: 15px 10px;
+    background-color: #fff;
+    border: 1px solid #cbcbcb;
+    margin: 0 10px 0;
+    box-sizing: border-box;
+    border-top: medium none;
+}
+
+.questionElements .question-title{
+    padding: 3px 8px;
+    font-size: 1.7em;
+    line-height: 100%;
+    /* height: 1.7em; */
+    width: 100%;
+    outline: 0;
+    margin: 0 0 3px;
+    background-color: #fff;
+}
+
+.questionElements #major-publishing-actions{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    clear: both;
+    margin-bottom: -3px;
+}
+
+.questionElements #minor-publishing{
+    padding: 0 12px 12px;
+}
+
+#advanceddiv input[type="number"]{
+    width: 100% !important;
+}
+
+.qsm-row .answer-header{
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 30px;
+    margin-top: 15px;
+}
+.qsm-row .new-answer-button{
+    text-align: center;
+    margin-top: 15px;
+}
+
+#advanceddiv{
+    margin-bottom: 0;
+}
+
+#answers .delete-answer-button{
+    text-decoration: none;
+    color: #ff0000;
+    vertical-align: middle;
+}
+
+.answers-single .correct-answer{
+    margin-right: 0;
+    vertical-align: -webkit-baseline-middle;
+}
+
+.questionElements #postbox-container-1 select{
+    border: 1px solid #dddddd;
+}
+
+.question-content-text * {
+    font-size: 16px;
+}
 @media screen and (max-width: 575px){
     .qsm-popup__container{
         min-width: auto;

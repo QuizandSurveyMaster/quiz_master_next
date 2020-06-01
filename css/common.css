@@ -116,6 +116,15 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }
 .qsm-quiz-container .qsm-contact-type-checkbox input{
     display: inline-block;
+}   
+.quiz_section .mlw_qmn_new_question{
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.quiz_section .mlw_qmn_question.qsm_remove_bold{
+    font-weight: normal;
 }
 .quiz_section iframe{    
     width: 100% !important;
