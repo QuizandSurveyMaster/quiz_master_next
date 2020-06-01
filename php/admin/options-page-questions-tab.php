@@ -96,7 +96,7 @@ function qsm_options_questions_tab_content() {
         <div class="question-create-page">
             <div>
                     <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> Create New Page</button>
-                    <button  style="display: none;" class="save-page-button button-primary">Save Questions and Pages</button>
+                    <button class="save-page-button button-primary">Save Questions and Pages</button>
             </div>
         </div>
 	<!-- Popup for question bank -->
@@ -133,25 +133,20 @@ function qsm_options_questions_tab_content() {
                                         <div id="post-body" class="metabox-holder columns-2">
                                             <div id="post-body-content" style="position: relative;">
                                                 <div class="qsm-row">
-                                                    <input type="text" class="question-title" name="question-title" value="" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
+                                                    <input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
                                                 </div>
                                                 <div class="qsm-row">
                                                         <textarea id="question-text"></textarea>
                                                 </div>
                                                 <div class="qsm-row">
-                                                    <label><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
+                                                    <label class="answer-header"><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
                                                     <div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
                                                     <div class="answers" id="answers">
 
                                                     </div>
-                                                    <a href="#" class="button" id="new-answer-button"><?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
-                                                    <label class="change-answer-editor-label">
-                                                        <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
-                                                        <select id="change-answer-editor">
-                                                            <option value="text">Text Answers</option>
-                                                            <option value="rich">Rich Answers</option>
-                                                        </select>
-                                                    </label>                             
+                                                    <div class="new-answer-button">
+                                                            <a href="#" class="button" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
+                                                    </div>                                                    
                                                 </div>
                                             </div>
                                             <div id="postbox-container-1" class="postbox-container">
@@ -176,11 +171,11 @@ function qsm_options_questions_tab_content() {
                                                                     <div class="qsm-row">
                                                                         <label class="change-answer-editor-label">
                                                                             <?php _e( 'Answers Type: ', 'quiz-master-next' ); ?>
-                                                                            <select id="change-answer-editor">
-                                                                                <option value="text">Text Answers</option>
-                                                                                <option value="rich">Rich Answers</option>
-                                                                            </select>
-                                                                        </label>     
+                                                                        </label>  
+                                                                        <select id="change-answer-editor">
+                                                                            <option value="text">Text Answers</option>
+                                                                            <option value="rich">Rich Answers</option>
+                                                                        </select>                                                                           
                                                                     </div>
                                                                 </div>
                                                                 <div id="major-publishing-actions">
@@ -333,7 +328,7 @@ function qsm_options_questions_tab_content() {
                             <# } #>                                                        
                         </div>
 			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-			<div><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #></div>
+			<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #> /> Correct</label></div>
 		</div>
 	</script>
 	<?php
