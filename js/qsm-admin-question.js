@@ -502,6 +502,11 @@ var import_button;
                             jQuery('#file-upload-type-div').hide();
                             jQuery('#file-upload-limit').hide();
                         }
+                        //Hide the question settings based on question type
+			$('.qsm_hide_for_other').hide();
+			if( $('.qsm_show_question_type_' + question.get('type')).length > 0 ){
+                            $('.qsm_show_question_type_' + question.get('type')).show();
+			}
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
@@ -749,7 +754,15 @@ var import_button;
                         jQuery('#file-upload-type-div').hide();
                         jQuery('#file-upload-limit').hide();
                     }
-                });                  
+                });
+                //Hide the question settings based on question type
+                $(document).on('change','#question_type', function(){
+                    var question_val = $(this).val();
+                    $('.qsm_hide_for_other').hide();
+                    if( $('.qsm_show_question_type_' + question_val).length > 0 ){
+                        $('.qsm_show_question_type_' + question_val).show();
+                    }
+                });
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)
