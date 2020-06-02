@@ -138,7 +138,7 @@ function qsm_options_questions_tab_content() {
                                                 <div class="qsm-row">
                                                         <textarea id="question-text"></textarea>
                                                 </div>
-                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_13">
+                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_13">
                                                     <label class="answer-header"><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
                                                     <div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
                                                     <div class="answers" id="answers">
@@ -260,16 +260,18 @@ function qsm_options_questions_tab_content() {
                                                                         'default' => '0'
                                                                     ),
                                                                     'limit_text' => array(
-                                                                        'label' => __('Limit Text( Works for text fields )', 'quiz-master-next' ),
+                                                                        'label' => __('Limit Text', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '7',                                                    
-                                                                        'default' => ''
+                                                                        'default' => '',
+                                                                        'show' => '3'
                                                                     ),
                                                                     'limit_multiple_response' => array(
-                                                                        'label' => __('Limit Multiple choice( Works for Multiple Response )', 'quiz-master-next' ),
+                                                                        'label' => __('Limit Multiple choice', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '8',
-                                                                        'default' => ''
+                                                                        'default' => '',
+                                                                        'show' => '4,10'
                                                                     ),                                                
                                                                     'file_upload_type' => array(
                                                                         'label' => __('Allow File type', 'quiz-master-next' ),
