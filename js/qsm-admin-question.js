@@ -346,8 +346,26 @@ var import_button;
 					correct = 1;
 				}
 				answers.push( [ answer, points, correct ] );
-			});                            
-			model.save( 
+			});
+                        var advanced_option = {};
+                        $('.questionElements .advanced-content > .qsm-row ').each(function(){
+                            if( $(this).find('input[type="text"]').length > 0){
+                                var element_id = $(this).find('input[type="text"]').attr('id');                                
+                                advanced_option[element_id] = $(this).find('input[type="text"]').val();
+                            } else if( $(this).find('input[type="number"]').length > 0 ){
+                                var element_id = $(this).find('input[type="number"]').attr('id');                                
+                                advanced_option[element_id] = $(this).find('input[type="number"]').val();
+                            }else if( $(this).find('select').length > 0 ){
+                                var element_id = $(this).find('select').attr('id');
+                                advanced_option[element_id] = $(this).find('select').val();
+                            } else if( $(this).find('input[type="checkbox"]').length > 0  ){
+                                var element_id = $(this).find('input[type="checkbox"]').attr('name');
+                                var multi_value = $(this).find('input[type="checkbox"]:checked').map(function() { return this.value;}).get().join(',');                                
+                                element_id = element_id.replace('[]','');                                
+                                advanced_option[element_id] = multi_value;
+                            }
+                        });                        
+			model.save(
 				{ 
 					type: type,
 					name: name,
@@ -356,14 +374,15 @@ var import_button;
 					comments: comments,
 					hint: hint,
 					category: category,
-					required: required,
+					//required: required,
 					answers: answers,
                                         answerEditor: answerType,
-                                        autofill: autofill,
-                                        limit_text: limit_text,
-                                        limit_multiple_response: limit_multiple_response,
-                                        file_upload_limit: file_upload_limit,
-                                        file_upload_type: type_arr.join(","),
+                                        //autofill: autofill,
+                                        //limit_text: limit_text,
+                                        //limit_multiple_response: limit_multiple_response,
+                                        //file_upload_limit: file_upload_limit,
+                                        //file_upload_type: type_arr.join(","),
+                                        other_settings: advanced_option
 				}, 
 				{ 
 					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
@@ -493,15 +512,7 @@ var import_button;
                         if( get_question_title === null || typeof get_question_title === "undefined" ){
                             get_question_title = '';
                         }
-                        
-                        //Hide the question settings based on question type
-                        if(question.get( 'type' ) == 11){
-                            jQuery('#file-upload-type-div').show();
-                            jQuery('#file-upload-limit').show();
-                        }else{
-                            jQuery('#file-upload-type-div').hide();
-                            jQuery('#file-upload-limit').hide();
-                        }
+                                                
                         //Hide the question settings based on question type
 			$('.qsm_hide_for_other').hide();
 			if( $('.qsm_show_question_type_' + question.get('type')).length > 0 ){
@@ -522,7 +533,25 @@ var import_button;
 			$( "#question_title" ).val( get_question_title );
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
-			}                        
+			}                 
+                        //Append extra settings
+                        var all_setting = question.get('settings');
+                        if( all_setting === null || typeof all_setting === "undefined" ){
+                        }else{         
+                            $.each(all_setting, function( index, value ) {
+                                if($('#' + index + '_area').length > 0){
+                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 0){
+                                        var fut_arr = value.split(",");
+                                        $.each(fut_arr,function(i){                                            
+                                            $("input[name='"+ index +"[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
+                                        });
+                                    }else{
+                                        if( value != null)
+                                            $('#' + index).val(value);
+                                    }
+                                }
+                            });
+                        }
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                         $('#modal-1-content').html( questionElements );
 			//MicroModal.show( 'modal-1' );
@@ -744,17 +773,7 @@ var import_button;
                         }  
                     });
                 });                
-                //Hide the question settings based on question type
-                $(document).on('change','#question_type', function(){
-                    var question_val = $(this).val();
-                    if(question_val == 11){
-                        jQuery('#file-upload-type-div').show();
-                        jQuery('#file-upload-limit').show();
-                    }else{
-                        jQuery('#file-upload-type-div').hide();
-                        jQuery('#file-upload-limit').hide();
-                    }
-                });
+                
                 //Hide the question settings based on question type
                 $(document).on('change','#question_type', function(){
                     var question_val = $(this).val();

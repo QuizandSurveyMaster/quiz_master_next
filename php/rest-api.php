@@ -406,6 +406,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
                                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
+                                        'settings' => $question['settings']
 				);
 			}                        
 			return $question_array;
@@ -478,7 +479,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
  * @return array An array that contains the key 'id' for the new question.
  */
 function qsm_rest_save_question( WP_REST_Request $request ) {
-
+        
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
@@ -495,16 +496,25 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'order'       => 1,
 					'category'    => $request['category'],
 				);
+                                $settings = array();
+                                $settings['answerEditor'] = $request['answerEditor'];
+                                $settings['question_title'] = $request['question_title'];                                
+                                if( isset($request['other_settings']) && is_array($request['other_settings']) ){
+                                    foreach ($request['other_settings'] as $setting_key => $setting_value) {
+                                        $settings[$setting_key] = $setting_value;
+                                    }
+                                }
+                                /* Old code
 				$settings = array(
-					'required' => $request['required'],
-                                        'answerEditor' => $request['answerEditor'],
+					'required' => $request['required'],                                        
                                         'autofill' => $request['autofill'],
                                         'limit_text' => $request['limit_text'],
                                         'limit_multiple_response' => $request['limit_multiple_response'],
                                         'file_upload_limit' => $request['file_upload_limit'],
                                         'file_upload_type' => $request['file_upload_type'],
                                         'question_title' => $request['question_title'],
-				);
+                                        'answerEditor' => $request['answerEditor'],
+				); */
 				$intial_answers = $request['answers'];
 				$answers = array();
 				if ( is_array( $intial_answers ) ) {
