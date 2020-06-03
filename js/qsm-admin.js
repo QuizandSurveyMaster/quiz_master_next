@@ -7,14 +7,17 @@ var QSMQuizzesSurveys;
 	QSMQuizzesSurveys = {
 		load: function() {
 			if ( 0 !== qsmQuizObject.length ) {
-				$.each( qsmQuizObject, function( i, val ) {
-					QSMQuizzesSurveys.addQuizRow( val );
-				});
-				$( '#the-list tr' ).filter( ':even' ).addClass( 'alternate' );
+                            // Do nothing
 			} else {
-				var template = wp.template( 'no-quiz' );
-				$( '.qsm-quizzes-page-content' ).hide();
-				$( '#new_quiz_button' ).parent().after( template() );
+                                var queryString = window.location.search;
+                                var urlParams = new URLSearchParams(queryString);
+                                if( urlParams.has('paged') || urlParams.has('s') ){
+                                    //do nothing
+                                }else{
+                                    var template = wp.template( 'no-quiz' );
+                                    $( '.qsm-quizzes-page-content' ).hide();
+                                    $( '#new_quiz_button' ).parent().after( template() );
+                                }				
 			}
 		},
     addQuizRow: function( quizData ) {
@@ -80,7 +83,11 @@ var QSMQuizzesSurveys;
       event.preventDefault();
       MicroModal.show( 'modal-2' );
     });
-    $( '#new_quiz_button' ).on( 'click', function( e ) {
+    $( document ).on( 'click', '.qsm-wizard-noquiz',function( event ) {
+        event.preventDefault();
+        $('#new_quiz_button').trigger('click');
+    });
+    $( document ).on( 'click', '#new_quiz_button', function( e ) {
         e.preventDefault();            
         MicroModal.show('model-wizard');
         var height = jQuery(".qsm-wizard-template-section").css("height");
@@ -155,7 +162,7 @@ var QSMQuizzesSurveys;
       event.preventDefault();
       $( '#delete-quiz-form' ).submit();
     });
-    //QSMQuizzesSurveys.load();
+    QSMQuizzesSurveys.load();
     $(document).on('click','.sc-opener',function(){ 
         var $this = $(this);
         var shortcode_text = $this.next('.sc-content').text();

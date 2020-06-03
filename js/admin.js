@@ -102,11 +102,7 @@ var QSMAdmin;
                         }
                     }
             );
-        });
-        /**/        
-        if(jQuery('.buttonset').length > 0){
-            jQuery('.buttonset').buttonset();
-        }
+        });        
         jQuery('.category_selection_random').change(function(){
                 var checked_data = jQuery(this).val().toString();                
                 jQuery('.catergory_comma_values').val(checked_data);
