@@ -631,6 +631,9 @@ body .qsm-popup__btn-primary {
     font-size: 14px !important;
     margin-bottom: 10px;
     cursor: pointer;
+    display: inline-block;
+    color: #0073aa !important;
+    font-weight: 500;
 }
 .sc-opener span.dashicons{
     position: relative;
@@ -809,6 +812,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+input#sc-shortcode-model-text {
+    height: 30px;
 }
 @media screen and (max-width: 767px){
     .qsm-quiz-row td:nth-of-type(2n){
