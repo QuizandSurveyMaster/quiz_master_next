@@ -250,11 +250,8 @@ class QSM_Fields {
     ?>
     <tr valign="top">
       <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
-      <td>
-        <?php   
-        $green_class = count($field["options"]) > 2 ? 'green' : '';
-        ?>
-        <fieldset class="buttonset buttonset-hide <?php echo $green_class; ?>" data-hide='1'>
+      <td>        
+        <fieldset class="buttonset buttonset-hide" data-hide='1'>
             <?php
               foreach ( $field["options"] as $option ) {
                 ?>                

@@ -29,6 +29,7 @@ function qsm_generate_quizzes_surveys_page() {
     wp_enqueue_style('qsm_admin_style', plugins_url('../../css/qsm-admin.css', __FILE__), array(), $mlwQuizMasterNext->version);
     wp_enqueue_script('qsm_admin_script', plugins_url('../../js/qsm-admin.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion'), $mlwQuizMasterNext->version);
     wp_enqueue_style('qsm_admin_dashboard_css', plugins_url('../../css/admin-dashboard.css', __FILE__));
+    wp_enqueue_style('qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
 
     // Create new quiz.
     if (isset($_POST['qsm_new_quiz_nonce']) && wp_verify_nonce($_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz')) {
@@ -388,6 +389,13 @@ function qsm_generate_quizzes_surveys_page() {
                                     </tr>
                                 <?php
                                 }
+                            }else{ ?>
+                                <tr>
+                                    <td colspan="6" style="text-align: center;">
+                                        <?php _e('No Quiz found!', 'quiz-master-next'); ?>
+                                    </td>
+                                </tr>
+                            <?php                         
                             }
                             ?>
                         </tbody>
@@ -623,9 +631,16 @@ function qsm_generate_quizzes_surveys_page() {
 
         <!-- Templates -->
         <script type="text/template" id="tmpl-no-quiz">
-            <h2><?php _e('You do not have any quizzes or surveys. Click "Add New" to get started.', 'quiz-master-next'); ?></h2>
-            <h2>Is this your first time using this plugin? Check out our <a href="https://quizandsurveymaster.com/docs" target="_blank">Documentation</a> or watch our Getting Started Video below</h2>
-            <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="qsm-no-quiz-wrapper">           
+                <span class="dashicons dashicons-format-chat"></span>
+                <h2><?php _e('You do not have any quizzes or surveys yet', 'quiz-master-next'); ?></h2>
+                <div class="buttons">
+                    <a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e('Create New Quiz/Survery', 'quiz-master-next'); ?></a>
+                    <a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e('Read Documentation', 'quiz-master-next'); ?></a>
+                </div>   
+                <h3><?php _e('or watch the below video to get started', 'quiz-master-next'); ?></h3>
+                <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         </script>
 
         <script type="text/template" id="tmpl-quiz-row">
