@@ -913,12 +913,13 @@ tr .qsm-opt-desc{
 .form-table .qsm-opt-tr{
     position: relative;    
     padding-right: 24px;
+    padding-top: 15px;
 }
 .qsm-opt-tr .qsm-tooltips-icon{
-    margin: -8px 0 0 0;
+    margin: 0 0 0 0;
     position: absolute;
     right: 0;
-    top: 50%;
+    top: 20px;
     color: #666;
     display: inline-block;
     font-size: 1.1em;

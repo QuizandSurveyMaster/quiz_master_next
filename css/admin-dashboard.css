@@ -345,6 +345,45 @@
 #recomm_addons_wrapper ul li img{
     max-width: 100%;
 }
+@media screen and (min-width: 1200px){
+    #quiz_settings_wrapper tr td fieldset > br{
+        display: none;
+    }
+}
+@media (min-width: 768px) and (max-width: 1200px){
+    #quiz_settings_wrapper tr td label{
+        vertical-align: top;
+        margin-bottom: 15px;
+        display: inline-block;
+    }
+    #model-wizard .qsm-popup__container{
+        width: 90%;
+    }
+}
+@media screen and (max-width: 767px){
+    #model-wizard .qsm-popup__container{
+        width: 90%;
+    }    
+    #model-wizard .qsm-popup__content .qsm-wizard-template-section{
+        width: 100%;
+    }
+    #model-wizard .qsm-popup__content .template-inner-wrap .template-list .template-list-inner:nth-child(2n+2),
+    #model-wizard .qsm-popup__content .template-inner-wrap .template-list .template-list-inner{
+        width: 100%;
+    }
+    #model-wizard .qsm-wizard-setting-section{
+        width: 100%;
+        height: auto !important;
+    }
+    #quiz_settings_wrapper tr td label{
+        margin-bottom: 20px;
+        display: inline-block;
+        vertical-align: top;
+    }
+    #model-wizard .qsm-popup__title{
+        font-size: 16px;
+    }
+}
 @media only screen and (max-width: 1800px) and (min-width: 1500px){
     #wpbody-content #dashboard-widgets #postbox-container-1 {
         width: 50%;

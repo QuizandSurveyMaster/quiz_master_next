@@ -306,7 +306,7 @@ class QSM_Fields {
               foreach ( $field["options"] as $option ) {
                 ?>                
                 <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
-                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label>
+                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br/>
                 <?php
               }
             ?>
