@@ -189,29 +189,6 @@ function qsm_generate_fb_header_metadata() {
 add_action('wp_head', 'qsm_generate_fb_header_metadata');
 
 
-add_action('wp_head', 'qsm_check_script_error');
-/**
- * @since 6.4.8
- * Show the JS error
- */
-function qsm_check_script_error() {
-    if (is_singular('qsm_quiz') && is_user_logged_in() && current_user_can('administrator')) {
-        ?>
-        <script src="<?php echo QSM_PLUGIN_URL . 'js/show-js-error.custom.js'; ?>"></script>
-        <link rel='stylesheet' href='<?php echo QSM_PLUGIN_URL . 'css/show-js-error.css'; ?>' type='text/css' media='all' />
-        <script>
-            //Display JS error
-            showJSError.init({
-                title: 'Javascript error detected by QSM Plugin. Try deactivating other plugins and themes. If the error still persists, please report the same on our support forums',
-                copyText: 'Copy to clipboard',                
-                userAgent: navigator.userAgent,
-                helpLinks: true
-            });
-        </script>
-        <?php
-    }
-}
-
 /**
  * @since QSM 6.4.6
  * @param int $quiz_id
@@ -248,7 +225,7 @@ function qsm_get_post_id_from_quiz_id($quiz_id){
 add_filter('qmn_end_shortcode', 'qsm_display_popup_div', 10, 3);
 function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_for_variables ){ 
     if($qmn_quiz_options->enable_result_after_timer_end == 0){
-        $return_display .= '<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
+        $return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
         $return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
         $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';
         $return_display .= '<main class="qsm-popup__content">';        

@@ -1,10 +1,10 @@
-=== Quiz And Survey Master - Best Quiz Plugin for WordPress ===
+=== Quiz And Survey Master - Best Quiz, Exam and Survey Plugin for WordPress ===
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.9
+Stable tag: 6.4.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,17 +121,38 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 6.4.9 (April 21, 2020)=
+= 6.4.11 (May 22, 2020) =
+* Bug: Removed static data from about us page.
+* Bug: Fixed progress bar JS error and its calculation issues.
+* Bug: Fixed issue with spaces before tables in questions.
+* Bug: Fixed scroll to top issue for pagination.
+* Bug: Fixed incorrect calculation with %AMOUNT_CORRECT% and %POINT_SCORE% variables.
+* Bug: Removed unnecessary query repetitions.
+* Enhancement: Added filter to add additional data to email content.
+* Enhancement: Trim white space at the end of text answers.
+* Enhancement: Created new function to check whether plugin is activated or not (https://wordpress.org/support/topic/error-on-submitting-quiz/#post-12821263)
+* Enhancement: Added progress bar support for options tab pagination.
+* Enhancement: Added new variable %QUESTION_ANSWER_X% to show specific question’s answer.
+
+= 6.4.10 (May 05, 2020) =
+* Bug: Fixed issue while using quotes in CSS  (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/874).
+* Bug: Fixed issue where text label overrides checkbox.
+* Bug: Fixed duplicate messages when login is required.
+* Bug: Fixed unwanted appearance of timer popup (https://wordpress.org/support/topic/time-is-up-message-is-displayed-for-odd-reason/#post-12749059).
+* Bug: Fixed issue with latex syntax on result page.
+* Enhancement: Added pagination while importing questions from question bank to increase performance
+
+= 6.4.9 (April 21, 2020) =
 * Bug: Fixed popup design issues.
 
-= 6.4.8 (April 20, 2020)=
+= 6.4.8 (April 20, 2020) =
 * Bug: Changed the quiz post type slug to solve the conflict with LMS plugin
 * Feature: Added the button to remove the result data permanent
 * Feature: Added supporting code for new advanced timer
 * Feature: Option to select categories for random questions
 * Enhancement: JavaScript error messages will show up only for WordPress admins.
 
-= 6.4.7 (April 07, 2020)=
+= 6.4.7 (April 07, 2020) =
 * Bug: Solved jquery UI error
 * Bug: Customized text using the "Text tab" and remove from "Options Tab" for user is not logged in
 * Bug: Fixed share Quizz's results on Social Media ( https://wordpress.org/support/topic/sharing-to-social-media/ )
@@ -142,7 +163,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Added Show JS Error library to show the JS Error in quiz page
 * Feature: Changed type of quiz_results to MEDIUMTEXT (16M size) ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/522 )
 
-= 6.4.5 (March 16, 2020)=
+= 6.4.5 (March 16, 2020) =
 * Bug: Hint not readable
 * Bug: Full html of the option is being output in the ID of wrapper div and in the value of the option ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/849 )
 * Bug: QSM not picking up user select answer when empty spaces at the end
@@ -150,13 +171,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Take to quiz edit after creating a new quiz
 * Feature: added 'deselect answer' button for multiple choice and horizontal multiple choice question type
 
-= 6.4.4 (Feb 24, 2020)=
+= 6.4.4 (Feb 24, 2020) =
 * Bug: Security Issues reported by WORDFENCE
 * Bug: Change text in Get a Free Addon page
 * Feature: Change sendy to sendinblue in free addon page
 * Feature: Added sorting functionality on name and last activity
 
-= 6.4.3 (Feb 6, 2020)=
+= 6.4.3 (Feb 6, 2020) =
 * Bug: Solved user limit issue with ip address
 * Bug: Solved Search input issue on Quizzes/Surveys
 * Added: added question type help link and changed the old documentation in whole plugin
