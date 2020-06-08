@@ -537,3 +537,52 @@ a.import-button.button.disable_import::before {
 .question_info_tag{
     float: right;    
 }
+@media (min-width: 783px) and (max-width: 1199px){
+    #poststuff #post-body.columns-2 #side-sortables{
+        min-width: unset;
+        width: 100%;
+    }
+    .questionElements .postbox{
+        min-width: unset;
+        width: 100%;
+    }
+    #post-body.columns-2 #postbox-container-1{
+        width: 250px;
+        float: left;
+        margin-left: 10px;   
+    }
+    .questionElements{
+        overflow: hidden;
+    }
+}
+@media screen and (max-width: 782px){
+    /*List of questions*/
+    .question-content .question-content-text{
+        font-size: 14px;
+    }
+    body .question-content > div{
+        margin: 0 5px;
+    }
+    .page-footer a.button{
+        font-size: 10px;
+        min-height: 25px;
+        padding: 0 5px;
+    }
+    .page-footer a.button .dashicons{
+        display: none;
+    }
+    .question-controls .search-box{
+        height: auto;
+    }
+    .questionElements .postbox{
+        max-width: 100%;
+        width: 100%;
+        min-width: unset;
+    }
+    .questionElements .category{
+        margin-bottom: 10px;
+    }
+    .answer-text-div{
+        width: 135%;
+    }
+}

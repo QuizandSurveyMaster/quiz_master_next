@@ -261,11 +261,13 @@ function qsm_generate_quizzes_surveys_page() {
                         <?php } ?>
                     </p>
                     <div class="tablenav top">
-                        <select name="qsm-ql-action-top">
-                            <option selected="selected" value="none"><?php _e('Bulk Actions', 'quiz-master-next'); ?></option>
-                            <option value="delete_pr"><?php _e('Delete Permanently', 'quiz-master-next'); ?></option>
-                        </select>
-                        <input id="take_action" name="take_action" class="button action" type="submit" value="<?php esc_attr_e('Apply', 'quiz-master-next'); ?>" >                    
+                        <div class="alignleft actions bulkactions">
+                            <select name="qsm-ql-action-top">
+                                <option selected="selected" value="none"><?php _e('Bulk Actions', 'quiz-master-next'); ?></option>
+                                <option value="delete_pr"><?php _e('Delete Permanently', 'quiz-master-next'); ?></option>
+                            </select>
+                            <input id="take_action" name="take_action" class="button action" type="submit" value="<?php esc_attr_e('Apply', 'quiz-master-next'); ?>" >                    
+                        </div>
                         <div class="tablenav-pages">                  
                             <span class="displaying-num"><?php echo number_format_i18n($total) . ' ' . sprintf(_n('item', 'items', $total), number_format_i18n($total)); ?></span>
                             <span class="pagination-links" <?php

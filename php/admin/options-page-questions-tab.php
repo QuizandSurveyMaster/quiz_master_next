@@ -96,7 +96,7 @@ function qsm_options_questions_tab_content() {
         <div class="question-create-page">
             <div>
                     <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> Create New Page</button>
-                    <button class="save-page-button button-primary">Save Questions and Pages</button>
+                    <button class="save-page-button button button-primary">Save Questions and Pages</button>
             </div>
         </div>
 	<!-- Popup for question bank -->
