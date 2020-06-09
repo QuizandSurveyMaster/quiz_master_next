@@ -31,19 +31,34 @@ add_action('admin_init','qsm_add_author_column_in_db');
  * Insert new column in quiz table
  */
 function qsm_add_author_column_in_db(){
-    if( get_option('qsm_update_db_column', '') != '1' ){
-        global $wpdb;
+    if( get_option('qsm_update_db_column', '') != '1' ) {
+		global $wpdb;
         $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-        $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
-        if (!isset($row->quiz_author_id)) {
+		$quiz_tbl_col    = 'quiz_author_id';
+
+		$quiz_col_obj = $wpdb->get_results( $wpdb->prepare(
+			'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
+			$wpdb->dbname, $quiz_table_name, $quiz_tbl_col
+		) );
+
+        if ( empty( $quiz_col_obj ) ) {
             $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
         }
+
         $result_table_name = $wpdb->prefix . "mlw_results";
-        $row = $wpdb->get_row("SELECT * FROM $result_table_name");
-        if ( !isset($row->unique_id) ) {
-            $wpdb->query("ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL");
+		$result_tbl_col    = 'unique_id';
+		
+		$result_col_obj = $wpdb->get_results( $wpdb->prepare(
+			'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
+			$wpdb->dbname, $result_table_name, $result_tbl_col
+		) );
+
+        if ( empty( $result_col_obj ) ) {
+            $wpdb->query( "ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL" );
         }
-        update_option('qsm_update_db_column', '1');
+
+		update_option('qsm_update_db_column', '1');
+		
     }
 }
 
