@@ -297,7 +297,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                     <form action="" method="post" id="new-quiz-form">
                         <div class="qsm-wizard-template-section">
                             <?php wp_nonce_field('qsm_new_quiz', 'qsm_new_quiz_nonce'); ?>
-                            <input type="text" class="quiz_name" name="quiz_name" value="" placeholder="<?php _e('Enter quiz name here', 'quiz-master-next'); ?>" />
+                            <input type="text" class="quiz_name" name="quiz_name" value="" placeholder="<?php _e('Enter quiz name here', 'quiz-master-next'); ?>" required/>
                             <div class="template-inner-wrap">
                                 <h6><?php _e('Select Template', 'quiz-master-next'); ?></h6>
                                 <div class="template-list">
@@ -343,8 +343,8 @@ function qsm_create_new_quiz_wizard(){ ?>
                     </form>
                 </main>
                 <footer class="qsm-popup__footer">
-                    <button id="create-quiz-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?></button>
-                    <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+                    <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?></button>
+                    <button class="button" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
                 </footer>
             </div>
         </div>

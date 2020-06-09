@@ -264,7 +264,7 @@ function qsm_wizard_template_quiz_options() {
 				$recommended_addon_str .= '<span class="ra-attr qra-att-' . $attr . '">' . $attr . '</span>';
 			}
 			$link                   = isset( $single_addon['link'] ) ? $single_addon['link'] : '';
-			$recommended_addon_str .= '<a href="' . $link . '">';
+			$recommended_addon_str .= '<a target="_blank" href="' . $link . '">';
 			if ( isset( $single_addon['img'] ) && $single_addon['img'] != '' ) {
 				$img                    = $single_addon['img'];
 				$recommended_addon_str .= '<img src="' . $img . '"/>';
@@ -514,7 +514,7 @@ function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
 	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
+		$quiz_name = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
 		$setting_arr = array(

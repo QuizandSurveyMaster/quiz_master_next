@@ -92,7 +92,7 @@ function qsm_options_questions_tab_content() {
                     <a href="#" class="button">Search Questions</a>
             </p>
 	</div>
-        <div class="questions"><div class="qsm-showing-loader" style="text-align: center;"><div class="qsm-spinner-loader"></div></div></div>
+        <div class="questions"><div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;"><div class="qsm-spinner-loader"></div></div></div>
         <div class="question-create-page">
             <div>
                     <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> Create New Page</button>

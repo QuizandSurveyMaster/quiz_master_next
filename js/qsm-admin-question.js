@@ -169,7 +169,7 @@ var import_button;
 		loadSuccess: function() {
 			QSMAdmin.clearAlerts();
                         $('.qsm-showing-loader').remove();
-			var question;
+			var question;                        
 			if ( qsmQuestionSettings.pages.length > 0 ) {
 				for ( var i = 0; i < qsmQuestionSettings.pages.length; i++ ) {
 					for ( var j = 0; j < qsmQuestionSettings.pages[ i ].length; j++ ) {
@@ -180,6 +180,11 @@ var import_button;
 			} else {
 				QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
 			}
+                        //Create Default pages and one question.
+                        if( qsmQuestionSettings.pages.length == 0 && QSMQuestion.questions.length == 0){
+                            $('.new-page-button').trigger('click');
+                            $('.questions .new-question-button').trigger('click');
+                        }
 			QSMQuestion.countTotal();
 		},
 		savePages: function() {

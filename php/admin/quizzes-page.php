@@ -29,13 +29,7 @@ function qsm_generate_quizzes_surveys_page() {
     wp_enqueue_style('qsm_admin_style', plugins_url('../../css/qsm-admin.css', __FILE__), array(), $mlwQuizMasterNext->version);
     wp_enqueue_script('qsm_admin_script', plugins_url('../../js/qsm-admin.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion'), $mlwQuizMasterNext->version);
     wp_enqueue_style('qsm_admin_dashboard_css', plugins_url('../../css/admin-dashboard.css', __FILE__));
-    wp_enqueue_style('qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
-
-    // Create new quiz.
-    if (isset($_POST['qsm_new_quiz_nonce']) && wp_verify_nonce($_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz')) {
-        $quiz_name = sanitize_textarea_field(htmlspecialchars(stripslashes($_POST['quiz_name']), ENT_QUOTES));
-        $mlwQuizMasterNext->quizCreator->create_quiz($quiz_name);
-    }
+    wp_enqueue_style('qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');        
 
     // Delete quiz.
     if (isset($_POST['qsm_delete_quiz_nonce']) && wp_verify_nonce($_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz')) {

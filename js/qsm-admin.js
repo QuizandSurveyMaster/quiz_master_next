@@ -151,8 +151,13 @@ var QSMQuizzesSurveys;
       $( '#reset_quiz_form' ).submit();
     });
     $( '#create-quiz-button' ).on( 'click', function( event ) {
-      event.preventDefault();
-      $( '#new-quiz-form' ).submit();
+        if( $('#new-quiz-form').find('.quiz_name').val() === ''){
+            $('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
+            $('#new-quiz-form').find('.quiz_name').focus();
+            return;
+        }
+        event.preventDefault();
+        $( '#new-quiz-form' ).submit();
     });
     $( '#duplicate-quiz-button' ).on( 'click', function( event ) {
       event.preventDefault();

@@ -164,6 +164,11 @@ var QSMAdmin;
         
         jQuery( '#create-quiz-button' ).on( 'click', function( event ) {
             event.preventDefault();
+            if( jQuery('#new-quiz-form').find('.quiz_name').val() === ''){
+                jQuery('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
+                jQuery('#new-quiz-form').find('.quiz_name').focus();
+                return;
+            }
             jQuery( '#new-quiz-form' ).submit();
         });
     });

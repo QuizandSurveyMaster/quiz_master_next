@@ -418,6 +418,7 @@ class QSM_Quiz_Settings {
 
 		$options = $this->get_setting( 'quiz_options' );
 		if ( is_array( $options ) ) {
+                        unset( $options['quiz_name'] );
 			$quiz_options = array_merge( $quiz_options, $options );
 		}
 

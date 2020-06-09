@@ -907,6 +907,9 @@ tr .qsm-opt-desc{
     margin-top: 5px;
     display: block;
 }
+#quiz_settings_wrapper .qsm-opt-desc{
+    display: none !important;
+}
 .form-table td fieldset label {
     margin-right: 20px !important;
 }

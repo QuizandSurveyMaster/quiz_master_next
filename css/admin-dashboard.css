@@ -154,9 +154,14 @@
     max-width: 1040px;
     border-radius: 0;
     max-height: 85vh;
+    overflow: hidden;
+    position: relative;
 }
 #model-wizard .qsm-popup__content{
     margin: 0;
+    max-height: 65vh;
+    overflow-y: auto;
+    padding-bottom: 59px;
 }
 #model-wizard .qsm-popup__header{
     background: #fff;
@@ -180,6 +185,11 @@
     padding: 5px 10px 5px 10px;
     border-radius: 0;
     border: 1px solid #dfd4d4;
+}
+#model-wizard .qsm-popup__content .quiz_name.qsm-required{
+    border-color: #ff0000;
+    outline: none !important;
+    box-shadow: none;
 }
 #model-wizard .qsm-popup__content .template-inner-wrap h6{
     font-size: 15px;
@@ -252,6 +262,10 @@
     padding: 15px;
     border-top: 1px solid #dfd4d4;
     margin-top: -4px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 #model-wizard .qsm-popup__close{
     cursor: pointer;
