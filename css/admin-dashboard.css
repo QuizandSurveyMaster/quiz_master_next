@@ -4,10 +4,16 @@
     font-size: 23px;
     margin-right: 5px;
 }
-.welcome-panel .welcome-panel-close{
+.welcome-panel .qsm-welcome-panel-close{    
+    position: absolute;
     top: -20px;
+    right: 10px;
+    padding: 10px 15px 10px 21px;
+    font-size: 13px;
+    line-height: 1.23076923;
+    text-decoration: none;
 }
-.welcome-panel .welcome-panel-close img{
+.welcome-panel .qsm-welcome-panel-close img{
     width: 100px;
 }
 .welcome-panel .welcome-panel-close:before{
@@ -90,7 +96,7 @@
 .changelog-ul li .bug{
     background: #FE2525;            
 }
-.changelog-ul li .user_request{
+.changelog-ul li .feature{
     background: #25BDFE;            
 }
 .recently-taken-quiz-ul li{
@@ -382,6 +388,9 @@
     }
     #model-wizard .qsm-popup__title{
         font-size: 16px;
+    }
+    .welcome-panel h2{
+        width: calc(100% - 100px);
     }
 }
 @media only screen and (max-width: 1800px) and (min-width: 1500px){
