@@ -432,6 +432,22 @@ var QSM;
 var qsmTitleText = document.title;
 
 /**
+ * Validates an email ID.
+ * 
+ * @param email The Email Id to validate.
+ * @returns Boolean
+ */
+function isEmail( email ) {
+	var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+	if( ! regex.test( email ) ) {
+		return false;
+	}else{
+		return true;
+	}
+}
+
+
+/**
 * Limit multiple response based on question limit
 * @returns {undefined}
 */
@@ -493,11 +509,10 @@ function qmnValidation( element, quiz_form_id ) {
 	qmnResetError( quiz_form_id );        
 	jQuery( element ).each(function(){
 		if ( jQuery( this ).attr( 'class' )) {
-			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) > -1 && this.value !== "" ) {
-				var x = this.value;
-				var atpos = x.indexOf('@');
-				var dotpos = x.lastIndexOf( '.' );
-				if ( atpos < 1 || dotpos < atpos + 2 || dotpos + 2>= x.length ) {
+			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) !== -1 && this.value !== "" ) {
+				// Remove any trailing and preceeding space.
+				var x = jQuery.trim( this.value );
+				if ( ! isEmail( x ) ) {
 					qmnDisplayError( email_error, jQuery( this ), quiz_form_id );
 					result = false;
 				}
