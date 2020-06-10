@@ -35,16 +35,15 @@ function qsm_options_questions_tab_content() {
 	$quiz_id = intval($_GET['quiz_id']);
 	$user_id = get_current_user_id();
 	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
-	$qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
-	if (empty($qpages)) {
+	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
+	$qpages = array();
+	if (!empty($pages)) {
+		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagetimer' => 0, 'pagetimer_warning' => 0, 'questions' => array());
 		foreach ($pages as $k => $val) {
-			$qpages[] = array(
-				'id' => $k+1,
-				'quizID' => $quiz_id,
-				'pagetimer' => 0,
-				'pagetimer_warning' => 0,
-				'questions' => $val,
-			);
+			$qpage = isset($db_qpages[$k]) ? $db_qpages[$k] : $defaultQPage;
+			$qpage['id'] = $k + 1;
+			$qpage['questions'] = $val;
+			$qpages[] = $qpage;
 		}
 	}
 	$json_data = array(
@@ -363,9 +362,12 @@ function qsm_ajax_save_pages() {
 		'status' => 'error',
 	);
 	$quiz_id = intval($_POST['quiz_id']);
+	$pages = isset($_POST['pages']) ? $_POST['pages'] : array('1');
+	$qpages = isset($_POST['qpages']) ? $_POST['qpages'] : array();
+	
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz_id);
-	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('qpages', $_POST['qpages']);
-	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('pages', $_POST['pages']);
+	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('qpages', $qpages);
+	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('pages', $pages);
 	if ($response) {
 		$json['status'] = 'success';
 	}

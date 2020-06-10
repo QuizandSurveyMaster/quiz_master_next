@@ -239,7 +239,7 @@ var import_button;
 		addNewPage: function(pageID) {
 			var template = wp.template( 'page' );
 			if (typeof pageID == 'undefined' || pageID == '') {
-				var newPageID = qsmQuestionSettings.qpages.length + 1;
+				var newPageID = QSMQuestion.qpages.length + 1;
 				var pageInfo = QSMQuestion.qpages.add({id: newPageID, quizID: qsmQuestionSettings.quizID});
 			} else {
 				var pageInfo = QSMQuestion.qpages.get(pageID);
