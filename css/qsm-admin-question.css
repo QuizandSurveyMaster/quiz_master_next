@@ -24,15 +24,18 @@
     align-items: center;
     justify-content: space-between;
     background-color: #fff;
-    padding: 10px 35px;
+    padding: 10px 25px;
 	border-bottom: 5px solid #1DD969;
 }
+
+.page-header div{margin: 0 10px;}
 
 .page-header a {
 	text-decoration: none;
 }
 
 .page-header-buttons {
+	flex-grow: 1;
 	text-align: center;
 }
 

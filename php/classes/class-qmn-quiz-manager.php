@@ -262,13 +262,22 @@ class QMNQuizManager {
                                     window.qmn_quiz_data = new Object();
                             }
                     </script>";
-            $qmn_json_data = array(
+			$qpages = array();
+			$qpages_arr = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
+			if (!empty($qpages_arr)) {
+				foreach ($qpages_arr as $key => $qpage) {
+					unset($qpage['questions']);
+					$qpages[$qpage['id']] = $qpage;
+				}
+			}
+			$qmn_json_data = array(
                 'quiz_id' => $qmn_array_for_variables['quiz_id'],
                 'quiz_name' => $qmn_array_for_variables['quiz_name'],
                 'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
                 'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
                 'progress_bar' => $qmn_quiz_options->progress_bar,
                 'contact_info_location' => $qmn_quiz_options->contact_info_location,
+                'qpages' => $qpages,
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -580,6 +589,7 @@ class QMNQuizManager {
         global $qmn_json_data;
         ob_start();        
         $pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
+        $qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
         $question_list = '';
         $contact_fields = QSM_Contact_Manager::load_fields();
@@ -604,7 +614,7 @@ class QMNQuizManager {
         }
 
         // If there is only one page.
-        if (1 == count($pages)) {            
+        if (1 == count($pages)) {
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
                 <?php
@@ -674,10 +684,23 @@ class QMNQuizManager {
         } else {
             $total_pages_count = count($pages);
             $pages_count = 1;
-            foreach ($pages as $page) {
+            foreach ($pages as $key => $page) {
+				$qpage = (isset($qpages[$key]) ? $qpages[$key] : array());
+				$qpage_id = (isset($qpage['id']) ? $qpage['id'] : $key);
                 ?>
-                <section class="qsm-page <?php echo $animation_effect; ?>">
-                    <?php
+				<section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id;?>" data-pid="<?php echo $qpage_id;?>">
+                    <?php 
+					if (isset($qpage['pagetimer']) && $qpage['pagetimer'] > 0) {
+						?>
+						<div class="page-timer-wrapper">
+							<div id="qsm-pagetimer-<?php echo $qpage_id;?>" class="qsm-pagetimer" data-id="<?php echo $qpages[$key]['id'];?>" style="display:none;"></div>
+							<div style="display: none;" id="qsm-pagetimer-warning-<?php echo $qpage_id;?>" class="qsm-pagetimer-warning"><?php _e('You are running out of time! few seconds are remaining.', 'quiz-master-next');?></div>
+						</div>
+						<?php
+					}
+					?>
+					<input type="hidden" name="pagetime[<?php echo $qpages[$key]['id'];?>]" class="pagetime" id="pagetime_<?php echo $qpages[$key]['id'];?>" value="0">
+					<?php
                     foreach ($page as $question_id) {
                         $question_list .= $question_id . 'Q';
                         $question = $questions[$question_id];
@@ -1043,6 +1066,7 @@ class QMNQuizManager {
             }
         }
 
+        $mlw_qmn_pagetime = isset($_POST["pagetime"]) ? $_POST["pagetime"] : array();
         $mlw_qmn_timer = isset($_POST["timer"]) ? sanitize_text_field(intval($_POST["timer"])) : 0;
         $mlw_qmn_timer_ms = isset($_POST["timer_ms"]) ? sanitize_text_field(intval($_POST["timer_ms"])) : 0;
         $qmn_array_for_variables['user_id'] = get_current_user_id();
@@ -1079,6 +1103,7 @@ class QMNQuizManager {
                     htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
                     'contact' => $contact_responses,
                     'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
+                    'pagetime' => $mlw_qmn_pagetime,
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
                 $serialized_results = serialize($results_array);

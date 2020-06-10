@@ -31,18 +31,33 @@ function qsm_options_questions_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-        $question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
-	$quiz_id = intval( $_GET['quiz_id'] );
-        $user_id = get_current_user_id();         
+	$question_categories = $wpdb->get_results("SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A');
+	$quiz_id = intval($_GET['quiz_id']);
+	$user_id = get_current_user_id();
+	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
+	$qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
+	if (empty($qpages)) {
+		foreach ($pages as $k => $val) {
+			$qpages[] = array(
+				'id' => $k+1,
+				'quizID' => $quiz_id,
+				'pagetimer' => 0,
+				'pagetimer_warning' => 0,
+				'questions' => $val,
+			);
+		}
+	}
 	$json_data = array(
-		'quizID'     => $quiz_id,
-		'answerText' => __( 'Answer', 'quiz-master-next' ),
-		'nonce'      => wp_create_nonce( 'wp_rest' ),
-		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
-                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
-                'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
-                'categories' => $question_categories
+		'quizID' => $quiz_id,
+		'answerText' => __('Answer', 'quiz-master-next'),
+		'nonce' => wp_create_nonce('wp_rest'),
+		'pages' => $pages,
+		'qpages' => $qpages,
+		'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
+		'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
+		'categories' => $question_categories
 	);
+	$json_data = apply_filters('qsm_question_settings_js_data', $json_data);
 
 	// Scripts and styles.
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
@@ -226,14 +241,47 @@ function qsm_options_questions_tab_content() {
 			</div>
 		</div>
 	</div>
+	
+	<!-- Popup for question bank -->
+	<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-page-1" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-1-title">Edit Page [ ID: <span id="edit-page-id"></span>  ]</h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-page-1-content">
+					<input type="hidden" name="edit_page_id" id="edit_page_id" value="">
+					<div id="page-options">
+						<div id="page_timer" class="qsm-row">
+							<label><?php _e('How many minutes does the user have to finish the page?', 'quiz-master-next'); ?></label>
+							<input type="number" step="1" min="0" id="pagetimer" name="pagetimer" value="0">
+							<em style="display: block;font-size: 12px;"><?php _e('Leave 0 for no time limit', 'quiz-master-next'); ?></em>
+						</div>
+						<div id="page_timer" class="qsm-row">
+							<label><?php _e('Show warning for specific remaining time', 'quiz-master-next'); ?></label>
+							<input type="number" step="1" min="0" id="pagetimer_warning" name="pagetimer_warning" value="0">
+							<span><?php _e('minutes', 'quiz-master-next'); ?></span>
+							<em style="display: block;font-size: 12px;"><?php _e('Leave 0 for no warining', 'quiz-master-next'); ?></em>
+						</div>
+					</div>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="save-page-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Page</button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+				</footer>
+			</div>
+		</div>
+	</div>
 
 	<!--Views-->
 
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">
-		<div class="page page-new">
+		<div class="page page-new" data-page-id="{{data.id }}">
 			<div class="page-header">
 				<div><span class="dashicons dashicons-move"></span></div>
+				<div><a href="#" class="edit-page-button"><span class="dashicons dashicons-edit"></span></a></div>
 				<div class="page-header-buttons">
 					<a href="#" class="new-question-button button">Create New Question</a>
 					<a href="#" class="add-question-bank-button button">Add Question From Question Bank</a>
@@ -292,6 +340,7 @@ function qsm_options_questions_tab_content() {
 		</div>
 	</script>
 	<?php
+	do_action('qsm_admin_after_questions_tab_content');
 }
 
 
@@ -305,22 +354,22 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-    
-        $nonce = $_POST['nonce'];
-        if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) )
-            die ( 'Busted!');
-        
+	$nonce = $_POST['nonce'];
+	if (!wp_verify_nonce($nonce, 'ajax-nonce-sandy-page')) {
+		die('Busted!');
+	}
 	global $mlwQuizMasterNext;
 	$json = array(
 		'status' => 'error',
 	);
-	$quiz_id = intval( $_POST['quiz_id'] );
-	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $_POST['pages'] );
-	if ( $response ) {
+	$quiz_id = intval($_POST['quiz_id']);
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz_id);
+	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('qpages', $_POST['qpages']);
+	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('pages', $_POST['pages']);
+	if ($response) {
 		$json['status'] = 'success';
 	}
-	echo wp_json_encode( $json );
+	echo wp_json_encode($json);
 	wp_die();
 }
 

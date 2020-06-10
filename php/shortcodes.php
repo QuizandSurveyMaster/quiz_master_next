@@ -237,5 +237,23 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
         $return_display .= '</div>';
         $return_display .= '</div>';
     }
+    /**
+	 * Page-Timer-End-Popup
+	 */
+	$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-page-1" aria-hidden="false">';
+	$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
+	$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';
+	$return_display .= '<main class="qsm-popup__content">';        
+	$return_display .= '<img src="' . QSM_PLUGIN_URL . '/assets/clock.png' .'"/>';
+	$return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
+	$return_display .= '</main>';
+	$return_display .= '<footer class="qsm-popup__footer">';
+	$return_display .= '<button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>';
+	$return_display .= '<button class="qmn_btn qsm-btn qmn_btn pagetime-goto-nextpage" data-quiz_id="'. $qmn_quiz_options->quiz_id .'" style="margin: 0 10px;" data-micromodal-close="" aria-label="Close this dialog window">Continue</button>';
+	$return_display .= '</footer>';
+	$return_display .= '</div>';
+	$return_display .= '</div>';
+	$return_display .= '</div>';
+	
     return $return_display;
 }
