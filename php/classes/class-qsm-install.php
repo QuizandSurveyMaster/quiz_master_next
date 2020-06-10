@@ -61,7 +61,8 @@ class QSM_Install {
         )
       ),
       'default' => 0,      
-      'help' => 'Select the system for grading the quiz. <a target="_blank" href="https://quizandsurveymaster.com/docs/">Read Documentation</a>'
+      'help' => __('Select the system for grading the quiz.', 'quiz-master-next'),
+      'tooltip' => '<a target="_blank" href="https://quizandsurveymaster.com/docs/">Read Documentation</a>'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 	
@@ -566,6 +567,17 @@ class QSM_Install {
         )
       ),
       'default' => ''
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    //Setting for animation
+    $field_array = array(
+      'id' => 'legacy_options',
+      'label' => __('Show Legacy Options', 'quiz-master-next'),
+      'type' => 'hide_show',
+      'default' => '',
+       'help' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
+       'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     

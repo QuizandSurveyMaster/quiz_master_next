@@ -933,6 +933,9 @@ tr .qsm-opt-desc{
     padding-right: 24px;
     padding-top: 15px;
 }
+td.scheduled_time_start {
+    padding-bottom: 0 !important;
+}
 .qsm-opt-tr .qsm-tooltips-icon{
     margin: 0 0 0 0;
     position: relative;
@@ -958,10 +961,13 @@ tr .qsm-opt-desc{
     left: 50%;
     position: absolute;
     text-align: center;
-    bottom: 30px;
+    bottom: 25px;
     width: 200px;
     transform: translateX(-50%);
     transition: opacity 0.5s ease 0s;
+}
+.qsm-tooltips-icon .qsm-tooltips a{
+    color: #fff;
 }
 .qsm-tooltips-icon .qsm-tooltips:before {
     border-color: #333 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
@@ -973,7 +979,8 @@ tr .qsm-opt-desc{
     transform: translateX(-50%);
     position: absolute;
 }
-.qsm-tooltips-icon:hover .qsm-tooltips {
+.qsm-tooltips-icon:hover .qsm-tooltips,
+.qsm-tooltips:hover{
     display: block;
     opacity: 1;
     z-index: 1;

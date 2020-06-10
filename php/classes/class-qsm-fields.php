@@ -241,7 +241,7 @@ class QSM_Fields {
             </span>
           <?php } ?>
       </th>
-      <td>
+      <td class="<?php echo $field["id"]; ?>">
           <?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
             <span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
           <?php } ?>
@@ -411,6 +411,33 @@ class QSM_Fields {
     </tr>
     <?php
   }
+  
+  /**
+   * @since 7.0
+   * @param Array $field
+   * @param String $value
+   * 
+   * Generate the hide show div
+   */
+  public static function generate_hide_show_field( $field, $value ) { ?>
+        <tr valign="top">
+            <th scope="row" class="qsm-opt-tr">
+                <a href="#" id="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></a>
+                <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+                    <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                        <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+                    </span>
+                  <?php } ?>
+            </th>
+            <td>
+                <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+                    <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+                <?php } ?> 
+            </td>
+          </tr>
+  <?php  
+  }
+  
 }
 
 ?>

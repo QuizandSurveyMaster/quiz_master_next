@@ -171,5 +171,18 @@ var QSMAdmin;
             }
             jQuery( '#new-quiz-form' ).submit();
         });
+        
+        //Hide/Show legacy option
+        jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
+        jQuery(document).on('click','#legacy_options', function(e){
+            e.preventDefault();
+            if( jQuery('#legacy_options').parents('tr').next('tr').is(':visible') ){
+                jQuery(this).text('').text('Show Legacy options');
+                jQuery('#legacy_options').parents('tr').nextAll('tr').hide();                
+            }else{
+                jQuery(this).text('').text('Hide Legacy options');
+                jQuery('#legacy_options').parents('tr').nextAll('tr').show();
+            }
+        });
     });
 }(jQuery));
