@@ -856,8 +856,23 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-input#sc-shortcode-model-text {
+input#sc-shortcode-model-text,
+input#sc-shortcode-model-text-link {
     height: 30px;
+}
+div#modal-6 lable {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #999;
+    font-style: italic;
+}
+#modal-6 .button > span.dashicons {
+    line-height: 29px;
+}
+.qsm-list-shortcode-view span.dashicons{
+    font-size: 24px;
 }
 /**
 * No quiz screen design

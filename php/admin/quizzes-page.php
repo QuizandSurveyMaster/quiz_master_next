@@ -357,20 +357,21 @@ function qsm_generate_quizzes_surveys_page() {
                                                 <a class="qsm-action-link" href="post.php?post=<?php echo $single_arr['postID']; ?>&action=edit"><?php _e('Post Settings', 'quiz-master-next'); ?></a> |
                                                 <a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e('Duplicate', 'quiz-master-next'); ?></a> |
                                                 <a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e('Delete', 'quiz-master-next'); ?></a> |
+                                                <a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('View Results', 'quiz-master-next'); ?></a> |
                                                 <a class="qsm-action-link" target="_blank" href="<?php echo $single_arr['link']; ?>"><?php _e('Preview', 'quiz-master-next'); ?></a>
                                             </div>
                                         </td>
                                         <td>
-                                            <p class="sc-opener"><?php _e('Embed', 'quiz-master-next'); ?>&nbsp;&nbsp;|&nbsp;&nbsp;</p>
-                                            <div class="sc-content">[qsm quiz=<?php echo $single_arr['id']; ?>]</div>
-                                            <p class="sc-opener"><?php _e('Link', 'quiz-master-next'); ?></p>
-                                            <div class="sc-content">[qsm_link id=<?php echo $single_arr['id']; ?>]<?php _e('Click here', 'quiz-master-next'); ?>[/qsm_link]</div>
+                                            <a href="#" class="qsm-list-shortcode-view">
+                                                <span class="dashicons dashicons-welcome-view-site"></span>
+                                            </a>
+                                            <div class="sc-content sc-embed">[qsm quiz=<?php echo $single_arr['id']; ?>]</div>                                            
+                                            <div class="sc-content sc-link">[qsm_link id=<?php echo $single_arr['id']; ?>]<?php _e('Click here', 'quiz-master-next'); ?>[/qsm_link]</div>
                                         </td>
                                         <td>
                                             <?php echo $single_arr['views']; ?>
                                             <div class="row-actions">
-                                                <a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e('Reset', 'quiz-master-next'); ?></a> |
-                                                <a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('Results', 'quiz-master-next'); ?></a>
+                                                <a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e('Reset', 'quiz-master-next'); ?></a>
                                             </div>
                                         </td>
                                         <td class="comments column-comments" style="text-align: left;">
@@ -451,67 +452,7 @@ function qsm_generate_quizzes_surveys_page() {
                             </span>
                         </div>
                     </div>
-                </div>
-                <?php
-                if ('true' == get_option('mlw_advert_shows')) {
-                    ?>
-                    <div class="qsm-news-ads">
-                        <h3 class="qsm-news-ads-title"><?php esc_html_e('QSM News', 'quiz-master-next'); ?></h3>
-                        <!--					<div class="qsm-info-widget">
-                                                                        <h3>Keep your WordPress site healthy and secure!</h3>
-                                                                        <p>Easily monitor your WordPress sites to ensure they stay up, healthy, and secure with our new WordPress plugin, WP Health!</p>
-                                                                        <a target="_blank" href="http://bit.ly/2Mr2SqC" class="button-primary"><?php esc_html_e('Learn More', 'quiz-master-next'); ?></a>
-                                                                </div>-->
-                        <?php
-                        $xml = qsm_fetch_data_from_xml();
-                        if (isset($xml->qsm_news)) {
-                            ?>
-                            <div class="qsm-info-widget">
-                                <h3><?php echo $xml->qsm_news->title; ?></h3>
-                                <p><?php echo $xml->qsm_news->desc; ?></p>
-                                <a target="_blank" href="<?php echo $xml->qsm_news->link; ?>?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=subscribe-to-newsletter" class="button-primary"><?php _e('Subscribe Now', 'quiz-master-next'); ?></a>
-                            </div>
-                            <?php
-                        }
-                        $qmn_rss = array();
-                        if (false === get_transient('qsm_sidebar_feed_data')) {
-                            $qmn_feed = fetch_feed('https://quizandsurveymaster.com/feed');
-                            if (!is_wp_error($qmn_feed)) {
-                                $qmn_feed_items = $qmn_feed->get_items(0, 5);
-                                foreach ($qmn_feed_items as $feed_item) {
-                                    $qmn_rss[] = array(
-                                        'link' => $feed_item->get_link(),
-                                        'title' => $feed_item->get_title(),
-                                        'description' => $feed_item->get_description(),
-                                        'date' => $feed_item->get_date('F j Y'),
-                                        'author' => $feed_item->get_author()->get_name(),
-                                    );
-                                }
-                            }
-                            set_transient('qsm_sidebar_feed_data', $qmn_rss, 60 * 60 * 24);
-                        } else {
-                            $qmn_rss = get_transient('qsm_sidebar_feed_data');
-                        }
-                        foreach ($qmn_rss as $item) {
-                            ?>
-                            <div class="qsm-info-widget">
-                                <h3><?php echo esc_html($item['title']); ?></h3>
-                                <p>By <?php echo esc_html($item['author']); ?></p>
-                                <div>
-                                    <?php echo esc_html($item['description']); ?>
-                                </div>
-                                <a target='_blank' href="<?php echo esc_attr($item['link']); ?>?utm_source=qsm-quizzes-page&utm_medium=plugin&utm_campaign=qsm_plugin" class="button-primary"><?php _e('Read More', 'quiz-master-next'); ?></a>
-                            </div>
-                            <?php
-                        }
-                        ?>
-                        <div class="remove-ads-adv-link">
-                            <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>
-                        </div>
-                    </div>
-                    <?php
-                }
-                ?>
+                </div>                
             </div>
         </form>        
 
@@ -618,8 +559,16 @@ function qsm_generate_quizzes_surveys_page() {
                         <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
                     </header>
                     <main class="qsm-popup__content" id="modal-5-content">
-                        <input type="text" value="" id="sc-shortcode-model-text" style="width: 72%;padding: 5px;">
-                        <button class="button button-primary" id="sc-copy-shortcode">Copy Shortcode</button>
+                        <div class="qsm-row" style="margin-bottom: 30px;">
+                            <lable><?php _e('Embed Shortcode','quiz-master-next'); ?></lable>
+                            <input type="text" value="" id="sc-shortcode-model-text" style="width: 72%;padding: 5px;">
+                            <button class="button button-primary" id="sc-copy-shortcode"><span class="dashicons dashicons-admin-page"></span></button>
+                        </div>
+                        <div class="qsm-row">
+                            <lable><?php _e('Link Shortcode','quiz-master-next'); ?></lable>
+                            <input type="text" value="" id="sc-shortcode-model-text-link" style="width: 72%;padding: 5px;">
+                            <button class="button button-primary" id="sc-copy-shortcode-link"><span class="dashicons dashicons-admin-page"></span></button>
+                        </div>                                                
                     </main>
                 </div>
             </div>

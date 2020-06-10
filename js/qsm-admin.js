@@ -168,20 +168,23 @@ var QSMQuizzesSurveys;
       $( '#delete-quiz-form' ).submit();
     });
     QSMQuizzesSurveys.load();
-    $(document).on('click','.sc-opener',function(){ 
-        var $this = $(this);
-        var shortcode_text = $this.next('.sc-content').text();
-        $('#sc-shortcode-model-text').val(shortcode_text);
-        MicroModal.show( 'modal-6' );        
+    $(document).on('click','.qsm-list-shortcode-view',function(e){ 
+        e.preventDefault();
+        var embed_text = $(this).siblings('.sc-embed').text();
+        var link_text = $(this).siblings('.sc-link').text();
+        $('#sc-shortcode-model-text').val( embed_text );
+        $('#sc-shortcode-model-text-link').val( link_text );
+        MicroModal.show( 'modal-6' );
+    });    
+    $(document).on('click','#sc-copy-shortcode', function(){        
+        var copyText = document.getElementById("sc-shortcode-model-text");        
+        copyText.select();        
+        document.execCommand("copy");        
     });
-    $(document).on('click','#sc-copy-shortcode', function(){
-        
-        var copyText = document.getElementById("sc-shortcode-model-text");
-        
-        copyText.select();
-        /* Copy the text inside the text field */
-        document.execCommand("copy");
-        
+    $(document).on('click','#sc-copy-shortcode-link', function(){        
+        var copyText = document.getElementById("sc-shortcode-model-text-link");
+        copyText.select();        
+        document.execCommand("copy");        
     });
   });
 }(jQuery));
