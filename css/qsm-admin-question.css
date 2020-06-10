@@ -444,9 +444,10 @@ a.import-button.button.disable_import::before {
 
 .ui-state-highlight {    
     background: #F3F3F3;
-    border: 1px solid #cbcbcb;
+    border: 1px dashed #cbcbcb;
     height: 50px;
     margin: 15px 10px 0;
+    opacity: 0.8;
 }
 
 .questionElements #poststuff{

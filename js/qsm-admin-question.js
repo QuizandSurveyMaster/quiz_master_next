@@ -626,15 +626,19 @@ var import_button;
                         $('.save-page-button').trigger('click');
 		});
 		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
-			event.preventDefault();
-			$( this ).parents( '.question' ).remove();
-			QSMQuestion.countTotal();
-                        $('.save-page-button').trigger('click');
+                        event.preventDefault();
+                        if( confirm('Are you sure?') ){
+                            $( this ).parents( '.question' ).remove();
+                            QSMQuestion.countTotal();
+                            $('.save-page-button').trigger('click');
+                        }
 		});
 		$( '.questions' ).on( 'click', '.delete-page-button', function( event ) {
 			event.preventDefault();
-			$( this ).parents( '.page' ).remove();
-                        $('.save-page-button').trigger('click');
+                        if( confirm('Are you sure?') ){
+                            $( this ).parents( '.page' ).remove();
+                            $('.save-page-button').trigger('click');
+                        }
 		});
 		$( document ).on( 'click', '#answers .delete-answer-button', function( event ) {
 			event.preventDefault();
@@ -736,7 +740,11 @@ var import_button;
 			opacity: 70,
 			cursor: 'move',
 			placeholder: "ui-state-highlight",
-                        stop: function(evt, ui) {
+                        stop: function(evt, ui) {                            
+                            $('.questions > .page').each(function(){
+                                var page = parseInt($(this).index()) + 1;
+                                $(this).find('.page-number').text( 'Page ' + page );
+                            });
                             setTimeout(
                                 function(){
                                     $('.save-page-button').trigger('click');
