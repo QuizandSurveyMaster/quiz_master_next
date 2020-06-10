@@ -26,25 +26,42 @@ function qsm_redirect_to_edit_page($quiz_id){
 }
 
 add_action('admin_init','qsm_add_author_column_in_db');
+
 /**
  * @since 6.4.6
  * Insert new column in quiz table
  */
-function qsm_add_author_column_in_db(){
-    if( get_option('qsm_update_db_column', '') != '1' ){
-        global $wpdb;
-        $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-        $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
-        if (!isset($row->quiz_author_id)) {
-            $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
-        }
-        $result_table_name = $wpdb->prefix . "mlw_results";
-        $row = $wpdb->get_row("SELECT * FROM $result_table_name");
-        if ( !isset($row->unique_id) ) {
-            $wpdb->query("ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL");
-        }
-        update_option('qsm_update_db_column', '1');
-    }
+function qsm_add_author_column_in_db() {
+
+	if( get_option('qsm_update_db_column', '') != '1' ) {
+
+		global $wpdb;
+
+		/*
+		 * Array of table and its column mapping.
+		 * Each array's item key refers to the table to be altered and its value refers 
+		 * to the array of column and its definition to be added.
+		 */
+		$table_column_arr = array( 
+			$wpdb->prefix . 'mlw_quizzes' => array( 'quiz_author_id' => 'INT NOT NULL' ),
+			$wpdb->prefix . 'mlw_results' => array( 'unique_id'      => 'VARCHAR(255) NOT NULL' ),
+		);
+
+		foreach( $table_column_arr as $table => $column_def ) {
+			foreach( $column_def  as $col_name => $col_def ) {
+				$table_col_obj = $wpdb->get_results( $wpdb->prepare(
+					'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $table, $col_name 
+				) );
+
+				if ( empty( $table_col_obj ) ) {
+					$wpdb->query( 'ALTER TABLE ' . $table . ' ADD ' . $col_name . ' ' . $col_def );
+				}
+			}
+		}
+
+		update_option( 'qsm_update_db_column', '1' );
+
+	}
 }
 
 add_action('admin_init', 'qsm_change_the_post_type');
