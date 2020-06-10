@@ -26,40 +26,42 @@ function qsm_redirect_to_edit_page($quiz_id){
 }
 
 add_action('admin_init','qsm_add_author_column_in_db');
+
 /**
  * @since 6.4.6
  * Insert new column in quiz table
  */
-function qsm_add_author_column_in_db(){
-    if( get_option('qsm_update_db_column', '') != '1' ) {
+function qsm_add_author_column_in_db() {
+
+	if( get_option('qsm_update_db_column', '') != '1' ) {
+
 		global $wpdb;
-        $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-		$quiz_tbl_col    = 'quiz_author_id';
 
-		$quiz_col_obj = $wpdb->get_results( $wpdb->prepare(
-			'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
-			$wpdb->dbname, $quiz_table_name, $quiz_tbl_col
-		) );
+		/*
+		 * Array of table and its column mapping.
+		 * Each array's item key refers to the table to be altered and its value refers 
+		 * to the array of column and its definition to be added.
+		 */
+		$table_column_arr = array( 
+			$wpdb->prefix . 'mlw_quizzes' => array( 'quiz_author_id' => 'INT NOT NULL' ),
+			$wpdb->prefix . 'mlw_results' => array( 'unique_id'      => 'VARCHAR(255) NOT NULL' ),
+		);
 
-        if ( empty( $quiz_col_obj ) ) {
-            $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
-        }
+		foreach( $table_column_arr as $table => $column_def ) {
+			foreach( $column_def  as $col_name => $col_def ) {
+				$table_col_obj = $wpdb->get_results( $wpdb->prepare(
+					'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $table, $col_name 
+				) );
 
-        $result_table_name = $wpdb->prefix . "mlw_results";
-		$result_tbl_col    = 'unique_id';
-		
-		$result_col_obj = $wpdb->get_results( $wpdb->prepare(
-			'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
-			$wpdb->dbname, $result_table_name, $result_tbl_col
-		) );
+				if ( empty( $table_col_obj ) ) {
+					$wpdb->query( 'ALTER TABLE ' . $table . ' ADD ' . $col_name . ' ' . $col_def );
+				}
+			}
+		}
 
-        if ( empty( $result_col_obj ) ) {
-            $wpdb->query( "ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL" );
-        }
+		update_option( 'qsm_update_db_column', '1' );
 
-		update_option('qsm_update_db_column', '1');
-		
-    }
+	}
 }
 
 add_action('admin_init', 'qsm_change_the_post_type');
