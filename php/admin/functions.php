@@ -174,6 +174,28 @@ function qsm_display_question_option($key, $single_option){
             </div>
             <?php
         break;
+        
+        case 'single_checkbox':
+            ?>
+            <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">                
+                <label>
+                    <?php
+                    $parent_key = $key;
+                    $default = isset($single_option['default']) ? $single_option['default'] : '';
+                    if(isset($single_option['options']) && is_array($single_option['options'])){
+                        foreach ($single_option['options'] as $key => $value) {
+                            $selected = $key === $default ? 'checked' : '';
+                            ?>
+                            <input name="<?php echo $parent_key; ?>" id="<?php echo $parent_key ?>" type="checkbox" value="<?php echo $key; ?>" <?php echo $selected; ?> />
+                        <?php
+                        }
+                    }
+                    ?>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                </label>
+            </div>
+            <?php
+        break;
 
         default:
         //Do nothing

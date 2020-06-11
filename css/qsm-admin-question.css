@@ -528,6 +528,21 @@ a.import-button.button.disable_import::before {
 .question-content-text * {
     font-size: 16px;
 }
+
+.question-type-description{        
+    color: #31708f;
+    background: #d9edf7;
+    border-color: #bce8f1;
+    padding: 15px;
+    border-radius: 4px;
+    font-family: Verdana, sans-serif;
+    font-size: 15px;
+}
+
+#category_area > label{
+    display: none;
+}
+
 @media screen and (max-width: 575px){
     .qsm-popup__container{
         min-width: auto;

@@ -313,10 +313,11 @@ var import_button;
                             alert('Enter Question title or description');
                             return false;
                         }
+                        var advanced_option = {};
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
-			var comments = $( "#comments" ).val();
-			var required = $( "#required" ).val();
+			var comments = $( "#comments" ).val();			                        
+                        advanced_option['required'] = $("#required").attr("checked") ? 1 : 0;
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
@@ -351,8 +352,7 @@ var import_button;
 					correct = 1;
 				}
 				answers.push( [ answer, points, correct ] );
-			});
-                        var advanced_option = {};
+			});                        
                         $('.questionElements .advanced-content > .qsm-row ').each(function(){
                             if( $(this).find('input[type="text"]').length > 0){
                                 var element_id = $(this).find('input[type="text"]').attr('id');                                
@@ -365,7 +365,7 @@ var import_button;
                                 advanced_option[element_id] = $(this).find('select').val();
                             } else if( $(this).find('input[type="checkbox"]').length > 0  ){
                                 var element_id = $(this).find('input[type="checkbox"]').attr('name');
-                                var multi_value = $(this).find('input[type="checkbox"]:checked').map(function() { return this.value;}).get().join(',');                                
+                                var multi_value = $(this).find('input[type="checkbox"]:checked').map(function() { return this.value;}).get().join(',');
                                 element_id = element_id.replace('[]','');                                
                                 advanced_option[element_id] = multi_value;
                             }
@@ -396,7 +396,7 @@ var import_button;
 					type: 'POST'
 				} 
 			);
-			CurrentElement.parents('.questionElements').slideUp('slow');
+			//CurrentElement.parents('.questionElements').slideUp('slow');
 		},
 		saveSuccess: function( model ) {
 			QSMAdmin.displayAlert( 'Question was saved!', 'success' );
@@ -413,7 +413,7 @@ var import_button;
 		addNewAnswer: function( answer ) {
                         
 			var answerTemplate = wp.template( 'single-answer' );                        
-			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5] } ) );
+			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], quiz_system: qsmQuestionSettings.quiz_system } ) );
                         if(answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true'){
                             var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
                             wp.editor.remove( textarea_id );
@@ -523,11 +523,14 @@ var import_button;
 			if( $('.qsm_show_question_type_' + question.get('type')).length > 0 ){
                             $('.qsm_show_question_type_' + question.get('type')).show();
 			}
+                        qsm_hide_show_question_desc( question.get('type') );
 			$( '#hint' ).val( question.get( 'hint' ) );
 			$( '#correct_answer_info' ).val( question.get( 'answerInfo' ) );
 			$( "#question_type" ).val( question.get( 'type' ) );
 			$( "#comments" ).val( question.get( 'comments' ) );
-			$( "#required" ).val( question.get( 'required' ) );
+                        //Changed checked logic based on new structure for required.
+                        $("input#required[value='" + question.get( 'required' ) + "']").prop('checked', true);
+                        
 			$( "#hide_autofill" ).val( disableAutofill );
 			$( "#limit_text" ).val( get_limit_text );
 			$( "#limit_multiple_response" ).val( get_limit_mr );
@@ -545,7 +548,7 @@ var import_button;
                         }else{         
                             $.each(all_setting, function( index, value ) {
                                 if($('#' + index + '_area').length > 0){
-                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 0){
+                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 1){
                                         var fut_arr = value.split(",");
                                         $.each(fut_arr,function(i){                                            
                                             $("input[name='"+ index +"[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
@@ -653,7 +656,7 @@ var import_button;
                         var model_html = $('#modal-1-content').html();
                         $('#modal-1-content').children().remove();
 			QSMQuestion.saveQuestion( $( this ).parents('.questionElements').children( '#edit_question_id' ).val(), $(this) );
-                        $('.save-page-button').trigger('click');                        
+                        $('.save-page-button').trigger('click');
                         $('#modal-1-content').html( model_html );
 		});                
 		$( document ).on( 'click', '#new-answer-button', function( event ) {
@@ -794,6 +797,7 @@ var import_button;
                     if( $('.qsm_show_question_type_' + question_val).length > 0 ){
                         $('.qsm_show_question_type_' + question_val).show();
                     }
+                    qsm_hide_show_question_desc( question_val );                    
                 });
 	});
         var decodeEntities = (function () {
@@ -820,4 +824,11 @@ var import_button;
                 }
                 return decodeHTMLEntities;
             })();
+            
+            function qsm_hide_show_question_desc(question_type){                
+                $('.question-type-description').hide();
+                if( $('#question_type_' + question_type + '_description').length > 0 ){
+                    $('#question_type_' + question_type + '_description').show();
+                }
+            }
 }(jQuery));

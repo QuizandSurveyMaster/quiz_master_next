@@ -41,7 +41,8 @@ function qsm_options_questions_tab_content() {
 		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
                 'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
                 'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
-                'categories' => $question_categories
+                'categories' => $question_categories,
+                'quiz_system' => $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' )
 	);
 
 	// Scripts and styles.
@@ -138,6 +139,29 @@ function qsm_options_questions_tab_content() {
                                                 <div class="qsm-row">
                                                         <textarea id="question-text"></textarea>
                                                 </div>
+                                                <div class="qsm-row">
+                                                    <?php
+                                                    $description_arr = array(
+                                                        array(
+                                                            'question_type_id' => 0,
+                                                            'description' => __('This is teting of description', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => 1,
+                                                            'description' => __('This is teting of description one', 'quiz-master-next')
+                                                        ),
+                                                    );
+                                                    $description_arr = apply_filters('qsm_question_type_description', $description_arr);
+                                                    if( $description_arr ){
+                                                        foreach ( $description_arr as $value ) { 
+                                                            $question_type_id = $value['question_type_id'];
+                                                            ?>
+                                                            <p id="question_type_<?php echo $question_type_id; ?>_description" class="question-type-description"><?php echo $value['description']; ?></p>
+                                                        <?php                                                        
+                                                        }
+                                                    }
+                                                    ?>
+                                                </div>
                                                 <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_13">
                                                     <label class="answer-header"><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
                                                     <div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
@@ -148,11 +172,29 @@ function qsm_options_questions_tab_content() {
                                                             <a href="#" class="button" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
                                                     </div>                                                    
                                                 </div>
+                                                <?php
+                                                $answer_area_option = array(
+                                                    'correct_answer_info' => array(
+                                                        'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
+                                                        'type' => 'text',                                                        
+                                                        'default' => ''
+                                                    ),
+                                                    'hint' => array(
+                                                        'label' => __( 'Hint', 'quiz-master-next' ),
+                                                        'type' => 'text',                                                        
+                                                        'default' => ''
+                                                    ),
+                                                );
+                                                $answer_area_option = apply_filters('qsm_question_advanced_option', $answer_area_option);
+                                                foreach($answer_area_option as $qo_key => $single_answer_option){
+                                                    echo qsm_display_question_option($qo_key, $single_answer_option);
+                                                }
+                                                ?>
                                             </div>
                                             <div id="postbox-container-1" class="postbox-container">
                                                 <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
-                                                    <div id="submitdiv" class="postbox ">
-                                                        <button type="button" class="handlediv" aria-expanded="true"><span class="screen-reader-text">Toggle panel: Publish</span><span class="toggle-indicator" aria-hidden="true"></span></button><h2 class="hndle ui-sortable-handle"><span>Publish</span></h2>
+                                                    <div id="submitdiv" class="postbox ">                                                        
+                                                        <h2 class="hndle ui-sortable-handle"><span><?php _e( 'Publish', 'quiz-master-quiz' ); ?></span></h2>
                                                         <div class="inside">
                                                             <div class="submitbox" id="submitpost">
                                                                 <div id="minor-publishing">                                                                            
@@ -165,8 +207,8 @@ function qsm_options_questions_tab_content() {
                                                                                     }
                                                                                     ?>
                                                                             </select>
-                                                                            <a class="question_info_tag" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
-                                                                            <p id="question_type_info"></p>
+                                                                            <a class="question_info_tag hidden" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
+                                                                            <p class="hidden" id="question_type_info"></p>
                                                                     </div>
                                                                     <?php
                                                                     $simple_question_option = array(
@@ -180,7 +222,17 @@ function qsm_options_questions_tab_content() {
                                                                             ),
                                                                             'default' => 'text',
                                                                             'show' => '0,1,2,4,13'
-                                                                        )
+                                                                        ),
+                                                                        'required' => array(
+                                                                            'label' => __( 'Required?', 'quiz-master-next' ),
+                                                                            'type' => 'single_checkbox',
+                                                                            'priority' => '2',
+                                                                            'options' => array(
+                                                                                //'0' => __( 'No', 'quiz-master-next' ),
+                                                                                '1' => __( 'Yes', 'quiz-master-next' )
+                                                                            ),
+                                                                            'default' => '0'
+                                                                        ),
                                                                     );
                                                                     $simple_question_option = apply_filters('qsm_question_format_option', $simple_question_option);
                                                                     $keys = array_column($simple_question_option, 'priority');
@@ -192,36 +244,42 @@ function qsm_options_questions_tab_content() {
                                                                 </div>
                                                                 <div id="major-publishing-actions">
                                                                     <div id="delete-action">
-                                                                        <button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+                                                                        <button class="button" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
                                                                     </div>
                                                                     <div id="publishing-action">
-                                                                        <button id="save-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Question</button>
+                                                                        <button id="save-popup-button" class="button button-primary">Save Question</button>
                                                                     </div>                                                                        
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="advanceddiv" class="postbox ">
-                                                        <button type="button" class="handlediv" aria-expanded="true">
-                                                            <span class="screen-reader-text">Toggle panel: Advanced Option</span><span class="toggle-indicator" aria-hidden="true"></span>
-                                                        </button>
-                                                        <h2 class="hndle ui-sortable-handle"><span>Advanced Option</span></h2>
+                                                    <div id="categorydiv" class="postbox">
+                                                        <h2 class="hndle ui-sortable-handle"><span><?php _e('Select Category', 'quiz-master-next'); ?></span></h2>
+                                                        <div class="inside">
+                                                            <?php
+                                                            $category_question_option = array(
+                                                                'categories' => array(
+                                                                    'label' => __( 'Category', 'quiz-master-next' ),
+                                                                    'type' => 'category',
+                                                                    'priority' => '5',                                                    
+                                                                    'default' => ''
+                                                                )
+                                                            );
+                                                            $category_question_option = apply_filters('qsm_question_category_option', $category_question_option);
+                                                            $keys = array_column($category_question_option, 'priority');
+                                                            array_multisort($keys, SORT_ASC, $category_question_option);
+                                                            foreach($category_question_option as $qo_key => $single_cat_option){
+                                                                echo qsm_display_question_option($qo_key, $single_cat_option);
+                                                            }
+                                                           ?>                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div id="advanceddiv" class="postbox">
+                                                        <h2 class="hndle ui-sortable-handle"><span><?php _e('Advanced Option', 'quiz-master-next'); ?></span></h2>
                                                         <div class="inside">
                                                             <div class="advanced-content">
                                                                 <?php
                                                                 $advanced_question_option = array(
-                                                                    'correct_answer_info' => array(
-                                                                        'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
-                                                                        'type' => 'text',
-                                                                        'priority' => '1',
-                                                                        'default' => ''
-                                                                    ),
-                                                                    'hint' => array(
-                                                                        'label' => __( 'Hint', 'quiz-master-next' ),
-                                                                        'type' => 'text',
-                                                                        'priority' => '2',
-                                                                        'default' => ''
-                                                                    ),
                                                                     'comments' => array(
                                                                         'label' => __( 'Comment Field', 'quiz-master-next' ),
                                                                         'type' => 'select',
@@ -232,23 +290,7 @@ function qsm_options_questions_tab_content() {
                                                                             '1' => __( 'None', 'quiz-master-next' )
                                                                         ),
                                                                         'default' => '1'
-                                                                    ),
-                                                                    'required' => array(
-                                                                        'label' => __( 'Required?', 'quiz-master-next' ),
-                                                                        'type' => 'select',
-                                                                        'priority' => '4',
-                                                                        'options' => array(
-                                                                            '0' => __( 'No', 'quiz-master-next' ),                                                        
-                                                                            '1' => __( 'Yes', 'quiz-master-next' )
-                                                                        ),
-                                                                        'default' => '0'
-                                                                    ),
-                                                                    'categories' => array(
-                                                                        'label' => __( 'Category', 'quiz-master-next' ),
-                                                                        'type' => 'category',
-                                                                        'priority' => '5',                                                    
-                                                                        'default' => ''
-                                                                    ),
+                                                                    ),                                                                                                                                        
                                                                     'autofill' => array(
                                                                         'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
                                                                         'type' => 'select',
@@ -303,7 +345,7 @@ function qsm_options_questions_tab_content() {
                                                                     echo qsm_display_question_option($qo_key, $single_option);
                                                                 }
                                                                 ?> 
-                                                            </div>	
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -375,10 +417,14 @@ function qsm_options_questions_tab_content() {
                                 <textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
                             <# } else { #>
                                 <input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
-                            <# } #>                                                        
+                            <# } #>
                         </div>
-			<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-			<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked"/> <# } #> /> Correct</label></div>
+                        <# if ( 1 == data.quiz_system ) { #>
+                            <div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+                        <# } #>
+                        <# if ( 0 == data.quiz_system ) { #>
+                            <div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> Correct</label></div>
+                        <# } #>    
 		</div>
 	</script>
 	<?php
