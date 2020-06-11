@@ -524,3 +524,22 @@ function qsm_create_new_quiz_from_wizard() {
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
+
+
+/**
+ * @since 7.0
+ * @param Object $upgrader_object
+ * @param Array $options
+ * Reset the transient on QSM plugin update
+ */
+function qsm_reset_transient_dashboard( $upgrader_object, $options ) {
+    $current_plugin_path_name = QSM_PLUGIN_BASENAME;    
+    if ($options['action'] == 'update' && $options['type'] == 'plugin' ){
+       foreach($options['plugins'] as $each_plugin) {
+           if ( $each_plugin == $current_plugin_path_name ){
+               delete_transient( 'qsm_admin_dashboard_data' );
+           }           
+       }
+    }
+}
+add_action( 'upgrader_process_complete', 'qsm_reset_transient_dashboard', 10, 2 );
