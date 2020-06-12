@@ -117,11 +117,23 @@ function qsm_options_results_tab_content() {
 			<div class="template_variable">
 				<span class="template_name">%POLL_RESULTS_X%</span> - <?php _e('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next'); ?>
 			</div>
-                        <div class="template_variable">
+			<div class="template_variable">
 				<span class="template_name">%RESULT_ID%</span> - <?php _e('Show result id', 'quiz-master-next'); ?>
 			</div>
-                        <div class="template_variable">
+			<div class="template_variable">
 				<span class="template_name">%QUESTION_ANSWER_X%</span> - <?php _e('X = Question ID. It will show result of particular question.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<span class="template_name">%PAGERESULT_X%</span> - <?php _e('X = Page Name. It will shows the points that user got in X page.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<span class="template_name">%PAGEPERCENTAGE_X%</span> - <?php _e('X = Percentage. It will shows the percentage that user got in X pages', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<span class="template_name">%IF_RESULT_ABOVE_X%----%END_RESULT_ABOVE_X%</span> - <?php _e('X = Result Percent. It will show content when total percent is equal or grater then X.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
+				<span class="template_name">%IF_RESULT_BELOW_X%----%END_RESULT_BELOW_X%</span> - <?php _e('X = Result Percent. It will show content when total percent is less then X.', 'quiz-master-next'); ?>
 			</div>
 			<?php do_action('qmn_template_variable_list'); ?>
 		</div>

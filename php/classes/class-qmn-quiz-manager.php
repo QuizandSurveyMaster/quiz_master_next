@@ -687,19 +687,20 @@ class QMNQuizManager {
             foreach ($pages as $key => $page) {
 				$qpage = (isset($qpages[$key]) ? $qpages[$key] : array());
 				$qpage_id = (isset($qpage['id']) ? $qpage['id'] : $key);
+				$page_key = (isset($qpage['pagekey']) ? $qpage['pagekey'] : $key);
                 ?>
 				<section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id;?>" data-pid="<?php echo $qpage_id;?>">
                     <?php 
 					if (isset($qpage['pagetimer']) && $qpage['pagetimer'] > 0) {
 						?>
 						<div class="page-timer-wrapper">
-							<div id="qsm-pagetimer-<?php echo $qpage_id;?>" class="qsm-pagetimer" data-id="<?php echo $qpages[$key]['id'];?>" style="display:none;"></div>
+							<div id="qsm-pagetimer-<?php echo $qpage_id;?>" class="qsm-pagetimer" data-id="<?php echo $qpage_id;?>" style="display:none;"></div>
 							<div style="display: none;" id="qsm-pagetimer-warning-<?php echo $qpage_id;?>" class="qsm-pagetimer-warning"><?php _e('You are running out of time! few seconds are remaining.', 'quiz-master-next');?></div>
 						</div>
 						<?php
 					}
 					?>
-					<input type="hidden" name="pagetime[<?php echo $qpages[$key]['id'];?>]" class="pagetime" id="pagetime_<?php echo $qpages[$key]['id'];?>" value="0">
+					<input type="hidden" name="pagetime[<?php echo $page_key;?>]" class="pagetime" id="pagetime_<?php echo $qpage_id;?>" value="0">
 					<?php
                     foreach ($page as $question_id) {
                         $question_list .= $question_id . 'Q';
@@ -1082,82 +1083,63 @@ class QMNQuizManager {
             $qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
-            // Determines redirect/results page.
-            $results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
-            $result_display .= $results_pages['display'];
-            $result_display = apply_filters('qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-
-            $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
-            $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-            if ( $this->qsm_plugin_active( 'qsm-save-resume/qsm-save-resume.php' ) != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
-                $result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="'. $qmn_array_for_variables['quiz_id'] .'" href="#" >'. apply_filters('qsm_retake_quiz_text', 'Retake Quiz') .'</a>';
-            }
             $unique_id = md5(date("Y-m-d H:i:s"));
+			$results_id = 0;
             // If the store responses in database option is set to Yes.
             if (0 != $qmn_quiz_options->store_responses) {
 
-                // Creates our results array.
-                $results_array = array(
-                    intval($qmn_array_for_variables['timer']),
-                    $qmn_array_for_variables['question_answers_array'],
-                    htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
-                    'contact' => $contact_responses,
-                    'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
-                    'pagetime' => $mlw_qmn_pagetime,
-                );
-                $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
-                $serialized_results = serialize($results_array);
+				// Creates our results array.
+				$results_array = array(
+					intval($qmn_array_for_variables['timer']),
+					$qmn_array_for_variables['question_answers_array'],
+					htmlspecialchars(stripslashes($qmn_array_for_variables['comments']), ENT_QUOTES),
+					'contact' => $contact_responses,
+					'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
+					'pagetime' => $mlw_qmn_pagetime,
+				);
+				$results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
+				$serialized_results = serialize($results_array);
 
-                // Inserts the responses in the database.
-                global $wpdb;
-                $table_name = $wpdb->prefix . "mlw_results";
-                
-                $results_insert = $wpdb->insert(
-                        $table_name, array(
-                    'quiz_id' => $qmn_array_for_variables['quiz_id'],
-                    'quiz_name' => $qmn_array_for_variables['quiz_name'],
-                    'quiz_system' => $qmn_array_for_variables['quiz_system'],
-                    'point_score' => $qmn_array_for_variables['total_points'],
-                    'correct_score' => $qmn_array_for_variables['total_score'],
-                    'correct' => $qmn_array_for_variables['total_correct'],
-                    'total' => $qmn_array_for_variables['total_questions'],
-                    'name' => $qmn_array_for_variables['user_name'],
-                    'business' => $qmn_array_for_variables['user_business'],
-                    'email' => $qmn_array_for_variables['user_email'],
-                    'phone' => $qmn_array_for_variables['user_phone'],
-                    'user' => $qmn_array_for_variables['user_id'],
-                    'user_ip' => $qmn_array_for_variables['user_ip'],
-                    'time_taken' => $qmn_array_for_variables['time_taken'],
-                    'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
-                    'quiz_results' => $serialized_results,
-                    'deleted' => 0,
-                    'unique_id' => $unique_id,
-                        ), array(
-                    '%d',
-                    '%s',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                        )
-                );
-            }
+				// Inserts the responses in the database.
+				global $wpdb;
+				$table_name = $wpdb->prefix . "mlw_results";
+				$results_insert = $wpdb->insert(
+					$table_name, array(
+					'quiz_id' => $qmn_array_for_variables['quiz_id'],
+					'quiz_name' => $qmn_array_for_variables['quiz_name'],
+					'quiz_system' => $qmn_array_for_variables['quiz_system'],
+					'point_score' => $qmn_array_for_variables['total_points'],
+					'correct_score' => $qmn_array_for_variables['total_score'],
+					'correct' => $qmn_array_for_variables['total_correct'],
+					'total' => $qmn_array_for_variables['total_questions'],
+					'name' => $qmn_array_for_variables['user_name'],
+					'business' => $qmn_array_for_variables['user_business'],
+					'email' => $qmn_array_for_variables['user_email'],
+					'phone' => $qmn_array_for_variables['user_phone'],
+					'user' => $qmn_array_for_variables['user_id'],
+					'user_ip' => $qmn_array_for_variables['user_ip'],
+					'time_taken' => $qmn_array_for_variables['time_taken'],
+					'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
+					'quiz_results' => $serialized_results,
+					'deleted' => 0,
+					'unique_id' => $unique_id,
+					), array('%d', '%s', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s', '%d', '%s')
+				);
+				$results_id = $wpdb->insert_id;
+			}
 
-            $results_id = $wpdb->insert_id;
+			// Determines redirect/results page.
+			$results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
+			$result_display .= $results_pages['display'];
+			$result_display = apply_filters('qmn_after_results_text', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 
-            // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
+			$result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
+			$result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
+			if ($this->qsm_plugin_active('qsm-save-resume/qsm-save-resume.php') != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1) {
+				$result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="' . $qmn_array_for_variables['quiz_id'] . '" href="#" >' . apply_filters('qsm_retake_quiz_text', 'Retake Quiz') . '</a>';
+			}
+
+			// Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
             
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);

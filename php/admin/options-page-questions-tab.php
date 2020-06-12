@@ -38,7 +38,7 @@ function qsm_options_questions_tab_content() {
 	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
 	$qpages = array();
 	if (!empty($pages)) {
-		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagetimer' => 0, 'pagetimer_warning' => 0, 'questions' => array());
+		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'pagetimer' => 0, 'pagetimer_warning' => 0, 'page_total_points' => 0, 'questions' => array());
 		foreach ($pages as $k => $val) {
 			$qpage = isset($db_qpages[$k]) ? $db_qpages[$k] : $defaultQPage;
 			$qpage['id'] = $k + 1;
@@ -246,22 +246,30 @@ function qsm_options_questions_tab_content() {
 		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 				<header class="qsm-popup__header">
-					<h2 class="qsm-popup__title" id="modal-1-title">Edit Page [ ID: <span id="edit-page-id"></span>  ]</h2>
+					<h2 class="qsm-popup__title" id="modal-1-title">Edit Page <span style="display: none;">[ ID: <span id="edit-page-id"></span>  ]</span></h2>
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-page-1-content">
 					<input type="hidden" name="edit_page_id" id="edit_page_id" value="">
 					<div id="page-options">
-						<div id="page_timer" class="qsm-row">
+						<div class="qsm-row">
+							<label><?php _e('Page Name', 'quiz-master-next'); ?></label>
+							<input type="text" id="pagekey" name="pagekey" value="">
+						</div>
+						<div class="qsm-row">
 							<label><?php _e('How many minutes does the user have to finish the page?', 'quiz-master-next'); ?></label>
 							<input type="number" step="1" min="0" id="pagetimer" name="pagetimer" value="0">
 							<em style="display: block;font-size: 12px;"><?php _e('Leave 0 for no time limit', 'quiz-master-next'); ?></em>
 						</div>
-						<div id="page_timer" class="qsm-row">
+						<div class="qsm-row">
 							<label><?php _e('Show warning for specific remaining time', 'quiz-master-next'); ?></label>
 							<input type="number" step="1" min="0" id="pagetimer_warning" name="pagetimer_warning" value="0">
 							<span><?php _e('minutes', 'quiz-master-next'); ?></span>
 							<em style="display: block;font-size: 12px;"><?php _e('Leave 0 for no warining', 'quiz-master-next'); ?></em>
+						</div>
+						<div class="qsm-row">
+							<label><?php _e('Total Points for this page', 'quiz-master-next'); ?></label>
+							<input type="number" step="1" min="0" id="page_total_points" name="page_total_points" value="0">
 						</div>
 					</div>
 				</main>
