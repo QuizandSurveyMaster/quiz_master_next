@@ -27,6 +27,7 @@ var import_button;
 				id: null,
 				quizID: 1,
 				pagekey: qsmRandomID(8),
+				page_intro: null,
 				pagetimer: 0,
 				pagetimer_warning: 0,
 				page_total_points: 0,
@@ -199,6 +200,8 @@ var import_button;
 			pageInfo.set('pagetimer', jQuery('#pagetimer').val());
 			pageInfo.set('pagetimer_warning', jQuery('#pagetimer_warning').val());
 			pageInfo.set('page_total_points', jQuery('#page_total_points').val());
+			var page_intro = wp.editor.getContent('page_intro');
+			pageInfo.set('page_intro', page_intro);
 		},
 		savePages: function() {
 			QSMAdmin.displayAlert( 'Saving pages and questions...', 'info' );
@@ -218,6 +221,9 @@ var import_button;
 					singlePage.push( jQuery( question ).data( 'question-id' ) )
 				});
 				pages.push( singlePage );
+				/**
+				 * Prepare qpages Object
+				 */
 				pageInfo = QSMQuestion.qpages.get(jQuery( page ).data('page-id'));
 				pageInfo.set('questions', singlePage);
 				qpages.push(pageInfo.attributes);
@@ -248,7 +254,15 @@ var import_button;
 			} else {
 				var pageInfo = QSMQuestion.qpages.get(pageID);
 			}
-			$( '.questions' ).append( template( { id: pageInfo.id, quizID: pageInfo.quizID, pagekey: pageInfo.pagekey, pagetimer: pageInfo.pagetimer, pagetimer_warning: pageInfo.pagetimer_warning, page_total_points:pageInfo.page_total_points} ) );
+			$('.questions').append(template({
+				id: pageInfo.id,
+				quizID: pageInfo.quizID,
+				pagekey: pageInfo.pagekey,
+				page_intro: pageInfo.page_intro,
+				pagetimer: pageInfo.pagetimer,
+				pagetimer_warning: pageInfo.pagetimer_warning,
+				page_total_points: pageInfo.page_total_points
+			}));
 			$( '.page' ).sortable({
 				items: '.question',
 				opacity: 70,
@@ -501,12 +515,25 @@ var import_button;
 		},
 		openEditPagePopup: function( pageID ) {
 			var page = QSMQuestion.qpages.get(pageID);
-			$( '#edit_page_id' ).val( pageID );
-			$( "#edit-page-id" ).text('').text(pageID);
-			$( '#pagekey' ).val( page.get( 'pagekey' ) );
-			$( '#pagetimer' ).val( page.get( 'pagetimer' ) );
-			$( '#pagetimer_warning' ).val( page.get( 'pagetimer_warning' ) );
-			$( '#page_total_points' ).val( page.get( 'page_total_points' ) );
+			$('#edit_page_id').val(pageID);
+			$("#edit-page-id").text('').text(pageID);
+			$('#pagekey').val(page.get('pagekey'));
+			$('#pagetimer').val(page.get('pagetimer'));
+			$('#pagetimer_warning').val(page.get('pagetimer_warning'));
+			$('#page_total_points').val(page.get('page_total_points'));
+			
+			var question_editor = ''
+			var pageIntroText = jQuery('<textarea />').html(page.get('page_intro')).text();
+			if (qsmQuestionSettings.qsm_user_ve === 'true') {
+				question_editor = tinyMCE.get('page_intro');
+			}
+			if ($('#wp-page_intro-wrap').hasClass('html-active')) {
+				jQuery("#page_intro").val(pageIntroText);
+			} else if (question_editor) {
+				tinyMCE.get('page_intro').setContent(pageIntroText);
+			} else {
+				jQuery("#page_intro").val(pageIntroText);
+			}
 			
 			MicroModal.show('modal-page-1');
 		},
@@ -527,6 +554,7 @@ var import_button;
 				quicktags:    true,
 			};
 			wp.editor.initialize( 'question-text', settings );
+			wp.editor.initialize( 'page_intro', settings );
 		}
 	};
 	$(function () {

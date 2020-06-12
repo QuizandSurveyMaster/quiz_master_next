@@ -38,10 +38,11 @@ function qsm_options_questions_tab_content() {
 	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
 	$qpages = array();
 	if (!empty($pages)) {
-		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'pagetimer' => 0, 'pagetimer_warning' => 0, 'page_total_points' => 0, 'questions' => array());
+		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'page_intro' => '', 'pagetimer' => 0, 'pagetimer_warning' => 0, 'page_total_points' => 0, 'questions' => array());
 		foreach ($pages as $k => $val) {
 			$qpage = isset($db_qpages[$k]) ? $db_qpages[$k] : $defaultQPage;
 			$qpage['id'] = $k + 1;
+			$qpage['page_intro'] = wp_unslash(html_entity_decode($qpage['page_intro']));
 			$qpage['questions'] = $val;
 			$qpages[] = $qpage;
 		}
@@ -257,6 +258,10 @@ function qsm_options_questions_tab_content() {
 							<input type="text" id="pagekey" name="pagekey" value="">
 						</div>
 						<div class="qsm-row">
+							<label><?php _e('Page Description', 'quiz-master-next'); ?></label>
+							<textarea id="page_intro" name="page_intro"></textarea>
+						</div>
+						<div class="qsm-row">
 							<label><?php _e('How many minutes does the user have to finish the page?', 'quiz-master-next'); ?></label>
 							<input type="number" step="1" min="0" id="pagetimer" name="pagetimer" value="0">
 							<em style="display: block;font-size: 12px;"><?php _e('Leave 0 for no time limit', 'quiz-master-next'); ?></em>
@@ -372,6 +377,9 @@ function qsm_ajax_save_pages() {
 	$quiz_id = intval($_POST['quiz_id']);
 	$pages = isset($_POST['pages']) ? $_POST['pages'] : array('1');
 	$qpages = isset($_POST['qpages']) ? $_POST['qpages'] : array();
+	foreach ($qpages as $key => $qp) {
+		$qpages[$key]['page_intro'] = htmlentities(wpautop($qp['page_intro']));
+	}
 	
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz_id);
 	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('qpages', $qpages);

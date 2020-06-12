@@ -701,6 +701,11 @@ class QMNQuizManager {
 					}
 					?>
 					<input type="hidden" name="pagetime[<?php echo $page_key;?>]" class="pagetime" id="pagetime_<?php echo $qpage_id;?>" value="0">
+					<?php if (isset($qpage['page_intro']) && !empty($qpage['page_intro'])): ?>
+						<div class="page_intro_wrapper">
+							<?php echo do_shortcode(wp_unslash(html_entity_decode($qpage['page_intro'])));?>
+						</div>
+					<?php endif;?>
 					<?php
                     foreach ($page as $question_id) {
                         $question_list .= $question_id . 'Q';
