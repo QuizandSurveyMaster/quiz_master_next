@@ -607,12 +607,13 @@ function qmnFormSubmit( quiz_form_id ) {
 	jQuery( '.mlw_answer_open_text' ).attr( 'disabled', false );
         
         //Convert serialize data into index array
-        var unindexed_array = jQuery( '#' + quiz_form_id ).serializeArray();        
+        var unindexed_array = jQuery( '#' + quiz_form_id ).serializeArray();
         var fd = new FormData();
-        jQuery.each(unindexed_array,function(key,input){            
+        jQuery.each(unindexed_array,function(key,input){
             fd.append(input.name,input.value);
         });
         fd.append("action", 'qmn_process_quiz');
+		
         
 	qsmEndTimeTakenTimer();
 	if ( qmn_quiz_data[quiz_id].hasOwnProperty( 'timer_limit' ) ) {
@@ -620,6 +621,7 @@ function qmnFormSubmit( quiz_form_id ) {
 	}
 	jQuery( '#' + quiz_form_id + ' input[type=submit]' ).attr( 'disabled', 'disabled' );
 	qsmDisplayLoading( $container );
+	// console.log( 'submitted data:' + unindexed_array );
         jQuery.ajax({
             url: qmn_ajax_object.ajaxurl,
             data: fd,
@@ -983,12 +985,17 @@ jQuery(function() {
 		}
 	});
 	
-	jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
-	  event.preventDefault();
-		qmnFormSubmit( this.id );
+	// jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
+	
+	jQuery(document).on( 'click', ".qsm-submit-btn", function( event ) {
+		event.preventDefault();
+		var form = jQuery(this).closest('form')[0];
+		// alert( 'quize form subnmitted: ' + form.id );
+		qmnFormSubmit( form.id );
 	});
         
         jQuery(document).on('click','.btn-reload-quiz',function(e){
+			// alert(1);
             e.preventDefault();
             var quiz_id = jQuery(this).data('quiz_id');
             var parent_div = jQuery(this).parents('.qsm-quiz-container');
@@ -1005,7 +1012,8 @@ jQuery(function() {
                     QSM.initPagination( quiz_id );
                 },
                 error: function (errorThrown) {
-                    alert(errorThrown);
+					console.log( 'error' );
+                    alert( );
                 }
             });
         });
