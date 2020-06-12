@@ -90,7 +90,7 @@ function qsm_display_question_option($key, $single_option){
 	$show_class = '';
 	if($show){
 		foreach($show as $show_value){
-			$show_class .= 'qsm_show_question_type_' . $show_value .' ';
+			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) .' ';
 		}
 		$show_class .= ' qsm_hide_for_other';
 	}
@@ -101,6 +101,15 @@ function qsm_display_question_option($key, $single_option){
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
                 <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
                 <input type="text" name="<?php echo $key; ?>" value="<?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?>" id="<?php echo $key ?>" />
+            </div>
+            <?php
+        break;
+    
+        case 'textarea':
+            ?>
+            <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <textarea name="<?php echo $key; ?>" id="<?php echo $key ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
             </div>
             <?php
         break;
@@ -149,7 +158,12 @@ function qsm_display_question_option($key, $single_option){
             <div id="category_area" class="qsm-row <?php echo $show_class; ?>">
                 <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
                 <div id="categories">
-                    <input type="radio" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new">New: <input type='text' id='new_category' value='' /></label>
+                    <a id="qsm-category-add-toggle" class="hide-if-no-js">
+                        <?php _e( '+ Add New Category', 'quiz-master-next' ); ?>
+                    </a>
+                    <p id="qsm-category-add" style="display: none;">
+                        <input type="radio" style="display: none;" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new"><input type='text' id='new_category' value='' placeholder="Add new category" /></label>
+                    </p>
                 </div>
             </div>
             <?php

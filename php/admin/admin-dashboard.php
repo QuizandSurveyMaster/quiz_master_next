@@ -108,6 +108,7 @@ function qsm_generate_dashboard_page() {
 				<img src="<?php echo QSM_PLUGIN_URL . '/assets/icon-128x128.png'; ?>">
 				<p class="current_version"><?php echo $mlwQuizMasterNext->version; ?></p>
 			</div>
+                        <a class="qsm-welcome-panel-dismiss" href="#" aria-label="Dismiss the welcome panel"><?php _e( 'Dismiss', 'quiz-master-next' ); ?></a>
 			<div class="welcome-panel-content">
 				<h2><?php _e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h2>
 				<p class="about-description"><?php _e( 'Formerly Quiz Master Next', 'quiz-master-next' ); ?></p>

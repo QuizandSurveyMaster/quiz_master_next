@@ -143,13 +143,9 @@ function qsm_options_questions_tab_content() {
                                                     <?php
                                                     $description_arr = array(
                                                         array(
-                                                            'question_type_id' => 0,
-                                                            'description' => __('This is teting of description', 'quiz-master-next')
-                                                        ),
-                                                        array(
-                                                            'question_type_id' => 1,
-                                                            'description' => __('This is teting of description one', 'quiz-master-next')
-                                                        ),
+                                                            'question_type_id' => 11,
+                                                            'description' => __('Users will see a file', 'quiz-master-next')
+                                                        )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);
                                                     if( $description_arr ){
@@ -176,7 +172,7 @@ function qsm_options_questions_tab_content() {
                                                 $answer_area_option = array(
                                                     'correct_answer_info' => array(
                                                         'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
-                                                        'type' => 'text',                                                        
+                                                        'type' => 'textarea',                                                        
                                                         'default' => ''
                                                     ),
                                                     'hint' => array(
@@ -244,7 +240,7 @@ function qsm_options_questions_tab_content() {
                                                                 </div>
                                                                 <div id="major-publishing-actions">
                                                                     <div id="delete-action">
-                                                                        <button class="button" data-micromodal-close aria-label="Close this dialog window">Cancel</button>
+                                                                        <a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
                                                                     </div>
                                                                     <div id="publishing-action">
                                                                         <button id="save-popup-button" class="button button-primary">Save Question</button>
@@ -299,14 +295,15 @@ function qsm_options_questions_tab_content() {
                                                                             '0' => __( 'No', 'quiz-master-next' ),                                                        
                                                                             '1' => __( 'Yes', 'quiz-master-next' )
                                                                         ),
-                                                                        'default' => '0'
+                                                                        'default' => '0',
+                                                                        'show' => '3, fill-in-the-blank'
                                                                     ),
                                                                     'limit_text' => array(
                                                                         'label' => __('Limit Text', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '7',                                                    
                                                                         'default' => '',
-                                                                        'show' => '3'
+                                                                        'show' => '3, fill-in-the-blank'
                                                                     ),
                                                                     'limit_multiple_response' => array(
                                                                         'label' => __('Limit Multiple choice', 'quiz-master-next' ),
@@ -404,7 +401,7 @@ function qsm_options_questions_tab_content() {
 	<!-- View for single category -->
 	<script type="text/template" id="tmpl-single-category">
 		<div class="category">
-			<input type="radio" name="category" class="category-radio" value="{{data.category}}"><label>{{data.category}}</label>
+			<label><input type="radio" name="category" class="category-radio" value="{{data.category}}">{{data.category}}</label>
 		</div>
 	</script>
 

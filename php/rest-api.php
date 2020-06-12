@@ -112,6 +112,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                         'id'         => $question['question_id'],
                         'quizID'     => $question['quiz_id'],
                         'type'       => $question['question_type_new'],
+                        'question_title' => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : 0,
                         'name'       => $question['question_name'],
                         'answerInfo' => $question['question_answer_info'],
                         'comments'   => $question['comments'],
@@ -351,6 +352,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
 					'page'       => $question['page'],
+                                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
 				);
 			}
 			return $question;

@@ -13,6 +13,35 @@
     line-height: 1.23076923;
     text-decoration: none;
 }
+.welcome-panel .qsm-welcome-panel-dismiss{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 15px 10px 21px;
+    font-size: 13px;
+    line-height: 1.23076923;
+    text-decoration: none;
+}
+.welcome-panel .qsm-welcome-panel-dismiss:before {
+    background: 0 0;
+    color: #72777c;
+    content: "\f153";
+    display: block;
+    font: normal 16px/20px dashicons;
+    speak: none;
+    height: 20px;
+    text-align: center;
+    width: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    top: 9px;
+    left: 0;
+    transition: all .1s ease-in-out;
+}
+.welcome-panel .qsm-welcome-panel-dismiss:hover:before {
+    color: #c00;
+}
 .welcome-panel .qsm-welcome-panel-close img{
     width: 100px;
 }

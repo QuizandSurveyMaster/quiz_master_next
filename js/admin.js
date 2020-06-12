@@ -184,5 +184,13 @@ var QSMAdmin;
                 jQuery('#legacy_options').parents('tr').nextAll('tr').show();
             }
         });
+        
+        //Dismiss the welcome panel
+        jQuery('.qsm-welcome-panel-dismiss').click(function(e){
+            e.preventDefault();
+            jQuery( '#welcome_panel' ).addClass('hidden');            
+            jQuery('#screen-options-wrap').find('#welcome_panel-hide').prop('checked', false);
+            postboxes.save_state( 'toplevel_page_qsm_dashboard' );
+        });
     });
 }(jQuery));

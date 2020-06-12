@@ -983,7 +983,7 @@ td.scheduled_time_start {
 .qsm-tooltips:hover{
     display: block;
     opacity: 1;
-    z-index: 1;
+    z-index: 9999;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
