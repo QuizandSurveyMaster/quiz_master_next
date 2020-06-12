@@ -986,16 +986,13 @@ jQuery(function() {
 	});
 	
 	// jQuery( '.qmn_quiz_form' ).on( "submit", function( event ) {
-	
 	jQuery(document).on( 'click', ".qsm-submit-btn", function( event ) {
 		event.preventDefault();
 		var form = jQuery(this).closest('form')[0];
-		// alert( 'quize form subnmitted: ' + form.id );
 		qmnFormSubmit( form.id );
 	});
         
         jQuery(document).on('click','.btn-reload-quiz',function(e){
-			// alert(1);
             e.preventDefault();
             var quiz_id = jQuery(this).data('quiz_id');
             var parent_div = jQuery(this).parents('.qsm-quiz-container');
