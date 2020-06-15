@@ -145,6 +145,22 @@ function qsm_options_questions_tab_content() {
                                                         array(
                                                             'question_type_id' => 11,
                                                             'description' => __('Users will see a file upload field instead of regular options for this question type.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => 1,
+                                                            'description' => __('This will display choice in horizontal format.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => 4,
+                                                            'description' => __('This will allow user to select multiple response( Checkbox ).', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => 8,
+                                                            'description' => __('This will create single checkbox with text for accepting any term & condition or any other text.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => 'fill-in-the-blank',
+                                                            'description' => __('We need to use %BLANK% variable in description box.', 'quiz-master-next')
                                                         )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);

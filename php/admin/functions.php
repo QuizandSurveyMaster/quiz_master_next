@@ -291,7 +291,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                         array(
                             'template_name' => __('Sample Template', 'quiz-master-next'),
                             'priority' => '2',
-                            'template_img' => 'http://localhost/work/et/qsm/wp-content/uploads/2020/05/sample-quiz.png',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
                                 'system' => array(
                                     'option_name' => 'Graded System',
@@ -310,7 +310,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                         array(
                             'template_name' => __('Customer Feedback', 'quiz-master-next'),
                             'priority' => '3',
-                            'template_img' => 'http://localhost/work/et/qsm/wp-content/uploads/2020/05/sample-quiz.png',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
                                 'system' => array(
                                     'option_name' => 'Graded System',
@@ -333,7 +333,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                         array(
                             'template_name' => __('Event Planning', 'quiz-master-next'),
                             'priority' => '4',
-                            'template_img' => 'http://localhost/work/et/qsm/wp-content/uploads/2020/05/sample-quiz.png',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
                                 'system' => array(
                                     'option_name' => 'Graded System',
