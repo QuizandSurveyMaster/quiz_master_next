@@ -78,6 +78,8 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ){
         if( $question_id === 'X'){
             $content = str_replace( "%QUESTION_ANSWER_". $question_id ."%" , '', $content);
             return $content;
+        }else if( $question_id === 'CORRECT' || $question_id === 'INCORRECT' || $question_id === 'GROUP' ){
+            return $content;
         }
         $question_answers_array = isset($mlw_quiz_array['question_answers_array']) ? $mlw_quiz_array['question_answers_array'] : array();
         $key = array_search( $question_id, array_column($question_answers_array, 'id'));
