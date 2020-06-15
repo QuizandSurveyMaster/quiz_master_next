@@ -577,7 +577,7 @@ class QSM_Install {
       'type' => 'hide_show',
       'default' => '',
        'help' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
-       'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
+       //'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     

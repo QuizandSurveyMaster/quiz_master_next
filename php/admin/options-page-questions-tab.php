@@ -144,7 +144,7 @@ function qsm_options_questions_tab_content() {
                                                     $description_arr = array(
                                                         array(
                                                             'question_type_id' => 11,
-                                                            'description' => __('Users will see a file', 'quiz-master-next')
+                                                            'description' => __('Users will see a file upload field instead of regular options for this question type.', 'quiz-master-next')
                                                         )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);
