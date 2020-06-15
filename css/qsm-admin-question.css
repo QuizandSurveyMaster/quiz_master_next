@@ -200,6 +200,23 @@
         color: #7b7575;
 }
 
+.questionElements .qsm-row > label {
+    position: relative;
+}
+
+.questionElements .qsm-row > label > .qsm-tooltips-icon {
+    position: relative;
+    top: 2px;
+}
+
+.questionElements .qsm-tooltips-icon .qsm-tooltips{    
+    bottom: 26px;
+}
+
+.questionElements .qsm-tooltips-icon{    
+    cursor: help;
+}
+
 .qsm-row select, .qsm-row input[type=text], .qsm-row textarea {
 	width: 100%;
 }

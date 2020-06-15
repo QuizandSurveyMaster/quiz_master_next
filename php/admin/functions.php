@@ -94,12 +94,21 @@ function qsm_display_question_option($key, $single_option){
 		}
 		$show_class .= ' qsm_hide_for_other';
 	}
-	
-    switch ($type){
+    $tooltip = '';
+    if( isset($single_option['tooltip']) && $single_option['tooltip'] != '' ){             
+        $tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+        $tooltip .= '<span class="qsm-tooltips">' . $single_option['tooltip'] . '</span>';
+        $tooltip .= '</span>';
+    }
+    switch ($type){         
         case 'text':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
+                <?php echo $tooltip; ?>
                 <input type="text" name="<?php echo $key; ?>" value="<?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?>" id="<?php echo $key ?>" />
             </div>
             <?php
@@ -108,7 +117,10 @@ function qsm_display_question_option($key, $single_option){
         case 'textarea':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <textarea name="<?php echo $key; ?>" id="<?php echo $key ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
             </div>
             <?php
@@ -117,7 +129,10 @@ function qsm_display_question_option($key, $single_option){
         case 'number':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <input type="number" name="<?php echo $key; ?>" value="<?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?>" id="<?php echo $key ?>" />
             </div>
             <?php
@@ -126,7 +141,10 @@ function qsm_display_question_option($key, $single_option){
         case 'select':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <select name="<?php echo $key; ?>" id="<?php echo $key ?>">
                     <?php
                     $default = isset($single_option['default']) ? $single_option['default'] : '';
@@ -147,7 +165,10 @@ function qsm_display_question_option($key, $single_option){
         case 'textarea':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <textarea id="<?php echo $key ?>" name="<?php echo $key; ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
             </div>
             <?php
@@ -156,7 +177,10 @@ function qsm_display_question_option($key, $single_option){
         case 'category':
             ?>
             <div id="category_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <div id="categories">
                     <a id="qsm-category-add-toggle" class="hide-if-no-js">
                         <?php _e( '+ Add New Category', 'quiz-master-next' ); ?>
@@ -172,7 +196,10 @@ function qsm_display_question_option($key, $single_option){
         case 'multi_checkbox':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label><?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?></label>
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                </label>
                 <?php
                 $parent_key = $key;
                 $default = isset($single_option['default']) ? $single_option['default'] : '';
@@ -206,6 +233,7 @@ function qsm_display_question_option($key, $single_option){
                     }
                     ?>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
                 </label>
             </div>
             <?php

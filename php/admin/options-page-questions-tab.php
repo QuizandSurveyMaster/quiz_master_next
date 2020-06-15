@@ -217,7 +217,8 @@ function qsm_options_questions_tab_content() {
                                                                                 'rich' => __( 'Rich Answers', 'quiz-master-next' ),                                                                            
                                                                             ),
                                                                             'default' => 'text',
-                                                                            'show' => '0,1,2,4,13'
+                                                                            'show' => '0,1,2,4,13',
+                                                                            'tooltip' => __('This is testing of question tooltip with <a href="#">Link</a>', 'quiz-master-next')
                                                                         ),
                                                                         'required' => array(
                                                                             'label' => __( 'Required?', 'quiz-master-next' ),
