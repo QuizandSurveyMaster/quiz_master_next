@@ -22,7 +22,7 @@ var QSM;
 					QSM.initPagination( quizID );
 					if ( quiz.hasOwnProperty( 'timer_limit' ) && 0 != quiz.timer_limit ) {
 						QSM.initTimer( quizID );
-					}				
+					}
 				});
 			}
 		},
@@ -65,18 +65,17 @@ var QSM;
 				} else {                                        
 					QSM.activateTimer( quizID );
                                         $( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.stoptimer-p').show();
-				}				
+				}
 			// ...else, we must be using the questions per page option.
 			} else {
 				if ( qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page ) {
 					$( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.mlw_next' ).on( 'click', function(event) {
 						event.preventDefault();
-                                                if(qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')){													
+                                if(qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')){
                                                     var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
-													
                                                     if( $( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.qmn_pagination > .current_page_hidden').val() == start_timer){
                                                         QSM.activateTimer( quizID );                                                        
-							$( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.stoptimer-p').show();
+								$( '#quizForm' + quizID ).closest( '.qmn_quiz_container' ).find( '.stoptimer-p').show();
                                                     }
                                                 }else{
                                                     if ( ! qmn_quiz_data[ quizID ].timerStatus && ( 0 == $( '.quiz_begin:visible' ).length || ( 1 == $( '.quiz_begin:visible' ).length && qmnValidatePage( 'quizForm' + quizID ) ) ) ) {
@@ -1006,6 +1005,12 @@ jQuery(function() {
                 },
                 success: function (response) {                    
                     parent_div.replaceWith(response);
+					// Restart the timer for retake quiz.
+					setInterval( qmnTimeTakenTimer, 1000 );
+					
+					// Reset the timer clock on retake quiz.
+					QSM.initTimer( quiz_id );
+					
                     QSM.initPagination( quiz_id );
                 },
                 error: function (errorThrown) {
@@ -1127,12 +1132,12 @@ jQuery(function() {
         });
         
         //Submit the form on popup click
-        jQuery('.submit-the-form').click(function(e){
+        jQuery(document).on( 'click', '.submit-the-form', function(e) {
             e.preventDefault();
-            var quiz_id = jQuery(this).data('quiz_id');
-            jQuery('#quizForm' + quiz_id ).submit();
+            // Triggger the click event on the quiz form's submit button.
+			jQuery( '.qsm-submit-btn' ).trigger( 'click' );
             jQuery('#modal-3').removeClass('is-open');
-        });
+        } );
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
