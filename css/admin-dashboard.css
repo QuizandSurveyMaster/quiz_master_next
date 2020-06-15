@@ -404,6 +404,9 @@
 #recomm_addons_wrapper ul li img{
     max-width: 100%;
 }
+#quiz_settings_wrapper .qsm-opt-tr .qsm-tooltips-icon{
+    display: none;
+}
 @media screen and (min-width: 1200px){
     #quiz_settings_wrapper tr td fieldset > br{
         display: none;
