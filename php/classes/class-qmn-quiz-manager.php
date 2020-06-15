@@ -1268,7 +1268,8 @@ class QMNQuizManager {
                                     "id" => $question['question_id'],
                                     "points" => $answer_points,
                                     "category" => $question['category'],
-                                    "question_type" => $question['question_type_new']
+                                    "question_type" => $question['question_type_new'],
+                                    "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
                                         ), $options, $quiz_data);
                             }
                             break;
@@ -1330,7 +1331,9 @@ class QMNQuizManager {
                                 "correct" => $correct_status,
                                 "id" => $question['question_id'],
                                 "points" => $answer_points,
-                                "category" => $question['category']
+                                "category" => $question['category'],
+                                "question_type" => $question['question_type_new'],
+                                "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
                                     ), $options, $quiz_data);
                         }
                         break;
