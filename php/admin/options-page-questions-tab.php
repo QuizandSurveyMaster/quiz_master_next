@@ -466,7 +466,8 @@ function qsm_ajax_save_pages() {
 	);
 	$quiz_id = intval( $_POST['quiz_id'] );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $_POST['pages'] );
+        $pages = isset( $_POST['pages'] ) ? $_POST['pages'] : array();
+	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
 		$json['status'] = 'success';
 	}
