@@ -73,8 +73,7 @@ class QMN_Review_Message {
 	 */
 	public function check_results_amount() {
 		global $wpdb;
-		$table_name = $wpdb->prefix."mlw_results";
-		$amount = $wpdb->get_var( "SELECT COUNT(result_id) FROM $table_name WHERE deleted=0" );
+		$amount = get_option( 'qmn_quiz_taken_cnt' );
 		return intval( $amount );
 	}
 
