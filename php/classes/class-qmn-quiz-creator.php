@@ -28,8 +28,8 @@ class QMNQuizCreator {
 	 * @since 3.7.1
 	 */
 	public function __construct() {
-		if ( isset( $_GET['quiz_id'] ) ) {
-			$this->quiz_id = intval( $_GET['quiz_id'] );
+		if ( isset( $_REQUEST['quiz_id'] ) ) {
+			$this->quiz_id = intval( $_REQUEST['quiz_id'] );
 		}
 	}
 

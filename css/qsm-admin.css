@@ -985,6 +985,94 @@ td.scheduled_time_start {
     opacity: 1;
     z-index: 9999;
 }
+/**
+* Text Tab design
+*/
+.qsm-text-main-wrap{
+    display: inline-block;
+    width: 100%;
+}
+.qsm-text-main-wrap #post-body-content{
+    background: #fff;
+    box-sizing: border-box;
+}
+.qsm-text-main-wrap #postbox-container-1{
+    position: relative;
+    background: #fff;    
+    box-sizing: border-box;
+}
+.qsm-text-main-wrap #postbox-container-1 .qsm-text-header h5{
+    font-size: 14px;
+    margin: 0;
+    font-weight: bold;
+}
+.qsm-text-main-wrap #postbox-container-1 .qsm-text-header .description{
+    color: #666;
+}
+.qsm-text-main-wrap .qsm-text-header{
+    padding: 20px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.qsm-text-main-wrap .qsm-text-header .message-dropdown{
+    display: inline-block;
+}
+.qsm-text-main-wrap .qsm-text-header .message-dropdown label{
+    font-size: 14px;
+    font-weight: bold;
+}
+.qsm-text-main-wrap .qsm-text-header .save-text-changes{
+    float: right;
+}
+.qsm-text-main-wrap .qsm-text-conent{
+    padding: 20px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.qsm-text-conent.qsm-text-allowed-variables span.qsm-text-template-span,
+#show-all-variable-content span.qsm-text-template-span {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+#show-all-variable-content span.qsm-text-template-span {
+    margin-bottom: 30px;
+    margin-right: 50px;
+}
+#show-all-variable-content .qsm-text-template-span .qsm-tooltips-icon{
+    margin-left: 5px;
+}
+.qsm-text-template-span button{
+    border-color: #ccc !important;
+}
+.qsm-text-template-span .qsm-tooltips-icon{
+    vertical-align: middle;
+    line-height: 30px;
+    color: #9E9E9E;
+    margin-left: 5px;
+}
+.qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips{
+    left: calc( 100% - 10px );
+    bottom: 30px;
+}
+.qsm-text-label-wrapper > h2 {
+    font-size: 24px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    line-height: normal;
+}
+.qsm-text-label-wrapper form > button:nth-child(3){
+    display: none;
+}
+.qsm-text-label-wrapper .section_heading{
+    margin-top: 0;
+}
+#show-all-variable .qsm-popup__container{
+    min-width: 50vw;
+    max-width: 1040px;
+}
+#show-all-variable-content{
+    margin-bottom: 0 !important;
+}
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
         float: left;

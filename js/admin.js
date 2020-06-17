@@ -192,5 +192,46 @@ var QSMAdmin;
             jQuery('#screen-options-wrap').find('#welcome_panel-hide').prop('checked', false);
             postboxes.save_state( 'toplevel_page_qsm_dashboard' );
         });
+        //Get the message in text tab
+        jQuery( document ).on( 'change', '#qsm_question_text_message_id' , function(){            
+            var text_id = jQuery(this).val();            
+            jQuery.post(ajaxurl, {text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message'},function (response) {
+                var data = jQuery.parseJSON( response );
+                if( data.success === true ){
+                    var text_msg = data.text_message;                    
+                    text_msg = text_msg.replace(/\n/g,"<br>");
+                    tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
+                    jQuery( '.qsm-text-allowed-variables > .qsm-text-variable-wrap' ).html('').html( data.allowed_variable_text );
+                } else {
+                    console.log( data.message );
+                }
+            });
+        });
+        //Save the message in text tab
+        jQuery( document ).on( 'click', '#qsm_save_text_message' , function(){
+            var $this = jQuery(this);
+            $this.siblings('.spinner').addClass('is-active');
+            var text_id = jQuery( '#qsm_question_text_message_id' ).val();
+            var message = wp.editor.getContent( 'qsm_question_text_message' );
+            jQuery.post(ajaxurl, {text_id: text_id, 'message': message, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_update_text_message'},function (response) {
+                var data = jQuery.parseJSON( response );
+                if( data.success === true ){
+                    //Do nothing
+                } else {
+                    console.log( data.message );
+                }
+                $this.siblings('.spinner').removeClass('is-active');
+            });
+        });
+        //On click append on tiny mce
+        jQuery( document ).on( 'click', '.qsm-text-allowed-variables button.button' , function(){
+            var content = jQuery(this).text();
+            tinyMCE.activeEditor.execCommand('mceInsertContent', false, content);
+        });
+        //Show all the variable list
+        jQuery('.qsm-show-all-variable-text').click(function (e) {
+            e.preventDefault();
+            MicroModal.show('show-all-variable');
+        });
     });
 }(jQuery));

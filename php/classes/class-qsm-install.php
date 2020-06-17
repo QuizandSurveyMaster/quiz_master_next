@@ -841,62 +841,25 @@ class QSM_Install {
 
     // Registers submit_button_text setting
     $field_array = array(
+      'id' => 'button_section',
+      'label' => __('Buttons', 'quiz-master-next'),
+      'type' => 'section_heading',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    $field_array = array(
       'id' => 'submit_button_text',
-      'label' => __('Text for submit button', 'quiz-master-next'),
+      'label' => __('Submit Button', 'quiz-master-next'),
       'type' => 'text',
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers name_field_text setting
-    $field_array = array(
-      'id' => 'name_field_text',
-      'label' => __('Text for name  field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers business_field_text setting
-    $field_array = array(
-      'id' => 'business_field_text',
-      'label' => __('Text for business field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers email_field_text setting
-    $field_array = array(
-      'id' => 'email_field_text',
-      'label' => __('Text for email field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers phone_field_text setting
-    $field_array = array(
-      'id' => 'phone_field_text',
-      'label' => __('Text for phone number field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers comment_field_text setting
-    $field_array = array(
-      'id' => 'comment_field_text',
-      'label' => __('Text for comments field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
+    
     // Registers previous_button_text setting
     $field_array = array(
       'id' => 'previous_button_text',
-      'label' => __('Text for previous button', 'quiz-master-next'),
+      'label' => __('Previous button', 'quiz-master-next'),
       'type' => 'text',
       'default' => 0
     );
@@ -905,25 +868,25 @@ class QSM_Install {
     // Registers next_button_text setting
     $field_array = array(
       'id' => 'next_button_text',
-      'label' => __('Text for next button', 'quiz-master-next'),
+      'label' => __('Next button', 'quiz-master-next'),
       'type' => 'text',
       'default' => 0
     );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers hint_text setting
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );    
+    
+    // Registers submit_button_text setting
     $field_array = array(
-      'id' => 'hint_text',
-      'label' => __('Text for hint', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 'Hint'
+      'id' => 'validation_text_section',
+      'label' => __('Validation Messages', 'quiz-master-next'),
+      'type' => 'section_heading',
+      'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
+    
     // Registers empty_error_text setting
     $field_array = array(
       'id' => 'empty_error_text',
-      'label' => __('Text for when user has not filled in all required fields', 'quiz-master-next'),
+      'label' => __('All required fields', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'Please complete all required fields!'
     );
@@ -932,7 +895,7 @@ class QSM_Install {
     // Registers email_error_text setting
     $field_array = array(
       'id' => 'email_error_text',
-      'label' => __('Text for when user filled in email field with invalid email', 'quiz-master-next'),
+      'label' => __('Invalid email', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'Not a valid e-mail address!'
     );
@@ -941,7 +904,7 @@ class QSM_Install {
     // Registers number_error_text setting
     $field_array = array(
       'id' => 'number_error_text',
-      'label' => __('Text for when user has filled in number field with invalid number', 'quiz-master-next'),
+      'label' => __('Invalid number', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'This field must be a number!'
     );
@@ -950,16 +913,80 @@ class QSM_Install {
     // Registers incorrect_error_text setting
     $field_array = array(
       'id' => 'incorrect_error_text',
-      'label' => __('Text for when user has not filled in captcha correctly', 'quiz-master-next'),
+      'label' => __('Invalid Captcha', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'The entered text is not correct!'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );        
     
+    // Registers submit_button_text setting
+    $field_array = array(
+      'id' => 'other_text_section',
+      'label' => __('Other', 'quiz-master-next'),
+      'type' => 'section_heading',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers name_field_text setting
+    $field_array = array(
+      'id' => 'name_field_text',
+      'label' => __('Name field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers business_field_text setting
+    $field_array = array(
+      'id' => 'business_field_text',
+      'label' => __('Business field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers email_field_text setting
+    $field_array = array(
+      'id' => 'email_field_text',
+      'label' => __('Email field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers phone_field_text setting
+    $field_array = array(
+      'id' => 'phone_field_text',
+      'label' => __('Phone number field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+    // Registers comment_field_text setting
+    $field_array = array(
+      'id' => 'comment_field_text',
+      'label' => __('Comments field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers hint_text setting
+    $field_array = array(
+      'id' => 'hint_text',
+      'label' => __('Hint Text', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Hint'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+   
+    
     // result page for sharing
     $field_array = array(
       'id' => 'result_page_fb_image',
-      'label' => __('Add image link for facebook sharing', 'quiz-master-next'),
+      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
       'type' => 'text',
       'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
     );

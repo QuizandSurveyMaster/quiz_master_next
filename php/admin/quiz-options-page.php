@@ -61,7 +61,7 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
-        
+        wp_localize_script('qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ));
         // Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
             //$quiz_id   = intval( $_POST['edit_quiz_id'] );

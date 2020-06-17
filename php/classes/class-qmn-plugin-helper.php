@@ -227,15 +227,19 @@ class QMNPluginHelper {
 	}
 
 	/**
-   * Outputs the section of input fields
-   *
-   * @since 5.0.0
-   * @param string $section The section that the settings were registered with
-   */
-  public function generate_settings_section( $section = 'quiz_options' ) {
-		global $mlwQuizMasterNext;
-		QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
-  }
+        * Outputs the section of input fields
+        *
+        * @since 5.0.0
+        * @since 7.0 Added new parameter settings_fields for default setting
+        * @param string $section The section that the settings were registered with
+        */
+       public function generate_settings_section( $section = 'quiz_options', $settings_fields = array() ) {
+             global $mlwQuizMasterNext;
+             if( empty( $settings_fields ) ){
+                 $settings_fields = $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section );
+             }             
+             QSM_Fields::generate_section( $settings_fields, $section );
+       }
 
 	/**
 	 * Registers Quiz Templates

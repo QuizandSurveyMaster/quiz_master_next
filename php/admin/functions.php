@@ -415,3 +415,38 @@ function qsm_create_new_quiz_wizard(){ ?>
     </div>
 <?php
 }
+
+/**
+ * @since 7.0
+ * @return array Template Variable
+ */
+function qsm_text_template_variable_list(){
+    $variable_list = array(
+        '%POINT_SCORE%' => __('Score for the quiz when using points', 'quiz-master-next'),
+        '%AVERAGE_POINT%' => __('The average amount of points user had per question', 'quiz-master-next'),
+        '%AMOUNT_CORRECT%' => __('The number of correct answers the user had', 'quiz-master-next'),
+        '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),
+        '%CORRECT_SCORE%' => __('Score for the quiz when using correct answers', 'quiz-master-next'),
+        '%USER_NAME%' => __('The name the user entered before the quiz', 'quiz-master-next'),
+        '%USER_BUSINESS%' => __('The business the user entered before the quiz', 'quiz-master-next'),
+        '%USER_PHONE%' => __('The phone number the user entered before the quiz', 'quiz-master-next'),
+        '%USER_EMAIL%' => __('The email the user entered before the quiz', 'quiz-master-next'),
+        '%QUIZ_NAME%' => __('The name of the quiz', 'quiz-master-next'),
+        '%QUESTIONS_ANSWERS%' => __('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next'),
+        '%COMMENT_SECTION%' => __('The comments the user entered into comment box if enabled', 'quiz-master-next'),
+        '%TIMER%' => __('The amount of time user spent on quiz in seconds', 'quiz-master-next'),
+        '%TIMER_MINUTES%' => __('The amount of time user spent on quiz in minutes', 'quiz-master-next'),
+        '%CATEGORY_POINTS_X%' => __('X: Category name - The amount of points a specific category earned.', 'quiz-master-next'),
+        '%CATEGORY_SCORE_X%' => __('X: Category name - The score a specific category earned.', 'quiz-master-next'),
+        '%CATEGORY_AVERAGE_POINTS%' => __('The average points from all categories.', 'quiz-master-next'),
+        '%CATEGORY_AVERAGE_SCORE%' => __('The average score from all categories.', 'quiz-master-next'),
+        '%QUESTION%' => __('The question that the user answered', 'quiz-master-next'),
+        '%USER_ANSWER%' => __('The answer the user gave for the question', 'quiz-master-next'),
+        '%CORRECT_ANSWER%' => __('The correct answer for the question', 'quiz-master-next'),
+        '%USER_COMMENTS%' => __('The comments the user provided in the comment field for the question', 'quiz-master-next'),
+        '%CORRECT_ANSWER_INFO%' => __('Reason why the correct answer is the correct answer', 'quiz-master-next'),
+        '%CURRENT_DATE%' => __('The Current Date', 'quiz-master-next'),
+    );
+    $variable_list = apply_filters('qsm_text_variable_list', $variable_list);
+    return $variable_list;
+}

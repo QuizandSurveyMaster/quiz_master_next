@@ -25,7 +25,7 @@ class QSM_Fields {
     if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
 
       // Cycle through fields to retrieve all posted values
-      $settings_array = array();
+      $settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
       foreach ( $fields as $field ) {
 
         // Sanitize the values based on type
@@ -49,12 +49,12 @@ class QSM_Fields {
             break;
 
           default:
-            $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
+            $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
             break;
         }
         $settings_array[ $field["id"] ] = $sanitized_value;
       }
-            
+      
       // Update the settings and show alert based on outcome
       $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
       if ( false !== $results ) {
@@ -436,6 +436,23 @@ class QSM_Fields {
             </td>
           </tr>
   <?php  
+  }
+  
+  /**
+   * Generates h2 tag for label
+   *
+   * @since 7.0.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_section_heading_field( $field, $value ) {
+    ?>
+    <tr valign="top">
+      <th scope="row"><h2 class="section_heading"><?php echo $field["label"]; ?></h2></th>
+      <td>        
+      </td>
+    </tr>
+    <?php
   }
   
 }
