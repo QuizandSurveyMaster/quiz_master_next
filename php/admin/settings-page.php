@@ -277,7 +277,7 @@ class QMNGlobalSettingsPage {
 		echo "<input type='checkbox' name='qmn-settings[ip_collection]' id='qmn-settings[ip_collection]' value='1'$checked />";
         echo '<span class="slider round"></span></label>';
 		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>"
-		 . __( "Be caution!!! You must not restrict number of quizz attempts when this option is enabled.", 'quiz-master-next' ) . "</span>";
+		 . __( "Be caution!!! You must not restrict number of quiz attempts when this option is enabled.", 'quiz-master-next' ) . "</span>";
 	}
 
 	/**
