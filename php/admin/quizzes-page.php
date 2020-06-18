@@ -580,7 +580,7 @@ function qsm_generate_quizzes_surveys_page() {
                 <span class="dashicons dashicons-format-chat"></span>
                 <h2><?php _e('You do not have any quizzes or surveys yet', 'quiz-master-next'); ?></h2>
                 <div class="buttons">
-                    <a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e('Create New Quiz/Survery', 'quiz-master-next'); ?></a>
+                    <a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e('Create New Quiz/Survey', 'quiz-master-next'); ?></a>
                     <a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e('Read Documentation', 'quiz-master-next'); ?></a>
                 </div>   
                 <h3><?php _e('or watch the below video to get started', 'quiz-master-next'); ?></h3>

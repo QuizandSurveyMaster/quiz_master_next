@@ -115,7 +115,7 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column-container">
 					<div class="welcome-panel-column">
 						<h3><?php _e( 'Get Started', 'quiz-master-next' ); ?></h3>
-						<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize" href="#"><?php _e( 'Create New Quiz/Survery', 'quiz-master-next' ); ?></a>
+						<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize" href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 						<p class="hide-if-no-customize">
 							or, <a href="admin.php?page=mlw_quiz_list"><?php _e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
 						</p>
