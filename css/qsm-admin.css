@@ -136,6 +136,8 @@ Results Pages & Emails Tab
     background: #fff;
     padding-right: 15px;
     padding-left: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .results-page-header,
@@ -247,7 +249,8 @@ Results Pages & Emails Tab
     .results-page-show,
     .email-when,
     .email-show {
-        min-width: 35%;
+        width: calc( 50% - 15px );
+        min-width: unset;
     }
 
     .results-page-condition,
@@ -1027,11 +1030,14 @@ td.scheduled_time_start {
     padding: 20px;
     border-bottom: 1px solid #f1f1f1;
 }
-.qsm-text-conent.qsm-text-allowed-variables span.qsm-text-template-span,
-#show-all-variable-content span.qsm-text-template-span {
+.qsm-text-conent.qsm-text-allowed-variables span.qsm-text-template-span{
     display: inline-block;
     margin-bottom: 10px;
     margin-right: 10px;
+    position: relative;
+}
+#show-all-variable-content span.qsm-text-template-span {
+    display: inline-block;
     position: relative;
 }
 #show-all-variable-content .popup-template-span-wrap{

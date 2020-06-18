@@ -40,100 +40,14 @@ function qsm_options_results_tab_content() {
 	?>
 	<h2><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
 	<p>Need assistance with this tab? <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-results-pages/" target="_blank">Check out the documentation</a> for this tab!</p>
-
-	<!-- Template Variables Section -->
-	<section>
-		<h3 style="text-align: center;"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h3>
-		<div class="template_list_holder">
-			<div class="template_variable">
-				<span class="template_name">%CONTACT_X%</span> - <?php _e( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CONTACT_ALL%</span> - <?php _e( 'List user values for all contact fields', 'quiz-master-next' ); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%POINT_SCORE%</span> - <?php _e('Score for the quiz when using points', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%AVERAGE_POINT%</span> - <?php _e('The average amount of points user had per question', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%AMOUNT_CORRECT%</span> - <?php _e('The number of correct answers the user had', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%TOTAL_QUESTIONS%</span> - <?php _e('The total number of questions in the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CORRECT_SCORE%</span> - <?php _e('Score for the quiz when using correct answers', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_NAME%</span> - <?php _e('The name the user entered before the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_BUSINESS%</span> - <?php _e('The business the user entered before the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_PHONE%</span> - <?php _e('The phone number the user entered before the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%USER_EMAIL%</span> - <?php _e('The email the user entered before the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%QUIZ_NAME%</span> - <?php _e('The name of the quiz', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%QUESTIONS_ANSWERS%</span> - <?php _e('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%COMMENT_SECTION%</span> - <?php _e('The comments the user entered into comment box if enabled', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%TIMER_MINUTES%</span> - <?php _e('The amount of time user spent taking quiz in minutes', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%TIMER%</span> - <?php _e('The amount of time user spent taking quiz in seconds', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CATEGORY_POINTS_X%</span> - <?php _e('X: Category name - The amount of points a specific category earned.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%AVERAGE_CATEGORY_POINTS_X%</span> - <?php _e('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CATEGORY_SCORE_X%</span> - <?php _e('X: Category name - The score a specific category earned.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CATEGORY_AVERAGE_POINTS%</span> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%CATEGORY_AVERAGE_SCORE%</span> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%FACEBOOK_SHARE%</span> - <?php _e('Displays button to share on Facebook.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%TWITTER_SHARE%</span> - <?php _e('Displays button to share on Twitter.', 'quiz-master-next'); ?>
-			</div>
-			<div class="template_variable">
-				<span class="template_name">%POLL_RESULTS_X%</span> - <?php _e('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next'); ?>
-			</div>
-                        <div class="template_variable">
-				<span class="template_name">%RESULT_ID%</span> - <?php _e('Show result id', 'quiz-master-next'); ?>
-			</div>
-                        <div class="template_variable">
-				<span class="template_name">%QUESTION_ANSWER_X%</span> - <?php _e('X = Question ID. It will show result of particular question.', 'quiz-master-next'); ?>
-			</div>
-			<?php do_action('qmn_template_variable_list'); ?>
-		</div>
-		<div style="clear:both;"></div>
-	</section>
-
+        
 	<!-- Results Page Section -->
 	<section>
 		<h3>Your Pages</h3>
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
                 <span class="spinner" style="float: none;"></span>
 		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
+                &nbsp;<a class="qsm-show-all-variable-text" href="#"><?php _e('Show Template Variables', 'quiz-master-next'); ?></a>
 		<div id="results-pages"></div>
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>
                 <span class="spinner" style="float: none;"></span>
@@ -190,6 +104,54 @@ function qsm_options_results_tab_content() {
 			<input type="text" class="results-page-condition-value" value="{{ data.value }}">
 		</div>
 	</script>
+        <!--Template popup-->
+        <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
+            <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+                <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+                    <header class="qsm-popup__header">
+                            <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
+                    </header>
+                    <main class="qsm-popup__content" id="show-all-variable-content">
+                        <?php
+                        $variable_list = qsm_text_template_variable_list();
+                        $email_exta_variable = array(
+                            '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+                            '%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),                            
+                        );  
+                        $variable_list = array_merge($email_exta_variable, $variable_list);
+                        $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
+                        $variable_list['%FACEBOOK_SHARE%'] = __('Displays button to share on Facebook.', 'quiz-master-next');
+                        $variable_list['%TWITTER_SHARE%'] = __('Displays button to share on Twitter.', 'quiz-master-next');
+                        $variable_list['%POLL_RESULTS_X%'] = __('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next');
+                        $variable_list['%RESULT_ID%'] = __('Show result id', 'quiz-master-next');
+                        $variable_list['%QUESTION_ANSWER_X%'] = __('X = Question ID. It will show result of particular question.', 'quiz-master-next');
+                        unset($variable_list['%QUESTION%']);
+                        unset($variable_list['%USER_ANSWER%']);
+                        unset($variable_list['%CORRECT_ANSWER%']);
+                        unset($variable_list['%USER_COMMENTS%']);
+                        unset($variable_list['%CORRECT_ANSWER_INFO%']);
+                        unset($variable_list['%CURRENT_DATE%']);
+                        if( $variable_list ){
+                            foreach ( $variable_list as $key => $s_variable ) { ?>
+                                <div class="popup-template-span-wrap">
+                                    <span class="qsm-text-template-span">
+                                        <button class="button button-default"><?php echo $key; ?></button>                                    
+                                        <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                                            <span class="qsm-tooltips"><?php echo $s_variable; ?></span>
+                                        </span>                                    
+                                    </span>
+                                </div>
+                            <?php                     
+                            }
+                        }
+                        ?>
+                    </main>
+                    <footer class="qsm-popup__footer" style="text-align: right;">                            
+                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close', 'quiz-master-next'); ?></button>
+                    </footer>
+                </div>
+            </div>
+        </div>
 	<?php
 }
 ?>
