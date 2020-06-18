@@ -494,6 +494,31 @@ Misc.
     color: #fff;
 }
 
+#mlw_qmn_theme_block_primary{
+    background-color: #3498db;
+    color: #fff;
+}
+
+#mlw_qmn_theme_block_amethyst{
+    background-color: #9b59b6;
+    color: #fff;
+}
+
+#mlw_qmn_theme_block_emerald{
+    background-color: #2ecc71;
+    color: #fff;
+}
+
+#mlw_qmn_theme_block_turquoise{
+    background-color: #1abc9c;
+    color: #fff;
+}
+
+#mlw_qmn_theme_block_gray{
+    background-color: #ccc;
+    color: #fff;
+}
+
 .qsm-info-widget a.button-primary {
     margin-top: 15px;
 }
