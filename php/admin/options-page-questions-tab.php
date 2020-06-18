@@ -234,15 +234,15 @@ function qsm_options_questions_tab_content() {
                                                                             ),
                                                                             'default' => 'text',
                                                                             'show' => '0,1,2,4,13',
-                                                                            'tooltip' => __('This is testing of question tooltip with <a href="#">Link</a>', 'quiz-master-next')
+                                                                            'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next')
                                                                         ),
                                                                         'required' => array(
                                                                             'label' => __( 'Required?', 'quiz-master-next' ),
                                                                             'type' => 'single_checkbox',
                                                                             'priority' => '2',
                                                                             'options' => array(
-                                                                                //'0' => __( 'No', 'quiz-master-next' ),
-                                                                                '1' => __( 'Yes', 'quiz-master-next' )
+                                                                                //'1' => __( 'No', 'quiz-master-next' ),
+                                                                                '0' => __( 'Yes', 'quiz-master-next' )
                                                                             ),
                                                                             'default' => '0'
                                                                         ),

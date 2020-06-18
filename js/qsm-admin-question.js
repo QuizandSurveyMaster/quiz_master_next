@@ -320,7 +320,7 @@ var import_button;
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
 			var comments = $( "#comments" ).val();			                        
-                        advanced_option['required'] = $("#required").attr("checked") ? 1 : 0;
+                        advanced_option['required'] = $("#required").attr("checked") ? 0 : 1;
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
