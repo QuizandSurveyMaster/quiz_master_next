@@ -60,13 +60,13 @@ function mlw_options_text_tab_content() {
                             </div>
                             <div class="save-text-changes">
                                 <span class="spinner" style="float: none;"></span>
-                                <button id="qsm_save_text_message" class="button button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+                                <button id="qsm_save_text_message" class="button button-primary"><?php _e('Save Text Message', 'quiz-master-next'); ?></button>
                             </div>
                         </div>
                         <div class="qsm-text-conent">
                             <?php 
                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[0]['id'] );
-                            wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message' );
+                            wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array(  'textarea_rows' => 10 ) );
                             ?>
                         </div>
                     </div>
@@ -113,27 +113,28 @@ function mlw_options_text_tab_content() {
             <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header">
-                            <h2 class="qsm-popup__title" id="modal-3-title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>
-                            <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+                            <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
                     </header>
-                    <main class="qsm-popup__content" id="show-all-variable-content">                            
+                    <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php
                         $variable_list = qsm_text_template_variable_list();
                         if( $variable_list ){
                             foreach ( $variable_list as $key => $s_variable ) { ?>
-                                <span class="qsm-text-template-span">
-                                    <button class="button button-default"><?php echo $key; ?></button>                                    
-                                    <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                                        <span class="qsm-tooltips"><?php echo $s_variable; ?></span>
-                                    </span>                                    
-                                </span>
+                                <div class="popup-template-span-wrap">
+                                    <span class="qsm-text-template-span">
+                                        <button class="button button-default"><?php echo $key; ?></button>                                    
+                                        <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                                            <span class="qsm-tooltips"><?php echo $s_variable; ?></span>
+                                        </span>                                    
+                                    </span>
+                                </div>
                             <?php                     
                             }
                         }
                         ?>
                     </main>
                     <footer class="qsm-popup__footer" style="text-align: right;">                            
-                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>
+                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close', 'quiz-master-next'); ?></button>
                     </footer>
                 </div>
             </div>

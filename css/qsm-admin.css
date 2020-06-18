@@ -1034,9 +1034,11 @@ td.scheduled_time_start {
     margin-right: 10px;
     position: relative;
 }
-#show-all-variable-content span.qsm-text-template-span {
-    margin-bottom: 30px;
-    margin-right: 50px;
+#show-all-variable-content .popup-template-span-wrap{
+    margin-bottom: 20px;
+    margin-right: 3%;
+    width: 30%;
+    display: inline-block;
 }
 #show-all-variable-content .qsm-text-template-span .qsm-tooltips-icon{
     margin-left: 5px;
@@ -1069,9 +1071,23 @@ td.scheduled_time_start {
 #show-all-variable .qsm-popup__container{
     min-width: 50vw;
     max-width: 1040px;
+    padding: 0;
 }
 #show-all-variable-content{
-    margin-bottom: 0 !important;
+    margin-bottom: 0 !important;    
+    padding: 20px;
+    margin: 0;
+}
+#show-all-variable .qsm-popup__header{
+    border-bottom: 1px solid #f1f1f1;
+    padding: 20px;
+}
+#show-all-variable .qsm-popup__header .qsm-popup__title{
+    color: #23282d;
+}
+#show-all-variable .qsm-popup__footer{
+    border-top: 1px solid #f1f1f1;
+    padding: 20px;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{

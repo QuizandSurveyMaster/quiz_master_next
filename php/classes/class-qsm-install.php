@@ -928,6 +928,45 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
     
+    // Registers comment_field_text setting
+    $field_array = array(
+      'id' => 'comment_field_text',
+      'label' => __('Comments field', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers hint_text setting
+    $field_array = array(
+      'id' => 'hint_text',
+      'label' => __('Hint Text', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Hint'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+   
+    
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_fb_image',
+      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    //Setting for animation
+    $field_array = array(
+      'id' => 'legacy_options',
+      'label' => __('Show Legacy Options', 'quiz-master-next'),
+      'type' => 'hide_show',
+      'default' => '',
+       'help' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
+       //'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
     // Registers name_field_text setting
     $field_array = array(
       'id' => 'name_field_text',
@@ -963,34 +1002,7 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-    // Registers comment_field_text setting
-    $field_array = array(
-      'id' => 'comment_field_text',
-      'label' => __('Comments field', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 0
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-    
-    // Registers hint_text setting
-    $field_array = array(
-      'id' => 'hint_text',
-      'label' => __('Hint Text', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => 'Hint'
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
    
-    
-    // result page for sharing
-    $field_array = array(
-      'id' => 'result_page_fb_image',
-      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
   }
 
   /**
