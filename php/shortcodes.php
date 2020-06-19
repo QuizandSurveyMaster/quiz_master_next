@@ -248,7 +248,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
 	$return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
 	$return_display .= '</main>';
 	$return_display .= '<footer class="qsm-popup__footer">';
-	$return_display .= '<button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>';
+	//$return_display .= '<button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>';
 	$return_display .= '<button class="qmn_btn qsm-btn qmn_btn pagetime-goto-nextpage" data-quiz_id="'. $qmn_quiz_options->quiz_id .'" style="margin: 0 10px;" data-micromodal-close="" aria-label="Close this dialog window">Continue</button>';
 	$return_display .= '</footer>';
 	$return_display .= '</div>';

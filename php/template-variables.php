@@ -716,10 +716,6 @@ function mlw_qmn_variable_pages_info($content, $mlw_quiz_array) {
 		foreach ($db_qpages as $page) {
 			$pagekey = $page['pagekey'];
 			$page_total_points = $page['page_total_points'];
-			if (empty($page['questions'])) {
-				$content = str_replace("%PAGERESULT_{$page['pagekey']}%", '', $content);
-				continue;
-			}
 			$pages_info[$pagekey] = array(
 				'questions' => $page['questions'],
 				'total_questions' => count($page['questions']),
@@ -734,11 +730,44 @@ function mlw_qmn_variable_pages_info($content, $mlw_quiz_array) {
 					$pages_info[$pagekey]['user_points'] += $answer['points'];
 				}
 			}
-			$user_points = $pages_info[$pagekey]['user_points'];
-			$user_percentage = round(( ( $user_points / $page_total_points ) * 100), 2);
-			$page_result = "{$user_points} out of {$page_total_points}";
-			$content = str_replace("%PAGERESULT_{$pagekey}%", $page_result, $content);
-			$content = str_replace("%PAGEPERCENTAGE_{$pagekey}%", $user_percentage, $content);
+		}
+		if (false !== strpos($content, '%PAGERESULT_')) {
+			while (strpos($content, '%PAGERESULT_')) {
+				$r_count = mlw_qmn_get_string_between($content, '%PAGERESULT_', '%');
+				$pageKeys = explode(',', strip_tags($r_count));
+				if (empty($pageKeys)) {
+					$content = str_replace("%PAGERESULT_{$r_count}%", '', $content);
+				} else {
+					$total_points = 0;
+					$user_points = 0;
+					foreach ($pageKeys as $key) {
+						$key = trim($key);
+						$user_points += (isset($pages_info[$key]['user_points']) ? $pages_info[$key]['user_points'] : 0);
+						$total_points += (isset($pages_info[$key]['total_points']) ? $pages_info[$key]['total_points'] : 0);
+					}
+					$pages_result = "{$user_points} out of {$total_points}";
+					$content = str_replace("%PAGERESULT_{$r_count}%", $pages_result, $content);
+				}
+			}
+		}
+		if (false !== strpos($content, '%PAGEPERCENTAGE_')) {
+			while (strpos($content, '%PAGEPERCENTAGE_')) {
+				$r_count = mlw_qmn_get_string_between($content, '%PAGEPERCENTAGE_', '%');
+				$pageKeys = explode(',', strip_tags($r_count));
+				if (empty($pageKeys)) {
+					$content = str_replace("%PAGEPERCENTAGE_{$r_count}%", '', $content);
+				} else {
+					$total_points = 0;
+					$user_points = 0;
+					foreach ($pageKeys as $key) {
+						$key = trim($key);
+						$user_points += (isset($pages_info[$key]['user_points']) ? $pages_info[$key]['user_points'] : 0);
+						$total_points += (isset($pages_info[$key]['total_points']) ? $pages_info[$key]['total_points'] : 0);
+					}
+					$user_percentage = round(( ( $user_points / $total_points ) * 100), 2);
+					$content = str_replace("%PAGEPERCENTAGE_{$r_count}%", $user_percentage, $content);
+				}
+			}
 		}
 	}
 	return $content;

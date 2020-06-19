@@ -21,6 +21,7 @@ var QSMPageTimer;
 				_.each( qmn_quiz_data, function( quiz ) {
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
+					QSMPageTimer.endPageTimer(quizID, true);
 					if ( quiz.hasOwnProperty( 'timer_limit' ) && 0 != quiz.timer_limit ) {
 						QSM.initTimer( quizID );
 					}				
@@ -433,14 +434,16 @@ var QSMPageTimer;
 				if ($curr_page_opt.hasOwnProperty('pagetimer') && 0 != $curr_page_opt.pagetimer) {
 					var $timer_box = $currentpage.find('.qsm-pagetimer');
 					var seconds = 0;
-					var timerStarted = localStorage.getItem('mlw_started_quiz' + quizID + '_page' + pid);
-					var timerStoped = localStorage.getItem('mlw_stoped_quiz' + quizID + '_page' + pid);
-					var timerRemaning = localStorage.getItem('mlw_time_quiz' + quizID + '_page' + pid);
+					var timerStarted = localStorage.getItem('mlw_started_q' + quizID + '_page' + pid);
+					var timerStoped = localStorage.getItem('mlw_stoped_q' + quizID + '_page' + pid);
+					var timerRemaning = localStorage.getItem('mlw_time_q' + quizID + '_page' + pid);
 					if (timerStoped != 'undefined' && timerStoped > 0) {
 						seconds = timerStoped;
 					} else {
-						if ('yes' == timerStarted && 0 < timerRemaning) {
-							seconds = parseInt(timerRemaning);
+						if ('yes' == timerStarted) {
+							if (0 < timerRemaning) {
+								seconds = parseInt(timerRemaning);
+							}
 						} else {
 							seconds = parseFloat($curr_page_opt.pagetimer) * 60;
 						}
@@ -478,8 +481,8 @@ var QSMPageTimer;
 			jQuery('#pagetime_'+pid).val(pageTimeTaken);
 
 			// Sets our local storage values for the timer being started and current timer value.
-			localStorage.setItem('mlw_started_quiz' + quizID + '_page' + pid, "yes");
-			localStorage.setItem('mlw_time_quiz' + quizID + '_page' + pid, secondsRemaining);
+			localStorage.setItem('mlw_started_q' + quizID + '_page' + pid, "yes");
+			localStorage.setItem('mlw_time_q' + quizID + '_page' + pid, secondsRemaining);
 
 			if ($page.hasOwnProperty('pagetimer_warning') && 0 != $page.pagetimer_warning) {
 				var page_warning_sec = parseFloat($page.pagetimer_warning) * 60;
@@ -509,13 +512,17 @@ var QSMPageTimer;
 		 *
 		 * @param int quizID The ID of the quiz
 		 */
-		endPageTimer: function (quizID) {
+		endPageTimer: function (quizID, clearStorage = false) {
 			jQuery.each(qmn_quiz_data[quizID].qpages, function (i, value) {
 				if (value.hasOwnProperty('pagetimer') && 0 != value.pagetimer) {
+					if (clearStorage) {
+						localStorage.removeItem('mlw_started_q' + quizID + '_page' + value.id);
+						localStorage.removeItem('mlw_stoped_q' + quizID + '_page' + value.id);
+						localStorage.removeItem('mlw_time_q' + quizID + '_page' + value.id);
+					}
 					var secondsRemaining = qmn_quiz_data[ quizID ].qpages[ value.id ].timerRemaning;
-					localStorage.setItem('mlw_stoped_quiz' + quizID + '_page' + value.id, secondsRemaining);
-					localStorage.setItem('mlw_time_quiz' + quizID + '_page' + value.id, 'completed');
-					localStorage.setItem('mlw_started_quiz' + quizID + '_page' + value.id, 'no');
+					localStorage.setItem('mlw_stoped_q' + quizID + '_page' + value.id, secondsRemaining);
+					localStorage.setItem('mlw_time_q' + quizID + '_page' + value.id, 'completed');
 					if (typeof qmn_quiz_data[ quizID ].qpages[ value.id ].timerInterval != 'undefined') {
 						clearInterval(qmn_quiz_data[ quizID ].qpages[ value.id ].timerInterval);
 					}
