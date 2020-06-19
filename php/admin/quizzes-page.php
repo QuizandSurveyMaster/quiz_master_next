@@ -353,8 +353,7 @@ function qsm_generate_quizzes_surveys_page() {
                                                 <?php echo $single_arr['name']; ?> <b style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></b>
                                             </a>
                                             <div class="row-actions">
-                                                <a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('Edit', 'quiz-master-next'); ?></a> |
-                                                <a class="qsm-action-link" href="post.php?post=<?php echo $single_arr['postID']; ?>&action=edit"><?php _e('Post Settings', 'quiz-master-next'); ?></a> |
+                                                <a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('Edit', 'quiz-master-next'); ?></a> |                                                
                                                 <a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e('Duplicate', 'quiz-master-next'); ?></a> |
                                                 <a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e('Delete', 'quiz-master-next'); ?></a> |
                                                 <a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e('View Results', 'quiz-master-next'); ?></a> |

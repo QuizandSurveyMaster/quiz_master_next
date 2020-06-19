@@ -72,7 +72,7 @@ function qsm_generate_quiz_options() {
 	<div class="wrap">            
 		<div class='mlw_quiz_options'>
                     <h1 style="display: inline-block;"><?php echo $quiz_name; ?></h1>
-                    <a style="display: inline-block;margin-top: 10px;margin-bottom: 15px;margin-left: 10px;" hre="#" class="edit-quiz-name button button-primary">Edit Name</a>
+                    <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
                     <?php
                     // Get quiz post based on quiz id
                     $args = array(
@@ -89,18 +89,22 @@ function qsm_generate_quiz_options() {
                     $the_query = new WP_Query($args);
 
                     // The Loop
-                    $post_permalink = '';
+                    $post_permalink = $edit_link = '';
                     if ($the_query->have_posts()) {
                         while ($the_query->have_posts()) {                
                             $the_query->the_post();
                             $post_permalink = get_the_permalink(get_the_ID());
+                            $edit_link = get_edit_post_link(get_the_ID());
                         }
                         /* Restore original Post Data */
                         wp_reset_postdata();
                     }
-                    ?>
-                    <a style="text-decoration: none; position: relative; top: 9px; left: 5px;" target="_blank" href="<?php echo $post_permalink; ?>">
-                        <span style="font-size: 30px;" class="dashicons dashicons-external"></span>
+                    ?>                    
+                    <a class="button button-default qsm-btn-quiz-edit" target="_blank" href="<?php echo $post_permalink; ?>">
+                        <span class="dashicons dashicons-welcome-view-site"></span> <?php _e('View Quiz', 'quiz-master-next'); ?>
+                    </a>
+                    <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
+                        <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
                     </a>
 			<?php
 			// Puts all output from tab into ob_get_contents below.
