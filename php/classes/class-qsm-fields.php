@@ -290,8 +290,9 @@ class QSM_Fields {
    * @param mixed $value The current value of the setting
    */
   public static function generate_radio_field( $field, $value ) {
+    $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
     ?>
-    <tr valign="top">
+    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
       <th scope="row" class="qsm-opt-tr">
           <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
           <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
@@ -327,8 +328,9 @@ class QSM_Fields {
    * @param mixed $value The current value of the setting
    */
   public static function generate_select_field( $field, $value ) {
+    $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
     ?>
-    <tr valign="top">
+    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
       <th scope="row" class="qsm-opt-tr">
           <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
           <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>

@@ -40,7 +40,30 @@ class QSM_Install {
   public function register_default_settings() {
 
     global $mlwQuizMasterNext;
-
+    
+    // Registers system setting
+    $field_array = array(
+      'id' => 'form_type',
+      'label' => __('Quiz Type', 'quiz-master-next'),
+      'type' => 'select',
+      'options' => array(
+        array(
+          'label' => __('Quiz', 'quiz-master-next'),
+          'value' => 0
+        ),
+        array(
+          'label' => __('Survey', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('Simple Form', 'quiz-master-next'),
+          'value' => 2
+        )
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     // Registers system setting
     $field_array = array(
       'id' => 'system',
@@ -56,13 +79,14 @@ class QSM_Install {
           'value' => 1
         ),
         array(
-          'label' => __('Not Graded', 'quiz-master-next'),
-          'value' => 2
+          'label' => __('Both', 'quiz-master-next'),
+          'value' => 3
         )
       ),
       'default' => 0,      
       'help' => __('Select the system for grading the quiz.', 'quiz-master-next'),
-      'tooltip' => '<a target="_blank" href="https://quizandsurveymaster.com/docs/">Read Documentation</a>'
+      'tooltip' => '<a target="_blank" href="https://quizandsurveymaster.com/docs/">Read Documentation</a>',      
+      'show_option' => 'form_type_0'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 	
@@ -1141,6 +1165,7 @@ class QSM_Install {
   			quiz_results MEDIUMTEXT NOT NULL,
   			deleted INT NOT NULL,
                         unique_id varchar(255) NOT NULL,
+                        form_type INT NOT NULL,
   			PRIMARY KEY  (result_id)
   		) $charset_collate;";
 

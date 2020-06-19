@@ -369,15 +369,21 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 									<span class="rtq-result-info">
 										<?php
 										$quotes_list = '';
-										if ( $single_result_arr['quiz_system'] == 0 ) {
-											$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%';
-										}
-										if ( $single_result_arr['quiz_system'] == 1 ) {
-											$quotes_list .= $single_result_arr['point_score'] . ' Points';
-										}
-										if ( $single_result_arr['quiz_system'] == 2 ) {
-											$quotes_list .= __( 'Not Graded', 'quiz-master-next' );
-										}
+                                                                                $form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
+                                                                                if( $form_type == 1 || $form_type == 2 ){
+                                                                                    $quotes_list .= __( 'Not Graded', 'quiz-master-next' );
+                                                                                }else{
+                                                                                    if ( $single_result_arr['quiz_system'] == 0 ) {
+                                                                                        $quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%';
+                                                                                    }
+                                                                                    if ( $single_result_arr['quiz_system'] == 1 ) {
+                                                                                        $quotes_list .= $single_result_arr['point_score'] . ' Points';
+                                                                                    }
+                                                                                    if ( $single_result_arr['quiz_system'] == 3 ) {
+                                                                                        $quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%<br/>';
+                                                                                        $quotes_list .= $single_result_arr['point_score'] . ' Points';
+                                                                                    }
+                                                                                }									
 										echo $quotes_list;
 										?>
 										|

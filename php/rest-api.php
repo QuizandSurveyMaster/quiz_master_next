@@ -154,15 +154,21 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ){
         if($mlw_quiz_data){
             $result_data = array();
             foreach ($mlw_quiz_data as $mlw_quiz_info) {
-                if ( $mlw_quiz_info->quiz_system == 0 ) {
-                    $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%";
-                }
-                if ( $mlw_quiz_info->quiz_system == 1 ) {
-                    $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
-                }
-                if ( $mlw_quiz_info->quiz_system == 2 ) {
+                $form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
+                if( $form_type == 1 || $form_type == 2 ){
                     $quotes_list = "".__('Not Graded','quiz-master-next' )."";
-                }
+                }else{
+                    if ( $mlw_quiz_info->quiz_system == 0 ) {
+                        $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%";
+                    }
+                    if ( $mlw_quiz_info->quiz_system == 1 ) {
+                        $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
+                    }
+                    if ( $mlw_quiz_info->quiz_system == 3 ) {
+                        $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%<br/>";
+                        $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
+                    }
+                }                                                
                 //Time to complete
                 $mlw_complete_time = '';
                 $mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);

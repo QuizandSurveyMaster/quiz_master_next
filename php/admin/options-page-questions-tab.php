@@ -42,6 +42,7 @@ function qsm_options_questions_tab_content() {
                 'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
                 'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
                 'categories' => $question_categories,
+                'form_type' => $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' ),
                 'quiz_system' => $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' )
 	);
 
@@ -433,11 +434,13 @@ function qsm_options_questions_tab_content() {
                                 <input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
                             <# } #>
                         </div>
-                        <# if ( 1 == data.quiz_system ) { #>
-                            <div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-                        <# } #>
-                        <# if ( 0 == data.quiz_system ) { #>
-                            <div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> Correct</label></div>
+                        <# if ( 0 == data.form_type ) { #>
+                            <# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
+                                <div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+                            <# } #>
+                            <# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
+                                <div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> Correct</label></div>
+                            <# } #>    
                         <# } #>    
 		</div>
 	</script>

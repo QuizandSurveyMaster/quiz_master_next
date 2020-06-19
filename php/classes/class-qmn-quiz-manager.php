@@ -1107,6 +1107,7 @@ class QMNQuizManager {
                     'quiz_results' => $serialized_results,
                     'deleted' => 0,
                     'unique_id' => $unique_id,
+                    'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
                         ), array(
                     '%d',
                     '%s',
@@ -1126,6 +1127,7 @@ class QMNQuizManager {
                     '%s',
                     '%d',
                     '%s',
+                    '%d',
                         )
                 );
             }

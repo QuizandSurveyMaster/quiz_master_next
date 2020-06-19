@@ -45,6 +45,17 @@ function qsm_add_author_column_in_db(){
         }
         update_option('qsm_update_db_column', '1');
     }
+    
+    //Update result db        
+    if( get_option('qsm_update_result_db_column', '') != '1' ){
+        global $wpdb;
+        $result_table_name = $wpdb->prefix . "mlw_results";
+        $row = $wpdb->get_row("SELECT * FROM $result_table_name");        
+        if ( !isset($row->form_type) ) {
+            $wpdb->query("ALTER TABLE $result_table_name ADD form_type INT NOT NULL");
+        }
+        update_option('qsm_update_result_db_column', '1');
+    }
 }
 
 add_action('admin_init', 'qsm_change_the_post_type');
@@ -264,10 +275,14 @@ function qsm_create_new_quiz_wizard(){ ?>
                             'template_name' => __('Start from scratch', 'quiz-master-next'),
                             'priority' => '1',
                             'options' => array(
+                                'form_type' => array(
+                                    'option_name' => 'Form Type',
+                                    'value' => 0
+                                ),
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0
-                                ),                     
+                                ),
                                 'require_log_in' => array(
                                     'option_name' => 'Require User Login',
                                     'value' => 1
@@ -293,6 +308,10 @@ function qsm_create_new_quiz_wizard(){ ?>
                             'priority' => '2',
                             'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
+                                'form_type' => array(
+                                    'option_name' => 'Form Type',
+                                    'value' => 0
+                                ),
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0
@@ -312,6 +331,10 @@ function qsm_create_new_quiz_wizard(){ ?>
                             'priority' => '3',
                             'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
+                                'form_type' => array(
+                                    'option_name' => 'Form Type',
+                                    'value' => 0
+                                ),
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0
@@ -335,6 +358,10 @@ function qsm_create_new_quiz_wizard(){ ?>
                             'priority' => '4',
                             'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
                             'options' => array(
+                                'form_type' => array(
+                                    'option_name' => 'Form Type',
+                                    'value' => 0
+                                ),
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0

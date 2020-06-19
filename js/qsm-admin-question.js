@@ -413,10 +413,9 @@ var import_button;
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
-		addNewAnswer: function( answer ) {
-                        
+		addNewAnswer: function( answer ) {                        
 			var answerTemplate = wp.template( 'single-answer' );                        
-			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], quiz_system: qsmQuestionSettings.quiz_system } ) );
+			$( '#answers' ).append( answerTemplate( { answer: decodeEntities( answer[0] ), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system } ) );
                         if(answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true'){
                             var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
                             wp.editor.remove( textarea_id );

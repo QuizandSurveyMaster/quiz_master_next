@@ -158,6 +158,13 @@ var QSMAdmin;
                     jQuery('#recomm_addons_wrapper').html('');
                     jQuery('#recomm_addons_wrapper').html(diff_html[1]);
                     jQuery( "#accordion" ).accordion();
+                    $( '#quiz_settings_wrapper select' ).each(function(){
+                        var name = $(this).attr('name');
+                        var value = $(this).val();                        
+                        if( $( '.' + name + '_' + value ).length > 0 ){                
+                            $( '.' + name + '_' + value ).show();
+                        }
+                    });
                 }
             );
         });
@@ -233,5 +240,21 @@ var QSMAdmin;
             e.preventDefault();
             MicroModal.show('show-all-variable');
         });
-    });
+        //Hide/show tr based on selection
+        $( '.qsm_tab_content select' ).each(function(){
+            var name = $(this).attr('name');
+            var value = $(this).val();                        
+            if( $( '.' + name + '_' + value ).length > 0 ){                
+                $( '.' + name + '_' + value ).show();
+            }
+        });
+        $(document).on('change', '.qsm_tab_content select, #quiz_settings_wrapper select', function(){
+            var name = $(this).attr('name');
+            var value = $(this).val();            
+            $( '.qsm_hidden_tr' ).hide();
+            if( $( '.' + name + '_' + value ).length > 0 ){                
+                $( '.' + name + '_' + value ).show();
+            }
+        });        
+    });    
 }(jQuery));
