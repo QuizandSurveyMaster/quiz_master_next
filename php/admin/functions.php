@@ -64,6 +64,7 @@ function qsm_add_author_column_in_db() {
 	}
 }
 
+
 add_action('admin_init', 'qsm_change_the_post_type');
 /**
  * @since version 6.4.8
@@ -96,3 +97,33 @@ function qsm_change_the_post_type(){
         flush_rewrite_rules();
     }
 }
+
+
+add_action('admin_init', 'qsm_update_question_type_col_val');
+
+/**
+ * Replace `fill-in-the-blank` value in question_type_column for Fill 
+ * In The Blank question types.
+ *
+ * @since version 6.4.12
+ */
+function qsm_update_question_type_col_val() {
+
+	global $wpdb;
+	global $mlwQuizMasterNext;
+
+	if ( version_compare( $mlwQuizMasterNext->version, '6.4.12', '<' ) ) {
+		if( get_option('qsm_upated_question_type_val') != '1' ) {
+			$table_name  = $wpdb->prefix . 'mlw_questions';
+			$status      = $wpdb->query(
+				$wpdb->prepare( 
+					"UPDATE " . $table_name . " SET `question_type_new` = REPLACE( `question_type_new`, 'fill-in-the-blank', %d )", 14 )
+				);
+
+			if( $status ) {
+				update_option('qsm_upated_question_type_val', '1');
+			}
+		}
+	}
+}
+
