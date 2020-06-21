@@ -1034,7 +1034,10 @@ function qmn_question_type_fill_blank()
 		'extra_inputs' => array(),
 		'function' => ''
 	);
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args );
+
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args, null, 14 );
+	
+
 }
 
 
