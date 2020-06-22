@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.4
 Requires PHP: 5.4
-Stable tag: 6.4.11
+Stable tag: 6.4.12
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 6.4.12 (June 22, 2020) =
+* Bug: Fixed validation issue in email with spaces.
+* Bug: Fixed issues with settings related to number of times a user can take quiz.
+* Bug: Fixed missing time calculation while retaking quiz.
+* Bug: Fixed incorrect calculation of %QUESTION_ANSWER_CORRECT% and %QUESTION_ANSWER_INCORRECT% variables.
+* Bug: Fixed time up popup with advanced timer on retaking quiz.
+* Bug: Removed irrelevant queries running behind the scene on each admin page.
+* Bug: Removed duplicate column name database error.
+* Bug: Removed orphaned plugin settings on its deletion.
+* Bug: Fixed issues with fill in the blank question type when using polylang.
+* Enhancement: Added user notification for collecting and storing IP addresses setting. 
 
 = 6.4.11 (May 22, 2020) =
 * Bug: Removed static data from about us page.
