@@ -38,8 +38,8 @@ function qsm_options_questions_tab_content() {
 	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
 	$qpages = array();
 	if (!empty($pages)) {
-		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'page_intro' => '', 'pagetimer' => 0, 'pagetimer_warning' => 0, 'page_total_points' => 0, 'questions' => array());
 		foreach ($pages as $k => $val) {
+			$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'page_intro' => '', 'pagetimer' => 0, 'pagetimer_warning' => 0, 'page_total_points' => 0, 'questions' => array());
 			$qpage = isset($db_qpages[$k]) ? $db_qpages[$k] : $defaultQPage;
 			$qpage['id'] = $k + 1;
 			$qpage['page_intro'] = wp_unslash(html_entity_decode($qpage['page_intro']));
