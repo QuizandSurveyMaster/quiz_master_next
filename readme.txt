@@ -122,15 +122,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 6.4.12 (June 22, 2020) =
-* Bug: Fixed the accepting of email values with spaces.
-* Bug: Made the setting how many times can a user take this quiz workable.
-* Bug: Fixed the missing time to complete quiz while retaking quiz.
-* Bug: Fixed incorrect calculation of %QUESTION_ANSWER_CORRECT% and %QUESTION_ANSWER_INCORRECT% variables.
+* Bug: Fixed validation issue in email with spaces.
+* Bug: Fixed issues with settings related to number of times a user can take quiz.
+* Bug: Fixed missing time calculation while retaking quiz.
+* Bug: Fixed incorrect calculation of %QUESTION_ANSWER_CORRECT% and %QUESTION_ANSWER_INCORRECT% variables.
 * Bug: Fixed time up popup with advanced timer on retaking quiz.
 * Bug: Removed irrelevant queries running behind the scene on each admin page.
 * Bug: Removed duplicate column name database error.
 * Bug: Removed orphaned plugin settings on its deletion.
-* Bug: Fixed the fill in the blank question not appearing with polylang.
+* Bug: Fixed issues with fill in the blank question type when using polylang.
 * Enhancement: Added user notification for collecting and storing IP addresses setting. 
 
 = 6.4.11 (May 22, 2020) =
