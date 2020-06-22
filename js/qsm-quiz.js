@@ -115,9 +115,11 @@ var QSMPageTimer;
 				seconds = parseFloat( qmn_quiz_data[ quizID ].timer_limit ) * 60;
 			}
 			qmn_quiz_data[ quizID ].timerRemaning = seconds;
-                        
-                        //hidden timer
-                        jQuery(".hiddentimer").html(seconds);
+			
+			var timeTaken = parseInt(parseFloat(qmn_quiz_data[ quizID ].timer_limit) * 60) - parseInt(seconds);
+			jQuery("#quizForm"+quizID+" #timer").val(timeTaken);
+			//hidden timer
+			jQuery(".hiddentimer").html(seconds);
                         
 			// Makes the timer appear.
 			$timer.show();
@@ -324,6 +326,10 @@ var QSMPageTimer;
 			var $pages = $quizForm.children( '.qsm-page' );
 			var $currentpage = $quizForm.children( '.qsm-page:nth-of-type(' + pageNumber + ')' );
 			var pid = $currentpage.data('pid');
+			if (pageNumber > $pages.length  && $quizForm.find('.qsm-submit-btn:visible').length > 0) {
+				$quizForm.find('.qsm-submit-btn').trigger('click');
+				return false;
+			}
 			$pages.hide();
 			$currentpage.show();
 
