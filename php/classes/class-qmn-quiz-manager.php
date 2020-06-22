@@ -779,7 +779,7 @@ class QMNQuizManager {
         <!-- View for pagination -->
         <script type="text/template" id="tmpl-qsm-pagination">
             <div class="qsm-pagination qmn_pagination border margin-bottom">
-            <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
+            <!--<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>-->
             <span class="qmn_page_message"></span>
             <div class="qmn_page_counter_message"></div>
             <div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
@@ -1910,3 +1910,12 @@ function mlw_qmn_set_html_content_type() {
 function qsm_time_in_milliseconds() {
 	return round(microtime(true) * 1000);
 }
+
+add_filter( 'wp_video_extensions', 
+    function( $exts ) {
+        $exts[] = 'mov';
+        $exts[] = 'avi';
+        $exts[] = 'wmv';
+        return $exts;
+    }
+);
