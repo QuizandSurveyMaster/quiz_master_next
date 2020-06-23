@@ -40,16 +40,15 @@ function qsm_options_emails_tab_content() {
 	wp_enqueue_editor();
 	wp_enqueue_media();
 	?>
-	<h2><?php esc_html_e( 'Emails', 'quiz-master-next' ); ?></h2>
-	<p>Need assistance with this tab? <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-emails/" target="_blank">Check out the documentation</a> for this tab!</p>
+        <h2 style="margin-bottom: 10px;"><?php esc_html_e( 'Emails', 'quiz-master-next' ); ?></h2>
+        <p style="margin-bottom: 30px;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-emails/" target="_blank"><?php _e('Check out the documentation', 'quiz-master-next'); ?></a></p>
 	
 	<!-- Emails Section -->
-	<section>
-		<h3>Your Emails</h3>
+	<section>		
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
-                &nbsp;<a class="qsm-show-all-variable-text" href="#"><?php _e('Show Template Variables', 'quiz-master-next'); ?></a>
-		<div id="emails"></div>
+                <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Show Template Variables', 'quiz-master-next'); ?></a>
+		<div id="emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
 	</section>

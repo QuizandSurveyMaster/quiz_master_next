@@ -56,6 +56,7 @@ var QSMAdminResults;
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
 			})
 				.done(function( pages ) {
+                                        $( '#results-pages' ).find( '.qsm-spinner-loader' ).remove();
 					pages.forEach( function( page, i, pages ) {
 						QSMAdminResults.addResultsPage( page.conditions, page.page, page.redirect );
 					});

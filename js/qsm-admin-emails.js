@@ -52,6 +52,7 @@ var QSMAdminEmails;
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( emails ) {
+                                        $( '#emails' ).find( '.qsm-spinner-loader' ).remove();
 					emails.forEach( function( email, i, emails ) {
 						QSMAdminEmails.addEmail( email.conditions, email.to, email.subject, email.content, email.replyTo );
 					});
