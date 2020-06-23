@@ -17,8 +17,9 @@
     display: block;
 }
 .polar-question-title{
-    margin-bottom: 50px;
-    font-size: 20px;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+	font-weight: 700px;
     line-height: 20px;
 }
 .question-type-polar-s{
