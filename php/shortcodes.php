@@ -167,14 +167,14 @@ function qsm_generate_fb_header_metadata() {
             //Fb share description
             $sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'facebook_sharing_text', '');
             $sharing = apply_filters('mlw_qmn_template_variable_results_page', $sharing, $results_array);
-            $default_fb_image = QSM_PLUGIN_URL . 'assets/icon-200x200.png';
-            $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_fb_image', '');
+            $default_fb_image = QSM_PLUGIN_URL . 'assets/icon-200x200.png';            
+            $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'result_page_fb_image', '');
             if( empty( $get_fb_sharing_image ) ) {
-                $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'result_page_fb_image', '');
+                $get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'result_page_fb_image', '');
             }
             if ($get_fb_sharing_image !== '') {
                 $default_fb_image = $get_fb_sharing_image;
-            }         
+            }
             $post = $wp_query->get_queried_object();
             $pagename = $post->post_title;
             ?>

@@ -54,10 +54,7 @@ class QSM_Fields {
             $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
             break;
         }
-        $settings_array[ $field["id"] ] = $sanitized_value;        
-        if( isset( $_GET['tab'] ) && $_GET['tab'] === 'text' ){
-            unset( $settings_array[ 'result_page_fb_image' ] );
-        }
+        $settings_array[ $field["id"] ] = $sanitized_value;
       }
             
       // Update the settings and show alert based on outcome
