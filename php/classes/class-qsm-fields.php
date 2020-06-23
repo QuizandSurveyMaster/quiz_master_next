@@ -66,8 +66,8 @@ class QSM_Fields {
     }
 
     // Retrieve the settings for this section
-    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
-
+    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );    
+    $settings[ 'form_type' ] = $settings[ 'system' ] == '2' ? 1 : $settings[ 'form_type' ];
     ?>
     <form action="" method="post">
       <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
