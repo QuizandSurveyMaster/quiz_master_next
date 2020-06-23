@@ -599,7 +599,7 @@ class QSM_Install {
       'id' => 'result_page_fb_image',
       'label' => __('Facebook sharing Logo', 'quiz-master-next'),
       'type' => 'text',
-      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
+      'default' => '',
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     

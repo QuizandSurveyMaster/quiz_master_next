@@ -75,7 +75,7 @@ class QSM_Fields {
     if( isset( $settings[ 'form_type' ] ) ){
         $settings[ 'form_type' ] = $settings[ 'system' ] == '2' ? 1 : $settings[ 'form_type' ];
     }
-    if( isset( $settings[ 'result_page_fb_image' ] ) ){
+    if( isset( $settings[ 'result_page_fb_image' ] ) && $settings[ 'result_page_fb_image' ] == '' ){
         $settings[ 'result_page_fb_image' ] = $result_page_fb_image != '' ? $result_page_fb_image : $settings[ 'result_page_fb_image' ];
     }    
     ?>
