@@ -1,6 +1,7 @@
 /**
 * Created by dev: 06-11-2019
 */
+
 .pages_count,
 .qsm-page .pages_count,
 .quiz_section .pages_count{
@@ -22,6 +23,11 @@
 	font-weight: 700px;
     line-height: 20px;
 }
+
+.polar-options {
+	margin-top: 5px;
+}
+
 .question-type-polar-s{
     display: inline-block !important;
     position: relative;
