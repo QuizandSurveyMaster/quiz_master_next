@@ -256,16 +256,18 @@ var QSMAdmin;
                 $( '.' + name + '_' + value ).show();
             }
         });
-        var element_position = $('.qsm-text-label-wrapper').offset().top;
-        $(window).scroll(function() {
-            var y_scroll_pos = window.pageYOffset;
-            var scroll_pos_test = element_position;
-            if(y_scroll_pos > scroll_pos_test) {
-                $('.qsm_text_customize_label').fadeOut('slow');                
-            }else{
-                $('.qsm_text_customize_label').fadeIn('slow');
-            }
-        });
+        if( $('.qsm-text-label-wrapper').length > 0 ){
+            var element_position = $('.qsm-text-label-wrapper').offset().top;
+            $(window).scroll(function() {
+                var y_scroll_pos = window.pageYOffset;
+                var scroll_pos_test = element_position;
+                if(y_scroll_pos > scroll_pos_test) {
+                    $('.qsm_text_customize_label').fadeOut('slow');                
+                }else{
+                    $('.qsm_text_customize_label').fadeIn('slow');
+                }
+            });
+        }        
         $(document).on('click','.qsm_text_customize_label', function(){               
             $('html, body').animate({
                 scrollTop: $(".qsm-text-label-wrapper").offset().top - 30
