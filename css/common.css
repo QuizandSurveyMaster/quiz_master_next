@@ -1,7 +1,6 @@
 /**
 * Created by dev: 06-11-2019
 */
-
 .pages_count,
 .qsm-page .pages_count,
 .quiz_section .pages_count{
@@ -17,16 +16,17 @@
 .mlw_qmn_question{
     display: block;
 }
+
+.mlw_qmn_question.polar-question-title {
+	margin-bottom: 10px;
+}
+
 .polar-question-title{
-    margin: 0 0 10px 0;
+    margin-bottom: 50px;
     font-size: 16px;
-	font-weight: 700px;
     line-height: 20px;
 }
 
-.polar-options {
-	margin-top: 5px;
-}
 
 .question-type-polar-s{
     display: inline-block !important;
