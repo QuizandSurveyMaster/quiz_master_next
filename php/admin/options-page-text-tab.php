@@ -102,6 +102,7 @@ function mlw_options_text_tab_content() {
                     </div>
                 </div>
             </div>
+            <div class="qsm_text_customize_label"><?php _e('Customize Labels', 'quiz-master-next'); ?> <span class="dashicons dashicons-arrow-down-alt"></span></div>
         </div>
         <div class="qsm-text-label-wrapper">
             <h2><?php _e("Customize Labels", 'quiz-master-next'); ?></h2>

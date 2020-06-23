@@ -1199,6 +1199,22 @@ td.scheduled_time_start {
     float: right;
     margin-top: 9px;
 }
+.qsm_text_customize_label{
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    background: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    z-index: 99;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.qsm_text_customize_label .dashicons{
+    font-size: 14px;
+    line-height: 20px;
+}
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
         float: left;

@@ -185,6 +185,6 @@ var QSMQuizzesSurveys;
         var copyText = document.getElementById("sc-shortcode-model-text-link");
         copyText.select();        
         document.execCommand("copy");        
-    });
+    });    
   });
 }(jQuery));
