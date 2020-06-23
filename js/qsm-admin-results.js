@@ -40,12 +40,12 @@ var QSMAdminResults;
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
 			})
 			.done(function( results ) {
+                                $("html, body").animate({ scrollTop: 0 }, "slow");
 				if ( results.status ) {
 					QSMAdmin.displayAlert( 'Results pages were saved!', 'success' );
 				} else {
 					QSMAdmin.displayAlert( 'There was an error when saving the results pages. Please try again.', 'error' );
-				}
-                                $('.save-pages').next('.spinner').removeClass('is-active');
+				}                                
 			})
 			.fail(QSMAdmin.displayjQueryError);
 		},
@@ -115,8 +115,7 @@ var QSMAdminResults;
 			QSMAdminResults.newResultsPage();
 		});
 		$( '.save-pages' ).on( 'click', function( event ) {
-			event.preventDefault();
-                        $(this).next('.spinner').addClass('is-active');
+			event.preventDefault();                        
 			QSMAdminResults.saveResults();                        
 		});
 		$( '#results-pages' ).on( 'click', '.new-condition', function( event ) {

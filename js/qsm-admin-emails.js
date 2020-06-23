@@ -37,11 +37,12 @@ var QSMAdminEmails;
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( results ) {
+                                        $("html, body").animate({ scrollTop: 0 }, "slow");
 					if ( results.status ) {
 						QSMAdmin.displayAlert( 'Emails were saved!', 'success' );
 					} else {
 						QSMAdmin.displayAlert( 'There was an error when saving the emails. Please try again.', 'error' );
-					}
+					}                                        
 				})
 				.fail(QSMAdmin.displayjQueryError);
 		},
