@@ -131,7 +131,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Removed duplicate column name database error.
 * Bug: Removed orphaned plugin settings on its deletion.
 * Bug: Fixed issues with fill in the blank question type when using polylang.
-* Enhancement: Added user notification for collecting and storing IP addresses setting. 
+* Enhancement: Added user notification for collecting and storing IP addresses setting.
+* Bug: Fixed inconsistent polar question type title.
 
 = 6.4.11 (May 22, 2020) =
 * Bug: Removed static data from about us page.
