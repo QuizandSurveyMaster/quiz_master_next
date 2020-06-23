@@ -20,11 +20,13 @@ class QSM_Fields {
 
     global $mlwQuizMasterNext;
     global $wpdb;
-
+    
+    $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
+    
     // If nonce is correct, save settings
     if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
 
-      // Cycle through fields to retrieve all posted values
+      // Cycle through fields to retrieve all posted values      
       $settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
       foreach ( $fields as $field ) {
 
@@ -52,9 +54,12 @@ class QSM_Fields {
             $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
             break;
         }
-        $settings_array[ $field["id"] ] = $sanitized_value;
+        $settings_array[ $field["id"] ] = $sanitized_value;        
+        if( isset( $_GET['tab'] ) && $_GET['tab'] === 'text' ){
+            unset( $settings_array[ 'result_page_fb_image' ] );
+        }
       }
-      
+            
       // Update the settings and show alert based on outcome
       $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
       if ( false !== $results ) {
@@ -68,6 +73,7 @@ class QSM_Fields {
     // Retrieve the settings for this section
     $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );    
     $settings[ 'form_type' ] = $settings[ 'system' ] == '2' ? 1 : $settings[ 'form_type' ];
+    $settings[ 'result_page_fb_image' ] = $result_page_fb_image != '' ? $result_page_fb_image : $settings[ 'result_page_fb_image' ];
     ?>
     <form action="" method="post">
       <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>

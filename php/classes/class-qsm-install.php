@@ -594,6 +594,15 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
+    // result page for sharing
+    $field_array = array(
+      'id' => 'result_page_fb_image',
+      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     //Setting for animation
     $field_array = array(
       'id' => 'legacy_options',
@@ -969,17 +978,7 @@ class QSM_Install {
       'default' => 'Hint'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-   
-    
-    // result page for sharing
-    $field_array = array(
-      'id' => 'result_page_fb_image',
-      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
-      'type' => 'text',
-      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',      
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-    
+           
     //Setting for animation
     $field_array = array(
       'id' => 'legacy_options',
