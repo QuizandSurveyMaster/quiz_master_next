@@ -273,5 +273,17 @@ var QSMAdmin;
                 scrollTop: $(".qsm-text-label-wrapper").offset().top - 30
             }, 2000);
         });
+        //New template design hide show
+        var new_template_result_detail = $('.new_template_result_detail:checked').val();
+        if( new_template_result_detail == 1 ){
+            $('.new_template_result_detail:checked').parents('tr').next('tr').hide();
+        }
+        $(document).on('change','.new_template_result_detail', function(){
+            if( $(this).val() == 1 ){
+                $(this).parents('tr').next('tr').hide();
+            }else{
+                $(this).parents('tr').next('tr').show();
+            }
+        });
     });    
 }(jQuery));
