@@ -145,23 +145,39 @@ function qsm_options_questions_tab_content() {
                                                     $description_arr = array(
                                                         array(
                                                             'question_type_id' => 11,
-                                                            'description' => __('Users will see a file upload field instead of regular options for this question type.', 'quiz-master-next')
-                                                        ),
-                                                        array(
-                                                            'question_type_id' => 1,
-                                                            'description' => __('This will display choice in horizontal format.', 'quiz-master-next')
-                                                        ),
-                                                        array(
-                                                            'question_type_id' => 4,
-                                                            'description' => __('This will allow user to select multiple response( Checkbox ).', 'quiz-master-next')
-                                                        ),
-                                                        array(
-                                                            'question_type_id' => 8,
-                                                            'description' => __('This will create single checkbox with text for accepting any term & condition or any other text.', 'quiz-master-next')
+                                                            'description' => __('For this question type, users will see a file upload field on front end.', 'quiz-master-next')
                                                         ),
                                                         array(
                                                             'question_type_id' => 'fill-in-the-blank',
-                                                            'description' => __('We need to use %BLANK% variable in description box.', 'quiz-master-next')
+                                                            'description' => __('Use %BLANK% variable in the description field to display input boxes.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '12',
+                                                            'description' => __('For this question type, users will see a date input field on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '3',
+                                                            'description' => __('For this question type, users will see a standard input box on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '5',
+                                                            'description' => __('For this question type, users will see a standard textarea input box on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '6',
+                                                            'description' => __('Displays a simple section on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '7',
+                                                            'description' => __('For this question type, users will see an input box which accepts only number values on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '8',
+                                                            'description' => __("For this question type, users will see a checkbox on front end. The text in description field will act like it's label.", 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '9',
+                                                            'description' => __('For this question type, users will see a Captcha field on front end.', 'quiz-master-next')
                                                         )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);
@@ -190,13 +206,9 @@ function qsm_options_questions_tab_content() {
                                                     'correct_answer_info' => array(
                                                         'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
                                                         'type' => 'textarea',                                                        
-                                                        'default' => ''
-                                                    ),
-                                                    'hint' => array(
-                                                        'label' => __( 'Hint', 'quiz-master-next' ),
-                                                        'type' => 'text',                                                        
-                                                        'default' => ''
-                                                    ),
+                                                        'default' => '',
+                                                        'show' => '0,1,2,4,10,13',
+                                                    )                                                    
                                                 );
                                                 $answer_area_option = apply_filters('qsm_question_advanced_option', $answer_area_option);
                                                 foreach($answer_area_option as $qo_key => $single_answer_option){
@@ -261,6 +273,7 @@ function qsm_options_questions_tab_content() {
                                                                         <a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
                                                                     </div>
                                                                     <div id="publishing-action">
+                                                                        <span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
                                                                         <button id="save-popup-button" class="button button-primary">Save Question</button>
                                                                     </div>                                                                        
                                                                 </div>
@@ -304,7 +317,13 @@ function qsm_options_questions_tab_content() {
                                                                             '1' => __( 'None', 'quiz-master-next' )
                                                                         ),
                                                                         'default' => '1'
-                                                                    ),                                                                                                                                        
+                                                                    ),  
+                                                                    'hint' => array(
+                                                                        'label' => __( 'Hint', 'quiz-master-next' ),
+                                                                        'type' => 'text',                                                        
+                                                                        'default' => '',
+                                                                        'priority' => '4',
+                                                                    ),
                                                                     'autofill' => array(
                                                                         'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
                                                                         'type' => 'select',

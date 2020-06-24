@@ -399,7 +399,7 @@ var import_button;
 					type: 'POST'
 				} 
 			);
-			//CurrentElement.parents('.questionElements').slideUp('slow');
+			//CurrentElement.parents('.questionElements').slideUp('slow');                        
 		},
 		saveSuccess: function( model ) {
 			QSMAdmin.displayAlert( 'Question was saved!', 'success' );
@@ -411,6 +411,7 @@ var import_button;
                             questionName = new_question_title;
                         }
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
+                        setTimeout( $('#save-edit-question-spinner').removeClass('is-active'), 250 );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
 		addNewAnswer: function( answer ) {                        
@@ -660,11 +661,12 @@ var import_button;
 		});
 		$( document ).on( 'click', '#save-popup-button', function( event ) {
 			event.preventDefault();
+                        $('#save-edit-question-spinner').addClass('is-active');
                         var model_html = $('#modal-1-content').html();
                         $('#modal-1-content').children().remove();
 			QSMQuestion.saveQuestion( $( this ).parents('.questionElements').children( '#edit_question_id' ).val(), $(this) );
                         $('.save-page-button').trigger('click');
-                        $('#modal-1-content').html( model_html );
+                        $('#modal-1-content').html( model_html );                        
 		});                
 		$( document ).on( 'click', '#new-answer-button', function( event ) {
 			event.preventDefault();
