@@ -9,6 +9,7 @@
 
 var QSM;
 (function ($) {
+	
 	QSM = {
 		/**
 		 * Initializes all quizzes or surveys on the page
@@ -16,6 +17,8 @@ var QSM;
 		init: function() {
 			// Makes sure we have quizzes on this page
 			if ( typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
+				// hide the recaptcha by default 
+				$( '.g-recaptcha' ).hide();
 				// Cycle through all quizzes
 				_.each( qmn_quiz_data, function( quiz ) {
 					quizID = parseInt( quiz.quiz_id );
@@ -324,10 +327,13 @@ var QSM;
 			$quizForm.find( '.qsm-previous' ).hide();
 			$quizForm.find( '.qsm-next' ).hide();
 			$quizForm.find( '.qsm-submit-btn' ).hide();
+			$quizForm.find( '.g-recaptcha' ).hide();
 			if ( pageNumber < $pages.length ) {
 				$quizForm.find( '.qsm-next' ).show();
 			} else {
 				$quizForm.find( '.qsm-submit-btn' ).show();
+				$quizForm.find( '.g-recaptcha' ).show();
+				
 			}
 			if ( 1 < pageNumber ) {
 				$quizForm.find( '.qsm-previous' ).show();
@@ -719,8 +725,7 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
 			slide_number = 1;
 		}
 		$container.find( ".mlw_qmn_quiz_link.mlw_previous" ).hide();
-                
-                if (qmn_quiz_data[ quiz_id ].first_page) {
+				if (qmn_quiz_data[ quiz_id ].first_page) {
                     if (slide_number > 1) {
                         $container.find(".mlw_qmn_quiz_link.mlw_previous").show();
                     }
@@ -733,6 +738,7 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
                     $container.find(".mlw_qmn_quiz_link.mlw_next").hide();
                     if(pagination == 1){
                         jQuery(quiz_form_id + " .quiz_section.quiz_end").show();
+						jQuery(quiz_form_id + " .g-recaptcha").show();
                     }
                 }
                 if (slide_number < section_totals) {
@@ -778,6 +784,8 @@ function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
 	var section_totals = +$container.find( '.total_sections_hidden' ).val();
 
 	jQuery( quiz_form_id + " .quiz_section" ).hide();
+	jQuery( quiz_form_id + " .g-recaptcha" ).hide();
+	
 	for (var i = 0; i < pagination; i++) {
 		if (i === 0 && previous === 0)	{
 			slide_number = slide_number - pagination;
