@@ -181,7 +181,8 @@ var import_button;
 					}
 				}
 			} else {
-				QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
+                            //We have removed this code in  7.0.0 because not allow to delete the single page.
+                            //QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
 			}
                         //Create Default pages and one question.
                         if( qsmQuestionSettings.pages.length == 0 && QSMQuestion.questions.length == 0){
