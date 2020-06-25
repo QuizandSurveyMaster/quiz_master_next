@@ -224,6 +224,7 @@ var import_button;
 		},
 		savePagesSuccess: function() {
 			QSMAdmin.displayAlert( 'Questions and pages were saved!', 'success' );
+                        $('#save-edit-quiz-pages').removeClass('is-active');
 		},
 		addNewPage: function() {
 			var template = wp.template( 'page' );                        
@@ -709,6 +710,7 @@ var import_button;
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
 			event.preventDefault();
+                        $('#save-edit-quiz-pages').addClass('is-active');
 			QSMQuestion.savePages();
 		});
                 
