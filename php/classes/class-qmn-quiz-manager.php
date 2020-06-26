@@ -1742,7 +1742,7 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
     return $display;
 }
 
-add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 10, 3);
+add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 99, 3);
 
 function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
     global $qmn_allowed_visit;
