@@ -136,24 +136,37 @@ function qsm_generate_results_details_tab() {
                 $template .= '<div class="timer-div-wrapper">';                
                 $mlw_qmn_results_array = @unserialize($results_data->quiz_results);
                 if ( is_array( $mlw_qmn_results_array ) ) {
-                        $mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
+                        $mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);                        
                         if ( $mlw_complete_hours > 0 ) {
                                 $template .= '<div>';
                                 $template .= '<span class="hours timer-span">' . str_pad($mlw_complete_hours, 2, '0', STR_PAD_LEFT) . '</span>';
-                                $template .= '<span class="timer-text">hours</span>';
+                                $hour_label = $mlw_complete_hours == 1 ? __( 'hour', 'quiz-master-next' ) : __( 'hours', 'quiz-master-next' );
+                                $template .= '<span class="timer-text">'. $hour_label .'</span>';
                                 $template .= '</div>';
+                        }else{
+                            $template .= '<div>';
+                            $template .= '<span class="hours timer-span">00</span>';
+                            $template .= '<span class="timer-text">hours</span>';
+                            $template .= '</div>';
                         }
                         $mlw_complete_minutes = floor(($mlw_qmn_results_array[0] % 3600) / 60);
                         if ( $mlw_complete_minutes > 0 ) {
-                                $template .= '<div>';
-                                $template .= '<span class="minutes timer-span">' . str_pad($mlw_complete_minutes, 2, '0', STR_PAD_LEFT) . '</span>';
-                                $template .= '<span class="timer-text">minutes</span>';
-                                $template .= '</div>';
+                            $template .= '<div>';
+                            $template .= '<span class="minutes timer-span">' . str_pad($mlw_complete_minutes, 2, '0', STR_PAD_LEFT) . '</span>';
+                            $min_label = $mlw_complete_minutes == 1 ? __( 'minute', 'quiz-master-next' ) : __( 'minutes', 'quiz-master-next' );
+                            $template .= '<span class="timer-text">' . $min_label . '</span>';
+                            $template .= '</div>';
+                        } else {
+                            $template .= '<div>';
+                            $template .= '<span class="minutes timer-span">00</span>';
+                            $template .= '<span class="timer-text">minutes</span>';
+                            $template .= '</div>';
                         }
                         $mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
                         $template .= '<div>';
                         $template .= '<span class="seconds timer-span">' . str_pad($mlw_complete_seconds, 2, '0', STR_PAD_LEFT) . '</span>';
-                        $template .= '<span class="timer-text">seconds</span>';
+                        $sec_label = $mlw_complete_seconds == 1 ? __( 'second', 'quiz-master-next' ) : __( 'seconds', 'quiz-master-next' );
+                        $template .= '<span class="timer-text">' . $sec_label . '</span>';
                         $template .= '</div>';                                                        
                 }                
                 $template .= '</div>';

@@ -1266,6 +1266,11 @@ td.scheduled_time_start {
     padding: 15px 30px;
     background: #F1F1F1;
     margin-right: 10px;    
+    max-width: 120px;
+    width: 100%;
+}
+.overview-main-wrapper .overview-inner-wrap .timer-div-wrapper > div:last-child{
+    margin-right: 0;
 }
 .overview-main-wrapper .overview-inner-wrap .timer-div-wrapper span.timer-span{
     display: block;

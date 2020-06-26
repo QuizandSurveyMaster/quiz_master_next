@@ -1744,9 +1744,19 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
 
 add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 99, 3);
 
+/** 
+ * @since 7.0.0 Added the condition for start time ( end time blank ) and end time ( start time blank ).
+ * 
+ * @global boolean $qmn_allowed_visit
+ * @param HTML $display
+ * @param Object $options
+ * @param Array $variable_data
+ * @return HTML This function check the time frame of quiz. 
+ */
 function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
     global $qmn_allowed_visit;
-
+    
+    $checked_pass = FALSE;
     // Checks if the start and end dates have data
     if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {
         $start = strtotime($options->scheduled_time_start);
@@ -1754,11 +1764,26 @@ function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
 
         // Checks if the current timestamp is outside of scheduled timeframe
         if (current_time('timestamp') < $start || current_time('timestamp') > $end) {
-            $qmn_allowed_visit = false;
-            $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));
-            $message = apply_filters('mlw_qmn_template_variable_quiz_page', $message, $variable_data);
-            $display .= str_replace("\n", "<br>", $message);
+            $checked_pass = TRUE;
         }
+    }
+    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){
+        $start = strtotime($options->scheduled_time_start);
+        if ( current_time('timestamp') < $start ){
+            $checked_pass = TRUE;
+        }
+    }
+    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){
+        $end = strtotime($options->scheduled_time_end) + 86399;
+        if ( current_time('timestamp') > $end ) {
+            $checked_pass = TRUE;
+        }
+    }
+    if( $checked_pass == TRUE ){
+        $qmn_allowed_visit = false;
+        $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));
+        $message = apply_filters('mlw_qmn_template_variable_quiz_page', $message, $variable_data);
+        $display .= str_replace("\n", "<br>", $message);
     }
     return $display;
 }
