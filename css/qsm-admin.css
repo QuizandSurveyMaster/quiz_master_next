@@ -1289,6 +1289,7 @@ td.scheduled_time_start {
     margin-bottom: 0;
     background-repeat: no-repeat;
     background-position: 95% center;
+    padding-right: 12%;
 }
 .response-inner-wrap .inside .qmn_question_answer:nth-child(2n){
     background-color: #fff;
