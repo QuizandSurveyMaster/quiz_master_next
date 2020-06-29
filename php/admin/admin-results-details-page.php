@@ -236,6 +236,7 @@ function qsm_generate_results_details_tab() {
             'quiz_id'                => $results_data->quiz_id,
             'quiz_name'              => $results_data->quiz_name,
             'quiz_system'            => $results_data->quiz_system,
+            'form_type'              => $results_data->form_type,
             'user_name'              => $results_data->name,
             'user_business'          => $results_data->business,
             'user_email'             => $results_data->email,

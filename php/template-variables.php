@@ -362,13 +362,30 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                 
 		// Cycles through each answer in the responses.                
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $answer["correct"] === "correct" ){
-				$user_answer_class = "qmn_user_correct_answer";
-				$question_answer_class = "qmn_question_answer_correct";
-			} else {
-				$user_answer_class = "qmn_user_incorrect_answer";
-				$question_answer_class = "qmn_question_answer_incorrect";
-			}
+                        if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ){                            
+                            $user_answer_class = "";
+                            $question_answer_class = "";
+                            if( isset( $mlw_quiz_array['form_type'] ) && $mlw_quiz_array['form_type'] == 0 ){                                 
+                                if( $mlw_quiz_array['quiz_system'] == 0 || $mlw_quiz_array['quiz_system'] == 3 ){
+                                    if ( $answer["correct"] === "correct" ){
+                                        $user_answer_class = "qmn_user_correct_answer";
+                                        $question_answer_class = "qmn_question_answer_correct";
+                                    } else {
+                                        $user_answer_class = "qmn_user_incorrect_answer";
+                                        $question_answer_class = "qmn_question_answer_incorrect";
+                                    }
+                                }
+                            }                           
+                        } else {
+                            if ( $answer["correct"] === "correct" ){
+                                $user_answer_class = "qmn_user_correct_answer";
+                                $question_answer_class = "qmn_question_answer_correct";
+                            } else {
+                                $user_answer_class = "qmn_user_incorrect_answer";
+                                $question_answer_class = "qmn_question_answer_incorrect";
+                            }
+                        }
+			
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
                         if( isset( $answer['question_title'] ) && $answer['question_title'] != '' ){
                             $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b><br />' . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
