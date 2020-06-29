@@ -1132,6 +1132,21 @@ class QMNQuizManager {
                 );
             }
 
+			/*
+			 * Update the option `qmn_quiz_taken_cnt` value by 1 each time 
+			 * whenever the record inserted into the required table.
+			 */
+			if( $results_insert ) {
+				$rec_inserted = intval( get_option( 'qmn_quiz_taken_cnt' ) );
+				if( 1000 > $rec_inserted ) {
+					if( ! $rec_inserted ) {
+						update_option( 'qmn_quiz_taken_cnt', 1, true );
+					}else {
+						update_option( 'qmn_quiz_taken_cnt', ++$rec_inserted );
+					}
+				}
+			}
+
             $results_id = $wpdb->insert_id;
 
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.

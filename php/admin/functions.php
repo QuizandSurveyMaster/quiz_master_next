@@ -30,33 +30,51 @@ add_action('admin_init','qsm_add_author_column_in_db');
  * @since 6.4.6
  * Insert new column in quiz table
  */
-function qsm_add_author_column_in_db(){
-    if( get_option('qsm_update_db_column', '') != '1' ){
-        global $wpdb;
-        $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-        $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
-        if (!isset($row->quiz_author_id)) {
-            $wpdb->query("ALTER TABLE $quiz_table_name ADD quiz_author_id INT NOT NULL");
+function qsm_add_author_column_in_db() {
+
+	if( get_option('qsm_update_db_column', '') != '1' ) {
+
+		global $wpdb;
+
+		/*
+		 * Array of table and its column mapping.
+		 * Each array's item key refers to the table to be altered and its value refers 
+		 * to the array of column and its definition to be added.
+		 */
+		$table_column_arr = array( 
+			$wpdb->prefix . 'mlw_quizzes' => array( 'quiz_author_id' => 'INT NOT NULL' ),
+			$wpdb->prefix . 'mlw_results' => array( 'unique_id'      => 'VARCHAR(255) NOT NULL' ),
+		);
+
+		foreach( $table_column_arr as $table => $column_def ) {
+			foreach( $column_def  as $col_name => $col_def ) {
+				$table_col_obj = $wpdb->get_results( $wpdb->prepare(
+					'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $table, $col_name 
+				) );
+
+				if ( empty( $table_col_obj ) ) {
+					$wpdb->query( 'ALTER TABLE ' . $table . ' ADD ' . $col_name . ' ' . $col_def );
+				}
+			}
+		}
+
+		update_option( 'qsm_update_db_column', '1' );
+
+	}
+        
+        //Update result db        
+        if( get_option('qsm_update_result_db_column', '') != '1' ){
+            global $wpdb;
+            $result_table_name = $wpdb->prefix . "mlw_results";
+            $row = $wpdb->get_row("SELECT * FROM $result_table_name");        
+            if ( !isset($row->form_type) ) {
+                $wpdb->query("ALTER TABLE $result_table_name ADD form_type INT NOT NULL");
+            }
+            update_option('qsm_update_result_db_column', '1');
         }
-        $result_table_name = $wpdb->prefix . "mlw_results";
-        $row = $wpdb->get_row("SELECT * FROM $result_table_name");
-        if ( !isset($row->unique_id) ) {
-            $wpdb->query("ALTER TABLE $result_table_name ADD unique_id varchar(255) NOT NULL");
-        }
-        update_option('qsm_update_db_column', '1');
-    }
-    
-    //Update result db        
-    if( get_option('qsm_update_result_db_column', '') != '1' ){
-        global $wpdb;
-        $result_table_name = $wpdb->prefix . "mlw_results";
-        $row = $wpdb->get_row("SELECT * FROM $result_table_name");        
-        if ( !isset($row->form_type) ) {
-            $wpdb->query("ALTER TABLE $result_table_name ADD form_type INT NOT NULL");
-        }
-        update_option('qsm_update_result_db_column', '1');
-    }
+
 }
+
 
 add_action('admin_init', 'qsm_change_the_post_type');
 /**
@@ -476,4 +494,32 @@ function qsm_text_template_variable_list(){
     );
     $variable_list = apply_filters('qsm_text_variable_list', $variable_list);
     return $variable_list;
+}
+
+add_action('admin_init', 'qsm_update_question_type_col_val');
+
+/**
+ * Replace `fill-in-the-blank` value in question_type_column for Fill 
+ * In The Blank question types.
+ *
+ * @since version 6.4.12
+ */
+function qsm_update_question_type_col_val() {
+
+	global $wpdb;
+	global $mlwQuizMasterNext;
+
+	if ( version_compare( $mlwQuizMasterNext->version, '6.4.12', '<' ) ) {
+		if( get_option('qsm_upated_question_type_val') != '1' ) {
+			$table_name  = $wpdb->prefix . 'mlw_questions';
+			$status      = $wpdb->query(
+				$wpdb->prepare( 
+					"UPDATE " . $table_name . " SET `question_type_new` = REPLACE( `question_type_new`, 'fill-in-the-blank', %d )", 14 )
+				);
+
+			if( $status ) {
+				update_option('qsm_upated_question_type_val', '1');
+			}
+		}
+	}
 }

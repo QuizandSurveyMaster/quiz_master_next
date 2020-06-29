@@ -16,11 +16,18 @@
 .mlw_qmn_question{
     display: block;
 }
+
+.mlw_qmn_question.polar-question-title {
+	margin-bottom: 10px;
+}
+
 .polar-question-title{
     margin-bottom: 50px;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 20px;
 }
+
+
 .question-type-polar-s{
     display: inline-block !important;
     position: relative;

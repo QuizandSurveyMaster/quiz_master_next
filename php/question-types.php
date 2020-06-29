@@ -1044,7 +1044,10 @@ function qmn_question_type_fill_blank()
 		'extra_inputs' => array(),
 		'function' => ''
 	);
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args );
+
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Fill In The Blank", 'quiz-master-next'), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args, null, 14 );
+	
+
 }
 
 
@@ -1220,7 +1223,7 @@ function qmn_polar_display($id, $question, $answers) {
     } else {
         $mlw_requireClass = "";
     }
-    $question_title = "<div class='polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
+    $question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
     $input_text .= "<div class='left-polar-title'>" . $answers[0][0] ."</div>";
     $input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
     $input_text .= '<div id="slider-'. $id .'"></div></div>';
