@@ -100,8 +100,8 @@ function qsm_generate_quiz_options() {
                         wp_reset_postdata();
                     }
                     ?>                    
-                    <a class="button button-default qsm-btn-quiz-edit" target="_blank" href="<?php echo $post_permalink; ?>">
-                        <span class="dashicons dashicons-welcome-view-site"></span> <?php _e('View Quiz', 'quiz-master-next'); ?>
+                    <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
+                        <span class="dashicons dashicons-external"></span>
                     </a>
                     <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
                         <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>

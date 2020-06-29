@@ -1177,14 +1177,22 @@ td.scheduled_time_start {
     border-top: 1px solid #f1f1f1;
     padding: 20px;
 }
+.qsm-view-preview-btn{
+    text-decoration: none;
+    line-height: normal;
+    margin-left: 5px;
+}
+.qsm-view-preview-btn span.dashicons{
+    line-height: 12px;
+    vertical-align: middle;
+    font-size: 25px;
+}
 .mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit {
-    border: 1px solid #ccc;
-    background: #F7F7F7;
-    color: #666;
-    font-weight: 500;
     margin-left: 10px;
     margin-top: 9px;
     box-shadow: none;
+    float: right;
+    margin-right: 10px;
 }
 .mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit:hover{
     opacity: 0.8;

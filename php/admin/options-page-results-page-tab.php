@@ -38,14 +38,13 @@ function qsm_options_results_tab_content() {
 	wp_enqueue_editor();
 	wp_enqueue_media();
 	?>
-	<h2 style="margin-bottom: 10px;"><?php esc_html_e( 'Results Pages', 'quiz-master-next' ); ?></h2>
-	<p style="margin-bottom: 30px;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-results-pages/" target="_blank">Check out the documentation</a></p>
-        
+	
 	<!-- Results Page Section -->
-	<section>		
+	<section style="margin-top: 15px;">		
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>                
 		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
                 <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Show Template Variables', 'quiz-master-next'); ?></a>
+                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-results-pages/" target="_blank">View Documentation</a>
 		<div id="results-pages"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-pages button-primary"><?php esc_html_e( 'Save Results Pages', 'quiz-master-next' ); ?></button>                
 		<button class="add-new-page button"><?php esc_html_e( 'Add New Results Page', 'quiz-master-next' ); ?></button>
