@@ -144,7 +144,7 @@ class QSM_Tracking {
     	$data['current_version']  = get_option('mlw_quiz_master_version');
 
 		// Configurations of quizzes and surveys
-    	$data['quiz_options'] = $wpdb->get_results( "SELECT quiz_name, system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp, user_email, user_phone, comment_section, question_from_total, total_user_tries, certificate_template, pagination, timer_limit, question_numbering, theme_selected, last_activity, require_log_in, limit_total_entries, disable_answer_onselect, ajax_show_correct, quiz_views, quiz_taken FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0" );
+    	$data['quiz_options'] = $wpdb->get_results( "SELECT quiz_name, quiz_system as system, randomness_order, loggedin_user_contact, show_score, send_user_email, send_admin_email, contact_info_location, user_name, user_comp, user_email, user_phone, comment_section, question_from_total, total_user_tries, certificate_template, pagination, timer_limit, question_numbering, theme_selected, last_activity, require_log_in, limit_total_entries, disable_answer_onselect, ajax_show_correct, quiz_views, quiz_taken FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0" );
 
 		// All error logs from QSM
     	$data['error_logs'] = $mlwQuizMasterNext->log_manager->get_logs();

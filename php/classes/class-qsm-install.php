@@ -1062,7 +1062,7 @@ class QSM_Install {
   			email_from_text TEXT NOT NULL,
   			question_answer_template TEXT NOT NULL,
   			leaderboard_template TEXT NOT NULL,
-  			system INT NOT NULL,
+  			quiz_system INT NOT NULL,
   			randomness_order INT NOT NULL,
   			loggedin_user_contact INT NOT NULL,
   			show_score INT NOT NULL,

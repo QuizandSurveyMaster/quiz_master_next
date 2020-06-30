@@ -72,7 +72,20 @@ function qsm_add_author_column_in_db() {
             }
             update_option('qsm_update_result_db_column', '1');
         }
-
+        
+        /**
+         * Changed the system word to quiz_system in quiz table
+         * @since 7.0.0
+         */
+        if( get_option('qsm_update_quiz_db_column', '') != '1' ){
+            global $wpdb;
+            $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
+            $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
+            if ( isset($row->system) ) {
+                $wpdb->query("ALTER TABLE $quiz_table_name CHANGE `system` `quiz_system` INT(11) NOT NULL;");
+            }
+            update_option('qsm_update_quiz_db_column', '1');
+        }
 }
 
 

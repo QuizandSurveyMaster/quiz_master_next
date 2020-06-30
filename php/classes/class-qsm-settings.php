@@ -289,7 +289,7 @@ class QSM_Quiz_Settings {
 
         // Prepares new quiz_options section's settings
         $settings_array['quiz_options'] = serialize( array(
-          'system' => $quiz_options->system,
+          'system' => $quiz_options->quiz_system,
   				'loggedin_user_contact' => $quiz_options->loggedin_user_contact,
   				'contact_info_location' => $quiz_options->contact_info_location,
   				'user_name' => $quiz_options->user_name,
