@@ -88,7 +88,7 @@ function qsm_generate_results_details_tab() {
 
 	// If there is previous or next results, show buttons.
         echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
-        echo '<h3 class="result-page-title">Quiz Result - '. $results_data->quiz_name .'</h3>';
+        echo '<h3 class="result-page-title">Quiz Result - '. $results_data->quiz_name .' <small><a href="?page=mlw_quiz_results" title="Return to results"><img draggable="false" class="emoji" alt="⤴" src="https://s.w.org/images/core/emoji/11/svg/2934.svg"></a></small></h3>';
 	if ( ! is_null( $previous_results ) && $previous_results ) {
 		echo "<a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
 	}
@@ -108,9 +108,9 @@ function qsm_generate_results_details_tab() {
             $template = '';            
             if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {                
                 $template .= '<div class="overview-main-wrapper">';
-                //Candidate detail
+                //User detail
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
-                $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Candidate Detail</span></h2>';
+                $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
                 $template .= '<div class="inside">';
                 $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
                 $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
@@ -176,7 +176,7 @@ function qsm_generate_results_details_tab() {
                 $template .= '</div>';
                 //Comment entered text
                 $template .= '<div class="comment-inner-wrap">';
-                $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Candidate Comments</span></h2>';
+                $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
                 $template .= '<div class="inside">';                
                 $template .= '%COMMENT_SECTION%';                
                 $template .= '</div>';

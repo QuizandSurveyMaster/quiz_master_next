@@ -1045,9 +1045,9 @@ jQuery(function() {
                     success: function (response) {
                         $this.find('.quick-question-res-p').remove();
                         if(response == 'correct'){
-                            $this.append('<p style="color: green" class="quick-question-res-p"><b>Correct!</b> You have selected correct answer.</p>')
+                            $this.append('<p style="color: green" class="quick-question-res-p">' + qmn_ajax_object.quick_result_correct_text + '</p>')
                         }else if(response == 'incorrect'){
-                            $this.append('<p style="color: red" class="quick-question-res-p"><b>Wrong!</b> You have selected wrong answer.</p>')
+                            $this.append('<p style="color: red" class="quick-question-res-p">' + qmn_ajax_object.quick_result_wrong_text + '</p>')
                         }                        
                     },
                     error: function (errorThrown) {
