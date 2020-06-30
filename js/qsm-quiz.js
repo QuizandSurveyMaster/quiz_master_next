@@ -464,6 +464,13 @@ var QSMPageTimer;
 					// Sets up timer interval.
 					qmn_quiz_data[ quizID ].qpages[ pid ].timerInterval = setInterval(QSMPageTimer.timer, 1000, quizID, pid, $timer_box);
 				}
+				$currentpage.find('.page_intro_wrapper video').each(function(){
+					var $this = jQuery(this);
+					var src = $this.find('source').attr('src');
+					$this.attr('src', src)
+					$this.load();
+					$this.get(0).play();
+				});
 			}
 		},
 		/**
