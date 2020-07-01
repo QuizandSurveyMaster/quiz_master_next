@@ -88,13 +88,18 @@ function qsm_generate_results_details_tab() {
 
 	// If there is previous or next results, show buttons.
         echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
-        echo '<h3 class="result-page-title">Quiz Result - '. $results_data->quiz_name .' <small><a href="?page=mlw_quiz_results" title="Return to results"><img draggable="false" class="emoji" alt="⤴" src="https://s.w.org/images/core/emoji/11/svg/2934.svg"></a></small></h3>';
+        echo '<h3 class="result-page-title">Quiz Result - '. $results_data->quiz_name .'</h3>';        
+        echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. __( 'Back to Results', 'quiz-master-next' ) .'</a>';
 	if ( ! is_null( $previous_results ) && $previous_results ) {
-		echo "<a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" >View Previous Results</a> ";
-	}
-	if ( ! is_null( $next_results ) && $next_results ) {
-		echo " <a class='button' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $next_results ) . "\" >View Next Results</a>";
-	}
+		echo "<a class='button button-primary' title='View Previous Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" ><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
+	}else{
+            echo "<a class='button button-primary' title='View Previous Result' href='#' disbled=disabled><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
+        }
+        if ( ! is_null( $next_results ) && $next_results ) {
+		echo " <a class='button button-primary' title='View Next Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $next_results ) . "\" ><span class='dashicons dashicons-arrow-right-alt2'></span></a>";
+	}else{
+            echo " <a class='button button-primary' title='View Next Result' href='#' disabled=disabled><span class='dashicons dashicons-arrow-right-alt2'></span></a>";
+        }        
         echo '</div>';
 
 	// Get template for admin results.
@@ -175,7 +180,7 @@ function qsm_generate_results_details_tab() {
                 $template .= '</div>';
                 $template .= '</div>';
                 //Comment entered text
-                $template .= '<div class="comment-inner-wrap">';
+                $template .= '<div class="comment-inner-wrap" style="display: none;">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
                 $template .= '<div class="inside">';                
                 $template .= '%COMMENT_SECTION%';                

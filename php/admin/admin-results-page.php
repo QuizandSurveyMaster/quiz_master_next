@@ -285,30 +285,31 @@ function qsm_results_overview_tab_content() {
 			</span>
 			<br class="clear">
 		</div>
+                <form action='' method="get">
+                        <?php
+                        if ( isset( $_GET['quiz_id'] ) ) {
+                                ?>
+                                <input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
+                                <?php
+                        }
+                        ?>
+                        <input type="hidden" name="page" value="mlw_quiz_results">
+                        <p class="search-box">
+                                <label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
+                                <input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
+                                <label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
+                                <select id="qmn_order_by" name="qmn_order_by">
+                                        <option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
+                                        <option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
+                                        <option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
+                                        <option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
+                                        <option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+                                </select>
+                                <button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
+                        </p>
+                </form>
 	</div>
-	<form action='' method="get">
-		<?php
-		if ( isset( $_GET['quiz_id'] ) ) {
-			?>
-			<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
-			<?php
-		}
-		?>
-		<input type="hidden" name="page" value="mlw_quiz_results">
-		<p class="search-box">
-			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
-			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
-			<select id="qmn_order_by" name="qmn_order_by">
-				<option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
-				<option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
-				<option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
-				<option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
-				<option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
-			</select>
-			<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
-		</p>
-	</form>
+	
 	<form action="" method="post" name="bulk_delete_form">
 		<input type="hidden" name="bulk_delete" value="confirmation" />
 		<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />

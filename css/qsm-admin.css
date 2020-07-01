@@ -1326,6 +1326,19 @@ td.scheduled_time_start {
     margin: 0;
     line-height: 30px;
 }
+.result-tab-content a.button > span.dashicons {
+    line-height: 29px;
+    font-size: 18px;  
+    margin-left: -4px;    
+    margin-right: -4px;
+}
+.result-page-wrapper .tablenav-pages{
+    margin-left: 10px;
+}
+.result-page-wrapper .tablenav.top{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
         float: left;
