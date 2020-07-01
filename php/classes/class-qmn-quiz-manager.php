@@ -95,7 +95,8 @@ class QMNQuizManager {
             $upload_dir = wp_upload_dir();            
             $datafile = $_FILES["file"]["tmp_name"];
             $file_name = $_FILES["file"]["name"];
-            $file = $upload_dir['path'] . '/' . $_FILES['productbd']['name'];
+            $file = $upload_dir['path'] . '/' . $_FILES['file']['name'];
+            $file_url = $upload_dir['url'] . '/' . $_FILES['file']['name'];
             $counter = 1;
             $rawBaseName = pathinfo($file_name, PATHINFO_FILENAME);
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);

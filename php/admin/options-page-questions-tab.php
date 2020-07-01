@@ -149,7 +149,7 @@ function qsm_options_questions_tab_content() {
                                                             'description' => __('For this question type, users will see a file upload field on front end.', 'quiz-master-next')
                                                         ),
                                                         array(
-                                                            'question_type_id' => 'fill-in-the-blank',
+                                                            'question_type_id' => '14',
                                                             'description' => __('Use %BLANK% variable in the description field to display input boxes.', 'quiz-master-next')
                                                         ),
                                                         array(
@@ -363,14 +363,14 @@ function qsm_options_questions_tab_content() {
                                                                             'video/mp4' => __( 'Video', 'quiz-master-next' ),
                                                                         ),
                                                                         'default' => 'image',
-                                                                        'show' => '11,13'
+                                                                        'show' => '11'
                                                                     ),
                                                                     'file_upload_limit' => array(
                                                                         'label' => __('File upload limit ( in MB )', 'quiz-master-next' ),
                                                                         'type' => 'number',
                                                                         'priority' => '9',
                                                                         'default' => '',
-                                                                        'show' => '11,13'
+                                                                        'show' => '11'
                                                                     ),
                                                                 );
                                                                 $advanced_question_option = apply_filters('qsm_question_advanced_option', $advanced_question_option);
