@@ -321,46 +321,60 @@ function qsm_create_new_quiz_wizard(){ ?>
                             ),
                             'recommended_addon' => array(
                                 array(
+                                    'name' => 'Reporting And Analysis',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/results-analysis/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Reporting-And-Analysis.jpg',
+                                    'attribute' => 'recommended'
+                                ),
+                                array(
+                                    'name' => 'Export & Import',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/export-import/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Export-Import.jpg',
+                                    'attribute' => 'recommended'
+                                ),
+                            )
+                        ),
+                        array(
+                            'template_name' => __('Simple Quiz', 'quiz-master-next'),
+                            'priority' => '2',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/simple-quiz.png',
+                            'options' => array(
+                                'form_type' => array(
+                                    'option_name' => 'Form Type',
+                                    'value' => 0
+                                ),
+                                'system' => array(
+                                    'option_name' => 'Graded System',
+                                    'value' => 0
+                                ),                     
+                                'require_log_in' => array(
+                                    'option_name' => 'Require User Login',
+                                    'value' => 1
+                                ),
+                                'enable_result_after_timer_end' => array(
+                                    'option_name' => 'Force Submit',
+                                    'value' => 0
+                                )
+                            ),
+                            'recommended_addon' => array(
+                                array(
                                     'name' => 'Payment Integration',
                                     'link' => 'https://quizandsurveymaster.com/downloads/paypal-and-stripe-payment-integration/',
                                     'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Paypal-and-Stripe-Payment-Integration-300x170.jpg',
                                     'attribute' => 'recommended'
                                 ),
                                 array(
-                                    'name' => 'Google Sheet',
-                                    'link' => 'https://quizandsurveymaster.com/downloads/sync-with-google-sheets/',
-                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/03/first-1-300x170.jpg',
+                                    'name' => 'Recaptcha',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/recaptcha/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/reCaptcha.jpg',
                                     'attribute' => 'required'
                                 ),
                             )
                         ),
                         array(
-                            'template_name' => __('Sample Template', 'quiz-master-next'),
-                            'priority' => '2',
-                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
-                            'options' => array(
-                                'form_type' => array(
-                                    'option_name' => 'Form Type',
-                                    'value' => 0
-                                ),
-                                'system' => array(
-                                    'option_name' => 'Graded System',
-                                    'value' => 0
-                                ),                     
-                                'require_log_in' => array(
-                                    'option_name' => 'Require User Login',
-                                    'value' => 1
-                                ),
-                                'enable_result_after_timer_end' => array(
-                                    'option_name' => 'Force Submit',
-                                    'value' => 0
-                                )
-                            ),
-                        ),
-                        array(
-                            'template_name' => __('Customer Feedback', 'quiz-master-next'),
+                            'template_name' => __('Time Based Quiz', 'quiz-master-next'),
                             'priority' => '3',
-                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/time-based-quiz.png',
                             'options' => array(
                                 'form_type' => array(
                                     'option_name' => 'Form Type',
@@ -369,47 +383,65 @@ function qsm_create_new_quiz_wizard(){ ?>
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0
-                                ),                     
-                                'require_log_in' => array(
-                                    'option_name' => 'Require User Login',
-                                    'value' => 1
-                                ),
-                                'enable_result_after_timer_end' => array(
-                                    'option_name' => 'Force Submit',
-                                    'value' => 0
-                                ),
-                                'progress_bar' => array(
-                                    'option_name' => 'Progress Bar',
+                                ),                                
+                                'timer_limit' => array(
+                                    'option_name' => 'Time Limit',
                                     'value' => 0
                                 )
                             ),
+                            'recommended_addon' => array(
+                                array(
+                                    'name' => 'Save and Resume',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/save-and-resume/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Save-and-Resume.jpg',
+                                    'attribute' => 'recommended'
+                                ),
+                                array(
+                                    'name' => 'Advanced Timer',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/wordpress-quiz-timer-advanced/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/35.jpg',
+                                    'attribute' => 'required'
+                                ),
+                            )
                         ),
                         array(
-                            'template_name' => __('Event Planning', 'quiz-master-next'),
+                            'template_name' => __('Survey', 'quiz-master-next'),
                             'priority' => '4',
-                            'template_img' => QSM_PLUGIN_URL . '/assets/sample-quiz.png',
+                            'template_img' => QSM_PLUGIN_URL . '/assets/survey-quiz.png',
                             'options' => array(
                                 'form_type' => array(
                                     'option_name' => 'Form Type',
-                                    'value' => 0
+                                    'value' => 1
                                 ),
                                 'system' => array(
                                     'option_name' => 'Graded System',
                                     'value' => 0
-                                ),                     
-                                'require_log_in' => array(
-                                    'option_name' => 'Require User Login',
-                                    'value' => 1
-                                ),
-                                'enable_result_after_timer_end' => array(
-                                    'option_name' => 'Force Submit',
-                                    'value' => 0
-                                ),
+                                ),                                
                                 'progress_bar' => array(
                                     'option_name' => 'Progress Bar',
                                     'value' => 0
                                 )
                             ),
+                            'recommended_addon' => array(
+                                array(
+                                    'name' => 'Daily Limit',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/daily-limit/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Daily-Limit.jpg',
+                                    'attribute' => 'recommended'
+                                ),
+                                array(
+                                    'name' => 'Google Sheet Connector',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/sync-with-google-sheets/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/03/first-1.jpg',
+                                    'attribute' => 'required'
+                                ),
+                                array(
+                                    'name' => 'Mailchimp Integration',
+                                    'link' => 'https://quizandsurveymaster.com/downloads/mailchimp-integration/',
+                                    'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/MailChimp-Integration.jpg',
+                                    'attribute' => 'required'
+                                ),
+                            )
                         ),
                     );
                     $qsm_quiz_templates = apply_filters('qsm_wizard_quiz_templates', $qsm_quiz_templates);
