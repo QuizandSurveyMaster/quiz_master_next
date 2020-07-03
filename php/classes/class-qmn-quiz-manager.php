@@ -1020,7 +1020,8 @@ class QMNQuizManager {
         if (!$qmn_allowed_visit) {
             return $result_display;
         }
-
+        //Add form type for new quiz system 7.0.0
+        $qmn_array_for_variables['form_type'] = isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0;
         // Gathers contact information.
         $qmn_array_for_variables['user_name'] = 'None';
         $qmn_array_for_variables['user_business'] = 'None';

@@ -137,10 +137,16 @@ function qsm_display_question_option($key, $single_option){
 		$show_class .= ' qsm_hide_for_other';
 	}
     $tooltip = '';
-    if( isset($single_option['tooltip']) && $single_option['tooltip'] != '' ){             
+    $document_text = '';
+    if( isset($single_option['tooltip']) && $single_option['tooltip'] != '' ){
         $tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
         $tooltip .= '<span class="qsm-tooltips">' . $single_option['tooltip'] . '</span>';
         $tooltip .= '</span>';
+    }
+    if( isset($single_option['documentation_link']) && $single_option['documentation_link'] != '' ){
+        $document_text .= '<a class="qsm-question-doc" href="'. $single_option['documentation_link'] .'" target="_blank" title="'. __('View Documentation', 'quiz-master-next') .'">';
+        $document_text .= '<span class="dashicons dashicons-media-document"></span>';
+        $document_text .= '</a>';
     }
     switch ($type){         
         case 'text':
@@ -148,9 +154,9 @@ function qsm_display_question_option($key, $single_option){
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
-                    <?php echo $tooltip; ?>
-                </label>
-                <?php echo $tooltip; ?>
+                    <?php echo $tooltip; ?>                    
+                    <?php echo $document_text; ?>
+                </label>                
                 <input type="text" name="<?php echo $key; ?>" value="<?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?>" id="<?php echo $key ?>" />
             </div>
             <?php
@@ -162,6 +168,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <textarea name="<?php echo $key; ?>" id="<?php echo $key ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
             </div>
@@ -174,6 +181,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <input type="number" name="<?php echo $key; ?>" value="<?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?>" id="<?php echo $key ?>" />
             </div>
@@ -186,6 +194,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <select name="<?php echo $key; ?>" id="<?php echo $key ?>">
                     <?php
@@ -210,6 +219,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <textarea id="<?php echo $key ?>" name="<?php echo $key; ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
             </div>
@@ -222,6 +232,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <div id="categories">
                     <a id="qsm-category-add-toggle" class="hide-if-no-js">
@@ -241,6 +252,7 @@ function qsm_display_question_option($key, $single_option){
                 <label>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
                 <?php
                 $parent_key = $key;
@@ -276,6 +288,7 @@ function qsm_display_question_option($key, $single_option){
                     ?>
                     <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
                     <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
                 </label>
             </div>
             <?php

@@ -209,6 +209,7 @@ function qsm_options_questions_tab_content() {
                                                         'type' => 'textarea',                                                        
                                                         'default' => '',
                                                         'show' => '0,1,2,4,10,13',
+                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info'
                                                     )                                                    
                                                 );
                                                 $answer_area_option = apply_filters('qsm_question_advanced_option', $answer_area_option);
@@ -225,7 +226,16 @@ function qsm_options_questions_tab_content() {
                                                             <div class="submitbox" id="submitpost">
                                                                 <div id="minor-publishing">                                                                            
                                                                     <div class="qsm-row">
-                                                                            <label><?php _e( 'Question Type', 'quiz-master-next' ); ?></label>
+                                                                            <label>
+                                                                                <?php _e( 'Question Type', 'quiz-master-next' ); ?>
+                                                                                <?php
+                                                                                $document_text = '';
+                                                                                $document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="'. __('View Documentation', 'quiz-master-next') .'">';
+                                                                                $document_text .= '<span class="dashicons dashicons-media-document"></span>';
+                                                                                $document_text .= '</a>';
+                                                                                echo $document_text;
+                                                                                ?>
+                                                                            </label>
                                                                             <select name="question_type" id="question_type">
                                                                                     <?php
                                                                                     foreach ( $question_types as $type ) {
@@ -248,7 +258,8 @@ function qsm_options_questions_tab_content() {
                                                                             ),
                                                                             'default' => 'text',
                                                                             'show' => '0,1,2,4,13',
-                                                                            'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next')
+                                                                            //'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
+                                                                            'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type'
                                                                         ),
                                                                         'required' => array(
                                                                             'label' => __( 'Required?', 'quiz-master-next' ),
@@ -282,15 +293,19 @@ function qsm_options_questions_tab_content() {
                                                         </div>
                                                     </div>
                                                     <div id="categorydiv" class="postbox">
-                                                        <h2 class="hndle ui-sortable-handle"><span><?php _e('Select Category', 'quiz-master-next'); ?></span></h2>
+                                                        <h2 class="hndle ui-sortable-handle">
+                                                            <span><?php _e('Select Category', 'quiz-master-next'); ?></span>
+                                                            <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category" target="_blank" title="View Documentation"><span class="dashicons dashicons-media-document"></span></a>
+                                                        </h2>
                                                         <div class="inside">
                                                             <?php
                                                             $category_question_option = array(
                                                                 'categories' => array(
-                                                                    'label' => __( 'Category', 'quiz-master-next' ),
+                                                                    'label' => __( '', 'quiz-master-next' ),
                                                                     'type' => 'category',
                                                                     'priority' => '5',                                                    
-                                                                    'default' => ''
+                                                                    'default' => '',
+                                                                    'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category'
                                                                 )
                                                             );
                                                             $category_question_option = apply_filters('qsm_question_category_option', $category_question_option);
@@ -317,13 +332,15 @@ function qsm_options_questions_tab_content() {
                                                                             '2' => __( 'Large Text Field', 'quiz-master-next' ),
                                                                             '1' => __( 'None', 'quiz-master-next' )
                                                                         ),
-                                                                        'default' => '1'
+                                                                        'default' => '1',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
                                                                     ),  
                                                                     'hint' => array(
                                                                         'label' => __( 'Hint', 'quiz-master-next' ),
-                                                                        'type' => 'text',                                                        
+                                                                        'type' => 'text',
                                                                         'default' => '',
                                                                         'priority' => '4',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Hints'
                                                                     ),
                                                                     'autofill' => array(
                                                                         'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
@@ -334,21 +351,21 @@ function qsm_options_questions_tab_content() {
                                                                             '1' => __( 'Yes', 'quiz-master-next' )
                                                                         ),
                                                                         'default' => '0',
-                                                                        'show' => '3, fill-in-the-blank'
+                                                                        'show' => '3, 14'
                                                                     ),
                                                                     'limit_text' => array(
                                                                         'label' => __('Limit Text', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '7',                                                    
                                                                         'default' => '',
-                                                                        'show' => '3, fill-in-the-blank'
+                                                                        'show' => '3, 14'
                                                                     ),
                                                                     'limit_multiple_response' => array(
                                                                         'label' => __('Limit Multiple choice', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '8',
                                                                         'default' => '',
-                                                                        'show' => '4,10'
+                                                                        'show' => '4,10',                                                                        
                                                                     ),                                                
                                                                     'file_upload_type' => array(
                                                                         'label' => __('Allow File type', 'quiz-master-next' ),
@@ -363,14 +380,16 @@ function qsm_options_questions_tab_content() {
                                                                             'video/mp4' => __( 'Video', 'quiz-master-next' ),
                                                                         ),
                                                                         'default' => 'image',
-                                                                        'show' => '11'
+                                                                        'show' => '11',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
                                                                     ),
                                                                     'file_upload_limit' => array(
                                                                         'label' => __('File upload limit ( in MB )', 'quiz-master-next' ),
                                                                         'type' => 'number',
                                                                         'priority' => '9',
                                                                         'default' => '',
-                                                                        'show' => '11'
+                                                                        'show' => '11',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
                                                                     ),
                                                                 );
                                                                 $advanced_question_option = apply_filters('qsm_question_advanced_option', $advanced_question_option);

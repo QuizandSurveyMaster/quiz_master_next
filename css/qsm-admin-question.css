@@ -185,7 +185,7 @@
 .qsm-row {
 	display: inline-block;
 	width: 100%;
-	margin-bottom: 10px;
+	margin-bottom: 13px;
 	font-size: 16px;
 }
 
@@ -196,7 +196,7 @@
 .qsm-row > label {
 	font-weight: normal;
 	display: block;
-        margin-bottom: 5px;
+        margin-bottom: 7px;
         color: #7b7575;
 }
 
@@ -207,6 +207,28 @@
 .questionElements .qsm-row > label > .qsm-tooltips-icon {
     position: relative;
     top: 2px;
+}
+
+.questionElements .qsm-question-doc{
+    text-decoration: none;
+    position: absolute;
+    right: 0;
+    color: #969696;
+}
+
+#categorydiv .qsm-question-doc{
+    right: 15px;
+}
+
+.questionElements .qsm-question-doc:hover{
+    color: #0073aa;
+}
+
+.questionElements .qsm-row > label > .qsm-question-doc span.dashicons{
+    font-size: 17px;
+    width: auto;
+    height: auto;
+    line-height: 23px;
 }
 
 .questionElements .qsm-tooltips-icon .qsm-tooltips{    
