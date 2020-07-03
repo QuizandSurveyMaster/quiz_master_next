@@ -380,7 +380,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'name' => 'Recaptcha',
                                     'link' => 'https://quizandsurveymaster.com/downloads/recaptcha/',
                                     'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/reCaptcha.jpg',
-                                    'attribute' => 'required'
+                                    'attribute' => 'recommended'
                                 ),
                             )
                         ),
@@ -413,7 +413,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'name' => 'Advanced Timer',
                                     'link' => 'https://quizandsurveymaster.com/downloads/wordpress-quiz-timer-advanced/',
                                     'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/35.jpg',
-                                    'attribute' => 'required'
+                                    'attribute' => 'recommended'
                                 ),
                             )
                         ),
@@ -446,13 +446,13 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'name' => 'Google Sheet Connector',
                                     'link' => 'https://quizandsurveymaster.com/downloads/sync-with-google-sheets/',
                                     'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/03/first-1.jpg',
-                                    'attribute' => 'required'
+                                    'attribute' => 'recommended'
                                 ),
                                 array(
                                     'name' => 'Mailchimp Integration',
                                     'link' => 'https://quizandsurveymaster.com/downloads/mailchimp-integration/',
                                     'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/MailChimp-Integration.jpg',
-                                    'attribute' => 'required'
+                                    'attribute' => 'recommended'
                                 ),
                             )
                         ),
@@ -480,8 +480,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                                 </div>
                                             <?php                                
                                             }else{ ?>
-                                                <div class="template-list-inner inner-json" data-settings='<?php echo isset($single_template['options']) ? json_encode($single_template['options']) : ''; ?>' data-addons='<?php echo isset($single_template['recommended_addon']) ? json_encode($single_template['recommended_addon']) : ''; ?>'>
-                                                    <h3><?php echo isset($single_template['template_name']) ? $single_template['template_name'] : ''; ?></h3>
+                                                <div class="template-list-inner inner-json" data-settings='<?php echo isset($single_template['options']) ? json_encode($single_template['options']) : ''; ?>' data-addons='<?php echo isset($single_template['recommended_addon']) ? json_encode($single_template['recommended_addon']) : ''; ?>'>                                                    
                                                     <div class="template-center-vertical">
                                                         <?php
                                                         if( isset($single_template['template_img']) ){ ?>
@@ -490,6 +489,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                                         }
                                                         ?>
                                                     </div>
+                                                    <h3><?php echo isset($single_template['template_name']) ? $single_template['template_name'] : ''; ?></h3>
                                                 </div>
                                             <?php                                            
                                             }

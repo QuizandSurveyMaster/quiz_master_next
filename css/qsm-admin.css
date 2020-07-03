@@ -590,6 +590,10 @@ Misc.
     padding: 10px 10px 10px 10px;
 }
 
+.admin_page_mlw_quiz_options .qsm_tab_content > form > .button-primary:nth-child(3) {
+    display: none;
+}
+
 .qsm_tab_content label{
     margin-right: 5px;
 }
