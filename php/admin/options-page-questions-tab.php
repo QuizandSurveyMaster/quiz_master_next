@@ -193,7 +193,12 @@ function qsm_options_questions_tab_content() {
                                                     ?>
                                                 </div>
                                                 <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_13">
-                                                    <label class="answer-header"><?php _e( 'Answers', 'quiz-master-next' ); ?></label>
+                                                    <label class="answer-header">
+                                                        <?php _e( 'Answers', 'quiz-master-next' ); ?>
+                                                        <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers" target="_blank" title="View Documentation">
+                                                            <span class="dashicons dashicons-media-document"></span>
+                                                        </a>
+                                                    </label>
                                                     <div class="correct-header"><?php _e( 'Correct', 'quiz-master-next' ); ?></div>
                                                     <div class="answers" id="answers">
 
@@ -333,7 +338,7 @@ function qsm_options_questions_tab_content() {
                                                                             '1' => __( 'None', 'quiz-master-next' )
                                                                         ),
                                                                         'default' => '1',
-                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Comment-Field'
                                                                     ),  
                                                                     'hint' => array(
                                                                         'label' => __( 'Hint', 'quiz-master-next' ),
@@ -351,14 +356,16 @@ function qsm_options_questions_tab_content() {
                                                                             '1' => __( 'Yes', 'quiz-master-next' )
                                                                         ),
                                                                         'default' => '0',
-                                                                        'show' => '3, 14'
+                                                                        'show' => '3, 14',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill'
                                                                     ),
                                                                     'limit_text' => array(
                                                                         'label' => __('Limit Text', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'priority' => '7',                                                    
                                                                         'default' => '',
-                                                                        'show' => '3, 14'
+                                                                        'show' => '3, 14',
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Text'
                                                                     ),
                                                                     'limit_multiple_response' => array(
                                                                         'label' => __('Limit Multiple choice', 'quiz-master-next' ),
@@ -366,6 +373,7 @@ function qsm_options_questions_tab_content() {
                                                                         'priority' => '8',
                                                                         'default' => '',
                                                                         'show' => '4,10',                                                                        
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
                                                                     ),                                                
                                                                     'file_upload_type' => array(
                                                                         'label' => __('Allow File type', 'quiz-master-next' ),
