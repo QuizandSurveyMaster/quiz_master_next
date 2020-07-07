@@ -150,10 +150,12 @@ var QSMAdmin;
             var addons = jQuery(this).data('addons');
             jQuery('.template-list .template-list-inner').removeClass('selected-quiz-template');
             jQuery(this).addClass('selected-quiz-template');
+            jQuery('#quiz_settings_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
+            jQuery('#recomm_addons_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
             $.post(ajaxurl, {settings: settings, addons: addons, action: action },
                 function (data) {
                     var diff_html = data.split('=====');                    
-                    jQuery('#quiz_settings_wrapper').html('');      
+                    jQuery('#quiz_settings_wrapper').html('');
                     jQuery('#quiz_settings_wrapper').html(diff_html[0]);
                     jQuery('#recomm_addons_wrapper').html('');
                     jQuery('#recomm_addons_wrapper').html(diff_html[1]);
