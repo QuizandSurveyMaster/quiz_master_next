@@ -588,9 +588,10 @@ function qsm_update_question_type_col_val() {
  * @since 7.0.0
  */
 function qsm_check_create_tables(){
-    if( get_option('qsm_check_create_tables', '') != '1' ){
+    global $wpdb;
+    $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
+    if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
         QSM_Install::install();
-        update_option('qsm_check_create_tables', 1);
     }
 }
 add_action('admin_init', 'qsm_check_create_tables');
