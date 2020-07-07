@@ -581,3 +581,16 @@ function qsm_update_question_type_col_val() {
 		}
 	}
 }
+
+/**
+ * Check and create table if not present
+ * 
+ * @since 7.0.0
+ */
+function qsm_check_create_tables(){
+    if( get_option('qsm_check_create_tables', '') != '1' ){
+        QSM_Install::install();
+        update_option('qsm_check_create_tables', 1);
+    }
+}
+add_action('admin_init', 'qsm_check_create_tables');
