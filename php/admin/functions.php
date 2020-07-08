@@ -66,8 +66,10 @@ function qsm_add_author_column_in_db() {
         if( get_option('qsm_update_result_db_column', '') != '1' ){
             global $wpdb;
             $result_table_name = $wpdb->prefix . "mlw_results";
-            $row = $wpdb->get_row("SELECT * FROM $result_table_name");        
-            if ( !isset($row->form_type) ) {
+            $table_result_col_obj = $wpdb->get_results( $wpdb->prepare(
+                'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $result_table_name, 'form_type' 
+            ) );
+            if ( empty( $table_result_col_obj ) ) {
                 $wpdb->query("ALTER TABLE $result_table_name ADD form_type INT NOT NULL");
             }
             update_option('qsm_update_result_db_column', '1');
@@ -80,9 +82,11 @@ function qsm_add_author_column_in_db() {
         if( get_option('qsm_update_quiz_db_column', '') != '1' ){
             global $wpdb;
             $quiz_table_name = $wpdb->prefix . "mlw_quizzes";
-            $row = $wpdb->get_row("SELECT * FROM $quiz_table_name");
-            if ( isset($row->system) ) {
-                $wpdb->query("ALTER TABLE $quiz_table_name CHANGE `system` `quiz_system` INT(11) NOT NULL;");
+            $table_quiz_col_obj = $wpdb->get_results( $wpdb->prepare(
+                'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $quiz_table_name, 'system' 
+            ) );
+            if ( !empty( $table_quiz_col_obj ) ) {
+                    $wpdb->query("ALTER TABLE $quiz_table_name CHANGE `system` `quiz_system` INT(11) NOT NULL;");
             }
             update_option('qsm_update_quiz_db_column', '1');
         }
