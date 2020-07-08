@@ -38,7 +38,7 @@
 }
 
 .page-header .dashicons.dashicons-trash{
-    color: #FF1D04;
+    color: #dc3232;
 }
 
 .page-header  span.page-number {
@@ -113,7 +113,7 @@
 }
 
 .question-content .dashicons.dashicons-trash{
-    color: #FF1D04;
+    color: #dc3232;
 }
 
 .question-content .dashicons.dashicons-move{
@@ -166,7 +166,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 5px;
-    padding: 20px 10px;
+    padding: 10px 10px;
     background: #FAFAFA;
 }
 
@@ -179,7 +179,11 @@
 }
 
 .answer-text-div {
-	width: 65%;
+    width: 85%;
+}
+
+.answers-single > div:nth-child(4){
+    width: 12%;
 }
 
 .qsm-row {
@@ -555,7 +559,7 @@ a.import-button.button.disable_import::before {
 
 #answers .delete-answer-button{
     text-decoration: none;
-    color: #ff0000;
+    color: #dc3232;
     vertical-align: middle;
 }
 

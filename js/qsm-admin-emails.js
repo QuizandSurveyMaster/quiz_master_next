@@ -36,8 +36,7 @@ var QSMAdminEmails;
 				data: data,
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
-				.done(function( results ) {
-                                        $("html, body").animate({ scrollTop: 0 }, "slow");
+				.done(function( results ) {                                        
 					if ( results.status ) {
 						QSMAdmin.displayAlert( 'Emails were saved!', 'success' );
 					} else {

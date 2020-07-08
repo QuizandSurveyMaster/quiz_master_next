@@ -185,7 +185,7 @@ Results Pages & Emails Tab
     background-color: #fff;
     margin: 20px 0;
     /*padding-bottom: 15px;*/
-    box-shadow: 0px 0px 5px 2px rgba(0,0,0,0.4)
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
 }
 
 .results-page .results-page-content,
@@ -211,7 +211,7 @@ Results Pages & Emails Tab
 .delete-email-button {
     background: none;
     border: none;
-    color: #ff0000;
+    color: #dc3232;
     cursor: pointer;
     transition-duration: 200ms;
 }
@@ -1054,6 +1054,7 @@ td.scheduled_time_start {
     width: 200px;
     transform: translateX(-50%);
     transition: opacity 0.5s ease 0s;
+    font-family: monospace;
 }
 .qsm-tooltips-icon .qsm-tooltips a{
     color: #fff;
@@ -1115,6 +1116,7 @@ td.scheduled_time_start {
 .qsm-text-main-wrap .qsm-text-conent{
     padding: 20px;
     border-bottom: 1px solid #f1f1f1;
+    position: relative;
 }
 .qsm-text-conent.qsm-text-allowed-variables span.qsm-text-template-span{
     display: inline-block;
@@ -1193,7 +1195,7 @@ td.scheduled_time_start {
 }
 .mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit {
     margin-left: 10px;
-    margin-top: 9px;
+    /*margin-top: 9px;*/ 
     box-shadow: none;
     float: right;
     margin-right: 10px;
@@ -1209,19 +1211,27 @@ td.scheduled_time_start {
 }
 .mlw_quiz_options  .edit-quiz-name{
     float: right;
-    margin-top: 9px;
+    /*margin-top: 9px;*/
 }
 .qsm_text_customize_label{
     position: fixed;
     bottom: 20px;
     right: 25px;
-    background: #2ecc71;
-    color: #fff;
+    background: #fff;
+    color: #5c5959;
     padding: 10px 20px;
     box-sizing: border-box;
     z-index: 99;
     border-radius: 5px;
+    border: 1px solid #cdbaba;
     cursor: pointer;
+}
+.qsm-text-tab-message-loader{
+    position: absolute;    
+    top: 50%;
+    left: 50%;
+    z-index: 99;
+    transform: translate(-50%, -50%);
 }
 .qsm_text_customize_label .dashicons{
     font-size: 14px;

@@ -71,8 +71,16 @@ function qsm_generate_quiz_options() {
 	?>
 	<div class="wrap">            
 		<div class='mlw_quiz_options'>
-                    <h1 style="display: inline-block;"><?php echo $quiz_name; ?></h1>
-                    <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
+                    <h1 style="margin-bottom: 10px;">
+                        <?php echo $quiz_name; ?>
+                        <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
+                            <span class="dashicons dashicons-external"></span>
+                        </a>
+                        <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
+                            <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
+                        </a>
+                        <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
+                    </h1>                    
                     <?php
                     // Get quiz post based on quiz id
                     $args = array(
@@ -100,12 +108,7 @@ function qsm_generate_quiz_options() {
                         wp_reset_postdata();
                     }
                     ?>                    
-                    <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
-                        <span class="dashicons dashicons-external"></span>
-                    </a>
-                    <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
-                        <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
-                    </a>
+                    
 			<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();

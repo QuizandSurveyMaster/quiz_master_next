@@ -568,6 +568,7 @@ var import_button;
                                 }
                             });
                         }
+                        $('#new-answer-button').trigger('click');
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                         $('#modal-1-content').html( questionElements );
 			//MicroModal.show( 'modal-1' );

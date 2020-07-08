@@ -39,8 +39,7 @@ var QSMAdminResults;
 				data: data,
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },
 			})
-			.done(function( results ) {
-                                $("html, body").animate({ scrollTop: 0 }, "slow");
+			.done(function( results ) {                                
 				if ( results.status ) {
 					QSMAdmin.displayAlert( 'Results pages were saved!', 'success' );
 				} else {

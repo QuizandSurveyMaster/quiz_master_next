@@ -203,7 +203,8 @@ var QSMAdmin;
         });
         //Get the message in text tab
         jQuery( document ).on( 'change', '#qsm_question_text_message_id' , function(){            
-            var text_id = jQuery(this).val();            
+            var text_id = jQuery(this).val();
+            jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').show();
             jQuery.post(ajaxurl, {text_id: text_id, 'quiz_id': qsmTextTabObject.quiz_id, action: 'qsm_get_question_text_message'},function (response) {
                 var data = jQuery.parseJSON( response );
                 if( data.success === true ){
@@ -211,6 +212,7 @@ var QSMAdmin;
                     text_msg = text_msg.replace(/\n/g,"<br>");
                     tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     jQuery( '.qsm-text-allowed-variables > .qsm-text-variable-wrap' ).html('').html( data.allowed_variable_text );
+                    jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
                 } else {
                     console.log( data.message );
                 }

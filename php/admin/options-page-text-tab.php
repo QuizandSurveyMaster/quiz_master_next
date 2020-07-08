@@ -23,7 +23,7 @@ add_action( "plugins_loaded", 'qmn_settings_text_tab', 5 );
 function mlw_options_text_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qmn_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
+	//wp_enqueue_style( 'qmn_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
@@ -64,6 +64,7 @@ function mlw_options_text_tab_content() {
                             </div>
                         </div>
                         <div class="qsm-text-conent">
+                            <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
                             <?php 
                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[0]['id'] );
                             wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array(  'textarea_rows' => 10 ) );
@@ -76,6 +77,7 @@ function mlw_options_text_tab_content() {
                             <span class="description"><?php _e('click to insert the variable', 'quiz-master-next'); ?></span>
                         </div>
                         <div class="qsm-text-conent qsm-text-allowed-variables">
+                            <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
                             <div class="qsm-text-variable-wrap">
                                 <?php
                                 $allowed_variables = isset( $editor_text_arr[0]['variables'] ) ? $editor_text_arr[0]['variables'] : array();
