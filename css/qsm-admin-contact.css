@@ -1,5 +1,5 @@
 .contact-form {
-	background-color: #0d97d8;
+	background-color: #fff;
     box-sizing: border-box;
     margin: 20px 0;
     overflow: hidden;
@@ -7,13 +7,13 @@
 
 .contact-form-field {
   padding: 25px 10px 10px;
-  margin: 15px 10px;
-  background: #fff;
-  border: 5px solid #1DD969;
+    margin: 15px 15px;
+    background: #f1f1f1;
+    border: 1px solid #dfd4d4;
 }
 
 .contact-form-field.new {
-  background: #ffff66;
+  background: #f1f1f1;
 }
 
 .contact-form-field.deleting {

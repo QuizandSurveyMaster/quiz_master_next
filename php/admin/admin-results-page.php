@@ -285,30 +285,31 @@ function qsm_results_overview_tab_content() {
 			</span>
 			<br class="clear">
 		</div>
+                <form action='' method="get">
+                        <?php
+                        if ( isset( $_GET['quiz_id'] ) ) {
+                                ?>
+                                <input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
+                                <?php
+                        }
+                        ?>
+                        <input type="hidden" name="page" value="mlw_quiz_results">
+                        <p class="search-box">
+                                <label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
+                                <input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
+                                <label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
+                                <select id="qmn_order_by" name="qmn_order_by">
+                                        <option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
+                                        <option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
+                                        <option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
+                                        <option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
+                                        <option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+                                </select>
+                                <button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
+                        </p>
+                </form>
 	</div>
-	<form action='' method="get">
-		<?php
-		if ( isset( $_GET['quiz_id'] ) ) {
-			?>
-			<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
-			<?php
-		}
-		?>
-		<input type="hidden" name="page" value="mlw_quiz_results">
-		<p class="search-box">
-			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
-			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
-			<select id="qmn_order_by" name="qmn_order_by">
-				<option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
-				<option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
-				<option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
-				<option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
-				<option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
-			</select>
-			<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
-		</p>
-	</form>
+	
 	<form action="" method="post" name="bulk_delete_form">
 		<input type="hidden" name="bulk_delete" value="confirmation" />
 		<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
@@ -358,15 +359,20 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<tr{$alternate}>";
 				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";				
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a> | <a style='color: red;' onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></div></td>";
-				if ( $mlw_quiz_info->quiz_system == 0 ) {
-					$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
-				}
-				if ( $mlw_quiz_info->quiz_system == 1 ) {
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
-				}
-				if ( $mlw_quiz_info->quiz_system == 2 ) {
-					$quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next' )."</span></td>";
-				}
+                                $form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
+                                if( $form_type == 1 || $form_type == 2 ){
+                                    $quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next' )."</span></td>";
+                                } else {
+                                    if ( $mlw_quiz_info->quiz_system == 0 ) {
+                                            $quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
+                                    }
+                                    if ( $mlw_quiz_info->quiz_system == 1 ) {
+                                            $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+                                    }
+                                    if ( $mlw_quiz_info->quiz_system == 3 ) {
+                                        $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span><br/><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+                                    }
+                                }				
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name ."</span></td>";
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business ."</span></td>";

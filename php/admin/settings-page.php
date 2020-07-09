@@ -52,6 +52,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-name', __( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-email', __( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
+                add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
@@ -289,6 +290,7 @@ class QMNGlobalSettingsPage {
 	public static function display_page() {
                 global $mlwQuizMasterNext;
                 wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+                wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
 		?>
 		<div class="wrap">
                     <h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
@@ -299,6 +301,30 @@ class QMNGlobalSettingsPage {
                     </form>
                 </div>
 		<?php
+	}
+        
+        /**
+	 * Generates Setting Field For new template for result detail
+	 *
+	 * @since 7.0.0
+	 * @return void
+	 */
+	public function new_template_results_details()
+	{
+		$settings = (array) get_option( 'qmn-settings' );                
+		$new_template_result_detail = '1';
+		if (isset($settings['new_template_result_detail'])){
+                    $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
+		}		
+                echo '<label style="margin-bottom: 10px;display: inline-block;">';
+		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' ". checked($new_template_result_detail, '1', false) ."/>";
+                echo __('New Template', 'quiz-master-next');
+                echo '</label>'; 
+                echo '<br/>';
+                echo '<label>';
+		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' ". checked($new_template_result_detail, '0', false) ."/>";
+                echo __('Old Template', 'quiz-master-next');
+                echo '</label>';                
 	}
 }
 

@@ -28,8 +28,8 @@ class QMNQuizCreator {
 	 * @since 3.7.1
 	 */
 	public function __construct() {
-		if ( isset( $_GET['quiz_id'] ) ) {
-			$this->quiz_id = intval( $_GET['quiz_id'] );
+		if ( isset( $_REQUEST['quiz_id'] ) ) {
+			$this->quiz_id = intval( $_REQUEST['quiz_id'] );
 		}
 	}
 
@@ -67,7 +67,7 @@ class QMNQuizCreator {
 	 * @param string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
-	public function create_quiz( $quiz_name ) {
+	public function create_quiz( $quiz_name, $quiz_settings = '' ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
                 $current_user = wp_get_current_user();
@@ -90,7 +90,7 @@ class QMNQuizCreator {
 				'email_from_text'          => 'Wordpress',
 				'question_answer_template' => '%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />',
 				'leaderboard_template'     => '',
-				'system'                   => 0,
+				'quiz_system'              => 0,
 				'randomness_order'         => 0,
 				'loggedin_user_contact'    => 0,
 				'show_score'               => 0,
@@ -114,7 +114,7 @@ class QMNQuizCreator {
 				'timer_limit'              => 0,
 				'quiz_stye'                => '',
 				'question_numbering'       => 0,
-				'quiz_settings'            => '',
+				'quiz_settings'            => $quiz_settings,
 				'theme_selected'           => 'primary',
 				'last_activity'            => current_time( 'mysql' ),
 				'require_log_in'           => 0,
@@ -344,7 +344,7 @@ class QMNQuizCreator {
 					'email_from_text' => $mlw_qmn_duplicate_data->email_from_text,
 					'question_answer_template' => $mlw_qmn_duplicate_data->question_answer_template,
 					'leaderboard_template' => $mlw_qmn_duplicate_data->leaderboard_template,
-					'system' => $mlw_qmn_duplicate_data->system,
+					'quiz_system' => $mlw_qmn_duplicate_data->system,
 					'randomness_order' => $mlw_qmn_duplicate_data->randomness_order,
 					'loggedin_user_contact' => $mlw_qmn_duplicate_data->loggedin_user_contact,
 					'show_score' => $mlw_qmn_duplicate_data->show_score,

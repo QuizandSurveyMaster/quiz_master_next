@@ -95,7 +95,8 @@ class QMNQuizManager {
             $upload_dir = wp_upload_dir();            
             $datafile = $_FILES["file"]["tmp_name"];
             $file_name = $_FILES["file"]["name"];
-            $file = $upload_dir['path'] . '/' . $_FILES['productbd']['name'];
+            $file = $upload_dir['path'] . '/' . $_FILES['file']['name'];
+            $file_url = $upload_dir['url'] . '/' . $_FILES['file']['name'];
             $counter = 1;
             $rawBaseName = pathinfo($file_name, PATHINFO_FILENAME);
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);
@@ -496,7 +497,7 @@ class QMNQuizManager {
         wp_enqueue_style('qsm_model_css', plugins_url('../../css/qsm-admin.css', __FILE__));
         wp_enqueue_script('qsm_model_js', plugins_url('../../js/micromodal.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
-        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : ''));
+        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => sprintf('<b>%s</b> %s', __( 'Correct!', 'quiz-master-next' ), __('You have selected correct answer.', 'quiz-master-next')), 'quick_result_wrong_text' => sprintf('<b>%s</b> %s', __( 'Wrong!', 'quiz-master-next' ), __('You have selected wrong answer.', 'quiz-master-next')) ));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );                
         global $qmn_total_questions;
         $qmn_total_questions = 0;
@@ -1019,7 +1020,8 @@ class QMNQuizManager {
         if (!$qmn_allowed_visit) {
             return $result_display;
         }
-
+        //Add form type for new quiz system 7.0.0
+        $qmn_array_for_variables['form_type'] = isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0;
         // Gathers contact information.
         $qmn_array_for_variables['user_name'] = 'None';
         $qmn_array_for_variables['user_business'] = 'None';
@@ -1107,6 +1109,7 @@ class QMNQuizManager {
                     'quiz_results' => $serialized_results,
                     'deleted' => 0,
                     'unique_id' => $unique_id,
+                    'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
                         ), array(
                     '%d',
                     '%s',
@@ -1126,6 +1129,7 @@ class QMNQuizManager {
                     '%s',
                     '%d',
                     '%s',
+                    '%d',
                         )
                 );
             }
@@ -1283,7 +1287,8 @@ class QMNQuizManager {
                                     "id" => $question['question_id'],
                                     "points" => $answer_points,
                                     "category" => $question['category'],
-                                    "question_type" => $question['question_type_new']
+                                    "question_type" => $question['question_type_new'],
+                                    "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
                                         ), $options, $quiz_data);
                             }
                             break;
@@ -1345,7 +1350,9 @@ class QMNQuizManager {
                                 "correct" => $correct_status,
                                 "id" => $question['question_id'],
                                 "points" => $answer_points,
-                                "category" => $question['category']
+                                "category" => $question['category'],
+                                "question_type" => $question['question_type_new'],
+                                "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
                                     ), $options, $quiz_data);
                         }
                         break;
@@ -1752,11 +1759,21 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
     return $display;
 }
 
-add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 10, 3);
+add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 99, 3);
 
+/** 
+ * @since 7.0.0 Added the condition for start time ( end time blank ) and end time ( start time blank ).
+ * 
+ * @global boolean $qmn_allowed_visit
+ * @param HTML $display
+ * @param Object $options
+ * @param Array $variable_data
+ * @return HTML This function check the time frame of quiz. 
+ */
 function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
     global $qmn_allowed_visit;
-
+    
+    $checked_pass = FALSE;
     // Checks if the start and end dates have data
     if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {
         $start = strtotime($options->scheduled_time_start);
@@ -1764,11 +1781,26 @@ function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
 
         // Checks if the current timestamp is outside of scheduled timeframe
         if (current_time('timestamp') < $start || current_time('timestamp') > $end) {
-            $qmn_allowed_visit = false;
-            $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));
-            $message = apply_filters('mlw_qmn_template_variable_quiz_page', $message, $variable_data);
-            $display .= str_replace("\n", "<br>", $message);
+            $checked_pass = TRUE;
         }
+    }
+    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){
+        $start = strtotime($options->scheduled_time_start);
+        if ( current_time('timestamp') < $start ){
+            $checked_pass = TRUE;
+        }
+    }
+    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){
+        $end = strtotime($options->scheduled_time_end) + 86399;
+        if ( current_time('timestamp') > $end ) {
+            $checked_pass = TRUE;
+        }
+    }
+    if( $checked_pass == TRUE ){
+        $qmn_allowed_visit = false;
+        $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));
+        $message = apply_filters('mlw_qmn_template_variable_quiz_page', $message, $variable_data);
+        $display .= str_replace("\n", "<br>", $message);
     }
     return $display;
 }

@@ -68,7 +68,7 @@ function qsm_options_styling_tab_content() {
 		<input type='hidden' name='save_style_options' value='confirmation' />
 		<input type='hidden' name='style_quiz_id' value='<?php echo esc_attr( $quiz_id ); ?>' />
 		<input type='hidden' name='save_quiz_theme' id='save_quiz_theme' value='<?php echo esc_attr( $mlw_quiz_options->theme_selected ); ?>' />
-		<h3><?php _e( 'Quiz Styles', 'quiz-master-next' ); ?></h3>
+                <h3 style="display: none;"><?php _e( 'Quiz Styles', 'quiz-master-next' ); ?></h3>
 		<p><?php _e( 'Choose your style:', 'quiz-master-next' ); ?></p>
 		<style>
 			div.mlw_qmn_themeBlockActive {

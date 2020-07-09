@@ -20,12 +20,14 @@ class QSM_Fields {
 
     global $mlwQuizMasterNext;
     global $wpdb;
-
+    
+    $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
+    
     // If nonce is correct, save settings
     if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
 
-      // Cycle through fields to retrieve all posted values
-      $settings_array = array();
+      // Cycle through fields to retrieve all posted values      
+      $settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
       foreach ( $fields as $field ) {
 
         // Sanitize the values based on type
@@ -49,12 +51,12 @@ class QSM_Fields {
             break;
 
           default:
-            $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
+            $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
             break;
         }
         $settings_array[ $field["id"] ] = $sanitized_value;
       }
-
+            
       // Update the settings and show alert based on outcome
       $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
       if ( false !== $results ) {
@@ -66,8 +68,13 @@ class QSM_Fields {
     }
 
     // Retrieve the settings for this section
-    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
-
+    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );    
+    if( isset( $settings[ 'form_type' ] ) ){
+        $settings[ 'form_type' ] = $settings[ 'system' ] == '2' ? 1 : $settings[ 'form_type' ];
+    }
+    if( isset( $settings[ 'result_page_fb_image' ] ) && $settings[ 'result_page_fb_image' ] == '' ){
+        $settings[ 'result_page_fb_image' ] = $result_page_fb_image != '' ? $result_page_fb_image : $settings[ 'result_page_fb_image' ];
+    }    
     ?>
     <form action="" method="post">
       <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
@@ -135,9 +142,19 @@ class QSM_Fields {
   public static function generate_text_field( $field, $value ) {
     ?>
     <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
       <td>
         <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>
       </td>
     </tr>
     <?php
@@ -146,7 +163,14 @@ class QSM_Fields {
   public static function generate_select_page_field( $field, $value ) {
     ?>
     <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
       <td>
           <select id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>">
               <option value="">Select Page</option>
@@ -156,6 +180,9 @@ class QSM_Fields {
               <option value="<?php echo get_page_link( $page->ID ) ?>" <?php selected($value, get_page_link( $page->ID )); ?> ><?php echo $page->post_title ?></option>;
               <?php } ?>
           </select>
+          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+          <?php } ?>
           <br/>
           <b style="color: red;">Note: </b><?php echo isset($field['note']) ? $field['note'] : ''; ?>
       </td>
@@ -213,9 +240,22 @@ class QSM_Fields {
 			});
 		</script>
     <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
-      <td>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
+      <td class="<?php echo $field["id"]; ?>">
+          <?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
+            <span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
+          <?php } ?>
           <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>
       </td>
     </tr>
     <?php
@@ -231,9 +271,19 @@ class QSM_Fields {
   public static function generate_number_field( $field, $value ) {
     ?>
     <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
       <td>
           <input type="number" step="1" min="0" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>
       </td>
     </tr>
     <?php
@@ -247,23 +297,68 @@ class QSM_Fields {
    * @param mixed $value The current value of the setting
    */
   public static function generate_radio_field( $field, $value ) {
+    $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
     ?>
-    <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
-      <td>
-        <?php   
-        $green_class = count($field["options"]) > 2 ? 'green' : '';
-        ?>
-        <fieldset class="buttonset buttonset-hide <?php echo $green_class; ?>" data-hide='1'>
+    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
+      <td>        
+        <fieldset class="buttonset buttonset-hide" data-hide='1'>
             <?php
               foreach ( $field["options"] as $option ) {
                 ?>                
                 <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
-                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label>
+                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br/>
                 <?php
               }
             ?>
-        </fieldset>  
+        </fieldset>
+        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>  
+      </td>
+    </tr>
+    <?php
+  }
+  
+  /**
+   * Generates radio inputs
+   *
+   * @since 5.0.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_select_field( $field, $value ) {
+    $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+    ?>
+    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
+      <td>        
+        <select name="<?php echo $field["id"]; ?>">
+            <?php
+              foreach ( $field["options"] as $option ) {
+                ?>                
+                <option <?php selected( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>"><?php echo $option["label"]; ?></option>                
+                <?php
+              }
+            ?>
+        </select>
+        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>  
       </td>
     </tr>
     <?php
@@ -282,7 +377,14 @@ class QSM_Fields {
 	$explode_cat = explode(',', $value);
     ?>
     <tr valign="top">
-      <th scope="row"><label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label></th>
+      <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+            </span>
+          <?php } ?>
+      </th>
       <td>
         <?php		
 		$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
@@ -311,10 +413,57 @@ class QSM_Fields {
                 }
         ?>
         <input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
+        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?> 
       </td>
     </tr>
     <?php
   }
+  
+  /**
+   * @since 7.0
+   * @param Array $field
+   * @param String $value
+   * 
+   * Generate the hide show div
+   */
+  public static function generate_hide_show_field( $field, $value ) { ?>
+        <tr valign="top">
+            <th scope="row" class="qsm-opt-tr">
+                <a href="#" id="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></a>
+                <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+                    <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+                        <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+                    </span>
+                  <?php } ?>
+            </th>
+            <td>
+                <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+                    <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+                <?php } ?> 
+            </td>
+          </tr>
+  <?php  
+  }
+  
+  /**
+   * Generates h2 tag for label
+   *
+   * @since 7.0.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_section_heading_field( $field, $value ) {
+    ?>
+    <tr valign="top">
+      <th scope="row"><h2 class="section_heading"><?php echo $field["label"]; ?></h2></th>
+      <td>        
+      </td>
+    </tr>
+    <?php
+  }
+  
 }
 
 ?>

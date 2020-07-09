@@ -111,7 +111,7 @@ class QMNPluginHelper {
 	 * @param int $user_id Get the quiz based on user id
 	 * @return array All of the quizzes as a numerical array of objects
 	 */
-	public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC', $user_role = array(), $user_id = '' ) {
+	public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC', $user_role = array(), $user_id = '', $limit = '', $offset = '', $where = '' ) {
 		global $wpdb;
 
 		// Set order direction
@@ -145,6 +145,9 @@ class QMNPluginHelper {
 
 		// Should we include deleted?
 		$delete = "WHERE deleted='0'";
+                if( $where != '' ){
+                    $delete = $delete . ' AND ' . $where;
+                }
 		if ( $include_deleted ) {
 			$delete = '';
 		}
@@ -156,9 +159,18 @@ class QMNPluginHelper {
                         $user_str = " AND quiz_author_id = '$user_id'";
                     }   
                 }
-
+                if( $where != '' && $user_str != '' ){
+                    $user_str = $user_str . ' AND ' . $where;
+                }
+                $where_str = '';
+                if( $user_str == '' && $delete === '' && $where != '' ){
+                    $where_str = "WHERE $where";
+                }
+                if($limit != ''){
+                    $limit = ' limit ' . $offset . ', ' . $limit;
+                }
 		// Get quizzes and return them
-		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete $user_str ORDER BY $order_field $order_direction" );
+		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete $user_str $where_str ORDER BY $order_field $order_direction $limit" );
 		return $quizzes;
 	}
 
@@ -215,15 +227,19 @@ class QMNPluginHelper {
 	}
 
 	/**
-   * Outputs the section of input fields
-   *
-   * @since 5.0.0
-   * @param string $section The section that the settings were registered with
-   */
-  public function generate_settings_section( $section = 'quiz_options' ) {
-		global $mlwQuizMasterNext;
-		QSM_Fields::generate_section( $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section ), $section );
-  }
+        * Outputs the section of input fields
+        *
+        * @since 5.0.0
+        * @since 7.0 Added new parameter settings_fields for default setting
+        * @param string $section The section that the settings were registered with
+        */
+       public function generate_settings_section( $section = 'quiz_options', $settings_fields = array() ) {
+             global $mlwQuizMasterNext;
+             if( empty( $settings_fields ) ){
+                 $settings_fields = $mlwQuizMasterNext->quiz_settings->load_setting_fields( $section );
+             }             
+             QSM_Fields::generate_section( $settings_fields, $section );
+       }
 
 	/**
 	 * Registers Quiz Templates

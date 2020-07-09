@@ -112,6 +112,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                         'id'         => $question['question_id'],
                         'quizID'     => $question['quiz_id'],
                         'type'       => $question['question_type_new'],
+                        'question_title' => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : 0,
                         'name'       => $question['question_name'],
                         'answerInfo' => $question['question_answer_info'],
                         'comments'   => $question['comments'],
@@ -127,6 +128,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                         'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
+                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
                 );
         }        
         return $question_array;
@@ -152,15 +154,21 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ){
         if($mlw_quiz_data){
             $result_data = array();
             foreach ($mlw_quiz_data as $mlw_quiz_info) {
-                if ( $mlw_quiz_info->quiz_system == 0 ) {
-                    $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%";
-                }
-                if ( $mlw_quiz_info->quiz_system == 1 ) {
-                    $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
-                }
-                if ( $mlw_quiz_info->quiz_system == 2 ) {
+                $form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
+                if( $form_type == 1 || $form_type == 2 ){
                     $quotes_list = "".__('Not Graded','quiz-master-next' )."";
-                }
+                }else{
+                    if ( $mlw_quiz_info->quiz_system == 0 ) {
+                        $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%";
+                    }
+                    if ( $mlw_quiz_info->quiz_system == 1 ) {
+                        $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
+                    }
+                    if ( $mlw_quiz_info->quiz_system == 3 ) {
+                        $quotes_list = "" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%<br/>";
+                        $quotes_list = "" . $mlw_quiz_info->point_score . " Points";
+                    }
+                }                                                
                 //Time to complete
                 $mlw_complete_time = '';
                 $mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);
@@ -350,6 +358,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
 					'page'       => $question['page'],
+                                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
 				);
 			}
 			return $question;
@@ -404,6 +413,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
                                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
+                                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
+                                        'settings' => $question['settings']
 				);
 			}                        
 			return $question_array;
@@ -441,7 +452,8 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 				);
 				$settings = array(
 					'required' => $request['required'],
-                                        'answerEditor' => 'text'
+                                        'answerEditor' => 'text',
+                                        'question_title' => $request['name']
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();
@@ -476,7 +488,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
  * @return array An array that contains the key 'id' for the new question.
  */
 function qsm_rest_save_question( WP_REST_Request $request ) {
-
+        
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
@@ -493,15 +505,25 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'order'       => 1,
 					'category'    => $request['category'],
 				);
+                                $settings = array();
+                                $settings['answerEditor'] = $request['answerEditor'];
+                                $settings['question_title'] = $request['question_title'];                                
+                                if( isset($request['other_settings']) && is_array($request['other_settings']) ){
+                                    foreach ($request['other_settings'] as $setting_key => $setting_value) {
+                                        $settings[$setting_key] = $setting_value;
+                                    }
+                                }
+                                /* Old code
 				$settings = array(
-					'required' => $request['required'],
-                                        'answerEditor' => $request['answerEditor'],
+					'required' => $request['required'],                                        
                                         'autofill' => $request['autofill'],
                                         'limit_text' => $request['limit_text'],
                                         'limit_multiple_response' => $request['limit_multiple_response'],
                                         'file_upload_limit' => $request['file_upload_limit'],
                                         'file_upload_type' => $request['file_upload_type'],
-				);
+                                        'question_title' => $request['question_title'],
+                                        'answerEditor' => $request['answerEditor'],
+				); */
 				$intial_answers = $request['answers'];
 				$answers = array();
 				if ( is_array( $intial_answers ) ) {
