@@ -289,11 +289,19 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '.popup-template-span-wrap button.button', function(e){
+        $(document).on('click', '.qsm-text-template-span > .button', function(e){
             e.preventDefault();
-            var content = jQuery(this).text();
-            tinyMCE.activeEditor.execCommand('mceInsertContent', false, content);
-            MicroModal.close('show-all-variable');
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val( jQuery(this).text() ).select();
+            document.execCommand("copy");
+            $temp.remove();
+            $(this).parent('.qsm-text-template-span').append('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> copied!</span>')
+            var this_par = $(this).parent('.qsm-text-template-span');
+            setTimeout(function(){
+                this_par.find('.popup-copied-des').remove();
+                MicroModal.close('show-all-variable');
+            }, 500);
         });
     });    
 }(jQuery));
