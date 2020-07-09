@@ -153,6 +153,10 @@
 	margin: 0 10px;
 }
 
+.question-bank-question > div:nth-child(2){
+    width: 100%;
+}
+
 .page-new, .question-new {
 	background-color: #fff !important;
 }
@@ -543,10 +547,11 @@ a.import-button.button.disable_import::before {
 }
 
 .qsm-row .answer-header{
-    font-weight: bold;
-    font-size: 24px;
+    font-weight: 500;
+    font-size: 20px;
     margin-bottom: 30px;
     margin-top: 15px;
+    color: #23282d;
 }
 .qsm-row .new-answer-button{
     text-align: center;

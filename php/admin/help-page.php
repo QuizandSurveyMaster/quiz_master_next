@@ -89,12 +89,12 @@ function qsm_get_system_info() {
 		$parent_theme      = $parent_theme_data->Name . ' ' . $parent_theme_data->Version;
 	}
 
-	$sys_info .= '<h3>Site Information</h3><br />';
+	$sys_info .= '<h3>Site Information</h3>';
 	$sys_info .= 'Site URL: ' . site_url() . '<br />';
 	$sys_info .= 'Home URL: ' . home_url() . '<br />';
 	$sys_info .= 'Multisite: ' . ( is_multisite() ? 'Yes' : 'No' ) . '<br />';
 
-	$sys_info .= '<h3>WordPress Information</h3><br />';
+	$sys_info .= '<h3>WordPress Information</h3>';
 	$sys_info .= 'Version: ' . get_bloginfo( 'version' ) . '<br />';
 	$sys_info .= 'Language: ' . ( defined( 'WPLANG' ) && WPLANG ? WPLANG : 'en_US' ) . '<br />';
 	$sys_info .= 'Permalink Structure: ' . ( get_option( 'permalink_structure' ) ? get_option( 'permalink_structure' ) : 'Default' ) . '<br>';
@@ -103,15 +103,15 @@ function qsm_get_system_info() {
 	$sys_info .= 'Debug Mode: ' . ( defined( 'WP_DEBUG' ) ? WP_DEBUG ? 'Enabled' : 'Disabled' : 'Not set' ) . '<br />';
 	$sys_info .= 'Memory Limit: ' . WP_MEMORY_LIMIT . '<br />';
 
-	$sys_info .= '<h3>Plugins Information</h3><br />';
+	$sys_info .= '<h3>Plugins Information</h3>';
 	$plugin_mu = get_mu_plugins();
 	if ( count( $plugin_mu ) > 0 ) {
-		$sys_info .= '<h4>Must Use</h4><br />';
+		$sys_info .= '<h4>Must Use</h4>';
 		foreach ( $plugin_mu as $plugin => $plugin_data ) {
 			$sys_info .= $plugin_data['Name'] . ': ' . $plugin_data['Version'] . "<br />";
 		}
 	}
-	$sys_info      .= '<h4>Active</h4><br />';
+	$sys_info      .= '<h4>Active</h4>';
 	$plugins        = get_plugins();
 	$active_plugins = get_option( 'active_plugins', array() );
 	foreach ( $plugins as $plugin_path => $plugin ) {
@@ -120,7 +120,7 @@ function qsm_get_system_info() {
 		}
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
-	$sys_info .= '<h4>Inactive</h4><br />';
+	$sys_info .= '<h4>Inactive</h4>';
 	foreach ( $plugins as $plugin_path => $plugin ) {
 		if ( in_array( $plugin_path, $active_plugins ) ) {
 			continue;
@@ -128,7 +128,7 @@ function qsm_get_system_info() {
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
 
-	$sys_info .= '<h3>Server Information</h3><br />';
+	$sys_info .= '<h3>Server Information</h3>';
 	$sys_info .= 'PHP : ' . PHP_VERSION . '<br />';
 	$sys_info .= 'MySQL : ' . $wpdb->db_version() . '<br />';
 	$sys_info .= 'Webserver : ' . $_SERVER['SERVER_SOFTWARE'] . '<br />';
@@ -140,7 +140,7 @@ function qsm_get_system_info() {
 	$total_results          = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results LIMIT 1" );
 	$total_active_results   = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 LIMIT 1" );
 
-	$sys_info .= '<h3>QSM Information</h3><br />';
+	$sys_info .= '<h3>QSM Information</h3>';
 	$sys_info .= 'Initial Version : ' . get_option( 'qmn_original_version' ) . '<br />';
 	$sys_info .= 'Current Version : ' . $mlwQuizMasterNext->version . '<br />';
 	$sys_info .= "Total Quizzes : {$total_quizzes}<br />";
@@ -150,7 +150,7 @@ function qsm_get_system_info() {
 	$sys_info .= "Total Results : {$total_results}<br />";
 	$sys_info .= "Total Active Results : {$total_active_results}<br />";
 
-	$sys_info     .= '<h3>QSM Recent Logs</h3><br />';
+	$sys_info     .= '<h3>QSM Recent Logs</h3>';
 	$recent_errors = $mlwQuizMasterNext->log_manager->get_logs();
 	if ( $recent_errors ) {
 		foreach ( $recent_errors as $error ) {

@@ -84,8 +84,8 @@ function qsm_options_questions_tab_content() {
 		<?php
 	}
 	?>
-	<h3>Questions</h3>
-	<p>Use this tab to create and modify the different pages of your quiz or survey as well as the questions on each page. Click "Create New Page" to get started! Need more information? Check out the <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">documentation for this tab!</a></p>
+        <h3 style="display: none;">Questions</h3>
+        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">View Documentation</a></p>
 	<div class="question-controls">		
             <span><b>Total Questions:</b> <span id="total-questions"></span></span>
             <p class="search-box">
@@ -443,7 +443,7 @@ function qsm_options_questions_tab_content() {
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>                                
-				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-controls-repeat"></span></a></div>
+				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
                                 <div><a href="#" title="Delete Question" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
 				<div class="question-category"><# if ( 0 !== data.category.length ) { #> Category: {{data.category}} <# } #></div>				

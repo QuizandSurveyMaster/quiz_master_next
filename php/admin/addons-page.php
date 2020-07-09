@@ -87,7 +87,7 @@ function qsm_generate_featured_addons() {
             }
             ?>		
         </div>
-        <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-bottom&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
+        <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-bottom&utm_campaign=qsm_plugin" target="_blank" class="button-primary" style="margin-top: 20px !important;"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
     </div>
     <div class="qsm-news-ads">
         <h3 class="qsm-news-ads-title">QSM Bundle</h3>
