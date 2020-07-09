@@ -333,7 +333,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                 ),
                                 'require_log_in' => array(
                                     'option_name' => 'Require User Login',
-                                    'value' => 1
+                                    'value' => 0
                                 )
                             ),
                             'recommended_addon' => array(
@@ -366,7 +366,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                 ),                     
                                 'require_log_in' => array(
                                     'option_name' => 'Require User Login',
-                                    'value' => 1
+                                    'value' => 0
                                 ),
                                 'enable_result_after_timer_end' => array(
                                     'option_name' => 'Force Submit',

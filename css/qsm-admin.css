@@ -582,6 +582,10 @@ Misc.
     color: #fff;
 }
 
+.mlw_qmn_themeBlockActive.qsm-info-widget{
+    transform: scale(1.1);
+}
+
 .qsm-info-widget a.button-primary {
     margin-top: 15px;
 }
@@ -1375,6 +1379,20 @@ td.scheduled_time_start {
 .inner-sidebar1 .inside h3,
 .inner-sidebar1 .inside h4{
     margin-bottom: 10px;
+}
+.qsm-quiz-email-tab .qsm-show-all-variable-text,
+.qsm-quiz-result-tab .qsm-show-all-variable-text{
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    background: #007cba;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    z-index: 99;
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
+    text-decoration: none;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{

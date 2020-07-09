@@ -98,7 +98,7 @@ function qsm_options_questions_tab_content() {
         <div class="question-create-page">
             <div>
                     <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Create New Page', 'quiz-master-next'); ?></button>
-                    <button class="save-page-button button button-primary"><?php _e('Save Questions and Pages', 'quiz-master-next'); ?></button>
+                    <button style="display: none;" class="save-page-button button button-primary"><?php _e('Save Questions and Pages', 'quiz-master-next'); ?></button>
                     <span class="spinner" id="save-edit-quiz-pages" style="float: none;"></span>
             </div>
         </div>
