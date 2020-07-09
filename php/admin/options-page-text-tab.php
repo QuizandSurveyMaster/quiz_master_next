@@ -97,7 +97,7 @@ function mlw_options_text_tab_content() {
                                 }
                                 ?>
                             </div>
-                            <div class="qsm-all-variable-wrap">
+                            <div style="display: none;" class="qsm-all-variable-wrap">
                                 <a class="qsm-show-all-variable-text" href="#"><?php _e( 'Show all Variables', 'quiz-master-next' ); ?></a>
                             </div>
                         </div>

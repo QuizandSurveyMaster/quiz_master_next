@@ -1141,6 +1141,7 @@ td.scheduled_time_start {
 #show-all-variable-content span.qsm-text-template-span {
     display: inline-block;
     position: relative;
+    width: 100%;
 }
 #show-all-variable-content .popup-template-span-wrap{
     margin-bottom: 20px;
@@ -1383,16 +1384,26 @@ td.scheduled_time_start {
 .qsm-quiz-email-tab .qsm-show-all-variable-text,
 .qsm-quiz-result-tab .qsm-show-all-variable-text{
     position: fixed;
-    right: 15px;
-    bottom: 15px;
-    background: #007cba;
-    padding: 10px 15px;
-    border-radius: 5px;
-    color: #fff;
-    font-weight: bold;
+    bottom: 20px;
+    right: 25px;
+    background: #fff;
+    color: #5c5959;
+    padding: 10px 20px;
+    box-sizing: border-box;
     z-index: 99;
+    border-radius: 5px;
+    border: 1px solid #cdbaba;
+    cursor: pointer;
     box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
     text-decoration: none;
+}
+.popup-template-span-wrap .popup-copied-des {
+    color: green;    
+    position: absolute;
+    width: 70px;
+    top: 5px;
+    right: 0;
+    background: #fff;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
