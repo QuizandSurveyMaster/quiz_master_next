@@ -289,5 +289,11 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
+        $(document).on('click', '.popup-template-span-wrap button.button', function(e){
+            e.preventDefault();
+            var content = jQuery(this).text();
+            tinyMCE.activeEditor.execCommand('mceInsertContent', false, content);
+            MicroModal.close('show-all-variable');
+        });
     });    
 }(jQuery));
