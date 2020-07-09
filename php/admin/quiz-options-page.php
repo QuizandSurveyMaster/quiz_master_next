@@ -69,6 +69,33 @@ function qsm_generate_quiz_options() {
             $mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
 	?>
+        <?php
+        // Get quiz post based on quiz id
+        $args = array(
+            'posts_per_page' => 1,
+            'post_type' => 'qsm_quiz',
+            'meta_query' => array(
+                array(
+                    'key' => 'quiz_id',
+                    'value' => $quiz_id,
+                    'compare' => '=',
+                ),
+            ),
+        );
+        $the_query = new WP_Query($args);
+
+        // The Loop
+        $post_permalink = $edit_link = '';
+        if ($the_query->have_posts()) {
+            while ($the_query->have_posts()) {                
+                $the_query->the_post();
+                $post_permalink = get_the_permalink(get_the_ID());
+                $edit_link = get_edit_post_link(get_the_ID());
+            }
+            /* Restore original Post Data */
+            wp_reset_postdata();
+        }
+        ?>    
 	<div class="wrap">            
 		<div class='mlw_quiz_options'>
                     <h1 style="margin-bottom: 10px;">
@@ -80,35 +107,7 @@ function qsm_generate_quiz_options() {
                             <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
                         </a>
                         <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
-                    </h1>                    
-                    <?php
-                    // Get quiz post based on quiz id
-                    $args = array(
-                        'posts_per_page' => 1,
-                        'post_type' => 'qsm_quiz',
-                        'meta_query' => array(
-                            array(
-                                'key' => 'quiz_id',
-                                'value' => $quiz_id,
-                                'compare' => '=',
-                            ),
-                        ),
-                    );
-                    $the_query = new WP_Query($args);
-
-                    // The Loop
-                    $post_permalink = $edit_link = '';
-                    if ($the_query->have_posts()) {
-                        while ($the_query->have_posts()) {                
-                            $the_query->the_post();
-                            $post_permalink = get_the_permalink(get_the_ID());
-                            $edit_link = get_edit_post_link(get_the_ID());
-                        }
-                        /* Restore original Post Data */
-                        wp_reset_postdata();
-                    }
-                    ?>                    
-                    
+                    </h1>                                        
 			<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();
