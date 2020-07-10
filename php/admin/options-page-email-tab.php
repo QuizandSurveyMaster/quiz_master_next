@@ -105,6 +105,9 @@ function qsm_options_emails_tab_content() {
 				<span class="template_name">%CATEGORY_PERCENTAGE_X%</span> - <?php _e('X: Category name - It will shows the percentage that user got in X category.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">
+				<span class="template_name">%CATEGORY_GRAPH%</span> - <?php _e('It will shows bar graph for each category.', 'quiz-master-next'); ?>
+			</div>
+			<div class="template_variable">
 				<span class="template_name">%CATEGORY_SCORE_X%</span> - <?php _e('X: Category name - The score a specific category earned.', 'quiz-master-next'); ?>
 			</div>
 			<div class="template_variable">

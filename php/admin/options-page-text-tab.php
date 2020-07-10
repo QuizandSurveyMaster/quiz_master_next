@@ -75,6 +75,9 @@ function mlw_options_text_tab_content() {
 			<span class="template_name">%CATEGORY_PERCENTAGE_X%</span> - <?php _e('X: Category name - It will shows the percentage that user got in X category.', 'quiz-master-next'); ?>
 		</div>
 		<div class="template_variable">
+			<span class="template_name">%CATEGORY_GRAPH%</span> - <?php _e('It will shows bar graph for each category.', 'quiz-master-next'); ?>
+		</div>
+		<div class="template_variable">
 			<span class="template_name">%CATEGORY_AVERAGE_POINTS%</span> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?>
 		</div>
 		<div class="template_variable">
