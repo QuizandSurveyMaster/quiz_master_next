@@ -254,6 +254,7 @@ var import_button;
 			QSMQuestion.addQuestionToPage( model );                        
 			QSMQuestion.openEditPopup( model.id, $( '.question[data-question-id=' + model.id + ']' ).find('.edit-question-button') );
 			QSMQuestion.countTotal();
+                        $('#new-answer-button').trigger('click');
 		},
 		addQuestionToPage: function( model ) {
 			var page = model.get( 'page' ) + 1;
@@ -567,8 +568,7 @@ var import_button;
                                     }
                                 }
                             });
-                        }
-                        $('#new-answer-button').trigger('click');
+                        }                        
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                         $('#modal-1-content').html( questionElements );
 			//MicroModal.show( 'modal-1' );

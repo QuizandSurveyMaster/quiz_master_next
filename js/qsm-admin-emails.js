@@ -46,7 +46,7 @@ var QSMAdminEmails;
 				.fail(QSMAdmin.displayjQueryError);
 		},
 		loadEmails: function() {
-			QSMAdmin.displayAlert( 'Loading emails...', 'info' );
+			//QSMAdmin.displayAlert( 'Loading emails...', 'info' );
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },

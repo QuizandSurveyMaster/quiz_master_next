@@ -49,7 +49,7 @@ var QSMAdminResults;
 			.fail(QSMAdmin.displayjQueryError);
 		},
 		loadResults: function() {
-			QSMAdmin.displayAlert( 'Loading results pages...', 'info' );
+			//QSMAdmin.displayAlert( 'Loading results pages...', 'info' );
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',
 				headers: { 'X-WP-Nonce': qsmResultsObject.nonce },

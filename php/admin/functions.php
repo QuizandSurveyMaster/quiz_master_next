@@ -402,7 +402,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'value' => 0
                                 ),                                
                                 'timer_limit' => array(
-                                    'option_name' => 'Time Limit',
+                                    'option_name' => 'Time Limit (in Minute)',
                                     'value' => 0
                                 )
                             ),

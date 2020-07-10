@@ -613,13 +613,10 @@ a#qsm-category-add-toggle {
     cursor: pointer;
 }
 
-/*#categories .category {
-    background: #f1f1f1;
-    padding: 10px;
-    border: solid 1px #ddd;
-    background-color: #FDFDFD;
-}*/
-
+.quiz_form_type_0.quiz_quiz_systen_3 #question_type_13_description,
+.quiz_form_type_0.quiz_quiz_systen_1 #question_type_13_description{
+    display: none !important;
+}
 @media screen and (max-width: 575px){
     .qsm-popup__container{
         min-width: auto;
