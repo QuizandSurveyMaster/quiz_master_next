@@ -36,6 +36,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_va
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_percentage',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_percentage_graph',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_average_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_score',10,2);
@@ -442,7 +443,6 @@ function mlw_qmn_variable_date_taken( $content, $results ) {
  * @param array $mlw_quiz_array The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-
 function qmn_variable_category_points($content, $mlw_quiz_array) {
 	$return_points = 0;
 	while (strpos($content, '%CATEGORY_POINTS%') !== false || false !== strpos($content, '%CATEGORY_POINTS_')) {
@@ -467,17 +467,15 @@ function qmn_variable_category_points($content, $mlw_quiz_array) {
 	}
 	return $content;
 }
+
 /*
- * 	Replaces variable %CATEGORY_PERCENTAGE_X% with the points for that category
- *
- * Filter function that replaces variable %CATEGORY_POINTS% with the points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
+ * 	Replaces variable %CATEGORY_PERCENTAGE_X% with the percentage for that category
  *
  * @since 4.0.0
  * @param string $content The contents of the results page
  * @param array $mlw_quiz_array The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-
 function qmn_variable_category_percentage($content, $mlw_quiz_array) {
 	global $wpdb;
 	while (strpos($content, '%CATEGORY_PERCENTAGE%') !== false || false !== strpos($content, '%CATEGORY_PERCENTAGE_')) {
@@ -508,12 +506,73 @@ function qmn_variable_category_percentage($content, $mlw_quiz_array) {
 				$category_total_points += $answer_points;
 			}
 		}
-		$return_percentage = round(( ( $user_category_points / $category_total_points ) * 100), 2);;
+		$return_percentage = ($category_total_points > 0) ? round(( ( $user_category_points / $category_total_points ) * 100), 2) : 0;
 		if (empty($answer_text)) {
 			$content = str_replace('%CATEGORY_PERCENTAGE_' . $category_name . '%', "{$return_percentage}%", $content);
 		} else {
-			$content = str_replace($answer_text[0], $return_percentage, $content);
+			$content = str_replace($answer_text[0], "{$return_percentage}%", $content);
 		}
+	}
+	return $content;
+}
+
+/*
+ * 	Replaces variable %CATEGORY_PERCENTAGE_GRAPH% with the bar graph
+ *
+ * @since 4.0.0
+ * @param string $content The contents of the results page
+ * @param array $mlw_quiz_array The array of all the results from user taking the quiz
+ * @return string Returns the contents for the results page
+ */
+function qmn_variable_category_percentage_graph($content, $mlw_quiz_array) {
+	global $wpdb;
+	while (strpos($content, '%CATEGORY_GRAPH%') !== false || false !== strpos($content, '%CATEGORY_GRAPH')) {
+		$category_total_points = $user_category_points = 0;
+		$category_percentage = array();
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer) {
+			$correct_answer_points = array();
+			$answer_array = $wpdb->get_var("SELECT `answer_array` FROM {$wpdb->prefix}mlw_questions WHERE `question_id`='{$answer['id']}'");
+			if (!empty($answer_array)) {
+				$answer_array = maybe_unserialize($answer_array);
+				foreach ($answer_array as $ans) {
+					if ((isset($ans[2]) && $ans[2] == 1) && isset($ans[1])) {
+						$correct_answer_points[] = $ans[1];
+					}
+				}
+			}
+			$answer_points = max($correct_answer_points);
+			if ($answer['question_type'] == 4 || $answer['question_type'] == 10) {
+				$answer_points = array_sum($correct_answer_points);
+			}
+			$category_name = $answer["category"];
+			$category_percentage[$category_name] = isset($category_percentage[$category_name]) ? $category_percentage[$category_name] : array('user_points' => 0, 'total_points' => 0);
+			$category_percentage[$category_name]['user_points'] += $answer["points"];
+			$category_percentage[$category_name]['total_points'] += $answer_points;
+		}
+		$graph_html = '';
+		if (!empty($category_percentage)) {
+			$graph_html = "<ul class='qsm_category_bargraph'>";
+			foreach ($category_percentage as $key => $val) {
+				$percentage = ($val['total_points'] > 0) ? round(( ( $val['user_points'] / $val['total_points'] ) * 100), 2) : 0;
+				$bar_width = ($percentage > 10) ? $percentage : 10;
+				$graph_html .= "<li>";
+				$graph_html .= "<span class='category_title'>{$key}</span>";
+				$graph_html .= "<span class='category_bar'>";
+					$graph_html .= "<span class='category_bar_line' style='width: {$bar_width}%;'>{$percentage}%</span>";
+				$graph_html .= "</span>";
+				$graph_html .= "</li>";
+			}
+			$graph_html .= "</ul>";
+			$graph_html .= "<style type='text/css'>";
+			$graph_html .= ".qsm_category_bargraph{display: inline-block;width: 100%;box-sizing: border-box;max-width: 500px;padding: 0;margin: 10px 0;}";
+			$graph_html .= ".qsm_category_bargraph li{display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;align-items: center;margin: 0;padding: 0;}";
+			$graph_html .= ".qsm_category_bargraph li span{padding: 5px 0;box-sizing: border-box;}";
+			$graph_html .= ".qsm_category_bargraph li span.category_title{-ms-flex: 0 0 20%;flex: 0 0 20%;max-width: 20%;font-size: 16px;}";
+			$graph_html .= ".qsm_category_bargraph li span.category_bar{-ms-flex: 0 0 80%;flex: 0 0 80%;max-width: 80%;}";
+			$graph_html .= ".qsm_category_bargraph li span.category_bar_line{display: inline-block;float: left;max-width: 100%;box-sizing: border-box;background: #00b9eb;border-radius: 3px;color: #FFF;padding: 5px 8px;font-size: 14px;}";
+			$graph_html .= "</style>";
+		}
+		$content = str_replace('%CATEGORY_GRAPH%', $graph_html, $content);
 	}
 	return $content;
 }
