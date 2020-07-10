@@ -538,7 +538,7 @@ class QMNQuizManager {
         if (0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && 0 !== count($pages)) {
             $quiz_display .= $this->display_pages($options, $quiz_data);
         } else {
-            // ... else, use older system.            
+            // ... else, use older system.
             $questions = $this->load_questions($quiz_data['quiz_id'], $options, true, $question_amount);
             $answers = $this->create_answer_array($questions);
             $quiz_display .= $this->display_begin_section($options, $quiz_data);
@@ -918,7 +918,6 @@ class QMNQuizManager {
         do_action('mlw_qmn_end_quiz_section');
         $section_display .= ob_get_contents();
         ob_end_clean();
-
         $section_display .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr(htmlspecialchars_decode($qmn_quiz_options->submit_button_text, ENT_QUOTES)) . "' />";
         $section_display .= "</div>";
 
