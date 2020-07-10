@@ -491,22 +491,35 @@ function qsm_dashboard_chagelog( $widget_id ) {
 		<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Changelog ( '. $mlwQuizMasterNext->version .' )', 'quiz-master-next' ); ?></span></h2>
 		<div class="inside">
 			<div class="main">
-                                <?php if($change_log){ ?>
+                                <?php if($change_log){
+                                    $change_log_count = count( $change_log );
+                                ?>
 				<ul class="changelog-ul">                                    
                                         <?php
+                                        $i = 0;
                                         foreach ($change_log as $single_change_log) {
                                             if( $single_change_log != ''){
+                                                if( $i == 5 )
+                                                    break;
+                                                
                                                 $expload_str = explode(':', $single_change_log); 
                                                 $cl_type = $expload_str[0];
                                                 $cl_str = $expload_str[1];
                                                 ?>                             
                                                     <li><span class="<?php echo trim(strtolower($cl_type)); ?>"><?php echo trim( $cl_type ); ?></span> <?php echo $cl_str; ?></li>
                                                 <?php
+                                                $i++;
                                             }
                                         }
                                         ?>					
 				</ul>
-                                <?php } ?>
+                                <?php if( $change_log_count > 5 ){ ?>
+                                <div class="pa-all-addon">
+                                    <a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"><?php _e('Read More Changelog', 'quiz-master-next'); ?></a>
+				</div>
+                                <?php
+                                }
+                                } ?>
 			</div>
 		</div>
 	</div>

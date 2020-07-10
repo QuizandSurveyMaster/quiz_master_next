@@ -186,7 +186,7 @@ Results Pages & Emails Tab
     background-color: #fff;
     margin: 20px 0;
     /*padding-bottom: 15px;*/
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.06);
 }
 
 .results-page .results-page-content,
@@ -584,6 +584,7 @@ Misc.
 
 .mlw_qmn_themeBlockActive.qsm-info-widget{
     transform: scale(1.1);
+    border: 2px solid #d5a8a8;
 }
 
 .qsm-info-widget a.button-primary {
@@ -1381,6 +1382,16 @@ td.scheduled_time_start {
 .inner-sidebar1 .inside h4{
     margin-bottom: 10px;
 }
+.qsm-quiz-email-tab,
+.qsm-quiz-result-tab{
+    max-width: 1200px;
+    width: 100%;
+}
+.qsm-quiz-email-tab .qsm-show-all-variable-text span.dashicons,
+.qsm-quiz-result-tab .qsm-show-all-variable-text span.dashicons{
+    font-size: 16px;
+    line-height: 22px;
+}
 .qsm-quiz-email-tab .qsm-show-all-variable-text,
 .qsm-quiz-result-tab .qsm-show-all-variable-text{
     position: fixed;
@@ -1394,7 +1405,6 @@ td.scheduled_time_start {
     border-radius: 5px;
     border: 1px solid #cdbaba;
     cursor: pointer;
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
     text-decoration: none;
 }
 .popup-template-span-wrap .popup-copied-des {

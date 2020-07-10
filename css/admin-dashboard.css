@@ -350,11 +350,11 @@
     padding: 20px;
 }
 #accordion .ui-icon.iconOpen {
-    background: url(../assets/down-1.png) no-repeat !important;
+    background:url('../assets/up-1.png') no-repeat !important;    
     background-size: cover !important;
 }
 #accordion .ui-icon.iconClosed {
-    background:url('../assets/up-1.png') no-repeat !important;
+    background: url(../assets/down-1.png) no-repeat !important;
     background-size: cover !important;
 }
 #accordion ui-accordion-header:focus {
