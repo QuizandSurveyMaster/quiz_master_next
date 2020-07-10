@@ -296,12 +296,15 @@ var QSMAdmin;
             $temp.val( jQuery(this).text() ).select();
             document.execCommand("copy");
             $temp.remove();
-            $(this).parent('.qsm-text-template-span').append('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> copied!</span>')
-            var this_par = $(this).parent('.qsm-text-template-span');
+            var button_width = $(this).width();
+            var button_txt = $(this).text();
+            $(this).css('width', button_width);
+            $(this).text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
+            var this_par = $(this);
             setTimeout(function(){
-                this_par.find('.popup-copied-des').remove();
-                MicroModal.close('show-all-variable');
-            }, 500);
+                this_par.css('width', 'auto');
+                this_par.text('').text(button_txt);
+            }, 1000);
         });
     });    
 }(jQuery));

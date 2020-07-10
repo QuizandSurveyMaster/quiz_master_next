@@ -1144,6 +1144,7 @@ td.scheduled_time_start {
 #show-all-variable-content span.qsm-text-template-span {
     display: inline-block;
     position: relative;    
+    text-align: center;
 }
 #show-all-variable-content .popup-template-span-wrap{
     margin-bottom: 20px;
@@ -1415,12 +1416,10 @@ td.scheduled_time_start {
     text-decoration: none;
 }
 .popup-template-span-wrap .popup-copied-des {
-    color: green;    
-    position: absolute;
-    width: 70px;
-    top: 5px;
-    right: 0;
-    background: #fff;
+    color: green;
+}
+.popup-template-span-wrap .popup-copied-des span.dashicons{
+    line-height: 28px;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{
