@@ -179,7 +179,7 @@
 #model-wizard .qsm-popup__container{
     padding: 0;
     background: #F3F3F3;
-    min-width: 90vw;
+    min-width: 70vw;
     max-width: 1040px;
     border-radius: 0;
     max-height: 85vh;
@@ -417,6 +417,9 @@
 }
 #quiz_settings_wrapper .qsm-opt-tr .qsm-tooltips-icon{
     display: none;
+}
+div#quiz_settings_wrapper #timer_limit {
+    width: 100px;
 }
 @media screen and (min-width: 1200px){
     #quiz_settings_wrapper tr td fieldset > br{

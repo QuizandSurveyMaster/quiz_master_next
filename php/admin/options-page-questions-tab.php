@@ -33,7 +33,9 @@ function qsm_options_questions_tab_content() {
 	global $mlwQuizMasterNext;
         $question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$quiz_id = intval( $_GET['quiz_id'] );
-        $user_id = get_current_user_id();         
+        $user_id = get_current_user_id();  
+        $form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+        $quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 	$json_data = array(
 		'quizID'     => $quiz_id,
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
@@ -42,8 +44,8 @@ function qsm_options_questions_tab_content() {
                 'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
                 'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
                 'categories' => $question_categories,
-                'form_type' => $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' ),
-                'quiz_system' => $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' )
+                'form_type' => $form_type,
+                'quiz_system' => $quiz_system
 	);
 
 	// Scripts and styles.
@@ -85,8 +87,8 @@ function qsm_options_questions_tab_content() {
 	}
 	?>
         <h3 style="display: none;">Questions</h3>
-        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">View Documentation</a></p>
-	<div class="question-controls">		
+        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">View Documentation</a></p>        
+	<div class="question-controls">
             <span><b>Total Questions:</b> <span id="total-questions"></span></span>
             <p class="search-box">
                     <label class="screen-reader-text" for="question_search">Search Questions:</label>
@@ -94,7 +96,7 @@ function qsm_options_questions_tab_content() {
                     <a href="#" class="button">Search Questions</a>
             </p>
 	</div>
-        <div class="questions"><div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;"><div class="qsm-spinner-loader"></div></div></div>
+        <div class="questions quiz_form_type_<?php echo $form_type; ?> quiz_quiz_systen_<?php echo $quiz_system; ?>"><div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;"><div class="qsm-spinner-loader"></div></div></div>
         <div class="question-create-page">
             <div>
                     <button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Create New Page', 'quiz-master-next'); ?></button>
@@ -179,6 +181,10 @@ function qsm_options_questions_tab_content() {
                                                         array(
                                                             'question_type_id' => '9',
                                                             'description' => __('For this question type, users will see a Captcha field on front end.', 'quiz-master-next')
+                                                        ),
+                                                        array(
+                                                            'question_type_id' => '13',
+                                                            'description' => __('To use this question type, you should use quiz type quiz and grading system points or both. ', 'quiz-master-next')
                                                         )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);
@@ -192,7 +198,14 @@ function qsm_options_questions_tab_content() {
                                                     }
                                                     ?>
                                                 </div>
-                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_13">
+                                                <?php
+                                                $polar_class = $polar_question_use = '';
+                                                if( $form_type == 0 && ($quiz_system == 1 || $quiz_system == 3) ){
+                                                    $polar_class = 'qsm_show_question_type_13';
+                                                    $polar_question_use = ',13';
+                                                }
+                                                ?>
+                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 <?php echo $polar_class; ?>">
                                                     <label class="answer-header">
                                                         <?php _e( 'Answers', 'quiz-master-next' ); ?>
                                                         <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers" target="_blank" title="View Documentation">
@@ -213,7 +226,7 @@ function qsm_options_questions_tab_content() {
                                                         'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
                                                         'type' => 'textarea',                                                        
                                                         'default' => '',
-                                                        'show' => '0,1,2,4,10,13',
+                                                        'show' => '0,1,2,4,10' . $polar_question_use,
                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info'
                                                     )                                                    
                                                 );

@@ -383,7 +383,7 @@ class QSM_Install {
     // Registers disable_answer_onselect setting
     $field_array = array(
       'id' => 'disable_answer_onselect',
-      'label' => __('Disable changing of answers', 'quiz-master-next'),
+      'label' => __('Disable change of answers', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(
         array(

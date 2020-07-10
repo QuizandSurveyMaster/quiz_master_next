@@ -834,8 +834,10 @@ body .qsm-popup__btn-primary {
 
 h3.addon_category_name {
     width: 100%;
-    background: #d7d1d1;
-    padding: 15px;
+    background: transparent;
+    padding: 15px 0;
+    border-bottom: 1px solid #d7d1d1;
+    margin-bottom: 30px;
 }
 /*Design of new radio taggle*/
 .buttonset.ui-buttonset .ui-button.ui-state-active {
@@ -1069,7 +1071,7 @@ td.scheduled_time_start {
     width: 200px;
     transform: translateX(-50%);
     transition: opacity 0.5s ease 0s;
-    font-family: monospace;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
 }
 .qsm-tooltips-icon .qsm-tooltips a{
     color: #fff;
@@ -1141,14 +1143,19 @@ td.scheduled_time_start {
 }
 #show-all-variable-content span.qsm-text-template-span {
     display: inline-block;
-    position: relative;
-    width: 100%;
+    position: relative;    
 }
 #show-all-variable-content .popup-template-span-wrap{
     margin-bottom: 20px;
     margin-right: 3%;
     width: 30%;
     display: inline-block;
+}
+#show-all-variable-content .popup-template-span-wrap:nth-child(3n+3) .qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips{
+    left: calc( 100% - 100px );
+}
+#show-all-variable-content .popup-template-span-wrap:nth-child(3n+3) .qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips:before{
+    left: 93%;
 }
 #show-all-variable-content .qsm-text-template-span .qsm-tooltips-icon{
     margin-left: 5px;
