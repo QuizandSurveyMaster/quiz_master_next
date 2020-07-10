@@ -356,11 +356,13 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 								<div class="rtq-main-wrapper">
 									<span class="rtq_user_info">
 										<?php
-										if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != '' ) {
+										if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != 0 ) {
 											$edit_link = get_edit_profile_url( $single_result_arr['user'] );
-											echo '<a href="' . $edit_link . '">' . $single_result_arr['name'] . '</a>';
+                                                                                        $actual_user = get_userdata( $single_result_arr['user'] );
+                                                                                        $user_name = $single_result_arr['name'] == 'None' ? $actual_user->data->display_name : $single_result_arr['name'];
+											echo '<a href="' . $edit_link . '">' . $user_name . '</a>';
 										} else {
-											echo $single_result_arr['name'];
+											echo __('Guest', 'quiz-master-next');
 										}
 										_e( ' took quiz ', 'quiz-master-next' );
 										echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . $single_result_arr['quiz_id'] . '">' . $single_result_arr['quiz_name'] . '</a>';
@@ -514,8 +516,8 @@ function qsm_dashboard_chagelog( $widget_id ) {
                                         ?>					
 				</ul>
                                 <?php if( $change_log_count > 5 ){ ?>
-                                <div class="pa-all-addon">
-                                    <a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"><?php _e('Read More Changelog', 'quiz-master-next'); ?></a>
+                                <div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
+                                    <a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"><?php _e('View Complete Changelog', 'quiz-master-next'); ?></a>
 				</div>
                                 <?php
                                 }

@@ -184,7 +184,7 @@ function qsm_options_questions_tab_content() {
                                                         ),
                                                         array(
                                                             'question_type_id' => '13',
-                                                            'description' => __('To use this question type, you should use quiz type quiz and grading system points or both. ', 'quiz-master-next')
+                                                            'description' => __('Use points based grading system for Polar questions.', 'quiz-master-next')
                                                         )
                                                     );
                                                     $description_arr = apply_filters('qsm_question_type_description', $description_arr);

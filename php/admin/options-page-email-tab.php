@@ -150,7 +150,7 @@ function qsm_options_emails_tab_content() {
                         ?>
                     </main>
                     <footer class="qsm-popup__footer" style="text-align: right;">                            
-                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close ( Esc )', 'quiz-master-next'); ?></button>
+                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close [Esc]', 'quiz-master-next'); ?></button>
                     </footer>
                 </div>
             </div>
