@@ -72,10 +72,13 @@ function mlw_options_text_tab_content() {
 			<span class="template_name">%CATEGORY_POINTS_X%</span> - <?php _e('X: Category name - The amount of points a specific category earned.', 'quiz-master-next'); ?>
 		</div>
 		<div class="template_variable">
-			<span class="template_name">%CATEGORY_SCORE_X%</span> - <?php _e('X: Category name - The score a specific category earned.', 'quiz-master-next'); ?>
+			<span class="template_name">%CATEGORY_PERCENTAGE_X%</span> - <?php _e('X: Category name - It will shows the percentage that user got in X category.', 'quiz-master-next'); ?>
 		</div>
 		<div class="template_variable">
 			<span class="template_name">%CATEGORY_AVERAGE_POINTS%</span> - <?php _e('The average points from all categories.', 'quiz-master-next'); ?>
+		</div>
+		<div class="template_variable">
+			<span class="template_name">%CATEGORY_SCORE_X%</span> - <?php _e('X: Category name - The score a specific category earned.', 'quiz-master-next'); ?>
 		</div>
 		<div class="template_variable">
 			<span class="template_name">%CATEGORY_AVERAGE_SCORE%</span> - <?php _e('The average score from all categories.', 'quiz-master-next'); ?>

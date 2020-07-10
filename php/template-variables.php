@@ -35,6 +35,7 @@ $mlw_qmn_result_array = array(
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_percentage',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_average_category_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_average_score',10,2);
@@ -432,40 +433,87 @@ function mlw_qmn_variable_date_taken( $content, $results ) {
 }
 
 /*
-*	Replaces variable %CATEGORY_POINTS% with the points for that category
-*
-* Filter function that replaces variable %CATEGORY_POINTS% with the points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
-*
-* @since 4.0.0
-* @param string $content The contents of the results page
-* @param array $mlw_quiz_array The array of all the results from user taking the quiz
-* @return string Returns the contents for the results page
-*/
-function qmn_variable_category_points($content, $mlw_quiz_array)
-{
+ * 	Replaces variable %CATEGORY_POINTS% with the points for that category
+ *
+ * Filter function that replaces variable %CATEGORY_POINTS% with the points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
+ *
+ * @since 4.0.0
+ * @param string $content The contents of the results page
+ * @param array $mlw_quiz_array The array of all the results from user taking the quiz
+ * @return string Returns the contents for the results page
+ */
+
+function qmn_variable_category_points($content, $mlw_quiz_array) {
 	$return_points = 0;
-	while (strpos($content, '%CATEGORY_POINTS%') !== false || false !== strpos($content, '%CATEGORY_POINTS_'))
-	{
+	while (strpos($content, '%CATEGORY_POINTS%') !== false || false !== strpos($content, '%CATEGORY_POINTS_')) {
 		$return_points = 0;
-		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i",$content,$answer_text);
-                if(empty($answer_text)){
-                    $category_name = mlw_qmn_get_string_between($content, '%CATEGORY_POINTS_', '%');
-                }else{
-                    $category_name = $answer_text[1];
-                }
-                
-		foreach ($mlw_quiz_array['question_answers_array'] as $answer)
-		{
-			if ($answer["category"] == $category_name)
-			{
+		preg_match("~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i", $content, $answer_text);
+		if (empty($answer_text)) {
+			$category_name = mlw_qmn_get_string_between($content, '%CATEGORY_POINTS_', '%');
+		} else {
+			$category_name = $answer_text[1];
+		}
+
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer) {
+			if ($answer["category"] == $category_name) {
 				$return_points += $answer["points"];
 			}
 		}
-                if(empty($answer_text)){
-                    $content = str_replace( '%CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
-                }else{
-                    $content = str_replace( $answer_text[0] , $return_points, $content);
-                }		
+		if (empty($answer_text)) {
+			$content = str_replace('%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content);
+		} else {
+			$content = str_replace($answer_text[0], $return_points, $content);
+		}
+	}
+	return $content;
+}
+/*
+ * 	Replaces variable %CATEGORY_PERCENTAGE_X% with the points for that category
+ *
+ * Filter function that replaces variable %CATEGORY_POINTS% with the points from the category inside the variable tags. i.e. %CATEGORY_POINTS%category 1%/CATEGORY_POINTS%
+ *
+ * @since 4.0.0
+ * @param string $content The contents of the results page
+ * @param array $mlw_quiz_array The array of all the results from user taking the quiz
+ * @return string Returns the contents for the results page
+ */
+
+function qmn_variable_category_percentage($content, $mlw_quiz_array) {
+	global $wpdb;
+	while (strpos($content, '%CATEGORY_PERCENTAGE%') !== false || false !== strpos($content, '%CATEGORY_PERCENTAGE_')) {
+		$category_total_points = $user_category_points = 0;
+		preg_match("~%CATEGORY_PERCENTAGE%(.*?)%/CATEGORY_PERCENTAGE%~i", $content, $answer_text);
+		if (empty($answer_text)) {
+			$category_name = mlw_qmn_get_string_between($content, '%CATEGORY_PERCENTAGE_', '%');
+		} else {
+			$category_name = $answer_text[1];
+		}
+		foreach ($mlw_quiz_array['question_answers_array'] as $answer) {
+			$correct_answer_points = array();
+			if ($answer["category"] == $category_name) {
+				$user_category_points += $answer["points"];
+				$answer_array = $wpdb->get_var("SELECT `answer_array` FROM {$wpdb->prefix}mlw_questions WHERE `question_id`='{$answer['id']}'");
+				if (!empty($answer_array)) {
+					$answer_array = maybe_unserialize($answer_array);
+					foreach ($answer_array as $ans) {
+						if ((isset($ans[2]) && $ans[2] == 1) && isset($ans[1])) {
+							$correct_answer_points[] = $ans[1];
+						}
+					}
+				}
+				$answer_points = max($correct_answer_points);
+				if ($answer['question_type'] == 4 || $answer['question_type'] == 10) {
+					$answer_points = array_sum($correct_answer_points);
+				}
+				$category_total_points += $answer_points;
+			}
+		}
+		$return_percentage = round(( ( $user_category_points / $category_total_points ) * 100), 2);;
+		if (empty($answer_text)) {
+			$content = str_replace('%CATEGORY_PERCENTAGE_' . $category_name . '%', "{$return_percentage}%", $content);
+		} else {
+			$content = str_replace($answer_text[0], $return_percentage, $content);
+		}
 	}
 	return $content;
 }
