@@ -116,8 +116,9 @@ function qsm_options_emails_tab_content() {
         <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
             <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
-                    <header class="qsm-popup__header">
+                    <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
+                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?></span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php

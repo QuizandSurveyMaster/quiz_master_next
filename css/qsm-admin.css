@@ -1201,7 +1201,8 @@ td.scheduled_time_start {
     padding: 20px;
 }
 #show-all-variable .qsm-popup__header .qsm-popup__title{
-    color: #23282d;
+    color: #23282d;    
+    margin-bottom: 7px;
 }
 #show-all-variable .qsm-popup__footer{
     border-top: 1px solid #f1f1f1;

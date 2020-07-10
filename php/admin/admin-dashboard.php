@@ -129,7 +129,7 @@ function qsm_generate_dashboard_page() {
 						</ul>
 					</div>
 					<div class="welcome-panel-column welcome-panel-last">
-						<h3><?php _e( 'Usefull Links', 'quiz-master-next' ); ?></h3>
+						<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 						<ul>
 							<li><a target="_blank" href="https://support.quizandsurveymaster.com/" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Support Forum', 'quiz-master-next' ); ?></a></li>
 							<li><a target="_blank" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
