@@ -14,7 +14,8 @@ if (!defined('ABSPATH')) {
  * @since 4.0.0
  */
 class QMNQuizManager {
-
+    
+    protected $qsm_background_email;
     /**
      * Main Construct Function
      *
@@ -53,6 +54,8 @@ class QMNQuizManager {
         //remove file of file upload question type
         add_action('wp_ajax_qsm_remove_file_fd_question', array($this, 'qsm_remove_file_fd_question'));
         add_action('wp_ajax_nopriv_qsm_remove_file_fd_question', array($this, 'qsm_remove_file_fd_question')); 
+        
+        add_action('init', array($this, 'qsm_process_background_email'));
     }
     
     /**
@@ -1154,9 +1157,12 @@ class QMNQuizManager {
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
             
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
-
-			// Sends the emails.
-            QSM_Emails::send_emails($qmn_array_for_variables);
+                        
+            // Send the emails in background.
+            $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
+            
+            // Sends the emails - Defer the emails.
+            //QSM_Emails::send_emails($qmn_array_for_variables);
             
             /**
              * Filters for filtering the results text after emails are sent.
@@ -1732,6 +1738,16 @@ class QMNQuizManager {
 	}
 
 	return false;
+    }
+    
+    /**
+     * Include background process files
+     * 
+     * @singce 7.0
+     */
+    public function qsm_process_background_email(){
+        require_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
+        $this->qsm_background_email = new QSM_Background_Request();
     }
 }
 
