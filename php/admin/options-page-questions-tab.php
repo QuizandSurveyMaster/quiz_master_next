@@ -31,21 +31,37 @@ function qsm_options_questions_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-        $question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
+	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
 	$quiz_id = intval( $_GET['quiz_id'] );
-        $user_id = get_current_user_id();  
-        $form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-        $quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$user_id = get_current_user_id();  
+	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
+	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
+	$qpages = array();
+	if (!empty($pages)) {
+		$defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => '', 'hide_prevbtn' => 0, 'questions' => array());
+		foreach ($pages as $k => $val) {
+			$qpage = isset($db_qpages[$k]) ? $db_qpages[$k] : $defaultQPage;
+			$qpage['id'] = $k + 1;
+			$qpage['pagekey'] = (isset($qpage['pagekey']) && !empty($qpage['pagekey'])) ? $qpage['pagekey'] : uniqid();
+			$qpage['hide_prevbtn'] = (isset($qpage['hide_prevbtn']) && !empty($qpage['hide_prevbtn'])) ? $qpage['hide_prevbtn'] : 0;
+			$qpage['questions'] = $val;
+			$qpages[] = $qpage;
+		}
+	}
+	$qpages = apply_filters('qsm_filter_quiz_page_attributes', $qpages, $pages);
 	$json_data = array(
 		'quizID'     => $quiz_id,
 		'answerText' => __( 'Answer', 'quiz-master-next' ),
 		'nonce'      => wp_create_nonce( 'wp_rest' ),
-		'pages'      => $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() ),
-                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
-                'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
-                'categories' => $question_categories,
-                'form_type' => $form_type,
-                'quiz_system' => $quiz_system
+		'pages'      => $pages,
+		'qpages' => $qpages,
+		'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
+		'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
+		'categories' => $question_categories,
+		'form_type' => $form_type,
+		'quiz_system' => $quiz_system
 	);
 
 	// Scripts and styles.
@@ -433,20 +449,53 @@ function qsm_options_questions_tab_content() {
 	</div>
 
 	<!--Views-->
+	
+	<!-- Popup for question bank -->
+	<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-page-1" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-1-title">Edit Page <span style="display: none;">[ ID: <span id="edit-page-id"></span>  ]</span></h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-page-1-content">
+					<input type="hidden" name="edit_page_id" id="edit_page_id" value="">
+					<div id="page-options">
+						<div class="qsm-row">
+							<label><?php _e('Page Name', 'quiz-master-next'); ?></label>
+							<input type="text" id="pagekey" name="pagekey" value="">
+						</div>
+						<div class="qsm-row">
+							<label><?php _e('Hide Previous Button?', 'quiz-master-next'); ?></label>
+							<select name="hide_prevbtn" id="hide_prevbtn">
+								<option value="0" selected="selected"><?php _e( 'No', 'quiz-master-next' ); ?></option>
+								<option value="1"><?php _e( 'Yes', 'quiz-master-next' ); ?></option>
+							</select>
+						</div>
+						<?php do_action('qsm_action_quiz_page_attributes_fields');?>
+					</div>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="save-page-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Page</button>
+					<button class="qsm-popup__btn" data-micromodal-close aria-label="Close this dialog window">Close</button>
+				</footer>
+			</div>
+		</div>
+	</div>
 
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">
-		<div class="page page-new">
-                    <div class="page-header">
-                            <div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
-                            <div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
-                    </div>
-                    <div class="page-footer">
-                        <div class="page-header-buttons">
-                            <a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> Create New Question</a>
-                            <a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> Add Question From Question Bank</a>
-                        </div>
-                    </div>
+		<div class="page page-new" data-page-id="{{data.id }}">
+			<div class="page-header">
+				<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
+				<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
+			</div>
+			<div class="page-footer">
+				<div class="page-header-buttons">
+					<a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> Create New Question</a>
+					<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> Add Question From Question Bank</a>
+				</div>
+			</div>
 		</div>                
 	</script>
         	
@@ -529,7 +578,10 @@ function qsm_ajax_save_pages() {
 	);
 	$quiz_id = intval( $_POST['quiz_id'] );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-        $pages = isset( $_POST['pages'] ) ? $_POST['pages'] : array();
+	
+	$pages = isset( $_POST['pages'] ) ? $_POST['pages'] : array();
+	$qpages = isset($_POST['qpages']) ? $_POST['qpages'] : array();
+	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('qpages', $qpages);
 	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
 		$json['status'] = 'success';
