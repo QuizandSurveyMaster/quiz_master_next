@@ -40,14 +40,18 @@
 .page-header .dashicons.dashicons-trash{
     color: #dc3232;
 }
-
+.page-header .edit-page-button{margin: 0 10px;}
+.page-header .edit-page-button span{color: #1F8CBE;}
 .page-header  span.page-number {
     font-size: 18px;
     color: #A6ABAF;
-    margin-left: 15px;
+    margin-left: 10px;
     display: inline-block;
     font-style: italic;
     margin-top: 3px;
+}
+.page-header  span.page-name {
+	
 }
 
 .page-footer{
@@ -249,6 +253,7 @@
 
 .qsm-row select, .qsm-row input[type=text], .qsm-row textarea {
 	width: 100%;
+	max-width: 100%;
 }
 
 .qsm-popup {
