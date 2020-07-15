@@ -487,8 +487,8 @@ function qsm_options_questions_tab_content() {
 	<script type="text/template" id="tmpl-page">
 		<div class="page page-new" data-page-id="{{data.id }}">
 			<div class="page-header">
-				<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button"><span class="dashicons dashicons-edit"></span></a> <span class="page-number"></span></div>
-				<div><a href="#" class="delete-page-button"><span class="dashicons dashicons-trash"></span></a></div>
+				<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
+				<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
 			</div>
 			<div class="page-footer">
 				<div class="page-header-buttons">
