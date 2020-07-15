@@ -402,7 +402,7 @@ function qsm_options_questions_tab_content() {
                                                                         'priority' => '8',
                                                                         'default' => '',
                                                                         'show' => '4,10',                                                                        
-                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Multiple-Choice'
                                                                     ),                                                
                                                                     'file_upload_type' => array(
                                                                         'label' => __('Allow File type', 'quiz-master-next' ),
@@ -418,7 +418,7 @@ function qsm_options_questions_tab_content() {
                                                                         ),
                                                                         'default' => 'image',
                                                                         'show' => '11',
-                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Allow-File-Type'
                                                                     ),
                                                                     'file_upload_limit' => array(
                                                                         'label' => __('File upload limit ( in MB )', 'quiz-master-next' ),
@@ -426,7 +426,7 @@ function qsm_options_questions_tab_content() {
                                                                         'priority' => '9',
                                                                         'default' => '',
                                                                         'show' => '11',
-                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Comment-Field'
+                                                                        'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Limit'
                                                                     ),
                                                                 );
                                                                 $advanced_question_option = apply_filters('qsm_question_advanced_option', $advanced_question_option);
