@@ -450,8 +450,10 @@ var import_button;
                             questionName = new_question_title;
                         }
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
-                        setTimeout( $('#save-edit-question-spinner').removeClass('is-active'), 250 );
-			setTimeout( QSMQuestion.removeNew, 250 );
+			setTimeout(function () {
+				$('#save-edit-question-spinner').removeClass('is-active');
+			}, 250);
+			setTimeout(QSMQuestion.removeNew, 250);
 		},
 		addNewAnswer: function( answer ) {                        
 			var answerTemplate = wp.template( 'single-answer' );                        
