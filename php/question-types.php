@@ -1293,7 +1293,7 @@ function qsm_question_title_func($question,$question_type = '',$new_question_tit
     }
     
     if($new_question_title != ''){
-        $question_display .= "<span class='mlw_qmn_new_question'>" . htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) . "</span>";
+        $question_display .= "<span class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . "</span>";
         $polar_extra_class .= ' qsm_remove_bold';
     }
     $question_display .= "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . "</span>";

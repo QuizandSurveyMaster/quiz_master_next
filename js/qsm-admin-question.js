@@ -5,6 +5,9 @@
 var QSMQuestion;
 var import_button;
 (function ($) {
+        $.QSMSanitize = function(input) {        
+            return input.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
+        };
 	QSMQuestion = {
 		question: Backbone.Model.extend({
 			defaults: {
@@ -386,6 +389,7 @@ var import_button;
                                     answer = wp.editor.getContent( ta_id );                                    
                                 }else{
                                     answer = $answer.find( '.answer-text' ).val().trim();
+                                    answer = $.QSMSanitize( answer );
                                 }
 				
 				var points = $answer.find( '.answer-points' ).val();
@@ -440,14 +444,14 @@ var import_button;
 			);
 			//CurrentElement.parents('.questionElements').slideUp('slow');                        
 		},
-		saveSuccess: function( model ) {
+		saveSuccess: function( model ) {                        
 			QSMAdmin.displayAlert( 'Question was saved!', 'success' );
 			var template = wp.template( 'question' );
 			var page = model.get( 'page' ) + 1;
                         var questionName = model.get('name');
                         var new_question_title = model.get('question_title');                        
                         if( new_question_title !== '' ){
-                            questionName = new_question_title;
+                            questionName = $.QSMSanitize(new_question_title);
                         }
 			$( '.question[data-question-id=' + model.id + ']' ).replaceWith( template( { id: model.id, type : model.get('type'), category : model.get('category'), question: questionName } ) );
 			setTimeout(function () {
