@@ -507,7 +507,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				);
                                 $settings = array();
                                 $settings['answerEditor'] = $request['answerEditor'];
-                                $settings['question_title'] = $request['question_title'];                                
+                                $settings['question_title'] = sanitize_text_field( $request['question_title'] );
                                 if( isset($request['other_settings']) && is_array($request['other_settings']) ){
                                     foreach ($request['other_settings'] as $setting_key => $setting_value) {
                                         $settings[$setting_key] = $setting_value;

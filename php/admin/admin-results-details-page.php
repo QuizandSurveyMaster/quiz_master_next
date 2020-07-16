@@ -267,7 +267,7 @@ function qsm_generate_results_details_tab() {
         if( $new_template_result_detail == 0 ){
             echo '<div class="old_template_result_wrap">';
         }
-        echo $template;
+        echo wp_kses_post( $template );
         if( $new_template_result_detail == 0 ){
             echo '</div>';
         }
