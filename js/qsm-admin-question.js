@@ -259,7 +259,6 @@ var import_button;
 		},
 		addNewPage: function(pageID) {
 			var template = wp.template( 'page' );
-			console.log(pageID);
 			if (typeof pageID == 'undefined' || pageID == '') {
 				var newPageID = QSMQuestion.qpages.length + 1;
 				var pageID = newPageID;
