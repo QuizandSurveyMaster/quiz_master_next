@@ -259,8 +259,10 @@ var import_button;
 		},
 		addNewPage: function(pageID) {
 			var template = wp.template( 'page' );
+			console.log(pageID);
 			if (typeof pageID == 'undefined' || pageID == '') {
 				var newPageID = QSMQuestion.qpages.length + 1;
+				var pageID = newPageID;
 				var pageInfo = QSMQuestion.qpages.add({id: newPageID, quizID: qsmQuestionSettings.quizID, pagekey: qsmRandomID(8), hide_prevbtn: 0});
 			}
 			var pageInfo = QSMQuestion.qpages.get(pageID);
