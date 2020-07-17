@@ -255,7 +255,10 @@ function qsm_options_questions_tab_content() {
                                             <div id="postbox-container-1" class="postbox-container">
                                                 <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
                                                     <div id="submitdiv" class="postbox ">                                                        
-                                                        <h2 class="hndle ui-sortable-handle"><span><?php _e( 'Publish', 'quiz-master-quiz' ); ?></span></h2>
+                                                        <h2 class="hndle ui-sortable-handle">
+                                                            <span><?php _e( 'Publish', 'quiz-master-quiz' ); ?></span>
+                                                            <span id="qsm-question-id"></span>
+                                                        </h2>
                                                         <div class="inside">
                                                             <div class="submitbox" id="submitpost">
                                                                 <div id="minor-publishing">                                                                            
