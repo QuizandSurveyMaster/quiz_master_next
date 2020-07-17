@@ -472,28 +472,3 @@ border: 1px solid #e3e3e3;
     display: inline-block;
     cursor: pointer;
 }
-
-.page-timer-wrapper{
-    display: flex;
-    max-width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-}
-.page-timer-wrapper .qsm-pagetimer{
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 24px;
-    color: #333;
-    padding: 5px 10px;
-    box-shadow: 0 0 10px 1px #eee;
-    border-radius: 5px;
-}
-.page-timer-wrapper .qsm-pagetimer-warning{
-    box-sizing: border-box;
-    color: red;
-    font-size: 18px;
-    line-height: 24px;
-}

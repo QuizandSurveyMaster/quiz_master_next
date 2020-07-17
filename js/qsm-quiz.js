@@ -434,9 +434,9 @@ var QSMPageTimer;
 		initPageTimer: function (quizID, $currentpage) {
 			var $quizForm = QSM.getQuizForm(quizID);
 			var pid = $currentpage.data('pid');
-			if (undefined != pid) {
-				var $qpages = qmn_quiz_data[ quizID ].qpages;
-				var $curr_page_opt = $qpages[pid];
+			var $qpages = qmn_quiz_data[ quizID ].qpages;
+			var $curr_page_opt = $qpages[pid];
+			if ('undefined' != typeof pid && 'undefined' != typeof $curr_page_opt) {
 				if ($curr_page_opt.hasOwnProperty('pagetimer') && 0 != $curr_page_opt.pagetimer) {
 					var $timer_box = $currentpage.find('.qsm-pagetimer');
 					var seconds = 0;
@@ -1296,5 +1296,16 @@ jQuery(function() {
 			qsmScrollTo($container);
         });
 });
-
+jQuery(function ($) {
+	jQuery(window).scroll(function () {
+		if($('.qsm-page:visible').find('.page-timer-wrapper').length > 0) {
+			var aTop = jQuery('.qsm-page:visible').offset().top;
+			if (jQuery(this).scrollTop() >= (aTop+50)) {
+				jQuery('.qsm-page:visible').find('.page-timer-wrapper').addClass('sticky-timer');
+			} else {
+				jQuery('.qsm-page:visible').find('.page-timer-wrapper').removeClass('sticky-timer');
+			}
+		}
+	});
+});
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
