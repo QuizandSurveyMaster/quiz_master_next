@@ -622,6 +622,10 @@ a#qsm-category-add-toggle {
 .quiz_form_type_0.quiz_quiz_systen_1 #question_type_13_description{
     display: none !important;
 }
+
+#qsm-question-id{
+    float: right;
+}
 @media screen and (max-width: 575px){
     .qsm-popup__container{
         min-width: auto;

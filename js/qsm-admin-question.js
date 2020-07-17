@@ -498,6 +498,8 @@ var import_button;
                         $('#modal-1-content').children().remove();
                         CurrentElement.parents('.question').after( "<div style='display: none;' class='questionElements'>"+ questionElements +"</div>" );
                         
+                        //Show question id on question edit screen
+                        $( '#qsm-question-id' ).text( 'ID: ' + questionID );
 			QSMQuestion.prepareCategories();
 			QSMQuestion.processCategories();
 			var question = QSMQuestion.questions.get( questionID );                        
