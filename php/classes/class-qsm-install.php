@@ -183,7 +183,8 @@ class QSM_Install {
 
       ),
       'default' => 0,
-      'help' => __('Leave 0 for unlimited attempts','quiz-master-next')
+      'help' => __('Leave 0 for unlimited attempts','quiz-master-next'),
+      'tooltip' => __('Limits how many times a user can take the quiz','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -196,7 +197,8 @@ class QSM_Install {
 
       ),
       'default' => 0,
-      'help' => __('Leave 0 for unlimited entries','quiz-master-next')
+      'help' => __('Leave 0 for unlimited entries','quiz-master-next'),
+      'tooltip' => __('Limits how many users can take the quiz.','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -223,7 +225,9 @@ class QSM_Install {
       ),
       'default' => '',
       'help' => '',
-      'ph_text' => __('Start Date','quiz-master-next')
+      'ph_text' => __('Start Date','quiz-master-next'),
+      'help' => __('If set, Quiz will be accessible only after this date', 'quiz-master-next'),
+      'tooltip' => __( 'Leave blank for no date limit', 'quiz-master-next' )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -236,7 +240,7 @@ class QSM_Install {
 
       ),
       'default' => '',
-      'help' => __('Leave blank for no date limit','quiz-master-next'),
+      'help' => __(' If set, Quiz will not be accessible after this date','quiz-master-next'),
       'ph_text' => __('End Date','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
