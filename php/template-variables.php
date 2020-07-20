@@ -122,6 +122,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ){
             $mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer_3, $mlw_question_answer_display);
             $answer_4 = !empty( $qmn_questions[$answer['id']] ) ? $qmn_questions[$answer['id']] : 'NA';
             $mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
+            $mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
             $display = "<div class='qmn_question_answer $question_answer_class'>".apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
             $content = str_replace( "%QUESTION_ANSWER_". $question_id ."%" , $display, $content);
         }     
@@ -422,6 +423,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer_3, $mlw_question_answer_display);
                         $answer_4 = !empty( $qmn_questions[$answer['id']] ) ? $qmn_questions[$answer['id']] : 'NA';
 			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
+                        $mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
 			$display .= "<div class='qmn_question_answer $question_answer_class'>".apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
 		}
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
@@ -735,3 +737,39 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
 
 	return $result_display;
 }
+
+/**
+ * 
+ * Add iFrame to allowed wp_kses_post tags
+ *
+ * @since 7.0.0
+ * 
+ * @param array  $tags Allowed tags, attributes, and/or entities.
+ * @param string $context Context to judge allowed tags by. Allowed values are 'post'.
+ *
+ * @return array
+ */
+function qsm_custom_wpkses_post_tags( $tags, $context ) {
+
+	if ( 'post' === $context ) {
+            $tags['iframe'] = array(
+                'src'             => true,
+                'height'          => true,
+                'width'           => true,
+                'frameborder'     => true,
+                'allowfullscreen' => true,
+            );
+            $tags['video'] = array(
+                'width' => true,
+                'height' => true
+            );
+            $tags['source'] = array(
+                'src' => true,
+                'type' => true
+            );
+	}
+
+	return $tags;
+}
+
+add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );

@@ -1203,7 +1203,7 @@ class QMNQuizManager {
         
         // Prepares data to be sent back to front-end.
         $return_array = array(
-            'display' => wp_kses_post( htmlspecialchars_decode($result_display) ),
+            'display' => htmlspecialchars_decode($result_display),
             'redirect' => $results_pages['redirect'],
         );
 
