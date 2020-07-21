@@ -85,7 +85,7 @@ class QSM_Install {
       ),
       'default' => 0,      
       'help' => __('Select the system for grading the quiz.', 'quiz-master-next'),
-      'tooltip' => '<a target="_blank" href="https://quizandsurveymaster.com/docs/">Read Documentation</a>',      
+      'tooltip' => __('To know more about our grading systems please ', 'quiz-master-next') . '<a target="_blank" href="https://quizandsurveymaster.com/docs/">'. __('read the documentation.', 'quiz-master-next') .'</a>',
       'show_option' => 'form_type_0'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -211,7 +211,8 @@ class QSM_Install {
 
       ),
       'default' => 0,
-      'help' => __('Leave 0 to load all questions','quiz-master-next')
+      'help' => __('Leave 0 to load all questions','quiz-master-next'),
+      'tooltip' => __('Show only limited number of questions from your quiz.','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -601,9 +602,10 @@ class QSM_Install {
     // result page for sharing
     $field_array = array(
       'id' => 'result_page_fb_image',
-      'label' => __('Facebook sharing Logo', 'quiz-master-next'),
+      'label' => __('Logo URL', 'quiz-master-next'),
       'type' => 'text',
-      'default' => '',
+      'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
+      'tooltip' => __('Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
