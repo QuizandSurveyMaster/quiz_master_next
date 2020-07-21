@@ -154,9 +154,10 @@ class QSM_Results_Pages {
 			?>
 		</div>
 		<?php
+		$quiz_id = $response_data['quiz_id'];
 		return array(
 			'display'  => do_shortcode( ob_get_clean() ),
-			'redirect' => $redirect,
+			'redirect' => apply_filters('qsm_quiz_redirect_url', $redirect, $quiz_id),
 		);
 	}
 
