@@ -36,22 +36,23 @@ var QSMAdminEmails;
 				data: data,
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
-				.done(function( results ) {
+				.done(function( results ) {                                        
 					if ( results.status ) {
 						QSMAdmin.displayAlert( 'Emails were saved!', 'success' );
 					} else {
 						QSMAdmin.displayAlert( 'There was an error when saving the emails. Please try again.', 'error' );
-					}
+					}                                        
 				})
 				.fail(QSMAdmin.displayjQueryError);
 		},
 		loadEmails: function() {
-			QSMAdmin.displayAlert( 'Loading emails...', 'info' );
+			//QSMAdmin.displayAlert( 'Loading emails...', 'info' );
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
 				headers: { 'X-WP-Nonce': qsmEmailsObject.nonce },
 			})
 				.done(function( emails ) {
+                                        $( '#emails' ).find( '.qsm-spinner-loader' ).remove();
 					emails.forEach( function( email, i, emails ) {
 						QSMAdminEmails.addEmail( email.conditions, email.to, email.subject, email.content, email.replyTo );
 					});

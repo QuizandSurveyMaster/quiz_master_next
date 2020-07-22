@@ -48,8 +48,8 @@ function qsm_options_contact_tab_content() {
    */
 
   ?>
-  <h2><?php _e( 'Contact', 'quiz-master-next' ); ?></h2>
-  <p>Need assistance with this tab? <a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-contact-form-fields/" target="_blank">Check out the documentation</a> for this tab!</p>
+  <h2 style="display: none;"><?php _e( 'Contact', 'quiz-master-next' ); ?></h2>
+  <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
   <div class="contact-message"></div>
   <a class="save-contact button-primary"><?php _e( 'Save Contact Fields', 'quiz-master-next' ); ?></a>
   <div class="contact-form"></div>

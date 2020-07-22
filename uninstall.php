@@ -55,6 +55,8 @@ $qsm_options = array(
 	'qmn-tracking-notice',
 	'mlw_qmn_review_notice',
 	'qsm_upated_question_type_val',
+        'qsm_update_quiz_db_column',
+        'qsm_update_result_db_column'
 );
 
 // Remove the orphaned options now.

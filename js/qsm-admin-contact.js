@@ -167,8 +167,16 @@ var QSMContact;
   };
   $(function() {
     QSMContact.load();
+    if( $('.contact-form > .contact-form-field').length === 0 ){
+        $('.save-contact').hide();
+    }
     $( '.add-contact-field' ).on( 'click', function() {
       QSMContact.newField();
+        if( $('.contact-form > .contact-form-field').length === 0 ){
+            $('.save-contact').hide();
+        }else{
+            $('.save-contact').show();
+        }
     });
     $( '.save-contact' ).on( 'click', function() {
       QSMContact.save();

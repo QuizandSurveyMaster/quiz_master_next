@@ -86,9 +86,9 @@ function qmn_stats_overview_content()
 	$labels = "";
 	$value = "";
 	foreach($data as $stat) {
-		$labels .= '"",'	;
+		$labels .= '"",';
 		$value .= "$stat,";
-	}
+	}        
 	?>
 	<style>
 		.postbox:after {
@@ -129,15 +129,29 @@ function qmn_stats_overview_content()
 								pointStrokeColor : "#fff",
 								pointHighlightFill : "#fff",
 								pointHighlightStroke : "rgba(220,220,220,1)",
-								data : [<?php echo $value; ?>]
+								data : [3,0,2,24,0,27,7]
 							}
 						]
 					}
 					window.onload = function(){
 						var graph_ctx = document.getElementById("graph_canvas").getContext("2d");
-						window.stats_graph = new Chart(graph_ctx).Line(graph_data, {
-							responsive: true
-						});
+						window.stats_graph = new Chart(graph_ctx, {
+                                                type: 'line',
+                                                data: {
+                                                    labels: [<?php echo $labels; ?>],
+                                                    datasets: [{
+                                                        label: 'Quiz Submissions', // Name the series
+                                                        data: [<?php echo $value; ?>], // Specify the data values array
+                                                        fill: false,
+                                                        borderColor: '#2196f3', // Add custom color border (Line)
+                                                        backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
+                                                        borderWidth: 1 // Specify bar border width
+                                                    }]},
+                                                    options: {
+                                                  responsive: true, // Instruct chart js to respond nicely.
+                                                  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+                                                }
+                                            });
 					}
 				</script>
 			</div>

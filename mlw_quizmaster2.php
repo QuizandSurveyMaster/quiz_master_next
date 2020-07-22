@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 6.4.12
+ * Version: 7.0.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 6.4.12
+ * @version 7.0.0
  * @package QSM
  */
 
@@ -37,7 +37,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '6.4.12';
+	public $version = '7.0.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -123,6 +123,7 @@ class MLWQuizMasterNext {
 			include 'php/admin/functions.php';
 			include 'php/admin/stats-page.php';
 			include 'php/admin/quizzes-page.php';
+			include 'php/admin/admin-dashboard.php';
 			include 'php/admin/quiz-options-page.php';
 			include 'php/admin/admin-results-page.php';
 			include 'php/admin/admin-results-details-page.php';
@@ -138,7 +139,6 @@ class MLWQuizMasterNext {
 			include 'php/admin/options-page-email-tab.php';
 			include 'php/admin/options-page-results-page-tab.php';
 			include 'php/admin/options-page-style-tab.php';
-			include 'php/admin/options-page-preview-tab.php';
 			include 'php/admin/addons-page.php';
 			include 'php/admin/settings-page.php';
 			include 'php/classes/class-qsm-tracking.php';
@@ -272,17 +272,23 @@ class MLWQuizMasterNext {
 	 */
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
-			add_menu_page( 'Quiz And Survey Master', __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', __FILE__, 'qsm_generate_quizzes_surveys_page', 'dashicons-feedback' );
+                        global $qsm_quiz_list_page;
+			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'Quiz And Survey Master', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
+			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ),  __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
+			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ),  __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
+                        add_action("load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options');
 			add_submenu_page( NULL, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
-			add_submenu_page( __FILE__, __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
+			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			add_submenu_page( NULL, __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
-			add_submenu_page( __FILE__, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
-			add_submenu_page( __FILE__, __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
-			add_submenu_page( __FILE__, __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
-			add_submenu_page( __FILE__, __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
-                        add_submenu_page( __FILE__, __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
-			add_submenu_page( __FILE__, __( 'QSM About', 'quiz-master-next' ), __( 'QSM About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
-			add_submenu_page( __FILE__, __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_help', 'qsm_generate_help_page' );                        
+			add_submenu_page( 'qsm_dashboard', __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'manage_options', 'qmn_global_settings', array( 'QMNGlobalSettingsPage', 'display_page' ) );
+			add_submenu_page( 'qsm_dashboard', __( 'Tools', 'quiz-master-next' ), __( 'Tools', 'quiz-master-next' ), 'manage_options', 'qsm_quiz_tools', 'qsm_generate_quiz_tools' );
+			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
+			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
+                        add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
+			add_submenu_page( 'qsm_dashboard', __( 'QSM About', 'quiz-master-next' ), __( 'QSM About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
+			add_submenu_page( 'qsm_dashboard', __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_help', 'qsm_generate_help_page' );                        
+                        //Register screen option for dashboard page
+                        add_action("screen_settings", "qsm_dashboard_screen_options", 10, 2);
 		}
 	}
 

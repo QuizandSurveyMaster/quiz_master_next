@@ -61,7 +61,7 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
-        
+        wp_localize_script('qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ));
         // Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
             //$quiz_id   = intval( $_POST['edit_quiz_id'] );
@@ -69,39 +69,45 @@ function qsm_generate_quiz_options() {
             $mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
 	?>
+        <?php
+        // Get quiz post based on quiz id
+        $args = array(
+            'posts_per_page' => 1,
+            'post_type' => 'qsm_quiz',
+            'meta_query' => array(
+                array(
+                    'key' => 'quiz_id',
+                    'value' => $quiz_id,
+                    'compare' => '=',
+                ),
+            ),
+        );
+        $the_query = new WP_Query($args);
+
+        // The Loop
+        $post_permalink = $edit_link = '';
+        if ($the_query->have_posts()) {
+            while ($the_query->have_posts()) {                
+                $the_query->the_post();
+                $post_permalink = get_the_permalink(get_the_ID());
+                $edit_link = get_edit_post_link(get_the_ID());
+            }
+            /* Restore original Post Data */
+            wp_reset_postdata();
+        }
+        ?>    
 	<div class="wrap">            
 		<div class='mlw_quiz_options'>
-                    <h1 style="display: inline-block;"><?php echo $quiz_name; ?></h1>
-                    <a style="display: inline-block;margin-top: 10px;margin-bottom: 15px;margin-left: 10px;" hre="#" class="edit-quiz-name button button-primary">Edit Name</a>
-                    <?php
-                    // Get quiz post based on quiz id
-                    $args = array(
-                        'posts_per_page' => 1,
-                        'post_type' => 'qsm_quiz',
-                        'meta_query' => array(
-                            array(
-                                'key' => 'quiz_id',
-                                'value' => $quiz_id,
-                                'compare' => '=',
-                            ),
-                        ),
-                    );
-                    $the_query = new WP_Query($args);
-
-                    // The Loop
-                    $post_permalink = '';
-                    if ($the_query->have_posts()) {
-                        while ($the_query->have_posts()) {                
-                            $the_query->the_post();
-                            $post_permalink = get_the_permalink(get_the_ID());
-                        }
-                        /* Restore original Post Data */
-                        wp_reset_postdata();
-                    }
-                    ?>
-                    <a style="text-decoration: none; position: relative; top: 9px; left: 5px;" target="_blank" href="<?php echo $post_permalink; ?>">
-                        <span style="font-size: 30px;" class="dashicons dashicons-external"></span>
-                    </a>
+                    <h1 style="margin-bottom: 10px;">
+                        <?php echo $quiz_name; ?>
+                        <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
+                            <span class="dashicons dashicons-external"></span>
+                        </a>
+                        <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
+                            <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
+                        </a>
+                        <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
+                    </h1>                                        
 			<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();
