@@ -321,10 +321,14 @@ class QMNQuizCreator {
 	 public function duplicate_quiz($quiz_id, $quiz_name, $is_duplicating_questions)
 	 {
 	 	global $mlwQuizMasterNext;
-		global $wpdb;
-
-		$table_name = $wpdb->prefix . "mlw_quizzes";
+		global $wpdb;                
+                $current_user = wp_get_current_user();
+		$table_name = $wpdb->prefix . "mlw_quizzes";                
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
+                $quiz_settings = unserialize( $mlw_qmn_duplicate_data->quiz_settings );                
+                if( $is_duplicating_questions == 0 ){                    
+                    $quiz_settings['pages'] = '';
+                }                
 		$results = $wpdb->insert(
 				$table_name,
 				array(
@@ -344,7 +348,7 @@ class QMNQuizCreator {
 					'email_from_text' => $mlw_qmn_duplicate_data->email_from_text,
 					'question_answer_template' => $mlw_qmn_duplicate_data->question_answer_template,
 					'leaderboard_template' => $mlw_qmn_duplicate_data->leaderboard_template,
-					'quiz_system' => $mlw_qmn_duplicate_data->system,
+					'quiz_system' => isset( $mlw_qmn_duplicate_data->system ) ? $mlw_qmn_duplicate_data->system : isset( $mlw_qmn_duplicate_data->quiz_system ) ? $mlw_qmn_duplicate_data->quiz_system : 0,
 					'randomness_order' => $mlw_qmn_duplicate_data->randomness_order,
 					'loggedin_user_contact' => $mlw_qmn_duplicate_data->loggedin_user_contact,
 					'show_score' => $mlw_qmn_duplicate_data->show_score,
@@ -368,7 +372,7 @@ class QMNQuizCreator {
 					'timer_limit' => $mlw_qmn_duplicate_data->timer_limit,
 					'quiz_stye' => $mlw_qmn_duplicate_data->quiz_stye,
 					'question_numbering' => $mlw_qmn_duplicate_data->question_numbering,
-					'quiz_settings' => $mlw_qmn_duplicate_data->quiz_settings,
+					'quiz_settings' => serialize( $quiz_settings ),
 					'theme_selected' => $mlw_qmn_duplicate_data->theme_selected,
 					'last_activity' => date("Y-m-d H:i:s"),
 					'require_log_in' => $mlw_qmn_duplicate_data->require_log_in,
@@ -379,7 +383,8 @@ class QMNQuizCreator {
 					'scheduled_timeframe_text' => $mlw_qmn_duplicate_data->scheduled_timeframe_text,
 					'quiz_views' => 0,
 					'quiz_taken' => 0,
-					'deleted' => 0
+					'deleted' => 0,
+                                        'quiz_author_id' => $current_user->ID,
 				),
 				array(
 					'%s',
@@ -431,6 +436,7 @@ class QMNQuizCreator {
 					'%s',
 					'%s',
 					'%s',
+					'%d',
 					'%d',
 					'%d',
 					'%d',
