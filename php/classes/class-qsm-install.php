@@ -527,7 +527,7 @@ class QSM_Install {
     //Setting for pagination of quiz
     $field_array = array(
       'id' => 'enable_deselect_option',
-      'label' => __('Deselct Answer', 'quiz-master-next'),
+      'label' => __('Deselect Answer', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(        
         array(
@@ -605,7 +605,8 @@ class QSM_Install {
       'label' => __('Logo URL', 'quiz-master-next'),
       'type' => 'text',
       'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
-      'tooltip' => __('Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next')
+      'tooltip' => __('Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next'),
+      'help' => __('If left blank, this will default to QSM logo', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
