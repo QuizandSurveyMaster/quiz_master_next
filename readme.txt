@@ -131,7 +131,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issue where recaptcha appears on every page
 * Bug: Fixed a database error where some users were not able to create a quiz (Error Code: 0001)
 * Bug: Fixed cross-site scripting vulnerability (discovered by Vishnupriya Ilango of Fortinet's FortiGuard Labs.)
-* Bug: Fixed duplicating quiz issue
+* Bug: Fixed issues while duplicating a quiz
 
 = 6.4.12 (June 22, 2020) =
 * Bug: Fixed validation issue in email with spaces.
