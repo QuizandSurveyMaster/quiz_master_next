@@ -3,12 +3,12 @@
  * @since 7.0
  * @param string $name
  */
-function qsm_get_widget_data( $name ){
+function qsm_get_widget_data( $name ){    
     $get_dashboard_data = get_transient( 'qsm_admin_dashboard_data' );
     if($get_dashboard_data !== false && !empty( $get_dashboard_data ) ){        
         $qsm_admin_dd = $get_dashboard_data;        
     }else{
-        $fetch_api_data = wp_remote_get('https://pm-qsm.expresstech.dev/wp-json/qsmps/get-data');
+        $fetch_api_data = wp_remote_get('https://quizandsurveymaster.com/wp-json/qsmps/get-data');
         if( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ){
             $qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
             $qsm_admin_dd = json_decode( $qsm_admin_dd, true );
