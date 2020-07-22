@@ -221,7 +221,7 @@ function qsm_options_questions_tab_content() {
                                                     $polar_question_use = ',13';
                                                 }
                                                 ?>
-                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 <?php echo $polar_class; ?>">
+                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_14 <?php echo $polar_class; ?>">
                                                     <label class="answer-header">
                                                         <?php _e( 'Answers', 'quiz-master-next' ); ?>
                                                         <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers" target="_blank" title="View Documentation">
@@ -242,7 +242,7 @@ function qsm_options_questions_tab_content() {
                                                         'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
                                                         'type' => 'textarea',                                                        
                                                         'default' => '',
-                                                        'show' => '0,1,2,4,10' . $polar_question_use,
+                                                        'show' => '0,1,2,4,10,14' . $polar_question_use,
                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info'
                                                     )                                                    
                                                 );
