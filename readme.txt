@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.4
+Tested up to: 5.4.2
 Requires PHP: 5.4
-Stable tag: 6.4.12
+Stable tag: 7.0.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.0.0 (July 22, 2020) =
+* Enhancement: Complete UI overhaul QSM admin view including new Dashboard
+* Enhancement: A new wizard to create quizzes effortlessly
+* Enhancement: Separate field for question title when you edit questions
+* Enhancement: Updated UI of several pages in admin panel
+* Enhancement: Added new template for results page in admin panel
+* Enhancement: Added background email feature to improve performance while displaying results.
+* Bug: Fixed issue where recaptcha appears on every page
+* Bug: Fixed a database error where some users were not able to create a quiz (Error Code: 0001)
+* Bug: Fixed cross-site scripting vulnerability (discovered by Vishnupriya Ilango of Fortinet's FortiGuard Labs.)
+* Bug: Fixed duplicating quiz issue
 
 = 6.4.12 (June 22, 2020) =
 * Bug: Fixed validation issue in email with spaces.
