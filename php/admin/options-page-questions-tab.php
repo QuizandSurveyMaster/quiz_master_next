@@ -103,7 +103,7 @@ function qsm_options_questions_tab_content() {
 	}
 	?>
         <h3 style="display: none;">Questions</h3>
-        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/adding-and-editing-questions/" target="_blank">View Documentation</a></p>        
+        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/questions-tab/" target="_blank">View Documentation</a></p>        
 	<div class="question-controls">
             <span><b>Total Questions:</b> <span id="total-questions"></span></span>
             <p class="search-box">

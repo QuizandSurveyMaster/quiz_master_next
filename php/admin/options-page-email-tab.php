@@ -46,7 +46,7 @@ function qsm_options_emails_tab_content() {
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>                
                 <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span class="dashicons dashicons-upload"></span></a>
-                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-emails/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
+                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
 		<div id="emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
