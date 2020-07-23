@@ -1093,6 +1093,7 @@ class QMNQuizManager {
 					'pagetime' => $mlw_qmn_pagetime,
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
+                $qmn_array_for_variables['parameters'] = $results_array['parameters'];
                 $serialized_results = serialize($results_array);
 
                 // Inserts the responses in the database.
