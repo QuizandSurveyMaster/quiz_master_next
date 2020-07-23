@@ -52,6 +52,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-name', __( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-email', __( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
+                add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
                 add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
@@ -88,6 +89,23 @@ class QMNGlobalSettingsPage {
 		}
 		?>                
 		<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]' value='<?php echo esc_attr( $from_email ); ?>' />                
+		<?php
+	}
+        
+	/**
+	 * Generates Setting Field For items per page in question bank pagination
+	 *
+	 * @since 7.0.1
+	 * @return void
+	 */
+	public function items_per_page_question_bank() {
+		$settings   = (array) get_option( 'qmn-settings' );
+		$items_per_page_question_bank = 20;
+		if ( isset( $settings['items_per_page_question_bank'] ) ) {
+                    $items_per_page_question_bank = $settings['items_per_page_question_bank'];
+		}
+		?>                
+                <input type='number' name='qmn-settings[items_per_page_question_bank]' id='qmn-settings[items_per_page_question_bank]' value='<?php echo esc_attr( $items_per_page_question_bank ); ?>' />
 		<?php
 	}
 
