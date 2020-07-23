@@ -90,6 +90,22 @@ function qsm_add_author_column_in_db() {
             }
             update_option('qsm_update_quiz_db_column', '1');
         }
+        
+        /**
+         * Changed result table column data type
+         * @since 7.0.1
+         */
+        if( get_option('qsm_update_result_db_column_datatype', '') != '1' ){
+            global $wpdb;
+            $result_table_name = $wpdb->prefix . "mlw_results";
+            $table_quiz_result_obj = $wpdb->get_row( $wpdb->prepare(
+                'SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $result_table_name, 'quiz_results' 
+            ), ARRAY_A );            
+            if ( isset( $table_quiz_result_obj['DATA_TYPE'] ) && $table_quiz_result_obj['DATA_TYPE'] == 'text' ) {
+                    $wpdb->query("ALTER TABLE $result_table_name CHANGE `quiz_results` `quiz_results` LONGTEXT;");
+            }            
+            update_option('qsm_update_result_db_column_datatype', '1');
+        }
 }
 
 
