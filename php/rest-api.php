@@ -78,7 +78,12 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         }
         $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0'$category_query", 'ARRAY_A' );
         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
+        $settings   = (array) get_option( 'qmn-settings' );        
         $limit = 20;
+        if ( isset( $settings['items_per_page_question_bank'] ) ) {
+            $limit = $settings['items_per_page_question_bank'];
+        }
+        $limit = $limit == '' || $limit == 0 ? 20 : $limit;
         $total_pages = ceil($total_count / $limit);
         $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;        
         $offset = ($pageno-1) * $limit;
