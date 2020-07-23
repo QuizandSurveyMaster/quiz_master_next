@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
  * @since 4.0.0
  */
 class QMNQuizManager {
-    
+
     protected $qsm_background_email;
     /**
      * Main Construct Function
@@ -49,15 +49,15 @@ class QMNQuizManager {
         add_action('wp_ajax_nopriv_qsm_get_question_quick_result', array($this, 'qsm_get_question_quick_result'));
         //Upload file of file upload question type
         add_action('wp_ajax_qsm_upload_image_fd_question', array($this, 'qsm_upload_image_fd_question'));
-        add_action('wp_ajax_nopriv_qsm_upload_image_fd_question', array($this, 'qsm_upload_image_fd_question')); 
-        
+        add_action('wp_ajax_nopriv_qsm_upload_image_fd_question', array($this, 'qsm_upload_image_fd_question'));
+
         //remove file of file upload question type
         add_action('wp_ajax_qsm_remove_file_fd_question', array($this, 'qsm_remove_file_fd_question'));
-        add_action('wp_ajax_nopriv_qsm_remove_file_fd_question', array($this, 'qsm_remove_file_fd_question')); 
-        
+        add_action('wp_ajax_nopriv_qsm_remove_file_fd_question', array($this, 'qsm_remove_file_fd_question'));
+
         add_action('init', array($this, 'qsm_process_background_email'));
     }
-    
+
     /**
      * @version 6.3.7
      * Upload file to server
@@ -86,16 +86,16 @@ class QMNQuizManager {
                     $mimes[] = $value;
                 }
             }
-        }        
+        }
         $json = array();
-        if (in_array($_FILES["file"]['type'], $mimes)) {            
+        if (in_array($_FILES["file"]['type'], $mimes)) {
             if($_FILES["file"]['size'] >= $file_upload_limit * 1024 * 1024){
                 $json['type']= 'error';
                 $json['message'] = 'File is too large. File must be less than ' . $file_upload_limit . ' MB';
                 echo json_encode($json);
                 exit;
             }
-            $upload_dir = wp_upload_dir();            
+            $upload_dir = wp_upload_dir();
             $datafile = $_FILES["file"]["tmp_name"];
             $file_name = $_FILES["file"]["name"];
             $file = $upload_dir['path'] . '/' . $_FILES['file']['name'];
@@ -111,7 +111,7 @@ class QMNQuizManager {
                     $counter++;
                 }
             }
-            if (!move_uploaded_file($datafile, $file)) {                
+            if (!move_uploaded_file($datafile, $file)) {
                 $json['type']= 'error';
                 $json['message'] = 'File not uploaded';
                 echo json_encode($json);
@@ -129,13 +129,13 @@ class QMNQuizManager {
         }
         exit;
     }
-    
+
     /**
      * @since 6.3.7
      * Remove the uploaded image
      */
     public function qsm_remove_file_fd_question(){
-        $file_url = isset($_POST['file_url']) ? sanitize_text_field($_POST['file_url']) : '';        
+        $file_url = isset($_POST['file_url']) ? sanitize_text_field($_POST['file_url']) : '';
         if($file_url){
             wp_delete_file($file_url);
             $json['type']= 'success';
@@ -195,15 +195,15 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
-            $result_unique_id = $_GET['result_id'];            
+            $result_unique_id = $_GET['result_id'];
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
-            $result = $wpdb->get_row($query,ARRAY_A);            
+            $result = $wpdb->get_row($query,ARRAY_A);
             if( !empty($result) && isset($result['result_id']) ){
                 $result_id = $result['result_id'];
                 $return_display = do_shortcode( '[qsm_result id="'. $result_id .'"]' );
             }else{
                 $return_display = 'Result id is wrong!';
-            }                  
+            }
             $return_display .= ob_get_clean();
         }else{
             global $wpdb;
@@ -233,7 +233,7 @@ class QMNQuizManager {
             // Loads Quiz Template.
             // The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
             if ('default' == $qmn_quiz_options->theme_selected) {
-                $return_display .= '<style type="text/css">' . htmlspecialchars_decode($qmn_quiz_options->quiz_stye) . '</style>';                
+                $return_display .= '<style type="text/css">' . htmlspecialchars_decode($qmn_quiz_options->quiz_stye) . '</style>';
                 wp_enqueue_style('qmn_quiz_style', plugins_url('../../css/qmn_quiz.css', __FILE__));
             } else {
                 $registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates($qmn_quiz_options->theme_selected);
@@ -301,18 +301,18 @@ class QMNQuizManager {
 
             $return_display .= ob_get_clean();
             $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
-        }        
+        }
         return $return_display;
     }
-    
+
     public function shortcode_display_result($atts){
         extract(shortcode_atts(array(
-            'id' => 0,            
+            'id' => 0,
                         ), $atts));
         ob_start();
         if($id == 0){
             $id = isset($_GET['result_id']) ? $_GET['result_id'] : 0;
-        }        
+        }
         global $wpdb;
         $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
         $quiz_result = unserialize($result_data['quiz_results']);
@@ -369,7 +369,7 @@ class QMNQuizManager {
 		$cat_query = '';
         if (1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order) {
             $order_by_sql = 'ORDER BY rand()';
-			$categories = isset($quiz_options->randon_category) ? $quiz_options->randon_category : '';			
+			$categories = isset($quiz_options->randon_category) ? $quiz_options->randon_category : '';
 			if($categories){
 				$exploded_arr = explode(',', $quiz_options->randon_category);
 				$cat_str = "'" . implode ( "', '", $exploded_arr ) . "'";
@@ -479,7 +479,7 @@ class QMNQuizManager {
      * @return string The content for the quiz page section
      */
     public function display_quiz($options, $quiz_data, $question_amount) {
-        
+
         global $qmn_allowed_visit;
         global $mlwQuizMasterNext;
         $quiz_display = '';
@@ -500,17 +500,17 @@ class QMNQuizManager {
             'incorrect' => $options->incorrect_error_text,
             'empty' => $options->empty_error_text,
         );
-        
+
         wp_enqueue_script('progress-bar', plugins_url('../../js/progressbar.min.js', __FILE__));
         wp_enqueue_script( 'jquery-ui-slider-js', plugins_url('../../js/jquery-ui.js', __FILE__));
         wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url('../../js/jquery.ui.slider-rtl.js', __FILE__) );
         wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url('../../css/jquery.ui.slider-rtl.css', __FILE__) );
-        wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );        
+        wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );
         wp_enqueue_style('qsm_model_css', plugins_url('../../css/qsm-admin.css', __FILE__));
         wp_enqueue_script('qsm_model_js', plugins_url('../../js/micromodal.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
         wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => sprintf('<b>%s</b> %s', __( 'Correct!', 'quiz-master-next' ), __('You have selected correct answer.', 'quiz-master-next')), 'quick_result_wrong_text' => sprintf('<b>%s</b> %s', __( 'Wrong!', 'quiz-master-next' ), __('You have selected wrong answer.', 'quiz-master-next')) ));
-        wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );                
+        wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
         global $qmn_total_questions;
         $qmn_total_questions = 0;
         global $mlw_qmn_section_count;
@@ -530,10 +530,10 @@ class QMNQuizManager {
             ),
         );
         $the_query = new WP_Query($args);
-        
+
         // The Loop
-        if ($the_query->have_posts()) {            
-            while ($the_query->have_posts()) {                
+        if ($the_query->have_posts()) {
+            while ($the_query->have_posts()) {
                 $the_query->the_post();
                 $quiz_display .= get_the_post_thumbnail(get_the_ID(),'full');
             }
@@ -591,7 +591,7 @@ class QMNQuizManager {
     public function display_pages($options, $quiz_data) {
         global $mlwQuizMasterNext;
         global $qmn_json_data;
-        ob_start();        
+        ob_start();
         $pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
 		$qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
         $questions = QSM_Questions::load_questions_by_pages($options->quiz_id);
@@ -602,7 +602,7 @@ class QMNQuizManager {
         if (count($pages) > 1 && (!empty($options->message_before) || ( 0 == $options->contact_info_location && $contact_fields ) )) {
             $qmn_json_data['first_page'] = true;
             $message_before = wpautop(htmlspecialchars_decode($options->message_before, ENT_QUOTES));
-            $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data);            
+            $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data);
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
                 <div class="quiz_section quiz_begin">
@@ -618,7 +618,7 @@ class QMNQuizManager {
         }
 
         // If there is only one page.
-        if (1 == count($pages)) {            
+        if (1 == count($pages)) {
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
                 <?php
@@ -636,7 +636,7 @@ class QMNQuizManager {
                         ?>
                     </div>
                     <?php
-                }                
+                }
                 foreach ($pages[0] as $question_id) {
                     $question_list .= $question_id . 'Q';
                     $question = $questions[$question_id];
@@ -717,9 +717,9 @@ class QMNQuizManager {
                             ?>
                         </div>
                         <?php
-                    }                    
+                    }
                     if($enable_pagination_quiz){
-                    ?>                    
+                    ?>
                         <span class="pages_count">
                             <?php
                             $text_c = $pages_count . ' out of ' .$total_pages_count;
@@ -841,8 +841,8 @@ class QMNQuizManager {
         $enable_pagination_quiz = isset($qmn_quiz_options->enable_pagination_quiz) && $qmn_quiz_options->enable_pagination_quiz ? $qmn_quiz_options->enable_pagination_quiz : 0;
         $pagination_optoin = $qmn_quiz_options->pagination;
         if($enable_pagination_quiz && $pagination_optoin){
-            $total_pages_count = count($qmn_quiz_questions);            
-            $total_pagination = ceil($total_pages_count / $pagination_optoin);                
+            $total_pages_count = count($qmn_quiz_questions);
+            $total_pagination = ceil($total_pages_count / $pagination_optoin);
         }
         $pages_count = 1;
         foreach ($qmn_quiz_questions as $mlw_question) {
@@ -865,7 +865,7 @@ class QMNQuizManager {
             if (!empty($mlw_question->hints)) {
                 $question_display .= "<div title=\"" . esc_attr(htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
                 $question_display .= "<br /><br />";
-            }           
+            }
             $question_display .= "</div>";
             $pages_count++;
         }
@@ -970,7 +970,7 @@ class QMNQuizManager {
     public function ajax_submit_results() {
         global $qmn_allowed_visit;
         global $mlwQuizMasterNext;
-                
+
         $qmn_allowed_visit = true;
         $quiz = intval($_POST["qmn_quiz_id"]);
         $mlwQuizMasterNext->pluginHelper->prepare_quiz($quiz);
@@ -983,7 +983,7 @@ class QMNQuizManager {
         );
         $post_data = array(
             'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
-        );        
+        );
         if(class_exists('QSM_Recaptcha')){
             $recaptcha_data = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( "recaptcha_integration_settings" );
             if(isset($recaptcha_data['enable_recaptcha']) && $recaptcha_data['enable_recaptcha'] != 'no'){
@@ -995,12 +995,12 @@ class QMNQuizManager {
                     ));
                     exit;
                 }
-            }            
-        }        
+            }
+        }
         echo json_encode($this->submit_results($options, $data));
         die();
     }
-    
+
     /**
      * @version 6.3.2
      * Show quiz on button click
@@ -1030,7 +1030,7 @@ class QMNQuizManager {
     public function submit_results($qmn_quiz_options, $qmn_array_for_variables) {
         global $qmn_allowed_visit;
         $result_display = '';
-        
+
         $qmn_array_for_variables['user_ip'] = $this->get_user_ip();
 
         $result_display = apply_filters('qmn_begin_results', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -1093,7 +1093,9 @@ class QMNQuizManager {
 					'pagetime' => $mlw_qmn_pagetime,
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
-                $qmn_array_for_variables['parameters'] = $results_array['parameters'];
+                if(isset($results_array['parameters'])) {
+                  $qmn_array_for_variables['parameters'] = $results_array['parameters'];
+                }
                 $serialized_results = serialize($results_array);
 
                 // Inserts the responses in the database.
@@ -1144,7 +1146,7 @@ class QMNQuizManager {
                 );
 				$results_id = $wpdb->insert_id;
             }
-			
+
 			// Determines redirect/results page.
             $results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
             $result_display .= $results_pages['display'];
@@ -1157,7 +1159,7 @@ class QMNQuizManager {
             }
 
 			/*
-			 * Update the option `qmn_quiz_taken_cnt` value by 1 each time 
+			 * Update the option `qmn_quiz_taken_cnt` value by 1 each time
 			 * whenever the record inserted into the required table.
 			 */
 			if( $results_insert ) {
@@ -1173,15 +1175,15 @@ class QMNQuizManager {
 
             // Hook is fired after the responses are submitted. Passes responses, result ID, quiz settings, and response data.
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
-            
+
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
-                        
+
             // Send the emails in background.
             $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
-            
+
             // Sends the emails - Defer the emails.
             //QSM_Emails::send_emails($qmn_array_for_variables);
-            
+
             /**
              * Filters for filtering the results text after emails are sent.
              *
@@ -1199,9 +1201,9 @@ class QMNQuizManager {
         } else {
             $result_display .= 'Thank you.';
         }
-        
+
         $result_display = str_replace('%FB_RESULT_ID%', $unique_id, $result_display);
-        
+
         // Prepares data to be sent back to front-end.
         $return_array = array(
             'display' => htmlspecialchars_decode($result_display),
@@ -1689,7 +1691,7 @@ class QMNQuizManager {
 
     /**
      * Returns the quiz taker's IP if IP collection is enabled
-     * 
+     *
      * @since 5.3.0
      * @return string The IP address or a phrase if not collected
      */
@@ -1706,7 +1708,7 @@ class QMNQuizManager {
             } else {
                 $ip = __('Unknown', 'quiz-master-next');
             }
-            
+
             if (getenv('HTTP_CLIENT_IP'))
                 $ip = getenv('HTTP_CLIENT_IP');
             else if (getenv('HTTP_X_FORWARDED_FOR'))
@@ -1724,7 +1726,7 @@ class QMNQuizManager {
         }
         return $ip;
     }
-    
+
     /**
     * Determines whether a plugin is active.
     *
@@ -1736,7 +1738,7 @@ class QMNQuizManager {
     private function qsm_plugin_active( $plugin ){
         return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || $this->qsm_plugin_active_for_network( $plugin );
     }
-    
+
     /**
     * Determines whether the plugin is active for the entire network.
     *
@@ -1757,10 +1759,10 @@ class QMNQuizManager {
 
 	return false;
     }
-    
+
     /**
      * Include background process files
-     * 
+     *
      * @singce 7.0
      */
     public function qsm_process_background_email(){
@@ -1774,7 +1776,7 @@ $qmnQuizManager = new QMNQuizManager();
 
 add_filter('qmn_begin_shortcode', 'qmn_require_login_check', 10, 3);
 
-function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {    
+function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->require_log_in == 1 && !is_user_logged_in()) {
         $qmn_allowed_visit = false;
@@ -1782,7 +1784,7 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
         }else{
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->require_log_in_text, ENT_QUOTES));
-        }        
+        }
         $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
         $mlw_message = str_replace("\n", "<br>", $mlw_message);
         //$display .= do_shortcode($mlw_message);
@@ -1794,18 +1796,18 @@ function qmn_require_login_check($display, $qmn_quiz_options, $qmn_array_for_var
 
 add_filter('qmn_begin_shortcode', 'qsm_scheduled_timeframe_check', 99, 3);
 
-/** 
+/**
  * @since 7.0.0 Added the condition for start time ( end time blank ) and end time ( start time blank ).
- * 
+ *
  * @global boolean $qmn_allowed_visit
  * @param HTML $display
  * @param Object $options
  * @param Array $variable_data
- * @return HTML This function check the time frame of quiz. 
+ * @return HTML This function check the time frame of quiz.
  */
 function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
     global $qmn_allowed_visit;
-    
+
     $checked_pass = FALSE;
     // Checks if the start and end dates have data
     if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {
@@ -1850,7 +1852,7 @@ add_filter('qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3);
  * @return string The altered HTML display for the quiz
  */
 function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_variables) {
-    
+
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->total_user_tries != 0) {
 
