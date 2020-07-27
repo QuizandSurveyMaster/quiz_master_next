@@ -61,7 +61,9 @@ function qsm_options_questions_tab_content() {
 		'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
 		'categories' => $question_categories,
 		'form_type' => $form_type,
-		'quiz_system' => $quiz_system
+		'quiz_system' => $quiz_system,
+                'hide_desc_text' => __('Hide Description Box', 'quiz-master-next'),
+                'show_desc_text' => __('Show Description Box', 'quiz-master-next'),
 	);
 
 	// Scripts and styles.
@@ -156,10 +158,11 @@ function qsm_options_questions_tab_content() {
                                                 <div class="qsm-row">
                                                     <input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
                                                 </div>
-                                                <div class="qsm-row">
-                                                        <textarea id="question-text"></textarea>
+                                                <a href="#" class="qsm-show-question-desc-box"><?php _e('Show Description box', 'quiz-master-next'); ?></a>
+                                                <div class="qsm-row" style="display: none;">
+                                                    <textarea id="question-text"></textarea>
                                                 </div>
-                                                <div class="qsm-row">
+                                                <div class="qsm-row" style="margin-bottom: 0;">
                                                     <?php
                                                     $description_arr = array(
                                                         array(
@@ -221,7 +224,7 @@ function qsm_options_questions_tab_content() {
                                                     $polar_question_use = ',13';
                                                 }
                                                 ?>
-                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_4 qsm_show_question_type_10 qsm_show_question_type_14 <?php echo $polar_class; ?>">
+                                                <div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
                                                     <label class="answer-header">
                                                         <?php _e( 'Answers', 'quiz-master-next' ); ?>
                                                         <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers" target="_blank" title="View Documentation">
@@ -242,9 +245,9 @@ function qsm_options_questions_tab_content() {
                                                         'label' => __( 'Correct Answer Info', 'quiz-master-next' ),
                                                         'type' => 'textarea',                                                        
                                                         'default' => '',
-                                                        'show' => '0,1,2,4,10,14' . $polar_question_use,
+                                                        'show' => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use,
                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info'
-                                                    )                                                    
+                                                    )                                
                                                 );
                                                 $answer_area_option = apply_filters('qsm_question_advanced_option', $answer_area_option);
                                                 foreach($answer_area_option as $qo_key => $single_answer_option){
