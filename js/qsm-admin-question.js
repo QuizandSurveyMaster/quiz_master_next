@@ -868,6 +868,18 @@ var import_button;
                         $( '#qsm-category-add' ).slideDown('slow');
                     }
                 });
+                
+                //Hide/show quesion description
+                $( document ).on('click', '.qsm-show-question-desc-box', function(e){
+                    e.preventDefault();
+                    if( $(this).next('.qsm-row').is(':visible') ){
+                        $(this).text('').text(qsmQuestionSettings.show_desc_text);
+                        $(this).next('.qsm-row').slideUp();
+                    }else{
+                        $(this).text('').text(qsmQuestionSettings.hide_desc_text);
+                        $(this).next('.qsm-row').slideDown();
+                    }                    
+                });
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)

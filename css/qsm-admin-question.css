@@ -596,7 +596,13 @@ a.import-button.button.disable_import::before {
     font-size: 15px;
     line-height: 21px;
     text-align: center;
-    margin: 0;
+    margin: 0 0 20px 0;
+}
+
+.qsm-show-question-desc-box{
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 
 #delete-action .deletion{
