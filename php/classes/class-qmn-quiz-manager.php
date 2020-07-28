@@ -1256,7 +1256,12 @@ class QMNQuizManager {
           1, // Horizontal Multiple Choice
           2, // Drop Down
           4, // Multiple Response
-          10 // Horizontal Multiple Response
+          10, // Horizontal Multiple Response
+          12, // Date
+          3, // Small Open Answer
+          5, // Large Open Answer
+          7, // Number
+          14, // Fill In The Blank
         );
 
         // If deprecated pagination setting is not used, use new system...
