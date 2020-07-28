@@ -64,8 +64,8 @@ function qsm_options_results_tab_content() {
 			<main class="results-page-content">
 				<div class="results-page-when">
 					<div class="results-page-content-header">
-						<h4>When...</h4>
-						<p>Set conditions for when this page should be shown. Leave empty to set this as the default page.</p>
+                                            <h4><?php esc_html_e('When...', 'quiz-master-next'); ?></h4>
+                                            <p><?php esc_html_e('Set conditions for when this page should be shown. Leave empty to set this as the default page.', 'quiz-master-next'); ?></p>
 					</div>
 					<div class="results-page-when-conditions">
 						<!-- Conditions go here. Review template below. -->
@@ -74,11 +74,11 @@ function qsm_options_results_tab_content() {
 				</div>
 				<div class="results-page-show">
 					<div class="results-page-content-header">
-						<h4>...Show</h4>
-						<p>Create the results page that should be shown when the conditions are met.</p>
+						<h4><?php esc_html_e('...Show', 'quiz-master-next'); ?></h4>
+						<p><?php esc_html_e('Create the results page that should be shown when the conditions are met.', 'quiz-master-next'); ?></p>
 					</div>
 					<textarea id="results-page-{{ data.id }}" class="results-page-template">{{{ data.page }}}</textarea>
-					<p>Or, redirect the user by entering the URL below:</p>
+					<p><?php esc_html_e('Or, redirect the user by entering the URL below:', 'quiz-master-next'); ?></p>
 					<input type="text" class="results-page-redirect" value="<# if ( data.redirect ) { #>{{ data.redirect }}<# } #>">
 				</div>
 			</main>
@@ -89,17 +89,17 @@ function qsm_options_results_tab_content() {
 		<div class="results-page-condition">
 			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
 			<select class="results-page-condition-criteria">
-				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>>Total points earned</option>
-				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>>Correct score percentage</option>
+				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e('Total points earned', 'quiz-master-next'); ?></option>
+				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e('Correct score percentage', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
 			</select>
 			<select class="results-page-condition-operator">
-				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>>is equal to</option>
-				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>>is not equal to</option>
-				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>>is greater than or equal to</option>
-				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>>is greater than</option>
-				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>>is less than or equal to</option>
-				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>>is less than</option>
+				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e('is equal to', 'quiz-master-next'); ?></option>
+				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e('is not equal to', 'quiz-master-next'); ?></option>
+				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e('is greater than or equal to', 'quiz-master-next'); ?></option>
+				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e('is greater than', 'quiz-master-next'); ?></option>
+				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e('is less than or equal to', 'quiz-master-next'); ?></option>
+				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e('is less than', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_results_page_condition_operator' ); ?>
 			</select>
 			<input type="text" class="results-page-condition-value" value="{{ data.value }}">

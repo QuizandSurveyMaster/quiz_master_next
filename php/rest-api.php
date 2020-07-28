@@ -140,7 +140,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
     }else{
         return array(
             'status' => 'error',
-            'msg'    => 'User not logged in',
+            'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
     }
 }
@@ -253,7 +253,7 @@ function qsm_rest_get_emails( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -280,7 +280,7 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -305,7 +305,7 @@ function qsm_rest_get_results( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -332,7 +332,7 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -371,7 +371,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -427,7 +427,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -481,7 +481,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }
 
@@ -549,6 +549,6 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'    => 'User not logged in',
+		'msg'    => __('User not logged in', 'quiz-master-next'),
 	);
 }

@@ -155,7 +155,7 @@ function qsm_get_question_text_message(){
     global $mlwQuizMasterNext;
     $text_id = isset( $_POST['text_id']  ) ? sanitize_text_field( $_POST['text_id'] ) : '';
     if( $text_id == '' ){
-        echo json_encode( array( 'success'=> false, 'message' => 'Text id is missing.') );
+        echo json_encode( array( 'success'=> false, 'message' => __('Text id is missing.', 'quiz-master-next')) );
         exit;
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
