@@ -1249,6 +1249,15 @@ class QMNQuizManager {
         $correct_status = "incorrect";
         $answer_points = 0;
         $question_data = array();
+        
+        // Question types to calculate result on
+        $result_question_types = array(
+          0, // Multiple Choice
+          1, // Horizontal Multiple Choice
+          2, // Drop Down
+          4, // Multiple Response
+          10 // Horizontal Multiple Response
+        );
 
         // If deprecated pagination setting is not used, use new system...
         if (0 == $options->question_from_total && 0 !== count($pages)) {
@@ -1268,8 +1277,7 @@ class QMNQuizManager {
                             $question = $questions[$page_question_id];
                             // Ignore non points questions from result
                             $question_type_new = $question['question_type_new'];
-                            if($question_type_new != 0 && $question_type_new != 1 && $question_type_new != 2 && $question_type_new != 4
-                               && $question_type_new != 10) {
+                            if(!in_array($question_type_new,$result_question_types)) {
                               $total_questions--;
                               continue;
                             }
