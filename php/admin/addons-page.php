@@ -20,7 +20,7 @@ function qmn_addons_page() {
     wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
     ?>
     <div class="wrap qsm-addon-setting-wrap">
-        <h2>Quiz And Survey Master Addon Settings</h2>
+        <h2><?php _e('Quiz And Survey Master Addon Settings', 'quiz-master-next'); ?></h2>
         <h2 class="nav-tab-wrapper">
             <?php
             foreach ($tab_array as $tab) {
@@ -209,7 +209,7 @@ function qsm_display_optin_page() {
                     />
                   </svg>
                   <span class="sib-form-message-panel__inner-text">
-                                    Your subscription could not be saved. Please try again.
+                                    <?php _e('Your subscription could not be saved. Please try again.', 'quiz-master-next'); ?>
                                 </span>
                 </div>
               </div>
@@ -221,7 +221,7 @@ function qsm_display_optin_page() {
                     />
                   </svg>
                   <span class="sib-form-message-panel__inner-text">
-                                    Your subscription has been successful.
+                      <?php _e('Your subscription has been successful.', 'quiz-master-next'); ?>
                                 </span>
                 </div>
               </div>
@@ -233,8 +233,8 @@ function qsm_display_optin_page() {
                     <div class="sib-input sib-form-block">
                       <div class="form__entry entry_block">
                         <div class="form__label-row ">
-                          <label class="entry__label" style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;" for="EMAIL" data-required="*">
-                            Enter your email address to subscribe
+                          <label class="entry__label" style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;" for="EMAIL" data-required="*">                            
+                            <?php _e('Enter your email address to subscribe', 'quiz-master-next'); ?>
                           </label>
 
                           <div class="entry__field">
@@ -245,7 +245,7 @@ function qsm_display_optin_page() {
                         <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;">
                         </label>
                         <label class="entry__specification" style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; border-width:px;">
-                          Provide your email address to subscribe. For e.g abc@xyz.com
+                            <?php _e('Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next'); ?>                          
                         </label>
                       </div>
                     </div>
@@ -258,7 +258,7 @@ function qsm_display_optin_page() {
                           <path d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z"
                           />
                         </svg>
-                        SUBSCRIBE
+                        <?php _e('SUBSCRIBE', 'quiz-master-next'); ?>
                       </button>
                     </div>
                   </div>
@@ -266,7 +266,7 @@ function qsm_display_optin_page() {
                     <div class="sib-form-block" style="font-size:14px; text-align:center; font-family:Helvetica, sans-serif; color:#333; background-color:transparent; border-width:px;">
                       <div class="sib-text-form-block">
                         <p>
-                          <a href="https://sendinblue.com" target="_blank">Terms &amp; Privacy policy</a>
+                          <a href="https://sendinblue.com" target="_blank"><?php _e('Terms &amp; Privacy policy', 'quiz-master-next'); ?></a>
                         </p>
                       </div>
                     </div>

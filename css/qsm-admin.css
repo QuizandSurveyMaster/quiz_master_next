@@ -249,6 +249,11 @@ Results Pages & Emails Tab
     margin-bottom: 10px;
 }
 
+.email-show label{
+    margin-bottom: 5px;    
+    display: block;
+}
+
 .results-page-content-header h4,
 .results-page-content-header p,
 .email-content-header h4,
@@ -274,7 +279,7 @@ Results Pages & Emails Tab
 .delete-condition-button {
     background: none;
     border: 1px solid #1DD969;
-    color: #1DD969;
+    color: #dc3232;
     cursor: pointer;
     transition-duration: 200ms;
     padding: 6px;
@@ -512,21 +517,20 @@ Misc.
 /* Info Bar */
 .qsm-info-box {
     display: block;
-    text-align:center;
-    background: #0d97d8;
-    border: 5px solid #1DD969;
-    color: #000;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #dfd4d4;
+    /* color: #000; */
     font-weight: bold;
-    font-size: 14px;
+    /* font-size: 14px; */
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .qsm-info-box p {
     font-size: 14px;
 }
 
-.qsm-info-box a {
-    color: yellow;
-}
 
 /* Info Widget */
 .qsm-quiz-page-addon .qsm-info-widget {

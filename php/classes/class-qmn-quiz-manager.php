@@ -91,7 +91,7 @@ class QMNQuizManager {
         if (in_array($_FILES["file"]['type'], $mimes)) {
             if($_FILES["file"]['size'] >= $file_upload_limit * 1024 * 1024){
                 $json['type']= 'error';
-                $json['message'] = 'File is too large. File must be less than ' . $file_upload_limit . ' MB';
+                $json['message'] = __('File is too large. File must be less than ', 'quiz-master-next') . $file_upload_limit . ' MB';
                 echo json_encode($json);
                 exit;
             }
@@ -113,18 +113,18 @@ class QMNQuizManager {
             }
             if (!move_uploaded_file($datafile, $file)) {
                 $json['type']= 'error';
-                $json['message'] = 'File not uploaded';
+                $json['message'] = __('File not uploaded', 'quiz-master-next');
                 echo json_encode($json);
             }else{
                 $json['type']= 'success';
-                $json['message'] = 'File uploaded successfully';
+                $json['message'] = __( 'File uploaded successfully', 'quiz-master-next' );
                 $json['file_url'] = $file_url;
                 $json['file_path'] = $file;
                 echo json_encode($json);
             }
         }else{
             $json['type']= 'error';
-            $json['message'] = 'File type is not supported';
+            $json['message'] = __('File type is not supported', 'quiz-master-next');
             echo json_encode($json);
         }
         exit;
@@ -139,12 +139,12 @@ class QMNQuizManager {
         if($file_url){
             wp_delete_file($file_url);
             $json['type']= 'success';
-            $json['message'] = 'File removed successfully';
+            $json['message'] = __( 'File removed successfully', 'quiz-master-next' );
             echo json_encode($json);
             exit;
         }
         $json['type']= 'error';
-        $json['message'] = 'File not removed';
+        $json['message'] = __( 'File not removed', 'quiz-master-next' );
         echo json_encode($json);
         exit;
     }

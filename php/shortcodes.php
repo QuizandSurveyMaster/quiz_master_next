@@ -89,7 +89,7 @@ function qsm_display_recent_quizzes($attrs) {
         }
     }
     if ($i == 0)
-        $result .= "No quiz found";
+        $result .= __("No quiz found", 'quiz-master-next');
     $result .= "</div>";
     return $result;
 }
