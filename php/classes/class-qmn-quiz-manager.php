@@ -1266,6 +1266,13 @@ class QMNQuizManager {
                         if ($page_question_id == $question_id) {
 
                             $question = $questions[$page_question_id];
+                            // Ignore non points questions from result
+                            $question_type_new = $question['question_type_new'];
+                            if($question_type_new != 0 && $question_type_new != 1 && $question_type_new != 2 && $question_type_new != 4
+                               && $question_type_new != 10) {
+                              $total_questions--;
+                              continue;
+                            }
 
                             // Reset question-specific variables
                             $user_answer = "";
