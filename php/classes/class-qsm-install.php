@@ -173,6 +173,24 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    $field_array = array(
+      'id' => 'by_pass_validation_time_expire',
+      'label' => __('By pass validation when time expire', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        )
+      ),
+      'default' => 1
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers total_user_tries setting
     $field_array = array(
