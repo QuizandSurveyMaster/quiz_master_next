@@ -3,6 +3,8 @@
     color: #606a73;
     font-size: 23px;
     margin-right: 5px;
+    position: relative;
+    top: -3px;
 }
 .welcome-panel .qsm-welcome-panel-close{    
     position: absolute;
