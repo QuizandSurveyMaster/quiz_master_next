@@ -175,8 +175,8 @@ class QSM_Install {
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     $field_array = array(
-      'id' => 'by_pass_validation_time_expire',
-      'label' => __('By pass validation when time expire', 'quiz-master-next'),
+      'id' => 'skip_validation_time_expire',
+      'label' => __('Skip validations when time expire', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(        
         array(

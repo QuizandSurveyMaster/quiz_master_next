@@ -677,7 +677,7 @@ function qmnValidation( element, quiz_form_id ) {
 				}
 			}
                         var by_pass = true;
-                        if( qmn_quiz_data[quiz_id].hasOwnProperty('by_pass_validation_time_expire') && qmn_quiz_data[quiz_id].by_pass_validation_time_expire == 0 ){
+                        if( qmn_quiz_data[quiz_id].hasOwnProperty('skip_validation_time_expire') && qmn_quiz_data[quiz_id].skip_validation_time_expire == 0 ){
                             by_pass = false;
                         }                        
                         
