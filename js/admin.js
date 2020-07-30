@@ -140,6 +140,7 @@ var QSMAdmin;
                         icons: icons,
                         heightStyle: "content"
                 });
+                jQuery('#accordion h3.ui-accordion-header').next().slideDown();
                 jQuery('.template-list .template-list-inner:first-child').trigger('click');                
             }
         });
@@ -160,6 +161,7 @@ var QSMAdmin;
                     jQuery('#recomm_addons_wrapper').html('');
                     jQuery('#recomm_addons_wrapper').html(diff_html[1]);
                     jQuery( "#accordion" ).accordion();
+                    jQuery('#accordion h3.ui-accordion-header').next().slideDown();
                     $( '#quiz_settings_wrapper select' ).each(function(){
                         var name = $(this).attr('name');
                         var value = $(this).val();                        
