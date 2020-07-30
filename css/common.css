@@ -13,8 +13,8 @@
 .MJXc-display{
     display: inline-block !important;
 }
-.mlw_qmn_question{
-    display: block;
+body .quiz_section .mlw_qmn_question{
+    display: inline-block;
 }
 
 .mlw_qmn_question.polar-question-title {
@@ -126,12 +126,14 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }   
 .quiz_section .mlw_qmn_new_question{
     font-weight: bold;
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: auto;
     margin-bottom: 10px;
 }
 .quiz_section .mlw_qmn_question.qsm_remove_bold{
     font-weight: normal;
+    display: block;
+    margin-bottom: 10px;
 }
 .quiz_section iframe{    
     width: 100% !important;
