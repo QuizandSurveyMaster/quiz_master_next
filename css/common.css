@@ -17,6 +17,10 @@ body .quiz_section .mlw_qmn_question{
     display: inline-block;
 }
 
+body .quiz_section .qsm_contact_div .mlw_qmn_question{
+    display: block;
+}
+
 .mlw_qmn_question.polar-question-title {
 	margin-bottom: 10px;
 }
