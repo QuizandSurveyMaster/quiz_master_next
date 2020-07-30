@@ -615,3 +615,16 @@ function qsm_check_create_tables(){
     }
 }
 add_action('admin_init', 'qsm_check_create_tables');
+
+/**
+ * Redirect the admin old slug to new slug
+ * 
+ * @since 7.0.0
+ */
+function qsm_admin_page_access_func(){
+    if( isset( $_GET['page'] ) && $_GET['page'] == 'quiz-master-next/mlw_quizmaster2.php'){
+        wp_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
+        exit;
+    }
+}
+add_action('admin_page_access_denied', 'qsm_admin_page_access_func');
