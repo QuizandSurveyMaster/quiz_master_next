@@ -349,64 +349,6 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 	return $content;
 }
 
-/**
- *  Show Answer or not based on logic
- */
-function show_answer($array, $key, $value,$mlw_quiz_array) {
-    if (is_array($array)) {
-        foreach($array as $key_f => $arr) {
-          foreach($arr[$key] as $t_key => $then) {
-            if($then['question'] == $value) {
-              $q_condition = $array[$key_f]['if'][$t_key];
-              $cond_q_id = $q_condition['question'];
-              $cond = $q_condition['condition'];
-              $cond_val = $q_condition['answer'];
-              $check = checkQuestionCondition($mlw_quiz_array,$cond_q_id,$cond,$cond_val);
-              if($check && $then['condition'] == 'Hide'){
-                return true;
-              }
-              return false;
-            }
-          }
-        }
-    }
-    return false;
-}
-
-/**
- *  Check question condition
- */
-function checkQuestionCondition($mlw_quiz_array,$cond_q_id,$cond,$cond_val) {
-  foreach($mlw_quiz_array as $key => $answer) {
-    $user_select = $answer[1];
-    $q_id = $answer['id'];
-    if($q_id == $cond_q_id) {
-      switch($cond){
-        case 'is equal to':
-          if($user_select == $cond_val) {
-            return true;
-          }
-          break;
-        case 'is not equal to':
-          if($user_select != $cond_val) {
-            return true;
-          }
-          break;
-        case 'is greater than':
-          if($user_select > $cond_val) {
-            return true;
-          }
-          break;
-        case 'is less than':
-          if($user_select < $cond_val) {
-            return true;
-          }
-          break;
-      }
-    }
-  }
-  return false;
-}
 
 /**
  * Converts the %QUESTIONS_ANSWERS% into the template
@@ -418,6 +360,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
   global $mlwQuizMasterNext;
   $logic_rules = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
   $logic_rules = unserialize( $logic_rules );
+  $hidden_questions = isset($mlw_quiz_array['hidden_questions']) ? $mlw_quiz_array['hidden_questions'] : array();
 
 	// Checks if the variable is present in the content.
 	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false ) {
@@ -437,8 +380,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 
 		// Cycles through each answer in the responses.
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-      $question_conditions = show_answer($logic_rules, 'then', $answer['id'], $mlw_quiz_array['question_answers_array']);
-      if($question_conditions) {
+      if(in_array($answer['id'],$hidden_questions)) {
         continue;
       }
                         if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ){

@@ -543,6 +543,7 @@ class QMNQuizManager {
         }
         $quiz_display = apply_filters('qsm_display_before_form', $quiz_display);
         $quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='' method='POST' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate  enctype='multipart/form-data'>";
+        $quiz_display .= "<input type='hidden' name='qsm_hidden_questions' id='qsm_hidden_questions' value=''>";
         $quiz_display .= "<div name='mlw_error_message' id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
         $quiz_display .= "<span id='mlw_top_of_quiz'></span>";
         $quiz_display = apply_filters('qmn_begin_quiz_form', $quiz_display, $options, $quiz_data);
@@ -1071,6 +1072,7 @@ class QMNQuizManager {
         $qmn_array_for_variables['timer_ms'] = $mlw_qmn_timer_ms;
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
         $qmn_array_for_variables['contact'] = $contact_responses;
+        $qmn_array_for_variables['hidden_questions'] = isset($_POST['qsm_hidden_questions']) ? json_decode(html_entity_decode(stripslashes($_POST['qsm_hidden_questions'])),true) : array();
 
         if (!isset($_POST["mlw_code_captcha"]) || ( isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] )) {
 
