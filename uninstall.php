@@ -68,6 +68,7 @@ $qsm_transients =  array(
 	'qsm_sidebar_feed_data',
 	'qmn_contributors',
 	'qsm_ads_data',
+        'qsm_admin_dashboard_data'
 );
 
 // Remove the orphaned transients now.

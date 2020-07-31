@@ -96,7 +96,8 @@ function qsm_generate_featured_addons() {
     <div class="qsm-addon-browse-addons">
         <div class="qsm-addon-anchor-left">
             <a class="active" href="#qsm_popular_addons"><?php _e('Popular Addons', 'quiz-master-next'); ?></a>
-            <a href="#qsm_new_addons"><?php _e('New Addons', 'quiz-master-next'); ?></a>
+            <a href="#qsm_onsale_addons"><?php _e('On Sale Addons', 'quiz-master-next'); ?></a>
+            <a href="#qsm_new_addons"><?php _e('Recently Updated Addons', 'quiz-master-next'); ?></a>
         </div>
         <div class="qsm-addon-list-right">
             <span><?php _e('40+ addons available', 'quiz-master-next'); ?></span>
@@ -123,7 +124,36 @@ function qsm_generate_featured_addons() {
                                             </a>
                                             <div class="description-wrap">
                                                 <span class="description"><?php echo $single_arr['description']; ?></span>
-                                                <button class="button button-primary">$<?php echo $single_arr['price']; ?></button>
+                                                <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
+                                                <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                            </div>                                            
+                                    </div>
+                                    <?php
+                            }
+                    }
+                    ?>
+            </div>
+        </div>
+        <div class="qsm_popular_addons" id="qsm_onsale_addons" style="display: none;">
+            <?php
+            $qsm_onsale_addons = qsm_get_widget_data('on_sale_products');
+            if( empty( $qsm_onsale_addons ) ){
+                $qsm_admin_dd = qsm_fetch_data_from_script();            
+                $qsm_onsale_addons = isset( $qsm_admin_dd['on_sale_products'] ) ? $qsm_admin_dd['on_sale_products'] : array();
+            } 
+            ?>
+            <div class="popuar-addon-ul">
+                    <?php
+                    if ( $qsm_onsale_addons ) {
+                            foreach ( $qsm_onsale_addons as $key => $single_arr ) {
+                                    ?>
+                                    <div>
+                                            <a href="<?php echo $single_arr['link']; ?>" target="_blank">
+                                                    <img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
+                                            </a>
+                                            <div class="description-wrap">
+                                                <span class="description"><?php echo $single_arr['description']; ?></span>
+                                                <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
                                                 <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
                                             </div>                                            
                                     </div>
@@ -182,7 +212,7 @@ function qsm_generate_featured_addons() {
                 <div class="qsm-info-widget" style="background-color: <?php echo $bundles_arr['background']; ?>">
                         <h3><?php echo $bundles_arr['name']; ?></h3>
                         <p><?php echo $bundles_arr['desc']; ?></p>
-                        <button class="button button-default">$<?php echo $bundles_arr['price']; ?></button>
+                        <button class="button button-default">$<?php echo array_values($bundles_arr['price'])[0]; ?></button>
                         <a target="_blank" href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary"><?php _e('Get Now', 'quiz-master-next'); ?></a>
                 </div>
             <?php            
