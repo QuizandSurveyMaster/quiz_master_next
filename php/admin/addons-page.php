@@ -20,8 +20,16 @@ function qmn_addons_page() {
     wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
     ?>
     <div class="wrap qsm-addon-setting-wrap">
-        <h2><?php _e('Quiz And Survey Master Addon Settings', 'quiz-master-next'); ?></h2>
-        <h2 class="nav-tab-wrapper">
+        <h2 style="margin-bottom: 20px;">
+            <?php _e('QSM Addon Settings', 'quiz-master-next'); ?>
+            <?php 
+            if( isset( $_GET['tab'] ) && $_GET['tab'] != '' ){ ?>
+                <a class="button button-default" href="?page=qmn_addons"><span style="margin-top: 4px;" class="dashicons dashicons-arrow-left-alt"></span> <?php _e('Back to list', 'quiz-master-next'); ?></a>
+            <?php            
+            }
+            ?>
+        </h2>
+        <h2 class="nav-tab-wrapper" style="display: none;">
             <?php
             foreach ($tab_array as $tab) {
                 $active_class = '';
@@ -52,64 +60,135 @@ function qmn_addons_page() {
  * @since 4.4.0
  */
 function qsm_generate_featured_addons() {
-    wp_enqueue_style('qsm_addons_style', plugins_url('../../css/qsm-admin.css', __FILE__));    
+    global $mlwQuizMasterNext;
+    wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+    $tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();    
     ?>
-    <p><?php esc_html_e('These addons extend the functionality of Quiz And Survey Master', 'quiz-master-next'); ?></p>
-    <div class="qsm-quiz-page-addon">
-        <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
-        <div class="qsm-addons">
-            <?php
-            $xml = qsm_fetch_data_from_xml();
-            $cateory_arr = array();
-            if (isset($xml->item) && $xml->item) {
-                foreach ($xml->item as $key => $value) {
-                    $category_addon = trim($value->category);
-                    if (!array_key_exists($category_addon, $cateory_arr)) {
-                        $cateory_arr[$category_addon] = array();
+    <div class="qsm-active-addons">
+        <h2 class="installed_title"><?php _e('Installed Addons', 'quiz-master-next'); ?></h2>
+        <?php            
+            if( $tab_array && count( $tab_array ) > 1 ){ ?>
+                <div class="installed_addons_wrapper">
+                <?php
+                foreach ($tab_array as $tab) { 
+                    if( trim( $tab['title'] ) == 'Featured Addons' ){
+                        continue;
                     }
-                    $cateory_arr[$category_addon][] = $value;
-                }
-            }
-            if ($cateory_arr) {
-                foreach ($cateory_arr as $cat_name => $cat_value) {
                     ?>
-                    <h3 class="addon_category_name"><?php echo $cat_name; ?></h3>
-                    <?php foreach ($cat_value as $value) { ?>
-                        <div class="qsm-info-widget">
-                            <h3><?php echo $value->name; ?></h3>
-                            <p><?php echo $value->desc; ?></p>
-                            <button class="button button-default"><?php echo '$' . $value->price; ?></button>
-                            <a href="<?php echo $value->link . '&utm_medium=plugin&utm_content=' . $value->slug . '&utm_campaign=qsm_plugin' ?>" target="_blank" class="button button-primary">Get This Addon</a>
-                        </div>                      
-                    <?php } ?>
-                    <?php
-                }
-            }
-            ?>		
-        </div>
-        <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-bottom&utm_campaign=qsm_plugin" target="_blank" class="button-primary" style="margin-top: 20px !important;"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
-    </div>
-    <div class="qsm-news-ads">
-        <h3 class="qsm-news-ads-title">QSM Bundle</h3>
-        <?php
-        if(isset($xml->qsm_bundle)){
+                    <div class="installed_addon">
+                        <span class="installed_addon_name"><?php echo $tab['title']; ?></span>
+                        <span class="installed_addon_link">
+                            <a class="button button-default" href="?page=qmn_addons&tab=<?php echo $tab['slug']; ?>"><span class="dashicons dashicons-admin-generic"></span> <?php _e('Settings', 'quiz-master-next'); ?></a>
+                        </span>
+                    </div>
+                <?php } ?>
+                </div>
+            <?php
+        } else { ?>
+            <div class="no_addons_installed">
+                <?php 
+                _e('You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next');
+                ?>
+            </div>
+        <?php }
         ?>
-        <div class="qsm-info-widget">
-            <h3><?php echo $xml->qsm_bundle->starter_bundle->name; ?></h3>
-            <p><?php echo $xml->qsm_bundle->starter_bundle->desc; ?></p>
-            <button class="button button-default">$<?php echo $xml->qsm_bundle->starter_bundle->price; ?></button>
-            <a target="_blank" href="<?php echo $xml->qsm_bundle->starter_bundle->link; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
+    </div>
+    <div class="qsm-addon-browse-addons">
+        <div class="qsm-addon-anchor-left">
+            <a class="active" href="#qsm_popular_addons"><?php _e('Popular Addons', 'quiz-master-next'); ?></a>
+            <a href="#qsm_new_addons"><?php _e('New Addons', 'quiz-master-next'); ?></a>
         </div>
-        <div class="qsm-info-widget">
-            <h3><?php echo $xml->qsm_bundle->premium_bundle->name; ?></h3>
-            <p><?php echo $xml->qsm_bundle->premium_bundle->desc; ?></p>
-            <button class="button button-default">$<?php echo $xml->qsm_bundle->premium_bundle->price; ?></button>
-            <a target="_blank" href="<?php echo $xml->qsm_bundle->premium_bundle->link; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary">Get Now</a>
+        <div class="qsm-addon-list-right">
+            <span><?php _e('40+ addons available', 'quiz-master-next'); ?></span>
+            <a href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button-primary"><?php _e('Browse All Addons', 'quiz-master-next'); ?></a>
         </div>
-        <?php } ?>
-       <!--  <div class="remove-ads-adv-link">
-            <a target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>
-        </div> -->
+    </div>
+    <div class="qsm-quiz-page-addon qsm-addon-page-list">
+        <?php
+        $popular_addons = qsm_get_widget_data('popular_products');        
+        if( empty( $popular_addons ) ){
+            $qsm_admin_dd = qsm_fetch_data_from_script();            
+            $popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
+        } 
+        ?>
+        <div class="qsm_popular_addons" id="qsm_popular_addons">
+            <div class="popuar-addon-ul">
+                    <?php
+                    if ( $popular_addons ) {
+                            foreach ( $popular_addons as $key => $single_arr ) {
+                                    ?>
+                                    <div>
+                                            <a href="<?php echo $single_arr['link']; ?>" target="_blank">
+                                                    <img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
+                                            </a>
+                                            <div class="description-wrap">
+                                                <span class="description"><?php echo $single_arr['description']; ?></span>
+                                                <button class="button button-primary">$<?php echo $single_arr['price']; ?></button>
+                                                <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                            </div>                                            
+                                    </div>
+                                    <?php
+                            }
+                    }
+                    ?>
+            </div>
+        </div>
+        <div class="qsm_popular_addons" id="qsm_new_addons" style="display: none;">
+            <?php
+            $new_addons = qsm_get_widget_data('new_addons');
+            if( empty( $popular_addons ) ){
+                $qsm_admin_dd = qsm_fetch_data_from_script();            
+                $new_addons = isset( $qsm_admin_dd['new_addons'] ) ? $qsm_admin_dd['new_addons'] : array();
+            } 
+            ?>
+            <div class="popuar-addon-ul">
+                <?php
+                if ( $new_addons ) {
+                        foreach ( $new_addons as $key => $single_arr ) {
+                                ?>
+                                <div>
+                                        <a href="<?php echo $single_arr['link']; ?>" target="_blank">
+                                                <img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
+                                        </a>
+                                        <div class="description-wrap">
+                                            <?php if( isset($single_arr['description']) && $single_arr['description'] != '' ){ ?>
+                                                <span class="description"><?php echo $single_arr['description']; ?></span>
+                                            <?php } ?>
+                                            <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
+                                            <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                        </div>                                            
+                                </div>
+                                <?php
+                        }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+    <div class="qsm-addon-news-ads">        
+        <?php
+            $bundles = qsm_get_widget_data('bundles');
+            if( empty( $bundles ) ){
+                $qsm_admin_dd = qsm_fetch_data_from_script();            
+                $bundles = isset( $qsm_admin_dd['bundles'] ) ? $qsm_admin_dd['bundles'] : array();
+            } 
+        ?>
+        <?php        
+        if( $bundles ){
+            ?>
+            <h3 class="qsm-news-ads-title"><?php _e('SAVE WITH OUR BUNDLES', 'quiz-master-next'); ?></h3>
+            <?php
+            foreach ($bundles as $key => $bundles_arr) { ?>
+                <div class="qsm-info-widget" style="background-color: <?php echo $bundles_arr['background']; ?>">
+                        <h3><?php echo $bundles_arr['name']; ?></h3>
+                        <p><?php echo $bundles_arr['desc']; ?></p>
+                        <button class="button button-default">$<?php echo $bundles_arr['price']; ?></button>
+                        <a target="_blank" href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" class="button-primary"><?php _e('Get Now', 'quiz-master-next'); ?></a>
+                </div>
+            <?php            
+            }
+        }
+        ?>
     </div>
     <?php
 }
@@ -149,9 +228,9 @@ function qsm_display_optin_page() {
                     <div class="about-body">
                         <img src="" alt="Improved Custom Fields">
                     </div>
-                </div> -->                
+                </div> -->
             </div>
-            
+
             <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in <b>Quiz and Survey Master</b>, let you know when new or updated addons are being released and provide informative articles that show you how to use <b>Quiz and Survey Master</b> to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://quizandsurveymaster.com/privacy-policy/', 'target="_blank"'); ?></p>
 
             <div id="wpas-mailchimp-signup-form-wrapper">
@@ -228,12 +307,12 @@ function qsm_display_optin_page() {
               <div></div>
               <div id="sib-container" class="sib-container--large sib-container--vertical" style="text-align:center; background-color:rgba(255,255,255,1); max-width:540px; border-radius:3px; border-width:1px; border-color:#C0CCD9; border-style:solid;">
                 <form id="sib-form" method="POST" action="https://cddf18fd.sibforms.com/serve/MUIEAO9t8eOB2GOqY73EWqFatPi328RiosfYMKieZ_8IxVL2jyEazmQ9LlkDj6pYrTlvB7JBsx3su8WdK5A4l445X0P-0r0Qf82LWXLSFa3yK0YZuypiIxy8hZfBXClZMANBeEVpBkswLw0RxDt2uWrN7B7zHTFXWY0W4mftpWo3Nqen7SQW1L9DYnXrex6lyw5EfHvZ3ZwsU6Xp"
-                  data-type="subscription">                                   
+                  data-type="subscription">
                   <div style="padding: 16px 0;">
                     <div class="sib-input sib-form-block">
                       <div class="form__entry entry_block">
                         <div class="form__label-row ">
-                          <label class="entry__label" style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;" for="EMAIL" data-required="*">                            
+                          <label class="entry__label" style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;" for="EMAIL" data-required="*">
                             <?php _e('Enter your email address to subscribe', 'quiz-master-next'); ?>
                           </label>
 
@@ -245,7 +324,7 @@ function qsm_display_optin_page() {
                         <label class="entry__error entry__error--primary" style="font-size:16px; text-align:left; font-family:Helvetica, sans-serif; color:#661d1d; background-color:#ffeded; border-radius:3px; border-width:px; border-color:#ff4949;">
                         </label>
                         <label class="entry__specification" style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; border-width:px;">
-                            <?php _e('Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next'); ?>                          
+                            <?php _e('Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next'); ?>
                         </label>
                       </div>
                     </div>
@@ -306,7 +385,7 @@ function qsm_display_optin_page() {
           </script>
           <script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
           <!-- END - We recommend to place the above code in footer or bottom of your website html  -->
-          <!-- End Sendinblue Form -->                
+          <!-- End Sendinblue Form -->
             </div>
         </div>
 
