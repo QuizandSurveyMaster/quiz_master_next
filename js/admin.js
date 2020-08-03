@@ -308,5 +308,13 @@ var QSMAdmin;
                 this_par.text('').text(button_txt);
             }, 1000);
         });
+        $(document).on('click', '.qsm-addon-anchor-left > a', function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            $('.qsm-addon-anchor-left').find('a').removeClass('active');
+            $(this).addClass('active');
+            $('.qsm-quiz-page-addon > .qsm_popular_addons').hide();
+            $( href ).show();
+        });
     });    
 }(jQuery));
