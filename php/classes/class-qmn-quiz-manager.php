@@ -1288,6 +1288,9 @@ class QMNQuizManager {
                             $question_type_new = $question['question_type_new'];
                             if(!in_array($question_type_new,$result_question_types)) {
                               $total_questions--;
+                            }
+                            if(in_array($question_id,$quiz_data['hidden_questions'])) {
+                              $total_questions--;
                               continue;
                             }
 
@@ -1302,13 +1305,19 @@ class QMNQuizManager {
 
                             // If question was graded correctly.
                             if (!isset($results_array["null_review"])) {
-                                $points_earned += $results_array["points"];
-                                $answer_points += $results_array["points"];
+                                if(in_array($question_type_new,$result_question_types)) {
+                                  $points_earned += $results_array["points"];
+                                  $answer_points += $results_array["points"];
+                                }
+                                
 
                                 // If the user's answer was correct
                                 if ('correct' == $results_array["correct"]) {
-                                    $total_correct += 1;
-                                    $correct_status = "correct";
+                                    if(in_array($question_type_new,$result_question_types)) {
+                                      $total_correct += 1;
+                                      $correct_status = "correct";
+                                    }
+                                    
                                 }
                                 $user_answer = $results_array["user_text"];
                                 $correct_answer = $results_array["correct_text"];
