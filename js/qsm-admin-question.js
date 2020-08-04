@@ -15,7 +15,7 @@ var import_button;
 				quizID: 1,
 				type: '0',
 				name: '',
-				question_title: 'Your new question!',
+				question_title: '',
 				answerInfo: '',
 				comments: '1',
 				hint: '',
@@ -315,7 +315,11 @@ var import_button;
                             //Do nothing
                         }else{
                             questionName = new_question_title;
-                        }                        
+                        }
+                        
+                        if( questionName == '' )
+                            questionName = 'Your new question!';
+                        
 			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, category : model.get('category'), question: questionName } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
@@ -873,10 +877,14 @@ var import_button;
                 $( document ).on('click', '.qsm-show-question-desc-box', function(e){
                     e.preventDefault();
                     if( $(this).next('.qsm-row').is(':visible') ){
-                        $(this).text('').text(qsmQuestionSettings.show_desc_text);
+                        $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_desc_text);
                         $(this).next('.qsm-row').slideUp();
                     }else{
-                        $(this).text('').text(qsmQuestionSettings.hide_desc_text);
+                        $(this).html('').html('<span class="dashicons dashicons-minus"></span> ' + qsmQuestionSettings.hide_desc_text);
+                        var question_description = wp.editor.getContent( 'question-text' );
+                        if( question_description == '' || question_description == NULL ){
+                            tinyMCE.get( 'question-text' ).setContent( 'Add description here!' );
+                        }
                         $(this).next('.qsm-row').slideDown();
                     }                    
                 });
