@@ -1247,6 +1247,7 @@ jQuery(function() {
             form_data.append('action', 'qsm_upload_image_fd_question');
             var question_id = $this.parent('.quiz_section').find('.mlw_file_upload_hidden_value').attr("name").replace('question','');
             form_data.append('question_id', question_id);
+            $this.next('.loading-uploaded-file').show();
             jQuery.ajax({
                 url: qmn_ajax_object.ajaxurl,
                 type: 'POST',
@@ -1256,9 +1257,10 @@ jQuery(function() {
                 processData: false,
                 success: function (response) {
                     var obj = jQuery.parseJSON(response);
+                    $this.next('.loading-uploaded-file').hide();
                     if(obj.type == 'success'){
-                        $this.next('.remove-uploaded-file').show();
-                        $this.next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
+                        $this.next().next('.remove-uploaded-file').show();
+                        $this.next().next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
                         $this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
                         $this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
                     }else{
