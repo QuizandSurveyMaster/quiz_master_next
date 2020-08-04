@@ -44,7 +44,7 @@ function qmn_file_upload_display($id, $question, $answers)
     //$question_title = apply_filters('the_content', $question);
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
     $question_display .= qsm_question_title_func($question,'',$new_question_title);
-    $question_display .= "<input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
+    $question_display .= "<div style=''></div><input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
     $question_display .= "<div style='display: none;' class='remove-uploaded-file'><span class='dashicons dashicons-trash'></span></div>";
     $question_display .= "<input class='mlw_file_upload_hidden_value' type='hidden' name='question".$id."' value='' />";
     $question_display .= "<span style='display: none;' class='mlw-file-upload-error-msg'></span>";

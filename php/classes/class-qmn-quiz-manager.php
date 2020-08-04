@@ -88,7 +88,8 @@ class QMNQuizManager {
             }
         }
         $json = array();
-        if (in_array($_FILES["file"]['type'], $mimes)) {
+        $validate_file = wp_check_filetype( $_FILES["file"]["name"]);        
+        if ( isset( $validate_file['type'] ) && in_array($validate_file['type'], $mimes)) {
             if($_FILES["file"]['size'] >= $file_upload_limit * 1024 * 1024){
                 $json['type']= 'error';
                 $json['message'] = __('File is too large. File must be less than ', 'quiz-master-next') . $file_upload_limit . ' MB';
@@ -98,11 +99,12 @@ class QMNQuizManager {
             $upload_dir = wp_upload_dir();
             $datafile = $_FILES["file"]["tmp_name"];
             $file_name = $_FILES["file"]["name"];
-            $file = $upload_dir['path'] . '/' . $_FILES['file']['name'];
-            $file_url = $upload_dir['url'] . '/' . $_FILES['file']['name'];
-            $counter = 1;
-            $rawBaseName = pathinfo($file_name, PATHINFO_FILENAME);
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            $rawBaseName = 'qsmfileupload_' . md5( date('Y-m-d H:i:s') ) . '_' . pathinfo($file_name, PATHINFO_FILENAME);
+            $new_fname = $rawBaseName . '.' . $extension;
+            $file = $upload_dir['path'] . '/' . $new_fname;
+            $file_url = $upload_dir['url'] . '/' . $new_fname;
+            $counter = 1;                        
             if(file_exists($file)){
                 while (file_exists($file)) {
                     $new_fname = $rawBaseName . '-' . $counter . '.' . $extension;
@@ -119,7 +121,7 @@ class QMNQuizManager {
                 $json['type']= 'success';
                 $json['message'] = __( 'File uploaded successfully', 'quiz-master-next' );
                 $json['file_url'] = $file_url;
-                $json['file_path'] = $file;
+                $json['file_path'] = $new_fname;
                 echo json_encode($json);
             }
         }else{
@@ -136,8 +138,10 @@ class QMNQuizManager {
      */
     public function qsm_remove_file_fd_question(){
         $file_url = isset($_POST['file_url']) ? sanitize_text_field($_POST['file_url']) : '';
-        if($file_url){
-            wp_delete_file($file_url);
+        $upload_dir = wp_upload_dir();
+        $uploaded_path = $upload_dir['path'];        
+        if($file_url && stristr( $file_url, 'qsmfileupload_' ) && file_exists( $uploaded_path . '/' . $file_url ) ){
+            wp_delete_file( $uploaded_path . '/' . $file_url );
             $json['type']= 'success';
             $json['message'] = __( 'File removed successfully', 'quiz-master-next' );
             echo json_encode($json);
