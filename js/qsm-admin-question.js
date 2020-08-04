@@ -515,7 +515,11 @@ var import_button;
                             wp.editor.remove( question_content );
                             QSMQuestion.prepareEditor();                                                        
                             question_editor = tinyMCE.get( 'question-text' );
-                        }			
+                        }
+                        if( questionText != '' && questionText != null ){
+                            jQuery('.qsm-show-question-desc-box').hide();
+                            jQuery('.qsm-show-question-desc-box').next('.qsm-row').show();
+                        }
 			if ($('#wp-question-text-wrap').hasClass('html-active')) {
 				jQuery( "#question-text" ).val( questionText );
 			} else if ( question_editor ) {
@@ -880,9 +884,9 @@ var import_button;
                         $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_desc_text);
                         $(this).next('.qsm-row').slideUp();
                     }else{
-                        $(this).html('').html('<span class="dashicons dashicons-minus"></span> ' + qsmQuestionSettings.hide_desc_text);
+                        $(this).hide();
                         var question_description = wp.editor.getContent( 'question-text' );
-                        if( question_description == '' || question_description == NULL ){
+                        if( question_description == '' || question_description == null ){
                             tinyMCE.get( 'question-text' ).setContent( 'Add description here!' );
                         }
                         $(this).next('.qsm-row').slideDown();
