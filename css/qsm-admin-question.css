@@ -195,10 +195,14 @@
 }
 
 .qsm-row {
-	display: inline-block;
+	display: block;
 	width: 100%;
 	margin-bottom: 13px;
 	font-size: 16px;
+}
+
+div#correct_answer_info_area {
+    float: left;
 }
 
 #post-body-content .qsm-row{
