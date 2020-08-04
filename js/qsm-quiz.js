@@ -1260,7 +1260,7 @@ jQuery(function() {
                     $this.next('.loading-uploaded-file').hide();
                     if(obj.type == 'success'){
                         $this.next().next('.remove-uploaded-file').show();
-                        $this.next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
+                        $this.next().next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
                         $this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
                         $this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
                     }else{
