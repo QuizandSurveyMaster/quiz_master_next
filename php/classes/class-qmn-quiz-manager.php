@@ -1302,7 +1302,9 @@ class QMNQuizManager {
 
                             // Send question to our grading function
                             $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
-
+                            if($results_array['question_type'] == 'file_upload') {
+                              $results_array['user_text'] = '<a target="_blank" href="'.$results_array['user_text'].'">Click here to view</a>';
+                            }
                             // If question was graded correctly.
                             if (!isset($results_array["null_review"])) {
                                 if(in_array($question_type_new,$result_question_types)) {
