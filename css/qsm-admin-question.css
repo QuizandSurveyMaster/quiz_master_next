@@ -605,7 +605,7 @@ a.import-button.button.disable_import::before {
 
 .qsm-show-question-desc-box{
     display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 10px !important;
     font-size: 15px;
 }
 
@@ -635,6 +635,13 @@ a#qsm-category-add-toggle {
 
 #qsm-question-id{
     float: right;
+}
+
+.qsm-show-question-desc-box{
+    background: #fff;
+}
+.qsm-show-question-desc-box span.dashicons{
+    line-height: 29px;
 }
 @media screen and (max-width: 575px){
     .qsm-popup__container{

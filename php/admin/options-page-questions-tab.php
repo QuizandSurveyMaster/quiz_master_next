@@ -62,8 +62,8 @@ function qsm_options_questions_tab_content() {
 		'categories' => $question_categories,
 		'form_type' => $form_type,
 		'quiz_system' => $quiz_system,
-                'hide_desc_text' => __('Hide Description Box', 'quiz-master-next'),
-                'show_desc_text' => __('Show Description Box', 'quiz-master-next'),
+                'hide_desc_text' => __('Less Description', 'quiz-master-next'),
+                'show_desc_text' => __('Add Description', 'quiz-master-next'),
 	);
 
 	// Scripts and styles.
@@ -156,11 +156,11 @@ function qsm_options_questions_tab_content() {
                                         <div id="post-body" class="metabox-holder columns-2">
                                             <div id="post-body-content" style="position: relative;">
                                                 <div class="qsm-row">
-                                                    <input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php _e('Add title','quiz-master-next'); ?>">
+                                                    <input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php _e('Type your question here','quiz-master-next'); ?>">
                                                 </div>
-                                                <a href="#" class="qsm-show-question-desc-box"><?php _e('Show Description box', 'quiz-master-next'); ?></a>
+                                                <a href="#" class="qsm-show-question-desc-box button button-default"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Add Description', 'quiz-master-next'); ?></a>
                                                 <div class="qsm-row" style="display: none;">
-                                                    <textarea id="question-text"></textarea>
+                                                    <textarea placeholder="<?php _e('Add your description here', 'quiz-master-next'); ?>" id="question-text"></textarea>
                                                 </div>
                                                 <div class="qsm-row" style="margin-bottom: 0;">
                                                     <?php
