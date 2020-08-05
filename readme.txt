@@ -122,19 +122,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.0.1 (August 05, 2020) =
-* Enhancement: Added items per page option for question bank pagination on settings page.
-* Enhancement: Improved UI/UX for description box with placeholder.
-* Enhancement: Few design changes on wizard and dashboard page.
+* Enhancement: Added option to set items per page while adding questions from question bank.
+* Enhancement: Hide question description by default or when empty.
 * Enhancement: Fixed the question number position while displaying questions.
-* Enhancement: Added new option to skip validations when time expire.
-* Enhancement: Renamed the question type for better understanding.
-* Enhancement: Improved the UI/UX of addons setting page.
-* Bug: Fixed result not storing issue when questions are more than 100+.
-* Bug: Added redirection while accessing old slug in admin panel.
-* Bug: Fixed issue force submit after timer expiry option not working.
-* Bug: Fixed issue %QUESTIONS_ANSWERS% not displaying correct data in Email.
-* Bug: Fixed Layout broken issue when editing or adding question.
-* Bug: Fixed security vulnerability (discovered by WordDefence).
+* Enhancement: Added new option to skip validations when timer expires.
+* Enhancement: Redesigned addons setting page.
+* Bug: Fixed issue with storing results when questions are more than 100.
+* Bug: Fixed issue with force submit option after timer expiry.
+* Bug: Fixed incorrect data issue in email when using %QUESTIONS_ANSWERS%.
+* Bug: Fixed broken layout when editing or adding question.
+* Bug: Fixed security vulnerability (discovered by Wordfence).
 
 = 7.0.0 (July 22, 2020) =
 * Enhancement: Complete UI overhaul QSM admin view including new Dashboard
