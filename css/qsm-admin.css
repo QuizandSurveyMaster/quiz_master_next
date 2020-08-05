@@ -125,6 +125,148 @@ span.qsm-quiz-name {
     float: left;
 }
 
+.qsm-addon-browse-addons{
+    background: #fff;
+    padding: 15px 25px;
+    width: 100%;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.qsm-addon-browse-addons .qsm-addon-anchor-left{
+    float: left;
+}
+.qsm-addon-browse-addons .qsm-addon-list-right{
+    float: right;
+}
+.qsm-addon-browse-addons .qsm-addon-list-right > span{
+    margin-right: 10px;
+    font-size: 16px;
+}
+.qsm-addon-browse-addons .qsm-addon-anchor-left a.active{
+    font-weight: bold;
+}
+.qsm-addon-browse-addons .qsm-addon-anchor-left a{
+    display: inline-block;
+    font-size: 16px;
+    color: #474444;
+    text-decoration: none;
+    margin-top: 5px;
+    margin-right: 30px;
+}
+.qsm_popular_addons div.popuar-addon-ul{
+    width: 100%;
+    display: inline-block;
+}
+.qsm_popular_addons div.popuar-addon-ul > div{
+    background: #fff;
+    padding: 5px;
+    width: 30%;
+    margin-right: 2%;
+    float: left;
+    margin-bottom: 30px;
+}
+.qsm_popular_addons div.popuar-addon-ul > div:nth-child(3n+4){
+    clear: both;
+}
+.qsm_popular_addons div.popuar-addon-ul > div .description-wrap{ 
+    padding: 20px;
+}
+.qsm_popular_addons div.popuar-addon-ul > div .description-wrap .description{ 
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-style: normal;
+}
+.qsm_popular_addons div.popuar-addon-ul > div img{
+    max-width: 100%;
+}
+.qsm-quiz-page-addon.qsm-addon-page-list{
+    width: 75%;
+    float: left;
+    margin-top: 40px;
+}
+.qsm-addon-news-ads{
+    width: 25%;
+    float: right;
+    background: #fff;
+    padding: 7px;
+    box-sizing: border-box;
+    margin-top: 40px;
+}
+.qsm-addon-news-ads .qsm-news-ads-title{
+    border-bottom: 0;
+    margin-top: 25px;
+}
+.qsm-addon-news-ads .qsm-info-widget{
+    text-align: left;
+    padding: 30px;
+}
+.qsm-addon-news-ads .qsm-info-widget h3{
+    color: #fff;
+}
+.qsm-addon-news-ads .qsm-info-widget a.button-primary{
+    margin-top: 0;
+    background: #fff;
+    color: #444;
+}
+.qsm-addon-news-ads .qsm-info-widget .button.button-default{
+    background: #fff;
+    color: #444;
+}
+.qsm-addon-news-ads .qsm-info-widget:nth-child(2){
+    background: #00BB57;
+    color: #fff;
+}
+.qsm-addon-news-ads .qsm-info-widget:nth-child(3){
+    background: #0073AF;
+    color: #fff;
+}
+.qsm-active-addons .installed_title{
+    background: #fff;
+    margin: 0;
+    padding: 15px;
+    border: 1px solid #ccd0d4;
+    color: #007cba;
+    font-size: 16px;
+}
+.qsm-active-addons .installed_addons_wrapper,
+.qsm-active-addons .no_addons_installed{
+    border: 1px solid #ccd0d4;
+    border-top: medium none;
+}
+.qsm-active-addons .no_addons_installed{
+    padding: 30px 25%;
+    background: #fff;
+    text-align: center;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 22px;
+}
+.qsm-active-addons .installed_addons_wrapper .installed_addon{
+    padding: 15px 15px 27px 15px;
+    background: #FAFAFA;
+}
+.qsm-active-addons .installed_addons_wrapper .installed_addon:nth-child(2n){
+    background: #fff;
+}
+.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_name{
+    font-size: 14px;
+    font-weight: bold;
+    position: relative;
+    top: 5px;
+}
+.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link{
+    float: right;
+}
+.qsm-active-addons .installed_addons_wrapper .installed_addon .installed_addon_link span.dashicons{
+    margin-top: 4px;
+}
+.qsm-active-addons{
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+}
 .quizzes-surveys_page_qmn_addons .qsm-news-ads{
     width: 15%;
     float: right;
@@ -249,6 +391,11 @@ Results Pages & Emails Tab
     margin-bottom: 10px;
 }
 
+.email-show label{
+    margin-bottom: 5px;    
+    display: block;
+}
+
 .results-page-content-header h4,
 .results-page-content-header p,
 .email-content-header h4,
@@ -274,7 +421,7 @@ Results Pages & Emails Tab
 .delete-condition-button {
     background: none;
     border: 1px solid #1DD969;
-    color: #1DD969;
+    color: #dc3232;
     cursor: pointer;
     transition-duration: 200ms;
     padding: 6px;
@@ -512,21 +659,20 @@ Misc.
 /* Info Bar */
 .qsm-info-box {
     display: block;
-    text-align:center;
-    background: #0d97d8;
-    border: 5px solid #1DD969;
-    color: #000;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #dfd4d4;
+    /* color: #000; */
     font-weight: bold;
-    font-size: 14px;
+    /* font-size: 14px; */
+    margin-bottom: 20px;
+    margin-top: 10px;
 }
 
 .qsm-info-box p {
     font-size: 14px;
 }
 
-.qsm-info-box a {
-    color: yellow;
-}
 
 /* Info Widget */
 .qsm-quiz-page-addon .qsm-info-widget {
@@ -1421,6 +1567,9 @@ td.scheduled_time_start {
 }
 .popup-template-span-wrap .popup-copied-des span.dashicons{
     line-height: 28px;
+}
+.comment-inner-wrap{
+    display: none;
 }
 @media (min-width: 768px) and (max-width: 1199px){
     .qsm-news-ads .qsm-info-widget{

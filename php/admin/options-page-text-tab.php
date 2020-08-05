@@ -27,6 +27,7 @@ function mlw_options_text_tab_content() {
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
+            <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div id="post-body-content" style="position: relative;">
@@ -154,7 +155,7 @@ function qsm_get_question_text_message(){
     global $mlwQuizMasterNext;
     $text_id = isset( $_POST['text_id']  ) ? sanitize_text_field( $_POST['text_id'] ) : '';
     if( $text_id == '' ){
-        echo json_encode( array( 'success'=> false, 'message' => 'Text id is missing.') );
+        echo json_encode( array( 'success'=> false, 'message' => __('Text id is missing.', 'quiz-master-next')) );
         exit;
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );

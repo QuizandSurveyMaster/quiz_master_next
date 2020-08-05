@@ -13,7 +13,11 @@
 .MJXc-display{
     display: inline-block !important;
 }
-.mlw_qmn_question{
+body .quiz_section .mlw_qmn_question{
+    display: inline-block;
+}
+
+body .quiz_section .qsm_contact_div .mlw_qmn_question{
     display: block;
 }
 
@@ -126,12 +130,14 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }   
 .quiz_section .mlw_qmn_new_question{
     font-weight: bold;
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: auto;
     margin-bottom: 10px;
 }
 .quiz_section .mlw_qmn_question.qsm_remove_bold{
     font-weight: normal;
+    display: block;
+    margin-bottom: 10px;
 }
 .quiz_section iframe{    
     width: 100% !important;
@@ -147,6 +153,20 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     font-weight: bold;
     color: rgb(52, 152, 219);
 }
+.quiz_section .mlw-file-upload-error-msg{
+    color: red;
+    display: block;
+}
+
+.quiz_section .remove-uploaded-file{
+    color: red;
+    border: 1px solid red;
+    width: 31px;
+    padding: 5px 5px 0px 5px;
+    display: inline-block;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

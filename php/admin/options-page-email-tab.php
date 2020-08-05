@@ -46,7 +46,7 @@ function qsm_options_emails_tab_content() {
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>                
                 <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span class="dashicons dashicons-upload"></span></a>
-                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/setting-up-emails/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
+                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
 		<div id="emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
@@ -66,8 +66,8 @@ function qsm_options_emails_tab_content() {
 			<main class="email-content">
 				<div class="email-when">
 					<div class="email-content-header">
-						<h4>When...</h4>
-						<p>Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.</p>
+						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
+						<p><?php esc_html_e('Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next'); ?></p>
 					</div>
 					<div class="email-when-conditions">
 						<!-- Conditions go here. Review template below. -->
@@ -76,14 +76,14 @@ function qsm_options_emails_tab_content() {
 				</div>
 				<div class="email-show">
 					<div class="email-content-header">
-						<h4>...Send</h4>
-						<p>Create the email that should be sent when the conditions are met.</p>
+						<h4><?php esc_html_e('...Send', 'quiz-master-next'); ?></h4>
+						<p><?php esc_html_e('Create the email that should be sent when the conditions are met.', 'quiz-master-next'); ?></p>
 					</div>
-					<label>Who to send the email to? Put %USER_EMAIL% to send to user</label>
+					<label><?php esc_html_e('Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next'); ?></label>
 					<input type="email" class="to-email" value="{{ data.to }}">
-					<label>Email Subject</label>
+					<label><?php esc_html_e('Email Subject', 'quiz-master-next'); ?></label>
 					<input type="text" class="subject" value="{{ data.subject }}">
-					<label>Email Content</label>
+					<label><?php esc_html_e('Email Content', 'quiz-master-next'); ?></label>
 					<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
 					<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
 				</div>
@@ -95,17 +95,17 @@ function qsm_options_emails_tab_content() {
 		<div class="email-condition">
 			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
 			<select class="email-condition-criteria">
-				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>>Total points earned</option>
-				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>>Correct score percentage</option>
+				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e('Total points earned', 'quiz-master-next'); ?></option>
+				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e('Correct score percentage', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_email_condition_criteria' ); ?>
 			</select>
 			<select class="email-condition-operator">
-				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>>is equal to</option>
-				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>>is not equal to</option>
-				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>>is greater than or equal to</option>
-				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>>is greater than</option>
-				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>>is less than or equal to</option>
-				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>>is less than</option>
+				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e('is equal to', 'quiz-master-next'); ?></option>
+				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e('is not equal to', 'quiz-master-next'); ?></option>
+				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e('is greater than or equal to', 'quiz-master-next'); ?></option>
+				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e('is greater than', 'quiz-master-next'); ?></option>
+				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e('is less than or equal to', 'quiz-master-next'); ?></option>
+				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e('is less than', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_email_condition_operator' ); ?>
 			</select>
 			<input type="text" class="email-condition-value" value="{{ data.value }}">
@@ -118,7 +118,7 @@ function qsm_options_emails_tab_content() {
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?></span>
+                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz. <br/><b>Note:</b> Always use uppercase while using these variables.', 'quiz-master-next'); ?></span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php

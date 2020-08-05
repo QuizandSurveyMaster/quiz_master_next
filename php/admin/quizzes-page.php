@@ -42,7 +42,7 @@ function qsm_generate_quizzes_surveys_page() {
     if (isset($_POST['qsm_duplicate_quiz_nonce']) && wp_verify_nonce($_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz')) {
         $quiz_id = intval($_POST['duplicate_quiz_id']);
         $quiz_name = sanitize_text_field(htmlspecialchars($_POST['duplicate_new_quiz_name'], ENT_QUOTES));
-        $mlwQuizMasterNext->quizCreator->duplicate_quiz($quiz_id, $quiz_name, isset($_POST['duplicate_questions']));
+        $mlwQuizMasterNext->quizCreator->duplicate_quiz($quiz_id, $quiz_name, isset($_POST['duplicate_questions']) ? sanitize_text_field( $_POST['duplicate_questions'] ) : 0);
     }
 
     // Resets stats for a quiz.
@@ -229,7 +229,7 @@ function qsm_generate_quizzes_surveys_page() {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {
             ?>
             <div class="qsm-info-box">
-                <p>Your site is using PHP version <?php echo esc_html(PHP_VERSION); ?>! Starting in QSM 6.0, your version of PHP will no longer be supported. <a href="http://bit.ly/2lyrrm8" target="_blank">Click here to learn more about QSM's minimum PHP version change.</a></p>
+                <p><?php esc_html_e('Your site is using PHP version', 'quiz-master-next'); ?> <?php echo esc_html(PHP_VERSION); ?>! <?php esc_html_e('Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next'); ?> <a href="http://bit.ly/2lyrrm8" target="_blank"><?php esc_html_e("Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next'); ?></a></p>
             </div>
             <?php
         }
@@ -460,7 +460,7 @@ function qsm_generate_quizzes_surveys_page() {
             <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
                     <header class="qsm-popup__header">
-                        <h2 class="qsm-popup__title" id="modal-1-title">Reset stats for this quiz?</h2>
+                        <h2 class="qsm-popup__title" id="modal-1-title"><?php _e('Reset stats for this quiz?', 'quiz-master-next'); ?></h2>
                         <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
                     </header>
                     <main class="qsm-popup__content" id="modal-1-content">

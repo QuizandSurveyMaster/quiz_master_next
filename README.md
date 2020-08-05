@@ -19,4 +19,4 @@ See [the list of contributors](https://github.com/QuizandSurveyMaster/quiz_maste
 This project is licensed under the GPLv2 License - see the [LICENSE.md file](https://github.com/QuizandSurveyMaster/quiz_master_next/blob/master/LICENSE.md) for details.
 
 ## Support ##
-This is a developer's portal for Quiz And Survey Master and should _not_ be used for support. Please create a support ticket [here](http://quizandsurveymaster.com/contact-us/).
+This is a developer's portal for Quiz And Survey Master and should _not_ be used for support. Please create a support ticket [here](https://quizandsurveymaster.com/contact-support/).

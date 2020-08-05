@@ -267,7 +267,7 @@ function qsm_generate_results_details_tab() {
         if( $new_template_result_detail == 0 ){
             echo '<div class="old_template_result_wrap">';
         }
-        echo $template;
+        echo wp_kses_post( $template );
         if( $new_template_result_detail == 0 ){
             echo '</div>';
         }
@@ -284,7 +284,7 @@ function qsm_generate_results_details_tab() {
 */
 function qsm_results_details_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( __( "Results", 'quiz-master-next' ), "qsm_generate_results_details_tab" );
+	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( "Results", "qsm_generate_results_details_tab" );
 }
 add_action( "plugins_loaded", 'qsm_results_details_tab' );
 ?>

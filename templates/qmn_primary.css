@@ -459,19 +459,6 @@ border: 1px solid #e3e3e3;
 .qsm-results-page .qmn_question_answer{
     margin-bottom: 30px;
 }
-.quiz_section .mlw-file-upload-error-msg{
-    color: red;
-    display: block;
-}
-
-.quiz_section .remove-uploaded-file{
-    color: red;
-    border: 1px solid red;
-    width: 31px;
-    padding: 5px 5px 0px 5px;
-    display: inline-block;
-    cursor: pointer;
-}
 
 .page-timer-wrapper{
     display: flex;

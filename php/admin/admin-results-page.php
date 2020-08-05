@@ -118,7 +118,7 @@ function qsm_results_overview_tab_content() {
 	if ( isset( $_POST["bulk_delete"] ) && wp_verify_nonce( $_POST['bulk_delete_nonce'], 'bulk_delete') ) {
 
 		// Ensure the POST variable is an array
-		if ( is_array( $_POST["delete_results"] ) ) {
+		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
 			foreach( $_POST["delete_results"] as $result ) {
