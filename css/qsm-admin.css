@@ -214,6 +214,10 @@ span.qsm-quiz-name {
     background: #fff;
     color: #444;
 }
+.qsm-addon-news-ads .qsm-info-widget{
+    transform: none !important;
+    max-width: 100%;
+}
 .qsm-addon-news-ads .qsm-info-widget:nth-child(2){
     background: #00BB57;
     color: #fff;

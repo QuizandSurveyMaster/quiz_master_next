@@ -125,7 +125,7 @@ function qsm_generate_featured_addons() {
                                             <div class="description-wrap">
                                                 <span class="description"><?php echo $single_arr['description']; ?></span>
                                                 <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
-                                                <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                                <a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
                                             </div>                                            
                                     </div>
                                     <?php
@@ -154,7 +154,7 @@ function qsm_generate_featured_addons() {
                                             <div class="description-wrap">
                                                 <span class="description"><?php echo $single_arr['description']; ?></span>
                                                 <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
-                                                <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                                <a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
                                             </div>                                            
                                     </div>
                                     <?php
@@ -175,6 +175,9 @@ function qsm_generate_featured_addons() {
                 <?php
                 if ( $new_addons ) {
                         foreach ( $new_addons as $key => $single_arr ) {
+                                if( trim( $single_arr['name'] ) == 'Starter Bundle' || trim( $single_arr['name'] ) == 'Premium Bundle' ){
+                                    continue;
+                                }
                                 ?>
                                 <div>
                                         <a href="<?php echo $single_arr['link']; ?>" target="_blank">
@@ -185,7 +188,7 @@ function qsm_generate_featured_addons() {
                                                 <span class="description"><?php echo $single_arr['description']; ?></span>
                                             <?php } ?>
                                             <button class="button button-primary">$<?php echo array_values($single_arr['price'])[0]; ?></button>
-                                            <a href="<?php echo $single_arr['link']; ?>" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
+                                            <a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank" class="button button-primary"><?php _e('Get This Addon', 'quiz-master-next'); ?></a>
                                         </div>                                            
                                 </div>
                                 <?php
