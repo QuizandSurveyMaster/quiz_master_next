@@ -127,6 +127,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: Fixed the question number position while displaying questions.
 * Enhancement: Added new option to skip validations when timer expires.
 * Enhancement: Redesigned addons setting page.
+* Enhancement: Renamed the question type for better understanding [Read Documentation](https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type).
 * Bug: Fixed issue with storing results when questions are more than 100.
 * Bug: Fixed issue with force submit option after timer expiry.
 * Bug: Fixed incorrect data issue in email when using %QUESTIONS_ANSWERS%.
