@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.4.2
 Requires PHP: 5.4
-Stable tag: 7.0.0
+Stable tag: 7.0.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,21 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.0.1 (August 05, 2020) =
+* Enhancement: Added items per page option for question bank pagination on settings page.
+* Enhancement: Improved UI/UX for description box with placeholder.
+* Enhancement: Few design changes on wizard and dashboard page.
+* Enhancement: Fixed the question number position while displaying questions.
+* Enhancement: Added new option to skip validations when time expire.
+* Enhancement: Renamed the question type for better understanding.
+* Enhancement: Improved the UI/UX of addons setting page.
+* Bug: Fixed result not storing issue when questions are more than 100+.
+* Bug: Added redirection while accessing old slug in admin panel.
+* Bug: Fixed issue force submit after timer expiry option not working.
+* Bug: Fixed issue %QUESTIONS_ANSWERS% not displaying correct data in Email.
+* Bug: Fixed Layout broken issue when editing or adding question.
+* Bug: Fixed security vulnerability (discovered by WordDefence).
 
 = 7.0.0 (July 22, 2020) =
 * Enhancement: Complete UI overhaul QSM admin view including new Dashboard
