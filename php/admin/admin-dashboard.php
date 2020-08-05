@@ -313,7 +313,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 						foreach ( $addon_array as $key => $single_arr ) {
 							?>
 							<li>
-								<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank">
+								<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-dashoard-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank">
 									<img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
 								</a>
 							</li>
