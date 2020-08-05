@@ -11,7 +11,7 @@ add_action("plugins_loaded", 'qmn_question_type_multiple_choice');
 function qmn_question_type_multiple_choice()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Vertical Multiple Choice", 'quiz-master-next'), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0);
 }
 
 add_action("plugins_loaded", 'qmn_question_type_file_upload');
@@ -44,7 +44,8 @@ function qmn_file_upload_display($id, $question, $answers)
     //$question_title = apply_filters('the_content', $question);
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
     $question_display .= qsm_question_title_func($question,'',$new_question_title);
-    $question_display .= "<input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
+    $question_display .= "<div style=''></div><input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
+    $question_display .= "<div style='display: none;' class='loading-uploaded-file'><img src='".get_site_url()."/wp-includes/images/spinner-2x.gif'></div>";
     $question_display .= "<div style='display: none;' class='remove-uploaded-file'><span class='dashicons dashicons-trash'></span></div>";
     $question_display .= "<input class='mlw_file_upload_hidden_value' type='hidden' name='question".$id."' value='' />";
     $question_display .= "<span style='display: none;' class='mlw-file-upload-error-msg'></span>";
@@ -443,7 +444,7 @@ add_action("plugins_loaded", 'qmn_question_type_small_open');
 function qmn_question_type_small_open()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Small Open Answer", 'quiz-master-next'), 'qmn_small_open_display', true, 'qmn_small_open_review', null, null, 3);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Short Answer", 'quiz-master-next'), 'qmn_small_open_display', true, 'qmn_small_open_review', null, null, 3);
 }
 
 /**
@@ -626,7 +627,7 @@ add_action("plugins_loaded", 'qmn_question_type_large_open');
 function qmn_question_type_large_open()
 {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Large Open Answer", 'quiz-master-next'), 'qmn_large_open_display', true, 'qmn_large_open_review', null, null, 5);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Paragraph", 'quiz-master-next'), 'qmn_large_open_display', true, 'qmn_large_open_review', null, null, 5);
 }
 
 /**
@@ -825,7 +826,7 @@ function qmn_question_type_accept()
 		'extra_inputs' => array(),
 		'function' => ''
 	);
-	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Accept", 'quiz-master-next'), 'qmn_accept_display', false, null, $edit_args, null, 8);
+	$mlwQuizMasterNext->pluginHelper->register_question_type(__("Opt-in", 'quiz-master-next'), 'qmn_accept_display', false, null, $edit_args, null, 8);
 }
 
 /**

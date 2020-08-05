@@ -108,12 +108,12 @@ function qmn_stats_overview_content()
 		<div class="postbox">
 			<form action="" method="post">
 				<select name="range">
-					<option value="daily" <?php if ( $range == "daily" ) { echo 'selected="selected"'; } ?>>Daily</option>
-					<option value="weekly" <?php if ( $range == "weekly" ) { echo 'selected="selected"'; } ?>>Weekly</option>
-					<option value="monthly" <?php if ( $range == "monthly" ) { echo 'selected="selected"'; } ?>>Monthly</option>
+					<option value="daily" <?php if ( $range == "daily" ) { echo 'selected="selected"'; } ?>><?php _e('Daily', 'quiz-master-next'); ?></option>
+					<option value="weekly" <?php if ( $range == "weekly" ) { echo 'selected="selected"'; } ?>><?php _e('Weekly', 'quiz-master-next'); ?></option>
+					<option value="monthly" <?php if ( $range == "monthly" ) { echo 'selected="selected"'; } ?>><?php _e('Monthly', 'quiz-master-next'); ?></option>
 					<?php do_action('qmn_quiz_taken_stats_options'); ?>
 				</select>
-				<button type="submit" class="button">Filter</button>
+				<button type="submit" class="button"><?php _e('Filter', 'quiz-master-next'); ?></button>
 			</form>
 			<div>
 				<canvas id="graph_canvas"></canvas>

@@ -15,7 +15,7 @@ var import_button;
 				quizID: 1,
 				type: '0',
 				name: '',
-				question_title: 'Your new question!',
+				question_title: '',
 				answerInfo: '',
 				comments: '1',
 				hint: '',
@@ -315,7 +315,11 @@ var import_button;
                             //Do nothing
                         }else{
                             questionName = new_question_title;
-                        }                        
+                        }
+                        
+                        if( questionName == '' )
+                            questionName = 'Your new question!';
+                        
 			$( '.page:nth-child(' + page + ')' ).append( template( { id: model.id, category : model.get('category'), question: questionName } ) );
 			setTimeout( QSMQuestion.removeNew, 250 );
 		},
@@ -511,7 +515,11 @@ var import_button;
                             wp.editor.remove( question_content );
                             QSMQuestion.prepareEditor();                                                        
                             question_editor = tinyMCE.get( 'question-text' );
-                        }			
+                        }
+                        if( questionText != '' && questionText != null ){
+                            jQuery('.qsm-show-question-desc-box').hide();
+                            jQuery('.qsm-show-question-desc-box').next('.qsm-row').show();
+                        }
 			if ($('#wp-question-text-wrap').hasClass('html-active')) {
 				jQuery( "#question-text" ).val( questionText );
 			} else if ( question_editor ) {
@@ -867,6 +875,22 @@ var import_button;
                         $('#new_category_new').attr('checked', true);
                         $( '#qsm-category-add' ).slideDown('slow');
                     }
+                });
+                
+                //Hide/show quesion description
+                $( document ).on('click', '.qsm-show-question-desc-box', function(e){
+                    e.preventDefault();
+                    if( $(this).next('.qsm-row').is(':visible') ){
+                        $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_desc_text);
+                        $(this).next('.qsm-row').slideUp();
+                    }else{
+                        $(this).hide();
+                        var question_description = wp.editor.getContent( 'question-text' );
+                        if( question_description == '' || question_description == null ){
+                            tinyMCE.get( 'question-text' ).setContent( 'Add description here!' );
+                        }
+                        $(this).next('.qsm-row').slideDown();
+                    }                    
                 });
 	});
         var decodeEntities = (function () {

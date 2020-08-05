@@ -140,6 +140,7 @@ var QSMAdmin;
                         icons: icons,
                         heightStyle: "content"
                 });
+                jQuery('#accordion h3.ui-accordion-header').next().slideDown();
                 jQuery('.template-list .template-list-inner:first-child').trigger('click');                
             }
         });
@@ -160,6 +161,7 @@ var QSMAdmin;
                     jQuery('#recomm_addons_wrapper').html('');
                     jQuery('#recomm_addons_wrapper').html(diff_html[1]);
                     jQuery( "#accordion" ).accordion();
+                    jQuery('#accordion h3.ui-accordion-header').next().slideDown();
                     $( '#quiz_settings_wrapper select' ).each(function(){
                         var name = $(this).attr('name');
                         var value = $(this).val();                        
@@ -305,6 +307,14 @@ var QSMAdmin;
                 this_par.css('width', 'auto');
                 this_par.text('').text(button_txt);
             }, 1000);
+        });
+        $(document).on('click', '.qsm-addon-anchor-left > a', function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            $('.qsm-addon-anchor-left').find('a').removeClass('active');
+            $(this).addClass('active');
+            $('.qsm-quiz-page-addon > .qsm_popular_addons').hide();
+            $( href ).show();
         });
     });    
 }(jQuery));

@@ -145,7 +145,7 @@ class QSM_Install {
     // Registers timer_limit setting
     $field_array = array(
       'id' => 'timer_limit',
-      'label' => __('Time Limit', 'quiz-master-next'),
+      'label' => __('Time Limit (in minutes)', 'quiz-master-next'),
       'type' => 'number',
       'options' => array(
 
@@ -171,6 +171,24 @@ class QSM_Install {
         )
       ),
       'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    $field_array = array(
+      'id' => 'skip_validation_time_expire',
+      'label' => __('Skip validations when time expire', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        )
+      ),
+      'default' => 1
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 

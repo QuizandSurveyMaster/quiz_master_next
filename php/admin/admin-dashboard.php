@@ -7,15 +7,24 @@ function qsm_get_widget_data( $name ){
     $get_dashboard_data = get_transient( 'qsm_admin_dashboard_data' );
     if($get_dashboard_data !== false && !empty( $get_dashboard_data ) ){        
         $qsm_admin_dd = $get_dashboard_data;        
-    }else{
-        $fetch_api_data = wp_remote_get('https://quizandsurveymaster.com/wp-json/qsmps/get-data');
-        if( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ){
-            $qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
-            $qsm_admin_dd = json_decode( $qsm_admin_dd, true );
-            set_transient( 'qsm_admin_dashboard_data', $qsm_admin_dd, 24*60*60 );
-        }     
+    }else{        
+        $qsm_admin_dd = qsm_fetch_data_from_script();
+        set_transient( 'qsm_admin_dashboard_data', $qsm_admin_dd, 24*60*60 );             
     }
     return isset( $qsm_admin_dd[$name] ) ? $qsm_admin_dd[$name] : array();
+}
+
+function qsm_fetch_data_from_script(){
+    $args = array(
+        'timeout'     => 10,
+        'sslverify' => false
+    );
+    $fetch_api_data = wp_remote_get('https://quizandsurveymaster.com/wp-json/qsmps/get-data', $args);    
+    if( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ){
+        $qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
+        return json_decode( $qsm_admin_dd, true );
+    }     
+    return array();
 }
 /**
  * @since 7.0
@@ -131,7 +140,7 @@ function qsm_generate_dashboard_page() {
 					<div class="welcome-panel-column welcome-panel-last">
 						<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 						<ul>
-							<li><a target="_blank" href="https://support.quizandsurveymaster.com/" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Support Forum', 'quiz-master-next' ); ?></a></li>
+							<li><a target="_blank" href="https://quizandsurveymaster.com/contact-support/" class="welcome-icon"><span class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Support Forum', 'quiz-master-next' ); ?></a></li>
 							<li><a target="_blank" href="https://github.com/QuizandSurveyMaster/quiz_master_next" class="welcome-icon"><span class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e( 'Github Repository', 'quiz-master-next' ); ?></a></li>
 						</ul>
 					</div>
@@ -304,7 +313,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 						foreach ( $addon_array as $key => $single_arr ) {
 							?>
 							<li>
-								<a href="<?php echo $single_arr['link']; ?>" target="_blank">
+								<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-dashoard-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank">
 									<img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
 								</a>
 							</li>

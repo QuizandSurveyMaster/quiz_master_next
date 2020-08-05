@@ -138,7 +138,7 @@ function qsm_audit_box() {
 	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
-	<p>Total actions since QSM installed: <?php echo esc_html( $audit_total ); ?></p>
+        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
 	<?php
 
 	// Determine which navigation to show.
