@@ -87,8 +87,9 @@ class QMNQuizManager {
                 }
             }
         }
-        $json = array();
-        $validate_file = wp_check_filetype( $_FILES["file"]["name"]);        
+        $json = array();        
+        $file_name = sanitize_file_name( $_FILES["file"]["name"] );
+        $validate_file = wp_check_filetype( $file_name );        
         if ( isset( $validate_file['type'] ) && in_array($validate_file['type'], $mimes)) {
             if($_FILES["file"]['size'] >= $file_upload_limit * 1024 * 1024){
                 $json['type']= 'error';
@@ -98,7 +99,7 @@ class QMNQuizManager {
             }
             $upload_dir = wp_upload_dir();
             $datafile = $_FILES["file"]["tmp_name"];
-            $file_name = $_FILES["file"]["name"];
+            //$file_name = $_FILES["file"]["name"];
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);
             $rawBaseName = 'qsmfileupload_' . md5( date('Y-m-d H:i:s') ) . '_' . pathinfo($file_name, PATHINFO_FILENAME);
             $new_fname = $rawBaseName . '.' . $extension;
@@ -1308,7 +1309,7 @@ class QMNQuizManager {
                             // Send question to our grading function
                             $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
                             if( isset($results_array['question_type']) && $results_array['question_type'] == 'file_upload') {
-                              $results_array['user_text'] = '<a target="_blank" href="'.$results_array['user_text'].'">Click here to view</a>';
+                              $results_array['user_text'] = '<a target="_blank" href="'.$results_array['user_text'].'">' . __('Click here to view', 'quiz-master-next') . '</a>';
                             }
                             // If question was graded correctly.
                             if (!isset($results_array["null_review"])) {
