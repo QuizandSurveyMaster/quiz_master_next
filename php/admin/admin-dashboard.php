@@ -15,8 +15,7 @@ function qsm_fetch_data_from_script(){
         'timeout'     => 10,
         'sslverify' => false
     );
-    //$fetch_api_data = wp_remote_get('http://localhost/work/et/qsm/wp-content/parsing_script.json', $args);    
-    $fetch_api_data = wp_remote_get('https://quizandsurveymaster.com/wp-json/qsmps/get-data', $args);    
+    $fetch_api_data = wp_remote_get('https://t6k8i7j6.stackpathcdn.com/wp-content/parsing_script.json', $args);        
     if( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ){
         $qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
         return json_decode( $qsm_admin_dd, true );
