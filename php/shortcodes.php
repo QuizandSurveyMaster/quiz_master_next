@@ -230,7 +230,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
     if($qmn_quiz_options->enable_result_after_timer_end == 0){
         $return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
         $return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
-        $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">';
+        $return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
         $return_display .= '<div class="qsm-popup__content">';        
         $return_display .= '<img src="' . QSM_PLUGIN_URL . '/assets/clock.png' .'"/>';
         $return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
