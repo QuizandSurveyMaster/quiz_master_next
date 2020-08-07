@@ -122,7 +122,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
         if($answerEditor === 'rich'){
             $question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
         }else{
-            $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
+            $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".str_replace(" ","-",esc_attr($answer[0]))."'>";
         }	
         $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlentities(esc_attr($answer[0])) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
 	$question_display .= "</div>";
