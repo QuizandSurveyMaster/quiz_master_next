@@ -1270,6 +1270,7 @@ class QMNQuizManager {
           5, // Large Open Answer
           7, // Number
           14, // Fill In The Blank
+          13 //Polar.  
         );
 
         // If deprecated pagination setting is not used, use new system...
@@ -1306,7 +1307,7 @@ class QMNQuizManager {
 
                             // Send question to our grading function
                             $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
-                            if($results_array['question_type'] == 'file_upload') {
+                            if( isset($results_array['question_type']) && $results_array['question_type'] == 'file_upload') {
                               $results_array['user_text'] = '<a target="_blank" href="'.$results_array['user_text'].'">Click here to view</a>';
                             }
                             // If question was graded correctly.
