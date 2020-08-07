@@ -1266,8 +1266,9 @@ function qmn_polar_review($id, $question, $answers) {
     $return_array['user_text'] = $mlw_user_answer;
     
     foreach($answers as $answer)  {
-        $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));        
-        if (mb_strtoupper($return_array['user_text']) == mb_strtoupper( trim ($decode_correct_text) ) )        {
+        $decode_correct_text = $answer[1];
+        $return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_correct_text ) ) );
+        if ( $return_array['user_text'] ==  trim ($decode_correct_text) ) {
           $return_array['correct'] = "correct";
           $return_array['points'] = $answer[1];          
           break;
