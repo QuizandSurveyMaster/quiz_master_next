@@ -212,7 +212,7 @@ function qsm_generate_featured_addons() {
             <h3 class="qsm-news-ads-title"><?php _e('SAVE WITH OUR BUNDLES', 'quiz-master-next'); ?></h3>
             <?php
             foreach ($bundles as $key => $bundles_arr) { ?>
-                <div class="qsm-info-widget" style="background-color: <?php echo $bundles_arr['background']; ?>">
+                <div class="qsm-info-widget">
                         <h3><?php echo $bundles_arr['name']; ?></h3>
                         <p><?php echo $bundles_arr['desc']; ?></p>
                         <button class="button button-default">$<?php echo array_values($bundles_arr['price'])[0]; ?></button>
