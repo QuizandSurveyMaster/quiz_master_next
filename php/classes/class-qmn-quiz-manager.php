@@ -636,8 +636,8 @@ class QMNQuizManager {
                     ?>
                     <div class="quiz_section quiz_begin">
                         <div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
-                        <?php
-                        if (0 == $options->contact_info_location) {
+                        <?php                        
+                        if (0 == $options->contact_info_location) {                            
                             echo QSM_Contact_Manager::display_fields($options);
                         }
                         ?>
@@ -1068,7 +1068,16 @@ class QMNQuizManager {
                 }
             }
         }
-
+        
+        if( is_user_logged_in() ){
+            $current_user = wp_get_current_user();
+            if( $qmn_array_for_variables['user_email'] == 'None' )
+                $qmn_array_for_variables['user_email'] = esc_html( $current_user->user_email );
+            
+            if( $qmn_array_for_variables['user_name'] == 'None' )
+                $qmn_array_for_variables['user_name'] = esc_html( $current_user->display_name );
+        }
+        
         $mlw_qmn_pagetime = isset($_POST["pagetime"]) ? $_POST["pagetime"] : array();
         $mlw_qmn_timer = isset($_POST["timer"]) ? sanitize_text_field(intval($_POST["timer"])) : 0;
         $mlw_qmn_timer_ms = isset($_POST["timer_ms"]) ? sanitize_text_field(intval($_POST["timer_ms"])) : 0;
