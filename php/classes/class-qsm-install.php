@@ -1007,7 +1007,7 @@ class QSM_Install {
     // Registers quick result correct answer setting
     $field_array = array(
       'id' => 'quick_result_correct_answer_text',
-      'label' => __('Quiz result correct answer text', 'quiz-master-next'),
+      'label' => __('Quick result correct answer text', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'Correct! You have selected correct answer.'
     );
@@ -1016,7 +1016,7 @@ class QSM_Install {
     // Registers quick result wrong answer setting
     $field_array = array(
       'id' => 'quick_result_wrong_answer_text',
-      'label' => __('Quiz result wrong answer text', 'quiz-master-next'),
+      'label' => __('Quick result wrong answer text', 'quiz-master-next'),
       'type' => 'text',
       'default' => 'Wrong! You have selected wrong answer.'
     );
