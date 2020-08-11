@@ -1233,7 +1233,7 @@ class QMNQuizManager {
         // Prepares data to be sent back to front-end.
         $return_array = array(
             'display' => htmlspecialchars_decode($result_display),
-            'redirect' => $results_pages['redirect'],
+            'redirect' => apply_filters('mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables),
         );
 
         return $return_array;
