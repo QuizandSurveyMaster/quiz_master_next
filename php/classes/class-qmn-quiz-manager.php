@@ -613,7 +613,11 @@ class QMNQuizManager {
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
                 <div class="quiz_section quiz_begin">
-                    <div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
+                    <div class='qsm-before-message mlw_qmn_message_before'>
+                        <?php 
+                            echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
+                        ?>
+                    </div>
                     <?php
                     if (0 == $options->contact_info_location) {
                         echo QSM_Contact_Manager::display_fields($options);
@@ -635,7 +639,11 @@ class QMNQuizManager {
                     $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data);
                     ?>
                     <div class="quiz_section quiz_begin">
-                        <div class='qsm-before-message mlw_qmn_message_before'><?php echo $message_before; ?></div>
+                        <div class='qsm-before-message mlw_qmn_message_before'>
+                            <?php 
+                            echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
+                            ?>
+                        </div>
                         <?php                        
                         if (0 == $options->contact_info_location) {                            
                             echo QSM_Contact_Manager::display_fields($options);
@@ -814,7 +822,7 @@ class QMNQuizManager {
             $message_before = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_before, ENT_QUOTES));
             $message_before = apply_filters('mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables);
 
-            $section_display .= "<div class='mlw_qmn_message_before'>$message_before</div>";
+            $section_display .= "<div class='mlw_qmn_message_before'>". $this->qsm_convert_editor_text_to_shortcode( $message_before ) ."</div>";
             if (0 == $qmn_quiz_options->contact_info_location) {
                 $section_display .= QSM_Contact_Manager::display_fields($qmn_quiz_options);
             }
@@ -1818,6 +1826,20 @@ class QMNQuizManager {
     public function qsm_process_background_email(){
         require_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
         $this->qsm_background_email = new QSM_Background_Request();
+    }
+    
+    /**
+     * Convert editor text into respective shortcodes
+     * 
+     * @since 7.0.2
+     * @param string $editor_text
+     */
+    public function qsm_convert_editor_text_to_shortcode( $editor_text ){
+        global $wp_embed;
+        $editor_text = $wp_embed->run_shortcode( $editor_text );
+        $editor_text = preg_replace("/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i","<iframe width=\"420\" height=\"315\" src=\"//www.youtube.com/embed/$1\" frameborder=\"0\" allowfullscreen></iframe>",$editor_text);
+        $allowed_html = wp_kses_allowed_html( 'post' );
+        return do_shortcode( wp_kses( $editor_text, $allowed_html ) ); 
     }
 }
 
