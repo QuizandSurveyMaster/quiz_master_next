@@ -384,8 +384,8 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'option_name' => 'Require User Login',
                                     'value' => 0
                                 ),
-                                'enable_result_after_timer_end' => array(
-                                    'option_name' => 'Force Submit',
+                                'progress_bar' => array(
+                                    'option_name' => 'Show progress bar',
                                     'value' => 0
                                 )
                             ),
