@@ -641,6 +641,7 @@ function qsm_generate_quizzes_surveys_page_screen_options(){
 }
 
 add_filter('set-screen-option', 'qsm_set_screen_option', 10, 3);
+add_filter('set_screen_option_qsm_per_page', 'qsm_set_screen_option', 10, 3);
 /**
  * @since 7.0
  * @param str $status
