@@ -546,6 +546,7 @@ function qsm_create_new_quiz_wizard(){ ?>
 function qsm_text_template_variable_list(){
     $variable_list = array(
         '%POINT_SCORE%' => __('Score for the quiz when using points', 'quiz-master-next'),
+        '%TOTAL_POSSIBLE_POINTS%' => __('Possible maximum points of the quiz when using points', 'quiz-master-next'),
         '%AVERAGE_POINT%' => __('The average amount of points user had per question', 'quiz-master-next'),
         '%AMOUNT_CORRECT%' => __('The number of correct answers the user had', 'quiz-master-next'),
         '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),

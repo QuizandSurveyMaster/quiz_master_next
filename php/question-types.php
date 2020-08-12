@@ -949,6 +949,7 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
   if ($required == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
   $limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_multiple_response');
+  $limit_mr_text = '';
   if($limit_multiple_response > 0)
       $limit_mr_text = 'onchange="qsmCheckMR(this,'. $limit_multiple_response .')"';
   $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
