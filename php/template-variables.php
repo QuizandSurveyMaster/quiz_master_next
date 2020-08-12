@@ -142,7 +142,7 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ){
  */
 function qsm_variable_total_possible_points( $content, $mlw_quiz_array ){    
     if( isset( $mlw_quiz_array["total_possible_points"] ) ){
-        $content = str_replace( "%TOTAL_POSSIBLE_POINTS%" , $mlw_quiz_array["total_possible_points"], $content);
+        $content = str_replace( "%MAXIMUM_POINTS%" , $mlw_quiz_array["total_possible_points"], $content);
     }
     return $content;
 }
