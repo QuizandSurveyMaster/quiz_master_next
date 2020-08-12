@@ -59,6 +59,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_shar
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -126,6 +127,22 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ){
             $display = "<div class='qmn_question_answer $question_answer_class'>".apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
             $content = str_replace( "%QUESTION_ANSWER_". $question_id ."%" , $display, $content);
         }
+    }
+    return $content;
+}
+
+/**
+ * Replace total_possible_points variable with actual points
+ * 
+ * @since 7.0.2
+ * 
+ * @param string $content
+ * @param array $mlw_quiz_array
+ * @return string $content
+ */
+function qsm_variable_total_possible_points( $content, $mlw_quiz_array ){    
+    if( isset( $mlw_quiz_array["total_possible_points"] ) ){
+        $content = str_replace( "%MAXIMUM_POINTS%" , $mlw_quiz_array["total_possible_points"], $content);
     }
     return $content;
 }
