@@ -113,8 +113,8 @@ var QSMQuizzesSurveys;
         var addons = $(this).data('addons');
         $('.template-list .template-list-inner').removeClass('selected-quiz-template');
         $(this).addClass('selected-quiz-template');
-        jQuery('#quiz_settings_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
-        jQuery('#recomm_addons_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
+        $('#quiz_settings_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
+        $('#recomm_addons_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
         $.post(ajaxurl, {settings: settings, addons: addons, action: action },
             function (data) {
                 var diff_html = data.split('=====');                    
