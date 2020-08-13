@@ -1313,7 +1313,8 @@ class QMNQuizManager {
                             if(!in_array($question_type_new,$result_question_types)) {
                               $total_questions--;
                             }
-                            if(in_array($question_id,$quiz_data['hidden_questions'])) {
+                            
+                            if(is_array($quiz_data['hidden_questions']) && in_array($question_id,$quiz_data['hidden_questions'])) {
                               $total_questions--;
                               continue;
                             }
