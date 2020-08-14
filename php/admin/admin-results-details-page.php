@@ -111,16 +111,23 @@ function qsm_generate_results_details_tab() {
         }
         if( $new_template_result_detail == 1 ){
             $template = '';            
-            if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {                
+            if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
+                $results_contact = unserialize($results_data->quiz_results);
                 $template .= '<div class="overview-main-wrapper">';
                 //User detail
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
-                $template .= '<div class="inside">';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Phone:', 'quiz-master-next' ) .'</label><span>'. $results_data->phone .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Email:', 'quiz-master-next' ) .'</label><span>'. $results_data->email .'</span></span>';
+                $template .= '<div class="inside">';                
+                if( isset( $results_contact['contact'] ) && is_array( $results_contact['contact'] ) ){
+                    for ( $i = 0; $i < count( $results_contact["contact"] ); $i++ ) {
+                        $template .= '<span class="result-candidate-span"><label>'. $results_contact["contact"][ $i ]["label"] .'</label><span>'. $results_contact["contact"][ $i ]["value"] .'</span></span>';
+                    }
+                }else{
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Phone:', 'quiz-master-next' ) .'</label><span>'. $results_data->phone .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Email:', 'quiz-master-next' ) .'</label><span>'. $results_data->email .'</span></span>';
+                }                
                 $template .= '</div>';
                 $template .= '</div>';
                 $template .= '</div>';                
