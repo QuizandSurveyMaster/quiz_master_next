@@ -287,7 +287,8 @@ class QMNQuizManager {
                 'progress_bar' => $qmn_quiz_options->progress_bar,
                 'contact_info_location' => $qmn_quiz_options->contact_info_location,
                 'qpages' => $qpages,
-                'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire
+                'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire,
+                'timer_limit_val' => $qmn_quiz_options->timer_limit
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);

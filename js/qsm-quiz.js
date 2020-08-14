@@ -658,14 +658,14 @@ function qmnResetError( quiz_form_id ) {
 	jQuery( '#' + quiz_form_id + ' .quiz_section' ).removeClass( 'qmn_error' );
 }
 
-function qmnValidation( element, quiz_form_id ) {
+function qmnValidation( element, quiz_form_id ) {        
 	var result = true;
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var email_error = qmn_quiz_data[ quiz_id ].error_messages.email;
 	var number_error = qmn_quiz_data[ quiz_id ].error_messages.number;
 	var empty_error = qmn_quiz_data[ quiz_id ].error_messages.empty;
 	var incorrect_error = qmn_quiz_data[ quiz_id ].error_messages.incorrect;
-	qmnResetError( quiz_form_id );
+	qmnResetError( quiz_form_id );        
 	jQuery( element ).each(function(){
 		if ( jQuery( this ).attr( 'class' )) {
 			if( jQuery( this ).attr( 'class' ).indexOf( 'mlwEmail' ) !== -1 && this.value !== "" ) {
@@ -677,7 +677,7 @@ function qmnValidation( element, quiz_form_id ) {
 				}
 			}
                         var by_pass = true;
-                        if( qmn_quiz_data[quiz_id].hasOwnProperty('skip_validation_time_expire') && qmn_quiz_data[quiz_id].skip_validation_time_expire == 0 ){
+                        if( qmn_quiz_data[ quizID ].timer_limit_val > 0 && qmn_quiz_data[quiz_id].hasOwnProperty('skip_validation_time_expire') && qmn_quiz_data[quiz_id].skip_validation_time_expire == 0 ){
                             by_pass = false;
                         }                        
                         
@@ -699,7 +699,7 @@ function qmnValidation( element, quiz_form_id ) {
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredAccept' ) > -1 && ! jQuery( this ).prop( 'checked' ) ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
-				}
+				}                                
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredRadio' ) > -1 ) {
 					check_val = jQuery( this ).find( 'input:checked' ).val();
 					if ( check_val == "No Answer Provided" ) {
