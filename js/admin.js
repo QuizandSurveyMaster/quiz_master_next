@@ -313,12 +313,25 @@ var QSMAdmin;
                 this_par.text('').text(button_txt);
             }, 1000);
         });
-        $(document).on('click', '.qsm-addon-anchor-left > a', function(e){
+        $(document).on('click', '.qsm-addon-anchor-left .qsm-install-addon a', function(e){
             e.preventDefault();
             var href = $(this).attr('href');
-            $('.qsm-addon-anchor-left').find('a').removeClass('active');
+            $('.qsm-addon-anchor-left .qsm-install-addon').find('a').removeClass('active');
             $(this).addClass('active');
-            $('.qsm-quiz-page-addon > .qsm_popular_addons').hide();
+            $('.qsm-addon-setting-wrap .qsm-primary-acnhor').hide();
+            $( href ).show();
+            if( href == '#qsm_add_addons' ){
+                $('.qsm-add-addon').css('display', 'inline-block');
+            }else{
+                $('.qsm-add-addon').css('display', 'none');
+            }
+        });
+        $(document).on('click', '.qsm-addon-anchor-left .qsm-add-addon a', function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            $('.qsm-addon-anchor-left .qsm-add-addon').find('a').removeClass('active');
+            $(this).addClass('active');
+            $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $( href ).show();
         });
     });    
