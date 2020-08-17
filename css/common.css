@@ -183,4 +183,9 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     .question-type-polar-s{
         height: auto !important;
     }
+    .quiz_section .qmn_radio_answers label,
+    .quiz_section .qmn_check_answers label,
+    .quiz_section .qmn_accept_answers label{
+        font-size: 14px;
+    }
 }
