@@ -1122,6 +1122,7 @@ class QMNQuizManager {
                 if(isset($results_array['parameters'])) {
                   $qmn_array_for_variables['parameters'] = $results_array['parameters'];
                 }
+                $results_array['hidden_questions'] = $qmn_array_for_variables['hidden_questions'];
                 $serialized_results = serialize($results_array);
 
                 // Inserts the responses in the database.

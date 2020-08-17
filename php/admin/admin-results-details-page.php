@@ -110,7 +110,7 @@ function qsm_generate_results_details_tab() {
             $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
         }
         if( $new_template_result_detail == 1 ){
-            $template = '';            
+            $template = '';    
             if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
                 $results_contact = unserialize($results_data->quiz_results);
                 $template .= '<div class="overview-main-wrapper">';
@@ -228,8 +228,10 @@ function qsm_generate_results_details_tab() {
         }
         
         // Prepare responses array.
+				$total_hidden_questions = 0;
         if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
                 $results = unserialize($results_data->quiz_results);
+								$total_hidden_questions = isset($results['hidden_questions']) ? count($results['hidden_questions']) : 0;
                 if ( ! isset( $results["contact"] ) ) {
                         $results["contact"] = array();
                 }
@@ -261,7 +263,7 @@ function qsm_generate_results_details_tab() {
             'total_points'           => $results_data->point_score,
             'total_score'            => $results_data->correct_score,
             'total_correct'          => $results_data->correct,
-            'total_questions'        => $results_data->total,
+            'total_questions'        => $results_data->total - $total_hidden_questions,
             'comments'               => isset( $results[2] ) ? $results[2] : '',
             'question_answers_array' => isset( $results[1] ) ? $results[1] : array(),
             'contact'                => $results["contact"],
