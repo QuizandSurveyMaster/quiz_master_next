@@ -118,7 +118,7 @@ function qsm_generate_results_details_tab() {
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
                 $template .= '<div class="inside">';                
-                if( isset( $results_contact['contact'] ) && is_array( $results_contact['contact'] ) ){
+                if( isset( $results_contact['contact'] ) && is_array( $results_contact['contact'] ) && !empty( $results_contact['contact'] ) ){
                     for ( $i = 0; $i < count( $results_contact["contact"] ); $i++ ) {
                         $template .= '<span class="result-candidate-span"><label>'. $results_contact["contact"][ $i ]["label"] .'</label><span>'. $results_contact["contact"][ $i ]["value"] .'</span></span>';
                     }
