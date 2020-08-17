@@ -1311,9 +1311,6 @@ class QMNQuizManager {
                             $question = $questions[$page_question_id];                            
                             // Ignore non points questions from result
                             $question_type_new = $question['question_type_new'];
-                            if(!in_array($question_type_new,$result_question_types)) {
-                              $total_questions--;
-                            }
                             
                             if(is_array($quiz_data['hidden_questions']) && in_array($question_id,$quiz_data['hidden_questions'])) {
                               $total_questions--;
