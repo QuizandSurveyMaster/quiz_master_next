@@ -1172,6 +1172,7 @@ class QMNQuizManager {
                 );
 				$results_id = $wpdb->insert_id;
             }
+            $qmn_array_for_variables['result_id'] = $results_id;
 
 			// Determines redirect/results page.
             $results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
@@ -1311,11 +1312,7 @@ class QMNQuizManager {
                             $question = $questions[$page_question_id];                            
                             // Ignore non points questions from result
                             $question_type_new = $question['question_type_new'];
-                            
-                            if(is_array($quiz_data['hidden_questions']) && in_array($question_id,$quiz_data['hidden_questions'])) {
-                              $total_questions--;
-                              continue;
-                            }
+                            $hidden_questions = is_array($quiz_data['hidden_questions']) ? $quiz_data['hidden_questions']: array();
 
                             // Reset question-specific variables
                             $user_answer = "";
@@ -1325,6 +1322,7 @@ class QMNQuizManager {
                             
                             //Get total correct points                            
                             if( ( $options->system == 3 || $options->system == 1 ) && isset($question['answers']) && !empty( $question['answers'] ) ){
+                              if(!in_array($question_id,$hidden_questions)) {
                                 if( $question_type_new == 4 || $question_type_new == 10 ){
                                     foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
                                         if ( $options->system == 1 && isset( $single_answer_arr[1] ) ){
@@ -1338,6 +1336,7 @@ class QMNQuizManager {
                                     $max_value = max(array_column($question['answers'], '1'));
                                     $total_possible_points = $total_possible_points + $max_value;
                                 }
+                              }
                             }
                             
                             // Send question to our grading function
@@ -1348,16 +1347,20 @@ class QMNQuizManager {
                             // If question was graded correctly.
                             if (!isset($results_array["null_review"])) {
                                 if(in_array($question_type_new,$result_question_types)) {
-                                  $points_earned += $results_array["points"];
-                                  $answer_points += $results_array["points"];
+                                  if(!in_array($question_id,$hidden_questions)) {
+                                    $points_earned += $results_array["points"];
+                                    $answer_points += $results_array["points"];
+                                  }
                                 }
                                 
 
                                 // If the user's answer was correct
                                 if ('correct' == $results_array["correct"]) {
                                     if(in_array($question_type_new,$result_question_types)) {
-                                      $total_correct += 1;
-                                      $correct_status = "correct";
+                                      if(!in_array($question_id,$hidden_questions)) {
+                                        $total_correct += 1;
+                                        $correct_status = "correct";
+                                      }
                                     }
                                     
                                 }
