@@ -1182,11 +1182,14 @@ jQuery(function() {
                 },
                 success: function (response) {
                     parent_div.replaceWith(response);
-					// Restart the timer for retake quiz.
-					setInterval( qmnTimeTakenTimer, 1000 );
+                    
+                    if( qmn_quiz_data[ quiz_id ].timer_limit_val > 0 ){
+                        // Restart the timer for retake quiz.
+                        setInterval( qmnTimeTakenTimer, 1000 );
 
-					// Reset the timer clock on retake quiz.
-					QSM.initTimer( quiz_id );
+                        // Reset the timer clock on retake quiz.
+                        QSM.initTimer( quiz_id );
+                    }
 
                     QSM.initPagination( quiz_id );
                 },
