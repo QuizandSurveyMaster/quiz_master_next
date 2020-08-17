@@ -45,6 +45,10 @@ add_action( 'init', 'qsm_block_init' );
 function qsm_get_quizzes_list(){
     global $wpdb;
     $quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'" );
+    $newslatter_provider_list[] = array(
+        'label' => __('Select the quiz', 'quiz-master-next'),
+        'value' => ''
+    );
     if( $quizzes ){
         foreach( $quizzes as $key=>$value) {            
             $newslatter_provider_list[] = array(
