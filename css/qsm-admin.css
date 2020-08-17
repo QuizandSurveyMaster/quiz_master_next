@@ -475,7 +475,7 @@ Options Page
 Results Pages & Emails Tab
 *********************/
 .results-page,
-.email {
+#emails .email {
     width: 100%;
     background-color: #fff;
     margin: 20px 0;
@@ -484,7 +484,7 @@ Results Pages & Emails Tab
 }
 
 .results-page .results-page-content,
-.email .email-content{
+#emails .email .email-content{
     background: #fff;
     padding-right: 15px;
     padding-left: 15px;
@@ -493,7 +493,7 @@ Results Pages & Emails Tab
 }
 
 .results-page-header,
-.email-header {
+#emails .email-header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -503,7 +503,7 @@ Results Pages & Emails Tab
 }
 
 .delete-page-button,
-.delete-email-button {
+#emails .delete-email-button {
     background: none;
     border: none;
     color: #dc3232;
@@ -512,7 +512,7 @@ Results Pages & Emails Tab
 }
 
 .delete-page-button:hover,
-.delete-email-button:hover {
+#emails .delete-email-button:hover {
     transform: scale(1.2);
 }
 
