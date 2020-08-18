@@ -869,10 +869,10 @@ var import_button;
                 //Add new category
                 $( document ).on('click', '#qsm-category-add-toggle', function(){
                     if( $( '#qsm-category-add' ).is(":visible") ){
-                        $('#new_category_new').attr('checked', false);
+                        $('.questionElements #new_category_new').attr('checked', false);
                         $( '#qsm-category-add' ).slideUp('slow');
                     }else{
-                        $('#new_category_new').attr('checked', true);
+                        $('.questionElements #new_category_new').attr('checked', true).prop('checked', 'checked');
                         $( '#qsm-category-add' ).slideDown('slow');
                     }
                 });
