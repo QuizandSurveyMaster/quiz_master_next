@@ -110,17 +110,24 @@ function qsm_generate_results_details_tab() {
             $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
         }
         if( $new_template_result_detail == 1 ){
-            $template = '';            
-            if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {                
+            $template = '';    
+            if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
+                $results_contact = unserialize($results_data->quiz_results);
                 $template .= '<div class="overview-main-wrapper">';
                 //User detail
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
-                $template .= '<div class="inside">';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Phone:', 'quiz-master-next' ) .'</label><span>'. $results_data->phone .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Email:', 'quiz-master-next' ) .'</label><span>'. $results_data->email .'</span></span>';
+                $template .= '<div class="inside">';                
+                if( isset( $results_contact['contact'] ) && is_array( $results_contact['contact'] ) && !empty( $results_contact['contact'] ) ){
+                    for ( $i = 0; $i < count( $results_contact["contact"] ); $i++ ) {
+                        $template .= '<span class="result-candidate-span"><label>'. $results_contact["contact"][ $i ]["label"] .'</label><span>'. $results_contact["contact"][ $i ]["value"] .'</span></span>';
+                    }
+                }else{
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Phone:', 'quiz-master-next' ) .'</label><span>'. $results_data->phone .'</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Email:', 'quiz-master-next' ) .'</label><span>'. $results_data->email .'</span></span>';
+                }                
                 $template .= '</div>';
                 $template .= '</div>';
                 $template .= '</div>';                
@@ -221,8 +228,10 @@ function qsm_generate_results_details_tab() {
         }
         
         // Prepare responses array.
+				$total_hidden_questions = 0;
         if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
                 $results = unserialize($results_data->quiz_results);
+								$total_hidden_questions = isset($results['hidden_questions']) ? count($results['hidden_questions']) : 0;
                 if ( ! isset( $results["contact"] ) ) {
                         $results["contact"] = array();
                 }
@@ -254,7 +263,7 @@ function qsm_generate_results_details_tab() {
             'total_points'           => $results_data->point_score,
             'total_score'            => $results_data->correct_score,
             'total_correct'          => $results_data->correct,
-            'total_questions'        => $results_data->total,
+            'total_questions'        => $results_data->total - $total_hidden_questions,
             'comments'               => isset( $results[2] ) ? $results[2] : '',
             'question_answers_array' => isset( $results[1] ) ? $results[1] : array(),
             'contact'                => $results["contact"],

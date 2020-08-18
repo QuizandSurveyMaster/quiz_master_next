@@ -211,7 +211,12 @@ var QSMAdmin;
                 var data = jQuery.parseJSON( response );
                 if( data.success === true ){
                     var text_msg = data.text_message;                    
-                    text_msg = text_msg.replace(/\n/g,"<br>");
+                    if ($('#wp-qsm_question_text_message-wrap').hasClass('html-active')) {
+                        jQuery( "#qsm_question_text_message" ).val( text_msg );
+                    } else {
+                        text_msg = text_msg.replace(/\n/g,"<br>");
+                        tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
+                    }                    
                     tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     jQuery( '.qsm-text-allowed-variables > .qsm-text-variable-wrap' ).html('').html( data.allowed_variable_text );
                     jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
@@ -308,12 +313,25 @@ var QSMAdmin;
                 this_par.text('').text(button_txt);
             }, 1000);
         });
-        $(document).on('click', '.qsm-addon-anchor-left > a', function(e){
+        $(document).on('click', '.qsm-addon-anchor-left .qsm-install-addon a', function(e){
             e.preventDefault();
             var href = $(this).attr('href');
-            $('.qsm-addon-anchor-left').find('a').removeClass('active');
+            $('.qsm-addon-anchor-left .qsm-install-addon').find('a').removeClass('active');
             $(this).addClass('active');
-            $('.qsm-quiz-page-addon > .qsm_popular_addons').hide();
+            $('.qsm-addon-setting-wrap .qsm-primary-acnhor').hide();
+            $( href ).show();
+            if( href == '#qsm_add_addons' ){
+                $('.qsm-add-addon').css('display', 'inline-block');
+            }else{
+                $('.qsm-add-addon').css('display', 'none');
+            }
+        });
+        $(document).on('click', '.qsm-addon-anchor-left .qsm-add-addon a', function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            $('.qsm-addon-anchor-left .qsm-add-addon').find('a').removeClass('active');
+            $(this).addClass('active');
+            $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $( href ).show();
         });
     });    

@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 7.0.1
+Stable tag: 7.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,28 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.0.2 (August 18, 2020) =
+* Enhancement: Checked compatibility with WordPress 5.5.
+* Enhancement: Added option to customize the inline correct/incorrect messages.
+* Enhancement: Added video, audio, youtube and gallery support while displaying message before quiz.
+* Enhancement: Added support of template variables when redirecting to result page.
+* Enhancement: Added new template variable %MAXIMUM_POINTS% to display the maximum possible points per quiz.
+* Enhancement: Added option to select quiz in Gutenberg block editor.
+* Enhancement: Email and name fields will be captured automatically for logged in user.
+* Enhancement: Upgraded user interface of addons settinga page.
+* Bug: Fixed score calculation issues.
+* Bug: Fixed issues while editing quiz's text tab.
+* Bug: Fixed issue where question title not showing for Polar question type.
+* Bug: Fixed calculation issues while using Polar question type.
+* Bug: Fixed validation issues with phone field in contact tab.
+* Bug: Fixed issue where option to limit choices was not working for horizontal multiple response question type.
+* Bug: Fixed security vulnerability (discovered by NinTechNet).
+* Bug: Fixed issue where number of items per page was not working on Quizzes/Surveys page.
+* Bug: Fixed issue with required checkbox while editing questions.
+* Bug: Fixed extra contact field were not showing in admin result new template.
+* Bug: Fixed issues with the title while retaking a quiz.
+* Bug: Fixed issue where category not assigning while editing the question.
 
 = 7.0.1 (August 05, 2020) =
 * Enhancement: Added option to set items per page while adding questions from question bank.

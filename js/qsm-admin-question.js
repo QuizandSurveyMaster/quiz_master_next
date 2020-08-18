@@ -366,7 +366,7 @@ var import_button;
 			var answerInfo = $( '#correct_answer_info' ).val();
 			var type = $( "#question_type" ).val();
 			var comments = $( "#comments" ).val();			                        
-                        advanced_option['required'] = $("#required").attr("checked") ? 0 : 1;
+                        advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
 			var category = $( ".category-radio:checked" ).val();
                         var autofill =  $( "#hide_autofill" ).val();
                         var limit_text =  $( "#limit_text" ).val();
@@ -869,10 +869,10 @@ var import_button;
                 //Add new category
                 $( document ).on('click', '#qsm-category-add-toggle', function(){
                     if( $( '#qsm-category-add' ).is(":visible") ){
-                        $('#new_category_new').attr('checked', false);
+                        $('.questionElements #new_category_new').attr('checked', false);
                         $( '#qsm-category-add' ).slideUp('slow');
                     }else{
-                        $('#new_category_new').attr('checked', true);
+                        $('.questionElements #new_category_new').attr('checked', true).prop('checked', 'checked');
                         $( '#qsm-category-add' ).slideDown('slow');
                     }
                 });

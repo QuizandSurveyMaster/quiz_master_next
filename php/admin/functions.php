@@ -384,8 +384,8 @@ function qsm_create_new_quiz_wizard(){ ?>
                                     'option_name' => 'Require User Login',
                                     'value' => 0
                                 ),
-                                'enable_result_after_timer_end' => array(
-                                    'option_name' => 'Force Submit',
+                                'progress_bar' => array(
+                                    'option_name' => 'Show progress bar',
                                     'value' => 0
                                 )
                             ),
@@ -546,6 +546,7 @@ function qsm_create_new_quiz_wizard(){ ?>
 function qsm_text_template_variable_list(){
     $variable_list = array(
         '%POINT_SCORE%' => __('Score for the quiz when using points', 'quiz-master-next'),
+        '%MAXIMUM_POINTS%' => __('Maximum possible points one can score', 'quiz-master-next'),
         '%AVERAGE_POINT%' => __('The average amount of points user had per question', 'quiz-master-next'),
         '%AMOUNT_CORRECT%' => __('The number of correct answers the user had', 'quiz-master-next'),
         '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),
