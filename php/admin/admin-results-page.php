@@ -343,6 +343,7 @@ function qsm_results_overview_tab_content() {
 				}
 				$mlw_complete_time = '';
 				$mlw_qmn_results_array = @unserialize($mlw_quiz_info->quiz_results);
+				$hidden_questions = isset($mlw_qmn_results_array['hidden_questions']) ? count($mlw_qmn_results_array['hidden_questions']): 0;
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
 					if ( $mlw_complete_hours > 0 ) {
@@ -355,7 +356,8 @@ function qsm_results_overview_tab_content() {
 					$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
 					$mlw_complete_time .=  "$mlw_complete_seconds seconds";
 				}
-
+				
+				$out_of_q = $mlw_quiz_info->total - $hidden_questions;
 				$quotes_list .= "<tr{$alternate}>";
 				$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='".$mlw_quiz_info->result_id. "' /></td>";				
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=".$mlw_quiz_info->result_id."'>View</a> | <a style='color: red;' onclick=\"deleteResults('".$mlw_quiz_info->result_id."','".esc_js($mlw_quiz_info->quiz_name)."')\" href='#'>Delete</a></span></div></td>";
@@ -364,7 +366,7 @@ function qsm_results_overview_tab_content() {
                                     $quotes_list .= "<td><span style='font-size:16px;'>".__('Not Graded','quiz-master-next' )."</span></td>";
                                 } else {
                                     if ( $mlw_quiz_info->quiz_system == 0 ) {
-                                            $quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span></td>";
+                                            $quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$out_of_q." or ".$mlw_quiz_info->correct_score."%</span></td>";
                                     }
                                     if ( $mlw_quiz_info->quiz_system == 1 ) {
                                             $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
