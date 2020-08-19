@@ -475,7 +475,7 @@ Options Page
 Results Pages & Emails Tab
 *********************/
 .results-page,
-#emails .email {
+#qsm_emails .qsm-email {
     width: 100%;
     background-color: #fff;
     margin: 20px 0;
@@ -484,7 +484,7 @@ Results Pages & Emails Tab
 }
 
 .results-page .results-page-content,
-#emails .email .email-content{
+#qsm_emails .qsm-email .qsm-email-content{
     background: #fff;
     padding-right: 15px;
     padding-left: 15px;
@@ -493,7 +493,7 @@ Results Pages & Emails Tab
 }
 
 .results-page-header,
-#emails .email-header {
+#qsm_emails .qsm-email-header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -503,7 +503,7 @@ Results Pages & Emails Tab
 }
 
 .delete-page-button,
-#emails .delete-email-button {
+#qsm_emails .delete-email-button {
     background: none;
     border: none;
     color: #dc3232;
@@ -512,12 +512,12 @@ Results Pages & Emails Tab
 }
 
 .delete-page-button:hover,
-#emails .delete-email-button:hover {
+#qsm_emails .delete-email-button:hover {
     transform: scale(1.2);
 }
 
 .results-page-content,
-.email-content {
+.qsm-email-content {
     display: flex;
     flex-direction: column;
 }
@@ -597,7 +597,7 @@ Results Pages & Emails Tab
 
 @media screen and (min-width: 760px) {
     .results-page-content,
-    .email-content {
+    .qsm-email-content {
         flex-direction: row;
         justify-content: space-around;
     }
