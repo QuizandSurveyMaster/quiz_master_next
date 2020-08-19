@@ -47,7 +47,7 @@ function qsm_options_emails_tab_content() {
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>                
                 <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span class="dashicons dashicons-upload"></span></a>
                 <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
-		<div id="emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
+		<div id="qsm_emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
                 <div class="qsm-alerts" style="margin-top: 20px;">
@@ -59,11 +59,11 @@ function qsm_options_emails_tab_content() {
 
 	<!-- Templates -->
 	<script type="text/template" id="tmpl-email">
-		<div class="email">
-			<header class="email-header">
+		<div class="qsm-email">
+			<header class="qsm-email-header">
 				<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
 			</header>
-			<main class="email-content">
+			<main class="qsm-email-content">
 				<div class="email-when">
 					<div class="email-content-header">
 						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
