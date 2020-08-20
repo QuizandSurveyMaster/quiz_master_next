@@ -1,4 +1,4 @@
-=== WordPres Quiz Plugin - Quiz And Survey Master ===
+=== WordPress Quiz Plugin - Quiz And Survey Master ===
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, wordpress quiz plugin, exam, quiz builder
 Requires at least: 4.9
