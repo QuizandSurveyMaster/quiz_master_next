@@ -403,6 +403,7 @@ class QMNQuizManager {
                     $question_ids[] = intval($question);
                 }
             }
+	    $question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
             $question_sql = implode(', ', $question_ids);
             $questions = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $cat_query . $order_by_sql . $limit_sql);
 
@@ -421,9 +422,15 @@ class QMNQuizManager {
                 $questions = $ordered_questions;
             }
         } else {
-            $questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 " . $cat_query . $order_by_sql . $limit_sql, $quiz_id));
+		$question_ids = apply_filters('qsm_load_questions_ids', array(), $quiz_id, $quiz_options);
+		$question_sql = '';
+		if (!empty($question_ids)) {
+			$qids = implode(', ', $question_ids);
+			$question_sql = " AND question_id IN ({$qids}) ";
+		}
+		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 {$question_sql} {$cat_query} {$order_by_sql} {$limit_sql}", $quiz_id));
         }
-
+	$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
         // Returns an array of all the loaded questions.
         return $questions;
     }
@@ -547,7 +554,7 @@ class QMNQuizManager {
             /* Restore original Post Data */
             wp_reset_postdata();
         }
-        $quiz_display = apply_filters('qsm_display_before_form', $quiz_display);
+        $quiz_display = apply_filters('qsm_display_before_form', $quiz_display, $options, $quiz_data);
         $quiz_display .= "<form name='quizForm{$quiz_data['quiz_id']}' id='quizForm{$quiz_data['quiz_id']}' action='".$_SERVER['REQUEST_URI']."' method='POST' class='qsm-quiz-form qmn_quiz_form mlw_quiz_form' novalidate  enctype='multipart/form-data'>";
         $quiz_display .= "<input type='hidden' name='qsm_hidden_questions' id='qsm_hidden_questions' value=''>";
         $quiz_display .= "<div id='mlw_error_message' class='qsm-error-message qmn_error_message_section'></div>";
@@ -630,6 +637,7 @@ class QMNQuizManager {
         }
 
         // If there is only one page.
+		$pages = apply_filters('qsm_display_pages', $pages, $options->quiz_id, $options);
         if (1 == count($pages)) {
             ?>
             <section class="qsm-page <?php echo $animation_effect; ?>">
@@ -1096,6 +1104,7 @@ class QMNQuizManager {
         $qmn_array_for_variables['time_taken'] = current_time('h:i:s A m/d/Y');
         $qmn_array_for_variables['contact'] = $contact_responses;
         $qmn_array_for_variables['hidden_questions'] = isset($_POST['qsm_hidden_questions']) ? json_decode(html_entity_decode(stripslashes($_POST['qsm_hidden_questions'])),true) : array();
+	$qmn_array_for_variables = apply_filters('qsm_result_variables', $qmn_array_for_variables);
 
         if (!isset($_POST["mlw_code_captcha"]) || ( isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] )) {
 

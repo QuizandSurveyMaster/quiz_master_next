@@ -130,7 +130,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                 }
                 $question['settings'] = $settings;
                 
-                $question_array['questions'][] = array(
+                $question_data = array(
                         'id'         => $question['question_id'],
                         'quizID'     => $question['quiz_id'],
                         'type'       => $question['question_type_new'],
@@ -152,6 +152,8 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
                 );
+				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
+				$question_array['questions'][] = $question_data;
         }        
         return $question_array;
     }else{
@@ -416,7 +418,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			foreach ( $questions as $question ) {
                                 $quiz_name = $wpdb->get_row('SELECT quiz_name FROM '. $quiz_table . ' WHERE quiz_id = ' . $question['quiz_id'], ARRAY_A );
 				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
-				$question_array[] = array(
+				$question_data = array(
 					'id'         => $question['question_id'],
 					'quizID'     => $question['quiz_id'],
 					'type'       => $question['question_type_new'],
@@ -438,6 +440,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
                                         'settings' => $question['settings']
 				);
+				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
+				$question_array[] = $question_data;
 			}                        
 			return $question_array;
 		}
@@ -483,6 +487,9 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					$answers = $intial_answers;
 				}
 				$question_id = QSM_Questions::create_question( $data, $answers, $settings );
+
+				do_action('qsm_saved_question_data', $question_id, $request);
+
 				return array(
 					'status' => 'success',
 					'id'     => $question_id,
@@ -552,6 +559,9 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					$answers = $intial_answers;
 				}
 				$question_id = QSM_Questions::save_question( $id, $data, $answers, $settings );
+
+				do_action('qsm_saved_question_data', $question_id, $request);
+
 				return array(
 					'status' => 'success',
 				);
