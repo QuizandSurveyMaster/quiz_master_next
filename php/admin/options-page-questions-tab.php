@@ -254,6 +254,8 @@ function qsm_options_questions_tab_content() {
                                                     echo qsm_display_question_option($qo_key, $single_answer_option);
                                                 }
                                                 ?>
+												
+												<?php do_action('qsm_question_form_fields', $quiz_id);?>
                                             </div>
                                             <div id="postbox-container-1" class="postbox-container">
                                                 <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
@@ -445,6 +447,7 @@ function qsm_options_questions_tab_content() {
                                                             </div>
                                                         </div>
                                                     </div>
+													<?php do_action('qsm_question_form_fields_side', $quiz_id);?>
                                                 </div>
                                             </div>
                                         </div>
@@ -512,7 +515,7 @@ function qsm_options_questions_tab_content() {
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>                                
 				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-                                <div><a href="#" title="Delete Question" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a></div>
+				<div><a href="#" title="Delete Question" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
 				<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e('Category:', 'quiz-master-next'); ?> {{data.category}} <# } #></div>				
 			</div>

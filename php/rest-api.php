@@ -17,66 +17,49 @@ function qsm_register_rest_routes() {
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_questions',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => WP_REST_Server::CREATABLE,
 		'callback' => 'qsm_rest_create_question',
-                'permission_callback' => function () {
-                    return current_user_can( 'edit_posts' );
-                }
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_question',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_question',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_results',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_results',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_emails',
-                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_emails',
-                'permission_callback' => function () {
-                    return current_user_can( 'edit_posts' );
-                }
 	) );
         //Register rest api to get quiz list
         register_rest_route('qsm', '/list_quiz', array(
             'methods' => 'GET',
             'callback' => 'qsm_get_basic_info_quiz',
-            'permission_callback' => '__return_true',
         ));
         //Register rest api to get result of quiz
         register_rest_route('qsm', '/list_results/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => 'qsm_get_result_of_quiz',
-            'permission_callback' => '__return_true',
         ));
         //Get questions for question bank
         register_rest_route( 'quiz-survey-master/v1', '/bank_questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_bank_questions',
-                'permission_callback' => function () {
-                    return current_user_can( 'edit_posts' );
-                }
 	) );
 }
 
@@ -130,7 +113,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                 }
                 $question['settings'] = $settings;
                 
-                $question_array['questions'][] = array(
+                $question_data = array(
                         'id'         => $question['question_id'],
                         'quizID'     => $question['quiz_id'],
                         'type'       => $question['question_type_new'],
@@ -152,6 +135,8 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
                 );
+				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
+				$question_array['questions'][] = $question_data;
         }        
         return $question_array;
     }else{
@@ -416,7 +401,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			foreach ( $questions as $question ) {
                                 $quiz_name = $wpdb->get_row('SELECT quiz_name FROM '. $quiz_table . ' WHERE quiz_id = ' . $question['quiz_id'], ARRAY_A );
 				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
-				$question_array[] = array(
+				$question_data = array(
 					'id'         => $question['question_id'],
 					'quizID'     => $question['quiz_id'],
 					'type'       => $question['question_type_new'],
@@ -438,6 +423,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
                                         'settings' => $question['settings']
 				);
+				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
+				$question_array[] = $question_data;
 			}                        
 			return $question_array;
 		}
@@ -483,6 +470,9 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					$answers = $intial_answers;
 				}
 				$question_id = QSM_Questions::create_question( $data, $answers, $settings );
+
+				do_action('qsm_saved_question_data', $question_id, $request);
+
 				return array(
 					'status' => 'success',
 					'id'     => $question_id,
@@ -552,6 +542,9 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					$answers = $intial_answers;
 				}
 				$question_id = QSM_Questions::save_question( $id, $data, $answers, $settings );
+
+				do_action('qsm_saved_question_data', $question_id, $request);
+
 				return array(
 					'status' => 'success',
 				);
