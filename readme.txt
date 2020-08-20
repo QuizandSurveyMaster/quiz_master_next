@@ -68,7 +68,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Create and display math formulas
 * And **Much** More...
 
-= [WordPress Quiz Plugin](https://quizandsurveymaster.com/) Addons =
+= Pro Addons =
 Quiz And Survey Master is fully functional and is packed with tons of features that will meet the needs of most, we do offer various extra features including:
 
 **Free Add-ons**
