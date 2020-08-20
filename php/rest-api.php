@@ -17,49 +17,66 @@ function qsm_register_rest_routes() {
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_questions',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/', array(
 		'methods'  => WP_REST_Server::CREATABLE,
 		'callback' => 'qsm_rest_create_question',
+                'permission_callback' => function () {
+                    return current_user_can( 'edit_posts' );
+                }
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_question',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_question',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_results',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/results', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_results',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_emails',
+                'permission_callback' => '__return_true',
 	) );
 	register_rest_route( 'quiz-survey-master/v1', '/quizzes/(?P<id>\d+)/emails', array(
 		'methods'  => WP_REST_Server::EDITABLE,
 		'callback' => 'qsm_rest_save_emails',
+                'permission_callback' => function () {
+                    return current_user_can( 'edit_posts' );
+                }
 	) );
         //Register rest api to get quiz list
         register_rest_route('qsm', '/list_quiz', array(
             'methods' => 'GET',
             'callback' => 'qsm_get_basic_info_quiz',
+            'permission_callback' => '__return_true',
         ));
         //Register rest api to get result of quiz
         register_rest_route('qsm', '/list_results/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => 'qsm_get_result_of_quiz',
+            'permission_callback' => '__return_true',
         ));
         //Get questions for question bank
         register_rest_route( 'quiz-survey-master/v1', '/bank_questions/(?P<id>\d+)', array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'qsm_rest_get_bank_questions',
+                'permission_callback' => function () {
+                    return current_user_can( 'edit_posts' );
+                }
 	) );
 }
 
