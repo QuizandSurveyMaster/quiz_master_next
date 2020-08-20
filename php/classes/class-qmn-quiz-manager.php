@@ -403,7 +403,7 @@ class QMNQuizManager {
                     $question_ids[] = intval($question);
                 }
             }
-			$question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
+	    $question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
             $question_sql = implode(', ', $question_ids);
             $questions = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $cat_query . $order_by_sql . $limit_sql);
 
@@ -422,15 +422,15 @@ class QMNQuizManager {
                 $questions = $ordered_questions;
             }
         } else {
-			$question_ids = apply_filters('qsm_load_questions_ids', array(), $quiz_id, $quiz_options);
-			$question_sql = '';
-			if (!empty($question_ids)) {
-				$qids = implode(', ', $question_ids);
-				$question_sql = " AND question_id IN ({$qids}) ";
-			}
-			$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 {$question_sql} {$cat_query} {$order_by_sql} {$limit_sql}", $quiz_id));
+		$question_ids = apply_filters('qsm_load_questions_ids', array(), $quiz_id, $quiz_options);
+		$question_sql = '';
+		if (!empty($question_ids)) {
+			$qids = implode(', ', $question_ids);
+			$question_sql = " AND question_id IN ({$qids}) ";
+		}
+		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 {$question_sql} {$cat_query} {$order_by_sql} {$limit_sql}", $quiz_id));
         }
-		$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
+	$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
         // Returns an array of all the loaded questions.
         return $questions;
     }
@@ -1108,7 +1108,7 @@ class QMNQuizManager {
 
         if (!isset($_POST["mlw_code_captcha"]) || ( isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] )) {
 
-            $qmn_array_for_variables = array_merge($qmn_array_for_variables, $this->check_answers($qmn_quiz_options, $qmn_array_for_variables));
+            $qmn_array_for_variables = array_merge($qmn_array_for_variables, $this->check_answers($qmn_quiz_options, $qmn_array_for_variables));            
             $result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
             $qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -1930,27 +1930,32 @@ function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
 
     $checked_pass = FALSE;
     // Checks if the start and end dates have data
-    if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {
+    if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {        
         $start = strtotime($options->scheduled_time_start);
-        $end = strtotime($options->scheduled_time_end) + 86399;
-
+        $end = strtotime($options->scheduled_time_end);        
+        if( strpos( $options->scheduled_time_end, ':' ) === false || strpos( $options->scheduled_time_end, '00:00' ) !== false )
+            $end = strtotime($options->scheduled_time_end) + 86399;
+        
+        $current_time = strtotime( current_time( 'm/d/Y H:i' ) );
         // Checks if the current timestamp is outside of scheduled timeframe
-        if (current_time('timestamp') < $start || current_time('timestamp') > $end) {
+        if ( $current_time < $start || $current_time > $end) {
             $checked_pass = TRUE;
         }
     }
-    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){
-        $start = strtotime($options->scheduled_time_start);
-        if ( current_time('timestamp') < $start ){
+    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){        
+        $start = new DateTime( $options->scheduled_time_start );
+        $current_datetime = new DateTime( current_time( 'm/d/Y H:i' ) );
+        if ( $current_datetime < $start ){
             $checked_pass = TRUE;
         }
     }
-    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){
-        $end = strtotime($options->scheduled_time_end) + 86399;
-        if ( current_time('timestamp') > $end ) {
+    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){        
+        $end = new DateTime( $options->scheduled_time_end );
+        $current_datetime = new DateTime( current_time( 'm/d/Y H:i' ) );
+        if ( $current_datetime > $end ) {
             $checked_pass = TRUE;
         }
-    }
+    }    
     if( $checked_pass == TRUE ){
         $qmn_allowed_visit = false;
         $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));
