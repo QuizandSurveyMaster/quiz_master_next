@@ -1921,27 +1921,32 @@ function qsm_scheduled_timeframe_check($display, $options, $variable_data) {
 
     $checked_pass = FALSE;
     // Checks if the start and end dates have data
-    if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {
+    if (!empty($options->scheduled_time_start) && !empty($options->scheduled_time_end)) {        
         $start = strtotime($options->scheduled_time_start);
-        $end = strtotime($options->scheduled_time_end) + 86399;
-
+        $end = strtotime($options->scheduled_time_end);        
+        if( strpos( $options->scheduled_time_end, ':' ) === false || strpos( $options->scheduled_time_end, '00:00' ) !== false )
+            $end = strtotime($options->scheduled_time_end) + 86399;
+        
+        $current_time = strtotime( current_time( 'm/d/Y H:i' ) );
         // Checks if the current timestamp is outside of scheduled timeframe
-        if (current_time('timestamp') < $start || current_time('timestamp') > $end) {
+        if ( $current_time < $start || $current_time > $end) {
             $checked_pass = TRUE;
         }
     }
-    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){
-        $start = strtotime($options->scheduled_time_start);
-        if ( current_time('timestamp') < $start ){
+    if ( !empty( $options->scheduled_time_start ) && empty( $options->scheduled_time_end ) ){        
+        $start = new DateTime( $options->scheduled_time_start );
+        $current_datetime = new DateTime( current_time( 'm/d/Y H:i' ) );
+        if ( $current_datetime < $start ){
             $checked_pass = TRUE;
         }
     }
-    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){
-        $end = strtotime($options->scheduled_time_end) + 86399;
-        if ( current_time('timestamp') > $end ) {
+    if ( empty( $options->scheduled_time_start ) && !empty( $options->scheduled_time_end ) ){        
+        $end = new DateTime( $options->scheduled_time_end );
+        $current_datetime = new DateTime( current_time( 'm/d/Y H:i' ) );
+        if ( $current_datetime > $end ) {
             $checked_pass = TRUE;
         }
-    }
+    }    
     if( $checked_pass == TRUE ){
         $qmn_allowed_visit = false;
         $message = wpautop(htmlspecialchars_decode($options->scheduled_timeframe_text, ENT_QUOTES));

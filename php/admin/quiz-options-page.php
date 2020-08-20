@@ -51,7 +51,8 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_script( 'jquery-ui-core' );
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'jquery-ui-datepicker' );
+	wp_enqueue_script( 'qmn_datetime_js', plugins_url( '../../js/jquery.datetimepicker.full.min.js', __FILE__ ) );
+        wp_enqueue_style( 'qsm_datetime_style', plugins_url( '../../css/jquery.datetimepicker.css', __FILE__ ) );
 	wp_enqueue_script( 'jquery-ui-tabs' );
 	wp_enqueue_script( 'jquery-effects-blind' );
 	wp_enqueue_script( 'jquery-effects-explode' );
