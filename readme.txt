@@ -27,13 +27,13 @@ Quiz and Survey Master is the easiest [WordPress Quiz Plugin](https://quizandsur
 [youtube https://www.youtube.com/watch?v=DyiCCNnDpHk]
 
 = Customize Text =
-You can customized anything your users will see and engage with. Everything from the text blocks throughout the quiz or survey to the submit button. You can even "template variables" to generate personlized text for your users.
+You can customized anything your users will see and engage with. Everything from the text blocks throughout the quiz or survey to the submit button. You can even "template variables" to generate personalized text for your users.
 
 = Question Types =
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, **polar** (slider) and **accept**. We release more questions types with every major release.
 
-= Customize Results Pages Based on Score =
-Using our quiz builder plugin, you can customize results page based on the user's score. 
+= Customize Results Based on Score =
+Using our quiz builder plugin, you can customize the results page based on the user's score. 
 
 = Emails After Quiz =
 After the user takes a quiz or survey, you can have the plugin email you and the user with results. This too can be customized with your own text.
@@ -90,10 +90,10 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 
 **Reachout to us**
 * You can contact our pro support via our [Contact Form](https://quizandsurveymaster.com/contact-support/) or use the WordPress form for free plugin support. We are equally active on both places.
-* Join our [offical FB group](https://www.facebook.com/groups/516958552587745).
+* Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-= Comparision with other Quiz Plugins =
+= Comparison with other Quiz Plugins =
 * Quiz cat (quizcat) - We offer a lot more questions types than just viral quiz and multiple choice. We provide a tons of integrations to help you automate your marketing campaign.
 * HD Quiz - Mainly used for viral and trivial questions types. We are in process of creating these question types.
 * WP Quiz Plugin - Again, mainly used for viral question types. We will release this by the end of this month.
