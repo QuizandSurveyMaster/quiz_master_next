@@ -231,14 +231,16 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_date_field( $field, $value ) {
-    wp_enqueue_script( 'jquery-ui-datepicker' );
+  public static function generate_date_field( $field, $value ) {    
     ?>
     <script>
-			jQuery(function() {
-    			jQuery( "#<?php echo $field["id"]; ?>" ).datepicker();
-			});
-		</script>
+        jQuery(function() {
+        jQuery( "#<?php echo $field["id"]; ?>" ).datetimepicker({
+            format:'m/d/Y H:i',
+            step: 1
+          });
+        });
+    </script>
     <tr valign="top">
       <th scope="row" class="qsm-opt-tr">
           <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
@@ -252,7 +254,7 @@ class QSM_Fields {
           <?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
             <span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
           <?php } ?>
-          <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
+            <input autocomplete="off" type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
           <?php if( isset($field['help']) && $field['help'] != ''){ ?>
             <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
         <?php } ?>
