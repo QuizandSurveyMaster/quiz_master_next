@@ -1,25 +1,21 @@
 <?php
 /**
  * @since 7.0
+ * @since 7.0.2 Removed the transient
  * @param string $name
  */
 function qsm_get_widget_data( $name ){    
-    $get_dashboard_data = get_transient( 'qsm_admin_dashboard_data' );
-    if($get_dashboard_data !== false && !empty( $get_dashboard_data ) ){        
-        $qsm_admin_dd = $get_dashboard_data;        
-    }else{        
-        $qsm_admin_dd = qsm_fetch_data_from_script();
-        set_transient( 'qsm_admin_dashboard_data', $qsm_admin_dd, 24*60*60 );             
-    }
+    $qsm_admin_dd = qsm_fetch_data_from_script();           
     return isset( $qsm_admin_dd[$name] ) ? $qsm_admin_dd[$name] : array();
 }
+
 
 function qsm_fetch_data_from_script(){
     $args = array(
         'timeout'     => 10,
         'sslverify' => false
     );
-    $fetch_api_data = wp_remote_get('https://quizandsurveymaster.com/wp-json/qsmps/get-data', $args);    
+    $fetch_api_data = wp_remote_get('https://t6k8i7j6.stackpathcdn.com/wp-content/parsing_script.json', $args);        
     if( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ){
         $qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
         return json_decode( $qsm_admin_dd, true );
@@ -313,7 +309,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 						foreach ( $addon_array as $key => $single_arr ) {
 							?>
 							<li>
-								<a href="<?php echo $single_arr['link']; ?>" target="_blank">
+								<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-dashoard-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin" target="_blank">
 									<img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
 								</a>
 							</li>

@@ -3,6 +3,7 @@ var el = wp.element.createElement,
 	registerBlockType = wp.blocks.registerBlockType,
 	ServerSideRender = wp.components.ServerSideRender,
 	TextControl = wp.components.TextControl,
+	SelectControl = wp.components.SelectControl,
 	InspectorControls = wp.editor.InspectorControls;
 
 /*
@@ -11,9 +12,10 @@ var el = wp.element.createElement,
 registerBlockType( 'qsm/main-block', {
 	title: 'QSM Block',
 	icon: 'feedback',
-	category: 'widgets',
+	category: 'widgets',        
 
 	edit: function( props ) {
+                const quiz_arr = props.attributes.quiz_id;
 		return [
 			/*
 			 * The ServerSideRender element uses the REST API to automatically call
@@ -26,11 +28,14 @@ registerBlockType( 'qsm/main-block', {
 			} ),
 			
 			el( InspectorControls, {},
-				el( TextControl, {
-					label: 'Quiz/Survey ID',
-					value: props.attributes.quiz,
-					onChange: ( value ) => { props.setAttributes( { quiz: value } ); },
-				} )
+                                el( 'p', { style: { padding: '0 16px' } },
+                                    el( SelectControl, {
+                                            label: 'Quiz/Survey ID',
+                                            value: props.attributes.quiz,
+                                            options: quiz_arr,
+                                            onChange: ( value ) => { props.setAttributes( { quiz: value } ); },
+                                    } )
+                                )				
 			),
 		];
 	},

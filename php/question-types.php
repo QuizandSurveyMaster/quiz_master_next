@@ -122,7 +122,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
         if($answerEditor === 'rich'){
             $question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
         }else{
-            $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".esc_attr($answer[0])."'>";
+            $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".str_replace(" ","-",esc_attr($answer[0]))."'>";
         }	
         $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlentities(esc_attr($answer[0])) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
 	$question_display .= "</div>";
@@ -948,6 +948,10 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredCheck";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
+  $limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_multiple_response');
+  $limit_mr_text = '';
+  if($limit_multiple_response > 0)
+      $limit_mr_text = 'onchange="qsmCheckMR(this,'. $limit_multiple_response .')"';
   $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
   $question_display .= qsm_question_title_func($question, '', $new_question_title);
   $question_display .= "<div class='qmn_check_answers $mlw_requireClass'>";
@@ -960,7 +964,7 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
       if ($answer[0] != "")
       {
         $question_display .= "<input type='hidden' name='question".$id."' value='This value does not matter' />";
-        $question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."&nbsp;</label></span>";
+        $question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."&nbsp;</label></span>";
       }
     }
   }
@@ -1224,7 +1228,9 @@ function qmn_polar_display($id, $question, $answers) {
     } else {
         $mlw_requireClass = "";
     }
-    $question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
+    $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
+    $question_title = qsm_question_title_func($question, '', $new_question_title);
+    //$question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
     $input_text .= "<div class='left-polar-title'>" . $answers[0][0] ."</div>";
     $input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
     $input_text .= '<div id="slider-'. $id .'"></div></div>';
@@ -1258,19 +1264,19 @@ function qmn_polar_review($id, $question, $answers) {
         $return_array['question_text'] = str_replace("%POLAR_SLIDER%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
     }
     if (isset($_POST["question" . $id])) {
-        $decode_user_answer = sanitize_textarea_field(strval(stripslashes(htmlspecialchars_decode($_POST["question" . $id], ENT_QUOTES))));
+        $decode_user_answer = sanitize_textarea_field( $_POST["question" . $id] );
         $mlw_user_answer = trim(preg_replace('/\s\s+/', ' ', str_replace("\n", " ", $decode_user_answer)));
     } else {
         $mlw_user_answer = " ";
     }
     $return_array['user_text'] = $mlw_user_answer;
-    
+    $return_array['points'] = $mlw_user_answer;
     foreach($answers as $answer)  {
-        $decode_correct_text = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));        
-        if (mb_strtoupper($return_array['user_text']) == mb_strtoupper( trim ($decode_correct_text) ) )        {
-          $return_array['correct'] = "correct";
-          $return_array['points'] = $answer[1];          
-          break;
+        $decode_correct_text = $answer[1];
+        $return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", " ", $decode_correct_text ) ) );
+        if ( $return_array['user_text'] ==  trim ($decode_correct_text) && isset($answer[2]) && $answer[2] == 1 ) {
+            $return_array['correct'] = "correct";          
+            break;
         }
     }    
     return $return_array;

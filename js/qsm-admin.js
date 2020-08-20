@@ -102,6 +102,7 @@ var QSMQuizzesSurveys;
                     icons: icons,
                     heightStyle: "content"
             });
+            jQuery('#accordion h3.ui-accordion-header').next().slideDown();
             jQuery('.template-list .template-list-inner:first-child').trigger('click');                
         }
     });
@@ -112,6 +113,8 @@ var QSMQuizzesSurveys;
         var addons = $(this).data('addons');
         $('.template-list .template-list-inner').removeClass('selected-quiz-template');
         $(this).addClass('selected-quiz-template');
+        $('#quiz_settings_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
+        $('#recomm_addons_wrapper').html('').html('<div class="qsm-spinner-loader"></div>');
         $.post(ajaxurl, {settings: settings, addons: addons, action: action },
             function (data) {
                 var diff_html = data.split('=====');                    
@@ -120,12 +123,28 @@ var QSMQuizzesSurveys;
                 $('#recomm_addons_wrapper').html('');
                 $('#recomm_addons_wrapper').html(diff_html[1]);
                 $( "#accordion" ).accordion();
+                $('#accordion h3.ui-accordion-header').next().slideDown();
+                $( '#quiz_settings_wrapper select' ).each(function(){
+                    var name = $(this).attr('name');
+                    var value = $(this).val();                        
+                    if( $( '.' + name + '_' + value ).length > 0 ){                
+                        $( '.' + name + '_' + value ).show();
+                    }
+                });
             }
         );
     });
     $( '#show_import_export_popup' ).on( 'click', function( event ) {
         event.preventDefault();
         MicroModal.show( 'modal-export-import' );
+    });
+    $(document).on('change', '.qsm_tab_content select, #quiz_settings_wrapper select', function(){
+        var name = $(this).attr('name');
+        var value = $(this).val();            
+        $( '.qsm_hidden_tr' ).hide();
+        if( $( '.' + name + '_' + value ).length > 0 ){                
+            $( '.' + name + '_' + value ).show();
+        }
     });
     /*$( '#quiz_search' ).keyup( function() {
       QSMQuizzesSurveys.searchQuizzes( $( this ).val() );

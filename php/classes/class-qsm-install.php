@@ -1003,6 +1003,26 @@ class QSM_Install {
       'default' => 'Hint'
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers quick result correct answer setting
+    $field_array = array(
+      'id' => 'quick_result_correct_answer_text',
+      'label' => __('Correct answer message', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Correct! You have selected correct answer.',
+       'tooltip' => __('Text to show when the selected option is correct answer.', 'quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers quick result wrong answer setting
+    $field_array = array(
+      'id' => 'quick_result_wrong_answer_text',
+      'label' => __('Incorrect answer message', 'quiz-master-next'),
+      'type' => 'text',
+      'default' => 'Wrong! You have selected wrong answer.',
+      'tooltip' => __('Text to show when the selected option is wrong answer.', 'quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
            
     //Setting for animation
     $field_array = array(
