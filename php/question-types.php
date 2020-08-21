@@ -145,14 +145,19 @@ function qmn_multiple_choice_display($id, $question, $answers)
 */
 function qmn_multiple_choice_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
     'user_text' => '',
     'correct_text' => ''
   );
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   if ( isset( $_POST["question".$id] ) ) {
     $mlw_user_answer = sanitize_textarea_field( $_POST["question".$id] );
+		if($answerEditor == 'rich'){
+			$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+		}
   } else {
     $mlw_user_answer = " ";
   }
@@ -308,6 +313,8 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
 */
 function qmn_horizontal_multiple_choice_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
@@ -316,6 +323,9 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
   );
   if ( isset( $_POST["question".$id] ) ) {
     $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
+		if($answerEditor == 'rich'){
+		  $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+		}
   } else {
     $mlw_user_answer = " ";
   }
@@ -403,6 +413,8 @@ function qmn_drop_down_display($id, $question, $answers)
 */
 function qmn_drop_down_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
@@ -411,6 +423,9 @@ function qmn_drop_down_review($id, $question, $answers)
   );
   if (isset($_POST["question".$id])) {
     $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
+		if($answerEditor == 'rich'){
+		  $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+		}
   } else {
     $mlw_user_answer = " ";
   }
