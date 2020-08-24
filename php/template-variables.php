@@ -900,6 +900,9 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  * @return str $content
  */
 function qsm_change_section_setting_lower_text_to_upper($content){
+    if( is_admin() ){
+        return $content;
+    }
     preg_match_all('/%(.*?)%/', $content, $match);
     if( isset( $match[1] ) && is_array( $match[1] ) && !empty($match[1])  ){        
         foreach ($match[1] as $key => $value) {
