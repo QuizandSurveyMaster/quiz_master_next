@@ -49,7 +49,10 @@ function qsm_options_questions_tab_content() {
 			$qpage['questions'] = $val;
 			$qpages[] = $qpage;
 		}
-	}
+	} else {
+            $defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'hide_prevbtn' => 0, 'questions' => array());		
+            $qpages[] = $defaultQPage;
+        }
 	$qpages = apply_filters('qsm_filter_quiz_page_attributes', $qpages, $pages);
 	$json_data = array(
 		'quizID'     => $quiz_id,
