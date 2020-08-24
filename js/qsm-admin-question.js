@@ -199,7 +199,7 @@ var import_button;
 				}
 			} else {
                             //We have removed this code in  7.0.0 because not allow to delete the single page.
-                            //QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
+                            QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
 			}
                         //Create Default pages and one question.
                         if( qsmQuestionSettings.pages.length == 0 && QSMQuestion.questions.length == 0){
@@ -241,6 +241,7 @@ var import_button;
 				pageInfo.set('questions', singlePage);
 				qpages.push(pageInfo.attributes);
 			});
+                        console.log(pages);
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
