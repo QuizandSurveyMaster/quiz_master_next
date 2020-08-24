@@ -196,7 +196,7 @@ class QMNPluginHelper {
    */
   public function get_section_setting( $section, $setting, $default = false ) {
 		global $mlwQuizMasterNext;
-		return $mlwQuizMasterNext->quiz_settings->get_section_setting( $section, $setting, $default );
+		return apply_filters('qsm_section_setting_text', $mlwQuizMasterNext->quiz_settings->get_section_setting( $section, $setting, $default ));
 	}
 
 	/**

@@ -167,6 +167,57 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     cursor: pointer;
 }
 
+/**
+* Design for new template variable QUESTION_WITH_ANSWER
+*/
+.mlw_qmn_question .qsm-text-wrong-option{
+    display: block;
+    color: #dc3232;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+.mlw_qmn_question span.qsm-text-wrong-option::before {
+    content: "\f335";
+    font-family: dashicons;
+    position: relative;
+    top: 3px;
+    left: -10px;
+}
+.mlw_qmn_question .qsm-text-correct-option{
+    display: block;
+    color: green;
+    margin-bottom: 5px;
+    padding-left: 10px;
+}
+.mlw_qmn_question .qsm-text-correct-option:before{
+    content: "\f15e";
+    font-family: dashicons;
+    position: relative;
+    top: 3px;
+    left: -10px;
+}
+.mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:before{
+    content: "\f12a";
+    top: 4px;
+}
+.mlw_qmn_question .qsm-text-simple-option{
+    display: block;    
+    margin-bottom: 5px;
+    color: #808080;
+    padding-left: 10px;
+}
+.mlw_qmn_question .qsm-text-simple-option:before{    
+    content: "\f159";
+    font-family: dashicons;
+    position: relative;
+    top: 3px;
+    left: -10px;
+}
+.qsm-results-page .qmn_question_answer.qsm-add-border-bottom {
+    border-bottom: 1px solid #808080;
+    padding-bottom: 25px;
+}
+
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

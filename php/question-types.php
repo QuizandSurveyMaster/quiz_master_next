@@ -1085,9 +1085,9 @@ function qmn_fill_blank_display($id, $question, $answers)
   $limit_text_att = $limit_text ? "maxlength='". $limit_text ."' " : '';
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
 	$input_text = "<input ". $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
-	if (strpos($question, '%BLANK%') !== false)
+	if (strpos($question, '%BLANK%') !== false || strpos($question, '%blank%') !== false)
 	{
-		$question = str_replace( "%BLANK%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+		$question = str_replace( array( "%BLANK%", "%blank%" ), array($input_text, $input_text), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
         //$question_title = apply_filters('the_content', $question);
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
@@ -1113,9 +1113,9 @@ function qmn_fill_blank_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-	if (strpos($question, '%BLANK%') !== false)
+	if (strpos($question, '%BLANK%') !== false || strpos($question, '%blank%') !== false)
 	{
-		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+		$return_array['question_text'] = str_replace( array( "%BLANK%", "%blank%" ), array( "__________", "__________" ), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   if ( isset( $_POST["question".$id] ) ) {
     $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
@@ -1269,8 +1269,8 @@ function qmn_polar_review($id, $question, $answers) {
         'user_text' => '',
         'correct_text' => ''
     );
-    if (strpos($question, '%POLAR_SLIDER%') !== false) {
-        $return_array['question_text'] = str_replace("%POLAR_SLIDER%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+    if (strpos($question, '%POLAR_SLIDER%') !== false || strpos($question, '%polar_slider%') !== false) {
+        $return_array['question_text'] = str_replace( array( "%POLAR_SLIDER%", "%polar_slider%" ), array( "__________", "__________" ), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
     }
     if (isset($_POST["question" . $id])) {
         $decode_user_answer = sanitize_textarea_field( $_POST["question" . $id] );
