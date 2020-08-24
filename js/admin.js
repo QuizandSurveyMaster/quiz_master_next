@@ -217,7 +217,7 @@ var QSMAdmin;
                         text_msg = text_msg.replace(/\n/g,"<br>");
                         tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     }                    
-                    tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
+                    //tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     jQuery( '.qsm-text-allowed-variables > .qsm-text-variable-wrap' ).html('').html( data.allowed_variable_text );
                     jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
                 } else {
