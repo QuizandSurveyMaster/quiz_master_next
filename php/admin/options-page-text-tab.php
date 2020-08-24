@@ -30,7 +30,7 @@ function mlw_options_text_tab_content() {
             <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
-                    <div id="post-body-content" style="position: relative;">
+                    <div class="qsm-question-text-tab" id="post-body-content" style="position: relative;">
                         <?php
                         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
                         $editor_text_arr = $text_text_arr = array();
