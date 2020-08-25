@@ -47,6 +47,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
+                add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'plural-name', __( 'Post Type Plural Name (Shown in various places such as on archive pages)', 'quiz-master-next' ), array( $this, 'plural_name_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
@@ -70,7 +71,7 @@ class QMNGlobalSettingsPage {
 		if ( isset( $_GET["settings-updated"] ) && $_GET["settings-updated"] ) {
 			flush_rewrite_rules( true );
                         echo '<div class="updated" style="padding: 10px;">';
-			echo "<span style='color:red;'>" . __( ' Settings have been updated!', 'quiz-master-next' ) . "</span>";
+			echo "<span>" . __( ' Settings have been updated!', 'quiz-master-next' ) . "</span>";
                         echo '</div>';
 		}                
 	}
@@ -217,6 +218,30 @@ class QMNGlobalSettingsPage {
 		}
                 echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[cpt_archive]' id='qmn-settings[cpt_archive]' value='1'$checked />";
+                echo '<span class="slider round"></span></label>';
+	}
+        
+        /**
+	 * Generates Setting Field For delete QSM data
+	 *
+	 * @since 7.0.3
+	 * @return void
+	 */
+	public function qsm_delete_data()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$cpt_archive = '0';
+		if (isset($settings['delete_qsm_data']))
+		{
+			$cpt_archive = esc_attr( $settings['delete_qsm_data'] );
+		}
+		$checked = '';
+		if ($cpt_archive == '1')
+		{
+			$checked = " checked='checked'";
+		}
+                echo '<label class="switch">';
+		echo "<input type='checkbox' name='qmn-settings[delete_qsm_data]' id='qmn-settings[delete_qsm_data]' value='1'$checked />";
                 echo '<span class="slider round"></span></label>';
 	}
 

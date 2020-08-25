@@ -9,6 +9,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit();
 }
 
+//Do not allow to delete the data untill delete_qsm_data option is not set.
+$settings   = (array) get_option( 'qmn-settings' );
+if( !isset( $settings['delete_qsm_data'] ) ){
+    return;
+}
+
 global $wpdb;
 
 $qsm_tables = array(
