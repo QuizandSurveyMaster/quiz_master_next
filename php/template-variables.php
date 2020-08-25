@@ -430,12 +430,17 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                         }
 
 			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
+                        $disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );                        
                         if( isset( $answer['question_title'] ) && $answer['question_title'] != '' ){
                             $add_br = '';
                             if( $answer[0] != '' ){
                                 $add_br = '<br/>';
                             }
-                            $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>'. $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+                            if( $disable_description_on_result == 1 ){
+                                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
+                            }else{
+                                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>'. $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+                            }                            
                         }else{
                             $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
                         }
