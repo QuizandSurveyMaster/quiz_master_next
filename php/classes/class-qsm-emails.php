@@ -143,7 +143,7 @@ class QSM_Emails {
 		global $mlwQuizMasterNext;
 
 		// Sets up our to email addresses.
-		$user_email = apply_filters( 'mlw_qmn_template_variable_results_page', sanitize_email( $response_data['user_email'] ), $response_data );
+		$user_email = sanitize_email( $response_data['user_email'] );
 		$count      = 0;
 		if ( is_email( $user_email ) ) {
 			$to = str_replace( '%USER_EMAIL%', $response_data['user_email'], $to, $count );
