@@ -190,7 +190,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     padding-left: 10px;
 }
 .mlw_qmn_question .qsm-text-correct-option:before{
-    content: "\f15e";
+    content: "\f159";
     font-family: dashicons;
     position: relative;
     top: 3px;

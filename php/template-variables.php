@@ -32,7 +32,6 @@ $mlw_qmn_result_array = array(
 		);
 
 */
-add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_conver_small_variable_to_uppercase', 5, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_points',10,2);
@@ -63,44 +62,10 @@ add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_questi
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
-add_filter('mlw_qmn_template_variable_quiz_page', 'qsm_conver_small_variable_to_uppercase',5,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date',10,2);
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user',10,2);
 
-/**
- * Convert small letter variables into upper case.
- * 
- * @since 7.0.3
- * @param str $content
- * @param array $mlw_quiz_array
- * @return str $content
- */
-function qsm_conver_small_variable_to_uppercase( $content, $mlw_quiz_array ){
-    preg_match_all('/%(.*?)%/', $content, $match);
-    if( isset( $match[1] ) && is_array( $match[1] ) && !empty($match[1])  ){
-        $small_cat_variables = array(
-            'category_points_',
-            'category_score_',
-            'average_category_points_'
-        );
-        $upper_cat_variables = array(
-            'CATEGORY_POINTS_',
-            'CATEGORY_SCORE_',
-            'AVERAGE_CATEGORY_POINTS_'
-        );        
-        foreach ($match[1] as $key => $value) {            
-            if( strpos($value, 'category_points_') !== false || strpos($value, 'category_score_') !== false || strpos($value, 'average_category_points_') !== false ){                
-                $content = str_replace($small_cat_variables, $upper_cat_variables, $content);
-            } else if( strpos($value, 'CATEGORY_POINTS_') !== false || strpos($value, 'CATEGORY_SCORE_') !== false || strpos($value, 'AVERAGE_CATEGORY_POINTS_') !== false ){
-                $content = $content;
-            }else {
-                $content = str_replace($value, strtoupper($value), $content);
-            }         
-        }        
-    }
-    return $content;
-}
 /**
  * @since 6.4.11
  * @param str $content
@@ -891,24 +856,3 @@ function qsm_custom_wpkses_post_tags( $tags, $context ) {
 }
 
 add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
-
-/**
- * Convert section lower letter task into upper case
- * 
- * @since 7.0.3
- * @param str $content
- * @return str $content
- */
-function qsm_change_section_setting_lower_text_to_upper($content){
-    if( is_admin() ){
-        return $content;
-    }
-    preg_match_all('/%(.*?)%/', $content, $match);
-    if( isset( $match[1] ) && is_array( $match[1] ) && !empty($match[1])  ){        
-        foreach ($match[1] as $key => $value) {
-            $content = str_replace($value, strtoupper($value), $content) ;
-        }
-    }
-    return $content;   
-}
-add_filter('qsm_section_setting_text', 'qsm_change_section_setting_lower_text_to_upper', 10, 1);

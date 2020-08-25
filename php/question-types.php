@@ -1085,9 +1085,9 @@ function qmn_fill_blank_display($id, $question, $answers)
   $limit_text_att = $limit_text ? "maxlength='". $limit_text ."' " : '';
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
 	$input_text = "<input ". $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question".$id."' />";
-	if (strpos($question, '%BLANK%') !== false || strpos($question, '%blank%') !== false)
+	if (strpos($question, '%BLANK%') !== false)
 	{
-		$question = str_replace( array( "%BLANK%", "%blank%" ), array($input_text, $input_text), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+		$question = str_replace( "%BLANK%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
         //$question_title = apply_filters('the_content', $question);
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
