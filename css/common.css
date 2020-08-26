@@ -217,7 +217,18 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     border-bottom: 1px solid #808080;
     padding-bottom: 25px;
 }
-
+.qmn_quiz_container.qsm_auto_pagination_enabled {
+    position: relative;
+}
+.qmn_quiz_container.qsm_auto_pagination_enabled  .quiz_section.quiz_end .qsm-btn{
+    bottom: 0;
+    right: 0;
+    width: auto;
+    text-align: right;
+    height: auto;
+    padding: 0;
+    position: absolute;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
