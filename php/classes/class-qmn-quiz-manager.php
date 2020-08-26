@@ -101,6 +101,8 @@ class QMNQuizManager {
             $datafile = $_FILES["file"]["tmp_name"];
             //$file_name = $_FILES["file"]["name"];
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            //remove white space between file name
+            $file_name = str_replace(' ', '-', $file_name);
             $rawBaseName = 'qsmfileupload_' . md5( date('Y-m-d H:i:s') ) . '_' . pathinfo($file_name, PATHINFO_FILENAME);
             $new_fname = $rawBaseName . '.' . $extension;
             $file = $upload_dir['path'] . '/' . $new_fname;
