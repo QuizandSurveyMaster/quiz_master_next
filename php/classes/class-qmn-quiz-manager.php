@@ -1290,6 +1290,7 @@ class QMNQuizManager {
         $answer_points = 0;
         $question_data = array();
         $total_possible_points = 0;
+        $attempted_question = 0;
         
         // Question types to calculate result on
         $result_question_types = array(
@@ -1378,7 +1379,13 @@ class QMNQuizManager {
                                 }
                                 $user_answer = $results_array["user_text"];
                                 $correct_answer = $results_array["correct_text"];
-
+                                
+                                if( trim( $user_answer ) != '' ){
+                                    if( $user_answer != 'No Answer Provided' ){
+                                        $attempted_question++;
+                                    }                                
+                                }
+                                
                                 // If a comment was submitted
                                 if (isset($_POST["mlwComment" . $question['question_id']])) {
                                     $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
@@ -1459,7 +1466,11 @@ class QMNQuizManager {
                             }
                             $user_answer = $results_array["user_text"];
                             $correct_answer = $results_array["correct_text"];
-
+                            if( trim( $user_answer ) != '' ){
+                                if( $user_answer != 'No Answer Provided' ){
+                                    $attempted_question++;
+                                }                                
+                            }
                             // If a comment was submitted
                             if (isset($_POST["mlwComment" . $question['question_id']])) {
                                 $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
@@ -1508,7 +1519,8 @@ class QMNQuizManager {
             'total_questions' => $total_questions,
             'question_answers_display' => '', // Kept for backwards compatibility
             'question_answers_array' => $question_data,
-            'total_possible_points' => $total_possible_points
+            'total_possible_points' => $total_possible_points,
+            'total_attempted_questions' => $attempted_question
         );
     }
 

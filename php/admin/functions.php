@@ -549,6 +549,8 @@ function qsm_text_template_variable_list(){
         '%MAXIMUM_POINTS%' => __('Maximum possible points one can score', 'quiz-master-next'),
         '%AVERAGE_POINT%' => __('The average amount of points user had per question', 'quiz-master-next'),
         '%AMOUNT_CORRECT%' => __('The number of correct answers the user had', 'quiz-master-next'),
+        '%AMOUNT_INCORRECT%' => __('The number of incorrect answers the user had', 'quiz-master-next'),
+        '%AMOUNT_ATTEMPTED%' => __('The number of questions are attempted', 'quiz-master-next'),
         '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),
         '%CORRECT_SCORE%' => __('Score for the quiz when using correct answers', 'quiz-master-next'),
         '%USER_NAME%' => __('The name the user entered before the quiz', 'quiz-master-next'),

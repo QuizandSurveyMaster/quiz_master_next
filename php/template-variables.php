@@ -42,6 +42,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'qmn_variable_category_aver
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_point_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_average_point',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_amount_correct',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_amount_incorrect',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_total_questions',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_correct_score',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -60,6 +61,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -144,6 +146,21 @@ function qsm_variable_total_possible_points( $content, $mlw_quiz_array ){
     if( isset( $mlw_quiz_array["total_possible_points"] ) ){
         $content = str_replace( "%MAXIMUM_POINTS%" , $mlw_quiz_array["total_possible_points"], $content);
     }
+    return $content;
+}
+
+/**
+ * Replace total_possible_points variable with actual points
+ * 
+ * @since 7.0.2
+ * 
+ * @param string $content
+ * @param array $mlw_quiz_array
+ * @return string $content
+ */
+function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ){    
+    $total_attempted_questions =  isset( $mlw_quiz_array["total_attempted_questions"] ) ? $mlw_quiz_array["total_attempted_questions"] : 0;
+    $content = str_replace( "%AMOUNT_ATTEMPTED%" , $total_attempted_questions, $content);   
     return $content;
 }
 
@@ -291,6 +308,24 @@ function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
 function mlw_qmn_variable_amount_correct($content, $mlw_quiz_array)
 {
 	$content = str_replace( "%AMOUNT_CORRECT%" , $mlw_quiz_array["total_correct"], $content);
+	return $content;
+}
+
+/**
+ * Return total incorrect amount
+ * 
+ * @since 7.0.3
+ * @param string $content
+ * @param array $mlw_quiz_array
+ * @return string
+ */
+function mlw_qmn_variable_amount_incorrect($content, $mlw_quiz_array){
+        if( false !== strpos($content, '%AMOUNT_INCORRECT%') ){
+            $total_question = $mlw_quiz_array["total_questions"];
+            $total_correct = $mlw_quiz_array["total_correct"];
+            $total_incorrect = $total_question - $total_correct; 
+            $content = str_replace( "%AMOUNT_INCORRECT%" , max($total_incorrect, 0), $content);
+        }
 	return $content;
 }
 function mlw_qmn_variable_total_questions($content, $mlw_quiz_array)
