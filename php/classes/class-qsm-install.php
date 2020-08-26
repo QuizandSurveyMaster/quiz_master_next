@@ -870,7 +870,7 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUESTION%',
-        '%QUESTION_WITH_ANSWER%',
+        '%USER_ANSWERS_DEFAULT%',
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',

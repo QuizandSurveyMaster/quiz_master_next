@@ -566,6 +566,7 @@ function qsm_text_template_variable_list(){
         '%CATEGORY_AVERAGE_SCORE%' => __('The average score from all categories.', 'quiz-master-next'),
         '%QUESTION%' => __('The question that the user answered', 'quiz-master-next'),
         '%USER_ANSWER%' => __('The answer the user gave for the question', 'quiz-master-next'),
+        '%USER_ANSWERS_DEFAULT%' => __('The answer the user gave for the question with default design', 'quiz-master-next'),
         '%CORRECT_ANSWER%' => __('The correct answer for the question', 'quiz-master-next'),
         '%USER_COMMENTS%' => __('The comments the user provided in the comment field for the question', 'quiz-master-next'),
         '%CORRECT_ANSWER_INFO%' => __('Reason why the correct answer is the correct answer', 'quiz-master-next'),
