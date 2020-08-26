@@ -531,8 +531,8 @@ class QMNQuizManager {
         $qmn_total_questions = 0;
         global $mlw_qmn_section_count;
         $mlw_qmn_section_count = 0;
-
-        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz'>";
+        $auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
+        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class}'>";
         // Get quiz post based on quiz id
         $args = array(
             'posts_per_page' => 1,
