@@ -123,8 +123,9 @@ var import_button;
                             $( '#question-bank' ).prepend($cat_html);
                             $('#question-bank-cat').val(pagination.category);
                         }
-                        if(pagination.current_page == 1){
+                        if(pagination.current_page == 1){                            
                             $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
+                            $( '#question-bank' ).prepend('<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</button>');
                         }                        
 		},
 		addQuestionToQuestionBank: function( question ) {                    
@@ -776,6 +777,11 @@ var import_button;
                         $('.import-button').addClass('disable_import');                        
                         $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked',false);
                     }
+                });
+                
+                //Select all button.
+                $( document ).on( 'change', '#qsm_select_all_question', function( event) {
+                    $('.qsm-question-checkbox').prop('checked', jQuery('#qsm_select_all_question').prop('checked'));
                 });
 
 		$( '.save-page-button' ).on( 'click', function( event ) {
