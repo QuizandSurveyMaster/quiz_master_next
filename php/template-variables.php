@@ -446,7 +446,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                         }
                         $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);
                         $extra_border_bottom_class = '';
-                        if( strpos( $mlw_question_answer_display, '%QUESTION_WITH_ANSWER%') !== false ){
+                        if( strpos( $mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%') !== false ){
                             $extra_border_bottom_class = 'qsm-add-border-bottom';
                             $show_two_option_questions = array(
                                 3,12,5,7,14
@@ -489,7 +489,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                                     }                                    
                                 }
                             }
-                            $mlw_question_answer_display = str_replace( "%QUESTION_WITH_ANSWER%" , $question_with_answer_text, $mlw_question_answer_display);
+                            $mlw_question_answer_display = str_replace( "%USER_ANSWERS_DEFAULT%" , $question_with_answer_text, $mlw_question_answer_display);
                         }
                         if( isset($answer['question_type']) && $answer['question_type'] == 11 ){
                             $file_extension = substr($answer[1], -4);
