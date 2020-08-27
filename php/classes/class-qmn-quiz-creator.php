@@ -88,7 +88,7 @@ class QMNQuizCreator {
 				'phone_field_text'         => 'Phone Number',
 				'comment_field_text'       => 'Comments',
 				'email_from_text'          => 'Wordpress',
-				'question_answer_template' => '%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />',
+				'question_answer_template' => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
 				'leaderboard_template'     => '',
 				'quiz_system'              => 0,
 				'randomness_order'         => 0,
