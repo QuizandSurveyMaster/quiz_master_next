@@ -88,7 +88,7 @@ class QMNQuizCreator {
 				'phone_field_text'         => 'Phone Number',
 				'comment_field_text'       => 'Comments',
 				'email_from_text'          => 'Wordpress',
-				'question_answer_template' => '%QUESTION%<br /> Answer Provided: %USER_ANSWER%<br /> Correct Answer: %CORRECT_ANSWER%<br /> Comments Entered: %USER_COMMENTS%<br />',
+				'question_answer_template' => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
 				'leaderboard_template'     => '',
 				'quiz_system'              => 0,
 				'randomness_order'         => 0,
@@ -328,7 +328,13 @@ class QMNQuizCreator {
                 $quiz_settings = unserialize( $mlw_qmn_duplicate_data->quiz_settings );                
                 if( $is_duplicating_questions == 0 ){                    
                     $quiz_settings['pages'] = '';
-                }                
+                }
+                $qsm_create_quiz_system = 0;
+                if( isset( $mlw_qmn_duplicate_data->system ) ){
+                    $qsm_create_quiz_system = $mlw_qmn_duplicate_data->system;                     
+                } else if( isset( $mlw_qmn_duplicate_data->quiz_system ) ){
+                    $qsm_create_quiz_system = $mlw_qmn_duplicate_data->quiz_system;
+                }
 		$results = $wpdb->insert(
 				$table_name,
 				array(
@@ -348,7 +354,7 @@ class QMNQuizCreator {
 					'email_from_text' => $mlw_qmn_duplicate_data->email_from_text,
 					'question_answer_template' => $mlw_qmn_duplicate_data->question_answer_template,
 					'leaderboard_template' => $mlw_qmn_duplicate_data->leaderboard_template,
-					'quiz_system' => isset( $mlw_qmn_duplicate_data->system ) ? $mlw_qmn_duplicate_data->system : isset( $mlw_qmn_duplicate_data->quiz_system ) ? $mlw_qmn_duplicate_data->quiz_system : 0,
+					'quiz_system' => $qsm_create_quiz_system,
 					'randomness_order' => $mlw_qmn_duplicate_data->randomness_order,
 					'loggedin_user_contact' => $mlw_qmn_duplicate_data->loggedin_user_contact,
 					'show_score' => $mlw_qmn_duplicate_data->show_score,

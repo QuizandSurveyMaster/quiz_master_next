@@ -562,6 +562,25 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
+    //Setting for pagination of quiz
+    $field_array = array(
+      'id' => 'disable_description_on_result',
+      'label' => __('Disable description on quiz result page?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+      ),
+      'default' => 0,      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     //Setting for animation
     $field_array = array(
       'id' => 'quiz_animation',
@@ -851,6 +870,7 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUESTION%',
+        '%USER_ANSWERS_DEFAULT%',
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',

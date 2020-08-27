@@ -145,14 +145,17 @@ function qmn_multiple_choice_display($id, $question, $answers)
 */
 function qmn_multiple_choice_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
     'user_text' => '',
     'correct_text' => ''
   );
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = sanitize_textarea_field( $_POST["question".$id] );
+    $mlw_user_answer = $_POST["question".$id];
+		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -308,6 +311,8 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
 */
 function qmn_horizontal_multiple_choice_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
@@ -315,7 +320,8 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
     'correct_text' => ''
   );
   if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
+    $mlw_user_answer = $_POST["question".$id];
+		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -403,6 +409,8 @@ function qmn_drop_down_display($id, $question, $answers)
 */
 function qmn_drop_down_review($id, $question, $answers)
 {
+	global $mlwQuizMasterNext;
+	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   $return_array = array(
     'points' => 0,
     'correct' => 'incorrect',
@@ -410,7 +418,8 @@ function qmn_drop_down_review($id, $question, $answers)
     'correct_text' => ''
   );
   if (isset($_POST["question".$id])) {
-    $mlw_user_answer = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST["question".$id] ), ENT_QUOTES ) );
+    $mlw_user_answer = $_POST["question".$id];
+		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
   }
@@ -1104,9 +1113,9 @@ function qmn_fill_blank_review($id, $question, $answers)
     'user_text' => '',
     'correct_text' => ''
   );
-	if (strpos($question, '%BLANK%') !== false)
+	if (strpos($question, '%BLANK%') !== false || strpos($question, '%blank%') !== false)
 	{
-		$return_array['question_text'] = str_replace( "%BLANK%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+		$return_array['question_text'] = str_replace( array( "%BLANK%", "%blank%" ), array( "__________", "__________" ), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
 	}
   if ( isset( $_POST["question".$id] ) ) {
     $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST["question".$id], ENT_QUOTES ) ) ) );
@@ -1260,8 +1269,8 @@ function qmn_polar_review($id, $question, $answers) {
         'user_text' => '',
         'correct_text' => ''
     );
-    if (strpos($question, '%POLAR_SLIDER%') !== false) {
-        $return_array['question_text'] = str_replace("%POLAR_SLIDER%", "__________", do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
+    if (strpos($question, '%POLAR_SLIDER%') !== false || strpos($question, '%polar_slider%') !== false) {
+        $return_array['question_text'] = str_replace( array( "%POLAR_SLIDER%", "%polar_slider%" ), array( "__________", "__________" ), do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
     }
     if (isset($_POST["question" . $id])) {
         $decode_user_answer = sanitize_textarea_field( $_POST["question" . $id] );

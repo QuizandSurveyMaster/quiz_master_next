@@ -101,6 +101,8 @@ class QMNQuizManager {
             $datafile = $_FILES["file"]["tmp_name"];
             //$file_name = $_FILES["file"]["name"];
             $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            //remove white space between file name
+            $file_name = str_replace(' ', '-', $file_name);
             $rawBaseName = 'qsmfileupload_' . md5( date('Y-m-d H:i:s') ) . '_' . pathinfo($file_name, PATHINFO_FILENAME);
             $new_fname = $rawBaseName . '.' . $extension;
             $file = $upload_dir['path'] . '/' . $new_fname;
@@ -529,8 +531,8 @@ class QMNQuizManager {
         $qmn_total_questions = 0;
         global $mlw_qmn_section_count;
         $mlw_qmn_section_count = 0;
-
-        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz'>";
+        $auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
+        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class}'>";
         // Get quiz post based on quiz id
         $args = array(
             'posts_per_page' => 1,
@@ -716,9 +718,10 @@ class QMNQuizManager {
 				$qpage = (isset($qpages[$key]) ? $qpages[$key] : array());
 				$qpage_id = (isset($qpage['id']) ? $qpage['id'] : $key);
 				$page_key = (isset($qpage['pagekey']) ? $qpage['pagekey'] : $key);
-				$hide_prevbtn = (isset($qpage['hide_prevbtn']) ? $qpage['hide_prevbtn'] : 0);
+				$hide_prevbtn = (isset($qpage['hide_prevbtn']) ? $qpage['hide_prevbtn'] : 0);                                
+                                $style = "style='display: none;'";                                
                 ?>
-                <section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id;?>" data-pid="<?php echo $qpage_id;?>" data-prevbtn="<?php echo $hide_prevbtn;?>">
+                <section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id;?>" data-pid="<?php echo $qpage_id;?>" data-prevbtn="<?php echo $hide_prevbtn;?>" <?php echo $style; ?>>
 					<?php do_action('qsm_action_before_page', $qpage_id, $qpage);?>
                     <?php
                     foreach ($page as $question_id) {
@@ -872,7 +875,11 @@ class QMNQuizManager {
         foreach ($qmn_quiz_questions as $mlw_question) {
             $question_id_list .= $mlw_question->question_id . "Q";
             $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-            $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
+            $style = '';
+            if(  $mlw_qmn_section_count != 1 ){
+                $style = "style='display: none;'";
+            }
+            $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}' {$style}>";
 
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 
@@ -1214,13 +1221,17 @@ class QMNQuizManager {
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
 
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
-
-            // Send the emails in background.
-            $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
-            $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
-
-            // Sends the emails - Defer the emails.
-            //QSM_Emails::send_emails($qmn_array_for_variables);
+            
+            $qmn_global_settings = (array) get_option('qmn-settings');
+            $background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
+            if( $background_quiz_email_process == 1 ){
+                // Send the emails in background.
+                $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+                $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
+            }else{
+                // Sends the emails.
+                QSM_Emails::send_emails($qmn_array_for_variables);
+            }
 
             /**
              * Filters for filtering the results text after emails are sent.
@@ -1288,6 +1299,7 @@ class QMNQuizManager {
         $answer_points = 0;
         $question_data = array();
         $total_possible_points = 0;
+        $attempted_question = 0;
         
         // Question types to calculate result on
         $result_question_types = array(
@@ -1376,7 +1388,13 @@ class QMNQuizManager {
                                 }
                                 $user_answer = $results_array["user_text"];
                                 $correct_answer = $results_array["correct_text"];
-
+                                
+                                if( trim( $user_answer ) != '' ){
+                                    if( $user_answer != 'No Answer Provided' ){
+                                        $attempted_question++;
+                                    }                                
+                                }
+                                
                                 // If a comment was submitted
                                 if (isset($_POST["mlwComment" . $question['question_id']])) {
                                     $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
@@ -1457,7 +1475,11 @@ class QMNQuizManager {
                             }
                             $user_answer = $results_array["user_text"];
                             $correct_answer = $results_array["correct_text"];
-
+                            if( trim( $user_answer ) != '' ){
+                                if( $user_answer != 'No Answer Provided' ){
+                                    $attempted_question++;
+                                }                                
+                            }
                             // If a comment was submitted
                             if (isset($_POST["mlwComment" . $question['question_id']])) {
                                 $comment = sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["mlwComment" . $question['question_id']]), ENT_QUOTES) );
@@ -1506,7 +1528,8 @@ class QMNQuizManager {
             'total_questions' => $total_questions,
             'question_answers_display' => '', // Kept for backwards compatibility
             'question_answers_array' => $question_data,
-            'total_possible_points' => $total_possible_points
+            'total_possible_points' => $total_possible_points,
+            'total_attempted_questions' => $attempted_question
         );
     }
 
