@@ -229,6 +229,9 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     padding: 0;
     position: absolute;
 }
+.qmn_quiz_container.qsm_auto_pagination_enabled .quiz_section:not(.quiz_begin) {
+    display: none;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
