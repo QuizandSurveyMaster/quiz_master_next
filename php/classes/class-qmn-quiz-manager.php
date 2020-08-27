@@ -1216,13 +1216,17 @@ class QMNQuizManager {
             do_action('qsm_quiz_submitted', $results_array, $results_id, $qmn_quiz_options, $qmn_array_for_variables);
 
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
-
-            // Send the emails in background.
-            $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
-            $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
-
-            // Sends the emails - Defer the emails.
-            //QSM_Emails::send_emails($qmn_array_for_variables);
+            
+            $qmn_global_settings = (array) get_option('qmn-settings');
+            $background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
+            if( $background_quiz_email_process == 1 ){
+                // Send the emails in background.
+                $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+                $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
+            }else{
+                // Sends the emails.
+                QSM_Emails::send_emails($qmn_array_for_variables);
+            }
 
             /**
              * Filters for filtering the results text after emails are sent.
