@@ -418,7 +418,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
   }
 
 	// Checks if the variable is present in the content.
-	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false ) {
+	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false ) {                
 		global $wpdb;
 		$display = '';
                 if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
@@ -427,6 +427,10 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                 }else{
                     $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
                 }
+                if( isset( $mlw_quiz_array['email_template_array'] ) && $mlw_quiz_array['email_template_array']  == true ){
+                    $qmn_question_answer_template = str_replace('%USER_ANSWERS_DEFAULT%', 'Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%', $qmn_question_answer_template);
+                    $qmn_question_answer_template = apply_filters('qsm_change_question_asnwer_template_email', $qmn_question_answer_template);
+                }          
 		$questions = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
 		$qmn_questions = array();
 		foreach ( $questions as $question ) {
@@ -491,23 +495,21 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                                 $question_with_answer_text = '';
                                 if( $total_answers ){
                                     if( isset($answer['question_type']) && in_array( $answer['question_type'], $show_two_option_questions) ){
-                                        $special_question_case_cnt = 1;
-                                        foreach ( $total_answers as $single_answer ) {
-                                            if( $special_question_case_cnt > 2 ){
-                                                break;
-                                            }
+                                        $do_show_wrong = true;
+                                        foreach( $total_answers as $single_answer ){
                                             if( isset( $single_answer[2] ) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] ){
                                                 $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                                break;
-                                            } else if( isset( $single_answer[2] ) && $single_answer[2] == 1 ) {
-                                                $question_with_answer_text .= '<span class="qsm-text-correct-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                            } else if( htmlspecialchars_decode($answer[1], ENT_QUOTES) !== $single_answer[0] ) {
-                                                $question_answer_text_for_answer = $answer[1] == '' ? __('No answer provided', 'quiz-master-next') : $answer[1];
-                                                $question_with_answer_text .= '<span class="qsm-text-wrong-option">'. htmlspecialchars_decode($question_answer_text_for_answer, ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                            } 
+                                                $do_show_wrong = false;
+                                            }
+                                        }
+                                        if( $do_show_wrong ){
+                                            $question_with_answer_text .= '<span class="qsm-text-wrong-option">'. htmlspecialchars_decode($answer[1], ENT_QUOTES) .'</span>';
+                                            foreach( $total_answers as $single_answer ){
+                                                if( isset( $single_answer[2] ) && $single_answer[2] == 1 ){
+                                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
+                                                    break;
+                                                }
+                                            }
                                         }                                        
                                     } else {
                                         foreach ( $total_answers as $single_answer ) {
