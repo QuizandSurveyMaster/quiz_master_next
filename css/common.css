@@ -228,6 +228,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     height: auto;
     padding: 0;
     position: absolute;
+    z-index: 1;
 }
 .qmn_quiz_container.qsm_auto_pagination_enabled .quiz_section:not(.quiz_begin) {
     display: none;
