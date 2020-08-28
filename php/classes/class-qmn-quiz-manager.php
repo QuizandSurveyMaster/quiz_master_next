@@ -776,7 +776,7 @@ class QMNQuizManager {
             $message_after = wpautop(htmlspecialchars_decode($options->message_end_template, ENT_QUOTES));
             $message_after = apply_filters('mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data);
             ?>
-            <section class="qsm-page">
+<section class="qsm-page" style="display: none;">
                 <div class="quiz_section">
                     <div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
                     <?php
@@ -952,7 +952,7 @@ class QMNQuizManager {
         $section_display = '';
         $section_display .= '<br />';
         $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-        $section_display .= "<div class='quiz_section slide$mlw_qmn_section_count quiz_end'>";
+        $section_display .= "<div class='quiz_section slide$mlw_qmn_section_count quiz_end' style='display: none;'>";
         if (!empty($qmn_quiz_options->message_end_template)) {
             $message_end = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_end_template, ENT_QUOTES));
             $message_end = apply_filters('mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables);
