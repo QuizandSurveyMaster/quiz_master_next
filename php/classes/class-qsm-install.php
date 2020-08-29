@@ -865,12 +865,28 @@ class QSM_Install {
     // Registers question_answer_template setting
     $field_array = array(
       'id' => 'question_answer_template',
-      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
+      'label' =>  __("Results Page %QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
       'type' => 'editor',
       'default' => 0,
       'variables' => array(
         '%QUESTION%',
         '%USER_ANSWERS_DEFAULT%',
+        '%USER_ANSWER%',
+        '%CORRECT_ANSWER%',
+        '%USER_COMMENTS%',
+        '%CORRECT_ANSWER_INFO%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers question_answer_template setting
+    $field_array = array(
+      'id' => 'question_answer_email_template',
+      'label' =>  __("%EMAIL_QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%',
+      'variables' => array(
+        '%QUESTION%',        
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',
