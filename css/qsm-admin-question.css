@@ -153,6 +153,17 @@
     clear: both;
 }
 
+.qsm-select-all-label {
+    margin-right: 5px;
+    position: relative;
+    top: 5px;
+    vertical-align: top;
+}
+
+#qsm-import-selected-question{
+    margin-right: 30px;
+}
+
 .question-bank-question div {
 	margin: 0 10px;
 }

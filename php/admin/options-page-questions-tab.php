@@ -49,7 +49,10 @@ function qsm_options_questions_tab_content() {
 			$qpage['questions'] = $val;
 			$qpages[] = $qpage;
 		}
-	}
+	} else {
+            $defaultQPage = array('id' => 1, 'quizID' => $quiz_id, 'pagekey' => uniqid(), 'hide_prevbtn' => 0, 'questions' => array());		
+            $qpages[] = $defaultQPage;
+        }
 	$qpages = apply_filters('qsm_filter_quiz_page_attributes', $qpages, $pages);
 	$json_data = array(
 		'quizID'     => $quiz_id,
@@ -254,6 +257,7 @@ function qsm_options_questions_tab_content() {
                                                     echo qsm_display_question_option($qo_key, $single_answer_option);
                                                 }
                                                 ?>
+												<?php do_action('qsm_question_form_fields', $quiz_id);?>
                                             </div>
                                             <div id="postbox-container-1" class="postbox-container">
                                                 <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
@@ -445,6 +449,7 @@ function qsm_options_questions_tab_content() {
                                                             </div>
                                                         </div>
                                                     </div>
+													<?php do_action('qsm_question_form_fields_side', $quiz_id);?>
                                                 </div>
                                             </div>
                                         </div>

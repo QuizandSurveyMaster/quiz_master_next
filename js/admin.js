@@ -217,7 +217,7 @@ var QSMAdmin;
                         text_msg = text_msg.replace(/\n/g,"<br>");
                         tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     }                    
-                    tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
+                    //tinyMCE.get( 'qsm_question_text_message' ).setContent( text_msg );
                     jQuery( '.qsm-text-allowed-variables > .qsm-text-variable-wrap' ).html('').html( data.allowed_variable_text );
                     jQuery('.qsm-text-main-wrap .qsm-text-tab-message-loader').hide();
                 } else {
@@ -244,7 +244,15 @@ var QSMAdmin;
         //On click append on tiny mce
         jQuery( document ).on( 'click', '.qsm-text-allowed-variables button.button' , function(){
             var content = jQuery(this).text();
-            tinyMCE.activeEditor.execCommand('mceInsertContent', false, content);
+            if( jQuery('.qsm-question-text-tab .html-active').length > 0 ){
+                var $txt = jQuery("#qsm_question_text_message");
+                var caretPos = $txt[0].selectionStart;
+                var textAreaTxt = $txt.val();
+                var txtToAdd = content;
+                $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+            }else{
+                tinyMCE.activeEditor.execCommand('mceInsertContent', false, content);
+            }            
         });
         //Show all the variable list
         jQuery('.qsm-show-all-variable-text').click(function (e) {
@@ -296,7 +304,7 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '.qsm-text-template-span > .button', function(e){
+        $(document).on('click', '#show-all-variable .qsm-text-template-span > .button', function(e){
             e.preventDefault();
             var $temp = $("<input>");
             $("body").append($temp);

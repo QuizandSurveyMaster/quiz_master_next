@@ -129,6 +129,7 @@ function qsm_options_results_tab_content() {
                         $variable_list['%QUESTION_ANSWER_X%'] = __('X = Question ID. It will show result of particular question.', 'quiz-master-next');
                         unset($variable_list['%QUESTION%']);
                         unset($variable_list['%USER_ANSWER%']);
+                        unset($variable_list['%USER_ANSWERS_DEFAULT%']);
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);

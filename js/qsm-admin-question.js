@@ -123,8 +123,9 @@ var import_button;
                             $( '#question-bank' ).prepend($cat_html);
                             $('#question-bank-cat').val(pagination.category);
                         }
-                        if(pagination.current_page == 1){
+                        if(pagination.current_page == 1){                            
                             $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
+                            $( '#question-bank' ).prepend('<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</button>');
                         }                        
 		},
 		addQuestionToQuestionBank: function( question ) {                    
@@ -199,7 +200,7 @@ var import_button;
 				}
 			} else {
                             //We have removed this code in  7.0.0 because not allow to delete the single page.
-                            //QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
+                            QSMQuestion.questions.each( QSMQuestion.addQuestionToPage );
 			}
                         //Create Default pages and one question.
                         if( qsmQuestionSettings.pages.length == 0 && QSMQuestion.questions.length == 0){
@@ -241,6 +242,7 @@ var import_button;
 				pageInfo.set('questions', singlePage);
 				qpages.push(pageInfo.attributes);
 			});
+                        console.log(pages);
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
@@ -557,7 +559,7 @@ var import_button;
                         }
                         //Get checked question type
                         var get_file_upload_type = question.get( 'file_upload_type' );
-                        $("input[name='file_upload_type[]']:checkbox").attr("checked",false);
+                        $("input[name='file_upload_type[]']:checkbox").attr("checked",false);                        
                         if( get_file_upload_type === null || typeof get_file_upload_type === "undefined" ){                            
                         }else{
                             var fut_arr = get_file_upload_type.split(",");
@@ -607,12 +609,12 @@ var import_button;
                         var all_setting = question.get('settings');
                         if( all_setting === null || typeof all_setting === "undefined" ){
                         }else{         
-                            $.each(all_setting, function( index, value ) {
+                            $.each(all_setting, function( index, value ) {                                
                                 if($('#' + index + '_area').length > 0){
-                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 1){
+                                    if($('#' + index + '_area').find('input[type="checkbox"]').length > 1){                                        
                                         var fut_arr = value.split(",");
-                                        $.each(fut_arr,function(i){                                            
-                                            $("input[name='"+ index +"[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true");
+                                        $.each(fut_arr,function(i){
+                                            $(".questionElements input[name='"+ index +"[]']:checkbox[value='"+ fut_arr[i] +"']").attr("checked","true").prop('checked', true);
                                         });
                                     }else{
                                         if( value != null)
@@ -775,6 +777,11 @@ var import_button;
                         $('.import-button').addClass('disable_import');                        
                         $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked',false);
                     }
+                });
+                
+                //Select all button.
+                $( document ).on( 'change', '#qsm_select_all_question', function( event) {
+                    $('.qsm-question-checkbox').prop('checked', jQuery('#qsm_select_all_question').prop('checked'));
                 });
 
 		$( '.save-page-button' ).on( 'click', function( event ) {

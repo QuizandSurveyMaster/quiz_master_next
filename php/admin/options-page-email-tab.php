@@ -47,7 +47,7 @@ function qsm_options_emails_tab_content() {
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>                
                 <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span class="dashicons dashicons-upload"></span></a>
                 <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
-		<div id="emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
+		<div id="qsm_emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
 		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
                 <div class="qsm-alerts" style="margin-top: 20px;">
@@ -59,11 +59,11 @@ function qsm_options_emails_tab_content() {
 
 	<!-- Templates -->
 	<script type="text/template" id="tmpl-email">
-		<div class="email">
-			<header class="email-header">
+		<div class="qsm-email">
+			<header class="qsm-email-header">
 				<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
 			</header>
-			<main class="email-content">
+			<main class="qsm-email-content">
 				<div class="email-when">
 					<div class="email-content-header">
 						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
@@ -126,15 +126,18 @@ function qsm_options_emails_tab_content() {
                         $email_exta_variable = array(
                             '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
                             '%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next')
+                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next'),
+                            '%QUESTIONS_ANSWERS_EMAIL%' => __('Shows the question, the answer provided by user, and the correct answer', 'quiz-master-next')
                         );  
                         $variable_list = array_merge($email_exta_variable, $variable_list);
                         $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
                         unset($variable_list['%QUESTION%']);
                         unset($variable_list['%USER_ANSWER%']);
+                        unset($variable_list['%USER_ANSWERS_DEFAULT%']);
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);
+                        unset($variable_list['%QUESTIONS_ANSWERS%']);
                         if( $variable_list ){
                             foreach ( $variable_list as $key => $s_variable ) { ?>
                                 <div class="popup-template-span-wrap">
