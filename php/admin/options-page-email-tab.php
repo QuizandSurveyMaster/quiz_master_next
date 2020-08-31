@@ -126,7 +126,8 @@ function qsm_options_emails_tab_content() {
                         $email_exta_variable = array(
                             '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
                             '%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next')
+                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next'),
+                            '%QUESTIONS_ANSWERS_EMAIL%' => __('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next')
                         );  
                         $variable_list = array_merge($email_exta_variable, $variable_list);
                         $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
@@ -136,6 +137,7 @@ function qsm_options_emails_tab_content() {
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);
+                        unset($variable_list['%QUESTIONS_ANSWERS%']);
                         if( $variable_list ){
                             foreach ( $variable_list as $key => $s_variable ) { ?>
                                 <div class="popup-template-span-wrap">
