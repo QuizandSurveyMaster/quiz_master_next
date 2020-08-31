@@ -127,7 +127,7 @@ function qsm_options_emails_tab_content() {
                             '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
                             '%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
                             '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next'),
-                            '%QUESTIONS_ANSWERS_EMAIL%' => __('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next')
+                            '%QUESTIONS_ANSWERS_EMAIL%' => __('Shows the question, the answer provided by user, and the correct answer', 'quiz-master-next')
                         );  
                         $variable_list = array_merge($email_exta_variable, $variable_list);
                         $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
