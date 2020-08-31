@@ -418,10 +418,10 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
   }
 
 	// Checks if the variable is present in the content.
-	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false || strpos( $content, '%EMAIL_QUESTIONS_ANSWERS%' ) !== false ) {
+	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false || strpos( $content, '%QUESTIONS_ANSWERS_EMAIL%' ) !== false ) {
 		global $wpdb;
 		$display = '';
-                if( strpos( $content, '%EMAIL_QUESTIONS_ANSWERS%' ) !== false ){                    
+                if( strpos( $content, '%QUESTIONS_ANSWERS_EMAIL%' ) !== false ){                    
                     if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
                         $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
                         $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_email_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
@@ -557,7 +557,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                         $qsm_question_cnt++;
 		}
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
-		$content = str_replace( "%EMAIL_QUESTIONS_ANSWERS%" , $display, $content);
+		$content = str_replace( "%QUESTIONS_ANSWERS_EMAIL%" , $display, $content);
 	}
               
 	return $content;

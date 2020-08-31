@@ -101,7 +101,7 @@ var QSMAdminEmails;
 			}];
 			var to = '%USER_EMAIL%';
 			var subject = 'Quiz Results For %QUIZ_NAME%';
-			var content = '%EMAIL_QUESTIONS_ANSWERS%';
+			var content = '%QUESTIONS_ANSWERS_EMAIL%';
 			var replyTo = false;
 			QSMAdminEmails.addEmail( conditions, to, subject, content, replyTo );
 		}
