@@ -372,7 +372,7 @@ function qsm_results_overview_tab_content() {
                                             $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
                                     }
                                     if ( $mlw_quiz_info->quiz_system == 3 ) {
-                                        $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$mlw_quiz_info->total." or ".$mlw_quiz_info->correct_score."%</span><br/><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+                                        $quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->correct ." out of ".$out_of_q." or ".$mlw_quiz_info->correct_score."%</span><br/><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
                                     }
                                 }				
 				$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time ."</span></td>";
