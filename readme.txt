@@ -27,7 +27,7 @@ Quiz and Survey Master is the easiest [WordPress Quiz Plugin](https://quizandsur
 [youtube https://www.youtube.com/watch?v=DyiCCNnDpHk]
 
 = Customize Text =
-You can customized anything your users will see and engage with. Everything from the text blocks throughout the quiz or survey to the submit button. You can even "template variables" to generate personalized text for your users.
+You can customize anything your users will see and engage with. Everything from the text blocks throughout the quiz or survey to the submit button. You can even use "template variables" to generate personalized text for your users.
 
 = Question Types =
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, **polar** (slider) and **accept**. We release more questions types with every major release.
