@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 7.1.0
+Stable tag: 7.1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.1 (September 02, 2020) =
+* Bug: Fixed problem with questions on front end while using random questions option.
+* Bug: Fixed submit button overlapping issue with progress bar for auto pagination.
+* Bug: Fixed the UI of meta boxes on Dashboard Page, Tools Page and Help Page.
 
 = 7.1.0 (August 31, 2020) =
 * Enhancement: Added a new variable %USER_ANSWERS_DEFAULT% to improve default result page. All new quizzes will have this variable by default.
