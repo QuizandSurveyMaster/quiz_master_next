@@ -130,7 +130,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }   
 .quiz_section .mlw_qmn_new_question{
     font-weight: bold;
-    display: inline-block;
+    display: inline;
     width: auto;
     margin-bottom: 10px;
 }
