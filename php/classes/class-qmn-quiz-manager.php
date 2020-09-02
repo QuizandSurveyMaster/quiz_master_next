@@ -876,7 +876,7 @@ class QMNQuizManager {
             $question_id_list .= $mlw_question->question_id . "Q";
             $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
             $style = '';
-            if(  $mlw_qmn_section_count != 1 ){
+            if(  $mlw_qmn_section_count != 1 && $pagination_optoin > 0 ){
                 $style = "style='display: none;'";
             }
             $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}' {$style}>";
@@ -952,7 +952,12 @@ class QMNQuizManager {
         $section_display = '';
         $section_display .= '<br />';
         $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-        $section_display .= "<div class='quiz_section slide$mlw_qmn_section_count quiz_end' style='display: none;'>";
+        $pagination_optoin = $qmn_quiz_options->pagination;
+        $style = '';
+        if( $pagination_optoin > 0 ){
+            $style = "style='display: none;'";
+        }
+        $section_display .= "<div class='quiz_section slide$mlw_qmn_section_count quiz_end' {$style}>";
         if (!empty($qmn_quiz_options->message_end_template)) {
             $message_end = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_end_template, ENT_QUOTES));
             $message_end = apply_filters('mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables);
