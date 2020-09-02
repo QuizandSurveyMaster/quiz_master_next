@@ -413,7 +413,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
   $logic_rules = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
   $logic_rules = unserialize( $logic_rules );
   $hidden_questions = isset($mlw_quiz_array['hidden_questions']) ? $mlw_quiz_array['hidden_questions'] : array();
-  if(is_admin()) {
+  if(empty($hidden_questions)) {
     $hidden_questions = isset($mlw_quiz_array['results']['hidden_questions']) ? $mlw_quiz_array['results']['hidden_questions'] : array();
   }
 
