@@ -423,7 +423,10 @@ span.qsm-quiz-name {
     width: 15%;
     float: right;
 }
-
+.qsm-help-page .handle-order-higher ,
+.qsm-help-page .handle-order-lower {
+    display: none;
+}
 @media screen and (min-width: 1200px) {
     
     .qsm-quiz-page-wrapper-with-ads {

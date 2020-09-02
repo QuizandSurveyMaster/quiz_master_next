@@ -423,6 +423,13 @@
 div#quiz_settings_wrapper #timer_limit {
     width: 100px;
 }
+.postbox .handlediv{
+    position: absolute;
+    right: 0;
+}
+h2.hndle.ui-sortable-handle {
+    border-bottom: 1px solid #ccd0d4;
+}
 @media screen and (min-width: 1200px){
     #quiz_settings_wrapper tr td fieldset > br{
         display: none;
