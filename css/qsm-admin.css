@@ -1195,7 +1195,7 @@ h3.addon_category_name {
     box-shadow: none;
     color: #666666;
     padding: 10px 15px;
-    width: auto;
+    width: 100%;
     height: auto;
 }
 .global-sub-text{

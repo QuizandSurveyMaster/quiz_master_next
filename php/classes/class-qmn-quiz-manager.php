@@ -1144,6 +1144,8 @@ class QMNQuizManager {
                   $qmn_array_for_variables['parameters'] = $results_array['parameters'];
                 }
                 $results_array['hidden_questions'] = $qmn_array_for_variables['hidden_questions'];
+                $results_array['total_possible_points'] = $qmn_array_for_variables['total_possible_points'];
+                $results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
                 $serialized_results = serialize($results_array);
 
                 // Inserts the responses in the database.
