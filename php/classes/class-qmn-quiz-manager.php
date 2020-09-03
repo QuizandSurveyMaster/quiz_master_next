@@ -164,10 +164,10 @@ class QMNQuizManager {
     public function qsm_get_question_quick_result(){
         global $wpdb;
         $question_id = isset($_POST['question_id']) ? intval($_POST['question_id']) : 0;
-        $answer = isset($_POST['answer']) ? sanitize_text_field($_POST['answer']) : '';
+        $answer = isset( $_POST['answer'] ) ? sanitize_textarea_field( $_POST['answer'] ) : '';
         $question_array = $wpdb->get_row( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
-        $got_ans = false;
+        $got_ans = false;        
         if($answer_array && $got_ans === false){
             foreach ($answer_array as $key => $value) {
                 if($value[0] == $answer && $value[2] == 1){
