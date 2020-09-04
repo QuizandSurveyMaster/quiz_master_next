@@ -569,7 +569,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                                             }                                            
                                         } else {
                                             if( isset($answer['question_type']) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 ) ){
-                                                $user_selected_answer = htmlspecialchars_decode($answer[1], ENT_QUOTES);                                                
+                                                $user_selected_answer = htmlspecialchars_decode($answer[1], ENT_QUOTES);
                                                 foreach ( $total_answers as $single_answer ) {
                                                     if( strpos( $user_selected_answer,  $single_answer[0]) !== false  ){
                                                         $question_with_answer_text .= '<span class="qsm-text-correct-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
@@ -587,6 +587,17 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                                                 }
                                             }                                                                                        
                                         }
+                                    }                                    
+                                } else {
+                                    if( isset($answer['question_type']) && $answer['question_type'] == 11 ){
+                                        $file_extension = substr($answer[1], -4);
+                                        if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
+                                            $question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+                                        }else{
+                                            $question_with_answer_text .= "<span class='$user_answer_class'>".trim( htmlspecialchars_decode($answer[1], ENT_QUOTES) ).'</span>';
+                                        }
+                                    } else {
+                                        $question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode($answer[1], ENT_QUOTES) . '</span>';
                                     }                                    
                                 }
                             }
