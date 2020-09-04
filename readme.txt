@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 7.1.1
+Stable tag: 7.1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.2 (September 04, 2020) =
+* Bug: Fixed admin results page to make it compatible with new variable %QUESTIONS_ANSWERS_DEFAULT%.
+* Bug: Fixed issues with %QUESTIONS_ANSWERS_DEFAULT% variable in quiz result while using point based quiz.
+* Bug: Fixed validation issue on front end while using Deselect Answer option.
+* Bug: Fixed issues with inline results when there is extra spacing between words.
+* Enhancement: Added feature to show the uploaded file into media library for File Upload question type.
 
 = 7.1.1 (September 02, 2020) =
 * Bug: Fixed problem with questions on front end while using random questions option.
