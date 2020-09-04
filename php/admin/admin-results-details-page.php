@@ -11,7 +11,8 @@ function qsm_generate_result_details() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-        wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+        wp_enqueue_style( 'qsm_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+        wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );        
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'results';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();
