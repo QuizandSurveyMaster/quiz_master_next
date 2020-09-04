@@ -1650,8 +1650,16 @@ td.scheduled_time_start {
 .response-inner-wrap .inside .qmn_question_answer.qmn_question_answer_incorrect{
     background-image: url(../assets/wrong.png);    
 }
+.response-inner-wrap .inside .qsm-add-border-bottom.qmn_question_answer.qmn_question_answer_incorrect,
+.response-inner-wrap .inside .qsm-remove-border-bottom.qmn_question_answer.qmn_question_answer_incorrect{
+    background-image: none;
+}
 .response-inner-wrap .inside .qmn_question_answer.qmn_question_answer_correct{
     background-image: url(../assets/right.png);    
+}
+.response-inner-wrap .inside .qsm-add-border-bottom.qmn_question_answer.qmn_question_answer_correct,
+.response-inner-wrap .inside .qsm-remove-border-bottom.qmn_question_answer.qmn_question_answer_correct{
+    background-image: none;
 }
 .old_template_result_wrap{
     padding: 15px;
