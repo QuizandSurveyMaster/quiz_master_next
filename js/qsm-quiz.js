@@ -1319,6 +1319,7 @@ jQuery(function() {
         jQuery('.qsm-deselect-answer').click(function(e){
             e.preventDefault();
             jQuery(this).parents('.quiz_section').find('input[type="radio"]').prop('checked', false);
+            jQuery(this).parents('.quiz_section').find('input[type="radio"][value="No Answer Provided"]').prop('checked', true);
         });
 
         //Submit the form on popup click
