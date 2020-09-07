@@ -31,9 +31,11 @@ function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( $_GET['quiz_id'] );
+        $user_id = get_current_user_id();
 	$js_data = array(
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
+                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
 	);
 	wp_enqueue_script( 'qsm_emails_admin_script', plugins_url( '../../js/qsm-admin-emails.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_emails_admin_script', 'qsmEmailsObject', $js_data );
