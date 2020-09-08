@@ -11,11 +11,17 @@ var QSMAdminEmails;
 			var emails = [];
 			var email = {};
 			$( '.qsm-email' ).each( function() {
+                                var email_content = '';
+                                if( $( this ).find( '.email-template' ).parent('.wp-editor-container').length > 0 ){
+                                    email_content = wp.editor.getContent( $( this ).find( '.email-template' ).attr( 'id' ) );
+                                } else {
+                                    email_content = $( this ).find( '.email-template' ).val()
+                                }                                    
 				email = {
 					'conditions': [],
 					'to': $( this ).find( '.to-email' ).val(),
 					'subject': $( this ).find( '.subject' ).val(),
-					'content': wp.editor.getContent( $( this ).find( '.email-template' ).attr( 'id' ) ),
+					'content': email_content,
 					'replyTo': $( this ).find( '.reply-to' ).prop( 'checked' ),
 				};
 				$( this ).find( '.email-condition' ).each( function() {
@@ -83,15 +89,17 @@ var QSMAdminEmails;
 					condition.value
 				);
 			});
-			var settings = {
-				mediaButtons: true,
-				tinymce:      {
-					forced_root_block : '',
-					toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
-				},
-				quicktags:    true,
-			};
-			wp.editor.initialize( 'email-template-' + QSMAdminEmails.total, settings );
+                        if(qsmEmailsObject.qsm_user_ve === 'true'){
+                            var settings = {
+                                    mediaButtons: true,
+                                    tinymce:      {
+                                            forced_root_block : '',
+                                            toolbar1: 'formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,charmap,undo,redo'
+                                    },
+                                    quicktags:    true,
+                            };
+                            wp.editor.initialize( 'email-template-' + QSMAdminEmails.total, settings );
+                        }
 		},
 		newEmail: function() {
 			var conditions = [{
