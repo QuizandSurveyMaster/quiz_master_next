@@ -927,7 +927,9 @@ function qmn_captcha_display($id, $question, $answers)
   $question_display .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
   $question_display .= "</div>";
   $question_display .= "<span class='mlw_qmn_question'>";
-  $question_display .= do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
+  $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
+  $question_title = qsm_question_title_func($question, '', $new_question_title);
+  $question_display .= $question_title ."</span>";
   $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
   $question_display .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
   $question_display .= "<script>
