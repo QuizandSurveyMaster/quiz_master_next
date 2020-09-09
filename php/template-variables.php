@@ -858,7 +858,9 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     }     
     $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);       
     $extra_border_bottom_class = '';
+    $remove_border = true;
     if (strpos($mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%') !== false) {
+        $remove_border = false;
         $question_with_answer_text = '';
         $extra_border_bottom_class = 'qsm-add-border-bottom';
         $show_two_option_questions = array(
@@ -988,7 +990,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     $answer_4 = !empty($qmn_questions[$answer['id']]) ? $qmn_questions[$answer['id']] : 'NA';
     $mlw_question_answer_display = str_replace("%CORRECT_ANSWER_INFO%", htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
     $mlw_question_answer_display = wp_kses_post($mlw_question_answer_display);
-    if ($total_question_cnt == $qsm_question_cnt) {
+    if ($total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
         $extra_border_bottom_class = 'qsm-remove-border-bottom';
     }
     $display = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array) . '</div>';
