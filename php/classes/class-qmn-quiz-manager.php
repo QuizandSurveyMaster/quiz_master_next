@@ -1169,51 +1169,64 @@ class QMNQuizManager {
                 // Inserts the responses in the database.
                 global $wpdb;
                 $table_name = $wpdb->prefix . "mlw_results";
-                $results_insert = $wpdb->insert(
-                        $table_name, array(
-                    'quiz_id' => $qmn_array_for_variables['quiz_id'],
-                    'quiz_name' => $qmn_array_for_variables['quiz_name'],
-                    'quiz_system' => $qmn_array_for_variables['quiz_system'],
-                    'point_score' => $qmn_array_for_variables['total_points'],
-                    'correct_score' => $qmn_array_for_variables['total_score'],
-                    'correct' => $qmn_array_for_variables['total_correct'],
-                    'total' => $qmn_array_for_variables['total_questions'],
-                    'name' => $qmn_array_for_variables['user_name'],
-                    'business' => $qmn_array_for_variables['user_business'],
-                    'email' => $qmn_array_for_variables['user_email'],
-                    'phone' => $qmn_array_for_variables['user_phone'],
-                    'user' => $qmn_array_for_variables['user_id'],
-                    'user_ip' => $qmn_array_for_variables['user_ip'],
-                    'time_taken' => $qmn_array_for_variables['time_taken'],
-                    'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
-                    'quiz_results' => $serialized_results,
-                    'deleted' => 0,
-                    'unique_id' => $unique_id,
-                    'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-                        ), array(
-                    '%d',
-                    '%s',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                    '%d',
-                        )
-                );
-				$results_id = $wpdb->insert_id;
-            }
+				if (isset($_POST['update_result']) && !empty($_POST['update_result'])) {
+					$results_id = $_POST['update_result'];
+					$results_update = $wpdb->update($table_name, array(
+						'point_score' => $qmn_array_for_variables['total_points'],
+						'correct_score' => $qmn_array_for_variables['total_score'],
+						'correct' => $qmn_array_for_variables['total_correct'],
+						'total' => $qmn_array_for_variables['total_questions'],
+						'user_ip' => $qmn_array_for_variables['user_ip'],
+						'time_taken' => $qmn_array_for_variables['time_taken'],
+						'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
+						'quiz_results' => $serialized_results,
+						), array('result_id' => $results_id));
+				} else {
+					$results_insert = $wpdb->insert($table_name, array(
+						'quiz_id' => $qmn_array_for_variables['quiz_id'],
+						'quiz_name' => $qmn_array_for_variables['quiz_name'],
+						'quiz_system' => $qmn_array_for_variables['quiz_system'],
+						'point_score' => $qmn_array_for_variables['total_points'],
+						'correct_score' => $qmn_array_for_variables['total_score'],
+						'correct' => $qmn_array_for_variables['total_correct'],
+						'total' => $qmn_array_for_variables['total_questions'],
+						'name' => $qmn_array_for_variables['user_name'],
+						'business' => $qmn_array_for_variables['user_business'],
+						'email' => $qmn_array_for_variables['user_email'],
+						'phone' => $qmn_array_for_variables['user_phone'],
+						'user' => $qmn_array_for_variables['user_id'],
+						'user_ip' => $qmn_array_for_variables['user_ip'],
+						'time_taken' => $qmn_array_for_variables['time_taken'],
+						'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
+						'quiz_results' => $serialized_results,
+						'deleted' => 0,
+						'unique_id' => $unique_id,
+						'form_type' => isset($qmn_quiz_options->form_type) ? $qmn_quiz_options->form_type : 0,
+						), array(
+						'%d',
+						'%s',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%s',
+						'%d',
+						)
+					);
+					$results_id = $wpdb->insert_id;
+				}
+			}
             $qmn_array_for_variables['result_id'] = $results_id;
 
 			// Determines redirect/results page.
