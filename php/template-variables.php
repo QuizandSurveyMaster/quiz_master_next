@@ -335,7 +335,7 @@ function mlw_qmn_variable_total_questions($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_correct_score($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%CORRECT_SCORE%" , $mlw_quiz_array["total_score"], $content);
+	$content = str_replace( "%CORRECT_SCORE%" , round( $mlw_quiz_array["total_score"] ), $content);
 	return $content;
 }
 function mlw_qmn_variable_quiz_name($content, $mlw_quiz_array)
@@ -924,9 +924,9 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                     $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 }
                             }
-                        } else {
-                            foreach ($total_answers as $single_answer) {
-                                if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == htmlspecialchars_decode( $single_answer[0], ENT_QUOTES)) {
+                        } else {                                                        
+                            foreach ($total_answers as $single_answer) {                                
+                                if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] ) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else if (isset($single_answer[2]) && $single_answer[2] == 1) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
