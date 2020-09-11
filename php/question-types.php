@@ -155,7 +155,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   if ( isset( $_POST["question".$id] ) ) {
     $mlw_user_answer = $_POST["question".$id];
-		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+    $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
   }    
@@ -174,7 +174,12 @@ function qmn_multiple_choice_review($id, $question, $answers)
             $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
           }
     } else {
-        if ( $mlw_user_answer == trim( esc_attr( $answer[0] ) ) ){
+        $mlw_user_answer = '';
+        if ( isset( $_POST["question".$id] ) ) {
+            $mlw_user_answer = $_POST["question".$id];
+            $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+        }        
+        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
             $return_array["points"] = $answer[1];
             $return_array["user_text"] = $answer[0];
             if ($answer[2] == 1){
@@ -350,7 +355,7 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
             $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
           }
     } else{
-        if ( $mlw_user_answer == esc_attr( $answer[0] ) ){
+        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
           $return_array["points"] = $answer[1];
           $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
           if ($answer[2] == 1)
