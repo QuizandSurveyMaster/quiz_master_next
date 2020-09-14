@@ -308,7 +308,8 @@ class QMNQuizManager {
                 'contact_info_location' => $qmn_quiz_options->contact_info_location,
                 'qpages' => $qpages,
                 'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire,
-                'timer_limit_val' => $qmn_quiz_options->timer_limit
+                'timer_limit_val' => $qmn_quiz_options->timer_limit,
+                'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
