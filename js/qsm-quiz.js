@@ -305,14 +305,18 @@ var QSMPageTimer;
 				$quizForm.find( '.qsm-pagination .qsm-next' ).on( 'click', function( event ) {
 					event.preventDefault();
 					QSM.nextPage( quizID );
-					var $container = jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' );
-					qsmScrollTo( $container );
+					var $container = jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' );                                        
+                                        if( qmn_quiz_data[ quizID ].disable_scroll_next_previous_click != 1 ){
+                                            qsmScrollTo( $container );
+                                        }					
 				});
 				$quizForm.find( '.qsm-pagination .qsm-previous' ).on( 'click', function( event ) {
 					event.preventDefault();
 					QSM.prevPage( quizID );
 					var $container = jQuery( '#quizForm' + quizID ).closest( '.qmn_quiz_container' );
-					qsmScrollTo( $container );
+                                        if( qmn_quiz_data[ quizID ].disable_scroll_next_previous_click != 1 ){
+                                            qsmScrollTo( $container );
+                                        }					
 				});
 			}
 		},
@@ -923,9 +927,8 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.slide_number_hidden' ).val( slide_number );
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.previous_amount_hidden' ).val( 0 );
 
-	qmnUpdatePageNumber( 1, quiz_form_id );
-
-	if (go_to_top == 1) {
+	qmnUpdatePageNumber( 1, quiz_form_id );        
+	if (go_to_top == 1 && qmn_quiz_data[ quiz_id ].disable_scroll_next_previous_click != 1 ) {
 		qsmScrollTo( $container );
 	}
         var page_number = slide_number - pagination;
@@ -997,7 +1000,7 @@ function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.slide_number_hidden' ).val( slide_number );
 	jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find( '.previous_amount_hidden' ).val( 0 );
 
-	if (go_to_top == 1) {
+	if (go_to_top == 1 && qmn_quiz_data[ quiz_id ].disable_scroll_next_previous_click != 1 ) {
 		qsmScrollTo( $container );
 	}
         var hiddem_page_number = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.current_page_hidden').val();
