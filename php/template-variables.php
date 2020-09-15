@@ -851,10 +851,10 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
         if ($disable_description_on_result == 1) {
             $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
         } else {
-            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>' . $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>' . $add_br . stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ), $mlw_question_answer_display);
         }        
     } else {        
-        $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
+        $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) . '</b>', $mlw_question_answer_display);
     }     
     $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);       
     $extra_border_bottom_class = '';
