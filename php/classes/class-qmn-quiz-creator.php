@@ -215,7 +215,7 @@ class QMNQuizCreator {
 	 * @return void
 	 */
 	 public function delete_quiz($quiz_id, $quiz_name)
-	 {
+	 {                             
 	 	global $mlwQuizMasterNext;
 		global $wpdb;
 	 	$results = $wpdb->update(
@@ -229,10 +229,14 @@ class QMNQuizCreator {
  			),
  			array( '%d' )
  		);
+                $deleted = 0;
+                if( isset( $_POST['qsm_delete_question_from_qb'] ) && $_POST['qsm_delete_question_from_qb'] == 1 ){
+                    $deleted = 1;
+                }
  		$delete_question_results = $wpdb->update(
  			$wpdb->prefix . "mlw_questions",
  			array(
- 				'deleted' => 1
+ 				'deleted' => $deleted
  			),
  			array( 'quiz_id' => $quiz_id ),
  			array(
