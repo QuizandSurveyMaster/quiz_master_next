@@ -1236,6 +1236,7 @@ class QSM_Install {
   			question_settings TEXT NOT NULL,
   			category TEXT NOT NULL,
   			deleted INT NOT NULL,
+  			deleted_question_bank INT NOT NULL,
   			PRIMARY KEY  (question_id)
   		) $charset_collate;";
 
