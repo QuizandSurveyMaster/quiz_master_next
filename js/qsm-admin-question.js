@@ -125,6 +125,7 @@ var import_button;
                         }
                         if(pagination.current_page == 1){                            
                             $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
+                            $( '#question-bank' ).prepend('<button class="button button-default" id="qsm-delete-selected-question">Delete Selected Question from Bank</button>');
                             $( '#question-bank' ).prepend('<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</button>');
                         }                        
 		},
@@ -776,6 +777,40 @@ var import_button;
                         });
                         $('.import-button').addClass('disable_import');                        
                         $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked',false);
+                    }
+                });
+                //Delete question from question bank
+                $( '.qsm-popup-bank' ).on( 'click', '#qsm-delete-selected-question', function( event) {
+                    if( confirm( 'are you sure?' ) ){
+                        var $total_selction = $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').length;
+                        if($total_selction === 0){
+                            alert('No question is selected.');
+                        }else{
+                            $.fn.reverse = [].reverse;                    	
+                            var question_ids = $($('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').reverse()).map(function() { 
+                                return $( this ).data( 'question-id' ); 
+                            }).get().join(',');
+                            if( question_ids ){
+                                $.ajax( {
+                                    url: ajaxurl,
+                                    method: 'POST',
+                                    data: {
+                                        'action' : 'qsm_delete_question_question_bank',
+                                        'question_ids': question_ids,
+                                        'nonce': qsmQuestionSettings.question_bank_nonce
+                                    },
+                                    success: function(response) {
+                                        var data = jQuery.parseJSON( response );
+                                        if( data.success === true ){
+                                            $('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').slideUp('slow');
+                                            alert( data.message );
+                                        } else {
+                                            alert( data.message );
+                                        }
+                                    }
+                                } );
+                            }
+                        }
                     }
                 });
                 

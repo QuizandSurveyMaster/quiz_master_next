@@ -163,6 +163,9 @@
 #qsm-import-selected-question{
     margin-right: 30px;
 }
+#qsm-delete-selected-question{
+    margin-right: 10px;
+}
 
 .question-bank-question div {
 	margin: 0 10px;
@@ -653,6 +656,9 @@ a#qsm-category-add-toggle {
 }
 .qsm-show-question-desc-box span.dashicons{
     line-height: 29px;
+}
+#modal-2 .qsm-popup__container{
+    max-width: 900px;
 }
 @media screen and (max-width: 575px){
     .qsm-popup__container{
