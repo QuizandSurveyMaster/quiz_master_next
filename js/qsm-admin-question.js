@@ -296,7 +296,9 @@ var import_button;
 			QSMQuestion.addQuestionToPage( model );                        
 			QSMQuestion.openEditPopup( model.id, $( '.question[data-question-id=' + model.id + ']' ).find('.edit-question-button') );
 			QSMQuestion.countTotal();
-                        $('#new-answer-button').trigger('click');
+                        if( $('#answers').find('.answers-single').length == 0  ){
+                            $('#new-answer-button').trigger('click');
+                        }                        
 		},
 		addQuestionToPage: function( model ) {
 			var page = model.get( 'page' ) + 1;
