@@ -618,6 +618,11 @@ function qsmCheckMR(event, limit){
    var checked = jQuery(event).parents('.quiz_section').find(':checkbox:checked').length;
    if (checked > limit) {
         event.checked = false;
+        if( jQuery(event).parents('.quiz_section').find('.multi-checkbox-limit-reach').length == 0 ){
+            jQuery(event).parents('.quiz_section').append('<span class="multi-checkbox-limit-reach">'+ qmn_ajax_object.multicheckbox_limit_reach +'</span>');
+        }        
+    } else {
+        jQuery(event).parents('.quiz_section').find('.multi-checkbox-limit-reach').remove();
     }
 }
 
