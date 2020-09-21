@@ -1253,9 +1253,11 @@ class QMNQuizManager {
             if( $background_quiz_email_process == 1 ){
                 // Send the emails in background.
                 $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+                $qmn_array_for_variables['email_processed'] = 'yes';
                 $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
             }else{
                 // Sends the emails.
+                $qmn_array_for_variables['email_processed'] = 'yes';
                 QSM_Emails::send_emails($qmn_array_for_variables);
             }
 
