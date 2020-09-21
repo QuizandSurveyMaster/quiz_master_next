@@ -59,7 +59,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_take
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
-add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',20,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
