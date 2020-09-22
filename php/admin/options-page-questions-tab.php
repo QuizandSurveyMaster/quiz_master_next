@@ -67,6 +67,7 @@ function qsm_options_questions_tab_content() {
 		'quiz_system' => $quiz_system,
                 'hide_desc_text' => __('Less Description', 'quiz-master-next'),
                 'show_desc_text' => __('Add Description', 'quiz-master-next'),
+                'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce")
 	);
 
 	// Scripts and styles.
@@ -692,4 +693,38 @@ function qsm_dashboard_delete_result(){
     echo 'failed';
     exit;
 }
+
+/**
+ * Delete question from question bank
+ * 
+ * @since 7.1.3
+ */
+function qsm_delete_question_question_bank(){
+    if ( !wp_verify_nonce( $_REQUEST['nonce'], "delete_question_question_bank_nonce") ) {
+        echo wp_json_encode( array( 'success' => false, 'message' => __( 'Nonce verification failed.','quiz-master-next' ) ) );
+	wp_die();
+    }
+    $question_ids = isset( $_POST['question_ids'] ) ? sanitize_textarea_field($_POST['question_ids']) : '';    
+    $question_arr = explode(',', $question_ids);
+    $response = array();
+    if( $question_arr ){
+        global $wpdb;
+        foreach ($question_arr as $key => $value) {
+            $wpdb->update(
+                    $wpdb->prefix."mlw_questions",
+                    array(
+                            'deleted_question_bank' => 1,
+                    ),
+                    array( 'question_id' => $value ),
+                    array(
+                            '%d'
+                    ),
+                    array( '%d' )
+            );
+        }
+        echo wp_json_encode( array( 'success' => true, 'message' => __( 'Selected Questions are removed from question bank.','quiz-master-next' ) ) );
+    }
+    exit;
+}
+add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_question_bank' );
 ?>

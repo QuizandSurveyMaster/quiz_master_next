@@ -106,6 +106,24 @@ function qsm_add_author_column_in_db() {
             }            
             update_option('qsm_update_result_db_column_datatype', '1');
         }
+        
+        /**
+         * Add new column in question table
+         * @since 7.0.3
+         */
+        if( get_option('qsm_add_new_column_question_table_table', '1') <= 3 ){            
+            $total_count_val = get_option('qsm_add_new_column_question_table_table', '1');            
+            global $wpdb;
+            $question_table_name = $wpdb->prefix . "mlw_questions";
+            $table_result_col_obj = $wpdb->get_results( $wpdb->prepare(
+                'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $question_table_name, 'deleted_question_bank' 
+            ) );
+            if ( empty( $table_result_col_obj ) ) {
+                $wpdb->query("ALTER TABLE $question_table_name ADD deleted_question_bank INT NOT NULL");
+            }
+            $inc_val = $total_count_val + 1;            
+            update_option('qsm_add_new_column_question_table_table', $inc_val);
+        }
 }
 
 

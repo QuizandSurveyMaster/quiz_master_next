@@ -111,7 +111,8 @@ function qsm_generate_quizzes_surveys_page() {
         if( ( isset($_POST[ 'qsm-ql-action-top' ]) && $_POST['qsm-ql-action-top'] == 'delete_pr' ) || ( isset($_POST[ 'qsm-ql-action-bottom' ]) && $_POST['qsm-ql-action-bottom'] == 'delete_pr' ) ){
             $quiz_ids_arr = $_POST['chk_remove_all'];            
             if($quiz_ids_arr){
-                foreach ($quiz_ids_arr as $quiz_id) {                    
+                $_POST['qsm_delete_question_from_qb'] = 1;
+                foreach ($quiz_ids_arr as $quiz_id) {
                     $mlwQuizMasterNext->quizCreator->delete_quiz($quiz_id, $quiz_id);
                 }
             }
@@ -517,6 +518,9 @@ function qsm_generate_quizzes_surveys_page() {
                     <main class="qsm-popup__content" id="modal-5-content">
                         <form action='' method='post' id="delete-quiz-form">
                             <h3><b><?php _e('Are you sure you want to delete this quiz or survey?', 'quiz-master-next'); ?></b></h3>
+                            <label>
+                                <input type="checkbox" value="1" name="qsm_delete_question_from_qb" checked="checked" /> <?php _e('Delete question from question bank?', 'quiz-master-next'); ?>
+                            </label>
                             <?php wp_nonce_field('qsm_delete_quiz', 'qsm_delete_quiz_nonce'); ?>
                             <input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
                             <input type='hidden' id='delete_quiz_name' name='delete_quiz_name' value='' />

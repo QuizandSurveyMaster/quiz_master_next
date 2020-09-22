@@ -155,26 +155,41 @@ function qmn_multiple_choice_review($id, $question, $answers)
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
   if ( isset( $_POST["question".$id] ) ) {
     $mlw_user_answer = $_POST["question".$id];
-		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+    $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
-  }
-  $return_array['user_text'] = stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
-  foreach($answers as $answer)
-  {
-    if ( $mlw_user_answer == trim( esc_attr( $answer[0] ) ) )
-    {
-      $return_array["points"] = $answer[1];
-      $return_array["user_text"] = $answer[0];
-      if ($answer[2] == 1)
-      {
-        $return_array["correct"] = "correct";
-      }
-    }
-    if ($answer[2] == 1)
-    {
-      $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
-    }
+  }    
+  $return_array['user_text'] = stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );  
+  foreach($answers as $answer){
+    if($answerEditor === 'rich'){
+        $answer_option = stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) );        
+        if ( $mlw_user_answer == trim( $answer_option ) ){
+                $return_array["points"] = $answer[1];
+                $return_array["user_text"] = $answer[0];
+            if ($answer[2] == 1){
+                $return_array["correct"] = "correct";
+            }
+          }
+          if ($answer[2] == 1){
+            $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
+          }
+    } else {
+        $mlw_user_answer = '';
+        if ( isset( $_POST["question".$id] ) ) {
+            $mlw_user_answer = $_POST["question".$id];
+            $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+        }        
+        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
+            $return_array["points"] = $answer[1];
+            $return_array["user_text"] = $answer[0];
+            if ($answer[2] == 1){
+              $return_array["correct"] = "correct";
+            }
+          }
+          if ($answer[2] == 1){
+            $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
+          }
+    }    
   }
   return $return_array;
 }
@@ -321,25 +336,39 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
   );
   if ( isset( $_POST["question".$id] ) ) {
     $mlw_user_answer = $_POST["question".$id];
-		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
+    $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
   } else {
     $mlw_user_answer = " ";
   }
-  foreach($answers as $answer)
-  {
-    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
-    {
-      $return_array["points"] = $answer[1];
-      $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
-      if ($answer[2] == 1)
-      {
-        $return_array["correct"] = "correct";
-      }
+  
+  foreach($answers as $answer){
+      if($answerEditor === 'rich'){
+        $answer_option = stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) );                
+        if ( $mlw_user_answer == trim( $answer_option ) ){            
+            $return_array["points"] = $answer[1];
+            $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+            if ($answer[2] == 1){
+              $return_array["correct"] = "correct";
+            }
+          }
+          if ($answer[2] == 1){
+            $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
+          }
+    } else{
+        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
+          $return_array["points"] = $answer[1];
+          $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+          if ($answer[2] == 1)
+          {
+            $return_array["correct"] = "correct";
+          }
+        }
+        if ($answer[2] == 1)
+        {
+          $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
+        }
     }
-    if ($answer[2] == 1)
-    {
-      $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
-    }
+    
   }
   return $return_array;
 }
@@ -903,7 +932,9 @@ function qmn_captcha_display($id, $question, $answers)
   $question_display .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
   $question_display .= "</div>";
   $question_display .= "<span class='mlw_qmn_question'>";
-  $question_display .= do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES))."</span>";
+  $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
+  $question_title = qsm_question_title_func($question, '', $new_question_title);
+  $question_display .= $question_title ."</span>";
   $question_display .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
   $question_display .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
   $question_display .= "<script>
