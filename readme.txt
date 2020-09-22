@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 7.1.2
+Stable tag: 7.1.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,23 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.3 (September 22, 2020) =
+* Bug: Fixed issues when email templates were not showing if classic editor was disabled.
+* Bug: Fixed the issue of Certificate Addon link not showing in admin result detail page issue.
+* Bug: Fixed point score calculation issue for rich answers.
+* Bug: Fixed the issue of question title  not showing on front while using captcha question type.
+* Bug: Fixed the issue of  Comment Field showing placeholder text  when the comment field is blank.
+* Bug: Removed unnecessary gap between question and answers in quiz result page.
+* Bug: Fixed the issue of text showing in the next line on mobile while using Fill in the blank question type.
+* Bug: Fixed the issue of  apostrophes showing backslash  in email content.
+* Bug: Fixed the issue of cloning of the question which was creating a blank answer
+* Bug: Fixed conflict between %QUESTION_ANSWER_X% variable and Extra Template Variables.
+* Bug: Fixed %QUESTION_ANSWER_X% variable content issue in email.
+* Enhancement: Implemented %CORRECT_SCORE% template variable score to round figure.
+* Enhancement: Added the option to disable scroll on click of next and previous button.
+* Enhancement: Added the option of Deleting a question from question bank while deleting the quiz.
+* Enhancement: Added a message when multiple choice limits are reached while using Multiple Response and Horizontal Multiple Response question type.
 
 = 7.1.2 (September 04, 2020) =
 * Bug: Fixed admin results page to make it compatible with new variable %QUESTIONS_ANSWERS_DEFAULT%.
