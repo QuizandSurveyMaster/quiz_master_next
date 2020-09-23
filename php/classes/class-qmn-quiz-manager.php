@@ -308,7 +308,8 @@ class QMNQuizManager {
                 'contact_info_location' => $qmn_quiz_options->contact_info_location,
                 'qpages' => $qpages,
                 'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire,
-                'timer_limit_val' => $qmn_quiz_options->timer_limit
+                'timer_limit_val' => $qmn_quiz_options->timer_limit,
+                'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click
             );
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
@@ -543,7 +544,7 @@ class QMNQuizManager {
         wp_enqueue_style('qsm_model_css', plugins_url('../../css/qsm-admin.css', __FILE__));
         wp_enqueue_script('qsm_model_js', plugins_url('../../js/micromodal.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
-        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => $options->quick_result_correct_answer_text, 'quick_result_wrong_text' => $options->quick_result_wrong_answer_text ));
+        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => $options->quick_result_correct_answer_text, 'quick_result_wrong_text' => $options->quick_result_wrong_answer_text, 'multicheckbox_limit_reach' => __('Limit of choice is reached.', 'quiz-master-next') ));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
         global $qmn_total_questions;
         $qmn_total_questions = 0;
@@ -689,10 +690,10 @@ class QMNQuizManager {
                         <?php
                         echo $mlwQuizMasterNext->pluginHelper->display_question($question['question_type_new'], $question_id, $options);
                         if (0 == $question['comments']) {
-                            echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "'/>";
+                            echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "' onclick='qmnClearField(this)'/>";
                         }
                         if (2 == $question['comments']) {
-                            echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "'></textarea>";
+                            echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) ."' onclick='qmnClearField(this)' ></textarea>";
                         }
                         // Checks if a hint is entered.
                         if (!empty($question['hints'])) {
@@ -750,10 +751,10 @@ class QMNQuizManager {
                             <?php
                             echo $mlwQuizMasterNext->pluginHelper->display_question($question['question_type_new'], $question_id, $options);
                             if (0 == $question['comments']) {
-                                echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "'/>";
+                                echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "' onclick='qmnClearField(this)'/>";
                             }
-                            if (2 == $question['comments']) {
-                                echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) . "'></textarea>";
+                            if (2 == $question['comments']) {                                
+                                echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) ."' onclick='qmnClearField(this)' ></textarea>";
                             }
                             // Checks if a hint is entered.
                             if (!empty($question['hints'])) {
@@ -902,11 +903,11 @@ class QMNQuizManager {
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 
             if (0 == $mlw_question->comments) {
-                $question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)) . "'/>";
+                $question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)) . "' onclick='qmnClearField(this)'/>";
                 $question_display .= "<br />";
             }
             if (2 == $mlw_question->comments) {
-                $question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr(htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES)) . "'></textarea>";
+                $question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . htmlspecialchars_decode($qmn_quiz_options->comment_field_text, ENT_QUOTES) . "' onclick='qmnClearField(this)'></textarea>";
                 $question_display .= "<br />";
             }
 
@@ -1265,9 +1266,11 @@ class QMNQuizManager {
             if( $background_quiz_email_process == 1 ){
                 // Send the emails in background.
                 $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+                $qmn_array_for_variables['email_processed'] = 'yes';
                 $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
             }else{
                 // Sends the emails.
+                $qmn_array_for_variables['email_processed'] = 'yes';
                 QSM_Emails::send_emails($qmn_array_for_variables);
             }
 

@@ -234,6 +234,17 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qmn_quiz_container.qsm_auto_pagination_enabled .quiz_section:not(.quiz_begin) {
     display: none;
 }
+.quiz_section input[type="text"].qmn_fill_blank{
+    display: inline-block;
+}
+.qmn_quiz_container .mlw_previous{
+    margin-bottom: 15px;
+}
+.multi-checkbox-limit-reach{
+    color: red;
+    margin-top: 5px;
+    display: inline-block;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,
