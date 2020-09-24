@@ -439,6 +439,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                     $display .= qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt);
                     $qsm_question_cnt++;
 		}
+		$display = "<div class='qsm_questions_answers_section'>{$display}</div>";
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
 		$content = str_replace( "%QUESTIONS_ANSWERS_EMAIL%" , $display, $content);
 	}
@@ -980,6 +981,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     if ($total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
         $extra_border_bottom_class = 'qsm-remove-border-bottom';
     }
+	$mlw_question_answer_display = apply_filters('qsm_question_answers_template_variable', $mlw_question_answer_display, $mlw_quiz_array, $answer);
     $display = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array) . '</div>';
     return $display;
 }
