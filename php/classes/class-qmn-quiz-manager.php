@@ -648,9 +648,7 @@ class QMNQuizManager {
                         ?>
                     </div>
                     <?php
-                    if (0 == $options->contact_info_location) {
-                        echo QSM_Contact_Manager::display_fields($options);
-                    }
+                    echo QSM_Contact_Manager::display_fields($options);                    
                     ?>
                 </div>
             </section>
