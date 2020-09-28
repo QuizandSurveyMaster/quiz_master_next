@@ -199,7 +199,7 @@ class QMNQuizManager {
         echo wp_json_encode(
                 array(
                     'success' => $got_ans ? 'correct' : 'incorrect',
-                    'message' => $show_correct_info ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . $correct_info_text : ''
+                    'message' => $show_correct_info && $got_ans ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . $correct_info_text : ''
                 ) 
         );
 	wp_die();        
