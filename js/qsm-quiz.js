@@ -1256,11 +1256,15 @@ jQuery(function() {
                         action: "qsm_get_question_quick_result",
                         question_id: question_id,
                         answer: value,
+                        show_correct_info: qmn_ajax_object.enable_quick_correct_answer_info
                     },
                     success: function (response) {
+                        var data = jQuery.parseJSON( response );
                         $this.find('.quick-question-res-p').remove();
-                        if(response == 'correct'){
+                        $this.find('.qsm-inline-correct-info').remove();
+                        if(data.success == 'correct'){
                             $this.append('<p style="color: green" class="quick-question-res-p">' + qmn_ajax_object.quick_result_correct_text + '</p>')
+                            $this.append('<p class="qsm-inline-correct-info">'+ data.message +'</p>');
                         }else if(response == 'incorrect'){
                             $this.append('<p style="color: red" class="quick-question-res-p">' + qmn_ajax_object.quick_result_wrong_text + '</p>')
                         }
