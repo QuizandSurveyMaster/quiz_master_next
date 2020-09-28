@@ -1265,7 +1265,7 @@ jQuery(function() {
                         if(data.success == 'correct'){
                             $this.append('<p style="color: green" class="quick-question-res-p">' + qmn_ajax_object.quick_result_correct_text + '</p>')
                             $this.append('<p class="qsm-inline-correct-info">'+ data.message +'</p>');
-                        }else if(response == 'incorrect'){
+                        }else if(data.success == 'incorrect'){
                             $this.append('<p style="color: red" class="quick-question-res-p">' + qmn_ajax_object.quick_result_wrong_text + '</p>')
                         }
                     },
