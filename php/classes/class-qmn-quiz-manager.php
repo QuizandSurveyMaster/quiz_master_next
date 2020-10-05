@@ -818,6 +818,7 @@ class QMNQuizManager {
             </section>
             <?php
         }
+        do_action('qsm_after_all_section');
         ?>
         <!-- View for pagination -->
         <script type="text/template" id="tmpl-qsm-pagination">
