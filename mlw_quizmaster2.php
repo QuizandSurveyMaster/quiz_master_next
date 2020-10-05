@@ -188,7 +188,15 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
+                add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
 	}
+        
+        /**
+         * @since 7.1.4
+         */
+        public function qsm_load_textdomain(){
+            load_plugin_textdomain( 'quiz-master-next', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+        }
 
 	/**
 	 * Creates Custom Quiz Post Type
