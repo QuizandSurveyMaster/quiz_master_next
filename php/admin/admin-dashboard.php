@@ -495,7 +495,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 			<span class="screen-reader-text">Toggle panel: <?php _e( 'Changelog', 'quiz-master-next' ); ?></span>
 			<span class="toggle-indicator" aria-hidden="true"></span>
 		</button>
-		<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Changelog ( '. $mlwQuizMasterNext->version .' )', 'quiz-master-next' ); ?></span></h2>
+		<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Changelog ' . '( ' . $mlwQuizMasterNext->version .' )', 'quiz-master-next' ); ?></span></h2>
 		<div class="inside">
 			<div class="main">
                                 <?php if($change_log){

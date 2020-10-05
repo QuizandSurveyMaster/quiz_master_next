@@ -111,7 +111,11 @@ function qsm_options_results_tab_content() {
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz. <br/><b>Note:</b> Always use uppercase while using these variables.', 'quiz-master-next'); ?></span>
+                            <span class="description">
+                                <?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
+                                <br/><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
+                                <?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
+                            </span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php
