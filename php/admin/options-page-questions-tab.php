@@ -264,7 +264,7 @@ function qsm_options_questions_tab_content() {
                                                 <div id="side-sortables" class="meta-box-sortables ui-sortable" style="">
                                                     <div id="submitdiv" class="postbox ">                                                        
                                                         <h2 class="hndle ui-sortable-handle">
-                                                            <span><?php _e( 'Publish', 'quiz-master-quiz' ); ?></span>
+                                                            <span><?php _e( 'Publish', 'quiz-master-next' ); ?></span>
                                                             <span id="qsm-question-id"></span>
                                                         </h2>
                                                         <div class="inside">
@@ -288,7 +288,7 @@ function qsm_options_questions_tab_content() {
                                                                                     }
                                                                                     ?>
                                                                             </select>
-                                                                            <a class="question_info_tag hidden" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz_master_next') ?></a>
+                                                                            <a class="question_info_tag hidden" target="_blank" href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e('How to use this option?','quiz-master-next') ?></a>
                                                                             <p class="hidden" id="question_type_info"></p>
                                                                     </div>
                                                                     <?php

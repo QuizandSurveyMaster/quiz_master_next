@@ -68,7 +68,7 @@ function qsm_options_emails_tab_content() {
 			<main class="qsm-email-content">
 				<div class="email-when">
 					<div class="email-content-header">
-						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
+						<h4><?php esc_html_e('When...', 'quiz-master-next') ?></h4>
 						<p><?php esc_html_e('Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next'); ?></p>
 					</div>
 					<div class="email-when-conditions">
