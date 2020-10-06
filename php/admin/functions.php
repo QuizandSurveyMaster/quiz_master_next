@@ -591,6 +591,7 @@ function qsm_text_template_variable_list(){
         '%USER_COMMENTS%' => __('The comments the user provided in the comment field for the question', 'quiz-master-next'),
         '%CORRECT_ANSWER_INFO%' => __('Reason why the correct answer is the correct answer', 'quiz-master-next'),
         '%CURRENT_DATE%' => __('The Current Date', 'quiz-master-next'),
+        '%QUESTION_POINT_SCORE%' => __('Point Score of the question', 'quiz-master-next'),
     );
     $variable_list = apply_filters('qsm_text_variable_list', $variable_list);
     return $variable_list;

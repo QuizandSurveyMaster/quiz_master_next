@@ -244,6 +244,11 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     color: red;
     margin-top: 5px;
     display: inline-block;
+	width: 100%;
+}
+.quiz_section .qsm-inline-correct-info{
+    margin-bottom: 0;
+    margin-top: 10px;
 }
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,

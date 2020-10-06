@@ -307,7 +307,7 @@ function qsm_display_optin_page() {
                 </div> -->
             </div>
 
-            <p><?php echo sprintf(__('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in <b>Quiz and Survey Master</b>, let you know when new or updated addons are being released and provide informative articles that show you how to use <b>Quiz and Survey Master</b> to its full potential. <a href="%s" %s>View our privacy policy</a>', 'quiz-master-next'), 'https://quizandsurveymaster.com/privacy-policy/', 'target="_blank"'); ?></p>
+            <p><?php echo __('Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next') . '<b>'. __('Quiz and Survey Master', 'quiz-master-next') .'</b>,' . __(' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next') . '<b>'. __('Quiz and Survey Master ', 'quiz-master-next') .'</b>' . __('to its full potential. ', 'quiz-master-next') . '<a href="https://quizandsurveymaster.com/privacy-policy/" target="_blank">' . __('View our privacy policy', 'quiz-master-next') .'</a>'; ?></p>
 
             <div id="wpas-mailchimp-signup-form-wrapper">
                 <div id="status"></div>
@@ -421,7 +421,7 @@ function qsm_display_optin_page() {
                     <div class="sib-form-block" style="font-size:14px; text-align:center; font-family:Helvetica, sans-serif; color:#333; background-color:transparent; border-width:px;">
                       <div class="sib-text-form-block">
                         <p>
-                          <a href="https://sendinblue.com" target="_blank"><?php _e('Terms &amp; Privacy policy', 'quiz-master-next'); ?></a>
+                          <a href="https://sendinblue.com" target="_blank"><?php _e('Terms & Privacy policy', 'quiz-master-next'); ?></a>
                         </p>
                       </div>
                     </div>

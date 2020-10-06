@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 7.1.3
+Stable tag: 7.1.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.4 (October 06, 2020) =
+* Bug: Fixed point score issues when answer type is Rich Answer with HTML tags.
+* Enhancement: Added JS hook for quiz to enhance JS event.
+* Enhancement: Added .pot file to translate string into any language.
+* Enhancement: Added %POINT_SCORE% variable support in %QUESTIONS_ANSWERS% template variable.
+* Enhancement: Added option to display Correct Answer Info with inline result.
 
 = 7.1.3 (September 22, 2020) =
 * Bug: Fixed issues when email templates were not showing if classic editor was disabled.

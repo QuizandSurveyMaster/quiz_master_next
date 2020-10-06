@@ -49,7 +49,7 @@ function qsm_generate_about_page() {
 					$contributor_list .= sprintf( '<a href="%s" title="%s">',
 						esc_url( 'https://github.com/' . $contributor->login ),
 						// translators: This is the 'title' attribute for GitHub contributors. This would add the GitHub user such as 'View fpcorso'.
-						esc_html( sprintf( __( 'View %s', 'quiz-master-next' ), $contributor->login ) )
+						esc_html( __( 'View ', 'quiz-master-next' ) . $contributor->login )
 					);
 					$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
 					$contributor_list .= '</a>';

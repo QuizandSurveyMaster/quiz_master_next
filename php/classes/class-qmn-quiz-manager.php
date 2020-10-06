@@ -183,19 +183,31 @@ class QMNQuizManager {
         global $wpdb;
         $question_id = isset($_POST['question_id']) ? intval($_POST['question_id']) : 0;
         $answer = isset( $_POST['answer'] ) ? sanitize_textarea_field( $_POST['answer'] ) : '';
-        $question_array = $wpdb->get_row( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
+        $question_array = $wpdb->get_row( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
-        $got_ans = false;        
+        $correct_info_text = isset( $question_array['question_answer_info'] ) ? $question_array['question_answer_info'] : '';
+        $show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( $_POST['show_correct_info'] ) : 0;
+        $got_ans = false;
+        $correct_answer = false;
         if($answer_array && $got_ans === false){
             foreach ($answer_array as $key => $value) {
                 if($value[0] == $answer && $value[2] == 1){
                     $got_ans = true;
+                    $correct_answer = true;
                     break;
                 }
             }
         }
-        echo $got_ans ? 'correct' : 'incorrect';
-        exit;
+        if( $show_correct_info == 2 ){
+            $got_ans = true;
+        }
+        echo wp_json_encode(
+                array(
+                    'success' => $correct_answer ? 'correct' : 'incorrect',
+                    'message' => $show_correct_info && $got_ans ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . $correct_info_text : ''
+                ) 
+        );
+	wp_die();        
     }
 
     /**
@@ -544,7 +556,7 @@ class QMNQuizManager {
         wp_enqueue_style('qsm_model_css', plugins_url('../../css/qsm-admin.css', __FILE__));
         wp_enqueue_script('qsm_model_js', plugins_url('../../js/micromodal.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
-        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => $options->quick_result_correct_answer_text, 'quick_result_wrong_text' => $options->quick_result_wrong_answer_text, 'multicheckbox_limit_reach' => __('Limit of choice is reached.', 'quiz-master-next') ));
+        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => $options->quick_result_correct_answer_text, 'quick_result_wrong_text' => $options->quick_result_wrong_answer_text, 'multicheckbox_limit_reach' => __('Limit of choice is reached.', 'quiz-master-next'), 'enable_quick_correct_answer_info' => isset($options->enable_quick_correct_answer_info) ? $options->enable_quick_correct_answer_info : 0 ));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
         global $qmn_total_questions;
         $qmn_total_questions = 0;
@@ -811,6 +823,7 @@ class QMNQuizManager {
             </section>
             <?php
         }
+        do_action('qsm_after_all_section');
         ?>
         <!-- View for pagination -->
         <script type="text/template" id="tmpl-qsm-pagination">
@@ -1170,51 +1183,64 @@ class QMNQuizManager {
                 // Inserts the responses in the database.
                 global $wpdb;
                 $table_name = $wpdb->prefix . "mlw_results";
-                $results_insert = $wpdb->insert(
-                        $table_name, array(
-                    'quiz_id' => $qmn_array_for_variables['quiz_id'],
-                    'quiz_name' => $qmn_array_for_variables['quiz_name'],
-                    'quiz_system' => $qmn_array_for_variables['quiz_system'],
-                    'point_score' => $qmn_array_for_variables['total_points'],
-                    'correct_score' => $qmn_array_for_variables['total_score'],
-                    'correct' => $qmn_array_for_variables['total_correct'],
-                    'total' => $qmn_array_for_variables['total_questions'],
-                    'name' => $qmn_array_for_variables['user_name'],
-                    'business' => $qmn_array_for_variables['user_business'],
-                    'email' => $qmn_array_for_variables['user_email'],
-                    'phone' => $qmn_array_for_variables['user_phone'],
-                    'user' => $qmn_array_for_variables['user_id'],
-                    'user_ip' => $qmn_array_for_variables['user_ip'],
-                    'time_taken' => $qmn_array_for_variables['time_taken'],
-                    'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
-                    'quiz_results' => $serialized_results,
-                    'deleted' => 0,
-                    'unique_id' => $unique_id,
-                    'form_type' => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
-                        ), array(
-                    '%d',
-                    '%s',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%s',
-                    '%d',
-                    '%s',
-                    '%d',
-                        )
-                );
-				$results_id = $wpdb->insert_id;
-            }
+				if (isset($_POST['update_result']) && !empty($_POST['update_result'])) {
+					$results_id = $_POST['update_result'];
+					$results_update = $wpdb->update($table_name, array(
+						'point_score' => $qmn_array_for_variables['total_points'],
+						'correct_score' => $qmn_array_for_variables['total_score'],
+						'correct' => $qmn_array_for_variables['total_correct'],
+						'total' => $qmn_array_for_variables['total_questions'],
+						'user_ip' => $qmn_array_for_variables['user_ip'],
+						'time_taken' => $qmn_array_for_variables['time_taken'],
+						'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
+						'quiz_results' => $serialized_results,
+						), array('result_id' => $results_id));
+				} else {
+					$results_insert = $wpdb->insert($table_name, array(
+						'quiz_id' => $qmn_array_for_variables['quiz_id'],
+						'quiz_name' => $qmn_array_for_variables['quiz_name'],
+						'quiz_system' => $qmn_array_for_variables['quiz_system'],
+						'point_score' => $qmn_array_for_variables['total_points'],
+						'correct_score' => $qmn_array_for_variables['total_score'],
+						'correct' => $qmn_array_for_variables['total_correct'],
+						'total' => $qmn_array_for_variables['total_questions'],
+						'name' => $qmn_array_for_variables['user_name'],
+						'business' => $qmn_array_for_variables['user_business'],
+						'email' => $qmn_array_for_variables['user_email'],
+						'phone' => $qmn_array_for_variables['user_phone'],
+						'user' => $qmn_array_for_variables['user_id'],
+						'user_ip' => $qmn_array_for_variables['user_ip'],
+						'time_taken' => $qmn_array_for_variables['time_taken'],
+						'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
+						'quiz_results' => $serialized_results,
+						'deleted' => 0,
+						'unique_id' => $unique_id,
+						'form_type' => isset($qmn_quiz_options->form_type) ? $qmn_quiz_options->form_type : 0,
+						), array(
+						'%d',
+						'%s',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%s',
+						'%s',
+						'%s',
+						'%s',
+						'%d',
+						'%s',
+						'%d',
+						)
+					);
+					$results_id = $wpdb->insert_id;
+				}
+			}
             $qmn_array_for_variables['result_id'] = $results_id;
 
 			// Determines redirect/results page.
@@ -1225,7 +1251,7 @@ class QMNQuizManager {
             $result_display .= $this->display_social($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
 			if ($this->qsm_plugin_active('qsm-save-resume/qsm-save-resume.php') != 1 && $qmn_quiz_options->enable_retake_quiz_button == 1) {
-				$result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="' . $qmn_array_for_variables['quiz_id'] . '" href="#" >' . apply_filters('qsm_retake_quiz_text', 'Retake Quiz') . '</a>';
+				$result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="' . $qmn_array_for_variables['quiz_id'] . '" href="#" >' . apply_filters('qsm_retake_quiz_text', __('Retake Quiz', 'quiz-master-next')) . '</a>';
             }
 
 			/*

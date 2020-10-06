@@ -503,6 +503,30 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_quick_correct_answer_info',
+      'label' => __('Show correct answer inline', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes When answer is correct', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('Yes Independent of correct/incorrect', 'quiz-master-next'),
+          'value' => 2
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        )
+      ),
+      'default' => 0,
+      'help' => __('Show correct user info when inline result is enabled.','quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     //Setting for retake quiz
     $field_array = array(
       'id' => 'enable_retake_quiz_button',
@@ -893,7 +917,8 @@ class QSM_Install {
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',
-        '%CORRECT_ANSWER_INFO%'
+        '%CORRECT_ANSWER_INFO%',
+        '%QUESTION_POINT_SCORE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );

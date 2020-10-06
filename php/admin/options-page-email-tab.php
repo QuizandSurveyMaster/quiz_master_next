@@ -68,7 +68,7 @@ function qsm_options_emails_tab_content() {
 			<main class="qsm-email-content">
 				<div class="email-when">
 					<div class="email-content-header">
-						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
+						<h4><?php esc_html_e('When...', 'quiz-master-next') ?></h4>
 						<p><?php esc_html_e('Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next'); ?></p>
 					</div>
 					<div class="email-when-conditions">
@@ -120,7 +120,11 @@ function qsm_options_emails_tab_content() {
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz. <br/><b>Note:</b> Always use uppercase while using these variables.', 'quiz-master-next'); ?></span>
+                            <span class="description">
+                                <?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
+                                <br/><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
+                                <?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
+                            </span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php
@@ -136,6 +140,7 @@ function qsm_options_emails_tab_content() {
                         unset($variable_list['%QUESTION%']);
                         unset($variable_list['%USER_ANSWER%']);
                         unset($variable_list['%USER_ANSWERS_DEFAULT%']);
+                        unset($variable_list['%QUESTION_POINT_SCORE%']);
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);

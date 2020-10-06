@@ -111,7 +111,11 @@ function qsm_options_results_tab_content() {
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz. <br/><b>Note:</b> Always use uppercase while using these variables.', 'quiz-master-next'); ?></span>
+                            <span class="description">
+                                <?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
+                                <br/><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
+                                <?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
+                            </span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php
@@ -130,6 +134,7 @@ function qsm_options_results_tab_content() {
                         unset($variable_list['%QUESTION%']);
                         unset($variable_list['%USER_ANSWER%']);
                         unset($variable_list['%USER_ANSWERS_DEFAULT%']);
+                        unset($variable_list['%QUESTION_POINT_SCORE%']);
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);

@@ -150,8 +150,12 @@ class QSM_Emails {
 		} else {
 			$to = str_replace( '%USER_EMAIL%', '', $to );
 		}
+		$to = apply_filters('qsm_send_results_email_addresses', $to, $response_data);
 		$to_array = explode( ',', $to );
-
+		$to_array = array_unique($to_array);
+		if (empty($to_array)) {
+			return;
+		}
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 
