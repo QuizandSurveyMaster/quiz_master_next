@@ -187,18 +187,23 @@ class QMNQuizManager {
         $answer_array = unserialize($question_array['answer_array']);
         $correct_info_text = isset( $question_array['question_answer_info'] ) ? $question_array['question_answer_info'] : '';
         $show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( $_POST['show_correct_info'] ) : 0;
-        $got_ans = false;        
+        $got_ans = false;
+        $correct_answer = false;
         if($answer_array && $got_ans === false){
             foreach ($answer_array as $key => $value) {
                 if($value[0] == $answer && $value[2] == 1){
                     $got_ans = true;
+                    $correct_answer = true;
                     break;
                 }
             }
         }
+        if( $show_correct_info == 2 ){
+            $got_ans = true;
+        }
         echo wp_json_encode(
                 array(
-                    'success' => $got_ans ? 'correct' : 'incorrect',
+                    'success' => $correct_answer ? 'correct' : 'incorrect',
                     'message' => $show_correct_info && $got_ans ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . $correct_info_text : ''
                 ) 
         );

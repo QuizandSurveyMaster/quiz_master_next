@@ -510,13 +510,17 @@ class QSM_Install {
       'type' => 'radio',
       'options' => array(        
         array(
-          'label' => __('Yes', 'quiz-master-next'),
+          'label' => __('Yes When answer is correct', 'quiz-master-next'),
           'value' => 1
+        ),
+        array(
+          'label' => __('Yes Independent of correct/incorrect', 'quiz-master-next'),
+          'value' => 2
         ),
         array(
           'label' => __('No', 'quiz-master-next'),
           'value' => 0
-        )  
+        )
       ),
       'default' => 0,
       'help' => __('Show correct user info when inline result is enabled.','quiz-master-next')
