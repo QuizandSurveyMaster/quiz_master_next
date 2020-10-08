@@ -715,7 +715,6 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
-
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
@@ -754,6 +753,10 @@ function qmnValidation( element, quiz_form_id ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
 					}
+				}
+				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredDate' ) > -1 && this.value === "" ) {
+					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
+					result =  false;
 				}
                 //Google recaptcha validation
 				if( jQuery( this ).attr( 'class' ).indexOf( 'g-recaptcha-response' ) > -1 ) {
