@@ -720,6 +720,12 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
+                                
+                                if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredDate' ) > -1 && this.value === "" ) {
+					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
+					result =  false;
+				}
+                                
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredCaptcha' ) > -1 && this.value != mlw_code ) {
 					qmnDisplayError( incorrect_error, jQuery( this ), quiz_form_id );
 					result =  false;
