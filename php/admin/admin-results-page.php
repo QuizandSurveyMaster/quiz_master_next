@@ -330,9 +330,9 @@ function qsm_results_overview_tab_content() {
             <thead>
             <tr>
                 <th><input type="checkbox" id="qmn_check_all"/></th>
+                <th><?php esc_html_e( 'Quiz Name','quiz-master-next' ); ?></th>
 				<?php
 				$table_heading_displays = '';
-				$table_heading_displays .= '<th>' . esc_html__( 'Quiz Name', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Score', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Time To Complete', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Name', 'quiz-master-next' ) . '</th>';
@@ -380,7 +380,7 @@ function qsm_results_overview_tab_content() {
 					$out_of_q    = $mlw_quiz_info->total - $hidden_questions;
 					$quiz_result_item .= "<tr{$alternate}>";
 					$quiz_result_item .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='" . $mlw_quiz_info->result_id . "' /></td>";
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=" . $mlw_quiz_info->result_id . "'>View</a> | <a style='color: red;' onclick=\"deleteResults('" . $mlw_quiz_info->result_id . "','" . esc_js( $mlw_quiz_info->quiz_name ) . "')\" href='#'>Delete</a></span></div></td>";
+					$quiz_result_item .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=" . $mlw_quiz_info->result_id . "'>View</a> | <a style='color: red;' onclick=\"deleteResults('" . $mlw_quiz_info->result_id . "','" . esc_js( $mlw_quiz_info->quiz_name ) . "')\" href='#'>Delete</a></span></div></td>";
 					$form_type   = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
 					if ( $form_type == 1 || $form_type == 2 ) {
 						$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . __( 'Not Graded', 'quiz-master-next' ) . "</span></td>";
