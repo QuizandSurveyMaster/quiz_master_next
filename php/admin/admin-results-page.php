@@ -330,16 +330,22 @@ function qsm_results_overview_tab_content() {
             <thead>
             <tr>
                 <th><input type="checkbox" id="qmn_check_all"/></th>
-                <th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Score', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Time To Complete', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Business', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Email', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Phone', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'Time Taken', 'quiz-master-next' ); ?></th>
-                <th><?php esc_html_e( 'IP Address', 'quiz-master-next' ); ?></th>
+				<?php
+				$table_heading_displays = '';
+				$table_heading_displays .= '<th>' . esc_html__( 'Quiz Name', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Score', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Time To Complete', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Name', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Business', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Email', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Phone', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'User', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Time Taken', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
+
+				$table_heading_displays = apply_filters('mlw_qmn_admin_results_page_headings', $table_heading_displays);
+				echo $table_heading_displays;
+				?>
             </tr>
             </thead>
 			<?php
@@ -348,6 +354,8 @@ function qsm_results_overview_tab_content() {
 			$alternate   = "";
 			if ( $mlw_quiz_data ) {
 				foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
+					$quiz_result_item = '';
+					$quiz_result_item_inner = '';
 					if ( $alternate ) {
 						$alternate = '';
 					} else {
@@ -370,38 +378,40 @@ function qsm_results_overview_tab_content() {
 					}
 
 					$out_of_q    = $mlw_quiz_info->total - $hidden_questions;
-					$quotes_list .= "<tr{$alternate}>";
-					$quotes_list .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='" . $mlw_quiz_info->result_id . "' /></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=" . $mlw_quiz_info->result_id . "'>View</a> | <a style='color: red;' onclick=\"deleteResults('" . $mlw_quiz_info->result_id . "','" . esc_js( $mlw_quiz_info->quiz_name ) . "')\" href='#'>Delete</a></span></div></td>";
+					$quiz_result_item .= "<tr{$alternate}>";
+					$quiz_result_item .= "<td><input type='checkbox' class='qmn_delete_checkbox' name='delete_results[]' value='" . $mlw_quiz_info->result_id . "' /></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->quiz_name . "</span><div class='row-actions'><span style='color:green;font-size:16px;'><a href='admin.php?page=qsm_quiz_result_details&&result_id=" . $mlw_quiz_info->result_id . "'>View</a> | <a style='color: red;' onclick=\"deleteResults('" . $mlw_quiz_info->result_id . "','" . esc_js( $mlw_quiz_info->quiz_name ) . "')\" href='#'>Delete</a></span></div></td>";
 					$form_type   = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
 					if ( $form_type == 1 || $form_type == 2 ) {
-						$quotes_list .= "<td><span style='font-size:16px;'>" . __( 'Not Graded', 'quiz-master-next' ) . "</span></td>";
+						$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . __( 'Not Graded', 'quiz-master-next' ) . "</span></td>";
 					} else {
 						if ( $mlw_quiz_info->quiz_system == 0 ) {
-							$quotes_list .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct . " out of " . $out_of_q . " or " . $mlw_quiz_info->correct_score . "%</span></td>";
+							$quiz_result_item_inner .= "<td class='post-title column-title'><span style='font-size:16px;'>" . $mlw_quiz_info->correct . " out of " . $out_of_q . " or " . $mlw_quiz_info->correct_score . "%</span></td>";
 						}
 						if ( $mlw_quiz_info->quiz_system == 1 ) {
-							$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+							$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
 						}
 						if ( $mlw_quiz_info->quiz_system == 3 ) {
-							$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->correct . " out of " . $out_of_q . " or " . $mlw_quiz_info->correct_score . "%</span><br/><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
+							$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->correct . " out of " . $out_of_q . " or " . $mlw_quiz_info->correct_score . "%</span><br/><span style='font-size:16px;'>" . $mlw_quiz_info->point_score . " Points</span></td>";
 						}
 					}
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_complete_time . "</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name . "</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email . "</span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_complete_time . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
 					if ( 0 == $mlw_quiz_info->user ) {
-						$quotes_list .= "<td><span style='font-size:16px;'>Visitor</span></td>";
+						$quiz_result_item_inner .= "<td><span style='font-size:16px;'>Visitor</span></td>";
 					} else {
-						$quotes_list .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user . "'>" . $mlw_quiz_info->user . "</a></span></td>";
+						$quiz_result_item_inner .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user . "'>" . $mlw_quiz_info->user . "</a></span></td>";
 					}
 					$date        = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 					$time        = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
-					$quotes_list .= "<td><span style='font-size:16px;'><abbr title='$date $time'>$date</abbr></span></td>";
-					$quotes_list .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
-					$quotes_list .= "</tr>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'><abbr title='$date $time'>$date</abbr></span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
+					$quiz_result_item .= apply_filters('mlw_qmn_admin_results_page_result', $quiz_result_item_inner, $mlw_quiz_info);
+					$quiz_result_item .= "</tr>";
+					$quotes_list .= $quiz_result_item;
 				}
 			} else {
 				$quotes_list .= "<tr{$alternate}><td colspan='12' style='text-align: center;'>" . __( 'No record found.', 'quiz-master-next' ) . "</td></tr>";
