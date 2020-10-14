@@ -970,7 +970,7 @@ class QMNQuizManager {
         $comment_display = '';
         if (0 == $qmn_quiz_options->comment_section) {
             $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-            $comment_display .= "<div class='quiz_section quiz_end qsm-auto-page-row slide" . $mlw_qmn_section_count . "' style='display: none;'>";
+            $comment_display .= "<div class='quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide" . $mlw_qmn_section_count . "' style='display: none;'>";
             $message_comments = wpautop(htmlspecialchars_decode($qmn_quiz_options->message_comment, ENT_QUOTES));
             $message_comments = apply_filters('mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables);
             $comment_display .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$message_comments</label><br />";

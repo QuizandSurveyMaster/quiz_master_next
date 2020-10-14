@@ -1013,15 +1013,10 @@ function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
  */
 function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number){    
     if ( '1' == qmn_quiz_data[ quiz_id ].progress_bar ) {
-        var total_questions = jQuery( '#quizForm' + quiz_id  ).closest( '.qmn_quiz_container' ).find('.quiz_section').length;
+        var qmn_total_questions = qmn_quiz_data[quiz_id].pagination.total_questions;        
         var pagination = qmn_quiz_data[quiz_id].pagination.amount;        
-        total_page_number = Math.ceil(total_questions / pagination);        
-        if( jQuery( '#quizForm' + quiz_id ).find('.qsm-auto-page-row.quiz_begin').length == 0 ){
-            total_page_number = total_page_number + 1;
-        }
-        if(pagination === 1){
-            //total_page_number = total_page_number - 1;
-        }        
+        total_page_number = Math.ceil(qmn_total_questions / pagination);        
+        total_page_number = total_page_number + 1; //Increase for quiz end section
         var animate_value = page_number / total_page_number;        
         if( animate_value <= 1){
             qmn_quiz_data[ quiz_id ].bar.animate( animate_value );
@@ -1050,25 +1045,12 @@ function qmnUpdatePageNumber( amount, quiz_form_id ) {
 }
 
 function qmnInitPagination( quiz_id ) {
-	var qmn_section_total = +qmn_quiz_data[quiz_id].pagination.total_questions;
-	if ( qmn_quiz_data[quiz_id].pagination.section_comments === '0' ) {
-            //qmn_section_total += 1;
-	}
-        if( jQuery( '#quizForm' + quiz_id ).find('.qsm-auto-page-row.quiz_begin').length > 0 && qmn_quiz_data[quiz_id].pagination.amount > 1 ){
-            qmn_section_total = qmn_section_total + 1;
-        }
-        if( jQuery( '#quizForm' + quiz_id ).find('.qsm-auto-page-row.quiz_end').length > 0 ){
-            qmn_section_total = qmn_section_total + 1;
-        }
-	var qmn_total_pages = Math.ceil( qmn_section_total / +qmn_quiz_data[quiz_id].pagination.amount );        
-	if ( qmn_quiz_data[quiz_id].first_page ) {
-		qmn_total_pages += 1;
-		qmn_section_total += 1;
-	}
-        if( jQuery( '#quizForm' + quiz_id ).find('.qsm-auto-page-row.quiz_begin').length == 0 ){
-            qmn_total_pages = qmn_total_pages + 1;
-            qmn_section_total = qmn_section_total + 1;
-        }
+	var qmn_section_total = +qmn_quiz_data[quiz_id].pagination.total_questions;	                
+	var qmn_total_pages = Math.ceil( qmn_section_total / +qmn_quiz_data[quiz_id].pagination.amount );
+        
+        qmn_total_pages = qmn_total_pages + 1; //quiz begin
+        qmn_total_pages = qmn_total_pages + 1; //quiz end
+        
 	jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).append( '<div class="qmn_pagination border margin-bottom"></div>' );
 	jQuery( '#quizForm' + quiz_id ).closest( '.qmn_quiz_container' ).find( '.qmn_pagination' ).append( '<input type="hidden" value="0" name="slide_number" class="slide_number_hidden" />')
 		.append( '<input type="hidden" value="0" name="current_page" class="current_page_hidden" />')
