@@ -457,6 +457,7 @@ class QMNQuizCreator {
                 //Update quiz settings
                 $update_quiz_settings = unserialize($mlw_qmn_duplicate_data->quiz_settings);
                 $update_pages = unserialize($update_quiz_settings['pages']);
+                $logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize(unserialize($update_quiz_settings['logic_rules'])) : array();
                 
 		if ( false != $results ) {
 			$current_user = wp_get_current_user();
@@ -545,7 +546,19 @@ class QMNQuizCreator {
                                             $update_pages[$pages_key][$pages_k_q] = $wpdb->insert_id;
                                         }
                                     }
-                                }   
+                                }
+                                // Fixed Rules Questions with new question ids
+                                if( $logic_rules ){
+                                    foreach ($logic_rules as $logic_key => $logic_value) {
+                                        foreach ($logic_value as $logic_cond_k => $logic_cond) {
+                                            foreach($logic_cond as $l_cond_k => $logic_val) {
+                                                if($logic_val['question'] == $mlw_question->question_id) {
+                                                    $logic_rules[$logic_key][$logic_cond_k][$l_cond_k]['question'] = $wpdb->insert_id;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 				if ($question_results == false)
 				{
 					$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0020'), 'error');
@@ -553,6 +566,7 @@ class QMNQuizCreator {
 				}
 			}
                         $update_quiz_settings['pages'] = serialize($update_pages);
+                        $update_quiz_settings['logic_rules'] = serialize(serialize($logic_rules));
                         $wpdb->update(
                             $wpdb->prefix . "mlw_quizzes",
                             array(
