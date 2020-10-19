@@ -457,7 +457,8 @@ function qmn_drop_down_review($id, $question, $answers)
   }
   foreach($answers as $answer)
   {
-    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
+    $answers_loop = trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) );
+    if ( $mlw_user_answer == $answers_loop )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
