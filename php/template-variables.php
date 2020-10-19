@@ -431,7 +431,7 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                 
 		// Cycles through each answer in the responses.
                 $total_question_cnt = count( $mlw_quiz_array['question_answers_array'] );
-                $qsm_question_cnt = 1;
+                $qsm_question_cnt = 1;                
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {                    
                     if(in_array($answer['id'],$hidden_questions)) {
                         continue;
@@ -899,13 +899,14 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                     if ($form_type == 0 && ( $quiz_system == 0 || $quiz_system == 3 )) {
                         if (isset($answer['question_type']) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 )) {
                             $user_selected_answer = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+                            $new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode('=====', $answer['user_compare_text']) : array();
                             foreach ($total_answers as $single_answer) {
                                 $current_answer_text = $single_answer[0];
-                                if (isset($single_answer[2]) && $single_answer[2] == 1 && preg_match("/\b$current_answer_text\b/", $user_selected_answer)) {
+                                if (isset($single_answer[2]) && $single_answer[2] == 1 && in_array($current_answer_text, $new_array_user_answer) ) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else if (isset($single_answer[2]) && $single_answer[2] == 1) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
-                                } else if (preg_match("/\b$current_answer_text\b/", $user_selected_answer) && $single_answer[2] !== 1) {
+                                } else if ( in_array($current_answer_text, $new_array_user_answer) && $single_answer[2] !== 1) {
                                     $question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else {
                                     $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';

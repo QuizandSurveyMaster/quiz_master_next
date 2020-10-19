@@ -1441,6 +1441,7 @@ class QMNQuizManager {
                                 }
                                 $user_answer = $results_array["user_text"];
                                 $correct_answer = $results_array["correct_text"];
+                                $user_compare_text = isset( $results_array["user_compare_text"] ) ? $results_array["user_compare_text"] : '';
                                 
                                 if( trim( $user_answer ) != '' ){
                                     if( $user_answer != 'No Answer Provided' ){
@@ -1472,7 +1473,8 @@ class QMNQuizManager {
                                     "points" => $answer_points,
                                     "category" => $question['category'],
                                     "question_type" => $question['question_type_new'],
-                                    "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
+                                    "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+                                    "user_compare_text" => $user_compare_text
                                         ), $options, $quiz_data);
                             }
                             break;
@@ -1528,6 +1530,7 @@ class QMNQuizManager {
                             }
                             $user_answer = $results_array["user_text"];
                             $correct_answer = $results_array["correct_text"];
+                            $user_compare_text = isset( $results_array["user_compare_text"] ) ? $results_array["user_compare_text"] : '';
                             if( trim( $user_answer ) != '' ){
                                 if( $user_answer != 'No Answer Provided' ){
                                     $attempted_question++;
@@ -1557,7 +1560,8 @@ class QMNQuizManager {
                                 "points" => $answer_points,
                                 "category" => $question['category'],
                                 "question_type" => $question['question_type_new'],
-                                "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : ''
+                                "question_title" => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+                                "user_compare_text" => $user_compare_text
                                     ), $options, $quiz_data);
                         }
                         break;

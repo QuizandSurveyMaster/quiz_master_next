@@ -622,7 +622,8 @@ function qmn_multiple_response_review($id, $question, $answers)
     'points' => 0,
     'correct' => 'incorrect',
     'user_text' => '',
-    'correct_text' => ''
+    'correct_text' => '',
+    'user_compare_text' => ''
   );
   $user_correct = 0;
   $total_correct = 0;
@@ -635,6 +636,7 @@ function qmn_multiple_response_review($id, $question, $answers)
         {
           $return_array["points"] += $answer[1];
           $return_array["user_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) .".";
+          $return_array["user_compare_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."=====";
           if ($answer[2] == 1)
           {
             $user_correct += 1;
