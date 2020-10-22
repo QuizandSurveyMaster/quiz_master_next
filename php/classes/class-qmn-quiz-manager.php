@@ -669,16 +669,24 @@ class QMNQuizManager {
         $animation_effect = isset($options->quiz_animation) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
         $enable_pagination_quiz = isset($options->enable_pagination_quiz) && $options->enable_pagination_quiz == 1 ? true : false;
 		$qmn_json_data['first_page'] = true;
+		$qmn_json_data['last_page'] = false;
 		if (isset($page_arg['page']) && !empty($page_arg['page'])) {
 			$qmn_json_data['first_page'] = false;
-			$pi = 1;
+			$current_page_num = $pi = 1;
 			foreach ($pages as $key => $page) {
 				$qpage = (isset($qpages[$key]) ? $qpages[$key] : array());
 				$page_key = (isset($qpage['pagekey']) ? $qpage['pagekey'] : $key);
-				if ($page_arg['page'] == $page_key && $pi == 1) {
-					$qmn_json_data['first_page'] = true;
+				if ($page_arg['page'] == $page_key) {
+					if ($pi == 1) {
+						$qmn_json_data['first_page'] = true;
+					}
+					$current_page_num = $pi;
 				}
+				
 				$pi++;
+			}
+			if (count($pages) == $current_page_num) {
+				$qmn_json_data['last_page'] = true;
 			}
 		}
 		
@@ -1111,7 +1119,8 @@ class QMNQuizManager {
             'quiz_name' => $options->quiz_name,
             'quiz_system' => $options->system,
             'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field($_POST['main_payment_id']) : '',
-            'save_page' => ((isset($_POST['save_page']) && $_POST['save_page'] == '1') ? true : false)
+            'save_page' => ((isset($_POST['save_page']) && $_POST['save_page'] == '1') ? true : false),
+            'last_page' => ((isset($_POST['last_page']) && $_POST['last_page'] == '1') ? true : false)
         );
         $post_data = array(
             'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
@@ -1231,27 +1240,34 @@ class QMNQuizManager {
 
             $unique_id = md5(date("Y-m-d H:i:s"));
 			$results_id = 0;
-            // If the store responses in database option is set to Yes.
-            if (0 != $qmn_quiz_options->store_responses) {
-				$starttime = date('Y-m-d H:i:s', (strtotime($qmn_array_for_variables['time_taken']) - intval($qmn_array_for_variables['timer'])));
-				if ($qmn_array_for_variables['save_page']) {
-					if (isset($_SESSION['qsm_quiz_time_' . $quiz_id]) && $_SESSION['qsm_quiz_time_' . $quiz_id] > 0) {
-						$starttime = $_SESSION['qsm_quiz_time_' . $quiz_id];
-					}
-					if (isset($_SESSION['qsm_quiz_result_' . $quiz_id]) && $_SESSION['qsm_quiz_result_' . $quiz_id] > 0) {
-						$results_id = $_SESSION['qsm_quiz_result_' . $quiz_id];
-						$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `result_id`='{$results_id}'");
-						if (!empty($savedResult)) {
-							$isUpdate = true;
-							/*$quiz_results = maybe_unserialize($savedResult->quiz_results);
-							echo "<pre>";
-							print_r($quiz_results);
-							print_r($qmn_array_for_variables);
-							exit;*/
-						}
+			$send_mail = true;
+			$starttime = date('Y-m-d H:i:s', (strtotime($qmn_array_for_variables['time_taken']) - intval($qmn_array_for_variables['timer'])));
+			if ($qmn_array_for_variables['save_page']) {
+				if (isset($_SESSION['qsm_quiz_time_' . $quiz_id]) && $_SESSION['qsm_quiz_time_' . $quiz_id] > 0) {
+					$starttime = $_SESSION['qsm_quiz_time_' . $quiz_id];
+				}
+				if (isset($_SESSION['qsm_quiz_result_' . $quiz_id]) && $_SESSION['qsm_quiz_result_' . $quiz_id] > 0) {
+					$results_id = $_SESSION['qsm_quiz_result_' . $quiz_id];
+					$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `result_id`='{$results_id}'");
+					if (!empty($savedResult)) {
+						$isUpdate = true;
+						/*$quiz_results = maybe_unserialize($savedResult->quiz_results);
+						echo "<pre>";
+						print_r($quiz_results);
+						print_r($qmn_array_for_variables);
+						exit;*/
 					}
 				}
-
+				$send_mail = false;
+				if ($qmn_array_for_variables['last_page']) {
+					$send_mail = true;
+					unset($_SESSION['qsm_autosave_id']);
+					unset($_SESSION['qsm_quiz_result_' . $quiz_id]);
+					unset($_SESSION['qsm_quiz_time_' . $quiz_id]);
+				}
+			}
+            // If the store responses in database option is set to Yes.
+            if (0 != $qmn_quiz_options->store_responses) {
                 // Creates our results array.
                 $results_array = array(
                     intval($qmn_array_for_variables['timer']),
@@ -1347,17 +1363,20 @@ class QMNQuizManager {
             $qmn_array_for_variables = apply_filters( 'qmn_filter_email_content', $qmn_array_for_variables, $results_id);
             
             $qmn_global_settings = (array) get_option('qmn-settings');
-            $background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
-            if( $background_quiz_email_process == 1 ){
-                // Send the emails in background.
-                $qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
-                $qmn_array_for_variables['email_processed'] = 'yes';
-                $this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
-            }else{
-                // Sends the emails.
-                $qmn_array_for_variables['email_processed'] = 'yes';
-                QSM_Emails::send_emails($qmn_array_for_variables);
-            }
+			
+			if ($send_mail) {
+				$background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
+				if( $background_quiz_email_process == 1 ){
+					// Send the emails in background.
+					$qmn_array_for_variables['quiz_settings'] = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+					$qmn_array_for_variables['email_processed'] = 'yes';
+					$this->qsm_background_email->data( array( 'name' => 'send_emails', 'variables' => $qmn_array_for_variables ) )->dispatch();
+				}else{
+					// Sends the emails.
+					$qmn_array_for_variables['email_processed'] = 'yes';
+					QSM_Emails::send_emails($qmn_array_for_variables);
+				}
+			}
 
             /**
              * Filters for filtering the results text after emails are sent.

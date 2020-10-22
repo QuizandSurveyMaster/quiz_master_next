@@ -29,8 +29,8 @@ var QSMPageTimer;
 					if ( quiz.hasOwnProperty( 'timer_limit' ) && 0 != quiz.timer_limit ) {
 						QSM.initTimer( quizID );
 					}
-					if ('' != quiz.page_arg.page && false === quiz.first_page) {
-						QSM.loadQuizSavedData(quizID);
+					if ('' != quiz.page_arg.page) {
+						QSM.loadQuizSavedData(quiz.quiz_id);
 					}
 				});
 			}
@@ -480,6 +480,11 @@ var QSMPageTimer;
 								} else {
 									element.val(elment_value);
 								}
+								if ('No Answer Provided' == elment_value) {
+									//Do Nothing.
+								} else {
+									$container.find('[name="' + element_id + '"]').attr('disabled', true);
+								}
 							}
 						});
 					}
@@ -887,6 +892,8 @@ function qmnFormSubmitPage( quiz_form_id ) {
 	var quiz_id = jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' .quiz_section:visible *', quiz_form_id );
+	
+	$container.find('[disabled]').attr('disabled', false);
 	/**
 	 * Update Timer in MS
 	 */
@@ -910,6 +917,8 @@ function qmnFormSubmitPage( quiz_form_id ) {
 	});
 	fd.append("action", 'qmn_process_quiz');
 	fd.append("save_page", 1);
+	var is_last_page = (true == qmn_quiz_data[quiz_id].last_page) ? '1' : '0';
+	fd.append("last_page", is_last_page);
 
 	qsmEndTimeTakenTimer();
 	if (qmn_quiz_data[quiz_id].hasOwnProperty('advanced_timer')) {
