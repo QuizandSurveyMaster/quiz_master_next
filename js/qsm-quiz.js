@@ -947,7 +947,7 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
         if(page_number > 0 && jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').length > 0){
             var actual_pages = total_pages - 2;
             if( page_number <= actual_pages ){
-                jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').text('').text( page_number + ' out of ' + actual_pages);
+                jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').text('').text( page_number + qmn_ajax_object.out_of_text + actual_pages);
                 jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').show();
             }else{
                 jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').hide();
@@ -989,7 +989,7 @@ function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
         if(page_number > 0 && jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').length > 0){
             var actual_pages = total_pages - 2;            
             if( slide_original_val <= actual_pages ){                
-                jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').text('').text( slide_original_val + ' out of ' + actual_pages);
+                jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').text('').text( slide_original_val + qmn_ajax_object.out_of_text + actual_pages);
                 if(slide_original_val == 0){
                     jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').hide();
                 }else{
