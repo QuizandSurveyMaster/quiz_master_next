@@ -1222,7 +1222,7 @@ function qmn_polar_display($id, $question, $answers) {
         $font_weight_lc = 'left-polar-title';
         $font_weight_rc = 'right-polar-title';
     }
-    $total_answer = count($answers);    
+    $total_answer = count($answers);     
     ?>
         <script type="text/javascript">
             (function($) {
@@ -1237,7 +1237,7 @@ function qmn_polar_display($id, $question, $answers) {
                                 max: <?php echo $answers[1][1]; ?>,
                         <?php } ?>
                             step: 1,
-                            value: <?php echo ceil($check_point/2); ?>,
+                            value: <?php echo $check_point/2; ?>,
                             change: function( event, ui ) {
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(ui.value);
                                 if(ui.value == <?php echo $answers[0][1]; ?>){
@@ -1260,7 +1260,7 @@ function qmn_polar_display($id, $question, $answers) {
                             create: function( event, ui ) {
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','400');
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','400');
-                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(<?php echo ceil($check_point/2); ?>);
+                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(<?php echo $check_point/2; ?>);
                             }    
                     });
                     var maxHeight = Math.max.apply(null, $(".question-section-id-<?php echo $id; ?> .question-type-polar-s > div").map(function (){
