@@ -44,6 +44,7 @@ class QMNQuizManager {
         add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
         add_shortcode('qsm', array($this, 'display_shortcode'));
         add_shortcode('qsm_result', array($this, 'shortcode_display_result'));
+        add_shortcode('tour_leaderboard', array($this, 'shortcode_tour_leaderboard'));
         add_action('wp_ajax_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_nopriv_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_qsm_get_quiz_to_reload', array($this, 'qsm_get_quiz_to_reload'));
@@ -1241,7 +1242,8 @@ class QMNQuizManager {
             $unique_id = md5(date("Y-m-d H:i:s"));
 			$results_id = 0;
 			$send_mail = true;
-			$starttime = date('Y-m-d H:i:s', (strtotime($qmn_array_for_variables['time_taken']) - intval($qmn_array_for_variables['timer'])));
+			$endtime = date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken']));
+			$starttime = date('Y-m-d H:i:s', (strtotime($endtime) - intval($qmn_array_for_variables['timer'])));
 			if ($qmn_array_for_variables['save_page']) {
 				if (isset($_SESSION['qsm_quiz_time_' . $quiz_id]) && $_SESSION['qsm_quiz_time_' . $quiz_id] > 0) {
 					$starttime = $_SESSION['qsm_quiz_time_' . $quiz_id];
@@ -1260,6 +1262,7 @@ class QMNQuizManager {
 				}
 				$send_mail = false;
 				if ($qmn_array_for_variables['last_page']) {
+					$endtime = date('Y-m-d H:i:s', strtotime(current_time('h:i:s A m/d/Y')));
 					$send_mail = true;
 					unset($_SESSION['qsm_autosave_id']);
 					unset($_SESSION['qsm_quiz_result_' . $quiz_id]);
@@ -1276,7 +1279,8 @@ class QMNQuizManager {
                     'contact' => $contact_responses,
                     'timer_ms' => intval($qmn_array_for_variables['timer_ms']),
 					'pagetime' => $mlw_qmn_pagetime,
-					'starttime' => $starttime
+					'starttime' => $starttime,
+					'endtime' => $endtime
                 );
                 $results_array = apply_filters('qsm_results_array', $results_array, $qmn_array_for_variables);
                 if(isset($results_array['parameters'])) {
@@ -2155,6 +2159,108 @@ class QMNQuizManager {
 		}
 		echo 'No data';
 		exit;
+	}
+	
+	public function shortcode_tour_leaderboard($atts) {
+		extract(shortcode_atts(array(
+			'quiz' => 1,
+			'ranks' => 0,
+			'name' => 'none',
+			), $atts));
+		$quiz_id = $quiz;
+		global $wpdb;
+		$mlw_order_sql = " ORDER BY time_taken_real DESC";
+		$mlw_limit_sql =  ($ranks != 0) ? " LIMIT {$ranks}" : "";
+		if ($quiz_id == 0) {
+			$mlw_result_data = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE `deleted`='0' {$mlw_order_sql} {$mlw_limit_sql}");
+		} else {
+			$mlw_quiz_options = $wpdb->get_row("SELECT * FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id`='{$quiz_id}' AND `deleted`='0'");
+			$serialize_options = isset($mlw_quiz_options->quiz_settings) ? unserialize($mlw_quiz_options->quiz_settings) : [];
+			$quiz_options = isset($serialize_options['quiz_options']) ? unserialize($serialize_options['quiz_options']) : [];
+			$mlw_result_data = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "mlw_results WHERE `quiz_id`='{$quiz_id}' AND `deleted`='0' {$mlw_order_sql} {$mlw_limit_sql}");
+			if ($name == 'none') {
+				$name = $mlw_quiz_options->quiz_name;
+			}
+		}
+		$mlw_quiz_leaderboard_display = '';
+		if ($name != 'none') {
+			$mlw_quiz_leaderboard_display .= "<h2>" . $name . "</h2>";
+		}
+		$mlw_quiz_leaderboard_display .= $this->qsm_display_leaderboard_table($mlw_result_data);
+		return $mlw_quiz_leaderboard_display;
+	}
+	
+	function qsm_display_leaderboard_table($data = array()) {
+		if (empty($data)) {
+			return '';
+		}
+		$table_html = '';
+		$variables = array(
+			'date' => __('Date', 'quiz-master-next'),
+			'user_name' => __('Team Name', 'quiz-master-next'),
+			'point_score' => __('Score', 'quiz-master-next'),
+			'time_taken' => __('Time', 'quiz-master-next'),
+		);
+		
+		array_multisort(array_column($data, 'time_taken_real'), SORT_DESC, $data);
+		if (!empty($variables)) {
+			$qsml_table_head = $qsml_table_body = "";
+			$i = 0;
+			foreach ($data as $mlw_eaches) {
+				$quiz_results = maybe_unserialize($mlw_eaches->quiz_results);
+				$qsml_table_body .= "<tr>";
+				foreach ($variables as $key => $variables_title) {
+					if ($i == 0) {
+						$qsml_table_head .= "<th>{$variables_title}</th>";
+					}
+					$value = '';
+					switch ($key) {
+						case 'date':
+							$value = date('d/m/Y', strtotime($mlw_eaches->time_taken_real));
+							if (strtotime($value) == strtotime(date('d/m/Y'))) {
+								$value = __('Today', 'quiz-master-next');
+							}
+							break;
+						case 'user_name':
+							$value = $mlw_eaches->name;
+							break;
+						case 'time_taken':
+							$hrs = $mins = $secs = "";
+							$time_taken = 0;
+							if (is_array($quiz_results)) {
+								$time_taken = (strtotime($quiz_results['endtime']) - strtotime($quiz_results['starttime']));
+							}
+							$mlw_complete_hours = floor($time_taken / 3600);
+							if ($mlw_complete_hours > 0) {
+								$hrs = "{$mlw_complete_hours} hr";
+							}
+							$mlw_complete_minutes = floor(($time_taken % 3600) / 60);
+							if ($mlw_complete_minutes > 0) {
+								$mins = "{$mlw_complete_minutes} min";
+							}
+							$mlw_complete_seconds = $time_taken % 60;
+							$secs = "{$mlw_complete_seconds} sec";
+
+							$value = "{$hrs} {$mins} {$secs}";
+							break;
+						default:
+							if (isset($mlw_eaches->$key)) {
+								$value = $mlw_eaches->$key;
+							}
+							break;
+					}
+					$qsml_table_body .= "<td>{$value}</td>";
+				}
+				$qsml_table_body .= "</tr>";
+				$i++;
+			}
+			$table_html .= "<table class='quiz_leaderboard_wrapper'>";
+			$table_html .= "<tr>{$qsml_table_head}</tr>";
+			$table_html .= $qsml_table_body;
+			$table_html .= "</table>";
+		}
+		$table_html = "<div class='tour_leaderboard'>{$table_html}</div>";
+		return $table_html;
 	}
 
 }
