@@ -166,6 +166,7 @@ class QSM_Emails {
 		$content = str_replace( "\n", '<br>', $content );
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
+		$content = html_entity_decode( $content );
 
 		// Prepares our from name and email.
 		$settings   = (array) get_option( 'qmn-settings' );
