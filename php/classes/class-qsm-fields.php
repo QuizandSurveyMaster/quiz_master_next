@@ -79,12 +79,28 @@ class QSM_Fields {
     <form action="" method="post">
       <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
       <button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
-      <table class="form-table" style="width: 100%;">
+      <table class="form-table" style="width: 100%;">          
         <?php
-
+        $array_before_legacy = array();
+        foreach ( $fields as $key => $field ) {
+            if( isset( $field['legacy_option'] ) && $field['legacy_option'] == 0 ){                
+                $array_before_legacy[] = $field;
+                unset( $fields[ $key ] );
+            }
+        }        
+        $key = array_search('legacy_options', array_column($fields, 'id'));        
+        if( isset( $fields[ $key ] ) && !empty( $array_before_legacy ) ){
+            $i = 1;
+            $array_before_legacy = array_reverse($array_before_legacy);
+            foreach ( $array_before_legacy as $bl_value ){                
+                $fields = array_slice($fields, 0, $key, true) +
+                    array( 'lo_' . $i => $bl_value ) +
+                    array_slice($fields, $key, count($fields) - $key, true);
+                $i++;
+            }
+        }
         // Cycles through each field
-        foreach ( $fields as  $field ) {
-
+        foreach ( $fields as  $field ) {            
           // Generate the field
           QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
         }

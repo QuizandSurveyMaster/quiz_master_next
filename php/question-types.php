@@ -124,7 +124,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
         }else{
             $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".str_replace(" ","-",esc_attr($answer[0]))."'>";
         }	
-        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlentities(esc_attr($answer[0])) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
+        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
 	$question_display .= "</div>";
       }
     }
@@ -457,7 +457,8 @@ function qmn_drop_down_review($id, $question, $answers)
   }
   foreach($answers as $answer)
   {
-    if ( $mlw_user_answer == esc_attr( $answer[0] ) )
+    $answers_loop = trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) );
+    if ( $mlw_user_answer == $answers_loop )
     {
       $return_array["points"] = $answer[1];
       $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
@@ -622,7 +623,8 @@ function qmn_multiple_response_review($id, $question, $answers)
     'points' => 0,
     'correct' => 'incorrect',
     'user_text' => '',
-    'correct_text' => ''
+    'correct_text' => '',
+    'user_compare_text' => ''
   );
   $user_correct = 0;
   $total_correct = 0;
@@ -635,6 +637,7 @@ function qmn_multiple_response_review($id, $question, $answers)
         {
           $return_array["points"] += $answer[1];
           $return_array["user_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) .".";
+          $return_array["user_compare_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."=====";
           if ($answer[2] == 1)
           {
             $user_correct += 1;
@@ -1031,7 +1034,8 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
     'points' => 0,
     'correct' => 'incorrect',
     'user_text' => '',
-    'correct_text' => ''
+    'correct_text' => '',
+    'user_compare_text' => ''
   );
   $user_correct = 0;
   $total_correct = 0;
@@ -1044,6 +1048,7 @@ function qmn_horizontal_multiple_response_review($id, $question, $answers)
         {
           $return_array["points"] += $answer[1];
           $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
+          $return_array["user_compare_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."=====";
           if ($answer[2] == 1)
           {
             $user_correct += 1;
@@ -1217,7 +1222,7 @@ function qmn_polar_display($id, $question, $answers) {
         $font_weight_lc = 'left-polar-title';
         $font_weight_rc = 'right-polar-title';
     }
-    $total_answer = count($answers);    
+    $total_answer = count($answers);     
     ?>
         <script type="text/javascript">
             (function($) {
@@ -1232,7 +1237,7 @@ function qmn_polar_display($id, $question, $answers) {
                                 max: <?php echo $answers[1][1]; ?>,
                         <?php } ?>
                             step: 1,
-                            value: <?php echo ceil($check_point/2); ?>,
+                            value: <?php echo $check_point/2; ?>,
                             change: function( event, ui ) {
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(ui.value);
                                 if(ui.value == <?php echo $answers[0][1]; ?>){
@@ -1255,7 +1260,7 @@ function qmn_polar_display($id, $question, $answers) {
                             create: function( event, ui ) {
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.left-polar-title').css('font-weight','400');
                                 $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.right-polar-title').css('font-weight','400');
-                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(<?php echo ceil($check_point/2); ?>);
+                                $('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find('.qmn_polar').val(<?php echo $check_point/2; ?>);
                             }    
                     });
                     var maxHeight = Math.max.apply(null, $(".question-section-id-<?php echo $id; ?> .question-type-polar-s > div").map(function (){
