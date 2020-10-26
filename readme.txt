@@ -135,6 +135,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 7.1.5 (October 26, 2020) =
+* Bug: Fixed  logic addon rules not being copied while duplicating quiz.
+* Bug: Fixed vietnamese accents and special characters not being recognized in quiz result page.
+* Bug: Fixed apostrophe and double quotes not working with Dropdown question type.
+* Bug: Fixed apostrophe being marked as incorrect for %USER_ANSWERS_DEFAULT% template variable.
+* Bug: Fixed question's answers being case sensitive while using %USER_ANSWERS_DEFAULT% template variable.
+* Bug: Fixed HTML codes appearing in email  while using rich answer type.
+* Bug: Fixed Polar question type scoring being rounded off to integers incorrectly.
+* Bug: Fixed timer not appearing while using retaking a quiz on result page.
+
 = 7.1.4 (October 06, 2020) =
 * Bug: Fixed point score issues when answer type is Rich Answer with HTML tags.
 * Enhancement: Added JS hook for quiz to enhance JS event.
