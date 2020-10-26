@@ -1168,16 +1168,10 @@ jQuery(function() {
                 },
                 success: function (response) {
                     parent_div.replaceWith(response);
-                    
-                    if( qmn_quiz_data[ quiz_id ].timer_limit_val > 0 ){
-                        // Restart the timer for retake quiz.
-                        setInterval( qmnTimeTakenTimer, 1000 );
-
-                        // Reset the timer clock on retake quiz.
-                        QSM.initTimer( quiz_id );
-                    }
-
-                    QSM.initPagination( quiz_id );
+                    //Reload the timer and pagination
+                    QSM.init();                    
+                    qmnInit();                    
+                    QSM.initTimer( quiz_id );
                 },
                 error: function (errorThrown) {
                     console.log( 'error' );                    
