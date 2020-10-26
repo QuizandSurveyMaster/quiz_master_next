@@ -142,7 +142,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed apostrophe being marked as incorrect for %USER_ANSWERS_DEFAULT% template variable.
 * Bug: Fixed question's answers being case sensitive while using %USER_ANSWERS_DEFAULT% template variable.
 * Bug: Fixed HTML codes appearing in email  while using rich answer type.
-* Bug: Fixed recently added options going under show legacy option issue.
 * Bug: Fixed Polar question type scoring being rounded off to integers incorrectly.
 * Bug: Fixed timer not appearing while using retaking a quiz on result page.
 
