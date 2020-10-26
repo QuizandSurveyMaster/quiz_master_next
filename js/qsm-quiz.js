@@ -1171,7 +1171,12 @@ jQuery(function() {
                     //Reload the timer and pagination
                     QSM.init();                    
                     qmnInit();                    
-                    QSM.initTimer( quiz_id );
+                    QSM.initTimer( quiz_id );                    
+                    jQuery("input[name='timer_ms']").each(function(){
+                        var timems = qsmTimeInMS();
+                        jQuery(this).val(timems);
+                    });
+                    setInterval( qmnTimeTakenTimer, 1000 );
                 },
                 error: function (errorThrown) {
                     console.log( 'error' );                    
