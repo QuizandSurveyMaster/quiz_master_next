@@ -137,7 +137,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 7.1.6 (October 29, 2020) =
 * Bug: Fixed PHP error issue while using Limit number of Questions option.
-* Bug: Fixed average point and average category point calculation issue while using file upload question type.
+* Bug: Fixed inclusion  of  file upload question type in calculation of  average point and average category point.
 
 = 7.1.5 (October 26, 2020) =
 * Bug: Fixed  logic addon rules not being copied while duplicating quiz.
