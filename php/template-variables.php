@@ -279,11 +279,17 @@ function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 	$content = str_replace( "%POINT_SCORE%" , $mlw_quiz_array["total_points"], $content);
 	return $content;
 }
-function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
-{
-	if ($mlw_quiz_array["total_questions"] != 0)
-	{
-		$mlw_average_points = round($mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"], 2);
+function mlw_qmn_variable_average_point($content, $mlw_quiz_array){
+        $question_total = 0;        
+        if( isset( $mlw_quiz_array['question_answers_array'] )  ){
+            foreach( $mlw_quiz_array['question_answers_array'] as $single_question ){
+                if( $single_question['question_type'] !== '11' ){                    
+                    $question_total++;
+                }                   
+            }
+        }
+	if ($mlw_quiz_array["total_questions"] != 0 && $question_total != 0){
+		$mlw_average_points = round($mlw_quiz_array["total_points"]/$question_total, 2);
 	}
 	else
 	{
@@ -552,7 +558,9 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
                 }
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["category"] == $category_name ) {
-				$total_questions += 1;
+                                if( $answer['question_type'] !== '11' ){   
+                                    $total_questions += 1;
+                                }
 				$return_points += $answer["points"];
 			}
 		}
