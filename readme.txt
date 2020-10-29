@@ -136,7 +136,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.1.6 (October 29, 2020) =
-* Bug: Fixed PHP error issue while using Limiting number of Questions.
+* Bug: Fixed division by zero error while limiting number of questions.
 * Bug: Fixed inclusion  of  file upload question type in calculation of  average point and average category point.
 
 = 7.1.5 (October 26, 2020) =
