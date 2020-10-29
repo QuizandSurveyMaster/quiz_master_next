@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.1
 Requires PHP: 5.4
-Stable tag: 7.1.5
+Stable tag: 7.1.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.6 (October 29, 2020) =
+* Bug: Fixed PHP error issue while using Limit number of Questions option.
+* Bug: Fixed average point and average category point calculation issue while using file upload question type.
 
 = 7.1.5 (October 26, 2020) =
 * Bug: Fixed  logic addon rules not being copied while duplicating quiz.
