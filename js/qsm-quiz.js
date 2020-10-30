@@ -480,7 +480,7 @@ var QSMPageTimer;
 								} else {
 									element.val(elment_value);
 								}
-								if ('No Answer Provided' == elment_value) {
+								if ('No Answer Provided' == elment_value || '' == elment_value) {
 									//Do Nothing.
 								} else {
 									$container.find('[name="' + element_id + '"]').attr('disabled', true);
@@ -916,6 +916,7 @@ function qmnFormSubmitPage( quiz_form_id ) {
 		fd.append(input.name,input.value);
 	});
 	fd.append("action", 'qmn_process_quiz');
+	fd.append("page_name", qmn_quiz_data[quiz_id].page_arg.page);
 	fd.append("save_page", 1);
 	var is_last_page = (true == qmn_quiz_data[quiz_id].last_page) ? '1' : '0';
 	fd.append("last_page", is_last_page);
@@ -1272,7 +1273,15 @@ function qmnSocialShare( network, mlw_qmn_social_text, mlw_qmn_title, facebook_i
 }
 
 jQuery(function() {
-	jQuery( '.qmn_quiz_container' ).tooltip();
+	
+	setInterval(function () {
+		jQuery( '.qmn_quiz_container' ).tooltip( {
+			position: {
+				my: "center bottom", // the "anchor point" in the tooltip element
+				at: "center top", // the position of that anchor point relative to selected element
+			}
+		});
+    },3000);
 
 	jQuery( '.qmn_quiz_container input' ).on( 'keypress', function ( e ) {
 		if ( e.which === 13 ) {
