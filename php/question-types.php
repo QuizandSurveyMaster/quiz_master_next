@@ -179,9 +179,12 @@ function qmn_multiple_choice_review($id, $question, $answers)
         $mlw_user_answer = '';
         if ( isset( $_POST["question".$id] ) ) {
             $mlw_user_answer = $_POST["question".$id];
-            $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
-        }        
-        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
+            $mlw_user_answer = trim( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
+            $mlw_user_answer = str_replace('\\', "", $mlw_user_answer);
+        }
+        $single_answer = trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
+        $single_answer = str_replace('\\', "", $single_answer);
+        if ( $mlw_user_answer == $single_answer ){
             $return_array["points"] = $answer[1];
             $return_array["user_text"] = $answer[0];
             if ($answer[2] == 1){
@@ -191,7 +194,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
           if ($answer[2] == 1){
             $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
           }
-    }    
+    }
   }  
   return $return_array;
 }
