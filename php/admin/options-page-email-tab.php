@@ -111,6 +111,7 @@ function qsm_options_emails_tab_content() {
 				<?php do_action( 'qsm_email_condition_operator' ); ?>
 			</select>
 			<input type="text" class="email-condition-value" value="{{ data.value }}">
+			<?php do_action('qsm_email_condition_value'); ?>
 		</div>
 	</script>
         
