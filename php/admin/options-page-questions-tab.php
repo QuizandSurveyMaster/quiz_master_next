@@ -32,6 +32,7 @@ function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
+	$question_quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0", 'ARRAY_A' );
 	$quiz_id = intval( $_GET['quiz_id'] );
 	$user_id = get_current_user_id();  
 	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
@@ -62,7 +63,8 @@ function qsm_options_questions_tab_content() {
 		'qpages' => $qpages,
 		'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
 		'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
-		'categories' => $question_categories,
+        'categories' => $question_categories,
+        'quizzes' => $question_quizzes,
 		'form_type' => $form_type,
 		'quiz_system' => $quiz_system,
                 'hide_desc_text' => __('Less Description', 'quiz-master-next'),
@@ -527,7 +529,7 @@ function qsm_options_questions_tab_content() {
 
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
-		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}" data-quiz-name="{{data.quiz_id}}">
                         <div class="question-bank-selection">
                             <input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
                         </div>

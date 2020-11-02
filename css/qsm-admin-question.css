@@ -510,7 +510,7 @@ a.import-button.button.disable_import::before {
     z-index: 5;
 }
 
-#question-bank-cat{
+#question-bank-cat,#question-bank-quiz{
     float: right;
     margin-bottom: 20px;
     margin-right: 10px;

@@ -87,7 +87,7 @@ var import_button;
 					xhr.setRequestHeader( 'X-WP-Nonce', qsmQuestionSettings.nonce );
 				},
 				data: {
-					'quizID' : 0,
+					'quizID' : $('#question-bank-quiz').val(),
                                         'page' : $('#question_back_page_number').length > 0 ? parseInt( $('#question_back_page_number').val() ) + 1 : 1,
                                         'category' : $('#question-bank-cat').val()
 				},
@@ -114,7 +114,7 @@ var import_button;
                         if(pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0){
                             var category_arr = qsmQuestionSettings.categories;                            
                             $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
-                            $cat_html += '<option value="">All Questions</option>';
+                            $cat_html += '<option value="">All Categories</option>';
                             $.each(category_arr, function(index, value){
                                 if(value.category !== '')
                                     $cat_html += '<option value="'+ value.category +'">'+ value.category +' Questions</option>';
@@ -122,6 +122,18 @@ var import_button;
                             $cat_html += '</select>';
                             $( '#question-bank' ).prepend($cat_html);
                             $('#question-bank-cat').val(pagination.category);
+                        }
+                        if(pagination.current_page == 1 && qsmQuestionSettings.quizzes.length > 0){
+                            var quiz_arr = qsmQuestionSettings.quizzes;                            
+                            $quiz_html = '<select name="question-bank-quiz" id="question-bank-quiz">';
+                            $quiz_html += '<option value="">All Quizzes</option>';
+                            $.each(quiz_arr, function(index, value){
+                                if(value.quiz_name !== '')
+                                    $quiz_html += '<option value="'+ value.quiz_id +'">'+ value.quiz_name +' Questions</option>';
+                            });
+                            $quiz_html += '</select>';
+                            $( '#question-bank' ).prepend($quiz_html);
+                            $('#question-bank-quiz').val(pagination.quiz);
                         }
                         if(pagination.current_page == 1){                            
                             $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
@@ -135,7 +147,7 @@ var import_button;
                         if( question.question_title !== "undefined" && question.question_title !== "" ){
                             questionText = question.question_title;
                         }    
-			$( '#question-bank' ).append( template( { id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name  } ) );
+			$( '#question-bank' ).append( template( { id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name, quiz_id: question.quizID  } ) );
 		},
 		addQuestionFromQuestionBank: function( questionID ) {
 			//MicroModal.close( 'modal-2' );
@@ -693,6 +705,12 @@ var import_button;
                 
                 //Show category related question
                 $( document ).on( 'change', '#question-bank-cat', function( event ) {
+			event.preventDefault();
+			QSMQuestion.loadQuestionBank('change');
+		});
+                
+                //Show quiz related question
+                $( document ).on( 'change', '#question-bank-quiz', function( event ) {
 			event.preventDefault();
 			QSMQuestion.loadQuestionBank('change');
 		});
