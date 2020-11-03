@@ -210,12 +210,14 @@ function mlw_qmn_get_string_between($string, $start, $end){
 }
 
 function qsm_find_key_from_array($search_value,$array){
-    if($array){
-        foreach ($array as $key => $value) {
-            if($value[0] == $search_value){
+    if($array){                
+        $search_value = htmlspecialchars_decode( $search_value, ENT_QUOTES );
+        foreach ($array as $key => $value) {            
+            $value_val = $value[0];
+            if( $value_val == $search_value ){
                 return true;
             }
-        }
+        }        
     }
     return false;
 }
