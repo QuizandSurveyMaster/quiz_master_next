@@ -128,7 +128,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
 	$question_display .= "</div>";
       }
     }
-    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
+    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
   }
   $question_display .= "</div>";
   return apply_filters('qmn_multiple_choice_display_front',$question_display,$id, $question, $answers);
@@ -313,7 +313,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
         $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /><label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label></span>";
       }
     }
-    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
+    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
   }
   $question_display .= "</div>";
   
@@ -416,7 +416,7 @@ function qmn_drop_down_display($id, $question, $answers)
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
     $question_display .= qsm_question_title_func($question, '', $new_question_title);
     $question_display .= "<select class='qsm_select $require_class' name='question".$id."'>";
-    $question_display .= "<option value='No Answer Provided'>" . __('Please select your answer','quiz-master-next') . "</option>";
+    $question_display .= "<option value=''>" . __('Please select your answer','quiz-master-next') . "</option>";
     if (is_array($answers))
     {
       $mlw_answer_total = 0;
