@@ -729,7 +729,7 @@ function qmnValidation( element, quiz_form_id ) {
 				}                                
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredRadio' ) > -1 ) {
 					check_val = jQuery( this ).find( 'input:checked' ).val();
-					if ( check_val == "No Answer Provided" ) {
+					if ( check_val == "No Answer Provided" || check_val == "" ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
 					}
@@ -743,7 +743,7 @@ function qmnValidation( element, quiz_form_id ) {
 				}
 				if( jQuery( this ).attr( 'class' ).indexOf( 'qsmRequiredSelect' ) > -1 ) {
 					check_val = jQuery( this ).val();
-					if ( check_val == "No Answer Provided" ) {
+					if ( check_val == "No Answer Provided" || check_val == "" ) {
 						qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 						result =  false;
 					}
@@ -1300,6 +1300,7 @@ jQuery(function() {
             e.preventDefault();
             jQuery(this).parents('.quiz_section').find('input[type="radio"]').prop('checked', false);
             jQuery(this).parents('.quiz_section').find('input[type="radio"][value="No Answer Provided"]').prop('checked', true);
+            jQuery(this).parents('.quiz_section').find('input[type="radio"][value=""]').prop('checked', true);
         });
 
         //Submit the form on popup click

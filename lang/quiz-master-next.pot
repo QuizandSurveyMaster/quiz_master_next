@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-22 11:51+0530\n"
+"POT-Creation-Date: 2020-11-06 12:59+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -233,7 +233,7 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: php/gdpr.php:178 php/admin/admin-results-page.php:330
+#: php/gdpr.php:178 php/admin/admin-results-page.php:344
 msgid "IP Address"
 msgstr ""
 
@@ -253,65 +253,65 @@ msgstr ""
 msgid "File Upload"
 msgstr ""
 
-#: php/question-types.php:208
+#: php/question-types.php:211
 msgid "Date"
 msgstr ""
 
-#: php/question-types.php:280
+#: php/question-types.php:283
 msgid "Horizontal Multiple Choice"
 msgstr ""
 
-#: php/question-types.php:390
+#: php/question-types.php:393
 msgid "Drop Down"
 msgstr ""
 
-#: php/question-types.php:416
+#: php/question-types.php:419
 msgid "Please select your answer"
 msgstr ""
 
-#: php/question-types.php:489
+#: php/question-types.php:492
 msgid "Short Answer"
 msgstr ""
 
-#: php/question-types.php:567
+#: php/question-types.php:570
 msgid "Multiple Response"
 msgstr ""
 
-#: php/question-types.php:674
+#: php/question-types.php:677
 msgid "Paragraph"
 msgstr ""
 
-#: php/question-types.php:756
+#: php/question-types.php:759
 msgid "Text/HTML Section"
 msgstr ""
 
-#: php/question-types.php:790
+#: php/question-types.php:793
 msgid "Number"
 msgstr ""
 
-#: php/question-types.php:873
+#: php/question-types.php:876
 msgid "Opt-in"
 msgstr ""
 
-#: php/question-types.php:918
+#: php/question-types.php:921
 msgid "Captcha"
 msgstr ""
 
-#: php/question-types.php:977
+#: php/question-types.php:980
 msgid "Horizontal Multiple Response"
 msgstr ""
 
-#: php/question-types.php:1096
+#: php/question-types.php:1099
 msgid ""
 "For fill in the blank types, use %BLANK% to represent where to put the text "
 "box in your text."
 msgstr ""
 
-#: php/question-types.php:1101
+#: php/question-types.php:1104
 msgid "Fill In The Blank"
 msgstr ""
 
-#: php/question-types.php:1192
+#: php/question-types.php:1195
 msgid "Polar"
 msgstr ""
 
@@ -322,7 +322,7 @@ msgid "User not logged in"
 msgstr ""
 
 #: php/rest-api.php:183 php/admin/admin-dashboard.php:381
-#: php/admin/admin-results-page.php:366
+#: php/admin/admin-results-page.php:386
 msgid "Not Graded"
 msgstr ""
 
@@ -330,8 +330,12 @@ msgstr ""
 msgid "No quiz found"
 msgstr ""
 
-#: php/template-variables.php:879 php/template-variables.php:888
+#: php/template-variables.php:890 php/template-variables.php:899
 msgid "No answer provided"
+msgstr ""
+
+#: php/template-variables.php:997
+msgid "No Answer Provided"
 msgstr ""
 
 #: php/admin/about-page.php:29
@@ -592,7 +596,7 @@ msgstr ""
 
 #: php/admin/admin-results-details-page.php:26
 #: php/admin/admin-results-page.php:21 php/admin/admin-results-page.php:26
-#: php/admin/admin-results-page.php:68
+#: php/admin/admin-results-page.php:69
 msgid "Quiz Results"
 msgstr ""
 
@@ -652,96 +656,96 @@ msgstr ""
 msgid "seconds"
 msgstr ""
 
-#: php/admin/admin-results-page.php:106
+#: php/admin/admin-results-page.php:108
 #: php/classes/class-qmn-quiz-creator.php:305
 msgid "Unknown error"
 msgstr ""
 
-#: php/admin/admin-results-page.php:108
+#: php/admin/admin-results-page.php:110
 #, php-format
 msgid "There was an error when deleting this result. Error from WordPress: %s"
 msgstr ""
 
-#: php/admin/admin-results-page.php:111
+#: php/admin/admin-results-page.php:113
 msgid "Your results has been deleted successfully."
 msgstr ""
 
-#: php/admin/admin-results-page.php:238
+#: php/admin/admin-results-page.php:245
 #, php-format
 msgid "One result"
 msgid_plural "%s results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: php/admin/admin-results-page.php:298 php/admin/admin-results-page.php:308
+#: php/admin/admin-results-page.php:310 php/admin/admin-results-page.php:320
 msgid "Search Results"
 msgstr ""
 
-#: php/admin/admin-results-page.php:300
+#: php/admin/admin-results-page.php:312
 msgid "Order By"
 msgstr ""
 
-#: php/admin/admin-results-page.php:302 php/admin/admin-results-page.php:321
+#: php/admin/admin-results-page.php:314 php/admin/admin-results-page.php:333
 msgid "Quiz Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:303
+#: php/admin/admin-results-page.php:315
 msgid "User Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:304 php/classes/class-qsm-install.php:78
+#: php/admin/admin-results-page.php:316 php/classes/class-qsm-install.php:78
 msgid "Points"
 msgstr ""
 
-#: php/admin/admin-results-page.php:305
+#: php/admin/admin-results-page.php:317
 msgid "Correct Percent"
 msgstr ""
 
-#: php/admin/admin-results-page.php:306
+#: php/admin/admin-results-page.php:318
 msgid "Default (Time)"
 msgstr ""
 
-#: php/admin/admin-results-page.php:322
+#: php/admin/admin-results-page.php:336
 msgid "Score"
 msgstr ""
 
-#: php/admin/admin-results-page.php:323
+#: php/admin/admin-results-page.php:337
 msgid "Time To Complete"
 msgstr ""
 
-#: php/admin/admin-results-page.php:324 php/admin/quiz-options-page.php:176
+#: php/admin/admin-results-page.php:338 php/admin/quiz-options-page.php:176
 msgid "Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:325
+#: php/admin/admin-results-page.php:339
 msgid "Business"
 msgstr ""
 
-#: php/admin/admin-results-page.php:326
+#: php/admin/admin-results-page.php:340
 msgid "Email"
 msgstr ""
 
-#: php/admin/admin-results-page.php:327
+#: php/admin/admin-results-page.php:341
 msgid "Phone"
 msgstr ""
 
-#: php/admin/admin-results-page.php:328 php/admin/tools-page.php:185
+#: php/admin/admin-results-page.php:342 php/admin/tools-page.php:185
 msgid "User"
 msgstr ""
 
-#: php/admin/admin-results-page.php:329
+#: php/admin/admin-results-page.php:343
 msgid "Time Taken"
 msgstr ""
 
-#: php/admin/admin-results-page.php:395
+#: php/admin/admin-results-page.php:417
 msgid "No record found."
 msgstr ""
 
-#: php/admin/admin-results-page.php:404
+#: php/admin/admin-results-page.php:426
 msgid "Are you sure you want to delete these results?"
 msgstr ""
 
-#: php/admin/admin-results-page.php:409
+#: php/admin/admin-results-page.php:432
 msgid "Delete Results"
 msgstr ""
 
@@ -2133,24 +2137,24 @@ msgstr ""
 
 #: php/classes/class-qmn-quiz-manager.php:559
 #: php/classes/class-qmn-quiz-manager.php:783
-#: php/classes/class-qmn-quiz-manager.php:949
+#: php/classes/class-qmn-quiz-manager.php:955
 msgid " out of "
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1253
+#: php/classes/class-qmn-quiz-manager.php:1272
 #: php/classes/class-qsm-install.php:533
 msgid "Retake Quiz"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1420
+#: php/classes/class-qmn-quiz-manager.php:1439
 msgid "Click here to view"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1885
+#: php/classes/class-qmn-quiz-manager.php:1904
 msgid "Not collected"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1895
+#: php/classes/class-qmn-quiz-manager.php:1914
 msgid "Unknown"
 msgstr ""
 
@@ -2184,11 +2188,11 @@ msgstr ""
 msgid "There was an error when updating the settings. Please try again."
 msgstr ""
 
-#: php/classes/class-qsm-fields.php:81 php/classes/class-qsm-fields.php:93
+#: php/classes/class-qsm-fields.php:81 php/classes/class-qsm-fields.php:109
 msgid "Save Changes"
 msgstr ""
 
-#: php/classes/class-qsm-fields.php:209
+#: php/classes/class-qsm-fields.php:225
 msgid "Allowed Variables:"
 msgstr ""
 

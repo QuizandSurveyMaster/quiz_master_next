@@ -992,7 +992,11 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
             $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>', $mlw_question_answer_display);
         }
     } else {
-        $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . htmlspecialchars_decode($answer[1], ENT_QUOTES) . '</span>', $mlw_question_answer_display);
+        $user_answer_new = $answer[1];
+        if( ( $answer['question_type'] == 0 || $answer['question_type'] == 1 || $answer['question_type'] == 2 ) && $answer[1] == '' ){
+            $user_answer_new = __('No Answer Provided', 'quiz-master-next');
+        }
+        $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . htmlspecialchars_decode($user_answer_new, ENT_QUOTES) . '</span>', $mlw_question_answer_display);
     }
     $answer_2 = !empty($answer[2]) ? $answer[2] : 'NA';
     $mlw_question_answer_display = str_replace("%CORRECT_ANSWER%", htmlspecialchars_decode($answer_2, ENT_QUOTES), $mlw_question_answer_display);
