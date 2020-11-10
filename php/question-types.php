@@ -124,11 +124,11 @@ function qmn_multiple_choice_display($id, $question, $answers)
         }else{
             $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".str_replace(" ","-",esc_attr($answer[0]))."'>";
         }	
-        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
+        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
 	$question_display .= "</div>";
       }
     }
-    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
+    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
   }
   $question_display .= "</div>";
   return apply_filters('qmn_multiple_choice_display_front',$question_display,$id, $question, $answers);
@@ -179,9 +179,12 @@ function qmn_multiple_choice_review($id, $question, $answers)
         $mlw_user_answer = '';
         if ( isset( $_POST["question".$id] ) ) {
             $mlw_user_answer = $_POST["question".$id];
-            $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
-        }        
-        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
+            $mlw_user_answer = trim( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
+            $mlw_user_answer = str_replace('\\', "", $mlw_user_answer);
+        }
+        $single_answer = trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
+        $single_answer = str_replace('\\', "", $single_answer);
+        if ( $mlw_user_answer == $single_answer ){
             $return_array["points"] = $answer[1];
             $return_array["user_text"] = $answer[0];
             if ($answer[2] == 1){
@@ -191,7 +194,7 @@ function qmn_multiple_choice_review($id, $question, $answers)
           if ($answer[2] == 1){
             $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
           }
-    }    
+    }
   }  
   return $return_array;
 }
@@ -310,7 +313,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
         $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /><label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label></span>";
       }
     }
-    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='No Answer Provided' />";
+    $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
   }
   $question_display .= "</div>";
   
@@ -413,7 +416,7 @@ function qmn_drop_down_display($id, $question, $answers)
     $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
     $question_display .= qsm_question_title_func($question, '', $new_question_title);
     $question_display .= "<select class='qsm_select $require_class' name='question".$id."'>";
-    $question_display .= "<option value='No Answer Provided'>" . __('Please select your answer','quiz-master-next') . "</option>";
+    $question_display .= "<option value=''>" . __('Please select your answer','quiz-master-next') . "</option>";
     if (is_array($answers))
     {
       $mlw_answer_total = 0;

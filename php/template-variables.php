@@ -210,12 +210,14 @@ function mlw_qmn_get_string_between($string, $start, $end){
 }
 
 function qsm_find_key_from_array($search_value,$array){
-    if($array){
-        foreach ($array as $key => $value) {
-            if($value[0] == $search_value){
+    if($array){                
+        $search_value = htmlspecialchars_decode( $search_value, ENT_QUOTES );
+        foreach ($array as $key => $value) {            
+            $value_val = $value[0];
+            if( $value_val == $search_value ){
                 return true;
             }
-        }
+        }        
     }
     return false;
 }
@@ -810,7 +812,7 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  * @param int $total_question_cnt
  * @return string
  */
-function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt) {    
+function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt) {        
     global $mlwQuizMasterNext;
     if (is_admin() && isset($_GET['page']) && $_GET['page'] == 'qsm_quiz_result_details') {
         $user_answer_class = "";
@@ -847,10 +849,10 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
         if ($disable_description_on_result == 1) {
             $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
         } else {
-            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>' . $add_br . stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ), $mlw_question_answer_display);
+            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>' . $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
         }        
     } else {        
-        $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) . '</b>', $mlw_question_answer_display);
+        $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' .  htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
     }     
     $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);       
     $extra_border_bottom_class = '';
@@ -932,13 +934,14 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                     $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 }
                             }
-                        } else {                                                        
+                        } else {                                                                    
                             foreach ($total_answers as $single_answer) {                                
-                                if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] ) {
+                                $single_answer_option = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);                                
+                                if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer_option ) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else if (isset($single_answer[2]) && $single_answer[2] == 1) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
-                                } else if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] && $single_answer[2] !== 1) {
+                                } else if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer_option && $single_answer[2] !== 1) {
                                     $question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else {
                                     $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
@@ -989,7 +992,11 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
             $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>', $mlw_question_answer_display);
         }
     } else {
-        $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . htmlspecialchars_decode($answer[1], ENT_QUOTES) . '</span>', $mlw_question_answer_display);
+        $user_answer_new = $answer[1];
+        if( ( $answer['question_type'] == 0 || $answer['question_type'] == 1 || $answer['question_type'] == 2 ) && $answer[1] == '' ){
+            $user_answer_new = __('No Answer Provided', 'quiz-master-next');
+        }
+        $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . htmlspecialchars_decode($user_answer_new, ENT_QUOTES) . '</span>', $mlw_question_answer_display);
     }
     $answer_2 = !empty($answer[2]) ? $answer[2] : 'NA';
     $mlw_question_answer_display = str_replace("%CORRECT_ANSWER%", htmlspecialchars_decode($answer_2, ENT_QUOTES), $mlw_question_answer_display);

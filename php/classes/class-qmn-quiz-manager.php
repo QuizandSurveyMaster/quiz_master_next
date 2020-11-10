@@ -1553,7 +1553,7 @@ class QMNQuizManager {
                             if( trim( $user_answer ) != '' ){
                                 if( $user_answer != 'No Answer Provided' ){
                                     $attempted_question++;
-                                }                                
+                                }   
                             }
                             // If a comment was submitted
                             if (isset($_POST["mlwComment" . $question['question_id']])) {
