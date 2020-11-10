@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.5.1
+Tested up to: 5.5.3
 Requires PHP: 5.4
-Stable tag: 7.1.6
+Stable tag: 7.1.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.7 (November 10, 2020) =
+* Bug: Fixed math formula not showing on result page.
+* Bug: Fixed incorrect results while using %POLL_RESULTS_X% template variable.
+* Bug: Fixed advanced timer not showing while questions per page option.
+* Bug: Fixed translation issue with string 'No Answer Provided'.
 
 = 7.1.6 (October 29, 2020) =
 * Bug: Fixed division by zero error while limiting number of questions.
