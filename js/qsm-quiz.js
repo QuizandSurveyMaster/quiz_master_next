@@ -1318,6 +1318,10 @@ jQuery(function() {
 		var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
 		qsmScrollTo($container);
 	});
+        
+	jQuery(document).on('keyup', '.mlwPhoneNumber', function(e){
+            this.value = this.value.replace(/[^- +()0-9\.]/g,'');
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
