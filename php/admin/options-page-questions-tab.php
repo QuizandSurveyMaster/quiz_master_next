@@ -404,7 +404,7 @@ function qsm_options_questions_tab_content() {
                                                                         'type' => 'text',
                                                                         'priority' => '7',                                                    
                                                                         'default' => '',
-                                                                        'show' => '3, 14',
+                                                                        'show' => '3, 14, 7',
                                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Text'
                                                                     ),
                                                                     'limit_multiple_response' => array(
