@@ -185,7 +185,7 @@ var QSMPageTimer;
 				$( ".mlw_qmn_quiz select" ).attr( 'disabled', true );
 				$( ".mlw_qmn_question_comment" ).attr( 'disabled', true );
 				$( ".mlw_answer_open_text" ).attr( 'disabled', true );
-				$( ".mlw_answer_number" ).attr( 'disabled', true );
+				$( ".mlw_answer_number" ).attr( 'readonly', true );
 
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
                                 $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
