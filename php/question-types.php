@@ -310,7 +310,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
-        $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /><label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label></span>";
+        $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' /><label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label></span>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
@@ -352,7 +352,7 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
         $sinel_answer_cmp = preg_replace("/\s+|\n+|\r/", ' ', htmlentities( $answer_option ));
         if ( $rich_text_comapre == $sinel_answer_cmp ){
             $return_array["points"] = $answer[1];
-            $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+            $return_array["user_text"] = $answer[0];
             if ($answer[2] == 1){
               $return_array["correct"] = "correct";
             }
@@ -363,7 +363,7 @@ function qmn_horizontal_multiple_choice_review($id, $question, $answers)
     } else{
         if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
           $return_array["points"] = $answer[1];
-          $return_array["user_text"] = strval(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+          $return_array["user_text"] = $answer[0];
           if ($answer[2] == 1)
           {
             $return_array["correct"] = "correct";
@@ -807,12 +807,14 @@ function qmn_number_display($id, $question, $answers)
 {
   $question_display = '';
   global $mlwQuizMasterNext;
-  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');  
+  $limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_text');  
+  $limit_text_att = $limit_text ? "maxlength='". $limit_text ."' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'" : '';  
   if ($required == 0) {$mlw_requireClass = "mlwRequiredNumber";} else {$mlw_requireClass = "";}
   //$question_title = apply_filters('the_content', $question);
   $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
   $question_display .= qsm_question_title_func($question, '', $new_question_title);
-  $question_display .= "<input type='number' class='mlw_answer_number $mlw_requireClass' name='question".$id."' />";
+  $question_display .= "<input type='number' $limit_text_att class='mlw_answer_number $mlw_requireClass' name='question".$id."' />";
   return apply_filters('qmn_number_display_front',$question_display,$id, $question, $answers);  
 }
 

@@ -185,7 +185,7 @@ var QSMPageTimer;
 				$( ".mlw_qmn_quiz select" ).attr( 'disabled', true );
 				$( ".mlw_qmn_question_comment" ).attr( 'disabled', true );
 				$( ".mlw_answer_open_text" ).attr( 'disabled', true );
-				$( ".mlw_answer_number" ).attr( 'disabled', true );
+				$( ".mlw_answer_number" ).attr( 'readonly', true );
 
 				$quizForm.closest( '.qmn_quiz_container' ).addClass( 'qsm_timer_ended' );
                                 $quizForm.closest( '.qmn_quiz_container' ).prepend('<p style="color: red;">Quiz time is over</p>');
@@ -714,7 +714,10 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
-
+                                if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredDate' ) > -1 && this.value === "" ) {
+					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
+					result =  false;
+				}
 				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
@@ -1318,6 +1321,10 @@ jQuery(function() {
 		var $container = jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container');
 		qsmScrollTo($container);
 	});
+        
+	jQuery(document).on('keyup', '.mlwPhoneNumber', function(e){
+            this.value = this.value.replace(/[^- +()0-9\.]/g,'');
+        });
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );

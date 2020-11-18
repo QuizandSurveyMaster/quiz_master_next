@@ -728,7 +728,8 @@ function qmn_variable_category_average_points($content, $mlw_quiz_array)
 
 add_filter('qmn_end_results', 'qsm_end_results_rank', 9999, 3);
 function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for_variables)
-{
+{   
+    while (strpos($result_display, '%RANK%') !== false){
 	global $wpdb;
 	$mlw_quiz_id = $qmn_array_for_variables['quiz_id'];
 	$mlw_result_id = $wpdb->get_var("SELECT MAX(`result_id`) FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_id}' AND `deleted`='0'");
@@ -760,7 +761,7 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
 		}
 	}
 	$result_display = str_replace("%RANK%", $mlw_rank, $result_display);
-
+    }
 	return $result_display;
 }
 
@@ -936,7 +937,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                             }
                         } else {                                                                    
                             foreach ($total_answers as $single_answer) {                                
-                                $single_answer_option = htmlspecialchars_decode($single_answer[0], ENT_QUOTES);                                
+                                $single_answer_option = $single_answer[0];
                                 if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer_option ) {
                                     $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
                                 } else if (isset($single_answer[2]) && $single_answer[2] == 1) {

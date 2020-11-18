@@ -247,6 +247,14 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     margin-bottom: 0;
     margin-top: 10px;
 }
+.quiz_section.qmn_error .mlw_answer_date{
+    border: 1px solid #da4f49;
+    background: #F2DEDE;
+    padding: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

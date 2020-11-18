@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.3
 Requires PHP: 5.4
-Stable tag: 7.1.7
+Stable tag: 7.1.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.8 (November 18, 2020) =
+* Bug: Fixed required field not working while using Date question type.
+* Bug: Fixed the issue of right answers containing apostrophes marked as incorrect in Multiple Response/ Multiple Choice questions
+* Bug: Fixed incorrect message while using rich answer type while using Show results inline option.
+* Bug: Fixed CSS overlapping issue for quiz_section class while using auto pagination.
+* Bug: Fixed continuous loading of result page while using landing page addon.
+* Bug: Fixed number question type not being recorded while using Force submit after timer expires.
+* Enhancement: Allowed plus, dash, bracket and slash in phone contact field.
+* Enhancement: Added option to limit the characters in Number question type.
 
 = 7.1.7 (November 10, 2020) =
 * Bug: Fixed math formula not showing on result page.
