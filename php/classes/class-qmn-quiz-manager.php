@@ -45,6 +45,7 @@ class QMNQuizManager {
         add_shortcode('qsm', array($this, 'display_shortcode'));
         add_shortcode('qsm_result', array($this, 'shortcode_display_result'));
         add_shortcode('tour_leaderboard', array($this, 'shortcode_tour_leaderboard'));
+        add_action('wp_enqueue_scripts', array($this, 'qsm_wp_enqueue_scripts'));
         add_action('wp_ajax_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_nopriv_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_qsm_get_quiz_to_reload', array($this, 'qsm_get_quiz_to_reload'));
@@ -2207,6 +2208,12 @@ class QMNQuizManager {
 		return $mlw_quiz_leaderboard_display;
 	}
 	
+	public function qsm_wp_enqueue_scripts() {
+		wp_enqueue_style('qsm-datatables-css', QSM_PLUGIN_URL.'css/datatables.css');
+		wp_enqueue_script('qsm-datatables-js', QSM_PLUGIN_URL.'js/datatables.js', array('jquery'));
+		
+		
+	}
 	function qsm_display_leaderboard_table($data = array()) {
 		if (empty($data)) {
 			return '';
@@ -2279,39 +2286,10 @@ class QMNQuizManager {
 				$i++;
 			}
 			$table_id = "quiz_leaderboard_".wp_generate_password(10, false, false);
-			$table_html .= "<table id='{$table_id}' class='quiz_leaderboard_wrapper'>";
+			$table_html .= "<table id='{$table_id}' class='quiz_leaderboard_wrapper qsm_datatable_table'>";
 			$table_html .= "<thead><tr>{$qsml_table_head}</tr></thead>";
 			$table_html .= "<tbody>{$qsml_table_body}</tbody>";
 			$table_html .= "</table>";
-			
-			$table_html .= "<link rel='stylesheet' type='text/css' href='".QSM_PLUGIN_URL."css/datatables.css'>";
-			$table_html .= "<script src='".QSM_PLUGIN_URL."js/datatables.js' id='datatables-js'></script>";
-			$table_html .= '<script type="text/javascript">
-				jQuery(document).ready(function () {
-					jQuery("#'.$table_id.'").DataTable({
-						"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-						"dom": \'<"top">rt<"bottom"lp><"clear">\',
-						"columnDefs": [{"targets": "no-sort","orderable": false}],
-						"order": [[2, "desc"], [3, "asc"]],
-						"language": {
-							"search": "'.__('Search:', 'quiz-master-next').'",
-							"lengthMenu": "'. __('Show', 'quiz-master-next').' _MENU_ '. __('entries', 'quiz-master-next').'",
-							"zeroRecords": "'. __('No matching records found', 'quiz-master-next').'",
-							"info": "'. __('Showing', 'quiz-master-next').' _START_ '. __('to', 'quiz-master-next').' _END_ '. __('of', 'quiz-master-next').' _TOTAL_ '. __('entries', 'quiz-master-next').'",
-							"infoEmpty": "'. __('No records available', 'quiz-master-next').'",
-							"infoFiltered": "('. __('filtered from', 'quiz-master-next').' _MAX_ '. __('total records', 'quiz-master-next').')",
-							"emptyTable": "'. __('No data available in table', 'quiz-master-next').'",
-							"oPaginate": {
-								"sFirst": "'. __('First', 'quiz-master-next').'",
-								"sLast": "'. __('Last', 'quiz-master-next').'",
-								"sPrevious": "&lsaquo;",
-								"sNext": "&rsaquo;"
-							},
-						}
-					});
-				});
-			</script>';
-			
 		}
 		$table_html = "<div class='tour_leaderboard'>{$table_html}</div>";
 		return $table_html;

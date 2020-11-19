@@ -22,6 +22,15 @@ define( 'QSM_SUBMENU', __FILE__);
 define('QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define( 'hide_qsm_adv', true);
 
+if (!function_exists('qsm_core_plugin_updates')) {
+	function qsm_core_plugin_updates($value) {
+		unset($value->response['quiz_master_next/mlw_quizmaster2.php']);
+		unset($value->response['quiz-master-next/mlw_quizmaster2.php']);
+		return $value;
+	}
+	add_filter('site_transient_update_plugins', 'qsm_core_plugin_updates');
+}
+
 /**
  * This class is the main class of the plugin
  *

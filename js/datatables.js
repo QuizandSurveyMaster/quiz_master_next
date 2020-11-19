@@ -179,3 +179,34 @@ b){return b._DT_RowIndex!==n?b._DT_RowIndex:null},_fnNodeToColumnIndex:function(
 _fnFilterColumn:Bb,_fnFilter:Ab,_fnFilterCreateSearch:Sa,_fnEscapeRegex:Ta,_fnFilterData:Db,_fnFeatureHtmlInfo:wb,_fnUpdateInfo:Gb,_fnInfoMacros:Hb,_fnInitialise:ia,_fnInitComplete:wa,_fnLengthChange:Ua,_fnFeatureHtmlLength:sb,_fnFeatureHtmlPaginate:xb,_fnPageChange:Wa,_fnFeatureHtmlProcessing:ub,_fnProcessingDisplay:J,_fnFeatureHtmlTable:vb,_fnScrollDraw:ma,_fnApplyToChildren:N,_fnCalculateColumnWidths:Ia,_fnThrottle:Ra,_fnConvertToWidth:Ib,_fnGetWidestNode:Jb,_fnGetMaxLenString:Kb,_fnStringToCss:B,
 _fnSortFlatten:X,_fnSort:qb,_fnSortAria:Mb,_fnSortListener:Ya,_fnSortAttachListener:Pa,_fnSortingClasses:za,_fnSortData:Lb,_fnSaveState:Aa,_fnLoadState:Nb,_fnSettingsFromNode:Ba,_fnLog:O,_fnMap:M,_fnBindAction:Za,_fnCallbackReg:D,_fnCallbackFire:A,_fnLengthOverflow:Va,_fnRenderer:Qa,_fnDataSource:I,_fnRowAttributes:Oa,_fnExtend:$a,_fnCalculateEnd:function(){}});f.fn.dataTable=q;q.$=f;f.fn.dataTableSettings=q.settings;f.fn.dataTableExt=q.ext;f.fn.DataTable=function(a){return f(this).dataTable(a).api()};
 f.each(q,function(a,b){f.fn.DataTable[a]=b});return f.fn.dataTable});
+
+function qsmInitDataTable() {
+	jQuery('.qsm_datatable_table').each(function (){
+		if (!jQuery(this).hasClass('dataTable')) {
+			jQuery(this).DataTable({
+			"lengthMenu": [[10, 25, 50, - 1], ['10', '25', '50', 'All']],
+				"dom": '<"top">rt<"bottom"lp><"clear">',
+				"columnDefs": [{"targets": "no-sort", "orderable": false}],
+				"order": [[2, "desc"], [3, "asc"]],
+				"language": {
+					"search": "Search:",
+					"lengthMenu": "Show _MENU_ entries",
+					"zeroRecords": "No matching records found",
+					"info": "Showing _START_ to _END_ of _TOTAL_ entries",
+					"infoEmpty": "No records available",
+					"infoFiltered": "(filtered from _MAX_ total records)",
+					"emptyTable": "No data available in table",
+					"oPaginate": {
+						"sFirst": "First",
+						"sLast": "Last",
+						"sPrevious": "&lsaquo;",
+						"sNext": "&rsaquo;"
+					},
+				}
+			});
+		}
+	});
+}
+jQuery(document).ready(function () {
+	qsmInitDataTable();
+});

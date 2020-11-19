@@ -954,16 +954,22 @@ function qsmDisplayLoading( $container ) {
 function qmnDisplayResults( results, quiz_form_id, quiz_id, $container ) {
 	$container.empty();
 	if ('' != qmn_quiz_data[quiz_id].page_arg.redirect) {
-		window.location.replace(qmn_quiz_data[quiz_id].page_arg.redirect);
+		//window.location.replace(qmn_quiz_data[quiz_id].page_arg.redirect);
+		window.location.href = qmn_quiz_data[quiz_id].page_arg.redirect;
 		return;
 	}
 	if ( results.redirect ) {
-		window.location.replace( results.redirect );
+		//window.location.replace( results.redirect );
+		window.location.href = results.redirect;
+		return;
 	} else {
 		$container.append( '<div class="qmn_results_page"></div>' );
 		$container.find( '.qmn_results_page' ).html( results.display );
 		qsmScrollTo( $container );
 		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+		if ( typeof qsmInitDataTable != 'undefined' ) {
+			qsmInitDataTable();
+		}
 	}
 }
 
