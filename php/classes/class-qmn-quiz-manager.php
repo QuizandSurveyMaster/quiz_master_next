@@ -263,12 +263,17 @@ class QMNQuizManager {
             global $qmn_allowed_visit;
             global $qmn_json_data;
             $qmn_json_data = array();
-            $page_arg = array('quiz' => $quiz, 'page' => $page, 'redirect' => $redirect, 'autosave_id' => '');
+            $page_arg = array('quiz' => $quiz, 'page' => $page, 'redirect' => $redirect, 'autosave_id' => md5(date("Y-m-d H:i:s")));
 			if (!session_id()) {
 				session_start();
 			}
-			if (isset($_SESSION['qsm_autosave_id']) && !empty($_SESSION['qsm_autosave_id'])) {
-				$page_arg['autosave_id'] = $_SESSION['qsm_autosave_id'];
+			if (is_user_logged_in()) {
+				$current_user_id = get_current_user_id();
+				$user = get_user_by('id', $current_user_id);
+				$old_unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$quiz}' AND `user`='{$current_user_id}' AND `active`='1'");
+				if (!empty($old_unique_id)) {
+					$page_arg['autosave_id'] = $old_unique_id;
+				}
 			}
 
 			$qmn_allowed_visit = true;
@@ -1124,7 +1129,8 @@ class QMNQuizManager {
             'quiz_payment_id' => isset($_POST['main_payment_id']) ? sanitize_text_field($_POST['main_payment_id']) : '',
             'page_name' => ((isset($_POST['page_name'])) ? $_POST['page_name'] : ''),
             'save_page' => ((isset($_POST['save_page']) && $_POST['save_page'] == '1') ? true : false),
-            'last_page' => ((isset($_POST['last_page']) && $_POST['last_page'] == '1') ? true : false)
+            'last_page' => ((isset($_POST['last_page']) && $_POST['last_page'] == '1') ? true : false),
+            'autosave_id' => (isset($_POST['autosave_id']) ? $_POST['autosave_id'] : '')
         );
         $post_data = array(
             'g-recaptcha-response' => isset($_POST['g-recaptcha-response']) ? sanitize_textarea_field($_POST['g-recaptcha-response']) : ''
@@ -1145,7 +1151,6 @@ class QMNQuizManager {
 		
 		if ($data['save_page']) {
 			$unique_id = $this->qsm_quiz_save_data($_POST);
-			$data['autosave_id'] = $unique_id;
 		}
         echo json_encode($this->submit_results($options, $data));
         die();
@@ -1250,6 +1255,7 @@ class QMNQuizManager {
 			$starttime = date('Y-m-d H:i:s', (strtotime($endtime) - intval($qmn_array_for_variables['timer'])));
 			if (isset($qmn_array_for_variables['save_page']) && $qmn_array_for_variables['save_page']) {
 				$active = 1;
+				$unique_id = (isset($qmn_array_for_variables['autosave_id']) ? $qmn_array_for_variables['autosave_id'] : $unique_id);
 				if (isset($_SESSION['qsm_quiz_time_' . $quiz_id]) && $_SESSION['qsm_quiz_time_' . $quiz_id] > 0) {
 					$starttime = $_SESSION['qsm_quiz_time_' . $quiz_id];
 				}
@@ -1258,11 +1264,6 @@ class QMNQuizManager {
 					$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `result_id`='{$results_id}'");
 					if (!empty($savedResult)) {
 						$isUpdate = true;
-						/*$quiz_results = maybe_unserialize($savedResult->quiz_results);
-						echo "<pre>";
-						print_r($quiz_results);
-						print_r($qmn_array_for_variables);
-						exit;*/
 					}
 				}
 				$send_mail = false;
@@ -1310,6 +1311,7 @@ class QMNQuizManager {
 						'time_taken' => $qmn_array_for_variables['time_taken'],
 						'time_taken_real' => date('Y-m-d H:i:s', strtotime($qmn_array_for_variables['time_taken'])),
 						'quiz_results' => $serialized_results,
+						'unique_id' => $unique_id,
 						'active' => $active,
 					), array('result_id' => $results_id));
 				} else {
@@ -2149,12 +2151,16 @@ class QMNQuizManager {
 		}
 		$_SESSION['qsm_autosave_id'] = $unique_id;
 		$quiz_data .= "&autosave_id={$unique_id}";
-		$page_name = ((isset($_POST['page_name'])) ? $_POST['page_name'] : '');
+		$loggedin_email = '';
+		if (is_user_logged_in()) {
+			$user = get_user_by('id', get_current_user_id());
+			$loggedin_email = $user->user_email;
+		}
 		$get_data = $wpdb->get_row("SELECT `quiz_data` FROM `{$table_name}` WHERE `unique_id`='{$unique_id}' AND `quiz_id`='{$data['qmn_quiz_id']}'");
 		if (!empty($get_data)) {
 			$results_insert = $wpdb->update($table_name, array('quiz_data' => $quiz_data), array('unique_id' => $unique_id, 'quiz_id' => $data['qmn_quiz_id']));
 		} else {
-			$results_insert = $wpdb->insert($table_name, array('loggedin_email' => '', 'quiz_id' => $data['qmn_quiz_id'], 'unique_id' => $unique_id, 'quiz_data' => $quiz_data));
+			$results_insert = $wpdb->insert($table_name, array('loggedin_email' => $loggedin_email, 'quiz_id' => $data['qmn_quiz_id'], 'unique_id' => $unique_id, 'quiz_data' => $quiz_data));
 		}
 		return $unique_id;
 	}
