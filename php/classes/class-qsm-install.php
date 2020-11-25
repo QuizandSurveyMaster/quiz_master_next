@@ -918,7 +918,8 @@ class QSM_Install {
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',
         '%CORRECT_ANSWER_INFO%',
-        '%QUESTION_POINT_SCORE%'
+        '%QUESTION_POINT_SCORE%',
+        '%QUESTION_MAX_POINTS%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -934,7 +935,9 @@ class QSM_Install {
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',
-        '%CORRECT_ANSWER_INFO%'
+        '%CORRECT_ANSWER_INFO%',
+        '%QUESTION_POINT_SCORE%',
+        '%QUESTION_MAX_POINTS%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
