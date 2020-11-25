@@ -79,8 +79,8 @@ class QMNQuizCreator {
 				'message_after'            => 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%',
 				'message_comment'          => 'Please fill in the comment box below.',
 				'message_end_template'     => '',
-				'user_email_template'      => '%QUESTIONS_ANSWERS%',
-				'admin_email_template'     => '%QUESTIONS_ANSWERS%',
+				'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',
+				'admin_email_template'     => '%QUESTIONS_ANSWERS_EMAIL%',
 				'submit_button_text'       => 'Submit',
 				'name_field_text'          => 'Name',
 				'business_field_text'      => 'Business',
@@ -215,7 +215,7 @@ class QMNQuizCreator {
 	 * @return void
 	 */
 	 public function delete_quiz($quiz_id, $quiz_name)
-	 {
+	 {                             
 	 	global $mlwQuizMasterNext;
 		global $wpdb;
 	 	$results = $wpdb->update(
@@ -229,10 +229,14 @@ class QMNQuizCreator {
  			),
  			array( '%d' )
  		);
+                $deleted = 0;
+                if( isset( $_POST['qsm_delete_question_from_qb'] ) && $_POST['qsm_delete_question_from_qb'] == 1 ){
+                    $deleted = 1;
+                }
  		$delete_question_results = $wpdb->update(
  			$wpdb->prefix . "mlw_questions",
  			array(
- 				'deleted' => 1
+ 				'deleted' => $deleted
  			),
  			array( 'quiz_id' => $quiz_id ),
  			array(
@@ -453,6 +457,7 @@ class QMNQuizCreator {
                 //Update quiz settings
                 $update_quiz_settings = unserialize($mlw_qmn_duplicate_data->quiz_settings);
                 $update_pages = unserialize($update_quiz_settings['pages']);
+                $logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize(unserialize($update_quiz_settings['logic_rules'])) : array();
                 
 		if ( false != $results ) {
 			$current_user = wp_get_current_user();
@@ -541,7 +546,19 @@ class QMNQuizCreator {
                                             $update_pages[$pages_key][$pages_k_q] = $wpdb->insert_id;
                                         }
                                     }
-                                }   
+                                }
+                                // Fixed Rules Questions with new question ids
+                                if( $logic_rules ){
+                                    foreach ($logic_rules as $logic_key => $logic_value) {
+                                        foreach ($logic_value as $logic_cond_k => $logic_cond) {
+                                            foreach($logic_cond as $l_cond_k => $logic_val) {
+                                                if($logic_val['question'] == $mlw_question->question_id) {
+                                                    $logic_rules[$logic_key][$logic_cond_k][$l_cond_k]['question'] = $wpdb->insert_id;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
 				if ($question_results == false)
 				{
 					$mlwQuizMasterNext->alertManager->newAlert(sprintf(__('There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next'), '0020'), 'error');
@@ -549,6 +566,7 @@ class QMNQuizCreator {
 				}
 			}
                         $update_quiz_settings['pages'] = serialize($update_pages);
+                        $update_quiz_settings['logic_rules'] = serialize(serialize($logic_rules));
                         $wpdb->update(
                             $wpdb->prefix . "mlw_quizzes",
                             array(

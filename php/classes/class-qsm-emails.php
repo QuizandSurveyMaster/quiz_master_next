@@ -150,17 +150,23 @@ class QSM_Emails {
 		} else {
 			$to = str_replace( '%USER_EMAIL%', '', $to );
 		}
+		$to = apply_filters('qsm_send_results_email_addresses', $to, $response_data);
 		$to_array = explode( ',', $to );
-
+		$to_array = array_unique($to_array);
+		if (empty($to_array)) {
+			return;
+		}
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 
 		// Prepares our content.
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );                
+                $response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content = str_replace( "\n", '<br>', $content );
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
+		$content = html_entity_decode( $content );
 
 		// Prepares our from name and email.
 		$settings   = (array) get_option( 'qmn-settings' );

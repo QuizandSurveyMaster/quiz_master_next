@@ -59,7 +59,7 @@ add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_take
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_facebook_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_twitter_share',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10,2);
-add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',20,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions',10,2);
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
@@ -70,6 +70,7 @@ add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user
 
 /**
  * @since 6.4.11
+ * @since 7.1.3 Changed the display structure to new structure.
  * @param str $content
  * @param array $mlw_quiz_array
  * Show particular question answer.
@@ -89,44 +90,30 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ){
         if( isset($question_answers_array[$key]) ){
             global $mlwQuizMasterNext;
             $answer = $question_answers_array[$key];
-            $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
-            if ( $answer["correct"] === "correct" ){
-                    $user_answer_class = "qmn_user_correct_answer";
-                    $question_answer_class = "qmn_question_answer_correct";
-            } else {
-                    $user_answer_class = "qmn_user_incorrect_answer";
-                    $question_answer_class = "qmn_question_answer_incorrect";
-            }
-            $mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
-            if( isset( $answer['question_title'] ) && $answer['question_title'] != '' ){
-                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b><br />' . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
-            }else{
-                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
-            }
-            $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);
-            if($answer['question_type'] == 11){
-                $file_extension = substr($answer[1], -4);
-                if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
-                    $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
+            if( isset( $mlw_quiz_array['email_processed'] ) && $mlw_quiz_array['email_processed'] == 'yes' ){
+                if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
+                    $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+                    $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_email_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
                 }else{
-                    $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".trim( htmlspecialchars_decode($answer[1], ENT_QUOTES) ).'</span>', $mlw_question_answer_display);
+                    $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
+                } 
+            } else {
+                if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
+                    $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+                    $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
+                }else{
+                    $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
                 }
-            }else{
-                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
-            }
-            global $wpdb;
+            }            
+            $mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
+            $questions = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
             $qmn_questions = array();
-            $question_id_n = $answer['id'];
-            $question_array = $wpdb->get_row( "SELECT question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = $question_id_n", 'ARRAY_A' );
-            $qmn_questions[ $question_id_n ] = $question_array['question_answer_info'];
-            $answer_2 = !empty( $answer[2] ) ? $answer[2] : 'NA';
-            $mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , htmlspecialchars_decode($answer_2, ENT_QUOTES), $mlw_question_answer_display);
-            $answer_3 = !empty( $answer[3] ) ? $answer[3] : 'NA';
-            $mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer_3, $mlw_question_answer_display);
-            $answer_4 = !empty( $qmn_questions[$answer['id']] ) ? $qmn_questions[$answer['id']] : 'NA';
-            $mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
-            $mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
-            $display = "<div class='qmn_question_answer $question_answer_class'>".apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
+            foreach ( $questions as $question ) {
+                $qmn_questions[ $question['question_id'] ] = $question['question_answer_info'];
+            }            
+            $total_question_cnt = 2;
+            $qsm_question_cnt = 1;
+            $display = qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $mlw_question_answer_display, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt);
             $content = str_replace( "%QUESTION_ANSWER_". $question_id ."%" , $display, $content);
         }
     }
@@ -223,12 +210,14 @@ function mlw_qmn_get_string_between($string, $start, $end){
 }
 
 function qsm_find_key_from_array($search_value,$array){
-    if($array){
-        foreach ($array as $key => $value) {
-            if($value[0] == $search_value){
+    if($array){                
+        $search_value = htmlspecialchars_decode( $search_value, ENT_QUOTES );
+        foreach ($array as $key => $value) {            
+            $value_val = $value[0];
+            if( $value_val == $search_value ){
                 return true;
             }
-        }
+        }        
     }
     return false;
 }
@@ -292,11 +281,17 @@ function mlw_qmn_variable_point_score($content, $mlw_quiz_array)
 	$content = str_replace( "%POINT_SCORE%" , $mlw_quiz_array["total_points"], $content);
 	return $content;
 }
-function mlw_qmn_variable_average_point($content, $mlw_quiz_array)
-{
-	if ($mlw_quiz_array["total_questions"] != 0)
-	{
-		$mlw_average_points = round($mlw_quiz_array["total_points"]/$mlw_quiz_array["total_questions"], 2);
+function mlw_qmn_variable_average_point($content, $mlw_quiz_array){
+        $question_total = 0;        
+        if( isset( $mlw_quiz_array['question_answers_array'] )  ){
+            foreach( $mlw_quiz_array['question_answers_array'] as $single_question ){
+                if( $single_question['question_type'] !== '11' ){                    
+                    $question_total++;
+                }                   
+            }
+        }
+	if ($mlw_quiz_array["total_questions"] != 0 && $question_total != 0){
+		$mlw_average_points = round($mlw_quiz_array["total_points"]/$question_total, 2);
 	}
 	else
 	{
@@ -335,7 +330,7 @@ function mlw_qmn_variable_total_questions($content, $mlw_quiz_array)
 }
 function mlw_qmn_variable_correct_score($content, $mlw_quiz_array)
 {
-	$content = str_replace( "%CORRECT_SCORE%" , $mlw_quiz_array["total_score"], $content);
+	$content = str_replace( "%CORRECT_SCORE%" , round( $mlw_quiz_array["total_score"] ), $content);
 	return $content;
 }
 function mlw_qmn_variable_quiz_name($content, $mlw_quiz_array)
@@ -413,20 +408,29 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
   $logic_rules = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
   $logic_rules = unserialize( $logic_rules );
   $hidden_questions = isset($mlw_quiz_array['hidden_questions']) ? $mlw_quiz_array['hidden_questions'] : array();
-  if(is_admin()) {
+  if(empty($hidden_questions)) {
     $hidden_questions = isset($mlw_quiz_array['results']['hidden_questions']) ? $mlw_quiz_array['results']['hidden_questions'] : array();
   }
 
 	// Checks if the variable is present in the content.
-	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false ) {
+	while ( strpos( $content, '%QUESTIONS_ANSWERS%' ) !== false || strpos( $content, '%QUESTIONS_ANSWERS_EMAIL%' ) !== false ) {
 		global $wpdb;
 		$display = '';
-                if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
-                    $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
-                    $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
+                if( strpos( $content, '%QUESTIONS_ANSWERS_EMAIL%' ) !== false ){
+                    if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
+                        $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+                        $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_email_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
+                    }else{
+                        $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
+                    }                    
                 }else{
-                    $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
-                }
+                    if( isset( $mlw_quiz_array['quiz_settings'] ) && !empty($mlw_quiz_array['quiz_settings']) ){
+                        $quiz_text_settings = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+                        $qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters('qsm_section_setting_text', $quiz_text_settings['question_answer_template']) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
+                    }else{
+                        $qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
+                    }                    
+                }         
 		$questions = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
 		$qmn_questions = array();
 		foreach ( $questions as $question ) {
@@ -435,122 +439,19 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
                 
 		// Cycles through each answer in the responses.
                 $total_question_cnt = count( $mlw_quiz_array['question_answers_array'] );
-                $qsm_question_cnt = 1;
-		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-                        if(in_array($answer['id'],$hidden_questions)) {
-                          continue;
-                        }
-                        if( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ){
-                            $user_answer_class = "";
-                            $question_answer_class = "";
-                            if( isset( $mlw_quiz_array['form_type'] ) && $mlw_quiz_array['form_type'] == 0 ){
-                                if( $mlw_quiz_array['quiz_system'] == 0 || $mlw_quiz_array['quiz_system'] == 3 ){
-                                    if ( $answer["correct"] === "correct" ){
-                                        $user_answer_class = "qmn_user_correct_answer";
-                                        $question_answer_class = "qmn_question_answer_correct";
-                                    } else {
-                                        $user_answer_class = "qmn_user_incorrect_answer";
-                                        $question_answer_class = "qmn_question_answer_incorrect";
-                                    }
-                                }
-                            }
-                        } else {
-                            if ( $answer["correct"] === "correct" ){
-                                $user_answer_class = "qmn_user_correct_answer";
-                                $question_answer_class = "qmn_question_answer_correct";
-                            } else {
-                                $user_answer_class = "qmn_user_incorrect_answer";
-                                $question_answer_class = "qmn_question_answer_incorrect";
-                            }
-                        }
-
-			$mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
-                        $disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );                        
-                        if( isset( $answer['question_title'] ) && $answer['question_title'] != '' ){
-                            $add_br = '';
-                            if( $answer[0] != '' ){
-                                $add_br = '<br/>';
-                            }
-                            if( $disable_description_on_result == 1 ){
-                                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
-                            }else{
-                                $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>'. $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
-                            }                            
-                        }else{
-                            $mlw_question_answer_display = str_replace( "%QUESTION%" , '<b>' . htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
-                        }
-                        $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);
-                        $extra_border_bottom_class = '';
-                        if( strpos( $mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%') !== false ){
-                            $extra_border_bottom_class = 'qsm-add-border-bottom';
-                            $show_two_option_questions = array(
-                                3,12,5,7,14
-                            );
-                            if( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && !empty( $questions[ $answer['id'] ] ) ){
-                                $total_answers = isset( $questions[ $answer['id'] ][ 'answers' ] ) ? $questions[ $answer['id'] ][ 'answers' ] : array();
-                                $question_with_answer_text = '';
-                                if( $total_answers ){
-                                    if( isset($answer['question_type']) && in_array( $answer['question_type'], $show_two_option_questions) ){
-                                        $special_question_case_cnt = 1;
-                                        foreach ( $total_answers as $single_answer ) {
-                                            if( $special_question_case_cnt > 2 ){
-                                                break;
-                                            }
-                                            if( isset( $single_answer[2] ) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] ){
-                                                $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                                break;
-                                            } else if( isset( $single_answer[2] ) && $single_answer[2] == 1 ) {
-                                                $question_with_answer_text .= '<span class="qsm-text-correct-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                            } else if( htmlspecialchars_decode($answer[1], ENT_QUOTES) !== $single_answer[0] ) {
-                                                $question_answer_text_for_answer = $answer[1] == '' ? __('No answer provided', 'quiz-master-next') : $answer[1];
-                                                $question_with_answer_text .= '<span class="qsm-text-wrong-option">'. htmlspecialchars_decode($question_answer_text_for_answer, ENT_QUOTES) .'</span>';
-                                                $special_question_case_cnt++;
-                                            } 
-                                        }                                        
-                                    } else {
-                                        foreach ( $total_answers as $single_answer ) {
-                                            if( isset( $single_answer[2] ) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] ){
-                                                $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                            }else if( isset( $single_answer[2] ) && $single_answer[2] == 1 ){
-                                                $question_with_answer_text .= '<span class="qsm-text-correct-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                            }else if( htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0] && $single_answer[2] !== 1 ){
-                                                $question_with_answer_text .= '<span class="qsm-text-wrong-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                            }else{
-                                                $question_with_answer_text .= '<span class="qsm-text-simple-option">'. htmlspecialchars_decode($single_answer[0], ENT_QUOTES) .'</span>';
-                                            }
-                                        }
-                                    }                                    
-                                }
-                            }
-                            $mlw_question_answer_display = str_replace( "%USER_ANSWERS_DEFAULT%" , $question_with_answer_text, $mlw_question_answer_display);
-                        }
-                        if( isset($answer['question_type']) && $answer['question_type'] == 11 ){
-                            $file_extension = substr($answer[1], -4);
-                            if($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif'){
-                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
-                            }else{
-                                $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".trim( htmlspecialchars_decode($answer[1], ENT_QUOTES) ).'</span>', $mlw_question_answer_display);
-                            }
-                        }else{
-                            $mlw_question_answer_display = str_replace( "%USER_ANSWER%" , "<span class='$user_answer_class'>".htmlspecialchars_decode($answer[1], ENT_QUOTES).'</span>', $mlw_question_answer_display);
-                        }
-                        $answer_2 = !empty( $answer[2] ) ? $answer[2] : 'NA';
-			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER%" , htmlspecialchars_decode($answer_2, ENT_QUOTES), $mlw_question_answer_display);
-                        $answer_3 = !empty( $answer[3] ) ? $answer[3] : 'NA';
-			$mlw_question_answer_display = str_replace( "%USER_COMMENTS%" , $answer_3, $mlw_question_answer_display);
-                        $answer_4 = !empty( $qmn_questions[$answer['id']] ) ? $qmn_questions[$answer['id']] : 'NA';
-			$mlw_question_answer_display = str_replace( "%CORRECT_ANSWER_INFO%" , htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
-                        $mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
-                        if( $total_question_cnt ==  $qsm_question_cnt){
-                            $extra_border_bottom_class = '';
-                        }
-			$display .= "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>".apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array).'</div>';
-                        $qsm_question_cnt++;
+                $qsm_question_cnt = 1;                
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {                    
+                    if(in_array($answer['id'],$hidden_questions)) {
+                        continue;
+                    }
+                    $display .= qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt);
+                    $qsm_question_cnt++;
 		}
+		$display = "<div class='qsm_questions_answers_section'>{$display}</div>";
 		$content = str_replace( "%QUESTIONS_ANSWERS%" , $display, $content);
+		$content = str_replace( "%QUESTIONS_ANSWERS_EMAIL%" , $display, $content);
 	}
+              
 	return $content;
 }
 
@@ -659,7 +560,9 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
                 }
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( $answer["category"] == $category_name ) {
-				$total_questions += 1;
+                                if( $answer['question_type'] !== '11' ){   
+                                    $total_questions += 1;
+                                }
 				$return_points += $answer["points"];
 			}
 		}
@@ -825,7 +728,8 @@ function qmn_variable_category_average_points($content, $mlw_quiz_array)
 
 add_filter('qmn_end_results', 'qsm_end_results_rank', 9999, 3);
 function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for_variables)
-{
+{   
+    while (strpos($result_display, '%RANK%') !== false){
 	global $wpdb;
 	$mlw_quiz_id = $qmn_array_for_variables['quiz_id'];
 	$mlw_result_id = $wpdb->get_var("SELECT MAX(`result_id`) FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_id}' AND `deleted`='0'");
@@ -857,7 +761,7 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
 		}
 	}
 	$result_display = str_replace("%RANK%", $mlw_rank, $result_display);
-
+    }
 	return $result_display;
 }
 
@@ -896,3 +800,219 @@ function qsm_custom_wpkses_post_tags( $tags, $context ) {
 }
 
 add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
+
+/**
+ * Function will convert all the QUESIONS_ANSWERS variable into appropriate data
+ * 
+ * @since 7.1.3
+ * 
+ * @param arr $mlw_quiz_array
+ * @param str $qmn_question_answer_template
+ * @param str $answer
+ * @param int $qsm_question_cnt
+ * @param int $total_question_cnt
+ * @return string
+ */
+function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt) {        
+    global $mlwQuizMasterNext;
+    if (is_admin() && isset($_GET['page']) && $_GET['page'] == 'qsm_quiz_result_details') {
+        $user_answer_class = "";
+        $question_answer_class = "";
+        if (isset($mlw_quiz_array['form_type']) && $mlw_quiz_array['form_type'] == 0) {
+            if ($mlw_quiz_array['quiz_system'] == 0 || $mlw_quiz_array['quiz_system'] == 3) {
+                if ($answer["correct"] === "correct") {
+                    $user_answer_class = "qmn_user_correct_answer";
+                    $question_answer_class = "qmn_question_answer_correct";
+                } else {
+                    $user_answer_class = "qmn_user_incorrect_answer";
+                    $question_answer_class = "qmn_question_answer_incorrect";
+                }
+            }
+        }
+    } else {
+        if ($answer["correct"] === "correct") {
+            $user_answer_class = "qmn_user_correct_answer";
+            $question_answer_class = "qmn_question_answer_correct";
+        } else {
+            $user_answer_class = "qmn_user_incorrect_answer";
+            $question_answer_class = "qmn_question_answer_incorrect";
+        }
+    }
+    
+    $mlw_question_answer_display = htmlspecialchars_decode($qmn_question_answer_template, ENT_QUOTES);
+    $disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'disable_description_on_result');
+    
+    if (isset($answer['question_title']) && $answer['question_title'] != '') {        
+        $add_br = '';
+        if ($answer[0] != '') {
+            $add_br = '<br/>';
+        }
+        if ($disable_description_on_result == 1) {
+            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
+        } else {
+            $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' . htmlspecialchars_decode($answer['question_title'], ENT_QUOTES) . '</b>' . $add_br . htmlspecialchars_decode($answer[0], ENT_QUOTES), $mlw_question_answer_display);
+        }        
+    } else {        
+        $mlw_question_answer_display = str_replace("%QUESTION%", '<b>' .  htmlspecialchars_decode($answer[0], ENT_QUOTES) . '</b>', $mlw_question_answer_display);
+    }     
+    $mlw_question_answer_display = qsm_question_title_func($mlw_question_answer_display);       
+    $extra_border_bottom_class = '';
+    $remove_border = true;
+    if (strpos($mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%') !== false) {
+        $remove_border = false;
+        $question_with_answer_text = '';
+        $extra_border_bottom_class = 'qsm-add-border-bottom';
+        $show_two_option_questions = array(
+            3, 12, 5, 7, 14
+        );
+        $form_type = isset($mlw_quiz_array['form_type']) ? $mlw_quiz_array['form_type'] : 0;
+        $quiz_system = isset($mlw_quiz_array['quiz_system']) ? $mlw_quiz_array['quiz_system'] : 0;        
+        if (isset($answer['id']) && isset($questions[$answer['id']]) && !empty($questions[$answer['id']])) {            
+            $total_answers = isset($questions[$answer['id']]['answers']) ? $questions[$answer['id']]['answers'] : array();            
+            if ($total_answers) {
+                if (isset($answer['question_type']) && in_array($answer['question_type'], $show_two_option_questions)) {                    
+                    $do_show_wrong = true;
+                    foreach ($total_answers as $single_answer) {
+                        $current_answer_zero = trim( htmlspecialchars_decode($single_answer[0], ENT_QUOTES) );
+                        if ($form_type == 0 && ( $quiz_system == 0 || $quiz_system == 3 )) {
+                            if (isset($single_answer[2]) && $single_answer[2] == 1 && strcasecmp( htmlspecialchars_decode($answer[1], ENT_QUOTES), $current_answer_zero ) == 0 ) {
+                                $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($answer[1], ENT_QUOTES) . '</span>';
+                                $do_show_wrong = false;
+                            }
+                        } else {
+                            if ( isset($single_answer[2]) && strcasecmp( htmlspecialchars_decode($answer[1], ENT_QUOTES), $current_answer_zero ) == 0 ) {
+                                $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                $do_show_wrong = false;
+                            }
+                        }
+                    }
+                    if ($do_show_wrong) {
+                        if ($form_type == 0 && ( $quiz_system == 0 || $quiz_system == 3 )) {
+                            $user_given_answer = $answer[1] == '' ? __('No answer provided', 'quiz-master-next') : $answer[1];
+                            $question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($user_given_answer, ENT_QUOTES) . '</span>';
+                            foreach ($total_answers as $single_answer) {
+                                if (isset($single_answer[2]) && $single_answer[2] == 1) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                    break;
+                                }
+                            }
+                        } else {
+                            $user_given_answer = $answer[1] == '' ? __('No answer provided', 'quiz-master-next') : $answer[1];
+                            $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($user_given_answer, ENT_QUOTES) . '</span>';
+                        }
+                    }
+                } else if (isset($answer['question_type']) && $answer['question_type'] == 11) {
+                    $file_extension = substr($answer[1], -4);
+                    if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+                        $question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+                    } else {
+                        $question_with_answer_text .= "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>';
+                    }
+                } else {
+                    if ($form_type == 0 && ( $quiz_system == 0 || $quiz_system == 3 )) {
+                        if (isset($answer['question_type']) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 )) {                            
+                            $user_selected_answer = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+                            $new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode('=====', $answer['user_compare_text']) : array();
+                            foreach ($total_answers as $single_answer) {
+                                $current_answer_text = trim( stripslashes( htmlspecialchars_decode($single_answer[0], ENT_QUOTES) ) );
+                                $is_answer_correct = false;
+                                if( $new_array_user_answer ){
+                                    foreach( $new_array_user_answer as $new_array_value ){
+                                        $new_array_value = trim( stripslashes( htmlspecialchars_decode($new_array_value, ENT_QUOTES) ) );
+                                        if( $current_answer_text == $new_array_value ){
+                                            $is_answer_correct = true;
+                                            break;
+                                        }                                    
+                                    }
+                                }
+                                if (isset($single_answer[2]) && $single_answer[2] == 1 && $is_answer_correct ) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else if (isset($single_answer[2]) && $single_answer[2] == 1) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else if ( $is_answer_correct && $single_answer[2] !== 1) {
+                                    $question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else {
+                                    $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                }
+                            }
+                        } else {                                                                    
+                            foreach ($total_answers as $single_answer) {                                
+                                $single_answer_option = $single_answer[0];
+                                if (isset($single_answer[2]) && $single_answer[2] == 1 && htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer_option ) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else if (isset($single_answer[2]) && $single_answer[2] == 1) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer_option && $single_answer[2] !== 1) {
+                                    $question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else {
+                                    $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                }
+                            }
+                        }                        
+                    } else {
+                        if (isset($answer['question_type']) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 )) {
+                            $user_selected_answer = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+                            foreach ($total_answers as $single_answer) {
+                                if (strpos($user_selected_answer, $single_answer[0]) !== false) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else {
+                                    $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                }
+                            }
+                        } else {
+                            foreach ($total_answers as $single_answer) {
+                                if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0]) {
+                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                } else {
+                                    $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (isset($answer['question_type']) && $answer['question_type'] == 11) {
+                    $file_extension = substr($answer[1], -4);
+                    if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+                        $question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+                    } else {
+                        $question_with_answer_text .= "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>';
+                    }
+                } else {
+                    $question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode($answer[1], ENT_QUOTES) . '</span>';
+                }
+            }
+        }        
+        $mlw_question_answer_display = str_replace("%USER_ANSWERS_DEFAULT%", $question_with_answer_text, $mlw_question_answer_display);
+    }
+    if (isset($answer['question_type']) && $answer['question_type'] == 11) {
+        $file_extension = substr($answer[1], -4);
+        if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+            $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
+        } else {
+            $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>', $mlw_question_answer_display);
+        }
+    } else {
+        $user_answer_new = $answer[1];
+        if( ( $answer['question_type'] == 0 || $answer['question_type'] == 1 || $answer['question_type'] == 2 ) && $answer[1] == '' ){
+            $user_answer_new = __('No Answer Provided', 'quiz-master-next');
+        }
+        $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . htmlspecialchars_decode($user_answer_new, ENT_QUOTES) . '</span>', $mlw_question_answer_display);
+    }
+    $answer_2 = !empty($answer[2]) ? $answer[2] : 'NA';
+    $mlw_question_answer_display = str_replace("%CORRECT_ANSWER%", htmlspecialchars_decode($answer_2, ENT_QUOTES), $mlw_question_answer_display);
+    $answer_3 = !empty($answer[3]) ? $answer[3] : 'NA';
+    $mlw_question_answer_display = str_replace("%USER_COMMENTS%", $answer_3, $mlw_question_answer_display);
+    $answer_4 = !empty($qmn_questions[$answer['id']]) ? $qmn_questions[$answer['id']] : 'NA';
+    $mlw_question_answer_display = str_replace("%CORRECT_ANSWER_INFO%", htmlspecialchars_decode($answer_4, ENT_QUOTES), $mlw_question_answer_display);
+    //Point score of the particular question.
+    $question_point = isset( $answer['points'] ) ? $answer['points'] : '0';
+    $mlw_question_answer_display = str_replace("%QUESTION_POINT_SCORE%", htmlspecialchars_decode($question_point, ENT_QUOTES), $mlw_question_answer_display);
+    $mlw_question_answer_display = wp_kses_post($mlw_question_answer_display);
+    if ($total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
+        $extra_border_bottom_class = 'qsm-remove-border-bottom';
+    }
+	$mlw_question_answer_display = apply_filters('qsm_question_answers_template_variable', $mlw_question_answer_display, $mlw_quiz_array, $answer);
+    $display = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array) . '</div>';
+    return $display;
+}

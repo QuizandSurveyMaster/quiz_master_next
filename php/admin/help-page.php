@@ -26,7 +26,7 @@ function qsm_generate_help_page() {
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
-	<div class="wrap">
+	<div class="wrap qsm-help-page">
 		<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
 		<?php qsm_show_adverts(); ?>
 

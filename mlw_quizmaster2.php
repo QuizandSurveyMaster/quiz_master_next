@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.0.2
+ * Version: 7.1.8
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.0.2
+ * @version 7.1.8
  * @package QSM
  */
 
@@ -37,7 +37,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.0.2';
+	public $version = '7.1.8';
 
 	/**
 	 * QSM Alert Manager Object
@@ -188,7 +188,15 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
+                add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
 	}
+        
+        /**
+         * @since 7.1.4
+         */
+        public function qsm_load_textdomain(){
+            load_plugin_textdomain( 'quiz-master-next', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+        }
 
 	/**
 	 * Creates Custom Quiz Post Type
@@ -273,7 +281,7 @@ class MLWQuizMasterNext {
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
                         global $qsm_quiz_list_page;
-			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'Quiz And Survey Master', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
+			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ),  __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
 			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ),  __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
                         add_action("load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options');

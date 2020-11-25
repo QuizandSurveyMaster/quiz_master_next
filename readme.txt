@@ -2,41 +2,53 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.5
+Tested up to: 5.5.3
 Requires PHP: 5.4
-Stable tag: 7.0.2
+Stable tag: 7.1.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Native quiz and surveys for your WordPress site. Easily and quickly add unlimited quizzes and surveys to your website. Customizable and professional quizzes are now at your finger tips.
+Create user-friendly and beautiful quizzes and surveys using Wordpress Quiz Plugin. Boost traffic and social shares on your website.
 
 == Description ==
 
 = Demoes! =
-Looking for demoes? Check out [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin) and [Sample Survey](https://quizandsurveymaster.com/quiz/sample-survey/?utm_source=readme&utm_medium=plugin&utm_content=sample-survey&utm_campaign=qsm_plugin)!
+* [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin) 
+* [Sample Survey](https://quizandsurveymaster.com/quiz/sample-survey/?utm_source=readme&utm_medium=plugin&utm_content=sample-survey&utm_campaign=qsm_plugin)
+* [Personality Quiz](https://quizandsurveymaster.com/quiz/personality-quiz/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Quiz with Leaderboard](https://demo.quizandsurveymaster.com/advanced-leaderboard-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Popup Quiz](https://quizandsurveymaster.com/simple-popup-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Flashcards](https://demo.quizandsurveymaster.com/flash-card-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Paid Quiz](https://demo.quizandsurveymaster.com/payment-integration-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+
+= Easily Create Quiz or Surveys For Your Users =
+Quiz and Survey Master is the easiest [WordPress Quiz Plugin](https://quizandsurveymaster.com/) which can be used to create engaging content to drive traffic and increase user engagement. Everything from viral quiz, trivia quiz, customer satisfaction surveys to employee surveys. This plugin is the ultimate marketing tool for your website.
 
 [youtube https://www.youtube.com/watch?v=DyiCCNnDpHk]
 
-= Easily Create Surveys For Your Users =
-You can easily create surveys for your users. Everything from customer satisfaction surveys to employee surveys.
+= Customize Text =
+You can customize anything your users will see and engage with. Everything from the text blocks throughout the quiz or survey to the submit button. You can even use "template variables" to generate personalized text for your users.
 
-= Customize Your Text =
-All the text your users see can be **customized**. Everything from the text blocks throughout the quiz or survey to the submit button.
+= Question Types =
+You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, **polar** (slider) and **accept**. We release more questions types with every major release.
 
-= Different Types Of Questions =
-You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, and **accept**. More types are being supported in future updates!
+= Customize Results Based on Score =
+Using our quiz builder plugin, you can customize the results page based on the user's score. 
 
-= Multiple Results Pages For Each Quiz =
-Each quiz or survey can have **unlimited** results pages that can be customized with your text. Show different results pages based on the users score!
-
-= Emails After Completion Of Quiz And Survey =
+= Emails After Quiz =
 After the user takes a quiz or survey, you can have the plugin email you and the user with results. This too can be customized with your own text.
 
-= Very Flexible =
+= Flexibility =
 Your quiz or survey can be graded with an incorrect/correct system or a points-based system. Or not at all. You ask for contact information at the beginning or the end and you decide which contact fields are required. You can decide to use all the questions or only a select few chosen at random. You can also set the number of questions per page or have all the questions on one page.
 
 = Categories =
-You can assign categories to your questions. You can then show the user their score in a **particular** category or an average score of the categories.
+You can assign categories to your questions using our quiz maker plugin. You can then show the user their score in a **particular** category or an average score of the categories.
+
+= Countdown Timer =
+Add countdown timer to your quizzes and effectively create skills assessment or online exams on your website. 
+
+= Integrations = 
+You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Response to your quiz or surveys in order to create drip email campaigns and reachout to your audience. Checkout our [integrations](https://quizandsurveymaster.com/downloads/category/integrations/).
 
 = Other Useful Features =
 
@@ -56,11 +68,8 @@ You can assign categories to your questions. You can then show the user their sc
 * Create and display math formulas
 * And **Much** More...
 
-= Make Suggestions Or Contribute =
-Quiz And Survey Master is on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
-
-= Quiz And Survey Master Add-ons =
-While Quiz And Survey Master is fully functional and is packed full of features that will meet the needs of most, we do offer various extra features including:
+= [WordPress Quiz Plugin](https://quizandsurveymaster.com/) Addons =
+Quiz And Survey Master is fully functional and is packed with tons of features that will meet the needs of most, we do offer various extra features including:
 
 **Free Add-ons**
 
@@ -79,11 +88,16 @@ While Quiz And Survey Master is fully functional and is packed full of features 
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
-**About Us**
-QSM is a WordPress Quiz Plugin which is owned completely by [ExpressTech](https://expresstech.io)
+**Reachout to us**
+* You can contact our pro support via our [Contact Form](https://quizandsurveymaster.com/contact-support/) or use the WordPress form for free plugin support. We are equally active on both places.
+* Join our [official FB group](https://www.facebook.com/groups/516958552587745).
+* Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-**Facebook Group**
-Join our [offical FB group](https://www.facebook.com/groups/516958552587745) for quicker response time on your technical queries
+= Comparison with other Quiz Plugins =
+* Quiz cat (quizcat) - We offer a lot more questions types than just viral quiz and multiple choice. We provide a tons of integrations to help you automate your marketing campaign.
+* HD Quiz - Mainly used for viral and trivial questions types. We are in process of creating these question types.
+* WP Quiz Plugin - Again, mainly used for viral question types. We will release this by the end of this month.
+
 
 == Installation ==
 
@@ -120,6 +134,90 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.8 (November 18, 2020) =
+* Bug: Fixed required field not working while using Date question type.
+* Bug: Fixed the issue of right answers containing apostrophes marked as incorrect in Multiple Response/ Multiple Choice questions
+* Bug: Fixed incorrect message while using rich answer type while using Show results inline option.
+* Bug: Fixed CSS overlapping issue for quiz_section class while using auto pagination.
+* Bug: Fixed continuous loading of result page while using landing page addon.
+* Bug: Fixed number question type not being recorded while using Force submit after timer expires.
+* Enhancement: Allowed plus, dash, bracket and slash in phone contact field.
+* Enhancement: Added option to limit the characters in Number question type.
+
+= 7.1.7 (November 10, 2020) =
+* Bug: Fixed math formula not showing on result page.
+* Bug: Fixed incorrect results while using %POLL_RESULTS_X% template variable.
+* Bug: Fixed advanced timer not showing while questions per page option.
+* Bug: Fixed translation issue with string 'No Answer Provided'.
+
+= 7.1.6 (October 29, 2020) =
+* Bug: Fixed division by zero error while limiting number of questions.
+* Bug: Fixed inclusion  of  file upload question type in calculation of  average point and average category point.
+
+= 7.1.5 (October 26, 2020) =
+* Bug: Fixed  logic addon rules not being copied while duplicating quiz.
+* Bug: Fixed vietnamese accents and special characters not being recognized in quiz result page.
+* Bug: Fixed apostrophe and double quotes not working with Dropdown question type.
+* Bug: Fixed apostrophe being marked as incorrect for %USER_ANSWERS_DEFAULT% template variable.
+* Bug: Fixed question's answers being case sensitive while using %USER_ANSWERS_DEFAULT% template variable.
+* Bug: Fixed HTML codes appearing in email  while using rich answer type.
+* Bug: Fixed Polar question type scoring being rounded off to integers incorrectly.
+* Bug: Fixed timer not appearing while using retaking a quiz on result page.
+
+= 7.1.4 (October 06, 2020) =
+* Bug: Fixed point score issues when answer type is Rich Answer with HTML tags.
+* Enhancement: Added JS hook for quiz to enhance JS event.
+* Enhancement: Added .pot file to translate string into any language.
+* Enhancement: Added %POINT_SCORE% variable support in %QUESTIONS_ANSWERS% template variable.
+* Enhancement: Added option to display Correct Answer Info with inline result.
+
+= 7.1.3 (September 22, 2020) =
+* Bug: Fixed issues when email templates were not showing if classic editor was disabled.
+* Bug: Fixed the issue of Certificate Addon link not showing in admin result detail page issue.
+* Bug: Fixed point score calculation issue for rich answers.
+* Bug: Fixed the issue of question title  not showing on front while using captcha question type.
+* Bug: Fixed the issue of  Comment Field showing placeholder text  when the comment field is blank.
+* Bug: Removed unnecessary gap between question and answers in quiz result page.
+* Bug: Fixed the issue of text showing in the next line on mobile while using Fill in the blank question type.
+* Bug: Fixed the issue of  apostrophes showing backslash  in email content.
+* Bug: Fixed the issue of cloning of the question which was creating a blank answer
+* Bug: Fixed conflict between %QUESTION_ANSWER_X% variable and Extra Template Variables.
+* Bug: Fixed %QUESTION_ANSWER_X% variable content issue in email.
+* Enhancement: Implemented %CORRECT_SCORE% template variable score to round figure.
+* Enhancement: Added the option to disable scroll on click of next and previous button.
+* Enhancement: Added the option of Deleting a question from question bank while deleting the quiz.
+* Enhancement: Added a message when multiple choice limits are reached while using Multiple Response and Horizontal Multiple Response question type.
+
+= 7.1.2 (September 04, 2020) =
+* Bug: Fixed admin results page to make it compatible with new variable %QUESTIONS_ANSWERS_DEFAULT%.
+* Bug: Fixed issues with %QUESTIONS_ANSWERS_DEFAULT% variable in quiz result while using point based quiz.
+* Bug: Fixed validation issue on front end while using Deselect Answer option.
+* Bug: Fixed issues with inline results when there is extra spacing between words.
+* Enhancement: Added feature to show the uploaded file into media library for File Upload question type.
+
+= 7.1.1 (September 02, 2020) =
+* Bug: Fixed problem with questions on front end while using random questions option.
+* Bug: Fixed submit button overlapping issue with progress bar for auto pagination.
+* Bug: Fixed the UI of meta boxes on Dashboard Page, Tools Page and Help Page.
+
+= 7.1.0 (August 31, 2020) =
+* Enhancement: Added a new variable %USER_ANSWERS_DEFAULT% to improve default result page. All new quizzes will have this variable by default.
+* Enhancement: Created new %AMOUNT_INCORRECT% and %AMOUNT_ATTEMPTED% template variable to enhance the quiz result page.
+* Enhancement: Added time( hours and minute ) support in quiz start and end date.
+* Enhancement: Added option in setting menu to delete data related to QSM on deletion of plugin.
+* Enhancement: Added option in setting menu to enable/disable the Background Quiz Email Process.
+* Enhancement: Added qsm prefixes to email classes.
+* Enhancement: Added feature to view uploaded file in admin result page for File Upload question type.
+* Enhancement: Added option to show only title in quiz result page.
+* Enhancement: Added a button to view uploaded file in quiz result page and replaced the empty spaces in the uploaded file slug with dashes.
+* Enhancement: Added a check box to select/deselect question in Question Bank Popup.
+* Bug: Fixed issues where questions were not showing up in admin when there is no pages in quiz.
+* Bug: Fixed jquery error when editor is changed to text in Quiz text tab.
+* Bug: Fixed PHP 7.4 Sentry Issues while creating new quiz.
+* Bug: Fixed issues with Allowed file types while question editing.
+* Bug: Fixed submit button position for auto pagination.
+* Bug: Fixed issues with quiz loading when pagination is enabled.
 
 = 7.0.2 (August 18, 2020) =
 * Enhancement: Checked compatibility with WordPress 5.5.

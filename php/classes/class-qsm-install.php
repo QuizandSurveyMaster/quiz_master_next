@@ -503,6 +503,30 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
+    // Settings for quick result
+    $field_array = array(
+      'id' => 'enable_quick_correct_answer_info',
+      'label' => __('Show correct answer inline', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes When answer is correct', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('Yes Independent of correct/incorrect', 'quiz-master-next'),
+          'value' => 2
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        )
+      ),
+      'default' => 0,
+      'help' => __('Show correct user info when inline result is enabled.','quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     //Setting for retake quiz
     $field_array = array(
       'id' => 'enable_retake_quiz_button',
@@ -568,6 +592,25 @@ class QSM_Install {
       'label' => __('Disable description on quiz result page?', 'quiz-master-next'),
       'type' => 'radio',
       'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+          'label' => __('No', 'quiz-master-next'),
+          'value' => 0
+        ),
+      ),
+      'default' => 0,      
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
+    //Setting for pagination of quiz
+    $field_array = array(
+      'id' => 'disable_scroll_next_previous_click',
+      'label' => __('Disable scroll on next and previous button click?', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(
         array(
           'label' => __('Yes', 'quiz-master-next'),
           'value' => 1
@@ -865,12 +908,29 @@ class QSM_Install {
     // Registers question_answer_template setting
     $field_array = array(
       'id' => 'question_answer_template',
-      'label' =>  __("%QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
+      'label' =>  __("Results Page %QUESTIONS_ANSWERS% Text", 'quiz-master-next'),
       'type' => 'editor',
       'default' => 0,
       'variables' => array(
         '%QUESTION%',
         '%USER_ANSWERS_DEFAULT%',
+        '%USER_ANSWER%',
+        '%CORRECT_ANSWER%',
+        '%USER_COMMENTS%',
+        '%CORRECT_ANSWER_INFO%',
+        '%QUESTION_POINT_SCORE%'
+      )
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+    
+    // Registers question_answer_template setting
+    $field_array = array(
+      'id' => 'question_answer_email_template',
+      'label' =>  __("%QUESTIONS_ANSWERS_EMAIL% Text", 'quiz-master-next'),
+      'type' => 'editor',
+      'default' => '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%',
+      'variables' => array(
+        '%QUESTION%',        
         '%USER_ANSWER%',
         '%CORRECT_ANSWER%',
         '%USER_COMMENTS%',
@@ -1201,6 +1261,7 @@ class QSM_Install {
   			question_settings TEXT NOT NULL,
   			category TEXT NOT NULL,
   			deleted INT NOT NULL,
+  			deleted_question_bank INT NOT NULL,
   			PRIMARY KEY  (question_id)
   		) $charset_collate;";
 

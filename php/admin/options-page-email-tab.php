@@ -31,9 +31,11 @@ function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( $_GET['quiz_id'] );
+        $user_id = get_current_user_id();
 	$js_data = array(
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
+                'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
 	);
 	wp_enqueue_script( 'qsm_emails_admin_script', plugins_url( '../../js/qsm-admin-emails.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_emails_admin_script', 'qsmEmailsObject', $js_data );
@@ -66,7 +68,7 @@ function qsm_options_emails_tab_content() {
 			<main class="qsm-email-content">
 				<div class="email-when">
 					<div class="email-content-header">
-						<h4><?php esc_html_e('When...', 'quiz-master-') ?></h4>
+						<h4><?php esc_html_e('When...', 'quiz-master-next') ?></h4>
 						<p><?php esc_html_e('Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next'); ?></p>
 					</div>
 					<div class="email-when-conditions">
@@ -109,6 +111,7 @@ function qsm_options_emails_tab_content() {
 				<?php do_action( 'qsm_email_condition_operator' ); ?>
 			</select>
 			<input type="text" class="email-condition-value" value="{{ data.value }}">
+			<?php do_action('qsm_email_condition_value'); ?>
 		</div>
 	</script>
         
@@ -118,7 +121,11 @@ function qsm_options_emails_tab_content() {
                 <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
                     <header class="qsm-popup__header" style="display: block;">
                             <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description"><?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz. <br/><b>Note:</b> Always use uppercase while using these variables.', 'quiz-master-next'); ?></span>
+                            <span class="description">
+                                <?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
+                                <br/><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
+                                <?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
+                            </span>
                     </header>
                     <main class="qsm-popup__content" id="show-all-variable-content">
                         <?php
@@ -126,16 +133,19 @@ function qsm_options_emails_tab_content() {
                         $email_exta_variable = array(
                             '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
                             '%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next')
+                            '%QUESTION_ANSWER_X%' => __('X = Question ID. It will show result of particular question.', 'quiz-master-next'),
+                            '%QUESTIONS_ANSWERS_EMAIL%' => __('Shows the question, the answer provided by user, and the correct answer', 'quiz-master-next')
                         );  
                         $variable_list = array_merge($email_exta_variable, $variable_list);
                         $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
                         unset($variable_list['%QUESTION%']);
                         unset($variable_list['%USER_ANSWER%']);
                         unset($variable_list['%USER_ANSWERS_DEFAULT%']);
+                        unset($variable_list['%QUESTION_POINT_SCORE%']);
                         unset($variable_list['%CORRECT_ANSWER%']);
                         unset($variable_list['%USER_COMMENTS%']);
                         unset($variable_list['%CORRECT_ANSWER_INFO%']);
+                        unset($variable_list['%QUESTIONS_ANSWERS%']);
                         if( $variable_list ){
                             foreach ( $variable_list as $key => $s_variable ) { ?>
                                 <div class="popup-template-span-wrap">

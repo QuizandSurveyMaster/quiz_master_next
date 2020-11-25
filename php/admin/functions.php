@@ -106,6 +106,24 @@ function qsm_add_author_column_in_db() {
             }            
             update_option('qsm_update_result_db_column_datatype', '1');
         }
+        
+        /**
+         * Add new column in question table
+         * @since 7.0.3
+         */
+        if( get_option('qsm_add_new_column_question_table_table', '1') <= 3 ){            
+            $total_count_val = get_option('qsm_add_new_column_question_table_table', '1');            
+            global $wpdb;
+            $question_table_name = $wpdb->prefix . "mlw_questions";
+            $table_result_col_obj = $wpdb->get_results( $wpdb->prepare(
+                'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ', $wpdb->dbname, $question_table_name, 'deleted_question_bank' 
+            ) );
+            if ( empty( $table_result_col_obj ) ) {
+                $wpdb->query("ALTER TABLE $question_table_name ADD deleted_question_bank INT NOT NULL");
+            }
+            $inc_val = $total_count_val + 1;            
+            update_option('qsm_add_new_column_question_table_table', $inc_val);
+        }
 }
 
 
@@ -573,6 +591,7 @@ function qsm_text_template_variable_list(){
         '%USER_COMMENTS%' => __('The comments the user provided in the comment field for the question', 'quiz-master-next'),
         '%CORRECT_ANSWER_INFO%' => __('Reason why the correct answer is the correct answer', 'quiz-master-next'),
         '%CURRENT_DATE%' => __('The Current Date', 'quiz-master-next'),
+        '%QUESTION_POINT_SCORE%' => __('Point Score of the question', 'quiz-master-next'),
     );
     $variable_list = apply_filters('qsm_text_variable_list', $variable_list);
     return $variable_list;

@@ -130,7 +130,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }   
 .quiz_section .mlw_qmn_new_question{
     font-weight: bold;
-    display: inline-block;
+    display: inline;
     width: auto;
     margin-bottom: 10px;
 }
@@ -228,9 +228,32 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     height: auto;
     padding: 0;
     position: absolute;
+    z-index: 1;
+    margin-bottom: 15px;
 }
-.qmn_quiz_container.qsm_auto_pagination_enabled .quiz_section:not(.quiz_begin) {
-    display: none;
+.quiz_section input[type="text"].qmn_fill_blank{
+    display: inline-block;
+}
+.qmn_quiz_container .mlw_previous{
+    margin-bottom: 15px;
+}
+.multi-checkbox-limit-reach{
+    color: red;
+    margin-top: 5px;
+    display: inline-block;
+	width: 100%;
+}
+.quiz_section .qsm-inline-correct-info{
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+.quiz_section.qmn_error .mlw_answer_date{
+    border: 1px solid #da4f49;
+    background: #F2DEDE;
+    padding: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
