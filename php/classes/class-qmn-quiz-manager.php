@@ -270,7 +270,7 @@ class QMNQuizManager {
 			if (is_user_logged_in()) {
 				$current_user_id = get_current_user_id();
 				$user = get_user_by('id', $current_user_id);
-				$old_unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$quiz}' AND `user`='{$current_user_id}' AND `active`='1'");
+				$old_unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$quiz}' AND `user`='{$current_user_id}' AND `active`='1' AND `deleted`='0'");
 				if (!empty($old_unique_id)) {
 					$page_arg['autosave_id'] = $old_unique_id;
 				}
@@ -1255,16 +1255,14 @@ class QMNQuizManager {
 			$starttime = date('Y-m-d H:i:s', (strtotime($endtime) - intval($qmn_array_for_variables['timer'])));
 			if (isset($qmn_array_for_variables['save_page']) && $qmn_array_for_variables['save_page']) {
 				$active = 1;
-				$unique_id = (isset($qmn_array_for_variables['autosave_id']) ? $qmn_array_for_variables['autosave_id'] : $unique_id);
 				if (isset($_SESSION['qsm_quiz_time_' . $quiz_id]) && $_SESSION['qsm_quiz_time_' . $quiz_id] > 0) {
 					$starttime = $_SESSION['qsm_quiz_time_' . $quiz_id];
 				}
-				if (isset($_SESSION['qsm_quiz_result_' . $quiz_id]) && $_SESSION['qsm_quiz_result_' . $quiz_id] > 0) {
-					$results_id = $_SESSION['qsm_quiz_result_' . $quiz_id];
-					$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `result_id`='{$results_id}'");
-					if (!empty($savedResult)) {
-						$isUpdate = true;
-					}
+				$unique_id = (isset($qmn_array_for_variables['autosave_id']) ? $qmn_array_for_variables['autosave_id'] : $unique_id);
+				$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `unique_id`='{$unique_id}'");
+				if (!empty($savedResult)) {
+					$results_id = $savedResult->result_id;
+					$isUpdate = true;
 				}
 				$send_mail = false;
 				if ($qmn_array_for_variables['last_page']) {
@@ -2170,7 +2168,7 @@ class QMNQuizManager {
 		$table_name = $wpdb->prefix . "mlw_autosave";
 		$quiz_id = isset($_POST['quiz_id']) ? sanitize_text_field($_POST['quiz_id']) : 0;
 		$unique_id = isset($_POST['unique_id']) ? $_POST['unique_id'] : '';
-		$get_data = $wpdb->get_row("SELECT `quiz_data` FROM `{$table_name}` WHERE `unique_id` = '{$unique_id}' AND `quiz_id`='{$quiz_id}'");
+		$get_data = $wpdb->get_row("SELECT `quiz_data` FROM `{$table_name}` WHERE `unique_id`='{$unique_id}' AND `quiz_id`='{$quiz_id}'");
 		if (!empty($get_data)) {
 			$quiz_data = $get_data->quiz_data;
 			parse_str($quiz_data, $params);
