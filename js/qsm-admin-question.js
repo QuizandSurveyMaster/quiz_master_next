@@ -69,17 +69,26 @@ var import_button;
                         });
 		},
 		loadQuestionBank: function( action = '' ) {
-                        if( action == 'change' ){
-                            $( '.qb-load-more-wrapper' ).remove();
-                            $( '#question-bank' ).find( '.question-bank-question' ).remove();
-                            $( '#question-bank' ).append( '<div style="top: 45px;position: relative;" class="qsm-spinner-loader"></div>' );
-                        }else if($('.qb-load-more-wrapper').length > 0){
-                            $( '.qb-load-more-question' ).hide();
-                            $( '.qb-load-more-wrapper' ).append( '<div class="qsm-spinner-loader"></div>' );
-                        }else{
-                            $( '#question-bank' ).empty();
-                            $( '#question-bank' ).append( '<div class="qsm-spinner-loader"></div>' );
-                        }			
+
+			//added by ankit
+			var ajax_quiz_id=0;
+			if( $('#question-bank-quiz').val()!==undefined){
+				var ajax_quiz_id=$('#question-bank-quiz').val();
+			}
+
+			localStorage.setItem("ajax_quiz_id", ajax_quiz_id);
+
+			if( action == 'change' ){
+				$( '.qb-load-more-wrapper' ).remove();
+				$( '#question-bank' ).find( '.question-bank-question' ).remove();
+				$( '#question-bank' ).append( '<div style="top: 45px;position: relative;" class="qsm-spinner-loader"></div>' );
+			}else if($('.qb-load-more-wrapper').length > 0){
+				$( '.qb-load-more-question' ).hide();
+				$( '.qb-load-more-wrapper' ).append( '<div class="qsm-spinner-loader"></div>' );
+			}else{
+				$( '#question-bank' ).empty();
+				$( '#question-bank' ).append( '<div class="qsm-spinner-loader"></div>' );
+			}			
 			$.ajax( {
 				url: wpApiSettings.root + 'quiz-survey-master/v1/bank_questions/0/',
 				method: 'GET',
@@ -87,9 +96,9 @@ var import_button;
 					xhr.setRequestHeader( 'X-WP-Nonce', qsmQuestionSettings.nonce );
 				},
 				data: {
-					'quizID' : 0,
-                                        'page' : $('#question_back_page_number').length > 0 ? parseInt( $('#question_back_page_number').val() ) + 1 : 1,
-                                        'category' : $('#question-bank-cat').val()
+					'quiz_id' : ajax_quiz_id,
+					'page' : $('#question_back_page_number').length > 0 ? parseInt( $('#question_back_page_number').val() ) + 1 : 1,
+					'category' : $('#question-bank-cat').val()
 				},
 				success: QSMQuestion.questionBankLoadSuccess
 			});
@@ -120,8 +129,29 @@ var import_button;
                                     $cat_html += '<option value="'+ value.category +'">'+ value.category +' Questions</option>';
                             });
                             $cat_html += '</select>';
+							
+							
+							//added by ankit
+							$cat_html += '<select name="question-bank-quiz" id="question-bank-quiz">';
+							$cat_html += '<option value="">All Quizes</option>';
+							var all_quizes = qsmQuestionSettings.all_quizes;     
+                            $.each(all_quizes, function(index, valueq){
+								console.log(valueq);
+                                if(valueq.quiz_name !== '')
+                                    $cat_html += '<option value="'+ valueq.quiz_id +'">'+ valueq.quiz_name +' Quiz</option>';
+                            });
+                            $cat_html += '</select>';
+							//////////////////////////////////////////////
+
                             $( '#question-bank' ).prepend($cat_html);
-                            $('#question-bank-cat').val(pagination.category);
+							$('#question-bank-cat').val(pagination.category);
+
+							$('#question-bank-quiz').val("");
+							if(localStorage.getItem("ajax_quiz_id")!==undefined){
+								$('#question-bank-quiz').val(localStorage.getItem("ajax_quiz_id"));
+							}
+							
+							localStorage.removeItem("ajax_quiz_id");
                         }
                         if(pagination.current_page == 1){                            
                             $( '#question-bank' ).prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
@@ -244,6 +274,7 @@ var import_button;
 				qpages.push(pageInfo.attributes);
 			});
                         console.log(pages);
+						console.log(qsmQuestionSettings);
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
@@ -691,8 +722,14 @@ var import_button;
 			QSMQuestion.loadQuestionBank();
 		});
                 
-                //Show category related question
-                $( document ).on( 'change', '#question-bank-cat', function( event ) {
+		//Show category related question
+		$( document ).on( 'change', '#question-bank-cat', function( event ) {
+			event.preventDefault();
+			QSMQuestion.loadQuestionBank('change');
+		});
+
+		//Show category related quiz---added by ankit
+		$( document ).on( 'change', '#question-bank-quiz', function( event ) {
 			event.preventDefault();
 			QSMQuestion.loadQuestionBank('change');
 		});

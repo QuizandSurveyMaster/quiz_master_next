@@ -92,7 +92,14 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         $category_query = '';
         if($category){
             $category_query = ' AND category = "' . $category . '"';
+		}
+		
+		//added by ankit
+		$quiz_id = isset($_REQUEST['quiz_id']) ? $_REQUEST['quiz_id'] : '';
+        if($quiz_id){
+            $category_query .= ' AND quiz_id = "' . $quiz_id . '"';
         }
+
         $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'$category_query", 'ARRAY_A' );
         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
         $settings   = (array) get_option( 'qmn-settings' );        
