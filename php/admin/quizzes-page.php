@@ -70,8 +70,9 @@ function qsm_generate_quizzes_surveys_page() {
     
     //Pagination.    
     $paged = filter_input(INPUT_GET, 'paged') ? absint(filter_input(INPUT_GET, 'paged')) : 1;
+    /* //Not required already checked above as integer.(AA)
     if (!is_numeric($paged))
-        $paged = 1;
+        $paged = 1;*/
     $limit = 10; // number of rows in page.
     
     $current_user = get_current_user_id();
@@ -118,9 +119,9 @@ function qsm_generate_quizzes_surveys_page() {
             }
         }
     }
-    
-    if (isset($_REQUEST['s']) && $_REQUEST['s'] != '') {
-        $search = $_REQUEST['s'];
+    /*Set Request To Post as form method is Post.(AA)*/
+    if (isset($_POST['btnSearchQuiz']) && $_POST['s'] != '') {
+        $search = $_POST['s'];
         $condition = " WHERE deleted='0' AND quiz_name LIKE '%$search%'";        
         $qry = "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes" . $condition;
         $total = $wpdb->get_var($qry);
@@ -134,20 +135,17 @@ function qsm_generate_quizzes_surveys_page() {
     //Next and previous page.
     $next_page = (int) $paged + 1;
 
-    if ($next_page > $num_of_pages)
+    if ($next_page > $num_of_pages){
         $next_page = $num_of_pages;
+    }
 
     $prev_page = (int) $paged - 1;
 
-    if ($prev_page < 1)
+    if ($prev_page < 1){
         $prev_page = 1;
+    }
 
-    //Query for post
-    $post_arr = array(
-        'post_type' => 'qsm_quiz',
-        'posts_per_page' => -1,
-        'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
-    );
+   
     //Check user role and fetch the quiz
     $user = wp_get_current_user();
     if (in_array('author', (array) $user->roles)) {
@@ -167,9 +165,24 @@ function qsm_generate_quizzes_surveys_page() {
         // Load our quizzes.
         $quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes(false, '', '', (array) $user->roles, $user->ID, $limit, $offset, $where);
     }
+    /*Written to get results form search.(AA)*/
+    if (isset($_POST['btnSearchQuiz']) && $_POST['s'] != '') {
+        $search_quiz = $_POST['s'];
+        $condition = " WHERE quiz_name LIKE '%$search_quiz%'";        
+        $qry = "SELECT * FROM {$wpdb->prefix}mlw_quizzes" . $condition;
+        $quizzes = $wpdb->get_results($qry );
+
+    }
 
     // Load quiz posts.
     $post_to_quiz_array = array();
+     //Query for post
+    $post_arr = array(
+        'post_type' => 'qsm_quiz',
+        'paged' => $paged,
+        'posts_per_page' => -1,
+        'post_status' => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private')
+    );
     $my_query = new WP_Query($post_arr);
 
     if ($my_query->have_posts()) {
@@ -218,6 +231,7 @@ function qsm_generate_quizzes_surveys_page() {
         );
     }
     $total_count = count($quiz_json_array);
+
     wp_localize_script('qsm_admin_script', 'qsmQuizObject', $quiz_json_array);
     ?>
     <div class="wrap qsm-quizes-page">
@@ -247,7 +261,8 @@ function qsm_generate_quizzes_surveys_page() {
                 ?>">
                     <p class="search-box">
                         <label class="screen-reader-text" for="quiz_search"><?php esc_html_e('Search', 'quiz-master-next'); ?></label>
-                        <input type="search" id="quiz_search" name="s" value="<?php echo isset($_REQUEST['s']) && $_REQUEST['s'] != '' ? $_REQUEST['s'] : ''; ?>">
+                        <!-- Changed Request to Post -->
+                        <input type="search" id="quiz_search" name="s" value="<?php echo isset($_POST['s']) && $_POST['s'] != '' ? $_POST['s'] : ''; ?>">
                         <input id="search-submit" class="button" type="submit" name="btnSearchQuiz" value="Search Quiz">
                         <?php if (class_exists('QSM_Export_Import')) { ?>
                             <a class="button button-primary" href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>" target="_blank"><?php _e('Import & Export', 'quiz-master-next'); ?></a>
@@ -386,6 +401,7 @@ function qsm_generate_quizzes_surveys_page() {
                                     </tr>
                                 <?php
                                 }
+
                             }else{ ?>
                                 <tr>
                                     <td colspan="6" style="text-align: center;">
@@ -542,8 +558,8 @@ function qsm_generate_quizzes_surveys_page() {
                         <h2 class="qsm-popup__title" id="modal-5-title"><?php _e('Extend QSM', 'quiz-master-next'); ?></h2>
                         <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
                     </header>
-                    <main class="qsm-popup__content" id="modal-5-content">						
-                        <h3><b><?php _e('Export functionality is provided as Premium addon.', 'quiz-master-next'); ?></b></h3>													
+                    <main class="qsm-popup__content" id="modal-5-content">                      
+                        <h3><b><?php _e('Export functionality is provided as Premium addon.', 'quiz-master-next'); ?></b></h3>                                                  
                     </main>
                     <footer class="qsm-popup__footer">
                         <a style="color: white;    text-decoration: none;" href="https://quizandsurveymaster.com/downloads/export-import/" target="_blank" class="qsm-popup__btn qsm-popup__btn-primary"><?php _e('Buy Now', 'quiz-master-next'); ?></a>
