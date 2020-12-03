@@ -88,12 +88,17 @@ function qsm_register_rest_routes() {
 function qsm_rest_get_bank_questions( WP_REST_Request $request ){
     if(is_user_logged_in()){
         global $wpdb;
-        $category = isset($_REQUEST['category']) ? $_REQUEST['category'] : '';
+		$category = isset($_REQUEST['category']) ? $_REQUEST['category'] : '';
+		$quizID_filter = isset($_REQUEST['quizID']) ? $_REQUEST['quizID'] : 0;
+		$quizID_query = '';
+        if($quizID_filter){
+            $quizID_query = ' AND quiz_id = "' . $quizID_filter . '" ';
+        }
         $category_query = '';
         if($category){
-            $category_query = ' AND category = "' . $category . '"';
+            $category_query = ' AND category = "' . $category . '" ';
         }
-        $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'$category_query", 'ARRAY_A' );
+        $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0' $quizID_query  $category_query", 'ARRAY_A' );
         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
         $settings   = (array) get_option( 'qmn-settings' );        
         $limit = 20;
@@ -104,13 +109,14 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         $total_pages = ceil($total_count / $limit);
         $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;        
         $offset = ($pageno-1) * $limit;
-        $questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'$category_query ORDER BY question_order ASC LIMIT $offset, $limit", 'ARRAY_A' );
+        $questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'  $quizID_query  $category_query ORDER BY question_order ASC LIMIT $offset, $limit", 'ARRAY_A' );
         $quiz_table = $wpdb->prefix . 'mlw_quizzes';
         $question_array = array();        
         $question_array['pagination'] = array(
                 'total_pages' => $total_pages,
                 'current_page' => $pageno,
-                'category' => $category
+				'category' => $category,
+				'quizID' =>$quizID_filter
         );        
         
         $question_array['questions'] = array();

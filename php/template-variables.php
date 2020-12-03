@@ -1008,6 +1008,10 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     //Point score of the particular question.
     $question_point = isset( $answer['points'] ) ? $answer['points'] : '0';
     $mlw_question_answer_display = str_replace("%QUESTION_POINT_SCORE%", htmlspecialchars_decode($question_point, ENT_QUOTES), $mlw_question_answer_display);
+	
+	$question_max_point = qsm_get_question_maximum_points($questions[$answer['id']]);
+	$mlw_question_answer_display = str_replace("%QUESTION_MAX_POINTS%", $question_max_point, $mlw_question_answer_display);
+	
     $mlw_question_answer_display = wp_kses_post($mlw_question_answer_display);
     if ($total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
         $extra_border_bottom_class = 'qsm-remove-border-bottom';
@@ -1015,4 +1019,25 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
 	$mlw_question_answer_display = apply_filters('qsm_question_answers_template_variable', $mlw_question_answer_display, $mlw_quiz_array, $answer);
     $display = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters('qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array) . '</div>';
     return $display;
+}
+function qsm_get_question_maximum_points($question = array()) {
+	$question_max_point = 0;
+	if (!empty($question) && isset($question['answers'])) {
+		$answer_points = array(0);
+		foreach ($question['answers'] as $ans) {
+			if (isset($ans[1])) {
+				$answer_points[] = intval($ans[1]);
+			}
+		}
+		$question_max_point = max($answer_points);
+		if ($question['question_type_new'] == 4 || $question['question_type_new'] == 10) {
+			$limit_multiple_response = (isset($question['settings']['limit_multiple_response'])) ? intval($question['settings']['limit_multiple_response']) : 0;
+			if ($limit_multiple_response > 0 && count($answer_points) > $limit_multiple_response) {
+				rsort($answer_points);
+				$answer_points = array_slice($answer_points, 0, $limit_multiple_response, true);
+			}
+			$question_max_point = array_sum($answer_points);
+		}
+	}
+	return $question_max_point;
 }

@@ -87,7 +87,7 @@ var import_button;
 					xhr.setRequestHeader( 'X-WP-Nonce', qsmQuestionSettings.nonce );
 				},
 				data: {
-					'quizID' : 0,
+					'quizID' : $('#question-bank-quiz-name').val(),
                                         'page' : $('#question_back_page_number').length > 0 ? parseInt( $('#question_back_page_number').val() ) + 1 : 1,
                                         'category' : $('#question-bank-cat').val()
 				},
@@ -110,7 +110,21 @@ var import_button;
                             pagination_html += '<input type="hidden" id="question_back_total_pages" value="'+ pagination.total_pages +'"/>';
                             pagination_html += '<a href="#" class="button button-primary qb-load-more-question">Load More Questions</a></div>';
                             $( '#question-bank' ).append( pagination_html );
-                        }                        
+						}    
+						  
+						if(pagination.current_page == 1 && qsmQuestionSettings.quiz_name_list.length > 0){
+                            var quiz_name_list = qsmQuestionSettings.quiz_name_list;                            
+                            quiz_name_html = '<select name="question-bank-quiz-name" id="question-bank-quiz-name">';
+                            quiz_name_html += '<option value="0">All Quiz</option>';
+                            $.each(quiz_name_list, function(index, value){
+                                if(value.quiz_name !== '')
+                                    quiz_name_html += '<option value="'+ value.quiz_id +'">'+ value.quiz_name +'</option>';
+                            });
+                            quiz_name_html += '</select>';
+                            $( '#question-bank' ).prepend(quiz_name_html);
+                            $('#question-bank-quiz-name').val(pagination.quizID);
+						}       
+						           
                         if(pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0){
                             var category_arr = qsmQuestionSettings.categories;                            
                             $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
@@ -693,6 +707,12 @@ var import_button;
                 
                 //Show category related question
                 $( document ).on( 'change', '#question-bank-cat', function( event ) {
+			event.preventDefault();
+			QSMQuestion.loadQuestionBank('change');
+		});
+
+		//Show quizID related question
+        $( document ).on( 'change', '#question-bank-quiz-name', function( event ) {
 			event.preventDefault();
 			QSMQuestion.loadQuestionBank('change');
 		});

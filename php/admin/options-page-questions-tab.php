@@ -31,7 +31,8 @@ function qsm_options_questions_tab_content() {
 
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
+    $question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
+    $question_quiz_name = $wpdb->get_results( "SELECT quiz_id,quiz_name FROM {$wpdb->prefix}mlw_quizzes", 'ARRAY_A' );
 	$quiz_id = intval( $_GET['quiz_id'] );
 	$user_id = get_current_user_id();  
 	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
@@ -62,7 +63,8 @@ function qsm_options_questions_tab_content() {
 		'qpages' => $qpages,
 		'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
 		'saveNonce' => wp_create_nonce('ajax-nonce-sandy-page'),
-		'categories' => $question_categories,
+        'categories' => $question_categories,
+        'quiz_name_list'=>$question_quiz_name,
 		'form_type' => $form_type,
 		'quiz_system' => $quiz_system,
                 'hide_desc_text' => __('Less Description', 'quiz-master-next'),
