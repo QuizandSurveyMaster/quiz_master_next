@@ -903,7 +903,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                     }
                 } else if (isset($answer['question_type']) && $answer['question_type'] == 11) {
                     $file_extension = substr($answer[1], -4);
-                    if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+                    if ($file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif') {
                         $question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
                     } else {
                         $question_with_answer_text .= "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>';
@@ -973,7 +973,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
             } else {
                 if (isset($answer['question_type']) && $answer['question_type'] == 11) {
                     $file_extension = substr($answer[1], -4);
-                    if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+                    if ($file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif') {
                         $question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
                     } else {
                         $question_with_answer_text .= "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>';
@@ -987,7 +987,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     }
     if (isset($answer['question_type']) && $answer['question_type'] == 11) {
         $file_extension = substr($answer[1], -4);
-        if ($file_extension == '.jpg' || $file_extension == 'jepg' || $file_extension == '.png' || $file_extension == '.gif') {
+        if ($file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif') {
             $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display);
         } else {
             $mlw_question_answer_display = str_replace("%USER_ANSWER%", "<span class='$user_answer_class'>" . trim(htmlspecialchars_decode($answer[1], ENT_QUOTES)) . '</span>', $mlw_question_answer_display);
