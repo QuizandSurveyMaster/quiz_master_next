@@ -182,7 +182,7 @@ class QMNQuizManager {
     public function qsm_get_question_quick_result(){
         global $wpdb;
         $question_id = isset($_POST['question_id']) ? intval($_POST['question_id']) : 0;
-        $answer = isset( $_POST['answer'] ) ? wp_kses_post( $_POST['answer'] ) : '';
+        $answer = isset( $_POST['answer'] ) ? stripslashes_deep( $_POST['answer'] ) : '';
         $question_array = $wpdb->get_row( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
         $correct_info_text = isset( $question_array['question_answer_info'] ) ? $question_array['question_answer_info'] : '';
@@ -190,8 +190,8 @@ class QMNQuizManager {
         $got_ans = false;
         $correct_answer = false;
         if($answer_array && $got_ans === false){
-            foreach ($answer_array as $key => $value) {                
-                if( htmlspecialchars_decode( $value[0], ENT_QUOTES ) == $answer && $value[2] == 1 ){
+            foreach ($answer_array as $key => $value) {             
+                if( esc_html( $value[0]) == esc_html($answer) && $value[2] == 1 ){
                     $got_ans = true;
                     $correct_answer = true;
                     break;
