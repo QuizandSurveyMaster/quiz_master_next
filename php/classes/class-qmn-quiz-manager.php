@@ -185,7 +185,7 @@ class QMNQuizManager {
         $answer = isset( $_POST['answer'] ) ? stripslashes_deep( $_POST['answer'] ) : '';
         $question_array = $wpdb->get_row( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
-        $correct_info_text = isset( $question_array['question_answer_info'] ) ? $question_array['question_answer_info'] : '';
+        $correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
         $show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( $_POST['show_correct_info'] ) : 0;
         $got_ans = false;
         $correct_answer = false;
