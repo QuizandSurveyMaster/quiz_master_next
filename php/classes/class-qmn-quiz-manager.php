@@ -906,9 +906,7 @@ class QMNQuizManager {
         $pages_count = 1;
         $current_page_number = 1;
         foreach ($qmn_quiz_questions as $mlw_question) {
-            if( $pagination_optoin == 0 ){
-                $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
-            } else {
+            if( $pagination_optoin != 0 ){
                 if( $pagination_optoin == 1 ){
                     $question_display .='<div class="qsm-auto-page-row qsm-apc-' . $current_page_number . '" style="display: none;">';
                     $current_page_number++;
@@ -918,12 +916,9 @@ class QMNQuizManager {
                         $current_page_number++;
                     }
                 }
-            }                 
+            }
             $question_id_list .= $mlw_question->question_id . "Q";
-            $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-            
-            $question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
-
+			$question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
 
             if (0 == $mlw_question->comments) {
@@ -940,14 +935,15 @@ class QMNQuizManager {
                 $question_display .= "<div title=\"" . esc_attr(htmlspecialchars_decode($mlw_question->hints, ENT_QUOTES)) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
                 $question_display .= "<br /><br />";
             }
-            $question_display .= "</div>";
+			$question_display .= '</div><!-- .quiz_section -->';
             if( $pagination_optoin == 0 ){
-                $question_display .= '</div><!-- .quiz_section -->';
+				
             } else if( $pagination_optoin == 1 ){
                 $question_display .= '</div><!-- .qsm-auto-page-row -->';
             }else if ($pages_count % $pagination_optoin == 0 || $pages_count == count($qmn_quiz_questions)) { // end of the row or last
                 $question_display .= '</div><!-- .qsm-auto-page-row -->';
             }
+            $mlw_qmn_section_count = $mlw_qmn_section_count + 1;
             $pages_count++;
         }
         if($enable_pagination_quiz){
