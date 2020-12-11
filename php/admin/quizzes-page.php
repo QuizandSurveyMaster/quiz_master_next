@@ -216,15 +216,19 @@ function qsm_generate_quizzes_surveys_page() {
             );
         }
 
+		$quiz_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' AND `quiz_id`='{$quiz->quiz_id}'" );
+
         $activity_date = date_i18n(get_option('date_format'), strtotime($quiz->last_activity));
         $activity_time = date('h:i:s A', strtotime($quiz->last_activity));
+
         $quiz_json_array[] = array(
             'id' => $quiz->quiz_id,
             'name' => esc_html($quiz->quiz_name),
             'link' => $post_to_quiz_array[$quiz->quiz_id]['link'],
             'postID' => $post_to_quiz_array[$quiz->quiz_id]['id'],
             'views' => $quiz->quiz_views,
-            'taken' => $quiz->quiz_taken,
+            /*'taken' => $quiz->quiz_taken,*/
+            'taken' => $quiz_results_count,
             'lastActivity' => $activity_date,
             'lastActivityDateTime' => $activity_date . ' ' . $activity_time,
             'post_status' => $post_to_quiz_array[$quiz->quiz_id]['post_status'],
