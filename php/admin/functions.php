@@ -576,6 +576,7 @@ function qsm_text_template_variable_list(){
         '%USER_PHONE%' => __('The phone number the user entered before the quiz', 'quiz-master-next'),
         '%USER_EMAIL%' => __('The email the user entered before the quiz', 'quiz-master-next'),
         '%QUIZ_NAME%' => __('The name of the quiz', 'quiz-master-next'),
+        '%QUIZ_LINK%' => __('The link of the quiz', 'quiz-master-next'),
         '%QUESTIONS_ANSWERS%' => __('Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next'),
         '%COMMENT_SECTION%' => __('The comments the user entered into comment box if enabled', 'quiz-master-next'),
         '%TIMER%' => __('The amount of time user spent on quiz in seconds', 'quiz-master-next'),
@@ -593,6 +594,9 @@ function qsm_text_template_variable_list(){
         '%CURRENT_DATE%' => __('The Current Date', 'quiz-master-next'),
         '%QUESTION_POINT_SCORE%' => __('Point Score of the question', 'quiz-master-next'),
         '%QUESTION_MAX_POINTS%' => __('Maximum points of the question', 'quiz-master-next'),
+		'%FACEBOOK_SHARE%' => __('Displays button to share on Facebook.', 'quiz-master-next'),
+		'%TWITTER_SHARE%' => __('Displays button to share on Twitter.', 'quiz-master-next'),
+		'%RESULT_LINK%' => __('The link of the result page.', 'quiz-master-next'),
     );
     $variable_list = apply_filters('qsm_text_variable_list', $variable_list);
     return $variable_list;

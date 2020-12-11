@@ -126,8 +126,6 @@ function qsm_options_results_tab_content() {
                         );  
                         $variable_list = array_merge($email_exta_variable, $variable_list);
                         $variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __('X: Category name - The average amount of points a specific category earned.', 'quiz-master-next');
-                        $variable_list['%FACEBOOK_SHARE%'] = __('Displays button to share on Facebook.', 'quiz-master-next');
-                        $variable_list['%TWITTER_SHARE%'] = __('Displays button to share on Twitter.', 'quiz-master-next');
                         $variable_list['%POLL_RESULTS_X%'] = __('X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next');
                         $variable_list['%RESULT_ID%'] = __('Show result id', 'quiz-master-next');
                         $variable_list['%QUESTION_ANSWER_X%'] = __('X = Question ID. It will show result of particular question.', 'quiz-master-next');

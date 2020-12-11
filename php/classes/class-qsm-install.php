@@ -822,7 +822,10 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
-        '%CURRENT_DATE%'
+        '%QUIZ_LINK%',
+        '%CURRENT_DATE%',
+		'%FACEBOOK_SHARE%',
+		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -835,7 +838,10 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
-        '%CURRENT_DATE%'
+        '%QUIZ_LINK%',
+        '%CURRENT_DATE%',
+		'%FACEBOOK_SHARE%',
+		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -848,7 +854,10 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
-        '%CURRENT_DATE%'
+        '%QUIZ_LINK%',
+        '%CURRENT_DATE%',
+		'%FACEBOOK_SHARE%',
+		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -861,6 +870,7 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
+        '%QUIZ_LINK%',
         '%CURRENT_DATE%'
       )
     );
@@ -874,7 +884,10 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
-        '%CURRENT_DATE%'
+        '%QUIZ_LINK%',
+        '%CURRENT_DATE%',
+		'%FACEBOOK_SHARE%',
+		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -887,7 +900,10 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
-        '%CURRENT_DATE%'
+        '%QUIZ_LINK%',
+        '%CURRENT_DATE%',
+		'%FACEBOOK_SHARE%',
+		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -900,6 +916,7 @@ class QSM_Install {
       'default' => 0,
       'variables' => array(
         '%QUIZ_NAME%',
+        '%QUIZ_LINK%',
         '%CURRENT_DATE%'
       )
     );
@@ -955,6 +972,8 @@ class QSM_Install {
         '%TOTAL_QUESTIONS%',
         '%CORRECT_SCORE%',
         '%QUIZ_NAME%',
+        '%QUIZ_LINK%',
+        '%RESULT_LINK%',
         '%TIMER%',
         '%CURRENT_DATE%'
       )
@@ -974,6 +993,8 @@ class QSM_Install {
         '%TOTAL_QUESTIONS%',
         '%CORRECT_SCORE%',
         '%QUIZ_NAME%',
+        '%QUIZ_LINK%',
+        '%RESULT_LINK%',
         '%TIMER%',
         '%CURRENT_DATE%'
       )

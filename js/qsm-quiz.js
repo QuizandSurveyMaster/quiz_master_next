@@ -1325,6 +1325,27 @@ jQuery(function() {
 	jQuery(document).on('keyup', '.mlwPhoneNumber', function(e){
             this.value = this.value.replace(/[^- +()0-9\.]/g,'');
         });
+
+	jQuery(document).on('click', '.qsm_social_share_link', function (e) {
+		e.preventDefault();
+		var network = jQuery(this).attr('data-network');
+		var share_url = jQuery(this).attr('data-link');
+		var social_text = jQuery(this).attr('data-text');
+		var social_id = jQuery(this).attr('data-id');
+		var url = '';
+		if (network == 'facebook') {
+			url = "https://www.facebook.com/dialog/feed?" + "display=popup&" + "app_id=" + social_id +
+					"&" + "link=" + encodeURIComponent(share_url) + "&" + "name=" + social_text;
+		}
+		if (network == 'twitter') {
+			url = "https://twitter.com/intent/tweet?text=" + social_text;
+		}
+		var sTop = window.screen.height / 2 - (218);
+		var sLeft = window.screen.width / 2 - (313);
+		var sqShareOptions = "height=400,width=580,toolbar=0,status=0,location=0,menubar=0,directories=0,scrollbars=0,top=" + sTop + ",left=" + sLeft;
+		window.open(url, "Share", sqShareOptions);
+		return false;
+	});
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
