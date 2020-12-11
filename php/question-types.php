@@ -683,11 +683,13 @@ function qmn_large_open_display($id, $question, $answers)
   $question_display = '';
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_text');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
+  $limit_text_att = $limit_text ? "maxlength='". $limit_text ."' " : '';
   //$question_title = apply_filters('the_content', $question); 
   $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
   $question_display .= qsm_question_title_func($question, '', $new_question_title);
-  $question_display .= "<textarea class='mlw_answer_open_text $mlw_requireClass' cols='70' rows='5' name='question".$id."' /></textarea>";
+  $question_display .= "<textarea class='mlw_answer_open_text {$mlw_requireClass}' {$limit_text_att} cols='70' rows='5' name='question{$id}' /></textarea>";
   return apply_filters('qmn_large_open_display_front',$question_display,$id, $question, $answers);
 }
 
