@@ -1009,7 +1009,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
     $question_point = isset( $answer['points'] ) ? $answer['points'] : '0';
     $mlw_question_answer_display = str_replace("%QUESTION_POINT_SCORE%", htmlspecialchars_decode($question_point, ENT_QUOTES), $mlw_question_answer_display);
 	
-	$question_max_point = qsm_get_question_maximum_points($questions[$answer['id']]);
+	$question_max_point = (isset($questions[$answer['id']]) ? qsm_get_question_maximum_points($questions[$answer['id']]) : 0 );
 	$mlw_question_answer_display = str_replace("%QUESTION_MAX_POINTS%", $question_max_point, $mlw_question_answer_display);
 	
     $mlw_question_answer_display = wp_kses_post($mlw_question_answer_display);
