@@ -136,12 +136,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.1.9 (December 14, 2020) =
-* Bug: Fixed the issue of answers with apostrophe's not being  recognized as correct  in show results inline option.
-* Bug: Fixed the issue of inline results shown twice when  Random Questions are enabled.
-* Bug: Fixed the issue of  point score and maximum point variable not working.
-* Bug: Fixed the issue of only last answer displaying as correct when all the answers were marked correct.
+* Bug: Fixed the issue where answers with apostrophe's are not being recognized as correct.
+* Bug: Fixed the issue where inline are shown twice when Random Questions are enabled.
+* Bug: Fixed the issue with point score and maximum point variable
+* Bug: Fixed the issue where only last answer display as correct when all the answers were marked correct.
 * Enhancement: Added Limit Text option for paragraph question type.
-* Enhancement: Added an option to inserting a link in the Correct info.
+* Enhancement: Added an option for inserting a link in the Correct info.
 
 = 7.1.8 (November 18, 2020) =
 * Bug: Fixed required field not working while using Date question type.
