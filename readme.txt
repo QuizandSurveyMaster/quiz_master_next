@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.5.3
 Requires PHP: 5.4
-Stable tag: 7.1.8
+Stable tag: 7.1.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.9 (December 14, 2020) =
+* Bug: Fixed the issue where answers with apostrophe's are not being recognized as correct.
+* Bug: Fixed the issue where inline are shown twice when Random Questions are enabled.
+* Bug: Fixed the issue with point score and maximum point variable
+* Bug: Fixed the issue where only last answer display as correct when all the answers were marked correct.
+* Enhancement: Added Limit Text option for paragraph question type.
+* Enhancement: Added an option for inserting a link in the Correct info.
 
 = 7.1.8 (November 18, 2020) =
 * Bug: Fixed required field not working while using Date question type.
