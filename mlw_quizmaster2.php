@@ -318,3 +318,6 @@ global $mlwQuizMasterNext;
 $mlwQuizMasterNext = new MLWQuizMasterNext();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
 ?>
+
+
+
