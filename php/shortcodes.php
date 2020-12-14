@@ -242,3 +242,48 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options, $qmn_array_f
     }
     return $return_display;
 }
+
+function qsm_display_questions_points($attrs) {
+
+    $id = intval($attrs['quiz_id']);
+
+
+    $id = 3;
+   
+    global $wpdb;
+
+     $ans_tbl = $wpdb->prefix . 'mlw_questions';
+   
+    $query = "SELECT question_settings, answer_array FROM $ans_tbl WHERE quiz_id='".$id."'";
+    $question = $wpdb->get_results($query);
+    
+    $result = '<div class="outer-con">';
+    $i = 0;
+    $max = array();
+    foreach ($question as $que) {
+      
+            $question_settings = unserialize($que->question_settings );
+            $answer_array  = unserialize($que->answer_array  );
+           // print_r($answer_array);
+            foreach ($answer_array as $key => $value) {
+                array_push($max, max($value));
+                
+            }
+            $result .='<div class="question_title">
+                            <p>'.esc_html($question_settings['question_title']).'&nbsp;&nbsp;&nbsp;<span>Max Point :: <strong>'.max($max).'</strong></span></p>
+                            
+                        </div>';
+              
+                
+               
+                echo "</pre>";
+            
+        }
+    
+    if ($i == 0)
+        //$result .= __("No quiz found", 'quiz-master-next');
+    $result .= "</div>";
+    return $result;
+}
+
+add_shortcode('qsm_que_pt', 'qsm_display_questions_points');
