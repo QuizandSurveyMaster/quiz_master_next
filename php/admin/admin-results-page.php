@@ -160,9 +160,12 @@ function qsm_results_overview_tab_content() {
 		$sanitized_search_phrase = sanitize_text_field( $_GET['qsm_search_phrase'] );
 		$search_phrase_percents  = '%' . $wpdb->esc_like( $sanitized_search_phrase ) . '%';
 		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
-		$qsm_results_count       = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)", $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents ) );
+	}
+	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
+		$quiz_id       = intval( $_GET['quiz_id'] );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' AND `quiz_id`='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = '0'" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' {$search_phrase_sql}" );
 	}
 
 	// Gets the order by arg. Uses switch to create SQL to prevent SQL injection.

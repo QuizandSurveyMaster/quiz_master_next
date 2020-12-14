@@ -31,7 +31,6 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question{
     line-height: 20px;
 }
 
-
 .question-type-polar-s{
     display: inline-block !important;
     position: relative;
@@ -255,6 +254,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     -moz-border-radius: 3px;
     border-radius: 3px;
 }
+.qsm_social_share_link{display: inline-block;cursor: pointer;}
 @media screen and (max-width: 767px){
     .question-type-polar-s .left-polar-title,
     .question-type-polar-s .slider-main-wrapper,

@@ -143,60 +143,61 @@ function qmn_multiple_choice_display($id, $question, $answers)
 * @return $return_array Returns the graded question to the results page
 * @since 4.4.0
 */
-function qmn_multiple_choice_review($id, $question, $answers)
-{
+function qmn_multiple_choice_review($id, $question, $answers) {
 	global $mlwQuizMasterNext;
-  $return_array = array(
-    'points' => 0,
-    'correct' => 'incorrect',
-    'user_text' => '',
-    'correct_text' => ''
-  );
+	$return_array = array(
+		'points' => 0,
+		'correct' => 'incorrect',
+		'user_text' => '',
+		'correct_text' => ''
+	);
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
-  if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = $_POST["question".$id];
-    $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
-  } else {
-    $mlw_user_answer = " ";
-  }    
-  $return_array['user_text'] = stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );    
-  $rich_text_comapre = preg_replace("/\s+|\n+|\r/", ' ', htmlentities( $mlw_user_answer ));
-  foreach($answers as $answer){
-    if($answerEditor === 'rich'){
-        $answer_option = stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
-        $sinel_answer_cmp = preg_replace("/\s+|\n+|\r/", ' ', htmlentities( $answer_option ));
-        if ( $rich_text_comapre == $sinel_answer_cmp ){
-                $return_array["points"] = $answer[1];
-                $return_array["user_text"] = $answer[0];
-            if ($answer[2] == 1){
-                $return_array["correct"] = "correct";
-            }
-          }
-          if ($answer[2] == 1){
-            $return_array["correct_text"] = stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
-          }
-    } else {
-        $mlw_user_answer = '';
-        if ( isset( $_POST["question".$id] ) ) {
-            $mlw_user_answer = $_POST["question".$id];
-            $mlw_user_answer = trim( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) );
-            $mlw_user_answer = str_replace('\\', "", $mlw_user_answer);
-        }
-        $single_answer = trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
-        $single_answer = str_replace('\\', "", $single_answer);
-        if ( $mlw_user_answer == $single_answer ){
-            $return_array["points"] = $answer[1];
-            $return_array["user_text"] = $answer[0];
-            if ($answer[2] == 1){
-              $return_array["correct"] = "correct";
-            }
-          }
-          if ($answer[2] == 1){
-            $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
-          }
-    }
-  }  
-  return $return_array;
+	if (isset($_POST["question" . $id])) {
+		$mlw_user_answer = $_POST["question" . $id];
+		$mlw_user_answer = trim(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+	} else {
+		$mlw_user_answer = " ";
+	}
+	$return_array['user_text'] = stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES));
+	$rich_text_comapre = preg_replace("/\s+|\n+|\r/", ' ', htmlentities($mlw_user_answer));
+	$correct_text = array();
+	foreach ($answers as $answer) {
+		if ($answerEditor === 'rich') {
+			$answer_option = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			$sinel_answer_cmp = preg_replace("/\s+|\n+|\r/", ' ', htmlentities($answer_option));
+			if ($rich_text_comapre == $sinel_answer_cmp) {
+				$return_array["points"] = $answer[1];
+				$return_array["user_text"] = $answer[0];
+				if ($answer[2] == 1) {
+					$return_array["correct"] = "correct";
+				}
+			}
+			if ($answer[2] == 1) {
+				$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			}
+		} else {
+			$mlw_user_answer = '';
+			if (isset($_POST["question" . $id])) {
+				$mlw_user_answer = $_POST["question" . $id];
+				$mlw_user_answer = trim(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES));
+				$mlw_user_answer = str_replace('\\', "", $mlw_user_answer);
+			}
+			$single_answer = trim(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			$single_answer = str_replace('\\', "", $single_answer);
+			if ($mlw_user_answer == $single_answer) {
+				$return_array["points"] = $answer[1];
+				$return_array["user_text"] = $answer[0];
+				if ($answer[2] == 1) {
+					$return_array["correct"] = "correct";
+				}
+			}
+			if ($answer[2] == 1) {
+				$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			}
+		}
+	}
+	$return_array["correct_text"] = implode('.', $correct_text);
+	return $return_array;
 }
 
 add_action("plugins_loaded", 'qmn_question_type_date');
@@ -329,54 +330,52 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
 * @return $return_array Returns the graded question to the results page
 * @since 4.4.0
 */
-function qmn_horizontal_multiple_choice_review($id, $question, $answers)
-{
+function qmn_horizontal_multiple_choice_review($id, $question, $answers) {
 	global $mlwQuizMasterNext;
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'answerEditor');
-  $return_array = array(
-    'points' => 0,
-    'correct' => 'incorrect',
-    'user_text' => '',
-    'correct_text' => ''
-  );
-  if ( isset( $_POST["question".$id] ) ) {
-    $mlw_user_answer = $_POST["question".$id];
-    $mlw_user_answer = trim( stripslashes( htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES) ) );
-  } else {
-    $mlw_user_answer = " ";
-  }
-  $rich_text_comapre = preg_replace("/\s+|\n+|\r/", ' ', htmlentities( $mlw_user_answer ));
-  foreach($answers as $answer){
-      if($answerEditor === 'rich'){
-        $answer_option = stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) );
-        $sinel_answer_cmp = preg_replace("/\s+|\n+|\r/", ' ', htmlentities( $answer_option ));
-        if ( $rich_text_comapre == $sinel_answer_cmp ){
-            $return_array["points"] = $answer[1];
-            $return_array["user_text"] = $answer[0];
-            if ($answer[2] == 1){
-              $return_array["correct"] = "correct";
-            }
-          }
-          if ($answer[2] == 1){
-            $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
-          }
-    } else{
-        if ( $mlw_user_answer == trim( stripslashes( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ) ){
-          $return_array["points"] = $answer[1];
-          $return_array["user_text"] = $answer[0];
-          if ($answer[2] == 1)
-          {
-            $return_array["correct"] = "correct";
-          }
-        }
-        if ($answer[2] == 1)
-        {
-          $return_array["correct_text"] = htmlspecialchars_decode($answer[0], ENT_QUOTES);
-        }
-    }
-    
-  }
-  return $return_array;
+	$return_array = array(
+		'points' => 0,
+		'correct' => 'incorrect',
+		'user_text' => '',
+		'correct_text' => ''
+	);
+	if (isset($_POST["question" . $id])) {
+		$mlw_user_answer = $_POST["question" . $id];
+		$mlw_user_answer = trim(stripslashes(htmlspecialchars_decode($mlw_user_answer, ENT_QUOTES)));
+	} else {
+		$mlw_user_answer = " ";
+	}
+	$rich_text_comapre = preg_replace("/\s+|\n+|\r/", ' ', htmlentities($mlw_user_answer));
+	$correct_text = array();
+	foreach ($answers as $answer) {
+		if ($answerEditor === 'rich') {
+			$answer_option = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			$sinel_answer_cmp = preg_replace("/\s+|\n+|\r/", ' ', htmlentities($answer_option));
+			if ($rich_text_comapre == $sinel_answer_cmp) {
+				$return_array["points"] = $answer[1];
+				$return_array["user_text"] = $answer[0];
+				if ($answer[2] == 1) {
+					$return_array["correct"] = "correct";
+				}
+			}
+			if ($answer[2] == 1) {
+				$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			}
+		} else {
+			if ($mlw_user_answer == trim(stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES)))) {
+				$return_array["points"] = $answer[1];
+				$return_array["user_text"] = $answer[0];
+				if ($answer[2] == 1) {
+					$return_array["correct"] = "correct";
+				}
+			}
+			if ($answer[2] == 1) {
+				$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			}
+		}
+	}
+	$return_array["correct_text"] = implode('.', $correct_text);
+	return $return_array;
 }
 
 add_action("plugins_loaded", 'qmn_question_type_drop_down');
@@ -620,48 +619,41 @@ function qmn_multiple_response_display($id, $question, $answers)
 * @return $return_array Returns the graded question to the results page
 * @since 4.4.0
 */
-function qmn_multiple_response_review($id, $question, $answers)
-{
-  $return_array = array(
-    'points' => 0,
-    'correct' => 'incorrect',
-    'user_text' => '',
-    'correct_text' => '',
-    'user_compare_text' => ''
-  );
-  $user_correct = 0;
-  $total_correct = 0;
-  $total_answers = count($answers);
-  foreach($answers as $answer)
-  {
-    for ($i = 1; $i <= $total_answers; $i++)
-    {
-        if (isset($_POST["question".$id."_".$i]) && sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) ) == esc_attr($answer[0]))
-        {
-          $return_array["points"] += $answer[1];
-          $return_array["user_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) .".";
-          $return_array["user_compare_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."=====";
-          if ($answer[2] == 1)
-          {
-            $user_correct += 1;
-          }
-          else
-          {
-            $user_correct = -1;
-          }
-        }
-    }
-    if ($answer[2] == 1)
-    {
-      $return_array["correct_text"] .= htmlspecialchars_decode($answer[0], ENT_QUOTES).".";
-      $total_correct++;
-    }
-  }
-  if ($user_correct == $total_correct)
-  {
-    $return_array["correct"] = "correct";
-  }
-  return $return_array;
+function qmn_multiple_response_review($id, $question, $answers) {
+	$return_array = array(
+		'points' => 0,
+		'correct' => 'incorrect',
+		'user_text' => '',
+		'correct_text' => '',
+		'user_compare_text' => ''
+	);
+	$user_correct = 0;
+	$total_correct = 0;
+	$total_answers = count($answers);
+	$correct_text = array();
+	foreach ($answers as $answer) {
+		for ($i = 1; $i <= $total_answers; $i++) {
+			if (isset($_POST["question" . $id . "_" . $i]) && sanitize_textarea_field(htmlspecialchars(stripslashes($_POST["question" . $id . "_" . $i]), ENT_QUOTES)) == esc_attr($answer[0])) {
+				$return_array["points"] += $answer[1];
+				$return_array["user_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . ".";
+				$return_array["user_compare_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . "=====";
+				if ($answer[2] == 1) {
+					$user_correct += 1;
+				} else {
+					$user_correct = -1;
+				}
+			}
+		}
+		if ($answer[2] == 1) {
+			$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			$total_correct++;
+		}
+	}
+	if ($user_correct == $total_correct) {
+		$return_array["correct"] = "correct";
+	}
+	$return_array["correct_text"] = implode('.', $correct_text);
+	return $return_array;
 }
 
 add_action("plugins_loaded", 'qmn_question_type_large_open');
@@ -691,11 +683,13 @@ function qmn_large_open_display($id, $question, $answers)
   $question_display = '';
   global $mlwQuizMasterNext;
   $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+  $limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_text');
   if ($required == 0) {$mlw_requireClass = "mlwRequiredText";} else {$mlw_requireClass = "";}
+  $limit_text_att = $limit_text ? "maxlength='". $limit_text ."' " : '';
   //$question_title = apply_filters('the_content', $question); 
   $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
   $question_display .= qsm_question_title_func($question, '', $new_question_title);
-  $question_display .= "<textarea class='mlw_answer_open_text $mlw_requireClass' cols='70' rows='5' name='question".$id."' /></textarea>";
+  $question_display .= "<textarea class='mlw_answer_open_text {$mlw_requireClass}' {$limit_text_att} cols='70' rows='5' name='question{$id}' /></textarea>";
   return apply_filters('qmn_large_open_display_front',$question_display,$id, $question, $answers);
 }
 
@@ -1033,48 +1027,41 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
 * @return $return_array Returns the graded question to the Results page
 * @since 4.4.0
 */
-function qmn_horizontal_multiple_response_review($id, $question, $answers)
-{
-  $return_array = array(
-    'points' => 0,
-    'correct' => 'incorrect',
-    'user_text' => '',
-    'correct_text' => '',
-    'user_compare_text' => ''
-  );
-  $user_correct = 0;
-  $total_correct = 0;
-  $total_answers = count($answers);
-  foreach($answers as $answer)
-  {
-    for ($i = 1; $i <= $total_answers; $i++)
-    {
-        if (isset($_POST["question".$id."_".$i]) && sanitize_textarea_field( htmlspecialchars(stripslashes($_POST["question".$id."_".$i]), ENT_QUOTES) ) == esc_attr($answer[0]))
-        {
-          $return_array["points"] += $answer[1];
-          $return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)).".";
-          $return_array["user_compare_text"] .= sanitize_textarea_field( strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."=====";
-          if ($answer[2] == 1)
-          {
-            $user_correct += 1;
-          }
-          else
-          {
-            $user_correct = -1;
-          }
-        }
-    }
-    if ($answer[2] == 1)
-    {
-      $return_array["correct_text"] .= htmlspecialchars_decode($answer[0], ENT_QUOTES).".";
-      $total_correct++;
-    }
-  }
-  if ($user_correct == $total_correct)
-  {
-    $return_array["correct"] = "correct";
-  }
-  return $return_array;
+function qmn_horizontal_multiple_response_review($id, $question, $answers) {
+	$return_array = array(
+		'points' => 0,
+		'correct' => 'incorrect',
+		'user_text' => '',
+		'correct_text' => '',
+		'user_compare_text' => ''
+	);
+	$user_correct = 0;
+	$total_correct = 0;
+	$total_answers = count($answers);
+	$correct_text = array();
+	foreach ($answers as $answer) {
+		for ($i = 1; $i <= $total_answers; $i++) {
+			if (isset($_POST["question" . $id . "_" . $i]) && sanitize_textarea_field(htmlspecialchars(stripslashes($_POST["question" . $id . "_" . $i]), ENT_QUOTES)) == esc_attr($answer[0])) {
+				$return_array["points"] += $answer[1];
+				$return_array["user_text"] .= strval(htmlspecialchars_decode($answer[0], ENT_QUOTES)) . ".";
+				$return_array["user_compare_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . "=====";
+				if ($answer[2] == 1) {
+					$user_correct += 1;
+				} else {
+					$user_correct = -1;
+				}
+			}
+		}
+		if ($answer[2] == 1) {
+			$correct_text[] = stripslashes(htmlspecialchars_decode($answer[0], ENT_QUOTES));
+			$total_correct++;
+		}
+	}
+	if ($user_correct == $total_correct) {
+		$return_array["correct"] = "correct";
+	}
+	$return_array["correct_text"] = implode('.', $correct_text);
+	return $return_array;
 }
 
 add_action("plugins_loaded", 'qmn_question_type_fill_blank');
