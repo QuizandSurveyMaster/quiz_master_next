@@ -228,7 +228,7 @@ function qsm_find_key_from_array($search_value,$array){
  * Adds Social sharing links
  */
 function mlw_qmn_variable_social_share($content, $mlw_quiz_array) {
-	global $mlwQuizMasterNext;
+	global $wpdb, $mlwQuizMasterNext;
 	$page_link = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);
 	if (false !== strpos($content, '%FACEBOOK_SHARE%')) {
 		$settings = (array) get_option('qmn-settings');
@@ -343,6 +343,7 @@ function mlw_qmn_variable_quiz_name($content, $mlw_quiz_array) {
 }
 
 function mlw_qmn_variable_quiz_links($content, $mlw_quiz_array) {
+	global $wpdb;
 	$quiz_link = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);
 	if (false !== strpos($content, '%QUIZ_LINK%')) {
 		$content = str_replace("%QUIZ_LINK%", $quiz_link, $content);
