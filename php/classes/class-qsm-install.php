@@ -90,6 +90,21 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 	
+	// Registers Rounding setting
+    $field_array = array(
+      'id' => 'score_roundoff',
+      'label' => __('Allow Score Round-off', 'quiz-master-next'),
+      'type' => 'checkbox',
+      'options' => array(
+        array(
+          'value' => 1
+        )
+      ),
+      'default' => 0,
+	  'show_option' => 'form_type_0'
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+	
 	// Registers progress_bar setting
     $field_array = array(
 		'id' => 'progress_bar',

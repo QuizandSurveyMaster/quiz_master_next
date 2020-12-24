@@ -294,7 +294,10 @@ function mlw_qmn_variable_average_point($content, $mlw_quiz_array){
             }
         }
 	if (isset($mlw_quiz_array['total_questions']) && $mlw_quiz_array["total_questions"] != 0 && $question_total != 0){
-		$mlw_average_points = round($mlw_quiz_array["total_points"]/$question_total, 2);
+		if(qsm_is_allow_score_roundoff())
+			$mlw_average_points = round($mlw_quiz_array["total_points"]/$question_total);
+		else
+			$mlw_average_points = round($mlw_quiz_array["total_points"]/$question_total, 2);
 	}
 	else
 	{
@@ -586,7 +589,10 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 			}
 		}
 		if ( $total_questions !== 0 ) {
-			$return_points = round( $return_points / $total_questions, 2 );
+			if(qsm_is_allow_score_roundoff())
+				$return_points = round( $return_points / $total_questions);
+		    else
+				$return_points = round( $return_points / $total_questions, 2 );
 		} else {
 			$return_points = 0;
 		}
@@ -638,7 +644,10 @@ function qmn_variable_category_score($content, $mlw_quiz_array)
 		}
 		if ($total_questions != 0)
 		{
-			$return_score = round((($amount_correct/$total_questions)*100), 2);
+			if(qsm_is_allow_score_roundoff())
+				$return_score = round((($amount_correct/$total_questions)*100));
+		    else
+				$return_score = round((($amount_correct/$total_questions)*100), 2);
 		}
 		else
 		{
@@ -696,7 +705,10 @@ function qmn_variable_category_average_score($content, $mlw_quiz_array)
 		}
 		if ($total_categories != 0)
 		{
-			$return_score = round((($total_score/$total_categories)*100), 2);
+			if(qsm_is_allow_score_roundoff())
+				$return_score = round((($total_score/$total_categories)*100));
+		    else
+				$return_score = round((($total_score/$total_categories)*100), 2);
 		}
 		else
 		{
@@ -1059,4 +1071,22 @@ function qsm_get_question_maximum_points($question = array()) {
 		}
 	}
 	return $question_max_point;
+}
+/**
+   * check is allow round off
+   *
+   * @since 7.1.9.0
+   */
+function qsm_is_allow_score_roundoff()
+{
+	global $mlwQuizMasterNext;
+	$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff');
+	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'form_type');
+	$system = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'system');
+	
+	// check if  quiz type Quiz and Geading system Correct/Incorrect Or Both Type
+	if($score_roundoff && $form_type ==0 && ($system ==0 || $system == 3)) 
+		return 1;
+	else
+		return 0;
 }

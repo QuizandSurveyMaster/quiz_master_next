@@ -481,6 +481,40 @@ class QSM_Fields {
     </tr>
     <?php
   }
+   /**
+   * Generates checkbox inputs
+   *
+   * @since 7.1.9.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_checkbox_field( $field, $value ) {
+    $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+	global $mlwQuizMasterNext;
+	 $score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff');
+    ?>
+    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
+    <th scope="row" class="qsm-opt-tr">
+          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+      </th>
+      <td>        
+        <fieldset class="buttonset buttonset-hide" data-hide='1'>
+            <?php
+              foreach ( $field["options"] as $option ) {
+                ?>                
+                <input type="checkbox" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $score_roundoff ); ?> value="<?php echo $option["value"]; ?>" />
+                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br/>
+                <?php
+              }
+            ?>
+        </fieldset>
+        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
+            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+        <?php } ?>  
+      </td>
+    </tr>
+    <?php
+  }
   
 }
 
