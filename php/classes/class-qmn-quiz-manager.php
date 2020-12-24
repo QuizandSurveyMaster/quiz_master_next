@@ -1321,7 +1321,7 @@ class QMNQuizManager {
             // Legacy Code.
             do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings);
         } else {
-            $result_display .= 'Thank you.';
+            $result_display .= apply_filters('qmn_captcha_varification_failed_msg', __('Captcha varification failed.', 'quiz-master-next'), $qmn_quiz_options, $qmn_array_for_variables); 
         }
 
         $result_display = str_replace('%FB_RESULT_ID%', $unique_id, $result_display);
