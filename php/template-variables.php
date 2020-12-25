@@ -991,13 +991,22 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                 }
                             }
                         } else {
-                            foreach ($total_answers as $single_answer) {
-                                if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0]) {
-                                    $question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
-                                } else {
-                                    $question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
-                                }
-                            }
+							if($answer['question_type'] == 13)
+							{									
+							    $questionid = $questions[$answer['id']]['question_id'];
+							
+								$question_with_answer_text .= qmn_polar_display_on_resultspage($questionid, $questions, $total_answers,$answer);										
+							}
+							else
+							{
+								foreach ($total_answers as $single_answer) {
+									if (htmlspecialchars_decode($answer[1], ENT_QUOTES) == $single_answer[0]) {
+										$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+									} else {
+										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
+									}
+								}
+							}
                         }
                     }
                 }
@@ -1089,4 +1098,110 @@ function qsm_is_allow_score_roundoff()
 		return 1;
 	else
 		return 0;
+}
+/**
+   * Display Polor Question on Result page
+   *
+   * @params $id The ID of the multiple choice question
+   * @params $question The question that is being edited.
+   * @params @answers The array that contains the answers to the question.
+   * @params @answer The array that contains the answers choose by user.
+   * @return $question_display Returns the content of the question
+   * @since 7.1.9.0
+   */
+function qmn_polar_display_on_resultspage($id, $question, $answers,$answer) {    
+    $question_display = '';
+    global $mlwQuizMasterNext;
+    $required = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'required');
+    $autofill = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'autofill');
+    $limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'limit_text');
+    $autofill_att = $autofill ? "autocomplete='off' " : '';
+    $limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
+    $input_text = '';
+    $first_point = isset($answers[0][1]) ? $answers[0][1] : 0;
+    $second_point = isset($answers[1][1]) ? $answers[1][1] : 0;
+    $is_reverse = false;
+    $check_point = $second_point;
+    $font_weight_lc = 'right-polar-title';
+    $font_weight_rc = 'left-polar-title';
+    if($first_point > $second_point){
+        $is_reverse = true;
+        $check_point = $first_point;
+        $font_weight_lc = 'left-polar-title';
+        $font_weight_rc = 'right-polar-title';
+    }
+    $total_answer = count($answers);
+    ?>
+        <script type="text/javascript">
+            (function($) {
+                $(document).ready(function() {
+                    							
+                    $('#slider-' + '<?php echo $id; ?>').slider({
+                         <?php if ($total_answer == 2 && $is_reverse) { ?>
+                                max: <?php echo $answers[0][1]; ?>,
+                                min: <?php echo $answers[1][1]; ?>,
+                                isRTL: true,
+                        <?php }else{ ?>
+                                min: <?php echo $answers[0][1]; ?>,
+                                max: <?php echo $answers[1][1]; ?>,
+                        <?php } ?>
+                            step: 1,
+							range: false,
+                            value: <?php echo $answer['points']; ?>,
+                             slide: function slider_slide(event, ui) {
+								return false; // this code not allow to dragging
+							}  
+                    });
+                    var maxHeight = Math.max.apply(null, $(".mlw-qmn-question-result-<?php echo $id; ?>> div").map(function (){
+                        return $(this).height();
+                    }).get());
+                    $('.mlw-qmn-question-result-<?php echo $id; ?>').height(maxHeight);
+                });
+            })(jQuery);               
+        </script>
+    <?php
+    if ($required == 0) {
+        $mlw_requireClass = "mlwRequiredText";
+    } else {
+        $mlw_requireClass = "";
+    }
+	if($answer['points'] == $answers[0][1])
+	{
+      $left_polar_title_style = "style='font-weight:900;'";
+	  $right_polar_title_style = "style='font-weight:100';";
+	}
+	else if($answer['points'] == $answers[0][1])
+	{
+	  $left_polar_title_style = "style='font-weight:100;'";
+	  $right_polar_title_style = "style='font-weight:900;'";
+	}
+	else if($answer['points'] == $check_point / 2)
+	{
+	  $left_polar_title_style = "style='font-weight:400;'";
+	  $right_polar_title_style = "style='font-weight400;'";
+	}
+	else if($answer['points'] > $check_point / 2)
+	{
+	  $left_polar_title_style = "style='font-weight:400;'";
+	  $right_polar_title_style = "style='font-weight:600;'";
+	}
+	else if($answer['points'] < $check_point / 2)
+	{
+	  $left_polar_title_style = "style='font-weight:600;'";
+	  $right_polar_title_style = "style='font-weight:400;'";
+	}
+	else
+	{
+	  $left_polar_title_style = "style='font-weight:400;'";
+	  $right_polar_title_style = "style='font-weight:400;'";
+	}
+    $new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting($id, 'question_title');  
+    $question_title = qsm_question_title_func($question, '', $new_question_title);
+    $input_text .= "<div class='left-polar-title' $left_polar_title_style>" . $answers[0][0] ."</div>";
+    $input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
+    $input_text .= '<div id="slider-'. $id .'"></div></div>';
+    $input_text .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . "</div>";
+    $question = $input_text;
+    $question_display .=  "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . "</span>";;
+    return apply_filters('qmn_polar_display_front', $question_display, $id, $question, $answers);
 }
