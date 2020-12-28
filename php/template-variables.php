@@ -1084,7 +1084,7 @@ function qsm_get_question_maximum_points($question = array()) {
 /**
    * check is allow round off
    *
-   * @since 7.1.9.0
+   * @since 7.1.10
    */
 function qsm_is_allow_score_roundoff()
 {
@@ -1107,7 +1107,7 @@ function qsm_is_allow_score_roundoff()
    * @params @answers The array that contains the answers to the question.
    * @params @answer The array that contains the answers choose by user.
    * @return $question_display Returns the content of the question
-   * @since 7.1.9.0
+   * @since 7.1.10
    */
 function qmn_polar_display_on_resultspage($id, $question, $answers,$answer) {    
     $question_display = '';
