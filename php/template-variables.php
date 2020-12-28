@@ -968,7 +968,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                             }
                         } else {
 							if($answer['question_type'] == 13)
-							{									
+							{								
 							    $questionid = $questions[$answer['id']]['question_id'];
 								$question_with_answer_text .= qmn_polar_display_on_resultspage($questionid, $questions, $total_answers,$answer);										
 							}
