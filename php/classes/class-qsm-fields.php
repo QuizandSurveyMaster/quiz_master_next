@@ -484,7 +484,7 @@ class QSM_Fields {
    /**
    * Generates checkbox inputs
    *
-   * @since 7.1.9.0
+   * @since 7.1.10
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
