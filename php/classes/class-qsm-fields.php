@@ -503,7 +503,7 @@ class QSM_Fields {
               foreach ( $field["options"] as $option ) {
                 ?>                
                 <input type="checkbox" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $score_roundoff ); ?> value="<?php echo $option["value"]; ?>" />
-                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br/>
+                <br/>
                 <?php
               }
             ?>
