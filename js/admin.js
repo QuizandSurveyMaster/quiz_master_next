@@ -275,6 +275,21 @@ var QSMAdmin;
                 $( '.' + name + '_' + value ).show();
             }
         });
+		$(document).on('click', '.qsm_tab_content input[name="system"]', function(){
+             var name = $(this).attr('name');
+             var value = $(this).val(); 
+			 $( '.qsm_hidden_tr_gradingsystem' ).hide();
+             if(value == 0 || value == 3){				 
+                $( '.qsm_hidden_tr_gradingsystem').show();
+             }
+        });
+		$( document ).ready(function() {
+			var system_option = $("input[type=radio][name='system']:checked").val();
+			 $( '.qsm_hidden_tr_gradingsystem' ).hide();
+             if(system_option == 0 || system_option == 3){				 
+                $( '.qsm_hidden_tr_gradingsystem').show();
+             }
+		});
         if( $('.qsm-text-label-wrapper').length > 0 ){
             var element_position = $('.qsm-text-label-wrapper').offset().top;
             $(window).scroll(function() {
