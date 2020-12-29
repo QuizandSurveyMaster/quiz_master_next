@@ -839,8 +839,6 @@ class QSM_Install {
         '%QUIZ_NAME%',
         '%QUIZ_LINK%',
         '%CURRENT_DATE%',
-		'%FACEBOOK_SHARE%',
-		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -855,8 +853,6 @@ class QSM_Install {
         '%QUIZ_NAME%',
         '%QUIZ_LINK%',
         '%CURRENT_DATE%',
-		'%FACEBOOK_SHARE%',
-		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -871,8 +867,6 @@ class QSM_Install {
         '%QUIZ_NAME%',
         '%QUIZ_LINK%',
         '%CURRENT_DATE%',
-		'%FACEBOOK_SHARE%',
-		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -901,8 +895,6 @@ class QSM_Install {
         '%QUIZ_NAME%',
         '%QUIZ_LINK%',
         '%CURRENT_DATE%',
-		'%FACEBOOK_SHARE%',
-		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -917,8 +909,6 @@ class QSM_Install {
         '%QUIZ_NAME%',
         '%QUIZ_LINK%',
         '%CURRENT_DATE%',
-		'%FACEBOOK_SHARE%',
-		'%TWITTER_SHARE%'
       )
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
