@@ -124,8 +124,9 @@ function qmn_multiple_choice_display($id, $question, $answers)
         }else{
             $question_display .= "<div class='qmn_mc_answer_wrap' id='question".$id."-".str_replace(" ","-",esc_attr($answer[0]))."'>";
         }	
-        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' /> <label for='question".$id."_".$mlw_answer_total."'>". trim( htmlspecialchars_decode($answer[0], ENT_QUOTES) ) ."</label>";
-	$question_display .= "</div>";
+        $question_display .= "<input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' />";
+        $question_display .= "<label for='question".$id."_".$mlw_answer_total."'>". trim(do_shortcode(htmlspecialchars_decode($answer[0], ENT_QUOTES)) ) ."</label>";
+		$question_display .= "</div>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
@@ -311,7 +312,7 @@ function qmn_horizontal_multiple_choice_display($id, $question, $answers)
       $mlw_answer_total++;
       if ($answer[0] != "")
       {
-        $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' /><label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label></span>";
+        $question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question".$id."' id='question".$id."_".$mlw_answer_total."' value='". $answer[0] ."' /><label for='question".$id."_".$mlw_answer_total."'>".trim(do_shortcode(htmlspecialchars_decode($answer[0], ENT_QUOTES)) )."</label></span>";
       }
     }
     $question_display .= "<input type='radio' style='display: none;' name='question".$id."' id='question".$id."_none' checked='checked' value='' />";
@@ -601,7 +602,7 @@ function qmn_multiple_response_display($id, $question, $answers)
       {
 				$question_display .= '<div class="qsm_check_answer">';
         $question_display .= "<input type='hidden' name='question".$id."' value='This value does not matter' />";
-        $question_display .= "<input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."</label>";
+        $question_display .= "<input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".trim(do_shortcode(htmlspecialchars_decode($answer[0], ENT_QUOTES)) )."</label>";
 				$question_display .= '</div>';
       }
     }
@@ -635,7 +636,7 @@ function qmn_multiple_response_review($id, $question, $answers) {
 		for ($i = 1; $i <= $total_answers; $i++) {
 			if (isset($_POST["question" . $id . "_" . $i]) && sanitize_textarea_field(htmlspecialchars(stripslashes($_POST["question" . $id . "_" . $i]), ENT_QUOTES)) == esc_attr($answer[0])) {
 				$return_array["points"] += $answer[1];
-				$return_array["user_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . ".";
+				$return_array["user_text"] .= htmlspecialchars_decode($answer[0], ENT_QUOTES) . ".";
 				$return_array["user_compare_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . "=====";
 				if ($answer[2] == 1) {
 					$user_correct += 1;
@@ -1009,7 +1010,7 @@ function qmn_horizontal_multiple_response_display($id, $question, $answers)
       if ($answer[0] != "")
       {
         $question_display .= "<input type='hidden' name='question".$id."' value='This value does not matter' />";
-        $question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".htmlspecialchars_decode($answer[0], ENT_QUOTES)."&nbsp;</label></span>";
+        $question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' " . $limit_mr_text ." name='question".$id."_".$mlw_answer_total."' id='question".$id."_".$mlw_answer_total."' value='".esc_attr($answer[0])."' /> <label for='question".$id."_".$mlw_answer_total."'>".trim(do_shortcode(htmlspecialchars_decode($answer[0], ENT_QUOTES)) )."&nbsp;</label></span>";
       }
     }
   }

@@ -312,17 +312,22 @@ class QMNQuizManager {
 				}
 			}
             $qmn_json_data = array(
-                'quiz_id' => $qmn_array_for_variables['quiz_id'],
-                'quiz_name' => $qmn_array_for_variables['quiz_name'],
-                'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
-                'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
-                'progress_bar' => $qmn_quiz_options->progress_bar,
-                'contact_info_location' => $qmn_quiz_options->contact_info_location,
-                'qpages' => $qpages,
-                'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire,
-                'timer_limit_val' => $qmn_quiz_options->timer_limit,
-                'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click
-            );
+				'quiz_id' => $qmn_array_for_variables['quiz_id'],
+				'quiz_name' => $qmn_array_for_variables['quiz_name'],
+				'disable_answer' => $qmn_quiz_options->disable_answer_onselect,
+				'ajax_show_correct' => $qmn_quiz_options->ajax_show_correct,
+				'progress_bar' => $qmn_quiz_options->progress_bar,
+				'contact_info_location' => $qmn_quiz_options->contact_info_location,
+				'qpages' => $qpages,
+				'skip_validation_time_expire' => $qmn_quiz_options->skip_validation_time_expire,
+				'timer_limit_val' => $qmn_quiz_options->timer_limit,
+				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
+				'enable_result_after_timer_end' => isset($qmn_quiz_options->enable_result_after_timer_end) ? $qmn_quiz_options->enable_result_after_timer_end : '',
+				'enable_quick_result_mc' => isset($qmn_quiz_options->enable_quick_result_mc) ? $qmn_quiz_options->enable_quick_result_mc : '',
+				'enable_quick_correct_answer_info' => isset($qmn_quiz_options->enable_quick_correct_answer_info) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
+				'quick_result_correct_answer_text' => $qmn_quiz_options->quick_result_correct_answer_text,
+				'quick_result_wrong_answer_text' => $qmn_quiz_options->quick_result_wrong_answer_text,
+			);
 
             $return_display = apply_filters('qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
 
@@ -556,7 +561,7 @@ class QMNQuizManager {
         wp_enqueue_style('qsm_model_css', plugins_url('../../css/qsm-admin.css', __FILE__));
         wp_enqueue_script('qsm_model_js', plugins_url('../../js/micromodal.min.js', __FILE__));
         wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar'), $mlwQuizMasterNext->version);
-        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'enable_quick_result_mc' => isset($options->enable_quick_result_mc) ? $options->enable_quick_result_mc : '','enable_result_after_timer_end' => isset($options->enable_result_after_timer_end) ? $options->enable_result_after_timer_end : '', 'quick_result_correct_text' => $options->quick_result_correct_answer_text, 'quick_result_wrong_text' => $options->quick_result_wrong_answer_text, 'multicheckbox_limit_reach' => __('Limit of choice is reached.', 'quiz-master-next'), 'enable_quick_correct_answer_info' => isset($options->enable_quick_correct_answer_info) ? $options->enable_quick_correct_answer_info : 0, 'out_of_text' => __(' out of ', 'quiz-master-next') ));
+        wp_localize_script('qsm_quiz', 'qmn_ajax_object', array('ajaxurl' => admin_url('admin-ajax.php'), 'multicheckbox_limit_reach' => __('Limit of choice is reached.', 'quiz-master-next'), 'out_of_text' => __(' out of ', 'quiz-master-next')));
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
         global $qmn_total_questions;
         $qmn_total_questions = 0;
@@ -1316,7 +1321,7 @@ class QMNQuizManager {
             // Legacy Code.
             do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings);
         } else {
-            $result_display .= 'Thank you.';
+            $result_display .= apply_filters('qmn_captcha_varification_failed_msg', __('Captcha verification failed.', 'quiz-master-next'), $qmn_quiz_options, $qmn_array_for_variables);
         }
 
         $result_display = str_replace('%FB_RESULT_ID%', $unique_id, $result_display);

@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 7.1.9
+Stable tag: 7.1.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.10 (December 29, 2020) =
+* Bug: Fixed the inconsistency between no of participants and available results.
+* Bug: Fixed incorrect pagination in results page.
+* Bug: Fixed the issue with interchanging of settings while using two quiz on same page.
+* Bug: Fixed shortcode not working while using rich answer.
+* Bug: Fixed ID and Class names not showing on result page while using rich answer.
+* Bug: Fixed selected options not being shown while using Polar question type.
+* Enhancement: Changed the captcha validation message.
+* Enhancement: Added the option to round off Score of correct/incorrect answer to a whole number.
 
 = 7.1.9 (December 14, 2020) =
 * Bug: Fixed the issue where answers with apostrophe's are not being recognized as correct.
