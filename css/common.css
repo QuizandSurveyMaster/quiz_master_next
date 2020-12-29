@@ -277,3 +277,31 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
         font-size: 14px !important;
     }
 }
+.qsm_tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.qsm_tooltip .qsm_tooltiptext{
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+}
+.qsm_tooltip .qsm_tooltiptext a{
+  background-color: black !important;
+  color: #fff!important;
+}
+.qsm_tooltip:hover .qsm_tooltiptext {
+  visibility: visible;
+}
