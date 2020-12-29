@@ -230,37 +230,28 @@ function qsm_find_key_from_array($search_value,$array){
 function mlw_qmn_variable_social_share($content, $mlw_quiz_array) {
 	global $wpdb, $mlwQuizMasterNext;
 	$page_link = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);
+	if (false !== strpos($content, '%FACEBOOK_SHARE%') || false !== strpos($content, '%TWITTER_SHARE%')) {
+		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
+	}
 	if (false !== strpos($content, '%FACEBOOK_SHARE%')) {
 		$settings = (array) get_option('qmn-settings');
 		$facebook_app_id = '483815031724529';
 		if (isset($settings['facebook_app_id'])) {
 			$facebook_app_id = esc_js($settings['facebook_app_id']);
 		}
-		$fb_image = plugins_url('', dirname(__FILE__)) . '/assets/facebook.png';
-		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'facebook_sharing_text', '%QUIZ_NAME%');
-		if (false !== strpos($sharing, '%RESULT_LINK%')) {
-			if (isset($mlw_quiz_array['result_id'])) {
-				$unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_array['quiz_id']}' AND `result_id`='{$mlw_quiz_array['result_id']}'");
-				$page_link = add_query_arg('result_id', $unique_id, $page_link);
-			}
-			$sharing = str_replace("%RESULT_LINK%", $page_link, $sharing);
-		}
-		$sharing = apply_filters('mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
-		$social_display = "<a class='qsm_social_share_link' data-network='facebook' data-text='" . urlencode($sharing) . "' data-link='{$page_link}' data-id='{$facebook_app_id}'><img src='{$fb_image}' alt='" . __('Facebbok Share', 'quiz-master-next') . "' /></a>";
-		$content = str_replace("%FACEBOOK_SHARE%", $social_display, $content);
+		$url = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);
+		$page_link = $url . '?result_id=' . '%FB_RESULT_ID%';
+		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '%QUIZ_NAME%' );
+		$sharing = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
+		$fb_image = plugins_url('', dirname(__FILE__) ) . '/assets/facebook.png';
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '".esc_js( $sharing )."', '".esc_js($mlw_quiz_array["quiz_name"])."', '$facebook_app_id', '$page_link');\"><img src='". $fb_image ."' alt='" . __('Facebbok Share', 'quiz-master-next') . "' /></a>";
+		$content = str_replace( "%FACEBOOK_SHARE%" , $social_display, $content);
 	}
 	if (false !== strpos($content, '%TWITTER_SHARE%')) {
-		$tw_image = plugins_url('', dirname(__FILE__) ) . '/assets/twitter.png';
+		$tw_image = plugins_url('', dirname(__FILE__)) . '/assets/twitter.png';
 		$sharing = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_text', 'twitter_sharing_text', '%QUIZ_NAME%');
-		if (false !== strpos($sharing, '%RESULT_LINK%')) {
-			if (isset($mlw_quiz_array['result_id'])) {
-				$unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_array['quiz_id']}' AND `result_id`='{$mlw_quiz_array['result_id']}'");
-				$page_link = add_query_arg('result_id', $unique_id, $page_link);
-			}
-			$sharing = str_replace("%RESULT_LINK%", $page_link, $sharing);
-		}
 		$sharing = apply_filters('mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array);
-		$social_display = "<a class='qsm_social_share_link' data-network='twitter' data-text='" . urlencode($sharing) . "' data-link='{$page_link}'><img src='{$tw_image}' alt='" . __('Twitter Share', 'quiz-master-next') . "' /></a>";
+		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js($sharing) . "', '" . esc_js($mlw_quiz_array["quiz_name"]) . "');\"><img src='" . $tw_image . "' alt='" . __('Twitter Share', 'quiz-master-next') . "' /></a>";
 		$content = str_replace("%TWITTER_SHARE%", $social_display, $content);
 	}
 	return $content;
