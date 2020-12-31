@@ -232,6 +232,9 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id = $_GET['result_id'];
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
             $result = $wpdb->get_row($query,ARRAY_A);
