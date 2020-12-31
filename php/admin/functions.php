@@ -572,6 +572,7 @@ function qsm_text_template_variable_list(){
         '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),
         '%CORRECT_SCORE%' => __('Score for the quiz when using correct answers', 'quiz-master-next'),
         '%USER_NAME%' => __('The name the user entered before the quiz', 'quiz-master-next'),
+		'%FULL_NAME%' => __('The full name of user with first name and last name', 'quiz-master-next'),
         '%USER_BUSINESS%' => __('The business the user entered before the quiz', 'quiz-master-next'),
         '%USER_PHONE%' => __('The phone number the user entered before the quiz', 'quiz-master-next'),
         '%USER_EMAIL%' => __('The email the user entered before the quiz', 'quiz-master-next'),
