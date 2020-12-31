@@ -233,6 +233,7 @@ class QMNQuizManager {
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
             wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+            wp_enqueue_style('dashicons');
             wp_enqueue_script( 'jquery' );
             wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id = $_GET['result_id'];
