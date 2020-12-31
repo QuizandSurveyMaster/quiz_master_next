@@ -502,10 +502,10 @@ function mlw_qmn_variable_date($content, $results) {
  * @param array $results The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-function mlw_qmn_variable_date_taken($content, $results) {
+function mlw_qmn_variable_date_taken($content, $mlw_quiz_array) {
 	$date = '';
 	if (isset($mlw_quiz_array["time_taken"])) {
-		$date = date_i18n(get_option('date_format'), strtotime($results["time_taken"]));
+		$date = date_i18n(get_option('date_format'), strtotime($mlw_quiz_array["time_taken"]));
 	}
 	$content = str_replace("%DATE_TAKEN%", $date, $content);
 	return $content;
