@@ -62,6 +62,8 @@ add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',20,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name',10,2);
+
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -361,6 +363,27 @@ function mlw_qmn_variable_user_name($content, $mlw_quiz_array) {
 function mlw_qmn_variable_current_user($content, $mlw_quiz_array) {
 	$current_user = wp_get_current_user();
 	$content = str_replace("%USER_NAME%", $current_user->display_name, $content);
+	return $content;
+}
+/**
+ * Returns full name of user
+ *
+ * @since 7.1.11
+ * @param string $content
+ * @param array $mlw_quiz_array
+ * @return string
+ */
+function mlw_qmn_variable_user_full_name($content, $mlw_quiz_array) {
+	if (false !== strpos($content, '%FULL_NAME%')) { 
+		$current_user = wp_get_current_user(); 
+		$firstname = get_user_meta( $current_user->ID, 'first_name', true );
+		$lastname = get_user_meta( $current_user->ID, 'last_name', true );
+		if(!empty($firstname) && !empty($lastname))
+			$full_name =  $firstname." ".$lastname;
+		else
+			$full_name = $current_user->display_name;
+		$content = str_replace("%FULL_NAME%", (isset($full_name) ? $full_name : ''), $content);
+		}
 	return $content;
 }
 
