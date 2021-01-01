@@ -714,11 +714,7 @@ class QMNQuizManager {
                         }
                         // Checks if a hint is entered.
                         if (!empty($question['hints'])) {
-							if(!empty($question['settings']['hint_url']))
-								$tooltiptext = '<a href="'.$question['settings']['hint_url'].'" target="_blank">' .esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)).'</a>';
-							else
-								$tooltiptext = esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES));
-                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.$tooltiptext.'</span></div>';
+                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.htmlspecialchars_decode($question['hints'], ENT_QUOTES).'</span></div>';
                         }
                         ?>
                     </div>
@@ -779,11 +775,7 @@ class QMNQuizManager {
                             }
                             // Checks if a hint is entered.
                             if (!empty($question['hints'])) {
-                               	if(!empty($question['settings']['hint_url']))
-								$tooltiptext = '<a href="'.$question['settings']['hint_url'].'" target="_blank">' .esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)).'</a>';
-							else
-								$tooltiptext = esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES));
-                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.$tooltiptext.'</span></div>';
+                               echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.htmlspecialchars_decode($question['hints'], ENT_QUOTES).'</span></div>';
                             }
                             ?>
                         </div>
