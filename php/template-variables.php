@@ -384,15 +384,15 @@ function mlw_qmn_variable_current_user($content, $mlw_quiz_array) {
  */
 function mlw_qmn_variable_user_full_name($content, $mlw_quiz_array) {
 	if (false !== strpos($content, '%FULL_NAME%')) { 
-	$current_user = wp_get_current_user(); 
-	$firstname = get_user_meta( $current_user->ID, 'first_name', true );
-	$lastname = get_user_meta( $current_user->ID, 'last_name', true );
-	if(!empty($firstname) && !empty($lastname))
-	$full_name =  $firstname." ".$lastname;
-    else
-	$full_name = $current_user->display_name;
-	$content = str_replace("%FULL_NAME%", (isset($full_name) ? $full_name : ''), $content);
-	}
+		$current_user = wp_get_current_user(); 
+		$firstname = get_user_meta( $current_user->ID, 'first_name', true );
+		$lastname = get_user_meta( $current_user->ID, 'last_name', true );
+		if(!empty($firstname) && !empty($lastname))
+			$full_name =  $firstname." ".$lastname;
+		else
+			$full_name = $current_user->display_name;
+		$content = str_replace("%FULL_NAME%", (isset($full_name) ? $full_name : ''), $content);
+		}
 	return $content;
 }
 
