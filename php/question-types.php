@@ -636,7 +636,7 @@ function qmn_multiple_response_review($id, $question, $answers) {
 		for ($i = 1; $i <= $total_answers; $i++) {
 			if (isset($_POST["question" . $id . "_" . $i]) && sanitize_textarea_field(htmlspecialchars(stripslashes($_POST["question" . $id . "_" . $i]), ENT_QUOTES)) == esc_attr($answer[0])) {
 				$return_array["points"] += $answer[1];
-				$return_array["user_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . ".";
+				$return_array["user_text"] .= htmlspecialchars_decode($answer[0], ENT_QUOTES) . ".";
 				$return_array["user_compare_text"] .= sanitize_textarea_field(strval(htmlspecialchars_decode($answer[0], ENT_QUOTES))) . "=====";
 				if ($answer[2] == 1) {
 					$user_correct += 1;

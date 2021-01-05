@@ -232,6 +232,10 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+            wp_enqueue_style('dashicons');
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id = $_GET['result_id'];
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
             $result = $wpdb->get_row($query,ARRAY_A);
@@ -714,7 +718,11 @@ class QMNQuizManager {
                         }
                         // Checks if a hint is entered.
                         if (!empty($question['hints'])) {
-                            echo '<div title="' . esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
+							if(!empty($question['settings']['hint_url']))
+								$tooltiptext = '<a href="'.$question['settings']['hint_url'].'" target="_blank">' .esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)).'</a>';
+							else
+								$tooltiptext = esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES));
+                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.$tooltiptext.'</span></div>';
                         }
                         ?>
                     </div>
@@ -775,7 +783,11 @@ class QMNQuizManager {
                             }
                             // Checks if a hint is entered.
                             if (!empty($question['hints'])) {
-                                echo '<div title="' . esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
+                               	if(!empty($question['settings']['hint_url']))
+								$tooltiptext = '<a href="'.$question['settings']['hint_url'].'" target="_blank">' .esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)).'</a>';
+							else
+								$tooltiptext = esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES));
+                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.$tooltiptext.'</span></div>';
                             }
                             ?>
                         </div>
@@ -1321,7 +1333,7 @@ class QMNQuizManager {
             // Legacy Code.
             do_action('mlw_qmn_load_results_page', $wpdb->insert_id, $qmn_quiz_options->quiz_settings);
         } else {
-            $result_display .= 'Thank you.';
+            $result_display .= apply_filters('qmn_captcha_varification_failed_msg', __('Captcha verification failed.', 'quiz-master-next'), $qmn_quiz_options, $qmn_array_for_variables);
         }
 
         $result_display = str_replace('%FB_RESULT_ID%', $unique_id, $result_display);
