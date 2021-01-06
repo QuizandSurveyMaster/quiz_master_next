@@ -183,7 +183,8 @@ class QSM_Quiz_Settings {
 	 * @return bool True if successful or false if fails
 	 */
 	public function update_setting( $setting, $value ) {
-
+                echo $value;
+                exit;
 		global $mlwQuizMasterNext;
 
 		// Return if empty.

@@ -289,11 +289,18 @@ class QSM_Contact_Manager {
 		if ( 0 === $quiz_id ) {
 			return false;
 		}
-
+                //Allow br and anchor tag
+                $allowed_html = array(
+                    'a' => array(
+                      'href' => array(),
+                    ),
+                    'br' => array(),
+                );
+                $label = wp_kses( $fields[ $i ]['label'], $allowed_html );
 		$total_fields = count( $fields );
 		for ( $i = 0; $i < $total_fields; $i++ ) { 
 			$fields[ $i ] = array(
-				'label'    => sanitize_text_field( $fields[ $i ]['label'] ),
+				'label'    => $label,
 				'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
 				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
 				'required' => sanitize_text_field( $fields[ $i ]['required'] ),
