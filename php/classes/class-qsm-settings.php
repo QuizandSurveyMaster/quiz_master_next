@@ -182,8 +182,7 @@ class QSM_Quiz_Settings {
 	 * @param mixed  $value The value that needs to be stored for the setting.
 	 * @return bool True if successful or false if fails
 	 */
-	public function update_setting( $setting, $value ) {
-
+	public function update_setting( $setting, $value ) {                
 		global $mlwQuizMasterNext;
 
 		// Return if empty.
