@@ -132,7 +132,7 @@ class QSM_Contact_Manager {
                                                         }
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
-                                                        <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo $fields[ $i ]['use'] == 'phone' ? 'text' : 'text'; ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo $fields[ $i ]['label']; ?>" />
+                                                        <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo $fields[ $i ]['use'] == 'phone' ? 'text' : 'text'; ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
 
@@ -142,7 +142,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
-                                                        <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo $fields[ $i ]['label']; ?>" />
+                                                        <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
 
@@ -291,21 +291,20 @@ class QSM_Contact_Manager {
 		}
                 //Allow br and anchor tag
                 $allowed_html = array(
-                    'a' => array(
-                      'href' => array(),
-                    ),
-                    'br' => array(),
-                );
-                $label = wp_kses( $fields[ $i ]['label'], $allowed_html );
+                    "a" => array(
+                        "href" => array(),
+                    )
+                );     
 		$total_fields = count( $fields );
-		for ( $i = 0; $i < $total_fields; $i++ ) { 
+		for ( $i = 0; $i < $total_fields; $i++ ) {                         
+                        $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
 			$fields[ $i ] = array(
 				'label'    => $label,
 				'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
 				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
 				'required' => sanitize_text_field( $fields[ $i ]['required'] ),
 			);
-		}
+		}                
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', serialize( $fields ) );
