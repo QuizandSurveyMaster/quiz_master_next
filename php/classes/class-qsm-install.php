@@ -1215,7 +1215,7 @@ class QSM_Install {
   			message_after TEXT NOT NULL,
   			message_comment TEXT NOT NULL,
   			message_end_template TEXT NOT NULL,
-  			user_email_template TEXT NOT NULL,
+  			user_email_template LONGTEXT NOT NULL,
   			admin_email_template TEXT NOT NULL,
   			submit_button_text TEXT NOT NULL,
   			name_field_text TEXT NOT NULL,
@@ -1362,7 +1362,7 @@ class QSM_Install {
    */
   public function update() {
     global $mlwQuizMasterNext;
-  	$data = $mlwQuizMasterNext->version;
+  	$data = $mlwQuizMasterNext->version ;
   	if ( ! get_option( 'qmn_original_version' ) ) {
   		add_option( 'qmn_original_version', $data );
     }
@@ -1728,6 +1728,14 @@ class QSM_Install {
   			$update_sql = "UPDATE ".$table_name." SET question_type_new=question_type";
   			$results = $wpdb->query( $update_sql );
   		}
+		
+		//Update 7.1.11
+		$user_email_template_data= $wpdb->get_row("SHOW COLUMNS FROM ".$wpdb->prefix."mlw_quizzes LIKE 'user_email_template'");
+		if($user_email_template_data->Type == "text")
+		{
+			$sql = "ALTER TABLE ".$wpdb->prefix."mlw_quizzes  CHANGE user_email_template user_email_template LONGTEXT NOT NULL";
+  			$results = $wpdb->query( $sql );
+		}
 
   		//Update 2.6.1
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;" );
