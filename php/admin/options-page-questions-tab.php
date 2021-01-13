@@ -379,20 +379,13 @@ function qsm_options_questions_tab_content() {
                                                                         ),
                                                                         'default' => '1',
                                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Comment-Field'
-                                                                    ),  
+                                                                    ),
                                                                     'hint' => array(
                                                                         'label' => __( 'Hint', 'quiz-master-next' ),
                                                                         'type' => 'text',
                                                                         'default' => '',
                                                                         'priority' => '4',
                                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Hints'
-                                                                    ),
-																	 'hint_url' => array(
-                                                                        'label' => __( 'Hint Url', 'quiz-master-next' ),
-                                                                        'type' => 'text',
-                                                                        'default' => '',
-                                                                        'priority' => '5',
-                                                                        'documentation_link' => ''
                                                                     ),
                                                                     'autofill' => array(
                                                                         'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
