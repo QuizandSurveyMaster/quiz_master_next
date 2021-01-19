@@ -423,7 +423,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'quizID'     => $question['quiz_id'],
 					'type'       => $question['question_type_new'],
 					'name'       => $question['question_name'],
-					'answerInfo' => $question['question_answer_info'],
+					'answerInfo' => htmlspecialchars_decode( $question['question_answer_info'] ),
 					'comments'   => $question['comments'],
 					'hint'       => $question['hints'],
 					'category'   => $question['category'],
