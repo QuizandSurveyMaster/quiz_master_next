@@ -190,7 +190,7 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
         $vals = array_count_values($answer_array);
         $str = '';
         if($vals){
-            $str .= '<h4>Poll Result:</h4>';
+            $str .= '<h4>' . __('Poll Result', 'quiz-master-next') . ':</h4>';
             foreach ($vals as $answer_str => $answer_count) {
                 if($answer_str != '' && qsm_find_key_from_array($answer_str, $ser_answer_arry_change)){
                     $percentage = number_format($answer_count / $total_result * 100,2) ;
