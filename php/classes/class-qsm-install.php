@@ -1304,7 +1304,7 @@ class QSM_Install {
   			quiz_id INT NOT NULL,
   			quiz_name TEXT NOT NULL,
   			quiz_system INT NOT NULL,
-  			point_score INT NOT NULL,
+  			point_score FLOAT NOT NULL,
   			correct_score INT NOT NULL,
   			correct INT NOT NULL,
   			total INT NOT NULL,
@@ -1326,7 +1326,6 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
   	}
-
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
   		$sql = "CREATE TABLE $audit_table_name (
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -1724,6 +1723,9 @@ class QSM_Install {
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_quizzes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
+		
+		//Update 7.1.11
+		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
 
 
   		global $wpdb;
