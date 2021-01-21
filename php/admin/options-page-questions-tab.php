@@ -67,7 +67,8 @@ function qsm_options_questions_tab_content() {
 		'quiz_system' => $quiz_system,
                 'hide_desc_text' => __('Less Description', 'quiz-master-next'),
                 'show_desc_text' => __('Add Description', 'quiz-master-next'),
-                'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce")
+                'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce"),
+				'single_question_nonce' => wp_create_nonce("delete_question_from_database")
 	);
 
 	// Scripts and styles.
@@ -518,7 +519,7 @@ function qsm_options_questions_tab_content() {
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>                                
 				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-                                <div><a href="#" title="Delete Question" class="delete-question-button"><span class="dashicons dashicons-trash"></span></a></div>
+                                <div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
 				<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e('Category:', 'quiz-master-next'); ?> {{data.category}} <# } #></div>				
 			</div>
@@ -727,4 +728,24 @@ function qsm_delete_question_question_bank(){
     exit;
 }
 add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_question_bank' );
+/**
+ * Delete quiz question from Database 
+ * 
+ * @since 7.1.11
+ */
+function qsm_delete_question_from_database(){
+    if ( !wp_verify_nonce( $_REQUEST['nonce'], "delete_question_from_database") ) {
+        echo wp_json_encode( array( 'success' => false, 'message' => __( 'Nonce verification failed.','quiz-master-next' ) ) );
+	wp_die();
+    }
+    $question_id = $_POST['question_id'];    
+
+    if( $question_id ){
+        global $wpdb;
+		$wpdb->delete($wpdb->prefix.'mlw_questions',array('question_id'=> $question_id));
+        echo wp_json_encode( array( 'success' => true,'message' => __( 'Question removed Successfully.','quiz-master-next' ) );
+    }
+    exit;
+}
+add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
 ?>
