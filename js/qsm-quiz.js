@@ -1209,6 +1209,7 @@ jQuery(function() {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
+					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
