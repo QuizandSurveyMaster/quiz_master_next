@@ -13,6 +13,7 @@ var QSMContact;
         }
     },
     addField : function( fieldArray ) {
+      var new_label =  fieldArray.label.replace(/"/g, "'");      
       var contactField = $( '<div class="contact-form-field new">' +
 		  '<div class="contact-form-group">' +
 		  	'<label class="contact-form-label">Field Type</label>' +
@@ -25,7 +26,7 @@ var QSMContact;
           '</div>' +
           '<div class="contact-form-group">' +
             '<label class="contact-form-label">Label</label>' +
-            '<input type="text" class="contact-form-control label-control" value="' + fieldArray.label + '">' +
+            '<input type="text" class="contact-form-control label-control" value="' + new_label + '">' +
           '</div>' +
           '<div class="contact-form-group">' +
             '<label class="contact-form-label">Used For</label>' +
