@@ -665,6 +665,11 @@ add_action('admin_page_access_denied', 'qsm_admin_page_access_func');
  */
 function qsm_generate_roadmap_page(){ ?>
     <div class="wrap">
+        <style>
+            iframe {
+                height: 1350px;
+            }
+        </style>
         <iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="900" width="100%" frameborder="0"></iframe>
         <script>
                 var ps_config = {
