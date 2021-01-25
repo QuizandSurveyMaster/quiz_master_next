@@ -1304,7 +1304,7 @@ class QSM_Install {
   			quiz_id INT NOT NULL,
   			quiz_name TEXT NOT NULL,
   			quiz_system INT NOT NULL,
-  			point_score FLOAT NOT NULL,
+  			point_score INT NOT NULL,
   			correct_score INT NOT NULL,
   			correct INT NOT NULL,
   			total INT NOT NULL,
