@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 7.1.10
+Stable tag: 7.1.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -135,14 +135,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.1.11 (January 25, 2020) =
+= 7.1.11 (January 27, 2020) =
 * Bug: Fixed jquery issue while editing the result page.
-* Bug: Make string translation for %POLL_RESULTS_X% variable.
+* Bug: Added string translation for %POLL_RESULTS_X% variable.
+* Bug: Fixed incorrect score while using point value with decimal.
 * Enhancement: Added link support in contact field label.
 * Enhancement: Added HTML support in email tab.
-* Enhancement: Added support of link in Hint field while editing the question.
-* Enhancement: Added HTML tags support in Correct answer info field while editing the question.
-* Enhancement: Integrated roadmap feature.
+* Enhancement: Added option to add link in Hint field.
+* Enhancement: Added support for HTML tags in Correct answer info field.
+* Enhancement: Added option to view roadmap.
+* Enhancement: Added option to delete questions from database.
+* Enhancement: Changed the quiz status by default to Draft.
+
 
 = 7.1.10 (December 29, 2020) =
 * Bug: Fixed the inconsistency between no of participants and available results.
