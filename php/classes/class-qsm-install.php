@@ -1326,7 +1326,6 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
   	}
-
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
   		$sql = "CREATE TABLE $audit_table_name (
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
