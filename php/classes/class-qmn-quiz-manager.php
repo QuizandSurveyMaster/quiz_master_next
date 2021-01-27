@@ -1243,7 +1243,7 @@ class QMNQuizManager {
 						'%d',
 						'%s',
 						'%d',
-						'%d',
+						'%f',
 						'%d',
 						'%d',
 						'%d',
@@ -1542,6 +1542,7 @@ class QMNQuizManager {
                         // Send question to our grading function
                         $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
 
+							
                         // If question was graded correctly.
                         if (!isset($results_array["null_review"])) {
                             $points_earned += $results_array["points"];

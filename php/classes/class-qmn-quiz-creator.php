@@ -189,7 +189,7 @@ class QMNQuizCreator {
 			$quiz_post = array(
 				'post_title'   => $quiz_name,
 				'post_content' => "[mlw_quizmaster quiz=$new_quiz]",
-				'post_status'  => 'publish',
+				'post_status'  => 'draft',
 				'post_author'  => $current_user->ID,
 				'post_type'    => 'qsm_quiz',
 			);

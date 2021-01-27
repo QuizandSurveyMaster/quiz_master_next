@@ -138,7 +138,7 @@ function qsm_generate_results_details_tab() {
                     $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Scorecard</span></h2>';
                     $template .= '<div class="inside">';
                     $template .= '<span class="result-candidate-span"><label>'. __( 'Correct Answers:', 'quiz-master-next' ) .'</label><span>%AMOUNT_CORRECT% Out of %TOTAL_QUESTIONS%</span></span>';
-                    $template .= '<span class="result-candidate-span"><label>'. __( 'Points:', 'quiz-master-next' ) .'</label><span>%POINT_SCORE%</span></span>';
+                    $template .= '<span class="result-candidate-span"><label>'. __( 'Points:', 'quiz-master-next' ) .'</label><span>%POINT_SCORE% </span></span>';
                     $template .= '<span class="result-candidate-span"><label>'. __( 'Percentage:', 'quiz-master-next' ) .'</label><span>%CORRECT_SCORE%%</span></span>';                
                     $template .= '</div>';
                     $template .= '</div>';
