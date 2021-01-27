@@ -62,6 +62,8 @@ add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_result_id',10
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_single_question_answer',20,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points',10,2);
 add_filter('mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions',10,2);
+add_filter('mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name',10,2);
+
 add_filter('qmn_end_results', 'qsm_variable_poll_result',10,3);
 
 add_filter('mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name',10,2);
@@ -188,7 +190,7 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
         $vals = array_count_values($answer_array);
         $str = '';
         if($vals){
-            $str .= '<h4>Poll Result:</h4>';
+            $str .= '<h4>' . __('Poll Result', 'quiz-master-next') . ':</h4>';
             foreach ($vals as $answer_str => $answer_count) {
                 if($answer_str != '' && qsm_find_key_from_array($answer_str, $ser_answer_arry_change)){
                     $percentage = number_format($answer_count / $total_result * 100,2) ;
@@ -231,7 +233,7 @@ function mlw_qmn_variable_social_share($content, $mlw_quiz_array) {
 	global $wpdb, $mlwQuizMasterNext;
 	$page_link = qsm_get_post_id_from_quiz_id($mlw_quiz_array['quiz_id']);
 	if (false !== strpos($content, '%FACEBOOK_SHARE%') || false !== strpos($content, '%TWITTER_SHARE%')) {
-		wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
+		//wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
 	}
 	if (false !== strpos($content, '%FACEBOOK_SHARE%')) {
 		$settings = (array) get_option('qmn-settings');
@@ -361,6 +363,27 @@ function mlw_qmn_variable_user_name($content, $mlw_quiz_array) {
 function mlw_qmn_variable_current_user($content, $mlw_quiz_array) {
 	$current_user = wp_get_current_user();
 	$content = str_replace("%USER_NAME%", $current_user->display_name, $content);
+	return $content;
+}
+/**
+ * Returns full name of user
+ *
+ * @since 7.1.11
+ * @param string $content
+ * @param array $mlw_quiz_array
+ * @return string
+ */
+function mlw_qmn_variable_user_full_name($content, $mlw_quiz_array) {
+	if (false !== strpos($content, '%FULL_NAME%')) { 
+		$current_user = wp_get_current_user(); 
+		$firstname = get_user_meta( $current_user->ID, 'first_name', true );
+		$lastname = get_user_meta( $current_user->ID, 'last_name', true );
+		if(!empty($firstname) && !empty($lastname))
+			$full_name =  $firstname." ".$lastname;
+		else
+			$full_name = $current_user->display_name;
+		$content = str_replace("%FULL_NAME%", (isset($full_name) ? $full_name : ''), $content);
+		}
 	return $content;
 }
 
@@ -502,10 +525,10 @@ function mlw_qmn_variable_date($content, $results) {
  * @param array $results The array of all the results from user taking the quiz
  * @return string Returns the contents for the results page
  */
-function mlw_qmn_variable_date_taken($content, $results) {
+function mlw_qmn_variable_date_taken($content, $mlw_quiz_array) {
 	$date = '';
 	if (isset($mlw_quiz_array["time_taken"])) {
-		$date = date_i18n(get_option('date_format'), strtotime($results["time_taken"]));
+		$date = date_i18n(get_option('date_format'), strtotime($mlw_quiz_array["time_taken"]));
 	}
 	$content = str_replace("%DATE_TAKEN%", $date, $content);
 	return $content;

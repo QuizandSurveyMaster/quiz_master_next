@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-06 12:59+0530\n"
+"POT-Creation-Date: 2021-01-20 10:31+0530\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr ""
 msgid "Quiz"
 msgstr ""
 
-#: mlw_quizmaster2.php:242 php/admin/quizzes-page.php:226
+#: mlw_quizmaster2.php:242 php/admin/quizzes-page.php:244
 msgid "Add New"
 msgstr ""
 
@@ -76,8 +76,8 @@ msgstr ""
 msgid "Dashboard"
 msgstr ""
 
-#: mlw_quizmaster2.php:286 php/admin/quizzes-page.php:225
-#: php/classes/class-qsm-install.php:1751
+#: mlw_quizmaster2.php:286 php/admin/quizzes-page.php:243
+#: php/classes/class-qsm-install.php:1788
 msgid "Quizzes/Surveys"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: mlw_quizmaster2.php:289 php/admin/quizzes-page.php:616
+#: mlw_quizmaster2.php:289 php/admin/quizzes-page.php:636
 msgid "Results"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: php/gdpr.php:178 php/admin/admin-results-page.php:344
+#: php/gdpr.php:178 php/admin/admin-results-page.php:347
 msgid "IP Address"
 msgstr ""
 
@@ -253,65 +253,65 @@ msgstr ""
 msgid "File Upload"
 msgstr ""
 
-#: php/question-types.php:211
+#: php/question-types.php:213
 msgid "Date"
 msgstr ""
 
-#: php/question-types.php:283
+#: php/question-types.php:285
 msgid "Horizontal Multiple Choice"
 msgstr ""
 
-#: php/question-types.php:393
+#: php/question-types.php:401
 msgid "Drop Down"
 msgstr ""
 
-#: php/question-types.php:419
+#: php/question-types.php:427
 msgid "Please select your answer"
 msgstr ""
 
-#: php/question-types.php:492
+#: php/question-types.php:500
 msgid "Short Answer"
 msgstr ""
 
-#: php/question-types.php:570
+#: php/question-types.php:578
 msgid "Multiple Response"
 msgstr ""
 
-#: php/question-types.php:677
+#: php/question-types.php:678
 msgid "Paragraph"
 msgstr ""
 
-#: php/question-types.php:759
+#: php/question-types.php:762
 msgid "Text/HTML Section"
 msgstr ""
 
-#: php/question-types.php:793
+#: php/question-types.php:796
 msgid "Number"
 msgstr ""
 
-#: php/question-types.php:876
+#: php/question-types.php:881
 msgid "Opt-in"
 msgstr ""
 
-#: php/question-types.php:921
+#: php/question-types.php:926
 msgid "Captcha"
 msgstr ""
 
-#: php/question-types.php:980
+#: php/question-types.php:985
 msgid "Horizontal Multiple Response"
 msgstr ""
 
-#: php/question-types.php:1099
+#: php/question-types.php:1097
 msgid ""
 "For fill in the blank types, use %BLANK% to represent where to put the text "
 "box in your text."
 msgstr ""
 
-#: php/question-types.php:1104
+#: php/question-types.php:1102
 msgid "Fill In The Blank"
 msgstr ""
 
-#: php/question-types.php:1195
+#: php/question-types.php:1193
 msgid "Polar"
 msgstr ""
 
@@ -322,7 +322,7 @@ msgid "User not logged in"
 msgstr ""
 
 #: php/rest-api.php:183 php/admin/admin-dashboard.php:381
-#: php/admin/admin-results-page.php:386
+#: php/admin/admin-results-page.php:389
 msgid "Not Graded"
 msgstr ""
 
@@ -330,11 +330,23 @@ msgstr ""
 msgid "No quiz found"
 msgstr ""
 
-#: php/template-variables.php:890 php/template-variables.php:899
+#: php/template-variables.php:193
+msgid "Poll Result"
+msgstr ""
+
+#: php/template-variables.php:249
+msgid "Facebbok Share"
+msgstr ""
+
+#: php/template-variables.php:256
+msgid "Twitter Share"
+msgstr ""
+
+#: php/template-variables.php:936 php/template-variables.php:945
 msgid "No answer provided"
 msgstr ""
 
-#: php/template-variables.php:997
+#: php/template-variables.php:1060
 msgid "No Answer Provided"
 msgstr ""
 
@@ -502,7 +514,7 @@ msgstr ""
 msgid "Get Started"
 msgstr ""
 
-#: php/admin/admin-dashboard.php:123 php/admin/quizzes-page.php:586
+#: php/admin/admin-dashboard.php:123 php/admin/quizzes-page.php:606
 msgid "Create New Quiz/Survey"
 msgstr ""
 
@@ -514,7 +526,7 @@ msgstr ""
 msgid "Next Steps"
 msgstr ""
 
-#: php/admin/admin-dashboard.php:131 php/admin/quizzes-page.php:587
+#: php/admin/admin-dashboard.php:131 php/admin/quizzes-page.php:607
 msgid "Read Documentation"
 msgstr ""
 
@@ -670,82 +682,82 @@ msgstr ""
 msgid "Your results has been deleted successfully."
 msgstr ""
 
-#: php/admin/admin-results-page.php:245
+#: php/admin/admin-results-page.php:248
 #, php-format
 msgid "One result"
 msgid_plural "%s results"
 msgstr[0] ""
 msgstr[1] ""
 
-#: php/admin/admin-results-page.php:310 php/admin/admin-results-page.php:320
+#: php/admin/admin-results-page.php:313 php/admin/admin-results-page.php:323
 msgid "Search Results"
 msgstr ""
 
-#: php/admin/admin-results-page.php:312
+#: php/admin/admin-results-page.php:315
 msgid "Order By"
 msgstr ""
 
-#: php/admin/admin-results-page.php:314 php/admin/admin-results-page.php:333
+#: php/admin/admin-results-page.php:317 php/admin/admin-results-page.php:336
 msgid "Quiz Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:315
+#: php/admin/admin-results-page.php:318
 msgid "User Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:316 php/classes/class-qsm-install.php:78
+#: php/admin/admin-results-page.php:319 php/classes/class-qsm-install.php:78
 msgid "Points"
 msgstr ""
 
-#: php/admin/admin-results-page.php:317
+#: php/admin/admin-results-page.php:320
 msgid "Correct Percent"
 msgstr ""
 
-#: php/admin/admin-results-page.php:318
+#: php/admin/admin-results-page.php:321
 msgid "Default (Time)"
 msgstr ""
 
-#: php/admin/admin-results-page.php:336
+#: php/admin/admin-results-page.php:339
 msgid "Score"
 msgstr ""
 
-#: php/admin/admin-results-page.php:337
+#: php/admin/admin-results-page.php:340
 msgid "Time To Complete"
 msgstr ""
 
-#: php/admin/admin-results-page.php:338 php/admin/quiz-options-page.php:176
+#: php/admin/admin-results-page.php:341 php/admin/quiz-options-page.php:177
 msgid "Name"
 msgstr ""
 
-#: php/admin/admin-results-page.php:339
+#: php/admin/admin-results-page.php:342
 msgid "Business"
 msgstr ""
 
-#: php/admin/admin-results-page.php:340
+#: php/admin/admin-results-page.php:343
 msgid "Email"
 msgstr ""
 
-#: php/admin/admin-results-page.php:341
+#: php/admin/admin-results-page.php:344
 msgid "Phone"
 msgstr ""
 
-#: php/admin/admin-results-page.php:342 php/admin/tools-page.php:185
+#: php/admin/admin-results-page.php:345 php/admin/tools-page.php:185
 msgid "User"
 msgstr ""
 
-#: php/admin/admin-results-page.php:343
+#: php/admin/admin-results-page.php:346
 msgid "Time Taken"
 msgstr ""
 
-#: php/admin/admin-results-page.php:417
+#: php/admin/admin-results-page.php:420
 msgid "No record found."
 msgstr ""
 
-#: php/admin/admin-results-page.php:426
+#: php/admin/admin-results-page.php:429
 msgid "Are you sure you want to delete these results?"
 msgstr ""
 
-#: php/admin/admin-results-page.php:432
+#: php/admin/admin-results-page.php:435
 msgid "Delete Results"
 msgstr ""
 
@@ -794,7 +806,7 @@ msgstr ""
 #: php/admin/options-page-option-tab.php:28
 #: php/admin/options-page-questions-tab.php:278
 #: php/admin/options-page-text-tab.php:30
-#: php/classes/class-qsm-install.php:1764
+#: php/classes/class-qsm-install.php:1801
 msgid "View Documentation"
 msgstr ""
 
@@ -842,9 +854,9 @@ msgstr ""
 msgid "Create Quiz"
 msgstr ""
 
-#: php/admin/functions.php:552 php/admin/quizzes-page.php:476
-#: php/admin/quizzes-page.php:504 php/admin/quizzes-page.php:531
-#: php/admin/quizzes-page.php:550
+#: php/admin/functions.php:552 php/admin/quizzes-page.php:496
+#: php/admin/quizzes-page.php:524 php/admin/quizzes-page.php:551
+#: php/admin/quizzes-page.php:570
 msgid "Cancel"
 msgstr ""
 
@@ -885,84 +897,108 @@ msgid "The name the user entered before the quiz"
 msgstr ""
 
 #: php/admin/functions.php:575
-msgid "The business the user entered before the quiz"
+msgid "The full name of user with first name and last name"
 msgstr ""
 
 #: php/admin/functions.php:576
-msgid "The phone number the user entered before the quiz"
+msgid "The business the user entered before the quiz"
 msgstr ""
 
 #: php/admin/functions.php:577
-msgid "The email the user entered before the quiz"
+msgid "The phone number the user entered before the quiz"
 msgstr ""
 
 #: php/admin/functions.php:578
-msgid "The name of the quiz"
+msgid "The email the user entered before the quiz"
 msgstr ""
 
 #: php/admin/functions.php:579
+msgid "The name of the quiz"
+msgstr ""
+
+#: php/admin/functions.php:580
+msgid "The link of the quiz"
+msgstr ""
+
+#: php/admin/functions.php:581
 msgid ""
 "Shows the question, the answer the user provided, and the correct answer"
 msgstr ""
 
-#: php/admin/functions.php:580
+#: php/admin/functions.php:582
 msgid "The comments the user entered into comment box if enabled"
 msgstr ""
 
-#: php/admin/functions.php:581
+#: php/admin/functions.php:583
 msgid "The amount of time user spent on quiz in seconds"
 msgstr ""
 
-#: php/admin/functions.php:582
+#: php/admin/functions.php:584
 msgid "The amount of time user spent on quiz in minutes"
 msgstr ""
 
-#: php/admin/functions.php:583
+#: php/admin/functions.php:585
 msgid "X: Category name - The amount of points a specific category earned."
 msgstr ""
 
-#: php/admin/functions.php:584
+#: php/admin/functions.php:586
 msgid "X: Category name - The score a specific category earned."
 msgstr ""
 
-#: php/admin/functions.php:585
+#: php/admin/functions.php:587
 msgid "The average points from all categories."
 msgstr ""
 
-#: php/admin/functions.php:586
+#: php/admin/functions.php:588
 msgid "The average score from all categories."
 msgstr ""
 
-#: php/admin/functions.php:587
+#: php/admin/functions.php:589
 msgid "The question that the user answered"
 msgstr ""
 
-#: php/admin/functions.php:588
+#: php/admin/functions.php:590
 msgid "The answer the user gave for the question"
 msgstr ""
 
-#: php/admin/functions.php:589
+#: php/admin/functions.php:591
 msgid "The answer the user gave for the question with default design"
 msgstr ""
 
-#: php/admin/functions.php:590
+#: php/admin/functions.php:592
 msgid "The correct answer for the question"
 msgstr ""
 
-#: php/admin/functions.php:591
+#: php/admin/functions.php:593
 msgid "The comments the user provided in the comment field for the question"
 msgstr ""
 
-#: php/admin/functions.php:592
+#: php/admin/functions.php:594
 msgid "Reason why the correct answer is the correct answer"
 msgstr ""
 
-#: php/admin/functions.php:593
+#: php/admin/functions.php:595
 msgid "The Current Date"
 msgstr ""
 
-#: php/admin/functions.php:594
+#: php/admin/functions.php:596
 msgid "Point Score of the question"
+msgstr ""
+
+#: php/admin/functions.php:597
+msgid "Maximum points of the question"
+msgstr ""
+
+#: php/admin/functions.php:598
+msgid "Displays button to share on Facebook."
+msgstr ""
+
+#: php/admin/functions.php:599
+msgid "Displays button to share on Twitter."
+msgstr ""
+
+#: php/admin/functions.php:600
+msgid "The link of the result page."
 msgstr ""
 
 #: php/admin/help-page.php:26
@@ -1213,13 +1249,13 @@ msgstr ""
 msgid "is less than"
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:122
+#: php/admin/options-page-email-tab.php:123
 #: php/admin/options-page-results-page-tab.php:113
 #: php/admin/options-page-text-tab.php:120
 msgid "Template Variables"
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:124
+#: php/admin/options-page-email-tab.php:125
 #: php/admin/options-page-results-page-tab.php:115
 msgid ""
 "Use these dynamic variables to customize your quiz or survey. Just copy and "
@@ -1227,18 +1263,18 @@ msgid ""
 "replaced by actual values when user takes a quiz."
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:125
+#: php/admin/options-page-email-tab.php:126
 #: php/admin/options-page-results-page-tab.php:116
 msgid "Note: "
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:126
+#: php/admin/options-page-email-tab.php:127
 #: php/admin/options-page-results-page-tab.php:117
 msgid "Always use uppercase while using these variables."
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:133
 #: php/admin/options-page-email-tab.php:134
+#: php/admin/options-page-email-tab.php:135
 #: php/admin/options-page-results-page-tab.php:124
 #: php/admin/options-page-results-page-tab.php:125
 msgid ""
@@ -1246,23 +1282,23 @@ msgid ""
 "first contact field would be %CONTACT_1%"
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:135
-#: php/admin/options-page-results-page-tab.php:133
+#: php/admin/options-page-email-tab.php:136
+#: php/admin/options-page-results-page-tab.php:131
 msgid "X = Question ID. It will show result of particular question."
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:136
+#: php/admin/options-page-email-tab.php:137
 msgid "Shows the question, the answer provided by user, and the correct answer"
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:139
+#: php/admin/options-page-email-tab.php:140
 #: php/admin/options-page-results-page-tab.php:128
 msgid ""
 "X: Category name - The average amount of points a specific category earned."
 msgstr ""
 
-#: php/admin/options-page-email-tab.php:164
-#: php/admin/options-page-results-page-tab.php:158
+#: php/admin/options-page-email-tab.php:167
+#: php/admin/options-page-results-page-tab.php:156
 msgid "Close [Esc]"
 msgstr ""
 
@@ -1438,18 +1474,18 @@ msgstr ""
 #: php/admin/options-page-questions-tab.php:315
 #: php/admin/options-page-questions-tab.php:396
 #: php/admin/options-page-questions-tab.php:484
-#: php/admin/settings-page.php:264 php/classes/class-qsm-install.php:100
-#: php/classes/class-qsm-install.php:119 php/classes/class-qsm-install.php:165
-#: php/classes/class-qsm-install.php:183 php/classes/class-qsm-install.php:333
-#: php/classes/class-qsm-install.php:354 php/classes/class-qsm-install.php:374
-#: php/classes/class-qsm-install.php:393 php/classes/class-qsm-install.php:413
-#: php/classes/class-qsm-install.php:434 php/classes/class-qsm-install.php:455
-#: php/classes/class-qsm-install.php:474 php/classes/class-qsm-install.php:493
-#: php/classes/class-qsm-install.php:537 php/classes/class-qsm-install.php:557
-#: php/classes/class-qsm-install.php:576 php/classes/class-qsm-install.php:596
-#: php/classes/class-qsm-install.php:615 php/classes/class-qsm-install.php:711
-#: php/classes/class-qsm-install.php:735 php/classes/class-qsm-install.php:759
-#: php/classes/class-qsm-install.php:782 php/classes/class-qsm-install.php:805
+#: php/admin/settings-page.php:264 php/classes/class-qsm-install.php:115
+#: php/classes/class-qsm-install.php:134 php/classes/class-qsm-install.php:180
+#: php/classes/class-qsm-install.php:198 php/classes/class-qsm-install.php:348
+#: php/classes/class-qsm-install.php:369 php/classes/class-qsm-install.php:389
+#: php/classes/class-qsm-install.php:408 php/classes/class-qsm-install.php:428
+#: php/classes/class-qsm-install.php:449 php/classes/class-qsm-install.php:470
+#: php/classes/class-qsm-install.php:489 php/classes/class-qsm-install.php:508
+#: php/classes/class-qsm-install.php:552 php/classes/class-qsm-install.php:572
+#: php/classes/class-qsm-install.php:591 php/classes/class-qsm-install.php:611
+#: php/classes/class-qsm-install.php:630 php/classes/class-qsm-install.php:726
+#: php/classes/class-qsm-install.php:750 php/classes/class-qsm-install.php:774
+#: php/classes/class-qsm-install.php:797 php/classes/class-qsm-install.php:820
 msgid "Yes"
 msgstr ""
 
@@ -1487,19 +1523,19 @@ msgstr ""
 
 #: php/admin/options-page-questions-tab.php:395
 #: php/admin/options-page-questions-tab.php:483
-#: php/admin/settings-page.php:269 php/classes/class-qsm-install.php:104
-#: php/classes/class-qsm-install.php:123 php/classes/class-qsm-install.php:169
-#: php/classes/class-qsm-install.php:187 php/classes/class-qsm-install.php:337
-#: php/classes/class-qsm-install.php:358 php/classes/class-qsm-install.php:378
-#: php/classes/class-qsm-install.php:397 php/classes/class-qsm-install.php:417
-#: php/classes/class-qsm-install.php:438 php/classes/class-qsm-install.php:459
-#: php/classes/class-qsm-install.php:478 php/classes/class-qsm-install.php:497
-#: php/classes/class-qsm-install.php:521 php/classes/class-qsm-install.php:541
-#: php/classes/class-qsm-install.php:561 php/classes/class-qsm-install.php:580
-#: php/classes/class-qsm-install.php:600 php/classes/class-qsm-install.php:619
-#: php/classes/class-qsm-install.php:715 php/classes/class-qsm-install.php:731
-#: php/classes/class-qsm-install.php:755 php/classes/class-qsm-install.php:778
-#: php/classes/class-qsm-install.php:801
+#: php/admin/settings-page.php:269 php/classes/class-qsm-install.php:119
+#: php/classes/class-qsm-install.php:138 php/classes/class-qsm-install.php:184
+#: php/classes/class-qsm-install.php:202 php/classes/class-qsm-install.php:352
+#: php/classes/class-qsm-install.php:373 php/classes/class-qsm-install.php:393
+#: php/classes/class-qsm-install.php:412 php/classes/class-qsm-install.php:432
+#: php/classes/class-qsm-install.php:453 php/classes/class-qsm-install.php:474
+#: php/classes/class-qsm-install.php:493 php/classes/class-qsm-install.php:512
+#: php/classes/class-qsm-install.php:536 php/classes/class-qsm-install.php:556
+#: php/classes/class-qsm-install.php:576 php/classes/class-qsm-install.php:595
+#: php/classes/class-qsm-install.php:615 php/classes/class-qsm-install.php:634
+#: php/classes/class-qsm-install.php:730 php/classes/class-qsm-install.php:746
+#: php/classes/class-qsm-install.php:770 php/classes/class-qsm-install.php:793
+#: php/classes/class-qsm-install.php:816
 msgid "No"
 msgstr ""
 
@@ -1609,18 +1645,10 @@ msgid "Or, redirect the user by entering the URL below:"
 msgstr ""
 
 #: php/admin/options-page-results-page-tab.php:129
-msgid "Displays button to share on Facebook."
-msgstr ""
-
-#: php/admin/options-page-results-page-tab.php:130
-msgid "Displays button to share on Twitter."
-msgstr ""
-
-#: php/admin/options-page-results-page-tab.php:131
 msgid "X = Question ID Note: only supported for multiple choice answers"
 msgstr ""
 
-#: php/admin/options-page-results-page-tab.php:132
+#: php/admin/options-page-results-page-tab.php:130
 msgid "Show result id"
 msgstr ""
 
@@ -1705,16 +1733,16 @@ msgid ""
 "There has been an error in this action. Please share this with the developer"
 msgstr ""
 
-#: php/admin/quiz-options-page.php:108 php/admin/quizzes-page.php:600
+#: php/admin/quiz-options-page.php:109 php/admin/quizzes-page.php:620
 msgid "Post Settings"
 msgstr ""
 
-#: php/admin/quiz-options-page.php:148
+#: php/admin/quiz-options-page.php:149
 #: php/classes/class-qmn-alert-manager.php:41
 msgid "Error!"
 msgstr ""
 
-#: php/admin/quiz-options-page.php:148
+#: php/admin/quiz-options-page.php:149
 msgid ""
 "Please go to the quizzes page and click on the Edit link from the quiz you "
 "wish to edit."
@@ -1728,179 +1756,179 @@ msgstr ""
 msgid "Error trying to reset stats. Please try again."
 msgstr ""
 
-#: php/admin/quizzes-page.php:233
+#: php/admin/quizzes-page.php:251
 msgid "Your site is using PHP version"
 msgstr ""
 
-#: php/admin/quizzes-page.php:233
+#: php/admin/quizzes-page.php:251
 msgid "Starting in QSM 6.0, your version of PHP will no longer be supported."
 msgstr ""
 
-#: php/admin/quizzes-page.php:233
+#: php/admin/quizzes-page.php:251
 msgid "Click here to learn more about QSM's minimum PHP version change."
 msgstr ""
 
-#: php/admin/quizzes-page.php:249
+#: php/admin/quizzes-page.php:267
 msgid "Search"
 msgstr ""
 
-#: php/admin/quizzes-page.php:253 php/admin/quizzes-page.php:255
+#: php/admin/quizzes-page.php:272 php/admin/quizzes-page.php:274
 msgid "Import & Export"
 msgstr ""
 
-#: php/admin/quizzes-page.php:261 php/admin/quizzes-page.php:422
+#: php/admin/quizzes-page.php:280 php/admin/quizzes-page.php:442
 msgid "Bulk Actions"
 msgstr ""
 
-#: php/admin/quizzes-page.php:262 php/admin/quizzes-page.php:423
+#: php/admin/quizzes-page.php:281 php/admin/quizzes-page.php:443
 msgid "Delete Permanently"
 msgstr ""
 
-#: php/admin/quizzes-page.php:264 php/admin/quizzes-page.php:425
+#: php/admin/quizzes-page.php:283 php/admin/quizzes-page.php:445
 msgid "Apply"
 msgstr ""
 
-#: php/admin/quizzes-page.php:267 php/admin/quizzes-page.php:427
+#: php/admin/quizzes-page.php:286 php/admin/quizzes-page.php:447
 msgid "item"
 msgid_plural "items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: php/admin/quizzes-page.php:277 php/admin/quizzes-page.php:437
+#: php/admin/quizzes-page.php:296 php/admin/quizzes-page.php:457
 msgid "Go to the first page"
 msgstr ""
 
-#: php/admin/quizzes-page.php:278 php/admin/quizzes-page.php:438
+#: php/admin/quizzes-page.php:297 php/admin/quizzes-page.php:458
 msgid "Go to the previous page"
 msgstr ""
 
-#: php/admin/quizzes-page.php:282 php/admin/quizzes-page.php:442
+#: php/admin/quizzes-page.php:301 php/admin/quizzes-page.php:462
 msgid "of"
 msgstr ""
 
-#: php/admin/quizzes-page.php:289 php/admin/quizzes-page.php:449
+#: php/admin/quizzes-page.php:308 php/admin/quizzes-page.php:469
 msgid "Go to the next page"
 msgstr ""
 
-#: php/admin/quizzes-page.php:290 php/admin/quizzes-page.php:450
+#: php/admin/quizzes-page.php:309 php/admin/quizzes-page.php:470
 msgid "Go to the last page"
 msgstr ""
 
-#: php/admin/quizzes-page.php:329 php/admin/quizzes-page.php:404
+#: php/admin/quizzes-page.php:348 php/admin/quizzes-page.php:424
 msgid "Title"
 msgstr ""
 
-#: php/admin/quizzes-page.php:333 php/admin/quizzes-page.php:408
-#: php/admin/quizzes-page.php:561
+#: php/admin/quizzes-page.php:352 php/admin/quizzes-page.php:428
+#: php/admin/quizzes-page.php:581
 msgid "Shortcode"
 msgstr ""
 
-#: php/admin/quizzes-page.php:334 php/admin/quizzes-page.php:409
+#: php/admin/quizzes-page.php:353 php/admin/quizzes-page.php:429
 msgid "Views"
 msgstr ""
 
-#: php/admin/quizzes-page.php:335 php/admin/quizzes-page.php:380
-#: php/admin/quizzes-page.php:410
+#: php/admin/quizzes-page.php:354 php/admin/quizzes-page.php:399
+#: php/admin/quizzes-page.php:430
 msgid "Participants"
 msgstr ""
 
-#: php/admin/quizzes-page.php:338 php/admin/quizzes-page.php:413
+#: php/admin/quizzes-page.php:357 php/admin/quizzes-page.php:433
 msgid "Last Modified"
 msgstr ""
 
-#: php/admin/quizzes-page.php:357 php/admin/quizzes-page.php:599
+#: php/admin/quizzes-page.php:376 php/admin/quizzes-page.php:619
 msgid "Edit"
 msgstr ""
 
-#: php/admin/quizzes-page.php:358 php/admin/quizzes-page.php:490
-#: php/admin/quizzes-page.php:503 php/admin/quizzes-page.php:601
+#: php/admin/quizzes-page.php:377 php/admin/quizzes-page.php:510
+#: php/admin/quizzes-page.php:523 php/admin/quizzes-page.php:621
 msgid "Duplicate"
 msgstr ""
 
-#: php/admin/quizzes-page.php:359 php/admin/quizzes-page.php:515
-#: php/admin/quizzes-page.php:530 php/admin/quizzes-page.php:602
+#: php/admin/quizzes-page.php:378 php/admin/quizzes-page.php:535
+#: php/admin/quizzes-page.php:550 php/admin/quizzes-page.php:622
 msgid "Delete"
 msgstr ""
 
-#: php/admin/quizzes-page.php:360
+#: php/admin/quizzes-page.php:379
 msgid "View Results"
 msgstr ""
 
-#: php/admin/quizzes-page.php:361 php/admin/quizzes-page.php:603
+#: php/admin/quizzes-page.php:380 php/admin/quizzes-page.php:623
 msgid "Preview"
 msgstr ""
 
-#: php/admin/quizzes-page.php:369 php/admin/quizzes-page.php:610
+#: php/admin/quizzes-page.php:388 php/admin/quizzes-page.php:630
 msgid "Click here"
 msgstr ""
 
-#: php/admin/quizzes-page.php:374 php/admin/quizzes-page.php:615
+#: php/admin/quizzes-page.php:393 php/admin/quizzes-page.php:635
 msgid "Reset"
 msgstr ""
 
-#: php/admin/quizzes-page.php:392
+#: php/admin/quizzes-page.php:412
 msgid "No Quiz found!"
 msgstr ""
 
-#: php/admin/quizzes-page.php:464
+#: php/admin/quizzes-page.php:484
 msgid "Reset stats for this quiz?"
 msgstr ""
 
-#: php/admin/quizzes-page.php:468
+#: php/admin/quizzes-page.php:488
 msgid ""
 "Are you sure you want to reset the stats to 0? All views and taken stats for "
 "this quiz will be reset. This is permanent and cannot be undone."
 msgstr ""
 
-#: php/admin/quizzes-page.php:475
+#: php/admin/quizzes-page.php:495
 msgid "Reset All Stats For Quiz"
 msgstr ""
 
-#: php/admin/quizzes-page.php:495
+#: php/admin/quizzes-page.php:515
 msgid "Duplicate questions also?"
 msgstr ""
 
-#: php/admin/quizzes-page.php:497
+#: php/admin/quizzes-page.php:517
 msgid "Name Of New Quiz Or Survey:"
 msgstr ""
 
-#: php/admin/quizzes-page.php:520
+#: php/admin/quizzes-page.php:540
 msgid "Are you sure you want to delete this quiz or survey?"
 msgstr ""
 
-#: php/admin/quizzes-page.php:522
+#: php/admin/quizzes-page.php:542
 msgid "Delete question from question bank?"
 msgstr ""
 
-#: php/admin/quizzes-page.php:542
+#: php/admin/quizzes-page.php:562
 msgid "Extend QSM"
 msgstr ""
 
-#: php/admin/quizzes-page.php:546
+#: php/admin/quizzes-page.php:566
 msgid "Export functionality is provided as Premium addon."
 msgstr ""
 
-#: php/admin/quizzes-page.php:549
+#: php/admin/quizzes-page.php:569
 msgid "Buy Now"
 msgstr ""
 
-#: php/admin/quizzes-page.php:566
+#: php/admin/quizzes-page.php:586
 msgid "Embed Shortcode"
 msgstr ""
 
-#: php/admin/quizzes-page.php:571
+#: php/admin/quizzes-page.php:591
 msgid "Link Shortcode"
 msgstr ""
 
-#: php/admin/quizzes-page.php:584
+#: php/admin/quizzes-page.php:604
 msgid "You do not have any quizzes or surveys yet"
 msgstr ""
 
-#: php/admin/quizzes-page.php:589
+#: php/admin/quizzes-page.php:609
 msgid "or watch the below video to get started"
 msgstr ""
 
-#: php/admin/quizzes-page.php:640
+#: php/admin/quizzes-page.php:660
 msgid "Number of items per page:"
 msgstr ""
 
@@ -2126,35 +2154,39 @@ msgstr ""
 msgid "Correct Info: "
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:254
-#: php/classes/class-qmn-quiz-manager.php:267
+#: php/classes/class-qmn-quiz-manager.php:258
+#: php/classes/class-qmn-quiz-manager.php:271
 msgid "It appears that this quiz is not set up correctly"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:559
+#: php/classes/class-qmn-quiz-manager.php:568
 msgid "Limit of choice is reached."
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:559
-#: php/classes/class-qmn-quiz-manager.php:783
-#: php/classes/class-qmn-quiz-manager.php:955
+#: php/classes/class-qmn-quiz-manager.php:568
+#: php/classes/class-qmn-quiz-manager.php:792
+#: php/classes/class-qmn-quiz-manager.php:960
 msgid " out of "
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1272
-#: php/classes/class-qsm-install.php:533
+#: php/classes/class-qmn-quiz-manager.php:1277
+#: php/classes/class-qsm-install.php:548
 msgid "Retake Quiz"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1439
+#: php/classes/class-qmn-quiz-manager.php:1328
+msgid "Captcha verification failed."
+msgstr ""
+
+#: php/classes/class-qmn-quiz-manager.php:1444
 msgid "Click here to view"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1904
+#: php/classes/class-qmn-quiz-manager.php:1909
 msgid "Not collected"
 msgstr ""
 
-#: php/classes/class-qmn-quiz-manager.php:1914
+#: php/classes/class-qmn-quiz-manager.php:1919
 msgid "Unknown"
 msgstr ""
 
@@ -2229,507 +2261,511 @@ msgid "read the documentation."
 msgstr ""
 
 #: php/classes/class-qsm-install.php:96
+msgid "Allow Score Round-off"
+msgstr ""
+
+#: php/classes/class-qsm-install.php:111
 msgid "Show progress bar"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:115
+#: php/classes/class-qsm-install.php:130
 msgid "Require User Login"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:128
+#: php/classes/class-qsm-install.php:143
 msgid "Enabling this allows only logged in users to take the quiz"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:135
+#: php/classes/class-qsm-install.php:150
 msgid "Questions Per Page"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:141
+#: php/classes/class-qsm-install.php:156
 msgid "Override the default pagination created on questions tab"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:148
+#: php/classes/class-qsm-install.php:163
 msgid "Time Limit (in minutes)"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:154
+#: php/classes/class-qsm-install.php:169
 msgid "Leave 0 for no time limit"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:161
+#: php/classes/class-qsm-install.php:176
 msgid "Force submit after timer expiry"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:179
+#: php/classes/class-qsm-install.php:194
 msgid "Skip validations when time expire"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:198
+#: php/classes/class-qsm-install.php:213
 msgid "Limit Attempts"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:204
+#: php/classes/class-qsm-install.php:219
 msgid "Leave 0 for unlimited attempts"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:205
+#: php/classes/class-qsm-install.php:220
 msgid "Limits how many times a user can take the quiz"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:212
+#: php/classes/class-qsm-install.php:227
 msgid "Limit Entries"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:218
+#: php/classes/class-qsm-install.php:233
 msgid "Leave 0 for unlimited entries"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:219
+#: php/classes/class-qsm-install.php:234
 msgid "Limits how many users can take the quiz."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:226
+#: php/classes/class-qsm-install.php:241
 msgid "Limit number of Questions"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:232
+#: php/classes/class-qsm-install.php:247
 msgid "Leave 0 to load all questions"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:233
+#: php/classes/class-qsm-install.php:248
 msgid "Show only limited number of questions from your quiz."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:240
+#: php/classes/class-qsm-install.php:255
 msgid "Quiz Dates"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:247
+#: php/classes/class-qsm-install.php:262
 msgid "Start Date"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:248
+#: php/classes/class-qsm-install.php:263
 msgid "If set, Quiz will be accessible only after this date"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:249
+#: php/classes/class-qsm-install.php:264
 msgid "Leave blank for no date limit"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:262
+#: php/classes/class-qsm-install.php:277
 msgid " If set, Quiz will not be accessible after this date"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:263
+#: php/classes/class-qsm-install.php:278
 msgid "End Date"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:270 php/classes/class-qsm-install.php:274
+#: php/classes/class-qsm-install.php:285 php/classes/class-qsm-install.php:289
 msgid "Random Questions"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:278
+#: php/classes/class-qsm-install.php:293
 msgid "Random Questions And Answers"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:282
+#: php/classes/class-qsm-install.php:297
 msgid "Random Answers"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:286
+#: php/classes/class-qsm-install.php:301
 msgid "Disabled"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:291
+#: php/classes/class-qsm-install.php:306
 msgid "Randomize the order of questions or answers every time a quiz loads"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:298
+#: php/classes/class-qsm-install.php:313
 msgid "Random Questions Categories"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:301
+#: php/classes/class-qsm-install.php:316
 msgid "Questions will load only from selected categories"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:308
+#: php/classes/class-qsm-install.php:323
 msgid "Contact form position"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:312
+#: php/classes/class-qsm-install.php:327
 msgid "Show before quiz begins"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:316
+#: php/classes/class-qsm-install.php:331
 msgid "Show after the quiz ends"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:321
+#: php/classes/class-qsm-install.php:336
 msgid "Select when to display the contact form"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:322
+#: php/classes/class-qsm-install.php:337
 msgid "The form can be configured in Contact tab"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:329
+#: php/classes/class-qsm-install.php:344
 msgid "Show contact form to logged in users"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:342
+#: php/classes/class-qsm-install.php:357
 msgid "Logged in users can edit their contact information"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:343
+#: php/classes/class-qsm-install.php:358
 msgid "The information will still get saved if this option is disabled"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:350
+#: php/classes/class-qsm-install.php:365
 msgid "Enable comments"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:363
+#: php/classes/class-qsm-install.php:378
 msgid "Allow users to enter their comments after the quiz"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:370
+#: php/classes/class-qsm-install.php:385
 msgid "Show question numbers"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:389
+#: php/classes/class-qsm-install.php:404
 msgid "Save Responses"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:402
+#: php/classes/class-qsm-install.php:417
 msgid "The results will be permanently stored in a database"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:409
+#: php/classes/class-qsm-install.php:424
 msgid "Disable change of answers"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:422 php/classes/class-qsm-install.php:443
+#: php/classes/class-qsm-install.php:437 php/classes/class-qsm-install.php:458
 msgid "Works with multiple choice questions only"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:423
+#: php/classes/class-qsm-install.php:438
 msgid "The question will be disabled once an answer is selected"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:430
+#: php/classes/class-qsm-install.php:445
 msgid "Add class for correct/incorrect answers"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:444
+#: php/classes/class-qsm-install.php:459
 msgid ""
 "Dynamically add class for incorrect/correct answer after user selects answer."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:451
+#: php/classes/class-qsm-install.php:466
 msgid "Disable auto fill for contact input"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:470
+#: php/classes/class-qsm-install.php:485
 msgid "Display category name on front end"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:489
+#: php/classes/class-qsm-install.php:504
 msgid "Show results inline"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:502
+#: php/classes/class-qsm-install.php:517
 msgid "Instantly displays the result for each question"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:509
+#: php/classes/class-qsm-install.php:524
 msgid "Show correct answer inline"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:513
+#: php/classes/class-qsm-install.php:528
 msgid "Yes When answer is correct"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:517
+#: php/classes/class-qsm-install.php:532
 msgid "Yes Independent of correct/incorrect"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:526
+#: php/classes/class-qsm-install.php:541
 msgid "Show correct user info when inline result is enabled."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:546
+#: php/classes/class-qsm-install.php:561
 msgid "Show a button on result page to retake the quiz"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:553
+#: php/classes/class-qsm-install.php:568
 msgid "Show current page number"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:572
+#: php/classes/class-qsm-install.php:587
 msgid "Deselect Answer"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:585
+#: php/classes/class-qsm-install.php:600
 msgid ""
 "Users are able deselect an answer and leave it blank. Works with Multiple "
 "Choice and Horizintal Multiple Choice questions only"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:592
+#: php/classes/class-qsm-install.php:607
 msgid "Disable description on quiz result page?"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:611
+#: php/classes/class-qsm-install.php:626
 msgid "Disable scroll on next and previous button click?"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:630
+#: php/classes/class-qsm-install.php:645
 msgid "Quiz Animation"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:634
+#: php/classes/class-qsm-install.php:649
 msgid "bounce"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:638
+#: php/classes/class-qsm-install.php:653
 msgid "flash"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:642
+#: php/classes/class-qsm-install.php:657
 msgid "pulse"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:646
+#: php/classes/class-qsm-install.php:661
 msgid "rubberBand"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:650
+#: php/classes/class-qsm-install.php:665
 msgid "shake"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:654
+#: php/classes/class-qsm-install.php:669
 msgid "swing"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:658
+#: php/classes/class-qsm-install.php:673
 msgid "tada"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:662
+#: php/classes/class-qsm-install.php:677
 msgid "wobble"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:666
+#: php/classes/class-qsm-install.php:681
 msgid "jello"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:670
+#: php/classes/class-qsm-install.php:685
 msgid "heartBeat"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:674
+#: php/classes/class-qsm-install.php:689
 msgid "No animation"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:685
+#: php/classes/class-qsm-install.php:700
 msgid "Logo URL"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:688
+#: php/classes/class-qsm-install.php:703
 msgid ""
 "Enter the url of an image which will be used as logo while sharing on "
 "facebook."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:689
+#: php/classes/class-qsm-install.php:704
 msgid "If left blank, this will default to QSM logo"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:696
-#: php/classes/class-qsm-install.php:1110
+#: php/classes/class-qsm-install.php:711
+#: php/classes/class-qsm-install.php:1139
 msgid "Show Legacy Options"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:699
-#: php/classes/class-qsm-install.php:1113
+#: php/classes/class-qsm-install.php:714
+#: php/classes/class-qsm-install.php:1142
 msgid ""
 "All the legacy options are deprecated and will be removed in upcoming version"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:707
+#: php/classes/class-qsm-install.php:722
 msgid "Social Sharing Buttons"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:720
+#: php/classes/class-qsm-install.php:735
 msgid ""
 "Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE"
 "%"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:727
+#: php/classes/class-qsm-install.php:742
 msgid "Ask user's name"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:739 php/classes/class-qsm-install.php:763
-#: php/classes/class-qsm-install.php:786 php/classes/class-qsm-install.php:809
+#: php/classes/class-qsm-install.php:754 php/classes/class-qsm-install.php:778
+#: php/classes/class-qsm-install.php:801 php/classes/class-qsm-install.php:824
 msgid "Require"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:751
+#: php/classes/class-qsm-install.php:766
 msgid "Ask user's business"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:774
+#: php/classes/class-qsm-install.php:789
 msgid "Ask user's email"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:797
+#: php/classes/class-qsm-install.php:812
 msgid "Ask user's phone"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:820
+#: php/classes/class-qsm-install.php:835
 msgid "Message Displayed Before Quiz"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:833
+#: php/classes/class-qsm-install.php:849
 msgid "Message Displayed Before Comments Box If Enabled"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:846
+#: php/classes/class-qsm-install.php:863
 msgid "Message Displayed At End Of Quiz (Leave Blank To Omit Text Section)"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:859
+#: php/classes/class-qsm-install.php:877
 msgid "Message Displayed If User Has Tried Quiz Too Many Times"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:872
+#: php/classes/class-qsm-install.php:891
 msgid ""
 "Message Displayed If User Is Not Logged In And Quiz Requires Users To Be "
 "Logged In"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:885
+#: php/classes/class-qsm-install.php:905
 msgid "Message Displayed If Date Is Outside Scheduled Timeframe"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:898
+#: php/classes/class-qsm-install.php:919
 msgid "Message Displayed If The Limit Of Total Entries Has Been Reached"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:911
+#: php/classes/class-qsm-install.php:933
 msgid "Results Page %QUESTIONS_ANSWERS% Text"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:929
+#: php/classes/class-qsm-install.php:952
 msgid "%QUESTIONS_ANSWERS_EMAIL% Text"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:945
+#: php/classes/class-qsm-install.php:970
 msgid "Twitter Sharing Text"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:964
+#: php/classes/class-qsm-install.php:991
 msgid "Facebook Sharing Text"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:983
+#: php/classes/class-qsm-install.php:1012
 msgid "Buttons"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:991
+#: php/classes/class-qsm-install.php:1020
 msgid "Submit Button"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1000
+#: php/classes/class-qsm-install.php:1029
 msgid "Previous button"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1009
+#: php/classes/class-qsm-install.php:1038
 msgid "Next button"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1018
+#: php/classes/class-qsm-install.php:1047
 msgid "Validation Messages"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1027
+#: php/classes/class-qsm-install.php:1056
 msgid "All required fields"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1036
+#: php/classes/class-qsm-install.php:1065
 msgid "Invalid email"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1045
+#: php/classes/class-qsm-install.php:1074
 msgid "Invalid number"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1054
+#: php/classes/class-qsm-install.php:1083
 msgid "Invalid Captcha"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1063
+#: php/classes/class-qsm-install.php:1092
 msgid "Other"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1072
+#: php/classes/class-qsm-install.php:1101
 msgid "Comments field"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1081
+#: php/classes/class-qsm-install.php:1110
 msgid "Hint Text"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1090
+#: php/classes/class-qsm-install.php:1119
 msgid "Correct answer message"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1093
+#: php/classes/class-qsm-install.php:1122
 msgid "Text to show when the selected option is correct answer."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1100
+#: php/classes/class-qsm-install.php:1129
 msgid "Incorrect answer message"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1103
+#: php/classes/class-qsm-install.php:1132
 msgid "Text to show when the selected option is wrong answer."
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1121
+#: php/classes/class-qsm-install.php:1150
 msgid "Name field"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1130
+#: php/classes/class-qsm-install.php:1159
 msgid "Business field"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1139
+#: php/classes/class-qsm-install.php:1168
 msgid "Email field"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1148
+#: php/classes/class-qsm-install.php:1177
 msgid "Phone number field"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1764
+#: php/classes/class-qsm-install.php:1801
 msgid "Documentation"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1765
+#: php/classes/class-qsm-install.php:1802
 msgid "Create Support Ticket"
 msgstr ""
 
-#: php/classes/class-qsm-install.php:1765
+#: php/classes/class-qsm-install.php:1802
 msgid "Support"
 msgstr ""
 
-#: php/classes/class-qsm-settings.php:324
+#: php/classes/class-qsm-settings.php:323
 msgid "Previous"
 msgstr ""
 
-#: php/classes/class-qsm-settings.php:325
+#: php/classes/class-qsm-settings.php:324
 msgid "Next"
 msgstr ""
 
