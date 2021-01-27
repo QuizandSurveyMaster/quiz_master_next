@@ -380,7 +380,7 @@ function qsm_options_questions_tab_content() {
                                                                         ),
                                                                         'default' => '1',
                                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Comment-Field'
-                                                                    ),  
+                                                                    ),
                                                                     'hint' => array(
                                                                         'label' => __( 'Hint', 'quiz-master-next' ),
                                                                         'type' => 'text',
@@ -742,8 +742,8 @@ function qsm_delete_question_from_database(){
 
     if( $question_id ){
         global $wpdb;
-		$wpdb->delete($wpdb->prefix.'mlw_questions',array('question_id'=> $question_id));
-        echo wp_json_encode( array( 'success' => true,'message' => __( 'Question removed Successfully.','quiz-master-next' ) ));
+		    $wpdb->delete($wpdb->prefix.'mlw_questions',array('question_id'=> $question_id));
+        echo wp_json_encode( array( 'success' => true,'message' => __( 'Question removed Successfully.','quiz-master-next' ) ) );
     }
     exit;
 }
