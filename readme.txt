@@ -137,15 +137,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 7.1.11 (January 27, 2020) =
 * Bug: Fixed jquery issue while editing the result page.
-* Bug: Make string translation for %POLL_RESULTS_X% variable.
-* Bug: Fixed decimal points converted to integar while editing question's answer.
+* Bug: Added string translation for %POLL_RESULTS_X% variable.
+* Bug: Fixed incorrect score while using point value with decimal.
 * Enhancement: Added link support in contact field label.
 * Enhancement: Added HTML support in email tab.
-* Enhancement: Added support of link in Hint field while editing the question.
-* Enhancement: Added HTML tags support in Correct answer info field while editing the question.
-* Enhancement: Integrated roadmap feature.
-* Enhancement: Changed the delete question function to delete the question from database.
-* Enhancement: Changed the quiz status to Draft by default.
+* Enhancement: Added option to add link in Hint field.
+* Enhancement: Added support for HTML tags in Correct answer info field.
+* Enhancement: Added option to view roadmap.
+* Enhancement: Added option to delete questions from database.
+* Enhancement: Changed the quiz status by default to Draft.
 
 
 = 7.1.10 (December 29, 2020) =
