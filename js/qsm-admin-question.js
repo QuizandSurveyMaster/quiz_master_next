@@ -711,9 +711,34 @@ var import_button;
 			QSMQuestion.duplicateQuestion( $( this ).parents( '.question' ).data( 'question-id' ) );
                         $('.save-page-button').trigger('click');
 		});
-		$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
+			$( '.questions' ).on( 'click', '.delete-question-button', function( event ) {
                         event.preventDefault();
                         if( confirm('Are you sure?') ){
+							 var question_id = $(this).data('question-iid');
+							
+                            // if( question_id ){
+							 console.log(question_id);
+                                $.ajax( {
+                                    url: ajaxurl,
+                                    method: 'POST',
+                                    data: {
+                                        'action' : 'qsm_delete_question_from_database',
+                                        'question_id': question_id,
+                                        'nonce': qsmQuestionSettings.single_question_nonce
+                                    },
+                                    success: function(response) {
+                                        var data = jQuery.parseJSON( response );
+                                        if( data.success === true ){
+                                
+                                            console.log( data.message );
+                                        } else {
+                                           console.log( data.message );
+                                        }
+                                    }
+                                } );
+                            // }
+                       
+							
                             $( this ).parents( '.question' ).remove();
                             QSMQuestion.countTotal();
                             $('.save-page-button').trigger('click');

@@ -1203,12 +1203,13 @@ jQuery(function() {
 					$this.find('.quick-question-res-p').remove();
 					$this.find('.qsm-inline-correct-info').remove();
 					if (data.success == 'correct') {
-						$this.append('<p style="color: green" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_correct_answer_text + '</p>')
-						$this.append('<p class="qsm-inline-correct-info">' + data.message + '</p>');
+						$this.append('<div style="color: green" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_correct_answer_text + '</div>')
+						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					} else if (data.success == 'incorrect') {
-						$this.append('<p style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</p>')
-						$this.append('<p class="qsm-inline-correct-info">' + data.message + '</p>');
+						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</div>')
+						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
+					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);

@@ -572,6 +572,7 @@ function qsm_text_template_variable_list(){
         '%TOTAL_QUESTIONS%' => __('The total number of questions in the quiz', 'quiz-master-next'),
         '%CORRECT_SCORE%' => __('Score for the quiz when using correct answers', 'quiz-master-next'),
         '%USER_NAME%' => __('The name the user entered before the quiz', 'quiz-master-next'),
+		'%FULL_NAME%' => __('The full name of user with first name and last name', 'quiz-master-next'),
         '%USER_BUSINESS%' => __('The business the user entered before the quiz', 'quiz-master-next'),
         '%USER_PHONE%' => __('The phone number the user entered before the quiz', 'quiz-master-next'),
         '%USER_EMAIL%' => __('The email the user entered before the quiz', 'quiz-master-next'),
@@ -656,3 +657,26 @@ function qsm_admin_page_access_func(){
     }
 }
 add_action('admin_page_access_denied', 'qsm_admin_page_access_func');
+
+/**
+ * Display roadmap page
+ * 
+ * @since 7.1.11
+ */
+function qsm_generate_roadmap_page(){ ?>
+    <div class="wrap">
+        <style>
+            iframe {
+                height: 1350px;
+            }
+        </style>
+        <iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="900" width="100%" frameborder="0"></iframe>
+        <script>
+                var ps_config = {
+                        productId : "d24ad9de-78c7-4835-a2a8-3f5ee0317f31"
+                };
+        </script>
+        <script type="text/javascript" src="https://app.productstash.io/js/productstash-embed.js" defer="defer"></script>
+    </div>
+<?php
+}

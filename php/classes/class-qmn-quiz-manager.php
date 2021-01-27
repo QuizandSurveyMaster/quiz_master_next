@@ -204,10 +204,10 @@ class QMNQuizManager {
         echo wp_json_encode(
                 array(
                     'success' => $correct_answer ? 'correct' : 'incorrect',
-                    'message' => $show_correct_info && $got_ans ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . $correct_info_text : ''
-                ) 
+                    'message' => $show_correct_info && $got_ans ?  '<b>'. __('Correct Info: ', 'quiz-master-next') .'</b>' . do_shortcode($correct_info_text) : ''
+                )
         );
-	wp_die();        
+	wp_die();    
     }
 
     /**
@@ -232,6 +232,10 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+            wp_enqueue_style('dashicons');
+            wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id = $_GET['result_id'];
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
             $result = $wpdb->get_row($query,ARRAY_A);
@@ -714,7 +718,7 @@ class QMNQuizManager {
                         }
                         // Checks if a hint is entered.
                         if (!empty($question['hints'])) {
-                            echo '<div title="' . esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
+                            echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.htmlspecialchars_decode($question['hints'], ENT_QUOTES).'</span></div>';
                         }
                         ?>
                     </div>
@@ -774,8 +778,8 @@ class QMNQuizManager {
                                 echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr(htmlspecialchars_decode($options->comment_field_text, ENT_QUOTES)) ."' onclick='qmnClearField(this)' ></textarea>";
                             }
                             // Checks if a hint is entered.
-                            if (!empty($question['hints'])) {
-                                echo '<div title="' . esc_attr(htmlspecialchars_decode($question['hints'], ENT_QUOTES)) . '" class="qsm-hint qsm_hint mlw_qmn_hint_link">' . $options->hint_text . '</div>';
+                            if (!empty($question['hints'])) { 
+                               echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">'.$options->hint_text . '<span class="qsm_tooltiptext">'.htmlspecialchars_decode($question['hints'], ENT_QUOTES).'</span></div>';
                             }
                             ?>
                         </div>
@@ -1239,7 +1243,7 @@ class QMNQuizManager {
 						'%d',
 						'%s',
 						'%d',
-						'%d',
+						'%f',
 						'%d',
 						'%d',
 						'%d',
@@ -1435,7 +1439,7 @@ class QMNQuizManager {
                             }
                             
                             // Send question to our grading function
-                            $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));                            
+                            $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
                             if( isset($results_array['question_type']) && $results_array['question_type'] == 'file_upload') {
                               $results_array['user_text'] = '<a target="_blank" href="'.$results_array['user_text'].'">' . __('Click here to view', 'quiz-master-next') . '</a>';
                             }
@@ -1536,8 +1540,9 @@ class QMNQuizManager {
                         }
                         
                         // Send question to our grading function
-                        $results_array = $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']);
+                        $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
 
+							
                         // If question was graded correctly.
                         if (!isset($results_array["null_review"])) {
                             $points_earned += $results_array["points"];

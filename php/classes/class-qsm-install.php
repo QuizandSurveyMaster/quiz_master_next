@@ -1205,7 +1205,7 @@ class QSM_Install {
   			message_after TEXT NOT NULL,
   			message_comment TEXT NOT NULL,
   			message_end_template TEXT NOT NULL,
-  			user_email_template TEXT NOT NULL,
+  			user_email_template LONGTEXT NOT NULL,
   			admin_email_template TEXT NOT NULL,
   			submit_button_text TEXT NOT NULL,
   			name_field_text TEXT NOT NULL,
@@ -1304,7 +1304,7 @@ class QSM_Install {
   			quiz_id INT NOT NULL,
   			quiz_name TEXT NOT NULL,
   			quiz_system INT NOT NULL,
-  			point_score INT NOT NULL,
+  			point_score FLOAT NOT NULL,
   			correct_score INT NOT NULL,
   			correct INT NOT NULL,
   			total INT NOT NULL,
@@ -1326,7 +1326,6 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
   	}
-
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
   		$sql = "CREATE TABLE $audit_table_name (
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -1352,7 +1351,7 @@ class QSM_Install {
    */
   public function update() {
     global $mlwQuizMasterNext;
-  	$data = $mlwQuizMasterNext->version;
+  	$data = $mlwQuizMasterNext->version ;
   	if ( ! get_option( 'qmn_original_version' ) ) {
   		add_option( 'qmn_original_version', $data );
     }
@@ -1718,13 +1717,22 @@ class QSM_Install {
   			$update_sql = "UPDATE ".$table_name." SET question_type_new=question_type";
   			$results = $wpdb->query( $update_sql );
   		}
+		
+		//Update 7.1.11
+		$user_email_template_data= $wpdb->get_row("SHOW COLUMNS FROM ".$wpdb->prefix."mlw_quizzes LIKE 'user_email_template'");
+		if($user_email_template_data->Type == "text")
+		{
+			$sql = "ALTER TABLE ".$wpdb->prefix."mlw_quizzes  CHANGE user_email_template user_email_template LONGTEXT NOT NULL";
+  			$results = $wpdb->query( $sql );
+		}
 
   		//Update 2.6.1
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_qm_audit_trail CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_quizzes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
-
+		
+		
 
   		global $wpdb;
   		$table_name = $wpdb->prefix . "mlw_results";
@@ -1744,7 +1752,11 @@ class QSM_Install {
   			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
   			$results = $wpdb->query( $update_sql );
   		}
-
+		//Update 7.1.11
+		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "mlw_results and column_name = 'point_score'") != 'FLOAT' ) 
+		{
+		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
+		}
       // Update 5.0.0
       $settings = (array) get_option( 'qmn-settings', array() );
       if ( ! isset( $settings['results_details_template'] ) ) {
@@ -1768,6 +1780,9 @@ class QSM_Install {
   	if ( ! get_option('mlw_advert_shows') ) {
   		add_option( 'mlw_advert_shows' , 'true' );
   	}
+	
+	
+	
   }
 
   /**
@@ -1799,6 +1814,8 @@ class QSM_Install {
     return (array) $links;
 
   }
+  
+  
 }
 
 $qsm_install = new QSM_Install();
