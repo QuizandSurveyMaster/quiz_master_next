@@ -1304,7 +1304,7 @@ class QSM_Install {
   			quiz_id INT NOT NULL,
   			quiz_name TEXT NOT NULL,
   			quiz_system INT NOT NULL,
-  			point_score INT NOT NULL,
+  			point_score FLOAT NOT NULL,
   			correct_score INT NOT NULL,
   			correct INT NOT NULL,
   			total INT NOT NULL,
@@ -1731,7 +1731,8 @@ class QSM_Install {
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_questions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_quizzes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
   		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci" );
-
+		
+		
 
   		global $wpdb;
   		$table_name = $wpdb->prefix . "mlw_results";
@@ -1751,7 +1752,11 @@ class QSM_Install {
   			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
   			$results = $wpdb->query( $update_sql );
   		}
-
+		//Update 7.1.11
+		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "mlw_results and column_name = 'point_score'") != 'FLOAT' ) 
+		{
+		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
+		}
       // Update 5.0.0
       $settings = (array) get_option( 'qmn-settings', array() );
       if ( ! isset( $settings['results_details_template'] ) ) {
@@ -1775,6 +1780,9 @@ class QSM_Install {
   	if ( ! get_option('mlw_advert_shows') ) {
   		add_option( 'mlw_advert_shows' , 'true' );
   	}
+	
+	
+	
   }
 
   /**
@@ -1806,6 +1814,8 @@ class QSM_Install {
     return (array) $links;
 
   }
+  
+  
 }
 
 $qsm_install = new QSM_Install();
