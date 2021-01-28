@@ -360,8 +360,8 @@ class QMNQuizManager {
                         ), $atts));
         ob_start();
         if($id == 0){
-            $id = isset($_GET['result_id']) ? $_GET['result_id'] : 0;
-        }
+            $id = isset($_GET['result_id']) ? sanitize_text_field( $_GET['result_id'] ) : 0;
+        }        
         global $wpdb;
         $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
         $quiz_result = unserialize($result_data['quiz_results']);
