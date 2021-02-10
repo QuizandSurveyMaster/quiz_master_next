@@ -742,8 +742,8 @@ function qsm_delete_question_from_database(){
 
     if( $question_id ){
         global $wpdb;
-		$wpdb->delete($wpdb->prefix.'mlw_questions',array('question_id'=> $question_id));
-        echo wp_json_encode( array( 'success' => true,'message' => __( 'Question removed Successfully.','quiz-master-next' ) );
+		    $wpdb->delete($wpdb->prefix.'mlw_questions',array('question_id'=> $question_id));
+        echo wp_json_encode( array( 'success' => true,'message' => __( 'Question removed Successfully.','quiz-master-next' ) ) );
     }
     exit;
 }

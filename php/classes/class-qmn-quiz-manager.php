@@ -360,34 +360,42 @@ class QMNQuizManager {
                         ), $atts));
         ob_start();
         if($id == 0){
-            $id = isset($_GET['result_id']) ? $_GET['result_id'] : 0;
+            $id = (int) isset($_GET['result_id']) ? sanitize_text_field( $_GET['result_id'] ) : 0;
         }
-        global $wpdb;
-        $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
-        $quiz_result = unserialize($result_data['quiz_results']);
-        $response_data = array(
-            'quiz_id' => $result_data['quiz_id'],
-            'quiz_name' => $result_data['quiz_name'],
-            'quiz_system' => $result_data['quiz_system'],
-            'quiz_payment_id' => '',
-            'user_ip' => $result_data['user_ip'],
-            'user_name' => $result_data['name'],
-            'user_business' => $result_data['business'],
-            'user_email' => $result_data['email'],
-            'user_phone' => $result_data['phone'],
-            'user_id' => $result_data['user'],
-            'timer' => 0,
-            'time_taken' => $result_data['time_taken'],
-            'contact' => $quiz_result['contact'],
-            'total_points' => $result_data['point_score'],
-            'total_score' => $result_data['correct_score'],
-            'total_correct' => $result_data['correct'],
-            'total_questions' => $result_data['total'],
-            'question_answers_array' => $quiz_result[1],
-            'comments' => ''
-        );
-        $data = QSM_Results_Pages::generate_pages($response_data);
-        echo htmlspecialchars_decode($data['display']);
+        if( $id && is_numeric($id) ){
+            global $wpdb;
+            $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
+            if( $result_data ){
+                $quiz_result = unserialize($result_data['quiz_results']);
+                $response_data = array(
+                    'quiz_id' => $result_data['quiz_id'],
+                    'quiz_name' => $result_data['quiz_name'],
+                    'quiz_system' => $result_data['quiz_system'],
+                    'quiz_payment_id' => '',
+                    'user_ip' => $result_data['user_ip'],
+                    'user_name' => $result_data['name'],
+                    'user_business' => $result_data['business'],
+                    'user_email' => $result_data['email'],
+                    'user_phone' => $result_data['phone'],
+                    'user_id' => $result_data['user'],
+                    'timer' => 0,
+                    'time_taken' => $result_data['time_taken'],
+                    'contact' => $quiz_result['contact'],
+                    'total_points' => $result_data['point_score'],
+                    'total_score' => $result_data['correct_score'],
+                    'total_correct' => $result_data['correct'],
+                    'total_questions' => $result_data['total'],
+                    'question_answers_array' => $quiz_result[1],
+                    'comments' => ''
+                );
+                $data = QSM_Results_Pages::generate_pages($response_data);
+                echo htmlspecialchars_decode($data['display']);
+            } else {
+                echo _e('Invalid result id!', 'quiz-master-next');
+            }
+        }else{
+            echo _e('Invalid result id!', 'quiz-master-next');
+        }
         $content = ob_get_clean();
         return $content;
     }
@@ -1243,7 +1251,7 @@ class QMNQuizManager {
 						'%d',
 						'%s',
 						'%d',
-						'%d',
+						'%f',
 						'%d',
 						'%d',
 						'%d',
@@ -1542,6 +1550,7 @@ class QMNQuizManager {
                         // Send question to our grading function
                         $results_array = apply_filters('qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review($question['question_type_new'], $question['question_id']));
 
+							
                         // If question was graded correctly.
                         if (!isset($results_array["null_review"])) {
                             $points_earned += $results_array["points"];
