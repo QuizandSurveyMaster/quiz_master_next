@@ -517,6 +517,24 @@ class QSM_Install {
       'help' => __('Instantly displays the result for each question','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    $field_array = array(
+    'id' => 'end_quiz_if_wrong',
+    'label' => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
+    'type' => 'radio',
+    'options' => array(
+      array(
+      'label' => __( 'Yes', 'quiz-master-next' ),
+      'value' => 1
+      ),
+      array(
+      'label' => __( 'No', 'quiz-master-next' ),
+      'value' => 0
+      )
+    ),
+    'default' => 0
+  );
+  $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     // Settings for quick result
     $field_array = array(

@@ -1218,6 +1218,51 @@ jQuery(function() {
 		}
 	});
 
+	// End Quiz If Wrong
+	jQuery(document).on('change','.qmn_radio_answers input',function(e){
+		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		var $quizForm = QSM.getQuizForm( quizID );
+		if (qmn_quiz_data[ quizID ].end_quiz_if_wrong == 1) {
+			var question_id = jQuery(this).attr('name').split('question')[1],
+					value = jQuery(this).val(),
+					$this = jQuery(this).parents('.quiz_section');
+			jQuery.ajax({
+				type: 'POST',
+				url: qmn_ajax_object.ajaxurl,
+				data: {
+					action: "qsm_get_question_quick_result",
+					question_id: question_id,
+					answer: value,
+					show_correct_info: qmn_quiz_data[ quizID ].enable_quick_correct_answer_info
+				},
+				success: function (response) {
+					var data = jQuery.parseJSON(response);
+					$this.find('.quick-question-res-p').remove();
+					$this.find('.qsm-inline-correct-info').remove();
+					if (data.success == 'correct') {
+						
+					} else if (data.success == 'incorrect') {
+						
+						
+
+						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</div>')
+						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+
+						 setTimeout(function() {
+   							 $quizForm.closest( '.qmn_quiz_container' ).find('.qsm-submit-btn').trigger('click');
+  						}, 2000);
+
+						
+					}
+					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+				},
+				error: function (errorThrown) {
+					alert(errorThrown);
+				}
+			});
+		}
+	});
+
 	//Ajax upload file code
 	jQuery('.quiz_section .mlw_answer_file_upload').on('change', function(){
 		var $this = jQuery(this);
