@@ -188,7 +188,7 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
-                add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
+        add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
 	}
         
         /**

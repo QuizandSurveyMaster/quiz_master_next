@@ -1219,7 +1219,7 @@ jQuery(function() {
 	});
 
 	// End Quiz If Wrong
-	jQuery(document).on('change','.qmn_radio_answers input',function(e){
+	jQuery(document).on('change ','.qmn_radio_answers input , .qmn_check_answers input , .qsm_select',function(e){
 		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
 		var $quizForm = QSM.getQuizForm( quizID );
 		if (qmn_quiz_data[ quizID ].end_quiz_if_wrong == 1) {
@@ -1250,7 +1250,7 @@ jQuery(function() {
 
 						 setTimeout(function() {
    							 $quizForm.closest( '.qmn_quiz_container' ).find('.qsm-submit-btn').trigger('click');
-  						}, 2000);
+  						}, 1000);
 
 						
 					}

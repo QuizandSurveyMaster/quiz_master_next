@@ -532,7 +532,8 @@ class QSM_Install {
       'value' => 0
       )
     ),
-    'default' => 0
+    'default' => 0,
+    'help' => __('This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types','quiz-master-next')
   );
   $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
