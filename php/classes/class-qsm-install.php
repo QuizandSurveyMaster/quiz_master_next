@@ -478,6 +478,24 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+     $field_array = array(
+      'id' => 'form_disable_autofill',
+      'label' => __('Disable auto fill for Quiz input', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+            'label' => __('No', 'quiz-master-next'),
+            'value' => 0
+        ),
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     // Registers show category on front setting
     $field_array = array(
