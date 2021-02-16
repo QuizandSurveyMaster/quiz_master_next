@@ -994,7 +994,9 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                                                             $single_answer_option = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
                                                                             $single_answer_option = htmlspecialchars( $single_answer_option );
                                                                             $answer_value = htmlspecialchars( $answer[1] );                                                                            
-                                                                        }
+                                                                        } else {
+										$answer_value = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+									}
 									if (isset($single_answer[2]) && $single_answer[2] == 1 && $answer_value == $single_answer_option ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
 									} else if (isset($single_answer[2]) && $single_answer[2] == 1) {
