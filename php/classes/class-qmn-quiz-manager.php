@@ -2305,9 +2305,6 @@ class QMNQuizManager {
 	}
 
 	public function init_schedules() {
-		if (isset($_REQUEST['testcron']) && $_REQUEST['testcron'] == '1') {
-			$this->qsm_every_five_minute_cron_func();
-		}
 		if (!wp_next_scheduled('qsm_every_five_minute_cron_hook')) {
 			wp_schedule_event(time(), 'qsm_every_five_minute', 'qsm_every_five_minute_cron_hook');
 		}
@@ -2328,8 +2325,16 @@ class QMNQuizManager {
 				$settings = maybe_unserialize($quiz->quiz_settings);
 				if (isset($settings['quiz_options'])) {
 					$quiz_options = maybe_unserialize($settings['quiz_options']);
-					$quiz_expire_times[$quiz->quiz_id] = (isset($quiz_options['quiz_expire_time']) ? $quiz_options['quiz_expire_time'] : 0);
+					if (isset($quiz_options['quiz_expire_time']) && $quiz_options['quiz_expire_time'] > 0) {
+						$quiz_expire_times[$quiz->quiz_id] = $quiz_options['quiz_expire_time'];
+					}
 				}
+			}
+			/**
+			 * Return if there is no expire times for quizzes.
+			 */
+			if (empty($quiz_expire_times)) {
+				return;
 			}
 			$mlw_result_data = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}mlw_results` WHERE `deleted`='0' && `active`='1' ORDER BY `result_id` DESC");
 			if (!empty($mlw_result_data)) {
