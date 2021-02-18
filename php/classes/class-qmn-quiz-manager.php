@@ -44,7 +44,6 @@ class QMNQuizManager {
         add_shortcode('mlw_quizmaster', array($this, 'display_shortcode'));
         add_shortcode('qsm', array($this, 'display_shortcode'));
         add_shortcode('qsm_result', array($this, 'shortcode_display_result'));
-        add_shortcode('tour_leaderboard', array($this, 'shortcode_tour_leaderboard'));
         add_action('wp_enqueue_scripts', array($this, 'qsm_wp_enqueue_scripts'));
         add_action('wp_ajax_qmn_process_quiz', array($this, 'ajax_submit_results'));
         add_action('wp_ajax_nopriv_qmn_process_quiz', array($this, 'ajax_submit_results'));
@@ -70,7 +69,12 @@ class QMNQuizManager {
 		add_action('admin_init', array($this, 'qsm_save_resume_create_table'));
         add_action('wp_ajax_qsm_get_quiz_saved_data', array($this, 'qsm_get_quiz_saved_data'));
         add_action('wp_ajax_nopriv_qsm_get_quiz_saved_data', array($this, 'qsm_get_quiz_saved_data'));
-    }
+
+		add_shortcode('tour_leaderboard', array($this, 'shortcode_tour_leaderboard'));
+		add_action('init', array($this, 'init_schedules'));
+		add_filter('cron_schedules', array($this, 'cron_schedules'));
+		add_action('qsm_every_five_minute_cron_hook', array($this, 'qsm_every_five_minute_cron_func'));
+	}
 
     /**
      * @version 6.3.7
@@ -2215,10 +2219,9 @@ class QMNQuizManager {
 	public function qsm_wp_enqueue_scripts() {
 		wp_enqueue_style('qsm-datatables-css', QSM_PLUGIN_URL.'css/datatables.css');
 		wp_enqueue_script('qsm-datatables-js', QSM_PLUGIN_URL.'js/datatables.js', array('jquery'));
-		
-		
 	}
-	function qsm_display_leaderboard_table($data = array()) {
+
+	public function qsm_display_leaderboard_table($data = array()) {
 		if (empty($data)) {
 			return '';
 		}
@@ -2255,6 +2258,8 @@ class QMNQuizManager {
 						case 'time_taken':
 							if ($mlw_eaches->active == '1') {
 								$value = __('In progress', 'quiz-master-next');
+							} elseif ($mlw_eaches->active == '2') {
+								$value = __('Expired', 'quiz-master-next');
 							} else {
 								$hrs = $mins = $secs = "00";
 								$time_taken = 0;
@@ -2297,6 +2302,51 @@ class QMNQuizManager {
 		}
 		$table_html = "<div class='tour_leaderboard'>{$table_html}</div>";
 		return $table_html;
+	}
+
+	public function init_schedules() {
+		if (isset($_REQUEST['testcron']) && $_REQUEST['testcron'] == '1') {
+			$this->qsm_every_five_minute_cron_func();
+		}
+		if (!wp_next_scheduled('qsm_every_five_minute_cron_hook')) {
+			wp_schedule_event(time(), 'qsm_every_five_minute', 'qsm_every_five_minute_cron_hook');
+		}
+	}
+
+	public function cron_schedules($schedules) {
+		$schedules['qsm_every_minute'] = array('interval' => 60, 'display' => esc_html__('Every One Minute'));
+		$schedules['qsm_every_five_minute'] = array('interval' => 300, 'display' => esc_html__('Every Five Minute'));
+		return $schedules;
+	}
+
+	public function qsm_every_five_minute_cron_func() {
+		global $wpdb, $mlwQuizMasterNext;
+		$db_quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes();
+		if (!empty($db_quizzes)) {
+			$quiz_expire_times = array();
+			foreach ($db_quizzes as $quiz) {
+				$settings = maybe_unserialize($quiz->quiz_settings);
+				if (isset($settings['quiz_options'])) {
+					$quiz_options = maybe_unserialize($settings['quiz_options']);
+					$quiz_expire_times[$quiz->quiz_id] = (isset($quiz_options['quiz_expire_time']) ? $quiz_options['quiz_expire_time'] : 0);
+				}
+			}
+			$mlw_result_data = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}mlw_results` WHERE `deleted`='0' && `active`='1' ORDER BY `result_id` DESC");
+			if (!empty($mlw_result_data)) {
+				foreach ($mlw_result_data as $key => $result) {
+					$quiz_results = maybe_unserialize($result->quiz_results);
+					$now = strtotime(date('Y-m-d H:i:s'));
+					$starttime = strtotime($quiz_results['starttime']);
+					$expire_time = (isset($quiz_expire_times[$result->quiz_id]) ? $quiz_expire_times[$result->quiz_id] * 60 : 0);
+					if ($expire_time > 0 && ($now - $starttime) >= $expire_time) {
+						$quiz_results['endtime'] = date('Y-m-d H:i:s', $now);
+						$serialized_results = serialize($quiz_results);
+						$wpdb->update("{$wpdb->prefix}mlw_results", array('quiz_results' => $serialized_results, 'active' => 2), array('result_id' => $result->result_id));
+					}
+				}
+			}
+		}
+		return;
 	}
 
 }

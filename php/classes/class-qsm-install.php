@@ -40,7 +40,19 @@ class QSM_Install {
   public function register_default_settings() {
 
     global $mlwQuizMasterNext;
-    
+
+	// Registers timer_limit setting
+	$field_array = array(
+		'id' => 'quiz_expire_time',
+		'label' => __('Quiz Expire Time (in minutes)', 'quiz-master-next'),
+		'type' => 'number',
+		'options' => array(
+		),
+		'default' => 0,
+		'help' => __('Leave 0 for no time limit', 'quiz-master-next')
+	);
+	$mlwQuizMasterNext->pluginHelper->register_quiz_setting($field_array, 'quiz_options');
+
     // Registers system setting
     $field_array = array(
       'id' => 'form_type',
