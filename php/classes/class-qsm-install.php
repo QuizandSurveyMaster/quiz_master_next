@@ -1092,7 +1092,7 @@ class QSM_Install {
       'id' => 'empty_error_text',
       'label' => __('All required fields', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Please complete all required fields!'
+      'default' => __('Please complete all required fields!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1101,7 +1101,7 @@ class QSM_Install {
       'id' => 'email_error_text',
       'label' => __('Invalid email', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Not a valid e-mail address!'
+      'default' => __('Not a valid e-mail address!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1110,7 +1110,7 @@ class QSM_Install {
       'id' => 'number_error_text',
       'label' => __('Invalid number', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'This field must be a number!'
+      'default' => __('This field must be a number!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1119,7 +1119,7 @@ class QSM_Install {
       'id' => 'incorrect_error_text',
       'label' => __('Invalid Captcha', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'The entered text is not correct!'
+      'default' => __('The entered text is not correct!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );        
     
@@ -1146,7 +1146,7 @@ class QSM_Install {
       'id' => 'hint_text',
       'label' => __('Hint Text', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Hint'
+      'default' => __('Hint', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
     
@@ -1155,7 +1155,7 @@ class QSM_Install {
       'id' => 'quick_result_correct_answer_text',
       'label' => __('Correct answer message', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Correct! You have selected correct answer.',
+      'default' => __('Correct! You have selected correct answer.', 'quiz-master-next'),
        'tooltip' => __('Text to show when the selected option is correct answer.', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -1165,7 +1165,7 @@ class QSM_Install {
       'id' => 'quick_result_wrong_answer_text',
       'label' => __('Incorrect answer message', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Wrong! You have selected wrong answer.',
+      'default' => __('Wrong! You have selected wrong answer.', 'quiz-master-next'),
       'tooltip' => __('Text to show when the selected option is wrong answer.', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
