@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 7.1.11
+Stable tag: 7.1.12
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -134,6 +134,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Example Quiz With Styling
 
 == Changelog ==
+
+= 7.1.12 (February 22, 2020) =
+* Bug: Fixed prevention of SQL injection while using result shortcode and question bank.
+* Bug: Fixed the issue of broken [latex] shortcode in result and user dashboard page.
+* Enhancement: Added option to end the quiz if answer is wrong.
+* Enhancement: Added option to turn off the HTML auto complete.
+* Enhancement: Modified  background color to fix contrast ratios from SEO perspective.
 
 = 7.1.11 (January 27, 2020) =
 * Bug: Fixed jquery issue while editing the result page.
