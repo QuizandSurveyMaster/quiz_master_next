@@ -509,7 +509,7 @@ function qsm_options_questions_tab_content() {
 					<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> <?php _e('Add Question From Question Bank', 'quiz-master-next'); ?></a>
 				</div>
 			</div>
-		</div>                
+		</div>
 	</script>
         	
 	<!-- View for Question -->
@@ -519,7 +519,7 @@ function qsm_options_questions_tab_content() {
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>                                
 				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-                                <div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
+				<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
 				<div class="question-content-text">{{{data.question}}}</div>
 				<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e('Category:', 'quiz-master-next'); ?> {{data.category}} <# } #></div>				
 			</div>
@@ -529,11 +529,10 @@ function qsm_options_questions_tab_content() {
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
 		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
-                        <div class="question-bank-selection">
-                            <input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
-                        </div>
-                        <div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p>
-                                </div>
+			<div class="question-bank-selection">
+				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
+			</div>
+			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
 			<div><a href="#" class="import-button button"><?php _e('Add Question', 'quiz-master-next'); ?></a></div>			
 		</div>
 	</script>
@@ -550,20 +549,21 @@ function qsm_options_questions_tab_content() {
 		<div class="answers-single">
 			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
 			<div class="answer-text-div">
-                            <# if ( 'rich' == data.answerType ) { #>
-                                <textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
-                            <# } else { #>
-                                <input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
-                            <# } #>
-                        </div>
-                        <# if ( 0 == data.form_type ) { #>
-                            <# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
-                                <div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-                            <# } #>
-                            <# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
-                                <div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e('Correct', 'quiz-master-next'); ?></label></div>
-                            <# } #>    
-                        <# } #>    
+				<# if ( 'rich' == data.answerType ) { #>
+					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
+				<# } else { #>
+					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+				<# } #>
+			</div>
+			<# if ( 0 == data.form_type ) { #>
+				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+				<# } #>
+				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e('Correct', 'quiz-master-next'); ?></label></div>
+				<# } #>    
+			<# } #>
+			<?php do_action('qsm_admin_single_answer_option_fields');?>
 		</div>
 	</script>
 	<?php

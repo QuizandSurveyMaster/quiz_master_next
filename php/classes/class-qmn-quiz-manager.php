@@ -328,6 +328,8 @@ class QMNQuizManager {
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
 				'enable_result_after_timer_end' => isset($qmn_quiz_options->enable_result_after_timer_end) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc' => isset($qmn_quiz_options->enable_quick_result_mc) ? $qmn_quiz_options->enable_quick_result_mc : '',
+                'end_quiz_if_wrong' => isset($qmn_quiz_options->end_quiz_if_wrong) ? $qmn_quiz_options->end_quiz_if_wrong : '',
+                'form_disable_autofill' => isset($qmn_quiz_options->form_disable_autofill) ? $qmn_quiz_options->form_disable_autofill : '',
 				'enable_quick_correct_answer_info' => isset($qmn_quiz_options->enable_quick_correct_answer_info) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text' => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text' => $qmn_quiz_options->quick_result_wrong_answer_text,
