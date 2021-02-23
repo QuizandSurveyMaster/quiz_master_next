@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 7.1.11
+Stable tag: 7.1.12
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,15 +125,27 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Screenshots ==
 
-1. Quiz/Survey Admin Page (With Advertisement Be Gone Add-On)
-2. Quiz/Survey Settings Page (With Advertisement Be Gone Add-On)
-3. Quiz/Survey Statistics Page (With Advertisement Be Gone Add-On)
-4. Example Quiz
-5. Example Survey
-6. Quiz/Survey Results Page
-8. Example Quiz With Styling
+1. Dashboard
+2. Create New Quiz or Survey
+3. Question Type
+4. Questions
+5. All Quizzes & Surveys
+6. Contact Field
+7. Frontend View
+8. Frontend View with Answer
+9. Answer
+10. Database
+11. Stats
+12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.1.12 (February 22, 2020) =
+* Bug: Fixed prevention of SQL injection while using result shortcode and question bank.
+* Bug: Fixed the issue of broken [latex] shortcode in result and user dashboard page.
+* Enhancement: Added option to end the quiz if answer is wrong.
+* Enhancement: Added option to turn off the HTML auto complete.
+* Enhancement: Modified  background color to fix contrast ratios from SEO perspective.
 
 = 7.1.11 (January 27, 2020) =
 * Bug: Fixed jquery issue while editing the result page.
