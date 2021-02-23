@@ -125,13 +125,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Screenshots ==
 
-1. Quiz/Survey Admin Page (With Advertisement Be Gone Add-On)
-2. Quiz/Survey Settings Page (With Advertisement Be Gone Add-On)
-3. Quiz/Survey Statistics Page (With Advertisement Be Gone Add-On)
-4. Example Quiz
-5. Example Survey
-6. Quiz/Survey Results Page
-8. Example Quiz With Styling
+1. The QSM Dashboard
+2. Create a New Quiz/Survey with Survey Template
+3. Creating Quiz/Survey - Adding Questions, Answers, Hints, Categories, etc.
+4. Quiz/Survey Questions with Pages Overview
+5. View all Quizzes and Surveys
+6. Collecting User Info. like Name, Email, Phone, etc. with Contact Fields
+7. Quiz/Survey Final View after successful creation - Blank withour user input [before]
+8. Quiz/Survey Final View after successful creation - with User Selected Answers [after]
+9. View Quiz/Survey Results Page - After User Submits the Quiz/Survey
+10. View Database Records of the Collected Quiz/Survey Data
+11. View Stats of the Quiz and Survey Recorded Submissions 
+12. Plot the Quiz and Survey Data in the form of Graphs & Charts with Reporting and Analysis Addon
 
 == Changelog ==
 
