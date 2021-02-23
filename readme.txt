@@ -125,18 +125,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Screenshots ==
 
-1. The QSM Dashboard
-2. Create a New Quiz/Survey with Survey Template
-3. Creating Quiz/Survey - Adding Questions, Answers, Hints, Categories, etc.
-4. Quiz/Survey Questions with Pages Overview
-5. View all Quizzes and Surveys
-6. Collecting User Info. like Name, Email, Phone, etc. with Contact Fields
-7. Quiz/Survey Final View after successful creation - Blank withour user input [before]
-8. Quiz/Survey Final View after successful creation - with User Selected Answers [after]
-9. View Quiz/Survey Results Page - After User Submits the Quiz/Survey
-10. View Database Records of the Collected Quiz/Survey Data
-11. View Stats of the Quiz and Survey Recorded Submissions 
-12. Plot the Quiz and Survey Data in the form of Graphs & Charts with Reporting and Analysis Addon
+1. Dashboard
+2. Create New Quiz or Survey
+3. Question Type
+4. Questions
+5. All Quizzes & Surveys
+6. Contact Field
+7. Frontend View
+8. Frontend View with Answer
+9. Answer
+10. Database
+11. Stats
+12. Reporting and analysis result
 
 == Changelog ==
 
