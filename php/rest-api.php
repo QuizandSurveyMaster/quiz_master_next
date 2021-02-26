@@ -91,20 +91,20 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         $category = isset($_REQUEST['category']) ? sanitize_text_field( $_REQUEST['category'] ) : '';
         $category_query = '';
         if($category){
-            $category_query = ' AND category = "' . $category . '"';
-        }
-        $total_count_query = $wpdb->get_row( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'$category_query", 'ARRAY_A' );
+            $category_query = " AND category = '$category'";
+        }        
+        $total_count_query = $wpdb->get_row( stripslashes( $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0%1s", $wpdb->esc_like( $category_query ) ) ), 'ARRAY_A' );        
         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
-        $settings   = (array) get_option( 'qmn-settings' );        
+        $settings   = (array) get_option( 'qmn-settings' );
         $limit = 20;
         if ( isset( $settings['items_per_page_question_bank'] ) ) {
             $limit = $settings['items_per_page_question_bank'];
         }
         $limit = $limit == '' || $limit == 0 ? 20 : $limit;
         $total_pages = ceil($total_count / $limit);
-        $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;        
+        $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
         $offset = ($pageno-1) * $limit;
-        $questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' AND deleted_question_bank='0'$category_query ORDER BY question_order ASC LIMIT $offset, $limit", 'ARRAY_A' );
+        $questions = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0%1s ORDER BY question_order ASC LIMIT %2s, %3s", $wpdb->esc_like( $category_query ), $offset, $limit ) ) , 'ARRAY_A' );        
         $quiz_table = $wpdb->prefix . 'mlw_quizzes';
         $question_array = array();        
         $question_array['pagination'] = array(
@@ -115,7 +115,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         
         $question_array['questions'] = array();
         foreach ( $questions as $question ) {
-                $quiz_name = $wpdb->get_row('SELECT quiz_name FROM '. $quiz_table . ' WHERE quiz_id = ' . $question['quiz_id'], ARRAY_A );
+                $quiz_name = $wpdb->get_row( $wpdb->prepare( 'SELECT quiz_name FROM %1s WHERE quiz_id = %d', $quiz_table, $question['quiz_id'] ), ARRAY_A );
                 $question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
                 
                 $answers = maybe_unserialize( $question['answer_array'] );
@@ -174,7 +174,7 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ){
     $quiz_id = isset($request['id']) ? $request['id'] : 0;    
     if($quiz_id > 0){
         global $wpdb;
-        $mlw_quiz_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND quiz_id = $quiz_id LIMIT 0,40" );
+        $mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND quiz_id = %d LIMIT 0,40", $quiz_id ) );
         if($mlw_quiz_data){
             $result_data = array();
             foreach ($mlw_quiz_data as $mlw_quiz_info) {
@@ -415,8 +415,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                         global $wpdb;
                         $quiz_table = $wpdb->prefix . 'mlw_quizzes';
 			$question_array = array();
-			foreach ( $questions as $question ) {
-                                $quiz_name = $wpdb->get_row('SELECT quiz_name FROM '. $quiz_table . ' WHERE quiz_id = ' . $question['quiz_id'], ARRAY_A );
+			foreach ( $questions as $question ) {                                
+                                $quiz_name = $wpdb->get_row( $wpdb->prepare( 'SELECT quiz_name FROM %1s WHERE quiz_id = %d', $quiz_table, $question['quiz_id'] ), ARRAY_A );
 				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
 				$question_data = array(
 					'id'         => $question['question_id'],

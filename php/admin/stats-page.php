@@ -178,7 +178,7 @@ function qmn_load_stats($type, $amount = 0) {
 			global $wpdb;
 			for ($i=0; $i < $amount; $i++) {
 				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-$i, date("Y")));
-				$retrieved_stats = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$stat_date." 00:00:00' AND '".$stat_date." 23:59:59') AND deleted=0");
+				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}
 			break;
@@ -188,7 +188,7 @@ function qmn_load_stats($type, $amount = 0) {
 				for ($i=0; $i < $amount; $i++) {
 					$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-(6+($i*7)), date("Y")));
 					$stat_end_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-($i*7), date("Y")));
-					$retrieved_stats = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$stat_date." 00:00:00' AND '".$stat_end_date." 23:59:59') AND deleted=0");
+					$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 					array_unshift($stats, $retrieved_stats);
 				}
 				break;
@@ -198,7 +198,7 @@ function qmn_load_stats($type, $amount = 0) {
 			for ($i=0; $i < $amount; $i++) {
 				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")-$i, 1, date("Y")));
 				$stat_end_date = date("Y-m-t", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
-				$retrieved_stats = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE (time_taken_real BETWEEN '".$stat_date." 00:00:00' AND '".$stat_end_date." 23:59:59') AND deleted=0");
+				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}
 			break;
