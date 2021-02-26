@@ -97,13 +97,13 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	}
 
 	// Calculate query range.
-	$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s'", $email ) );
+	$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE %1s email = '%2s'", $user_sql, $email ) );
 	$per_page  = 25;
 	$begin     = $per_page * ( $page - 1 );
 	$remaining = $total - ( $page * $per_page );
 
 	// Get the results.
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $user_sql email = '%s' ORDER BY result_id DESC LIMIT %d, %d", $email, $begin, $per_page ) );
+	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE %1s email = '%2s' ORDER BY result_id DESC LIMIT %d, %d", $user_sql, $email, $begin, $per_page ) );
 
 	// Cycle through adding to array.
 	foreach ( $results as $result ) {

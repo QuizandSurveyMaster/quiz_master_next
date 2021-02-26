@@ -171,12 +171,12 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
         global $wpdb;
         $table_name = $wpdb->prefix . 'mlw_results';
         $table_question = $wpdb->prefix . 'mlw_questions';
-        $total_query = $wpdb->get_row('SELECT count(*) AS total_count FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
+        $total_query = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$table_name} WHERE quiz_id = %d", $quiz_id ),ARRAY_A);
         $total_result = $total_query['total_count'];
-        $ser_answer = $wpdb->get_row('SELECT answer_array FROM ' . $table_question . ' WHERE question_id = ' . $question_id,ARRAY_A);
+        $ser_answer = $wpdb->get_row( $wpdb->prepare( "'SELECT answer_array FROM {$table_question} WHERE question_id = %d", $question_id ) ,ARRAY_A);
         $ser_answer_arry = unserialize($ser_answer['answer_array']);
         $ser_answer_arry_change = array_filter(array_merge(array(0), $ser_answer_arry));
-        $total_quiz_results = $wpdb->get_results('SELECT quiz_results FROM ' . $table_name . ' WHERE quiz_id = ' . $quiz_id,ARRAY_A);
+        $total_quiz_results = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$table_name} WHERE quiz_id = %d", $quiz_id ) ,ARRAY_A);
         $answer_array = array();
         if($total_quiz_results){
             foreach ($total_quiz_results as $key => $value) {
@@ -347,7 +347,7 @@ function mlw_qmn_variable_quiz_links($content, $mlw_quiz_array) {
 	if (false !== strpos($content, '%RESULT_LINK%')) {
 		$result_link = $quiz_link;
 		if (isset($mlw_quiz_array['result_id'])) {
-			$unique_id = $wpdb->get_var("SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_array['quiz_id']}' AND `result_id`='{$mlw_quiz_array['result_id']}'");
+			$unique_id = $wpdb->get_var( $wpdb->prepare( "SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{%1s}' AND `result_id`='{%2s}'", $mlw_quiz_array['quiz_id'], $mlw_quiz_array['result_id'] ) );
 			$result_link = add_query_arg('result_id', $unique_id, $quiz_link);
 		}
 		$content = str_replace("%RESULT_LINK%", $result_link, $content);
@@ -777,8 +777,8 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
     while (strpos($result_display, '%RANK%') !== false){
 	global $wpdb;
 	$mlw_quiz_id = $qmn_array_for_variables['quiz_id'];
-	$mlw_result_id = $wpdb->get_var("SELECT MAX(`result_id`) FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_id}' AND `deleted`='0'");
-	$mlw_result_data = $wpdb->get_results("SELECT `result_id`, `correct_score`, `point_score`, `quiz_results` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{$mlw_quiz_id}' AND `deleted`='0'");
+	$mlw_result_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(`result_id`) FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='%d' AND `deleted`='0'", $mlw_quiz_id ) );
+	$mlw_result_data = $wpdb->get_results( $wpdb->prepare( "SELECT `result_id`, `correct_score`, `point_score`, `quiz_results` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='%d' AND `deleted`='0'", $mlw_quiz_id ) );
 	if (!empty($mlw_result_data)) {
 		foreach ($mlw_result_data as $key => $mlw_eaches) {
 			$time_taken = 0;
