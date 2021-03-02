@@ -284,6 +284,32 @@ function qsm_display_question_option($key, $single_option){
             <?php
         break;
 
+        case 'multi_category':
+            ?>
+            <div id="multi_category_area" class="qsm-row <?php echo $show_class; ?>">
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
+                </label>
+                <div id="multi_categories_wrapper" class="categorydiv">
+					<ul id="multicategories_checklist" class="categorychecklist form-no-clear">
+						<?php 
+						wp_terms_checklist(0,
+							array(
+								'taxonomy'             => 'qsm_category',
+								'descendants_and_self' => 0,
+								'selected_cats'        => false,
+								'echo'                 => true,
+							)
+						);
+						?>
+					</ul>
+                </div>
+            </div>
+            <?php
+        break;
+
         case 'multi_checkbox':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">

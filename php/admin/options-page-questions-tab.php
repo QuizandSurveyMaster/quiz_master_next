@@ -36,6 +36,7 @@ function qsm_options_questions_tab_content() {
 	$user_id = get_current_user_id();  
 	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$multiple_categories = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'multiple_categories' );
 	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('pages', array());
 	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('qpages', array());
 	$qpages = array();
@@ -65,10 +66,11 @@ function qsm_options_questions_tab_content() {
 		'categories' => $question_categories,
 		'form_type' => $form_type,
 		'quiz_system' => $quiz_system,
-                'hide_desc_text' => __('Less Description', 'quiz-master-next'),
-                'show_desc_text' => __('Add Description', 'quiz-master-next'),
-                'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce"),
-				'single_question_nonce' => wp_create_nonce("delete_question_from_database")
+		'multiple_categories' => $multiple_categories,
+		'hide_desc_text' => __('Less Description', 'quiz-master-next'),
+		'show_desc_text' => __('Add Description', 'quiz-master-next'),
+		'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce"),
+		'single_question_nonce' => wp_create_nonce("delete_question_from_database")
 	);
 
 	// Scripts and styles.
@@ -344,19 +346,32 @@ function qsm_options_questions_tab_content() {
                                                             <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category" target="_blank" title="View Documentation"><span class="dashicons dashicons-media-document"></span></a>
                                                         </h2>
                                                         <div class="inside">
+															<?php if ($multiple_categories == 1): ?>
+															<?php endif;?>
                                                             <?php
-                                                            $category_question_option = array(
-                                                                'categories' => array(
-                                                                    'label' => __( '', 'quiz-master-next' ),
-                                                                    'type' => 'category',
-                                                                    'priority' => '5',                                                    
-                                                                    'default' => '',
-                                                                    'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category'
-                                                                )
-                                                            );
-                                                            $category_question_option = apply_filters('qsm_question_category_option', $category_question_option);
-                                                            $keys = array_column($category_question_option, 'priority');
-                                                            array_multisort($keys, SORT_ASC, $category_question_option);
+															if ($multiple_categories == 1) {
+																$category_question_option = array(
+																	'categories' => array(
+																		'label' => __( '', 'quiz-master-next' ),
+																		'type' => 'multi_category',
+																		'priority' => '5',                                                    
+																		'default' => '',
+																	)
+																);
+															} else {
+																$category_question_option = array(
+																	'categories' => array(
+																		'label' => __( '', 'quiz-master-next' ),
+																		'type' => 'category',
+																		'priority' => '5',                                                    
+																		'default' => '',
+																		'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category'
+																	)
+																);
+															}
+															$category_question_option = apply_filters('qsm_question_category_option', $category_question_option);
+															$keys = array_column($category_question_option, 'priority');
+															array_multisort($keys, SORT_ASC, $category_question_option);
                                                             foreach($category_question_option as $qo_key => $single_cat_option){
                                                                 echo qsm_display_question_option($qo_key, $single_cat_option);
                                                             }

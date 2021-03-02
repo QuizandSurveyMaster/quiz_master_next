@@ -24,6 +24,14 @@ class QSM_Questions {
 		$question_id = intval( $question_id );
 		$question = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id ), 'ARRAY_A' );
 		if ( ! is_null( $question ) ) {
+			$multicategories = array();
+			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
+			if (!empty($multicategories_res)){
+				foreach ($multicategories_res as $cat) {
+					$multicategories[] = $cat['term_id'];
+				}
+			}
+			$question['multicategories'] = $multicategories;
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -83,7 +91,14 @@ class QSM_Questions {
 
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
-
+				$multicategories = array();
+				$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
+				if (!empty($multicategories_res)){
+					foreach ($multicategories_res as $cat) {
+						$multicategories[] = $cat['term_id'];
+					}
+				}
+				$question['multicategories'] = $multicategories;
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {
@@ -136,7 +151,14 @@ class QSM_Questions {
 
 		// Loop through questions and prepare serialized data.
 		foreach ( $questions as $question ) {
-
+			$multicategories = array();
+			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
+			if (!empty($multicategories_res)){
+				foreach ($multicategories_res as $cat) {
+					$multicategories[] = $cat['term_id'];
+				}
+			}
+			$question['multicategories'] = $multicategories;
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -243,6 +265,7 @@ class QSM_Questions {
 			'hint'        => '',
 			'order'       => 1,
 			'category'    => '',
+			'multicategories' => '',
 		);
 		$data = wp_parse_args( $data, $defaults );
 
@@ -272,6 +295,7 @@ class QSM_Questions {
 			'category'             => sanitize_text_field( $data['category'] ),
 			'deleted'              => 0,
 		);
+		$values = apply_filters('qsm_save_question_data', $values);
 
 		$types = array(
 			'%d',
@@ -287,32 +311,47 @@ class QSM_Questions {
 			'%d',
 		);
 
+		$question_id = intval($data['ID']);
 		if ( $is_creating ) {
 			$results = $wpdb->insert(
 				$wpdb->prefix . 'mlw_questions',
 				$values,
 				$types
 			);
+			$question_id = $wpdb->insert_id;
 		} else {
 			$results = $wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				$values,
-				array( 'question_id' => intval( $data['ID'] ) ),
+				array( 'question_id' => $question_id ),
 				$types,
 				array( '%d' )
 			);
 		}
-
+		
 		if ( false === $results ) {
 			$msg = $wpdb->last_error . ' from ' . $wpdb->last_query;
 			$mlwQuizMasterNext->log_manager->add( 'Error when creating/saving question', $msg, 0, 'error' );
 			throw new Exception( $msg );
 		}
-
-		if ( $is_creating ) {
-			return $wpdb->insert_id;
-		} else {
-			return $data['ID'];
+		
+		/**
+		 * Process Question Categories
+		 */
+		$question_terms_table = $wpdb->prefix . "mlw_question_terms";
+		$wpdb->delete($question_terms_table, array('question_id' => $question_id, 'taxonomy' => 'qsm_category'));
+		if (!empty($data['multicategories'])) {
+			foreach ($data['multicategories'] as $term_id) {
+				$term_rel_data = array(
+					'question_id' => $question_id,
+					'quiz_id' => intval($data['quiz_id']),
+					'term_id' => $term_id,
+					'taxonomy' => 'qsm_category',
+				);
+				$wpdb->insert($question_terms_table, $term_rel_data);
+			}
 		}
+
+		return $question_id;
 	}
 }
