@@ -2244,22 +2244,26 @@ class QMNQuizManager {
 					if ($i == 0) {
 						$qsml_table_head .= "<th>{$variables_title}</th>";
 					}
+					$data_value = '';
 					$value = '';
 					switch ($key) {
 						case 'date':
-							$value = date('d/m/Y', strtotime($mlw_eaches->time_taken_real));
+							$data_value = strtotime($mlw_eaches->time_taken_real);
+							$value = date('d/m/Y', $data_value);
 							if ($value == date('d/m/Y')) {
 								$value = __('Today', 'quiz-master-next');
 							}
 							break;
 						case 'user_name':
+							$data_value = $mlw_eaches->name;
 							$value = $mlw_eaches->name;
 							break;
 						case 'time_taken':
 							if ($mlw_eaches->active == '1') {
 								$value = __('In progress', 'quiz-master-next');
-							} elseif ($mlw_eaches->active == '2') {
-								$value = __('Expired', 'quiz-master-next');
+								$data_value = 0;
+							//} elseif ($mlw_eaches->active == '2') {
+								//$value = __('Expired', 'quiz-master-next');
 							} else {
 								$hrs = $mins = $secs = "00";
 								$time_taken = 0;
@@ -2281,15 +2285,17 @@ class QMNQuizManager {
 								$secs = ($mlw_complete_seconds < 10) ? "0{$mlw_complete_seconds}" : $mlw_complete_seconds;
 
 								$value = "{$hrs}:{$mins}:{$secs}";
+								$data_value = $time_taken;
 							}
 							break;
 						default:
 							if (isset($mlw_eaches->$key)) {
 								$value = $mlw_eaches->$key;
+								$data_value = $mlw_eaches->$key;
 							}
 							break;
 					}
-					$qsml_table_body .= "<td>{$value}</td>";
+					$qsml_table_body .= "<td data-order='{$data_value}'>{$value}</td>";
 				}
 				$qsml_table_body .= "</tr>";
 				$i++;
@@ -2305,6 +2311,9 @@ class QMNQuizManager {
 	}
 
 	public function init_schedules() {
+		if (isset($_REQUEST['testcron']) && $_REQUEST['testcron'] == '1'){
+			$this->qsm_every_five_minute_cron_func();
+		}
 		if (!wp_next_scheduled('qsm_every_five_minute_cron_hook')) {
 			wp_schedule_event(time(), 'qsm_every_five_minute', 'qsm_every_five_minute_cron_hook');
 		}
@@ -2339,14 +2348,48 @@ class QMNQuizManager {
 			$mlw_result_data = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}mlw_results` WHERE `deleted`='0' && `active`='1' ORDER BY `result_id` DESC");
 			if (!empty($mlw_result_data)) {
 				foreach ($mlw_result_data as $key => $result) {
-					$quiz_results = maybe_unserialize($result->quiz_results);
-					$now = strtotime(date('Y-m-d H:i:s'));
-					$starttime = strtotime($quiz_results['starttime']);
-					$expire_time = (isset($quiz_expire_times[$result->quiz_id]) ? $quiz_expire_times[$result->quiz_id] * 60 : 0);
-					if ($expire_time > 0 && ($now - $starttime) >= $expire_time) {
-						$quiz_results['endtime'] = date('Y-m-d H:i:s', $now);
-						$serialized_results = serialize($quiz_results);
-						$wpdb->update("{$wpdb->prefix}mlw_results", array('quiz_results' => $serialized_results, 'active' => 2), array('result_id' => $result->result_id));
+					if (isset($quiz_expire_times[$result->quiz_id])) {
+						$quiz_results = maybe_unserialize($result->quiz_results);
+						$now = strtotime(current_time('h:i:s A m/d/Y'));
+						$starttime = strtotime($quiz_results['starttime']);
+						$expire_time = (isset($quiz_expire_times[$result->quiz_id]) ? $quiz_expire_times[$result->quiz_id] * 60 : 0);
+						if ($expire_time > 0 && ($now - $starttime) >= $expire_time) {
+							$quiz_results['endtime'] = date('Y-m-d H:i:s', $now);
+							$serialized_results = serialize($quiz_results);
+							$wpdb->update("{$wpdb->prefix}mlw_results", array('quiz_results' => $serialized_results, 'active' => 2), array('result_id' => $result->result_id));
+							/**
+							 * Send Email.
+							 */
+							$mlwQuizMasterNext->pluginHelper->prepare_quiz($result->quiz_id);
+							$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+							$qmn_array_for_variables = (array) $result;
+							$results_pages = $this->display_results_text($qmn_quiz_options, $qmn_array_for_variables);
+							/* Prepare Result Values for Email */
+							$qmn_array_for_variables = array_merge($qmn_array_for_variables, array(
+								'user_name' => $result->name,
+								'user_business' => $result->business,
+								'user_email' => $result->email,
+								'user_phone' => $result->phone,
+								'user_id' => $result->user,
+								'quiz_results' => $quiz_results,
+								'total_points' => $result->point_score,
+								'total_score' => $result->correct_score,
+								'total_correct' => $result->correct,
+								'total_questions' => $result->total,
+								'question_answers_display' => '',
+								'comments' => $quiz_results[2],
+								'question_answers_array' => $quiz_results[1],
+								'total_possible_points' => $quiz_results['total_possible_points'],
+								'total_attempted_questions' => $quiz_results['total_attempted_questions'],
+								'timer_ms' => $quiz_results['timer_ms'],
+								'parameters' => $quiz_results['parameters'],
+								'autosave_id' => $result->autosave_id,
+							));
+
+							$qmn_array_for_variables = apply_filters('qmn_filter_email_content', $qmn_array_for_variables, $result->result_id);
+							$qmn_array_for_variables['email_processed'] = 'yes';
+							QSM_Emails::send_emails($qmn_array_for_variables);
+						}
 					}
 				}
 			}
@@ -2453,9 +2496,9 @@ function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_
         // Checks if the user is logged in. If so, check by user id. If not, check by IP.
         if (is_user_logged_in()) {
             $current_user = wp_get_current_user();
-            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$wpdb->prefix}mlw_results` WHERE `user`=%d AND `deleted`='0' AND `active`='0' AND `quiz_id`=%d", $current_user->ID, $qmn_array_for_variables['quiz_id']));
+            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$wpdb->prefix}mlw_results` WHERE `user`=%d AND `deleted`='0' AND `active`!='1' AND `quiz_id`=%d", $current_user->ID, $qmn_array_for_variables['quiz_id']));
         } else {
-            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$wpdb->prefix}mlw_results` WHERE `user_ip`='%s' AND `deleted`='0' AND `active`='0' AND `quiz_id`=%d", $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id']));
+            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM `{$wpdb->prefix}mlw_results` WHERE `user_ip`='%s' AND `deleted`='0' AND `active`!='1' AND `quiz_id`=%d", $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id']));
         }
 
         // If user has already reached the limit for this quiz
