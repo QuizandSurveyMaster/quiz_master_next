@@ -142,8 +142,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 7.1.13 (March 9, 2021) =
 * Bug: Fixed several security issues. 
-* Bug: Fixed the issue %USER_ANSWER_DEFAULT% variable on the results page.
-* Bug: Fixed the issue [latex] shortcode not showing Red cross mark for incorrect option.
+* Bug: Fixed the issue of audio and video player not showing in question content
+* Bug: Fixed the issue of [latex] shortcode not showing Red cross mark for incorrect option.
 * Bug: Fixed the issue required field getting surpassed by spaces in contact form.
 
 = 7.1.12 (February 22, 2021) =
