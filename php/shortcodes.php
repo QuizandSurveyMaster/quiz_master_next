@@ -120,7 +120,7 @@ function qsm_generate_fb_header_metadata() {
         }
         global $mlwQuizMasterNext, $wpdb, $wp_query;
         $result_id = sanitize_text_field($_GET['result_id']);        
-        $results_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = '$result_id'");
+        $results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = '%s'", $result_id ) );        
         if ($results_data) {
             // Prepare responses array.
             if (is_serialized($results_data->quiz_results) && is_array(@unserialize($results_data->quiz_results))) {
