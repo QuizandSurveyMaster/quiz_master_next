@@ -379,10 +379,11 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'comments'   => $question['comments'],
 					'hint'       => $question['hints'],
 					'category'   => $question['category'],
+					'multicategories'   => $question['multicategories'],
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
 					'page'       => $question['page'],
-                                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
+					'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
 				);
 			}
 			return $question;
@@ -412,11 +413,11 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			} else {
 				$questions = QSM_Questions::load_questions( 0 );                                
 			}
-                        global $wpdb;
-                        $quiz_table = $wpdb->prefix . 'mlw_quizzes';
+			global $wpdb;
+			$quiz_table = $wpdb->prefix . 'mlw_quizzes';
 			$question_array = array();
-			foreach ( $questions as $question ) {                                
-                                $quiz_name = $wpdb->get_row( $wpdb->prepare( 'SELECT quiz_name FROM %1s WHERE quiz_id = %d', $quiz_table, $question['quiz_id'] ), ARRAY_A );
+			foreach ( $questions as $question ) {
+				$quiz_name = $wpdb->get_row( $wpdb->prepare( 'SELECT quiz_name FROM %1s WHERE quiz_id = %d', $quiz_table, $question['quiz_id'] ), ARRAY_A );
 				$question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
 				$question_data = array(
 					'id'         => $question['question_id'],
@@ -427,18 +428,19 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'comments'   => $question['comments'],
 					'hint'       => $question['hints'],
 					'category'   => $question['category'],
+					'multicategories'   => $question['multicategories'],
 					'required'   => $question['settings']['required'],
 					'answers'    => $question['answers'],
 					'page'       => $question['page'],
-                                        'answerEditor'   => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : 'text',
-                                        'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
-                                        'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
-                                        'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
-                                        'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
-                                        'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
-                                        'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
-                                        'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
-                                        'settings' => $question['settings']
+					'answerEditor'   => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : 'text',
+					'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
+					'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
+					'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
+					'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
+					'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
+					'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
+					'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
+					'settings' => $question['settings']
 				);
 				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
 				$question_array[] = $question_data;
@@ -475,11 +477,12 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'hint'        => $request['hint'],
 					'order'       => 1,
 					'category'    => $request['category'],
+					'multicategories'   => $request['multicategories'],
 				);
 				$settings = array(
 					'required' => $request['required'],
-                                        'answerEditor' => 'text',
-                                        'question_title' => $request['name']
+					'answerEditor' => 'text',
+					'question_title' => $request['name']
 				);
 				$intial_answers = $request['answers'];
 				$answers = array();
@@ -533,25 +536,26 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'hint'        => $request['hint'],
 					'order'       => 1,
 					'category'    => $request['category'],
+					'multicategories'   => $request['multicategories'],
 				);
-                                $settings = array();
-                                $settings['answerEditor'] = $request['answerEditor'];
-                                $settings['question_title'] = sanitize_text_field( $request['question_title'] );
-                                if( isset($request['other_settings']) && is_array($request['other_settings']) ){
-                                    foreach ($request['other_settings'] as $setting_key => $setting_value) {
-                                        $settings[$setting_key] = $setting_value;
-                                    }
-                                }
-                                /* Old code
+				$settings = array();
+				$settings['answerEditor'] = $request['answerEditor'];
+				$settings['question_title'] = sanitize_text_field( $request['question_title'] );
+				if( isset($request['other_settings']) && is_array($request['other_settings']) ){
+					foreach ($request['other_settings'] as $setting_key => $setting_value) {
+						$settings[$setting_key] = $setting_value;
+					}
+				}
+				/* Old code
 				$settings = array(
 					'required' => $request['required'],                                        
-                                        'autofill' => $request['autofill'],
-                                        'limit_text' => $request['limit_text'],
-                                        'limit_multiple_response' => $request['limit_multiple_response'],
-                                        'file_upload_limit' => $request['file_upload_limit'],
-                                        'file_upload_type' => $request['file_upload_type'],
-                                        'question_title' => $request['question_title'],
-                                        'answerEditor' => $request['answerEditor'],
+										'autofill' => $request['autofill'],
+										'limit_text' => $request['limit_text'],
+										'limit_multiple_response' => $request['limit_multiple_response'],
+										'file_upload_limit' => $request['file_upload_limit'],
+										'file_upload_type' => $request['file_upload_type'],
+										'question_title' => $request['question_title'],
+										'answerEditor' => $request['answerEditor'],
 				); */
 				$intial_answers = $request['answers'];
 				$answers = array();

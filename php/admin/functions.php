@@ -251,6 +251,28 @@ function qsm_display_question_option($key, $single_option){
             <?php
         break;
 
+        case 'radio':
+            ?>
+            <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
+                </label>
+				<p>
+                    <?php
+                    $default = isset($single_option['default']) ? $single_option['default'] : '';
+                    if(isset($single_option['options']) && is_array($single_option['options'])){
+                        foreach ($single_option['options'] as $o_key => $value) {
+                            ?><label><input type="radio" name="<?php echo $key; ?>" id="<?php echo $key.'_'.$o_key ?>" value="<?php echo $o_key; ?>" <?php checked($o_key, $default);?>>&nbsp;<?php echo $value;?></label><?php
+                        }
+                    }
+                    ?>
+				</p>
+            </div>
+            <?php
+        break;
+
         case 'textarea':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
@@ -279,6 +301,32 @@ function qsm_display_question_option($key, $single_option){
                     <p id="qsm-category-add" style="display: none;">
                         <input type="radio" style="display: none;" name="category" class="category-radio" id="new_category_new" value="new_category"><label for="new_category_new"><input type='text' id='new_category' value='' placeholder="Add new category" /></label>
                     </p>
+                </div>
+            </div>
+            <?php
+        break;
+
+        case 'multi_category':
+            ?>
+            <div id="multi_category_area" class="qsm-row <?php echo $show_class; ?>">
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
+                </label>
+                <div id="multi_categories_wrapper" class="categorydiv">
+					<ul id="multicategories_checklist" class="categorychecklist form-no-clear">
+						<?php 
+						wp_terms_checklist(0,
+							array(
+								'taxonomy'             => 'qsm_category',
+								'descendants_and_self' => 0,
+								'selected_cats'        => false,
+								'echo'                 => true,
+							)
+						);
+						?>
+					</ul>
                 </div>
             </div>
             <?php
