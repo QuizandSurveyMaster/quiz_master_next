@@ -170,7 +170,7 @@ class QMNPluginHelper {
                     $limit = ' limit ' . $offset . ', ' . $limit;
                 }
 		// Get quizzes and return them
-		$quizzes = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_quizzes $delete $user_str $where_str ORDER BY $order_field $order_direction $limit" );
+		$quizzes = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit ) ) );
 		return $quizzes;
 	}
 

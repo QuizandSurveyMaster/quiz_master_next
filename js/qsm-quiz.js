@@ -716,7 +716,7 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
-				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
+				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && jQuery.trim(this.value) === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}

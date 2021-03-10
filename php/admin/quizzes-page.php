@@ -122,13 +122,13 @@ function qsm_generate_quizzes_surveys_page() {
     /*Set Request To Post as form method is Post.(AA)*/
     if (isset($_POST['btnSearchQuiz']) && $_POST['s'] != '') {
         $search = $_POST['s'];
-        $condition = " WHERE deleted='0' AND quiz_name LIKE '%$search%'";        
-        $qry = "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes" . $condition;
+        $condition = " WHERE deleted=0 AND quiz_name LIKE '%$search%'";
+        $qry = stripslashes( $wpdb->prepare( "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
         $total = $wpdb->get_var($qry);
         $num_of_pages = ceil($total / $limit);
     } else {
-        $condition = " WHERE deleted='0'";
-        $total = $wpdb->get_var("SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes " . $condition);
+        $condition = " WHERE deleted=0";
+        $total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes %1s", $condition ) );
         $num_of_pages = ceil($total / $limit);
     }
     
@@ -168,8 +168,8 @@ function qsm_generate_quizzes_surveys_page() {
     /*Written to get results form search.(AA)*/
     if (isset($_POST['btnSearchQuiz']) && $_POST['s'] != '') {
         $search_quiz = $_POST['s'];
-        $condition = " WHERE quiz_name LIKE '%$search_quiz%'";        
-        $qry = "SELECT * FROM {$wpdb->prefix}mlw_quizzes" . $condition;
+        $condition = " WHERE quiz_name LIKE '%$search_quiz%'";
+        $qry = stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes%1s", $condition) );
         $quizzes = $wpdb->get_results($qry );
 
     }
@@ -216,7 +216,7 @@ function qsm_generate_quizzes_surveys_page() {
             );
         }
 
-		$quiz_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' AND `quiz_id`='{$quiz->quiz_id}'" );
+		$quiz_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`= 0 AND `quiz_id`= %d", $quiz->quiz_id ) );
 
         $activity_date = date_i18n(get_option('date_format'), strtotime($quiz->last_activity));
         $activity_time = date('h:i:s A', strtotime($quiz->last_activity));
