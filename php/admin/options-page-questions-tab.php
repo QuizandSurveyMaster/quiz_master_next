@@ -346,8 +346,6 @@ function qsm_options_questions_tab_content() {
                                                             <a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category" target="_blank" title="View Documentation"><span class="dashicons dashicons-media-document"></span></a>
                                                         </h2>
                                                         <div class="inside">
-															<?php if ($multiple_categories == 1): ?>
-															<?php endif;?>
                                                             <?php
 															if ($multiple_categories == 1) {
 																$category_question_option = array(
@@ -456,7 +454,7 @@ function qsm_options_questions_tab_content() {
                                                                         'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Limit'
                                                                     ),
                                                                 );
-                                                                $advanced_question_option = apply_filters('qsm_question_advanced_option', $advanced_question_option);
+                                                                $advanced_question_option = apply_filters('qsm_question_sidebar_advanced_option', $advanced_question_option);
                                                                 $keys = array_column($advanced_question_option, 'priority');
                                                                 array_multisort($keys, SORT_ASC, $advanced_question_option);
                                                                 foreach($advanced_question_option as $qo_key => $single_option){

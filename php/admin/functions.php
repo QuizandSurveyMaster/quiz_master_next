@@ -251,6 +251,28 @@ function qsm_display_question_option($key, $single_option){
             <?php
         break;
 
+        case 'radio':
+            ?>
+            <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+                <label>
+                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+                    <?php echo $tooltip; ?>
+                    <?php echo $document_text; ?>
+                </label>
+				<p>
+                    <?php
+                    $default = isset($single_option['default']) ? $single_option['default'] : '';
+                    if(isset($single_option['options']) && is_array($single_option['options'])){
+                        foreach ($single_option['options'] as $o_key => $value) {
+                            ?><label><input type="radio" name="<?php echo $key; ?>" id="<?php echo $key.'_'.$o_key ?>" value="<?php echo $o_key; ?>" <?php checked($o_key, $default);?>>&nbsp;<?php echo $value;?></label><?php
+                        }
+                    }
+                    ?>
+				</p>
+            </div>
+            <?php
+        break;
+
         case 'textarea':
             ?>
             <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
