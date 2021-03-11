@@ -89,11 +89,14 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
     if(is_user_logged_in()){
         global $wpdb;
         $category = isset($_REQUEST['category']) ? sanitize_text_field( $_REQUEST['category'] ) : '';
-        $category_query = '';
+		$category_query = '';
         if($category){
-            $category_query = " AND category = '$category'";
-        }        
-        $total_count_query = $wpdb->get_row( stripslashes( $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0%1s", $wpdb->esc_like( $category_query ) ) ), 'ARRAY_A' );        
+			$query = stripslashes($wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0 AND category= %s", $category));
+        } else {
+			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0%1s", $wpdb->esc_like( $category_query ) ) ;
+		}    
+
+		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
         $settings   = (array) get_option( 'qmn-settings' );
         $limit = 20;
@@ -104,9 +107,15 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ){
         $total_pages = ceil($total_count / $limit);
         $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
         $offset = ($pageno-1) * $limit;
-        $questions = $wpdb->get_results( stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0%1s ORDER BY question_order ASC LIMIT %2s, %3s", $wpdb->esc_like( $category_query ), $offset, $limit ) ) , 'ARRAY_A' );        
+		if($category){
+			$category = "'$category'";
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category=%1s ORDER BY question_order ASC LIMIT %2s, %3s", $category, $offset, $limit );
+		} else {
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0%1s ORDER BY question_order ASC LIMIT %2s, %3s", $wpdb->esc_like( $category_query ), $offset, $limit );
+		}
+        $questions = $wpdb->get_results( stripslashes($query) , 'ARRAY_A' );
         $quiz_table = $wpdb->prefix . 'mlw_quizzes';
-        $question_array = array();        
+        $question_array = array();
         $question_array['pagination'] = array(
                 'total_pages' => $total_pages,
                 'current_page' => $pageno,
