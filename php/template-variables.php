@@ -169,14 +169,14 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
             return $content;
         }
         global $wpdb;
-        $table_name = $wpdb->prefix . 'mlw_results';
-        $table_question = $wpdb->prefix . 'mlw_questions';
-        $total_query = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$table_name} WHERE quiz_id = %d", $quiz_id ),ARRAY_A);
+        // $table_name = $wpdb->prefix . 'mlw_results';
+        // $table_question = $wpdb->prefix . 'mlw_questions';
+        $total_query = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ),ARRAY_A);
         $total_result = $total_query['total_count'];
-        $ser_answer = $wpdb->get_row( $wpdb->prepare( "'SELECT answer_array FROM {$table_question} WHERE question_id = %d", $question_id ) ,ARRAY_A);
+        $ser_answer = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ) ,ARRAY_A);
         $ser_answer_arry = unserialize($ser_answer['answer_array']);
         $ser_answer_arry_change = array_filter(array_merge(array(0), $ser_answer_arry));
-        $total_quiz_results = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$table_name} WHERE quiz_id = %d", $quiz_id ) ,ARRAY_A);
+        $total_quiz_results = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ) ,ARRAY_A);
         $answer_array = array();
         if($total_quiz_results){
             foreach ($total_quiz_results as $key => $value) {
@@ -265,8 +265,7 @@ function mlw_qmn_variable_social_share($content, $mlw_quiz_array) {
 function qsm_variable_result_id( $content, $mlw_quiz_array ) {
 	while ( false !== strpos($content, '%RESULT_ID%') ) {
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'mlw_results';
-                $get_last_id = $wpdb->get_row("SELECT result_id FROM $table_name ORDER BY result_id DESC",ARRAY_A);
+                $get_last_id = $wpdb->get_row("SELECT result_id FROM {$wpdb->prefix}mlw_results ORDER BY result_id DESC",ARRAY_A);
 		$content = str_replace( "%RESULT_ID%" , $get_last_id['result_id'], $content);
 	}
 	return $content;
@@ -347,7 +346,7 @@ function mlw_qmn_variable_quiz_links($content, $mlw_quiz_array) {
 	if (false !== strpos($content, '%RESULT_LINK%')) {
 		$result_link = $quiz_link;
 		if (isset($mlw_quiz_array['result_id'])) {
-			$unique_id = $wpdb->get_var( $wpdb->prepare( "SELECT `unique_id` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='{%1s}' AND `result_id`='{%2s}'", $mlw_quiz_array['quiz_id'], $mlw_quiz_array['result_id'] ) );
+			$unique_id = $wpdb->get_var( $wpdb->prepare( "SELECT unique_id FROM {$wpdb->prefix}mlw_results WHERE quiz_id=%d AND result_id=%d", $mlw_quiz_array['quiz_id'], $mlw_quiz_array['result_id'] ) );
 			$result_link = add_query_arg('result_id', $unique_id, $quiz_link);
 		}
 		$content = str_replace("%RESULT_LINK%", $result_link, $content);
@@ -777,8 +776,8 @@ function qsm_end_results_rank($result_display, $qmn_quiz_options, $qmn_array_for
     while (strpos($result_display, '%RANK%') !== false){
 	global $wpdb;
 	$mlw_quiz_id = $qmn_array_for_variables['quiz_id'];
-	$mlw_result_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(`result_id`) FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='%d' AND `deleted`='0'", $mlw_quiz_id ) );
-	$mlw_result_data = $wpdb->get_results( $wpdb->prepare( "SELECT `result_id`, `correct_score`, `point_score`, `quiz_results` FROM `{$wpdb->prefix}mlw_results` WHERE `quiz_id`='%d' AND `deleted`='0'", $mlw_quiz_id ) );
+	$mlw_result_id = $wpdb->get_var( $wpdb->prepare( "SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE quiz_id=%d AND deleted=0", $mlw_quiz_id ) );
+	$mlw_result_data = $wpdb->get_results( $wpdb->prepare( "SELECT result_id, correct_score, point_score, quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id=%d AND deleted=0", $mlw_quiz_id ) );
 	if (!empty($mlw_result_data)) {
 		foreach ($mlw_result_data as $key => $mlw_eaches) {
 			$time_taken = 0;
