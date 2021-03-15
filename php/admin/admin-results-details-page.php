@@ -84,8 +84,8 @@ function qsm_generate_results_details_tab() {
 	$quiz_id = intval( $results_data->quiz_id );
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
-	$previous_results = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id < $result_id)" );
-	$next_results     = $wpdb->get_var( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > $result_id)" );
+    $previous_results = $wpdb->get_var( $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MAX(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id < %d)",  $result_id));
+	$next_results     = $wpdb->get_var( $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE result_id = (SELECT MIN(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted = 0 AND result_id > %d)", $result_id));
 
 	// If there is previous or next results, show buttons.
         echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
