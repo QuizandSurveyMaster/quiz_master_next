@@ -180,7 +180,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
         $category = isset($_REQUEST['category']) ? sanitize_text_field($_REQUEST['category']) : '';
         
         if (!empty($category)) {
-            $query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=%d AND deleted_question_bank=%d AND category=%s", 0,0,$category );    
+            $query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0 AND category=%s", $category );
         } else {
             $query = "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0";    
         }
