@@ -169,8 +169,6 @@ function qsm_variable_poll_result($content, $mlw_quiz_array, $variables){
             return $content;
         }
         global $wpdb;
-        // $table_name = $wpdb->prefix . 'mlw_results';
-        // $table_question = $wpdb->prefix . 'mlw_questions';
         $total_query = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ),ARRAY_A);
         $total_result = $total_query['total_count'];
         $ser_answer = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ) ,ARRAY_A);

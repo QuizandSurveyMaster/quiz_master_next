@@ -50,7 +50,6 @@ function qsm_options_styling_tab_content() {
 	}
 
 	if ( isset( $_GET['quiz_id'] ) ) {
-		// $table_name = $wpdb->prefix . 'mlw_quizzes';
 		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
