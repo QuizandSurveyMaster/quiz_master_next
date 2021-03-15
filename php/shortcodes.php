@@ -53,8 +53,6 @@ function qsm_display_recent_quizzes($attrs) {
     global $wpdb;
     wp_enqueue_style('quizzes-list', plugins_url('../css/quizzes-list.css', __FILE__));
 
-    // $quiz_tbl = $wpdb->prefix . 'mlw_quizzes';
-
     $query = "SELECT quiz_id, quiz_name, quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE deleted=0 ORDER BY  quiz_id DESC";
     $quizzes = $wpdb->get_results($query);
     $result = '<div class="outer-con">';

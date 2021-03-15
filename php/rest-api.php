@@ -85,95 +85,6 @@ function qsm_register_rest_routes() {
  * @since 6.4.10
  * @param WP_REST_Request $request
  */
-// function qsm_rest_get_bank_questions( WP_REST_Request $request ){
-//     if(is_user_logged_in()){
-//         global $wpdb;
-//         $category = isset($_REQUEST['category']) ? sanitize_text_field( $_REQUEST['category'] ) : '';
-// 		$category_query = '';
-//         if($category){
-// 			$query = stripslashes($wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0 AND category= %s", $category));
-//         } else {
-// 			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted=0 AND deleted_question_bank=0%1s", $wpdb->esc_like( $category_query ) ) ;
-// 		}    
-
-// 		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
-//         $total_count = isset($total_count_query['total_question']) ? $total_count_query['total_question'] : 0;
-//         $settings   = (array) get_option( 'qmn-settings' );
-//         $limit = 20;
-//         if ( isset( $settings['items_per_page_question_bank'] ) ) {
-//             $limit = $settings['items_per_page_question_bank'];
-//         }
-//         $limit = $limit == '' || $limit == 0 ? 20 : $limit;
-//         $total_pages = ceil($total_count / $limit);
-//         $pageno = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-//         $offset = ($pageno-1) * $limit;
-// 		if($category){
-// 			$category = "'$category'";
-// 			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category=%1s ORDER BY question_order ASC LIMIT %2s, %3s", $category, $offset, $limit );
-// 		} else {
-// 			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0%1s ORDER BY question_order ASC LIMIT %2s, %3s", $wpdb->esc_like( $category_query ), $offset, $limit );
-// 		}
-//         $questions = $wpdb->get_results( stripslashes($query) , 'ARRAY_A' );
-//         $quiz_table = $wpdb->prefix . 'mlw_quizzes';
-//         $question_array = array();
-//         $question_array['pagination'] = array(
-//                 'total_pages' => $total_pages,
-//                 'current_page' => $pageno,
-//                 'category' => $category
-//         );        
-        
-//         $question_array['questions'] = array();
-//         foreach ( $questions as $question ) {
-//                 $quiz_name = $wpdb->get_row( $wpdb->prepare( 'SELECT quiz_name FROM %1s WHERE quiz_id = %d', $quiz_table, $question['quiz_id'] ), ARRAY_A );
-//                 $question['page']  = isset( $question['page'] ) ? $question['page'] : 0;
-                
-//                 $answers = maybe_unserialize( $question['answer_array'] );
-//                 if ( ! is_array( $answers ) ) {
-//                         $answers = array();
-//                 }
-//                 $question['answers'] = $answers;
-
-//                 $settings = maybe_unserialize( $question['question_settings'] );
-//                 if ( ! is_array( $settings ) ) {
-//                         $settings = array( 'required' => 1 );
-//                 }
-//                 $question['settings'] = $settings;
-                
-//                 $question_data = array(
-//                         'id'         => $question['question_id'],
-//                         'quizID'     => $question['quiz_id'],
-//                         'type'       => $question['question_type_new'],
-//                         'question_title' => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : 0,
-//                         'name'       => $question['question_name'],
-//                         'answerInfo' => $question['question_answer_info'],
-//                         'comments'   => $question['comments'],
-//                         'hint'       => $question['hints'],
-//                         'category'   => $question['category'],
-//                         'required'   => $question['settings']['required'],
-//                         'answers'    => $question['answers'],
-//                         'page'       => $question['page'],
-//                         'answerEditor'   => isset($question['settings']['answerEditor']) ? $question['settings']['answerEditor'] : 'text',
-//                         'autofill'   => isset($question['settings']['autofill']) ? $question['settings']['autofill'] : 0,
-//                         'limit_text'   => isset($question['settings']['limit_text']) ? $question['settings']['limit_text'] : 0,
-//                         'limit_multiple_response'   => isset($question['settings']['limit_multiple_response']) ? $question['settings']['limit_multiple_response'] : 0,
-//                         'file_upload_limit'   => isset($question['settings']['file_upload_limit']) ? $question['settings']['file_upload_limit'] : 0,
-//                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
-//                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
-//                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
-//                 );
-// 				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
-// 				$question_array['questions'][] = $question_data;
-//         }        
-//         return $question_array;
-//     }else{
-//         return array(
-//             'status' => 'error',
-//             'msg'    => __('User not logged in', 'quiz-master-next'),
-// 	);
-//     }
-// }
-
-
 function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
     if (is_user_logged_in()) {
         global $wpdb;
@@ -205,8 +116,6 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
         }
 
         $questions = $wpdb->get_results( $query, 'ARRAY_A' );
-
-        // $quiz_table = $wpdb->prefix . 'mlw_quizzes';
         $question_array = array();        
         $question_array['pagination'] = array(
                 'total_pages' => $total_pages,
@@ -216,7 +125,6 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
         
         $question_array['questions'] = array();
         foreach ( $questions as $question ) {
-        $quiz_table = $wpdb->prefix . 'mlw_quizzes';
                 $quiz_name = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d",  $question['quiz_id'] ), ARRAY_A );
                 $question['page']  = isset( $question['page'] ) ? (int) $question['page'] : 0;
                 
@@ -514,8 +422,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			} else {
 				$questions = QSM_Questions::load_questions( 0 );                                
 			}
-                        global $wpdb;
-                        // $quiz_table = $wpdb->prefix . 'mlw_quizzes';
+            global $wpdb;
 			$question_array = array();
 			foreach ( $questions as $question ) {                                
                 $quiz_name = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
