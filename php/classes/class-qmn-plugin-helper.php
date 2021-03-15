@@ -144,7 +144,7 @@ class QMNPluginHelper {
 		}
 
 		// Should we include deleted?
-		$delete = "WHERE deleted='0'";
+		$delete = "WHERE deleted=0";
                 if( $where != '' ){
                     $delete = $delete . ' AND ' . $where;
                 }

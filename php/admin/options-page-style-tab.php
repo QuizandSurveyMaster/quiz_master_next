@@ -39,7 +39,7 @@ function qsm_options_styling_tab_content() {
 		$quiz_style = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST['quiz_css'] ), ENT_QUOTES ) );
 
 		// Saves the new css.
-		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye='%s', theme_selected='%s', last_activity='%s' WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
+		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved For Quiz Number $style_quiz_id" );
@@ -50,8 +50,8 @@ function qsm_options_styling_tab_content() {
 	}
 
 	if ( isset( $_GET['quiz_id'] ) ) {
-		$table_name = $wpdb->prefix . 'mlw_quizzes';
-		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
+		// $table_name = $wpdb->prefix . 'mlw_quizzes';
+		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>

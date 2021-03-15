@@ -346,9 +346,9 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 			<div class="main">
 				<ul class="recently-taken-quiz-ul">
 					<?php
-					$mlw_resutl_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' ORDER BY result_id DESC LIMIT 2", ARRAY_A );
-					if ( $mlw_resutl_data ) {
-						foreach ( $mlw_resutl_data as $key => $single_result_arr ) {
+					$mlw_result_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 ORDER BY result_id DESC LIMIT 2", ARRAY_A );
+					if ( $mlw_result_data ) {
+						foreach ( $mlw_result_data as $key => $single_result_arr ) {
 							?>
 							<li>
 								<?php
@@ -427,12 +427,12 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 				<p>
 					<a href="admin.php?page=mlw_quiz_results">
 						<?php
-						$mlw_resutl_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted='0'", ARRAY_A );
-						echo isset( $mlw_resutl_data['total_result'] ) ? __( 'See All Results ', 'quiz-master-next' ) : '';
+						$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
+						echo isset( $mlw_result_data['total_result'] ) ? __( 'See All Results ', 'quiz-master-next' ) : '';
 						?>
 					</a>
 					<?php
-					echo isset( $mlw_resutl_data['total_result'] ) ? '(' . $mlw_resutl_data['total_result'] . ')' : '';
+					echo isset( $mlw_result_data['total_result'] ) ? '(' . $mlw_result_data['total_result'] . ')' : '';
 					?>
 				</p>
 			</div>

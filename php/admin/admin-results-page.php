@@ -163,9 +163,9 @@ function qsm_results_overview_tab_content() {
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' AND `quiz_id`='{$quiz_id}' {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`='0' {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 {$search_phrase_sql}" );
 	}
 
 	// Gets the order by arg. Uses switch to create SQL to prevent SQL injection.
@@ -203,9 +203,9 @@ function qsm_results_overview_tab_content() {
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted='0' AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) );
 	} else {
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted = '0' $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
 	}
 
 	wp_enqueue_script( 'jquery' );

@@ -91,19 +91,27 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	$group_label  = __( 'Form Responses', 'quiz-master-next' );
 
 	// Prepare SQL for finding by user.
-	$user_sql = '';
+	$user_id = 0;
 	if ( $user && isset( $user->ID ) && 0 !== $user->ID ) {
-		$user_sql = "user = {$user->ID} OR ";
+		$user_id = $user->ID;
+		$query = $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE user = %d OR email = %s", $user_id, $email );
+	} else {
+		$query = $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE email = %s", $email );
 	}
 
 	// Calculate query range.
-	$total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE %1s email = '%2s'", $user_sql, $email ) );
+	$total = $wpdb->get_var( $query );
 	$per_page  = 25;
 	$begin     = $per_page * ( $page - 1 );
 	$remaining = $total - ( $page * $per_page );
 
 	// Get the results.
-	$results = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE %1s email = '%2s' ORDER BY result_id DESC LIMIT %d, %d", $user_sql, $email, $begin, $per_page ) );
+	if(0 !== $user_id){
+		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE user = %d OR email = %s ORDER BY result_id DESC LIMIT %d, %d", $user_id, $email, $begin, $per_page );
+	} else {
+		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE email = %s ORDER BY result_id DESC LIMIT %d, %d", $email, $begin, $per_page );
+	}
+	$results = $wpdb->get_results( $query );
 
 	// Cycle through adding to array.
 	foreach ( $results as $result ) {
