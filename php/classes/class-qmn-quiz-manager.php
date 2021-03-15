@@ -682,6 +682,7 @@ class QMNQuizManager {
                     if (0 == $options->contact_info_location) {
                         echo QSM_Contact_Manager::display_fields($options);
                     }
+					do_action('qsm_after_begin_message', $options, $quiz_data);
                     ?>
                 </div>
             </section>
@@ -717,7 +718,7 @@ class QMNQuizManager {
                     $question_list .= $question_id . 'Q';
                     $question = $questions[$question_id];
                     ?>
-                    <div class='quiz_section question-section-id-<?php echo esc_attr($question_id); ?>'>
+                    <div class="quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr($question_id); ?>" data-qid="<?php echo esc_attr($question_id); ?>">
                         <?php
                         echo $mlwQuizMasterNext->pluginHelper->display_question($question['question_type_new'], $question_id, $options);
                         if (0 == $question['comments']) {
@@ -769,7 +770,7 @@ class QMNQuizManager {
 				$qpage_id = (isset($qpage['id']) ? $qpage['id'] : $key);
 				$page_key = (isset($qpage['pagekey']) ? $qpage['pagekey'] : $key);
 				$hide_prevbtn = (isset($qpage['hide_prevbtn']) ? $qpage['hide_prevbtn'] : 0);                                
-                                $style = "style='display: none;'";                                
+				$style = "style='display: none;'";
                 ?>
                 <section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id;?>" data-pid="<?php echo $qpage_id;?>" data-prevbtn="<?php echo $hide_prevbtn;?>" <?php echo $style; ?>>
 					<?php do_action('qsm_action_before_page', $qpage_id, $qpage);?>
@@ -778,7 +779,7 @@ class QMNQuizManager {
                         $question_list .= $question_id . 'Q';
                         $question = $questions[$question_id];
                         ?>
-                        <div class='quiz_section question-section-id-<?php echo esc_attr($question_id); ?>'>
+						<div class="quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr($question_id); ?>" data-qid="<?php echo esc_attr($question_id); ?>">
                             <?php
                             echo $mlwQuizMasterNext->pluginHelper->display_question($question['question_type_new'], $question_id, $options);
                             if (0 == $question['comments']) {

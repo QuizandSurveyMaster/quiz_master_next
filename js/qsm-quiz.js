@@ -898,8 +898,8 @@ function qmnValidatePage( quiz_form_id ) {
 
 //Function to advance quiz to next page
 function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
-        jQuery(document).trigger('qsm_next_button_click_before', [quiz_form_id]);
 	var quiz_id = +jQuery( quiz_form_id ).find( '.qmn_quiz_id' ).val();
+	jQuery(document).trigger('qsm_next_button_click_before', [quiz_id]);
 	var $container = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' );
 	var slide_number = +$container.find( '.slide_number_hidden' ).val();	
 	var page_number = +$container.find( '.current_page_hidden' ).val();	
@@ -956,12 +956,12 @@ function qmnNextSlide( pagination, go_to_top, quiz_form_id ) {
             jQuery( quiz_form_id ).closest( '.qmn_quiz_container' ).find('.pages_count').hide();
         }        
         qmnInitProgressbarOnClick(quiz_id, page_number, total_pages);
-        jQuery(document).trigger('qsm_next_button_click_after', [quiz_form_id]);
+        jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 }
 
 function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
-        jQuery(document).trigger('qsm_previous_button_click_before', [quiz_form_id]);
 	var quiz_id = +jQuery( quiz_form_id ).find( '.qmn_quiz_id' ).val();
+	jQuery(document).trigger('qsm_previous_button_click_before', [quiz_id]);
 	var $container = jQuery( quiz_form_id ).closest( '.qmn_quiz_container' );
 	var slide_number = +$container.find( '.slide_number_hidden' ).val();
 	var previous = +$container.find( '.previous_amount_hidden' ).val();
@@ -1001,7 +1001,7 @@ function qmnPrevSlide( pagination, go_to_top, quiz_form_id ) {
         }
         jQuery( quiz_form_id ).parent().find('.qmn_pagination').css('width', '100%' );
         qmnInitProgressbarOnClick(quiz_id, slide_original_val, total_pages);
-        jQuery(document).trigger('qsm_auto_previous_button_click_after', [quiz_form_id]);
+        jQuery(document).trigger('qsm_auto_previous_button_click_after', [quiz_id]);
 }
 
 /**
