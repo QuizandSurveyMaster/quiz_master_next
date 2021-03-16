@@ -130,7 +130,7 @@ class MLWQuizMasterNext {
 			include 'php/admin/tools-page.php';
 			include 'php/classes/class-qsm-changelog-generator.php';
 			include 'php/admin/about-page.php';
-			include 'php/admin/help-page.php';
+			// include 'php/admin/help-page.php';
 			include 'php/admin/dashboard-widgets.php';
 			include 'php/admin/options-page-questions-tab.php';
 			include 'php/admin/options-page-contact-tab.php';
@@ -294,9 +294,9 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
                         add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
                         add_submenu_page( 'qsm_dashboard', __( 'Roadmap', 'quiz-master-next' ), __( 'Roadmap', 'quiz-master-next' ), 'moderate_comments', 'qsm_roadmap_page', 'qsm_generate_roadmap_page' );
-						// Merging About page in help page
+						// Merging Help page in About page
 						// add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
-			add_submenu_page( 'qsm_dashboard', __( 'Help', 'quiz-master-next' ), __( 'Help', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_help', 'qsm_generate_help_page' );                        
+			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_about', 'qsm_generate_about_page' );                        
                         //Register screen option for dashboard page
                         add_action("screen_settings", "qsm_dashboard_screen_options", 10, 2);
 		}
