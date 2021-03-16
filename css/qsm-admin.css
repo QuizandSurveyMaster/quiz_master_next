@@ -1512,12 +1512,13 @@ td.scheduled_time_start {
 .qsm-view-preview-btn{
     text-decoration: none;
     line-height: normal;
-    margin-left: 5px;
+    margin-left: -5px;
 }
-.qsm-view-preview-btn span.dashicons{
+.qsm-view-preview-btn span.dashicons, .edit-quiz-name span.dashicons{
     line-height: 12px;
-    vertical-align: middle;
-    font-size: 25px;
+    vertical-align: bottom;
+    /* margin-right:5px; */
+    /* font-size: 25px; */
 }
 .mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit {
     margin-left: 10px;
@@ -1536,7 +1537,8 @@ td.scheduled_time_start {
     margin-top: 20px;
 }
 .mlw_quiz_options  .edit-quiz-name{
-    float: right;
+    float: none;
+    text-decoration: none;
     /*margin-top: 9px;*/
 }
 .qsm_text_customize_label{

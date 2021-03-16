@@ -16,28 +16,111 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 6.2.0
  */
 function qsm_generate_help_page() {
+	global $mlwQuizMasterNext;
+	$version = $mlwQuizMasterNext->version;
 	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
-
+	$tab_array = [['slug'=>'help', 'title' => 'Help'], ['slug'=>'about', 'title'=>'About']];
+	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'help';
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $version );
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
-	<div class="wrap qsm-help-page">
+	
+		<?php if($active_tab == 'help'){?>
+		<div class="wrap qsm-help-page">
 		<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-		<?php qsm_show_adverts(); ?>
+		<?php } elseif($active_tab == 'about') {?>
+			<style>
+				div.qsm_icon_wrap {
+				background: <?php echo 'url("' . plugins_url( '../../assets/icon-128x128.png', __FILE__ ) . '" )'; ?> no-repeat;
+			}
+			</style>
+			<div class="wrap about-wrap">
+				<h1><?php esc_html_e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?></h1>		
+				<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
+		<?php } ?>
+
+        <h2 class="nav-tab-wrapper">
+            <?php
+            foreach ($tab_array as $tab) {
+                $active_class = '';
+                if ($active_tab == $tab['slug']) {
+                    $active_class = 'nav-tab-active';
+                }
+                echo "<a href=\"?page=qsm_quiz_help&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
+            }
+            ?>
+        </h2>
+		<br/>
+        <div>
+            <?php
+                if ($active_tab == 'help') {
+                    qsm_show_adverts();
+					?>
+						<div style="width:100%;" class="inner-sidebar1">
+							<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
+						</div>
+
+						<div style="width:100%;" class="inner-sidebar1">
+							<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
+						</div>
+					<?php
+                } elseif($active_tab == 'about') {
+					?>
+					<div class="qsm-tab-content tab-3" >
+                    <h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors</h2>
+					<?php
+					$contributors = get_transient( 'qmn_contributors' );
+					if ( false === $contributors ) {
+						$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
+						if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
+							$contributors = array();
+						} else {
+							$contributors = json_decode( wp_remote_retrieve_body( $response ) );
+						}
+					}
+					
+					if ( is_array( $contributors ) & ! empty( $contributors ) ) {
+						set_transient( 'qmn_contributors', $contributors, 3600 );
+						$contributor_list = '<ul class="wp-people-group">';
+						foreach ( $contributors as $contributor ) {
+							$contributor_list .= '<li class="wp-person">';
+							$contributor_list .= sprintf( '<a href="%s" title="%s">',
+							esc_url( 'https://github.com/' . $contributor->login ),
+							// translators: This is the 'title' attribute for GitHub contributors. This would add the GitHub user such as 'View fpcorso'.
+							esc_html( __( 'View ', 'quiz-master-next' ) . $contributor->login )
+							);
+							$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
+							$contributor_list .= '</a>';
+							$contributor_list .= sprintf( '<a class="web" href="%s" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+							$contributor_list .= '</a>';
+							$contributor_list .= '</li>';
+						}
+						$contributor_list .= '</ul>';
+						echo $contributor_list;
+					}
+					?>
+					<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
+					</div>
+					<?php
+				}
+            ?>
+        </div>
+		<?php //qsm_show_adverts(); ?>
 
 		<!--Display Widget Boxes-->
-		<div style="width:100%;" class="inner-sidebar1">
-			<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
-		</div>
+		<!-- <div style="width:100%;" class="inner-sidebar1"> -->
+			<?php //do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
+		<!-- </div> -->
 
-		<div style="width:100%;" class="inner-sidebar1">
-			<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
-		</div>
+		<!-- <div style="width:100%;" class="inner-sidebar1"> -->
+			<?php //do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
+		<!-- </div> -->
 
 	</div>
 <?php

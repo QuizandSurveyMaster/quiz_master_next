@@ -123,21 +123,23 @@ function qsm_generate_quiz_options() {
                         <?php echo $quiz_name; ?>
                         <?php
                         if( $post_status == 'draft' ){ ?>
-                            <form method="POST" action="" style="display: inline-block; margin-left: 10px;">
+                            <form method="POST" action="" style="display: inline-block; margin-right: 10px;float:right;">
                                 <?php wp_nonce_field( 'qsm_update_quiz_status','qsm_update_quiz_status_nonce' ); ?>
                                 <input type="hidden" name="quiz_post_id" value="<?php echo $post_id; ?>" />
-                                <input type="submit" class="button button-default" value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
+                                <input type="submit" class="button button-primary" value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
                             </form>
                         <?php                         
                         }
-                        ?>                        
-                        <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
+                        ?>     
+                        <a href="#" title="Edit Name" class="edit-quiz-name">
+                        <span class="dashicons dashicons-edit"></span>
+                        </a>                   
+                        <a class="qsm-view-preview-btn" title="Preview" target="_blank" href="<?php echo $post_permalink; ?>">
                             <span class="dashicons dashicons-external"></span>
                         </a>
                         <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
                             <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
                         </a>
-                        <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
                     </h1>                                        
 			<?php
 			// Puts all output from tab into ob_get_contents below.

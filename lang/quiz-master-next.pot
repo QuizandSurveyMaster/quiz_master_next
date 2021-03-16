@@ -114,11 +114,16 @@ msgstr ""
 msgid "Get a Free Addon!"
 msgstr ""
 
+
 #: mlw_quizmaster2.php:296
-msgid "QSM About"
+msgid "Roadmap"
 msgstr ""
 
 #: mlw_quizmaster2.php:297
+msgid "About"
+msgstr ""
+
+#: mlw_quizmaster2.php:298
 msgid "Help"
 msgstr ""
 
