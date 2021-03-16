@@ -130,7 +130,6 @@ class MLWQuizMasterNext {
 			include 'php/admin/tools-page.php';
 			include 'php/classes/class-qsm-changelog-generator.php';
 			include 'php/admin/about-page.php';
-			// include 'php/admin/help-page.php';
 			include 'php/admin/dashboard-widgets.php';
 			include 'php/admin/options-page-questions-tab.php';
 			include 'php/admin/options-page-contact-tab.php';

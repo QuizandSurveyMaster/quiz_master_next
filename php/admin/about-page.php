@@ -111,17 +111,6 @@ function qsm_generate_about_page() {
 				}
             ?>
         </div>
-		<?php //qsm_show_adverts(); ?>
-
-		<!--Display Widget Boxes-->
-		<!-- <div style="width:100%;" class="inner-sidebar1"> -->
-			<?php //do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
-		<!-- </div> -->
-
-		<!-- <div style="width:100%;" class="inner-sidebar1"> -->
-			<?php //do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
-		<!-- </div> -->
-
 	</div>
 <?php
 }
