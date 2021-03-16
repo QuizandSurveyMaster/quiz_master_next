@@ -134,7 +134,7 @@ function qsm_generate_quiz_options() {
                         <a href="#" title="Edit Name" class="edit-quiz-name">
                         <span class="dashicons dashicons-edit"></span>
                         </a>
-                        <a class="button button-default qsm-btn-quiz-edit" target="_blank" href="<?php echo $post_permalink; ?>">
+                        <a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo $post_permalink; ?>">
                             <span class="dashicons dashicons-welcome-view-site"></span>
                         </a>
                         <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">

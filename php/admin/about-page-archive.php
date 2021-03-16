@@ -53,7 +53,7 @@ function qsm_generate_about_page_old() {
 					);
 					$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
 					$contributor_list .= '</a>';
-					$contributor_list .= sprintf( '<a class="web" href="%s" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+					$contributor_list .= sprintf( '<a class="web" href="%s" rel="noopener" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
 					$contributor_list .= '</a>';
 					$contributor_list .= '</li>';
 				}
@@ -61,7 +61,7 @@ function qsm_generate_about_page_old() {
 				echo $contributor_list;
 			}
 			?>
-			<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
+			<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank" class="button-primary">View GitHub Repo</a>
 		</div>
 	</div>
 <?php

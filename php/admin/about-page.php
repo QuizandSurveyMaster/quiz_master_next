@@ -97,7 +97,7 @@ function qsm_generate_about_page() {
 							);
 							$contributor_list .= sprintf( '<img src="%s" width="64" height="64" class="gravatar" alt="%s" />', esc_url( $contributor->avatar_url ), esc_html( $contributor->login ) );
 							$contributor_list .= '</a>';
-							$contributor_list .= sprintf( '<a class="web" href="%s" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
+							$contributor_list .= sprintf( '<a class="web" href="%s" rel="noopener" target="_blank">%s</a>', esc_url( 'https://github.com/' . $contributor->login ), esc_html( $contributor->login ) );
 							$contributor_list .= '</a>';
 							$contributor_list .= '</li>';
 						}
@@ -105,7 +105,7 @@ function qsm_generate_about_page() {
 						echo $contributor_list;
 					}
 					?>
-					<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" target="_blank" class="button-primary">View GitHub Repo</a>
+					<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank" class="button-primary">View GitHub Repo</a>
 					</div>
 					<?php
 				}
@@ -125,8 +125,8 @@ function qsm_documentation_meta_box_content() {
 	?>
 	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
 	<ul>
-		<li>For assistance in using the plugin, read our <a href="https://quizandsurveymaster.com/docs/" target="_blank">documentation</a></li>
-		<li>For support, fill out the form on our <a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" target="_blank">Contact Us Page</a></li>
+		<li>For assistance in using the plugin, read our <a href="https://quizandsurveymaster.com/docs/" rel="noopener" target="_blank">documentation</a></li>
+		<li>For support, fill out the form on our <a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }
