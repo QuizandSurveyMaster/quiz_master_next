@@ -708,15 +708,15 @@ function qmn_large_open_review( $id, $question, $answers ) {
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
 		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-		$mlw_user_answer    = trim( $decode_user_answer );
+		$mlw_user_answer    = trim(str_replace(' ','',preg_replace('/\s\s+/', '', $decode_user_answer )));
 	} else {
 		$mlw_user_answer = ' ';
 	}
-	$return_array['user_text'] = $mlw_user_answer;
+	$return_array['user_text'] = $decode_user_answer;
 	foreach ( $answers as $answer ) {
-		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		$return_array['correct_text'] = trim( $decode_correct_text );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
+		$return_array['correct_text'] = $decode_correct_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+		$decode_correct_text = trim(str_replace(' ','', preg_replace('/\s\s+/', '', $decode_correct_text )));
+		if ( mb_strtoupper( $mlw_user_answer ) == mb_strtoupper( $decode_correct_text ) ) {
 			$return_array['correct'] = 'correct';
 			$return_array['points']  = $answer[1];
 			break;
