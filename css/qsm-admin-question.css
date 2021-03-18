@@ -7,20 +7,34 @@
 
 #delete-question-button{
     background-color:#dc3232;
+    float: right;
+}
+
+#unlink-question-button{
+    float: right;
+    margin-left: 5px;
 }
 
 #modal-7{
     max-width: 500px;
 }
 
+#modal-7 hr{
+    margin: 0 -30px;
+}
+
+#modal-7 header{
+    margin: -10px 0 10px 0;
+}
+
+#modal-7 .qsm-popup__close {
+    margin: -10px -10px 0 0;
+    font-size: 20px;
+}
+
 #modal-7-title{
     color: gray;
     opacity: 70%;
-}
-
-
-#modal-7 footer #cancel-button{
-    float: right;
 }
 
 #modal-7 footer .dashicons{
@@ -32,10 +46,15 @@
 
 #modal-7 .qsm-popup__container{
     max-width:560px;
+    padding-bottom: 20px;
 }
 
 .modal-7-table{
-    font-size: 16px;;
+    font-size: 16px;
+}
+
+#modal-7 footer{
+    margin-top: 15px;
 }
 
 .modal-7-table tr td{

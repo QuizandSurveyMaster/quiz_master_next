@@ -576,6 +576,7 @@ function qsm_options_questions_tab_content() {
                     <h3 class="qsm-popup__title" id="modal-7-title"><?php _e('Delete Options', 'quiz-master-next'); ?></h3>
                     <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
                 </header>
+                <hr/>
                 <main class="qsm-popup__content" id="modal-7-content">
                     <form action='' method='post' id="delete-question-form">
                         <table class="modal-7-table">
@@ -590,6 +591,7 @@ function qsm_options_questions_tab_content() {
                         </table>
                     </form>
                 </main>
+                <hr/>
                 <footer class="qsm-popup__footer">
                     <button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-trash"></span><?php _e('Unlink', 'quiz-master-next'); ?></button>
                     <button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-warning"></span><?php _e('Delete', 'quiz-master-next'); ?></button>
