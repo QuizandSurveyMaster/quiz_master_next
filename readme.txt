@@ -8,7 +8,7 @@ Stable tag: 7.1.14
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create user-friendly and beautiful quizzes and surveys using Wordpress Quiz Plugin. Boost traffic and social shares on your website.
+Easily create exams, generate leads, surveys and any type of quiz with our popular WordPress Quiz Plugin. Custom flows, emails and create leaderboard
 
 == Description ==
 
@@ -47,7 +47,7 @@ You can assign categories to your questions using our quiz maker plugin. You can
 = Countdown Timer =
 Add countdown timer to your quizzes and effectively create skills assessment or online exams on your website. 
 
-= Integrations = 
+= Lead Generation = 
 You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Response to your quiz or surveys in order to create drip email campaigns and reachout to your audience. Checkout our [integrations](https://quizandsurveymaster.com/downloads/category/integrations/).
 
 = Other Useful Features =
@@ -68,7 +68,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Create and display math formulas
 * And **Much** More...
 
-= [WordPress Quiz Plugin](https://quizandsurveymaster.com/) Addons =
+= QSM Addons =
 Quiz And Survey Master is fully functional and is packed with tons of features that will meet the needs of most, we do offer various extra features including:
 
 **Free Add-ons**
