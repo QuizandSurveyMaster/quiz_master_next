@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.13
+Stable tag: 7.1.14
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.1.14 (March 19, 2021) =
+* Bug: Fixed security and Vulnerability issues.
+* Bug: Fixed the inability to recognize correct answer for Question type Paragraph.
+* Enhancement: Added the feature of soft delete of questions from quiz.
+* Enhancement: Improved UI of Quiz Edit Page header.
 
 = 7.1.13 (March 9, 2021) =
 * Bug: Fixed several security issues. 
