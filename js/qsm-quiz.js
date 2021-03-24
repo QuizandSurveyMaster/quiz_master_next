@@ -1179,6 +1179,7 @@ jQuery(function() {
 					jQuery(this).val(timems);
 				});
 				setInterval(qmnTimeTakenTimer, 1000);
+				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 			},
 			error: function (errorThrown) {
 				console.log('error');
