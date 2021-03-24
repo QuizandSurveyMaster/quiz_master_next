@@ -340,8 +340,8 @@ function qsm_generate_quizzes_surveys_page() {
                                 <td class="manage-column column-cb check-column" id="cb"><input type="checkbox" name="delete-all-shortcodes-1" id="delete-all-shortcodes-1" value="0"></td>
                                 <th class="<?php echo $orderby_class; ?>">
                                     <?php
-                                    $paged_slug = isset($_GET['paged']) && $_GET['paged'] != '' ? '&paged=' . $_GET['paged'] : '';
-                                    $searched_slug = isset($_GET['s']) && $_GET['s'] != ''? '&s='.htmlspecialchars($_GET['s'], ENT_QUOTES) : '';
+                                    $paged_slug = isset($_GET['paged']) && $_GET['paged'] != '' ? '&paged='.esc_attr($_GET['paged']) : '';
+                                    $searched_slug = isset($_GET['s']) && $_GET['s'] != ''? '&s='.esc_attr($_GET['s']) : '';
                                     $sorting_url = '?page=mlw_quiz_list' . $paged_slug . $searched_slug;
                                     ?>
                                     <a href="<?php echo $sorting_url . $orderby_slug; ?>">
