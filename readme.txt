@@ -140,10 +140,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.1.14 (March 19, 2021) =
+= 7.1.14 (March 25, 2021) =
 * Bug: Fixed security and Vulnerability issues.
 * Bug: Fixed the inability to recognize correct answer for Question type Paragraph.
-* Enhancement: Added the feature of soft delete of questions from quiz.
+* Bug: Fixed the issue of  question not displaying when randomizing questions by category.
+* Bug: Fixed the issue of [latex] shortcode not working on retake quiz.
+* Enhancement: Added the feature of temporary delete of questions from quiz.
 * Enhancement: Improved UI of Quiz Edit Page header.
 
 = 7.1.13 (March 9, 2021) =
