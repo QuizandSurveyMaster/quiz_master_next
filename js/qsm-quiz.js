@@ -784,14 +784,17 @@ function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
+
+
+	if ( ! result ) { return result; }
+
 	/**
-	 * Update Timer in MS
-	 */
+	* Update Timer in MS
+	*/
+	
 	var timer_ms = jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val();
 	var new_timer_ms = qsmTimeInMS();
 	jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val(Math.abs(new_timer_ms - timer_ms));
-
-	if ( ! result ) { return result; }
 
 	jQuery( '.mlw_qmn_quiz input:radio' ).attr( 'disabled', false );
 	jQuery( '.mlw_qmn_quiz input:checkbox' ).attr( 'disabled', false );
@@ -1176,6 +1179,7 @@ jQuery(function() {
 					jQuery(this).val(timems);
 				});
 				setInterval(qmnTimeTakenTimer, 1000);
+				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 			},
 			error: function (errorThrown) {
 				console.log('error');

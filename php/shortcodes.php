@@ -53,9 +53,7 @@ function qsm_display_recent_quizzes($attrs) {
     global $wpdb;
     wp_enqueue_style('quizzes-list', plugins_url('../css/quizzes-list.css', __FILE__));
 
-    $quiz_tbl = $wpdb->prefix . 'mlw_quizzes';
-
-    $query = "SELECT quiz_id, quiz_name, quiz_settings FROM $quiz_tbl WHERE deleted=0 ORDER BY  quiz_id DESC";
+    $query = "SELECT quiz_id, quiz_name, quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE deleted=0 ORDER BY  quiz_id DESC";
     $quizzes = $wpdb->get_results($query);
     $result = '<div class="outer-con">';
     $i = 0;
@@ -120,7 +118,7 @@ function qsm_generate_fb_header_metadata() {
         }
         global $mlwQuizMasterNext, $wpdb, $wp_query;
         $result_id = sanitize_text_field($_GET['result_id']);        
-        $results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = '%s'", $result_id ) );        
+        $results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );        
         if ($results_data) {
             // Prepare responses array.
             if (is_serialized($results_data->quiz_results) && is_array(@unserialize($results_data->quiz_results))) {

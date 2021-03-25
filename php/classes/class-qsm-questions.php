@@ -79,7 +79,7 @@ class QSM_Questions {
 			$question_sql = implode( ', ', $question_ids );
 
 			// Get all questions.
-			$question_array = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql)", 'ARRAY_A' );
+			$question_array = $wpdb->get_results( $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s)",$question_sql), 'ARRAY_A' );
 
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {

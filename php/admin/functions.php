@@ -199,19 +199,6 @@ function qsm_display_question_option($key, $single_option){
             </div>
             <?php
         break;
-    
-        case 'textarea':
-            ?>
-            <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
-                <label>
-                    <?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
-                    <?php echo $tooltip; ?>
-                    <?php echo $document_text; ?>
-                </label>
-                <textarea name="<?php echo $key; ?>" id="<?php echo $key ?>"><?php echo isset($single_option['default']) ? $single_option['default'] : ''; ?></textarea>
-            </div>
-            <?php
-        break;
 
         case 'number':
             ?>

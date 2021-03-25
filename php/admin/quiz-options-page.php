@@ -27,8 +27,9 @@ function qsm_generate_quiz_options() {
         //Check user capability
         $user = wp_get_current_user();
         if ( in_array( 'author', (array) $user->roles ) ) {
-            $quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
-            $quiz_author_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_author_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d AND quiz_author_id=%d LIMIT 1", $quiz_id, $user->ID ) );
+            $user_id = sanitize_text_field($user->ID);
+            $quiz_id = isset( $_GET['quiz_id'] ) ? intval($_GET['quiz_id']) : 0;
+            $quiz_author_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_author_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d AND quiz_author_id=%d LIMIT 1", $quiz_id, $user_id) );
             if(!$quiz_author_id){
                 wp_die('You are not allow to edit this quiz, You need higher permission!');
             }
@@ -122,21 +123,23 @@ function qsm_generate_quiz_options() {
                         <?php echo $quiz_name; ?>
                         <?php
                         if( $post_status == 'draft' ){ ?>
-                            <form method="POST" action="" style="display: inline-block; margin-left: 10px;">
+                            <form method="POST" action="" style="display: inline-block; margin-right: 10px;float:right;">
                                 <?php wp_nonce_field( 'qsm_update_quiz_status','qsm_update_quiz_status_nonce' ); ?>
                                 <input type="hidden" name="quiz_post_id" value="<?php echo $post_id; ?>" />
-                                <input type="submit" class="button button-default" value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
+                                <input type="submit" class="button button-primary" value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
                             </form>
                         <?php                         
                         }
-                        ?>                        
-                        <a class="qsm-view-preview-btn" target="_blank" href="<?php echo $post_permalink; ?>">
-                            <span class="dashicons dashicons-external"></span>
+                        ?>     
+                        <a href="#" title="Edit Name" class="edit-quiz-name">
+                        <span class="dashicons dashicons-edit"></span>
+                        </a>
+                        <a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo $post_permalink; ?>">
+                            <span class="dashicons dashicons-welcome-view-site"></span>
                         </a>
                         <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
-                            <span class="dashicons dashicons-admin-settings"></span> <?php _e('Post Settings', 'quiz-master-next'); ?>
+                            <span class="dashicons dashicons-admin-settings"></span>
                         </a>
-                        <a href="#" class="edit-quiz-name button button-primary">Edit Name</a>
                     </h1>                                        
 			<?php
 			// Puts all output from tab into ob_get_contents below.
