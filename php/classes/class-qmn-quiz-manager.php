@@ -457,7 +457,8 @@ class QMNQuizManager {
             }
 	    $question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
             $question_sql = implode(', ', $question_ids);
-            $questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql ));
+            $query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
+            $questions = $wpdb->get_results( stripslashes($query));
 
             // If we are not using randomization, we need to put the questions in the order of the new question editor.
             // If a user has saved the pages in the question editor but still uses the older pagination options
