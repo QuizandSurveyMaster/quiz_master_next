@@ -1211,11 +1211,6 @@ function qmn_polar_display_on_resultspage($id, $question, $answers,$answer) {
       $left_polar_title_style = "style='font-weight:900;'";
 	  $right_polar_title_style = "style='font-weight:100';";
 	}
-	// else if($answer['points'] == $answers[0][1])
-	// {
-	//   $left_polar_title_style = "style='font-weight:100;'";
-	//   $right_polar_title_style = "style='font-weight:900;'";
-	// }
 	else if($answer['points'] == $check_point / 2)
 	{
 	  $left_polar_title_style = "style='font-weight:400;'";
