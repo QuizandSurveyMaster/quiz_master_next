@@ -479,9 +479,9 @@ class QMNQuizManager {
 		$question_sql = '';
 		if (!empty($question_ids)) {
 			$qids = implode(', ', $question_ids);
-			$question_sql = " AND question_id IN ({$qids}) ";
+			$question_sql = " AND question_id IN ($qids) ";
 		}
-		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s %4s", $quiz_id, $question_sql, $question_sql, $order_by_sql, $limit_sql));
+		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql));
         }
 	$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
         // Returns an array of all the loaded questions.
