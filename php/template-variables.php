@@ -1004,7 +1004,10 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                                                             if( strpos($answer[1], '&lt;') !== false || strpos($answer[1], '&quot;') !== false ){
                                                                                     $answer_value = htmlentities( $answer[1] );
                                                                             }else {
-                                                                                    $answer_value = $answer[1];
+                                                                                    $answer_value = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+																					$answer_value = htmlspecialchars_decode($answer_value, ENT_QUOTES);
+																					$answer_value = htmlentities($answer_value);
+																					$answer_value = htmlspecialchars($answer_value);
                                                                             }
                                                                         } else {
                                                                             $answer_value = htmlspecialchars_decode($answer[1], ENT_QUOTES);
