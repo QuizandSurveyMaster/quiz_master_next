@@ -369,6 +369,7 @@ class QMNQuizManager {
             $result_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id), ARRAY_A);
             if( $result_data ){
                 wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+                wp_enqueue_style('dashicons');
                 wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
                 $quiz_result = unserialize($result_data['quiz_results']);
                 $response_data = array(
