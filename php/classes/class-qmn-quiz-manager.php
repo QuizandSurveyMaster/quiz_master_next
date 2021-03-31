@@ -232,9 +232,12 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            global $mlwQuizMasterNext;
             wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
             wp_enqueue_style('dashicons');
             wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'jquery-ui-tooltip' );
+            wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip'), $mlwQuizMasterNext->version);
             wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id =sanitize_text_field($_GET['result_id']);
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
@@ -242,6 +245,7 @@ class QMNQuizManager {
             if( !empty($result) && isset($result['result_id']) ){
                 $result_id = $result['result_id'];
                 $return_display = do_shortcode( '[qsm_result id="'. $result_id .'"]' );
+                $return_display = str_replace('%FB_RESULT_ID%', $result_unique_id, $return_display);
             }else{
                 $return_display = 'Result id is wrong!';
             }
