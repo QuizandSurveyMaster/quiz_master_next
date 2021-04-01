@@ -1514,7 +1514,8 @@ td.scheduled_time_start {
     line-height: normal;
     margin-left: -5px;
 }
-.qsm-view-preview-btn span.dashicons, .edit-quiz-name span.dashicons{
+.qsm-view-preview-btn span.dashicons, 
+.edit-quiz-name span.dashicons{
     line-height: 12px;
     vertical-align: bottom;
 }

@@ -232,9 +232,12 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            global $mlwQuizMasterNext;
             wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
             wp_enqueue_style('dashicons');
             wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'jquery-ui-tooltip' );
+            wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip'), $mlwQuizMasterNext->version);
             wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
             $result_unique_id =sanitize_text_field($_GET['result_id']);
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
@@ -242,6 +245,7 @@ class QMNQuizManager {
             if( !empty($result) && isset($result['result_id']) ){
                 $result_id = $result['result_id'];
                 $return_display = do_shortcode( '[qsm_result id="'. $result_id .'"]' );
+                $return_display = str_replace('%FB_RESULT_ID%', $result_unique_id, $return_display);
             }else{
                 $return_display = 'Result id is wrong!';
             }
@@ -368,6 +372,9 @@ class QMNQuizManager {
             global $wpdb;
             $result_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id), ARRAY_A);
             if( $result_data ){
+                wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+                wp_enqueue_style('dashicons');
+                wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
                 $quiz_result = unserialize($result_data['quiz_results']);
                 $response_data = array(
                     'quiz_id' => $result_data['quiz_id'],
@@ -457,7 +464,8 @@ class QMNQuizManager {
             }
 	    $question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
             $question_sql = implode(', ', $question_ids);
-            $questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql ));
+            $query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
+            $questions = $wpdb->get_results( stripslashes($query));
 
             // If we are not using randomization, we need to put the questions in the order of the new question editor.
             // If a user has saved the pages in the question editor but still uses the older pagination options
@@ -478,9 +486,9 @@ class QMNQuizManager {
 		$question_sql = '';
 		if (!empty($question_ids)) {
 			$qids = implode(', ', $question_ids);
-			$question_sql = " AND question_id IN ({$qids}) ";
+			$question_sql = " AND question_id IN ($qids) ";
 		}
-		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 {%1s} {%2s} {%3s} {%4s}", $quiz_id, $question_sql, $question_sql, $order_by_sql, $limit_sql));
+		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql));
         }
 	$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
         // Returns an array of all the loaded questions.
