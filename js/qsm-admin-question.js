@@ -387,6 +387,8 @@ var import_button;
 			if ( ! category ) {
 				category = '';
 			}
+						var featureImageID = $('.qsm-feature-image-id').val();
+                        var featureImageSrc = $('.qsm-feature-image-src').val();
                         var answerType = $('#change-answer-editor').val();
 			var answers = [];
 			var $answers = jQuery( '.answers-single');
@@ -424,7 +426,7 @@ var import_button;
                                 element_id = element_id.replace('[]','');                                
                                 advanced_option[element_id] = multi_value;
                             }
-                        });                        
+                        });
 			model.save(
 				{ 
 					type: type,
@@ -434,6 +436,8 @@ var import_button;
 					comments: comments,
 					hint: hint,
 					category: category,
+					featureImageID: featureImageID,
+					featureImageSrc: featureImageSrc,
 					//required: required,
 					answers: answers,
                                         answerEditor: answerType,
@@ -560,6 +564,12 @@ var import_button;
                         if( get_limit_fu === null || typeof get_limit_fu === "undefined" ){
                             get_limit_fu = '0';
                         }
+						//Get featured image
+                        var get_featureImageSrc = question.get( 'featureImageSrc' );
+                        var get_featureImageID = question.get( 'featureImageID' );
+                        if( get_featureImageSrc === null || typeof get_featureImageSrc === "undefined" ){
+                            get_featureImageSrc = get_featureImageID = '';
+                        }
                         //Get checked question type
                         var get_file_upload_type = question.get( 'file_upload_type' );
                         $("input[name='file_upload_type[]']:checkbox").attr("checked",false);                        
@@ -607,7 +617,15 @@ var import_button;
 			$( "#question_title" ).val( get_question_title );
 			if ( 0 !== question.get( 'category' ).length ) {
 				$( ".category-radio" ).val( [question.get( 'category' )] );
-			}                 
+			}
+			//Append feature image
+			if( get_featureImageSrc ){
+				var button = $('.qsm-feature-image-upl');
+				button.html('<img src="' + get_featureImageSrc + '" style="width:150px">');
+				button.next('.qsm-feature-image-rmv').show();
+				button.next().next('.qsm-feature-image-id').val(get_featureImageID);
+				button.next().next().next('.qsm-feature-image-src').val(get_featureImageSrc);
+			}
                         //Append extra settings
                         var all_setting = question.get('settings');
                         if( all_setting === null || typeof all_setting === "undefined" ){
@@ -981,6 +999,39 @@ var import_button;
                         $(this).next('.qsm-row').slideDown();
                     }                    
                 });
+
+				//Open file upload on feature image                
+                $('body').on( 'click', '.qsm-feature-image-upl', function(e){
+                    e.preventDefault();
+                    var button = $(this),
+                    custom_uploader = wp.media({
+                        title: 'Insert image',
+                        library : {
+                                // uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
+                                type : 'image'
+                        },
+                        button: {
+                                text: 'Use this image' // button label text
+                        },
+                        multiple: false
+                    }).on('select', function() { // it also has "open" and "close" events
+                        var attachment = custom_uploader.state().get('selection').first().toJSON();                        
+                        button.html('<img src="' + attachment.url + '" style="width:150px">');
+                        button.next('.qsm-feature-image-rmv').show();
+                        button.next().next('.qsm-feature-image-id').val(attachment.id);
+                        button.next().next().next('.qsm-feature-image-src').val(attachment.url);
+                    }).open();
+                });
+                
+                // on remove button click
+                $('body').on('click', '.qsm-feature-image-rmv', function(e){
+                    e.preventDefault();
+                    var button = $(this);
+                    button.next().val(''); // emptying the hidden field
+                    button.next().next().val(''); // emptying the hidden field
+                    button.hide().prev().html('Upload image');
+                });
+
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)

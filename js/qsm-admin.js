@@ -146,6 +146,15 @@ var QSMQuizzesSurveys;
             $( '.' + name + '_' + value ).show();
         }
     });
+    //Hide/show the wizard quiz options
+    $(document).on('change', '#quiz_settings select', function(){
+      var value = $(this).val();
+      if( value == 0 ){
+        jQuery(this).closest('.input-group').next('.input-group').show();
+      } else {
+        jQuery(this).closest('.input-group').next('.input-group').hide();
+      }
+    });
     /*$( '#quiz_search' ).keyup( function() {
       QSMQuizzesSurveys.searchQuizzes( $( this ).val() );
     });*/
@@ -204,6 +213,38 @@ var QSMQuizzesSurveys;
         var copyText = document.getElementById("sc-shortcode-model-text-link");
         copyText.select();        
         document.execCommand("copy");        
-    });    
+    });
+    //Show the menus on widget click
+    $(document).on('click', '.qsm-new_menu_tab_items li', function(e){
+        $('.qsm-new_menu_tab_items li').removeClass('active');
+        $(this).addClass('active');
+        $('.qsm-new-menu-elements').hide();
+        var id = $(this).attr('data-show');
+        $('#' + id).show();
+        e.preventDefault();
+    });
+    $(document).on('click', '.qsm-wizard-wrap', function(e){
+        $('.qsm-wizard-menu .qsm-wizard-wrap').removeClass('active');
+        $(this).addClass('active');
+        $('.qsm-new-menu-elements').hide();
+        var id = $(this).attr('data-show');
+        $('#' + id).show();
+        e.preventDefault();
+    });
+    $(document).on('click', '.theme-sub-menu li', function(e){
+        e.preventDefault();
+        var id = $(this).children('a').attr('data-show');        
+        $('.theme-sub-menu li').removeClass('active');        
+        $(this).addClass('active');
+        $('.theme-wrap').hide();        
+        $('#' + id).show();
+    });
+    $(document).on('click', '#downloaded_theme .theme-wrapper', function(e){
+        e.preventDefault();
+        $('#downloaded_theme .theme-wrapper').removeClass('active');
+        $('#downloaded_theme .theme-wrapper').find('.qsm-activate-theme').html('').html('Select Theme');
+        $(this).addClass('active');
+        $('#downloaded_theme .theme-wrapper.active').find('.qsm-activate-theme').html('').html('Selected Theme');
+    });
   });
 }(jQuery));

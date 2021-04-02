@@ -73,6 +73,9 @@ function qsm_options_questions_tab_content() {
 
 	// Scripts and styles.
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
+    if ( ! did_action( 'wp_enqueue_media' ) ) {
+        wp_enqueue_media();
+    }
 	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
 	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
@@ -300,7 +303,8 @@ function qsm_options_questions_tab_content() {
                                                                             'priority' => '1',
                                                                             'options' => array(
                                                                                 'text' => __( 'Text Answers', 'quiz-master-next' ),
-                                                                                'rich' => __( 'Rich Answers', 'quiz-master-next' ),                                                                            
+                                                                                'rich' => __( 'Rich Answers', 'quiz-master-next' ),
+                                                                                'image' => __( 'Image Answers', 'quiz-master-next' ),                                                                            
                                                                             ),
                                                                             'default' => 'text',
                                                                             'show' => '0,1,2,4,13',
@@ -360,6 +364,21 @@ function qsm_options_questions_tab_content() {
                                                             foreach($category_question_option as $qo_key => $single_cat_option){
                                                                 echo qsm_display_question_option($qo_key, $single_cat_option);
                                                             }
+                                                            ?>                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div id="featureImagediv" class="postbox">
+                                                        <h2 class="hndle ui-sortable-handle">
+                                                            <span><?php _e('Feature Image', 'quiz-master-next'); ?></span>
+                                                            <a class="qsm-question-doc" href="#" target="_blank" title="View Documentation"><span class="dashicons dashicons-media-document"></span></a>
+                                                        </h2>
+                                                        <div class="inside">
+                                                            <?php
+                                                            echo '<a href="#" class="qsm-feature-image-upl">'. __('Upload Image', 'quiz-master-next') .'</a>
+                                                                <a href="#" class="qsm-feature-image-rmv" style="display:none">'. __('Remove Image', 'quiz-master-next') .'</a>'
+                                                                . '<input type="hidden" name="qsm-feature-image-id" class="qsm-feature-image-id" value="">'
+                                                                . '<input type="hidden" name="qsm-feature-image-src" class="qsm-feature-image-src" value="">';
+                                                            
                                                            ?>                                                            
                                                         </div>
                                                     </div>

@@ -447,6 +447,8 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
                                         'file_upload_type'   => isset($question['settings']['file_upload_type']) ? $question['settings']['file_upload_type'] : '',
                                         'quiz_name'   => isset($quiz_name['quiz_name']) ? $quiz_name['quiz_name'] : '',
                                         'question_title'   => isset($question['settings']['question_title']) ? $question['settings']['question_title'] : '',
+										'featureImageID'   => isset($question['settings']['featureImageID']) ? $question['settings']['featureImageID'] : '',
+                                        'featureImageSrc'   => isset($question['settings']['featureImageSrc']) ? $question['settings']['featureImageSrc'] : '',
                                         'settings' => $question['settings']
 				);
 				$question_data = apply_filters('qsm_rest_api_filter_question_data', $question_data, $question, $request);
@@ -546,6 +548,8 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
                                 $settings = array();
                                 $settings['answerEditor'] = $request['answerEditor'];
                                 $settings['question_title'] = sanitize_text_field( $request['question_title'] );
+								$settings['featureImageID'] = sanitize_text_field( $request['featureImageID'] );
+                                $settings['featureImageSrc'] = sanitize_text_field( $request['featureImageSrc'] );
                                 if( isset($request['other_settings']) && is_array($request['other_settings']) ){
                                     foreach ($request['other_settings'] as $setting_key => $setting_value) {
                                         $settings[$setting_key] = $setting_value;

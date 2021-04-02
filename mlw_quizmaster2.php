@@ -17,10 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'QSM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'QSM_SUBMENU', __FILE__);
 define('QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define( 'hide_qsm_adv', true);
+$upload = wp_upload_dir();
+$upload_dir = $upload['basedir'];
+define( 'QSM_THEME_PATH', $upload['basedir'] . '/qsm_themes/');
+define( 'QSM_THEME_SLUG', $upload['baseurl'] . '/qsm_themes/');
 
 /**
  * This class is the main class of the plugin
