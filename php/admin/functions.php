@@ -809,13 +809,22 @@ function qsm_admin_page_access_func(){
 add_action('admin_page_access_denied', 'qsm_admin_page_access_func');
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
+    $active_themes = get_option('qsm_active_themes');
     $folder_name = QSM_THEME_PATH;
     $folder_slug = QSM_THEME_SLUG;
     $theme_folders = array();
-    if (is_dir($folder_name)) {
-        $theme_folders = scandir($folder_name);
+    if(!empty($active_themes)){
+        foreach($active_themes as $dir){
+            $theme_dir = $folder_name.$dir;
+            if(is_dir($theme_dir)){
+                $theme_folders[] = $dir;
+            }
+        }
     }
-    $theme_folders = apply_filters('qsm_theme_list', $theme_folders);
+    // if (is_dir($folder_name)) {
+    //     $theme_folders = scandir($folder_name);
+    // }
+    // $theme_folders = apply_filters('qsm_theme_list', $theme_folders);
     ?>
     <div class="theme-wrapper theme <?php
     if ($saved_quiz_theme == '' || $saved_quiz_theme == 'default') {

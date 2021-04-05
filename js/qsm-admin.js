@@ -228,7 +228,7 @@ var QSMQuizzesSurveys;
         $(this).addClass('active');
         $('.qsm-new-menu-elements').hide();
         var id = $(this).attr('data-show');
-        $('#' + id).show();
+        $('#' + id).fadeIn();
         e.preventDefault();
     });
     $(document).on('click', '.theme-sub-menu li', function(e){
