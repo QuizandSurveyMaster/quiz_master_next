@@ -181,6 +181,7 @@ var QSMQuizzesSurveys;
     $( '#create-quiz-button' ).on( 'click', function( event ) {
         if( $('#new-quiz-form').find('.quiz_name').val() === ''){
             $('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
+            $('.qsm-wizard-wrap[data-show="quiz_settings"]').trigger('click');
             $('#new-quiz-form').find('.quiz_name').focus();
             return;
         }
@@ -229,7 +230,53 @@ var QSMQuizzesSurveys;
         $('.qsm-new-menu-elements').hide();
         var id = $(this).attr('data-show');
         $('#' + id).fadeIn();
+        switch (id) {
+          case 'select_themes':
+            $('#model-wizard .qsm-popup__footer #prev-theme-button').hide();
+            $('#model-wizard .qsm-popup__footer #prev-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #next-quiz-button').show();
+            $('#model-wizard .qsm-popup__footer #create-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #choose-addons-button').hide();
+            break;
+          case 'quiz_settings':
+            $('#model-wizard .qsm-popup__footer #prev-theme-button').show();
+            $('#model-wizard .qsm-popup__footer #prev-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #next-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #create-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #choose-addons-button').show();
+            break;
+          case 'addons_list':
+            $('#model-wizard .qsm-popup__footer #prev-theme-button').hide();
+            $('#model-wizard .qsm-popup__footer #prev-quiz-button').show();
+            $('#model-wizard .qsm-popup__footer #next-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #create-quiz-button').show();
+            $('#model-wizard .qsm-popup__footer #choose-addons-button').hide();
+            break;
+          default:
+            $('#model-wizard .qsm-popup__footer #prev-theme-button').hide();
+            $('#model-wizard .qsm-popup__footer #prev-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #next-quiz-button').show();
+            $('#model-wizard .qsm-popup__footer #create-quiz-button').hide();
+            $('#model-wizard .qsm-popup__footer #choose-addons-button').hide();
+            break;
+        }
         e.preventDefault();
+    });
+    $(document).on('click', '#model-wizard .qsm-popup__footer #prev-theme-button', function(e){
+      $('.qsm-wizard-wrap[data-show="select_themes"]').trigger('click');
+      e.preventDefault();
+    });
+    $(document).on('click', '#model-wizard .qsm-popup__footer #prev-quiz-button', function(e){
+      $('.qsm-wizard-wrap[data-show="quiz_settings"]').trigger('click');
+      e.preventDefault();
+    });
+    $(document).on('click', '#model-wizard .qsm-popup__footer #choose-addons-button', function(e){
+      $('.qsm-wizard-wrap[data-show="addons_list"]').trigger('click');
+      e.preventDefault();
+    });
+    $(document).on('click', '#model-wizard .qsm-popup__footer #next-quiz-button', function(e){
+      $('.qsm-wizard-wrap[data-show="quiz_settings"]').trigger('click');
+      e.preventDefault();
     });
     $(document).on('click', '.theme-sub-menu li', function(e){
         e.preventDefault();

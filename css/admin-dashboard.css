@@ -1,3 +1,11 @@
+* {
+    scrollbar-width: 3px;
+  }
+  
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 3px;
+}
 .welcome-panel-column .dashicons {
     /* font-size: 30px; */
     color: #606a73;
@@ -315,6 +323,28 @@
     width: 100%;
     box-sizing: border-box;
 }
+#model-wizard .qsm-popup__footer #prev-theme-button,
+#model-wizard .qsm-popup__footer #prev-quiz-button
+{
+    float: left;
+    display: none;
+}
+#model-wizard .qsm-popup__footer #create-quiz-button,
+#model-wizard .qsm-popup__footer #choose-addons-button
+{
+    display: none;
+}
+#model-wizard .qsm-popup__footer .dashicons{
+    font-size: 18px;
+    vertical-align: middle;
+}
+#model-wizard .qsm-popup__footer .left-icons{
+    margin-left: -9px;
+}
+#model-wizard .qsm-popup__footer .right-icons{
+    margin-right: -9px;
+    margin-left: 3px;
+}
 #model-wizard .qsm-popup__close{
     cursor: pointer;
     font-size: 20px;
@@ -495,6 +525,8 @@ h2.hndle.ui-sortable-handle {
     margin: 0;
 }
 #model-wizard .qsm-new-menu-elements .input-group {
+    width: 60%;
+    margin:0 auto;
     margin-bottom: 10px;
     background: white;
     padding: 3% 4%;
@@ -508,20 +540,37 @@ h2.hndle.ui-sortable-handle {
     font-style: italic;
     font-size: 14px;
     margin-top: 10px;
-    display: block;
+    display: inline-block;
+    width: 30%;
+    position: relative;
+    top: -30px;
+    text-align: right;
 }
 #model-wizard .qsm-new-menu-elements .input-group > label{
-    display: block;
-    font-size: 14px;
+    line-height: 1.7;
+    color: #888;
+    display: inline-block;
+    font-size: 18px;
     margin-bottom: 5px;
     font-family: inherit;
+    width: 30%;
+    text-align: right;
+    margin-right: 20px;
+    vertical-align: top;
 }
 #model-wizard .qsm-new-menu-elements input[type="text"],
 #model-wizard .qsm-new-menu-elements select{
-    width: 100%;
+    width: 60%;
     max-width: 100%;
     height: 35px;
     border: solid 1px #dddddd;
+    box-shadow: 1px 1px 2px rgba(10,10,10,0.3);
+    border-radius: 3px;
+}
+#model-wizard .qsm-new-menu-elements fieldset{
+    width: 60%;
+    max-width: 100%;
+    display: inline-block;
 }
 #select_themes .theme{
     width: 30.6%;
@@ -537,7 +586,7 @@ h2.hndle.ui-sortable-handle {
 }
 #addons_list ul li{
     position: relative;
-    border: 1px solid #c4c4c4
+    border: 1px solid #c4c4c4;
 }
 #addons_list ul li span.ra-attr{
     position: absolute;
@@ -546,7 +595,7 @@ h2.hndle.ui-sortable-handle {
     font-size: 10px;
     color: #fff;
     background: gray;
-    border-radius: 5px;
+    border-radius: 0 0 0 10px;
     top: 0;
     text-transform: capitalize;
 }
@@ -615,6 +664,10 @@ h2.hndle.ui-sortable-handle {
     text-decoration: none;
     font-size: 16px;
 }
+#quiz_settings .input-group{
+    box-shadow: 2px 2px 5px rgba(10,10,10,0.3);
+    border-radius: 5px;
+}
 @media screen and (min-width: 1200px){
     #quiz_settings_wrapper tr td fieldset > br{
         display: none;
@@ -643,6 +696,7 @@ h2.hndle.ui-sortable-handle {
         width: 48%;
     }
 }
+
 @media screen and (max-width: 767px){
     #model-wizard .qsm-popup__container{
         width: 90%;
@@ -665,6 +719,21 @@ h2.hndle.ui-sortable-handle {
     }
     #model-wizard .qsm-popup__title{
         font-size: 16px;
+    }
+    #model-wizard .qsm-new-menu-elements .input-group{
+        width:90%;
+    }
+    #model-wizard .qsm-new-menu-elements .input-group label,
+    #model-wizard .qsm-new-menu-elements .input-group input[type='text'],
+    #model-wizard .qsm-new-menu-elements .input-group select
+    {
+        text-align: left;
+        display:block;
+        margin:0px;
+        width: 100%;
+    }
+    #model-wizard .qsm-new-menu-elements .input-group .qsm-opt-desc{
+        display:none;
     }
     .welcome-panel h2{
         width: calc(100% - 100px);

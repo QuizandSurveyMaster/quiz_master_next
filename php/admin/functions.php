@@ -397,7 +397,7 @@ function qsm_create_new_quiz_wizard(){
                                 <input type="text" class="quiz_name" name="quiz_name" value="" required="">
                             </div>
                             <?php
-                            $all_settings          = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
+                            $all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
                             $quiz_setting_option = array(
                                 'form_type' => array(
                                     'option_name' => 'Form Type',
@@ -698,8 +698,12 @@ function qsm_create_new_quiz_wizard(){
                     </form>
                 </main>
                 <footer class="qsm-popup__footer">
-                    <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?></button>
-                    <button class="button" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+                    <button id="prev-theme-button" class="button button-primary"><span class="dashicons dashicons-arrow-left-alt2 left-icons"></span><?php _e('Select Theme', 'quiz-master-next'); ?></button>
+                    <button id="prev-quiz-button" class="button button-primary"><span class="dashicons dashicons-arrow-left-alt2 left-icons"></span><?php _e('Quiz Settings', 'quiz-master-next'); ?></button>
+                    <button class="button" data-micromodal-close aria-label="Close this dialog window"><span class="dashicons dashicons-no left-icons"></span><?php _e('Cancel', 'quiz-master-next'); ?></button>
+                    <button id="next-quiz-button" class="button button-primary"><?php _e('Next', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></span></button>
+                    <button id="choose-addons-button" class="button button-primary"><?php _e('Next', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></span></button>
+                    <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></button>
                 </footer>
             </div>
         </div>
