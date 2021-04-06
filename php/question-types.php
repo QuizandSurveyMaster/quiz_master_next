@@ -533,6 +533,8 @@ function qmn_small_open_review( $id, $question, $answers ) {
 		'user_text'    => '',
 		'correct_text' => '',
 	);
+	
+
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
 		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
 		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
@@ -549,10 +551,17 @@ function qmn_small_open_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+ 
+
+	
+    $return_array = apply_filters( 'qmn_small_open_review',  $return_array ,$answers);
+
+  
+			
 	return $return_array;
 }
 
-add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
+add_action( 'plugins_loaded', 'qmn_question_type_multiple_response');
 
 /**
  * This function registers the multiple response question type
@@ -722,6 +731,8 @@ function qmn_large_open_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+
+	$return_array = apply_filters( 'qmn_large_open_review', $return_array , $answers );
 	return $return_array;
 }
 
@@ -1151,6 +1162,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+
+	$return_array = apply_filters( 'qmn_fill_blank_review', $return_array , $answers );
 	return $return_array;
 }
 
