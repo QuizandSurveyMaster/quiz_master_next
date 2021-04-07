@@ -161,7 +161,15 @@ function qsm_options_questions_tab_content() {
                                         <div id="post-body" class="metabox-holder columns-2">
                                             <div id="post-body-content" style="position: relative;">
                                                 <div class="qsm-row">
-                                                    <input type="text" id="question_title" class="question-title" name="question-title" value="" placeholder="<?php _e('Type your question here','quiz-master-next'); ?>">
+                                                    <input type="text" id="question_title" class="question-title" name="question-title"
+                                                     value="" placeholder="<?php _e('Type your question here','quiz-master-next'); ?>">
+                                                     
+                                                     <br/>
+                                                     <br/>
+                                                     <br/>
+                                                    
+                                                    <?php do_action( 'qmn_admin_extra_point_filed'); ?>
+                                                    
                                                 </div>
                                                 <a href="#" class="qsm-show-question-desc-box button button-default"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Add Description', 'quiz-master-next'); ?></a>
                                                 <div class="qsm-row" style="display: none;">
@@ -563,7 +571,7 @@ function qsm_options_questions_tab_content() {
 					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e('Correct', 'quiz-master-next'); ?></label></div>
 				<# } #>    
 			<# } #>
-			<?php do_action('qsm_admin_single_answer_option_fields');?>
+			
 		</div>
 	</script>
 	<?php

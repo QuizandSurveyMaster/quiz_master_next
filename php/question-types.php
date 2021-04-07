@@ -198,6 +198,8 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 		}
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
+
+	$return_array = apply_filters( 'qmn_multiple_choice_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -270,6 +272,8 @@ function qmn_date_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+
+	$return_array = apply_filters( 'qmn_date_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -384,6 +388,8 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		}
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
+
+	$return_array = apply_filters( 'qmn_horizontal_multiple_choice_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -473,6 +479,7 @@ function qmn_drop_down_review( $id, $question, $answers ) {
 			$return_array['correct_text'] = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
 		}
 	}
+	$return_array = apply_filters( 'qmn_drop_down_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -551,13 +558,7 @@ function qmn_small_open_review( $id, $question, $answers ) {
 			break;
 		}
 	}
- 
-
-	
-    $return_array = apply_filters( 'qmn_small_open_review',  $return_array ,$answers);
-
-  
-			
+   	$return_array = apply_filters( 'qmn_small_open_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -658,6 +659,8 @@ function qmn_multiple_response_review( $id, $question, $answers ) {
 		$return_array['correct'] = 'correct';
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
+
+	$return_array = apply_filters( 'qmn_multiple_response_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -732,7 +735,7 @@ function qmn_large_open_review( $id, $question, $answers ) {
 		}
 	}
 
-	$return_array = apply_filters( 'qmn_large_open_review', $return_array , $answers );
+	$return_array = apply_filters( 'qmn_large_open_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -847,6 +850,8 @@ function qmn_number_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+
+	$return_array = apply_filters( 'qmn_number_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -1062,6 +1067,8 @@ function qmn_horizontal_multiple_response_review( $id, $question, $answers ) {
 		$return_array['correct'] = 'correct';
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
+
+	$return_array = apply_filters( 'qmn_horizontal_multiple_response_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -1163,7 +1170,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		}
 	}
 
-	$return_array = apply_filters( 'qmn_fill_blank_review', $return_array , $answers );
+	$return_array = apply_filters( 'qmn_fill_blank_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 
@@ -1319,6 +1326,8 @@ function qmn_polar_review( $id, $question, $answers ) {
 			break;
 		}
 	}
+
+	$return_array = apply_filters( 'qmn_polar_review',  $return_array ,$answers , $id);
 	return $return_array;
 }
 

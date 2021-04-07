@@ -160,11 +160,15 @@ function qsm_get_question_text_message(){
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
+
         $key = array_search( $text_id, array_column( $quiz_text_arr, 'id' ) );
         $allowed_text = '';
         if( isset( $quiz_text_arr[$key] ) ){
             $variable_list = qsm_text_template_variable_list();
-            foreach ( $quiz_text_arr[$key]['variables'] as $variable ) {
+
+            $quiz_text_arr_variable =  apply_filters( 'qsm_text_varialble', $quiz_text_arr[$key]['variables'] );
+            
+            foreach ( $quiz_text_arr_variable as $variable ) {
                 $allowed_text .= '<span class="qsm-text-template-span">';
                 $allowed_text .= '<button class="button button-default">'. $variable .'</button>';
                 if( isset( $variable_list[ $variable ] ) ){                                                 
