@@ -830,6 +830,8 @@ function qmnFormSubmit( quiz_form_id ) {
             type: 'POST',
             success: function( response ){
                 qmnDisplayResults( JSON.parse( response ), quiz_form_id, $container );
+                jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
+
             }
         });
         jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
@@ -1151,9 +1153,12 @@ jQuery(function() {
 	});
 
 	jQuery(document).on( 'click', ".qsm-submit-btn", function( event ) {
+
 		event.preventDefault();
 		var form = jQuery(this).closest('form')[0];
 		qmnFormSubmit( form.id );
+
+
 	});
 
 	jQuery(document).on('click', '.btn-reload-quiz', function (e) {
