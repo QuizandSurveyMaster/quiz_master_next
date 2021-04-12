@@ -1233,6 +1233,8 @@ class QSM_Install {
   	$question_table_name = $wpdb->prefix . "mlw_questions";
   	$results_table_name = $wpdb->prefix . "mlw_results";
   	$audit_table_name = $wpdb->prefix . "mlw_qm_audit_trail";
+    $themes_table_name = $wpdb->prefix . "mlw_themes";
+    $quiz_themes_settings_table_name = $wpdb->prefix . "mlw_quiz_theme_settings";
 
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
   		$sql = "CREATE TABLE $quiz_table_name (
@@ -1363,6 +1365,7 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
   	}
+
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
   		$sql = "CREATE TABLE $audit_table_name (
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -1375,7 +1378,35 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
 	  }
+
+    if( $wpdb->get_var( "SHOW TABLES LIKE '$themes_table_name'" ) != $themes_table_name ) {
+  		$sql = "CREATE TABLE $themes_table_name (
+  			id mediumint(9) NOT NULL AUTO_INCREMENT,
+  			theme TEXT NOT NULL,
+        theme_name TEXT NOT NULL,
+        default_settings TEXT NOT NULL,
+        theme_active BOOLEAN NOT NULL,
+  			PRIMARY KEY  (id)
+  		) $charset_collate;";
+
+  		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+  		dbDelta( $sql );
+	  }
 	
+    if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_themes_settings_table_name'" ) != $quiz_themes_settings_table_name ) {
+  		$sql = "CREATE TABLE $quiz_themes_settings_table_name (
+  			id mediumint(9) NOT NULL AUTO_INCREMENT,
+  			theme_id mediumint(9) NOT NULL,
+        quiz_id mediumint(9) NOT NULL,
+        quiz_theme_settings TEXT NOT NULL,
+        active_theme BOOLEAN NOT NULL,
+  			PRIMARY KEY  (id)
+  		) $charset_collate;";
+
+  		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+  		dbDelta( $sql );
+	  }
+
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->register_quiz_post_types();
           // Will be removed

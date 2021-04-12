@@ -813,13 +813,15 @@ function qsm_admin_page_access_func(){
 add_action('admin_page_access_denied', 'qsm_admin_page_access_func');
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
-    $active_themes = get_option('qsm_active_themes');
+    global $mlwQuizMasterNext;
+    // $active_themes = get_option('qsm_active_themes');
+    $active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes(['theme', 'theme_name']);
     $folder_name = QSM_THEME_PATH;
     $folder_slug = QSM_THEME_SLUG;
     $theme_folders = array();
     if(!empty($active_themes)){
         foreach($active_themes as $dir){
-            $theme_dir = $folder_name.$dir;
+            $theme_dir = $folder_name.$dir['theme'];
             if(is_dir($theme_dir)){
                 $theme_folders[] = $dir;
             }
@@ -853,12 +855,8 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
     <?php do_action('qsm_add_after_default_theme'); ?>
     <?php
     if ($theme_folders) {
-        foreach ($theme_folders as $key => $theme_name) {
-            if ($theme_name !== '.' && $theme_name !== '..') {
-                if (file_exists($folder_name . $theme_name . '/style.css')) {
-                    $theme_folder = $folder_name . $theme_name;
-                    $theme_style_file = $theme_folder . '/style.css';
-                    $read_style_data = get_file_data($theme_style_file, array('Name' => 'Theme Name'));
+        foreach ($theme_folders as $key => $theme) {
+                $theme_name = $theme['theme'];
                     ?>
                     <div class="theme-wrapper theme <?php
                     if ($saved_quiz_theme == $theme_name) {
@@ -871,7 +869,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
                         </div>
                         <span class="more-details" style="display: none;"><?php _e('Templates', 'quiz-master-next'); ?></span>
                         <div class="theme-id-container">
-                            <h2 class="theme-name" id="emarket-name"><?php echo $read_style_data['Name']; ?></h2>
+                            <h2 class="theme-name" id="emarket-name"><?php echo $theme['theme_name'];; ?></h2>
                             <div class="theme-actions">
                                 <?php if ($saved_quiz_theme != $theme_name) {
                                     if( $wizard_theme_list == 'wizard_theme_list' ){ ?>
@@ -892,8 +890,6 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
                     </div>
                     <?php
                     do_action('qsm_add_after_themes');
-                }
-            }
         }
     }
 }

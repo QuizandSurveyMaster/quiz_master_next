@@ -90,6 +90,15 @@ class MLWQuizMasterNext {
 	 */
 	public $quiz_settings;
 
+
+	/**
+	 * QSM theme settings object
+	 * 
+	 * @var object
+	 * @since 7.1.15
+	 */
+	public $theme_settings;
+
 	/**
 	 * Main Construct Function
 	 *
@@ -174,6 +183,9 @@ class MLWQuizMasterNext {
 
 		include 'php/classes/class-qsm-settings.php';
 		$this->quiz_settings = new QSM_Quiz_Settings();
+
+		include 'php/classes/class-qsm-theme-settings.php';
+		$this->theme_settings = new QSM_Theme_Settings();
 
 		include 'php/rest-api.php';
 	}
