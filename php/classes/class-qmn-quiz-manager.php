@@ -1245,12 +1245,10 @@ class QMNQuizManager {
 		$qmn_array_for_variables = apply_filters('qsm_result_variables', $qmn_array_for_variables);
 
         if (!isset($_POST["mlw_code_captcha"]) || ( isset($_POST["mlw_code_captcha"]) && $_POST["mlw_user_captcha"] == $_POST["mlw_code_captcha"] )) {
-
             $qmn_array_for_variables = array_merge($qmn_array_for_variables, $this->check_answers($qmn_quiz_options, $qmn_array_for_variables));            
             $result_display = apply_filters('qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
             $qmn_array_for_variables['comments'] = $this->check_comment_section($qmn_quiz_options, $qmn_array_for_variables);
             $result_display = apply_filters('qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables);
-
             $unique_id = md5(date("Y-m-d H:i:s"));
 			$results_id = 0;
 			$active = 0;
@@ -1266,6 +1264,17 @@ class QMNQuizManager {
 				$savedResult = $wpdb->get_row("SELECT * FROM `{$result_table}` WHERE `unique_id`='{$unique_id}'");
 				if (!empty($savedResult)) {
 					$results_id = $savedResult->result_id;
+					if ($savedResult->active == 2) {
+						/**
+						 * Do Not Store Data if already force Submitted.
+						 */
+						$mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->total_user_tries_text, ENT_QUOTES));
+						$mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);
+						return array(
+							'display' => do_shortcode($mlw_message),
+							'redirect' => '',
+						);
+					}
 					$isUpdate = true;
 				}
 				$send_mail = false;
