@@ -1004,7 +1004,10 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
                                                                             if( strpos($answer[1], '&lt;') !== false || strpos($answer[1], '&quot;') !== false ){
                                                                                     $answer_value = htmlentities( $answer[1] );
                                                                             }else {
-                                                                                    $answer_value = $answer[1];
+                                                                                    $answer_value = htmlspecialchars_decode($answer[1], ENT_QUOTES);
+																					$answer_value = htmlspecialchars_decode($answer_value, ENT_QUOTES);
+																					$answer_value = htmlentities($answer_value);
+																					$answer_value = htmlspecialchars($answer_value);
                                                                             }
                                                                         } else {
                                                                             $answer_value = htmlspecialchars_decode($answer[1], ENT_QUOTES);
@@ -1013,7 +1016,7 @@ function qsm_questions_answers_shortcode_to_text($mlw_quiz_array, $qmn_question_
 										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
 									} else if (isset($single_answer[2]) && $single_answer[2] == 1) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
-									} else if ($answer[1] == $single_answer_option && $single_answer[2] !== 1) {
+									} else if ($answer_value == $single_answer_option && $single_answer[2] !== 1) {
 										$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode($single_answer[0], ENT_QUOTES) . '</span>';
