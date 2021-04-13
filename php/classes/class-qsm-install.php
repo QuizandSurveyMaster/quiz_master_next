@@ -478,6 +478,24 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+     $field_array = array(
+      'id' => 'form_disable_autofill',
+      'label' => __('Disable auto fill for Quiz input', 'quiz-master-next'),
+      'type' => 'radio',
+      'options' => array(        
+        array(
+          'label' => __('Yes', 'quiz-master-next'),
+          'value' => 1
+        ),
+        array(
+            'label' => __('No', 'quiz-master-next'),
+            'value' => 0
+        ),
+      ),
+      'default' => 0
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     // Registers show category on front setting
     $field_array = array(
@@ -517,6 +535,25 @@ class QSM_Install {
       'help' => __('Instantly displays the result for each question','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+    $field_array = array(
+    'id' => 'end_quiz_if_wrong',
+    'label' => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
+    'type' => 'radio',
+    'options' => array(
+      array(
+      'label' => __( 'Yes', 'quiz-master-next' ),
+      'value' => 1
+      ),
+      array(
+      'label' => __( 'No', 'quiz-master-next' ),
+      'value' => 0
+      )
+    ),
+    'default' => 0,
+    'help' => __('This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types','quiz-master-next')
+  );
+  $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     
     // Settings for quick result
     $field_array = array(
@@ -1055,7 +1092,7 @@ class QSM_Install {
       'id' => 'empty_error_text',
       'label' => __('All required fields', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Please complete all required fields!'
+      'default' => __('Please complete all required fields!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1064,7 +1101,7 @@ class QSM_Install {
       'id' => 'email_error_text',
       'label' => __('Invalid email', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Not a valid e-mail address!'
+      'default' => __('Not a valid e-mail address!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1073,7 +1110,7 @@ class QSM_Install {
       'id' => 'number_error_text',
       'label' => __('Invalid number', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'This field must be a number!'
+      'default' => __('This field must be a number!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1082,7 +1119,7 @@ class QSM_Install {
       'id' => 'incorrect_error_text',
       'label' => __('Invalid Captcha', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'The entered text is not correct!'
+      'default' => __('The entered text is not correct!', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );        
     
@@ -1109,7 +1146,7 @@ class QSM_Install {
       'id' => 'hint_text',
       'label' => __('Hint Text', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Hint'
+      'default' => __('Hint', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
     
@@ -1118,7 +1155,7 @@ class QSM_Install {
       'id' => 'quick_result_correct_answer_text',
       'label' => __('Correct answer message', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Correct! You have selected correct answer.',
+      'default' => __('Correct! You have selected correct answer.', 'quiz-master-next'),
        'tooltip' => __('Text to show when the selected option is correct answer.', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -1128,7 +1165,7 @@ class QSM_Install {
       'id' => 'quick_result_wrong_answer_text',
       'label' => __('Incorrect answer message', 'quiz-master-next'),
       'type' => 'text',
-      'default' => 'Wrong! You have selected wrong answer.',
+      'default' => __('Wrong! You have selected wrong answer.', 'quiz-master-next'),
       'tooltip' => __('Text to show when the selected option is wrong answer.', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -1578,7 +1615,7 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD last_activity DATETIME NOT NULL AFTER theme_selected";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET last_activity='".date("Y-m-d H:i:s")."'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", date("Y-m-d H:i:s") );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1587,28 +1624,28 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD require_log_in INT NOT NULL AFTER last_activity";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET require_log_in='0'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET require_log_in='%d'", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'require_log_in_text'") != "require_log_in_text")
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD require_log_in_text TEXT NOT NULL AFTER require_log_in";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET require_log_in_text='Enter Text Here'";
+  			$update_sql = $wpdb->prepare( "UPDATE ".$table_name." SET require_log_in_text='%s'", 'Enter Text Here' );
   			$results = $wpdb->query( $update_sql );
   		}
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries'") != "limit_total_entries")
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries INT NOT NULL AFTER require_log_in_text";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET limit_total_entries='0'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries='%d'", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'limit_total_entries_text'") != "limit_total_entries_text")
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD limit_total_entries_text TEXT NOT NULL AFTER limit_total_entries";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET limit_total_entries_text='Enter Text Here'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries_text='%s'", 'Enter Text Here' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1618,13 +1655,13 @@ class QSM_Install {
   			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe TEXT NOT NULL AFTER limit_total_entries_text";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe=''";
-  			$results = $wpdb->query( $update_sql );
+  			$results = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
   		}
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'scheduled_timeframe_text'") != "scheduled_timeframe_text")
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD scheduled_timeframe_text TEXT NOT NULL AFTER scheduled_timeframe";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET scheduled_timeframe_text='Enter Text Here'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET scheduled_timeframe_text='%s'", 'Enter Text Here' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1633,14 +1670,14 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD disable_answer_onselect INT NOT NULL AFTER scheduled_timeframe_text";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET disable_answer_onselect=0";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET disable_answer_onselect=%d", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'ajax_show_correct'") != "ajax_show_correct")
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD ajax_show_correct INT NOT NULL AFTER disable_answer_onselect";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET ajax_show_correct=0";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET ajax_show_correct=%d", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1653,7 +1690,7 @@ class QSM_Install {
   			$results = $wpdb->query( $sql );
   			$sql = "ALTER TABLE ".$table_name." ADD hints TEXT NOT NULL AFTER comments";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET comments=1, hints=''";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET comments=%d, hints=''", '1' );
   			$results = $wpdb->query( $update_sql );
   		}
   		//Update 0.8
@@ -1661,7 +1698,7 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD question_order INT NOT NULL AFTER hints";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET question_order=0";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET question_order=%d", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1669,7 +1706,7 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD question_type INT NOT NULL AFTER question_order";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET question_type=0";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET question_type=%d", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1679,7 +1716,7 @@ class QSM_Install {
   			$sql = "ALTER TABLE ".$table_name." ADD question_answer_info TEXT NOT NULL AFTER correct_answer";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET question_answer_info=''";
-  			$results = $wpdb->query( $update_sql );
+  			$results = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
   		}
 
   		//Update 2.5.1
@@ -1688,7 +1725,7 @@ class QSM_Install {
   			$sql = "ALTER TABLE ".$table_name." ADD answer_array TEXT NOT NULL AFTER question_name";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET answer_array=''";
-  			$results = $wpdb->query( $update_sql );
+  			$results = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
   		}
 
   		//Update 3.1.1
@@ -1697,7 +1734,7 @@ class QSM_Install {
   			$sql = "ALTER TABLE ".$table_name." ADD question_settings TEXT NOT NULL AFTER question_type";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET question_settings=''";
-  			$results = $wpdb->query( $update_sql );
+  			$results = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
   		}
 
   		//Update 4.0.0
@@ -1706,7 +1743,7 @@ class QSM_Install {
   			$sql = "ALTER TABLE ".$table_name." ADD category TEXT NOT NULL AFTER question_settings";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET category=''";
-  			$results = $wpdb->query( $update_sql );
+  			$results = $wpdb->query( stripslashes( esc_sql( $update_sql ) ) );
   		}
 
   		//Update 4.0.0
@@ -1714,7 +1751,7 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD question_type_new TEXT NOT NULL AFTER question_type";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET question_type_new=question_type";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET question_type_new=%s", 'question_type' );
   			$results = $wpdb->query( $update_sql );
   		}
 		
@@ -1741,7 +1778,7 @@ class QSM_Install {
   		{
   			$sql = "ALTER TABLE ".$table_name." ADD user INT NOT NULL AFTER phone";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE ".$table_name." SET user=0";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET user=%d", '0' );
   			$results = $wpdb->query( $update_sql );
   		}
 
@@ -1749,7 +1786,7 @@ class QSM_Install {
   		if( $wpdb->get_var( "SHOW COLUMNS FROM $table_name LIKE 'user_ip'" ) != "user_ip" ) {
   			$sql = "ALTER TABLE $table_name ADD user_ip TEXT NOT NULL AFTER user";
   			$results = $wpdb->query( $sql );
-  			$update_sql = "UPDATE $table_name SET user_ip='Unknown'";
+  			$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET user_ip='%s'", 'Unknown' );
   			$results = $wpdb->query( $update_sql );
   		}
 		//Update 7.1.11

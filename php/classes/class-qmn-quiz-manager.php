@@ -183,7 +183,7 @@ class QMNQuizManager {
         global $wpdb;
         $question_id = isset($_POST['question_id']) ? intval($_POST['question_id']) : 0;
         $answer = isset( $_POST['answer'] ) ? stripslashes_deep( $_POST['answer'] ) : '';
-        $question_array = $wpdb->get_row( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = ($question_id)", 'ARRAY_A' );
+        $question_array = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
         $answer_array = unserialize($question_array['answer_array']);
         $correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
         $show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( $_POST['show_correct_info'] ) : 0;
@@ -232,16 +232,20 @@ class QMNQuizManager {
         ob_start();
         if(isset($_GET['result_id']) && $_GET['result_id'] != ''){
             global $wpdb;
+            global $mlwQuizMasterNext;
             wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
             wp_enqueue_style('dashicons');
             wp_enqueue_script( 'jquery' );
+            wp_enqueue_script( 'jquery-ui-tooltip' );
+            wp_enqueue_script('qsm_quiz', plugins_url('../../js/qsm-quiz.js', __FILE__), array('wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip'), $mlwQuizMasterNext->version);
             wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
-            $result_unique_id = $_GET['result_id'];
+            $result_unique_id =sanitize_text_field($_GET['result_id']);
             $query = $wpdb->prepare("SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s",$result_unique_id);
             $result = $wpdb->get_row($query,ARRAY_A);
             if( !empty($result) && isset($result['result_id']) ){
                 $result_id = $result['result_id'];
                 $return_display = do_shortcode( '[qsm_result id="'. $result_id .'"]' );
+                $return_display = str_replace('%FB_RESULT_ID%', $result_unique_id, $return_display);
             }else{
                 $return_display = 'Result id is wrong!';
             }
@@ -328,6 +332,8 @@ class QMNQuizManager {
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
 				'enable_result_after_timer_end' => isset($qmn_quiz_options->enable_result_after_timer_end) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc' => isset($qmn_quiz_options->enable_quick_result_mc) ? $qmn_quiz_options->enable_quick_result_mc : '',
+                'end_quiz_if_wrong' => isset($qmn_quiz_options->end_quiz_if_wrong) ? $qmn_quiz_options->end_quiz_if_wrong : '',
+                'form_disable_autofill' => isset($qmn_quiz_options->form_disable_autofill) ? $qmn_quiz_options->form_disable_autofill : '',
 				'enable_quick_correct_answer_info' => isset($qmn_quiz_options->enable_quick_correct_answer_info) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text' => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text' => $qmn_quiz_options->quick_result_wrong_answer_text,
@@ -364,8 +370,11 @@ class QMNQuizManager {
         }
         if( $id && is_numeric($id) ){
             global $wpdb;
-            $result_data = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = {$id}", ARRAY_A);
+            $result_data = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id), ARRAY_A);
             if( $result_data ){
+                wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
+                wp_enqueue_style('dashicons');
+                wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
                 $quiz_result = unserialize($result_data['quiz_results']);
                 $response_data = array(
                     'quiz_id' => $result_data['quiz_id'],
@@ -455,7 +464,8 @@ class QMNQuizManager {
             }
 	    $question_ids = apply_filters('qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options);
             $question_sql = implode(', ', $question_ids);
-            $questions = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN ($question_sql) " . $cat_query . $order_by_sql . $limit_sql);
+            $query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
+            $questions = $wpdb->get_results( stripslashes($query));
 
             // If we are not using randomization, we need to put the questions in the order of the new question editor.
             // If a user has saved the pages in the question editor but still uses the older pagination options
@@ -476,9 +486,9 @@ class QMNQuizManager {
 		$question_sql = '';
 		if (!empty($question_ids)) {
 			$qids = implode(', ', $question_ids);
-			$question_sql = " AND question_id IN ({$qids}) ";
+			$question_sql = " AND question_id IN ($qids) ";
 		}
-		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE quiz_id=%d AND deleted=0 {$question_sql} {$cat_query} {$order_by_sql} {$limit_sql}", $quiz_id));
+		$questions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql));
         }
 	$questions = apply_filters('qsm_load_questions_filter', $questions, $quiz_id, $quiz_options);
         // Returns an array of all the loaded questions.
@@ -2139,9 +2149,9 @@ function qmn_total_user_tries_check($display, $qmn_quiz_options, $qmn_array_for_
         // Checks if the user is logged in. If so, check by user id. If not, check by IP.
         if (is_user_logged_in()) {
             $current_user = wp_get_current_user();
-            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE user=%d AND deleted='0' AND quiz_id=%d", $current_user->ID, $qmn_array_for_variables['quiz_id']));
+            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user=%d AND deleted=0 AND quiz_id=%d", $current_user->ID, $qmn_array_for_variables['quiz_id']));
         } else {
-            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM " . $wpdb->prefix . "mlw_results WHERE user_ip='%s' AND deleted='0' AND quiz_id=%d", $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id']));
+            $mlw_qmn_user_try_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE user_ip=%s AND deleted=0 AND quiz_id=%d", $qmn_array_for_variables['user_ip'], $qmn_array_for_variables['quiz_id']));
         }
 
         // If user has already reached the limit for this quiz
@@ -2163,7 +2173,7 @@ function qmn_total_tries_check($display, $qmn_quiz_options, $qmn_array_for_varia
     global $qmn_allowed_visit;
     if ($qmn_quiz_options->limit_total_entries != 0) {
         global $wpdb;
-        $mlw_qmn_entries_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM " . $wpdb->prefix . "mlw_results WHERE deleted='0' AND quiz_id=%d", $qmn_array_for_variables['quiz_id']));
+        $mlw_qmn_entries_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables['quiz_id']));
         if ($mlw_qmn_entries_count >= $qmn_quiz_options->limit_total_entries) {
             $mlw_message = wpautop(htmlspecialchars_decode($qmn_quiz_options->limit_total_entries_text, ENT_QUOTES));
             $mlw_message = apply_filters('mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables);

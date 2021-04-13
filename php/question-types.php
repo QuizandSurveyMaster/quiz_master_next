@@ -164,7 +164,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text              = array();
 	foreach ( $answers as $answer ) {
 		if ( $answerEditor === 'rich' ) {
-			$answer_option    = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$answer_option    = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
 			$sinel_answer_cmp = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $answer_option ) );
 			if ( $rich_text_comapre == $sinel_answer_cmp ) {
 				$return_array['points']    = $answer[1];
@@ -708,15 +708,15 @@ function qmn_large_open_review( $id, $question, $answers ) {
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
 		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-		$mlw_user_answer    = trim( $decode_user_answer );
+		$mlw_user_answer    = trim(str_replace(' ','',preg_replace('/\s\s+/', '', $decode_user_answer )));
 	} else {
 		$mlw_user_answer = ' ';
 	}
-	$return_array['user_text'] = $mlw_user_answer;
+	$return_array['user_text'] = $decode_user_answer;
 	foreach ( $answers as $answer ) {
-		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		$return_array['correct_text'] = trim( $decode_correct_text );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
+		$return_array['correct_text'] = $decode_correct_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+		$decode_correct_text = trim(str_replace(' ','', preg_replace('/\s\s+/', '', $decode_correct_text )));
+		if ( mb_strtoupper( $mlw_user_answer ) == mb_strtoupper( $decode_correct_text ) ) {
 			$return_array['correct'] = 'correct';
 			$return_array['points']  = $answer[1];
 			break;
@@ -1330,7 +1330,8 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$question_display  .= "<span class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</span>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_display .= "<span class='mlw_qmn_question {$polar_extra_class}' >" . htmlspecialchars_decode( do_shortcode( $question_title ), ENT_QUOTES ) . $deselect_answer . '</span>';
+
+	$question_display .= "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES )) . $deselect_answer . '</span>';
 	return $question_display;
 }
 ?>

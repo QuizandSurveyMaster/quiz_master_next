@@ -716,7 +716,7 @@ function qmnValidation( element, quiz_form_id ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
-				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && this.value === "" ) {
+				if( jQuery( this ).attr( 'class' ).indexOf( 'mlwRequiredText' ) > -1 && jQuery.trim(this.value) === "" ) {
 					qmnDisplayError( empty_error, jQuery( this ), quiz_form_id );
 					result =  false;
 				}
@@ -784,14 +784,17 @@ function qmnFormSubmit( quiz_form_id ) {
 	var quiz_id = +jQuery( '#' + quiz_form_id ).find( '.qmn_quiz_id' ).val();
 	var $container = jQuery( '#' + quiz_form_id ).closest( '.qmn_quiz_container' );
 	var result = qmnValidation( '#' + quiz_form_id + ' *', quiz_form_id );
+
+
+	if ( ! result ) { return result; }
+
 	/**
-	 * Update Timer in MS
-	 */
+	* Update Timer in MS
+	*/
+	
 	var timer_ms = jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val();
 	var new_timer_ms = qsmTimeInMS();
 	jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val(Math.abs(new_timer_ms - timer_ms));
-
-	if ( ! result ) { return result; }
 
 	jQuery( '.mlw_qmn_quiz input:radio' ).attr( 'disabled', false );
 	jQuery( '.mlw_qmn_quiz input:checkbox' ).attr( 'disabled', false );
@@ -1176,6 +1179,7 @@ jQuery(function() {
 					jQuery(this).val(timems);
 				});
 				setInterval(qmnTimeTakenTimer, 1000);
+				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 			},
 			error: function (errorThrown) {
 				console.log('error');
@@ -1208,6 +1212,61 @@ jQuery(function() {
 					} else if (data.success == 'incorrect') {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+					}
+					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+				},
+				error: function (errorThrown) {
+					alert(errorThrown);
+				}
+			});
+		}
+	});
+
+	 // Autocomplete off
+	
+		var quizID = jQuery('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		var $quizForm = QSM.getQuizForm( quizID );
+		if (qmn_quiz_data[ quizID ].form_disable_autofill == 1) {
+			jQuery('#quizForm'+quizID).attr('autocomplete' , 'off');
+		}
+		
+	
+
+	// End Quiz If Wrong
+	jQuery(document).on('change ','.qmn_radio_answers input , .qmn_check_answers input , .qsm_select',function(e){
+		var quizID = jQuery(this).parents('.qsm-quiz-container').find('.qmn_quiz_id').val();
+		var $quizForm = QSM.getQuizForm( quizID );
+		if (qmn_quiz_data[ quizID ].end_quiz_if_wrong == 1) {
+			var question_id = jQuery(this).attr('name').split('question')[1],
+					value = jQuery(this).val(),
+					$this = jQuery(this).parents('.quiz_section');
+			jQuery.ajax({
+				type: 'POST',
+				url: qmn_ajax_object.ajaxurl,
+				data: {
+					action: "qsm_get_question_quick_result",
+					question_id: question_id,
+					answer: value,
+					show_correct_info: qmn_quiz_data[ quizID ].enable_quick_correct_answer_info
+				},
+				success: function (response) {
+					var data = jQuery.parseJSON(response);
+					$this.find('.quick-question-res-p').remove();
+					$this.find('.qsm-inline-correct-info').remove();
+					if (data.success == 'correct') {
+						
+					} else if (data.success == 'incorrect') {
+						
+						
+
+						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[ quizID ].quick_result_wrong_answer_text + '</div>')
+						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
+
+						 setTimeout(function() {
+   							 $quizForm.closest( '.qmn_quiz_container' ).find('.qsm-submit-btn').trigger('click');
+  						}, 1000);
+
+						
 					}
 					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 				},

@@ -2,13 +2,13 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.11
+Stable tag: 7.1.15
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Create user-friendly and beautiful quizzes and surveys using Wordpress Quiz Plugin. Boost traffic and social shares on your website.
+Easily create exams, generate leads, surveys and any type of quiz with our popular WordPress Quiz Plugin. Custom flows, emails and create leaderboard
 
 == Description ==
 
@@ -47,7 +47,7 @@ You can assign categories to your questions using our quiz maker plugin. You can
 = Countdown Timer =
 Add countdown timer to your quizzes and effectively create skills assessment or online exams on your website. 
 
-= Integrations = 
+= Lead Generation = 
 You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Response to your quiz or surveys in order to create drip email campaigns and reachout to your audience. Checkout our [integrations](https://quizandsurveymaster.com/downloads/category/integrations/).
 
 = Other Useful Features =
@@ -68,7 +68,7 @@ You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Respo
 * Create and display math formulas
 * And **Much** More...
 
-= [WordPress Quiz Plugin](https://quizandsurveymaster.com/) Addons =
+= QSM Addons =
 Quiz And Survey Master is fully functional and is packed with tons of features that will meet the needs of most, we do offer various extra features including:
 
 **Free Add-ons**
@@ -125,17 +125,48 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Screenshots ==
 
-1. Quiz/Survey Admin Page (With Advertisement Be Gone Add-On)
-2. Quiz/Survey Settings Page (With Advertisement Be Gone Add-On)
-3. Quiz/Survey Statistics Page (With Advertisement Be Gone Add-On)
-4. Example Quiz
-5. Example Survey
-6. Quiz/Survey Results Page
-8. Example Quiz With Styling
+1. Dashboard
+2. Create New Quiz or Survey
+3. Question Type
+4. Questions
+5. All Quizzes & Surveys
+6. Contact Field
+7. Frontend View
+8. Frontend View with Answer
+9. Answer
+10. Database
+11. Stats
+12. Reporting and analysis result
 
 == Changelog ==
 
-= 7.1.11 (January 27, 2020) =
+= 7.1.15 (April 13, 2021) =
+* Bug: Fixed SQL errors due to which questions were disappearing from some old quizzes.
+* Bug: Fixed [qsm_result] shortcode format in results page.
+* Bug: Fixed the issue with incorrect points while using Latex commands along with the anchor tags in the rich answers.
+
+= 7.1.14 (March 25, 2021) =
+* Bug: Fixed security and Vulnerability issues.
+* Bug: Fixed the inability to recognize correct answer for Question type Paragraph.
+* Bug: Fixed the issue of  question not displaying when randomizing questions by category.
+* Bug: Fixed the issue of [latex] shortcode not working on retake quiz.
+* Enhancement: Added the feature to Unlink questions from quiz.
+* Enhancement: UI improvements for Quiz Editor.
+
+= 7.1.13 (March 9, 2021) =
+* Bug: Fixed several security issues. 
+* Bug: Fixed the issue of audio and video player not showing in question content
+* Bug: Fixed the issue of [latex] shortcode not showing Red cross mark for incorrect option.
+* Bug: Fixed the issue required field getting surpassed by spaces in contact form.
+
+= 7.1.12 (February 22, 2021) =
+* Bug: Fixed prevention of SQL injection while using result shortcode and question bank.
+* Bug: Fixed the issue of broken [latex] shortcode in result and user dashboard page.
+* Enhancement: Added option to end the quiz if answer is wrong.
+* Enhancement: Added option to turn off the HTML auto complete.
+* Enhancement: Modified  background color to fix contrast ratios from SEO perspective.
+
+= 7.1.11 (January 27, 2021) =
 * Bug: Fixed jquery issue while editing the result page.
 * Bug: Added string translation for %POLL_RESULTS_X% variable.
 * Bug: Fixed incorrect score while using point value with decimal.

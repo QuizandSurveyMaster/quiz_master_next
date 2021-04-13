@@ -567,6 +567,41 @@ function qsm_options_questions_tab_content() {
 		</div>
 	</script>
 	<?php
+
+    ?>
+    <div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
+        <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+            <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">
+                <header class="qsm-popup__header">
+                    <h3 class="qsm-popup__title" id="modal-7-title"><?php _e('Delete Options', 'quiz-master-next'); ?></h3>
+                    <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+                </header>
+                <hr/>
+                <main class="qsm-popup__content" id="modal-7-content">
+                    <form action='' method='post' id="delete-question-form">
+                        <table class="modal-7-table">
+                            <tr>
+                                <td><strong style="color:#00449e"><?php _e('Unlink', 'quiz-master-next'); ?></strong></td>
+                                <td><?php _e('Removes the question only from this quiz.', 'quiz-master-next'); ?></td>
+                            <tr>
+                            <tr>
+                                <td><strong style="color:#dc3232"><?php _e('Delete', 'quiz-master-next'); ?></Strong></td>
+                                <td><?php _e('Removes this question from database and everywhere. This action cannot be reversed.', 'quiz-master-next'); ?></td>
+                            <tr>
+                        </table>
+                    </form>
+                </main>
+                <hr/>
+                <footer class="qsm-popup__footer">
+                    <button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-trash"></span><?php _e('Unlink', 'quiz-master-next'); ?></button>
+                    <button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-warning"></span><?php _e('Delete', 'quiz-master-next'); ?></button>
+                    <button id="cancel-button" class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <?php
 }
 
 
