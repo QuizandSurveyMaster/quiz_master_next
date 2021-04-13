@@ -141,9 +141,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.1.15 (April 13, 2021) =
-* Bug: Fixed SQL Syntax Error resulting in invisible question in front end..
+* Bug: Fixed SQL errors due to which questions were disappearing from some old quizzes.
 * Bug: Fixed [qsm_result] shortcode format in results page.
-* Bug: Fixed the issue of incorrect points while using Latex commands along with the anchor tags in the rich answers..
+* Bug: Fixed the issue with incorrect points while using Latex commands along with the anchor tags in the rich answers.
 
 = 7.1.14 (March 25, 2021) =
 * Bug: Fixed security and Vulnerability issues.
