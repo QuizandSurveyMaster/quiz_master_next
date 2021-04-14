@@ -535,7 +535,7 @@ function qsm_create_new_quiz_wizard(){ ?>
                     </form>
                 </main>
                 <footer class="qsm-popup__footer">
-                    <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?></button>
+                    <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz...', 'quiz-master-next'); ?></button>
                     <button class="button" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
                 </footer>
             </div>
