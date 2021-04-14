@@ -268,7 +268,7 @@ var QSMPageTimer;
 			var $quizForm = QSM.getQuizForm( quizID );
 			if ( 0 < $quizForm.children( '.qsm-page' ).length ) {
 				$quizForm.children( '.qsm-page' ).hide();
-				template = wp.template( 'qsm-pagination' );
+				template = wp.template( 'qsm-pagination-'+quizID );
 				$quizForm.append( template() );
 				if( $quizForm.find( '.qsm-pagination > .current_page_hidden' ).length == 0){
 					$quizForm.find( '.qsm-pagination' ).append( '<input type="hidden" value="0" name="current_page" class="current_page_hidden" />');

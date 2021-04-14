@@ -860,7 +860,7 @@ class QMNQuizManager {
         do_action('qsm_after_all_section');
         ?>
         <!-- View for pagination -->
-        <script type="text/template" id="tmpl-qsm-pagination">
+        <script type="text/template" id="tmpl-qsm-pagination-<?php echo $options->quiz_id;?>">
             <div class="qsm-pagination qmn_pagination border margin-bottom">
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
