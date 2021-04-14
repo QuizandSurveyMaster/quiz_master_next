@@ -67,7 +67,7 @@ class QMNQuizCreator {
 	 * @param string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
-	public function create_quiz( $quiz_name, $quiz_settings = '' ) {
+	public function create_quiz( $quiz_name, $theme_id, $quiz_settings = '' ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
                 $current_user = wp_get_current_user();
@@ -194,7 +194,10 @@ class QMNQuizCreator {
 				'post_type'    => 'qsm_quiz',
 			);
 			$quiz_post_id = wp_insert_post( $quiz_post );
-			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );			
+			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );	
+			
+			// activating selected theme
+			$mlwQuizMasterNext->theme_settings->activate_selected_theme($quiz_post_id, $theme_id);
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );

@@ -542,15 +542,14 @@ function qsm_create_new_quiz_from_wizard() {
 	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
 		$quiz_name = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
-		$theme_name = isset( $_POST['quiz_new_theme'] ) ? sanitize_text_field( $_POST['quiz_new_theme'] ) : '';
+		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) $_POST['quiz_theme_id'] : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		unset( $_POST['quiz_new_theme'] );
+		unset( $_POST['quiz_theme_id'] );
 		$setting_arr = array(
 			'quiz_options' => serialize( $_POST ),
-			'quiz_new_theme' => $theme_name
 		);
-		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, serialize( $setting_arr ) );
+		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, serialize( $setting_arr ) );
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

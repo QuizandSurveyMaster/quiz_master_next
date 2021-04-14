@@ -290,6 +290,7 @@ var QSMQuizzesSurveys;
         e.preventDefault();
         $('#downloaded_theme .theme-wrapper').removeClass('active');
         $('#downloaded_theme .theme-wrapper').find('.qsm-activate-theme').html('').html('Select Theme');
+        $('#downloaded_theme .theme-wrapper').find('input[name="quiz_theme_id"]').prop("checked", true);
         $(this).addClass('active');
         $('#downloaded_theme .theme-wrapper.active').find('.qsm-activate-theme').html('').html('Selected Theme');
     });
