@@ -486,8 +486,7 @@ var import_button;
 				if (CurrentElement.parents('.question').next('.questionElements').is(":visible")) {
 					CurrentElement.parents('.question').next('.questionElements').slideUp('slow');
 					$('.questions').sortable('enable');
-					+
-							$('.page').sortable('enable');
+					$('.page').sortable('enable');
 				} else {
 					CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
 				}
