@@ -136,7 +136,7 @@ class QMNGlobalSettingsPage {
 	 */
 	public function facebook_app_id() {
 		$settings = (array) get_option( 'qmn-settings' );
-		$facebook_app_id = '483815031724529';
+		$facebook_app_id = '594986844960937';
 		if (isset($settings['facebook_app_id']))
 		{
 			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
