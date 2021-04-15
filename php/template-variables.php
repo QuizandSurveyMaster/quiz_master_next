@@ -235,7 +235,7 @@ function mlw_qmn_variable_social_share($content, $mlw_quiz_array) {
 	}
 	if (false !== strpos($content, '%FACEBOOK_SHARE%')) {
 		$settings = (array) get_option('qmn-settings');
-		$facebook_app_id = '483815031724529';
+		$facebook_app_id = '594986844960937';
 		if (isset($settings['facebook_app_id'])) {
 			$facebook_app_id = esc_js($settings['facebook_app_id']);
 		}
