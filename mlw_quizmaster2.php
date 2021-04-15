@@ -188,6 +188,7 @@ class MLWQuizMasterNext {
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
         add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
+		add_action('admin_enqueue_scripts', array($this, 'qsm_admin_scripts_style'));
 	}
         
         /**
@@ -196,6 +197,17 @@ class MLWQuizMasterNext {
         public function qsm_load_textdomain(){
             load_plugin_textdomain( 'quiz-master-next', false, dirname(plugin_basename(__FILE__)) . '/lang/');
         }
+
+	/**
+	 * Loads admin scripts and style
+	 * 
+	 * @since 7.1.16
+	 */
+	public function qsm_admin_scripts_style($hook_prefix){
+		if($hook_prefix == 'admin_page_mlw_quiz_options'){
+			wp_enqueue_script( 'wp-tinymce' );
+		}
+	}
 
 	/**
 	 * Creates Custom Quiz Post Type
