@@ -561,6 +561,7 @@ function qmn_variable_category_points($content, $mlw_quiz_array)
 				$return_points += $answer["points"];
 			}
 		}
+		$return_points .= ' '.count($mlw_quiz_array['question_answers_array']);
                 if(empty($answer_text)){
                     $content = str_replace( '%CATEGORY_POINTS_'.$category_name.'%' , $return_points, $content);
                 }else{
