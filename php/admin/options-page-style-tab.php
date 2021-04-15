@@ -393,17 +393,4 @@ function qsm_display_theme_settings() {
     </div>
     <?php
 }
-
-add_action('init', 'qsm_include_admin_theme_function');
-
-function qsm_include_admin_theme_function() {
-    global $mlwQuizMasterNext;
-    $quiz_id = (int) $_GET['quiz_id'];
-    // $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
-    $saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path($quiz_id);
-    $folder_name = QSM_THEME_PATH . $saved_quiz_theme . '/';
-    if (file_exists($folder_name . 'admin_functions.php')) {
-        include $folder_name . 'admin_functions.php';
-    }
-}
 ?>
