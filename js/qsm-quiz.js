@@ -21,13 +21,29 @@ var QSMPageTimer;
 				$( '.g-recaptcha' ).hide();
 				// Cycle through all quizzes
 				_.each( qmn_quiz_data, function( quiz ) {
+					console.log(quiz);
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
+					
+					if(quiz.hasOwnProperty('pagination') || quiz.qpages.hasOwnProperty(2)){
+						qsmEndTimeTakenTimer();
+						jQuery( '#timer' ).val(0);
+						jQuery("input[name='timer_ms']").val(0);
+						quizType = 'paginated';
+					}
+
 					if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
+						qsmEndTimeTakenTimer();
+						jQuery( '#timer' ).val(0);
+						jQuery("input[name='timer_ms']").val(0);
 						QSMPageTimer.endPageTimer(quizID, true);
 					}
 					if ( quiz.hasOwnProperty( 'timer_limit' ) && 0 != quiz.timer_limit ) {
+						qsmEndTimeTakenTimer();
+						jQuery( '#timer' ).val(0);
+						jQuery("input[name='timer_ms']").val(0);
 						QSM.initTimer( quizID );
+						quizType = 'timer';
 					}
 				});
 			}
@@ -104,8 +120,16 @@ var QSMPageTimer;
 		 * @param int quizID The ID of the quiz.
 		 */
 		activateTimer: function( quizID ) {
-                        
-                        jQuery(document).trigger('qsm_activate_time_before', [quizID, qmn_quiz_data]);
+			timer_ms = jQuery("input[name='timer_ms']").val();
+			if(timer_ms == 0){
+				qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
+				jQuery("input[name='timer_ms']").each(function(){
+					var timems = qsmTimeInMS();
+					jQuery(this).val(timems);
+				});
+			}
+			
+			jQuery(document).trigger('qsm_activate_time_before', [quizID, qmn_quiz_data]);
 			// Gets our form.
 			var $timer = QSM.getTimer( quizID );
 
@@ -595,7 +619,20 @@ var QSMPageTimer;
 		qmnInit();
 
 		// Call main initialization.
-		QSM.init();
+		qsminstance = QSM.init();
+
+		jQuery(".qsm-quiz-container").on("click", ".mlw_next", function(){
+			if(quizType == 'paginated'){
+				timer_ms = jQuery("input[name='timer_ms']").val();
+				if(timer_ms == 0){
+					qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
+					jQuery("input[name='timer_ms']").each(function(){
+						var timems = qsmTimeInMS();
+						jQuery(this).val(timems);
+					});
+				}
+			}
+		});
 	});
 
 	jQuery("input[name='timer_ms']").each(function(){
@@ -1395,3 +1432,4 @@ jQuery(function() {
 });
 
 var qsmTimerInterval = setInterval( qmnTimeTakenTimer, 1000 );
+var quizType = 'default';
