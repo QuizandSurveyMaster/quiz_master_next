@@ -189,6 +189,7 @@ class MLWQuizMasterNext {
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
         add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
 		add_action('admin_enqueue_scripts', array($this, 'qsm_admin_scripts_style'));
+		add_action('admin_init', array($this, 'qsm_overide_old_setting_options'));
 	}
         
         /**
@@ -324,6 +325,21 @@ class MLWQuizMasterNext {
 	public function admin_head() {
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'qsm_quiz_result_details' );
+	}
+	/**
+	 * Overide Old Quiz Settings Options
+	 * @since 7.1.16
+	 * @return void
+	 */
+	public function qsm_overide_old_setting_options()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$facebook_app_id = $settings['facebook_app_id'];
+		if($facebook_app_id == '483815031724529')
+		{
+			$settings['facebook_app_id'] = '594986844960937';
+			update_option( 'qmn-settings', $settings );
+		}
 	}
 }
 
