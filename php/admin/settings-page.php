@@ -140,6 +140,10 @@ class QMNGlobalSettingsPage {
 		if (isset($settings['facebook_app_id']))
 		{
 			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
+			if($facebook_app_id == '483815031724529' || empty($facebook_app_id))
+			{
+				$facebook_app_id = '594986844960937';
+			}
 		}                
 		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";                
 	}
