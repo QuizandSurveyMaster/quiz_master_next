@@ -1680,6 +1680,10 @@ class QMNQuizManager {
             $facebook_app_id = '594986844960937';
             if (isset($settings['facebook_app_id'])) {
                 $facebook_app_id = esc_js($settings['facebook_app_id']);
+                if($facebook_app_id == '483815031724529' || empty($facebook_app_id))
+                {
+                    $facebook_app_id = '594986844960937';
+                }
             }
 
             // Loads Social Media Text.

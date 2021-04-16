@@ -115,6 +115,10 @@ function qsm_generate_fb_header_metadata() {
         $facebook_app_id = '594986844960937';
         if (isset($settings['facebook_app_id'])) {
             $facebook_app_id = esc_js($settings['facebook_app_id']);
+            if($facebook_app_id == '483815031724529' || empty($facebook_app_id))
+            {
+                $facebook_app_id = '594986844960937';
+            }
         }
         global $mlwQuizMasterNext, $wpdb, $wp_query;
         $result_id = sanitize_text_field($_GET['result_id']);        
