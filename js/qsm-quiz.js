@@ -21,10 +21,9 @@ var QSMPageTimer;
 				$( '.g-recaptcha' ).hide();
 				// Cycle through all quizzes
 				_.each( qmn_quiz_data, function( quiz ) {
-					console.log(quiz);
 					quizID = parseInt( quiz.quiz_id );
 					QSM.initPagination( quizID );
-					
+
 					if(quiz.hasOwnProperty('pagination') || quiz.qpages.hasOwnProperty(2)){
 						qsmEndTimeTakenTimer();
 						jQuery( '#timer' ).val(0);
