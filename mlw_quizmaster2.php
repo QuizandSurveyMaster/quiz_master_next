@@ -328,6 +328,8 @@ class MLWQuizMasterNext {
 	}
 	/**
 	 * Overide Old Quiz Settings Options
+	 * @since 7.1.16
+	 * @return void
 	 */
 	public function qsm_overide_old_setting_options()
 	{
