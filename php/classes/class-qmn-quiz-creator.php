@@ -197,7 +197,7 @@ class QMNQuizCreator {
 			add_post_meta( $quiz_post_id, 'quiz_id', $new_quiz );	
 			
 			// activating selected theme
-			$mlwQuizMasterNext->theme_settings->activate_selected_theme($quiz_post_id, $theme_id);
+			$mlwQuizMasterNext->theme_settings->activate_selected_theme($new_quiz, $theme_id);
 
 			$mlwQuizMasterNext->alertManager->newAlert(__('Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next'), 'success');
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );

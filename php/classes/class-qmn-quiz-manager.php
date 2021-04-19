@@ -599,7 +599,7 @@ class QMNQuizManager {
         $auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
         // $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
         $saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path($options->quiz_id);
-        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class}'>";
+        $quiz_display .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class} quiz_theme_$saved_quiz_theme'>";
         // Get quiz post based on quiz id
         $args = array(
             'posts_per_page' => 1,
