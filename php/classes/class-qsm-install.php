@@ -741,7 +741,7 @@ class QSM_Install {
       'help' => __('If left blank, this will default to QSM logo', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-    
+    do_action('qsm_extra_setting_fields');
     //Setting for animation
     $field_array = array(
       'id' => 'legacy_options',

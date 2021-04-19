@@ -203,6 +203,8 @@ class MLWQuizMasterNext {
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
         add_action('plugins_loaded', array(&$this, 'qsm_load_textdomain'));
+		add_action('admin_enqueue_scripts', array($this, 'qsm_admin_scripts_style'));
+		add_action('admin_init', array($this, 'qsm_overide_old_setting_options'));
 	}
         
         /**
@@ -211,6 +213,17 @@ class MLWQuizMasterNext {
         public function qsm_load_textdomain(){
             load_plugin_textdomain( 'quiz-master-next', false, dirname(plugin_basename(__FILE__)) . '/lang/');
         }
+
+	/**
+	 * Loads admin scripts and style
+	 * 
+	 * @since 7.1.16
+	 */
+	public function qsm_admin_scripts_style($hook_prefix){
+		if($hook_prefix == 'admin_page_mlw_quiz_options'){
+			wp_enqueue_script( 'wp-tinymce' );
+		}
+	}
 
 	/**
 	 * Creates Custom Quiz Post Type
@@ -327,6 +340,21 @@ class MLWQuizMasterNext {
 	public function admin_head() {
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'mlw_quiz_options' );
 		remove_submenu_page( 'quiz-master-next/mlw_quizmaster2.php', 'qsm_quiz_result_details' );
+	}
+	/**
+	 * Overide Old Quiz Settings Options
+	 * @since 7.1.16
+	 * @return void
+	 */
+	public function qsm_overide_old_setting_options()
+	{
+		$settings = (array) get_option( 'qmn-settings' );
+		$facebook_app_id = $settings['facebook_app_id'];
+		if($facebook_app_id == '483815031724529')
+		{
+			$settings['facebook_app_id'] = '594986844960937';
+			update_option( 'qmn-settings', $settings );
+		}
 	}
 }
 
