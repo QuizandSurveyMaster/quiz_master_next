@@ -101,20 +101,20 @@ function qsm_options_emails_tab_content() {
 				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e('Correct score percentage', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_email_condition_criteria' ); ?>
 			</select>
+			<?php do_action('qsm_email_extra_condition_fields'); ?>
 			<select class="email-condition-operator">
-				<option value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e('is equal to', 'quiz-master-next'); ?></option>
-				<option value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e('is not equal to', 'quiz-master-next'); ?></option>
-				<option value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e('is greater than or equal to', 'quiz-master-next'); ?></option>
-				<option value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e('is greater than', 'quiz-master-next'); ?></option>
-				<option value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e('is less than or equal to', 'quiz-master-next'); ?></option>
-				<option value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e('is less than', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e('is equal to', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e('is not equal to', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e('is greater than or equal to', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e('is greater than', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e('is less than or equal to', 'quiz-master-next'); ?></option>
+				<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e('is less than', 'quiz-master-next'); ?></option>
 				<?php do_action( 'qsm_email_condition_operator' ); ?>
 			</select>
-			<input type="text" class="email-condition-value" value="{{ data.value }}">
+			<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">
 			<?php do_action('qsm_email_condition_value'); ?>
 		</div>
 	</script>
-        
         <!--Template popup-->
         <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
             <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">

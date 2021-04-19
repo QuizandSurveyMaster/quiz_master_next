@@ -100,6 +100,7 @@ var QSMAdminEmails;
                             };
                             wp.editor.initialize( 'email-template-' + QSMAdminEmails.total, settings );
                         }
+			jQuery(document).trigger('qsm_after_add_email_block', [conditions, to, subject, content, replyTo]);
 		},
 		newEmail: function() {
 			var conditions = [{
