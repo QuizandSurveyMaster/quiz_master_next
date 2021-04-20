@@ -943,7 +943,8 @@ class QMNQuizManager {
                         $current_page_number++;
                     }
                 }
-            }
+				$question_display .= apply_filters('qsm_auto_page_begin_row', '', ($current_page_number - 1), $qmn_quiz_options, $qmn_quiz_questions);
+			}
             $question_id_list .= $mlw_question->question_id . "Q";
 			$question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
