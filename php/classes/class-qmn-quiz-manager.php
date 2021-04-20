@@ -297,7 +297,6 @@ class QMNQuizManager {
             wp_enqueue_style('qmn_quiz_animation_style', plugins_url('../../css/animate.css', __FILE__));
             wp_enqueue_style('qmn_quiz_common_style', plugins_url('../../css/common.css', __FILE__));
             wp_enqueue_style('dashicons');
-            // $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
             $saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path($quiz);
             $folder_name = QSM_THEME_PATH . $saved_quiz_theme . '/';
             if( file_exists( $folder_name . 'functions.php' ) ){
