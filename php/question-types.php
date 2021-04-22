@@ -119,8 +119,10 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				if ( $answerEditor === 'rich' || $answerEditor === 'image' ) {
+				if ( $answerEditor === 'rich') {
 					$question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
+				} else if($answerEditor === 'image') {
+					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option' id='question$id-$mlw_answer_total'>";
 				} else {
 					$question_display .= "<div class='qmn_mc_answer_wrap' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
 				}
