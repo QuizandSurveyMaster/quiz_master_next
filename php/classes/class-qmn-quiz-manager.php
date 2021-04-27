@@ -353,7 +353,6 @@ class QMNQuizManager {
             $return_display .= '<script>
                             window.qmn_quiz_data["' . $qmn_json_data["quiz_id"] . '"] = ' . json_encode($qmn_filtered_json) . '
                     </script>';
-
             $return_display .= ob_get_clean();
             $return_display = apply_filters('qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables);
         }
