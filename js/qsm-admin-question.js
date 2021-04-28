@@ -979,6 +979,18 @@ var import_button;
                         $(this).next('.qsm-row').slideDown();
                     }                    
                 });
+
+				//Hide/show correct answer info
+                $( document ).on('click', '.qsm-show-correct-info-box', function(e){
+                    e.preventDefault();
+                    if( $(this).next('.qsm-row').is(':visible') ){
+                        $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_correct_info_text);
+                        $(this).next('.qsm-row').slideUp();
+                    }else{
+                        $(this).hide();
+                        $(this).next('.qsm-row').slideDown();
+                    }                    
+                });
 	});
         var decodeEntities = (function () {
                 //create a new html document (doesn't execute script tags in child elements)
