@@ -168,6 +168,7 @@ function qsm_options_questions_tab_content() {
                                                 <div class="qsm-row" style="display: none;">
                                                     <textarea placeholder="<?php _e('Add your description here', 'quiz-master-next'); ?>" id="question-text"></textarea>
                                                 </div>
+                                                <hr/>
                                                 <div class="qsm-row" style="margin-bottom: 0;">
                                                     <?php
                                                     $description_arr = array(
@@ -245,6 +246,7 @@ function qsm_options_questions_tab_content() {
                                                             <a href="#" class="button" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
                                                     </div>                                                    
                                                 </div>
+                                                <hr style="margin-bottom:25px;">
                                                 <a href="#" class="qsm-show-correct-info-box button button-default"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Add Correct Answer Info', 'quiz-master-next'); ?></a>
                                                 <div class="qsm-row" style="display: none;">
                                                 <?php
