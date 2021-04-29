@@ -95,6 +95,7 @@ var QSMAdminResults;
 				quicktags:    true,
 			};
 			wp.editor.initialize( 'results-page-' + QSMAdminResults.total, settings );
+			jQuery(document).trigger('qsm_after_add_result_block', [conditions, page, redirect]);
 		},
 		newResultsPage: function() {
 			var conditions = [{

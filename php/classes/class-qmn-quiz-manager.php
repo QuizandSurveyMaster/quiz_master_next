@@ -853,7 +853,7 @@ class QMNQuizManager {
         do_action('qsm_after_all_section');
         ?>
         <!-- View for pagination -->
-        <script type="text/template" id="tmpl-qsm-pagination">
+        <script type="text/template" id="tmpl-qsm-pagination-<?php echo $options->quiz_id;?>">
             <div class="qsm-pagination qmn_pagination border margin-bottom">
             <a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html($options->previous_button_text); ?></a>
             <span class="qmn_page_message"></span>
@@ -943,7 +943,8 @@ class QMNQuizManager {
                         $current_page_number++;
                     }
                 }
-            }
+				$question_display .= apply_filters('qsm_auto_page_begin_row', '', ($current_page_number - 1), $qmn_quiz_options, $qmn_quiz_questions);
+			}
             $question_id_list .= $mlw_question->question_id . "Q";
 			$question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
             $question_display .= $mlwQuizMasterNext->pluginHelper->display_question($mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options);
@@ -1677,7 +1678,7 @@ class QMNQuizManager {
         $social_display = '';
         if ($qmn_quiz_options->social_media == 1) {
             $settings = (array) get_option('qmn-settings');
-            $facebook_app_id = '483815031724529';
+            $facebook_app_id = '594986844960937';
             if (isset($settings['facebook_app_id'])) {
                 $facebook_app_id = esc_js($settings['facebook_app_id']);
             }
