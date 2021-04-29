@@ -67,6 +67,7 @@ function qsm_options_questions_tab_content() {
 		'quiz_system' => $quiz_system,
                 'hide_desc_text' => __('Less Description', 'quiz-master-next'),
                 'show_desc_text' => __('Add Description', 'quiz-master-next'),
+                'show_correct_info_text' => __('Add Correct Answer Info', 'quiz-master-next'),
                 'question_bank_nonce' => wp_create_nonce("delete_question_question_bank_nonce"),
 				'single_question_nonce' => wp_create_nonce("delete_question_from_database")
 	);
@@ -170,6 +171,7 @@ function qsm_options_questions_tab_content() {
                                                 <div class="qsm-row" style="display: none;">
                                                     <textarea placeholder="<?php _e('Add your description here', 'quiz-master-next'); ?>" id="question-text"></textarea>
                                                 </div>
+                                                <hr/>
                                                 <div class="qsm-row" style="margin-bottom: 0;">
                                                     <?php
                                                     $description_arr = array(
@@ -247,6 +249,9 @@ function qsm_options_questions_tab_content() {
                                                             <a href="#" class="button" id="new-answer-button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add New Answer!', 'quiz-master-next'); ?></a>
                                                     </div>                                                    
                                                 </div>
+                                                <hr style="margin-bottom:25px;">
+                                                <a href="#" class="qsm-show-correct-info-box button button-default"><span class="dashicons dashicons-plus-alt2"></span> <?php _e('Add Correct Answer Info', 'quiz-master-next'); ?></a>
+                                                <div class="qsm-row" style="display: none;">
                                                 <?php
                                                 $answer_area_option = array(
                                                     'correct_answer_info' => array(
@@ -262,6 +267,7 @@ function qsm_options_questions_tab_content() {
                                                     echo qsm_display_question_option($qo_key, $single_answer_option);
                                                 }
                                                 ?>
+                                                </div>
 												<?php do_action('qsm_question_form_fields', $quiz_id);?>
                                             </div>
                                             <div id="postbox-container-1" class="postbox-container">
