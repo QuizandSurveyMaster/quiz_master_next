@@ -314,6 +314,7 @@ function qsm_results_overview_tab_content() {
                 <input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
                 <label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
                 <select id="qmn_order_by" name="qmn_order_by">
+                    <option selected disabled></option>
                     <option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
                     <option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
                     <option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
