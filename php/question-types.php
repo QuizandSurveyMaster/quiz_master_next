@@ -89,7 +89,10 @@ function qmn_file_upload_review( $id, $question, $answers ) {
 				break;
 			}
 		}
-		return $return_array;
+		/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_file_upload_review', $return_array , $answers );
 }
 
 /**
@@ -198,7 +201,10 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 		}
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_multiple_choice_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_date' );
@@ -270,7 +276,10 @@ function qmn_date_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_date_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_choice' );
@@ -384,7 +393,10 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		}
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_horizontal_multiple_choice_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_drop_down' );
@@ -473,7 +485,10 @@ function qmn_drop_down_review( $id, $question, $answers ) {
 			$return_array['correct_text'] = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_drop_down_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_small_open' );
@@ -549,7 +564,10 @@ function qmn_small_open_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_small_open_review',  $return_array ,$answers);
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
@@ -649,7 +667,10 @@ function qmn_multiple_response_review( $id, $question, $answers ) {
 		$return_array['correct'] = 'correct';
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_multiple_response_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_large_open' );
@@ -722,7 +743,10 @@ function qmn_large_open_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_large_open_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_text_block' );
@@ -836,7 +860,10 @@ function qmn_number_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_number_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_accept' );
@@ -1051,7 +1078,10 @@ function qmn_horizontal_multiple_response_review( $id, $question, $answers ) {
 		$return_array['correct'] = 'correct';
 	}
 	$return_array['correct_text'] = implode( '.', $correct_text );
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_horizontal_multiple_response_review', $return_array , $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_fill_blank' );
@@ -1151,7 +1181,10 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_fill_blank_review', $return_array , $answers );
 }
 
 
@@ -1306,7 +1339,10 @@ function qmn_polar_review( $id, $question, $answers ) {
 			break;
 		}
 	}
-	return $return_array;
+	/**
+	 * Hook to filter answers array
+	 */
+	return apply_filters( 'qmn_polar_review', $return_array , $answers );
 }
 
 function qsm_question_title_func( $question, $question_type = '', $new_question_title = '' ) {
