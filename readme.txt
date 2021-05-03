@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.15
+Stable tag: 7.1.16
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.1.16 (April 29, 2021) =
+* Bug: Fixed the issue with Facebook share.
+* Bug: Fixed issue with timer starting on intro page.
+* Bug: Fixed pagination issue with multiple quizzes on same page.
+* Bug: Fixed issue with tiny-mce causing conflict with other plugins.
+* Bug: Fixed the issue of logic rules not being copied when duplicating quiz.
+* Feature: Added rich textbox for correct answer information.
+* Feature: Added additional condition for Email template for different answers.
 
 = 7.1.15 (April 13, 2021) =
 * Bug: Fixed SQL errors due to which questions were disappearing from some old quizzes.
