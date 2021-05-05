@@ -1217,6 +1217,9 @@ jQuery(function() {
 				});
 				setInterval(qmnTimeTakenTimer, 1000);
 				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+
+				// trigger fired on successfull retake quiz
+				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
 			},
 			error: function (errorThrown) {
 				console.log('error');
