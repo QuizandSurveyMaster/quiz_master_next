@@ -10,7 +10,7 @@
         event.preventDefault();
         $( '#new-quiz-form' ).submit();
     });
-    
+
     //Hide/show the wizard quiz options
     $(document).on('change', '#quiz_settings select', function(){
         var value = $(this).val();
@@ -96,10 +96,30 @@
     $(document).on('click', '#downloaded_theme .theme-wrapper', function(e){
         e.preventDefault();
         $('#downloaded_theme .theme-wrapper').removeClass('active');
-        $('#downloaded_theme .theme-wrapper').find('.qsm-activate-theme').html('').html('Select Theme');
-        $('#downloaded_theme .theme-wrapper').find('input[name="quiz_theme_id"]').prop("checked", true);
+        $('#downloaded_theme .theme-wrapper').find('.theme-name').stop().fadeTo('slow',0);
+        // $('#downloaded_theme .theme-wrapper').find('.qsm-activate-theme').html('').html('Select Theme');
+        $(this).find('input[name="quiz_theme_id"]').prop("checked", true);
         $(this).addClass('active');
-        $('#downloaded_theme .theme-wrapper.active').find('.qsm-activate-theme').html('').html('Selected Theme');
+        $(this).find('.theme-name').stop().fadeTo('slow',1);
+        // $('#downloaded_theme .theme-wrapper.active').find('.qsm-activate-theme').html('').html('Selected Theme');
     });
+
+    $(document).on('mouseover', '#downloaded_theme .theme-wrapper', function(e){
+      e.preventDefault();
+      if(!$(this).hasClass('active')){
+        $(this).find('.theme-name').stop().fadeTo('slow',1);
+      }
+    });
+
+    $(document).on('mouseout', '#downloaded_theme .theme-wrapper', function(e){
+      e.preventDefault();
+      if(!$(this).hasClass('active')){
+        $(this).find('.theme-name').stop().fadeTo('slow',0);
+      }
+    });
+
+    $(document).find('#select_themes .theme-actions').remove();
+
+    $(document).find('#select_themes .qsm-opt-desc').remove();
 
 }(jQuery));

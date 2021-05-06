@@ -343,16 +343,17 @@ function qsm_create_new_quiz_wizard(){
                 <?php wp_nonce_field('qsm_new_quiz', 'qsm_new_quiz_nonce'); ?>
                 <main class="qsm-popup__content" id="modal-2-content">
                 <div class="qsm-wizard-menu">
+                            <div class="qsm-logo"><img src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png"></div>
                             <div class="qsm-wizard-wrap active" data-show="select_themes">
-                                <span class="qsm-wizard-step-number">1</span>
+                                <!-- <span class="qsm-wizard-step-number">1</span> -->
                                 <span class="qsm-wizard-step-text"><?php echo _e('Select themes', 'quiz-master-next'); ?></span>
                             </div>
                             <div class="qsm-wizard-wrap" data-show="quiz_settings">
-                                <span class="qsm-wizard-step-number">2</span>
+                                <!-- <span class="qsm-wizard-step-number">2</span> -->
                                 <span class="qsm-wizard-step-text"><?php echo _e('Quiz Settings', 'quiz-master-next'); ?></span>
                             </div>
                             <div class="qsm-wizard-wrap" data-show="addons_list">
-                                <span class="qsm-wizard-step-number">3</span>
+                                <!-- <span class="qsm-wizard-step-number">3</span> -->
                                 <span class="qsm-wizard-step-text"><?php echo _e('Addons', 'quiz-master-next'); ?></span>
                             </div>
                         </div>
@@ -442,13 +443,13 @@ function qsm_create_new_quiz_wizard(){
                                     </div>
                                     <div class="theme-wrap" id="browse_themes" style="display: none;">
                                         <div class="theme-wrapper theme ">                                            
-                                            <div class="theme-screenshot">
+                                            <div class="theme-screenshot" id="qsm-theme-screenshot">
                                                 <img src="http://localhost/work/et/qsm/wp-content/uploads/qsm_themes/dark-quiz/screenshot.png">
                                             </div>                                            
                                             <div class="theme-id-container">
                                                 <h2 class="theme-name" id="emarket-name">QSM Dark Theme</h2>
                                                 <div class="theme-actions">                                                                                        
-                                                    <a class="button button-primary load-customize hide-if-no-customize" href="#">Live Preview</a>
+                                                    <!-- <a class="button button-primary load-customize hide-if-no-customize" href="#">Live Preview</a> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -700,7 +701,7 @@ function qsm_create_new_quiz_wizard(){
                 <footer class="qsm-popup__footer">
                     <button id="prev-theme-button" class="button button-primary"><span class="dashicons dashicons-arrow-left-alt2 left-icons"></span><?php _e('Select Theme', 'quiz-master-next'); ?></button>
                     <button id="prev-quiz-button" class="button button-primary"><span class="dashicons dashicons-arrow-left-alt2 left-icons"></span><?php _e('Quiz Settings', 'quiz-master-next'); ?></button>
-                    <button class="button" data-micromodal-close aria-label="Close this dialog window"><span class="dashicons dashicons-no left-icons"></span><?php _e('Cancel', 'quiz-master-next'); ?></button>
+                    <button class="button" data-micromodal-close aria-label="Close this dialog window"><?php _e('Cancel', 'quiz-master-next'); ?></button>
                     <button id="next-quiz-button" class="button button-primary"><?php _e('Next', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></span></button>
                     <button id="choose-addons-button" class="button button-primary"><?php _e('Next', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></span></button>
                     <button id="create-quiz-button" class="button button-primary"><?php _e('Create Quiz', 'quiz-master-next'); ?><span class="dashicons dashicons-arrow-right-alt2 right-icons"></button>
@@ -834,7 +835,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
     }
     ?>">
         <input style="display: none" type="radio" name="quiz_theme_id" value="0" <?php checked($saved_quiz_theme, "0", true); ?>>
-        <div class="theme-screenshot">
+        <div class="theme-screenshot" id="qsm-theme-screenshot">
             <img src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
         </div>                  
         <div class="theme-id-container">
@@ -842,8 +843,8 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
             <div class="theme-actions">
                 <?php if ($saved_quiz_theme != 'default') { ?>
                     <button class="button qsm-activate-theme"><?php _e('Activate', 'quiz-master-next'); ?></button>
-                <?php } else { ?>
-                    <a target="_blank" class="button button-primary qsm-customize-color-settings" href=""><?php _e('Quiz Preview', 'quiz-master-next') ?></a>
+                <?php //} else { ?>
+                    <!-- <a target="_blank" class="button button-primary qsm-customize-color-settings" href=""><?php //_e('Quiz Preview', 'quiz-master-next') ?></a> -->
                 <?php } ?>
             </div>
         </div>
@@ -861,7 +862,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
                     }
                     ?>">
                         <input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo (int) $theme_id; ?>" <?php checked($saved_quiz_theme, $theme_id, true); ?>>
-                        <div class="theme-screenshot">
+                        <div class="theme-screenshot" id="qsm-theme-screenshot">
                             <img src="<?php echo $folder_slug . $theme_name . '/screenshot.png' ?>" />
                         </div>
                         <span class="more-details" style="display: none;"><?php _e('Templates', 'quiz-master-next'); ?></span>
@@ -870,14 +871,14 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ){
                             <div class="theme-actions">
                                 <?php if ($saved_quiz_theme != $theme_id) {
                                     if( $wizard_theme_list == 'wizard_theme_list' ){ ?>
-                                        <button class="button qsm-activate-theme"><?php _e('Select Theme', 'quiz-master-next'); ?></button>
+                                        <!-- <button class="button qsm-activate-theme"><?php //_e('Select Theme', 'quiz-master-next'); ?></button> -->
                                     <?php                                     
                                     } else { ?>
                                         <button class="button qsm-activate-theme"><?php _e('Activate', 'quiz-master-next'); ?></button>
                                     <?php                                    
                                     }
                                     ?>                                    
-                                    <a class="button button-primary load-customize hide-if-no-customize" href="#"><?php _e('Live Preview', 'quiz-master-next') ?></a>
+                                    <!-- <a class="button button-primary load-customize hide-if-no-customize" href="#"><?php //_e('Live Preview', 'quiz-master-next') ?></a> -->
                                 <?php } ?>
                                 <?php if ($saved_quiz_theme == $theme_id) { ?>
                                     <a class="button button-primary qsm-customize-color-settings" href="#"><?php _e('Customize', 'quiz-master-next') ?></a>

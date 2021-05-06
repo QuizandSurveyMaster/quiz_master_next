@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * This class will manage all data related to QSM Themes
  * 
- * @since 7.1.15
+ * @since 7.1.17
  */
 class QSM_Theme_Settings{
 
@@ -31,7 +31,12 @@ class QSM_Theme_Settings{
 
     /**
      * updates theme status active/inactive when theme plugin is activated/deactivated
+     * @param   bool true for activate/ false for deactivate
+     * @param   string  theme folder name
+     * @param   string  theme name
+     * @param   string  serialized data quiz settings.
      * 
+     * @return bool true for successful update, false in failure
      * 
      */
     public function update_theme_status($status = TRUE, $path, $name = '', $default_settings = ''){

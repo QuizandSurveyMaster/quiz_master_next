@@ -1,11 +1,4 @@
-* {
-    scrollbar-width: 3px;
-  }
-  
-/* Works on Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-    width: 3px;
-}
+
 .welcome-panel-column .dashicons {
     /* font-size: 30px; */
     color: #606a73;
@@ -517,18 +510,37 @@ h2.hndle.ui-sortable-handle {
     width: 97%;
     padding: 2%;
     margin-bottom: 60px;
+    margin-top: 55px;
     height: 100%;
+    min-height: 45vh;
 }
+
 #model-wizard #modal-2-content{
     background: #f3f3f3;
-    /*display: flex;*/    
+    overflow-y: scroll;
+    margin-left: 15px;
     margin: 0;
+}
+#model-wizard #modal-2-content::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+    border-radius: 5px;
+}
+
+#model-wizard #modal-2-content::-webkit-scrollbar{
+	width: 5px;
+	background-color: #F5F5F5;
+}
+
+#model-wizard #modal-2-content::-webkit-scrollbar-thumb{
+	background-color: #3b81b9;
+    border-radius: 5px;
 }
 #model-wizard .qsm-new-menu-elements .input-group {
     width: 60%;
     margin:0 auto;
     margin-bottom: 10px;
-    background: white;
+    background: #ffffff60;
     padding: 3% 4%;
     position: relative;
 }
@@ -547,10 +559,10 @@ h2.hndle.ui-sortable-handle {
     text-align: right;
 }
 #model-wizard .qsm-new-menu-elements .input-group > label{
-    line-height: 1.7;
-    color: #888;
+    line-height: 2.2;
+    /* color: #888; */
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 5px;
     font-family: inherit;
     width: 30%;
@@ -564,8 +576,8 @@ h2.hndle.ui-sortable-handle {
     max-width: 100%;
     height: 35px;
     border: solid 1px #dddddd;
-    box-shadow: 1px 1px 2px rgba(10,10,10,0.3);
-    border-radius: 3px;
+    box-shadow: 0px 0px 5px rgba(10,10,10,0.3);
+    border-radius: 0;
 }
 #model-wizard .qsm-new-menu-elements fieldset{
     width: 60%;
@@ -573,10 +585,26 @@ h2.hndle.ui-sortable-handle {
     display: inline-block;
 }
 #select_themes .theme{
-    width: 30.6%;
-    margin: 0 3% 2% 0;
+    width: 23%;
+    margin: 0 2% 2% 0;
 }
-#select_themes .theme:nth-child(3n){
+#select_themes .theme .theme-name{
+    padding: 10px 15px;
+    display: none;
+    margin-top: -38px;
+}
+#select_themes .theme.active .theme-name{
+    display: block;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 50%);
+    transition: all 0.5s ease !important;
+}
+#select_themes #qsm-theme-screenshot:after {
+    content:'';
+    display: block;
+    padding-top:100%;
+}
+
+#select_themes .theme:nth-child(4n){
     margin-right: 0;
 }
 #addons_list ul{
@@ -614,14 +642,30 @@ h2.hndle.ui-sortable-handle {
 .qsm-wizard-menu{
     width: 100%;
     display: flex;
-    padding: 20px;
     background: #fff;
+    position: absolute;
+    z-index: 1;
+    border-bottom: 1px solid #dfd4d4;
+    justify-content: center;
+    
+}
+.qsm-wizard-menu .qsm-logo{
+    position: absolute;
+    top: 0px;
+    left: 15px;
+}
+.qsm-wizard-menu .qsm-logo img{
+    height: 55px;
 }
 .qsm-wizard-menu .qsm-wizard-wrap{
-    margin-right: 60px;
+    padding: 10px 15px;
+    transition: border 0.5s ease;
+    border-bottom: 3px solid #3b81b9;
 }
 .qsm-wizard-menu .qsm-wizard-wrap:not(.active){
     opacity: 0.5;
+    border-color: white;
+    border-image: none;
 }
 .qsm-wizard-menu .qsm-wizard-step-number{
     background: #0085BA;
@@ -638,7 +682,7 @@ h2.hndle.ui-sortable-handle {
 }
 .qsm-wizard-menu .qsm-wizard-step-text{
     display: inline-block;
-    font-size: 24px;
+    font-size: 20px;
     text-transform: capitalize;
     position: relative;
     top: 3px;
@@ -662,11 +706,17 @@ h2.hndle.ui-sortable-handle {
 .theme-sub-menu li a{
     color: #888888;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 13px;
+}
+.theme-sub-menu li a:active,
+.theme-sub-menu li a:focus{
+    outline: 0;
+    border: none;
+    -moz-outline-style: none;
+    box-shadow: none;
 }
 #quiz_settings .input-group{
-    box-shadow: 2px 2px 5px rgba(10,10,10,0.3);
-    border-radius: 5px;
+    box-shadow: 0 0 3px rgba(10,10,10,0.2);
 }
 @media screen and (min-width: 1200px){
     #quiz_settings_wrapper tr td fieldset > br{
