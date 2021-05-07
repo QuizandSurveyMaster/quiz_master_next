@@ -164,7 +164,11 @@ function qsm_get_question_text_message(){
         $allowed_text = '';
         if( isset( $quiz_text_arr[$key] ) ){
             $variable_list = qsm_text_template_variable_list();
-            foreach ( $quiz_text_arr[$key]['variables'] as $variable ) {
+			/**
+			 * Filter allowed variables for Text Tab options.
+			 */
+			$quiz_text_allowed_variables = apply_filters('qsm_text_allowed_variables', $quiz_text_arr[$key]['variables'], $key);
+            foreach ($quiz_text_allowed_variables as $variable ) {
                 $allowed_text .= '<span class="qsm-text-template-span">';
                 $allowed_text .= '<button class="button button-default">'. $variable .'</button>';
                 if( isset( $variable_list[ $variable ] ) ){                                                 
