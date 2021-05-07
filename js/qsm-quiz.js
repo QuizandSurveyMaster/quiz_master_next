@@ -154,7 +154,10 @@ var QSMPageTimer;
 			$timer.text( QSM.secondsToTimer( seconds ) );
 
 			// Sets up timer interval.
-			qmn_quiz_data[ quizID ].timerInterval = setInterval( QSM.timer, 1000, quizID );
+			if(!isNaN(qmn_quiz_data[ quizID ].timerRemaning)){
+				clearInterval(qmn_quiz_data[ quizID ].timerInterval);
+				qmn_quiz_data[ quizID ].timerInterval = setInterval( QSM.timer, 1000, quizID );
+			}
                         jQuery(document).trigger('qsm_activate_time_after', [quizID, qmn_quiz_data]);
 		},
 		/**
