@@ -465,12 +465,10 @@ class QMNQuizCreator
             $query = $wpdb->prepare("SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id);
             $logic_data = $wpdb->get_results($query);
             $logic_rules = [];
-            if (sizeof($logic_data) > 0) {
+            if (!empty($logic_data)) {
                 foreach ($logic_data as $data) {
                     $logic_rules[] = unserialize($data->logic);
                 }
-            } else {
-
             }
         } else {
             $logic_rules = isset($update_quiz_settings['logic_rules']) ? unserialize(unserialize($update_quiz_settings['logic_rules'])) : array();
@@ -587,7 +585,7 @@ class QMNQuizCreator
             $update_quiz_settings['pages'] = serialize($update_pages);
             //saves data in logic table first or else in quiz_settings
             $value_array = [];
-            if (is_array($logic_rules) && sizeof($logic_rules) > 0) {
+            if (is_array($logic_rules) && !empty($logic_rules)) {
                 if (is_null($logic_table_exists)) {
                     $update_quiz_settings['logic_rules'] = serialize(serialize($logic_rules));
                 } else {
