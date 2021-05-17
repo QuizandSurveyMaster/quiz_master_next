@@ -104,6 +104,7 @@ class QMNQuizCreator {
 				'admin_email'              => get_option( 'admin_email', 'Enter email' ),
 				'comment_section'          => 1,
 				'question_from_total'      => 0,
+				'questions_per_category'   => 0,
 				'total_user_tries'         => 0,
 				'total_user_tries_text'    => __('You have utilized all of your attempts to pass this quiz.', 'quiz-master-next'),
 				'certificate_template'     => '',
@@ -157,6 +158,7 @@ class QMNQuizCreator {
 				'%d',
 				'%d',
 				'%s',
+				'%d',
 				'%d',
 				'%d',
 				'%d',
@@ -327,7 +329,8 @@ class QMNQuizCreator {
 	 	global $mlwQuizMasterNext;
 		global $wpdb;                
                 $current_user = wp_get_current_user();
-		$table_name = $wpdb->prefix . "mlw_quizzes";                
+		$table_name = $wpdb->prefix . "mlw_quizzes";   
+		$logic_table = $wpdb->prefix. "mlw_logic";             
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
                 $quiz_settings = unserialize( $mlw_qmn_duplicate_data->quiz_settings );                
                 if( $is_duplicating_questions == 0 ){                    
@@ -372,6 +375,7 @@ class QMNQuizCreator {
 					'admin_email' => get_option( 'admin_email', 'Enter email' ),
 					'comment_section' => $mlw_qmn_duplicate_data->comment_section,
 					'question_from_total' => $mlw_qmn_duplicate_data->question_from_total,
+					'questions_per_category' => $mlw_qmn_duplicate_data->questions_per_category,
 					'total_user_tries' => $mlw_qmn_duplicate_data->total_user_tries,
 					'total_user_tries_text' => $mlw_qmn_duplicate_data->total_user_tries_text,
 					'certificate_template' => $mlw_qmn_duplicate_data->certificate_template,
@@ -394,7 +398,7 @@ class QMNQuizCreator {
 					'quiz_views' => 0,
 					'quiz_taken' => 0,
 					'deleted' => 0,
-                                        'quiz_author_id' => $current_user->ID,
+                    'quiz_author_id' => $current_user->ID,
 				),
 				array(
 					'%s',
@@ -428,6 +432,7 @@ class QMNQuizCreator {
 					'%d',
 					'%d',
 					'%d',
+					'%d',
 					'%s',
 					'%s',
 					'%d',
@@ -457,8 +462,19 @@ class QMNQuizCreator {
                 //Update quiz settings
                 $update_quiz_settings = unserialize($mlw_qmn_duplicate_data->quiz_settings);
                 $update_pages = unserialize($update_quiz_settings['pages']);
-                $logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize(unserialize($update_quiz_settings['logic_rules'])) : array();
+				//get logic data from logic table first or else from quiz_settings
+				$query = $wpdb->prepare("SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id);
+				$logic_data = $wpdb->get_results($query);
+				$logic_rules = [];
+				if(sizeof($logic_data) > 0){
+					foreach ($logic_data as $data) {
+						$logic_rules[] = unserialize($data->logic);
+					}
+				} else {
+					$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize(unserialize($update_quiz_settings['logic_rules'])) : array();
+				}
                 
+
 		if ( false != $results ) {
 			$current_user = wp_get_current_user();
 			$quiz_post = array(
@@ -566,7 +582,25 @@ class QMNQuizCreator {
 				}
 			}
                         $update_quiz_settings['pages'] = serialize($update_pages);
-                        $update_quiz_settings['logic_rules'] = serialize(serialize($logic_rules));
+						//saves data in logic table first or else in quiz_settings
+						foreach($logic_rules as $logic_data){
+							$data = array(
+								$mlw_new_id,
+								serialize($logic_data),
+							);
+							$value_array[] = stripslashes($wpdb->prepare("(%d, %s)", $data));
+						}
+						$values = implode(',', $value_array);
+						$query = "INSERT INTO $logic_table (quiz_id, logic) VALUES ";
+						$query .= $values;
+						$saved = $wpdb->query($query);
+						if($saved != FALSE){
+							update_option("logic_rules_quiz_$mlw_new_id", date(time()));
+							$update_quiz_settings['logic_rules'] = '';
+						} else {
+							$update_quiz_settings['logic_rules'] = serialize(serialize($logic_rules));
+						}
+                        
                         $wpdb->update(
                             $wpdb->prefix . "mlw_quizzes",
                             array(
