@@ -249,6 +249,22 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+    // Registers questions_per_category setting
+     $field_array = array(
+        'id' => 'questions_per_category',
+        'label' => __('Limit number of Questions per Category', 'quiz-master-next'),
+        'type' => 'number',
+        'options' => array(
+    
+        ),
+         'default' => 0,
+         'help' => __('Leave 0 to load all questions','quiz-master-next'),
+         'tooltip' => __('Show only limited number of questions per category from your quiz.','quiz-master-next')
+        );
+      $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+
+
     // Registers scheduled_time_start setting
     $field_array = array(
       'id' => 'scheduled_time_start',
@@ -741,7 +757,7 @@ class QSM_Install {
       'help' => __('If left blank, this will default to QSM logo', 'quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-    
+    do_action('qsm_extra_setting_fields');
     //Setting for animation
     $field_array = array(
       'id' => 'legacy_options',
@@ -1216,6 +1232,10 @@ class QSM_Install {
       'default' => 0
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+
+
+
    
   }
 
@@ -1267,6 +1287,7 @@ class QSM_Install {
   			admin_email TEXT NOT NULL,
   			comment_section INT NOT NULL,
   			question_from_total INT NOT NULL,
+        questions_per_category INT NOT NULL,
   			total_user_tries INT NOT NULL,
   			total_user_tries_text TEXT NOT NULL,
   			certificate_template TEXT NOT NULL,
@@ -1463,10 +1484,20 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 
+      	//Update 1.5.1
+  		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'questions_per_category'") != "questions_per_category")
+  		{
+  			$sql = "ALTER TABLE ".$table_name." ADD questions_per_category INT NOT NULL AFTER question_from_total";
+  			$results = $wpdb->query( $sql );
+  			$update_sql = "UPDATE ".$table_name." SET questions_per_category=0";
+  			$results = $wpdb->query( $update_sql );
+  		}
+
+
   		//Update 1.6.1
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'total_user_tries'") != "total_user_tries")
   		{
-  			$sql = "ALTER TABLE ".$table_name." ADD total_user_tries INT NOT NULL AFTER question_from_total";
+  			$sql = "ALTER TABLE ".$table_name." ADD total_user_tries INT NOT NULL AFTER questions_per_category";
   			$results = $wpdb->query( $sql );
   			$update_sql = "UPDATE ".$table_name." SET total_user_tries=0";
   			$results = $wpdb->query( $update_sql );
