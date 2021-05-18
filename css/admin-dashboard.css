@@ -65,6 +65,11 @@
 	-webkit-columns: 2;
 	-moz-columns: 2;
 }
+.qsm-popup .popuar-addon-ul {
+	columns: 1;
+	-webkit-columns: 1;
+	-moz-columns: 1;
+}
 .popuar-addon-ul li img {
 	max-width: 100%;
 }
@@ -352,7 +357,7 @@
 #model-wizard .qsm-popup__footer {
 	text-align: right;
 	background: #fff;
-	padding: 15px;
+	padding: 10px;
 	border-top: 1px solid #dfd4d4;
 	margin-top: -4px;
 	position: absolute;
@@ -360,6 +365,15 @@
 	width: 100%;
 	box-sizing: border-box;
 }
+#model-wizard .qsm-popup__footer button {
+	padding: 3px 20px;
+}
+
+#model-wizard .qsm-popup__footer #cancel-quiz-wizard {
+	border: none;
+	background: transparent;
+}
+
 #model-wizard .qsm-popup__footer #prev-theme-button,
 #model-wizard .qsm-popup__footer #prev-quiz-button {
 	float: left;
@@ -406,6 +420,12 @@
 	border-bottom: 1px solid #dfd4d4;
 	padding-right: 20px;
 	outline: 0 !important;
+}
+#model-wizard .qsm-quiz-page-addon.qsm-addon-page-list {
+	width: 100%;
+}
+#model-wizard .qsm-addon-browse-addons {
+	min-height: 60px;
 }
 #accordion .ui-accordion-header-icon {
 	position: absolute;
@@ -696,7 +716,8 @@ h2.hndle.ui-sortable-handle {
 	left: 15px;
 }
 .qsm-wizard-menu .qsm-logo img {
-	height: 55px;
+	height: 80px;
+	margin-top: -16px;
 }
 .qsm-wizard-menu .qsm-wizard-wrap {
 	padding: 10px 15px;
@@ -723,7 +744,7 @@ h2.hndle.ui-sortable-handle {
 }
 .qsm-wizard-menu .qsm-wizard-step-text {
 	display: inline-block;
-	font-size: 20px;
+	font-size: 16px;
 	text-transform: capitalize;
 	position: relative;
 	top: 3px;
