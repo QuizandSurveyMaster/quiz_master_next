@@ -20,11 +20,26 @@ add_action('qmn_quiz_created', 'qsm_redirect_to_edit_page', 10, 1);
  */
 function qsm_redirect_to_edit_page($quiz_id)
 {
+    link_featured_image($quiz_id);
     $url = admin_url('admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id);?>
     <script>
         window.location.href = '<?php echo $url; ?>';
     </script>
     <?php
+}
+
+/**
+ * Links quiz featured image if exists
+ *
+ * @param int $quiz_id
+ * @return void
+ */
+function link_featured_image($quiz_id)
+{
+    $url = trim($_POST['quiz_featured_image']);
+    if (!empty($url)) {
+        update_option("quiz_featured_image_$quiz_id", $url);
+    }
 }
 
 add_action('admin_init', 'qsm_add_author_column_in_db');
@@ -399,8 +414,22 @@ function qsm_create_new_quiz_wizard()
                         </ul>
                         <div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
                             <div class="input-group">
-                                <label for="rmp-menu-name"><?php _e('Quiz Name', 'quiz-master-next');?></label>
+                                <label for="quiz_name"><?php _e('Quiz Name', 'quiz-master-next');?>
+                                    <span class="qsm-opt-desc"><?php _e('Enter a name for this Quiz.', 'quiz-master-next');?></span>
+                                </label>
                                 <input type="text" class="quiz_name" name="quiz_name" value="" required="">
+                            </div>
+                            <div class="input-group featured_image">
+                                <label for="quiz_name"><?php _e('Quiz Featured Image', 'quiz-master-next');?>
+                                    <span class="qsm-opt-desc">
+                                        <?php _e('Enter an external URL or Choose from Media Library.', 'quiz-master-next');?>
+                                        <?php _e('Can be changed further from style tab', 'quiz-master-next');?>
+                                    </span>
+                                </label>
+                                <span id="qsm_span">
+                                    <input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
+                                    <a id="set_featured_image" class="button "><?php _e('Set Featured Image', 'quiz-master-next');?></a>
+                                </span>
                             </div>
                             <?php
 $all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields('quiz_options');

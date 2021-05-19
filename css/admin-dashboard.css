@@ -187,7 +187,7 @@
 	padding: 0;
 	background: #f3f3f3;
 	min-width: 70vw;
-	max-width: 1040px;
+	/* max-width: 1040px; */
 	border-radius: 0;
 	max-height: 85vh;
 	overflow: hidden;
@@ -427,6 +427,13 @@
 #model-wizard .qsm-addon-browse-addons {
 	min-height: 60px;
 }
+#model-wizard
+	.qsm-addon-browse-addons
+	.qsm-addon-anchor-left
+	.qsm-add-addon
+	a.active {
+	background: #2271b1;
+}
 #accordion .ui-accordion-header-icon {
 	position: absolute;
 	right: 24px;
@@ -599,7 +606,7 @@ h2.hndle.ui-sortable-handle {
 	border-radius: 5px;
 }
 #model-wizard .qsm-new-menu-elements .input-group {
-	width: 60%;
+	width: 75%;
 	margin: 0 auto;
 	margin-bottom: 10px;
 	background: #ffffff60;
@@ -611,24 +618,18 @@ h2.hndle.ui-sortable-handle {
 }
 #model-wizard .qsm-new-menu-elements .input-group .qsm-opt-desc {
 	color: #666;
-	font-style: italic;
-	font-size: 14px;
-	margin-top: 10px;
-	display: inline-block;
-	width: 30%;
-	position: relative;
-	top: -30px;
-	text-align: right;
+	font-size: 12px;
+	display: block;
+	text-align: left;
 }
 #model-wizard .qsm-new-menu-elements .input-group > label {
-	line-height: 2.2;
 	/* color: #888; */
 	display: inline-block;
 	font-size: 16px;
 	margin-bottom: 5px;
 	font-family: inherit;
 	width: 30%;
-	text-align: right;
+	text-align: left;
 	margin-right: 20px;
 	vertical-align: top;
 }
@@ -645,6 +646,17 @@ h2.hndle.ui-sortable-handle {
 	width: 60%;
 	max-width: 100%;
 	display: inline-block;
+}
+#model-wizard #qsm_span {
+	width: 60%;
+	display: inline-block;
+}
+#model-wizard #qsm_span .quiz_featured_image {
+	width: 100%;
+	margin-bottom: 10px;
+}
+#model-wizard .featured_image {
+	display: none;
 }
 #select_themes .theme {
 	width: 23%;
@@ -717,12 +729,13 @@ h2.hndle.ui-sortable-handle {
 }
 .qsm-wizard-menu .qsm-logo img {
 	height: 80px;
-	margin-top: -16px;
+	margin-top: -10px;
 }
 .qsm-wizard-menu .qsm-wizard-wrap {
-	padding: 10px 15px;
+	padding: 15px;
 	transition: border 0.5s ease;
 	border-bottom: 3px solid #3b81b9;
+	cursor: pointer;
 }
 .qsm-wizard-menu .qsm-wizard-wrap:not(.active) {
 	opacity: 0.5;
