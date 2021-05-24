@@ -55,8 +55,6 @@ function qsm_options_styling_tab_content()
         $mlw_quiz_options = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id));
     }
     $registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
-    // $theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme($quiz_id);
-    // var_dump($theme_id);
     ?>
 <script>
 function mlw_qmn_theme(theme) {
@@ -76,9 +74,6 @@ jQuery(document).ready(function() {
 	});
 });
 </script>
-<!-- <p><b><?php //_e('Set Featured Image', 'quiz-master-next')?></b></p>
-<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
-<a id="set_featured_image" class="button "><?php //_e('Set Featured Image', 'quiz-master-next');?></a> -->
 
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
@@ -137,6 +132,7 @@ jQuery(document).ready(function() {
     wp_enqueue_script('qsm_theme_color_js', plugins_url('../../js/qsm-theme-color.js', __FILE__), array('jquery', 'wp-color-picker', 'micromodal_script'), $mlwQuizMasterNext->version);
     wp_enqueue_style('wp-color-picker');
     wp_enqueue_style('qsm_admin_style', plugins_url('../../css/qsm-admin.css', __FILE__));
+    wp_enqueue_media();
     ?>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
@@ -157,31 +153,59 @@ jQuery(document).ready(function() {
 if (isset($_POST["quiz_theme_integration_nouce"]) && wp_verify_nonce($_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration')) {
         $quiz_id = (int) $_GET['quiz_id'];
         $theme_id = (int) $_POST['quiz_theme_id'];
-        // $mlwQuizMasterNext->quiz_settings->update_setting('quiz_new_theme', sanitize_text_field($_POST['quiz_new_theme']));
         $mlwQuizMasterNext->theme_settings->activate_selected_theme($quiz_id, $theme_id);
         $mlwQuizMasterNext->alertManager->newAlert(__('The theme is applied successfully.', 'quiz-master-next'), 'success');
         $mlwQuizMasterNext->audit_manager->new_audit("Styles Have Been Saved For Quiz Number $quiz_id");
     }
     //Read all the themes
-    // $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
     $saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme($quiz_id);
+    if ($saved_quiz_theme !== 0) {
+        $quiz_id = isset($_GET['quiz_id']) ? (int) trim($_GET['quiz_id']) : '';
+        if (isset($_POST["quiz_featured_image_nonce"]) && wp_verify_nonce($_POST['quiz_featured_image_nonce'], 'quiz_featured_image')) {
+            $featured_image = isset($_POST['quiz_featured_image']) ? trim($_POST['quiz_featured_image']) : '';
+            if (!empty($quiz_id)) {
+                update_option("quiz_featured_image_$quiz_id", $featured_image);
+                $mlwQuizMasterNext->alertManager->newAlert(__('Featured Image updated successfully.', 'quiz-master-next'), 'success');
+                $mlwQuizMasterNext->audit_manager->new_audit("Featured Image Saved For Quiz Number $quiz_id");
+            }
+        } else {
+            $featured_image = get_option("quiz_featured_image_$quiz_id");
+            $featured_image = !empty(trim($featured_image)) ? trim($featured_image) : '';
+        }
+        ?>
+	<h3>Set Featured Image</h3>
+	<form method="post" action="">
+		<?php wp_nonce_field('quiz_featured_image', 'quiz_featured_image_nonce');?>
+		<input type="text" class="quiz_featured_image" name="quiz_featured_image"
+			value="<?php echo $featured_image; ?>" />
+		<a id="set_featured_image" class="button "><?php _e('Set Featured Image', 'quiz-master-next');?></a>
+		<?php if (!empty($featured_image)) {?>
+		<br><img class="qsm_featured_image_preview" src="<?php echo $featured_image; ?>"><br>
+		<?php }?>
+		<input type="submit" class="button button-primary" value="<?php _e('Save', 'quiz-master-next');?>" />
+	</form>
+	<?php
+}
 
-    if (isset($_POST["save_theme_settings_nonce"]) && wp_verify_nonce($_POST['save_theme_settings_nonce'], 'save_theme_settings')) {
+    if (isset($_POST["save_theme_settings_nonce"]) && wp_verify_nonce($_POST['save_theme_settings_nonce'],
+        'save_theme_settings')) {
         unset($_POST['save_theme_settings_nonce']);
         unset($_POST['_wp_http_referer']);
         $settings_array = array();
         array_map('sanitize_text_field', $_POST['settings']);
         $settings_array = serialize($_POST['settings']);
         // $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('theme_settings_' . $saved_quiz_theme, $settings_array);
-        $results = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings($quiz_id, $saved_quiz_theme, $settings_array);
-        $mlwQuizMasterNext->alertManager->newAlert(__('The theme settings saved successfully.', 'quiz-master-next'), 'success');
+        $results = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings($quiz_id, $saved_quiz_theme,
+            $settings_array);
+        $mlwQuizMasterNext->alertManager->newAlert(__('The theme settings saved successfully.', 'quiz-master-next'),
+            'success');
         $mlwQuizMasterNext->audit_manager->new_audit("Theme settings Have Been Saved For Quiz Number $quiz_id");
     }
     $folder_name = QSM_THEME_PATH;
     $folder_slug = QSM_THEME_SLUG;
     $theme_folders = array();
     // if (is_dir($folder_name)) {
-    //     $theme_folders = scandir($folder_name);
+    // $theme_folders = scandir($folder_name);
     // }
     // $theme_folders = apply_filters('qsm_theme_list', $theme_folders);
     $post_permalink = $edit_link = '';
@@ -412,8 +436,7 @@ $theme_settings = array();
 						data-default-color="<?php echo $setting_val; ?>" class="my-color-field" />
 				</td>
 			</tr>
-			<?php
-}
+			<?php }
     } else {
         ?>
 			<tr>

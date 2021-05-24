@@ -135,17 +135,23 @@
 		})
 	});
 
-	$(document).on('click', '#set_featured_image', function (e) {
-		if (typeof wp !== 'undefined' && wp.media && wp.media.editor) {
-			e.preventDefault();
-			var button = $(this);
-			var id = button.prev();
-			wp.media.editor.send.attachment = function (props, attachment) {
-				id.val(attachment.url);
-			};
-			wp.media.editor.open(button);
-			return false;
-		}
-	});
+	// $(document).on('click', '#set_featured_image', function (e) {
+	// 	var button = $(this);
+	// 	e.preventDefault();
+	// 	custom_uploader = wp.media({
+	// 		title: 'Set Featured Image',
+	// 		library: {
+	// 			type: 'image'
+	// 		},
+	// 		button: {
+	// 			text: 'Use this image' // button label text
+	// 		},
+	// 		multiple: false
+	// 	}).on('select', function () { // it also has "open" and "close" events
+	// 		var attachment = custom_uploader.state().get('selection').first().toJSON();
+	// 		button.prev().val(attachment.url);
+	// 	}).open();
+	// 	return false;
+	// });
 
 }(jQuery));

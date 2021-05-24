@@ -350,5 +350,24 @@ var QSMAdmin;
             $('.qsm-addon-setting-wrap .qsm_popular_addons').hide();
             $(href).show();
         });
+
+        // opens media library o set featured image for quiz
+        $(document).on('click', '#set_featured_image', function (e) {
+            var button = $(this);
+            e.preventDefault();
+            custom_uploader = wp.media({
+                title: 'Set Featured Image',
+                library: {
+                    type: 'image'
+                },
+                button: {
+                    text: 'Use this image' // button label text
+                },
+                multiple: false
+            }).on('select', function () { // it also has "open" and "close" events
+                var attachment = custom_uploader.state().get('selection').first().toJSON();
+                button.prev().val(attachment.url);
+            }).open();
+        });
     });
 }(jQuery));

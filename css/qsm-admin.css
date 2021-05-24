@@ -665,6 +665,20 @@ Quiz Styles Tab
 	display: flex;
 	flex-direction: column;
 }
+.qsm_featured_image_preview{
+	width: 400px;
+    border: 3px solid white;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.qsm_featured_image_preview:hover:before{
+	content: "\f147";
+	font-family: "dashicons";
+	color: #5cb85c;
+	margin-right: 5px;
+}
+
 
 @media screen and (min-width: 700px) {
 	.qsm-styles {
