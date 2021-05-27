@@ -105,8 +105,14 @@
 		if ($(this).find('input[name="quiz_theme_id"]').val() == 0) {
 			$('#model-wizard .featured_image').hide();
 			$('#model-wizard .featured_image .quiz_featured_image').val('');
+			$('#model-wizard #quiz_settings #pagination').val(0).parents('.input-group').hide();
+			$('#model-wizard #quiz_settings #progress_bar-0').prop('checked', true).parents('.input-group').hide();
+			$('#model-wizard #quiz_settings #enable_pagination_quiz-0').prop('checked', true).parents('.input-group').hide();
 		} else {
 			$('#model-wizard .featured_image').show();
+			$('#model-wizard #quiz_settings #pagination').val(1).parents('.input-group').show();
+			$('#model-wizard #quiz_settings #progress_bar-1').prop('checked', true).parents('.input-group').show();
+			$('#model-wizard #quiz_settings #enable_pagination_quiz-1').prop('checked', true).parents('.input-group').show();
 		}
 	});
 

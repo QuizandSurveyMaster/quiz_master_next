@@ -456,6 +456,22 @@ $all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields('quiz_opt
             'option_name' => 'Graded System',
             'value' => 0,
         ),
+        'pagination' => array(
+            'option_name' => 'Questions Per Page',
+            'value' => 0,
+        ),
+        'progress_bar' => array(
+            'option_name' => 'Show Progress Bar',
+            'value' => 0,
+        ),
+        'timer_limit' => array(
+            'option_name' => 'Time Limit (in Minute)',
+            'value' => 0,
+        ),
+        'enable_pagination_quiz' => array(
+            'option_name' => 'Show current page number',
+            'value' => 0,
+        ),
         'require_log_in' => array(
             'option_name' => 'Require User Login',
             'value' => 0,
