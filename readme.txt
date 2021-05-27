@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.16
+Stable tag: 7.1.17
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.1.17 (May 27, 2021) =
+* Bug: Fixed the issue page title showing Nan:Nan:Nan on reload.
+* Bug: Fixed the issue editing duplicate questions updates original questions.
 
 = 7.1.16 (April 29, 2021) =
 * Bug: Fixed the issue with Facebook share.
