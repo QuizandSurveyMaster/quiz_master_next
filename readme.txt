@@ -140,6 +140,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
+= 7.1.18 (May 31, 2021) =
+* Bug: Fixed recently discovered security issues.
+
 = 7.1.17 (May 28, 2021) =
 * Bug: Fixed the issue where page title shows Nan:Nan:Nan on reload.
 * Bug: Fixed the issue when editing duplicate questions updates original questions.
