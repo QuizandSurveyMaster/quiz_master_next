@@ -2006,7 +2006,12 @@ class QMNQuizManager {
 				$ip = $_SERVER['REMOTE_ADDR'];
 			}
 		}
-		return $ip;
+
+		if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return $ip;
+		} else {
+			return 'Invalid IP Address';
+		}
 	}
 
 	/**
