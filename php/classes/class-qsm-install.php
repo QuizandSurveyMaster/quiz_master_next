@@ -235,20 +235,6 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-   // Registers question_per_category setting
-   $field_array = array(
-      'id' => 'question_per_category',
-      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
-      'type' => 'number',
-      'options' => array(
-
-      ),
-      'default' => 0,
-      'help' => __('Leave 0 to load all questions','quiz-master-next'),
-      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
-    );
-    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-    
     // Registers question_from_total setting
     $field_array = array(
       'id' => 'question_from_total',
@@ -263,6 +249,19 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+        // Registers question_per_category setting
+   $field_array = array(
+      'id' => 'question_per_category',
+      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0,
+      'help' => __('Leave 0 to load all questions','quiz-master-next'),
+      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     // Registers scheduled_time_start setting
     $field_array = array(
       'id' => 'scheduled_time_start',
@@ -1281,7 +1280,8 @@ class QSM_Install {
   			admin_email TEXT NOT NULL,
   			comment_section INT NOT NULL,
   			question_from_total INT NOT NULL,
-  			total_user_tries INT NOT NULL,
+        question_per_category INT NOT NULL,
+     		total_user_tries INT NOT NULL,
   			total_user_tries_text TEXT NOT NULL,
   			certificate_template TEXT NOT NULL,
   			social_media INT NOT NULL,
