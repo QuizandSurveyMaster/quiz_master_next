@@ -36,7 +36,8 @@
 		$(this).addClass('active');
 		$('.qsm-new-menu-elements').hide();
 		var id = $(this).attr('data-show');
-		$('#' + id).fadeIn();
+		$('#' + id).fadeIn()
+		$('#modal-2-content').scrollTop(0);
 		switch (id) {
 			case 'select_themes':
 				$('#model-wizard .qsm-popup__footer #prev-theme-button').hide();
