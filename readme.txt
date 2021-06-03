@@ -140,7 +140,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.1.19 (Jun 3, 2021) =
+= 7.1.19 (June 3, 2021) =
 * Bug: Fixed security issue related to IP address sanitization.
 
 = 7.1.18 (May 31, 2021) =
