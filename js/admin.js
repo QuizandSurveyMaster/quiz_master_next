@@ -367,6 +367,7 @@ var QSMAdmin;
             }).on('select', function () { // it also has "open" and "close" events
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
                 button.prev().val(attachment.url);
+                button.nextAll('.qsm_featured_image_preview').attr('src', attachment.url);
             }).open();
         });
     });
