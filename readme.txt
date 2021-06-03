@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.18
+Stable tag: 7.1.19
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.1.19 (June 3, 2021) =
+* Bug: Fixed security issue related to IP address sanitization.
 
 = 7.1.18 (May 31, 2021) =
 * Bug: Fixed recently discovered security issues.
