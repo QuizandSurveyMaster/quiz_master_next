@@ -235,6 +235,20 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+   // Registers question_per_category setting
+   $field_array = array(
+      'id' => 'question_per_category',
+      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0,
+      'help' => __('Leave 0 to load all questions','quiz-master-next'),
+      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+    
     // Registers question_from_total setting
     $field_array = array(
       'id' => 'question_from_total',
