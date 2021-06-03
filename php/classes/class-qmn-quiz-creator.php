@@ -376,6 +376,7 @@ class QMNQuizCreator {
 				'admin_email'              => get_option( 'admin_email', 'Enter email' ),
 				'comment_section'          => $mlw_qmn_duplicate_data->comment_section,
 				'question_from_total'      => $mlw_qmn_duplicate_data->question_from_total,
+				'question_per_category'    => $mlw_qmn_duplicate_data->question_per_category,
 				'total_user_tries'         => $mlw_qmn_duplicate_data->total_user_tries,
 				'total_user_tries_text'    => $mlw_qmn_duplicate_data->total_user_tries_text,
 				'certificate_template'     => $mlw_qmn_duplicate_data->certificate_template,
