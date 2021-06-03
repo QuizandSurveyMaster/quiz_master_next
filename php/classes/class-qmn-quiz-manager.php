@@ -477,9 +477,47 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ', ', $question_ids );
+			
+			//check If we should load a specific number of question 
+			if( $quiz_options->question_per_category !== 0 && $is_quiz_page ){
+				
+        //processing Categories checking. removing commas and making them arrays
+        $categories = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
+
+		$categories = str_replace(',', '', $categories)	;
+		
+		$categories = explode(" ",$categories);
+
+
+        //Running a loop for each category and getting a limited number of questions 
+         for ($i=0; $i < count($categories) ; $i++) { 
+	          $piece1 =  $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) AND category IN (%s) LIMIT %d",
+	              $question_sql,
+	              strtoupper($categories[$i]),
+	              $quiz_options->question_per_category  );
+	          
+	         $piece_res = $wpdb->get_results( stripslashes( $piece1 ) );
+	         //add them to the big_array
+					$big_array = array_merge($big_array, $piece_res);
+
+}			
+// Check If the no category Question is less or equal to the question limit
+                if (count($big_array) <= $quiz_options->question_from_total  ) {
+                     $questions  = $big_array;
+                }
+//If Category Question are more then run array_rand to get random entries 
+
+                else{
+                	$questions = array_rand( $big_array, $quiz_options->question_from_total );
+                }
+
+			}
+			else{
+
 			$query        = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
 			$questions    = $wpdb->get_results( stripslashes( $query ) );
-
+	
+			}
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
