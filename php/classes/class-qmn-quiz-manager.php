@@ -2010,7 +2010,7 @@ class QMNQuizManager {
 		if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
 			return $ip;
 		} else {
-			return 'Invalid IP Address';
+			return __( 'Invalid IP Address', 'quiz-master-next' );
 		}
 	}
 
