@@ -801,9 +801,18 @@ var import_button;
 		});
 		$(document).on('click', '#save-popup-button', function (event) {
 			event.preventDefault();
+			questionElements = $(this).parents('.questionElements');
+			if (6 == questionElements.find('#question_type').val()) {
+				question_description = wp.editor.getContent('question-text').trim();
+				if (question_description == '' || question_description == null) {
+					alert('Text/HTML Section cannot be empty');
+					return false;
+				}
+			}
 			$('#save-edit-question-spinner').addClass('is-active');
 			var model_html = $('#modal-1-content').html();
 			$('#modal-1-content').children().remove();
+
 			QSMQuestion.saveQuestion($(this).parents('.questionElements').children('#edit_question_id').val(), $(this));
 			$('.save-page-button').trigger('click');
 			$('#modal-1-content').html(model_html);
@@ -968,6 +977,12 @@ var import_button;
 		//Hide the question settings based on question type
 		$(document).on('change', '#question_type', function () {
 			var question_val = $(this).val();
+			if (6 == question_val) {
+				var question_description = wp.editor.getContent('question-text');
+				if (question_description == 'Add description here!') {
+					tinyMCE.get('question-text').setContent('');
+				}
+			}
 			$('.qsm_hide_for_other').hide();
 			if ($('.qsm_show_question_type_' + question_val).length > 0) {
 				$('.qsm_show_question_type_' + question_val).show();
@@ -994,9 +1009,15 @@ var import_button;
 				$(this).next('.qsm-row').slideUp();
 			} else {
 				$(this).hide();
+				questionElements = $(this).parents('.questionElements');
 				var question_description = wp.editor.getContent('question-text');
 				if (question_description == '' || question_description == null) {
-					tinyMCE.get('question-text').setContent('Add description here!');
+					console.log(questionElements.find('#question_type').val());
+					if (6 == questionElements.find('#question_type').val()) {
+						tinyMCE.get('question-text').setContent('');
+					} else {
+						tinyMCE.get('question-text').setContent('Add description here!');
+					}
 				}
 				$(this).next('.qsm-row').slideDown();
 			}
