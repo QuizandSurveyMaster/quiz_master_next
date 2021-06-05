@@ -443,11 +443,12 @@ class QMNQuizManager {
 		$questions    = array();
 		$order_by_sql = 'ORDER BY question_order ASC';
 		$limit_sql    = '';
+		$big_array    = array();
 
 		// Checks if the questions should be randomized.
 		$cat_query = '';
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-			$order_by_sql = 'ORDER BY rand()';
+			$order_by_sql = 'ORDER BY rand()';	
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 			if ( $categories ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
@@ -457,7 +458,7 @@ class QMNQuizManager {
 		}
 
 		// Check if we should load all questions or only a selcted amount.
-		if ( $is_quiz_page && ( 0 != $quiz_options->question_from_total || 0 !== $question_amount ) ) {
+		if ( $is_quiz_page && ( 0 != $quiz_options->question_from_total || 0 !== $question_amount   ) ) {
 			if ( 0 !== $question_amount ) {
 				$limit_sql = " LIMIT $question_amount";
 			} else {
@@ -477,16 +478,17 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ', ', $question_ids );
-			
-			//check If we should load a specific number of question 
+		
+//check If we should load a specific number of question 
 			if( $quiz_options->question_per_category !== 0 && $is_quiz_page ){
 				
         //processing Categories checking. removing commas and making them arrays
         $categories = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 
+		$categories = explode(",",$categories);
+
 		$categories = str_replace(',', '', $categories)	;
 		
-		$categories = explode(" ",$categories);
 
 
         //Running a loop for each category and getting a limited number of questions 
@@ -499,16 +501,25 @@ class QMNQuizManager {
 	         $piece_res = $wpdb->get_results( stripslashes( $piece1 ) );
 	         //add them to the big_array
 					$big_array = array_merge($big_array, $piece_res);
+//var_dump($big_array);
 
 }			
 // Check If the no category Question is less or equal to the question limit
                 if (count($big_array) <= $quiz_options->question_from_total  ) {
                      $questions  = $big_array;
+
                 }
 //If Category Question are more then run array_rand to get random entries 
 
                 else{
-                	$questions = array_rand( $big_array, $quiz_options->question_from_total );
+ for ($i=0; $i < $quiz_options->question_from_total ; $i++) {
+ 	array_push($questions, $big_array[$i]);
+ }
+
+
+//                	var_dump($quiz_options->question_from_total);
+
+                	var_dump($question);
                 }
 
 			}
@@ -518,10 +529,11 @@ class QMNQuizManager {
 			$questions    = $wpdb->get_results( stripslashes( $query ) );
 	
 			}
+
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
-			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order ) {
+			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && $quiz_options->question_per_category !== 0 ) {
 				$ordered_questions = array();
 				foreach ( $questions as $question ) {
 					$key = array_search( $question->question_id, $question_ids );
@@ -2044,12 +2056,7 @@ class QMNQuizManager {
 				$ip = $_SERVER['REMOTE_ADDR'];
 			}
 		}
-
-		if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
-			return $ip;
-		} else {
-			return __( 'Invalid IP Address', 'quiz-master-next' );
-		}
+		return $ip;
 	}
 
 	/**
