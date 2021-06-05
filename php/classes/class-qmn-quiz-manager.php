@@ -519,7 +519,7 @@ class QMNQuizManager {
 
 //                	var_dump($quiz_options->question_from_total);
 
-                	var_dump($question);
+                	//var_dump($question);
                 }
 
 			}
