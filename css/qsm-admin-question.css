@@ -770,15 +770,14 @@ a#qsm-category-add-toggle {
     background: #eee;
     padding: 4px 10px;
     border-radius: 0px 5px 5px 0px;
+    margin-bottom: -29px;
 }
 
 #set_featured_image:focus {
     outline: none;
 }
 
-#featured_image_textbox {
-    /* width: calc(100% - 30px); */
-}
+#featured_image_caption {}
 
 @media screen and (max-width: 575px) {
     .qsm-popup__container {

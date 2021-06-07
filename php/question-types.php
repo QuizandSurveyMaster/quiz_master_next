@@ -138,6 +138,7 @@ function qmn_multiple_choice_display($id, $question, $answers)
                 $question_display .= "<label for='question" . $id . '_' . $mlw_answer_total . "'>";
                 if ($answerEditor === 'image') {
                     $question_display .= '<img src="' . trim(htmlspecialchars_decode($answer[0], ENT_QUOTES)) . '" />';
+                    $question_display.= '<span class="qsm_image_caption">'.trim(htmlspecialchars_decode($answer[3], ENT_QUOTES)) .'</span>';
                 } else {
                     $question_display .= trim(do_shortcode(htmlspecialchars_decode($answer[0], ENT_QUOTES)));
                 }

@@ -396,9 +396,15 @@ var import_button;
 			_.each($answers, function (answer) {
 				var $answer = jQuery(answer);
 				var answer = '';
+				var caption = '';
 				if (answerType == 'rich') {
 					var ta_id = $answer.find('textarea').attr('id')
 					answer = wp.editor.getContent(ta_id);
+				} else if (answerType == 'image') {
+					answer = $answer.find('.answer-text').val().trim();
+					answer = $.QSMSanitize(answer);
+					caption = $answer.find('.answer-caption').val().trim();
+					caption = $.QSMSanitize(caption);
 				} else {
 					answer = $answer.find('.answer-text').val().trim();
 					answer = $.QSMSanitize(answer);
@@ -409,7 +415,13 @@ var import_button;
 				if ($answer.find('.answer-correct').prop('checked')) {
 					correct = 1;
 				}
-				answers.push([answer, points, correct]);
+
+				if (answerType == 'image') {
+					answers.push([answer, points, correct, caption]);
+				} else {
+					answers.push([answer, points, correct]);
+				}
+
 			});
 			$('.questionElements .advanced-content > .qsm-row ').each(function () {
 				if ($(this).find('input[type="text"]').length > 0) {
@@ -469,7 +481,12 @@ var import_button;
 		},
 		addNewAnswer: function (answer) {
 			var answerTemplate = wp.template('single-answer');
-			$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			if (answer.length >= 7 && answer[6] == 'image') {
+				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], caption: answer[3], count: answer[4], question_id: answer[5], answerType: answer[6], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			} else {
+				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			}
+
 			if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
 				var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
 				wp.editor.remove(textarea_id);

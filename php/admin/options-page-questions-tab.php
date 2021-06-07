@@ -630,7 +630,7 @@ function qsm_options_questions_tab_content() {
 				<# } else if ( 'image' == data.answerType ) { #>
 					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
 					<a href="#" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
-					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
+					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
 				<# } else { #>
 					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
 				<# } #>
