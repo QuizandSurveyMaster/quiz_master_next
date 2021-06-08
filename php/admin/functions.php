@@ -408,6 +408,9 @@ function qsm_create_new_quiz_wizard() {
 						<div class="qsm-wizard-wrap" data-show="addons_list">
 							<!-- <span class="qsm-wizard-step-number">3</span> -->
 							<span class="qsm-wizard-step-text"><?php echo _e( 'Addons', 'quiz-master-next' ); ?></span>
+							<span class="qsm-wizard-step-text-optional">
+								<?php echo _e( 'Optional', 'quiz-master-next' ); ?>
+							</span>
 						</div>
 					</div>
 					<ul style="display: none;" class="qsm-new_menu_tab_items">
@@ -547,6 +550,36 @@ function qsm_create_new_quiz_wizard() {
 					</div>
 					<div id="addons_list" class="qsm-new-menu-elements" style="display: none;">
 						<div class="qsm-addon-setting-wrap">
+							<div class="qsm-addon-news-ads">
+								<?php
+								$bundles = qsm_get_widget_data( 'bundles' );
+								if ( empty( $bundles ) ) {
+									$qsm_admin_dd = qsm_fetch_data_from_script();
+									$bundles      = isset( $qsm_admin_dd['bundles'] ) ? $qsm_admin_dd['bundles'] : array();
+								}
+								?>
+								<?php if ( $bundles ) { ?>
+								<h3 class="qsm-news-ads-title">
+									<?php _e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
+								<?php foreach ( $bundles as $key => $bundles_arr ) { ?>
+								<div class="qsm-info-widget">
+									<div class="bundle-icon">
+										<?php echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />'; ?>
+									</div>
+									<h3><?php echo $bundles_arr['name']; ?></h3>
+									<p><?php echo $bundles_arr['desc']; ?></p>
+									<a href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+										target="_blank" class="button button-primary addon-bundle-btn">
+										<?php echo _e( 'Get now', 'quiz-master-next' ); ?>
+										$<?php echo array_values( $bundles_arr['price'] )[0]; ?>
+										<span class="dashicons dashicons-arrow-right-alt2"></span>
+									</a>
+								</div>
+								<?php
+									}
+								}
+								?>
+							</div>
 							<div class="qsm-addon-browse-addons">
 								<div class="qsm-addon-anchor-left">
 									<div class="qsm-add-addon">
@@ -594,10 +627,10 @@ function qsm_create_new_quiz_wizard() {
 															<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 														</span>
 														<?php
-													if ( str_word_count( $single_arr['description'] ) > 9 ) {
-														echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-													}
-													?>
+														if ( str_word_count( $single_arr['description'] ) > 9 ) {
+															echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+														}
+														?>
 													</div>
 												</div>
 												<div class="addon-price">
@@ -642,10 +675,10 @@ function qsm_create_new_quiz_wizard() {
 															<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 														</span>
 														<?php
-													if ( str_word_count( $single_arr['description'] ) > 9 ) {
-														echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-													}
-													?>
+														if ( str_word_count( $single_arr['description'] ) > 9 ) {
+															echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+														}
+														?>
 													</div>
 												</div>
 												<div class="addon-price">
@@ -693,10 +726,10 @@ function qsm_create_new_quiz_wizard() {
 															<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 														</span>
 														<?php
-													if ( str_word_count( $single_arr['description'] ) > 9 ) {
-														echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-													}
-													?>
+														if ( str_word_count( $single_arr['description'] ) > 9 ) {
+															echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+														}
+														?>
 													</div>
 												</div>
 												<div class="addon-price">

@@ -456,6 +456,54 @@
 	background: #2271b1;
 }
 
+#model-wizard .qsm-addon-news-ads {
+	width: 100%;
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-news-ads-title {
+	padding: 10px;
+	margin-top: 10px;
+	font-size: 1em;
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-info-widget {
+	max-width: 30%;
+	display: inline-block;
+	margin-top: 50px;
+	padding: 10px;
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-info-widget h3 {
+	font-size: 14px;
+	line-height: 14px;
+	margin-top: 40px;
+	margin-bottom: 10px;
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-info-widget p {
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-info-widget .bundle-icon {
+	width: 30px;
+	height: 30px;
+	padding: 20px;
+	border-radius: 50%;
+	position: absolute;
+	top: -40px;
+	left: calc(50% - 30px);
+}
+
+#model-wizard .qsm-addon-news-ads .qsm-info-widget .bundle-icon img {
+	width: 30px;
+}
+
+
 #accordion .ui-accordion-header-icon {
 	position: absolute;
 	right: 24px;
@@ -840,6 +888,24 @@ h2.hndle.ui-sortable-handle {
 	text-transform: capitalize;
 	position: relative;
 	top: 3px;
+}
+
+.qsm-wizard-menu .qsm-wizard-step-text-optional {
+	background: rgba(0, 0, 0, 0.3);
+	color: white;
+	padding: 2px 5px;
+	border-radius: 3px;
+	font-size: 9px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	position: absolute;
+	top: 10px;
+	margin-left: 3px;
+	display: none;
+}
+
+.qsm-wizard-menu .active .qsm-wizard-step-text-optional {
+	display: inline;
 }
 
 .theme-sub-menu {
