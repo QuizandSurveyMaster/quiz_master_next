@@ -1090,7 +1090,7 @@ class QMNQuizManager {
 		} else {
 			$end_section .= "<div class='qsm-auto-page-row quiz_section quiz_end empty_quiz_end' {$style}>";
 			$end_section .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->submit_button_text, ENT_QUOTES ) ) . "' />";
-			$end_display .= '</div>';
+			$end_section .= '</div>';
 		}
 
 		return $end_section;
