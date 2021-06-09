@@ -1066,7 +1066,9 @@ function qmnInitProgressbarOnClick(quiz_id, page_number, total_page_number) {
 		var qmn_total_questions = qmn_quiz_data[quiz_id].pagination.total_questions;
 		var pagination = qmn_quiz_data[quiz_id].pagination.amount;
 		total_page_number = Math.ceil(qmn_total_questions / pagination);
-		total_page_number = total_page_number + 1; //Increase for quiz end section
+		if (!jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container').find('.empty_quiz_end').length) {
+			total_page_number = total_page_number + 1; //Increase for quiz end section
+		}
 		var animate_value = page_number / total_page_number;
 		if (animate_value <= 1) {
 			qmn_quiz_data[quiz_id].bar.animate(animate_value);
@@ -1100,6 +1102,7 @@ function qmnInitPagination(quiz_id) {
 
 	qmn_total_pages = qmn_total_pages + 1; //quiz begin
 	qmn_total_pages = qmn_total_pages + 1; //quiz end
+
 
 	jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container').append('<div class="qmn_pagination border margin-bottom"></div>');
 	jQuery('#quizForm' + quiz_id).closest('.qmn_quiz_container').find('.qmn_pagination').append('<input type="hidden" value="0" name="slide_number" class="slide_number_hidden" />')
