@@ -409,7 +409,7 @@ function qsm_create_new_quiz_wizard() {
 							<!-- <span class="qsm-wizard-step-number">3</span> -->
 							<span class="qsm-wizard-step-text"><?php echo _e( 'Addons', 'quiz-master-next' ); ?></span>
 							<span class="qsm-wizard-step-text-optional">
-								<?php echo _e( 'Optional', 'quiz-master-next' ); ?>
+								<?php echo _e( '(Optional)', 'quiz-master-next' ); ?>
 							</span>
 						</div>
 					</div>
@@ -550,54 +550,18 @@ function qsm_create_new_quiz_wizard() {
 					</div>
 					<div id="addons_list" class="qsm-new-menu-elements" style="display: none;">
 						<div class="qsm-addon-setting-wrap">
-							<div class="qsm-addon-news-ads">
-								<?php
-								$bundles = qsm_get_widget_data( 'bundles' );
-								if ( empty( $bundles ) ) {
-									$qsm_admin_dd = qsm_fetch_data_from_script();
-									$bundles      = isset( $qsm_admin_dd['bundles'] ) ? $qsm_admin_dd['bundles'] : array();
-								}
-								?>
-								<?php if ( $bundles ) { ?>
-								<h3 class="qsm-news-ads-title">
-									<?php _e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
-								<?php foreach ( $bundles as $key => $bundles_arr ) { ?>
-								<div class="qsm-info-widget">
-									<div class="bundle-icon">
-										<?php echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />'; ?>
-									</div>
-									<h3><?php echo $bundles_arr['name']; ?></h3>
-									<p><?php echo $bundles_arr['desc']; ?></p>
-									<a href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-										target="_blank" class="button button-primary addon-bundle-btn">
-										<?php echo _e( 'Get now', 'quiz-master-next' ); ?>
-										$<?php echo array_values( $bundles_arr['price'] )[0]; ?>
-										<span class="dashicons dashicons-arrow-right-alt2"></span>
-									</a>
-								</div>
-								<?php
-									}
-								}
-								?>
-							</div>
-							<div class="qsm-addon-browse-addons">
-								<div class="qsm-addon-anchor-left">
+							<!-- <div class="qsm-addon-browse-addons"> -->
+							<!-- <div class="qsm-addon-anchor-left">
 									<div class="qsm-add-addon">
 										<a class="active"
-											href="#qsm_popular_addons"><?php _e( 'Popular Addons', 'quiz-master-next' ); ?></a>
+											href="#qsm_popular_addons"><?php // _e( 'Popular Addons', 'quiz-master-next' ); ?></a>
 										<a
-											href="#qsm_onsale_addons"><?php _e( 'On Sale Addons', 'quiz-master-next' ); ?></a>
+											href="#qsm_onsale_addons"><?php // _e( 'On Sale Addons', 'quiz-master-next' ); ?></a>
 										<a
-											href="#qsm_new_addons"><?php _e( 'Recently Updated Addons', 'quiz-master-next' ); ?></a>
+											href="#qsm_new_addons"><?php // _e( 'Recently Updated Addons', 'quiz-master-next' ); ?></a>
 									</div>
-								</div>
-								<div class="qsm-addon-list-right">
-									<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
-									<a style="text-decoration: none; font-size: 15px;"
-										href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-										target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
-								</div>
-							</div>
+								</div> -->
+							<!-- </div> -->
 							<div id="qsm_add_addons" class="qsm-primary-acnhor">
 								<div class="qsm-quiz-page-addon qsm-addon-page-list">
 									<?php
@@ -614,33 +578,24 @@ function qsm_create_new_quiz_wizard() {
 												foreach ( $popular_addons as $key => $single_arr ) {
 													?>
 											<div>
-												<div class="addon-itd-wrap">
-													<div class="addon-image"
-														style="background-image: url('<?php echo $single_arr['img']; ?>')">
-													</div>
-													<div class="addon-title-descption">
-														<a class="addon-title" href="<?php echo $single_arr['link']; ?>"
+												<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+													target="_blank">
+													<span class="addon-itd-wrap">
+														<img src="<?php echo $single_arr['img']; ?>" />
+													</span>
+													<span class="addon-price">
+														<a class="addon-get-link"
+															href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank">
-															<?php echo $single_arr['name']; ?>
+															<?php
+															_e( 'Buy now', 'quiz-master-next' );
+															echo ' : $ ';
+															echo array_values( $single_arr['price'] )[0];
+															?>
+															<!-- <span class="dashicons dashicons-arrow-right-alt2"></span> -->
 														</a>
-														<span class="description">
-															<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
-														</span>
-														<?php
-														if ( str_word_count( $single_arr['description'] ) > 9 ) {
-															echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-														}
-														?>
-													</div>
-												</div>
-												<div class="addon-price">
-													<button
-														class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
-													<a class="button button-primary addon-get-link"
-														href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-														target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?>
-														<span class="dashicons dashicons-arrow-right-alt2"></span></a>
-												</div>
+													</span>
+												</a>
 											</div>
 											<?php
 												}
@@ -648,7 +603,7 @@ function qsm_create_new_quiz_wizard() {
 											?>
 										</div>
 									</div>
-									<div class="qsm_popular_addons" id="qsm_onsale_addons" style="display: none;">
+									<!-- <div class="qsm_popular_addons" id="qsm_onsale_addons" style="display: none;">
 										<?php
 										$qsm_onsale_addons = qsm_get_widget_data( 'on_sale_products' );
 										if ( empty( $qsm_onsale_addons ) ) {
@@ -690,7 +645,7 @@ function qsm_create_new_quiz_wizard() {
 														<span class="dashicons dashicons-arrow-right-alt2"></span></a>
 												</div>
 											</div>
-											<?php
+													<?php
 												}
 											}
 											?>
@@ -741,13 +696,19 @@ function qsm_create_new_quiz_wizard() {
 														<span class="dashicons dashicons-arrow-right-alt2"></span></a>
 												</div>
 											</div>
-											<?php
+													<?php
 												}
 											}
 											?>
 										</div>
-									</div>
+									</div> -->
 								</div>
+							</div>
+							<div class="qsm-addon-list-right">
+								<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
+								<a style="text-decoration: none; font-size: 15px;"
+									href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+									target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 							<?php
 							// $addons = array(
@@ -792,221 +753,12 @@ function qsm_create_new_quiz_wizard() {
 						</div>
 				</main>
 			</form>
-			<main class="qsm-popup__content" style="display: none;" id="modal-2-content">
-				<?php
-				$qsm_quiz_templates = array(
-					array(
-						'template_name'     => __( 'Start from scratch', 'quiz-master-next' ),
-						'priority'          => '1',
-						'options'           => array(
-							'form_type'      => array(
-								'option_name' => 'Form Type',
-								'value'       => 0,
-							),
-							'system'         => array(
-								'option_name' => 'Graded System',
-								'value'       => 0,
-							),
-							'require_log_in' => array(
-								'option_name' => 'Require User Login',
-								'value'       => 0,
-							),
-						),
-						'recommended_addon' => array(
-							array(
-								'name'      => 'Reporting And Analysis',
-								'link'      => 'https://quizandsurveymaster.com/downloads/results-analysis/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Reporting-And-Analysis.jpg',
-								'attribute' => 'recommended',
-							),
-							array(
-								'name'      => 'Export & Import',
-								'link'      => 'https://quizandsurveymaster.com/downloads/export-import/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Export-Import.jpg',
-								'attribute' => 'recommended',
-							),
-						),
-					),
-					array(
-						'template_name'     => __( 'Simple Quiz', 'quiz-master-next' ),
-						'priority'          => '2',
-						'template_img'      => QSM_PLUGIN_URL . '/assets/simple-quiz.png',
-						'options'           => array(
-							'form_type'      => array(
-								'option_name' => 'Form Type',
-								'value'       => 0,
-							),
-							'system'         => array(
-								'option_name' => 'Graded System',
-								'value'       => 0,
-							),
-							'require_log_in' => array(
-								'option_name' => 'Require User Login',
-								'value'       => 0,
-							),
-							'progress_bar'   => array(
-								'option_name' => 'Show progress bar',
-								'value'       => 0,
-							),
-						),
-						'recommended_addon' => array(
-							array(
-								'name'      => 'Payment Integration',
-								'link'      => 'https://quizandsurveymaster.com/downloads/paypal-and-stripe-payment-integration/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Paypal-and-Stripe-Payment-Integration-300x170.jpg',
-								'attribute' => 'recommended',
-							),
-							array(
-								'name'      => 'Recaptcha',
-								'link'      => 'https://quizandsurveymaster.com/downloads/recaptcha/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/reCaptcha.jpg',
-								'attribute' => 'recommended',
-							),
-						),
-					),
-					array(
-						'template_name'     => __( 'Time Based Quiz', 'quiz-master-next' ),
-						'priority'          => '3',
-						'template_img'      => QSM_PLUGIN_URL . '/assets/time-based-quiz.png',
-						'options'           => array(
-							'form_type'   => array(
-								'option_name' => 'Form Type',
-								'value'       => 0,
-							),
-							'system'      => array(
-								'option_name' => 'Graded System',
-								'value'       => 0,
-							),
-							'timer_limit' => array(
-								'option_name' => 'Time Limit (in Minute)',
-								'value'       => 0,
-							),
-						),
-						'recommended_addon' => array(
-							array(
-								'name'      => 'Save and Resume',
-								'link'      => 'https://quizandsurveymaster.com/downloads/save-and-resume/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Save-and-Resume.jpg',
-								'attribute' => 'recommended',
-							),
-							array(
-								'name'      => 'Advanced Timer',
-								'link'      => 'https://quizandsurveymaster.com/downloads/wordpress-quiz-timer-advanced/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/35.jpg',
-								'attribute' => 'recommended',
-							),
-						),
-					),
-					array(
-						'template_name'     => __( 'Survey', 'quiz-master-next' ),
-						'priority'          => '4',
-						'template_img'      => QSM_PLUGIN_URL . '/assets/survey-quiz.png',
-						'options'           => array(
-							'form_type'    => array(
-								'option_name' => 'Form Type',
-								'value'       => 1,
-							),
-							'system'       => array(
-								'option_name' => 'Graded System',
-								'value'       => 0,
-							),
-							'progress_bar' => array(
-								'option_name' => 'Progress Bar',
-								'value'       => 0,
-							),
-						),
-						'recommended_addon' => array(
-							array(
-								'name'      => 'Daily Limit',
-								'link'      => 'https://quizandsurveymaster.com/downloads/daily-limit/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Daily-Limit.jpg',
-								'attribute' => 'recommended',
-							),
-							array(
-								'name'      => 'Google Sheet Connector',
-								'link'      => 'https://quizandsurveymaster.com/downloads/sync-with-google-sheets/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/03/first-1.jpg',
-								'attribute' => 'recommended',
-							),
-							array(
-								'name'      => 'Mailchimp Integration',
-								'link'      => 'https://quizandsurveymaster.com/downloads/mailchimp-integration/',
-								'img'       => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/MailChimp-Integration.jpg',
-								'attribute' => 'recommended',
-							),
-						),
-					),
-				);
-				$qsm_quiz_templates = apply_filters( 'qsm_wizard_quiz_templates', $qsm_quiz_templates );
-				$keys               = array_column( $qsm_quiz_templates, 'priority' );
-				array_multisort( $keys, SORT_ASC, $qsm_quiz_templates );
-				?>
-				<form action="" method="post">
-					<div class="qsm-wizard-template-section">
-						<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
-						<input type="text" class="quiz_name" name="quiz_name" value=""
-							placeholder="<?php _e( 'Enter quiz name here', 'quiz-master-next' ); ?>" required />
-						<div class="template-inner-wrap">
-							<h6><?php _e( 'Select Template', 'quiz-master-next' ); ?></h6>
-							<div class="template-list">
-								<?php
-								if ( $qsm_quiz_templates ) {
-									foreach ( $qsm_quiz_templates as $key => $single_template ) {
-										if ( isset( $single_template['priority'] ) && $single_template['priority'] == 1 ) {
-											?>
-								<div class="template-list-inner"
-									data-settings='<?php echo isset( $single_template['options'] ) ? json_encode( $single_template['options'] ) : ''; ?>'
-									data-addons='<?php echo isset( $single_template['recommended_addon'] ) ? json_encode( $single_template['recommended_addon'] ) : ''; ?>'>
-									<div class="template-center-vertical">
-										<span class="dashicons dashicons-plus-alt2"></span>
-										<p class="start_scratch">
-											<?php echo isset( $single_template['template_name'] ) ? $single_template['template_name'] : ''; ?>
-										</p>
-									</div>
-								</div>
-								<?php
-										} else {
-											?>
-								<div class="template-list-inner inner-json"
-									data-settings='<?php echo isset( $single_template['options'] ) ? json_encode( $single_template['options'] ) : ''; ?>'
-									data-addons='<?php echo isset( $single_template['recommended_addon'] ) ? json_encode( $single_template['recommended_addon'] ) : ''; ?>'>
-									<div class="template-center-vertical">
-										<?php
-											if ( isset( $single_template['template_img'] ) ) {
-												?>
-										<img src="<?php echo $single_template['template_img']; ?>"
-											title="<?php echo isset( $single_template['template_name'] ) ? $single_template['template_name'] : ''; ?>">
-										<?php
-											}
-											?>
-									</div>
-									<h3><?php echo isset( $single_template['template_name'] ) ? $single_template['template_name'] : ''; ?>
-									</h3>
-								</div>
-								<?php
-										}
-									}
-								}
-								?>
-							</div>
-						</div>
-					</div>
-					<div class="qsm-wizard-setting-section">
-						<div id="accordion">
-							<h3><?php _e( 'Quiz Settings', 'quiz-master-next' ); ?></h3>
-							<div id="quiz_settings_wrapper"></div>
-							<h3><?php _e( 'Recommended Addons', 'quiz-master-next' ); ?></h3>
-							<div id="recomm_addons_wrapper"></div>
-						</div>
-					</div>
-				</form>
-			</main>
 			<footer class="qsm-popup__footer">
 				<button id="prev-theme-button"
-					class="button button-primary"><?php _e( 'Select Theme', 'quiz-master-next' ); ?></button>
+					class="button qsm-wizard-borderless"><?php _e( 'Back', 'quiz-master-next' ); ?></button>
 				<button id="prev-quiz-button"
-					class="button button-primary"></span><?php _e( 'Quiz Settings', 'quiz-master-next' ); ?></button>
-				<button id="cancel-quiz-wizard" class="button" data-micromodal-close
+					class="button qsm-wizard-borderless"></span><?php _e( 'Back', 'quiz-master-next' ); ?></button>
+				<button class="button qsm-wizard-borderless" data-micromodal-close
 					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
 				<button id="next-quiz-button"
 					class="button button-primary"><?php _e( 'Next', 'quiz-master-next' ); ?></button>
