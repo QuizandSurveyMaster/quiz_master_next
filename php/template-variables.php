@@ -956,19 +956,22 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										}
 									}
 								}
+								$image_class = '';
 								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
+									$image_class      = 'qmn_image_option';
 								} else {
 									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
+									$image_class      = '';
 								}
 								if ( isset( $single_answer[2] ) && $single_answer[2] == 1 && $is_answer_correct ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
 								} elseif ( isset( $single_answer[2] ) && $single_answer[2] == 1 ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} elseif ( $is_answer_correct && $single_answer[2] !== 1 ) {
-									$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} else {
-									$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								}
 							}
 						} else {
@@ -1019,15 +1022,18 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( isset( $answer['question_type'] ) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 ) ) {
 							$user_selected_answer = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 							foreach ( $total_answers as $single_answer ) {
+								$image_class = '';
 								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
+									$image_class      = 'qmn_image_option';
 								} else {
 									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
+									$image_class      = '';
 								}
 								if ( strpos( $user_selected_answer, $single_answer[0] ) !== false ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} else {
-									$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								}
 							}
 						} else {
@@ -1037,15 +1043,18 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							} else {
 								foreach ( $total_answers as $single_answer ) {
+									$image_class = '';
 									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
+										$image_class      = 'qmn_image_option';
 									} else {
 										$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
+										$image_class      = '';
 									}
 									if ( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) == $single_answer[0] ) {
-										$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} else {
-										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									}
 								}
 							}
