@@ -547,6 +547,20 @@
 	padding-right: 20px;
 }
 
+#model-wizard .market-theme .market-theme-url {
+	position: absolute;
+	left: 50%;
+	top: 60%;
+	transform: translate(-50%, -50%);
+	opacity: 0;
+	transition: all 200ms ease-in-out;
+}
+
+#model-wizard .market-theme:hover .market-theme-url {
+	opacity: 1;
+	top: 50%
+}
+
 #accordion .ui-accordion-header-icon {
 	position: absolute;
 	right: 24px;

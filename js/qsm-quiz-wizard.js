@@ -94,7 +94,7 @@
 		$('.theme-wrap').hide();
 		$('#' + id).show();
 	});
-	$(document).on('click', '#downloaded_theme .theme-wrapper', function (e) {
+	$(document).on('click', '#downloaded_theme .theme-wrapper:not(.market-theme)', function (e) {
 		e.preventDefault();
 		$('#downloaded_theme .theme-wrapper').removeClass('active');
 		$('#downloaded_theme .theme-wrapper').find('.theme-name').stop().fadeTo('slow', 0);
@@ -117,14 +117,14 @@
 		}
 	});
 
-	$(document).on('mouseover', '#downloaded_theme .theme-wrapper', function (e) {
+	$(document).on('mouseover', '#downloaded_theme .theme-wrapper, #browse_themes .theme-wrapper', function (e) {
 		e.preventDefault();
 		if (!$(this).hasClass('active')) {
 			$(this).find('.theme-name').stop().fadeTo('slow', 1);
 		}
 	});
 
-	$(document).on('mouseout', '#downloaded_theme .theme-wrapper', function (e) {
+	$(document).on('mouseout', '#downloaded_theme .theme-wrapper, #browse_themes .theme-wrapper', function (e) {
 		e.preventDefault();
 		if (!$(this).hasClass('active')) {
 			$(this).find('.theme-name').stop().fadeTo('slow', 0);
