@@ -71,6 +71,8 @@ class QMNQuizManager {
 		if ( $file_upload_type ) {
 			$file_type_exp = explode( ',', $file_upload_type );
 			foreach ( $file_type_exp as $value ) {
+
+				$value = trim( $value );
 				if ( $value == 'image' ) {
 					$mimes[] = 'image/jpeg';
 					$mimes[] = 'image/png';
@@ -82,6 +84,10 @@ class QMNQuizManager {
 				} elseif ( $value == 'excel' ) {
 					$mimes[] = 'application/excel, application/vnd.ms-excel, application/x-excel, application/x-msexcel';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+				} elseif ( empty( $value ) ) {
+					// don't add blank mime type
+
 				} else {
 					$mimes[] = $value;
 				}
@@ -90,7 +96,7 @@ class QMNQuizManager {
 		$json          = array();
 		$file_name     = sanitize_file_name( $_FILES['file']['name'] );
 		$validate_file = wp_check_filetype( $file_name );
-		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes ) ) {
+		if ( isset( $validate_file['type'] ) && $validate_file['type'] != false && in_array( $validate_file['type'], $mimes ) ) {
 			if ( $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
@@ -308,6 +314,7 @@ class QMNQuizManager {
 				include $folder_name . 'functions.php';
 			}
 			do_action( 'qsm_enqueue_script_style', $qmn_quiz_options );
+
 
 			// Starts to prepare variable array for filters.
 			$qmn_array_for_variables = array(
@@ -716,14 +723,16 @@ class QMNQuizManager {
 							echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
 			?>
 		</div>
-			<?php
+		<?php
+
 			if ( 0 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
 			}
 			?>
 	</div>
 </section>
-			<?php
+<?php
+
 		}
 
 		// If there is only one page.
@@ -731,7 +740,8 @@ class QMNQuizManager {
 		if ( 1 == count( $pages ) ) {
 			?>
 <section class="qsm-page <?php echo $animation_effect; ?>">
-			<?php
+	<?php
+
 			if ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) {
 				$qmn_json_data['first_page'] = false;
 				$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
@@ -739,24 +749,24 @@ class QMNQuizManager {
 				?>
 	<div class="quiz_section quiz_begin">
 		<div class='qsm-before-message mlw_qmn_message_before'>
-				<?php
+			<?php
 						echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
 				?>
 		</div>
-				<?php
+		<?php
 				if ( 0 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
 				}
 				?>
 	</div>
-				<?php
+	<?php
 			}
 			foreach ( $pages[0] as $question_id ) {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
 				?>
 	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
-				<?php
+		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
 					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
@@ -770,7 +780,7 @@ class QMNQuizManager {
 				}
 				?>
 	</div>
-				<?php
+	<?php
 			}
 			if ( 0 == $options->comment_section ) {
 				$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
@@ -781,7 +791,8 @@ class QMNQuizManager {
 			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
-				<?php
+	<?php
+
 			}
 			if ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) {
 				$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
@@ -789,17 +800,17 @@ class QMNQuizManager {
 				?>
 	<div class="quiz_section">
 		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
-				<?php
+		<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
 				}
 				?>
 	</div>
-				<?php
+	<?php
 			}
 			?>
 </section>
-			<?php
+<?php
 		} else {
 			$total_pages_count = count( $pages );
 			$pages_count       = 1;
@@ -812,14 +823,14 @@ class QMNQuizManager {
 				?>
 <section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id; ?>"
 	data-pid="<?php echo $qpage_id; ?>" data-prevbtn="<?php echo $hide_prevbtn; ?>" <?php echo $style; ?>>
-				<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
-				<?php
+	<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
+	<?php
 				foreach ( $page as $question_id ) {
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					?>
 	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
-					<?php
+		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
 						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
@@ -833,19 +844,20 @@ class QMNQuizManager {
 					}
 					?>
 	</div>
-					<?php
+	<?php
 				}
 				if ( $enable_pagination_quiz ) {
 					?>
 	<span class="pages_count">
-					<?php
+		<?php
+
 						$text_c = $pages_count . __( ' out of ', 'quiz-master-next' ) . $total_pages_count;
 						echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 					?>
 	</span>
 	<?php } ?>
 </section>
-				<?php
+<?php
 				$pages_count++;
 			}
 		}
@@ -861,7 +873,7 @@ class QMNQuizManager {
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 </section>
-			<?php
+<?php
 		}
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
 			$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
@@ -870,18 +882,18 @@ class QMNQuizManager {
 <section class="qsm-page" style="display: none;">
 	<div class="quiz_section">
 		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
-			<?php
+		<?php
 			if ( 1 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
 			}
 			?>
 	</div>
-			<?php
+	<?php
 				// Legacy code.
 				do_action( 'mlw_qmn_end_quiz_section' );
 			?>
 </section>
-			<?php
+<?php
 		}
 		do_action( 'qsm_after_all_section' );
 		?>
@@ -897,7 +909,7 @@ class QMNQuizManager {
 			</div>
 		</script>
 <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
-		<?php
+<?php
 		return ob_get_clean();
 	}
 
@@ -2021,7 +2033,12 @@ class QMNQuizManager {
 				$ip = $_SERVER['REMOTE_ADDR'];
 			}
 		}
-		return $ip;
+
+		if ( filter_var( $ip, FILTER_VALIDATE_IP ) ) {
+			return $ip;
+		} else {
+			return __( 'Invalid IP Address', 'quiz-master-next' );
+		}
 	}
 
 	/**

@@ -379,7 +379,8 @@ var import_button;
 			var file_upload_limit = $("#file_upload_limit").val();
 			var type_arr = [];
 			$.each($("input[name='file_upload_type[]']:checked"), function () {
-				type_arr.push($(this).val());
+				type_value = $(this).val().replace(/,/g, '');
+				type_arr.push(type_value);
 			});
 			if ('new_category' == category) {
 				category = $('#new_category').val();
