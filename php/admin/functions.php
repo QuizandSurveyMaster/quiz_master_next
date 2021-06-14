@@ -590,46 +590,6 @@ function qsm_create_new_quiz_wizard() {
 									href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 									target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
-							<?php
-										// $addons = array(
-										// array(
-										// 'name' => 'Reporting And Analysis',
-										// 'link' => 'https://quizandsurveymaster.com/downloads/results-analysis/',
-										// 'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Reporting-And-Analysis.jpg',
-										// 'attribute' => 'recommended',
-										// ),
-										// array(
-										// 'name' => 'Export & Import',
-										// 'link' => 'https://quizandsurveymaster.com/downloads/export-import/',
-										// 'img' => 'https://t6k8i7j6.stackpathcdn.com/wp-content/uploads/edd/2020/04/Export-Import.jpg',
-										// 'attribute' => 'recommended',
-										// ),
-										// );
-										// $addons = apply_filters('qsm_addon_list_wizard', $addons);
-										// $recommended_addon_str = '';
-										// $recommended_addon_str .= '<ul>';
-										// if ($addons) {
-										// foreach ($addons as $single_addon) {
-										// $recommended_addon_str .= '<li>';
-										// if (isset($single_addon['attribute']) && $single_addon['attribute'] != '') {
-										// $attr = $single_addon['attribute'];
-										// $recommended_addon_str .= '<span class="ra-attr qra-att-' . $attr . '">' . $attr . '</span>';
-										// }
-										// $link = isset($single_addon['link']) ? $single_addon['link'] : '';
-										// $recommended_addon_str .= '<a target="_blank" href="' . $link . '">';
-										// if (isset($single_addon['img']) && $single_addon['img'] != '') {
-										// $img = $single_addon['img'];
-										// $recommended_addon_str .= '<img src="' . $img . '"/>';
-										// }
-										// $recommended_addon_str .= '</a>';
-										// $recommended_addon_str .= '</li>';
-										// }
-										// } else {
-										// $recommended_addon_str .= 'No addons found!';
-										// }
-										// $recommended_addon_str .= '</ul>';
-										// echo $recommended_addon_str;
-							?>
 						</div>
 				</main>
 			</form>
@@ -699,14 +659,14 @@ function qsm_text_template_variable_list() {
 	return $variable_list;
 }
 
-									add_action( 'admin_init', 'qsm_update_question_type_col_val' );
+add_action( 'admin_init', 'qsm_update_question_type_col_val' );
 
-									/**
-									 * Replace `fill-in-the-blank` value in question_type_column for Fill
-									 * In The Blank question types.
-									 *
-									 * @since version 6.4.12
-									 */
+/**
+ * Replace `fill-in-the-blank` value in question_type_column for Fill
+ * In The Blank question types.
+ *
+ * @since version 6.4.12
+ */
 function qsm_update_question_type_col_val() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
@@ -728,25 +688,30 @@ function qsm_update_question_type_col_val() {
 	}
 }
 
-									/**
-									 * Check and create table if not present
-									 *
-									 * @since 7.0.0
-									 */
+/**
+ * Check and create table if not present
+ *
+ * @since 7.0.0
+ */
 function qsm_check_create_tables() {
 	global $wpdb;
 	$quiz_table_name = $wpdb->prefix . 'mlw_quizzes';
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
 		QSM_Install::install();
 	}
-}
-									add_action( 'admin_init', 'qsm_check_create_tables' );
 
-									/**
-									 * Redirect the admin old slug to new slug
-									 *
-									 * @since 7.0.0
-									 */
+	$quiz_theme_table_name = $wpdb->prefix . 'mlw_themes';
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) != $quiz_theme_table_name ) {
+		QSM_Install::install();
+	}
+}
+add_action( 'admin_init', 'qsm_check_create_tables' );
+
+/**
+ * Redirect the admin old slug to new slug
+ *
+ * @since 7.0.0
+ */
 function qsm_admin_page_access_func() {
 	if ( isset( $_GET['page'] ) && $_GET['page'] == 'quiz-master-next/mlw_quizmaster2.php' ) {
 		wp_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
@@ -789,7 +754,6 @@ function qsm_fetch_theme_data() {
 		$qsm_admin_dd = qsm_fetch_data_from_script();
 		$themes_data  = isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array();
 	}
-	// $themes_data = array_merge( $dummy_data, $themes_data );
 }
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
