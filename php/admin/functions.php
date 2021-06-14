@@ -400,7 +400,7 @@ function qsm_create_new_quiz_wizard() {
 						<div class="qsm-logo"><img src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png"></div>
 						<div class="qsm-wizard-wrap active" data-show="select_themes">
 							<span
-								class="qsm-wizard-step-text"><?php echo _e( 'Select themes', 'quiz-master-next' ); ?></span>
+								class="qsm-wizard-step-text"><?php echo _e( 'Select theme', 'quiz-master-next' ); ?></span>
 						</div>
 						<div class="qsm-wizard-wrap" data-show="quiz_settings">
 							<span
@@ -749,10 +749,10 @@ function qsm_fetch_theme_data() {
 	// 'link' => 'https://quizandsurveymaster.com/?post_type=download&p=3439',
 	// ),
 	// );
-	$themes_data = qsm_get_widget_data( 'themes' );
+	$themes_data = qsm_get_widget_data( 'popular_products' );
 	if ( empty( $themes_data ) ) {
 		$qsm_admin_dd = qsm_fetch_data_from_script();
-		$themes_data  = isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array();
+		$themes_data  = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
 	}
 }
 
@@ -827,7 +827,6 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			<?php
 				}
 				?>
-			<!-- <a class="button button-primary load-customize hide-if-no-customize" href="#"><?php // _e('Live Preview', 'quiz-master-next') ?></a> -->
 			<?php } ?>
 			<?php if ( $saved_quiz_theme == $theme_id ) { ?>
 			<a class="button button-primary qsm-customize-color-settings"
@@ -888,8 +887,12 @@ function qsm_get_default_wizard_themes() {
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img src="<?php echo $theme_screenshot; ?>" />
-		<a class="button button-primary market-theme-url" target="__blank"
-			href="<?php echo $theme_url; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+		<div class="market-theme-url">
+			<a class="button button-primary" target="__blank"
+				href="<?php echo $theme_url; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+			<a class="button" target="__blank"
+				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+		</div>
 	</div>
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php echo $theme_name; ?></h2>
@@ -916,8 +919,12 @@ function qsm_get_market_themes() {
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img src="<?php echo $theme_screenshot; ?>" />
-		<a class="button button-primary market-theme-url" target="__blank"
-			href="<?php echo $theme_url; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+		<div class="market-theme-url">
+			<a class="button button-primary" target="__blank"
+				href="<?php echo $theme_url; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+			<a class="button" target="__blank"
+				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+		</div>
 	</div>
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php echo $theme_name; ?></h2>
