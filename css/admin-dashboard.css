@@ -555,6 +555,13 @@
 	transform: translate(-50%, -50%);
 	opacity: 0;
 	transition: all 200ms ease-in-out;
+	text-align: center;
+}
+
+#model-wizard .market-theme .market-theme-url a {
+	margin: 5px;
+	width: 100px;
+	display: inline-block;
 }
 
 #model-wizard .market-theme:hover .market-theme-url {
