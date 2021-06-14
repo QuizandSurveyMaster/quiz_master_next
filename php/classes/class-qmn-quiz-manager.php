@@ -315,7 +315,6 @@ class QMNQuizManager {
 			}
 			do_action( 'qsm_enqueue_script_style', $qmn_quiz_options );
 
-
 			// Starts to prepare variable array for filters.
 			$qmn_array_for_variables = array(
 				'quiz_id'     => $qmn_quiz_options->quiz_id,
@@ -1043,9 +1042,14 @@ class QMNQuizManager {
 	public function display_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;
 		$comment_display = '';
+		if ( $qmn_quiz_options->randomness_order == 0 ) {
+			$display_style = 'display: none;';
+		} else {
+			$display_style = '';
+		}
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$comment_display      .= "<div class='quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide" . $mlw_qmn_section_count . "' style='display: none;'>";
+			$comment_display      .= "<div class='quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide" . $mlw_qmn_section_count . "' style='" . $display_style . "'>";
 			$message_comments      = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ) );
 			$message_comments      = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables );
 			$comment_display      .= "<label for='mlwQuizComments' class='mlw_qmn_comment_section_text'>$message_comments</label><br />";
