@@ -73,6 +73,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
 												if ( ! in_array( $key, $hidden_box_arr ) ) {
 													?> checked="checked" <?php } ?>><?php echo $value['title']; ?></label>
 		<?php
+
 									}
 								}
 								?>
@@ -130,13 +131,16 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php _e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" href="https://quizandsurveymaster.com/docs/" class="welcome-icon"><span
+						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/docs/"
+								class="welcome-icon"><span
 									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" href="https://demo.quizandsurveymaster.com/" class="welcome-icon"><span
+						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/"
+								class="welcome-icon"><span
 									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" href="https://quizandsurveymaster.com/addons/" class="welcome-icon"><span
+						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/addons/"
+								class="welcome-icon"><span
 									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
@@ -144,11 +148,12 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" href="https://quizandsurveymaster.com/contact-support/"
+						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/contact-support/"
 								class="welcome-icon"><span
 									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Contact Support', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" href="https://github.com/QuizandSurveyMaster/quiz_master_next"
+						<li><a target="_blank" rel="noopener"
+								href="https://github.com/QuizandSurveyMaster/quiz_master_next"
 								class="welcome-icon"><span
 									class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e( 'Github Repository', 'quiz-master-next' ); ?></a>
 						</li>
@@ -336,7 +341,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				?>
 			</ul>
 			<div class="pa-all-addon">
-				<a href="https://quizandsurveymaster.com/addons/"
+				<a href="https://quizandsurveymaster.com/addons/" rel="noopener"
 					target="_blank"><?php _e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>
