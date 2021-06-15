@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * This class will manage all data related to QSM Themes
  *
- * @since 7.1.17
+ * @since 7.2.0
  */
 class QSM_Theme_Settings {
 

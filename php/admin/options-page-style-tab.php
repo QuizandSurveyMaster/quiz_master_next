@@ -217,10 +217,7 @@ jQuery(document).ready(function() {
 	<div class="wp-filter hide-if-no-js">
 		<ul class="filter-links">
 			<li>
-				<a href="#" class="current"><?php _e( 'My Themes', 'quiz-master-next' ); ?></a>
-			</li>
-			<li>
-				<a href="#"><?php _e( 'Premium Themes', 'quiz-master-next' ); ?></a>
+				<a href="#" class="current"><?php _e( 'Themes', 'quiz-master-next' ); ?></a>
 			</li>
 			<?php do_action( 'qsm_add_filter_menu' ); ?>
 		</ul>
