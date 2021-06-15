@@ -18,7 +18,7 @@ var QSMPageTimer;
 			// Makes sure we have quizzes on this page
 			if (typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
 				// hide the recaptcha by default
-				$('.g-recaptcha').hide();
+				//$('.g-recaptcha').hide();
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					quizID = parseInt(quiz.quiz_id);

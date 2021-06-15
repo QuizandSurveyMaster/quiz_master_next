@@ -661,6 +661,7 @@ class QMNQuizManager {
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		if ( 0 == $options->randomness_order && 0 == $options->question_from_total && 0 == $options->pagination && 0 !== count( $pages ) ) {
 			$quiz_display .= $this->display_pages( $options, $quiz_data );
+			$quiz_display  = apply_filters( 'qmn_after_comment_section', $quiz_display, $options, $quiz_data );
 		} else {
 			// ... else, use older system.
 			$questions     = $this->load_questions( $quiz_data['quiz_id'], $options, true, $question_amount );
