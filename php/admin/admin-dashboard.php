@@ -331,7 +331,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 						?>
 				<li>
 					<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-dashoard-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-						target="_blank">
+						target="_blank" rel="noopener">
 						<img src="<?php echo $single_arr['img']; ?>" title="<?php echo $single_arr['name']; ?>">
 					</a>
 				</li>
@@ -491,7 +491,7 @@ function qsm_dashboard_what_new( $widget_id ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
 				<li>
-					<a href="<?php echo $single_feed_arr['link']; ?>" target="_blank">
+					<a href="<?php echo $single_feed_arr['link']; ?>" target="_blank" rel="noopener">
 						<?php echo $single_feed_arr['title']; ?>
 					</a>
 					<div class="post-description">
@@ -557,8 +557,8 @@ function qsm_dashboard_chagelog( $widget_id ) {
 			</ul>
 			<?php if ( $change_log_count > 5 ) { ?>
 			<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
-				<a href="https://wordpress.org/plugins/quiz-master-next/#developers"
-					target="_blank"><?php _e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+				<a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"
+					rel="noopener"><?php _e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
 			</div>
 			<?php
 				}
