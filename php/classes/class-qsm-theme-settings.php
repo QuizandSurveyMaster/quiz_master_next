@@ -136,21 +136,11 @@ class QSM_Theme_Settings {
 	/**
 	 * Get active themes from database
 	 *
-	 * @param array/string parameter to be retrieved from themes table
-	 *
 	 * @return array of active themes
 	 */
-	public function get_active_themes( $parameter = 'theme' ) {
+	public function get_active_themes() {
 		global $wpdb;
-		if ( is_array( $parameter ) ) {
-			$parameter = sanitize_text_field( implode( ',', $parameter ) );
-		} elseif ( is_string( $parameter ) ) {
-			$parameter = sanitize_text_field( $parameter );
-		} else {
-			$parameter = 'theme';
-		}
-
-		$query          = $wpdb->prepare( "SELECT id,%1s FROM {$wpdb->prefix}$this->themes_table WHERE theme_active = 1", $parameter );
+		$query          = "SELECT id, theme, theme_name FROM {$wpdb->prefix}$this->themes_table WHERE theme_active = 1";
 		return $results = $wpdb->get_results( $query, ARRAY_A );
 
 	}
@@ -162,7 +152,7 @@ class QSM_Theme_Settings {
 	 */
 	public function get_installed_themes() {
 		global $wpdb;
-		$query          = $wpdb->prepare( "SELECT theme, theme_name FROM {$wpdb->prefix}$this->themes_table" );
+		$query          = "SELECT theme, theme_name FROM {$wpdb->prefix}$this->themes_table";
 		return $results = $wpdb->get_results( $query, ARRAY_A );
 	}
 

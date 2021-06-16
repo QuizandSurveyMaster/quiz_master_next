@@ -731,7 +731,7 @@ function qsm_fetch_theme_data() {
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	global $mlwQuizMasterNext;
-	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes( array( 'theme', 'theme_name' ) );
+	$active_themes = $mlwQuizMasterNext->theme_settings->get_active_themes();
 	$folder_name   = QSM_THEME_PATH;
 	$folder_slug   = QSM_THEME_SLUG;
 	$theme_folders = array();
