@@ -179,7 +179,7 @@ class QSM_Theme_Settings {
 			array( 'active_theme' => false ),
 			array( 'quiz_id' => $quiz_id ),
 			'%d',
-			'%d',
+			'%d'
 		);
 
 		if ( $theme_id === 0 ) {
@@ -194,7 +194,7 @@ class QSM_Theme_Settings {
 				array( 'active_theme' => true ),
 				array( 'id' => $id ),
 				'%d',
-				'%d',
+				'%d'
 			);
 		} else {
 			$settings = $wpdb->get_var( $wpdb->prepare( "SELECT default_settings from {$wpdb->prefix}$this->themes_table WHERE id = %d", $theme_id ) );
@@ -208,7 +208,7 @@ class QSM_Theme_Settings {
 			$wpdb->insert(
 				$wpdb->prefix . $this->settings_table,
 				$data,
-				array( '%d', '%d', '%d', '%s' ),
+				array( '%d', '%d', '%d', '%s' )
 			);
 			$wpdb->insert_id;
 		}
@@ -259,7 +259,7 @@ class QSM_Theme_Settings {
 				'theme_id' => $theme_id,
 			),
 			'%s',
-			array( '%d', '%d' ),
+			array( '%d', '%d' )
 		);
 	}
 
