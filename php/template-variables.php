@@ -273,7 +273,7 @@ function qsm_variable_result_id( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_point_score( $content, $mlw_quiz_array ) {
-	$content = str_replace( '%POINT_SCORE%', ( isset( $mlw_quiz_array['total_points'] ) ? apply_filters('mlw_total_points' , $mlw_quiz_array['total_points']) : '' ), $content );
+	$content = str_replace( '%POINT_SCORE%', ( isset( $mlw_quiz_array['total_points'] ) ? $mlw_quiz_array['total_points'] : '' ), $content );
 	return $content;
 }
 function mlw_qmn_variable_average_point( $content, $mlw_quiz_array ) {

@@ -1277,6 +1277,7 @@ class QMNQuizManager {
 					'pagetime' => $mlw_qmn_pagetime,
 				);
 				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
+				$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables_extra', $qmn_array_for_variables );
 				if ( isset( $results_array['parameters'] ) ) {
 					$qmn_array_for_variables['parameters'] = $results_array['parameters'];
 				}
