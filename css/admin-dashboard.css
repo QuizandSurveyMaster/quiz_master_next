@@ -422,7 +422,8 @@
 
 #model-wizard #quiz_settings .input-group:nth-child(5),
 #model-wizard #quiz_settings .input-group:nth-child(6),
-#model-wizard #quiz_settings .input-group:nth-child(8) {
+#model-wizard #quiz_settings .input-group:nth-child(8),
+#model-wizard #quiz_settings .input-group:nth-child(10) {
 	display: none;
 }
 

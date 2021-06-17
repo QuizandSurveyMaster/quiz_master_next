@@ -470,38 +470,42 @@ function qsm_create_new_quiz_wizard() {
 							</span>
 						</div>
 						<?php
-						$all_settings        = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-						$quiz_setting_option = array(
+						$all_settings            = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
+						$quiz_setting_option     = array(
 							'form_type'              => array(
-								'option_name' => 'Form Type',
+								'option_name' => __( 'Form Type', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'system'                 => array(
-								'option_name' => 'Graded System',
+								'option_name' => __( 'Graded System', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'pagination'             => array(
-								'option_name' => 'Questions Per Page',
+								'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'progress_bar'           => array(
-								'option_name' => 'Show Progress Bar',
+								'option_name' => __( 'Show Progress Bar', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'timer_limit'            => array(
-								'option_name' => 'Time Limit (in Minute)',
+								'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'enable_pagination_quiz' => array(
-								'option_name' => 'Show current page number',
+								'option_name' => __( 'Show current page number', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'require_log_in'         => array(
-								'option_name' => 'Require User Login',
+								'option_name' => __( 'Require User Login', 'quiz-master-next' ),
+								'value'       => 0,
+							),
+							'disable_scroll_next_previous_click' => array(
+								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 						);
-						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
 								$key              = array_search( $key, array_column( $all_settings, 'id' ) );
@@ -613,10 +617,10 @@ function qsm_create_new_quiz_wizard() {
 <?php
 }
 
-									/**
-									 * @since 7.0
-									 * @return array Template Variable
-									 */
+/**
+ * @since 7.0
+ * @return array Template Variable
+ */
 function qsm_text_template_variable_list() {
 	$variable_list = array(
 		'%POINT_SCORE%'             => __( 'Score for the quiz when using points', 'quiz-master-next' ),
@@ -792,7 +796,6 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			if ( $saved_quiz_theme != $theme_id ) {
 				if ( $wizard_theme_list == 'wizard_theme_list' ) {
 					?>
-			<!-- <button class="button qsm-activate-theme"><?php // _e('Select Theme', 'quiz-master-next'); ?></button> -->
 			<?php
 				} else {
 					?>
@@ -876,11 +879,6 @@ function qsm_get_default_wizard_themes() {
 		}
 	}
 }
-function qsm_get_market_themes_label() {
-	global $themes_data;
-	if ( ! empty( $themes_data ) ) {
-	}
-}
 
 function qsm_get_market_themes() {
 	global $themes_data;
@@ -910,11 +908,11 @@ function qsm_get_market_themes() {
 	}
 }
 
-									/**
-									 * Display roadmap page
-									 *
-									 * @since 7.1.11
-									 */
+/**
+ * Display roadmap page
+ *
+ * @since 7.1.11
+ */
 function qsm_generate_roadmap_page() {
 	?>
 <div class="wrap">
