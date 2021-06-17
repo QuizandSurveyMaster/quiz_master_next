@@ -93,38 +93,6 @@ jQuery(document).ready(function() {
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
-	// if (isset($_POST["quiz_theme_upload_nouce"]) && wp_verify_nonce($_POST['quiz_theme_upload_nouce'], 'quiz_theme_upload')) {
-	// $quiz_id = $_GET['quiz_id'];
-	// $file_name = sanitize_file_name($_FILES["themezip"]["name"]);
-	// $name = explode('.', $file_name);
-	// $validate_file = wp_check_filetype($file_name);
-	// $mimes = array('application/zip', 'application/x-gzip');
-	// if (isset($validate_file['type']) && in_array($validate_file['type'], $mimes)) {
-	// $upload_dir = wp_upload_dir()['basedir'] . '/qsm_themes/';
-	// if (!is_dir($upload_dir)) {
-	// mkdir($upload_dir, 0700);
-	// }
-	// WP_Filesystem();
-	// $theme = $_FILES['themezip']['tmp_name'];
-	// $unzip_file = unzip_file($theme, $upload_dir);
-	// if ($unzip_file) {
-	// $scan = scandir($upload_dir . $name[0]);
-	// if (in_array('style.css', $scan) && in_array('functions.php', $scan)) {
-	// $mlwQuizMasterNext->alertManager->newAlert(__('The theme has been uploaded successfully.', 'quiz-master-next'), 'success');
-	// $mlwQuizMasterNext->audit_manager->new_audit("New theme have been uploaded For Quiz Number $quiz_id");
-	// } else {
-	// $path = $upload_dir . $name[0];
-	// array_map('unlink', glob("$path/*.*"));
-	// rmdir($path);
-	// $mlwQuizMasterNext->alertManager->newAlert(__('Error occured when trying to upload the theme. style.css and functions.php is missing.', 'quiz-master-next'), 'error');
-	// $mlwQuizMasterNext->log_manager->add('Error uploading themes', 'Style.css and functions.php is missing: ' . $quiz_id, 0, 'error');
-	// }
-	// } else {
-	// $mlwQuizMasterNext->alertManager->newAlert(__('Error occured when trying to upload the theme. Please try again.', 'quiz-master-next'), 'error');
-	// $mlwQuizMasterNext->log_manager->add('Error uploading themes', 'Quiz ID: ' . $quiz_id, 0, 'error');
-	// }
-	// }
-	// }
 	// Include required custom js and css
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
@@ -139,7 +107,6 @@ jQuery(document).ready(function() {
 			jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
 		});
 		jQuery(document).on('input', '.quiz_featured_image', function() {
-			console.log(jQuery(this).val());
 			jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
 		});
 	});
@@ -183,13 +150,9 @@ jQuery(document).ready(function() {
 		$featured_image = get_option( "quiz_featured_image_$quiz_id" );
 		$featured_image = ! empty( trim( $featured_image ) ) ? trim( $featured_image ) : '';
 	}
-	$folder_name   = QSM_THEME_PATH;
-	$folder_slug   = QSM_THEME_SLUG;
-	$theme_folders = array();
-	// if (is_dir($folder_name)) {
-	// $theme_folders = scandir($folder_name);
-	// }
-	// $theme_folders = apply_filters('qsm_theme_list', $theme_folders);
+	$folder_name    = QSM_THEME_PATH;
+	$folder_slug    = QSM_THEME_SLUG;
+	$theme_folders  = array();
 	$post_permalink = $edit_link = '';
 	// Get quiz post based on quiz id
 	$args      = array(
@@ -317,7 +280,6 @@ jQuery(document).ready(function() {
 					<hr />
 					<table class="form-table" style="width: 100%;">
 						<?php
-						// $get_theme_settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('theme_settings_' . $saved_quiz_theme);
 						$get_theme_settings = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
 
 						if ( $get_theme_settings ) {
@@ -375,8 +337,7 @@ function qsm_register_theme_Setting_submenu_page() {
 
 function qsm_display_theme_settings() {
 	 global $mlwQuizMasterNext, $wpdb;
-	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
-	// $theme_id = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
+	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
 	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
@@ -385,16 +346,13 @@ function qsm_display_theme_settings() {
 		$settings_array = array();
 		array_map( 'sanitize_text_field', $_POST['settings'] );
 		$settings_array = serialize( $_POST['settings'] );
-		// $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting('theme_settings_' . $theme_id, $settings_array);
-		$results = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
+		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">
 	<p><?php _e( 'Theme settings are saved!', 'quiz-master-next' ); ?></p>
 </div>
 <?php
 	}
-
-	// $get_theme_settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting('theme_settings_' . $theme_id);
 	$get_theme_settings = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $theme_id )
 	?>
 <div class="wrap">
