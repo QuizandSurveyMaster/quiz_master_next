@@ -397,7 +397,8 @@ function qsm_create_new_quiz_wizard() {
 				<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
 				<main class="qsm-popup__content" id="modal-2-content">
 					<div class="qsm-wizard-menu">
-						<div class="qsm-logo"><img src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png"></div>
+						<div class="qsm-logo"><img alt="" src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png">
+						</div>
 						<div class="qsm-wizard-wrap active" data-show="select_themes">
 							<span
 								class="qsm-wizard-step-text"><?php echo _e( 'Select theme', 'quiz-master-next' ); ?></span>
@@ -565,7 +566,7 @@ function qsm_create_new_quiz_wizard() {
 												<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 													target="_blank" rel="noopener">
 													<span class="addon-itd-wrap">
-														<img src="<?php echo $single_arr['img']; ?>" />
+														<img alt="" src="<?php echo $single_arr['img']; ?>" />
 													</span>
 													<span class="addon-price">
 														<a class="addon-get-link"
@@ -758,7 +759,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	<input style="display: none" type="radio" name="quiz_theme_id" value="0"
 		<?php checked( $saved_quiz_theme, '0', true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
+		<img alt="" src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
 	</div>
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php echo __( 'Default Theme', 'quiz-master-next' ); ?></h2>
@@ -786,7 +787,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo (int) $theme_id; ?>"
 		<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img src="<?php echo $folder_slug . $theme_name . '/screenshot.png'; ?>" />
+		<img alt="" src="<?php echo $folder_slug . $theme_name . '/screenshot.png'; ?>" />
 	</div>
 	<span class="more-details" style="display: none;"><?php _e( 'Templates', 'quiz-master-next' ); ?></span>
 	<div class="theme-id-container">
@@ -863,11 +864,11 @@ function qsm_get_default_wizard_themes() {
 			?>
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img src="<?php echo $theme_screenshot; ?>" />
+		<img alt="" src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
-			<a class="button button-primary" target="_blank"
+			<a class="button button-primary" target="_blank" rel="noopener"
 				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="_blank"
+			<a class="button" target="_blank" rel="noopener"
 				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
@@ -891,11 +892,11 @@ function qsm_get_market_themes() {
 			?>
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img src="<?php echo $theme_screenshot; ?>" />
+		<img alt="" src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
-			<a class="button button-primary" target="_blank"
+			<a class="button button-primary" target="_blank" rel="noopener"
 				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="_blank"
+			<a class="button" target="_blank" rel="noopener"
 				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>

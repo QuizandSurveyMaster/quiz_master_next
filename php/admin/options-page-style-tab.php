@@ -276,7 +276,7 @@ jQuery(document).ready(function() {
 						value="<?php echo $featured_image; ?>" />
 					<a id="set_featured_image"
 						class="button "><?php _e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
-					<br><img class="qsm_featured_image_preview" src="<?php echo $featured_image; ?>">
+					<br><img alt="" class="qsm_featured_image_preview" src="<?php echo $featured_image; ?>">
 					<hr />
 					<table class="form-table" style="width: 100%;">
 						<?php
