@@ -140,7 +140,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.2.0 (June 15, 2021) =
+= 7.2.0 (June 17, 2021) =
 * Feature: Introduced QSM Themes.
 
 = 7.1.19 (June 3, 2021) =
