@@ -573,6 +573,11 @@
 	clear: none;
 }
 
+#model-wizard .theme:focus .theme-screenshot img,
+#model-wizard .theme:hover .theme-screenshot img {
+	opacity: 0.1;
+}
+
 #accordion .ui-accordion-header-icon {
 	position: absolute;
 	right: 24px;

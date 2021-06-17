@@ -23,34 +23,34 @@ function qmn_addons_page() {
 	<h2 style="margin-bottom: 20px;">
 		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 		<?php
-			if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
-				?>
+		if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
+			?>
 		<a class="button button-default" href="?page=qmn_addons"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
 			<?php _e( 'Back to list', 'quiz-master-next' ); ?></a>
 		<?php
-			}
-			?>
+		}
+		?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
-			foreach ( $tab_array as $tab ) {
-					$active_class = '';
-				if ( $active_tab == $tab['slug'] ) {
-					$active_class = 'nav-tab-active';
-				}
-				echo "<a href=\"?page=qmn_addons&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
+		foreach ( $tab_array as $tab ) {
+				$active_class = '';
+			if ( $active_tab == $tab['slug'] ) {
+				$active_class = 'nav-tab-active';
 			}
-			?>
+			echo "<a href=\"?page=qmn_addons&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
+		}
+		?>
 	</h2>
 	<div>
 		<?php
-			foreach ( $tab_array as $tab ) {
-				if ( $active_tab == $tab['slug'] ) {
-					call_user_func( $tab['function'] );
-				}
+		foreach ( $tab_array as $tab ) {
+			if ( $active_tab == $tab['slug'] ) {
+				call_user_func( $tab['function'] );
 			}
-			?>
+		}
+		?>
 	</div>
 </div>
 <?php
@@ -82,7 +82,7 @@ function qsm_generate_featured_addons() {
 	</div>
 	<div class="qsm-addon-list-right">
 		<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
-		<a style="text-decoration: none; font-size: 15px;"
+		<a rel="noopener" style="text-decoration: none; font-size: 15px;"
 			href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 			target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 	</div>
@@ -90,15 +90,15 @@ function qsm_generate_featured_addons() {
 <div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor">
 	<h2 class="installed_title"><?php _e( 'Installed Addons', 'quiz-master-next' ); ?></h2>
 	<?php
-		if ( $tab_array && count( $tab_array ) > 1 ) {
-			?>
+	if ( $tab_array && count( $tab_array ) > 1 ) {
+		?>
 	<div class="installed_addons_wrapper">
 		<?php
-						foreach ( $tab_array as $tab ) {
-							if ( trim( $tab['title'] ) == 'Featured Addons' ) {
-								continue;
-							}
-							?>
+		foreach ( $tab_array as $tab ) {
+			if ( trim( $tab['title'] ) == 'Featured Addons' ) {
+							continue;
+			}
+			?>
 		<div class="installed_addon">
 			<span class="installed_addon_name"><?php echo $tab['title']; ?></span>
 			<span class="installed_addon_link">
@@ -110,16 +110,16 @@ function qsm_generate_featured_addons() {
 		<?php } ?>
 	</div>
 	<?php
-		} else {
-			?>
+	} else {
+		?>
 	<div class="no_addons_installed">
 		<?php
-				_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
-				?>
+			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
+		?>
 	</div>
 	<?php
-		}
-		?>
+	}
+	?>
 </div>
 <div id="qsm_add_addons" class="qsm-primary-acnhor" style="display: none;">
 	<div class="qsm-quiz-page-addon qsm-addon-page-list">
@@ -133,9 +133,9 @@ function qsm_generate_featured_addons() {
 		<div class="qsm_popular_addons" id="qsm_popular_addons">
 			<div class="popuar-addon-ul">
 				<?php
-					if ( $popular_addons ) {
-						foreach ( $popular_addons as $key => $single_arr ) {
-							?>
+				if ( $popular_addons ) {
+					foreach ( $popular_addons as $key => $single_arr ) {
+						?>
 				<div>
 					<div class="addon-itd-wrap">
 						<div class="addon-image" style="background-image: url('<?php echo $single_arr['img']; ?>')">
@@ -148,25 +148,25 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
-										if ( str_word_count( $single_arr['description'] ) > 9 ) {
-											echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-										}
-										?>
+							if ( str_word_count( $single_arr['description'] ) > 9 ) {
+								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+							}
+							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
 							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
-						<a class="button button-primary addon-get-link"
+						<a class="button button-primary addon-get-link" rel="noopener"
 							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
 				<?php
-						}
 					}
-					?>
+				}
+				?>
 			</div>
 		</div>
 		<div class="qsm_popular_addons" id="qsm_onsale_addons" style="display: none;">
@@ -179,9 +179,9 @@ function qsm_generate_featured_addons() {
 			?>
 			<div class="popuar-addon-ul">
 				<?php
-					if ( $qsm_onsale_addons ) {
-						foreach ( $qsm_onsale_addons as $key => $single_arr ) {
-							?>
+				if ( $qsm_onsale_addons ) {
+					foreach ( $qsm_onsale_addons as $key => $single_arr ) {
+						?>
 				<div>
 					<div class="addon-itd-wrap">
 						<div class="addon-image" style="background-image: url('<?php echo $single_arr['img']; ?>')">
@@ -194,25 +194,25 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
-										if ( str_word_count( $single_arr['description'] ) > 9 ) {
-											echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-										}
-										?>
+							if ( str_word_count( $single_arr['description'] ) > 9 ) {
+								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+							}
+							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
 							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
-						<a class="button button-primary addon-get-link"
+						<a class="button button-primary addon-get-link" rel="noopener"
 							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
 				<?php
-						}
 					}
-					?>
+				}
+				?>
 			</div>
 		</div>
 		<div class="qsm_popular_addons" id="qsm_new_addons" style="display: none;">
@@ -243,16 +243,16 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
-									if ( str_word_count( $single_arr['description'] ) > 9 ) {
-										echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
-									}
-									?>
+							if ( str_word_count( $single_arr['description'] ) > 9 ) {
+								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+							}
+							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
 							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
-						<a class="button button-primary addon-get-link"
+						<a class="button button-primary addon-get-link" rel="noopener"
 							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
@@ -284,12 +284,12 @@ function qsm_generate_featured_addons() {
 			<div class="bundle-icon">
 				<?php
 							echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />';
-							?>
+				?>
 			</div>
 			<h3><?php echo $bundles_arr['name']; ?></h3>
 			<p><?php echo $bundles_arr['desc']; ?></p>
 			<a href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-				target="_blank" class="button button-primary addon-bundle-btn">
+				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
 				<?php echo _e( 'Get now', 'quiz-master-next' ); ?>
 				$<?php echo array_values( $bundles_arr['price'] )[0]; ?>
 				<span class="dashicons dashicons-arrow-right-alt2"></span>
@@ -473,7 +473,7 @@ function qsm_display_optin_page() {
 									style="font-size:14px; text-align:center; font-family:Helvetica, sans-serif; color:#333; background-color:transparent; border-width:px;">
 									<div class="sib-text-form-block">
 										<p>
-											<a href="https://sendinblue.com"
+											<a href="https://sendinblue.com" rel="noopener"
 												target="_blank"><?php _e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
 										</p>
 									</div>
@@ -498,7 +498,7 @@ function qsm_display_optin_page() {
 			window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
 
 			window.GENERIC_INVALID_MESSAGE =
-			"The information provided is invalid. Please review the field format and try again.";
+				"The information provided is invalid. Please review the field format and try again.";
 
 
 

@@ -127,7 +127,8 @@ function qsm_options_questions_tab_content() {
 	}
 	?>
 <h3 style="display: none;">Questions</h3>
-<p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/questions-tab/" target="_blank">View
+<p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/questions-tab/" rel="noopener"
+		target="_blank">View
 		Documentation</a></p>
 <div class="question-controls">
 	<span><b><?php _e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
@@ -269,7 +270,7 @@ function qsm_options_questions_tab_content() {
 								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
 								<label class="answer-header">
 									<?php _e( 'Answers', 'quiz-master-next' ); ?>
-									<a class="qsm-question-doc"
+									<a class="qsm-question-doc" rel="noopener"
 										href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers"
 										target="_blank" title="View Documentation">
 										<span class="dashicons dashicons-media-document"></span>
@@ -336,7 +337,7 @@ function qsm_options_questions_tab_content() {
 														}
 														?>
 													</select>
-													<a class="question_info_tag hidden" target="_blank"
+													<a class="question_info_tag hidden" target="_blank" rel="noopener"
 														href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e( 'How to use this option?', 'quiz-master-next' ); ?></a>
 													<p class="hidden" id="question_type_info"></p>
 												</div>
@@ -393,7 +394,7 @@ function qsm_options_questions_tab_content() {
 								<div id="categorydiv" class="postbox">
 									<h2 class="hndle ui-sortable-handle">
 										<span><?php _e( 'Select Category', 'quiz-master-next' ); ?></span>
-										<a class="qsm-question-doc"
+										<a class="qsm-question-doc" rel="noopener"
 											href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category"
 											target="_blank" title="View Documentation"><span
 												class="dashicons dashicons-media-document"></span></a>

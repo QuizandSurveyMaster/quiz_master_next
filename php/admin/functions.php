@@ -563,14 +563,14 @@ function qsm_create_new_quiz_wizard() {
 													?>
 											<div>
 												<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-													target="_blank">
+													target="_blank" rel="noopener">
 													<span class="addon-itd-wrap">
 														<img src="<?php echo $single_arr['img']; ?>" />
 													</span>
 													<span class="addon-price">
 														<a class="addon-get-link"
 															href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-															target="_blank">
+															target="_blank" rel="noopener">
 															<?php
 															_e( 'Buy now', 'quiz-master-next' );
 															echo ' : $ ';
@@ -590,7 +590,7 @@ function qsm_create_new_quiz_wizard() {
 							</div>
 							<div class="qsm-addon-list-right">
 								<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
-								<a style="text-decoration: none; font-size: 15px;"
+								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
 									href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 									target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
@@ -865,9 +865,9 @@ function qsm_get_default_wizard_themes() {
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
-			<a class="button button-primary" target="__blank"
+			<a class="button button-primary" target="_blank"
 				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="__blank"
+			<a class="button" target="_blank"
 				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
@@ -893,9 +893,9 @@ function qsm_get_market_themes() {
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
-			<a class="button button-primary" target="__blank"
+			<a class="button button-primary" target="_blank"
 				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="__blank"
+			<a class="button" target="_blank"
 				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>

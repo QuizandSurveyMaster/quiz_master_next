@@ -245,7 +245,7 @@ jQuery(document).ready(function() {
 	<div id="custom_css" class="quiz_style_tab_content" style="display: none;">
 		<h3><?php _e( 'Custom Style CSS', 'quiz-master-next' ); ?></h3>
 		<p><?php _e( 'For help and guidance along with a list of different classes used in this plugin, please visit the following link:', 'quiz-master-next' ); ?>
-			<a target="_blank"
+			<a target="_blank" rel="noopener"
 				href="https://quizandsurveymaster.com/docs/advanced-topics/editing-design-styles-css/">CSS in QSM</a>
 		</p>
 		<table class="form-table">
