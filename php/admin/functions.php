@@ -527,10 +527,10 @@ function qsm_create_new_quiz_wizard() {
 							<div class="themes wp-clearfix">
 								<ul class="theme-sub-menu">
 									<li class="active"><a data-show="downloaded_theme"
-											href="#"><?php _e( 'Downloaded', 'quiz-master-next' ); ?></a></li>
+											href="#"><?php _e( 'Themes', 'quiz-master-next' ); ?></a></li>
 									<?php if ( ! empty( $themes_data ) ) { ?>
 									<li><a data-show="browse_themes"
-											href="#"><?php _e( 'Browse Themes', 'quiz-master-next' ); ?></a></li>
+											href="#"><?php _e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
 									<?php } ?>
 								</ul>
 								<div class="theme-wrap" id="downloaded_theme">
