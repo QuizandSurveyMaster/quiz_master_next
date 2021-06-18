@@ -548,7 +548,8 @@
 	padding-right: 20px;
 }
 
-#model-wizard .market-theme .market-theme-url {
+#model-wizard .market-theme .market-theme-url,
+#model-wizard .downloaded-theme-button {
 	position: absolute;
 	left: 50%;
 	top: 60%;
@@ -558,13 +559,15 @@
 	text-align: center;
 }
 
-#model-wizard .market-theme .market-theme-url a {
+#model-wizard .market-theme .market-theme-url a,
+#model-wizard .downloaded-theme-button span {
 	margin: 5px;
 	width: 100px;
 	display: inline-block;
 }
 
-#model-wizard .market-theme:hover .market-theme-url {
+#model-wizard .market-theme:hover .market-theme-url,
+#model-wizard .theme:hover .downloaded-theme-button {
 	opacity: 1;
 	top: 50%
 }
@@ -843,6 +846,29 @@ h2.hndle.ui-sortable-handle {
 	display: none;
 }
 
+#model-wizard .empty-market-place {
+	position: absolute;
+	top: 45%;
+	margin: 0 auto;
+	text-align: center;
+	width: 100%;
+}
+
+#model-wizard .empty-market-place span {
+	color: #ccc;
+	margin: 0 auto;
+}
+
+#model-wizard .empty-market-place span.dashicons {
+	font-size: 50px;
+	margin-bottom: 10px;
+	display: contents;
+}
+
+#model-wizard .empty-market-place span.no-themes-message {
+	font-size: 20px;
+}
+
 #select_themes .theme {
 	width: 23%;
 	margin: 0 2% 2% 0;
@@ -967,12 +993,13 @@ h2.hndle.ui-sortable-handle {
 .qsm-wizard-menu .qsm-wizard-step-text-optional {
 	padding: 2px 5px;
 	border-radius: 3px;
-	font-size: 9px;
+	font-size: 11px;
 	font-weight: bold;
-	letter-spacing: 0.5px;
-	position: absolute;
-	top: 22px;
+	position: relative;
+	top: 19px;
 	opacity: 0.7;
+	left: -17px;
+	color: #a6a6a6;
 }
 
 .theme-sub-menu {

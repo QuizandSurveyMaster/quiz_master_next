@@ -718,9 +718,8 @@ Quiz Styles Tab
 .qsm_featured_image_preview {
 	max-height: 200px;
 	max-width: 300px;
-	border: 3px solid white;
-	border-radius: 5px;
 	margin: 5px 0;
+	border-radius: 3px;
 }
 
 .qsm_featured_image_preview:hover:before {

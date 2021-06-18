@@ -409,10 +409,10 @@ function qsm_create_new_quiz_wizard() {
 						</div>
 						<div class="qsm-wizard-wrap" data-show="addons_list">
 							<span class="qsm-wizard-step-text"><?php echo _e( 'Addons', 'quiz-master-next' ); ?></span>
-							<span class="qsm-wizard-step-text-optional">
-								<?php echo _e( '(Optional)', 'quiz-master-next' ); ?>
-							</span>
 						</div>
+						<span class="qsm-wizard-step-text-optional">
+							<?php echo _e( '(Optional)', 'quiz-master-next' ); ?>
+						</span>
 					</div>
 					<ul style="display: none;" class="qsm-new_menu_tab_items">
 						<li class="qsm-new_menu_tab_li active" data-show="quiz_settings">
@@ -760,6 +760,9 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		<?php checked( $saved_quiz_theme, '0', true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img alt="" src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
+		<div class="downloaded-theme-button">
+			<span class="button button-primary"><?php _e( 'Select', 'quiz-master-next' ); ?></span>
+		</div>
 	</div>
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php echo __( 'Default Theme', 'quiz-master-next' ); ?></h2>
@@ -788,6 +791,9 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img alt="" src="<?php echo $folder_slug . $theme_name . '/screenshot.png'; ?>" />
+		<div class="downloaded-theme-button">
+			<span class="button button-primary"><?php _e( 'Select', 'quiz-master-next' ); ?></span>
+		</div>
 	</div>
 	<span class="more-details" style="display: none;"><?php _e( 'Templates', 'quiz-master-next' ); ?></span>
 	<div class="theme-id-container">
@@ -906,6 +912,13 @@ function qsm_get_market_themes() {
 </div>
 <?php
 		}
+	} else {
+		?>
+<div class="empty-market-place">
+	<span class="dashicons dashicons-welcome-widgets-menus"></span><br />
+	<span class="no-themes-message"><?php _e( 'No more themes found.', 'quiz-master-next' ); ?></span>
+</div>
+<?php
 	}
 }
 
