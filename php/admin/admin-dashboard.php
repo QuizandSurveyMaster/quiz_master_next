@@ -139,9 +139,13 @@ function qsm_generate_dashboard_page() {
 								class="welcome-icon"><span
 									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/addons/"
+						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/pricing/"
 								class="welcome-icon"><span
 									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
+						</li>
+						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/"
+								class="welcome-icon"><span
+									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Beautify QSM with Themes', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -156,6 +160,10 @@ function qsm_generate_dashboard_page() {
 								href="https://github.com/QuizandSurveyMaster/quiz_master_next"
 								class="welcome-icon"><span
 									class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e( 'Github Repository', 'quiz-master-next' ); ?></a>
+						</li>
+						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
+								class="welcome-icon"><span
+									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -341,7 +349,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				?>
 			</ul>
 			<div class="pa-all-addon">
-				<a href="https://quizandsurveymaster.com/addons/" rel="noopener"
+				<a href="https://quizandsurveymaster.com/pricing/" rel="noopener"
 					target="_blank"><?php _e( 'SEE ALL ADDONS', 'quiz-master-next' ); ?></a>
 			</div>
 		</div>

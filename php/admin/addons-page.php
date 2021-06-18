@@ -75,9 +75,9 @@ function qsm_generate_featured_addons() {
 					class="dashicons dashicons-arrow-right-alt2"></span></a>
 		</div>
 		<div class="qsm-add-addon" style="display: none;">
-			<a class="active" href="#qsm_popular_addons"><?php _e( 'Popular Addons', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_onsale_addons"><?php _e( 'On Sale Addons', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_new_addons"><?php _e( 'Recently Updated Addons', 'quiz-master-next' ); ?></a>
+			<a class="active" href="#qsm_popular_addons"><?php _e( 'Popular', 'quiz-master-next' ); ?></a>
+			<a href="#qsm_onsale_addons"><?php _e( 'On Sale', 'quiz-master-next' ); ?></a>
+			<a href="#qsm_new_addons"><?php _e( 'Recently Updated', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="qsm-addon-list-right">
