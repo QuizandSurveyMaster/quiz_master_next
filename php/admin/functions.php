@@ -843,7 +843,7 @@ function qsm_get_default_wizard_themes() {
 				$key_to_move = array_search( $theme, array_column( $themes_data, 'name' ) );
 				if ( $key_to_move !== false ) {
 					array_push( $default_themes_data, $themes_data[ $key_to_move ] );
-					$keys_to_unset[] = $key_to_move;
+					// $keys_to_unset[] = $key_to_move;
 				}
 			}
 		}
