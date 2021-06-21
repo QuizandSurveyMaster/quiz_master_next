@@ -245,6 +245,7 @@ class QMNQuizManager {
 			global $wpdb;
 			global $mlwQuizMasterNext;
 			wp_enqueue_style( 'qmn_quiz_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-tooltip' );
@@ -291,6 +292,7 @@ class QMNQuizManager {
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
 				$return_display .= '<style type="text/css">' . htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../../css/qmn_quiz.css', __FILE__ ) );
+				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
 				$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
 				// Check direct file first, then check templates folder in plugin, then check templates file in theme.
@@ -307,6 +309,7 @@ class QMNQuizManager {
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', plugins_url( '../../css/animate.css', __FILE__ ) );
 			wp_enqueue_style( 'qmn_quiz_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
 			$folder_name      = QSM_THEME_PATH . $saved_quiz_theme . '/';
@@ -395,6 +398,7 @@ class QMNQuizManager {
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
 				wp_enqueue_style( 'qmn_quiz_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 				$quiz_result   = unserialize( $result_data['quiz_results'] );
@@ -604,6 +608,7 @@ class QMNQuizManager {
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url( '../../css/jquery.ui.slider-rtl.css', __FILE__ ) );
 		wp_enqueue_script( 'jqueryui-touch-js', '//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js' );
 		wp_enqueue_style( 'qsm_model_css', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+		wp_style_add_data( 'qsm_model_css', 'rtl', 'replace' );
 		wp_enqueue_script( 'qsm_model_js', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 		wp_enqueue_script( 'qsm_quiz', plugins_url( '../../js/qsm-quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version );
 		wp_localize_script(

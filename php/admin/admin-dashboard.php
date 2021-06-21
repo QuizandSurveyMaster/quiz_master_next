@@ -99,7 +99,9 @@ function qsm_generate_dashboard_page() {
 	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
 	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
 	wp_enqueue_script( 'dashboard' );
 	if ( wp_is_mobile() ) {

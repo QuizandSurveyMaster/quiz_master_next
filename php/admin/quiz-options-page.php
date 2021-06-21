@@ -61,7 +61,8 @@ function qsm_generate_quiz_options() {
 	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
         wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+    wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
 	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
         wp_localize_script('qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ));
         // Edit Quiz Name.
@@ -87,7 +88,7 @@ function qsm_generate_quiz_options() {
             }
 	}
 	?>
-        <?php
+<?php
         // Get quiz post based on quiz id
         $args = array(
             'posts_per_page' => 1,
@@ -115,40 +116,42 @@ function qsm_generate_quiz_options() {
             /* Restore original Post Data */
             wp_reset_postdata();
         }
-        ?>    
-	<div class="wrap">            
-		<div class='mlw_quiz_options'>
-                    <h1 style="margin-bottom: 10px;">
-                        <?php echo $quiz_name; ?>
-                        <?php
-                        if( $post_status == 'draft' ){ ?>
-                            <form method="POST" action="" style="display: inline-block; margin-right: 10px;float:right;">
-                                <?php wp_nonce_field( 'qsm_update_quiz_status','qsm_update_quiz_status_nonce' ); ?>
-                                <input type="hidden" name="quiz_post_id" value="<?php echo $post_id; ?>" />
-                                <input type="submit" class="button button-primary" value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
-                            </form>
-                        <?php                         
-                        }
-                        ?>     
-                        <a href="#" title="Edit Name" class="edit-quiz-name">
-                        <span class="dashicons dashicons-edit"></span>
-                        </a>
-                        <a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo $post_permalink; ?>">
-                            <span class="dashicons dashicons-welcome-view-site"></span>
-                        </a>
-                        <a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
-                            <span class="dashicons dashicons-admin-settings"></span>
-                        </a>
-                    </h1>                                        
+        ?>
+<div class="wrap">
+	<div class='mlw_quiz_options'>
+		<h1 style="margin-bottom: 10px;">
+			<?php echo $quiz_name; ?>
 			<?php
+                        if( $post_status == 'draft' ){ ?>
+			<form method="POST" action="">
+				<?php wp_nonce_field( 'qsm_update_quiz_status','qsm_update_quiz_status_nonce' ); ?>
+				<input type="hidden" name="quiz_post_id" value="<?php echo $post_id; ?>" />
+				<input type="submit" class="button button-primary"
+					value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
+			</form>
+			<?php                         
+                        }
+                        ?>
+			<a href="#" title="Edit Name" class="edit-quiz-name">
+				<span class="dashicons dashicons-edit"></span>
+			</a>
+			<a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank"
+				href="<?php echo $post_permalink; ?>">
+				<span class="dashicons dashicons-welcome-view-site"></span>
+			</a>
+			<a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
+				<span class="dashicons dashicons-admin-settings"></span>
+			</a>
+		</h1>
+		<?php
 			// Puts all output from tab into ob_get_contents below.
 			ob_start();
 
 			// If the quiz is set and not empty.
 			if ( $quiz_id ) {
 				?>
-				<nav class="nav-tab-wrapper">
-					<?php
+		<nav class="nav-tab-wrapper">
+			<?php
 					// Cycles through registered tabs to create navigation.
 					foreach ( $tab_array as $tab ) {
 						$active_class = '';
@@ -156,13 +159,14 @@ function qsm_generate_quiz_options() {
 							$active_class = 'nav-tab-active';
 						}
 						?>
-						<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo esc_html( $tab['title'] ); ?></a>
-						<?php
+			<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>"
+				class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo esc_html( $tab['title'] ); ?></a>
+			<?php
 					}
 					?>
-				</nav>
-				<div class="qsm_tab_content">
-					<?php
+		</nav>
+		<div class="qsm_tab_content">
+			<?php
 					// Cycles through tabs looking for current tab to create tab's content.
 					foreach ( $tab_array as $tab ) {
 						if ( $active_tab == $tab['slug'] ) {
@@ -170,60 +174,65 @@ function qsm_generate_quiz_options() {
 						}
 					}
 					?>
-				</div>
-				<?php
+		</div>
+		<?php
 			} else {                            
 				?>
-				<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
-					<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
-					<strong><?php esc_html_e( 'Error!', 'quiz-master-next' ); ?></strong> <?php esc_html_e( 'Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next' ); ?></p>
-				</div>
-				<?php
+		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+			<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+				<strong><?php esc_html_e( 'Error!', 'quiz-master-next' ); ?></strong>
+				<?php esc_html_e( 'Please go to the quizzes page and click on the Edit link from the quiz you wish to edit.', 'quiz-master-next' ); ?>
+			</p>
+		</div>
+		<?php
 			}
 			$mlw_output = ob_get_contents();
 			ob_end_clean();
 
 			// Shows alerts, ads, then tab content.
 			?>
-			<div class="qsm-alerts">
-				<?php
+		<div class="qsm-alerts">
+			<?php
 				$mlwQuizMasterNext->alertManager->showAlerts();
 				?>
-			</div>
-			<?php
+		</div>
+		<?php
 			qsm_show_adverts();
 			echo $mlw_output;
 			?>
-		</div>
-                <div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
-                    <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-                        <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
-                            <header class="qsm-popup__header">
-                                    <h2 class="qsm-popup__title" id="modal-3-title">Edit Name</h2>
-                                    <a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
-                            </header>
-                            <main class="qsm-popup__content" id="modal-3-content">
-                                    <form action='' method='post' id="edit-name-form">
-                                            <label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
-                                            <input type="text" id="edit_quiz_name" name="edit_quiz_name" value="<?php echo $quiz_name; ?>" />
-                                            <input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset($_GET['quiz_id']) && is_int($_GET['quiz_id']) ? (int) $_GET['quiz_id'] : '0'; ?>" />
-                                            <?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
-                                    </form>
-                            </main>
-                            <footer class="qsm-popup__footer">
-                                    <button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary">Edit</button>
-                                    <button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>
-                            </footer>
-                        </div>
-                    </div>
+	</div>
+	<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-3-title">Edit Name</h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-3-content">
+					<form action='' method='post' id="edit-name-form">
+						<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
+						<input type="text" id="edit_quiz_name" name="edit_quiz_name"
+							value="<?php echo $quiz_name; ?>" />
+						<input type="hidden" id="edit_quiz_id" name="edit_quiz_id"
+							value="<?php echo isset($_GET['quiz_id']) && is_int($_GET['quiz_id']) ? (int) $_GET['quiz_id'] : '0'; ?>" />
+						<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
+					</form>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary">Edit</button>
+					<button class="qsm-popup__btn" data-micromodal-close=""
+						aria-label="Close this dialog window">Cancel</button>
+				</footer>
+			</div>
 		</div>
 	</div>
+</div>
 
-	<!-- Backbone Views -->
+<!-- Backbone Views -->
 
-	<!-- View for Notices -->
-	<script type="text/template" id="tmpl-notice">
-		<div class="notice notice-large notice-{{data.type}}">
+<!-- View for Notices -->
+<script type="text/template" id="tmpl-notice">
+	<div class="notice notice-large notice-{{data.type}}">
 			<p>{{data.message}}</p>
 		</div>
 	</script>
