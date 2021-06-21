@@ -142,6 +142,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 7.2.0 (June 21, 2021) =
 * Feature: Introduced QSM Themes.
+* Feature: Introduced image type answers.
+* Bug: Fixed issue where there is an empty last page while using auto pagination.
 
 = 7.1.19 (June 3, 2021) =
 * Bug: Fixed security issue related to IP address sanitization.
