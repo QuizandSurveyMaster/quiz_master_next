@@ -1697,7 +1697,7 @@ td.scheduled_time_start {
 	vertical-align: bottom;
 }
 
-.mlw_quiz_options form {
+.mlw_quiz_options form:first-child {
 	margin-left: 10px;
 	float: left;
 }
