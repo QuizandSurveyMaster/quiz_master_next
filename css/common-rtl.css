@@ -204,7 +204,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	padding-right: 10px;
 }
 
-.mlw_qmn_question span.qsm-text-wrong-option::before {
+.mlw_qmn_question span.qsm-text-wrong-option::after {
 	content: "\f335";
 	font-family: dashicons;
 	position: relative;
@@ -219,7 +219,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	padding-right: 10px;
 }
 
-.mlw_qmn_question .qsm-text-correct-option:before {
+.mlw_qmn_question .qsm-text-correct-option:after {
 	content: "\f159";
 	font-family: dashicons;
 	position: relative;
@@ -239,7 +239,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	padding-right: 10px;
 }
 
-.mlw_qmn_question .qsm-text-simple-option:before {
+.mlw_qmn_question .qsm-text-simple-option:after {
 	content: "\f159";
 	font-family: dashicons;
 	position: relative;
