@@ -1709,7 +1709,7 @@ class QMNQuizManager {
 		}
 
 		// Return array to be merged with main user response array
-		return array(
+		return apply_filters('qsm_check_answers_results' ,  array(
 			'total_points'              => $points_earned,
 			'total_score'               => $total_score,
 			'total_correct'             => $total_correct,
@@ -1718,7 +1718,7 @@ class QMNQuizManager {
 			'question_answers_array'    => $question_data,
 			'total_possible_points'     => $total_possible_points,
 			'total_attempted_questions' => $attempted_question,
-		);
+		), $options, $quiz_data );
 	}
 
 	/**
