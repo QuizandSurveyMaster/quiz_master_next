@@ -24,29 +24,32 @@ function qsm_generate_about_page() {
 	$tab_array = [['slug'=>'about', 'title'=>'About'],['slug'=>'help', 'title' => 'Help']];
 	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'about';
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $version );
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
-	
-		<?php if($active_tab == 'help'){?>
-		<div class="wrap qsm-help-page">
-		<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-		<?php } elseif($active_tab == 'about') {?>
-			<style>
-				div.qsm_icon_wrap {
-				background: <?php echo 'url("' . plugins_url( '../../assets/icon-128x128.png', __FILE__ ) . '" )'; ?> no-repeat;
-			}
-			</style>
-			<div class="wrap about-wrap">
-				<h1><?php esc_html_e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?></h1>		
-				<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
+
+<?php if($active_tab == 'help'){?>
+<div class="wrap qsm-help-page">
+	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
+	<?php } elseif($active_tab == 'about') {?>
+	<style>
+	div.qsm_icon_wrap {
+		background: <?php echo 'url("'. plugins_url('../../assets/icon-128x128.png', __FILE__) . '" )';
+		?>no-repeat;
+	}
+	</style>
+	<div class="wrap about-wrap">
+		<h1><?php esc_html_e( 'Welcome To Quiz And Survey Master (Formerly Quiz Master Next)', 'quiz-master-next' ); ?>
+		</h1>
+		<div class="qsm_icon_wrap"><?php echo esc_html( $version ); ?></div>
 		<?php } ?>
 
-        <h2 class="nav-tab-wrapper">
-            <?php
+		<h2 class="nav-tab-wrapper">
+			<?php
             foreach ($tab_array as $tab) {
                 $active_class = '';
                 if ($active_tab == $tab['slug']) {
@@ -55,26 +58,27 @@ function qsm_generate_about_page() {
                 echo "<a href=\"?page=qsm_quiz_about&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
             }
             ?>
-        </h2>
-		<br/>
-        <div>
-            <?php
+		</h2>
+		<br />
+		<div>
+			<?php
                 if ($active_tab == 'help') {
                     qsm_show_adverts();
 					?>
-						<div style="width:100%;" class="inner-sidebar1">
-							<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
-						</div>
+			<div style="width:100%;" class="inner-sidebar1">
+				<?php do_meta_boxes( 'meta_box_help', 'advanced', '' ); ?>
+			</div>
 
-						<div style="width:100%;" class="inner-sidebar1">
-							<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
-						</div>
-					<?php
+			<div style="width:100%;" class="inner-sidebar1">
+				<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
+			</div>
+			<?php
                 } elseif($active_tab == 'about') {
 					?>
-					<div class="qsm-tab-content tab-3" >
-                    <h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors</h2>
-					<?php
+			<div class="qsm-tab-content tab-3">
+				<h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors
+				</h2>
+				<?php
 					$contributors = get_transient( 'qmn_contributors' );
 					if ( false === $contributors ) {
 						$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
@@ -105,14 +109,15 @@ function qsm_generate_about_page() {
 						echo $contributor_list;
 					}
 					?>
-					<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank" class="button-primary">View GitHub Repo</a>
-					</div>
-					<?php
+				<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank"
+					class="button-primary">View GitHub Repo</a>
+			</div>
+			<?php
 				}
             ?>
-        </div>
+		</div>
 	</div>
-<?php
+	<?php
 }
 
 /**
@@ -125,8 +130,11 @@ function qsm_documentation_meta_box_content() {
 	?>
 	<p><?php esc_html_e( 'Need help with the plugin? Try any of the following:', 'quiz-master-next' ); ?></p>
 	<ul>
-		<li>For assistance in using the plugin, read our <a href="https://quizandsurveymaster.com/docs/" rel="noopener" target="_blank">documentation</a></li>
-		<li>For support, fill out the form on our <a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_blank">Contact Us Page</a></li>
+		<li>For assistance in using the plugin, read our <a href="https://quizandsurveymaster.com/docs/" rel="noopener"
+				target="_blank">documentation</a></li>
+		<li>For support, fill out the form on our <a
+				href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us"
+				rel="noopener" target="_blank">Contact Us Page</a></li>
 	</ul>
 	<?php
 }

@@ -12,20 +12,22 @@ function qsm_generate_result_details() {
 	}
 	global $mlwQuizMasterNext;
         wp_enqueue_style( 'qsm_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+        wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
         wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );        
+        wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
         wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'results';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();        
 	?>
-        <style>
-            .prettyprint {
-                width: 200px;
-            }
-        </style>
-	<div class="wrap">
-                <h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
-                <h2 class="nav-tab-wrapper">
-			<?php
+<style>
+.prettyprint {
+	width: 200px;
+}
+</style>
+<div class="wrap">
+	<h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
+	<h2 class="nav-tab-wrapper">
+		<?php
 			foreach( $tab_array as $tab ) {
 				$active_class = '';
 				if ( $active_tab == $tab['slug'] ) {
@@ -34,23 +36,25 @@ function qsm_generate_result_details() {
 				echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . $tab['slug'] . "\" class=\"nav-tab $active_class\">" . $tab['title'] . "</a>";
 			}
 			?>
-		</h2>
-                <style type="text/css">
-                    .result-tab-content p{
-                        font-size: 16px;
-                    }
-                    .qmn_question_answer b {
-                        font-size: 18px;
-                        margin-bottom: 0;
-                        display: block;
-                    }
-                    .qmn_question_answer{
-                        margin-bottom: 30px;
-                        font-size: 16px;
-                        line-height: 1.5;
-                    }
-                </style>
-                <div class="result-tab-content">
+	</h2>
+	<style type="text/css">
+	.result-tab-content p {
+		font-size: 16px;
+	}
+
+	.qmn_question_answer b {
+		font-size: 18px;
+		margin-bottom: 0;
+		display: block;
+	}
+
+	.qmn_question_answer {
+		margin-bottom: 30px;
+		font-size: 16px;
+		line-height: 1.5;
+	}
+	</style>
+	<div class="result-tab-content">
 		<?php                                        
 			foreach( $tab_array as $tab ) {
 				if ( $active_tab == $tab['slug'] ) {
@@ -58,9 +62,9 @@ function qsm_generate_result_details() {
 				}
 			}
 		?>
-		</div>
 	</div>
-	<?php
+</div>
+<?php
 }
 
 
