@@ -190,13 +190,18 @@ function qsm_generate_results_details_tab() {
                 $template .= '</div>';
                 $template .= '</div>';
                 //Comment entered text
-                $template .= '<div class="comment-inner-wrap" style="display: none;">';
-                $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
+                 $results = @unserialize($results_data->quiz_results);
+                
+                 if ($results[2]) {
+           $template .= '<div class="comment-inner-wrap" style="">';
+                $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
                 $template .= '<div class="inside">';                
                 $template .= '%COMMENT_SECTION%';                
                 $template .= '</div>';
                 $template .= '</div>';
                 $template .= '</div>';
+            }
+           
                 //Response div
                 $template .= '<div class="response-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Responses</span></h2>';
