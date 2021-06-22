@@ -227,7 +227,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 	right: -10px;
 }
 
-.mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:before {
+.mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:after {
 	content: "\f12a";
 	top: 4px;
 }
