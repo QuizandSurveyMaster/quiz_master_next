@@ -1277,7 +1277,6 @@ class QMNQuizManager {
 					'pagetime' => $mlw_qmn_pagetime,
 				);
 				$results_array = apply_filters( 'qsm_results_array', $results_array, $qmn_array_for_variables );
-				$qmn_array_for_variables = apply_filters( 'qsm_result_variables_extra', $qmn_array_for_variables );
 				if ( isset( $results_array['parameters'] ) ) {
 					$qmn_array_for_variables['parameters'] = $results_array['parameters'];
 				}
@@ -1705,7 +1704,7 @@ class QMNQuizManager {
 		}
 
 		// Return array to be merged with main user response array
-		return array(
+		return apply_filters('qsm_check_answers_results' ,  array(
 			'total_points'              => $points_earned,
 			'total_score'               => $total_score,
 			'total_correct'             => $total_correct,
@@ -1714,7 +1713,7 @@ class QMNQuizManager {
 			'question_answers_array'    => $question_data,
 			'total_possible_points'     => $total_possible_points,
 			'total_attempted_questions' => $attempted_question,
-		);
+		), $options, $quiz_data );
 	}
 
 	/**
