@@ -570,7 +570,7 @@ function qsm_create_new_quiz_wizard() {
 													</span>
 													<span class="addon-price">
 														<a class="addon-get-link"
-															href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+															href="<?php echo $single_arr['link']; ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank" rel="noopener">
 															<?php
 															_e( 'Buy now', 'quiz-master-next' );
