@@ -195,7 +195,7 @@ function qsm_generate_results_details_tab() {
                 $template .= '</div>';
                 //Comment entered text
 
-//code to check if comments are enabled or not                
+///code to check if comments are enabled or not                
                     $quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $results_data->quiz_id ) );
 
                     $unserialized_quiz_setting = @unserialize($quiz_data->quiz_settings);
