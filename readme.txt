@@ -102,8 +102,8 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 
 = More free plugins for your WordPress Site =
 
-* [Responsive Menu](https://wordpress.org/plugins/responsive-menu/)
-* [Hide My WP](https://wordpress.org/plugins/hide-wp-login/)
+* [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
+* [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
 
 == Installation ==
 
