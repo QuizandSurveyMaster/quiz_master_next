@@ -2059,7 +2059,7 @@ td.scheduled_time_start {
     .result-page-title{
         margin-bottom: 10px;
     }
-=======
+
 	color: green;
 }
 
@@ -2068,7 +2068,7 @@ td.scheduled_time_start {
 }
 
 .comment-inner-wrap {
-	display: none;
+/*	display: none;*/
 }
 
 #qsm_themes h2.wp-heading-inline {
