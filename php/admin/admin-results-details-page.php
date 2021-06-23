@@ -190,19 +190,28 @@ function qsm_generate_results_details_tab() {
                 $template .= '</div>';
                 $template .= '</div>';
                 //Comment entered text
-                 $results = @unserialize($results_data->quiz_results);
-                
-                 if ($results[2]) {
+
+//code to check if comments are enabled or not                
+                    $quiz_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $results_data->quiz_id ) );
+
+                    $unserialized_quiz_setting = @unserialize($quiz_data->quiz_settings);
+                    $comments_enabled  =  @unserialize($unserialized_quiz_setting['quiz_options']);
+
+
+
+//always check in what representation the data is it ate so much of my time when I was doing that with numerical representation of 0;
+                    if ( $comments_enabled['comment_section'] === '0') {
+
            $template .= '<div class="comment-inner-wrap" style="">';
                 $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
-                $template .= '<div class="inside">';                
+                $template .= '<div class="inside">'; 
                 $template .= '%COMMENT_SECTION%';                
                 $template .= '</div>';
                 $template .= '</div>';
                 $template .= '</div>';
-            }
-           
-                //Response div
+            
+                    }
+//              //Response div
                 $template .= '<div class="response-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Responses</span></h2>';
                 $template .= '<div class="inside">';                
