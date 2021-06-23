@@ -21,6 +21,12 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 * [Flashcards](https://demo.quizandsurveymaster.com/flash-card-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 * [Paid Quiz](https://demo.quizandsurveymaster.com/payment-integration-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 
+= Themes =
+* [Theme Breeze](https://themes.quizandsurveymaster.com/breeze-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Fragrance](https://themes.quizandsurveymaster.com/fragrance-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Ivory](https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Pool](https://themes.quizandsurveymaster.com/pool-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+
 = Easily Create Quiz or Surveys For Your Users =
 Quiz and Survey Master is the easiest [WordPress Quiz Plugin](https://quizandsurveymaster.com/) which can be used to create engaging content to drive traffic and increase user engagement. Everything from viral quiz, trivia quiz, customer satisfaction surveys to employee surveys. This plugin is the ultimate marketing tool for your website.
 
@@ -88,16 +94,16 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
-**Reachout to us**
+= Reachout to us =
+
 * You can contact our pro support via our [Contact Form](https://quizandsurveymaster.com/contact-support/) or use the WordPress form for free plugin support. We are equally active on both places.
 * Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-= Comparison with other Quiz Plugins =
-* Quiz cat (quizcat) - We offer a lot more questions types than just viral quiz and multiple choice. We provide a tons of integrations to help you automate your marketing campaign.
-* HD Quiz - Mainly used for viral and trivial questions types. We are in process of creating these question types.
-* WP Quiz Plugin - Again, mainly used for viral question types. We will release this by the end of this month.
+= More free plugins for your WordPress Site =
 
+* [Responsive Menu](https://wordpress.org/plugins/responsive-menu/)
+* [Hide My WP](https://wordpress.org/plugins/hide-wp-login/)
 
 == Installation ==
 
