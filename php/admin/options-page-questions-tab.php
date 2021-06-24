@@ -243,11 +243,23 @@ function qsm_options_questions_tab_content() {
 										'question_type_id' => '9',
 										'description'      => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
 									),
-									array(
-										'question_type_id' => '13',
-										'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
-									),
+									// array(
+									// 	'question_type_id' => '13',
+									// 	'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+									// ),
 								);
+								
+								// disabling polar for form type quiz and system correct/incorrect
+								if ( $form_type == 0 && $quiz_system == 0 ) {
+									$polar_class = $polar_question_use = '';
+									$description_arr[] = array(
+											'question_type_id' => '13',
+											'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+									);
+								} else {
+									$polar_class        = 'qsm_show_question_type_13';
+									$polar_question_use = ',13';
+								}
 								$description_arr = apply_filters( 'qsm_question_type_description', $description_arr );
 								if ( $description_arr ) {
 									foreach ( $description_arr as $value ) {
@@ -260,13 +272,6 @@ function qsm_options_questions_tab_content() {
 								}
 								?>
 							</div>
-							<?php
-							$polar_class = $polar_question_use = '';
-							if ( $form_type == 0 && ( $quiz_system == 1 || $quiz_system == 3 ) ) {
-								$polar_class        = 'qsm_show_question_type_13';
-								$polar_question_use = ',13';
-							}
-							?>
 							<div id="qsm_optoins_wrapper"
 								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
 								<label class="answer-header">
@@ -644,6 +649,8 @@ function qsm_options_questions_tab_content() {
 				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
 					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e( 'Correct', 'quiz-master-next' ); ?></label></div>
 				<# } #>
+			<# } else { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<# } #>
 			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>
