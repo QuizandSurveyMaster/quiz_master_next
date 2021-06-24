@@ -632,6 +632,7 @@ class QMNQuizManager {
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
 		$quiz_display    .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class} quiz_theme_$saved_quiz_theme'>";
+		$quiz_display     .= "<div id='randomness_order' style='display:none;' >". $options->randomness_order ."</div>";
 		// Get quiz post based on quiz id
 		$args      = array(
 			'posts_per_page' => 1,

@@ -297,17 +297,15 @@ var QSMPageTimer;
 	
 
 			/**
-			 *Here is the code for configuring the recaptcha on randfomized questioons
-			 *Randomized questions have the older pagination system and as a result earlier
-			 * we weren't able to see recaptcha on quizzes with random questions. The qsm-page
-			 * class doens't exist in the older pagination system. If that class doesn't exist
-			 * we will show recapthca  
+			 *
+			 * We have echoed the value pf randomness in quiz page and getting it here
 			 */
-            
-            if($quizForm.children('.qsm-page').length === 0){
-            	QSM.goToPage(quizID, 1);
+            var randomness_order = document.getElementById('randomness_order').innerHTML;
+            if(randomness_order !== '0'){
+            console.log($quizForm.children('.qsm-page').length);
+            QSM.goToPage(quizID, 1);
             }
-			if (0 < $quizForm.children('.qsm-page').length) {
+            else if (0 < $quizForm.children('.qsm-page').length) {
 				$quizForm.children('.qsm-page').hide();
 				template = wp.template('qsm-pagination-' + quizID);
 				$quizForm.append(template());
@@ -348,6 +346,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);
+				//.log('Gotopage Workconsoleing');
 				$quizForm.find('.qsm-pagination .qsm-next').on('click', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
