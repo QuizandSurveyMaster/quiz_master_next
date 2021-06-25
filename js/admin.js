@@ -329,6 +329,9 @@ var QSMAdmin;
                 this_par.text('').text(button_txt);
             }, 1000);
         });
+        $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
+            $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
+        });
         $(document).on('click', '.qsm-addon-anchor-left .qsm-install-addon a', function (e) {
             e.preventDefault();
             var href = $(this).attr('href');

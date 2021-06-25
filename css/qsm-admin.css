@@ -448,6 +448,10 @@ span.qsm-quiz-name {
 	line-height: 22px;
 }
 
+.qsm-active-addons .no_addons_installed a {
+	margin-top: 20px;
+}
+
 .qsm-active-addons .installed_addons_wrapper .installed_addon {
 	padding: 15px 15px 27px 15px;
 	background: #fff;

@@ -108,6 +108,12 @@ function qsm_generate_dashboard_page() {
 		wp_enqueue_script( 'jquery-touch-punch' );
 	}
 	?>
+<script>
+var ps_config = {
+	workspace_id: "d24ad9de-78c7-4835-a2a8-3f5ee0317f31"
+};
+</script>
+<script type="text/javascript" src="https://cdn.productstash.io/js/widget.min.js?v=0.5" defer="defer"></script>
 <div class="wrap">
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
@@ -171,6 +177,9 @@ function qsm_generate_dashboard_page() {
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
+						</li>
+						<li><a href="#" class="welcome-icon" id="whatsnew"><span
+									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>

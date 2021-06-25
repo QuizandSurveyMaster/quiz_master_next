@@ -114,9 +114,13 @@ function qsm_generate_featured_addons() {
 	} else {
 		?>
 	<div class="no_addons_installed">
-		<?php
+		<div>
+			<?php
 			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
 		?>
+		</div>
+		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
+			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}
