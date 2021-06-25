@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.2.0
+Stable tag: 7.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.2.1 (June 25, 2021) =
+* Bug: Fixed layout issues with rtl languages.
+* Bug: Fixed issue of user comments not appearing on admin result page.
+* Bug: Fixed issue with recaptcha not appearing on random quiz.
 
 = 7.2.0 (June 21, 2021) =
 * Feature: Introduced QSM Themes.
