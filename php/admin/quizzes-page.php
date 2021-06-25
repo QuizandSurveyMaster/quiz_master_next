@@ -258,8 +258,8 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 		<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 			<?php echo esc_html( PHP_VERSION ); ?>!
 			<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-			<a href="http://bit.ly/2lyrrm8"
-				target="_blank"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
+			<a href="http://bit.ly/2lyrrm8" target="_blank"
+				rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 		</p>
 	</div>
 	<?php
@@ -287,7 +287,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 					<?php if ( class_exists( 'QSM_Export_Import' ) ) { ?>
 					<a class="button button-primary"
 						href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>"
-						target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+						target="_blank" rel="noopener"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
 					<?php } else { ?>
 					<a id="show_import_export_popup" href="#" style="position: relative;top: 0px;"
 						class="add-new-h2 button-primary"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
@@ -419,7 +419,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 									<a class="qsm-action-link"
 										href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e( 'View Results', 'quiz-master-next' ); ?></a>
 									|
-									<a class="qsm-action-link" target="_blank"
+									<a class="qsm-action-link" target="_blank" rel="noopener"
 										href="<?php echo $single_arr['link']; ?>"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
 								</div>
 							</td>
