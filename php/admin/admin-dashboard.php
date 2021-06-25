@@ -108,6 +108,12 @@ function qsm_generate_dashboard_page() {
 		wp_enqueue_script( 'jquery-touch-punch' );
 	}
 	?>
+<script>
+var ps_config = {
+	workspace_id: "d24ad9de-78c7-4835-a2a8-3f5ee0317f31"
+};
+</script>
+<script type="text/javascript" src="https://cdn.productstash.io/js/widget.min.js?v=0.5" defer="defer"></script>
 <div class="wrap">
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
@@ -133,19 +139,23 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php _e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Beautify QSM with Themes', 'quiz-master-next' ); ?></a>
 						</li>
@@ -154,7 +164,8 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Contact Support', 'quiz-master-next' ); ?></a>
 						</li>
@@ -166,6 +177,9 @@ function qsm_generate_dashboard_page() {
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
+						</li>
+						<li><a href="#" class="welcome-icon" id="whatsnew"><span
+									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -501,7 +515,8 @@ function qsm_dashboard_what_new( $widget_id ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
 				<li>
-					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard" target="_blank" rel="noopener">
+					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard"
+						target="_blank" rel="noopener">
 						<?php echo $single_feed_arr['title']; ?>
 					</a>
 					<div class="post-description">
