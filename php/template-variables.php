@@ -56,6 +56,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_seconds', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_social_share', 10, 2 );
@@ -500,8 +501,14 @@ function mlw_qmn_variable_timer( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_timer_minutes( $content, $mlw_quiz_array ) {
-	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? round( $mlw_quiz_array['timer'] / 60, 2 ) : '' );
+	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? floor( $mlw_quiz_array['timer'] / 60 ) : '' );
 	$content     = str_replace( '%TIMER_MINUTES%', $mlw_minutes, $content );
+	return $content;
+}
+
+function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
+	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? (int)( $mlw_quiz_array['timer'] % 60) : '' );
+	$content     = str_replace( '%TIMER_SECONDS%', $mlw_minutes, $content );
 	return $content;
 }
 
