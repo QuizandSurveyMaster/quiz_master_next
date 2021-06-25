@@ -284,7 +284,9 @@ function qsm_generate_featured_addons() {
 		<div class="qsm-info-widget">
 			<div class="bundle-icon">
 				<?php
-							echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />';
+				if ( ! empty( $bundles_arr['icon'] ) ) {
+					echo '<img src="' . $bundles_arr['icon'] . '" />';
+				}
 				?>
 			</div>
 			<h3><?php echo $bundles_arr['name']; ?></h3>
