@@ -30,7 +30,7 @@ function qsm_options_styling_tab_content() {
 	global $mlwQuizMasterNext;
 
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	$quiz_id = intval( $_GET['quiz_id'] );
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
 
@@ -98,6 +98,7 @@ jQuery(document).ready(function() {
 	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
 	wp_enqueue_style( 'wp-color-picker' );
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	wp_enqueue_media();
 	?>
 	<script type="text/javascript">

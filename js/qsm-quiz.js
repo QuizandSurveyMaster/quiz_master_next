@@ -18,7 +18,7 @@ var QSMPageTimer;
 			// Makes sure we have quizzes on this page
 			if (typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
 				// hide the recaptcha by default
-				$('.g-recaptcha').hide();
+			$('.g-recaptcha').hide();
 				// Cycle through all quizzes
 				_.each(qmn_quiz_data, function (quiz) {
 					quizID = parseInt(quiz.quiz_id);
@@ -62,6 +62,7 @@ var QSMPageTimer;
 
 			// Creates timer status key.
 			qmn_quiz_data[quizID].timerStatus = false;
+
 
 			// If we are using the newer pagination system...
 			if (0 < $quizForm.children('.qsm-page').length) {
@@ -285,6 +286,7 @@ var QSMPageTimer;
 			var $quizForm = QSM.getQuizForm(quizID);
 			return $quizForm.children('.mlw_qmn_timer');
 		},
+
 		/**
 		 * Sets up pagination for a quiz
 		 *
@@ -292,7 +294,17 @@ var QSMPageTimer;
 		 */
 		initPagination: function (quizID) {
 			var $quizForm = QSM.getQuizForm(quizID);
-			if (0 < $quizForm.children('.qsm-page').length) {
+	
+
+			/**
+			 *
+			 * CHecking if the quiz is random
+			 */
+            $is_random = $('.qmn_quiz_container').hasClass('random');
+            if($is_random){
+            QSM.goToPage(quizID, 1);
+            }
+            else if (0 < $quizForm.children('.qsm-page').length) {
 				$quizForm.children('.qsm-page').hide();
 				template = wp.template('qsm-pagination-' + quizID);
 				$quizForm.append(template());
@@ -333,6 +345,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);
+				
 				$quizForm.find('.qsm-pagination .qsm-next').on('click', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
@@ -379,6 +392,7 @@ var QSMPageTimer;
 			$quizForm.find('.qsm-submit-btn').hide();
 			$quizForm.find('.g-recaptcha').hide();
 			if (pageNumber < $pages.length) {
+      
 				$quizForm.find('.qsm-next').show();
 			} else {
 				$quizForm.find('.qsm-submit-btn').show();

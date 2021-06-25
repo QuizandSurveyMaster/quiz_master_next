@@ -89,9 +89,10 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['from_email'] ) ) {
 			$from_email = $settings['from_email'];
 		}
-		?>                
-		<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]' value='<?php echo esc_attr( $from_email ); ?>' />                
-		<?php
+		?>
+<input type='email' name='qmn-settings[from_email]' id='qmn-settings[from_email]'
+	value='<?php echo esc_attr( $from_email ); ?>' />
+<?php
 	}
         
 	/**
@@ -106,9 +107,10 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['items_per_page_question_bank'] ) ) {
                     $items_per_page_question_bank = $settings['items_per_page_question_bank'];
 		}
-		?>                
-                <input type='number' name='qmn-settings[items_per_page_question_bank]' id='qmn-settings[items_per_page_question_bank]' value='<?php echo esc_attr( $items_per_page_question_bank ); ?>' />
-		<?php
+		?>
+<input type='number' name='qmn-settings[items_per_page_question_bank]' id='qmn-settings[items_per_page_question_bank]'
+	value='<?php echo esc_attr( $items_per_page_question_bank ); ?>' />
+<?php
 	}
 
 	/**
@@ -123,9 +125,10 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['from_name'] ) ) {
 			$from_name = $settings['from_name'];
 		}
-		?>                
-		<input type='text' name='qmn-settings[from_name]' id='qmn-settings[from_name]' value='<?php echo esc_attr( $from_name ); ?>' />                
-		<?php
+		?>
+<input type='text' name='qmn-settings[from_name]' id='qmn-settings[from_name]'
+	value='<?php echo esc_attr( $from_name ); ?>' />
+<?php
 	}
 
 	/**
@@ -358,17 +361,18 @@ class QMNGlobalSettingsPage {
 	public static function display_page() {
                 global $mlwQuizMasterNext;
                 wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-                wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+                wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+				wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
 		?>
-		<div class="wrap">
-                    <h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
-                    <form action="options.php" method="POST" class="qsm_global_settings">
-                        <?php settings_fields( 'qmn-settings-group' ); ?>
-                        <?php do_settings_sections( 'qmn_global_settings' ); ?>
-                        <?php submit_button(); ?>
-                    </form>
-                </div>
-		<?php
+<div class="wrap">
+	<h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
+	<form action="options.php" method="POST" class="qsm_global_settings">
+		<?php settings_fields( 'qmn-settings-group' ); ?>
+		<?php do_settings_sections( 'qmn_global_settings' ); ?>
+		<?php submit_button(); ?>
+	</form>
+</div>
+<?php
 	}
         
         /**

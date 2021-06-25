@@ -18,6 +18,7 @@ function qmn_addons_page() {
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	?>
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
@@ -113,9 +114,13 @@ function qsm_generate_featured_addons() {
 	} else {
 		?>
 	<div class="no_addons_installed">
-		<?php
+		<div>
+			<?php
 			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
 		?>
+		</div>
+		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
+			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}
@@ -283,7 +288,9 @@ function qsm_generate_featured_addons() {
 		<div class="qsm-info-widget">
 			<div class="bundle-icon">
 				<?php
-							echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />';
+				if ( ! empty( $bundles_arr['icon'] ) ) {
+					echo '<img src="' . $bundles_arr['icon'] . '" />';
+				}
 				?>
 			</div>
 			<h3><?php echo $bundles_arr['name']; ?></h3>

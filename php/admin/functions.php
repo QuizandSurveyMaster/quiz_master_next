@@ -563,14 +563,14 @@ function qsm_create_new_quiz_wizard() {
 												foreach ( $popular_addons as $key => $single_arr ) {
 													?>
 											<div>
-												<a href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+												<a href="<?php echo $single_arr['link']; ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 													target="_blank" rel="noopener">
 													<span class="addon-itd-wrap">
 														<img alt="" src="<?php echo $single_arr['img']; ?>" />
 													</span>
 													<span class="addon-price">
 														<a class="addon-get-link"
-															href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+															href="<?php echo $single_arr['link']; ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank" rel="noopener">
 															<?php
 															_e( 'Buy now', 'quiz-master-next' );
@@ -592,7 +592,7 @@ function qsm_create_new_quiz_wizard() {
 							<div class="qsm-addon-list-right">
 								<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
 								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
-									href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+									href="http://quizandsurveymaster.com/addons/?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 									target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
@@ -873,9 +873,9 @@ function qsm_get_default_wizard_themes() {
 		<img alt="" src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+				href="<?php echo $theme_demo; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo $theme_url; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
@@ -901,9 +901,9 @@ function qsm_get_market_themes() {
 		<img alt="" src="<?php echo $theme_screenshot; ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo $theme_demo; ?>"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+				href="<?php echo $theme_demo; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo $theme_url; ?>"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo $theme_url; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
@@ -934,8 +934,12 @@ function qsm_generate_roadmap_page() {
 	iframe {
 		height: 1350px;
 	}
+
+	body::-webkit-scrollbar {
+		width: 0px;
+	}
 	</style>
-	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="900" width="100%"
+	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="1350px" width="100%"
 		frameborder="0"></iframe>
 	<script>
 	var ps_config = {
