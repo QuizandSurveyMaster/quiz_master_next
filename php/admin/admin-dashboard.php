@@ -157,7 +157,7 @@ var ps_config = {
 						<li><a target="_blank" rel="noopener"
 								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Beautify QSM with Themes', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
