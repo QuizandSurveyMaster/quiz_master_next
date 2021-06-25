@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.1.19
+ * Version: 7.2.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.1.19
+ * @version 7.2.0
  * @package QSM
  */
 
@@ -17,10 +17,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'QSM_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'QSM_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 define( 'QSM_SUBMENU', __FILE__ );
 define( 'QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'hide_qsm_adv', true );
+define( 'QSM_THEME_PATH', plugin_dir_path( __DIR__ ) );
+define( 'QSM_THEME_SLUG', plugins_url( '/' ) );
 
 /**
  * This class is the main class of the plugin
@@ -38,7 +41,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.1.19';
+	public $version = '7.2.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -87,6 +90,14 @@ class MLWQuizMasterNext {
 	 * @since 5.0.0
 	 */
 	public $quiz_settings;
+
+	/**
+	 * QSM theme settings object
+	 *
+	 * @var object
+	 * @since 7.1.15
+	 */
+	public $theme_settings;
 
 	/**
 	 * Main Construct Function
@@ -173,6 +184,9 @@ class MLWQuizMasterNext {
 		include 'php/classes/class-qsm-settings.php';
 		$this->quiz_settings = new QSM_Quiz_Settings();
 
+		include 'php/classes/class-qsm-theme-settings.php';
+		$this->theme_settings = new QSM_Theme_Settings();
+
 		include 'php/rest-api.php';
 	}
 
@@ -205,9 +219,16 @@ class MLWQuizMasterNext {
 	 *
 	 * @since 7.1.16
 	 */
-	public function qsm_admin_scripts_style( $hook_prefix ) {
-		if ( $hook_prefix == 'admin_page_mlw_quiz_options' ) {
+	public function qsm_admin_scripts_style( $hook ) {
+		global $mlwQuizMasterNext;
+		if ( $hook == 'admin_page_mlw_quiz_options' ) {
 			wp_enqueue_script( 'wp-tinymce' );
+		}
+
+		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
+			wp_enqueue_script( 'qsm_quiz_wizard_script', plugins_url( 'js/qsm-quiz-wizard.js', __FILE__ ), array( 'jquery', 'micromodal_script' ), $this->version );
+			wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
+			wp_enqueue_media();
 		}
 	}
 
@@ -334,15 +355,12 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	public function qsm_overide_old_setting_options() {
-		$settings = (array) get_option( 'qmn-settings' );
-		if ( isset( $settings['facebook_app_id'] ) ) {
-			$facebook_app_id = $settings['facebook_app_id'];
-			if ( $facebook_app_id == '483815031724529' ) {
-				$settings['facebook_app_id'] = '594986844960937';
-				update_option( 'qmn-settings', $settings );
-			}
+		$settings        = (array) get_option( 'qmn-settings' );
+		$facebook_app_id = $settings['facebook_app_id'];
+		if ( $facebook_app_id == '483815031724529' ) {
+			$settings['facebook_app_id'] = '594986844960937';
+			update_option( 'qmn-settings', $settings );
 		}
-
 	}
 }
 

@@ -388,15 +388,24 @@ var import_button;
 			if (!category) {
 				category = '';
 			}
+			var featureImageID = $('.qsm-feature-image-id').val();
+			var featureImageSrc = $('.qsm-feature-image-src').val();
 			var answerType = $('#change-answer-editor').val();
+
 			var answers = [];
 			var $answers = jQuery('.answers-single');
 			_.each($answers, function (answer) {
 				var $answer = jQuery(answer);
 				var answer = '';
+				var caption = '';
 				if (answerType == 'rich') {
 					var ta_id = $answer.find('textarea').attr('id')
 					answer = wp.editor.getContent(ta_id);
+				} else if (answerType == 'image') {
+					answer = $answer.find('.answer-text').val().trim();
+					answer = $.QSMSanitize(answer);
+					caption = $answer.find('.answer-caption').val().trim();
+					caption = $.QSMSanitize(caption);
 				} else {
 					answer = $answer.find('.answer-text').val().trim();
 					answer = $.QSMSanitize(answer);
@@ -407,7 +416,13 @@ var import_button;
 				if ($answer.find('.answer-correct').prop('checked')) {
 					correct = 1;
 				}
-				answers.push([answer, points, correct]);
+
+				if (answerType == 'image') {
+					answers.push([answer, points, correct, caption]);
+				} else {
+					answers.push([answer, points, correct]);
+				}
+
 			});
 			$('.questionElements .advanced-content > .qsm-row ').each(function () {
 				if ($(this).find('input[type="text"]').length > 0) {
@@ -421,30 +436,33 @@ var import_button;
 					advanced_option[element_id] = $(this).find('select').val();
 				} else if ($(this).find('input[type="checkbox"]').length > 0) {
 					var element_id = $(this).find('input[type="checkbox"]').attr('name');
-					var multi_value = $(this).find('input[type="checkbox"]:checked').map(function () {
-						return this.value;
-					}).get().join(',');
+					var multi_value = $(this).find('input[type="checkbox"]:checked').map(function () { return this.value; }).get().join(',');
 					element_id = element_id.replace('[]', '');
 					advanced_option[element_id] = multi_value;
 				}
 			});
-			model.save({
-				type: type,
-				name: name,
-				question_title: question_title,
-				answerInfo: answerInfo,
-				comments: comments,
-				hint: hint,
-				category: category,
-				answers: answers,
-				answerEditor: answerType,
-				other_settings: advanced_option
-			}, {
-				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
-				success: QSMQuestion.saveSuccess,
-				error: QSMAdmin.displayError,
-				type: 'POST'
-			});
+			model.save(
+				{
+					type: type,
+					name: name,
+					question_title: question_title,
+					answerInfo: answerInfo,
+					comments: comments,
+					hint: hint,
+					category: category,
+					featureImageID: featureImageID,
+					featureImageSrc: featureImageSrc,
+					answers: answers,
+					answerEditor: answerType,
+					other_settings: advanced_option
+				},
+				{
+					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+					success: QSMQuestion.saveSuccess,
+					error: QSMAdmin.displayError,
+					type: 'POST'
+				}
+			);
 			//CurrentElement.parents('.questionElements').slideUp('slow');                        
 		},
 		saveSuccess: function (model) {
@@ -462,9 +480,27 @@ var import_button;
 			}, 250);
 			setTimeout(QSMQuestion.removeNew, 250);
 		},
-		addNewAnswer: function (answer) {
+		addNewAnswer: function (answer, questionType = false) {
+			if (!questionType) {
+				questionType = $('#question_type').val();
+			}
 			var answerTemplate = wp.template('single-answer');
-			$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			if (answer.length >= 7 && answer[6] == 'image') {
+				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], caption: answer[3], count: answer[4], question_id: answer[5], answerType: answer[6], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			} else {
+				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+			}
+
+			// show points field only for polar in survey and simple form
+			if (qsmQuestionSettings.form_type != 0) {
+				if (questionType == 13) {
+					$('#answers .answer-points').show();
+				} else {
+					$('#answers .answer-points').val('').hide();
+				}
+			}
+
+
 			if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
 				var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
 				wp.editor.remove(textarea_id);
@@ -525,6 +561,7 @@ var import_button;
 			} else {
 				jQuery("#question-text").val(questionText);
 			}
+
 			if ($('#wp-correct_answer_info-wrap').hasClass('html-active')) {
 				jQuery("#correct_answer_info").val(answerInfo);
 			} else if (CAI_editor) {
@@ -559,6 +596,12 @@ var import_button;
 			if (get_limit_fu === null || typeof get_limit_fu === "undefined") {
 				get_limit_fu = '0';
 			}
+			//Get featured image
+			var get_featureImageSrc = question.get('featureImageSrc');
+			var get_featureImageID = question.get('featureImageID');
+			if (get_featureImageSrc === null || typeof get_featureImageSrc === "undefined") {
+				get_featureImageSrc = get_featureImageID = '';
+			}
 			//Get checked question type
 			var get_file_upload_type = question.get('file_upload_type');
 			$("input[name='file_upload_type[]']:checkbox").attr("checked", false);
@@ -574,7 +617,7 @@ var import_button;
 				answer.push(al + 1);
 				answer.push(questionID);
 				answer.push(answerEditor);
-				QSMQuestion.addNewAnswer(answer);
+				QSMQuestion.addNewAnswer(answer, question.get('type'));
 				al++;
 			});
 			//get new question type
@@ -588,6 +631,7 @@ var import_button;
 			if ($('.qsm_show_question_type_' + question.get('type')).length > 0) {
 				$('.qsm_show_question_type_' + question.get('type')).show();
 			}
+
 			qsm_hide_show_question_desc(question.get('type'));
 			$('#hint').val(question.get('hint'));
 			$("#question_type").val(question.get('type'));
@@ -605,6 +649,14 @@ var import_button;
 			$("#question_title").val(get_question_title);
 			if (0 !== question.get('category').length) {
 				$(".category-radio").val([question.get('category')]);
+			}
+			//Append feature image
+			if (get_featureImageSrc) {
+				var button = $('.qsm-feature-image-upl');
+				button.html('<img src="' + get_featureImageSrc + '" style="width:150px">');
+				button.next('.qsm-feature-image-rmv').show();
+				button.next().next('.qsm-feature-image-id').val(get_featureImageID);
+				button.next().next().next('.qsm-feature-image-src').val(get_featureImageSrc);
 			}
 			//Append extra settings
 			var all_setting = question.get('settings');
@@ -780,9 +832,18 @@ var import_button;
 		});
 		$(document).on('click', '#save-popup-button', function (event) {
 			event.preventDefault();
+			questionElements = $(this).parents('.questionElements');
+			if (6 == questionElements.find('#question_type').val()) {
+				question_description = wp.editor.getContent('question-text').trim();
+				if (question_description == '' || question_description == null) {
+					alert('Text/HTML Section cannot be empty');
+					return false;
+				}
+			}
 			$('#save-edit-question-spinner').addClass('is-active');
 			var model_html = $('#modal-1-content').html();
 			$('#modal-1-content').children().remove();
+
 			QSMQuestion.saveQuestion($(this).parents('.questionElements').children('#edit_question_id').val(), $(this));
 			$('.save-page-button').trigger('click');
 			$('#modal-1-content').html(model_html);
@@ -797,7 +858,7 @@ var import_button;
 			var question_id = $('#edit_question_id').val();
 			var answerType = $('#change-answer-editor').val();
 			var answer = ['', '', 0, answer_length + 1, question_id, answerType];
-			QSMQuestion.addNewAnswer(answer);
+			QSMQuestion.addNewAnswer(answer, 0);
 		});
 
 		$('.qsm-popup-bank').on('click', '.import-button', function (event) {
@@ -947,6 +1008,21 @@ var import_button;
 		//Hide the question settings based on question type
 		$(document).on('change', '#question_type', function () {
 			var question_val = $(this).val();
+			if (6 == question_val) {
+				var question_description = wp.editor.getContent('question-text');
+				if (question_description == 'Add description here!') {
+					tinyMCE.get('question-text').setContent('');
+				}
+			}
+
+			// show points field only for polar in survey and simple form
+			if (qsmQuestionSettings.form_type != 0) {
+				if (13 == question_val) {
+					$('.answer-points').show();
+				} else {
+					$('.answer-points').val('').hide();
+				}
+			}
 			$('.qsm_hide_for_other').hide();
 			if ($('.qsm_show_question_type_' + question_val).length > 0) {
 				$('.qsm_show_question_type_' + question_val).show();
@@ -973,12 +1049,50 @@ var import_button;
 				$(this).next('.qsm-row').slideUp();
 			} else {
 				$(this).hide();
+				questionElements = $(this).parents('.questionElements');
 				var question_description = wp.editor.getContent('question-text');
 				if (question_description == '' || question_description == null) {
-					tinyMCE.get('question-text').setContent('Add description here!');
+					console.log(questionElements.find('#question_type').val());
+					if (6 == questionElements.find('#question_type').val()) {
+						tinyMCE.get('question-text').setContent('');
+					} else {
+						tinyMCE.get('question-text').setContent('Add description here!');
+					}
 				}
 				$(this).next('.qsm-row').slideDown();
 			}
+		});
+
+		//Open file upload on feature image                
+		$('body').on('click', '.qsm-feature-image-upl', function (e) {
+			e.preventDefault();
+			var button = $(this),
+				custom_uploader = wp.media({
+					title: 'Insert image',
+					library: {
+						// uploadedTo : wp.media.view.settings.post.id, // attach to the current post?
+						type: 'image'
+					},
+					button: {
+						text: 'Use this image' // button label text
+					},
+					multiple: false
+				}).on('select', function () { // it also has "open" and "close" events
+					var attachment = custom_uploader.state().get('selection').first().toJSON();
+					button.html('<img src="' + attachment.url + '" style="width:150px">');
+					button.next('.qsm-feature-image-rmv').show();
+					button.next().next('.qsm-feature-image-id').val(attachment.id);
+					button.next().next().next('.qsm-feature-image-src').val(attachment.url);
+				}).open();
+		});
+
+		// on remove button click
+		$('body').on('click', '.qsm-feature-image-rmv', function (e) {
+			e.preventDefault();
+			var button = $(this);
+			button.next().val(''); // emptying the hidden field
+			button.next().next().val(''); // emptying the hidden field
+			button.hide().prev().html('Upload image');
 		});
 
 		//Hide/show correct answer info

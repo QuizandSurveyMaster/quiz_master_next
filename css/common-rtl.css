@@ -1,0 +1,360 @@
+/**
+* Created by dev: 21-06-2021
+*/
+.pages_count,
+.qsm-page .pages_count,
+.quiz_section .pages_count {
+	display: block;
+	text-align: center;
+}
+
+.mlw_qmn_question p:empty {
+	display: none;
+}
+
+.MJXc-display {
+	display: inline-block !important;
+}
+
+body .quiz_section .mlw_qmn_question {
+	display: inline-block;
+}
+
+body .quiz_section .qsm_contact_div .mlw_qmn_question {
+	display: block;
+}
+
+.mlw_qmn_question.polar-question-title {
+	margin-bottom: 10px;
+}
+
+.polar-question-title {
+	margin-bottom: 50px;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+.question-type-polar-s {
+	display: inline-block !important;
+	position: relative;
+	width: 100%;
+}
+
+.question-type-polar-s br {
+	display: none;
+}
+
+.question-type-polar-s .left-polar-title {
+	width: 25%;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	line-height: normal;
+}
+
+.question-type-polar-s .slider-main-wrapper {
+	width: 45%;
+	position: absolute;
+	right: 50%;
+	top: 50%;
+	transform: translate(50%, -50%);
+}
+
+.question-type-polar-s .right-polar-title {
+	width: 25%;
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	line-height: normal;
+}
+
+.question-type-polar-s .ui-widget-content {
+	background: #A5A5A5;
+	border-color: #A5A5A5;
+	border-radius: 0;
+	height: 20px;
+}
+
+.question-type-polar-s .ui-widget-content .ui-slider-handle {
+	background: rgb(119, 113, 113);
+	height: 32px;
+	border-color: rgb(119, 113, 113);
+	top: -7px;
+	border-radius: 0px;
+}
+
+.qsm-deselect-answer {
+	float: left;
+}
+
+.qsm-popup__close {
+	text-decoration: none !important;
+}
+
+.qsm-popup__btn-primary {
+	margin-left: 30px;
+}
+
+.submit-the-form {
+	margin-right: 15px !important;
+}
+
+body .qsm-popup__container {
+	padding-top: 40px;
+	padding-bottom: 50px;
+}
+
+body .qsm-popup__header {
+	text-align: right;
+}
+
+body .qsm-popup .qsm-popup__btn {
+	font-size: 16px;
+	padding-right: 15px;
+	padding-left: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+body .qsm-popup__content {
+	text-align: center;
+}
+
+body .qsm-popup__content>img {
+	display: inline-block;
+	width: 70px;
+}
+
+body .qsm-popup__content>p.qsm-time-up-text {
+	font-weight: bold;
+	font-size: 24px;
+	margin-top: 10px;
+	font-family: inherit;
+}
+
+footer.qsm-popup__footer {
+	text-align: center;
+}
+
+footer.qsm-popup__footer button.qsm-popup-secondary-button {
+	background-color: #808080 !important;
+}
+
+footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
+	background-color: #808080 !important;
+	opacity: 0.9;
+}
+
+.qsm-quiz-container .qsm-contact-type-checkbox input {
+	display: inline-block;
+}
+
+.quiz_section .mlw_qmn_new_question {
+	font-weight: bold;
+	display: inline;
+	width: auto;
+	margin-bottom: 10px;
+}
+
+.quiz_section .mlw_qmn_question.qsm_remove_bold {
+	font-weight: normal;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.quiz_section iframe {
+	width: 100% !important;
+	min-height: 315px !important;
+}
+
+.qsm-progress-bar .progressbar-text {
+	position: absolute;
+	padding: 0px;
+	margin: 0px;
+	top: 10px !important;
+	left: 10px;
+	font-size: 13px;
+	font-weight: bold;
+	color: rgb(52, 152, 219);
+}
+
+.quiz_section .mlw-file-upload-error-msg {
+	color: red;
+	display: block;
+}
+
+.quiz_section .remove-uploaded-file {
+	color: red;
+	border: 1px solid red;
+	width: 31px;
+	padding: 5px 5px 0px 5px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+/**
+* Design for new template variable QUESTION_WITH_ANSWER
+*/
+.mlw_qmn_question .qsm-text-wrong-option {
+	display: block;
+	color: #dc3232;
+	margin-bottom: 5px;
+	padding-right: 10px;
+}
+
+.mlw_qmn_question span.qsm-text-wrong-option::after {
+	content: "\f335";
+	font-family: dashicons;
+	position: relative;
+	top: 3px;
+	right: -10px;
+}
+
+.mlw_qmn_question .qsm-text-correct-option {
+	display: block;
+	color: green;
+	margin-bottom: 5px;
+	padding-right: 10px;
+}
+
+.mlw_qmn_question .qsm-text-correct-option:after {
+	content: "\f159";
+	font-family: dashicons;
+	position: relative;
+	top: 3px;
+	right: -10px;
+}
+
+.mlw_qmn_question .qsm-text-correct-option.qsm-text-user-correct-answer:after {
+	content: "\f12a";
+	top: 4px;
+}
+
+.mlw_qmn_question .qsm-text-simple-option {
+	display: block;
+	margin-bottom: 5px;
+	color: #808080;
+	padding-right: 10px;
+}
+
+.mlw_qmn_question .qsm-text-simple-option:after {
+	content: "\f159";
+	font-family: dashicons;
+	position: relative;
+	top: 3px;
+	right: -10px;
+}
+
+.qsm-results-page .qmn_question_answer.qsm-add-border-bottom {
+	border-bottom: 1px solid #808080;
+	padding-bottom: 25px;
+}
+
+.qmn_quiz_container.qsm_auto_pagination_enabled {
+	position: relative;
+}
+
+.qmn_quiz_container.qsm_auto_pagination_enabled .quiz_section.quiz_end .qsm-btn {
+	bottom: 0;
+	left: 0;
+	width: auto;
+	text-align: left;
+	height: auto;
+	padding: 0;
+	position: absolute;
+	z-index: 1;
+	margin-bottom: 15px;
+}
+
+.quiz_section input[type="text"].qmn_fill_blank {
+	display: inline-block;
+}
+
+.qmn_quiz_container .mlw_previous {
+	margin-bottom: 15px;
+}
+
+.multi-checkbox-limit-reach {
+	color: red;
+	margin-top: 5px;
+	display: inline-block;
+	width: 100%;
+}
+
+.quiz_section .qsm-inline-correct-info {
+	margin-bottom: 0;
+	margin-top: 10px;
+}
+
+.quiz_section.qmn_error .mlw_answer_date {
+	border: 1px solid #da4f49;
+	background: #F2DEDE;
+	padding: 5px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.qsm_social_share_link {
+	display: inline-block;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+
+	.question-type-polar-s .left-polar-title,
+	.question-type-polar-s .slider-main-wrapper,
+	.question-type-polar-s .right-polar-title {
+		width: 100%;
+		position: relative;
+		top: auto;
+		right: auto;
+		left: auto;
+		bottom: auto;
+		transform: none;
+		margin-bottom: 30px;
+	}
+
+	.question-type-polar-s {
+		height: auto !important;
+	}
+
+	body .quiz_section .qmn_radio_answers label,
+	body .quiz_section .qmn_check_answers label,
+	body .quiz_section .qmn_accept_answers label {
+		font-size: 14px !important;
+	}
+}
+
+.qsm_tooltip {
+	position: relative;
+	display: inline-block;
+}
+
+.qsm_tooltip .qsm_tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+	bottom: 100%;
+	right: 50%;
+	margin-right: -60px;
+}
+
+.qsm_tooltip .qsm_tooltiptext a {
+	background-color: black !important;
+	color: #fff !important;
+}
+
+.qsm_tooltip:hover .qsm_tooltiptext {
+	visibility: visible;
+}

@@ -148,8 +148,7 @@ class QSM_Results_Pages {
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
 			$page = htmlspecialchars_decode( $content, ENT_QUOTES );
-			$page = apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
-			echo str_replace( "\n", '<br>', $page );
+			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page' );
 			?>
 		</div>
