@@ -133,28 +133,33 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php _e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Beautify QSM with Themes', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Contact Support', 'quiz-master-next' ); ?></a>
 						</li>
@@ -501,7 +506,8 @@ function qsm_dashboard_what_new( $widget_id ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
 				<li>
-					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard" target="_blank" rel="noopener">
+					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard"
+						target="_blank" rel="noopener">
 						<?php echo $single_feed_arr['title']; ?>
 					</a>
 					<div class="post-description">
