@@ -480,13 +480,26 @@ var import_button;
 			}, 250);
 			setTimeout(QSMQuestion.removeNew, 250);
 		},
-		addNewAnswer: function (answer) {
+		addNewAnswer: function (answer, questionType = false) {
+			if (!questionType) {
+				questionType = $('#question_type').val();
+			}
 			var answerTemplate = wp.template('single-answer');
 			if (answer.length >= 7 && answer[6] == 'image') {
 				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], caption: answer[3], count: answer[4], question_id: answer[5], answerType: answer[6], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
 			} else {
 				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
 			}
+
+			// show points field only for polar in survey and simple form
+			if (qsmQuestionSettings.form_type != 0) {
+				if (questionType == 13) {
+					$('#answers .answer-points').show();
+				} else {
+					$('#answers .answer-points').val('').hide();
+				}
+			}
+
 
 			if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
 				var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
@@ -604,7 +617,7 @@ var import_button;
 				answer.push(al + 1);
 				answer.push(questionID);
 				answer.push(answerEditor);
-				QSMQuestion.addNewAnswer(answer);
+				QSMQuestion.addNewAnswer(answer, question.get('type'));
 				al++;
 			});
 			//get new question type
@@ -845,7 +858,7 @@ var import_button;
 			var question_id = $('#edit_question_id').val();
 			var answerType = $('#change-answer-editor').val();
 			var answer = ['', '', 0, answer_length + 1, question_id, answerType];
-			QSMQuestion.addNewAnswer(answer);
+			QSMQuestion.addNewAnswer(answer, 0);
 		});
 
 		$('.qsm-popup-bank').on('click', '.import-button', function (event) {
@@ -999,6 +1012,15 @@ var import_button;
 				var question_description = wp.editor.getContent('question-text');
 				if (question_description == 'Add description here!') {
 					tinyMCE.get('question-text').setContent('');
+				}
+			}
+
+			// show points field only for polar in survey and simple form
+			if (qsmQuestionSettings.form_type != 0) {
+				if (13 == question_val) {
+					$('.answer-points').show();
+				} else {
+					$('.answer-points').val('').hide();
 				}
 			}
 			$('.qsm_hide_for_other').hide();
