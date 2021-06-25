@@ -298,11 +298,10 @@ var QSMPageTimer;
 
 			/**
 			 *
-			 * We have echoed the value pf randomness in quiz page and getting it here
+			 * CHecking if the quiz is random
 			 */
-            var randomness_order = document.getElementById('randomness_order').innerHTML;
-            if(randomness_order !== '0'){
-            console.log($quizForm.children('.qsm-page').length);
+            $is_random = $('.qmn_quiz_container').hasClass('random');
+            if($is_random){
             QSM.goToPage(quizID, 1);
             }
             else if (0 < $quizForm.children('.qsm-page').length) {
@@ -346,7 +345,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);
-				//.log('Gotopage Workconsoleing');
+				
 				$quizForm.find('.qsm-pagination .qsm-next').on('click', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
