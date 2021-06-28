@@ -1191,12 +1191,6 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	// if ( isset( $_POST[ 'question' . $id ] ) ) {
-	// $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-	// $mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-	// } else {
-	// $mlw_user_answer = ' ';
-	// }
 	$user_input = $user_text = array();
 	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
 		foreach ( $_POST[ 'question' . $id ] as $input ) {
@@ -1208,7 +1202,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 			}
 		}
 	}
-	// $return_array['user_text'] = $mlw_user_answer;
+
 	foreach ( $answers as $answer ) {
 		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
@@ -1216,10 +1210,10 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		if ( $key !== false ) {
 			$return_array['correct']   = 'correct';
 			$return_array['points']    = $answer[1];
-			$return_array['user_text'] = $_POST[ 'question' . $id ][ $key ];
+			$return_array['user_text'] = $user_test[ $key ];
 			break;
 		} else {
-			$return_array['user_text'] = implode( ', ', $_POST[ 'question' . $id ] );
+			$return_array['user_text'] = implode( ', ', $user_test );
 		}
 	}
 	/**
