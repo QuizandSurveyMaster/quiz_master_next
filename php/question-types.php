@@ -1162,7 +1162,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
 		$mlw_requireClass = '';}
-	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "' />";
+	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "[]' />";
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
@@ -1191,20 +1191,35 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-	} else {
-		$mlw_user_answer = ' ';
+	// if ( isset( $_POST[ 'question' . $id ] ) ) {
+	// $decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
+	// $mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
+	// } else {
+	// $mlw_user_answer = ' ';
+	// }
+	$user_input = $user_text = array();
+	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
+		foreach ( $_POST[ 'question' . $id ] as $input ) {
+			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
+			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
+			if ( $mlw_user_answer != '' ) {
+				$user_input[] = mb_strtoupper( $mlw_user_answer );
+				$user_test[] = $mlw_user_answer;
+			}
+		}
 	}
-	$return_array['user_text'] = $mlw_user_answer;
+	// $return_array['user_text'] = $mlw_user_answer;
 	foreach ( $answers as $answer ) {
 		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
-			$return_array['correct'] = 'correct';
-			$return_array['points']  = $answer[1];
+		$key                          = array_search( mb_strtoupper( $return_array['correct_text'] ), $user_input );
+		if ( $key !== false ) {
+			$return_array['correct']   = 'correct';
+			$return_array['points']    = $answer[1];
+			$return_array['user_text'] = $_POST[ 'question' . $id ][ $key ];
 			break;
+		} else {
+			$return_array['user_text'] = implode( ', ', $_POST[ 'question' . $id ] );
 		}
 	}
 	/**
