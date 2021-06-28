@@ -356,12 +356,24 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_overide_old_setting_options() {
 		$settings        = (array) get_option( 'qmn-settings' );
+
+if (isset($settings['facebook_app_id'])) {
+
 		$facebook_app_id = $settings['facebook_app_id'];
+		
 		if ( $facebook_app_id == '483815031724529' ) {
 			$settings['facebook_app_id'] = '594986844960937';
-			update_option( 'qmn-settings', $settings );
+			
 		}
+}
+else{
+	$settings['facebook_app_id'] = '594986844960937';
+	update_option( 'qmn-settings', $settings );
+}
+			
+
 	}
+
 }
 
 global $mlwQuizMasterNext;
