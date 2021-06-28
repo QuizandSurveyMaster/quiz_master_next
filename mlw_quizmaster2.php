@@ -363,7 +363,7 @@ if (isset($settings['facebook_app_id'])) {
 		
 		if ( $facebook_app_id == '483815031724529' ) {
 			$settings['facebook_app_id'] = '594986844960937';
-			
+			update_option( 'qmn-settings', $settings );
 		}
 }
 else{
