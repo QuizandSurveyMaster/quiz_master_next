@@ -313,9 +313,9 @@ function mlw_qmn_variable_amount_correct( $content, $mlw_quiz_array ) {
  */
 function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 	if ( false !== strpos( $content, '%AMOUNT_INCORRECT%' ) ) {
-		$total_question  = $mlw_quiz_array['total_questions'];
+		$total_attempted_question  = $mlw_quiz_array['total_attempted_questions'];
 		$total_correct   = $mlw_quiz_array['total_correct'];
-		$total_incorrect = $total_question - $total_correct;
+		$total_incorrect = $total_attempted_question - $total_correct;
 		$content         = str_replace( '%AMOUNT_INCORRECT%', max( $total_incorrect, 0 ), $content );
 	}
 	return $content;
