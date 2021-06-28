@@ -22,7 +22,7 @@ class QSM_Questions {
 	public static function load_question( $question_id ) {
 		global $wpdb;
 		$question_id = intval( $question_id );
-		$question    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id ), 'ARRAY_A' );
+		$question = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id ), 'ARRAY_A' );
 		if ( ! is_null( $question ) ) {
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
@@ -37,7 +37,7 @@ class QSM_Questions {
 			}
 			$question['settings'] = $settings;
 
-			return apply_filters( 'qsm_load_question', $question, $question_id );
+			return apply_filters('qsm_load_question',$question, $question_id);
 		}
 		return array();
 	}
@@ -79,7 +79,7 @@ class QSM_Questions {
 			$question_sql = implode( ', ', $question_ids );
 
 			// Get all questions.
-			$question_array = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s)", $question_sql ), 'ARRAY_A' );
+			$question_array = $wpdb->get_results( $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s)",$question_sql), 'ARRAY_A' );
 
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
@@ -111,7 +111,7 @@ class QSM_Questions {
 				$questions[ $key ]['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 			}
 		}
-		return apply_filters( 'qsm_load_questions_by_pages', $questions, $quiz_id );
+		return apply_filters('qsm_load_questions_by_pages',$questions,$quiz_id);
 	}
 
 	/**
@@ -128,7 +128,7 @@ class QSM_Questions {
 
 		// Get all questions.
 		if ( 0 !== $quiz_id ) {
-			$quiz_id   = intval( $quiz_id );
+			$quiz_id = intval( $quiz_id );
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted='0' ORDER BY question_order ASC", $quiz_id ), 'ARRAY_A' );
 		} else {
 			$questions = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted='0' ORDER BY question_order ASC", 'ARRAY_A' );
@@ -152,7 +152,7 @@ class QSM_Questions {
 
 			$question_array[ $question['question_id'] ] = $question;
 		}
-		return apply_filters( 'qsm_load_questions', $question_array, $quiz_id );
+		return apply_filters('qsm_load_questions',$question_array,$quiz_id);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class QSM_Questions {
 	 */
 	public static function delete_question( $question_id ) {
 		global $wpdb;
-
+		
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_questions',
 			array(
@@ -244,7 +244,7 @@ class QSM_Questions {
 			'order'       => 1,
 			'category'    => '',
 		);
-		$data     = wp_parse_args( $data, $defaults );
+		$data = wp_parse_args( $data, $defaults );
 
 		$defaults = array(
 			'required' => 1,
@@ -252,15 +252,11 @@ class QSM_Questions {
 		$settings = wp_parse_args( $settings, $defaults );
 
 		foreach ( $answers as $key => $answer ) {
-			$answers_array = array(
+			$answers[ $key ] = array(
 				htmlspecialchars( $answer[0], ENT_QUOTES ),
 				floatval( $answer[1] ),
 				intval( $answer[2] ),
 			);
-			if ( isset( $answer[3] ) ) {
-				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
-			}
-			$answers[ $key ] = $answers_array;
 		}
 
 		$values = array(

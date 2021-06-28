@@ -163,6 +163,7 @@ class QSM_Emails {
 		$content = htmlspecialchars_decode( $content, ENT_QUOTES );                
                 $response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
+		$content = str_replace( "\n", '<br>', $content );
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
 		$content = html_entity_decode( $content );

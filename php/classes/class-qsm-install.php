@@ -249,6 +249,19 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+        // Registers question_per_category setting
+   $field_array = array(
+      'id' => 'question_per_category',
+      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0,
+      'help' => __('Leave 0 to load all questions','quiz-master-next'),
+      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
     // Registers scheduled_time_start setting
     $field_array = array(
       'id' => 'scheduled_time_start',
@@ -1233,8 +1246,6 @@ class QSM_Install {
   	$question_table_name = $wpdb->prefix . "mlw_questions";
   	$results_table_name = $wpdb->prefix . "mlw_results";
   	$audit_table_name = $wpdb->prefix . "mlw_qm_audit_trail";
-    $themes_table_name = $wpdb->prefix . "mlw_themes";
-    $quiz_themes_settings_table_name = $wpdb->prefix . "mlw_quiz_theme_settings";
 
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
   		$sql = "CREATE TABLE $quiz_table_name (
@@ -1269,7 +1280,8 @@ class QSM_Install {
   			admin_email TEXT NOT NULL,
   			comment_section INT NOT NULL,
   			question_from_total INT NOT NULL,
-  			total_user_tries INT NOT NULL,
+        question_per_category INT NOT NULL,
+     		total_user_tries INT NOT NULL,
   			total_user_tries_text TEXT NOT NULL,
   			certificate_template TEXT NOT NULL,
   			social_media INT NOT NULL,
@@ -1365,7 +1377,6 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
   	}
-
   	if( $wpdb->get_var( "SHOW TABLES LIKE '$audit_table_name'" ) != $audit_table_name ) {
   		$sql = "CREATE TABLE $audit_table_name (
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -1378,45 +1389,9 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
 	  }
-
-    if( $wpdb->get_var( "SHOW TABLES LIKE '$themes_table_name'" ) != $themes_table_name ) {
-  		$sql = "CREATE TABLE $themes_table_name (
-  			id mediumint(9) NOT NULL AUTO_INCREMENT,
-  			theme TEXT NOT NULL,
-        theme_name TEXT NOT NULL,
-        default_settings TEXT NOT NULL,
-        theme_active BOOLEAN NOT NULL,
-  			PRIMARY KEY  (id)
-  		) $charset_collate;";
-
-  		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-  		dbDelta( $sql );
-	  }
 	
-    if( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_themes_settings_table_name'" ) != $quiz_themes_settings_table_name ) {
-  		$sql = "CREATE TABLE $quiz_themes_settings_table_name (
-  			id mediumint(9) NOT NULL AUTO_INCREMENT,
-  			theme_id mediumint(9) NOT NULL,
-        quiz_id mediumint(9) NOT NULL,
-        quiz_theme_settings TEXT NOT NULL,
-        active_theme BOOLEAN NOT NULL,
-  			PRIMARY KEY  (id)
-  		) $charset_collate;";
-
-  		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-  		dbDelta( $sql );
-	  }
-
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->register_quiz_post_types();
-          // Will be removed
-          //Create a folder in upload folder
-          $upload = wp_upload_dir();
-          $upload_dir = $upload['basedir'];
-          $upload_dir = $upload_dir . '/qsm_themes';
-          if (! is_dir($upload_dir)) {
-             mkdir( $upload_dir, 0700 );
-          }
 	flush_rewrite_rules();
   }
 
@@ -1829,7 +1804,7 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 		//Update 7.1.11
-		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "mlw_results and column_name = 'point_score'") != 'FLOAT' ) 
+		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "'mlw_results' and column_name = 'point_score'") != 'FLOAT' ) 
 		{
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
 		}
