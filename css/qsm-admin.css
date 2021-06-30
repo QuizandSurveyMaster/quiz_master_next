@@ -390,6 +390,15 @@ span.qsm-quiz-name {
 	box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 16%);
 }
 
+.qsm-addon-news-ads .qsm-info-widget .bundle-icon img {
+	max-width: 40px;
+	max-height: 40px;
+}
+
+.qsm-addon-news-ads .qsm-info-widget:nth-child(4) .bundle-icon {
+	background: #2271b1;
+}
+
 .qsm-addon-news-ads .qsm-info-widget:nth-child(2) .bundle-icon {
 	background: #00b592;
 }
