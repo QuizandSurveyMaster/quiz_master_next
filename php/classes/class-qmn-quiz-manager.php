@@ -495,20 +495,34 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
         //check If we should load a specific number of question 
 			if( $quiz_options->question_per_category != 0 && $is_quiz_page ){
 				
+        
         //processing Categories checking. removing commas and making them arrays
-        $categories = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
+	$cat_sql = $wpdb->get_results( $wpdb->prepare("SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d ", $quiz_id), );
+       $all_cat = array();
+    foreach($cat_sql as $cat){
+    array_push($all_cat, $cat->category);
+    }   
+    //processing the categories
+    $all_cat = array_unique($all_cat);
+    
+    $all_cat = array_values($all_cat);
+    	
+
+    var_dump($all_cat);	
+
+        $categories = $quiz_options->randon_category != '' ? $quiz_options->randon_category : $all_cat;
+
+       if($quiz_options->randon_category != ''){
 
 		$categories = explode(",",$categories);
 
 		$categories = str_replace(',', '', $categories)	;
-		
-
-
+       }
         //Running a loop for each category and getting a limited number of questions 
          for ($i=0; $i < count($categories) ; $i++) { 
-	          $piece1 =  $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) AND category IN (%s) LIMIT %d",
-	              $question_sql,
-	              strtoupper($categories[$i]),
+         	$catSQL = isset( $quiz_options->randon_category )&& !empty( $quiz_options->randon_category) ? : '';
+	          $piece1 =  $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) AND category IN  (%s) LIMIT %d",
+	              $question_sql,$categories[$i],
 	              $quiz_options->question_per_category  );
 	          
 	         $piece_res = $wpdb->get_results( stripslashes( $piece1 ) );

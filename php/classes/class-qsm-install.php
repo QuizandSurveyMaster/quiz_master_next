@@ -326,7 +326,7 @@ class QSM_Install {
 	// Registers category setting
     $field_array = array(
 		  'id' => 'randon_category',
-		  'label' => __('Random Questions Categories', 'quiz-master-next'),
+		  'label' => __('Questions Categories', 'quiz-master-next'),
 		  'type' => 'category',
            'default' => '',
         'help' => __('Questions will load only from selected categories', 'quiz-master-next')
@@ -1285,7 +1285,6 @@ class QSM_Install {
   			admin_email TEXT NOT NULL,
   			comment_section INT NOT NULL,
   			question_from_total INT NOT NULL,
-        question_per_category INT NOT NULL,
   			total_user_tries INT NOT NULL,
   			total_user_tries_text TEXT NOT NULL,
   			certificate_template TEXT NOT NULL,
