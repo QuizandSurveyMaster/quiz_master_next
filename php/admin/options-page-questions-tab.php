@@ -373,6 +373,17 @@ function qsm_options_questions_tab_content() {
 														),
 														'default' => '0',
 													),
+													'match-answer' => array(
+														'label' => __( 'Match Answer', 'quiz-master-next' ),
+														'type' => 'select',
+														'priority' => '3',
+														'options' => array(
+															'random' => __( 'Randomly', 'quiz-master-next' ),
+															'sequence' => __( 'Sequentially', 'quiz-master-next' ),
+														),
+														'default' => 'random',
+														'show' => '14',
+													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
 												$keys                   = array_column( $simple_question_option, 'priority' );

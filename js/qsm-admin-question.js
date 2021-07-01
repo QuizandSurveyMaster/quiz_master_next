@@ -391,6 +391,7 @@ var import_button;
 			var featureImageID = $('.qsm-feature-image-id').val();
 			var featureImageSrc = $('.qsm-feature-image-src').val();
 			var answerType = $('#change-answer-editor').val();
+			var matchAnswer = $('#match-answer').val();
 
 			var answers = [];
 			var $answers = jQuery('.answers-single');
@@ -454,6 +455,7 @@ var import_button;
 					featureImageSrc: featureImageSrc,
 					answers: answers,
 					answerEditor: answerType,
+					matchAnswer: matchAnswer,
 					other_settings: advanced_option
 				},
 				{
@@ -674,6 +676,9 @@ var import_button;
 								$('#' + index).val(value);
 						}
 					}
+					if (index == 'matchAnswer') {
+						$('#match-answer').val(value);
+					}
 				});
 			}
 			CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
@@ -839,6 +844,24 @@ var import_button;
 					alert('Text/HTML Section cannot be empty');
 					return false;
 				}
+			}
+			if (14 == questionElements.find('#question_type').val()) {
+				question_description = wp.editor.getContent('question-text').trim();
+				blanks = question_description.match(/%BLANK%/g);
+				options_length = $('.answer-text-div').length
+				if ($('#match-answer').val() == 'sequence') {
+					if (blanks == null || blanks.length != options_length) {
+						alert('Number of %BLANK% should be equal to options for sequential matching');
+						return false;
+					}
+				} else {
+					if (blanks == null) {
+						alert('Atleast one %BLANK% is required in description.');
+						return false;
+					}
+				}
+
+
 			}
 			$('#save-edit-question-spinner').addClass('is-active');
 			var model_html = $('#modal-1-content').html();
