@@ -108,7 +108,7 @@ class QMNQuizCreator
                 'user_phone' => 2,
                 'admin_email' => get_option('admin_email', 'Enter email'),
                 'comment_section' => 1,
-                'question_from_total'  => 0
+                'question_from_total'  => 0,
                 'total_user_tries' => 0,
                 'total_user_tries_text' => __('You have utilized all of your attempts to pass this quiz.', 'quiz-master-next'),
                 'certificate_template' => '',

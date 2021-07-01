@@ -150,7 +150,7 @@ class QSM_Tracking {
     	$data['error_logs'] = $mlwQuizMasterNext->log_manager->get_logs();
 
 		// Some meta info about the site
-    	$data['site_title']   = get_bloginfo( 'name' ):
+    	$data['site_title']   = get_bloginfo( 'name' );
     	$data['site_desc']    = get_bloginfo( 'description' );
     	$data['site_charset'] = get_bloginfo( 'charset' );
     	$data['lang']         = get_bloginfo( 'language' );
