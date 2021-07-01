@@ -508,8 +508,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
     $all_cat = array_values($all_cat);
     	
 
-    var_dump($all_cat);	
-
         $categories = $quiz_options->randon_category != '' ? $quiz_options->randon_category : $all_cat;
 
        if($quiz_options->randon_category != ''){
