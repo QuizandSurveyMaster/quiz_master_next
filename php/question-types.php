@@ -1199,10 +1199,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		foreach ( $_POST[ 'question' . $id ] as $input ) {
 			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
 			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-			// if ( $mlw_user_answer != '' ) {
 				$user_input[] = mb_strtoupper( $mlw_user_answer );
 				$user_text[]  = $mlw_user_answer;
-			// }
 		}
 	}
 

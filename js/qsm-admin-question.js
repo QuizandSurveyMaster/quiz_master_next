@@ -855,8 +855,8 @@ var import_button;
 						return false;
 					}
 				} else {
-					if (blanks == null) {
-						alert('Atleast one %BLANK% is required in description.');
+					if (blanks == null || options_length === 0) {
+						alert('Atleast one %BLANK% and one option is required.');
 						return false;
 					}
 				}

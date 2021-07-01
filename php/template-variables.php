@@ -947,7 +947,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 14 ) {
-					$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'matchAnswer' );
+					$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
 					if($match_answer == 'sequence'){
 						foreach ( $total_answers as $key => $single_answer ) {
@@ -978,6 +978,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if($key !== false){
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
 								} else {
+									if($show_user_answer == '') {
+										$show_user_answer = 'No answer provided';
+									}
 									$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
 								}
 							}
@@ -987,6 +990,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if($key !== false){
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
 								} else {
+									if($show_user_answer == '') {
+										$show_user_answer = 'No answer provided';
+									}
 									if($answer['correct'] == 'correct'){
 										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . $show_user_answer . '</span>';
 									} else {
