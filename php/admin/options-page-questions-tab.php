@@ -703,6 +703,28 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
+<div class="qsm-popup qsm-popup-slide" id="modal-8" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-8-title">
+			<header class="qsm-popup__header">
+				<h3 class="qsm-popup__title" id="modal-8-title"><?php _e( 'Alert', 'quiz-master-next' ); ?>
+				</h3>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			</header>
+			<hr />
+			<main class="qsm-popup__content" id="modal-8-content">
+				<div class="modal-8-table">
+				</div>
+			</main>
+			<hr />
+			<footer class="qsm-popup__footer">
+				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+
 <?php
 }
 

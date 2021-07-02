@@ -851,12 +851,14 @@ var import_button;
 				options_length = $('.answer-text-div').length
 				if ($('#match-answer').val() == 'sequence') {
 					if (blanks == null || blanks.length != options_length) {
-						alert('Number of %BLANK% should be equal to options for sequential matching');
+						$('.modal-8-table').html('Number of <strong>%BLANK%</strong> should be equal to options for sequential matching');
+						MicroModal.show('modal-8');
 						return false;
 					}
 				} else {
 					if (blanks == null || options_length === 0) {
-						alert('Atleast one %BLANK% and one option is required.');
+						$('.modal-8-table').html('Atleast one <strong>%BLANK%</strong> and one option is required.');
+						MicroModal.show('modal-8');
 						return false;
 					}
 				}

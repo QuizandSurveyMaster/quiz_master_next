@@ -1251,25 +1251,10 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		}
 		if($correct){
 			$return_array['correct']   = 'correct';
-		} else {
-			$return_array['points'] = 0;
 		}
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
 	}
 
-	// foreach ( $answers as $answer ) {
-	// 	$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-	// 	$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-	// 	$key                          = array_search( mb_strtoupper( $return_array['correct_text'] ), $user_input );
-	// 	if ( $key !== false ) {
-	// 		$return_array['correct']   = 'correct';
-	// 		$return_array['points']    = $answer[1];
-	// 		$return_array['user_text'] = $user_text[ $key ];
-	// 		break;
-	// 	} else {
-	// 		$return_array['user_text'] = implode( ', ', $user_text );
-	// 	}
-	// }
 	/**
 	 * Hook to filter answers array
 	 */
