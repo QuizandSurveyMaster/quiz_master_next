@@ -733,6 +733,7 @@ class QMNQuizManager {
 			if ( 0 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
 			}
+			do_action('qsm_after_begin_message', $options, $quiz_data);
 			?>
 	</div>
 </section>
@@ -770,7 +771,7 @@ class QMNQuizManager {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
 				?>
-	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>' data-qid="<?php echo esc_attr($question_id); ?>">
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
@@ -834,7 +835,7 @@ class QMNQuizManager {
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					?>
-	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>' data-qid='<?php echo esc_attr($question_id); ?>'>
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {

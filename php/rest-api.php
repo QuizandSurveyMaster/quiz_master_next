@@ -435,6 +435,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'comments'       => $question['comments'],
 					'hint'           => $question['hints'],
 					'category'       => $question['category'],
+					'multicategories'=> $question['multicategories'],
 					'required'       => $question['settings']['required'],
 					'answers'        => $question['answers'],
 					'page'           => $question['page'],
@@ -482,6 +483,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'comments'                => $question['comments'],
 					'hint'                    => $question['hints'],
 					'category'                => $question['category'],
+					'multicategories'         => $question['multicategories'],
 					'required'                => $question['settings']['required'],
 					'answers'                 => $question['answers'],
 					'page'                    => $question['page'],
@@ -532,6 +534,7 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 					'hint'        => $request['hint'],
 					'order'       => 1,
 					'category'    => $request['category'],
+					'multicategories'   => $request['multicategories'],
 				);
 				$settings       = array(
 					'required'       => $request['required'],
@@ -590,6 +593,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'hint'        => $request['hint'],
 					'order'       => 1,
 					'category'    => $request['category'],
+					'multicategories'   => $request['multicategories'],
 				);
 				$settings                    = array();
 				$settings['answerEditor']    = $request['answerEditor'];

@@ -746,6 +746,16 @@ a#qsm-category-add-toggle {
     float: right;
 }
 
+div#multi_categories_wrapper {
+    display: inline-block;
+    width: 100%;
+    max-height: 250px;
+    box-sizing: border-box;
+    border: 1px solid #DDD;
+    padding: 0 15px;
+    overflow: hidden;
+    overflow-y: auto;
+}
 .qsm-show-correct-info-box,
 .qsm-show-question-desc-box {
     background: #fff;

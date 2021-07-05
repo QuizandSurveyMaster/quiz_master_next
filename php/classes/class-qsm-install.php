@@ -90,6 +90,25 @@ class QSM_Install {
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 	
+    // Registers multicategories setting
+    $field_array = array(
+		'id' => 'multiple_categories',
+		'label' => __('Enable Multiple Categories', 'quiz-master-next'),
+		'type' => 'radio',
+		'options' => array(
+			array(
+				'label' => __('Yes', 'quiz-master-next'),
+				'value' => 1
+			),
+			array(
+				'label' => __('No', 'quiz-master-next'),
+				'value' => 0
+			)
+		),
+		'default' => 0,
+    );
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+	
 	// Registers Rounding setting
     $field_array = array(
       'id' => 'score_roundoff',
@@ -1378,6 +1397,24 @@ class QSM_Install {
   		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
   		dbDelta( $sql );
 	  }
+	  
+	if( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}mlw_question_terms'" ) != "{$wpdb->prefix}mlw_question_terms" ) {
+		$sql = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}mlw_question_terms` (
+			`id` bigint(20) NOT NULL AUTO_INCREMENT,
+			`question_id` int(11) DEFAULT '0',
+			`quiz_id` int(11) DEFAULT '0',
+			`term_id` int(11) DEFAULT '0',
+			`taxonomy` varchar(50) DEFAULT NULL,
+			PRIMARY KEY (`id`),
+			KEY `question_id` (`question_id`),
+			KEY `quiz_id` (`quiz_id`),
+			KEY `term_id` (`term_id`),
+			KEY `taxonomy` (`taxonomy`)
+		) $charset_collate;";
+
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		dbDelta( $sql );
+	}
 
     if( $wpdb->get_var( "SHOW TABLES LIKE '$themes_table_name'" ) != $themes_table_name ) {
   		$sql = "CREATE TABLE $themes_table_name (
@@ -1426,13 +1463,31 @@ class QSM_Install {
    * @since 4.7.1
    */
   public function update() {
-    global $mlwQuizMasterNext;
+    global $wpdb, $mlwQuizMasterNext;
   	$data = $mlwQuizMasterNext->version ;
   	if ( ! get_option( 'qmn_original_version' ) ) {
   		add_option( 'qmn_original_version', $data );
     }
   	if ( get_option( 'mlw_quiz_master_version' ) != $data ) {
-  		global $wpdb;
+		$charset_collate = $wpdb->get_charset_collate();
+		if( $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}mlw_question_terms'" ) != "{$wpdb->prefix}mlw_question_terms" ) {
+			$sql = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}mlw_question_terms` (
+				`id` bigint(20) NOT NULL AUTO_INCREMENT,
+				`question_id` int(11) DEFAULT '0',
+				`quiz_id` int(11) DEFAULT '0',
+				`term_id` int(11) DEFAULT '0',
+				`taxonomy` varchar(50) DEFAULT NULL,
+				PRIMARY KEY (`id`),
+				KEY `question_id` (`question_id`),
+				KEY `quiz_id` (`quiz_id`),
+				KEY `term_id` (`term_id`),
+				KEY `taxonomy` (`taxonomy`)
+			) $charset_collate;";
+
+			require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+			dbDelta( $sql );
+		}
+
   		$table_name = $wpdb->prefix . "mlw_quizzes";
   		//Update 0.5
   		if($wpdb->get_var("SHOW COLUMNS FROM ".$table_name." LIKE 'comment_section'") != "comment_section")
