@@ -132,17 +132,22 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Screenshots ==
 
 1. Dashboard
-2. Create New Quiz or Survey
-3. Question Type
+2. Create New Quiz Or Survey
+3. Adding Questions / Answers
 4. Questions
 5. All Quizzes & Surveys
 6. Contact Field
-7. Frontend View
+7. Style Tab
 8. Frontend View with Answer
 9. Answer
 10. Database
 11. Stats
 12. Reporting and analysis result
+13. Customizing Themes
+14. QSM Breeze Theme
+15. QSM Fragrance Theme
+16. QSM Ivory Theme
+17. QSM Pool Theme
 
 == Changelog ==
 
