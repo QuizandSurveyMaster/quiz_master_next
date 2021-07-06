@@ -1829,7 +1829,7 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 		//Update 7.1.11
-		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "mlw_results and column_name = 'point_score'") != 'FLOAT' ) 
+		if($wpdb->get_var("select data_type from information_schema.columns where table_name = '".$wpdb->prefix . "mlw_results' and column_name = 'point_score'") != 'FLOAT' ) 
 		{
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
 		}
