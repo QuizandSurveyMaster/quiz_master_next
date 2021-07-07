@@ -325,10 +325,11 @@ span.qsm-quiz-name {
 	border-bottom: 0;
 	margin-top: 20px;
 	background: #fff;
-	padding: 16px;
+	padding: 16px 24px;
 	color: #007cba;
 	font-weight: bold;
 	position: relative;
+	font-size: 14px;
 }
 
 .qsm-addon-news-ads .qsm-news-ads-title:before,
