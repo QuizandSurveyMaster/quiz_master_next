@@ -176,6 +176,7 @@ class QMNPluginHelper
             $limit = ' limit ' . $offset . ', ' . $limit;
         }
         // Get quizzes and return them
+        $delete  = apply_filters( 'quiz_query_delete_clause', $delete );
         $quizzes = $wpdb->get_results(stripslashes($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit)));
         return $quizzes;
     }
@@ -656,6 +657,6 @@ class QMNPluginHelper
      */
     public function get_settings_tabs()
     {
-        return $this->settings_tabs;
+        return apply_filters('qmn_quiz_setting_tabs' , $this->settings_tabs);
     }
 }

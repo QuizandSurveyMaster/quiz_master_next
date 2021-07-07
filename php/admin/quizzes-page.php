@@ -36,6 +36,7 @@ function qsm_generate_quizzes_surveys_page() {
 	// Delete quiz.
 	if ( isset( $_POST['qsm_delete_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
 		$quiz_id   = intval( $_POST['delete_quiz_id'] );
+		do_action('qsm_before_delete_quiz' , $quiz_id);
 		$quiz_name = sanitize_text_field( $_POST['delete_quiz_name'] );
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
@@ -136,7 +137,8 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 		$num_of_pages = ceil( $total / $limit );
 	} else {
 		$condition    = ' WHERE deleted=0';
-		$total        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes %1s", $condition ) );
+		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
+		$total        = $wpdb->get_var( stripslashes($wpdb->prepare( "SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes %1s", $condition ) ));
 		$num_of_pages = ceil( $total / $limit );
 	}
 
@@ -176,6 +178,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
 		$search_quiz = htmlspecialchars( $_POST['s'], ENT_QUOTES );
 		$condition   = " WHERE deleted=0 AND quiz_name LIKE '%$search_quiz%'";
+		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
 		$qry         = stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
 		$quizzes     = $wpdb->get_results( $qry );
 

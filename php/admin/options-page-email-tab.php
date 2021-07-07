@@ -82,6 +82,7 @@ function qsm_options_emails_tab_content() {
 						<p><?php esc_html_e('Create the email that should be sent when the conditions are met.', 'quiz-master-next'); ?></p>
 					</div>
 					<label><?php esc_html_e('Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next'); ?></label>
+					<?php do_action('qsm_after_send_email_label'); ?>
 					<input type="email" class="to-email" value="{{ data.to }}">
 					<label><?php esc_html_e('Email Subject', 'quiz-master-next'); ?></label>
 					<input type="text" class="subject" value="{{ data.subject }}">
