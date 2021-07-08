@@ -261,7 +261,7 @@ class QSM_Install {
       ),
       'default' => 0,
       'help' => __('Leave 0 to load all questions','quiz-master-next'),
-      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
+      'tooltip' => __('Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.','quiz-master-next')
     );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
