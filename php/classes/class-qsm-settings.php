@@ -298,6 +298,7 @@ class QSM_Quiz_Settings {
   				'comment_section' => $quiz_options->comment_section,
   				'randomness_order' => $quiz_options->randomness_order,
   				'question_from_total' => $quiz_options->question_from_total,
+          'question_per_category' => $quiz_options->question_per_category,
   				'total_user_tries' => $quiz_options->total_user_tries,
   				'social_media' => $quiz_options->social_media,
   				'pagination' => $quiz_options->pagination,

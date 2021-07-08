@@ -247,6 +247,22 @@ class QSM_Install {
       'help' => __('Leave 0 to load all questions','quiz-master-next'),
       'tooltip' => __('Show only limited number of questions from your quiz.','quiz-master-next')
     );
+    
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+
+        // Registers question_per_category setting
+   $field_array = array(
+      'id' => 'question_per_category',
+      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0,
+      'help' => __('Leave 0 to load all questions','quiz-master-next'),
+      'tooltip' => __('Show only limited number of category questions from your quiz.','quiz-master-next')
+    );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers scheduled_time_start setting
@@ -310,7 +326,7 @@ class QSM_Install {
 	// Registers category setting
     $field_array = array(
 		  'id' => 'randon_category',
-		  'label' => __('Random Questions Categories', 'quiz-master-next'),
+		  'label' => __('Questions Categories', 'quiz-master-next'),
 		  'type' => 'category',
            'default' => '',
         'help' => __('Questions will load only from selected categories', 'quiz-master-next')
