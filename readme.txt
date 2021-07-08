@@ -138,16 +138,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 5. All Quizzes & Surveys
 6. Contact Field
 7. Style Tab
-8. Frontend View with Answer
-9. Answer
-10. Database
-11. Stats
-12. Reporting and analysis result
-13. Customizing Themes
-14. QSM Breeze Theme
-15. QSM Fragrance Theme
-16. QSM Ivory Theme
-17. QSM Pool Theme
+8. Featured Image
+9. Frontend View with Answer
+10. Answer
+11. Database
+12. Stats
+13. Reporting and analysis result
+14. Customizing Themes
+15. QSM Breeze Theme
+16. QSM Fragrance Theme
+17. QSM Ivory Theme
+18. QSM Pool Theme
 
 == Changelog ==
 
