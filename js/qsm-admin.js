@@ -146,6 +146,7 @@ var QSMQuizzesSurveys;
             $( '.' + name + '_' + value ).show();
         }
     });
+    
     /*$( '#quiz_search' ).keyup( function() {
       QSMQuizzesSurveys.searchQuizzes( $( this ).val() );
     });*/
@@ -168,15 +169,6 @@ var QSMQuizzesSurveys;
     $( '#reset-stats-button' ).on( 'click', function( event ) {
       event.preventDefault();
       $( '#reset_quiz_form' ).submit();
-    });
-    $( '#create-quiz-button' ).on( 'click', function( event ) {
-        if( $('#new-quiz-form').find('.quiz_name').val() === ''){
-            $('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
-            $('#new-quiz-form').find('.quiz_name').focus();
-            return;
-        }
-        event.preventDefault();
-        $( '#new-quiz-form' ).submit();
     });
     $( '#duplicate-quiz-button' ).on( 'click', function( event ) {
       event.preventDefault();
@@ -204,6 +196,6 @@ var QSMQuizzesSurveys;
         var copyText = document.getElementById("sc-shortcode-model-text-link");
         copyText.select();        
         document.execCommand("copy");        
-    });    
+    });
   });
 }(jQuery));

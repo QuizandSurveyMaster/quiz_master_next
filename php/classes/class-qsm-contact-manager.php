@@ -157,6 +157,7 @@ class QSM_Contact_Manager {
 							break;
 
 						default:
+							do_action('qsm_extra_contact_filed' ,$fields, $options);
 							break;
 					}
 				?>

@@ -23,7 +23,7 @@ function qsm_show_adverts() {
 
 		global $mlwQuizMasterNext;
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-		
+		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
                 if( false === get_transient('qsm_ads_data') ){
                     $xml = qsm_fetch_data_from_xml();
                     if(isset($xml->qsm_ads)){
@@ -42,10 +42,11 @@ function qsm_show_adverts() {
                 $link = str_replace('#38', '&', $link);
                 $ad_text = str_replace('[link]', $link, $all_ads['ads'][$rand_int]['text']);
 		?>
-		<div class="help-decide">
-			<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?></p>
-		</div>
-		<?php
+<div class="help-decide">
+	<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?>
+	</p>
+</div>
+<?php
 	}
 }
 ?>

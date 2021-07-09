@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.1.15
+Stable tag: 7.2.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,12 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 * [Popup Quiz](https://quizandsurveymaster.com/simple-popup-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 * [Flashcards](https://demo.quizandsurveymaster.com/flash-card-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 * [Paid Quiz](https://demo.quizandsurveymaster.com/payment-integration-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+
+= Themes =
+* [Theme Breeze](https://themes.quizandsurveymaster.com/breeze-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Fragrance](https://themes.quizandsurveymaster.com/fragrance-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Ivory](https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
+* [Theme Pool](https://themes.quizandsurveymaster.com/pool-qsm-theme-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 
 = Easily Create Quiz or Surveys For Your Users =
 Quiz and Survey Master is the easiest [WordPress Quiz Plugin](https://quizandsurveymaster.com/) which can be used to create engaging content to drive traffic and increase user engagement. Everything from viral quiz, trivia quiz, customer satisfaction surveys to employee surveys. This plugin is the ultimate marketing tool for your website.
@@ -88,16 +94,16 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
 
-**Reachout to us**
+= Reachout to us =
+
 * You can contact our pro support via our [Contact Form](https://quizandsurveymaster.com/contact-support/) or use the WordPress form for free plugin support. We are equally active on both places.
 * Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-= Comparison with other Quiz Plugins =
-* Quiz cat (quizcat) - We offer a lot more questions types than just viral quiz and multiple choice. We provide a tons of integrations to help you automate your marketing campaign.
-* HD Quiz - Mainly used for viral and trivial questions types. We are in process of creating these question types.
-* WP Quiz Plugin - Again, mainly used for viral question types. We will release this by the end of this month.
+= More free plugins for your WordPress Site =
 
+* 🎨 [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
+* 🔒 [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
 
 == Installation ==
 
@@ -139,6 +145,35 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.2.1 (June 25, 2021) =
+* Bug: Fixed layout issues with rtl languages.
+* Bug: Fixed issue of user comments not appearing on admin result page.
+* Bug: Fixed issue with recaptcha not appearing on random quiz.
+
+= 7.2.0 (June 21, 2021) =
+* Feature: Introduced QSM Themes.
+* Feature: Introduced image type answers.
+* Bug: Fixed issue where there is an empty last page while using auto pagination.
+
+= 7.1.19 (June 3, 2021) =
+* Bug: Fixed security issue related to IP address sanitization.
+
+= 7.1.18 (May 31, 2021) =
+* Bug: Fixed recently discovered security issues.
+
+= 7.1.17 (May 28, 2021) =
+* Bug: Fixed the issue where page title shows Nan:Nan:Nan on reload.
+* Bug: Fixed the issue when editing duplicate questions updates original questions.
+
+= 7.1.16 (April 29, 2021) =
+* Bug: Fixed the issue with Facebook share.
+* Bug: Fixed issue with timer starting on intro page.
+* Bug: Fixed pagination issue with multiple quizzes on same page.
+* Bug: Fixed issue with tiny-mce causing conflict with other plugins.
+* Bug: Fixed the issue of logic rules not being copied when duplicating quiz.
+* Feature: Added rich textbox for correct answer information.
+* Feature: Added additional condition for Email template for different answers.
 
 = 7.1.15 (April 13, 2021) =
 * Bug: Fixed SQL errors due to which questions were disappearing from some old quizzes.
