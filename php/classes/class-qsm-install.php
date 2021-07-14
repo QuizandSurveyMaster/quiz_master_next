@@ -247,6 +247,22 @@ class QSM_Install {
       'help' => __('Leave 0 to load all questions','quiz-master-next'),
       'tooltip' => __('Show only limited number of questions from your quiz.','quiz-master-next')
     );
+    
+    $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+
+        // Registers question_per_category setting
+   $field_array = array(
+      'id' => 'question_per_category',
+      'label' => __('Limit number of Questions Per Category ', 'quiz-master-next'),
+      'type' => 'number',
+      'options' => array(
+
+      ),
+      'default' => 0,
+      'help' => __('Leave 0 to load all questions. You also need to set Limit Number of questions, as well as select Question Categories','quiz-master-next'),
+      'tooltip' => __('Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.','quiz-master-next')
+    );
     $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
     // Registers scheduled_time_start setting
@@ -310,7 +326,7 @@ class QSM_Install {
 	// Registers category setting
     $field_array = array(
 		  'id' => 'randon_category',
-		  'label' => __('Random Questions Categories', 'quiz-master-next'),
+		  'label' => __('Questions Categories', 'quiz-master-next'),
 		  'type' => 'category',
            'default' => '',
         'help' => __('Questions will load only from selected categories', 'quiz-master-next')
@@ -1829,7 +1845,7 @@ class QSM_Install {
   			$results = $wpdb->query( $update_sql );
   		}
 		//Update 7.1.11
-		if($wpdb->get_var("select data_type from information_schema.columns where table_name = ".$wpdb->prefix . "mlw_results and column_name = 'point_score'") != 'FLOAT' ) 
+		if($wpdb->get_var("select data_type from information_schema.columns where table_name = '".$wpdb->prefix . "mlw_results' and column_name = 'point_score'") != 'FLOAT' ) 
 		{
 		$results = $wpdb->query( "ALTER TABLE ".$wpdb->prefix . "mlw_results MODIFY point_score FLOAT NOT NULL;" );
 		}

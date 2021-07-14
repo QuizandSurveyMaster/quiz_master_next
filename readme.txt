@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.2.1
+Stable tag: 7.2.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -132,19 +132,35 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Screenshots ==
 
 1. Dashboard
-2. Create New Quiz or Survey
-3. Question Type
+2. Create New Quiz Or Survey
+3. Adding Questions / Answers
 4. Questions
 5. All Quizzes & Surveys
 6. Contact Field
-7. Frontend View
-8. Frontend View with Answer
-9. Answer
-10. Database
-11. Stats
-12. Reporting and analysis result
+7. Style Tab
+8. Featured Image
+9. Frontend View with Answer
+10. Answer
+11. Database
+12. Stats
+13. Reporting and analysis result
+14. Customizing Themes
+15. QSM Breeze Theme
+16. QSM Fragrance Theme
+17. QSM Ivory Theme
+18. QSM Pool Theme
 
 == Changelog ==
+
+= 7.2.2 (July 14, 2021) =
+* Feature: Implemented multiple fill in the blanks support.
+* Feature: Implemented new template variable %TIMER_SECONDS% to show left over seconds.
+* Feature: Implemented new option to limit number of questions per category.
+* Bug: Fixed issue with template variable %AMOUNT_INCORRECT%.
+* Bug: Fixed issue of undefined index notice of facebook app id.
+* Bug: Fixed issue with saving conditions in email and results tab.
+* Bug: Fixed issue of wordpress database error notice on fresh installation.
+* Bug: Fixed issue with validation on retake quiz
 
 = 7.2.1 (June 25, 2021) =
 * Bug: Fixed layout issues with rtl languages.

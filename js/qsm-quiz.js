@@ -630,30 +630,7 @@ var QSMPageTimer;
 
 	// On load code
 	$(function () {
-
-		// Legacy init.
-		qmnInit();
-
-		// Call main initialization.
-		qsminstance = QSM.init();
-
-		jQuery(".qsm-quiz-container").on("click", ".mlw_next", function () {
-			if (quizType == 'paginated') {
-				timer_ms = jQuery("input[name='timer_ms']").val();
-				if (timer_ms == 0) {
-					qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
-					jQuery("input[name='timer_ms']").each(function () {
-						var timems = qsmTimeInMS();
-						jQuery(this).val(timems);
-					});
-				}
-			}
-		});
-	});
-
-	jQuery("input[name='timer_ms']").each(function () {
-		var timems = qsmTimeInMS();
-		jQuery(this).val(timems);
+		qmnDoInit();
 	});
 }(jQuery));
 
@@ -690,6 +667,27 @@ function qsmCheckMR(event, limit) {
 	} else {
 		jQuery(event).parents('.quiz_section').find('.multi-checkbox-limit-reach').remove();
 	}
+}
+
+function qmnDoInit() {
+	// Legacy init.
+	qmnInit();
+
+	// Call main initialization.
+	qsminstance = QSM.init();
+
+	jQuery(".qsm-quiz-container").on("click", ".mlw_next", function () {
+		if (quizType == 'paginated') {
+			timer_ms = jQuery("input[name='timer_ms']").val();
+			if (timer_ms == 0) {
+				qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
+				jQuery("input[name='timer_ms']").each(function () {
+					var timems = qsmTimeInMS();
+					jQuery(this).val(timems);
+				});
+			}
+		}
+	});
 }
 
 function qmnTimeTakenTimer() {
@@ -1237,14 +1235,8 @@ jQuery(function () {
 			success: function (response) {
 				parent_div.replaceWith(response);
 				//Reload the timer and pagination
-				QSM.init();
-				qmnInit();
-				QSM.initTimer(quiz_id);
-				jQuery("input[name='timer_ms']").each(function () {
-					var timems = qsmTimeInMS();
-					jQuery(this).val(timems);
-				});
-				setInterval(qmnTimeTakenTimer, 1000);
+				qmnDoInit();
+				
 				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 
 				// trigger fired on successfull retake quiz
