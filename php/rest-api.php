@@ -596,6 +596,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 				$settings['question_title']  = sanitize_text_field( $request['question_title'] );
 				$settings['featureImageID']  = sanitize_text_field( $request['featureImageID'] );
 				$settings['featureImageSrc'] = sanitize_text_field( $request['featureImageSrc'] );
+				$settings['matchAnswer']     = sanitize_text_field( $request['matchAnswer'] );
 				if ( isset( $request['other_settings'] ) && is_array( $request['other_settings'] ) ) {
 					foreach ( $request['other_settings'] as $setting_key => $setting_value ) {
 						$settings[ $setting_key ] = $setting_value;

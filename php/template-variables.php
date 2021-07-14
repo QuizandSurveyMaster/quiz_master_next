@@ -56,6 +56,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_question
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_comments', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_seconds', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_social_share', 10, 2 );
@@ -313,10 +314,10 @@ function mlw_qmn_variable_amount_correct( $content, $mlw_quiz_array ) {
  */
 function mlw_qmn_variable_amount_incorrect( $content, $mlw_quiz_array ) {
 	if ( false !== strpos( $content, '%AMOUNT_INCORRECT%' ) ) {
-		$total_question  = $mlw_quiz_array['total_questions'];
-		$total_correct   = $mlw_quiz_array['total_correct'];
-		$total_incorrect = $total_question - $total_correct;
-		$content         = str_replace( '%AMOUNT_INCORRECT%', max( $total_incorrect, 0 ), $content );
+		$total_attempted_question = $mlw_quiz_array['total_attempted_questions'];
+		$total_correct            = $mlw_quiz_array['total_correct'];
+		$total_incorrect          = $total_attempted_question - $total_correct;
+		$content                  = str_replace( '%AMOUNT_INCORRECT%', max( $total_incorrect, 0 ), $content );
 	}
 	return $content;
 }
@@ -500,8 +501,14 @@ function mlw_qmn_variable_timer( $content, $mlw_quiz_array ) {
 }
 
 function mlw_qmn_variable_timer_minutes( $content, $mlw_quiz_array ) {
-	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? round( $mlw_quiz_array['timer'] / 60, 2 ) : '' );
+	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? floor( $mlw_quiz_array['timer'] / 60 ) : '' );
 	$content     = str_replace( '%TIMER_MINUTES%', $mlw_minutes, $content );
+	return $content;
+}
+
+function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
+	$mlw_minutes = ( isset( $mlw_quiz_array['timer'] ) ? (int) ( $mlw_quiz_array['timer'] % 60 ) : '' );
+	$content     = str_replace( '%TIMER_SECONDS%', $mlw_minutes, $content );
 	return $content;
 }
 
@@ -886,10 +893,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			12,
 			5,
 			7,
-			14,
+			// 14,
 		);
-		$form_type                 = isset( $mlw_quiz_array['form_type'] ) ? $mlw_quiz_array['form_type'] : 0;
-		$quiz_system               = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
+		$form_type   = isset( $mlw_quiz_array['form_type'] ) ? $mlw_quiz_array['form_type'] : 0;
+		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
 			if ( $total_answers ) {
@@ -939,6 +946,64 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
+				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 14 ) {
+					$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
+					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
+					if($match_answer == 'sequence'){
+						foreach ( $total_answers as $key => $single_answer ) {
+							$show_user_answer  = $new_array_user_answer[ $key ];
+							$is_answer_correct = false;
+							if ( mb_strtoupper( $show_user_answer ) == mb_strtoupper( $single_answer[0] ) ) {
+								$is_answer_correct = true;
+							}
+							$index = $key +1;
+							if ( $is_answer_correct ) {
+								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index. ') ' . $show_user_answer . '</span>';
+							} else {
+								if($show_user_answer == '') {
+									$show_user_answer = 'No answer provided';
+								}
+								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . $single_answer[0] . '</span>';
+							}
+						}
+					} else {
+						$options = array();
+						foreach($total_answers as $key => $single_answer){
+							$options[] = mb_strtoupper($single_answer[0]);
+						}
+						if(sizeof($new_array_user_answer) < sizeof($total_answers)){
+							foreach($new_array_user_answer as $show_user_answer){
+								$key = array_search( mb_strtoupper($show_user_answer), $options );
+								if($key !== false){
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
+								} else {
+									if($show_user_answer == '') {
+										$show_user_answer = 'No answer provided';
+									}
+									$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
+								}
+							}
+						} else {
+							foreach($new_array_user_answer as $show_user_answer){
+								$key = array_search( mb_strtoupper($show_user_answer), $options );
+								if($key !== false){
+									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . $show_user_answer . '</span>';
+								} else {
+									if($show_user_answer == '') {
+										$show_user_answer = 'No answer provided';
+									}
+									if($answer['correct'] == 'correct'){
+										$question_with_answer_text .= '<span class="qsm-text-simple-option">' . $show_user_answer . '</span>';
+									} else {
+										$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . $show_user_answer . '</span>';
+									}
+									
+								}
+							}
+						}
+					}
+					
 				} else {
 					if ( $form_type == 0 && ( $quiz_system == 0 || $quiz_system == 3 ) ) {
 						if ( isset( $answer['question_type'] ) && ( $answer['question_type'] == 4 || $answer['question_type'] == 10 ) ) {

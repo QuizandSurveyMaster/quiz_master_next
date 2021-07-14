@@ -1162,7 +1162,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
 		$mlw_requireClass = '';}
-	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "' />";
+	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "[]' />";
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
@@ -1182,31 +1182,79 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
  * @since 4.4.0
  */
 function qmn_fill_blank_review( $id, $question, $answers ) {
+	global $mlwQuizMasterNext;
+	$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'matchAnswer' );
 	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
+		'points'            => 0,
+		'correct'           => 'incorrect',
+		'user_text'         => '',
+		'correct_text'      => '',
+		'user_compare_text' => '',
 	);
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$return_array['user_text'] = $mlw_user_answer;
-	foreach ( $answers as $answer ) {
-		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
-			$return_array['correct'] = 'correct';
-			$return_array['points']  = $answer[1];
-			break;
+	$user_input = $user_text = array();
+	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
+		foreach ( $_POST[ 'question' . $id ] as $input ) {
+			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
+			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
+				$user_input[] = mb_strtoupper( $mlw_user_answer );
+				$user_text[]  = $mlw_user_answer;
 		}
 	}
+
+	$total_correct = $user_correct = 0;
+	if ( $match_answer == 'sequence' ) {
+		foreach ( $answers as $key => $answer ) {
+			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
+			if ( mb_strtoupper( $decode_user_text ) == $user_input[ $key ] ) {
+				$return_array['points'] += $answer[1];
+				$user_correct += 1;
+			}
+			$total_correct++;
+		}
+		$return_array['user_text'] = implode( '.', $user_text );
+		$return_array['user_compare_text'] = implode( '=====', $user_text );
+		if($total_correct == $user_correct){
+			$return_array['correct']   = 'correct';
+		}
+	} else {
+		$answers_array = array();
+		$correct = true;
+		foreach($answers as $answer){
+			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
+			$answers_array[] = mb_strtoupper( $decode_user_text );
+		}
+		$total_user_input = sizeof($user_input);
+		$total_option = sizeof($answers);
+		if($total_user_input < $total_option){
+			foreach($user_input as $k => $input){
+				$key = array_search( $input, $answers_array );
+				if($key !== false){
+					$return_array['points'] += $answers[$key][1];	
+				} else {
+					$correct = false;
+				}
+			}
+		} else {
+			foreach($answers_array as $k => $answer){
+				$key = array_search( $answer, $user_input );
+				if($key !== false){
+					$return_array['points'] += $answers[$k][1];	
+				} else {
+					$correct = false;
+				}
+			}
+		}
+		if($correct){
+			$return_array['correct']   = 'correct';
+		}
+		$return_array['user_compare_text'] = implode( '=====', $user_text );
+	}
+
 	/**
 	 * Hook to filter answers array
 	 */
