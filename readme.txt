@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.2.1
+Stable tag: 7.2.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -145,6 +145,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 12. Reporting and analysis result
 
 == Changelog ==
+
+= 7.2.2 (July 14, 2021) =
+* Feature: Implemented multiple fill in the blanks support.
+* Feature: Implemented new template variable %TIMER_SECONDS% to show left over seconds.
+* Feature: Implemented new option to limit number of questions per category.
+* Bug: Fixed issue with template variable %AMOUNT_INCORRECT%.
+* Bug: Fixed issue of undefined index notice of facebook app id.
+* Bug: Fixed issue with saving conditions in email and results tab.
+* Bug: Fixed issue of wordpress database error notice on fresh installation.
+* Bug: Fixed issue with validation on retake quiz
 
 = 7.2.1 (June 25, 2021) =
 * Bug: Fixed layout issues with rtl languages.
