@@ -88,7 +88,7 @@ function qsm_results_overview_tab_content() {
 		// Variables from delete result form.
 		$mlw_delete_results_id   = intval( $_POST['result_id'] );
 		$mlw_delete_results_name = sanitize_text_field( $_POST['delete_quiz_name'] );
-
+		do_action('qsm_before_delete_result' , $mlw_delete_results_id);
 		// Updates table to mark results as deleted.
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_results',
@@ -154,6 +154,8 @@ function qsm_results_overview_tab_content() {
 	// Prepares the SQL to retrieve the results.
 	$table_limit       = 40;
 	$search_phrase_sql = '';
+	$delete = 'deleted=0';
+	$delete  = apply_filters( 'qsm_results_delete_clause', $delete );
 	$order_by_sql      = 'ORDER BY result_id DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
@@ -163,9 +165,9 @@ function qsm_results_overview_tab_content() {
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} {$search_phrase_sql}" );
 	}
 
 	// Gets the order by arg. Uses switch to create SQL to prevent SQL injection.
@@ -203,9 +205,9 @@ function qsm_results_overview_tab_content() {
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
 	} else {
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
 	}
 
 	wp_enqueue_script( 'jquery' );
@@ -272,7 +274,7 @@ function deleteResults(id, quizName) {
 					?>
 			<a class="prev-page button"
 				href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>">
-				<< /a>
+				<</a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of
 						<?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php

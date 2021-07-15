@@ -448,7 +448,7 @@ class QMNQuizManager {
 	 * @return array The questions for the quiz
 	 * @deprecated 5.2.0 Use new class: QSM_Questions instead
 	 */
-	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
+public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
 		// Prepare variables.
 		global $wpdb;
@@ -456,11 +456,12 @@ class QMNQuizManager {
 		$questions    = array();
 		$order_by_sql = 'ORDER BY question_order ASC';
 		$limit_sql    = '';
+		$big_array    = array();
 
 		// Checks if the questions should be randomized.
 		$cat_query = '';
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-			$order_by_sql = 'ORDER BY rand()';
+			$order_by_sql = 'ORDER BY rand()';	
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 			if ( $categories ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
@@ -470,7 +471,7 @@ class QMNQuizManager {
 		}
 
 		// Check if we should load all questions or only a selcted amount.
-		if ( $is_quiz_page && ( 0 != $quiz_options->question_from_total || 0 !== $question_amount ) ) {
+		if ( $is_quiz_page && ( 0 != $quiz_options->question_from_total || 0 !== $question_amount   ) ) {
 			if ( 0 !== $question_amount ) {
 				$limit_sql = " LIMIT $question_amount";
 			} else {
@@ -490,13 +491,83 @@ class QMNQuizManager {
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ', ', $question_ids );
+		
+        //check If we should load a specific number of question 
+			if( $quiz_options->question_per_category != 0 && $is_quiz_page ){
+				
+        
+        //processing Categories checking. removing commas and making them arrays
+	$cat_sql = $wpdb->get_results( $wpdb->prepare("SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d ", $quiz_id), );
+       $all_cat = array();
+    foreach($cat_sql as $cat){
+    array_push($all_cat, $cat->category);
+    }   
+    //processing the categories
+    $all_cat = array_unique($all_cat);
+    
+    $all_cat = array_values($all_cat);
+    	
+
+        $categories = $quiz_options->randon_category != '' ? $quiz_options->randon_category : $all_cat;
+
+       if($quiz_options->randon_category != ''){
+
+		$categories = explode(",",$categories);
+
+		$categories = str_replace(',', '', $categories)	;
+       }
+        //Running a loop for each category and getting a limited number of questions 
+         for ($i=0; $i < count($categories) ; $i++) { 
+         	$catSQL = isset( $quiz_options->randon_category )&& !empty( $quiz_options->randon_category) ? : '';
+	          $piece1 =  $wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) AND category IN  (%s) LIMIT %d",
+	              $question_sql,$categories[$i],
+	              $quiz_options->question_per_category  );
+	          
+	         $piece_res = $wpdb->get_results( stripslashes( $piece1 ) );
+	         //add them to the big_array
+					$big_array = array_merge($big_array, $piece_res);
+
+
+}			
+
+// Check If the no category Question is less or equal to the question limit
+
+                if (count($big_array) <= $quiz_options->question_from_total  )
+                 {
+                 	$big_range = range(0, count($big_array) - 1);
+ $quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2 ? shuffle($big_range) : $big_range;
+  for ($i=0; $i < count($big_array)  ; $i++) {
+  
+ 	array_push($questions, $big_array[$big_range[$i]]);
+ }
+  
+                  }
+//If Category Question are more then run array_rand to get random entries
+                else{
+
+$range = range(0, $quiz_options->question_from_total);
+
+    $quiz_options->randomness_order == 1 || $quiz_options->randomness_order == 2 ? shuffle($range) : $range;
+ for ($i=0; $i < $quiz_options->question_from_total ; $i++) {
+
+ 	array_push($questions, $big_array[$range[$i]]);
+ }
+
+                }
+
+			}
+	else{
+
 			$query        = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
 			$questions    = $wpdb->get_results( stripslashes( $query ) );
+	
+			}
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
-			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order ) {
+			
+			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && $quiz_options->question_per_category == 0 ) {
 				$ordered_questions = array();
 				foreach ( $questions as $question ) {
 					$key = array_search( $question->question_id, $question_ids );
@@ -519,6 +590,7 @@ class QMNQuizManager {
 		$questions = apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 		// Returns an array of all the loaded questions.
 		return $questions;
+
 	}
 
 	/**

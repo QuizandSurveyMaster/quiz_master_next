@@ -15,53 +15,62 @@
     margin-left: 5px;
 }
 
-#modal-7 {
+#modal-7,
+#modal-8 {
     max-width: 500px;
 }
 
-#modal-7 hr {
+#modal-7 hr,
+#modal-8 hr {
     margin: 0 -30px;
 }
 
-#modal-7 header {
+#modal-7 header,
+#modal-8 header {
     margin: -10px 0 10px 0;
 }
 
-#modal-7 .qsm-popup__close {
+#modal-7 .qsm-popup__close,
+#modal-8 .qsm-popup__close {
     margin: -10px -10px 0 0;
     font-size: 20px;
 }
 
-#modal-7-title {
+#modal-7-title,
+#modal-8-title {
     color: gray;
     opacity: 70%;
 }
 
-#modal-7 footer .dashicons {
+#modal-7 footer .dashicons,
+#modal-8 footer .dashicons {
     font-size: 20px;
     margin-right: 3px;
     vertical-align: middle;
     margin-left: -10px;
 }
 
-#modal-7 .qsm-popup__container {
+#modal-7 .qsm-popup__container,
+#modal-8 .qsm-popup__container {
     max-width: 560px;
     padding-bottom: 20px;
 }
 
-.modal-7-table {
+.modal-7-table,
+.modal-8-table {
     font-size: 16px;
 }
 
-#modal-7 footer {
+#modal-7 footer,
+#modal-8 footer {
     margin-top: 15px;
 }
 
-.modal-7-table tr td {
+.modal-7-table tr td,
+.modal-8-table tr td {
     vertical-align: top;
     padding: 0 10px 5px 0
 }
-
 @media screen and (min-width:700px) {
     .question-controls {
         flex-direction: row;

@@ -325,10 +325,11 @@ span.qsm-quiz-name {
 	border-bottom: 0;
 	margin-top: 20px;
 	background: #fff;
-	padding: 16px;
+	padding: 16px 24px;
 	color: #007cba;
 	font-weight: bold;
 	position: relative;
+	font-size: 14px;
 }
 
 .qsm-addon-news-ads .qsm-news-ads-title:before,
@@ -388,6 +389,15 @@ span.qsm-quiz-name {
 	left: calc(50% - 40px);
 	border: 2px solid #fff;
 	box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 16%);
+}
+
+.qsm-addon-news-ads .qsm-info-widget .bundle-icon img {
+	max-width: 40px;
+	max-height: 40px;
+}
+
+.qsm-addon-news-ads .qsm-info-widget:nth-child(4) .bundle-icon {
+	background: #2271b1;
 }
 
 .qsm-addon-news-ads .qsm-info-widget:nth-child(2) .bundle-icon {
@@ -1935,7 +1945,8 @@ td.scheduled_time_start {
 }
 
 .qsm-quiz-email-tab .qsm-show-all-variable-text,
-.qsm-quiz-result-tab .qsm-show-all-variable-text {
+.qsm-quiz-result-tab .qsm-show-all-variable-text,
+#slack-integration .qsm-show-all-variable-text {
 	position: fixed;
 	bottom: 20px;
 	right: 25px;

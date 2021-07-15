@@ -375,6 +375,17 @@ function qsm_options_questions_tab_content() {
 														),
 														'default' => '0',
 													),
+													'match-answer' => array(
+														'label' => __( 'Match Answer', 'quiz-master-next' ),
+														'type' => 'select',
+														'priority' => '3',
+														'options' => array(
+															'random' => __( 'Randomly', 'quiz-master-next' ),
+															'sequence' => __( 'Sequentially', 'quiz-master-next' ),
+														),
+														'default' => 'random',
+														'show' => '14',
+													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
 												$keys                   = array_column( $simple_question_option, 'priority' );
@@ -698,6 +709,28 @@ function qsm_options_questions_tab_content() {
 						class="dashicons dashicons-trash"></span><?php _e( 'Unlink', 'quiz-master-next' ); ?></button>
 				<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span
 						class="dashicons dashicons-warning"></span><?php _e( 'Delete', 'quiz-master-next' ); ?></button>
+				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+
+<div class="qsm-popup qsm-popup-slide" id="modal-8" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-8-title">
+			<header class="qsm-popup__header">
+				<h3 class="qsm-popup__title" id="modal-8-title"><?php _e( 'Alert', 'quiz-master-next' ); ?>
+				</h3>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			</header>
+			<hr />
+			<main class="qsm-popup__content" id="modal-8-content">
+				<div class="modal-8-table">
+				</div>
+			</main>
+			<hr />
+			<footer class="qsm-popup__footer">
 				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
 					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
 			</footer>
