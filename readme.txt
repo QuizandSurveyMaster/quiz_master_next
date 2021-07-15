@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.4
-Stable tag: 7.2.2
+Stable tag: 7.2.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,16 +141,19 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 8. Featured Image
 9. Frontend View with Answer
 10. Answer
-11. Database
-12. Stats
-13. Reporting and analysis result
-14. Customizing Themes
-15. QSM Breeze Theme
-16. QSM Fragrance Theme
-17. QSM Ivory Theme
-18. QSM Pool Theme
+11. Stats
+12. Reporting and analysis result
+13. Customizing Themes
+14. QSM Breeze Theme
+15. QSM Fragrance Theme
+16. QSM Ivory Theme
+17. QSM Pool Theme
+18. Database
 
 == Changelog ==
+
+= 7.2.3 (July 15, 2021) =
+* Bug: Fixed issue fatal error on php version below 7.3.
 
 = 7.2.2 (July 14, 2021) =
 * Feature: Implemented multiple fill in the blanks support.
