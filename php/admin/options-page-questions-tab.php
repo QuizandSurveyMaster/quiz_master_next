@@ -76,7 +76,7 @@ function qsm_options_questions_tab_content() {
 		'categories'             => $question_categories,
 		'form_type'              => $form_type,
 		'quiz_system'            => $quiz_system,
-		'multiple_categories' => $multiple_categories,
+		'multiple_categories'    => $multiple_categories,
 		'hide_desc_text'         => __( 'Less Description', 'quiz-master-next' ),
 		'show_desc_text'         => __( 'Add Description', 'quiz-master-next' ),
 		'show_correct_info_text' => __( 'Add Correct Answer Info', 'quiz-master-next' ),
