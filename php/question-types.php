@@ -344,6 +344,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				$question_display .= '</span>';
 			}
 		}
+		$question_display =apply_filters( 'qmn_horizontal_multiple_choice_question_display', $question_display, $id, $question, $answers );
 		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
 	}
 	$question_display .= '</div>';

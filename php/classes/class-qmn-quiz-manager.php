@@ -497,7 +497,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				
         
         //processing Categories checking. removing commas and making them arrays
-	$cat_sql = $wpdb->get_results( $wpdb->prepare("SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d ", $quiz_id), );
+	$cat_sql = $wpdb->get_results( $wpdb->prepare("SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d ", $quiz_id) );
        $all_cat = array();
     foreach($cat_sql as $cat){
     array_push($all_cat, $cat->category);
