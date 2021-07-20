@@ -116,8 +116,13 @@ var import_button;
 				$cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
 				$cat_html += '<option value="">All Questions</option>';
 				$.each(category_arr, function (index, value) {
-					if (value.category !== '')
-						$cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+					if (value.category !== '') {
+						if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
+							$cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
+						} else {
+							$cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+						}
+					}
 				});
 				$cat_html += '</select>';
 				$('#question-bank').prepend($cat_html);
