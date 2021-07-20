@@ -167,7 +167,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
 				$question_ids = array_unique( $question_ids );
-				$qurey_result = [];
+				$query_result = [];
 				foreach( $question_ids as $question_id ) {
 					$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d ORDER BY question_order ASC LIMIT %d, %d", $question_id, $offset, $limit );
 					$query_result[] = $wpdb->get_row( $query, 'ARRAY_A' );
