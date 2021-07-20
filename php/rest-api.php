@@ -176,7 +176,11 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				$query_result = [];
 				foreach( $question_ids as $question_id ) {
 					$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d ORDER BY question_order ASC LIMIT %d, %d", $question_id, $offset, $limit );
-					$query_result[] = $wpdb->get_row( $query, 'ARRAY_A' );
+					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
+					if( ! is_null($question_data)){
+						$query_result[] = $question_data;
+					}
+					
 				}
 				$questions = $query_result;
 			} else {
@@ -210,7 +214,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			if ( ! is_array( $settings ) ) {
 				$settings = array( 'required' => 1 );
 			}
-			if ( empty( $settings['question_title'] ) ) {
+			if ( empty( $settings['question_title'] ) && empty( $question['question_name'] )) {
 				continue;
 			}
 			

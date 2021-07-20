@@ -437,7 +437,8 @@ function qsm_options_questions_tab_content() {
 									</h2>
 									<div class="inside">
 										<?php
-										if ($multiple_categories == 1) {
+										$enabled_multiple_category = get_option( 'qsm_multiple_category_enabled' );
+										if ( $enabled_multiple_category && 'cancelled' !== $enabled_multiple_category ) {
 											$category_question_option = array(
 												'categories' => array(
 													'label' => __( '', 'quiz-master-next' ),
