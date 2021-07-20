@@ -134,9 +134,15 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
 		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( $_REQUEST['category'] ) : '';
+		$enabled = get_option( 'qsm_multiple_category_enabled' );
+	
+		$migrated = false;
+		if ( $enabled && 'cancelled' !== $enabled ) {
+			$migrated = true;
+		}
 
 		if ( ! empty( $category ) ) {
-			if ( is_numeric( $category ) ) {
+			if ( $migrated && is_numeric( $category ) ) {
 				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
 			} else {
 				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s", $category );
@@ -159,8 +165,8 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		$offset      = ( $pageno - 1 ) * $limit;
 
 		if ( ! empty( $category ) ) {
-			if ( is_numeric( $category ) ) {
-				$query = $wpdb->prepare( "SELECT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
+			if ( $migrated && is_numeric( $category ) ) {
+				$query = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
 				$term_ids = $wpdb->get_results( $query, 'ARRAY_A' );
 				$question_ids = [];
 				foreach( $term_ids as $term_id ) {
@@ -190,46 +196,49 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		);
 
 		$question_array['questions'] = array();
-		foreach ( $questions as $question ) {
-				$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
-				$question['page'] = isset( $question['page'] ) ? (int) $question['page'] : 0;
+		foreach( $questions as $question ) {
+			$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
+			$question['page'] = isset( $question['page'] ) ? (int) $question['page'] : 0;
 
-				$answers = maybe_unserialize( $question['answer_array'] );
+			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
-					$answers = array();
+				$answers = array();
 			}
-				$question['answers'] = $answers;
+			$question['answers'] = $answers;
 
-				$settings = maybe_unserialize( $question['question_settings'] );
+			$settings = maybe_unserialize( $question['question_settings'] );
 			if ( ! is_array( $settings ) ) {
-					$settings = array( 'required' => 1 );
+				$settings = array( 'required' => 1 );
 			}
-				$question['settings'] = $settings;
-
-				$question_data                 = array(
-					'id'                      => $question['question_id'],
-					'quizID'                  => $question['quiz_id'],
-					'type'                    => $question['question_type_new'],
-					'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : 0,
-					'name'                    => $question['question_name'],
-					'answerInfo'              => $question['question_answer_info'],
-					'comments'                => $question['comments'],
-					'hint'                    => $question['hints'],
-					'category'                => $question['category'],
-					'required'                => $question['settings']['required'],
-					'answers'                 => $question['answers'],
-					'page'                    => $question['page'],
-					'answerEditor'            => isset( $question['settings']['answerEditor'] ) ? $question['settings']['answerEditor'] : 'text',
-					'autofill'                => isset( $question['settings']['autofill'] ) ? $question['settings']['autofill'] : 0,
-					'limit_text'              => isset( $question['settings']['limit_text'] ) ? $question['settings']['limit_text'] : 0,
-					'limit_multiple_response' => isset( $question['settings']['limit_multiple_response'] ) ? $question['settings']['limit_multiple_response'] : 0,
-					'file_upload_limit'       => isset( $question['settings']['file_upload_limit'] ) ? $question['settings']['file_upload_limit'] : 0,
-					'file_upload_type'        => isset( $question['settings']['file_upload_type'] ) ? $question['settings']['file_upload_type'] : '',
-					'quiz_name'               => isset( $quiz_name['quiz_name'] ) ? $quiz_name['quiz_name'] : '',
-					'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
-				);
-				$question_data                 = apply_filters( 'qsm_rest_api_filter_question_data', $question_data, $question, $request );
-				$question_array['questions'][] = $question_data;
+			if ( empty( $settings['question_title'] ) ) {
+				continue;
+			}
+			
+			$question['settings'] = $settings;
+			$question_data = array(
+				'id'                      => $question['question_id'],
+				'quizID'                  => $question['quiz_id'],
+				'type'                    => $question['question_type_new'],
+				'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : 0,
+				'name'                    => $question['question_name'],
+				'answerInfo'              => $question['question_answer_info'],
+				'comments'                => $question['comments'],
+				'hint'                    => $question['hints'],
+				'category'                => $question['category'],
+				'required'                => $question['settings']['required'],
+				'answers'                 => $question['answers'],
+				'page'                    => $question['page'],
+				'answerEditor'            => isset( $question['settings']['answerEditor'] ) ? $question['settings']['answerEditor'] : 'text',
+				'autofill'                => isset( $question['settings']['autofill'] ) ? $question['settings']['autofill'] : 0,
+				'limit_text'              => isset( $question['settings']['limit_text'] ) ? $question['settings']['limit_text'] : 0,
+				'limit_multiple_response' => isset( $question['settings']['limit_multiple_response'] ) ? $question['settings']['limit_multiple_response'] : 0,
+				'file_upload_limit'       => isset( $question['settings']['file_upload_limit'] ) ? $question['settings']['file_upload_limit'] : 0,
+				'file_upload_type'        => isset( $question['settings']['file_upload_type'] ) ? $question['settings']['file_upload_type'] : '',
+				'quiz_name'               => isset( $quiz_name['quiz_name'] ) ? $quiz_name['quiz_name'] : '',
+				'question_title'          => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+			);
+			$question_data = apply_filters( 'qsm_rest_api_filter_question_data', $question_data, $question, $request );
+			$question_array['questions'][] = $question_data;
 		}
 		return $question_array;
 	} else {
