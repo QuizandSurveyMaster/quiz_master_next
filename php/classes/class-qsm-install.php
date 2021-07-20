@@ -1319,6 +1319,12 @@ class QSM_Install {
 
 			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 			dbDelta( $sql );
+
+			// enabling multiple category for fresh installation
+			$multiple_category = get_option( 'qsm_multiple_category_enabled' );
+			if ( ! $multiple_category ) {
+				add_option( 'qsm_multiple_category_enabled', date( time() ) );
+			}
 		}
 
 		if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_table_name'" ) != $question_table_name ) {
