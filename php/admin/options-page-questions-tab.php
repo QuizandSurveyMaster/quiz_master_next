@@ -29,7 +29,24 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
+	
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
+	$enabled = get_option( 'qsm_multiple_category_enabled' );
+	
+	if ( $enabled && 'cancelled' !== $enabled ) {
+		$question_categories = [];
+		$terms = get_terms( array(
+			'taxonomy' => 'qsm_category',
+			'hide_empty' => false,
+		) );
+		foreach( $terms as $term ) {
+			$question_categories[] = [
+				'category' => $term->name,
+				'cat_id' => $term->term_id
+			];
+		}
+	}
+	
 	$quiz_id             = intval( $_GET['quiz_id'] );
 	$user_id             = get_current_user_id();
 	$form_type           = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
