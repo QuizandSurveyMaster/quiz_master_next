@@ -244,7 +244,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_media();
 		}
 
-		wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version );
+		wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery'), $this->version, true );
 		wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 	}
 
@@ -366,11 +366,14 @@ class MLWQuizMasterNext {
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
 			global $qsm_quiz_list_page;
+			$enabled             = get_option( 'qsm_multiple_category_enabled' );
 			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
 			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ), __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
 			add_action( "load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options' );
-			$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
+			if($enabled && $enabled != 'cancelled'){
+				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
+			}
 			add_submenu_page( null, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
 			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			add_submenu_page( null, __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );

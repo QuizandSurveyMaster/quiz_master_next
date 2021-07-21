@@ -10,40 +10,47 @@
     float: right;
 }
 
-#unlink-question-button {
+#unlink-question-button,
+#save-multi-category-button {
     float: right;
     margin-left: 5px;
 }
 
 #modal-7,
-#modal-8 {
+#modal-8,
+#modal-9 {
     max-width: 500px;
 }
 
 #modal-7 hr,
-#modal-8 hr {
+#modal-8 hr,
+#modal-9 hr {
     margin: 0 -30px;
 }
 
 #modal-7 header,
-#modal-8 header {
+#modal-8 header,
+#modal-9 header {
     margin: -10px 0 10px 0;
 }
 
 #modal-7 .qsm-popup__close,
-#modal-8 .qsm-popup__close {
+#modal-8 .qsm-popup__close,
+#modal-9 .qsm-popup__close {
     margin: -10px -10px 0 0;
     font-size: 20px;
 }
 
 #modal-7-title,
-#modal-8-title {
+#modal-8-title,
+#modal-9-title {
     color: gray;
     opacity: 70%;
 }
 
 #modal-7 footer .dashicons,
-#modal-8 footer .dashicons {
+#modal-8 footer .dashicons,
+#modal-9 footer .dashicons {
     font-size: 20px;
     margin-right: 3px;
     vertical-align: middle;
@@ -51,25 +58,38 @@
 }
 
 #modal-7 .qsm-popup__container,
-#modal-8 .qsm-popup__container {
+#modal-8 .qsm-popup__container,
+#modal-9 .qsm-popup__container {
     max-width: 560px;
     padding-bottom: 20px;
 }
 
 .modal-7-table,
-.modal-8-table {
+.modal-8-table,
+.modal-9-table {
     font-size: 16px;
 }
 
 #modal-7 footer,
-#modal-8 footer {
+#modal-8 footer,
+#modal-9 footer {
     margin-top: 15px;
 }
 
 .modal-7-table tr td,
-.modal-8-table tr td {
+.modal-8-table tr td,
+.modal-9-table tr td {
     vertical-align: top;
     padding: 0 10px 5px 0
+}
+#modal-9-content .info {
+    height: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: -25px;
+    color: red;
+    text-align: center;
+    font-size: 15px;
 }
 @media screen and (min-width:700px) {
     .question-controls {
@@ -745,6 +765,13 @@ a#qsm-category-add-toggle {
     text-decoration: underline;
     cursor: pointer;
 }
+.add-multiple-category {
+    margin-top: 10px !important;
+    text-align: center;
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
 
 .quiz_form_type_0.quiz_quiz_systen_3 #question_type_13_description,
 .quiz_form_type_0.quiz_quiz_systen_1 #question_type_13_description {
@@ -761,7 +788,7 @@ div#multi_categories_wrapper {
     max-height: 250px;
     box-sizing: border-box;
     border: 1px solid #DDD;
-    padding: 0 15px;
+    padding: 15px;
     overflow: hidden;
     overflow-y: auto;
 }

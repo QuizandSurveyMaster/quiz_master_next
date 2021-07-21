@@ -248,7 +248,6 @@ var import_button;
 				pageInfo.set('questions', singlePage);
 				qpages.push(pageInfo.attributes);
 			});
-			console.log(pages);
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
@@ -329,8 +328,13 @@ var import_button;
 
 			if (questionName == '')
 				questionName = 'Your new question!';
+				// multicat = model.get('multicategories');
 
-			$('.page:nth-child(' + page + ')').append(template({ id: model.id, category: model.get('category'), question: questionName }));
+			$('.page:nth-child(' + page + ')').append(template({
+				id: model.id,
+				category: model.get('category'),
+				question: questionName
+			}));
 			setTimeout(QSMQuestion.removeNew, 250);
 		},
 		createQuestion: function (page) {
@@ -793,6 +797,7 @@ var import_button;
 
 		$('.questions').on('click', '.edit-question-button', function (event) {
 			event.preventDefault();
+			$('.qsm-category-filter').trigger('keyup');
 			QSMQuestion.openEditPopup($(this).parents('.question').data('question-id'), $(this));
 		});
 		$('.questions').on('click', '.edit-page-button', function (event) {
@@ -1245,4 +1250,76 @@ var import_button;
 		}
 		return result;
 	}
+	$(document).on('keyup', '.qsm-category-filter', function () {
+		search_term = $.trim($(this).val());
+		if (search_term == '') {
+			$('.qsm_category_checklist li').each(function () {
+				$(this).show()
+			});
+		} else {
+			search_term = new RegExp(search_term, 'i');
+			$('.qsm_category_checklist li').each(function () {
+				search_string = $(this).children('label').text();
+				// search_string = search_string.replace('Edit |  Delete', ' ');
+				result = search_string.search(search_term);
+				if (result > -1) {
+					$(this).show();
+				} else {
+					$(this).hide();
+				}
+			});
+
+		}
+	});
+
+	$(document).on('click', '.add-multiple-category', function (e) {
+		e.preventDefault();
+		MicroModal.show('modal-9', {
+			onClose: function () {
+				$('#new-category-name').val('');
+				$('#qsm-parent-category').val(-1);
+			}
+		});
+	});
+
+	$(document).on('click', '#save-multi-category-button', function (e) {
+		e.preventDefault();
+		duplicate = false;
+		new_category = $('#new-category-name').val().trim();
+		parent_category = $('#qsm-parent-category option:selected').val();
+		if (new_category == '') {
+			$('#modal-9-content .info').html('Category cannot be empty');
+			return false;
+		} else {
+			$('#qsm-parent-category option').each(function () {
+				if ($(this).text().toLowerCase() == new_category.toLowerCase()) {
+					duplicate = true;
+					$('#modal-9-content .info').html('Category <b>' + new_category + '</b> already exists in database');
+					return false;
+				}
+			});
+
+			if (!duplicate) {
+				var new_category_data = {
+					action: 'save_new_category',
+					name: new_category,
+					parent: parent_category
+				};
+				$('#modal-9-content .info').html('');
+				jQuery.ajax(ajaxurl, {
+					data: new_category_data,
+					method: 'POST',
+					success: function (response) {
+						result = JSON.parse(response);
+						if (result.term_id > 0) {
+							$('#qsm-parent-category').append('<option class="level-0" value="' + result.term_id + '">' + new_category + '</option>');
+							console.log($('.qsm_category_checklist').html());
+							$('.qsm_category_checklist').prepend('<li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" name="tax_input[qsm_category][]" checked="checked" id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li>');
+							MicroModal.close('modal-9')
+						}
+					}
+				});
+			}
+		}
+	});
 }(jQuery));

@@ -366,6 +366,15 @@ class QMNGlobalSettingsPage {
 		?>
 <div class="wrap">
 	<h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
+	<?php
+	$enabled = get_option( 'qsm_multiple_category_enabled' );
+	if( $enabled == 'cancelled' ){
+		?>
+	<a href="#"
+		class="button button-primary button-hero enable-cancelled-multiple-category"><?php _e('Enable Multiple Category', 'quiz-master-next'); ?></a>
+	<?php 
+	}
+	?>
 	<form action="options.php" method="POST" class="qsm_global_settings">
 		<?php settings_fields( 'qmn-settings-group' ); ?>
 		<?php do_settings_sections( 'qmn_global_settings' ); ?>

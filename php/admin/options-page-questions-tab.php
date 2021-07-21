@@ -29,24 +29,26 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	
+
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
-	$enabled = get_option( 'qsm_multiple_category_enabled' );
-	
+	$enabled             = get_option( 'qsm_multiple_category_enabled' );
+
 	if ( $enabled && 'cancelled' !== $enabled ) {
-		$question_categories = [];
-		$terms = get_terms( array(
-			'taxonomy' => 'qsm_category',
-			'hide_empty' => false,
-		) );
-		foreach( $terms as $term ) {
-			$question_categories[] = [
+		$question_categories = array();
+		$terms               = get_terms(
+			array(
+				'taxonomy'   => 'qsm_category',
+				'hide_empty' => false,
+			)
+		);
+		foreach ( $terms as $term ) {
+			$question_categories[] = array(
 				'category' => $term->name,
-				'cat_id' => $term->term_id
-			];
+				'cat_id'   => $term->term_id,
+			);
 		}
 	}
-	
+
 	$quiz_id             = intval( $_GET['quiz_id'] );
 	$user_id             = get_current_user_id();
 	$form_type           = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
@@ -263,17 +265,17 @@ function qsm_options_questions_tab_content() {
 										'description'      => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
 									),
 									// array(
-									// 	'question_type_id' => '13',
-									// 	'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+									// 'question_type_id' => '13',
+									// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									// ),
 								);
-								
+
 								// disabling polar for form type quiz and system correct/incorrect
 								if ( $form_type == 0 && $quiz_system == 0 ) {
-									$polar_class = $polar_question_use = '';
+									$polar_class       = $polar_question_use = '';
 									$description_arr[] = array(
-											'question_type_id' => '13',
-											'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+										'question_type_id' => '13',
+										'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									);
 								} else {
 									$polar_class        = 'qsm_show_question_type_13';
@@ -445,7 +447,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'multi_category',
 													'priority' => '5',
 													'default' => '',
-												)
+												),
 											);
 										} else {
 											$category_question_option = array(
@@ -454,8 +456,8 @@ function qsm_options_questions_tab_content() {
 													'type' => 'category',
 													'priority' => '5',
 													'default' => '',
-													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category'
-												)
+													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category',
+												),
 											);
 										}
 										$category_question_option = apply_filters( 'qsm_question_category_option', $category_question_option );
@@ -756,6 +758,59 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
+<div class="qsm-popup qsm-popup-slide" id="modal-9" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-9-title">
+			<header class="qsm-popup__header">
+				<h3 class="qsm-popup__title" id="modal-9-title"><?php _e( 'Add New Category', 'quiz-master-next' ); ?>
+				</h3>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			</header>
+			<hr />
+			<main class="qsm-popup__content" id="modal-9-content">
+				<!-- <form action='' method='post' id="delete-question-form"> -->
+				<div class="info"></div>
+				<table class="modal-9-table">
+					<tr>
+						<td><?php _e( 'Category Name', 'quiz-master-next' ); ?>
+						</td>
+						<td><input type="text" id="new-category-name" /></td>
+					<tr>
+					<tr>
+						<td><?php _e( 'Parent Category', 'quiz-master-next' ); ?>
+						</td>
+						<td>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'             => 'qsm_category',
+									'descendants_and_self' => 0,
+									'selected_cats'        => true,
+									'echo'                 => true,
+									'id'                   => 'qsm-parent-category',
+									'hide_empty'           => false,
+									'hirerichal'           => 1,
+									'show_option_none'     => 'None',
+									'option_none_value'    => -1,
+								)
+							);
+							?>
+						</td>
+					<tr>
+				</table>
+				<!-- </form> -->
+			</main>
+			<hr />
+			<footer class="qsm-popup__footer">
+				<button id="save-multi-category-button"
+					class="qsm-popup__btn qsm-popup__btn-primary"></span><?php _e( 'Save', 'quiz-master-next' ); ?></button>
+				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+
 <?php
 }
 
@@ -979,4 +1034,22 @@ function qsm_delete_question_from_database() {
 	exit;
 }
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
+
+add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
+
+function qsm_save_new_category() {
+
+	$category   = sanitize_text_field( $_POST['name'] );
+	$parent     = (int) $_POST['parent'];
+	$parent     = ( $parent == -1 ) ? 0 : $parent;
+	$term_array = wp_insert_term(
+		$category,
+		'qsm_category',
+		array(
+			'parent' => $parent,
+		)
+	);
+	echo json_encode($term_array);
+	exit;
+}
 ?>
