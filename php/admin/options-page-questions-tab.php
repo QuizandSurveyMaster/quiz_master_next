@@ -792,6 +792,7 @@ function qsm_options_questions_tab_content() {
 									'hirerichal'           => 1,
 									'show_option_none'     => 'None',
 									'option_none_value'    => -1,
+									'orderby'              => 'name',
 								)
 							);
 							?>
@@ -1049,7 +1050,7 @@ function qsm_save_new_category() {
 			'parent' => $parent,
 		)
 	);
-	echo json_encode($term_array);
+	echo json_encode( $term_array );
 	exit;
 }
 ?>

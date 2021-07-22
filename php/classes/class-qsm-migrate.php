@@ -29,7 +29,7 @@ class QSM_Migrate {
 				$new_category  = '';
 				$term_id       = 0;
 				$values_array  = array();
-				$result = false;
+				$result        = false;
 				$category_data = $wpdb->get_results( "SELECT question_id, quiz_id, category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' ORDER BY category" );
 				foreach ( $category_data as $data ) {
 					if ( $new_category != $data->category ) {
@@ -43,21 +43,21 @@ class QSM_Migrate {
 					}
 					$values_array[] = "($data->question_id, $data->quiz_id, $term_id, 'qsm_category')";
 				}
-				$values = join( ',', $values_array );
-				$insert_query = stripslashes($wpdb->prepare("INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values));
-				$result = $wpdb->query($insert_query);
-				if($result > 0){
-					update_option( 'qsm_multiple_category_enabled', date(time()) );
+				$values       = join( ',', $values_array );
+				$insert_query = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
+				$result       = $wpdb->query( $insert_query );
+				if ( $result > 0 ) {
+					update_option( 'qsm_multiple_category_enabled', date( time() ) );
 					$response = array(
 						'status' => true,
-						'count' => $result
+						'count'  => $result,
 					);
 				} else {
 					$response = array(
-						'status' => false
+						'status' => false,
 					);
 				}
-				echo json_encode($response);
+				echo json_encode( $response );
 				break;
 
 			case 'cancel':
@@ -66,5 +66,37 @@ class QSM_Migrate {
 				break;
 		}
 		exit;
+	}
+
+	/**
+	 * This function check which regime of category is available and returns category data accordingly
+	 *
+	 * @param string $name
+	 * @return array
+	 */
+	public function get_category_data( $name ) {
+		$enabled  = get_option( 'qsm_multiple_category_enabled' );
+		$migrated = false;
+		if ( $enabled && 'cancelled' !== $enabled ) {
+			$migrated = true;
+		}
+
+		$response = array(
+			'migrated' => $migrated,
+		);
+
+		if ( $migrated ) {
+			$cat_data = get_term_by( 'name', $name, 'qsm_category' );
+			if ( $cat_data ) {
+				$response['id'] = $cat_data->term_id;
+			} else {
+				$response['migrated'] = false;
+				$response['name']     = $name;
+			}
+		} else {
+			$response['name'] = $name;
+		}
+
+		return $response;
 	}
 }
