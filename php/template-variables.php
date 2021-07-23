@@ -567,9 +567,16 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if($category_data['migrated']){
-				if(in_array($category_data['id'], $answer['multicategories'])){
+				$length = 0;
+				foreach($category_data['ids'] as $id){
+					if(in_array($id, $answer['multicategories'])){
+						$length++;
+					}
+				}
+				if($length == sizeof($category_data['ids'])){
 					$return_points += $answer['points'];
 				}
+				
 			} else {
 				if ( $answer['category'] == $category_name ) {
 					$return_points += $answer['points'];
@@ -662,12 +669,21 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if($category_data['migrated']){
-				if(in_array($category_data['id'], $answer['multicategories'])){
+				$length = 0;
+				foreach($category_data['ids'] as $id){
+					if(in_array($id, $answer['multicategories'])){
+						$length++;
+					}
+				}
+				if($length == sizeof($category_data['ids'])){
 					$total_questions += 1;
 					if ( $answer['correct'] == 'correct' ) {
 						$amount_correct += 1;
 					}
 				}
+				// if(in_array($category_data['id'], $answer['multicategories'])){
+					
+				// }
 			} else {
 				if ( $answer['category'] == $category_name ) {
 					$total_questions += 1;

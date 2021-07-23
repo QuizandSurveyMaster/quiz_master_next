@@ -86,9 +86,20 @@ class QSM_Migrate {
 		);
 
 		if ( $migrated ) {
-			$cat_data = get_term_by( 'name', $name, 'qsm_category' );
-			if ( $cat_data ) {
-				$response['id'] = $cat_data->term_id;
+			$cats = explode('_', $name);
+			$ids = array();
+			foreach($cats as $category){
+				$category = trim($category);
+				if($category != ''){
+					$cat_data = get_term_by( 'name', $category, 'qsm_category' );
+					if ( $cat_data ) {
+						$ids[] = $cat_data->term_id;
+					} 
+				}
+			}
+			
+			if ( !empty($ids) ) {
+				$response['ids'] = $ids;
 			} else {
 				$response['migrated'] = false;
 				$response['name']     = $name;
