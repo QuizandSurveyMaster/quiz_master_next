@@ -30,8 +30,8 @@ class QSM_Results_Pages {
 		$default_redirect = false;
 		ob_start();
 		?>
-		<div class="qsm-results-page">
-			<?php
+<div class="qsm-results-page">
+	<?php
 			do_action( 'qsm_before_results_page' );
 
 			// Cycles through each possible page.
@@ -51,15 +51,27 @@ class QSM_Results_Pages {
 					// Cycle through each condition to see if we should show this page.
 					foreach ( $page['conditions'] as $condition ) {
 						$value = $condition['value'];
-
+						$category = '';
+						if( isset($condition['category'])){
+							$category = $condition['category'];
+						}
 						// First, determine which value we need to test.
 						switch ( $condition['criteria'] ) {
 							case 'score':
-								$test = $response_data['total_score'];
+								if( $category != '' ){
+									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
+								} else {
+									$test = $response_data['total_score'];
+								}
+								
 								break;
 
 							case 'points':
-								$test = $response_data['total_points'];
+								if( $category != '' ){
+									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
+								} else {
+									$test = $response_data['total_points'];
+								}
 								break;
 
 							default:
@@ -151,8 +163,8 @@ class QSM_Results_Pages {
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page' );
 			?>
-		</div>
-		<?php
+</div>
+<?php
 		return array(
 			'display'  => do_shortcode( ob_get_clean() ),
 			'redirect' => $redirect,

@@ -53,7 +53,7 @@ function qsm_options_questions_tab_content() {
 	$user_id             = get_current_user_id();
 	$form_type           = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system         = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
-	$multiple_categories = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'multiple_categories' );
+	// $multiple_categories = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'multiple_categories' );
 	$pages               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 	$db_qpages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 	$qpages              = array();
@@ -95,7 +95,7 @@ function qsm_options_questions_tab_content() {
 		'categories'             => $question_categories,
 		'form_type'              => $form_type,
 		'quiz_system'            => $quiz_system,
-		'multiple_categories'    => $multiple_categories,
+		// 'multiple_categories'    => $multiple_categories,
 		'hide_desc_text'         => __( 'Less Description', 'quiz-master-next' ),
 		'show_desc_text'         => __( 'Add Description', 'quiz-master-next' ),
 		'show_correct_info_text' => __( 'Add Correct Answer Info', 'quiz-master-next' ),

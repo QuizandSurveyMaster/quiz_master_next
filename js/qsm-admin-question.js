@@ -1323,6 +1323,7 @@ var import_button;
 		e.preventDefault();
 		MicroModal.show('modal-9', {
 			onClose: function () {
+				$('#modal-9-content .info').html('');
 				$('#new-category-name').val('');
 				$('#qsm-parent-category').val(-1);
 			}

@@ -37,31 +37,46 @@ function qsm_options_emails_tab_content() {
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
                 'qsm_user_ve' => get_user_meta($user_id, 'rich_editing', true),
 	);
+
+	$categories = array();
+	$enabled = get_option( 'qsm_multiple_category_enabled' );
+	if ( $enabled && $enabled != 'cancelled' ) {
+		$query      = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+	} else {
+		$query      = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
+	}
+	$categories = $wpdb->get_results( $query, ARRAY_N );
+
 	wp_enqueue_script( 'qsm_emails_admin_script', plugins_url( '../../js/qsm-admin-emails.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_emails_admin_script', 'qsmEmailsObject', $js_data );
 	wp_enqueue_editor();
 	wp_enqueue_media();
-	?>        
-	
-	<!-- Emails Section -->
-        <section class="qsm-quiz-email-tab" style="margin-top: 15px;">		
-		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
-		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>                
-                <a style="float: right;" class="qsm-show-all-variable-text" href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span class="dashicons dashicons-upload"></span></a>
-                <a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
-		<div id="qsm_emails"><div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div></div>
-		<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
-		<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
-                <div class="qsm-alerts" style="margin-top: 20px;">
-                    <?php
+	?>
+
+<!-- Emails Section -->
+<section class="qsm-quiz-email-tab" style="margin-top: 15px;">
+	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
+	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
+	<a style="float: right;" class="qsm-show-all-variable-text"
+		href="#"><?php _e('Insert Template Variables', 'quiz-master-next'); ?> <span
+			class="dashicons dashicons-upload"></span></a>
+	<a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/"
+		target="_blank"><?php _e('View Documentation', 'quiz-master-next'); ?></a>
+	<div id="qsm_emails">
+		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
+	</div>
+	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
+	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
+	<div class="qsm-alerts" style="margin-top: 20px;">
+		<?php
                     $mlwQuizMasterNext->alertManager->showAlerts();
                     ?>
-                </div>
-	</section>
+	</div>
+</section>
 
-	<!-- Templates -->
-	<script type="text/template" id="tmpl-email">
-		<div class="qsm-email">
+<!-- Templates -->
+<script type="text/template" id="tmpl-email">
+	<div class="qsm-email">
 			<header class="qsm-email-header">
 				<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
 			</header>
@@ -94,9 +109,18 @@ function qsm_options_emails_tab_content() {
 		</div>
 	</script>
 
-	<script type="text/template" id="tmpl-email-condition">
-		<div class="email-condition">
+<script type="text/template" id="tmpl-email-condition">
+	<div class="email-condition">
 			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+			<?php if( ! empty($categories)) {?>
+				<select class="email-condition-category">
+					<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
+					<?php foreach($categories as $cat) { ?>
+					<option value="<?php echo $cat[0]; ?>" <# if (data.category == '<?php echo $cat[0]; ?>') { #>selected<# } #>><?php echo $cat[0]; ?></option>
+					<?php } ?>
+					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
+				</select>
+			<?php } ?>
 			<select class="email-condition-criteria">
 				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e('Total points earned', 'quiz-master-next'); ?></option>
 				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e('Correct score percentage', 'quiz-master-next'); ?></option>
@@ -116,20 +140,20 @@ function qsm_options_emails_tab_content() {
 			<?php do_action('qsm_email_condition_value'); ?>
 		</div>
 	</script>
-        <!--Template popup-->
-        <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
-            <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-                <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
-                    <header class="qsm-popup__header" style="display: block;">
-                            <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                            <span class="description">
-                                <?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
-                                <br/><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
-                                <?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
-                            </span>
-                    </header>
-                    <main class="qsm-popup__content" id="show-all-variable-content">
-                        <?php
+<!--Template popup-->
+<div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
+			<header class="qsm-popup__header" style="display: block;">
+				<h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>
+				<span class="description">
+					<?php _e('Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next'); ?>
+					<br /><b><?php _e('Note: ', 'quiz-master-next'); ?></b>
+					<?php _e('Always use uppercase while using these variables.', 'quiz-master-next'); ?>
+				</span>
+			</header>
+			<main class="qsm-popup__content" id="show-all-variable-content">
+				<?php
                         $variable_list = qsm_text_template_variable_list();
                         $email_exta_variable = array(
                             '%CONTACT_X%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
@@ -151,25 +175,26 @@ function qsm_options_emails_tab_content() {
                         unset($variable_list['%TWITTER_SHARE%']);
                         if( $variable_list ){
                             foreach ( $variable_list as $key => $s_variable ) { ?>
-                                <div class="popup-template-span-wrap">
-                                    <span class="qsm-text-template-span">
-                                        <button class="button button-default"><?php echo $key; ?></button>                                    
-                                        <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                                            <span class="qsm-tooltips"><?php echo $s_variable; ?></span>
-                                        </span>                                    
-                                    </span>
-                                </div>
-                            <?php                     
+				<div class="popup-template-span-wrap">
+					<span class="qsm-text-template-span">
+						<button class="button button-default"><?php echo $key; ?></button>
+						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+							<span class="qsm-tooltips"><?php echo $s_variable; ?></span>
+						</span>
+					</span>
+				</div>
+				<?php                     
                             }
                         }
                         ?>
-                    </main>
-                    <footer class="qsm-popup__footer" style="text-align: right;">                            
-                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close [Esc]', 'quiz-master-next'); ?></button>
-                    </footer>
-                </div>
-            </div>
-        </div>
-	<?php
+			</main>
+			<footer class="qsm-popup__footer" style="text-align: right;">
+				<button class="button button-default" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e('Close [Esc]', 'quiz-master-next'); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+<?php
 }
 ?>
