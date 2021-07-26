@@ -332,7 +332,9 @@ class QMNQuizCreator {
 		$current_user           = wp_get_current_user();
 		$table_name             = $wpdb->prefix . 'mlw_quizzes';
 		$logic_table            = $wpdb->prefix . 'mlw_logic';
+		$question_term          = $wpdb->prefix . 'mlw_question_terms';
 		$logic_table_exists     = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $logic_table ) );
+		$question_term_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $question_term ) );
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
 		$quiz_settings          = unserialize( $mlw_qmn_duplicate_data->quiz_settings );
 		if ( $is_duplicating_questions == 0 ) {
@@ -499,7 +501,9 @@ class QMNQuizCreator {
 			$questions  = array();
 			if ( is_array( $update_pages ) ) {
 				foreach ( $update_pages as $ids ) {
-					$questions[] = $ids[0];
+					foreach ( $ids as $id ) {
+						$questions[] = $id;
+					}
 				}
 			}
 			$question_ids          = implode( ',', $questions );
@@ -579,6 +583,33 @@ class QMNQuizCreator {
 						}
 					}
 				}
+				// Copying categories for multiple categories table
+				$new_question_id = $wpdb->insert_id;
+				if ( ! is_null( $question_term_exists ) ) {
+					$query    = $wpdb->prepare( "SELECT DISTINCT term_id FROM $question_term WHERE question_id = %d AND quiz_id = %d", $mlw_question->question_id, $quiz_id );
+					$term_ids = $wpdb->get_results( $query, ARRAY_N );
+
+					if ( ! is_null( $term_ids ) ) {
+						foreach ( $term_ids as $term_id ) {
+							$wpdb->insert(
+								$question_term,
+								array(
+									'question_id' => $new_question_id,
+									'quiz_id'     => $mlw_new_id,
+									'term_id'     => $term_id[0],
+									'taxonomy'    => 'qsm_category',
+								),
+								array(
+									'%d',
+									'%d',
+									'%d',
+									'%s',
+								)
+							);
+						}
+					}
+				}
+
 				if ( $question_results == false ) {
 					$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0020' ), 'error' );
 					$mlwQuizMasterNext->log_manager->add( 'Error 0020', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
