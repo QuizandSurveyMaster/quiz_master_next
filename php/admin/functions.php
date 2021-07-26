@@ -508,7 +508,7 @@ function qsm_create_new_quiz_wizard() {
 								'value'       => 0,
 							),
 							'system'                 => array(
-								'option_name' => __( 'Graded System', 'quiz-master-next' ),
+								'option_name' => __( 'Grading System', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'pagination'             => array(

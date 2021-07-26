@@ -1624,8 +1624,8 @@ td.scheduled_time_start {
 
 #show-all-variable-content .popup-template-span-wrap {
 	margin-bottom: 20px;
-	margin-right: 3%;
-	width: 30%;
+	margin-right: 5px;
+	width: auto;
 	display: inline-block;
 }
 
