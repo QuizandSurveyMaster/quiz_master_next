@@ -500,8 +500,8 @@ class QMNQuizCreator {
 			$table_name = $wpdb->prefix . 'mlw_questions';
 			$questions  = array();
 			if ( is_array( $update_pages ) ) {
-				foreach ( $update_pages[0] as $ids ) {
-					$questions[] = $ids;
+				foreach ( $update_pages as $ids ) {
+					$questions[] = $ids[0];
 				}
 			}
 			$question_ids          = implode( ',', $questions );
