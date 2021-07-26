@@ -501,7 +501,9 @@ class QMNQuizCreator {
 			$questions  = array();
 			if ( is_array( $update_pages ) ) {
 				foreach ( $update_pages as $ids ) {
-					$questions[] = $ids[0];
+					foreach ( $ids as $id ) {
+						$questions[] = $id;
+					}
 				}
 			}
 			$question_ids          = implode( ',', $questions );
