@@ -651,7 +651,7 @@ Results Pages & Emails Tab
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 15px;
-	justify-content: space-around;
+	/* justify-content: space-around; */
 }
 
 .results-page-condition>select,
@@ -712,7 +712,7 @@ Results Pages & Emails Tab
 	.results-page-condition>input,
 	.email-condition>select,
 	.email-condition>input {
-		max-width: 30%;
+		max-width: 23%;
 	}
 
 	.delete-condition-button {

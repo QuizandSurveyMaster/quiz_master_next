@@ -287,6 +287,7 @@ $results_array = array(
     'comments'               => isset( $results[2] ) ? $results[2] : '',
     'question_answers_array' => isset( $results[1] ) ? $results[1] : array(),
     'contact'                => $results["contact"],
+    'result_id'              => $result_id,
     'results'                => $results,
 );
 
@@ -296,7 +297,13 @@ $template = str_replace( "\n" , "<br>", $template );
 if( $new_template_result_detail == 0 ){
     echo '<div class="old_template_result_wrap">';
 }
-echo wp_kses_post( $template );
+
+$is_allow_html = apply_filters('qsm_admin_results_details_page_allow_html', false);
+if ($is_allow_html) {
+	echo $template;
+} else {
+	echo wp_kses_post($template);
+}
 if( $new_template_result_detail == 0 ){
     echo '</div>';
 }

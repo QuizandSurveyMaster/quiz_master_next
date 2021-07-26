@@ -23,12 +23,13 @@ var QSMAdminResults;
 				}
 				$( this ).find( '.results-page-condition' ).each( function() {
 					page.conditions.push({
+						'category': $(this).children('.results-page-condition-category').val(),
 						'criteria': $( this ).children( '.results-page-condition-criteria' ).val(),
 						'operator': $( this ).children( '.results-page-condition-operator' ).val(),
 						'value': $( this ).children( '.results-page-condition-value' ).val()
 					});
 				});
-				pages.push( page );
+				pages.push(page);
 			});
 			var data = {
 				'pages': pages
@@ -63,27 +64,29 @@ var QSMAdminResults;
 				})
 				.fail(QSMAdmin.displayjQueryError);
 		},
-		addCondition: function( $page, criteria, operator, value ) {
+		addCondition: function ($page, category, criteria, operator, value) {
 			var template = wp.template( 'results-page-condition' );
-			$page.find( '.results-page-when-conditions' ).append( template({
-				'criteria': criteria,
-				'operator': operator,
-				'value': value
+			$page.find('.results-page-when-conditions').append(template({
+							'category': category,
+							'criteria': criteria,
+							'operator': operator,
+							'value': value
 			}));
 		},
 		newCondition: function( $page ) {
-			QSMAdminResults.addCondition( $page, 'score', 'equal', 0 );
+			QSMAdminResults.addCondition($page, '', 'score', 'equal', 0);
 		},
-		addResultsPage: function( conditions, page, redirect ) {
+		addResultsPage: function (conditions, page, redirect) {
 			QSMAdminResults.total += 1;
 			var template = wp.template( 'results-page' );
 			$( '#results-pages' ).append( template( { id: QSMAdminResults.total, page: page, redirect: redirect } ) );
 			conditions.forEach( function( condition, i, conditions) {
 				QSMAdminResults.addCondition( 
-					$( '.results-page:last-child' ), 
-					condition.criteria,
-					condition.operator,
-					condition.value
+					$('.results-page:last-child'),
+						condition.category,
+						condition.criteria,
+						condition.operator,
+						condition.value
 				);
 			});
 			var settings = {
@@ -99,6 +102,7 @@ var QSMAdminResults;
 		},
 		newResultsPage: function() {
 			var conditions = [{
+				'category': '',
 				'criteria': 'score',
 				'operator': 'greater',
 				'value': '0'
