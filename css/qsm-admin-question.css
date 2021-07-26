@@ -766,7 +766,6 @@ a#qsm-category-add-toggle {
     cursor: pointer;
 }
 .add-multiple-category {
-    margin-top: 10px !important;
     text-align: center;
     display: block;
     width: 100%;

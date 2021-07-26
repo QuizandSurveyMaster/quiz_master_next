@@ -330,8 +330,6 @@ function qsm_display_question_option( $key, $single_option ) {
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
 		<input type='text' class='qsm-category-filter' placeholder=' <?php  _e( ' Search', 'quiz-master-next' ); ?> '>
-		<a href='#' class='button button-primary add-multiple-category'>
-			<?php _e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
 		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
 			<?php 
 						wp_terms_checklist(0,
@@ -344,6 +342,9 @@ function qsm_display_question_option( $key, $single_option ) {
 						);
 						?>
 		</ul>
+		<a href='#' class='button button-primary add-multiple-category'>
+			<?php _e( '+ Add New Category ', 'quiz-master-next' ); ?>
+		</a>
 	</div>
 </div>
 <?php
