@@ -58,7 +58,7 @@ function qsm_options_results_tab_content() {
 		href="#"><?php _e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span
 			class="dashicons dashicons-upload"></span></a>
 	<a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/results-pages-tab/"
-		target="_blank">View Documentation</a>
+		target="_blank" rel="noopener">View Documentation</a>
 	<div id="results-pages">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
