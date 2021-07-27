@@ -318,21 +318,22 @@ function qsm_display_question_option( $key, $single_option ) {
 	</div>
 </div>
 <?php
-        break;
+			break;
 
-        case 'multi_category':
-            ?>
+		case 'multi_category':
+			?>
 <div id="multi_category_area" class="qsm-row <?php echo $show_class; ?>">
 	<label>
-		<?php echo isset($single_option['label']) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
-		<input type='text' class='qsm-category-filter' placeholder=' <?php  _e( ' Search', 'quiz-master-next' ); ?> '>
+		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
 		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
-			<?php 
-						wp_terms_checklist(0,
+			<?php
+						wp_terms_checklist(
+							0,
 							array(
 								'taxonomy'             => 'qsm_category',
 								'descendants_and_self' => 0,
@@ -340,7 +341,7 @@ function qsm_display_question_option( $key, $single_option ) {
 								'echo'                 => true,
 							)
 						);
-						?>
+			?>
 		</ul>
 		<a href='#' class='button button-primary add-multiple-category'>
 			<?php _e( '+ Add New Category ', 'quiz-master-next' ); ?>
@@ -348,7 +349,7 @@ function qsm_display_question_option( $key, $single_option ) {
 	</div>
 </div>
 <?php
-        break;
+			break;
 
 		case 'multi_checkbox':
 			?>
@@ -731,15 +732,27 @@ function qsm_update_question_type_col_val() {
  */
 function qsm_check_create_tables() {
 	global $wpdb;
+	$install         = false;
+
 	$quiz_table_name = $wpdb->prefix . 'mlw_quizzes';
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
-		QSM_Install::install();
+		$install = true;
 	}
 
 	$quiz_theme_table_name = $wpdb->prefix . 'mlw_themes';
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) != $quiz_theme_table_name ) {
+		$install = true;
+	}
+
+	$question_terms_table_name = $wpdb->prefix . 'mlw_question_terms';
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_terms_table_name'" ) != $question_terms_table_name ) {
+		$install = true;
+	}
+
+	if ( $install ) {
 		QSM_Install::install();
 	}
+
 }
 add_action( 'admin_init', 'qsm_check_create_tables' );
 
