@@ -41,7 +41,7 @@ class QSM_Theme_Settings {
 	 *
 	 * @return bool true for successful update, false in failure
 	 */
-	public function update_theme_status( $status = true, $path, $name = '', $default_settings = '' ) {
+	public function update_theme_status( $status, $path, $name = '', $default_settings = '' ) {
 		global $wpdb;
 		$theme_path             = isset( $path ) ? $path : '';
 		$theme_name             = isset( $name ) ? $name : '';
