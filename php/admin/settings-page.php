@@ -74,7 +74,11 @@ class QMNGlobalSettingsPage {
                         echo '<div class="updated" style="padding: 10px;">';
 			echo "<span>" . __( ' Settings have been updated!', 'quiz-master-next' ) . "</span>";
                         echo '</div>';
-		}                
+		}
+		echo '<div class="notice notice-info enable-category-notice" style="padding: 10px;display:none;">';
+		echo "<span class='message'></span>";
+		echo "<span class='trail'></span>";
+        echo '</div>';                
 	}
 
 	/**

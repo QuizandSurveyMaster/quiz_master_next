@@ -84,13 +84,11 @@ class QSM_Migrate {
 				$result       = $wpdb->query( $insert_query );
 				if ( $result > 0 ) {
 					update_option( 'qsm_multiple_category_enabled', date( time() ) );
-					$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( '%d records updated', 'quiz-master-next' ), $result ), 'success' );
 					$response = array(
 						'status' => true,
 						'count'  => $result,
 					);
 				} else {
-					$mlwQuizMasterNext->alertManager->newAlert( __( 'Failed to update database. Try again later', 'quiz-master-next' ), 'error' );
 					$response = array(
 						'status' => false,
 					);
