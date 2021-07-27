@@ -438,20 +438,20 @@ class MLWQuizMasterNext {
 			?>
 <div class="notice notice-info multiple-category-notice">
 	<h3>
-		<?php _e( 'Multiple Category Support', 'quiz-master-next' ); ?>
+		<?php _e( 'Database update required', 'quiz-master-next' ); ?>
 	</h3>
 	<p>
 		<?php
-			$message  = sprintf( __( 'From %1$s version 7.2.4%2$s onwards QSM is compatible with multiple category per questions.', 'quiz-master-next' ), '<code><b>', '</b></code>' );
-			$message .= sprintf( __( '%1$s To enable this feature click on Enable button below', 'quiz-master-next' ), '<br/>' );
-			$message .= sprintf( __( '%1$s NOTE : This action cannot be reverted back.%2$s', 'quiz-master-next' ), '<br/><b style="color:red;">', '</b>' );
+			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
+			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
+			$message .= sprintf( __( '%1$s Please note that this action can not be rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>');
 			echo $message;
 			?>
 	</p>
 	<p class="category-action">
 		<?php
-			$buttons  = sprintf( __( '%1$s Enable Multiple Category %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			$buttons .= sprintf( __( '%1$s Cancel, I will stay with old regime %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button cancel-multiple-category">', '</a>' );
+			$buttons = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
+			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
 			echo $buttons;
 			?>
 	</p>
