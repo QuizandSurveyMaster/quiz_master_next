@@ -76,11 +76,11 @@ class QSM_Fields {
         $settings[ 'result_page_fb_image' ] = $result_page_fb_image != '' ? $result_page_fb_image : $settings[ 'result_page_fb_image' ];
     }    
     ?>
-    <form action="" method="post">
-      <?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
-      <button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
-      <table class="form-table" style="width: 100%;">          
-        <?php
+<form action="" method="post">
+	<?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
+	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+	<table class="form-table" style="width: 100%;">
+		<?php
         $array_before_legacy = array();
         foreach ( $fields as $key => $field ) {
             if( isset( $field['legacy_option'] ) && $field['legacy_option'] == 0 ){                
@@ -105,10 +105,10 @@ class QSM_Fields {
           QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
         }
         ?>
-      </table>
-      <button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
-    </form>
-    <?php
+	</table>
+	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+</form>
+<?php
   }
 
   /**
@@ -157,53 +157,55 @@ class QSM_Fields {
    */
   public static function generate_text_field( $field, $value ) {
     ?>
-    <tr valign="top">
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>
-        <input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
-        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>
-      </td>
-    </tr>
-    <?php
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
+			value="<?php echo $value; ?>" />
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
   
   public static function generate_select_page_field( $field, $value ) {
     ?>
-    <tr valign="top">
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>
-          <select id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>">
-              <option value="">Select Page</option>
-              <?php
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<select id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>">
+			<option value="">Select Page</option>
+			<?php
               $pages = get_pages(); 
               foreach ( $pages as $page ) { ?>
-              <option value="<?php echo get_page_link( $page->ID ) ?>" <?php selected($value, get_page_link( $page->ID )); ?> ><?php echo $page->post_title ?></option>;
-              <?php } ?>
-          </select>
-          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-          <?php } ?>
-          <br/>
-          <b style="color: red;">Note: </b><?php echo isset($field['note']) ? $field['note'] : ''; ?>
-      </td>
-    </tr>
-    <?php
+			<option value="<?php echo get_page_link( $page->ID ) ?>"
+				<?php selected($value, get_page_link( $page->ID )); ?>><?php echo $page->post_title ?></option>;
+			<?php } ?>
+		</select>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+		<br />
+		<b style="color: red;">Note: </b><?php echo isset($field['note']) ? $field['note'] : ''; ?>
+	</td>
+</tr>
+<?php
   }
 
   /**
@@ -215,29 +217,29 @@ class QSM_Fields {
    */
   public static function generate_editor_field( $field, $value ) {
     ?>
-    <tr>
-      <th scope="row">
-        <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?>
-          <?php
+<tr>
+	<th scope="row">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?>
+			<?php
           if ( is_array( $field["variables"] ) ) {
             ?>
-            <br>
-            <p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
-            <?php
+			<br>
+			<p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
+			<?php
             foreach ( $field["variables"] as $variable ) {
               ?>
-              <p style="margin: 2px 0">- <?php echo $variable; ?></p>
-              <?php
+			<p style="margin: 2px 0">- <?php echo $variable; ?></p>
+			<?php
             }
           }
           ?>
-        </label>
-      </th>
-      <td>
-        <?php wp_editor( htmlspecialchars_decode( $value, ENT_QUOTES ), $field["id"] ); ?>
-      </td>
-    </tr>
-    <?php
+		</label>
+	</th>
+	<td>
+		<?php wp_editor( htmlspecialchars_decode( $value, ENT_QUOTES ), $field["id"] ); ?>
+	</td>
+</tr>
+<?php
   }
 
   /**
@@ -249,34 +251,35 @@ class QSM_Fields {
    */
   public static function generate_date_field( $field, $value ) {    
     ?>
-    <script>
-        jQuery(function() {
-        jQuery( "#<?php echo $field["id"]; ?>" ).datetimepicker({
-            format:'m/d/Y H:i',
-            step: 1
-          });
-        });
-    </script>
-    <tr valign="top">
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td class="<?php echo $field["id"]; ?>">
-          <?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
-            <span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
-          <?php } ?>
-            <input autocomplete="off" type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
-          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>
-      </td>
-    </tr>
-    <?php
+<script>
+jQuery(function() {
+	jQuery("#<?php echo $field["id"]; ?>").datetimepicker({
+		format: 'm/d/Y H:i',
+		step: 1
+	});
+});
+</script>
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td class="<?php echo $field["id"]; ?>">
+		<?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
+		<span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
+		<?php } ?>
+		<input autocomplete="off" type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
+			value="<?php echo $value; ?>" />
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
 
   /**
@@ -288,23 +291,24 @@ class QSM_Fields {
    */
   public static function generate_number_field( $field, $value ) {
     ?>
-    <tr valign="top">
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>
-          <input type="number" step="1" min="0" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>" value="<?php echo $value; ?>" />
-          <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>
-      </td>
-    </tr>
-    <?php
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<input type="number" step="1" min="0" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
+			value="<?php echo $value; ?>" />
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
 
   /**
@@ -317,32 +321,35 @@ class QSM_Fields {
   public static function generate_radio_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
     ?>
-    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>        
-        <fieldset class="buttonset buttonset-hide" data-hide='1'>
-            <?php
+<tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<fieldset class="buttonset buttonset-hide" data-hide='1'>
+			<?php
               foreach ( $field["options"] as $option ) {
-                ?>                
-                <input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>" />
-                <label for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br/>
-                <?php
+                ?>
+			<input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>"
+				name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?>
+				value="<?php echo $option["value"]; ?>" />
+			<label
+				for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br />
+			<?php
               }
             ?>
-        </fieldset>
-        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>  
-      </td>
-    </tr>
-    <?php
+		</fieldset>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
   
   /**
@@ -355,31 +362,32 @@ class QSM_Fields {
   public static function generate_select_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
     ?>
-    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>        
-        <select name="<?php echo $field["id"]; ?>">
-            <?php
+<tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<select name="<?php echo $field["id"]; ?>">
+			<?php
               foreach ( $field["options"] as $option ) {
-                ?>                
-                <option <?php selected( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>"><?php echo $option["label"]; ?></option>                
-                <?php
+                ?>
+			<option <?php selected( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>">
+				<?php echo $option["label"]; ?></option>
+			<?php
               }
             ?>
-        </select>
-        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>  
-      </td>
-    </tr>
-    <?php
+		</select>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
   
   /**
@@ -394,49 +402,73 @@ class QSM_Fields {
 	$quiz_id = isset($_GET['quiz_id']) ? $_GET['quiz_id'] : 0;	
 	$explode_cat = explode(',', $value);
     ?>
-    <tr valign="top">
-      <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-          <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-            <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-            </span>
-          <?php } ?>
-      </th>
-      <td>
-        <?php		
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<?php		
 		$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
                 $cat_array = array();
 		if($questions){ 
-                    foreach( $questions as $single_question ){
-                        $cat_array[] = $single_question['category'];
-                    }
-                    $cat_array = array_unique($cat_array);
-                    if($cat_array){
-                    ?>
-                    <select class="category_selection_random" multiple="">
-                        <option value="">Select Categories</option>
-                        <?php
+			$multiple_category_system = false;
+			// check if multiple category is enabled.
+			$enabled = get_option( 'qsm_multiple_category_enabled' );
+				if( $enabled && $enabled != 'cancelled' ){
+					$multiple_category_system = true;
+				}
+			foreach( $questions as $single_question ){
+				if( $multiple_category_system ){
+					foreach($single_question['multicategories'] as $category_id ){
+						$cat_array[] = $category_id;
+					}
+				} else {
+					$cat_array[] = $single_question['category'];
+				}
+			}
+			$cat_array = array_unique($cat_array);
+			if($cat_array){
+
+			?>
+		<select class="category_selection_random" multiple="">
+			<option value="">Select Categories</option>
+			<?php
 			foreach( $cat_array as $single_cat ){ ?>
-                            <option <?php if( in_array($single_cat, $explode_cat) ){ echo "selected"; } ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option>
+			<option <?php if( in_array($single_cat, $explode_cat) ){ echo "selected"; } ?>
+				value="<?php echo $single_cat; ?>">
+				<?php 
+				if($multiple_category_system){
+					$cat_data = get_term_by('term_id', $single_cat, 'qsm_category' );
+						echo $cat_data->name;
+				} else {
+					echo $single_cat; 
+				}
+				?>
+			</option>
 			<?php
 			} ?>
-                    </select>
-                <?php
+		</select>
+		<?php
                     }else{
-                        echo 'No catergory found.';
+                        echo 'No category found.';
                     }
 		}else{
                     echo 'No catergory found.';
                 }
         ?>
-        <input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>" value='<?php echo $value; ?>'>
-        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?> 
-      </td>
-    </tr>
-    <?php
+		<input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>"
+			value='<?php echo $value; ?>'>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
   
   /**
@@ -447,22 +479,22 @@ class QSM_Fields {
    * Generate the hide show div
    */
   public static function generate_hide_show_field( $field, $value ) { ?>
-        <tr valign="top">
-            <th scope="row" class="qsm-opt-tr">
-                <a href="#" id="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></a>
-                <?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
-                    <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                        <span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
-                    </span>
-                  <?php } ?>
-            </th>
-            <td>
-                <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-                    <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-                <?php } ?> 
-            </td>
-          </tr>
-  <?php  
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<a href="#" id="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></a>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php  
   }
   
   /**
@@ -474,12 +506,14 @@ class QSM_Fields {
    */
   public static function generate_section_heading_field( $field, $value ) {
     ?>
-    <tr valign="top">
-      <th scope="row"><h2 class="section_heading"><?php echo $field["label"]; ?></h2></th>
-      <td>        
-      </td>
-    </tr>
-    <?php
+<tr valign="top">
+	<th scope="row">
+		<h2 class="section_heading"><?php echo $field["label"]; ?></h2>
+	</th>
+	<td>
+	</td>
+</tr>
+<?php
   }
    /**
    * Generates checkbox inputs
@@ -493,27 +527,30 @@ class QSM_Fields {
 	global $mlwQuizMasterNext;
 	 $score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff');
     ?>
-    <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
-    <th scope="row" class="qsm-opt-tr">
-          <label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
-      </th>
-      <td>        
-        <fieldset class="buttonset buttonset-hide" data-hide='1'>
-            <?php
+<tr valign="top"
+	<?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+	</th>
+	<td>
+		<fieldset class="buttonset buttonset-hide" data-hide='1'>
+			<?php
               foreach ( $field["options"] as $option ) {
-                ?>                
-                <input type="checkbox" id="<?php echo $field["id"] . '-' . $option["value"]; ?>" name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $score_roundoff ); ?> value="<?php echo $option["value"]; ?>" />
-                <br/>
-                <?php
+                ?>
+			<input type="checkbox" id="<?php echo $field["id"] . '-' . $option["value"]; ?>"
+				name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $score_roundoff ); ?>
+				value="<?php echo $option["value"]; ?>" />
+			<br />
+			<?php
               }
             ?>
-        </fieldset>
-        <?php if( isset($field['help']) && $field['help'] != ''){ ?>
-            <span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
-        <?php } ?>  
-      </td>
-    </tr>
-    <?php
+		</fieldset>
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
   }
   
 }
