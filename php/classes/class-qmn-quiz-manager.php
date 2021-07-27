@@ -588,6 +588,8 @@ $range = range(0, $quiz_options->question_from_total);
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
 		}
 		$questions = apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
+		$qsm_random_que_ids = array_column($questions,'question_id');
+		update_option('qsm_random_que_ids',$qsm_random_que_ids);
 		// Returns an array of all the loaded questions.
 		return $questions;
 
@@ -632,7 +634,8 @@ $range = range(0, $quiz_options->question_from_total);
 		if ( ! $is_ajax ) {
 			global $qmn_json_data;
 			$qmn_json_data['question_list'] = $question_list;
-		}
+		}		
+		
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -1783,7 +1786,21 @@ $range = range(0, $quiz_options->question_from_total);
 		} else {
 			$total_score = 0;
 		}
+		$qsm_random_que_ids = get_option('qsm_random_que_ids');
+		if(!empty($qsm_random_que_ids))
+		{
 
+			$new_question_data = array();
+			foreach($qsm_random_que_ids as $que_id)
+			{
+				$key = array_search($que_id,array_column($question_data,'id'));
+				array_push($new_question_data,$question_data[$key]);
+			}
+			$question_data = $new_question_data;
+		}
+
+		// We no need longer this option
+		delete_option('qsm_random_que_ids');
 		// Return array to be merged with main user response array
 		return apply_filters('qsm_check_answers_results' ,  array(
 			'total_points'              => $points_earned,
