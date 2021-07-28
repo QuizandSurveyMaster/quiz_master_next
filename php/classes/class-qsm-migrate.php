@@ -53,6 +53,8 @@ class QSM_Migrate {
 						'status' => true,
 						'count'  => $result,
 					);
+					$update   = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
+					$updated  = $wpdb->query( $update );
 				} else {
 					$response = array(
 						'status' => false,
