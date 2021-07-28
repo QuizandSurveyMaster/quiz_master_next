@@ -92,25 +92,6 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-		// Registers multicategories setting
-		// $field_array = array(
-		// 	'id'      => 'multiple_categories',
-		// 	'label'   => __( 'Enable Multiple Categories', 'quiz-master-next' ),
-		// 	'type'    => 'radio',
-		// 	'options' => array(
-		// 		array(
-		// 			'label' => __( 'Yes', 'quiz-master-next' ),
-		// 			'value' => 1,
-		// 		),
-		// 		array(
-		// 			'label' => __( 'No', 'quiz-master-next' ),
-		// 			'value' => 0,
-		// 		),
-		// 	),
-		// 	'default' => 0,
-		// );
-		// $mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
 		// Registers Rounding setting
 		$field_array = array(
 			'id'          => 'score_roundoff',
@@ -333,7 +314,7 @@ class QSM_Install {
 			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
 			'type'    => 'category',
 			'default' => '',
-			'help'    => __( 'Questions will load only from selected categories', 'quiz-master-next' ),
+			'help'    => __( 'Questions will load only from selected categories. This option works only with Random Questions ', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
