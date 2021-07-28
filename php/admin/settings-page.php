@@ -94,7 +94,7 @@ class QMNGlobalSettingsPage {
 	</p>
 	<p class="category-action">
 		<?php
-			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
+			$buttons = sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
 			echo $buttons;
 			?>
 	</p>
