@@ -250,8 +250,11 @@ class MLWQuizMasterNext {
 			wp_enqueue_media();
 		}
 
-		wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version, true );
-		wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		if ( strpos( $hook, 'qsm' ) !== false || strpos( $hook, 'mlw_quiz' ) !== false ) {
+			wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+			wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		}
+
 	}
 
 	/**
@@ -442,7 +445,7 @@ class MLWQuizMasterNext {
 		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
 		if ( ! $multiple_categories ) {
 			?>
-<div class="notice notice-info multiple-category-notice">
+<div class="notice notice-info multiple-category-notice" style="display:none;">
 	<h3>
 		<?php _e( 'Database update required', 'quiz-master-next' ); ?>
 	</h3>
@@ -450,7 +453,7 @@ class MLWQuizMasterNext {
 		<?php
 			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
 			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
-			$message .= sprintf( __( '%1$s Please note that this action can not be rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>' );
+			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
 			echo $message;
 			?>
 	</p>

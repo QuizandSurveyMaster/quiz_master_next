@@ -44,7 +44,7 @@
 #modal-7-title,
 #modal-8-title,
 #modal-9-title {
-    color: gray;
+    color: #00449e;
     opacity: 70%;
 }
 
@@ -82,15 +82,14 @@
     vertical-align: top;
     padding: 0 10px 5px 0
 }
+
 #modal-9-content .info {
-    height: 20px;
     width: 100%;
-    margin-bottom: 20px;
-    margin-top: -25px;
+    margin-bottom: -20px;
     color: red;
-    text-align: center;
     font-size: 15px;
 }
+
 @media screen and (min-width:700px) {
     .question-controls {
         flex-direction: row;
@@ -765,6 +764,7 @@ a#qsm-category-add-toggle {
     text-decoration: underline;
     cursor: pointer;
 }
+
 .add-multiple-category {
     text-align: center;
     display: block;
@@ -791,6 +791,7 @@ div#multi_categories_wrapper {
     overflow: hidden;
     overflow-y: auto;
 }
+
 .qsm-show-correct-info-box,
 .qsm-show-question-desc-box {
     background: #fff;

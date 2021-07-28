@@ -61,41 +61,6 @@ class QSM_Migrate {
 				echo json_encode( $response );
 				break;
 
-			case 'update':
-				$new_category  = '';
-				$term_id       = 0;
-				$values_array  = array();
-				$result        = false;
-				$category_data = $wpdb->get_results( "SELECT question_id, quiz_id, category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' ORDER BY category" );
-				foreach ( $category_data as $data ) {
-					if ( $new_category != $data->category ) {
-						$term_data = get_term_by( 'name', $data->category, 'qsm_category' );
-						if ( $term_data ) {
-							$term_id = $term_data->term_id;
-						} else {
-							$term_array = wp_insert_term( $data->category, 'qsm_category' );
-							$term_id    = $term_array['term_id'];
-						}
-					}
-					$values_array[] = "($data->question_id, $data->quiz_id, $term_id, 'qsm_category')";
-				}
-				$values       = join( ',', $values_array );
-				$insert_query = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
-				$result       = $wpdb->query( $insert_query );
-				if ( $result > 0 ) {
-					update_option( 'qsm_multiple_category_enabled', date( time() ) );
-					$response = array(
-						'status' => true,
-						'count'  => $result,
-					);
-				} else {
-					$response = array(
-						'status' => false,
-					);
-				}
-				echo json_encode( $response );
-				break;
-
 			case 'cancel':
 				update_option( 'qsm_multiple_category_enabled', 'cancelled' );
 				return true;

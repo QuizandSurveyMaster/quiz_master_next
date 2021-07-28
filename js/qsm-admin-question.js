@@ -196,11 +196,11 @@ var import_button;
 			QSMAdmin.displayAlert('Loading questions...', 'info');
 			QSMQuestion.questions.fetch({
 				headers: {
-						'X-WP-Nonce': qsmQuestionSettings.nonce
-					},
-					data: {
-						quizID: qsmQuestionSettings.quizID
-					},
+					'X-WP-Nonce': qsmQuestionSettings.nonce
+				},
+				data: {
+					quizID: qsmQuestionSettings.quizID
+				},
 				success: QSMQuestion.loadSuccess,
 				error: QSMAdmin.displayError
 			});
@@ -360,14 +360,14 @@ var import_button;
 		createQuestion: function (page) {
 			QSMAdmin.displayAlert('Creating question...', 'info');
 			QSMQuestion.questions.create({
-						quizID: qsmQuestionSettings.quizID,
-						page: page
+				quizID: qsmQuestionSettings.quizID,
+				page: page
 			}, {
 				headers: {
 					'X-WP-Nonce': qsmQuestionSettings.nonce
 				},
 				success: QSMQuestion.addNewQuestion,
-					error: QSMAdmin.displayError
+				error: QSMAdmin.displayError
 			});
 		},
 		duplicateQuestion: function (questionID) {
@@ -478,27 +478,27 @@ var import_button;
 				}
 			});
 			model.save({
-						type: type,
-						name: name,
-						question_title: question_title,
-						answerInfo: answerInfo,
-						comments: comments,
-						hint: hint,
-						category: category,
-						multicategories: multicategories,
-						featureImageID: featureImageID,
-						featureImageSrc: featureImageSrc,
-						answers: answers,
-						answerEditor: answerType,
-						matchAnswer: matchAnswer,
-						other_settings: advanced_option
+				type: type,
+				name: name,
+				question_title: question_title,
+				answerInfo: answerInfo,
+				comments: comments,
+				hint: hint,
+				category: category,
+				multicategories: multicategories,
+				featureImageID: featureImageID,
+				featureImageSrc: featureImageSrc,
+				answers: answers,
+				answerEditor: answerType,
+				matchAnswer: matchAnswer,
+				other_settings: advanced_option
 			}, {
 				headers: {
 					'X-WP-Nonce': qsmQuestionSettings.nonce
 				},
 				success: QSMQuestion.saveSuccess,
-					error: QSMAdmin.displayError,
-					type: 'POST'
+				error: QSMAdmin.displayError,
+				type: 'POST'
 			});
 			jQuery(document).trigger('qsm_save_question', [questionID, CurrentElement]);
 		},
@@ -664,7 +664,7 @@ var import_button;
 				//No Action Require
 			} else {
 				$.each(multicategories, function (i, val) {
-							$("input[name='tax_input[qsm_category][]']:checkbox[value='" + val + "']").attr("checked", "true");
+					$("input[name='tax_input[qsm_category][]']:checkbox[value='" + val + "']").attr("checked", "true");
 				});
 			}
 			//Get featured image
@@ -1286,6 +1286,7 @@ var import_button;
 			}
 		});
 	}
+
 	function qsmRandomID(length) {
 		var result = '';
 		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1342,7 +1343,7 @@ var import_button;
 			$('#qsm-parent-category option').each(function () {
 				if ($(this).text().toLowerCase() == new_category.toLowerCase()) {
 					duplicate = true;
-					$('#modal-9-content .info').html('Category <b>' + new_category + '</b> already exists in database');
+					$('#modal-9-content .info').html('Category ' + new_category + ' already exists in database');
 					return false;
 				}
 			});

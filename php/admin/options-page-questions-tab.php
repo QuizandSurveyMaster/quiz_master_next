@@ -49,14 +49,14 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id             = intval( $_GET['quiz_id'] );
-	$user_id             = get_current_user_id();
-	$form_type           = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-	$quiz_system         = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$quiz_id     = intval( $_GET['quiz_id'] );
+	$user_id     = get_current_user_id();
+	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 	// $multiple_categories = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'multiple_categories' );
-	$pages               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-	$qpages              = array();
+	$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$qpages    = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
 			'id'           => 1,
@@ -769,7 +769,6 @@ function qsm_options_questions_tab_content() {
 			<hr />
 			<main class="qsm-popup__content" id="modal-9-content">
 				<!-- <form action='' method='post' id="delete-question-form"> -->
-				<div class="info"></div>
 				<table class="modal-9-table">
 					<tr>
 						<td><?php _e( 'Category Name', 'quiz-master-next' ); ?>
@@ -799,6 +798,7 @@ function qsm_options_questions_tab_content() {
 						</td>
 					<tr>
 				</table>
+				<div class="info"></div>
 				<!-- </form> -->
 			</main>
 			<hr />
