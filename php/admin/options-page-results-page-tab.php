@@ -35,15 +35,14 @@ function qsm_options_results_tab_content() {
 	);
 
 	$categories = array();
-	$enabled = get_option( 'qsm_multiple_category_enabled' );
+	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && $enabled != 'cancelled' ) {
-		$query      = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
 	} else {
-		$query      = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
+		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
 	$categories = $wpdb->get_results( $query, ARRAY_N );
 
-	
 	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
 	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	wp_enqueue_editor();
@@ -104,10 +103,11 @@ function qsm_options_results_tab_content() {
 <script type="text/template" id="tmpl-results-page-condition">
 	<div class="results-page-condition">
 			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-			<?php if( ! empty($categories)) {?>
+			<?php if ( ! empty( $categories ) ) { ?>
 				<select class="results-page-condition-category">
 					<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
-					<?php foreach($categories as $cat) { ?>
+					<option value="" disabled><?php _e( '---Select Category---', 'quiz-master-next' ); ?></option>
+					<?php foreach ( $categories as $cat ) { ?>
 					<option value="<?php echo $cat[0]; ?>" <# if (data.category == '<?php echo $cat[0]; ?>') { #>selected<# } #>><?php echo $cat[0]; ?></option>
 					<?php } ?>
 					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>

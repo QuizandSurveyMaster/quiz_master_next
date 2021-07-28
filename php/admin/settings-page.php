@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Generates The Settings Page For The Plugin
@@ -9,29 +11,29 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class QMNGlobalSettingsPage {
 
 	/**
-	  * Main Construct Function
-	  *
-	  * Call functions within class
-	  *
-	  * @since 4.1.0
-	  * @uses QMNGlobalSettingsPage::load_dependencies() Loads required filed
-	  * @uses QMNGlobalSettingsPage::add_hooks() Adds actions to hooks and filters
-	  * @return void
-	  */
+	 * Main Construct Function
+	 *
+	 * Call functions within class
+	 *
+	 * @since 4.1.0
+	 * @uses QMNGlobalSettingsPage::load_dependencies() Loads required filed
+	 * @uses QMNGlobalSettingsPage::add_hooks() Adds actions to hooks and filters
+	 * @return void
+	 */
 	function __construct() {
 		$this->add_hooks();
 	}
 
 	/**
-	  * Add Hooks
-	  *
-	  * Adds functions to relavent hooks and filters
-	  *
-	  * @since 4.1.0
-	  * @return void
-	  */
+	 * Add Hooks
+	 *
+	 * Adds functions to relavent hooks and filters
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
 	private function add_hooks() {
-		add_action( "admin_init", array( $this, 'init' ) );
+		add_action( 'admin_init', array( $this, 'init' ) );
 	}
 
 	/**
@@ -47,15 +49,15 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
-                add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
-                add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
+			add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
+			add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'plural-name', __( 'Post Type Plural Name (Shown in various places such as on archive pages)', 'quiz-master-next' ), array( $this, 'plural_name_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-name', __( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'from-email', __( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
-                add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
-                add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
+			add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
+			add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
@@ -67,19 +69,38 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function global_section() {                
+	public function global_section() {
 		_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
-		if ( isset( $_GET["settings-updated"] ) && $_GET["settings-updated"] ) {
+		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
 			flush_rewrite_rules( true );
-                        echo '<div class="updated" style="padding: 10px;">';
-			echo "<span>" . __( ' Settings have been updated!', 'quiz-master-next' ) . "</span>";
-                        echo '</div>';
+					echo '<div class="updated" style="padding: 10px;">';
+			echo '<span>' . __( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
+					echo '</div>';
 		}
-		echo '<div class="notice notice-info enable-category-notice" style="padding: 10px;display:none;">';
-		echo "<span class='message'></span>";
-		echo "<span class='trail'></span>";
-        echo '</div>';                
-	}
+		$enabled = get_option( 'qsm_multiple_category_enabled' );
+		if ( $enabled == 'cancelled' ) {
+			?>
+<div class="notice notice-info multiple-category-notice">
+	<h3>
+		<?php _e( 'Database update required', 'quiz-master-next' ); ?>
+	</h3>
+	<p>
+		<?php
+			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
+			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
+			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
+			echo $message;
+			?>
+	</p>
+	<p class="category-action">
+		<?php
+			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
+			echo $buttons;
+			?>
+	</p>
+</div>
+<?php
+		}}
 
 	/**
 	 * Generates Setting Field For From Email
@@ -98,7 +119,7 @@ class QMNGlobalSettingsPage {
 	value='<?php echo esc_attr( $from_email ); ?>' />
 <?php
 	}
-        
+
 	/**
 	 * Generates Setting Field For items per page in question bank pagination
 	 *
@@ -106,10 +127,10 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function items_per_page_question_bank() {
-		$settings   = (array) get_option( 'qmn-settings' );
+		$settings                     = (array) get_option( 'qmn-settings' );
 		$items_per_page_question_bank = 20;
 		if ( isset( $settings['items_per_page_question_bank'] ) ) {
-                    $items_per_page_question_bank = $settings['items_per_page_question_bank'];
+					$items_per_page_question_bank = $settings['items_per_page_question_bank'];
 		}
 		?>
 <input type='number' name='qmn-settings[items_per_page_question_bank]' id='qmn-settings[items_per_page_question_bank]'
@@ -142,13 +163,12 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function facebook_app_id() {
-		$settings = (array) get_option( 'qmn-settings' );
+		$settings        = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '594986844960937';
-		if (isset($settings['facebook_app_id']))
-		{
+		if ( isset( $settings['facebook_app_id'] ) ) {
 			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
-		}                
-		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";                
+		}
+		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";
 	}
 
 	/**
@@ -162,8 +182,8 @@ class QMNGlobalSettingsPage {
 		$cpt_slug = 'quiz';
 		if ( isset( $settings['cpt_slug'] ) ) {
 			$cpt_slug = esc_attr( $settings['cpt_slug'] );
-		}                
-		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";                
+		}
+		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";
 	}
 
 	/**
@@ -173,12 +193,12 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function plural_name_field() {
-		$settings = (array) get_option( 'qmn-settings' );
+		$settings    = (array) get_option( 'qmn-settings' );
 		$plural_name = __( 'Quizzes & Surveys', 'quiz-master-next' );
 		if ( isset( $settings['plural_name'] ) ) {
 			$plural_name = esc_attr( $settings['plural_name'] );
-		}                
-		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";                
+		}
+		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";
 	}
 
 	/**
@@ -187,22 +207,19 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function cpt_search_field()
-	{
-		$settings = (array) get_option( 'qmn-settings' );
+	public function cpt_search_field() {
+		$settings   = (array) get_option( 'qmn-settings' );
 		$cpt_search = '0';
-		if (isset($settings['cpt_search']))
-		{
+		if ( isset( $settings['cpt_search'] ) ) {
 			$cpt_search = esc_attr( $settings['cpt_search'] );
 		}
 		$checked = '';
-		if ($cpt_search == '1')
-		{
+		if ( $cpt_search == '1' ) {
 			$checked = " checked='checked'";
 		}
-                echo '<label class="switch">';
+				echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[cpt_search]' id='qmn-settings[cpt_search]' value='1'$checked />";
-                echo '<span class="slider round"></span></label>';
+				echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -211,70 +228,63 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function cpt_archive_field()
-	{
-		$settings = (array) get_option( 'qmn-settings' );
+	public function cpt_archive_field() {
+		$settings    = (array) get_option( 'qmn-settings' );
 		$cpt_archive = '0';
-		if (isset($settings['cpt_archive']))
-		{
+		if ( isset( $settings['cpt_archive'] ) ) {
 			$cpt_archive = esc_attr( $settings['cpt_archive'] );
 		}
 		$checked = '';
-		if ($cpt_archive == '1')
-		{
+		if ( $cpt_archive == '1' ) {
 			$checked = " checked='checked'";
 		}
-                echo '<label class="switch">';
+				echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[cpt_archive]' id='qmn-settings[cpt_archive]' value='1'$checked />";
-                echo '<span class="slider round"></span></label>';
+				echo '<span class="slider round"></span></label>';
 	}
-        
-        /**
+
+	/**
 	 * Generates Setting Field For delete QSM data
 	 *
 	 * @since 7.0.3
 	 * @return void
 	 */
-	public function qsm_delete_data()
-	{
-		$settings = (array) get_option( 'qmn-settings' );
+	public function qsm_delete_data() {
+		 $settings   = (array) get_option( 'qmn-settings' );
 		$cpt_archive = '0';
-		if (isset($settings['delete_qsm_data']))
-		{
+		if ( isset( $settings['delete_qsm_data'] ) ) {
 			$cpt_archive = esc_attr( $settings['delete_qsm_data'] );
 		}
 		$checked = '';
-		if ($cpt_archive == '1')
-		{
+		if ( $cpt_archive == '1' ) {
 			$checked = " checked='checked'";
 		}
-                echo '<label class="switch">';
+				echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[delete_qsm_data]' id='qmn-settings[delete_qsm_data]' value='1'$checked />";
-                echo '<span class="slider round"></span></label>';
+				echo '<span class="slider round"></span></label>';
 	}
-        
-        /**
+
+	/**
 	 * Generates Setting Field For background email process
 	 *
 	 * @since 7.0.3
 	 * @return void
 	 */
-	public function qsm_background_quiz_email_process()
-	{
-		$settings = (array) get_option( 'qmn-settings' );		
-                $background_quiz_email_process = '1';
-                if ( isset($settings['background_quiz_email_process']) ){
-                    $background_quiz_email_process = esc_attr( $settings['background_quiz_email_process'] );
-		}				
-                echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='1' ". checked($background_quiz_email_process, '1', false) ."/>";
-                echo __('Yes', 'quiz-master-next');
-                echo '</label>'; 
-                echo '<br/>';
-                echo '<label>';
-		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='0' ". checked($background_quiz_email_process, '0', false) ."/>";
-                echo __('No', 'quiz-master-next');
-                echo '</label>';
+	public function qsm_background_quiz_email_process() {
+		$settings                              = (array) get_option( 'qmn-settings' );
+				$background_quiz_email_process = '1';
+		if ( isset( $settings['background_quiz_email_process'] ) ) {
+			$background_quiz_email_process = esc_attr( $settings['background_quiz_email_process'] );
+		}
+				echo '<label style="margin-bottom: 10px;display: inline-block;">';
+		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='1' " . checked( $background_quiz_email_process, '1', false ) . '/>';
+				echo __( 'Yes', 'quiz-master-next' );
+				echo '</label>';
+				echo '<br/>';
+				echo '<label>';
+		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='0' " . checked( $background_quiz_email_process, '0', false ) . '/>';
+				echo __( 'No', 'quiz-master-next' );
+				echo '</label>';
 	}
 
 	/**
@@ -283,16 +293,12 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function results_details_template()
-	{
+	public function results_details_template() {
 		$settings = (array) get_option( 'qmn-settings' );
-		if (isset($settings['results_details_template']))
-		{
-			$template = htmlspecialchars_decode($settings['results_details_template'], ENT_QUOTES);
-		}
-		else
-		{
-			$template = "<h2>Quiz Results for %QUIZ_NAME%</h2>
+		if ( isset( $settings['results_details_template'] ) ) {
+			$template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
+		} else {
+			$template = '<h2>Quiz Results for %QUIZ_NAME%</h2>
 			<p>%CONTACT_ALL%</p>
 			<p>Name Provided: %USER_NAME%</p>
 			<p>Business Provided: %USER_BUSINESS%</p>
@@ -303,9 +309,9 @@ class QMNGlobalSettingsPage {
 			<p>The user took %TIMER% to complete quiz.</p>
 			<p>Comments entered were: %COMMENT_SECTION%</p>
 			<p>The answers were as follows:</p>
-			%QUESTIONS_ANSWERS%";
+			%QUESTIONS_ANSWERS%';
 		}
-		wp_editor( $template, 'results_template', array('textarea_name' => 'qmn-settings[results_details_template]') );
+		wp_editor( $template, 'results_template', array( 'textarea_name' => 'qmn-settings[results_details_template]' ) );
 	}
 
 	/**
@@ -314,23 +320,20 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function usage_tracker_field()
-	{
-		$settings = (array) get_option( 'qmn-settings' );
+	public function usage_tracker_field() {
+		 $settings        = (array) get_option( 'qmn-settings' );
 		$tracking_allowed = '0';
-		if (isset($settings['tracking_allowed']))
-		{
+		if ( isset( $settings['tracking_allowed'] ) ) {
 			$tracking_allowed = esc_attr( $settings['tracking_allowed'] );
 		}
 		$checked = '';
-		if ($tracking_allowed == '2')
-		{
+		if ( $tracking_allowed == '2' ) {
 			$checked = " checked='checked'";
-		}                
-                echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked /><span class='slider round'></span>";		
-                echo '</label>';
-                echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . "</span>";
+		}
+				echo '<label class="switch">';
+		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked /><span class='slider round'></span>";
+				echo '</label>';
+				echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -340,7 +343,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function ip_collection_field() {
-		$settings = (array) get_option( 'qmn-settings' );
+		$settings      = (array) get_option( 'qmn-settings' );
 		$ip_collection = '0';
 		if ( isset( $settings['ip_collection'] ) ) {
 			$ip_collection = esc_attr( $settings['ip_collection'] );
@@ -349,11 +352,11 @@ class QMNGlobalSettingsPage {
 		if ( '1' == $ip_collection ) {
 			$checked = " checked='checked'";
 		}
-        echo '<label class="switch">';
+		echo '<label class="switch">';
 		echo "<input type='checkbox' name='qmn-settings[ip_collection]' id='qmn-settings[ip_collection]' value='1'$checked />";
-        echo '<span class="slider round"></span></label>';
+		echo '<span class="slider round"></span></label>';
 		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>"
-		 . __( "You must not restrict number of quiz attempts when this option is enabled.", 'quiz-master-next' ) . "</span>";
+		 . __( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -363,22 +366,13 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public static function display_page() {
-                global $mlwQuizMasterNext;
-                wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-                wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+				global $mlwQuizMasterNext;
+				wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+				wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 				wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
 		?>
 <div class="wrap">
 	<h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
-	<?php
-	$enabled = get_option( 'qsm_multiple_category_enabled' );
-	if( $enabled == 'cancelled' ){
-		?>
-	<a href="#"
-		class="button button-primary button-hero enable-cancelled-multiple-category"><?php _e('Enable Multiple Category', 'quiz-master-next'); ?></a>
-	<?php 
-	}
-	?>
 	<form action="options.php" method="POST" class="qsm_global_settings">
 		<?php settings_fields( 'qmn-settings-group' ); ?>
 		<?php do_settings_sections( 'qmn_global_settings' ); ?>
@@ -387,29 +381,28 @@ class QMNGlobalSettingsPage {
 </div>
 <?php
 	}
-        
-        /**
+
+	/**
 	 * Generates Setting Field For new template for result detail
 	 *
 	 * @since 7.0.0
 	 * @return void
 	 */
-	public function new_template_results_details()
-	{
-		$settings = (array) get_option( 'qmn-settings' );                
+	public function new_template_results_details() {
+		$settings                   = (array) get_option( 'qmn-settings' );
 		$new_template_result_detail = '1';
-		if (isset($settings['new_template_result_detail'])){
-                    $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
-		}		
-                echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' ". checked($new_template_result_detail, '1', false) ."/>";
-                echo __('New Template', 'quiz-master-next');
-                echo '</label>'; 
-                echo '<br/>';
-                echo '<label>';
-		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' ". checked($new_template_result_detail, '0', false) ."/>";
-                echo __('Old Template', 'quiz-master-next');
-                echo '</label>';                
+		if ( isset( $settings['new_template_result_detail'] ) ) {
+					$new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
+		}
+				echo '<label style="margin-bottom: 10px;display: inline-block;">';
+		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' " . checked( $new_template_result_detail, '1', false ) . '/>';
+				echo __( 'New Template', 'quiz-master-next' );
+				echo '</label>';
+				echo '<br/>';
+				echo '<label>';
+		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' " . checked( $new_template_result_detail, '0', false ) . '/>';
+				echo __( 'Old Template', 'quiz-master-next' );
+				echo '</label>';
 	}
 }
 
