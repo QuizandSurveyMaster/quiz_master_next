@@ -221,6 +221,13 @@ class MLWQuizMasterNext {
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
 	}
 
+	/**
+	 * Modifies QSM Category taxonomy columns
+	 *
+	 * @param array $columns
+	 * @return array
+	 * @since 7.3.0
+	 */
 	public function modify_qsm_category_columns( $columns ) {
 		unset( $columns['posts'] );
 		return $columns;
@@ -440,6 +447,7 @@ class MLWQuizMasterNext {
 	 * Displays QSM Admin notices
 	 *
 	 * @return void
+	 * @since 7.3.0
 	 */
 	public function qsm_admin_notices() {
 		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
