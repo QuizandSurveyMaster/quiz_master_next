@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Class that handles migration logic
  *
- * @since 4.7.1
+ * @since 7.3.0
  */
 class QSM_Migrate {
 
