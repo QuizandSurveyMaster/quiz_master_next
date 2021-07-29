@@ -100,7 +100,8 @@ class QMNGlobalSettingsPage {
 	</p>
 </div>
 <?php
-		}}
+		}
+	}
 
 	/**
 	 * Generates Setting Field For From Email

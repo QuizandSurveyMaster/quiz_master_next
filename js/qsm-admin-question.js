@@ -348,7 +348,6 @@ var import_button;
 
 			if (questionName == '')
 				questionName = 'Your new question!';
-			// multicat = model.get('multicategories');
 
 			$('.page:nth-child(' + page + ')').append(template({
 				id: model.id,
@@ -794,7 +793,7 @@ var import_button;
 					if (is_checked) {
 						$(checkbox).parents('li').children('label').children('input').prop("checked", true);
 					} else {
-						$(checkbox).parentsUntil('ul').find('input').prop("checked", false);;
+						$(checkbox).parentsUntil('ul').find('input').prop("checked", false);
 					}
 					jQuery(document).trigger('qsm_sync_child_parent_category', [checkbox, questionID]);
 				});
