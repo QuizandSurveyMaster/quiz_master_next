@@ -177,7 +177,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text              = array();
 	foreach ( $answers as $answer ) {
 		if ( $answerEditor === 'rich' ) {
-			$answer_option    = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+			$answer_option    = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 			$sinel_answer_cmp = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $answer_option ) );
 			if ( $rich_text_comapre == $sinel_answer_cmp ) {
 				$return_array['points']    = $answer[1];
@@ -344,6 +344,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				$question_display .= '</span>';
 			}
 		}
+		$question_display =apply_filters( 'qmn_horizontal_multiple_choice_question_display', $question_display, $id, $question, $answers );
 		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
 	}
 	$question_display .= '</div>';

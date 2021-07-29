@@ -48,15 +48,26 @@ class QSM_Emails {
 				// Cycle through each condition to see if we should sent this email.
 				foreach ( $email['conditions'] as $condition ) {
 					$value = $condition['value'];
-
+					$category = '';
+					if( isset($condition['category'])){
+						$category = $condition['category'];
+					}
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							$test = $response_data['total_score'];
+							if( $category != '' ){
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
+							} else {
+								$test = $response_data['total_score'];
+							}
 							break;
 
 						case 'points':
-							$test = $response_data['total_points'];
+							if( $category != '' ){
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
+							} else {
+								$test = $response_data['total_points'];
+							}
 							break;
 
 						default:

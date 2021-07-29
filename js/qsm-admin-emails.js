@@ -26,6 +26,7 @@ var QSMAdminEmails;
 				};
 				$( this ).find( '.email-condition' ).each( function() {
 					email.conditions.push({
+						'category': $(this).children('.email-condition-category').val(),
 						'criteria': $( this ).children( '.email-condition-criteria' ).val(),
 						'operator': $( this ).children( '.email-condition-operator' ).val(),
 						'value': $( this ).children( '.email-condition-value' ).val()
@@ -66,16 +67,17 @@ var QSMAdminEmails;
 				})
 				.fail(QSMAdmin.displayjQueryError);
 		},
-		addCondition: function( $email, criteria, operator, value ) {
+		addCondition: function ($email, category, criteria, operator, value) {
 			var template = wp.template( 'email-condition' );
-			$email.find( '.email-when-conditions' ).append( template({
-				'criteria': criteria,
-				'operator': operator,
-				'value': value
+			$email.find('.email-when-conditions').append(template({
+							'category': category,
+							'criteria': criteria,
+							'operator': operator,
+							'value': value
 			}));
 		},
 		newCondition: function( $email ) {
-			QSMAdminEmails.addCondition( $email, 'score', 'equal', 0 );
+			QSMAdminEmails.addCondition($email, '', 'score', 'equal', 0);
 		},
 		addEmail: function( conditions, to, subject, content, replyTo ) {
 			QSMAdminEmails.total += 1;
@@ -84,6 +86,7 @@ var QSMAdminEmails;
 			conditions.forEach( function( condition, i, conditions) {
 				QSMAdminEmails.addCondition( 
 					$( '.qsm-email:last-child' ), 
+					condition.category,
 					condition.criteria,
 					condition.operator,
 					condition.value
@@ -104,6 +107,7 @@ var QSMAdminEmails;
 		},
 		newEmail: function() {
 			var conditions = [{
+				'category': '',
 				'criteria': 'score',
 				'operator': 'greater',
 				'value': '0'

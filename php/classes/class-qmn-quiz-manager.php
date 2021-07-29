@@ -457,6 +457,13 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$order_by_sql = 'ORDER BY question_order ASC';
 		$limit_sql    = '';
 		$big_array    = array();
+		$exploded_arr = array();
+		$multiple_category_system = false;
+		// check if multiple category is enabled.
+		$enabled = get_option( 'qsm_multiple_category_enabled' );
+		if( $enabled && $enabled != 'cancelled' ){
+			$multiple_category_system = true;
+		}
 
 		// Checks if the questions should be randomized.
 		$cat_query = '';
@@ -465,8 +472,12 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 			if ( $categories ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
-				$cat_str      = "'" . implode( "', '", $exploded_arr ) . "'";
-				$cat_query    = " AND category IN ( $cat_str ) ";
+				if ( ! $multiple_category_system ) {
+					$cat_str      = "'" . implode( "', '", $exploded_arr ) . "'";
+					$cat_query    = " AND category IN ( $cat_str ) ";
+				} else {
+					$exploded_arr = array_map( 'intval' , $exploded_arr );
+				}
 			}
 		}
 
@@ -483,10 +494,28 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		// Get all question IDs needed.
 		$total_pages = count( $pages );
+		$category_question_ids = array();
+		if ( $multiple_category_system && ! empty( $exploded_arr )) {
+			$term_ids = implode( ', ', $exploded_arr );
+			$query = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d AND term_id IN (%1s)", $quiz_id, $term_ids);
+			$question_data = $wpdb->get_results( $query, ARRAY_N );
+			foreach( $question_data as $q_data ) {
+				$category_question_ids[] = $q_data[0];
+			}
+		}
+		
 		if ( $total_pages > 0 ) {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
-					$question_ids[] = intval( $question );
+					if( ! empty( $category_question_ids ) ){
+						if( in_array( $question, $category_question_ids) ){
+							$question_ids[] = intval( $question );
+						}
+					} else {
+						$question_ids[] = intval( $question );
+					}
+					
+					
 				}
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
@@ -805,6 +834,7 @@ $range = range(0, $quiz_options->question_from_total);
 			if ( 0 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
 			}
+			do_action('qsm_after_begin_message', $options, $quiz_data);
 			?>
 	</div>
 </section>
@@ -842,7 +872,8 @@ $range = range(0, $quiz_options->question_from_total);
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
 				?>
-	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>'
+		data-qid="<?php echo esc_attr($question_id); ?>">
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
@@ -906,7 +937,8 @@ $range = range(0, $quiz_options->question_from_total);
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					?>
-	<div class='quiz_section question-section-id-<?php echo esc_attr( $question_id ); ?>'>
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>'
+		data-qid='<?php echo esc_attr($question_id); ?>'>
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
@@ -1611,7 +1643,7 @@ $range = range(0, $quiz_options->question_from_total);
 							}
 
 							// Send question to our grading function
-							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ) );
+							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
 							if ( isset( $results_array['question_type'] ) && $results_array['question_type'] == 'file_upload' ) {
 								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
 							}
@@ -1668,6 +1700,7 @@ $range = range(0, $quiz_options->question_from_total);
 										'id'             => $question['question_id'],
 										'points'         => $answer_points,
 										'category'       => $question['category'],
+										'multicategories' => $question['multicategories'],
 										'question_type'  => $question['question_type_new'],
 										'question_title' => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
@@ -1715,7 +1748,7 @@ $range = range(0, $quiz_options->question_from_total);
 						}
 
 						// Send question to our grading function
-						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ) );
+						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
 
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
@@ -1760,6 +1793,7 @@ $range = range(0, $quiz_options->question_from_total);
 									'id'                => $question['question_id'],
 									'points'            => $answer_points,
 									'category'          => $question['category'],
+									'multicategories'	=> $question['multicategories'],
 									'question_type'     => $question['question_type_new'],
 									'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 									'user_compare_text' => $user_compare_text,

@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.2.3
+ * Version: 7.3.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.2.3
+ * @version 7.3.0
  * @package QSM
  */
 
@@ -41,7 +41,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.2.3';
+	public $version = '7.3.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -95,9 +95,17 @@ class MLWQuizMasterNext {
 	 * QSM theme settings object
 	 *
 	 * @var object
-	 * @since 7.1.15
+	 * @since 7.2.0
 	 */
 	public $theme_settings;
+
+	/**
+	 * QSM migration helper object
+	 *
+	 * @var object
+	 * @since 7.3.0
+	 */
+	public $migrationHelper;
 
 	/**
 	 * Main Construct Function
@@ -187,6 +195,9 @@ class MLWQuizMasterNext {
 		include 'php/classes/class-qsm-theme-settings.php';
 		$this->theme_settings = new QSM_Theme_Settings();
 
+		include 'php/classes/class-qsm-migrate.php';
+		$this->migrationHelper = new QSM_Migrate();
+
 		include 'php/rest-api.php';
 	}
 
@@ -202,9 +213,24 @@ class MLWQuizMasterNext {
 		add_action( 'admin_menu', array( $this, 'setup_admin_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 900 );
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
+		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ) );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
+		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
+		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+	}
+
+	/**
+	 * Modifies QSM Category taxonomy columns
+	 *
+	 * @param array $columns
+	 * @return array
+	 * @since 7.3.0
+	 */
+	public function modify_qsm_category_columns( $columns ) {
+		unset( $columns['posts'] );
+		return $columns;
 	}
 
 	/**
@@ -230,6 +256,12 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
 			wp_enqueue_media();
 		}
+
+		if ( strpos( $hook, 'qsm' ) !== false || strpos( $hook, 'mlw_quiz' ) !== false ) {
+			wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version, true );
+			wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+		}
+
 	}
 
 	/**
@@ -302,6 +334,41 @@ class MLWQuizMasterNext {
 
 		// Registers post type.
 		register_post_type( 'qsm_quiz', $quiz_args );
+
+		/**
+		 * Register Taxonomy
+		 */
+		$taxonomy_args = array(
+			'labels'            => array(
+				'menu_name'         => __( 'Question Categories', 'quiz-master-next' ),
+				'name'              => __( 'Categories', 'quiz-master-next' ),
+				'singular_name'     => __( 'Category', 'quiz-master-next' ),
+				'all_items'         => __( 'All Categories', 'quiz-master-next' ),
+				'parent_item'       => __( 'Parent Category', 'quiz-master-next' ),
+				'parent_item_colon' => __( 'Parent Category:', 'quiz-master-next' ),
+				'new_item_name'     => __( 'New Category Name', 'quiz-master-next' ),
+				'add_new_item'      => __( 'Add New Category', 'quiz-master-next' ),
+				'edit_item'         => __( 'Edit Category', 'quiz-master-next' ),
+				'update_item'       => __( 'Update Category', 'quiz-master-next' ),
+				'view_item'         => __( 'View Category', 'quiz-master-next' ),
+			),
+			'hierarchical'      => true,
+			'public'            => true,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'show_in_nav_menus' => true,
+			'show_tagcloud'     => false,
+			'rewrite'           => false,
+		);
+		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
+	}
+
+	public function parent_file( $parent_file ) {
+		global $menu, $submenu, $parent_file, $submenu_file;
+		if ( 'edit-tags.php?taxonomy=qsm_category' == $submenu_file ) {
+			$parent_file = 'qsm_dashboard';
+		}
+		return $parent_file;
 	}
 
 	/**
@@ -315,10 +382,14 @@ class MLWQuizMasterNext {
 	public function setup_admin_menu() {
 		if ( function_exists( 'add_menu_page' ) ) {
 			global $qsm_quiz_list_page;
+			$enabled            = get_option( 'qsm_multiple_category_enabled' );
 			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
 			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ), __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
 			add_action( "load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options' );
+			if ( $enabled && $enabled != 'cancelled' ) {
+				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
+			}
 			add_submenu_page( null, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
 			add_submenu_page( 'qsm_dashboard', __( 'Results', 'quiz-master-next' ), __( 'Results', 'quiz-master-next' ), 'moderate_comments', 'mlw_quiz_results', 'qsm_generate_admin_results_page' );
 			add_submenu_page( null, __( 'Result Details', 'quiz-master-next' ), __( 'Result Details', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_result_details', 'qsm_generate_result_details' );
@@ -355,23 +426,55 @@ class MLWQuizMasterNext {
 	 * @return void
 	 */
 	public function qsm_overide_old_setting_options() {
-		$settings        = (array) get_option( 'qmn-settings' );
+		$settings = (array) get_option( 'qmn-settings' );
 
-if (isset($settings['facebook_app_id'])) {
+		if ( isset( $settings['facebook_app_id'] ) ) {
 
-		$facebook_app_id = $settings['facebook_app_id'];
-		
-		if ( $facebook_app_id == '483815031724529' ) {
+				$facebook_app_id = $settings['facebook_app_id'];
+
+			if ( $facebook_app_id == '483815031724529' ) {
+				$settings['facebook_app_id'] = '594986844960937';
+				update_option( 'qmn-settings', $settings );
+			}
+		} else {
 			$settings['facebook_app_id'] = '594986844960937';
 			update_option( 'qmn-settings', $settings );
 		}
-}
-else{
-	$settings['facebook_app_id'] = '594986844960937';
-	update_option( 'qmn-settings', $settings );
-}
-			
 
+	}
+
+	/**
+	 * Displays QSM Admin notices
+	 *
+	 * @return void
+	 * @since 7.3.0
+	 */
+	public function qsm_admin_notices() {
+		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
+		if ( ! $multiple_categories ) {
+			?>
+<div class="notice notice-info multiple-category-notice" style="display:none;">
+	<h3>
+			<?php _e( 'Database update required', 'quiz-master-next' ); ?>
+	</h3>
+	<p>
+			<?php
+			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
+			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
+			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
+			echo $message;
+			?>
+	</p>
+	<p class="category-action">
+			<?php
+			$buttons  = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
+			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
+			echo $buttons;
+			?>
+	</p>
+</div>
+			<?php
+		}
 	}
 
 }
