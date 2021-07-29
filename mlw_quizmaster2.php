@@ -103,7 +103,7 @@ class MLWQuizMasterNext {
 	 * QSM migration helper object
 	 *
 	 * @var object
-	 * @since 7.2.4
+	 * @since 7.3.0
 	 */
 	public $migrationHelper;
 
@@ -447,10 +447,10 @@ class MLWQuizMasterNext {
 			?>
 <div class="notice notice-info multiple-category-notice" style="display:none;">
 	<h3>
-		<?php _e( 'Database update required', 'quiz-master-next' ); ?>
+			<?php _e( 'Database update required', 'quiz-master-next' ); ?>
 	</h3>
 	<p>
-		<?php
+			<?php
 			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
 			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
 			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
@@ -458,14 +458,14 @@ class MLWQuizMasterNext {
 			?>
 	</p>
 	<p class="category-action">
-		<?php
+			<?php
 			$buttons  = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
 			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
 			echo $buttons;
 			?>
 	</p>
 </div>
-<?php
+			<?php
 		}
 	}
 

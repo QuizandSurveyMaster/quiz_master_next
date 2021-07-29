@@ -19,7 +19,7 @@ class QSM_Migrate {
 	/**
 	 * This function enables multiple categories feature in QSM
 	 *
-	 * @since 7.2.4
+	 * @since 7.3.0
 	 * @return void
 	 */
 	public function enable_multiple_categories() {
