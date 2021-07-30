@@ -1176,9 +1176,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<br/><span class='$user_answer_class'><img src='$answer[1]'/></span>", $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<br/><span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>', $mlw_question_answer_display );
 		}
 	} else {
 		$user_answer_new = $answer[1];
@@ -1187,17 +1187,17 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != '' ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$image_url'/></span>", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<br/><span class='$user_answer_class'><img src='$image_url'/></span>", $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . '</span>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<br/><span class='$user_answer_class'>" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . '</span>', $mlw_question_answer_display );
 		}
 	}
 	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
 	if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $answer_2 != 'NA' ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
-		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<img src="' . $image_url . '"/>', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<br/><img src="' . $image_url . '"/>', $mlw_question_answer_display );
 	} else {
-		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', htmlspecialchars_decode( $answer_2, ENT_QUOTES ), $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<br/>'.htmlspecialchars_decode( $answer_2, ENT_QUOTES ), $mlw_question_answer_display );
 	}
 	$answer_3                    = ! empty( $answer[3] ) ? $answer[3] : 'NA';
 	$mlw_question_answer_display = str_replace( '%USER_COMMENTS%', $answer_3, $mlw_question_answer_display );
