@@ -122,6 +122,16 @@ function qsm_register_rest_routes() {
 				},
 			)
 		);
+		// Get Categories of quiz
+		register_rest_route(
+			'quiz-survey-master/v1',
+			'/quizzes/(?P<id>\d+)/categories',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => 'qsm_rest_get_categories',
+				'permission_callback' => '__return_true',
+			)
+		);
 }
 
 /**
@@ -641,5 +651,30 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	return array(
 		'status' => 'error',
 		'msg'    => __( 'User not logged in', 'quiz-master-next' ),
+	);
+}
+
+/**
+ * Gets categories for a quiz.
+ *
+ * @since 7.2.1
+ * @param WP_REST_Request $request The request sent from WP REST API.
+ * @return array Categories for the quiz.
+ */
+function qsm_rest_get_categories( WP_REST_Request $request ) {
+	if ( is_user_logged_in() ) {
+		$current_user = wp_get_current_user();
+		if ( 0 !== $current_user ) {
+			$categories	 = array();
+			$quiz_id	 = isset( $request['id'] ) ? intval( $request['id'] ) : 0;
+			if ( 0 !== $quiz_id ) {
+				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
+			}
+			return $categories;
+		}
+	}
+	return array(
+		'status' => 'error',
+		'msg'	 => __( 'User not logged in', 'quiz-master-next' ),
 	);
 }
