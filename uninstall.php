@@ -56,6 +56,7 @@ $qsm_options = array(
 	'qsm_change_the_post_type',
 	'qmn_quiz_taken_cnt',
 	'qmn-settings',
+	'qsm-quiz-settings',
 	'mlw_quiz_master_version',
 	'qmn_tracker_last_time',
 	'qmn-tracking-notice',
