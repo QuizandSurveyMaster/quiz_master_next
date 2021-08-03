@@ -770,8 +770,14 @@ class QMNQuizManager {
 			foreach ( $pages[0] as $question_id ) {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
+				$categor_class	 = '';
+				if ( ! empty( $question['multicategories'] ) ) {
+					foreach ( $question['multicategories'] as $cat ) {
+						$categor_class .= ' category-section-id-' . esc_attr( $cat );
+					}
+				}
 				?>
-	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>' data-qid="<?php echo esc_attr($question_id); ?>">
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>' data-qid="<?php echo esc_attr($question_id); ?>">
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
@@ -834,8 +840,14 @@ class QMNQuizManager {
 				foreach ( $page as $question_id ) {
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
+					$categor_class	 = '';
+					if ( ! empty( $question['multicategories'] ) ) {
+						foreach ( $question['multicategories'] as $cat ) {
+							$categor_class .= ' category-section-id-' . esc_attr( $cat );
+						}
+					}
 					?>
-	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>' data-qid='<?php echo esc_attr($question_id); ?>'>
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>' data-qid='<?php echo esc_attr($question_id); ?>'>
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
