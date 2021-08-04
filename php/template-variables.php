@@ -1236,6 +1236,7 @@ function qsm_get_question_maximum_points( $question = array() ) {
 				$answer_points = array_slice( $answer_points, 0, $limit_multiple_response, true );
 			}
 			$question_max_point = array_sum( $answer_points );
+			$question_max_point = apply_filters('qsm_question_max_point',$question_max_point,$answer_points);
 		}
 	}
 	return $question_max_point;
