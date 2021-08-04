@@ -1629,9 +1629,11 @@ $range = range(0, $quiz_options->question_from_total);
 									if ( $question_type_new == 4 || $question_type_new == 10 ) {
 										foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
 											if ( $options->system == 1 && isset( $single_answer_arr[1] ) ) {
+												$single_answer_arr[1] = apply_filters('qsm_single_answer_arr',$single_answer_arr[1]);
 												$total_possible_points = $total_possible_points + $single_answer_arr[1];
 											}
 											if ( $options->system == 3 && isset( $single_answer_arr[2] ) && $single_answer_arr[2] == 1 ) {
+												$single_answer_arr[1] = apply_filters('qsm_single_answer_arr',$single_answer_arr[1]);
 												$total_possible_points = $total_possible_points + $single_answer_arr[1];
 											}
 										}
@@ -1735,9 +1737,11 @@ $range = range(0, $quiz_options->question_from_total);
 							if ( $question_type_new == 4 || $question_type_new == 10 ) {
 								foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
 									if ( $options->system == 1 && isset( $single_answer_arr[1] ) ) {
+										$single_answer_arr[1] = apply_filters('qsm_single_answer_arr',$single_answer_arr[1]);
 										$total_possible_points = $total_possible_points + $single_answer_arr[1];
 									}
 									if ( $options->system == 3 && isset( $single_answer_arr[2] ) && $single_answer_arr[2] == 1 ) {
+										$single_answer_arr[1] = apply_filters('qsm_single_answer_arr',$single_answer_arr[1]);
 										$total_possible_points = $total_possible_points + $single_answer_arr[1];
 									}
 								}
