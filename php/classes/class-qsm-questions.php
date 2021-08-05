@@ -358,4 +358,56 @@ class QSM_Questions {
 
 		return $question_id;
 	}
+
+	/**
+	 * Get categories for a quiz
+	 *
+	 * @since 7.2.1
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_quiz_categories( $quiz_id = 0 ) {
+		global $wpdb;
+		$categories = array();
+		if ( 0 !== $quiz_id ) {
+			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id`='{$quiz_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
+			if ( ! empty( $question_terms ) ) {
+				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
+				if ( ! empty( $term_ids ) ) {
+					$categories_names	 = array();
+					$categories_tree	 = array();
+					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+					if ( ! empty( $terms ) ) {
+						foreach ( $terms as $tax ) {
+							$categories_names[$tax->term_id] = $tax->name;
+							$taxs[$tax->parent][]			 = $tax;
+						}
+						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+					}
+					$categories = array(
+						'list'	 => $categories_names,
+						'tree'	 => $categories_tree,
+					);
+				}
+			}
+		}
+		return $categories;
+	}
+
+	/**
+	 * Create tree structure of terms.
+	 *
+	 * @since 7.2.1
+	 */
+	public static function create_terms_tree( &$list, $parent ) {
+		$taxTree = array();
+		foreach ( $parent as $ind => $val ) {
+			if ( isset( $list[$val->term_id] ) ) {
+				$val->children = self::create_terms_tree( $list, $list[$val->term_id] );
+			}
+			$taxTree[] = $val;
+		}
+		return $taxTree;
+	}
+
 }
