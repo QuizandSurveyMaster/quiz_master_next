@@ -773,7 +773,7 @@ class QMNQuizManager {
 				$categor_class	 = '';
 				if ( ! empty( $question['multicategories'] ) ) {
 					foreach ( $question['multicategories'] as $cat ) {
-						$categor_class .= ' category-section-id-' . esc_attr( $cat );
+						$categor_class .= ' category-section-id-c' . esc_attr( $cat );
 					}
 				}
 				?>
@@ -843,7 +843,7 @@ class QMNQuizManager {
 					$categor_class	 = '';
 					if ( ! empty( $question['multicategories'] ) ) {
 						foreach ( $question['multicategories'] as $cat ) {
-							$categor_class .= ' category-section-id-' . esc_attr( $cat );
+							$categor_class .= ' category-section-id-c' . esc_attr( $cat );
 						}
 					}
 					?>
