@@ -681,52 +681,7 @@ class QSM_Install {
 			'id'      => 'quiz_animation',
 			'label'   => __( 'Quiz Animation', 'quiz-master-next' ),
 			'type'    => 'select',
-			'options' => array(
-				array(
-					'label' => __( 'bounce', 'quiz-master-next' ),
-					'value' => 'bounce',
-				),
-				array(
-					'label' => __( 'flash', 'quiz-master-next' ),
-					'value' => 'flash',
-				),
-				array(
-					'label' => __( 'pulse', 'quiz-master-next' ),
-					'value' => 'pulse',
-				),
-				array(
-					'label' => __( 'rubberBand', 'quiz-master-next' ),
-					'value' => 'rubberBand',
-				),
-				array(
-					'label' => __( 'shake', 'quiz-master-next' ),
-					'value' => 'shake',
-				),
-				array(
-					'label' => __( 'swing', 'quiz-master-next' ),
-					'value' => 'swing',
-				),
-				array(
-					'label' => __( 'tada', 'quiz-master-next' ),
-					'value' => 'tada',
-				),
-				array(
-					'label' => __( 'wobble', 'quiz-master-next' ),
-					'value' => 'wobble',
-				),
-				array(
-					'label' => __( 'jello', 'quiz-master-next' ),
-					'value' => 'jello',
-				),
-				array(
-					'label' => __( 'heartBeat', 'quiz-master-next' ),
-					'value' => 'heartBeat',
-				),
-				array(
-					'label' => __( 'No animation', 'quiz-master-next' ),
-					'value' => '',
-				),
-			),
+			'options' => $mlwQuizMasterNext->pluginHelper->quiz_animation_effect(),
 			'default' => '',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1888,7 +1843,6 @@ class QSM_Install {
 		return (array) $links;
 
 	}
-
 
 }
 

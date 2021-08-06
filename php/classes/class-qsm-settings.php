@@ -7,7 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  *
  * @since 5.0.0
  */
-class QSM_Quiz_Settings {
+class QSM_Quiz_Settings
+{
 
   /**
    * ID of the quiz
@@ -15,43 +16,45 @@ class QSM_Quiz_Settings {
    * @var int
    * @since 5.0.0
    */
-  private $quiz_id;
+    private $quiz_id;
 
-  /**
-   * The settings for the quiz
-   *
-   * @var array
-   * @since 5.0.0
-   */
-  private $settings;
+    /**
+     * The settings for the quiz
+     *
+     * @var array
+     * @since 5.0.0
+     */
+    private $settings;
 
-  /**
-   * The fields that have been registered
-   *
-   * @var array
-   * @since 5.0.0
-   */
-  private $registered_fields;
+    /**
+     * The fields that have been registered
+     *
+     * @var array
+     * @since 5.0.0
+     */
+    private $registered_fields;
 
-  /**
-   * Prepares the settings for the supplied quiz
-   *
-   * @since 5.0.0
-   * @param int $quiz_id the ID of the quiz that we are handling the settings data for
-   */
-  public function prepare_quiz( $quiz_id ) {
-    $this->quiz_id = intval( $quiz_id );
-    $this->load_settings();
-  }
+    /**
+     * Prepares the settings for the supplied quiz
+     *
+     * @since 5.0.0
+     * @param int $quiz_id the ID of the quiz that we are handling the settings data for
+     */
+    public function prepare_quiz($quiz_id)
+    {
+        $this->quiz_id = intval($quiz_id);
+        $this->load_settings();
+    }
 
 
-  /**
-   * Registers a setting be shown on the Options or Text tab
-   *
-   * @since 5.0.0
-   * @param array $field_array An array of the components for the settings field
-   */
-  public function register_setting( $field_array, $section = 'quiz_options' ) {
+    /**
+     * Registers a setting be shown on the Options or Text tab
+     *
+     * @since 5.0.0
+     * @param array $field_array An array of the components for the settings field
+     */
+    public function register_setting($field_array, $section = 'quiz_options')
+    {
 
     /*
       Example field array
@@ -72,231 +75,220 @@ class QSM_Quiz_Settings {
       );
     */
 
-    // Adds field to registered fields
-    $this->registered_fields[ $section ][] = $field_array;
+        // Adds field to registered fields
+        $this->registered_fields[ $section ][] = $field_array;
+    }
 
-  }
-
-  /**
-   * Retrieves the registered setting fields
-   *
-   * @since 5.0.0
-   * @param string $section The section whose fields that are being retrieved
-   * @return array All the fields registered the the section provided
-   */
-  public function load_setting_fields( $section = 'quiz_options' ) {
+    /**
+     * Retrieves the registered setting fields
+     *
+     * @since 5.0.0
+     * @param string $section The section whose fields that are being retrieved
+     * @return array All the fields registered the the section provided
+     */
+    public function load_setting_fields($section = 'quiz_options')
+    {
 
     // Checks if section exists in registered fields and returns it if it does
-    if ( isset( $this->registered_fields[ $section ] ) ) {
-      return $this->registered_fields[ $section ];
-    } else {
-      return false;
+        if (isset($this->registered_fields[ $section ])) {
+            return $this->registered_fields[ $section ];
+        } else {
+            return false;
+        }
     }
-  }
 
-  /**
-   * Retrieves a setting value from a section based on name of section and setting
-   *
-   * @since 5.0.0
-   * @param string $section The name of the section the setting is registered in
-   * @param string $setting The name of the setting whose value we need to retrieve
-   * @param mixed $default What we need to return if no setting exists with given $setting
-   * @return $mixed Value set for $setting or $default if setting does not exist
-   */
-  public function get_section_setting( $section, $setting, $default = false ) {
+    /**
+     * Retrieves a setting value from a section based on name of section and setting
+     *
+     * @since 5.0.0
+     * @param string $section The name of the section the setting is registered in
+     * @param string $setting The name of the setting whose value we need to retrieve
+     * @param mixed $default What we need to return if no setting exists with given $setting
+     * @return $mixed Value set for $setting or $default if setting does not exist
+     */
+    public function get_section_setting($section, $setting, $default = false)
+    {
 
     // Return if section or setting is empty
-    if ( empty( $section ) || empty( $setting ) ) {
-      return $default;
-    }
-
-    // Get settings in section
-    $section_settings = $this->get_setting( $section );
-
-    // Return default if section not found
-    if ( ! $section_settings ) {
-      return $default;
-    }
-
-    // Maybe unserailize
-    $section_settings = maybe_unserialize( $section_settings );
-
-    // Check if setting exists
-    if ( isset( $section_settings[ $setting ] ) ) {
-
-      // Try to unserialize it and then return it
-      return maybe_unserialize( $section_settings[ $setting ] );
-    } else {
-
-      // Return the default if no setting exists
-      return $default;
-    }
-  }
-
-  /**
-   * Retrieves setting value based on name of setting
-   *
-   * @since 5.0.0
-   * @param string $setting The name of the setting whose value we need to retrieve
-   * @param mixed $default What we need to return if no setting exists with given $setting
-   * @return $mixed Value set for $setting or $default if setting does not exist
-   */
-  public function get_setting( $setting, $default = false ) {
-
-    global $mlwQuizMasterNext;
-
-    // Return if empty
-    if ( empty( $setting ) ) {
-      return false;
-    }
-
-    // Check if ID is not set, for backwards compatibility
-    if ( ! $this->quiz_id ) {
-      $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
-
-      // If get_id doesn't work, return false
-      if ( ! $quiz_id ) {
-        return false;
-      } else {
-        $this->prepare_quiz( $quiz_id );
-      }
-    }
-
-    // Check if setting exists
-    if ( isset( $this->settings[ $setting ] ) ) {
-
-      // Try to unserialize it and then return it
-      return maybe_unserialize( $this->settings[ $setting ] );
-    } else {
-
-      // Return the default if no setting exists
-      return $default;
-    }
-  }
-
-	/**
-	 * Updates a settings value, adding it if it didn't already exist
-	 *
-	 * @since 5.0.0
-	 * @param string $setting The name of the setting whose value we need to retrieve.
-	 * @param mixed  $value The value that needs to be stored for the setting.
-	 * @return bool True if successful or false if fails
-	 */
-	public function update_setting( $setting, $value ) {                
-		global $mlwQuizMasterNext;
-
-		// Return if empty.
-		if ( empty( $setting ) ) {
-			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', 'Setting was empty with value equal to ' . print_r( $value, true ), 0, 'error' );
-			return false;
-		}
-
-		// Check if ID is not set, for backwards compatibility.
-		if ( ! $this->quiz_id ) {
-			$quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
-
-			// If get_id doesn't work, return false.
-			if ( ! $quiz_id ) {
-				$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', 'Quiz ID was not found', 0, 'error' );
-				return false;
-			} else {
-				$this->prepare_quiz( $quiz_id );
-			}
-		}
-  
-
-		$old_value = $this->get_setting( $setting );
-    if(isset($_POST['global_setting'])){
-        $setDefaultvalue=$old_value;
-        $getdefaultvalue=get_option( 'qsm-quiz-settings' );
-
-        $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
-        $setDefaultvalue['system']=$getdefaultvalue['system'];
-        $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
-        $setDefaultvalue['progress_bar']=$getdefaultvalue['progress_bar'];
-        $setDefaultvalue['require_log_in']=$getdefaultvalue['require_log_in'];
-        $setDefaultvalue['pagination']=$getdefaultvalue['pagination'];
-        $setDefaultvalue['timer_limit']=$getdefaultvalue['timer_limit'];
-        $setDefaultvalue['enable_result_after_timer_end']=$getdefaultvalue['enable_result_after_timer_end'];
-        $setDefaultvalue['skip_validation_time_expire']=$getdefaultvalue['skip_validation_time_expire'];
-        $setDefaultvalue['total_user_tries']=$getdefaultvalue['total_user_tries'];
-        $setDefaultvalue['limit_total_entries']=$getdefaultvalue['limit_total_entries'];
-        $setDefaultvalue['question_from_total']=$getdefaultvalue['question_from_total'];
-        $setDefaultvalue['question_per_category']=$getdefaultvalue['question_per_category'];
-        $setDefaultvalue['contact_info_location']=$getdefaultvalue['contact_info_location'];
-        $setDefaultvalue['loggedin_user_contact']=$getdefaultvalue['loggedin_user_contact'];
-        $setDefaultvalue['comment_section']=$getdefaultvalue['comment_section'];
-        $setDefaultvalue['question_numbering']=$getdefaultvalue['question_numbering'];
-        $setDefaultvalue['store_responses']=$getdefaultvalue['store_responses'];
-        $setDefaultvalue['disable_answer_onselect']=$getdefaultvalue['disable_answer_onselect'];
-        $setDefaultvalue['ajax_show_correct']=$getdefaultvalue['ajax_show_correct'];
-        $setDefaultvalue['contact_disable_autofill']=$getdefaultvalue['contact_disable_autofill'];
-        $setDefaultvalue['form_disable_autofill']=$getdefaultvalue['form_disable_autofill'];
-        $setDefaultvalue['show_category_on_front']=$getdefaultvalue['show_category_on_front'];
-        $setDefaultvalue['enable_quick_result_mc']=$getdefaultvalue['enable_quick_result_mc'];
-        $setDefaultvalue['end_quiz_if_wrong']=$getdefaultvalue['end_quiz_if_wrong'];
-        $setDefaultvalue['enable_quick_correct_answer_info']=$getdefaultvalue['enable_quick_correct_answer_info'];
-        $setDefaultvalue['enable_retake_quiz_button']=$getdefaultvalue['enable_retake_quiz_button'];
-        $setDefaultvalue['enable_pagination_quiz']=$getdefaultvalue['enable_pagination_quiz'];
-        $setDefaultvalue['enable_deselect_option']=$getdefaultvalue['enable_deselect_option'];
-        $setDefaultvalue['disable_description_on_result']=$getdefaultvalue['disable_description_on_result'];
-        $setDefaultvalue['disable_scroll_next_previous_click']=$getdefaultvalue['disable_scroll_next_previous_click'];
-        $setDefaultvalue['quiz_animation']=$getdefaultvalue['quiz_animation'];
-        $setDefaultvalue['result_page_fb_image']=$getdefaultvalue['result_page_fb_image'];
-        $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
-        $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
-        $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];  
-                // Try to serialize the value.
-        $serialized_value = maybe_serialize( $setDefaultvalue );
-        // Set the new value.
-        $this->settings[ $setting ] = $serialized_value;   
-        // Update the database.
-        global $wpdb;
-        $serialized_settings = serialize( $this->settings );
-        $results = $wpdb->update(
-          $wpdb->prefix . 'mlw_quizzes',
-          array( 'quiz_settings' => $serialized_settings ),
-          array( 'quiz_id' => $this->quiz_id ),
-          array( '%s' ),
-          array( '%d' )
-        );
-        if ( false === $results ) {
-          $mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-          return false;
-        } else {
-          return true;
+        if (empty($section) || empty($setting)) {
+            return $default;
         }
 
+        // Get settings in section
+        $section_settings = $this->get_setting($section);
+
+        // Return default if section not found
+        if (! $section_settings) {
+            return $default;
+        }
+
+        // Maybe unserailize
+        $section_settings = maybe_unserialize($section_settings);
+
+        // Check if setting exists
+        if (isset($section_settings[ $setting ])) {
+
+      // Try to unserialize it and then return it
+            return maybe_unserialize($section_settings[ $setting ]);
+        } else {
+
+      // Return the default if no setting exists
+            return $default;
+        }
     }
-		// If the old value and new value are the same, return false.
-		if ( $value === $old_value ) {
-			return true;
-		}
 
-		// Try to serialize the value.
-		$serialized_value = maybe_serialize( $value );
+    /**
+     * Retrieves setting value based on name of setting
+     *
+     * @since 5.0.0
+     * @param string $setting The name of the setting whose value we need to retrieve
+     * @param mixed $default What we need to return if no setting exists with given $setting
+     * @return $mixed Value set for $setting or $default if setting does not exist
+     */
+    public function get_setting($setting, $default = false)
+    {
+        global $mlwQuizMasterNext;
 
-		// Set the new value.
-		$this->settings[ $setting ] = $serialized_value;
+        // Return if empty
+        if (empty($setting)) {
+            return false;
+        }
 
-		// Update the database.
-		global $wpdb;
-		$serialized_settings = serialize( $this->settings );
-		$results = $wpdb->update(
-			$wpdb->prefix . 'mlw_quizzes',
-			array( 'quiz_settings' => $serialized_settings ),
-			array( 'quiz_id' => $this->quiz_id ),
-			array( '%s' ),
-			array( '%d' )
-		);
+        // Check if ID is not set, for backwards compatibility
+        if (! $this->quiz_id) {
+            $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
 
-		if ( false === $results ) {
-			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-			return false;
-		} else {
-			return true;
-		}
-	}
+            // If get_id doesn't work, return false
+            if (! $quiz_id) {
+                return false;
+            } else {
+                $this->prepare_quiz($quiz_id);
+            }
+        }
+
+        // Check if setting exists
+        if (isset($this->settings[ $setting ])) {
+
+      // Try to unserialize it and then return it
+            return maybe_unserialize($this->settings[ $setting ]);
+        } else {
+
+      // Return the default if no setting exists
+            return $default;
+        }
+    }
+
+    /**
+     * Updates a settings value, adding it if it didn't already exist
+     *
+     * @since 5.0.0
+     * @param string $setting The name of the setting whose value we need to retrieve.
+     * @param mixed  $value The value that needs to be stored for the setting.
+     * @return bool True if successful or false if fails
+     */
+    public function update_setting($setting, $value)
+    {
+        global $mlwQuizMasterNext;
+
+        // Return if empty.
+        if (empty($setting)) {
+            $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Setting was empty with value equal to ' . print_r($value, true), 0, 'error');
+            return false;
+        }
+
+        // Check if ID is not set, for backwards compatibility.
+        if (! $this->quiz_id) {
+            $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
+
+            // If get_id doesn't work, return false.
+            if (! $quiz_id) {
+                $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Quiz ID was not found', 0, 'error');
+                return false;
+            } else {
+                $this->prepare_quiz($quiz_id);
+            }
+        }
+  
+
+        $old_value = $this->get_setting($setting);
+        if (isset($_POST['global_setting'])) {
+            $setDefaultvalue=$old_value;
+            $getdefaultvalue=get_option('qsm-quiz-settings');
+
+            $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
+            $setDefaultvalue['system']=$getdefaultvalue['system'];
+            $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
+            $setDefaultvalue['progress_bar']=$getdefaultvalue['progress_bar'];
+            $setDefaultvalue['require_log_in']=$getdefaultvalue['require_log_in'];
+            $setDefaultvalue['pagination']=$getdefaultvalue['pagination'];
+            $setDefaultvalue['timer_limit']=$getdefaultvalue['timer_limit'];
+            $setDefaultvalue['enable_result_after_timer_end']=$getdefaultvalue['enable_result_after_timer_end'];
+            $setDefaultvalue['skip_validation_time_expire']=$getdefaultvalue['skip_validation_time_expire'];
+            $setDefaultvalue['total_user_tries']=$getdefaultvalue['total_user_tries'];
+            $setDefaultvalue['limit_total_entries']=$getdefaultvalue['limit_total_entries'];
+            $setDefaultvalue['question_from_total']=$getdefaultvalue['question_from_total'];
+            $setDefaultvalue['question_per_category']=$getdefaultvalue['question_per_category'];
+            $setDefaultvalue['contact_info_location']=$getdefaultvalue['contact_info_location'];
+            $setDefaultvalue['loggedin_user_contact']=$getdefaultvalue['loggedin_user_contact'];
+            $setDefaultvalue['comment_section']=$getdefaultvalue['comment_section'];
+            $setDefaultvalue['question_numbering']=$getdefaultvalue['question_numbering'];
+            $setDefaultvalue['store_responses']=$getdefaultvalue['store_responses'];
+            $setDefaultvalue['disable_answer_onselect']=$getdefaultvalue['disable_answer_onselect'];
+            $setDefaultvalue['ajax_show_correct']=$getdefaultvalue['ajax_show_correct'];
+            $setDefaultvalue['contact_disable_autofill']=$getdefaultvalue['contact_disable_autofill'];
+            $setDefaultvalue['form_disable_autofill']=$getdefaultvalue['form_disable_autofill'];
+            $setDefaultvalue['show_category_on_front']=$getdefaultvalue['show_category_on_front'];
+            $setDefaultvalue['enable_quick_result_mc']=$getdefaultvalue['enable_quick_result_mc'];
+            $setDefaultvalue['end_quiz_if_wrong']=$getdefaultvalue['end_quiz_if_wrong'];
+            $setDefaultvalue['enable_quick_correct_answer_info']=$getdefaultvalue['enable_quick_correct_answer_info'];
+            $setDefaultvalue['enable_retake_quiz_button']=$getdefaultvalue['enable_retake_quiz_button'];
+            $setDefaultvalue['enable_pagination_quiz']=$getdefaultvalue['enable_pagination_quiz'];
+            $setDefaultvalue['enable_deselect_option']=$getdefaultvalue['enable_deselect_option'];
+            $setDefaultvalue['disable_description_on_result']=$getdefaultvalue['disable_description_on_result'];
+            $setDefaultvalue['disable_scroll_next_previous_click']=$getdefaultvalue['disable_scroll_next_previous_click'];
+            $setDefaultvalue['quiz_animation']=$getdefaultvalue['quiz_animation'];
+            $setDefaultvalue['result_page_fb_image']=$getdefaultvalue['result_page_fb_image'];
+            $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
+            $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
+            $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
+            // Try to serialize the value.
+            
+            return $this->save_quiz_settings($setting,$setDefaultvalue);
+        }
+        // If the old value and new value are the same, return false.
+        if ($value === $old_value) {
+            return true;
+        }
+        // Try to serialize the value.
+        return $this->save_quiz_settings($setting,$value);
+    }
+    /**
+       * Update setting option fdor Quiz
+       *
+       * @since 5.0.0
+       */ 
+      private function save_quiz_settings($setting,$settingArray) {        
+            $serialized_value = maybe_serialize( $settingArray );
+            // Set the new value.
+            $this->settings[ $setting ] = $serialized_value;   
+            // Update the database.
+            global $wpdb;
+            $serialized_settings = serialize( $this->settings );        
+            $results = $wpdb->update(
+              $wpdb->prefix . 'mlw_quizzes',
+              array( 'quiz_settings' => $serialized_settings ),
+              array( 'quiz_id' => $this->quiz_id ),
+              array( '%s' ),
+              array( '%d' )
+            );
+            if ( false === $results ) {
+              $mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+              return false;
+            } else {
+              return true;
+            }
+
+      }
 
   /**
    * Loads the settings for the quiz

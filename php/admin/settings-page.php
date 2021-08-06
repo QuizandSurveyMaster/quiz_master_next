@@ -999,56 +999,12 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_quiz_animation() {
 		global $globalQuizsetting;
+		global $mlwQuizMasterNext;
 		$qsm_quiz_animation	=(isset($globalQuizsetting['quiz_animation'])  && '' !== $globalQuizsetting['quiz_animation'] ?  $globalQuizsetting['quiz_animation'] :"");	
-		$options = array(
-			array(
-				'label' => __( 'bounce', 'quiz-master-next' ),
-				'value' => 'bounce',
-			),
-			array(
-				'label' => __( 'flash', 'quiz-master-next' ),
-				'value' => 'flash',
-			),
-			array(
-				'label' => __( 'pulse', 'quiz-master-next' ),
-				'value' => 'pulse',
-			),
-			array(
-				'label' => __( 'rubberBand', 'quiz-master-next' ),
-				'value' => 'rubberBand',
-			),
-			array(
-				'label' => __( 'shake', 'quiz-master-next' ),
-				'value' => 'shake',
-			),
-			array(
-				'label' => __( 'swing', 'quiz-master-next' ),
-				'value' => 'swing',
-			),
-			array(
-				'label' => __( 'tada', 'quiz-master-next' ),
-				'value' => 'tada',
-			),
-			array(
-				'label' => __( 'wobble', 'quiz-master-next' ),
-				'value' => 'wobble',
-			),
-			array(
-				'label' => __( 'jello', 'quiz-master-next' ),
-				'value' => 'jello',
-			),
-			array(
-				'label' => __( 'heartBeat', 'quiz-master-next' ),
-				'value' => 'heartBeat',
-			),
-			array(
-				'label' => __( 'No animation', 'quiz-master-next' ),
-				'value' => '',
-			),
-		);		
+		$options = $mlwQuizMasterNext->pluginHelper->quiz_animation_effect();
 
 			$string= '<select  name="qsm-quiz-settings[quiz_animation]">';
-				foreach($options as $key=>$value){
+				foreach($options as $value){
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_quiz_animation) && $qsm_quiz_animation ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
@@ -1096,7 +1052,7 @@ class QMNGlobalSettingsPage {
 			),
 		);	
 		$string= '<select name="qsm-quiz-settings[randomness_order]">';
-				foreach($options as $key=>$value){
+				foreach($options as $value){
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_randomness_order) && $qsm_randomness_order ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
