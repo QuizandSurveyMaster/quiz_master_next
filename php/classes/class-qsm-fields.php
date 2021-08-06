@@ -106,7 +106,11 @@ class QSM_Fields {
         }
         ?>
 	</table>
+  <?php  if(isset($_GET['tab']) && 'options'==$_GET['tab'] && $_GET['page']=='mlw_quiz_options'){?>
+      <button class="button" name="global_setting" type="submit"><?php _e('Set Global Defaults', 'quiz-master-next'); ?></button>
+  <?php } ?>
 	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+  
 </form>
 <?php
   }
