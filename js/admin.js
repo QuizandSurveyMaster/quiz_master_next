@@ -373,5 +373,27 @@ var QSMAdmin;
                 button.nextAll('.qsm_featured_image_preview').attr('src', attachment.url);
             }).open();
         });
+
+        $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {            
+            var value = $(this).val();                               
+            if (value == '0' ) {                
+                $('.global_setting_system').parents('tr').show();
+                $('.global_setting_score_roundoff').parents('tr').show();
+            }else {
+                $('.global_setting_system').parents('tr').hide();
+                $('.global_setting_score_roundoff').parents('tr').hide();
+    
+            }
+        });
+        $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {            
+            var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();                              
+            if (value == '1' ) {                         
+                $('.global_setting_score_roundoff').parents('tr').hide();
+                
+            }else {                
+                $('.global_setting_score_roundoff').parents('tr').show();
+    
+            }
+        });
     });
 }(jQuery));
