@@ -62,6 +62,10 @@ class QSM_Migrate {
 						);
 					}
 				} else {
+					$response	 = array(
+						'status' => true,
+						'count'	 => 0,
+					);
 					update_option( 'qsm_multiple_category_enabled', date( time() ) );
 				}
 				echo json_encode( $response );
