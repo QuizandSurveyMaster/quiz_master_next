@@ -61,8 +61,7 @@ var QSMPageTimer;
 			var $quizForm = QSM.getQuizForm(quizID);
 
 			// Creates timer status key.
-			qmn_quiz_data[quizID].timerStatus = false;
-
+			qmn_quiz_data[quizID].timerStatus = false;		
 
 			// If we are using the newer pagination system...
 			if (0 < $quizForm.children('.qsm-page').length) {
@@ -173,8 +172,13 @@ var QSMPageTimer;
 			}
 			var secondsRemaining = qmn_quiz_data[quizID].timerRemaning;
 			var display = QSM.secondsToTimer(secondsRemaining);
-
-			// Sets our local storage values for the timer being started and current timer value.
+			var systemTime=new Date().getTime()/1000;
+			systemTime=Math.round(systemTime);
+			if('1'===qmn_quiz_data[quizID].not_allow_after_expired_time && systemTime > qmn_quiz_data[quizID].scheduled_time_end ){
+				MicroModal.show('modal-4');
+				return false;
+			}
+					// Sets our local storage values for the timer being started and current timer value.
 			localStorage.setItem('mlw_time_quiz' + quizID, secondsRemaining);
 			localStorage.setItem('mlw_started_quiz' + quizID, "yes");
 
@@ -832,10 +836,10 @@ function getFormData($form) {
 }
 
 function qmnFormSubmit(quiz_form_id) {
+
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	var $container = jQuery('#' + quiz_form_id).closest('.qmn_quiz_container');
 	var result = qmnValidation('#' + quiz_form_id + ' *', quiz_form_id);
-
 
 	if (!result) { return result; }
 
@@ -880,11 +884,19 @@ function qmnFormSubmit(quiz_form_id) {
 		processData: false,
 		type: 'POST',
 		success: function (response) {
-			qmnDisplayResults(JSON.parse(response), quiz_form_id, $container);
-			jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
+			response=JSON.parse(response);
+			if(response.quizExpired){
+				MicroModal.show('modal-4');
+				return false;
+			}else{
+				qmnDisplayResults(response, quiz_form_id, $container);
+				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
+				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
+			}
+			
 		}
 	});
-	jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
+
 	return false;
 }
 

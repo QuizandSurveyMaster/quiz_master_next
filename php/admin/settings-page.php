@@ -86,6 +86,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'limit-number-of-questions', __( 'Limit number of Questions', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'limit-number-of-questions-per-category', __( 'Limit number of Questions Per Category', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions_per_category' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'quiz-dates', __( 'Quiz Dates', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_dates' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'can-submit-after-end-date', __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ), array( $this, 'qsm_global_Do_not_allow_quiz_submission_after_the_end_datetime' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'random-questions', __( 'Random Questions', 'quiz-master-next' ), array( $this, 'qsm_global_random_questions' ), 'qsm_default_global_option', 'qmn-global-section' );		
 		add_settings_field( 'contact-form-position', __( 'Contact form position', 'quiz-master-next' ), array( $this, 'qsm_global_contact_form_position' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-contact-form-to-logged-in-users', __( 'Show contact form to logged in users', 'quiz-master-next' ), array( $this, 'qsm_global_show_contact_form_to_logged_in_users' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1089,6 +1090,21 @@ class QMNGlobalSettingsPage {
 			});
 			</script>';
 	}
+/**
+	 * Generates Quiz Global  Field For Do not allow quiz submission after the end date/time
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_Do_not_allow_quiz_submission_after_the_end_datetime() {		
+		global $globalQuizsetting;
+		$qsm_not_allow_after_expired_time	=(isset($globalQuizsetting['not_allow_after_expired_time'])  && '' !== $globalQuizsetting['not_allow_after_expired_time'] ?  $globalQuizsetting['not_allow_after_expired_time'] :"");		
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" '. checked( $qsm_not_allow_after_expired_time, '1', false ) .'>
+				<br>
+			</fieldset>';
+	}
+	
 	
 }
 
