@@ -278,6 +278,19 @@ class QSM_Install {
 			'ph_text' => __( 'End Date', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		$field_array = array(
+			'id'      => 'not_allow_after_expired_time',
+			'label'       => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'type'    => 'checkbox',
+			'options' => array(
+				array(
+					'value' => 1,
+				),
+			),
+			'default' => 0,		
+			'ph_text' => __( '', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers randomness_order setting
 		$field_array = array(

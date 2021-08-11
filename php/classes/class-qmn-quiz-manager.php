@@ -357,6 +357,8 @@ class QMNQuizManager {
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
+				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -1265,7 +1267,14 @@ $range = range(0, $quiz_options->question_from_total);
 		$qmn_allowed_visit = true;
 		$quiz              = intval( $_POST['qmn_quiz_id'] );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
-		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();		
+		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
+		$qsm_option = array_map("unserialize", $qsm_option);
+
+		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && time() > strtotime($qsm_option['quiz_options']['scheduled_time_end']) ){
+			echo json_encode( array('quizExpired'=>true) );
+			die();
+		} 
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
 			'quiz_name'       => $options->quiz_name,
@@ -1548,7 +1557,8 @@ $range = range(0, $quiz_options->question_from_total);
 
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
-			'display'  => htmlspecialchars_decode( $result_display ),
+			'quizExpired'=>false,
+			'display'  => htmlspecialchars_decode( $result_display ),			
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
 

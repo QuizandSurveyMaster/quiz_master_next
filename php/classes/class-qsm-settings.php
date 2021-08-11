@@ -251,6 +251,7 @@ class QSM_Quiz_Settings
             $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
             $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
             $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
+            $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
             // Try to serialize the value.
             
             return $this->save_quiz_settings($setting,$setDefaultvalue);
