@@ -61,8 +61,7 @@ var QSMPageTimer;
 			var $quizForm = QSM.getQuizForm(quizID);
 
 			// Creates timer status key.
-			qmn_quiz_data[quizID].timerStatus = false;
-		//	console.log(qmn_quiz_data);
+			qmn_quiz_data[quizID].timerStatus = false;		
 
 			// If we are using the newer pagination system...
 			if (0 < $quizForm.children('.qsm-page').length) {
