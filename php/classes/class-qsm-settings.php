@@ -268,6 +268,7 @@ class QSM_Quiz_Settings
        * @since 5.0.0
        */ 
       private function save_quiz_settings($setting,$settingArray) {        
+            global $mlwQuizMasterNext;
             $serialized_value = maybe_serialize( $settingArray );
             // Set the new value.
             $this->settings[ $setting ] = $serialized_value;   

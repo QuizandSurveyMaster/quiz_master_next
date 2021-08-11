@@ -151,9 +151,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 7.3.1 (August 10, 2021) =
+
+= 7.3.1 (August 11, 2021) =
 * Bug: Fixed the error while upgrading database.
-* Bug: Fixed the display issues in results page.
+* Bug: Fixed the display issues in results page
 * Feature: Added global default settings for quiz options.
 
 
