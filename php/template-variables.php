@@ -1191,6 +1191,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 	} else {
 		$user_answer_new = $answer[1];
+		if($answer['question_type'] == 14 && empty($answer[1])){
+			$user_answer_new = str_replace("=====",",",$answer['user_compare_text']);
+		}
 		if ( ( $answer['question_type'] == 0 || $answer['question_type'] == 1 || $answer['question_type'] == 2 ) && $answer[1] == '' ) {
 			$user_answer_new = __( 'No Answer Provided', 'quiz-master-next' );
 		}
@@ -1201,7 +1204,23 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<br/><span class='$user_answer_class'>" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . '</span>', $mlw_question_answer_display );
 		}
 	}
-	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
+	if($answer['question_type'] == 14 && empty( $answer[2] )){
+		if(isset($questions[ $answer['id'] ]['answers']) && is_array($questions[ $answer['id'] ]['answers']))
+		{
+			foreach($questions[ $answer['id'] ]['answers'] as $val)
+			{
+				if($val[2] == 1)
+				{
+					$answer_2 .= $val[0] . ",";
+				}
+			}
+			rtrim($answer_2,",");
+		}
+		
+	}
+	else{
+		$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
+	}
 	if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $answer_2 != 'NA' ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<br/><img src="' . $image_url . '"/>', $mlw_question_answer_display );
