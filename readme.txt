@@ -151,7 +151,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 7.3.1 (august 10, 2021) =
+= 7.3.1 (august 11, 2021) =
 * Bug: Fixed the error on updating database.
 * Bug: Fixed the issue of  everything displayed in the same line in the results page.
 * Feature: Added global default settings for quiz options.
