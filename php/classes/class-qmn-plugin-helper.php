@@ -406,6 +406,7 @@ class QMNPluginHelper
         }
         if (2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order) {
             shuffle($answers);
+            update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
         foreach ($this->question_types as $type) {
             if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
