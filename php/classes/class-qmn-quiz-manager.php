@@ -1269,9 +1269,11 @@ $range = range(0, $quiz_options->question_from_total);
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();		
 		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
-		$qsm_option = array_map("unserialize", $qsm_option);
-
-		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && time() > strtotime($qsm_option['quiz_options']['scheduled_time_end']) ){
+		$qsm_option = array_map("unserialize", $qsm_option);		
+		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
+		$timezone = $_POST['currentuserTimeZone'];
+		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
+		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && $_POST['currentuserTime'] > $dtUtcDate){
 			echo json_encode( array('quizExpired'=>true) );
 			die();
 		} 
