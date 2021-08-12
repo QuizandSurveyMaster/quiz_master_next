@@ -1215,7 +1215,9 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_correct += 1;
 			}
 			$total_correct++;
+			$correct_text[]=$answers[$key][0];
 		}
+		$return_array['correct_text'] = implode( '.', $correct_text );
 		$return_array['user_text'] = implode( '.', $user_text );
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
 		if($total_correct == $user_correct){
