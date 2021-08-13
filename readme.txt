@@ -152,10 +152,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.3.1 (August 11, 2021) =
-* Bug: Fixed the error while upgrading database.
-* Bug: Fixed the display issues in results page
+= 7.3.1 (August 13, 2021) =
+* Bug: Fixed the error on updating database.
+* Bug: Fixed the issue of everything displayed in the same line in the results page.
+* Bug: Fixed the issue of fill in the blank question type not showing user answer and correct answer in the results page and email.
 * Feature: Added global default settings for quiz options.
+* Enhancement: Added option to deny quiz submission after end date/time
+* Enhancement: Made order of random questions same on the results page and the quiz frontend.
 
 
 = 7.3.0 (July 29, 2021) =
