@@ -28,7 +28,6 @@ class QSM_Install {
 	 */
 	public function add_hooks() {
 		add_action( 'admin_init', array( $this, 'update' ) );
-		add_action( 'admin_init', array( $this, 'update' ) );
 		add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'plugins_loaded', array( $this, 'register_default_settings' ) );
@@ -277,6 +276,19 @@ class QSM_Install {
 			'default' => '',
 			'help'    => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
 			'ph_text' => __( 'End Date', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		$field_array = array(
+			'id'      => 'not_allow_after_expired_time',
+			'label'       => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'type'    => 'checkbox',
+			'options' => array(
+				array(
+					'value' => 1,
+				),
+			),
+			'default' => 0,		
+			'ph_text' => __( '', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -682,52 +694,7 @@ class QSM_Install {
 			'id'      => 'quiz_animation',
 			'label'   => __( 'Quiz Animation', 'quiz-master-next' ),
 			'type'    => 'select',
-			'options' => array(
-				array(
-					'label' => __( 'bounce', 'quiz-master-next' ),
-					'value' => 'bounce',
-				),
-				array(
-					'label' => __( 'flash', 'quiz-master-next' ),
-					'value' => 'flash',
-				),
-				array(
-					'label' => __( 'pulse', 'quiz-master-next' ),
-					'value' => 'pulse',
-				),
-				array(
-					'label' => __( 'rubberBand', 'quiz-master-next' ),
-					'value' => 'rubberBand',
-				),
-				array(
-					'label' => __( 'shake', 'quiz-master-next' ),
-					'value' => 'shake',
-				),
-				array(
-					'label' => __( 'swing', 'quiz-master-next' ),
-					'value' => 'swing',
-				),
-				array(
-					'label' => __( 'tada', 'quiz-master-next' ),
-					'value' => 'tada',
-				),
-				array(
-					'label' => __( 'wobble', 'quiz-master-next' ),
-					'value' => 'wobble',
-				),
-				array(
-					'label' => __( 'jello', 'quiz-master-next' ),
-					'value' => 'jello',
-				),
-				array(
-					'label' => __( 'heartBeat', 'quiz-master-next' ),
-					'value' => 'heartBeat',
-				),
-				array(
-					'label' => __( 'No animation', 'quiz-master-next' ),
-					'value' => '',
-				),
-			),
+			'options' => $mlwQuizMasterNext->pluginHelper->quiz_animation_effect(),
 			'default' => '',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1889,7 +1856,6 @@ class QSM_Install {
 		return (array) $links;
 
 	}
-
 
 }
 

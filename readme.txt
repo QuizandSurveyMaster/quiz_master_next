@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.0
+Stable tag: 7.3.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+
+= 7.3.1 (August 13, 2021) =
+* Bug: Fixed the error on updating database.
+* Bug: Fixed the issue of everything displayed in the same line in the results page.
+* Bug: Fixed the issue of fill in the blank question type not showing user answer and correct answer in the results page and email.
+* Feature: Added global default settings for quiz options.
+* Enhancement: Added option to deny quiz submission after end date/time
+* Enhancement: Made order of random questions same on the results page and the quiz frontend.
+
 
 = 7.3.0 (July 29, 2021) =
 * Feature: Added option to add multiple categories to single question.

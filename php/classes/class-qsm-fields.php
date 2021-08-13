@@ -106,7 +106,11 @@ class QSM_Fields {
         }
         ?>
 	</table>
+  <?php  if(isset($_GET['tab']) && 'options'==$_GET['tab'] && $_GET['page']=='mlw_quiz_options'){?>
+      <button class="button" name="global_setting" type="submit"><?php _e('Set Global Defaults', 'quiz-master-next'); ?></button>
+  <?php } ?>
 	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+  
 </form>
 <?php
   }
@@ -525,7 +529,7 @@ jQuery(function() {
   public static function generate_checkbox_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 	global $mlwQuizMasterNext;
-	 $score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options', 'score_roundoff');
+	 $score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
     ?>
 <tr valign="top"
 	<?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>

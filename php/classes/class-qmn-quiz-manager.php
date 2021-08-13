@@ -357,6 +357,8 @@ class QMNQuizManager {
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
+				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
 
 			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -617,6 +619,8 @@ $range = range(0, $quiz_options->question_from_total);
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
 		}
 		$questions = apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
+		$qsm_random_que_ids = array_column($questions,'question_id');
+		update_option('qsm_random_que_ids',$qsm_random_que_ids);
 		// Returns an array of all the loaded questions.
 		return $questions;
 
@@ -661,7 +665,8 @@ $range = range(0, $quiz_options->question_from_total);
 		if ( ! $is_ajax ) {
 			global $qmn_json_data;
 			$qmn_json_data['question_list'] = $question_list;
-		}
+		}		
+		
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -871,8 +876,14 @@ $range = range(0, $quiz_options->question_from_total);
 			foreach ( $pages[0] as $question_id ) {
 				$question_list .= $question_id . 'Q';
 				$question       = $questions[ $question_id ];
+				$categor_class	 = '';
+				if ( ! empty( $question['multicategories'] ) ) {
+					foreach ( $question['multicategories'] as $cat ) {
+						$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+					}
+				}
 				?>
-	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>'
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
 		data-qid="<?php echo esc_attr($question_id); ?>">
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
@@ -936,8 +947,14 @@ $range = range(0, $quiz_options->question_from_total);
 				foreach ( $page as $question_id ) {
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
+					$categor_class	 = '';
+					if ( ! empty( $question['multicategories'] ) ) {
+						foreach ( $question['multicategories'] as $cat ) {
+							$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+						}
+					}
 					?>
-	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?>'
+	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
 		data-qid='<?php echo esc_attr($question_id); ?>'>
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
@@ -1253,7 +1270,16 @@ $range = range(0, $quiz_options->question_from_total);
 		$qmn_allowed_visit = true;
 		$quiz              = intval( $_POST['qmn_quiz_id'] );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
-		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();		
+		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
+		$qsm_option = array_map("unserialize", $qsm_option);		
+		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
+		$timezone = $_POST['currentuserTimeZone'];
+		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
+		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && $_POST['currentuserTime'] > $dtUtcDate){
+			echo json_encode( array('quizExpired'=>true) );
+			die();
+		} 
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
 			'quiz_name'       => $options->quiz_name,
@@ -1370,8 +1396,7 @@ $range = range(0, $quiz_options->question_from_total);
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables ) );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
-			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-
+			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );			
 			$unique_id  = md5( date( 'Y-m-d H:i:s' ) );
 			$results_id = 0;
 			// If the store responses in database option is set to Yes.
@@ -1536,7 +1561,8 @@ $range = range(0, $quiz_options->question_from_total);
 
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
-			'display'  => htmlspecialchars_decode( $result_display ),
+			'quizExpired'=>false,
+			'display'  => htmlspecialchars_decode( $result_display ),			
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
 
@@ -1814,7 +1840,21 @@ $range = range(0, $quiz_options->question_from_total);
 		} else {
 			$total_score = 0;
 		}
+		$qsm_random_que_ids = get_option('qsm_random_que_ids');
+		if(!empty($qsm_random_que_ids))
+		{
 
+			$new_question_data = array();
+			foreach($qsm_random_que_ids as $que_id)
+			{
+				$key = array_search($que_id,array_column($question_data,'id'));
+				array_push($new_question_data,$question_data[$key]);
+			}
+			$question_data = $new_question_data;
+		}
+
+		// We no need longer this option
+		delete_option('qsm_random_que_ids');
 		// Return array to be merged with main user response array
 		return apply_filters('qsm_check_answers_results' ,  array(
 			'total_points'              => $points_earned,

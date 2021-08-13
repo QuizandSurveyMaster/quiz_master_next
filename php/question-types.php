@@ -1195,7 +1195,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	$user_input = $user_text = array();
+	$correct_text=$user_input = $user_text = array();
 	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
 		foreach ( $_POST[ 'question' . $id ] as $input ) {
 			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
@@ -1204,7 +1204,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_text[]  = $mlw_user_answer;
 		}
 	}
-
+	
 	$total_correct = $user_correct = 0;
 	if ( $match_answer == 'sequence' ) {
 		foreach ( $answers as $key => $answer ) {
@@ -1215,7 +1215,9 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_correct += 1;
 			}
 			$total_correct++;
+			$correct_text[]=$answers[$key][0];
 		}
+		$return_array['correct_text'] = implode( '.', $correct_text );
 		$return_array['user_text'] = implode( '.', $user_text );
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
 		if($total_correct == $user_correct){
@@ -1234,31 +1236,36 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		if($total_user_input < $total_option){
 			foreach($user_input as $k => $input){
 				$key = array_search( $input, $answers_array );
-				if($key !== false){
+				if($key !== false){					
 					$return_array['points'] += $answers[$key][1];	
 				} else {
 					$correct = false;
 				}
+				$correct_text[]=$answers[$key][0];
 			}
 		} else {
 			foreach($answers_array as $k => $answer){
 				$key = array_search( $answer, $user_input );
-				if($key !== false){
+				if($key !== false){				
 					$return_array['points'] += $answers[$k][1];	
 				} else {
 					$correct = false;
 				}
+				$correct_text[]=$answers[$k][0];
 			}
 		}
 		if($correct){
 			$return_array['correct']   = 'correct';
 		}
+		$return_array['user_text'] = implode( '.', $user_text );
+		$return_array['correct_text'] = implode( '.', $correct_text );
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
 	}
 
 	/**
 	 * Hook to filter answers array
 	 */
+
 	return apply_filters( 'qmn_fill_blank_review', $return_array, $answers );
 }
 
