@@ -247,9 +247,9 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
 		$return_display .= '<div class="qsm-popup__content">';
 		$return_display .= '<img src="' . QSM_PLUGIN_URL . 'assets/clock.png' . '" alt="clock.png"/>';
-		$return_display .= '<p class="qsm-time-up-text">Time is Up!</p>';
+		$return_display .= '<p class="qsm-time-up-text">'._e( 'Time is Up!', 'quiz-master-next' ) .'</p>';
 		$return_display .= '</div>';
-		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">Submit Quiz</button></footer>';
+		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">'. _e( 'Cancel', 'quiz-master-next' ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'._e( 'Submit Quiz', 'quiz-master-next' ).'</button></footer>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
@@ -264,9 +264,9 @@ function qsm_display_popup_div_expired_quiz( $return_display, $qmn_quiz_options 
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
 		$return_display .= '<div class="qsm-popup__content">';
 		$return_display .= '<img src="' . QSM_PLUGIN_URL . 'assets/clock.png' . '" alt="clock.png"/>';
-		$return_display .= '<p class="qsm-time-up-text">Time\'s up</p>';
+		$return_display .= '<p class="qsm-time-up-text"> '._e( 'Time\'s up', 'quiz-master-next' ) .'</p>';
 		$return_display .= '</div>';
-		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window" onclick="location.reload();">Cancel</button></footer>';
+		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window" onclick="location.reload();">'. _e( 'Cancel', 'quiz-master-next' ).'</button></footer>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
