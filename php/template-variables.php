@@ -1205,7 +1205,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 	}
 	if($answer['question_type'] == 14 && empty( $answer[2] )){
-		if(isset($questions[ $answer['id'] ]['answers']) && is_array($questions[ $answer['id'] ]['answers']))
+		if( isset($questions[ $answer['id'] ]['answers']) && is_array($questions[ $answer['id'] ]['answers']) )
 		{
 			foreach($questions[ $answer['id'] ]['answers'] as $val)
 			{
@@ -1214,7 +1214,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$answer_2 .= $val[0] . ",";
 				}
 			}
-			rtrim($answer_2,",");
+			$answer_2 = rtrim( $answer_2,"," );
 		}
 		
 	}
