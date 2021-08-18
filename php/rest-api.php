@@ -526,7 +526,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'answerInfo'              => htmlspecialchars_decode( $question['question_answer_info'], ENT_QUOTES ),
 					'comments'                => $question['comments'],
 					'hint'                    => $question['hints'],
-					'category'                => $question['category'],
+					'category'                => implode(',' ,QSM_Questions::get_question_categories($question['question_id'])) ,
 					'multicategories'         => $question['multicategories'],
 					'required'                => $question['settings']['required'],
 					'answers'                 => $question['answers'],
