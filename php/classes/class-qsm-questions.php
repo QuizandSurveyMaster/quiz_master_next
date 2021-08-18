@@ -401,8 +401,7 @@ class QSM_Questions {
 	 * @return array The array of categories.
 	 */
 	public static function get_question_categories( $question_id = 0 ) {
-		global $wpdb;
-		$categories = array();
+		global $wpdb;	
 		if ( 0 !== $question_id ) {
 			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
 			if ( ! empty( $question_terms ) ) {
