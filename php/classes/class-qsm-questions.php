@@ -393,7 +393,33 @@ class QSM_Questions {
 		}
 		return $categories;
 	}
-
+	/**
+	 * Get categories for a Question 
+	 *
+	 * @since 7.2.1
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_question_categories( $question_id = 0 ) {
+		global $wpdb;	
+		if ( 0 !== $question_id ) {
+			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
+			if ( ! empty( $question_terms ) ) {
+				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
+				if ( ! empty( $term_ids ) ) {
+					$categories_names	 = array();					
+					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+					if ( ! empty( $terms ) ) {
+						foreach ( $terms as $tax ) {
+							$categories_names[$tax->term_id] = $tax->name;						
+						}
+						
+					}					
+				}
+			}
+		}
+		return $categories_names;
+	}
 	/**
 	 * Create tree structure of terms.
 	 *
