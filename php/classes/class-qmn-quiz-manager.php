@@ -516,17 +516,39 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					} else {
 						$question_ids[] = intval( $question );
 					}
-					
-					
 				}
 			}
-			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
-			$question_sql = implode( ', ', $question_ids );
-		
+
         //check If we should load a specific number of question 
-			if( $quiz_options->question_per_category != 0 && $is_quiz_page ){
-				
-        
+			if($quiz_options->question_per_category != 0 && $is_quiz_page){
+				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
+				$category_ids = (isset($categories['list']) ? array_keys($categories['list']) : array());
+				$categories_tree = (isset($categories['tree']) ? $categories['tree'] : array());
+				if (!empty($category_ids)) {
+					$term_ids = implode(',', $category_ids);
+					$term_ids = ($quiz_options->randon_category != '') ? $quiz_options->randon_category : $term_ids;
+					$tq_ids = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id`='{$quiz_id}' AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+					$random = array();
+					if (!empty($tq_ids)) {
+						$term_data = array();
+						foreach ($tq_ids as $key => $val) {
+							$term_data[$val['term_id']][] = $val['question_id'];
+						}
+						if ($quiz_options->randon_category == '') {
+							foreach ($categories_tree as $cat) {
+								if (!empty($cat->children)) {
+									unset($term_data[$cat->term_id]);
+								}
+							}
+						}
+						foreach ($term_data as $tk => $tv) {
+							//shuffle($tv);
+							$random = array_merge($random, array_slice($tv, 0, $quiz_options->question_per_category));
+						}
+					}
+					$question_ids = array_unique( $random );
+				}
+/*        
         //processing Categories checking. removing commas and making them arrays
 	$cat_sql = $wpdb->get_results( $wpdb->prepare("SELECT category FROM {$wpdb->prefix}mlw_questions WHERE quiz_id = %d ", $quiz_id) );
        $all_cat = array();
@@ -585,14 +607,13 @@ $range = range(0, $quiz_options->question_from_total);
  }
 
                 }
-
+/**/
 			}
-	else{
-
+			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
+			$question_sql = implode( ', ', $question_ids );
+			
 			$query        = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
 			$questions    = $wpdb->get_results( stripslashes( $query ) );
-	
-			}
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options

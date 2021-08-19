@@ -253,6 +253,44 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers category setting
+		$field_array = array(
+			'id'      => 'randon_category',
+			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
+			'type'    => 'category',
+			'default' => '',
+			'help'    => __( 'Questions will load only from selected categories. This option works only with Random Questions ', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers randomness_order setting
+		$field_array = array(
+			'id'      => 'randomness_order',
+			'label'   => __( 'Random Questions', 'quiz-master-next' ),
+			'type'    => 'select',
+			'options' => array(
+				array(
+					'label' => __( 'Random Questions', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Random Questions And Answers', 'quiz-master-next' ),
+					'value' => 2,
+				),
+				array(
+					'label' => __( 'Random Answers', 'quiz-master-next' ),
+					'value' => 3,
+				),
+				array(
+					'label' => __( 'Disabled', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default' => 0,
+			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers scheduled_time_start setting
 		$field_array = array(
 			'id'      => 'scheduled_time_start',
@@ -289,44 +327,6 @@ class QSM_Install {
 			),
 			'default' => 0,		
 			'ph_text' => __( '', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-		// Registers randomness_order setting
-		$field_array = array(
-			'id'      => 'randomness_order',
-			'label'   => __( 'Random Questions', 'quiz-master-next' ),
-			'type'    => 'select',
-			'options' => array(
-				array(
-					'label' => __( 'Random Questions', 'quiz-master-next' ),
-					'value' => 1,
-				),
-				array(
-					'label' => __( 'Random Questions And Answers', 'quiz-master-next' ),
-					'value' => 2,
-				),
-				array(
-					'label' => __( 'Random Answers', 'quiz-master-next' ),
-					'value' => 3,
-				),
-				array(
-					'label' => __( 'Disabled', 'quiz-master-next' ),
-					'value' => 0,
-				),
-			),
-			'default' => 0,
-			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-		// Registers category setting
-		$field_array = array(
-			'id'      => 'randon_category',
-			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
-			'type'    => 'category',
-			'default' => '',
-			'help'    => __( 'Questions will load only from selected categories. This option works only with Random Questions ', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
