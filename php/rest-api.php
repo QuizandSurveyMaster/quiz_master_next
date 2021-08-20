@@ -518,6 +518,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 			foreach ( $questions as $question ) {
 				$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
+				$categorysArray = QSM_Questions::get_question_categories($question['question_id']);
 				$question_data    = array(
 					'id'                      => $question['question_id'],
 					'quizID'                  => $question['quiz_id'],
@@ -526,7 +527,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'answerInfo'              => htmlspecialchars_decode( $question['question_answer_info'], ENT_QUOTES ),
 					'comments'                => $question['comments'],
 					'hint'                    => $question['hints'],
-					'category'                => implode(',' ,QSM_Questions::get_question_categories($question['question_id'])) ,
+					'category'                => (isset($categorysArray) && !empty($categorysArray) ? implode(',',$categorysArray):"" ) ,
 					'multicategories'         => $question['multicategories'],
 					'required'                => $question['settings']['required'],
 					'answers'                 => $question['answers'],
