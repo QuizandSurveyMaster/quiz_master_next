@@ -1498,7 +1498,11 @@ $range = range(0, $quiz_options->question_from_total);
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display  = apply_filters( 'qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			if ( $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
-				$result_display .= '<a style="float: right;" class="button btn-reload-quiz" data-quiz_id="' . $qmn_array_for_variables['quiz_id'] . '" href="#" >' . apply_filters( 'qsm_retake_quiz_text', __( 'Retake Quiz', 'quiz-master-next' ) ) . '</a>';
+	
+				$result_display .= '<form method="POST">';
+				$result_display .= '<input type="hidden" value="' . $qmn_array_for_variables['quiz_id'] . '" name="qsm_retake_quiz_id" />';
+				$result_display .= '<input type="submit" value="' . apply_filters( 'qsm_retake_quiz_text', __( 'Retake Quiz', 'quiz-master-next' ) ). '" name="qsm_retake_button" />';
+				$result_display .= '</form>';
 			}
 
 			/*
