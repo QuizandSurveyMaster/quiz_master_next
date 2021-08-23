@@ -440,7 +440,7 @@ jQuery(function() {
 					echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
 				} else {
 					foreach ( $cat_array as $single_cat ) {
-						?><option <?php echo ( in_array( $single_cat, $explode_cat ) ? 'selected' : '' ); ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option><?php
+						?><option <?php echo in_array( $single_cat, $explode_cat ) ? 'selected' : ''; ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option><?php
 					}
 				}
 				?></select><?php
