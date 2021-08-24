@@ -583,7 +583,10 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			}
 		}
 		if ( empty( $answer_text ) ) {
-			$return_points = apply_filters( 'qsm_category_return_points', $return_points, $content, $mlw_quiz_array );
+			/**
+			 * Filter category points.
+			 */
+			$return_points = apply_filters( 'qsm_category_return_points', $return_points, $content, $mlw_quiz_array, $category_name );
 			$content = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
 		} else {
 			$content = str_replace( $answer_text[0], $return_points, $content );
