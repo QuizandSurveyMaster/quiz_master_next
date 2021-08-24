@@ -417,7 +417,7 @@ class QMNPluginHelper
                     }
                 }
                 if ($quiz_options->show_category_on_front ) {                    
-                    $categories = QSM_Questions::get_question_categories( $question_id );
+                    $categories = QSM_Questions::get_question_categories( $question_id )['category_name'];                   
                     if(!empty($categories)){
                         $display .= '<div class="quiz-cat">[ ' .implode(',' ,$categories) . ' ]</div>';
                     }                    
