@@ -94,8 +94,8 @@ class QSM_Questions {
 				$multicategories = self::get_question_categories($question['question_id']);
 				//get_question_categories
 				
-				$question['multicategories'] = array_keys($multicategories['category_name']);
-				$question['multicategoriesobject'] = $multicategories	['category_tree'];
+				$question['multicategories'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+				$question['multicategoriesobject'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {

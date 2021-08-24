@@ -417,9 +417,9 @@ class QMNPluginHelper
                     }
                 }
                 if ($quiz_options->show_category_on_front ) {                    
-                    $categories = QSM_Questions::get_question_categories( $question_id )['category_name'];                   
-                    if(!empty($categories)){
-                        $display .= '<div class="quiz-cat">[ ' .implode(',' ,$categories) . ' ]</div>';
+                    $categories = QSM_Questions::get_question_categories( $question_id );                   
+                    if(!empty($categories['category_name'])){
+                        $display .= '<div class="quiz-cat">[ ' .implode(',' ,$categories['category_name']) . ' ]</div>';
                     }                    
                 }
                 $display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
