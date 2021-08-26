@@ -91,14 +91,11 @@ class QSM_Questions {
 
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
-				$multicategories = array();
-				$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
-				if (!empty($multicategories_res)){
-					foreach ($multicategories_res as $cat) {
-						$multicategories[] = $cat['term_id'];
-					}
-				}
-				$question['multicategories'] = $multicategories;
+				$multicategories = self::get_question_categories($question['question_id']);
+				//get_question_categories
+				
+				$question['multicategories'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+				$question['multicategoriesobject'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {
@@ -407,18 +404,21 @@ class QSM_Questions {
 			if ( ! empty( $question_terms ) ) {
 				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
 				if ( ! empty( $term_ids ) ) {
-					$categories_names	 = array();					
+					$categories_tree	 = array();
+					$categories_names	 = array();								
 					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
 					if ( ! empty( $terms ) ) {
 						foreach ( $terms as $tax ) {
-							$categories_names[$tax->term_id] = $tax->name;						
+							$categories_names[$tax->term_id] = $tax->name;										
+							$taxs[$tax->parent][]			 = $tax;		
 						}
+						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 						
 					}					
 				}
 			}
 		}
-		return $categories_names;
+		return array('category_name'=>$categories_names,"category_tree"=>$categories_tree);
 	}
 	/**
 	 * Create tree structure of terms.
