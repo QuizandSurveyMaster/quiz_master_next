@@ -65,6 +65,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_single_quest
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_possible_points', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_total_attempted_questions', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_user_full_name', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_poll_result', 10, 3);
 add_filter( 'qmn_end_results', 'qsm_variable_poll_result', 10, 3 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_name', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_links', 10, 2 );
@@ -161,7 +162,7 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
  * @param str $content
  * @param arr $mlw_quiz_array
  */
-function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables ) {
+function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "") {
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%POLL_RESULTS_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%POLL_RESULTS_', '%' );
@@ -172,8 +173,9 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables ) {
 		global $wpdb;
 		$total_query            = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$total_result           = $total_query['total_count'];
-		$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
+		$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array,question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
 		$ser_answer_arry        = unserialize( $ser_answer['answer_array'] );
+		$question_settings        = unserialize( $ser_answer['question_settings'] );
 		$ser_answer_arry_change = array_filter( array_merge( array( 0 ), $ser_answer_arry ) );
 		$total_quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$answer_array           = array();
@@ -190,11 +192,16 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables ) {
 		$str  = '';
 		if ( $vals ) {
 			$str .= '<h4>' . __( 'Poll Result', 'quiz-master-next' ) . ':</h4>';
-			foreach ( $vals as $answer_str => $answer_count ) {
+			foreach ( $vals as $answer_str => $answer_count ) {				
 				if ( $answer_str != '' && qsm_find_key_from_array( $answer_str, $ser_answer_arry_change ) ) {
 					$percentage = number_format( $answer_count / $total_result * 100, 2 );
-					$str       .= $answer_str . ' : ' . $percentage . '%<br/>';
-					$str       .= '<progress value="' . $percentage . '" max="100">' . $percentage . ' %</progress><br/>';
+					if ($question_settings['answerEditor'] == 'rich') {
+						$answer_str = htmlspecialchars_decode($answer_str);
+					} else if ($question_settings['answerEditor'] == 'image') {
+						$answer_str = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode( $answer_str, ENT_QUOTES ) . '"/></span>';
+					}
+					$str .= $answer_str. ' : ' . $percentage . '%<br/>';
+					$str .= '<progress value="' . $percentage . '" max="100">' . $percentage . ' %</progress><br/>';
 				}
 			}
 		}
