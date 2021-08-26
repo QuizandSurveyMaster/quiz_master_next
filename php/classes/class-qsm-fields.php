@@ -416,55 +416,41 @@ jQuery(function() {
 		<?php } ?>
 	</th>
 	<td>
-		<?php		
+		<?php 
+		$categories = QSM_Questions::get_quiz_categories( $quiz_id );
+		$categories_tree = (isset($categories['tree']) ? $categories['tree'] : array());
 		$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
-                $cat_array = array();
-		if($questions){ 
-			$multiple_category_system = false;
+		$cat_array = array();
+		if ( $questions ) {
+			$multiple_category_system	 = false;
 			// check if multiple category is enabled.
-			$enabled = get_option( 'qsm_multiple_category_enabled' );
-				if( $enabled && $enabled != 'cancelled' ){
-					$multiple_category_system = true;
-				}
-			foreach( $questions as $single_question ){
-				if( $multiple_category_system ){
-					foreach($single_question['multicategories'] as $category_id ){
-						$cat_array[] = $category_id;
-					}
-				} else {
+			$enabled					 = get_option( 'qsm_multiple_category_enabled' );
+			if ( $enabled && $enabled != 'cancelled' ) {
+				$multiple_category_system = true;
+			}
+			foreach ( $questions as $single_question ) {
+				if ( ! $multiple_category_system ) {
 					$cat_array[] = $single_question['category'];
 				}
 			}
-			$cat_array = array_unique($cat_array);
-			if($cat_array){
-
-			?>
-		<select class="category_selection_random" multiple="">
-			<option value="">Select Categories</option>
-			<?php
-			foreach( $cat_array as $single_cat ){ ?>
-			<option <?php if( in_array($single_cat, $explode_cat) ){ echo "selected"; } ?>
-				value="<?php echo $single_cat; ?>">
-				<?php 
-				if($multiple_category_system){
-					$cat_data = get_term_by('term_id', $single_cat, 'qsm_category' );
-						echo $cat_data->name;
+			$cat_array = array_unique( $cat_array );
+			if ( $cat_array || $categories_tree ) {
+				?><select class="category_selection_random" multiple=""><option value="">Select Categories</option><?php
+				if ( $multiple_category_system ) {
+					echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
 				} else {
-					echo $single_cat; 
+					foreach ( $cat_array as $single_cat ) {
+						?><option <?php echo in_array( $single_cat, $explode_cat ) ? 'selected' : ''; ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option><?php
+					}
 				}
-				?>
-			</option>
-			<?php
-			} ?>
-		</select>
-		<?php
-                    }else{
-                        echo 'No category found.';
-                    }
-		}else{
-                    echo 'No catergory found.';
-                }
-        ?>
+				?></select><?php
+			} else {
+				echo 'No category found.';
+			}
+		} else {
+			echo 'No catergory found.';
+		}
+		?>
 		<input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>"
 			value='<?php echo $value; ?>'>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
@@ -473,6 +459,19 @@ jQuery(function() {
 	</td>
 </tr>
 <?php
+  }
+  
+  public static function get_category_hierarchical_options($categories = array(), $selected = array(), $prefix = '') {
+	  $options = '';
+	  if (! empty($categories)) {
+		  foreach ($categories as $cat) {
+			  $options .= '<option value="' . $cat->term_id . '" ' . ( in_array( $cat->term_id, $selected ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
+			  if (! empty($cat->children)) {
+				  $options .= QSM_Fields::get_category_hierarchical_options( $cat->children, $selected, $prefix . '&nbsp;&nbsp;&nbsp;' );
+			  }
+		  }
+	  }
+	  return $options;
   }
   
   /**

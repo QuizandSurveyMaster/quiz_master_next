@@ -156,7 +156,7 @@ function qsm_results_overview_tab_content() {
 	$search_phrase_sql = '';
 	$delete = 'deleted=0';
 	$delete  = apply_filters( 'qsm_results_delete_clause', $delete );
-	$order_by_sql      = 'ORDER BY result_id DESC';
+	$order_by_sql      = 'ORDER BY time_taken_real DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
 		$sanitized_search_phrase = sanitize_text_field( $_GET['qsm_search_phrase'] );
@@ -190,8 +190,8 @@ function qsm_results_overview_tab_content() {
 				$order_by_sql = ' ORDER BY correct_score DESC';
 				break;
 			default:
-				$order_by     = 'quiz_name';
-				$order_by_sql = ' ORDER BY result_id DESC';
+				$order_by     = 'time_taken_real';
+				$order_by_sql = ' ORDER BY time_taken_real DESC';
 		}
 	}
 
@@ -316,18 +316,20 @@ function deleteResults(id, quizName) {
 		<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
 		<?php
 			}
+			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? $_GET['qsm_search_phrase'] : '';
+			$qmn_order_by = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? $_GET['qmn_order_by'] : 'default';
 			?>
 		<input type="hidden" name="page" value="mlw_quiz_results">
 		<p class="search-box">
 			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
+			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo $qsm_search_phrase; ?>">
 			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
 			<select id="qmn_order_by" name="qmn_order_by">
-				<option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
-				<option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
-				<option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
-				<option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
-				<option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+				<option value="default" <?php selected( $qmn_order_by, 'default' ); ?>><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+				<option value="quiz_name" <?php selected( $qmn_order_by, 'quiz_name' ); ?>><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
+				<option value="name" <?php selected( $qmn_order_by, 'name' ); ?>><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
+				<option value="point_score" <?php selected( $qmn_order_by, 'point_score' ); ?>><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
+				<option value="correct_score" <?php selected( $qmn_order_by, 'correct_score' ); ?>><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
 			</select>
 			<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
 		</p>
