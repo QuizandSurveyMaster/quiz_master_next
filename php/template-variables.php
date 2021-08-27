@@ -195,11 +195,7 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "") {
 			foreach ( $vals as $answer_str => $answer_count ) {				
 				if ( $answer_str != '' && qsm_find_key_from_array( $answer_str, $ser_answer_arry_change ) ) {
 					$percentage = number_format( $answer_count / $total_result * 100, 2 );
-					if ($question_settings['answerEditor'] == 'rich') {
-						$answer_str = htmlspecialchars_decode($answer_str);
-					} else if ($question_settings['answerEditor'] == 'image') {
-						$answer_str = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode( $answer_str, ENT_QUOTES ) . '"/></span>';
-					}
+					$answer_str = qsm_answers_type_evulate( $answer_str, $question_settings );
 					$str .= $answer_str. ' : ' . $percentage . '%<br/>';
 					$str .= '<progress value="' . $percentage . '" max="100">' . $percentage . ' %</progress><br/>';
 				}
@@ -209,7 +205,20 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "") {
 	}
 	return $content;
 }
-
+/**
+ * Show Answer type evalated
+ *
+ * @param str $answer
+ * @param arr $question_settings
+ */
+function qsm_answers_type_evulate ( $answer, $question_settings ) {
+	if ( 'rich' === $question_settings['answerEditor'] ) {
+		$answer = htmlspecialchars_decode( $answer );
+	} elseif ( 'image' === $question_settings['answerEditor'] ) {
+		$answer = '<span class="qmn_image_option" ><img src="' . htmlspecialchars_decode( $answer, ENT_QUOTES ) . '"/></span>';
+	}
+	return $answer;
+}
 function mlw_qmn_get_string_between( $string, $start, $end ) {
 	$string = ' ' . $string;
 	$ini    = strpos( $string, $start );
