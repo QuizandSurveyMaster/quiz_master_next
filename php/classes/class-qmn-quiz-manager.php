@@ -1814,10 +1814,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		// Get random order
 		$qsm_random_que_ids = get_option( 'qsm_random_que_ids' );
 		if ( ! empty( $qsm_random_que_ids ) && is_array( $qsm_random_que_ids ) ) {
-			$has_diff = array_diff( $question_data, $qsm_random_que_ids );
+			$qs_ids = array_column( $question_data, 'id' );
+			$has_diff = array_diff( $qs_ids, $qsm_random_que_ids );
 			// Check random option value has all the questions in previous order
 			if ( empty( $has_diff ) ) {
-				$qs_ids = array_column( $question_data, 'id' );
 				$new_question_data = [];
 				foreach( $qsm_random_que_ids as $que_id ) {
 					$key = array_search( $que_id, $qs_ids );
