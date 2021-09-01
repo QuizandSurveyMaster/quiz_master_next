@@ -268,7 +268,7 @@ if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $re
 }
 
         // Prepare full results array.
-$results_array = array(
+$results_array = apply_filters( 'mlw_qmn_template_variable_results_array', array(
     'quiz_id'                => $results_data->quiz_id,
     'quiz_name'              => $results_data->quiz_name,
     'quiz_system'            => $results_data->quiz_system,
@@ -289,7 +289,7 @@ $results_array = array(
     'contact'                => $results["contact"],
     'result_id'              => $result_id,
     'results'                => $results,
-);
+) );
 
         // Pass through template variable filter
 $template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $results_array );
