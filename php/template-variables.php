@@ -195,7 +195,7 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) 
 			foreach ( $vals as $answer_str => $answer_count ) {				
 				if ( $answer_str != '' && qsm_find_key_from_array( $answer_str, $ser_answer_arry_change ) ) {
 					$percentage = number_format( $answer_count / $total_result * 100, 2 );
-					$answer_str = qsm_answers_type_evulate( $answer_str, $question_settings );
+					$answer_str = qsm_answers_type_evaluated( $answer_str, $question_settings );
 					$str .= $answer_str. ' : ' . $percentage . '%<br/>';
 					$str .= '<progress value="' . $percentage . '" max="100">' . $percentage . ' %</progress><br/>';
 				}
@@ -206,12 +206,12 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) 
 	return $content;
 }
 /**
- * Show Answer type evalated
+ * Show Answer type evaluated
  *
  * @param str $answer
  * @param arr $question_settings
  */
-function qsm_answers_type_evulate ( $answer, $question_settings ) {
+function qsm_answers_type_evaluated ( $answer, $question_settings ) {
 	if ( 'rich' === $question_settings['answerEditor'] ) {
 		$answer = htmlspecialchars_decode( $answer );
 	} elseif ( 'image' === $question_settings['answerEditor'] ) {
