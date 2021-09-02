@@ -111,8 +111,7 @@ class QSM_Results_Pages {
 								}
 								break;
 
-							case 'equal':
-							default:
+							case 'equal':							
 								if ( $test != $value ) {
 									$show = false;
 								}
