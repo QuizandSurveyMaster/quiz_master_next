@@ -110,7 +110,6 @@ function qsm_options_results_tab_content() {
 					<?php foreach ( $categories as $cat ) { ?>
 					<option value="<?php echo $cat[0]; ?>" <# if (data.category == '<?php echo $cat[0]; ?>') { #>selected<# } #>><?php echo $cat[0]; ?></option>
 					<?php } ?>
-					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
 				</select>
 			<?php } ?>
 			<select class="results-page-condition-criteria">
