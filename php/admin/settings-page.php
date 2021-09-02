@@ -45,7 +45,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function init() {
-		register_setting( 'qmn-settings-group', 'qmn-settings' );
+		register_setting( 'qmn-settings-group', 'qmn-settings', array( 'sanitize_callback' => 'sanitize_text_field') );
 		add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
 		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
