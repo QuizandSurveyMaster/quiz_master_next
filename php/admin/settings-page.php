@@ -36,7 +36,7 @@ class QMNGlobalSettingsPage {
 	private function add_hooks() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_init', array( $this, 'quiz_default_global_option_init' ) );
-		add_filter( 'pre_update_option_qmn-settings', function( $new_value, $old_value ) {			
+		add_filter( 'pre_update_option_qmn-settings', function( $new_value ) {			
 			$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] )  ;			
 			return $new_value;		 
 		}, 10, 2 );
