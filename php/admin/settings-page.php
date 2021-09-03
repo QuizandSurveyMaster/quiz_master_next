@@ -36,6 +36,10 @@ class QMNGlobalSettingsPage {
 	private function add_hooks() {
 		add_action( 'admin_init', array( $this, 'init' ) );
 		add_action( 'admin_init', array( $this, 'quiz_default_global_option_init' ) );
+		add_filter( 'pre_update_option_qmn-settings', function( $new_value ) {			
+			$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] )  ;			
+			return $new_value;		 
+		}, 10, 2 );
 	}
 
 	/**
@@ -45,7 +49,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function init() {
-		register_setting( 'qmn-settings-group', 'qmn-settings', array( 'sanitize_callback' => 'sanitize_text_field') );
+		register_setting( 'qmn-settings-group', 'qmn-settings' );
 		add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
 		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
