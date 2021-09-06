@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.3.1
+ * Version: 7.3.2
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.1
+ * @version 7.3.2
  * @package QSM
  */
 
@@ -41,7 +41,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.3.1';
+	public $version = '7.3.2';
 
 	/**
 	 * QSM Alert Manager Object

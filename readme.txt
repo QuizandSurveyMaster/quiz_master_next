@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.1
+Stable tag: 7.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.2 (September 06, 2021) =
+* Bug: Added Translation for Time is up and Cancel button.
+* Bug: Fixed the issue of category name not visible.
+* Bug: Fixed the issue of limit number of questions per category is not working.
+* Bug: Fixed the issue of results page and email showing only 1 question and its answer multiple times.
+* Bug: Fixed the issue of %POLL_RESULT_X% not displaying images while using rich answers.
+* Bug: Fixed the issue of %AVERAGE_CATEGORY_POINTS_X% variable not working.
+* Bug: Fixed the issue of validation errors appearing on the questions before entering the responses.
+* Bug: Fixed the issue of timer not showing on the quiz.
+* Bug: Fixed security issue to prevent Cross-Site Scripting attacks.
+
 
 = 7.3.1 (August 13, 2021) =
 * Bug: Fixed the error on updating database.
