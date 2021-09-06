@@ -628,12 +628,18 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$category_name = $answer_text[1];
 		}
-		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $answer['category'] == $category_name ) {
-				if ( $answer['question_type'] !== '11' ) {
-					$total_questions += 1;
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {			
+			if( is_array( $answer['multicategories'] ) ) {
+				foreach ( $answer['multicategories'] as $category ) {
+					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );		
+					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
+				 	if ( $category_name_object->name == $category_name ) {
+						if ( '11' !== $answer['question_type'] ) {
+							$total_questions = +1;
+						}
+						$return_points += $answer['points'];
+					}
 				}
-				$return_points += $answer['points'];
 			}
 		}
 		if ( $total_questions !== 0 ) {
