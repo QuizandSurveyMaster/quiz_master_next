@@ -69,6 +69,10 @@ var QSMPageTimer;
 				if (!qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page) {									
 					QSM.activateTimer(quizID);
 					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+				} else { 
+					// else, We must start timer if quiz is single page
+					QSM.activateTimer(quizID);
+					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 				}
 				// ...else, we must be using the questions per page option.
 			} else {
