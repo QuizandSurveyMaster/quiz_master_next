@@ -1000,6 +1000,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 				submit_button = jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").html();
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
 				$container.find(".mlw_next").hide();
+				$container.find('.g-recaptcha').show();
 			}
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();
