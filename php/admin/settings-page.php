@@ -65,6 +65,8 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
+		//introduces a new settings for preferred date format
+		add_settings_field( 'new_preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'new_preferred_date_format' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 		/**
@@ -473,6 +475,29 @@ class QMNGlobalSettingsPage {
 				echo '<label>';
 		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' " . checked( $new_template_result_detail, '0', false ) . '/>';
 				echo __( 'Old Template', 'quiz-master-next' );
+				echo '</label>';
+	}
+
+	/**
+	 * Generates Setting Field For new preferred date format
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	public function new_preferred_date_format() {
+		$settings                   = (array) get_option( 'qmn-settings' );
+		$new_preferred_date_format_detail = '1';
+		if ( isset( $settings['new_preferred_date_format'] ) ) {
+					$new_template_result_detail = esc_attr( $settings['new_preferred_date_format'] );
+		}
+				echo '<label style="margin-bottom: 10px;display: inline-block;">';
+		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='1' " . checked( $new_preferred_date_format_detail, '1', false ) . '/>';
+				echo __( '01-Jan-2000', 'quiz-master-next' );
+				echo '</label>';
+				echo '<br/>';
+				echo '<label>';
+		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='0' " . checked( $new_preferred_date_format_detail, '0', false ) . '/>';
+				echo __( 'Jan-01-2000', 'quiz-master-next' );
 				echo '</label>';
 	}
 	

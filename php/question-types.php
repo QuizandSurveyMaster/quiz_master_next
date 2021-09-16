@@ -276,7 +276,19 @@ function qmn_date_review( $id, $question, $answers ) {
 	} else {
 		$mlw_user_answer = ' ';
 	}
-	$return_array['user_text'] = $mlw_user_answer;
+
+	//Converts date to the preferred format from QSM settings
+	$qmn_global_settings = (array) get_option( 'qmn-settings' );//get preferred date format
+	$qms_unix_time=strtotime($mlw_user_answer);//convert to unix time
+	$qms_php_time = new DateTime("@$qms_unix_time");//convert to php datetime
+	if("0"===$qmn_global_settings['new_preferred_date_format']){
+		// 0 implies Jan-01-2000 format
+		$return_array['user_text'] = $qms_php_time->format('M-d-Y');
+	} else{
+		//1 implies 01-Jan-2000 format
+		$return_array['user_text'] = $qms_php_time->format('d-M-Y');
+	}
+
 	foreach ( $answers as $answer ) {
 		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
