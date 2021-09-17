@@ -264,6 +264,8 @@ function qmn_date_display( $id, $question, $answers ) {
  * @since 6.3.7
  */
 function qmn_date_review( $id, $question, $answers ) {
+
+	global $wpdb;
 	$return_array = array(
 		'points'       => 0,
 		'correct'      => 'incorrect',
@@ -276,7 +278,39 @@ function qmn_date_review( $id, $question, $answers ) {
 	} else {
 		$mlw_user_answer = ' ';
 	}
-	$return_array['user_text'] = $mlw_user_answer;
+
+	//Converts date to the preferred format from QSM settings	
+	
+	$quiz_id=$_POST['qmn_quiz_id'];
+	$qsm_quiz_settings = unserialize($wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $quiz_id )));
+	$qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
+	$qsm_global_settings = (array) get_option( 'qmn-settings' );
+
+	//check if preferred date format is set at quiz level, else use global value
+	if("3"===$qsm_quiz_options['preferred_date_format']){
+		$preferred_date_format	= $qsm_global_settings['preferred_date_format'];
+	}else{
+		$preferred_date_format = $qsm_quiz_options['preferred_date_format'];
+	}
+
+	$qms_wp_global_date_format= get_option( 'date_format' );// get wp global date format
+	$qms_unix_time=strtotime($mlw_user_answer);//convert to unix time
+	$qms_php_time = new DateTime("@$qms_unix_time");//convert to php datetime
+	if("0"===$preferred_date_format){
+		// 0 implies Jan-01-2000 format
+		$qms_formatted_time = $qms_php_time->format('M-d-Y');
+	} elseif ("1"===$preferred_date_format){
+		//1 implies 01-Jan-2000 format
+		$qms_formatted_time = $qms_php_time->format('d-M-Y');
+	} elseif ("2"===$preferred_date_format){
+		//2 implies wordpress default format
+		$qms_formatted_time = $qms_php_time->format($qms_wp_global_date_format);
+	} else{
+		$qms_formatted_time = $mlw_user_answer;
+	}
+
+	$return_array['user_text'] = apply_filter('qms_preferred_date_format',$qms_formatted_time,$qms_php_time);
+
 	foreach ( $answers as $answer ) {
 		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );

@@ -848,6 +848,35 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+		// Registers Preferred date type settings in the quiz options 
+		$field_array = array(
+			'id'      => 'preferred_date_format',
+			'label'   => __( "Preferred Date Format ", 'quiz-master-next' ),
+			'type'    => 'radio',
+			'options' => array(
+				array(
+					'label' => __( 'Global Settings', 'quiz-master-next' ),
+					'value' => 3,
+				),
+				array(
+					'label' => __( '01-Jan-2000', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Jan-01-2000', 'quiz-master-next' ),
+					'value' => 0,
+				),
+				array(
+					'label' => __( 'Wordpress Default', 'quiz-master-next' ),
+					'value' => 2,
+				),
+			),
+			'default' => 3,
+			'show_option' => 'form_type_0',
+			'help'    => __( 'Overrides gloabl settings for preferred date format', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers message_comment setting
 		$field_array = array(
 			'id'        => 'message_comment',

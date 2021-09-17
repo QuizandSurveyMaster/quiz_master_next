@@ -252,6 +252,7 @@ class QSM_Quiz_Settings
             $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
             $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
             $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
+            $setDefaultvalue['preferred_date_format']=$getdefaultvalue['preferred_date_format'];
             // Try to serialize the value.
             
             return $this->save_quiz_settings($setting,$setDefaultvalue);
@@ -365,7 +366,8 @@ class QSM_Quiz_Settings
           'scheduled_time_start'=> $scheduled_timeframe["start"],
   				'scheduled_time_end' => $scheduled_timeframe["end"],
   				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
-  				'ajax_show_correct' => $quiz_options->ajax_show_correct
+  				'ajax_show_correct' => $quiz_options->ajax_show_correct,
+          'preferred_date_format'=>$quiz_options->preferred_date_format
         ) );
       }
 
