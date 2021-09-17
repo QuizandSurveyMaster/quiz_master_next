@@ -486,17 +486,17 @@ class QMNGlobalSettingsPage {
 	 */
 	public function new_preferred_date_format() {
 		$settings                   = (array) get_option( 'qmn-settings' );
-		$new_preferred_date_format_detail = '1';
+		$new_preferred_date_format = '1';
 		if ( isset( $settings['new_preferred_date_format'] ) ) {
-					$new_template_result_detail = esc_attr( $settings['new_preferred_date_format'] );
+					$new_preferred_date_format = esc_attr( $settings['new_preferred_date_format'] );
 		}
 				echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='1' " . checked( $new_preferred_date_format_detail, '1', false ) . '/>';
+		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='1' " . checked($new_preferred_date_format, '1', false ). '/>';
 				echo __( '01-Jan-2000', 'quiz-master-next' );
 				echo '</label>';
 				echo '<br/>';
 				echo '<label>';
-		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='0' " . checked( $new_preferred_date_format_detail, '0', false ) . '/>';
+		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='0' " . checked( $new_preferred_date_format, '0', false ) . '/>';
 				echo __( 'Jan-01-2000', 'quiz-master-next' );
 				echo '</label>';
 	}
