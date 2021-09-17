@@ -66,7 +66,8 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
 		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 		//introduces a new settings for preferred date format
-		add_settings_field( 'new_preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'new_preferred_date_format' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qmn_global_settings', 'qmn-global-section' );
+		
 	}
 
 		/**
@@ -113,7 +114,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );		
+		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
 		$globalQuizsetting=get_option( 'qsm-quiz-settings' );
 
@@ -479,28 +480,35 @@ class QMNGlobalSettingsPage {
 	}
 
 	/**
-	 * Generates Setting Field For new preferred date format
+	 * Generates quiz global field for preferred date format
 	 *
 	 * @since x.x.x
 	 * @return void
 	 */
-	public function new_preferred_date_format() {
+	public function preferred_date_format() {
+
 		$settings                   = (array) get_option( 'qmn-settings' );
-		$new_preferred_date_format = '1';
-		if ( isset( $settings['new_preferred_date_format'] ) ) {
-					$new_preferred_date_format = esc_attr( $settings['new_preferred_date_format'] );
-		}
-				echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='1' " . checked($new_preferred_date_format, '1', false ). '/>';
-				echo __( '01-Jan-2000', 'quiz-master-next' );
-				echo '</label>';
-				echo '<br/>';
-				echo '<label>';
-		echo "<input type='radio' name='qmn-settings[new_preferred_date_format]' class='new_preferred_date_format' value='0' " . checked( $new_preferred_date_format, '0', false ) . '/>';
-				echo __( 'Jan-01-2000', 'quiz-master-next' );
-				echo '</label>';
+		$preferred_date_format	=(isset($settings['preferred_date_format'])  && '' !== $settings['preferred_date_format'] ?  $settings['preferred_date_format'] :"1");
+
+		echo '<fieldset class="buttonset buttonset-hide" >';
+			echo '<label style="margin-bottom: 10px;display: inline-block;">';
+			echo "<input type='radio' name='qmn-settings[preferred_date_format]' class='preferred_date_format' value='1' " . checked($preferred_date_format, '1', false ). '/>';
+			echo __( '01-Jan-2000', 'quiz-master-next' );
+			echo '</label>';
+			echo '<br/>';
+			echo '<label style="margin-bottom: 10px;display: inline-block;">';
+			echo "<input type='radio' name='qmn-settings[preferred_date_format]' class='preferred_date_format' value='0' " . checked( $preferred_date_format, '0', false ) . '/>';
+			echo __( 'Jan-01-2000', 'quiz-master-next' );
+			echo '</label>';
+			echo '<br/>';
+			echo '<label style="display: inline-block;">';
+			echo "<input type='radio' name='qmn-settings[preferred_date_format]' class='preferred_date_format' value='2' " . checked( $preferred_date_format, '2', false ) . '/>';
+			echo __( 'Wordpress Default', 'quiz-master-next' );
+			echo '</label>';
+		echo '</fieldset>';
+		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
-	
+
 	/**
 	 * Generates Quiz Global  Field For Quiz Type
 	 *
@@ -1132,9 +1140,7 @@ class QMNGlobalSettingsPage {
 				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" '. checked( $qsm_not_allow_after_expired_time, '1', false ) .'>
 				<br>
 			</fieldset>';
-	}
-	
-	
+	}		
 }
 
 $qmnGlobalSettingsPage = new QMNGlobalSettingsPage();
