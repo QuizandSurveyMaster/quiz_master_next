@@ -542,7 +542,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							}
 						}
 						foreach ($term_data as $tv) {
-							$random = array_merge($random, array_slice($tv, 0, $quiz_options->question_per_category));
+							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+								shuffle($tv);
+							}
+							$random = array_merge($random, array_slice(array_unique($tv), 0, $quiz_options->question_per_category));
 						}
 					}
 					$question_ids = array_unique( $random );
