@@ -1457,7 +1457,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	
 			//Converts date to the preferred format
 			$qms_qna_list = $qmn_array_for_variables['question_answers_array'];
-			$quiz_id=$_POST['qmn_quiz_id'];
 			$qsm_quiz_settings = unserialize($qmn_quiz_options->quiz_settings);
 			$qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
 			$qsm_global_settings = (array) get_option( 'qsm-quiz-settings' );
@@ -1480,22 +1479,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					if("0"===$preferred_date_format){
 						// 0 implies Jan-01-2000 format
-						// $qms_formatted_time_user_response = $qms_php_time_user_response->format('M-d-Y');
-						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format('M-d-Y');
 						$GLOBALS['date_format']='M-d-Y';
 					} elseif ("1"===$preferred_date_format){
 						//1 implies 01-Jan-2000 format
-						// $qms_formatted_time_user_response = $qms_php_time_user_response->format('d-M-Y');
-						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format('d-M-Y');
 						$GLOBALS['date_format']='d-M-Y';
 					} elseif ("2"===$preferred_date_format){
 						//2 implies wordpress default format
-						// $qms_formatted_time_user_response = $qms_php_time_user_response->format($qms_wp_global_date_format);
-						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format($qms_wp_global_date_format);
 						$GLOBALS['date_format']=$qms_wp_global_date_format;
 					} else{
-						// $qms_formatted_time_user_response = null;
-						// $qms_formatted_time_correct_answer = null;
 						$GLOBALS['date_format'] = null;
 					}
 					$filtered_date_format= apply_filters('qms_preferred_date_format', $filtered_date_format = null );
@@ -1509,7 +1500,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					}
 					
 					//converts the question array into preferred date format for question type date
-					function qsm_convert_question_array_date_format($questions,$quiz_id){	
+					function qsm_convert_question_array_date_format($questions){	
 						foreach ($questions as $question_id => $question_to_convert){
 							if("12"=== $question_to_convert['question_type_new']){
 
@@ -1520,7 +1511,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						}
 						return $questions;
 					}
-					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format',10,2);
+					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
 				}
 			}
 			
