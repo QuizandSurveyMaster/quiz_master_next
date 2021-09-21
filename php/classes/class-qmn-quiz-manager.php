@@ -1487,7 +1487,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						//2 implies wordpress default format
 						$GLOBALS['date_format']=$qms_wp_global_date_format;
 					} else{
-						$GLOBALS['date_format'] = null;
+						//defaults to 01-Jan-2000 format						
+						$GLOBALS['date_format']='d-M-Y';
 					}
 					$filtered_date_format= apply_filters('qms_preferred_date_format', $filtered_date_format = null );
 					if (null!==$filtered_date_format){
@@ -1503,10 +1504,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					function qsm_convert_question_array_date_format($questions){	
 						foreach ($questions as $question_id => $question_to_convert){
 							if("12"=== $question_to_convert['question_type_new']){
-
-								$qms_unix_time_questions_array=strtotime($question_to_convert['answers'][0][0]);//convert to unix time
-								$qms_php_time_questions_array= new DateTime("@$qms_unix_time_questions_array");//convert to php datetime
-								$questions[$question_id]['answers'][0][0]= $qms_php_time_questions_array->format($GLOBALS['date_format']);
+								if(null!==$GLOBALS['date_format']){
+									$qms_unix_time_questions_array=strtotime($question_to_convert['answers'][0][0]);//convert to unix time
+									$qms_php_time_questions_array= new DateTime("@$qms_unix_time_questions_array");//convert to php datetime
+									$questions[$question_id]['answers'][0][0]= $qms_php_time_questions_array->format($GLOBALS['date_format']);
+								}
 							}
 						}
 						return $questions;
