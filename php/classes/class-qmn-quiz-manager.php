@@ -1454,6 +1454,76 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 			}
 			$qmn_array_for_variables['result_id'] = $results_id;
+	
+			//Converts date to the preferred format
+			$qms_qna_list = $qmn_array_for_variables['question_answers_array'];
+			$quiz_id=$_POST['qmn_quiz_id'];
+			$qsm_quiz_settings = unserialize($qmn_quiz_options->quiz_settings);
+			$qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
+			$qsm_global_settings = (array) get_option( 'qsm-quiz-settings' );
+			foreach ($qms_qna_list as $qna_id => $qna){
+				if ("12"===$qna['question_type']){
+
+					//check if preferred date format is set at quiz level, else use global value
+					if(isset($qsm_quiz_options['preferred_date_format']) &&""!==$qsm_quiz_options['preferred_date_format']) {
+						$preferred_date_format	= $qsm_quiz_options['preferred_date_format'];
+					}else{
+						$preferred_date_format = $qsm_global_settings['preferred_date_format'];
+					}
+
+					$qms_wp_global_date_format= get_option('date_format' );// get wp global date format
+					$qms_unix_time_user_response=strtotime($qna['1']);//convert to unix time
+					$qms_unix_time_correct_answer=strtotime($qna['2']);//convert to unix time
+					$qms_php_time_user_response = new DateTime("@$qms_unix_time_user_response");//convert to php datetime
+					$qms_php_time_correct_answer = new DateTime("@$qms_unix_time_correct_answer");//convert to php datetime
+
+
+					if("0"===$preferred_date_format){
+						// 0 implies Jan-01-2000 format
+						// $qms_formatted_time_user_response = $qms_php_time_user_response->format('M-d-Y');
+						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format('M-d-Y');
+						$GLOBALS['date_format']='M-d-Y';
+					} elseif ("1"===$preferred_date_format){
+						//1 implies 01-Jan-2000 format
+						// $qms_formatted_time_user_response = $qms_php_time_user_response->format('d-M-Y');
+						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format('d-M-Y');
+						$GLOBALS['date_format']='d-M-Y';
+					} elseif ("2"===$preferred_date_format){
+						//2 implies wordpress default format
+						// $qms_formatted_time_user_response = $qms_php_time_user_response->format($qms_wp_global_date_format);
+						// $qms_formatted_time_correct_answer = $qms_php_time_correct_answer->format($qms_wp_global_date_format);
+						$GLOBALS['date_format']=$qms_wp_global_date_format;
+					} else{
+						// $qms_formatted_time_user_response = null;
+						// $qms_formatted_time_correct_answer = null;
+						$GLOBALS['date_format'] = null;
+					}
+					$filtered_date_format= apply_filters('qms_preferred_date_format', $filtered_date_format = null );
+					if (null!==$filtered_date_format){
+						$GLOBALS['date_format']=$filtered_date_format;
+					}
+									
+					if(null!==$GLOBALS['date_format']){
+						$qmn_array_for_variables['question_answers_array'][$qna_id]['1']= $qms_php_time_user_response->format($GLOBALS['date_format']);
+						$qmn_array_for_variables['question_answers_array'][$qna_id]['2']= $qms_php_time_correct_answer->format($GLOBALS['date_format']);	
+					}
+					
+					//converts the question array into preferred date format for question type date
+					function qsm_convert_question_array_date_format($questions,$quiz_id){	
+						foreach ($questions as $question_id => $question_to_convert){
+							if("12"=== $question_to_convert['question_type_new']){
+
+								$qms_unix_time_questions_array=strtotime($question_to_convert['answers'][0][0]);//convert to unix time
+								$qms_php_time_questions_array= new DateTime("@$qms_unix_time_questions_array");//convert to php datetime
+								$questions[$question_id]['answers'][0][0]= $qms_php_time_questions_array->format($GLOBALS['date_format']);
+							}
+						}
+						return $questions;
+					}
+					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format',10,2);
+				}
+			}
+			
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );

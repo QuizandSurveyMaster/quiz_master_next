@@ -848,16 +848,12 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
-		// Registers Preferred date type settings in the quiz options 
+		// Registers Preferred date type settings in the quiz options
 		$field_array = array(
 			'id'      => 'preferred_date_format',
 			'label'   => __( "Preferred Date Format ", 'quiz-master-next' ),
 			'type'    => 'radio',
 			'options' => array(
-				array(
-					'label' => __( 'Global Settings', 'quiz-master-next' ),
-					'value' => 3,
-				),
 				array(
 					'label' => __( '01-Jan-2000', 'quiz-master-next' ),
 					'value' => 1,
@@ -871,7 +867,7 @@ class QSM_Install {
 					'value' => 2,
 				),
 			),
-			'default' => 3,
+			'default' => get_option( 'qsm-quiz-settings' )['preferred_date_format'],
 			'show_option' => 'form_type_0',
 			'help'    => __( 'Overrides gloabl settings for preferred date format', 'quiz-master-next' ),
 		);
