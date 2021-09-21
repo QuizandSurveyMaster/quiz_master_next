@@ -92,6 +92,7 @@ class QMNQuizManager {
 					$mimes[] = $value;
 				}
 			}
+			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
 		}
 		$json          = array();
 		$file_name     = sanitize_file_name( $_FILES['file']['name'] );
