@@ -111,7 +111,8 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );		
+		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
 		$globalQuizsetting=get_option( 'qsm-quiz-settings' );
 
@@ -1107,6 +1108,20 @@ class QMNGlobalSettingsPage {
 				<input type="checkbox" id="not_allow_after_expired_time-1" name="qsm-quiz-settings[not_allow_after_expired_time]" value="1" '. checked( $qsm_not_allow_after_expired_time, '1', false ) .'>
 				<br>
 			</fieldset>';
+	}
+
+	/**
+	 * Generates quiz global field for preferred date format
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	public function preferred_date_format() {
+		
+		global $globalQuizsetting;
+		$preferred_date_format =(isset($globalQuizsetting['preferred_date_format'])? $globalQuizsetting['preferred_date_format'] : get_option( 'date_format' ));
+		echo '<input type="text" id="preferred_date_format" name="qsm-quiz-settings[preferred_date_format]" value="'.$preferred_date_format.'">';
+		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
 	
 	
