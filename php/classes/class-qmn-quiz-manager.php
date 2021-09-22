@@ -1471,7 +1471,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					if(null!==$GLOBALS['qsm_date_format']){
 						$qmn_array_for_variables['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-						// $qmn_array_for_variables['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));	
+						$qmn_array_for_variables['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));	
 					}
 
 					//converts the questions array into preferred date format for question type date
