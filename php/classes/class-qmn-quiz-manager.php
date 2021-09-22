@@ -1475,18 +1475,20 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					}
 
 					//converts the questions array into preferred date format for question type date
-					function qsm_convert_question_array_date_format($questions){	
-						foreach ($questions as $question_id => $question_to_convert){
-							if("12"=== $question_to_convert['question_type_new']){
-								foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-									if(1===$answer_value[2] && null!==$GLOBALS['qsm_date_format']){										
-										$questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-									}
-								}	
+					if(!function_exists('qsm_convert_question_array_date_format')){
+						function qsm_convert_question_array_date_format($questions){	
+							foreach ($questions as $question_id => $question_to_convert){
+								if("12"=== $question_to_convert['question_type_new']){
+									foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
+										if(1===$answer_value[2] && null!==$GLOBALS['qsm_date_format']){										
+											$questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
+										}
+									}	
+								}
 							}
+							return $questions;
 						}
-						return $questions;
-					}
+					} 
 					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
 				}
 			}			
