@@ -1480,7 +1480,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							foreach ($questions as $question_id => $question_to_convert){
 								if("12"=== $question_to_convert['question_type_new']){
 									foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-										if(1===$answer_value[2] && null!==$GLOBALS['qsm_date_format']){										
+										if( null!==$GLOBALS['qsm_date_format']){										
 											$questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
 										}
 									}	
