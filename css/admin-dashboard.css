@@ -77,9 +77,9 @@
 }
 
 .popover-count {
-    top: -3px !important;
+    top: -2px !important;
     right: unset!important;
-    left: 15px!important;
+    left: 9px!important;
     height: 13px!important;
     width: 13px!important;
     font-size: 8px!important;
