@@ -213,46 +213,47 @@ class QSM_Quiz_Settings
         $old_value = $this->get_setting($setting);
         if (isset($_POST['global_setting'])) {
             $setDefaultvalue=$old_value;
-            $getdefaultvalue=get_option('qsm-quiz-settings');
-
-            $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
-            $setDefaultvalue['system']=$getdefaultvalue['system'];
-            $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
-            $setDefaultvalue['progress_bar']=$getdefaultvalue['progress_bar'];
-            $setDefaultvalue['require_log_in']=$getdefaultvalue['require_log_in'];
-            $setDefaultvalue['pagination']=$getdefaultvalue['pagination'];
-            $setDefaultvalue['timer_limit']=$getdefaultvalue['timer_limit'];
-            $setDefaultvalue['enable_result_after_timer_end']=$getdefaultvalue['enable_result_after_timer_end'];
-            $setDefaultvalue['skip_validation_time_expire']=$getdefaultvalue['skip_validation_time_expire'];
-            $setDefaultvalue['total_user_tries']=$getdefaultvalue['total_user_tries'];
-            $setDefaultvalue['limit_total_entries']=$getdefaultvalue['limit_total_entries'];
-            $setDefaultvalue['question_from_total']=$getdefaultvalue['question_from_total'];
-            $setDefaultvalue['question_per_category']=$getdefaultvalue['question_per_category'];
-            $setDefaultvalue['contact_info_location']=$getdefaultvalue['contact_info_location'];
-            $setDefaultvalue['loggedin_user_contact']=$getdefaultvalue['loggedin_user_contact'];
-            $setDefaultvalue['comment_section']=$getdefaultvalue['comment_section'];
-            $setDefaultvalue['question_numbering']=$getdefaultvalue['question_numbering'];
-            $setDefaultvalue['store_responses']=$getdefaultvalue['store_responses'];
-            $setDefaultvalue['disable_answer_onselect']=$getdefaultvalue['disable_answer_onselect'];
-            $setDefaultvalue['ajax_show_correct']=$getdefaultvalue['ajax_show_correct'];
-            $setDefaultvalue['contact_disable_autofill']=$getdefaultvalue['contact_disable_autofill'];
-            $setDefaultvalue['form_disable_autofill']=$getdefaultvalue['form_disable_autofill'];
-            $setDefaultvalue['show_category_on_front']=$getdefaultvalue['show_category_on_front'];
-            $setDefaultvalue['enable_quick_result_mc']=$getdefaultvalue['enable_quick_result_mc'];
-            $setDefaultvalue['end_quiz_if_wrong']=$getdefaultvalue['end_quiz_if_wrong'];
-            $setDefaultvalue['enable_quick_correct_answer_info']=$getdefaultvalue['enable_quick_correct_answer_info'];
-            $setDefaultvalue['enable_retake_quiz_button']=$getdefaultvalue['enable_retake_quiz_button'];
-            $setDefaultvalue['enable_pagination_quiz']=$getdefaultvalue['enable_pagination_quiz'];
-            $setDefaultvalue['enable_deselect_option']=$getdefaultvalue['enable_deselect_option'];
-            $setDefaultvalue['disable_description_on_result']=$getdefaultvalue['disable_description_on_result'];
-            $setDefaultvalue['disable_scroll_next_previous_click']=$getdefaultvalue['disable_scroll_next_previous_click'];
-            $setDefaultvalue['quiz_animation']=$getdefaultvalue['quiz_animation'];
-            $setDefaultvalue['result_page_fb_image']=$getdefaultvalue['result_page_fb_image'];
-            $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
-            $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
-            $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
-            $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
-            $setDefaultvalue['preferred_date_format']=$getdefaultvalue['preferred_date_format'];
+            $getdefaultvalue= get_option('qsm-quiz-settings');
+            if ($getdefaultvalue){
+              $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
+              $setDefaultvalue['system']=$getdefaultvalue['system'];
+              $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
+              $setDefaultvalue['progress_bar']=$getdefaultvalue['progress_bar'];
+              $setDefaultvalue['require_log_in']=$getdefaultvalue['require_log_in'];
+              $setDefaultvalue['pagination']=$getdefaultvalue['pagination'];
+              $setDefaultvalue['timer_limit']=$getdefaultvalue['timer_limit'];
+              $setDefaultvalue['enable_result_after_timer_end']=$getdefaultvalue['enable_result_after_timer_end'];
+              $setDefaultvalue['skip_validation_time_expire']=$getdefaultvalue['skip_validation_time_expire'];
+              $setDefaultvalue['total_user_tries']=$getdefaultvalue['total_user_tries'];
+              $setDefaultvalue['limit_total_entries']=$getdefaultvalue['limit_total_entries'];
+              $setDefaultvalue['question_from_total']=$getdefaultvalue['question_from_total'];
+              $setDefaultvalue['question_per_category']=$getdefaultvalue['question_per_category'];
+              $setDefaultvalue['contact_info_location']=$getdefaultvalue['contact_info_location'];
+              $setDefaultvalue['loggedin_user_contact']=$getdefaultvalue['loggedin_user_contact'];
+              $setDefaultvalue['comment_section']=$getdefaultvalue['comment_section'];
+              $setDefaultvalue['question_numbering']=$getdefaultvalue['question_numbering'];
+              $setDefaultvalue['store_responses']=$getdefaultvalue['store_responses'];
+              $setDefaultvalue['disable_answer_onselect']=$getdefaultvalue['disable_answer_onselect'];
+              $setDefaultvalue['ajax_show_correct']=$getdefaultvalue['ajax_show_correct'];
+              $setDefaultvalue['contact_disable_autofill']=$getdefaultvalue['contact_disable_autofill'];
+              $setDefaultvalue['form_disable_autofill']=$getdefaultvalue['form_disable_autofill'];
+              $setDefaultvalue['show_category_on_front']=$getdefaultvalue['show_category_on_front'];
+              $setDefaultvalue['enable_quick_result_mc']=$getdefaultvalue['enable_quick_result_mc'];
+              $setDefaultvalue['end_quiz_if_wrong']=$getdefaultvalue['end_quiz_if_wrong'];
+              $setDefaultvalue['enable_quick_correct_answer_info']=$getdefaultvalue['enable_quick_correct_answer_info'];
+              $setDefaultvalue['enable_retake_quiz_button']=$getdefaultvalue['enable_retake_quiz_button'];
+              $setDefaultvalue['enable_pagination_quiz']=$getdefaultvalue['enable_pagination_quiz'];
+              $setDefaultvalue['enable_deselect_option']=$getdefaultvalue['enable_deselect_option'];
+              $setDefaultvalue['disable_description_on_result']=$getdefaultvalue['disable_description_on_result'];
+              $setDefaultvalue['disable_scroll_next_previous_click']=$getdefaultvalue['disable_scroll_next_previous_click'];
+              $setDefaultvalue['quiz_animation']=$getdefaultvalue['quiz_animation'];
+              $setDefaultvalue['result_page_fb_image']=$getdefaultvalue['result_page_fb_image'];
+              $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
+              $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
+              $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
+              $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
+              $setDefaultvalue['preferred_date_format']=$getdefaultvalue['preferred_date_format'];              
+            }
             // Try to serialize the value.
             
             return $this->save_quiz_settings($setting,$setDefaultvalue);
@@ -366,7 +367,7 @@ class QSM_Quiz_Settings
           'scheduled_time_start'=> $scheduled_timeframe["start"],
   				'scheduled_time_end' => $scheduled_timeframe["end"],
   				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
-  				'ajax_show_correct' => $quiz_options->ajax_show_correct,
+  				'ajax_show_correct' => $quiz_options->ajax_show_correct ,
           'preferred_date_format'=>$quiz_options->preferred_date_format
         ) );
       }
