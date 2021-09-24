@@ -4,6 +4,7 @@
 	font-size: 23px;
 	margin-left: 5px;
 	position: relative;
+	top: unset!important;
 }
 
 .welcome-panel .qsm-welcome-panel-close {
@@ -70,10 +71,6 @@
 .welcome-panel .welcome-icon {
     display: flex;
     align-items: center;
-}
-
-.welcome-panel-column .dashicons{
-	top: unset!important;
 }
 
 .popover-count {
