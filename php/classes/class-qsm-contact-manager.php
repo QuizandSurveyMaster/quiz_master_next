@@ -236,6 +236,9 @@ class QSM_Contact_Manager {
 				if ( isset( $fields[ $i ]['use'] ) ) {
 					$field_array['use'] = $fields[ $i ]['use'];
 				}
+				if ( isset( $fields[ $i ]['type'] ) ) {
+					$field_array['type'] = $fields[ $i ]['type'];
+				}
 				$responses[] = $field_array;
 			}
 		}
