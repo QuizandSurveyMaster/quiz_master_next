@@ -213,8 +213,7 @@ class QSM_Quiz_Settings
         $old_value = $this->get_setting($setting);
         if (isset($_POST['global_setting'])) {
             $setDefaultvalue=$old_value;
-            $getdefaultvalue=get_option('qsm-quiz-settings');
-
+            $getdefaultvalue= (array) get_option('qsm-quiz-settings');
             $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
             $setDefaultvalue['system']=$getdefaultvalue['system'];
             $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
@@ -252,8 +251,8 @@ class QSM_Quiz_Settings
             $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
             $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
             $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
-            // Try to serialize the value.
-            
+            $setDefaultvalue['preferred_date_format']=$getdefaultvalue['preferred_date_format'];
+            // Try to serialize the value.            
             return $this->save_quiz_settings($setting,$setDefaultvalue);
         }
         // If the old value and new value are the same, return false.
@@ -365,7 +364,8 @@ class QSM_Quiz_Settings
           'scheduled_time_start'=> $scheduled_timeframe["start"],
   				'scheduled_time_end' => $scheduled_timeframe["end"],
   				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
-  				'ajax_show_correct' => $quiz_options->ajax_show_correct
+  				'ajax_show_correct' => $quiz_options->ajax_show_correct ,
+          'preferred_date_format'=>$quiz_options->preferred_date_format
         ) );
       }
 
