@@ -429,10 +429,10 @@ var QSMPageTimer;
 		 */
 		changePage: function (quizID, difference) {			
 			var page = QSM.getPage(quizID);			
-			if(page=="1" && qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
+			if(qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
 				if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 					var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
-					if ($('#quizForm' + quizID).closest('.qmn_quiz_container').find('.qmn_pagination > .current_page_hidden').val() == start_timer) {
+					if ( page == start_timer ) {
 						QSM.activateTimer(quizID);
 						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					}
