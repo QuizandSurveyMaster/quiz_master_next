@@ -108,10 +108,10 @@ function qsm_generate_dashboard_page() {
 		wp_enqueue_script( 'jquery-touch-punch' );
 	}
 	?>
-	
-<script>var ps_popover = { workspace_id : "d24ad9de-78c7-4835-a2a8-3f5ee0317f31", selector: "#whatsnew" }; </script>
-<script type="text/javascript" src="https://cdn.productstash.io/js/popover.min.js?v=0.1" defer="defer"></script>
-
+<?php	
+wp_enqueue_script ( 'productstash-config', plugins_url( '../../js/qsm-productstash-config.js', __FILE__ ) );
+wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
+?>
 <div class="wrap">
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
