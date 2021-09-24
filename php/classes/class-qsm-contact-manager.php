@@ -156,6 +156,16 @@ class QSM_Contact_Manager {
 							<?php
 							break;
 
+						case 'date':
+							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
+								$class = 'mlwRequiredAccept qsm_required_accept';
+							}
+							?>
+							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+							<input type='date' id='contact_field_<?php echo $i; ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='' />
+							<?php
+							break;
+
 						default:
 							do_action('qsm_extra_contact_filed' ,$fields, $options);
 							break;
