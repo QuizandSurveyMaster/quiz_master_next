@@ -22,6 +22,7 @@ var QSMContact;
               '<option value="text">Small Open Answer</option>' +
               '<option value="email">Email</option>' +
               '<option value="checkbox">Checkbox</option>' +
+              '<option value="date">Date</option>' +
             '</select>' +
           '</div>' +
           '<div class="contact-form-group">' +
@@ -60,6 +61,9 @@ var QSMContact;
           break;
         case 'checkbox':
           contactField.find( '.type-control option[value="checkbox"]').prop( 'selected', true );
+          break;
+        case 'date':
+          contactField.find( '.type-control option[value="date"]').prop( 'selected', true );
           break;
         default:
 
