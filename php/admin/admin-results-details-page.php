@@ -164,14 +164,12 @@ function qsm_generate_results_details_tab() {
 	// Get template for admin results.
     $settings = (array) get_option( 'qmn-settings' );
     $new_template_result_detail = '1';
-    //$results["contact"] = array();
     if (isset($settings['new_template_result_detail'])){
         $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
     }
     if( $new_template_result_detail == 1 ){
         $template = '';    
         if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
-            //$results_contact = unserialize($results_data->quiz_results);
             $template .= '<div class="overview-main-wrapper">';
                     //User detail
             $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
