@@ -312,7 +312,6 @@ class QSM_Questions {
 			'%d',
 		);
 
-		$question_id = intval($data['ID']);
 		if ( $is_creating ) {
 			$results = $wpdb->insert(
 				$wpdb->prefix . 'mlw_questions',
@@ -321,6 +320,7 @@ class QSM_Questions {
 			);
 			$question_id = $wpdb->insert_id;
 		} else {
+			$question_id = intval($data['ID']);
 			$results = $wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				$values,
@@ -371,24 +371,41 @@ class QSM_Questions {
 			$question_ids	 = array_column( $questions, 'question_id' );
 			$question_ids	 = implode( ',', $question_ids );
 			$question_terms	 = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+			$term_ids = array();
 			if ( ! empty( $question_terms ) ) {
 				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
-				if ( ! empty( $term_ids ) ) {
-					$categories_names	 = array();
-					$categories_tree	 = array();
-					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
-					if ( ! empty( $terms ) ) {
-						foreach ( $terms as $tax ) {
-							$categories_names[$tax->term_id] = $tax->name;
-							$taxs[$tax->parent][]			 = $tax;
+			}
+			$cat_array = array();
+			$questions = self::load_questions_by_pages( $quiz_id );
+			if ( $questions ) {
+				foreach ( $questions as $single_question ) {
+					if ( isset( $single_question['multicategories'] ) && is_array( $single_question['multicategories'] ) ) {
+						foreach( $single_question['multicategories'] as $cat_id ) {
+							$cat_array[] = $cat_id;
 						}
-						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 					}
-					$categories = array(
-						'list'	 => $categories_names,
-						'tree'	 => $categories_tree,
-					);
 				}
+			}
+			$enabled = get_option( 'qsm_multiple_category_enabled' );
+			if ( $enabled && $enabled != 'cancelled' && ! empty( $cat_array ) ) {
+				$term_ids = array_unique( array_merge( $term_ids, $cat_array ) );
+			}
+
+			if ( ! empty( $term_ids ) ) {
+				$categories_names	 = array();
+				$categories_tree	 = array();
+				$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+				if ( ! empty( $terms ) ) {
+					foreach ( $terms as $tax ) {
+						$categories_names[$tax->term_id] = $tax->name;
+						$taxs[$tax->parent][]			 = $tax;
+					}
+					$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+				}
+				$categories = array(
+					'list'	 => $categories_names,
+					'tree'	 => $categories_tree,
+				);
 			}
 		}
 		return $categories;

@@ -66,7 +66,7 @@ var QSMPageTimer;
 			// If we are using the newer pagination system...
 			if (0 < $quizForm.children('.qsm-page').length) {
 				// If there is a first page...
-				if (!qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page) {									
+				if (qmn_quiz_data[quizID].hasOwnProperty('first_page') && !qmn_quiz_data[quizID].first_page) {									
 					QSM.activateTimer(quizID);
 					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 				}
@@ -429,10 +429,10 @@ var QSMPageTimer;
 		 */
 		changePage: function (quizID, difference) {			
 			var page = QSM.getPage(quizID);			
-			if(page=="1" && qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
+			if(qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
 				if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 					var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
-					if ($('#quizForm' + quizID).closest('.qmn_quiz_container').find('.qmn_pagination > .current_page_hidden').val() == start_timer) {
+					if ( page == start_timer ) { // check current page
 						QSM.activateTimer(quizID);
 						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					}
@@ -1000,6 +1000,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 				submit_button = jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").html();
 				jQuery(quiz_form_id + " .qsm-auto-page-row.empty_quiz_end").show();
 				$container.find(".mlw_next").hide();
+				$container.find('.g-recaptcha').show();
 			}
 		}
 		$container.find('.qsm-auto-page-row.qsm-apc-' + page_number).show();

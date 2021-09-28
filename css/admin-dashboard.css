@@ -4,7 +4,7 @@
 	font-size: 23px;
 	margin-right: 5px;
 	position: relative;
-	top: -3px;
+	top: unset!important;
 }
 
 .welcome-panel .qsm-welcome-panel-close {
@@ -66,6 +66,20 @@
 	padding: 0;
 	position: relative;
 	top: -30px;
+}
+
+.welcome-panel .welcome-icon {
+    display: flex;
+    align-items: center;
+}
+
+.popover-count {
+    top: -2px !important;
+    right: unset!important;
+    left: 9px!important;
+    height: 13px!important;
+    width: 13px!important;
+    font-size: 8px!important;
 }
 
 .popuar-addon-ul {

@@ -171,11 +171,14 @@ class QSM_Emails {
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 
 		// Prepares our content.
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );                
-                $response_data['email_template_array'] = true;
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
+        $response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
+		$content = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $content );
+		$content = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $content );
+		$content = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $content );
 		$content = html_entity_decode( $content );
 
 		// Prepares our from name and email.

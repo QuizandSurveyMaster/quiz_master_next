@@ -635,9 +635,9 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
 				 	if ( $category_name_object->name == $category_name ) {
 						if ( '11' !== $answer['question_type'] ) {
-							$total_questions = +1;
+							$total_questions += 1;
+							$return_points += $answer['points'];
 						}
-						$return_points += $answer['points'];
 					}
 				}
 			}
@@ -1197,6 +1197,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
+				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 12 ) {
+					$date_format = apply_filters( 'qmn_date_output_format_frontend', get_option( 'date_format' ), $answer[1], $mlw_quiz_array['quiz_id'], $mlw_quiz_array );
+					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . date_i18n( $date_format, strtotime( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 				} else {
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode( $answer[1], ENT_QUOTES ) . '</span>';
 				}
