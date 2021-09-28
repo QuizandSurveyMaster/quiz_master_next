@@ -732,9 +732,10 @@ class QMNPluginHelper
 	 */
 
 	public function convert_to_preferred_date_format($qsm_qna_array){
-
+        global $mlwQuizMasterNext;
+        $quiz_options= $mlwQuizMasterNext->quiz_settings->get_quiz_options();
         $qsm_qna_list = $qsm_qna_array['question_answers_array'];
-        $qsm_quiz_settings = unserialize($qmn_quiz_options->quiz_settings);
+        $qsm_quiz_settings = unserialize($quiz_options->quiz_settings);
         $qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
         $qsm_global_settings = get_option( 'qsm-quiz-settings' );
         $qsm_contact_array = $qsm_qna_array['contact'];
