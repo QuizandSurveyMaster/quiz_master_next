@@ -408,6 +408,11 @@ class QMNPluginHelper
             shuffle($answers);
             update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
+		/**
+		 * Filter Answers of specific question before display
+		 */
+		$answers = apply_filters('qsm_single_question_answers', $answers, $question, $quiz_options);
+
         foreach ($this->question_types as $type) {
             if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
                 if ($type["graded"]) {
