@@ -367,7 +367,10 @@ class QSM_Questions {
 		global $wpdb;
 		$categories = array();
 		if ( 0 !== $quiz_id ) {
-			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id`='{$quiz_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
+			$questions		 = QSM_Questions::load_questions_by_pages( $quiz_id );
+			$question_ids	 = array_column( $questions, 'question_id' );
+			$question_ids	 = implode( ',', $question_ids );
+			$question_terms	 = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
 			$term_ids = array();
 			if ( ! empty( $question_terms ) ) {
 				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );

@@ -282,6 +282,10 @@ class QMNQuizManager {
 
 			$return_display   = '';
 			$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			/**
+			 * Filter Quiz Options before Quiz Display
+			 */
+			$qmn_quiz_options = apply_filters('qsm_shortcode_quiz_options', $qmn_quiz_options);
 
 			// If quiz options isn't found, stop function.
 			if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
