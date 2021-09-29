@@ -1346,6 +1346,9 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 			value: <?php echo $answer['points']; ?>,
 			slide: function slider_slide(event, ui) {
 				return false; // this code not allow to dragging
+			},
+			create: function (event, ui){
+				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]); // This code allow to apply js code on polar slider on result page			
 			}
 		});
 		var maxHeight = Math.max.apply(null, $(".mlw-qmn-question-result-<?php echo $id; ?>> div").map(
