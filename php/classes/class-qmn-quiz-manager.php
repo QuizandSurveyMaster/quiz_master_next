@@ -1460,42 +1460,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			}
 			$qmn_array_for_variables['result_id'] = $results_id;
 
-			//Converts date to the preferred format
-			$qsm_qna_list = $qmn_array_for_variables['question_answers_array'];
-			$qsm_quiz_settings = unserialize($qmn_quiz_options->quiz_settings);
-			$qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
-			$qsm_global_settings = get_option( 'qsm-quiz-settings' );
-			$qsm_contact_array = $qmn_array_for_variables['contact'];
-			//check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
-			$preferred_date_format= isset($qsm_quiz_options['preferred_date_format'])? $qsm_quiz_options['preferred_date_format'] : (isset($qsm_global_settings['preferred_date_format'])? $qsm_global_settings['preferred_date_format'] : get_option( 'date_format'));
-			//filter date format
-			$GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format );
-
-			foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact){
-				if ("date" === $qsm_contact['type'] && null!==$GLOBALS['qsm_date_format']){
-					$qmn_array_for_variables['contact'][$qsm_contact_id]['value']=date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qsm_contact['value'])));
-				}
-			}
-			foreach ($qsm_qna_list as $qna_id => $qna){
-				if ("12"===$qna['question_type'] && null!==$GLOBALS['qsm_date_format']){
-					$qmn_array_for_variables['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-					$qmn_array_for_variables['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));	
-					//converts the questions array into preferred date format for question type date
-					if(!function_exists('qsm_convert_question_array_date_format')){
-						function qsm_convert_question_array_date_format($questions){	
-							foreach ($questions as $question_id => $question_to_convert){
-								if("12"=== $question_to_convert['question_type_new']){
-									foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-										$questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-									}	
-								}
-							}
-							return $questions;
-						}
-					} 
-					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
-				}
-			}			
+			// Converts date to the preferred format
+			global $mlwQuizMasterNext;
+			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($qmn_array_for_variables);			
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
