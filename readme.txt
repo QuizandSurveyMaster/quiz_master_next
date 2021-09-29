@@ -152,14 +152,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 7.3.3 (September 29, 2021) =
-* Bug: Fixed the issue of %AVERAGE_CATEGORY_POINTS_X% calculating total instead of average.
-* Bug: Fixed the issue of no category found for questions imported from question bank.
-* Bug: Fixed the issue of the limit number of questions per category not working.
-* Bug: Fixed the issue of "Limit question per category" setting along with the Random setting.
-* Bug: Fixed the issue of timer not showing on single page quiz.
-* Bug: Fixed the issue of recaptcha button not showing when question per page quiz options is enabled.
-* Bug: Fixed the issue of duplicate quiz doesn't work properly.
-* Bug: Fixed the issue of date question type shows date in reverse order on the results page and in emails.
+* Bug: Fixed the issue where %AVERAGE_CATEGORY_POINTS_X% was calculating total instead of average.
+* Bug: Fixed the issue where no category found for questions imported from question bank.
+* Bug: Fixed the issue where the limit number of questions per category was not working.
+* Bug: Fixed the issue with "Limit question per category" setting when "Random" option is enabled
+* Bug: Fixed the issue where timer was not showing on single page quiz.
+* Bug: Fixed the issue when recaptcha button not showing when question per page quiz options is enabled.
+* Bug: Fixed the issues while duplicating a quiz.
+* Bug: Fixed the issue where date question type shows date in reverse order on the results page and in emails.
 * Feature: Added date field in quiz contact tab.
 * Enhancement: Added Correct/Incorrect answers in different color in email.
 
