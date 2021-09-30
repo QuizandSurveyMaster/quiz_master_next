@@ -740,7 +740,13 @@ class QMNPluginHelper
         $qsm_global_settings = get_option( 'qsm-quiz-settings' );
         $qsm_contact_array = $qsm_qna_array['contact'];
         //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
-        $preferred_date_format= isset($qsm_quiz_options['preferred_date_format'])? $qsm_quiz_options['preferred_date_format'] : (isset($qsm_global_settings['preferred_date_format'])? $qsm_global_settings['preferred_date_format'] : get_option( 'date_format'));
+        if (isset($qsm_quiz_options['preferred_date_format'])){
+            $preferred_date_format= $qsm_quiz_options['preferred_date_format'];
+        } elseif ( isset($qsm_global_settings['preferred_date_format']) ){
+            $preferred_date_format= isset($qsm_global_settings['preferred_date_format']);
+        }else{
+            $preferred_date_format= get_option( 'date_format');
+        }
         //filter date format
         $GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format);
 
