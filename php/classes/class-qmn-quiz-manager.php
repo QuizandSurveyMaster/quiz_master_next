@@ -2237,7 +2237,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	public function qsm_convert_editor_text_to_shortcode( $editor_text ) {
 		global $wp_embed;
 		$editor_text  = $wp_embed->run_shortcode( $editor_text );
-		$editor_text  = preg_replace( '/s*[\w\/:\.]*youtube.com\/watch\?v=([\w-_]+)([\w\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+		$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 		$allowed_html = wp_kses_allowed_html( 'post' );
 		return do_shortcode( wp_kses( $editor_text, $allowed_html ) );
 	}
