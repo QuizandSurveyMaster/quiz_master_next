@@ -919,7 +919,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$question_answer_class = 'qmn_question_answer_incorrect';
 		}
 	}
-
+	$open_span_tag = '<span class="'.$user_answer_class.'">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
@@ -1007,9 +1007,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 					$file_extension = substr( $answer[1], -4 );
 					if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-						$question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+						$question_with_answer_text .= "$open_span_tag<img src='$answer[1]'/></span>";
 					} else {
-						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
+						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 14 ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
@@ -1193,9 +1193,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 					$file_extension = substr( $answer[1], -4 );
 					if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-						$question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+						$question_with_answer_text .= "$open_span_tag<img src='$answer[1]'/></span>";
 					} else {
-						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
+						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 12 ) {
 					$date_format = apply_filters( 'qmn_date_output_format_frontend', get_option( 'date_format' ), $answer[1], $mlw_quiz_array['quiz_id'], $mlw_quiz_array );
@@ -1212,9 +1212,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	if ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$answer[1]'/>$close_span_with_br", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$answer[1]'/>$close_span_with_br", $mlw_question_answer_display );
 		}else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	} else {
 		$user_answer_new = $answer[1];
@@ -1223,11 +1223,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != '' ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
 		}elseif( $answer['question_type'] == 5){
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . nl2br(htmlspecialchars_decode( $user_answer_new, ENT_QUOTES )) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br(htmlspecialchars_decode( $user_answer_new, ENT_QUOTES )) . $close_span_with_br, $mlw_question_answer_display );
 		}  else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	}
 	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
