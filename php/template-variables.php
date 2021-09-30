@@ -633,11 +633,9 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 				foreach ( $answer['multicategories'] as $category ) {
 					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
-				 	if ( $category_name_object->name == $category_name ) {
-						if ( '11' !== $answer['question_type'] ) {
-							$total_questions += 1;
-							$return_points += $answer['points'];
-						}
+				 	if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
+						$total_questions += 1;
+						$return_points += $answer['points'];
 					}
 				}
 			}
