@@ -734,11 +734,9 @@ class QMNPluginHelper
 	public function convert_to_preferred_date_format($qsm_qna_array){
         global $mlwQuizMasterNext;
         $quiz_options= $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-        $qsm_qna_list = $qsm_qna_array['question_answers_array'];
         $qsm_quiz_settings = unserialize($quiz_options->quiz_settings);
         $qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
         $qsm_global_settings = get_option( 'qsm-quiz-settings' );
-        $qsm_contact_array = $qsm_qna_array['contact'];
         //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
         if (isset($qsm_quiz_options['preferred_date_format'])){
             $preferred_date_format= $qsm_quiz_options['preferred_date_format'];
