@@ -742,33 +742,80 @@ class QMNPluginHelper
         //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
         $preferred_date_format= isset($qsm_quiz_options['preferred_date_format'])? $qsm_quiz_options['preferred_date_format'] : (isset($qsm_global_settings['preferred_date_format'])? $qsm_global_settings['preferred_date_format'] : get_option( 'date_format'));
         //filter date format
-        $GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format );
+        $GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format);
 
+        $qsm_qna_array = $this->convert_contacts_to_preferred_date_format($qsm_qna_array);
+        $qsm_qna_array = $this->convert_answers_to_preferred_date_format($qsm_qna_array);
+        $this->convert_questions_to_preferred_date_format();        
+           
+        return $qsm_qna_array;
+	}
+
+    /**
+	 * converts contacts into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_contacts_to_preferred_date_format($qsm_qna_array){
+
+        $qsm_contact_array = $qsm_qna_array['contact'];
         foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact){
             if ("date" === $qsm_contact['type'] && null!==$GLOBALS['qsm_date_format']){
                 $qsm_qna_array['contact'][$qsm_contact_id]['value']=date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qsm_contact['value'])));
             }
         }
+        return $qsm_qna_array;
+	}
+
+    /**
+	 * converts answers into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_answers_to_preferred_date_format($qsm_qna_array){
+
+        $qsm_qna_list = $qsm_qna_array['question_answers_array'];
         foreach ($qsm_qna_list as $qna_id => $qna){
             if ("12"===$qna['question_type'] && null!==$GLOBALS['qsm_date_format']){
                 $qsm_qna_array['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));	
-                //converts the questions array into preferred date format for question type date
-                if(!function_exists('qsm_convert_question_array_date_format')){
-                    function qsm_convert_question_array_date_format($questions){	
-                        foreach ($questions as $question_id => $question_to_convert){
-                            if("12"=== $question_to_convert['question_type_new']){
-                                foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-                                    $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-                                }	
-                            }
-                        }
-                        return $questions;
-                    }
-                } 
-                add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
+                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));           
             }
         }
         return $qsm_qna_array;
+	}
+
+    /**
+	 * converts questions into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_questions_to_preferred_date_format(){
+        if (null!==$GLOBALS['qsm_date_format']){
+            if(!function_exists('qsm_convert_question_array_date_format')){
+                function qsm_convert_question_array_date_format($questions){	
+                    foreach ($questions as $question_id => $question_to_convert){
+                        if("12"=== $question_to_convert['question_type_new']){
+                            foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
+                                $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
+                            }	
+                        }
+                    }
+                    return $questions;
+                }
+            } 
+            add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
+        }
 	}
 }
