@@ -1107,7 +1107,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							} else {
-								foreach ( $total_answers as $single_answer ) {
+								foreach ( $total_answers as $single_answer_key => $single_answer ) {
 									$single_answer_option = $single_answer[0];
 									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'rich' ) {
 										$single_answer_option = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
@@ -1142,6 +1142,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
+										$question_with_answer_text = apply_filters('question_with_answer_text_another_quetion_type', $question_with_answer_text, $questionid, $questions, $total_answers, $answer, $single_answer_key);
 									}
 								}
 							}
