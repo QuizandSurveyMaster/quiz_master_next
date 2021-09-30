@@ -192,7 +192,7 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) 
 		$str  = '';
 		if ( $vals ) {
 			$str .= '<h4>' . __( 'Poll Result', 'quiz-master-next' ) . ':</h4>';
-			foreach ( $vals as $answer_str => $answer_count ) {				
+			foreach ( $vals as $answer_str => $answer_count ) {
 				if ( $answer_str != '' && qsm_find_key_from_array( $answer_str, $ser_answer_arry_change ) ) {
 					$percentage = number_format( $answer_count / $total_result * 100, 2 );
 					$answer_str = qsm_answers_type_evaluated( $answer_str, $question_settings );
@@ -628,10 +628,10 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$category_name = $answer_text[1];
 		}
-		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {			
+		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
-					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );		
+					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
 				 	if ( $category_name_object->name == $category_name ) {
 						if ( '11' !== $answer['question_type'] ) {
@@ -919,7 +919,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$question_answer_class = 'qmn_question_answer_incorrect';
 		}
 	}
-
+	$open_span_tag = '<span class="'.$user_answer_class.'">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
@@ -955,14 +955,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-			
+
 			 $qsm_random_quetion_answer = get_post_meta($answer['id'],'qsm_random_quetion_answer',true);
 			 if(!empty($qsm_random_quetion_answer))
 			 {
 			 	$total_answers = $qsm_random_quetion_answer;
 			 	// No longer Need This Value
 			 	delete_post_meta( $answer['id'], 'qsm_random_quetion_answer');
-			 }			 
+			 }
 
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( $answer['question_type'], $show_two_option_questions ) ) {
@@ -1007,9 +1007,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 					$file_extension = substr( $answer[1], -4 );
 					if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-						$question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+						$question_with_answer_text .= "$open_span_tag<img src='$answer[1]'/></span>";
 					} else {
-						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
+						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 14 ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
@@ -1193,9 +1193,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 					$file_extension = substr( $answer[1], -4 );
 					if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-						$question_with_answer_text .= "<span class='$user_answer_class'><img src='$answer[1]'/></span>";
+						$question_with_answer_text .= "$open_span_tag<img src='$answer[1]'/></span>";
 					} else {
-						$question_with_answer_text .= "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
+						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 12 ) {
 					$date_format = apply_filters( 'qmn_date_output_format_frontend', get_option( 'date_format' ), $answer[1], $mlw_quiz_array['quiz_id'], $mlw_quiz_array );
@@ -1208,12 +1208,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWERS_DEFAULT%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', do_shortcode( $question_with_answer_text ), $mlw_question_answer_display );
 	}
+	$close_span_with_br = '</span><br/>';
 	if ( isset( $answer['question_type'] ) && $answer['question_type'] == 11 ) {
 		$file_extension = substr( $answer[1], -4 );
 		if ( $file_extension == '.jpg' || $file_extension == '.jpeg' || $file_extension == '.png' || $file_extension == '.gif' ) {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$answer[1]'/></span><br/>", $mlw_question_answer_display );
-		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span><br/>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$answer[1]'/>$close_span_with_br", $mlw_question_answer_display );
+		}else {
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	} else {
 		$user_answer_new = $answer[1];
@@ -1222,9 +1223,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != '' ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'><img src='$image_url'/></span><br/>", $mlw_question_answer_display );
-		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "<span class='$user_answer_class'>" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . '</span><br/>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
+		}elseif( $answer['question_type'] == 5){
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br(htmlspecialchars_decode( $user_answer_new, ENT_QUOTES )) . $close_span_with_br, $mlw_question_answer_display );
+		}  else {
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	}
 	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
@@ -1348,7 +1351,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 				return false; // this code not allow to dragging
 			},
 			create: function (event, ui){
-				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]); // This code allow to apply js code on polar slider on result page			
+				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]); // This code allow to apply js code on polar slider on result page
 			}
 		});
 		var maxHeight = Math.max.apply(null, $(".mlw-qmn-question-result-<?php echo $id; ?>> div").map(
