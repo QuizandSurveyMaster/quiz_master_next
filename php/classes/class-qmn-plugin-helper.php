@@ -802,20 +802,19 @@ class QMNPluginHelper
 	 */
 
 	public function convert_questions_to_preferred_date_format(){
-        if (null!==$GLOBALS['qsm_date_format']){
-            if(!function_exists('qsm_convert_question_array_date_format')){
-                function qsm_convert_question_array_date_format($questions){	
-                    foreach ($questions as $question_id => $question_to_convert){
-                        if("12"=== $question_to_convert['question_type_new']){
-                            foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-                                $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-                            }	
-                        }
+        
+        if(!function_exists('qsm_convert_question_array_date_format')){
+            function qsm_convert_question_array_date_format($questions){	
+                foreach ($questions as $question_id => $question_to_convert){
+                    if("12"=== $question_to_convert['question_type_new']){
+                        foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
+                            $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
+                        }	
                     }
-                    return $questions;
                 }
-            } 
-            add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
-        }
+                return $questions;
+            }
+        } 
+        add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
 	}
 }
