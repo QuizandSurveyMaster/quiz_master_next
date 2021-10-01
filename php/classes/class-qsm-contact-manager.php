@@ -158,7 +158,7 @@ class QSM_Contact_Manager {
 
 						case 'date':
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
-								$class = 'mlwRequiredAccept qsm_required_accept';
+								$class = 'mlwRequiredDate qsm_required_date';
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
