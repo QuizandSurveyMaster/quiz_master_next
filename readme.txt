@@ -151,7 +151,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 7.3.3 (September 29, 2021) =
+= 7.3.3 (October 1, 2021) =
 * Bug: Fixed the issue where %AVERAGE_CATEGORY_POINTS_X% was calculating total instead of average.
 * Bug: Fixed the issue where no category found for questions imported from question bank.
 * Bug: Fixed the issue where the limit number of questions per category was not working.
