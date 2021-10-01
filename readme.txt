@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.3
+Stable tag: 7.3.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.4 (October 1, 2021) =
+* Bug: Fixed the issue with validation of date field for contact section
+
 = 7.3.3 (October 1, 2021) =
 * Bug: Fixed the issue where %AVERAGE_CATEGORY_POINTS_X% was calculating total instead of average.
 * Bug: Fixed the issue where no category found for questions imported from question bank.
