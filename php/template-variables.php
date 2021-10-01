@@ -1400,7 +1400,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
  */
 function qmn_sanitize_input_data( $data, $strip = false ) {
 	if ( $strip ) {
-		$data = stripslashes_deep( $data );
+		$data = stripslashes( $data );
 	}
-	return maybe_unserialize( $data );
+	return unserialize( $data );
 }
