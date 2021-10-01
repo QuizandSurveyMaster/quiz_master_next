@@ -1,0 +1,1 @@
+var ps_popover = { workspace_id : "d24ad9de-78c7-4835-a2a8-3f5ee0317f31", selector: "#whatsnew" };

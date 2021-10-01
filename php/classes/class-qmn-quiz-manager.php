@@ -92,6 +92,7 @@ class QMNQuizManager {
 					$mimes[] = $value;
 				}
 			}
+			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
 		}
 		$json          = array();
 		$file_name     = sanitize_file_name( $_FILES['file']['name'] );
@@ -281,6 +282,10 @@ class QMNQuizManager {
 
 			$return_display   = '';
 			$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			/**
+			 * Filter Quiz Options before Quiz Display
+			 */
+			$qmn_quiz_options = apply_filters('qsm_shortcode_quiz_options', $qmn_quiz_options);
 
 			// If quiz options isn't found, stop function.
 			if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
@@ -542,7 +547,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							}
 						}
 						foreach ($term_data as $tv) {
-							$random = array_merge($random, array_slice($tv, 0, $quiz_options->question_per_category));
+							if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+								shuffle($tv);
+							}
+							$random = array_merge($random, array_slice(array_unique($tv), 0, $quiz_options->question_per_category));
 						}
 					}
 					$question_ids = array_unique( $random );
@@ -1452,6 +1460,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			}
 			$qmn_array_for_variables['result_id'] = $results_id;
 
+			// Converts date to the preferred format
+			global $mlwQuizMasterNext;
+			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($qmn_array_for_variables);			
+
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display .= $results_pages['display'];
@@ -2225,7 +2237,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	public function qsm_convert_editor_text_to_shortcode( $editor_text ) {
 		global $wp_embed;
 		$editor_text  = $wp_embed->run_shortcode( $editor_text );
-		$editor_text  = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+		$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 		$allowed_html = wp_kses_allowed_html( 'post' );
 		return do_shortcode( wp_kses( $editor_text, $allowed_html ) );
 	}

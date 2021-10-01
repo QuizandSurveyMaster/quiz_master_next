@@ -709,6 +709,16 @@ class QSM_Install {
 			'help'    => __( 'If left blank, this will default to QSM logo', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers Preferred date type settings in the quiz options
+		$field_array = array(
+			'id'      => 'preferred_date_format',
+			'label'   => __( 'Preferred Date Format', 'quiz-master-next' ),
+			'type'    => 'text',
+			'default' => isset(get_option( 'qsm-quiz-settings' )['preferred_date_format'])? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format'),
+			'help'    => __( 'Overrides global settings for preferred date format', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		do_action( 'qsm_extra_setting_fields' );
 		// Setting for animation
 		$field_array = array(
