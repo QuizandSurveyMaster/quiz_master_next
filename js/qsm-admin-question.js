@@ -1120,6 +1120,7 @@ var import_button;
 		//Hide the question settings based on question type
 		$(document).on('change', '#question_type', function () {
 			var question_val = $(this).val();
+			var js_func = $('option:selected', this).attr('js-func');
 			if (6 == question_val) {
 				var question_description = wp.editor.getContent('question-text');
 				if (question_description == 'Add description here!') {
@@ -1140,6 +1141,12 @@ var import_button;
 				$('.qsm_show_question_type_' + question_val).show();
 			}
 			qsm_hide_show_question_desc(question_val);
+			if(js_func!=''){
+				if (typeof window[js_func] == 'function'){
+					window[js_func](question_val);
+					e.preventDefault();
+				}
+			}
 		});
 
 		//Add new category
@@ -1175,7 +1182,7 @@ var import_button;
 			}
 		});
 
-		//Open file upload on feature image                
+		//Open file upload on feature image
 		$('body').on('click', '.qsm-feature-image-upl', function (e) {
 			e.preventDefault();
 			var button = $(this),

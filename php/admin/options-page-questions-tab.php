@@ -280,6 +280,14 @@ function qsm_options_questions_tab_content() {
 									$polar_class        = 'qsm_show_question_type_13';
 									$polar_question_use = ',13';
 								}
+
+								$show_answer_option = '';
+								foreach ( $question_types as $type ) {
+									if($type["show_answer_option"]){
+										$show_answer_option .= ' qsm_show_question_type_'.$type['slug'];
+									}
+								}
+
 								$description_arr = apply_filters( 'qsm_question_type_description', $description_arr );
 								if ( $description_arr ) {
 									foreach ( $description_arr as $value ) {
@@ -293,7 +301,7 @@ function qsm_options_questions_tab_content() {
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper"
-								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
+								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class.$show_answer_option; ?>">
 								<label class="answer-header">
 									<?php _e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -318,12 +326,18 @@ function qsm_options_questions_tab_content() {
 								<?php _e( 'Add Correct Answer Info', 'quiz-master-next' ); ?></a>
 							<div class="qsm-row" style="display: none;">
 								<?php
+								$show_correct_answer_info = '';
+								foreach ( $question_types as $type ) {
+									if($type["show_correct_answer_info"]){
+										$show_correct_answer_info .= ','.$type['slug'];
+									}
+								}
 								$answer_area_option = array(
 									'correct_answer_info' => array(
 										'label'   => __( 'Correct Answer Info', 'quiz-master-next' ),
 										'type'    => 'textarea',
 										'default' => '',
-										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use,
+										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use .$show_correct_answer_info,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
 									),
 								);
@@ -359,7 +373,7 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-																echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+																echo "<option value='{$type['slug']}' js-func='{$type['js_func']}'>{$type['name']}</option>";
 														}
 														?>
 													</select>
@@ -368,6 +382,18 @@ function qsm_options_questions_tab_content() {
 													<p class="hidden" id="question_type_info"></p>
 												</div>
 												<?php
+												$show_change_answer_editor = '';
+												foreach ( $question_types as $type ) {
+													if($type["show_change_answer_editor"]){
+														$show_change_answer_editor .= ','.$type['slug'];
+													}
+												}
+												$show_match_answer = '';
+												foreach ( $question_types as $type ) {
+													if($type["show_match_answer"]){
+														$show_match_answer .= ','.$type['slug'];
+													}
+												}
 												$simple_question_option = array(
 													'change-answer-editor' => array(
 														'label' => __( 'Answers Type', 'quiz-master-next' ),
@@ -379,7 +405,7 @@ function qsm_options_questions_tab_content() {
 															'image' => __( 'Image Answers', 'quiz-master-next' ),
 														),
 														'default' => 'text',
-														'show' => '0,1,2,4,13',
+														'show' => '0,1,2,4,13'.$show_change_answer_editor,
 														// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
 														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
@@ -402,7 +428,7 @@ function qsm_options_questions_tab_content() {
 															'sequence' => __( 'Sequentially', 'quiz-master-next' ),
 														),
 														'default' => 'random',
-														'show' => '14',
+														'show' => '14'.$show_match_answer,
 													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
@@ -492,6 +518,12 @@ function qsm_options_questions_tab_content() {
 									<div class="inside">
 										<div class="advanced-content">
 											<?php
+											$show_autofill = '';
+											foreach ( $question_types as $type ) {
+												if($type["show_autofill"]){
+													$show_autofill .= ','.$type['slug'];
+												}
+											}
 											$advanced_question_option = array(
 												'comments' => array(
 													'label' => __( 'Comment Field', 'quiz-master-next' ),
@@ -521,7 +553,7 @@ function qsm_options_questions_tab_content() {
 														'1' => __( 'Yes', 'quiz-master-next' ),
 													),
 													'default' => '0',
-													'show' => '3, 14',
+													'show' => '3, 14'.$show_autofill,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
 												),
 												'limit_text' => array(
