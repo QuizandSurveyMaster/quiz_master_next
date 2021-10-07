@@ -227,10 +227,12 @@ class QMNQuizCreator {
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_id' => $quiz_id )
 			);
-			$delete_questions_from_db = $wpdb->delete(
-				$wpdb->prefix . 'mlw_quizzes',
-				array( 'quiz_id' => $quiz_id )
-			);
+			if ( isset($_POST['qsm_delete_question_from_qb']) && "1" === $_POST['qsm_delete_question_from_qb']){
+				$wpdb->delete(
+					$wpdb->prefix . 'mlw_quizzes',
+					array( 'quiz_id' => $quiz_id )
+				);
+			}
 
 		}else{
 			$set_delete_quiz = $wpdb->update(
@@ -245,20 +247,20 @@ class QMNQuizCreator {
 				array( '%d' )
 			);
 			$deleted = 0;
-			if ( isset( $_POST['qsm_delete_question_from_qb'] ) && $_POST['qsm_delete_question_from_qb'] == 1 ) {
+			if ( isset( $_POST['qsm_delete_question_from_qb'] ) &&"1" === $_POST['qsm_delete_question_from_qb']  ) {
 				$deleted = 1;
+				$wpdb->update(
+					$wpdb->prefix . 'mlw_questions',
+					array(
+						'deleted' => $deleted,
+					),
+					array( 'quiz_id' => $quiz_id ),
+					array(
+						'%d',
+					),
+					array( '%d' )
+				);
 			}
-			$set_delete_question_from_qb = $wpdb->update(
-				$wpdb->prefix . 'mlw_questions',
-				array(
-					'deleted' => $deleted,
-				),
-				array( 'quiz_id' => $quiz_id ),
-				array(
-					'%d',
-				),
-				array( '%d' )
-			);
 		}
 
 		if ( $set_delete_quiz || $delete_quiz_from_db ) {

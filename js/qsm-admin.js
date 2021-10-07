@@ -192,25 +192,6 @@ var QSMQuizzesSurveys;
 			}			
 		});
 
-		$('#bulk-delete-quiz-button').on('click', function (event) {
-			event.preventDefault();			
-			if($("#bult-delete-quiz-form input[name='qsm_delete_question_from_qb']").is(":checked")){
-				$("<input>",{
-					"type":"hidden",
-					"name": "qsm_delete_question_from_qb",
-					"value": "1"
-				} ).appendTo("#posts-filter");
-			}
-			if($("#bult-delete-quiz-form input[name='qsm_delete_from_db']").is(":checked")){
-				$("<input>",{
-					"type":"hidden",
-					"name": "qsm_delete_from_db",
-					"value": "1"
-				} ).appendTo("#posts-filter");
-			}			
-			$('#posts-filter').submit();
-		});
-
 		QSMQuizzesSurveys.load();
 		$(document).on('click', '.qsm-list-shortcode-view', function (e) {
 			e.preventDefault();
@@ -231,4 +212,26 @@ var QSMQuizzesSurveys;
 			document.execCommand("copy");
 		});
 	});
+
+	$(function () {
+		$('#bulk-delete-quiz-button').on('click', function (event) {
+			event.preventDefault();			
+			if($("#bult-delete-quiz-form input[name='qsm_delete_question_from_qb']").is(":checked")){
+				$("<input>",{
+					"type":"hidden",
+					"name": "qsm_delete_question_from_qb",
+					"value": "1"
+				} ).appendTo("#posts-filter");
+			}
+			if($("#bult-delete-quiz-form input[name='qsm_delete_from_db']").is(":checked")){
+				$("<input>",{
+					"type":"hidden",
+					"name": "qsm_delete_from_db",
+					"value": "1"
+				} ).appendTo("#posts-filter");
+			}			
+			$('#posts-filter').submit();
+		});
+	});
+
 }(jQuery));
