@@ -92,6 +92,7 @@ class QMNQuizManager {
 					$mimes[] = $value;
 				}
 			}
+			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
 		}
 		$json          = array();
 		$file_name     = sanitize_file_name( $_FILES['file']['name'] );
@@ -281,6 +282,10 @@ class QMNQuizManager {
 
 			$return_display   = '';
 			$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+			/**
+			 * Filter Quiz Options before Quiz Display
+			 */
+			$qmn_quiz_options = apply_filters('qsm_shortcode_quiz_options', $qmn_quiz_options);
 
 			// If quiz options isn't found, stop function.
 			if ( is_null( $qmn_quiz_options ) || empty( $qmn_quiz_options->quiz_name ) ) {
@@ -424,6 +429,7 @@ class QMNQuizManager {
 					'total_questions'        => $result_data['total'],
 					'question_answers_array' => $quiz_result[1],
 					'comments'               => '',
+					'result_id'               => $id,
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
 				echo htmlspecialchars_decode( $data['display'] );
@@ -1081,8 +1087,17 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 				$question_display .= apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
+			$categor_class	 = '';
+			$multicategories = QSM_Questions::get_question_categories($mlw_question->question_id);
+			$question_categories = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+			if ( ! empty( $question_categories ) ) {
+				foreach ( $question_categories as $cat ) {
+					$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+				}
+			}
+
 			$question_id_list .= $mlw_question->question_id . 'Q';
-			$question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
+			$question_display .= "<div class='quiz_section qsm-question-wrapper {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count} {$categor_class}'>";
 			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 			if ( 0 == $mlw_question->comments ) {
@@ -1455,43 +1470,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			}
 			$qmn_array_for_variables['result_id'] = $results_id;
 
-			//Converts date to the preferred format
-			$qsm_qna_list = $qmn_array_for_variables['question_answers_array'];
-			$qsm_quiz_settings = unserialize($qmn_quiz_options->quiz_settings);
-			$qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
-			$qsm_global_settings = get_option( 'qsm-quiz-settings' );
-			foreach ($qsm_qna_list as $qna_id => $qna){
-				if ("12"===$qna['question_type']){
-
-					//check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
-					$preferred_date_format= isset($qsm_quiz_options['preferred_date_format'])? $qsm_quiz_options['preferred_date_format'] : (isset($qsm_global_settings['preferred_date_format'])? $qsm_global_settings['preferred_date_format'] : get_option( 'date_format'));
-
-					//filter date format
-					$GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format );
-
-					if(null!==$GLOBALS['qsm_date_format']){
-						$qmn_array_for_variables['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-						$qmn_array_for_variables['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));	
-					}
-
-					//converts the questions array into preferred date format for question type date
-					if(!function_exists('qsm_convert_question_array_date_format')){
-						function qsm_convert_question_array_date_format($questions){	
-							foreach ($questions as $question_id => $question_to_convert){
-								if("12"=== $question_to_convert['question_type_new']){
-									foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-										if( null!==$GLOBALS['qsm_date_format']){										
-											$questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-										}
-									}	
-								}
-							}
-							return $questions;
-						}
-					} 
-					add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
-				}
-			}			
+			// Converts date to the preferred format
+			global $mlwQuizMasterNext;
+			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($qmn_array_for_variables);			
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
@@ -2266,7 +2247,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	public function qsm_convert_editor_text_to_shortcode( $editor_text ) {
 		global $wp_embed;
 		$editor_text  = $wp_embed->run_shortcode( $editor_text );
-		$editor_text  = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+		$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 		$allowed_html = wp_kses_allowed_html( 'post' );
 		return do_shortcode( wp_kses( $editor_text, $allowed_html ) );
 	}

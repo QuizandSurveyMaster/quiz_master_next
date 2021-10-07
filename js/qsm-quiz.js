@@ -429,10 +429,10 @@ var QSMPageTimer;
 		 */
 		changePage: function (quizID, difference) {			
 			var page = QSM.getPage(quizID);			
-			if(page=="1" && qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
+			if(qmn_quiz_data[quizID].hasOwnProperty('first_page') && qmn_quiz_data[quizID].first_page){				
 				if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 					var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
-					if ($('#quizForm' + quizID).closest('.qmn_quiz_container').find('.qmn_pagination > .current_page_hidden').val() == start_timer) {
+					if ( page == start_timer ) { // check current page
 						QSM.activateTimer(quizID);
 						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					}
@@ -906,6 +906,7 @@ function qsmDisplayLoading($container) {
 
 function qmnDisplayResults(results, quiz_form_id, $container) {
 	$container.empty();
+	jQuery(document).trigger('qsm_before_display_result', [results, quiz_form_id, $container]);
 	if (results.redirect) {
 		window.location.replace(results.redirect);
 	} else {
@@ -914,7 +915,7 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 		qsmScrollTo($container);
 		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 		// Fires after result is populates via ajax
-		jQuery(document).trigger('qsm_after_display_result');
+		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
 }
 
@@ -1031,7 +1032,7 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 		jQuery(quiz_form_id).closest('.qmn_quiz_container').find('.pages_count').hide();
 	}
 	qmnInitProgressbarOnClick(quiz_id, page_number, total_pages);
-	jQuery(document).trigger('qsm_next_button_click_after', [quiz_form_id]);
+	jQuery(document).trigger('qsm_auto_next_button_click_after', [quiz_form_id]);
 }
 
 function qmnPrevSlide(pagination, go_to_top, quiz_form_id) {
