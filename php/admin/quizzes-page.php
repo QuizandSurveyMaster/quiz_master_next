@@ -103,7 +103,7 @@ function qsm_generate_quizzes_surveys_page() {
 	// Multiple Delete quiz.
 	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( $_POST['qsm_search_multiple_delete_nonce'], 'qsm_search_multiple_delete' ) ) {
 		if ( ( isset( $_POST['qsm-ql-action-top'] ) && $_POST['qsm-ql-action-top'] == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && $_POST['qsm-ql-action-bottom'] == 'delete_pr' ) ) {
-			$quiz_ids_arr = $_POST['chk_remove_all'];
+			$quiz_ids_arr = isset($_POST['chk_remove_all'])?$_POST['chk_remove_all']: false ;
 			if ( $quiz_ids_arr ) {
 				foreach ( $quiz_ids_arr as $quiz_id ) {
 					$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_id );
