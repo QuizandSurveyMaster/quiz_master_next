@@ -226,7 +226,7 @@ class QMNQuizCreator {
 		$qsm_delete_questions_from_qb= isset($_POST['qsm_delete_question_from_qb']) && "1" === $_POST['qsm_delete_question_from_qb'];
 
 		if ( $qsm_delete_from_db ){
-			$delete_quiz = $wpdb->delete(
+			$qsm_delete = $wpdb->delete(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_id' => $quiz_id )
 			);
@@ -238,7 +238,7 @@ class QMNQuizCreator {
 			}
 
 		}else{
-			$set_delete_quiz = $wpdb->update(
+			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
 					'deleted' => 1,
@@ -266,7 +266,7 @@ class QMNQuizCreator {
 			}
 		}
 
-		if ( $set_delete_quiz || $delete_quiz ) {
+		if ($qsm_delete) {
 			$my_query = new WP_Query(
 				array(
 					'post_type'  => 'qsm_quiz',
