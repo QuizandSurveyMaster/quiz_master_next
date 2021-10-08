@@ -97,14 +97,14 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
 			$answer = $question_answers_array[ $key ];
 			if ( isset( $mlw_quiz_array['email_processed'] ) && $mlw_quiz_array['email_processed'] == 'yes' ) {
 				if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
-					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 					$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_email_template'] ) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
 				} else {
 					$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
 				}
 			} else {
 				if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
-					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 					$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_template'] ) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
 				} else {
 					$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
@@ -174,14 +174,14 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) 
 		$total_query            = $wpdb->get_row( $wpdb->prepare( "SELECT count(*) AS total_count FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$total_result           = $total_query['total_count'];
 		$ser_answer             = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array,question_settings FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d", $question_id ), ARRAY_A );
-		$ser_answer_arry        = unserialize( $ser_answer['answer_array'] );
-		$question_settings        = unserialize( $ser_answer['question_settings'] );
+		$ser_answer_arry        = qmn_sanitize_input_data( $ser_answer['answer_array'] );
+		$question_settings        = qmn_sanitize_input_data( $ser_answer['question_settings'] );
 		$ser_answer_arry_change = array_filter( array_merge( array( 0 ), $ser_answer_arry ) );
 		$total_quiz_results     = $wpdb->get_results( $wpdb->prepare( "SELECT quiz_results FROM {$wpdb->prefix}mlw_results WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$answer_array           = array();
 		if ( $total_quiz_results ) {
 			foreach ( $total_quiz_results as $key => $value ) {
-				$userdb = unserialize( $value['quiz_results'] );
+				$userdb = qmn_sanitize_input_data( $value['quiz_results'] );
 				if ( ! empty( $userdb ) ) {
 					$key            = array_search( $question_id, array_column( $userdb[1], 'id' ) );
 					$answer_array[] = isset( $userdb[1][ $key ] ) ? $userdb[1][ $key ][1] : '';
@@ -459,7 +459,7 @@ function qsm_all_contact_fields_variable( $content, $results ) {
 function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext;
 	$logic_rules      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
-	$logic_rules      = unserialize( $logic_rules );
+	$logic_rules      = qmn_sanitize_input_data( $logic_rules );
 	$hidden_questions = isset( $mlw_quiz_array['hidden_questions'] ) ? $mlw_quiz_array['hidden_questions'] : array();
 	if ( empty( $hidden_questions ) ) {
 		$hidden_questions = isset( $mlw_quiz_array['results']['hidden_questions'] ) ? $mlw_quiz_array['results']['hidden_questions'] : array();
@@ -470,14 +470,14 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 		$display = '';
 		if ( strpos( $content, '%QUESTIONS_ANSWERS_EMAIL%' ) !== false ) {
 			if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
-				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 				$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_email_template'] ) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
 			} else {
 				$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_email_template', '%QUESTION%<br/>Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%' );
 			}
 		} else {
 			if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
-				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? @unserialize( stripslashes( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ) : array();
+				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 				$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_template'] ) : $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
 			} else {
 				$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
@@ -633,11 +633,9 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 				foreach ( $answer['multicategories'] as $category ) {
 					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
-				 	if ( $category_name_object->name == $category_name ) {
-						if ( '11' !== $answer['question_type'] ) {
-							$total_questions += 1;
-							$return_points += $answer['points'];
-						}
+				 	if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
+						$total_questions += 1;
+						$return_points += $answer['points'];
 					}
 				}
 			}
@@ -818,7 +816,7 @@ function qsm_end_results_rank( $result_display, $qmn_quiz_options, $qmn_array_fo
 		if ( ! empty( $mlw_result_data ) ) {
 			foreach ( $mlw_result_data as $key => $mlw_eaches ) {
 				$time_taken            = 0;
-				$mlw_qmn_results_array = @unserialize( $mlw_eaches->quiz_results );
+				$mlw_qmn_results_array = qmn_sanitize_input_data( $mlw_eaches->quiz_results );
 				if ( is_array( $mlw_qmn_results_array ) ) {
 					$time_taken = $mlw_qmn_results_array[0];
 					if ( isset( $mlw_qmn_results_array['timer_ms'] ) && $mlw_qmn_results_array['timer_ms'] > 0 ) {
@@ -1197,9 +1195,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
-				} elseif ( isset( $answer['question_type'] ) && $answer['question_type'] == 12 ) {
-					$date_format = apply_filters( 'qmn_date_output_format_frontend', get_option( 'date_format' ), $answer[1], $mlw_quiz_array['quiz_id'], $mlw_quiz_array );
-					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . date_i18n( $date_format, strtotime( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 				} else {
 					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode( $answer[1], ENT_QUOTES ) . '</span>';
 				}
@@ -1346,7 +1341,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 			<?php } ?>
 			step: 1,
 			range: false,
-			value: <?php echo $answer['points']; ?>,
+			value: <?php echo esc_attr( $answer['points'] ); ?>,
 			slide: function slider_slide(event, ui) {
 				return false; // this code not allow to dragging
 			},
@@ -1393,4 +1388,19 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$question           = $input_text;
 	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
+}
+
+/**
+ * Display Polor Question on Result page
+ *
+ * @params $data Questions Data
+ * @params $strip Can Stripable ot not?
+ * @return $question_display Returns the content of the question
+ * @since 7.3.3
+ */
+function qmn_sanitize_input_data( $data, $strip = false ) {
+	if ( $strip ) {
+		$data = stripslashes( $data );
+	}
+	return unserialize( $data );
 }

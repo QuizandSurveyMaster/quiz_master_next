@@ -429,6 +429,7 @@ class QMNQuizManager {
 					'total_questions'        => $result_data['total'],
 					'question_answers_array' => $quiz_result[1],
 					'comments'               => '',
+					'result_id'               => $id,
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
 				echo htmlspecialchars_decode( $data['display'] );
@@ -1086,8 +1087,17 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 				$question_display .= apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
+			$categor_class	 = '';
+			$multicategories = QSM_Questions::get_question_categories($mlw_question->question_id);
+			$question_categories = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+			if ( ! empty( $question_categories ) ) {
+				foreach ( $question_categories as $cat ) {
+					$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+				}
+			}
+
 			$question_id_list .= $mlw_question->question_id . 'Q';
-			$question_display .= "<div class='quiz_section {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count}'>";
+			$question_display .= "<div class='quiz_section qsm-question-wrapper {$animation_effect} question-section-id-{$mlw_question->question_id} slide{$mlw_qmn_section_count} {$categor_class}'>";
 			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 			if ( 0 == $mlw_question->comments ) {
@@ -2237,7 +2247,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	public function qsm_convert_editor_text_to_shortcode( $editor_text ) {
 		global $wp_embed;
 		$editor_text  = $wp_embed->run_shortcode( $editor_text );
-		$editor_text  = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+		$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 		$allowed_html = wp_kses_allowed_html( 'post' );
 		return do_shortcode( wp_kses( $editor_text, $allowed_html ) );
 	}

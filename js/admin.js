@@ -374,24 +374,24 @@ var QSMAdmin;
             }).open();
         });
 
-        $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {            
-            var value = $(this).val();                               
-            if (value == '0' ) {                
+        $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {
+            var value = $(this).val();
+            if (value == '0' ) {
                 $('.global_setting_system').parents('tr').show();
                 $('.global_setting_score_roundoff').parents('tr').show();
             }else {
                 $('.global_setting_system').parents('tr').hide();
                 $('.global_setting_score_roundoff').parents('tr').hide();
-    
+
             }
         });
-        $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {            
-            var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();  
-            var value1 = $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').val();                              
-            if (value != '1'  && value1 == '0' ) {                                         
+        $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {
+            var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();
+            var value1 = $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').val();
+            if (value != '1'  && value1 == '0' ) {
                 $('.global_setting_score_roundoff').parents('tr').show();
-            }else {                
-                $('.global_setting_score_roundoff').parents('tr').hide();    
+            }else {
+                $('.global_setting_score_roundoff').parents('tr').hide();
             }
         });
         $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');

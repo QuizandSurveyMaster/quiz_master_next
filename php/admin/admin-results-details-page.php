@@ -170,6 +170,9 @@ function qsm_generate_results_details_tab() {
     if( $new_template_result_detail == 1 ){
         $template = '';    
         if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
+            $span_start = '<span class="result-candidate-span"><label>';
+            $span_end = '</label><span>';
+            $spanend = '</span></span>';
             $template .= '<div class="overview-main-wrapper">';
                     //User detail
             $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
@@ -177,13 +180,13 @@ function qsm_generate_results_details_tab() {
             $template .= '<div class="inside">';                
             if( isset( $results_array['contact'] ) && is_array( $results_array['contact'] ) && !empty( $results_array['contact'] ) ){
                 for ( $i = 0; $i < count( $results_array["contact"] ); $i++ ) {
-                    $template .= '<span class="result-candidate-span"><label>'. $results_array["contact"][ $i ]["label"] .'</label><span>'. $results_array["contact"][ $i ]["value"] .'</span></span>';
+                    $template .= $span_start. $results_array["contact"][ $i ]["label"] .$span_end. $results_array["contact"][ $i ]["value"] .$spanend;
                 }
             }else{
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Name:', 'quiz-master-next' ) .'</label><span>'. $results_data->name .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Business:', 'quiz-master-next' ) .'</label><span>'. $results_data->business .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Phone:', 'quiz-master-next' ) .'</label><span>'. $results_data->phone .'</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Email:', 'quiz-master-next' ) .'</label><span>'. $results_data->email .'</span></span>';
+                $template .= $span_start. __( 'Name:', 'quiz-master-next' ) .$span_end. $results_data->name .$spanend;
+                $template .= $span_start. __( 'Business:', 'quiz-master-next' ) .$span_end. $results_data->business .$spanend;
+                $template .= $span_start. __( 'Phone:', 'quiz-master-next' ) .$span_end. $results_data->phone .$spanend;
+                $template .= $span_start. __( 'Email:', 'quiz-master-next' ) .$span_end. $results_data->email .$spanend;
             }                
             $template .= '</div>';
             $template .= '</div>';
@@ -193,9 +196,9 @@ function qsm_generate_results_details_tab() {
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Scorecard</span></h2>';
                 $template .= '<div class="inside">';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Correct Answers:', 'quiz-master-next' ) .'</label><span>%AMOUNT_CORRECT% Out of %TOTAL_QUESTIONS%</span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Points:', 'quiz-master-next' ) .'</label><span>%POINT_SCORE% </span></span>';
-                $template .= '<span class="result-candidate-span"><label>'. __( 'Percentage:', 'quiz-master-next' ) .'</label><span>%CORRECT_SCORE%%</span></span>';                
+                $template .= $span_start. __( 'Correct Answers:', 'quiz-master-next' ) .'</label><span>%AMOUNT_CORRECT% Out of %TOTAL_QUESTIONS%</span></span>';
+                $template .= $span_start. __( 'Points:', 'quiz-master-next' ) .'</label><span>%POINT_SCORE% </span></span>';
+                $template .= $span_start. __( 'Percentage:', 'quiz-master-next' ) .'</label><span>%CORRECT_SCORE%%</span></span>';                
                 $template .= '</div>';
                 $template .= '</div>';
                 $template .= '</div>';

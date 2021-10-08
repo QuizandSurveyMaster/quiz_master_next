@@ -268,7 +268,15 @@ function qsm_options_questions_tab_content() {
 									// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									// ),
 								);
-
+								foreach ( $question_types as $type ) {
+									if(isset($type["options"]["description"] ) &&  $type["options"]["description"] != null){
+										$description = array(
+											'question_type_id' => $type['slug'],
+											'description'      => __( $type["options"]["description"], 'quiz-master-next' ),
+										);
+										array_push($description_arr, $description);
+									}
+								}
 								// disabling polar for form type quiz and system correct/incorrect
 								if ( $form_type == 0 && $quiz_system == 0 ) {
 									$polar_class       = $polar_question_use = '';
@@ -283,7 +291,7 @@ function qsm_options_questions_tab_content() {
 
 								$show_answer_option = '';
 								foreach ( $question_types as $type ) {
-									if($type["show_answer_option"]){
+									if( isset($type["options"]["show_answer_option"] ) &&  $type["options"]["show_answer_option"] == true ){
 										$show_answer_option .= ' qsm_show_question_type_'.$type['slug'];
 									}
 								}
@@ -328,7 +336,7 @@ function qsm_options_questions_tab_content() {
 								<?php
 								$show_correct_answer_info = '';
 								foreach ( $question_types as $type ) {
-									if($type["show_correct_answer_info"]){
+									if( isset($type["options"]["show_correct_answer_info"] ) &&  $type["options"]["show_correct_answer_info"] == true ){
 										$show_correct_answer_info .= ','.$type['slug'];
 									}
 								}
@@ -373,7 +381,7 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-																echo "<option value='{$type['slug']}' js-func='{$type['js_func']}'>{$type['name']}</option>";
+																echo "<option value='{$type['slug']}'>{$type['name']}</option>";
 														}
 														?>
 													</select>
@@ -384,13 +392,13 @@ function qsm_options_questions_tab_content() {
 												<?php
 												$show_change_answer_editor = '';
 												foreach ( $question_types as $type ) {
-													if($type["show_change_answer_editor"]){
+													if( isset($type["options"]["show_change_answer_editor"] ) &&  $type["options"]["show_change_answer_editor"] == true ){
 														$show_change_answer_editor .= ','.$type['slug'];
 													}
 												}
 												$show_match_answer = '';
 												foreach ( $question_types as $type ) {
-													if($type["show_match_answer"]){
+													if( isset($type["options"]["show_match_answer"] ) &&  $type["options"]["show_match_answer"] == true){
 														$show_match_answer .= ','.$type['slug'];
 													}
 												}
@@ -520,8 +528,32 @@ function qsm_options_questions_tab_content() {
 											<?php
 											$show_autofill = '';
 											foreach ( $question_types as $type ) {
-												if($type["show_autofill"]){
+												if( isset($type["options"]["show_autofill"] ) &&  $type["options"]["show_autofill"] == true ){
 													$show_autofill .= ','.$type['slug'];
+												}
+											}
+											$show_limit_text = '';
+											foreach ( $question_types as $type ) {
+												if( isset($type["options"]["show_limit_text"] ) &&  $type["options"]["show_limit_text"] == true ){
+													$show_limit_text .= ','.$type['slug'];
+												}
+											}
+											$show_limit_multiple_response = '';
+											foreach ( $question_types as $type ) {
+												if( isset($type["options"]["show_limit_multiple_response"] ) &&  $type["options"]["show_limit_multiple_response"] == true ){
+													$show_limit_multiple_response .= ','.$type['slug'];
+												}
+											}
+											$show_file_upload_type = '';
+											foreach ( $question_types as $type ) {
+												if( isset($type["options"]["show_file_upload_type"] ) &&  $type["options"]["show_file_upload_type"] == true ){
+													$show_file_upload_type .= ','.$type['slug'];
+												}
+											}
+											$show_file_upload_limit = '';
+											foreach ( $question_types as $type ) {
+												if( isset($type["options"]["show_file_upload_limit"] ) &&  $type["options"]["show_file_upload_limit"] == true ){
+													$show_file_upload_limit .= ','.$type['slug'];
 												}
 											}
 											$advanced_question_option = array(
@@ -561,7 +593,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'text',
 													'priority' => '7',
 													'default' => '',
-													'show' => '3, 5, 7, 14',
+													'show' => '3, 5, 7, 14'.$show_limit_text,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Text',
 												),
 												'limit_multiple_response' => array(
@@ -569,7 +601,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'text',
 													'priority' => '8',
 													'default' => '',
-													'show' => '4,10',
+													'show' => '4,10'.$show_limit_multiple_response,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Multiple-Choice',
 												),
 												'file_upload_type' => array(
@@ -585,7 +617,7 @@ function qsm_options_questions_tab_content() {
 														'video/mp4' => __( 'Video', 'quiz-master-next' ),
 													),
 													'default' => 'image',
-													'show' => '11',
+													'show' => '11'.$show_file_upload_type,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Allow-File-Type',
 												),
 												'file_upload_limit' => array(
@@ -593,7 +625,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'number',
 													'priority' => '9',
 													'default' => '',
-													'show' => '11',
+													'show' => '11'.$show_file_upload_limit,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Limit',
 												),
 											);
@@ -717,6 +749,7 @@ function qsm_options_questions_tab_content() {
 					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
 				<# } #>
 			</div>
+			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 			<# if ( 0 == data.form_type ) { #>
 				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
@@ -727,9 +760,9 @@ function qsm_options_questions_tab_content() {
 			<# } else { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<# } #>
-			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>
 	</script>
+	<?php do_action( 'qsm_admin_after_single_answer_template' ); ?>
 <div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">

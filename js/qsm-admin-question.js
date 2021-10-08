@@ -798,6 +798,9 @@ var import_button;
 					jQuery(document).trigger('qsm_sync_child_parent_category', [checkbox, questionID]);
 				});
 			});
+		},
+		question_type_change: function (previous_question_val, questionID) {
+			//you can override this object
 		}
 	};
 
@@ -1118,9 +1121,15 @@ var import_button;
 		});
 
 		//Hide the question settings based on question type
-		$(document).on('change', '#question_type', function () {
-			var question_val = $(this).val();
-			var js_func = $('option:selected', this).attr('js-func');
+		var previous_question_val;
+		$(document).on('focus', '#question_type', function () {
+			previous_question_val = this.value;
+		})
+		$(document).on('change', '#question_type', function() {
+
+			var question_val = $('#question_type').val();
+			if(!QSMQuestion.question_type_change(previous_question_val, question_val)) return;
+
 			if (6 == question_val) {
 				var question_description = wp.editor.getContent('question-text');
 				if (question_description == 'Add description here!') {
@@ -1141,12 +1150,6 @@ var import_button;
 				$('.qsm_show_question_type_' + question_val).show();
 			}
 			qsm_hide_show_question_desc(question_val);
-			if(js_func!=''){
-				if (typeof window[js_func] == 'function'){
-					window[js_func](question_val);
-					e.preventDefault();
-				}
-			}
 		});
 
 		//Add new category

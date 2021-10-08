@@ -119,15 +119,16 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
-		foreach ( $answers as $answer ) {
+		foreach ( $answers as $answer_index => $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
+				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
 				if ( $answerEditor === 'rich' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question$id-$mlw_answer_total'>";
 				} elseif ( $answerEditor === 'image' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option' id='question$id-$mlw_answer_total'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option {$answer_class}' id='question$id-$mlw_answer_total'>";
 				} else {
-					$question_display .= "<div class='qmn_mc_answer_wrap' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
 				}
 				$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' />";
 				$question_display .= "<label for='question" . $id . '_' . $mlw_answer_total . "'>";
@@ -330,10 +331,11 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	$question_display  .= "<div class='qmn_radio_answers qmn_radio_horizontal_answers $mlw_requireClass'>";
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
-		foreach ( $answers as $answer ) {
+		foreach ( $answers as $answer_index => $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				$question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' /><label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
+				$question_display .= "<span class='mlw_horizontal_choice {$answer_class}'><input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' /><label for='question" . $id . '_' . $mlw_answer_total . "'>";
 				if ( $answerEditor === 'image' ) {
 					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
 				} else {

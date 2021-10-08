@@ -906,6 +906,7 @@ function qsmDisplayLoading($container) {
 
 function qmnDisplayResults(results, quiz_form_id, $container) {
 	$container.empty();
+	jQuery(document).trigger('qsm_before_display_result', [results, quiz_form_id, $container]);
 	if (results.redirect) {
 		window.location.replace(results.redirect);
 	} else {
@@ -914,7 +915,7 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 		qsmScrollTo($container);
 		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
 		// Fires after result is populates via ajax
-		jQuery(document).trigger('qsm_after_display_result');
+		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
 }
 
