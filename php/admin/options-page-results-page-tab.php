@@ -146,35 +146,28 @@ function qsm_options_results_tab_content() {
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
 						$variable_list                                = qsm_text_template_variable_list();
-						$email_exta_variable                          = array(
-							'%CONTACT_X%'   => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-							'%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-						);
-						$variable_list                                = array_merge( $email_exta_variable, $variable_list );
-						$variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' );
-						$variable_list['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
-						$variable_list['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
-						$variable_list['%QUESTION_ANSWER_X%']         = __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' );
-						unset( $variable_list['%QUESTION%'] );
-						unset( $variable_list['%USER_ANSWER%'] );
-						unset( $variable_list['%USER_ANSWERS_DEFAULT%'] );
-						unset( $variable_list['%QUESTION_POINT_SCORE%'] );
-						unset( $variable_list['%CORRECT_ANSWER%'] );
-						unset( $variable_list['%USER_COMMENTS%'] );
-						unset( $variable_list['%CORRECT_ANSWER_INFO%'] );
-						unset( $variable_list['%CURRENT_DATE%'] );
+						$variable_list['Core']['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
+						$variable_list['Core']['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
+						//filter to add or remove variables from variable list for pdf tab
+						$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
 						if ( $variable_list ) {
-							foreach ( $variable_list as $key => $s_variable ) {
+							foreach ( $variable_list as $category_name => $category_variables ) {
 								?>
-				<div class="popup-template-span-wrap">
-					<span class="qsm-text-template-span">
-						<button class="button button-default"><?php echo $key; ?></button>
-						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-							<span class="qsm-tooltips"><?php echo $s_variable; ?></span>
-						</span>
-					</span>
-				</div>
-				<?php
+								<div><h2><?php echo $category_name;?></h2></div>
+								<?php
+                foreach ($category_variables as $variable_key => $variable) {
+                ?>
+								<div class="popup-template-span-wrap">
+									<span class="qsm-text-template-span">
+										<span class="button button-default template-variable"><?php echo $variable_key; ?></span>
+										<span class="button click-to-copy">Click to Copy</span>
+										<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+											<span class="qsm-tooltips"><?php echo $variable; ?></span>
+										</span>
+									</span>
+								</div>
+								<?php
+                }
 							}
 						}
 						?>
