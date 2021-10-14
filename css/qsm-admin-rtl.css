@@ -2121,7 +2121,7 @@ td.scheduled_time_start {
 .qsm-text-template-span .click-to-copy{
 	display: none;
 	position: absolute;
-	width: 100%;
+	width: calc(100% - 12px);
 	text-align: center;
 	left: 0;
 }
