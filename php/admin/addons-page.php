@@ -22,16 +22,16 @@ function qmn_addons_page() {
 	?>
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
-		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 		<?php
 		if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
 			?>
-		<a class="button button-default" href="?page=qmn_addons"><span style="margin-top: 4px;"
+		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
 			<?php _e( 'Back to list', 'quiz-master-next' ); ?></a>
 		<?php
 		}
 		?>
+		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php

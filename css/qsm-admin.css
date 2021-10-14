@@ -2258,6 +2258,11 @@ td.scheduled_time_start {
 
 }
 
+.qsm-text-template-span{
+	min-width: 100px;
+	
+}
+
 .qsm-text-template-span .button{
 	padding: 0px;
 	border: none;
@@ -2273,7 +2278,7 @@ td.scheduled_time_start {
 .qsm-text-template-span .click-to-copy{
 	display: none;
 	position: absolute;
-	width: calc(100% - 12px);
+	width: 100%;
 	text-align: center;
 	left: 0;
 }
@@ -2292,6 +2297,8 @@ td.scheduled_time_start {
 
 .qsm-text-template-span:hover .qsm-tooltips-icon{
 	display: inline-block;
-	position: relative;
+	position: absolute;
+	right: 5px;
+	top: 4px;
 	z-index:99;
 }
