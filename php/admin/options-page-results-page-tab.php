@@ -161,9 +161,11 @@ function qsm_options_results_tab_content() {
 									<span class="qsm-text-template-span">
 										<span class="button button-default template-variable"><?php echo $variable_key; ?></span>
 										<span class="button click-to-copy">Click to Copy</span>
-										<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-											<span class="qsm-tooltips"><?php echo $variable; ?></span>
-										</span>
+										<span class="temp-var-seperator">
+											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+												<span class="qsm-tooltips"><?php echo $variable; ?></span>
+											</span>											
+										</span>						
 									</span>
 								</div>
 								<?php

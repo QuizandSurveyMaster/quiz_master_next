@@ -314,21 +314,21 @@ var QSMAdmin;
         });
         $(document).on('click', '#show-all-variable .qsm-text-template-span ', function (e) {
             e.preventDefault();
+            let templateSpan = jQuery(this);
             let templateVariable= jQuery(this).children('.template-variable');
             var $temp = $("<input>");
             $("body").append($temp);
             $temp.val(templateVariable.text()).select();
             document.execCommand("copy");
             $temp.remove();
-            var button_width = templateVariable.width();
-            var button_txt = templateVariable.text();
-            templateVariable.css('width', button_width);
-            templateVariable.text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
-            var this_par = templateVariable;
+            var button_width = templateSpan.width();
+            var button_txt = templateSpan.html()
+            templateSpan.css('width', button_width);
+            templateSpan.text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
             setTimeout(function () {
-                this_par.css('width', 'auto');
-                this_par.text('').text(button_txt);
-            }, 2000);
+                templateSpan.css('width', 'auto');
+                templateSpan.html(button_txt);
+            }, 1000);
         });
         $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
             $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
