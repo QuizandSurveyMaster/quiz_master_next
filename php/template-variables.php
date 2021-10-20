@@ -894,6 +894,14 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  */
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
 	global $mlwQuizMasterNext;
+	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$disable_image_type_template = array();
+	foreach ( $question_types as $type ) {
+		if( isset($type["options"]["disable_image_type_template"] ) &&  $type["options"]["disable_image_type_template"] == true ){
+			$disable_image_type_template[] = $type['slug'];
+		}
+	}
+
 	if ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ) {
 		$user_answer_class     = '';
 		$question_answer_class = '';
@@ -1082,8 +1090,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										}
 									}
 								}
+
 								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
+								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template)  ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 									$image_class      = 'qmn_image_option';
 								} else {
@@ -1125,7 +1134,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										$answer_value = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 									}
 									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
+									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
 										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 										$image_class      = 'qmn_image_option';
 									} else {
@@ -1149,7 +1158,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$user_selected_answer = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 							foreach ( $total_answers as $single_answer ) {
 								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
+								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 									$image_class      = 'qmn_image_option';
 								} else {
@@ -1170,7 +1179,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
+									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
 										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 										$image_class      = 'qmn_image_option';
 									} else {
@@ -1262,7 +1271,15 @@ function qsm_get_question_maximum_points( $question = array() ) {
 			}
 		}
 		$question_max_point = max( $answer_points );
-		if ( $question['question_type_new'] == 4 || $question['question_type_new'] == 10 ) {
+		global $mlwQuizMasterNext;
+		$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+		$multiple_choise = array();
+		foreach ( $question_types as $type ) {
+			if( isset($type["options"]["multiple_choise"] ) &&  $type["options"]["multiple_choise"] == true ){
+				$multiple_choise[] = $type['slug'];
+			}
+		}
+		if ( $question['question_type_new'] == 4 || $question['question_type_new'] == 10 || in_array($question['question_type_new'],$multiple_choise)) {
 			$limit_multiple_response = ( isset( $question['settings']['limit_multiple_response'] ) ) ? intval( $question['settings']['limit_multiple_response'] ) : 0;
 			if ( $limit_multiple_response > 0 && count( $answer_points ) > $limit_multiple_response ) {
 				rsort( $answer_points );

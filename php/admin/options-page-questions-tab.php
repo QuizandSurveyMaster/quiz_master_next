@@ -749,7 +749,6 @@ function qsm_options_questions_tab_content() {
 					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
 				<# } #>
 			</div>
-			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 			<# if ( 0 == data.form_type ) { #>
 				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
@@ -760,6 +759,7 @@ function qsm_options_questions_tab_content() {
 			<# } else { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<# } #>
+			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>
 	</script>
 	<?php do_action( 'qsm_admin_after_single_answer_template' ); ?>

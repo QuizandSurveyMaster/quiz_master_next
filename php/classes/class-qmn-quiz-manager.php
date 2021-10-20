@@ -476,7 +476,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		// Checks if the questions should be randomized.
 		$cat_query = '';
 		if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
-			$order_by_sql = 'ORDER BY rand()';	
+			$order_by_sql = 'ORDER BY rand()';
 			$categories   = isset( $quiz_options->randon_category ) ? $quiz_options->randon_category : '';
 			if ( $categories ) {
 				$exploded_arr = explode( ',', $quiz_options->randon_category );
@@ -511,7 +511,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$category_question_ids[] = $q_data[0];
 			}
 		}
-		
+
 		if ( $total_pages > 0 ) {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
@@ -525,7 +525,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 			}
 
-        //check If we should load a specific number of question 
+        //check If we should load a specific number of question
 			if($quiz_options->question_per_category != 0 && $is_quiz_page){
 				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids = (isset($categories['list']) ? array_keys($categories['list']) : array());
@@ -559,14 +559,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			}
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ', ', $question_ids );
-			
+
 			$query        = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
 			$questions    = $wpdb->get_results( stripslashes( $query ) );
 
 			// If we are not using randomization, we need to put the questions in the order of the new question editor.
 			// If a user has saved the pages in the question editor but still uses the older pagination options
 			// Then they will make it here. So, we need to order the questions based on the new editor.
-			
+
 			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && $quiz_options->question_per_category == 0 ) {
 				$ordered_questions = array();
 				foreach ( $questions as $question ) {
@@ -588,11 +588,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
 		}
 		$questions = apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
-		
+
 		// Create question ids array
 		$qsm_random_que_ids = array_column( $questions,'question_id' );
 		update_option( 'qsm_random_que_ids', $qsm_random_que_ids );
-		
+
 		// Returns an array of all the loaded questions.
 		return $questions;
 	}
@@ -636,8 +636,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		if ( ! $is_ajax ) {
 			global $qmn_json_data;
 			$qmn_json_data['question_list'] = $question_list;
-		}		
-		
+		}
+
 		return $mlw_qmn_answer_arrays;
 	}
 
@@ -708,7 +708,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
-		$randomness_class = $options->randomness_order == '0'? '':'random'; 
+		$randomness_class = $options->randomness_order == '0'? '':'random';
 		$quiz_display    .= "<div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz {$auto_pagination_class} quiz_theme_$saved_quiz_theme {$randomness_class} '>";
 		// Get quiz post based on quiz id
 		$args      = array(
@@ -1250,16 +1250,16 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$qmn_allowed_visit = true;
 		$quiz              = intval( $_POST['qmn_quiz_id'] );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
-		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();		
+		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
-		$qsm_option = array_map("unserialize", $qsm_option);		
+		$qsm_option = array_map("unserialize", $qsm_option);
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone = $_POST['currentuserTimeZone'];
 		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
 		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && $_POST['currentuserTime'] > $dtUtcDate){
 			echo json_encode( array('quizExpired'=>true) );
 			die();
-		} 
+		}
 		$data      = array(
 			'quiz_id'         => $options->quiz_id,
 			'quiz_name'       => $options->quiz_name,
@@ -1376,7 +1376,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables ) );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
-			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );			
+			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$unique_id  = md5( date( 'Y-m-d H:i:s' ) );
 			$results_id = 0;
 			// If the store responses in database option is set to Yes.
@@ -1472,7 +1472,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 			// Converts date to the preferred format
 			global $mlwQuizMasterNext;
-			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($qmn_array_for_variables);			
+			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format($qmn_array_for_variables);
 
 			// Determines redirect/results page.
 			$results_pages   = $this->display_results_text( $qmn_quiz_options, $qmn_array_for_variables );
@@ -1482,7 +1482,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$result_display .= $this->display_social( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display  = apply_filters( 'qmn_after_social_media', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			if ( $qmn_quiz_options->enable_retake_quiz_button == 1 ) {
-	
+
 				$result_display .= '<form method="POST">';
 				$result_display .= '<input type="hidden" value="' . $qmn_array_for_variables['quiz_id'] . '" name="qsm_retake_quiz_id" />';
 				$result_display .= '<input type="submit" value="' . apply_filters( 'qsm_retake_quiz_text', __( 'Retake Quiz', 'quiz-master-next' ) ). '" name="qsm_retake_button" />';
@@ -1550,7 +1550,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		// Prepares data to be sent back to front-end.
 		$return_array = array(
 			'quizExpired'=>false,
-			'display'  => htmlspecialchars_decode( $result_display ),			
+			'display'  => htmlspecialchars_decode( $result_display ),
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
 
@@ -1610,6 +1610,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			14, // Fill In The Blank
 			13, // Polar.
 		);
+
+		// Advance Question types filter
+		$result_question_types = apply_filters( 'qsm_result_question_types', $result_question_types );
 
 		// If deprecated pagination setting is not used, use new system...
 		if ( 0 == $options->question_from_total && 0 !== count( $pages ) ) {

@@ -1206,7 +1206,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_text[]  = $mlw_user_answer;
 		}
 	}
-	
+
 	$total_correct = $user_correct = 0;
 	if ( $match_answer == 'sequence' ) {
 		foreach ( $answers as $key => $answer ) {
@@ -1238,8 +1238,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		if($total_user_input < $total_option){
 			foreach($user_input as $k => $input){
 				$key = array_search( $input, $answers_array );
-				if($key !== false){					
-					$return_array['points'] += $answers[$key][1];	
+				if($key !== false){
+					$return_array['points'] += $answers[$key][1];
 				} else {
 					$correct = false;
 				}
@@ -1248,8 +1248,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		} else {
 			foreach($answers_array as $k => $answer){
 				$key = array_search( $answer, $user_input );
-				if($key !== false){				
-					$return_array['points'] += $answers[$k][1];	
+				if($key !== false){
+					$return_array['points'] += $answers[$k][1];
 				} else {
 					$correct = false;
 				}
