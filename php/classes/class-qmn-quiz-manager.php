@@ -78,6 +78,7 @@ class QMNQuizManager {
 					$mimes[] = 'image/png';
 					$mimes[] = 'image/x-icon';
 					$mimes[] = 'image/gif';
+					$mimes[] = 'image/webp';
 				} elseif ( $value == 'doc' ) {
 					$mimes[] = 'application/msword';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
