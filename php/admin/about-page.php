@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 7.3.5
  */
-function qsm_admin_enqueue_scripts_about_page(){
+function qsm_admin_enqueue_scripts_about_page($hook){
 	if ('qsm_page_qsm_quiz_about' != $hook ) {
 		return;
 	}
