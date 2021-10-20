@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 7.3.5
  */
-function qsm_admin_enqueue_scripts_addon_page(){
+function qsm_admin_enqueue_scripts_addon_page($hook){
 	if ( 'qsm_page_qmn_addons' != $hook ) {
 		return;
 	}
@@ -76,7 +76,7 @@ function qmn_addons_page() {
  * @return void
  * @since 4.4.0
  */
-function qsm_generate_featured_addons($hook) {
+function qsm_generate_featured_addons() {
 	global $mlwQuizMasterNext;
 	wp_localize_script( 'qsm_admin_script', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
