@@ -8,6 +8,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_style($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook && 'style' != $_GET['tab'] ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
+	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
+	wp_enqueue_style( 'wp-color-picker' );
+	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+	wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style');
+
+/**
  * Adds the Style tab to the Quiz Settings page.
  *
  * @return void
@@ -92,15 +111,6 @@ jQuery(document).ready(function() {
 	</ul>
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
-	<?php
-	// Include required custom js and css
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_media();
-	?>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
 		jQuery(document).on('click', '.qsm-activate-theme', function() {

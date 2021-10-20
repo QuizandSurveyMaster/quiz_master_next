@@ -10,6 +10,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_results($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook && 'results-pages' != $_GET['tab'] ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
+	wp_enqueue_editor();
+	wp_enqueue_media();
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_results');
+
+
+
+/**
  * Adds the Results Page tab to the Quiz Settings page.
  *
  * @since 6.1.0
@@ -33,7 +51,7 @@ function qsm_options_results_tab_content() {
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
 	);
-
+	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && $enabled != 'cancelled' ) {
@@ -42,11 +60,6 @@ function qsm_options_results_tab_content() {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
 	$categories = $wpdb->get_results( $query, ARRAY_N );
-
-	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
-	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
-	wp_enqueue_editor();
-	wp_enqueue_media();
 	?>
 
 <!-- Results Page Section -->

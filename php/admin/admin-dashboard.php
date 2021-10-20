@@ -87,6 +87,30 @@ function qsm_dashboard_screen_options( $status, $args ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_dashboard_page($hook){
+	if ( 'toplevel_page_qsm_dashboard' != $hook ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version );
+	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
+	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
+	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+	wp_enqueue_script( 'dashboard' );
+	if ( wp_is_mobile() ) {
+		wp_enqueue_script( 'jquery-touch-punch' );
+	}
+	wp_enqueue_script ( 'productstash-config', plugins_url( '../../js/qsm-productstash-config.js', __FILE__ ) );
+	wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );	
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page');
+
+/**
  * @since 7.0
  * @return HTMl Dashboard for QSM
  */
@@ -96,21 +120,6 @@ function qsm_generate_dashboard_page() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-	wp_enqueue_script( 'dashboard' );
-	if ( wp_is_mobile() ) {
-		wp_enqueue_script( 'jquery-touch-punch' );
-	}
-	?>
-<?php	
-wp_enqueue_script ( 'productstash-config', plugins_url( '../../js/qsm-productstash-config.js', __FILE__ ) );
-wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
 ?>
 <div class="wrap">
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
