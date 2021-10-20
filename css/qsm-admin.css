@@ -2310,13 +2310,14 @@ td.scheduled_time_start {
 	height: 100%;
 	width:25px;	
 	z-index:99;
-	border-left: 1px solid #0a4b78;
+	border-left: 1px dashed #a1c1d8;
 	background: #def0ff;
 }
 
 #show-all-variable-content .popup-template-span-wrap:hover{
 	background: #def0ff;
 	border-color: #a1c1d8 ;
+	border-style: dashed;
 }
 
 .popup-template-span-wrap .qsm-text-template-span .popup-copied-des span.dashicons{
