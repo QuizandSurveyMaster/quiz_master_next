@@ -13,7 +13,7 @@ function qsm_admin_enqueue_scripts_addon_page($hook){
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version, true);
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_addon_page');
 

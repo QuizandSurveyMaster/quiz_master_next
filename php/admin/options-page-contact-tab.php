@@ -13,7 +13,7 @@ function qsm_admin_enqueue_scripts_options_page_contact($hook){
 		return;
 	}	
 	global $mlwQuizMasterNext;
-  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version );
+  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
   wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ), array(), $mlwQuizMasterNext->version );
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact');
