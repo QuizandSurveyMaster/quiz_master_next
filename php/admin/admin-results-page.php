@@ -19,8 +19,6 @@ function qsm_admin_enqueue_scripts_results_page($hook){
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ) );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array() );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
 
