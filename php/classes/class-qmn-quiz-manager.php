@@ -363,6 +363,7 @@ class QMNQuizManager {
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'quiz_processing_message'            => $qmn_quiz_options->quiz_processing_message,
 				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
