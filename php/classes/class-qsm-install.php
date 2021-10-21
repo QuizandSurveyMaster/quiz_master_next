@@ -1148,6 +1148,16 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
+		// Registers quick result wrong answer setting
+		$field_array = array(
+			'id'      => 'quiz_processing_message',
+			'label'   => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
+			'type'    => 'text',
+			'default' => __( '', 'quiz-master-next' ),
+			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
 		// Setting for animation
 		$field_array = array(
 			'id'      => 'legacy_options',
