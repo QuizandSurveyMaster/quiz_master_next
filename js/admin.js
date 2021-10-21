@@ -312,21 +312,22 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '#show-all-variable .qsm-text-template-span > .button', function (e) {
+        $(document).on('click', '#show-all-variable .qsm-text-template-span ', function (e) {
             e.preventDefault();
+            let templateSpan = jQuery(this);
+            let templateVariable= jQuery(this).children('.template-variable');
             var $temp = $("<input>");
             $("body").append($temp);
-            $temp.val(jQuery(this).text()).select();
+            $temp.val(templateVariable.text()).select();
             document.execCommand("copy");
             $temp.remove();
-            var button_width = $(this).width();
-            var button_txt = $(this).text();
-            $(this).css('width', button_width);
-            $(this).text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
-            var this_par = $(this);
+            var button_width = templateSpan.width();
+            var button_txt = templateSpan.html()
+            templateSpan.css('width', button_width);
+            templateSpan.text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
             setTimeout(function () {
-                this_par.css('width', 'auto');
-                this_par.text('').text(button_txt);
+                templateSpan.css('width', 'auto');
+                templateSpan.html(button_txt);
             }, 1000);
         });
         $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
