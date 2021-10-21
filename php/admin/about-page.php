@@ -10,20 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_about_page($hook){
-	if ('qsm_page_qsm_quiz_about' != $hook ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_about_page');
-
-/**
  * This function generates the help page.
  *
  * @return void

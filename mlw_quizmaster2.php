@@ -248,11 +248,13 @@ class MLWQuizMasterNext {
 	public function qsm_admin_scripts_style( $hook ) {
 		global $mlwQuizMasterNext;
 		//common scripts and styles
-		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+		wp_enqueue_script( 'qmn_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util' ), $this->version, true );
 
 		if ( $hook == 'admin_page_mlw_quiz_options' ) {
 			wp_enqueue_script( 'wp-tinymce' );
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
 		}
 
 		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
