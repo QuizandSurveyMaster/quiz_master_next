@@ -19,7 +19,7 @@ function qsm_admin_enqueue_scripts_options_page_results($hook){
 		return;
 	}	
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
+	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 	wp_enqueue_editor();
 	wp_enqueue_media();
 }
