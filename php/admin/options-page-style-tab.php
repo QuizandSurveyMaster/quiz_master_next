@@ -23,8 +23,6 @@ function qsm_admin_enqueue_scripts_options_page_style($hook){
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
 		wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 		wp_enqueue_media();
 	}
 	
