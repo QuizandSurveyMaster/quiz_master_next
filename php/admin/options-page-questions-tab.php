@@ -15,21 +15,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 7.3.5
  */
 function qsm_admin_enqueue_scripts_options_page_questions($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook && 'questions' != $_GET['tab'] ) {
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
 		return;
-	}	
-	global $mlwQuizMasterNext;
-	// Scripts and styles.
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	if ( ! did_action( 'wp_enqueue_media' ) ) {
+	}
+	if("questions" === $_GET['tab']){
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
+		wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
+		if ( ! did_action( 'wp_enqueue_media' ) ) {
+			wp_enqueue_media();
+		}
+		wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
+		wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+		wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		wp_enqueue_editor();
 		wp_enqueue_media();
 	}
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
-	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-	wp_enqueue_editor();
-	wp_enqueue_media();
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions');
 

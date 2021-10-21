@@ -9,12 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 7.3.5
  */
 function qsm_admin_enqueue_scripts_options_page_contact($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook && 'contact' != $_GET['tab'] ) {
+	if ( 'admin_page_mlw_quiz_options' != $hook  ) {
 		return;
-	}	
-	global $mlwQuizMasterNext;
-  wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
-  wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ), array(), $mlwQuizMasterNext->version );
+	}
+  if("contact" === $_GET['tab']){
+    global $mlwQuizMasterNext;
+    wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
+    wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
+    wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ), array(), $mlwQuizMasterNext->version );
+  }	
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact');
 
