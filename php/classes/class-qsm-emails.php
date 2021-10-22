@@ -228,6 +228,10 @@ class QSM_Emails {
 			$name      = sanitize_text_field( $response_data['user_name'] );
 			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
 		}
+		/**
+		 * Filter to modify email headers.
+		 */
+		$headers = apply_filters('qsm_send_results_email_headers', $headers, $response_data);
 
 		// Prepares our attachments. If %USER_EMAIL% was in the $to, then use the user email attachment filter.
 		$attachments = array();
