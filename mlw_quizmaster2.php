@@ -258,6 +258,7 @@ class MLWQuizMasterNext {
 		}
 
 		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
 			wp_enqueue_script( 'qsm_quiz_wizard_script', plugins_url( 'js/qsm-quiz-wizard.js', __FILE__ ), array( 'jquery', 'micromodal_script' ), $this->version);
 			wp_enqueue_media();
 		}
