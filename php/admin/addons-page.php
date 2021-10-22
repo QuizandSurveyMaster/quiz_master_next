@@ -4,20 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_addon_page($hook){
-	if ( 'qsm_page_qmn_addons' != $hook ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version, true);
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_addon_page');
-
-/**
  * Creates the add on page that is displayed in the add on settings page
  *
  * @return void
@@ -78,7 +64,7 @@ function qmn_addons_page() {
  */
 function qsm_generate_featured_addons() {
 	global $mlwQuizMasterNext;
-	wp_localize_script( 'qsm_admin_script', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
+	wp_localize_script( 'qsm_admin_js', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 <div class="qsm-addon-browse-addons">

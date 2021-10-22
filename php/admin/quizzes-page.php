@@ -18,12 +18,10 @@ function qsm_admin_enqueue_scripts_quizzes_page($hook){
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version, true );
 	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
 	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
 	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version, true);
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quizzes_page');
 
@@ -239,8 +237,7 @@ function qsm_generate_quizzes_surveys_page() {
 		);
 	}
 	$total_count = count( $quiz_json_array );
-
-	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
+	wp_localize_script( 'qsm_admin_js', 'qsmQuizObject', $quiz_json_array );
 	?>
 <div class="wrap qsm-quizes-page">
 	<h1>

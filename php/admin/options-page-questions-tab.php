@@ -20,8 +20,6 @@ function qsm_admin_enqueue_scripts_options_page_questions($hook){
 	}
 	if("questions" === $_GET['tab'] || !isset($_GET['tab'])){
 		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
-		wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 		if ( ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
