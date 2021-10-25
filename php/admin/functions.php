@@ -680,14 +680,6 @@ function qsm_text_template_variable_list() {
 			'%CATEGORY_SCORE_X%'        => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
 			'%CATEGORY_AVERAGE_POINTS%' => __( 'The average points from all categories.', 'quiz-master-next' ),
 			'%CATEGORY_AVERAGE_SCORE%'  => __( 'The average score from all categories.', 'quiz-master-next' ),
-			// '%QUESTION%'                => __( 'The question that the user answered', 'quiz-master-next' ),
-			// '%USER_ANSWER%'             => __( 'The answer the user gave for the question', 'quiz-master-next' ),
-			// '%USER_ANSWERS_DEFAULT%'    => __( 'The answer the user gave for the question with default design', 'quiz-master-next' ),
-			// '%CORRECT_ANSWER%'          => __( 'The correct answer for the question', 'quiz-master-next' ),
-			// '%USER_COMMENTS%'           => __( 'The comments the user provided in the comment field for the question', 'quiz-master-next' ),
-			// '%CORRECT_ANSWER_INFO%'     => __( 'Reason why the correct answer is the correct answer', 'quiz-master-next' ),
-			// '%CURRENT_DATE%'            => __( 'The Current Date', 'quiz-master-next' ),
-			// '%QUESTION_POINT_SCORE%'    => __( 'Point Score of the question', 'quiz-master-next' ),
 			'%QUESTION_MAX_POINTS%'     => __( 'Maximum points of the question', 'quiz-master-next' ),
 			'%FACEBOOK_SHARE%'          => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
 			'%TWITTER_SHARE%'           => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
@@ -696,6 +688,7 @@ function qsm_text_template_variable_list() {
 			'%CONTACT_ALL%'             => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%AVERAGE_CATEGORY_POINTS_X%'=> __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
 			'%QUESTION_ANSWER_X%'       => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+			'%MINIMUM_POINTS%'          => __( 'Minimum possible points one can score', 'quiz-master-next' ),
 		)		
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );

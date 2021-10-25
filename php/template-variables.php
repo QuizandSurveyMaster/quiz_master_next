@@ -72,6 +72,7 @@ add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_links'
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_social_share', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_points', 10, 2 );
 
 /**
  * @since 6.4.11
@@ -1403,4 +1404,20 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 		$data = stripslashes( $data );
 	}
 	return unserialize( $data );
+}
+
+/**
+ * Replace minimum points variable with actual miniumum points
+ *
+ * @since 7.0.2
+ *
+ * @param string $content
+ * @param array  $mlw_quiz_array
+ * @return string $content
+ */
+function qsm_variable_minimum_points( $content, $mlw_quiz_array ) {
+	if ( isset( $mlw_quiz_array['minimum_possible_points'] ) ) {
+		$content = str_replace( '%MINIMUM_POINTS%', $mlw_quiz_array['minimum_possible_points'], $content );
+	}
+	return $content;
 }
