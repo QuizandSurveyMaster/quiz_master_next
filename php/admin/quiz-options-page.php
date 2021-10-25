@@ -18,7 +18,7 @@ function qsm_admin_enqueue_scripts_quiz_options_page($hook){
 	if ( 'admin_page_mlw_quiz_options' != $hook) {
 		return;
 	}	
-	if ("options" === $_GET['tab']){
+	if ( isset($_GET['tab'] ) && "options" === $_GET['tab']){
 		global $mlwQuizMasterNext;
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'jquery-ui-core' );

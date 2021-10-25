@@ -16,7 +16,7 @@ function qsm_admin_enqueue_scripts_options_page_style($hook){
 	if ( 'admin_page_mlw_quiz_options' != $hook ) {
 		return;
 	}	
-	if("style" === $_GET['tab']){
+	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
 		global $mlwQuizMasterNext;
 		wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
 		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
