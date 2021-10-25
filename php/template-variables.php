@@ -908,14 +908,20 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 			}
 		}
+
 	} else {
-		if ( $answer['correct'] === 'correct' ) {
+		if ( isset( $mlw_quiz_array['form_type'] )  && "1" === $mlw_quiz_array['form_type'] ){
 			$user_answer_class     = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
-			$user_answer_class     = 'qmn_user_incorrect_answer';
-			$question_answer_class = 'qmn_question_answer_incorrect';
-		}
+			if ( $answer['correct'] === 'correct' ) {
+				$user_answer_class     = 'qmn_user_correct_answer';
+				$question_answer_class = 'qmn_question_answer_correct';
+			} else {
+				$user_answer_class     = 'qmn_user_incorrect_answer';
+				$question_answer_class = 'qmn_question_answer_incorrect';
+			}
+		}		
 	}
 	$open_span_tag = '<span class="'.$user_answer_class.'">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
