@@ -658,6 +658,7 @@ function qsm_text_template_variable_list() {
 		'Core' => array(
 			'%POINT_SCORE%'             => __( 'Score for the quiz when using points', 'quiz-master-next' ),
 			'%MAXIMUM_POINTS%'          => __( 'Maximum possible points one can score', 'quiz-master-next' ),
+      '%MINIMUM_POINTS%'          => __( 'Minimum possible points one can score', 'quiz-master-next' ),
 			'%AVERAGE_POINT%'           => __( 'The average amount of points user had per question', 'quiz-master-next' ),
 			'%AMOUNT_CORRECT%'          => __( 'The number of correct answers the user had', 'quiz-master-next' ),
 			'%AMOUNT_INCORRECT%'        => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
@@ -688,7 +689,6 @@ function qsm_text_template_variable_list() {
 			'%CONTACT_ALL%'             => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%AVERAGE_CATEGORY_POINTS_X%'=> __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
 			'%QUESTION_ANSWER_X%'       => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
-			'%MINIMUM_POINTS%'          => __( 'Minimum possible points one can score', 'quiz-master-next' ),
 		)		
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
