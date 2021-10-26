@@ -1649,7 +1649,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
                     foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
                         if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
                           $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                          // $total_possible_points += $single_answer_arr[1];
                           if (intval($single_answer_arr[1]) > 0) {
                             array_push($max_value_array, $single_answer_arr[1]);
                           }
@@ -1786,7 +1785,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
                 foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
                     if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
                       $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                      // $total_possible_points += $single_answer_arr[1];
                       if (intval($single_answer_arr[1]) > 0) {
                         array_push($max_value_array, $single_answer_arr[1]);
                       }
