@@ -143,7 +143,7 @@ jQuery(document).ready(function() {
 		$quiz_id  = (int) $_GET['quiz_id'];
 		$theme_id = (int) $_POST['quiz_theme_id'];
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
-		if ( $_POST['save_featured_image'] == 'Save' ) {
+		if (isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
