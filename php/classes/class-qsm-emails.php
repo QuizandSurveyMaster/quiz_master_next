@@ -177,6 +177,7 @@ class QSM_Emails {
 		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
         $response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
+		$content = apply_filters( 'qmn_email_template_variable_results', $content );
 		$content = str_replace( '<br/>', '<br>', $content );
 		$content = str_replace( '<br />', '<br>', $content );
 		$content = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $content );

@@ -1092,7 +1092,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template)  ) {
+								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image'  ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 									$image_class      = 'qmn_image_option';
 								} else {
@@ -1134,7 +1134,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										$answer_value = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 									}
 									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
+									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 										$image_class      = 'qmn_image_option';
 									} else {
@@ -1158,7 +1158,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$user_selected_answer = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
 							foreach ( $total_answers as $single_answer ) {
 								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
+								if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 									$image_class      = 'qmn_image_option';
 								} else {
@@ -1179,7 +1179,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && !in_array($question['question_type_new'],$disable_image_type_template) ) {
+									if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
 										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
 										$image_class      = 'qmn_image_option';
 									} else {
@@ -1225,7 +1225,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( ( $answer['question_type'] == 0 || $answer['question_type'] == 1 || $answer['question_type'] == 2 ) && $answer[1] == '' ) {
 			$user_answer_new = __( 'No Answer Provided', 'quiz-master-next' );
 		}
-		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != '' ) {
+		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != ''  && !in_array($answer['question_type'],$disable_image_type_template) ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
 		}elseif( $answer['question_type'] == 5){
@@ -1235,7 +1235,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		}
 	}
 	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
-	if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $answer_2 != 'NA' ) {
+	if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $answer_2 != 'NA'  && !in_array($answer['question_type'],$disable_image_type_template)  ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<br/><img src="' . $image_url . '"/>', $mlw_question_answer_display );
 	} else {
