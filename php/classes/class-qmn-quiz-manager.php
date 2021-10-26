@@ -1645,43 +1645,66 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
               // Get total correct points
               if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
                 if ( ! in_array( $question_id, $hidden_questions ) ) {
-                  if ($question_type_new == 4 || $question_type_new == 10) {
-                    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                        if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                          $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                          if (intval($single_answer_arr[1]) > 0) {
-                            array_push($max_value_array, $single_answer_arr[1]);
-                          }
-                          if (intval($single_answer_arr[1]) < 0) {
-                            array_push($min_value_array, $single_answer_arr[1]);
-                          }
-                        }
+                  $max_value = 0;
+                  $min_value = 0;
+                  foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
+                    if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
+                      $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
+                      if (intval($single_answer_arr[1]) > 0) {
+                        array_push($max_value_array, $single_answer_arr[1]);
+                      }
+                      if (intval($single_answer_arr[1]) < 0) {
+                        array_push($min_value_array, $single_answer_arr[1]);
+                      }
                     }
-                    if (empty($max_value_array) || empty($min_value_array)){
-                      if (empty($max_value_array)){
-                        if ( 0 ===$question_is_required ){
-                          $max_value = max($min_value_array) ? max($min_value_array) : 0;
+                  }
+                  if (empty($max_value_array) || empty($min_value_array)){
+                    if (empty($max_value_array)){
+                      if ( 0 ===$question_is_required ){
+                        if ($question_type_new == 4 || $question_type_new == 10) {
+                          $max_value = !empty($min_value_array) ? max($min_value_array) : 0;
+                          $min_value = !empty($min_value_array) ? array_sum($min_value_array): 0;
+                        } else {
+                          $max_value = !empty($min_value_array) ? max($min_value_array) : 0;
+                          $min_value = !empty($min_value_array) ? min($min_value_array): 0;
+                        }                        
+                      } else {
+                        if ($question_type_new == 4 || $question_type_new == 10) {
+                          $max_value = 0;
+                          $min_value = !empty($min_value_array) ? array_sum($min_value_array): 0;
                         } else {
                           $max_value = 0;
+                          $min_value = !empty($min_value_array) ? min($min_value_array): 0;
                         }
-                        $min_value = min($min_value_array) ? min($min_value_array): 0;
-
                       }
-                      if (empty($min_value_array)){
-                        if ( 0 === $question_is_required ){
-                          $min_value = min($max_value_array) ? min($max_value_array) : 0;
+                    }
+                    if (empty($min_value_array)){
+                      if ( 0 ===$question_is_required ){
+                        if ($question_type_new == 4 || $question_type_new == 10) {
+                          $min_value = !empty($max_value_array) ? min($max_value_array) : 0 ;
+                          $max_value = !empty($max_value_array) ? array_sum($max_value_array) : 0 ;                    
+                        } else {
+                          $min_value = !empty($max_value_array) ? min($max_value_array) : 0 ;
+                          $max_value = !empty($max_value_array) ? max($max_value_array) : 0 ;
+                        }                        
+                      } else {
+                        if ($question_type_new == 4 || $question_type_new == 10) {
+                          $min_value = 0;
+                          $max_value = !empty($max_value_array) ? array_sum($max_value_array) : 0 ;
                         } else {
                           $min_value = 0;
+                          $max_value = !empty($max_value_array) ? max($max_value_array) : 0 ;
                         }
-                        $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                      }             
+                      }
+                    }             
+                  } else {
+                    if ($question_type_new == 4 || $question_type_new == 10) {
+                      $max_value            = array_sum($max_value_array);
+                      $min_value            = array_sum($min_value_array);
                     } else {
                       $max_value            = max($max_value_array);
                       $min_value            = min($min_value_array);
-                    }
-                  } else {
-                      $max_value            = max(array_column($question['answers'], '1'));
-                      $min_value            = min(array_column($question['answers'], '1'));
+                    }   
                   }                                
                   $total_possible_points += $max_value;
                   $minimum_possible_points += $min_value;
@@ -1781,44 +1804,67 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
             // Get total correct points
             if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
-              if ($question_type_new == 4 || $question_type_new == 10) {
-                foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                    if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                      $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                      if (intval($single_answer_arr[1]) > 0) {
-                        array_push($max_value_array, $single_answer_arr[1]);
-                      }
-                      if (intval($single_answer_arr[1]) < 0) {
-                        array_push($min_value_array, $single_answer_arr[1]);
-                      }
-                    }
+              $max_value = 0;
+              $min_value = 0;
+              foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
+                if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
+                  $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
+                  if (intval($single_answer_arr[1]) > 0) {
+                    array_push($max_value_array, $single_answer_arr[1]);
+                  }
+                  if (intval($single_answer_arr[1]) < 0) {
+                    array_push($min_value_array, $single_answer_arr[1]);
+                  }
                 }
-                if (empty($max_value_array) || empty($min_value_array)){
-                  if (empty($max_value_array)){
-                    if ( 0 ===$question_is_required ){
-                      $max_value = max($min_value_array) ? max($min_value_array) : 0;
+              }
+              if (empty($max_value_array) || empty($min_value_array)){
+                if (empty($max_value_array)){
+                  if ( 0 ===$question_is_required ){
+                    if ($question_type_new == 4 || $question_type_new == 10) {
+                      $max_value = !empty($min_value_array) ? max($min_value_array) : 0;
+                      $min_value = !empty($min_value_array) ? array_sum($min_value_array): 0;
+                    } else {
+                      $max_value = !empty($min_value_array) ? max($min_value_array) : 0;
+                      $min_value = !empty($min_value_array) ? min($min_value_array): 0;
+                    }                        
+                  } else {
+                    if ($question_type_new == 4 || $question_type_new == 10) {
+                      $max_value = 0;
+                      $min_value = !empty($min_value_array) ? array_sum($min_value_array): 0;
                     } else {
                       $max_value = 0;
+                      $min_value = !empty($min_value_array) ? min($min_value_array): 0;
                     }
-                    $min_value = min($min_value_array) ? min($min_value_array): 0;
-
                   }
-                  if (empty($min_value_array)){
-                    if ( 0 === $question_is_required ){
-                      $min_value = min($max_value_array) ? min($max_value_array) : 0;
+                }
+                if (empty($min_value_array)){
+                  if ( 0 ===$question_is_required ){
+                    if ($question_type_new == 4 || $question_type_new == 10) {
+                      $min_value = !empty($max_value_array) ? min($max_value_array) : 0 ;
+                      $max_value = !empty($max_value_array) ? array_sum($max_value_array) : 0 ;                    
+                    } else {
+                      $min_value = !empty($max_value_array) ? min($max_value_array) : 0 ;
+                      $max_value = !empty($max_value_array) ? max($max_value_array) : 0 ;
+                    }                        
+                  } else {
+                    if ($question_type_new == 4 || $question_type_new == 10) {
+                      $min_value = 0;
+                      $max_value = !empty($max_value_array) ? array_sum($max_value_array) : 0 ;
                     } else {
                       $min_value = 0;
+                      $max_value = !empty($max_value_array) ? max($max_value_array) : 0 ;
                     }
-                    $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                  }             
+                  }
+                }             
+              } else {
+                if ($question_type_new == 4 || $question_type_new == 10) {
+                  $max_value            = array_sum($max_value_array);
+                  $min_value            = array_sum($min_value_array);
                 } else {
                   $max_value            = max($max_value_array);
                   $min_value            = min($min_value_array);
-                }
-              } else {
-                  $max_value            = max(array_column($question['answers'], '1'));
-                  $min_value            = min(array_column($question['answers'], '1'));
-              }                                
+                }   
+              }                                    
               $total_possible_points += $max_value;
               $minimum_possible_points += $min_value;
             }
