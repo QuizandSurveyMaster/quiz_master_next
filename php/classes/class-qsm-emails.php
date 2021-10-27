@@ -191,7 +191,7 @@ class QSM_Emails {
 		$content = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $content );
 		$content = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $content );
 		$content = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $content );
-		$content = str_replace( '<span class="qmn_user_incorrect_answer">', "$correct_answer ", $content );
+		$content = str_replace( '<span class="qmn_user_correct_answer">', "$correct_answer ", $content );
 		$content = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $content );
 		$content = html_entity_decode( $content );
 
