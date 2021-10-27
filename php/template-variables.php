@@ -898,13 +898,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 	$disable_image_type_template = array();
 	foreach ( $question_types as $type ) {
-		if( isset($type["options"]["disable_image_type_template"] ) &&  $type["options"]["disable_image_type_template"] == true ){
+		if( isset($type["options"]["disable_image_type_template"] ) &&  $type["options"]["disable_image_type_template"]){
 			$disable_image_type_template[] = $type['slug'];
 		}
 	}
 	$use_custom_default_template = array();
 	foreach ( $question_types as $type ) {
-		if( isset($type["options"]["use_custom_default_template"] ) &&  $type["options"]["use_custom_default_template"] == true ){
+		if( isset($type["options"]["use_custom_default_template"] ) &&  $type["options"]["use_custom_default_template"]){
 			$use_custom_default_template[] = $type['slug'];
 		}
 	}
@@ -936,7 +936,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				$user_answer_class     = 'qmn_user_incorrect_answer';
 				$question_answer_class = 'qmn_question_answer_incorrect';
 			}
-		}		
+		}
 	}
 	$open_span_tag = '<span class="'.$user_answer_class.'">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
@@ -1296,7 +1296,7 @@ function qsm_get_question_maximum_points( $question = array() ) {
 		$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
 		$multiple_choise = array();
 		foreach ( $question_types as $type ) {
-			if( isset($type["options"]["multiple_choise"] ) &&  $type["options"]["multiple_choise"] == true ){
+			if( isset($type["options"]["multiple_choise"] ) &&  $type["options"]["multiple_choise"]){
 				$multiple_choise[] = $type['slug'];
 			}
 		}

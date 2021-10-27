@@ -297,7 +297,7 @@ class QMNPluginHelper
      * @param bool $graded Tells the plugin if this question is graded or not. This will affect scoring.
      * @param string $review_function The name of the function to call when scoring the question
      * @param string $slug The slug of the question type to be stored with question in database
-     * @param string $option The options for show and hide question validation settings and answer types
+     * @param array $options The options for show and hide question validation settings and answer types
      * @return void
      */
     public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_args = null, $save_edit_function = null, $slug = null, $options = array())

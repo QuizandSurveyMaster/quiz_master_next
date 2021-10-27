@@ -305,7 +305,7 @@ function qsm_options_questions_tab_content() {
 
 								$show_answer_option = '';
 								foreach ( $question_types as $type ) {
-									if( isset($type["options"]["show_answer_option"] ) &&  $type["options"]["show_answer_option"] == true ){
+									if( isset($type["options"]["show_answer_option"] ) &&  $type["options"]["show_answer_option"]){
 										$show_answer_option .= ' qsm_show_question_type_'.$type['slug'];
 									}
 								}
@@ -350,7 +350,7 @@ function qsm_options_questions_tab_content() {
 								<?php
 								$show_correct_answer_info = '';
 								foreach ( $question_types as $type ) {
-									if( isset($type["options"]["show_correct_answer_info"] ) &&  $type["options"]["show_correct_answer_info"] == true ){
+									if( isset($type["options"]["show_correct_answer_info"] ) &&  $type["options"]["show_correct_answer_info"]){
 										$show_correct_answer_info .= ','.$type['slug'];
 									}
 								}
@@ -406,13 +406,13 @@ function qsm_options_questions_tab_content() {
 												<?php
 												$show_change_answer_editor = '';
 												foreach ( $question_types as $type ) {
-													if( isset($type["options"]["show_change_answer_editor"] ) &&  $type["options"]["show_change_answer_editor"] == true ){
+													if( isset($type["options"]["show_change_answer_editor"] ) &&  $type["options"]["show_change_answer_editor"]){
 														$show_change_answer_editor .= ','.$type['slug'];
 													}
 												}
 												$show_match_answer = '';
 												foreach ( $question_types as $type ) {
-													if( isset($type["options"]["show_match_answer"] ) &&  $type["options"]["show_match_answer"] == true){
+													if( isset($type["options"]["show_match_answer"] ) &&  $type["options"]["show_match_answer"]){
 														$show_match_answer .= ','.$type['slug'];
 													}
 												}
@@ -542,31 +542,31 @@ function qsm_options_questions_tab_content() {
 											<?php
 											$show_autofill = '';
 											foreach ( $question_types as $type ) {
-												if( isset($type["options"]["show_autofill"] ) &&  $type["options"]["show_autofill"] == true ){
+												if( isset($type["options"]["show_autofill"] ) &&  $type["options"]["show_autofill"]){
 													$show_autofill .= ','.$type['slug'];
 												}
 											}
 											$show_limit_text = '';
 											foreach ( $question_types as $type ) {
-												if( isset($type["options"]["show_limit_text"] ) &&  $type["options"]["show_limit_text"] == true ){
+												if( isset($type["options"]["show_limit_text"] ) &&  $type["options"]["show_limit_text"]){
 													$show_limit_text .= ','.$type['slug'];
 												}
 											}
 											$show_limit_multiple_response = '';
 											foreach ( $question_types as $type ) {
-												if( isset($type["options"]["show_limit_multiple_response"] ) &&  $type["options"]["show_limit_multiple_response"] == true ){
+												if( isset($type["options"]["show_limit_multiple_response"] ) &&  $type["options"]["show_limit_multiple_response"]){
 													$show_limit_multiple_response .= ','.$type['slug'];
 												}
 											}
 											$show_file_upload_type = '';
 											foreach ( $question_types as $type ) {
-												if( isset($type["options"]["show_file_upload_type"] ) &&  $type["options"]["show_file_upload_type"] == true ){
+												if( isset($type["options"]["show_file_upload_type"] ) &&  $type["options"]["show_file_upload_type"]){
 													$show_file_upload_type .= ','.$type['slug'];
 												}
 											}
 											$show_file_upload_limit = '';
 											foreach ( $question_types as $type ) {
-												if( isset($type["options"]["show_file_upload_limit"] ) &&  $type["options"]["show_file_upload_limit"] == true ){
+												if( isset($type["options"]["show_file_upload_limit"] ) &&  $type["options"]["show_file_upload_limit"]){
 													$show_file_upload_limit .= ','.$type['slug'];
 												}
 											}
