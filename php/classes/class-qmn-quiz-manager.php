@@ -1900,8 +1900,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
     $question_required = ( 0 === unserialize($question['question_settings'])['required']);
     $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
       
-    $max_min_result = $this->qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
-    return $max_min_result;
+    return $this->qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
+    
 	}
   /**
 	 * evaluates conditions and returns maximum and minimum points for a quiz
