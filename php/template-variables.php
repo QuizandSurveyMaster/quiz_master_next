@@ -901,6 +901,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$disable_image_type_template[] = $type['slug'];
 		}
 	}
+	$use_custom_default_template = array();
+	foreach ( $question_types as $type ) {
+		if( isset($type["options"]["use_custom_default_template"] ) &&  $type["options"]["use_custom_default_template"] == true ){
+			$use_custom_default_template[] = $type['slug'];
+		}
+	}
 
 	if ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ) {
 		$user_answer_class     = '';
@@ -1113,6 +1119,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							if ( $answer['question_type'] == 13 ) {
 								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
+							}elseif(in_array($answer['question_type'],$use_custom_default_template)){
+								$questionid  = $answer['question_type'];
+								$custom_answer_new  = $answer[1];
+								$question_with_answer_text .= apply_filters('qsm_result_page_custom_default_template', $custom_answer_new, $questionid , $total_answers, $questions, $answer);
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$single_answer_option = $single_answer[0];
@@ -1142,7 +1152,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										$image_class      = '';
 									}
 									if ( isset( $single_answer[2] ) && $single_answer[2] == 1 && $answer_value == $single_answer_option ) {
-										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
+										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer' . $image_class . '">' . $show_user_answer . '</span>';
 									} elseif ( isset( $single_answer[2] ) && $single_answer[2] == 1 ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} elseif ( $answer_value == $single_answer_option && $single_answer[2] !== 1 ) {
