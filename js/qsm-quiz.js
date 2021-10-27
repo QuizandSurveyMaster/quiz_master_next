@@ -873,7 +873,7 @@
 	 }
 	 jQuery(document).trigger('qsm_before_quiz_submit', [quiz_form_id]);
 	 jQuery('#' + quiz_form_id + ' input[type=submit]').attr('disabled', 'disabled');
-	 qsmDisplayLoading($container);
+	 qsmDisplayLoading($container, quiz_id);
 	 // console.log( 'submitted data:' + unindexed_array );
 	 jQuery.ajax({
 		 url: qmn_ajax_object.ajaxurl,
@@ -898,9 +898,15 @@
 	 return false;
  }
 
- function qsmDisplayLoading($container) {
+ function qsmDisplayLoading($container, quiz_id) {
+	 var loader_html = '<div class="qsm_quiz_processing_box">';
+	 loader_html += '<div class="qsm-spinner-loader qsm_quiz_processing_loader"></div>';
+	 if (qmn_quiz_data[quiz_id].hasOwnProperty('quiz_processing_message') && qmn_quiz_data[quiz_id].quiz_processing_message != '') {
+		 loader_html += '<div class="qsm_quiz_processing_message">'+qmn_quiz_data[quiz_id].quiz_processing_message+'</div>';
+	 }
+	 loader_html += '</div>';
 	 $container.empty();
-	 $container.append('<div class="qsm-spinner-loader"></div>');
+	 $container.append(loader_html);
 	 qsmScrollTo($container);
  }
 
@@ -1236,7 +1242,7 @@
 		 e.preventDefault();
 		 var quiz_id = jQuery(this).data('quiz_id');
 		 var parent_div = jQuery(this).parents('.qsm-quiz-container');
-		 qsmDisplayLoading(parent_div);
+		 qsmDisplayLoading(parent_div, quiz_id);
 		 jQuery.ajax({
 			 type: 'POST',
 			 url: qmn_ajax_object.ajaxurl,

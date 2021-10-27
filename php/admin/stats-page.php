@@ -8,6 +8,22 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_stats_page($hook){
+	if ( 'qsm_page_qmn_stats' != $hook ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script('ChartJS', plugins_url( '../../js/Chart.min.js' , __FILE__ ));
+	
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
+
+
+/**
  * Generates the HTML for the Stats page
  *
  * Retrieves the HTML for the tab of Stats page from the plugin helper
@@ -77,7 +93,6 @@ add_action("plugins_loaded", 'qmn_stats_overview_tab');
  */
 function qmn_stats_overview_content()
 {
-	wp_enqueue_script('ChartJS', plugins_url( '../../js/Chart.min.js' , __FILE__ ));
 	$range = "daily";
 	if (isset($_POST["range"]) && $_POST["range"] != '') {
 		$range = sanitize_text_field( $_POST["range"] );

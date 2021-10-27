@@ -1620,6 +1620,7 @@ td.scheduled_time_start {
 	display: inline-block;
 	position: relative;
 	text-align: center;
+	padding: 0 5px;
 }
 
 #show-all-variable-content .popup-template-span-wrap {
@@ -1627,6 +1628,7 @@ td.scheduled_time_start {
 	margin-right: 5px;
 	width: auto;
 	display: inline-block;
+	border: 1px solid #def0ff;
 }
 
 #show-all-variable-content .popup-template-span-wrap:nth-child(3n + 3) .qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips {
@@ -1637,19 +1639,15 @@ td.scheduled_time_start {
 	left: 93%;
 }
 
-#show-all-variable-content .qsm-text-template-span .qsm-tooltips-icon {
-	margin-left: 5px;
-}
-
-.qsm-text-template-span button {
-	border-color: #ccc !important;
-}
-
 .qsm-text-template-span .qsm-tooltips-icon {
 	vertical-align: middle;
-	line-height: 30px;
-	color: #9e9e9e;
-	margin-left: 5px;
+	width: unset;
+	height: 10px;
+	color: #2271b1;
+	border: 0.5px solid #2271b1;
+	border-radius: 50%;
+	font-size: 8px;
+	display: none;
 }
 
 .qsm-text-template-span .qsm-tooltips-icon .qsm-tooltips {
@@ -2258,3 +2256,70 @@ td.scheduled_time_start {
 	}
 
 }
+
+.qsm-text-template-span{
+	min-width: 100px;
+	
+}
+
+.qsm-text-template-span .button{
+	padding: 0px;
+	border: none;
+	min-height: unset;
+	font-size: 12px;
+	background: unset;	
+}
+
+.qsm-text-template-span .template-variable:hover {
+	background: unset;
+}
+
+.qsm-text-template-span .click-to-copy{
+	display: none;
+	position: absolute;
+	width: calc(100% - 25px);
+	text-align: center;
+	left: 0;
+}
+
+
+.qsm-text-template-span:hover .click-to-copy{
+	display: inline-block;
+	background: #def0ff;
+}
+
+
+.qsm-text-template-span .qsm-tooltips-icon:before{
+	content:"\003F";
+	padding: 0px 3px;
+  vertical-align: top;
+}
+
+.qsm-text-template-span:hover .qsm-tooltips-icon{
+	display: inline-block;
+
+}
+
+.qsm-text-template-span:hover .temp-var-seperator{
+	position: absolute;
+	display: flex;
+	right: 0;
+	top: 0;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width:25px;	
+	z-index:99;
+	border-left: 1px dashed #a1c1d8;
+	background: #def0ff;
+}
+
+#show-all-variable-content .popup-template-span-wrap:hover{
+	background: #def0ff;
+	border-color: #a1c1d8 ;
+	border-style: dashed;
+}
+
+.popup-template-span-wrap .qsm-text-template-span .popup-copied-des span.dashicons{
+	line-height: 1;
+} 

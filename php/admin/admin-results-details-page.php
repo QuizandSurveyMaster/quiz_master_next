@@ -1,5 +1,25 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_results_detail_page($hook){
+	if ( 'admin_page_qsm_quiz_result_details' != $hook ) {
+		return;
+	}
+	global $mlwQuizMasterNext;
+	wp_enqueue_style( 'qsm_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
+    wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
+    wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
+    wp_enqueue_script( 'jquery-ui-slider-js', plugins_url( '../../js/jquery-ui.js', __FILE__ ) );
+    wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url( '../../js/jquery.ui.slider-rtl.js', __FILE__ ) );
+    wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url( '../../css/jquery.ui.slider-rtl.css', __FILE__ ) );
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_detail_page');
+
 /**
 * This function generates the results details that are shown the results page.
 *
@@ -11,14 +31,6 @@ function qsm_generate_result_details() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-    wp_enqueue_style( 'qsm_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
-    wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-    wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );        
-    wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-    wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
-    wp_enqueue_script( 'jquery-ui-slider-js', plugins_url( '../../js/jquery-ui.js', __FILE__ ) );
-    wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url( '../../js/jquery.ui.slider-rtl.js', __FILE__ ) );
-    wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url( '../../css/jquery.ui.slider-rtl.css', __FILE__ ) );
     $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'results';
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();        
     ?>
