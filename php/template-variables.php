@@ -1186,6 +1186,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$questionid = $questions[ $answer['id'] ]['question_id'];
 
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
+							}elseif(in_array($answer['question_type'],$use_custom_default_template)){
+								$questionid  = $answer['question_type'];
+								$custom_answer_new  = $answer[1];
+								$question_with_answer_text .= apply_filters('qsm_result_page_custom_default_template', $custom_answer_new, $questionid , $total_answers, $questions, $answer);
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$image_class = '';
