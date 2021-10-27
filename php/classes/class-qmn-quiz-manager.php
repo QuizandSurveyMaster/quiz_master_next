@@ -368,7 +368,7 @@ class QMNQuizManager {
 				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
 
-			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			// Checks if we should be showing quiz or results page.
 			if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
@@ -377,14 +377,14 @@ class QMNQuizManager {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 
-			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables );
+			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			$return_display .= '<script>
                             window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . json_encode( $qmn_filtered_json ) . '
                     </script>';
 
 			$return_display .= ob_get_clean();
-			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 		}
 		return $return_display;
 	}
@@ -1570,7 +1570,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public function check_answers( $options, $quiz_data ) {
+	public static function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
 
