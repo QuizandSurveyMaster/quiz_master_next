@@ -1728,7 +1728,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-            $question_type_new = $question['question_type_new'];
             // Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
