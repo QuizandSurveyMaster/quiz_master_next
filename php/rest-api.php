@@ -468,6 +468,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$question = QSM_Questions::load_question( $request['id'] );
+			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);			
 			if ( ! empty( $question ) ) {
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 				$question         = array(
@@ -478,7 +479,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'answerInfo'     => $question['question_answer_info'],
 					'comments'       => $question['comments'],
 					'hint'           => $question['hints'],
-					'category'       => $question['category'],
+					'category'       => (isset($categorysArray['category_name']) && !empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']):"" ) ,
 					'multicategories'=> $question['multicategories'],
 					'required'       => $question['settings']['required'],
 					'answers'        => $question['answers'],
