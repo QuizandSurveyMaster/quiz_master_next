@@ -1630,6 +1630,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
+              $question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
@@ -1641,7 +1642,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
               // Get maximum and minimum points for the quiz
               if ( ! in_array( $question_id, $hidden_questions ) ) {
-                $max_min_result = $this->qsm_max_min_points($options,$question);
+                $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
                 $total_possible_points += $max_min_result['max_point'];
                 $minimum_possible_points += $max_min_result['min_point'];
               }            
@@ -1727,7 +1728,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-            
             // Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
@@ -1735,7 +1735,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						$answer_points  = 0;
 
             // Get maximum and minimum points for the quiz
-            $max_min_result = $this->qsm_max_min_points($options,$question);
+            $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
             $total_possible_points += $max_min_result['max_point'];
             $minimum_possible_points += $max_min_result['min_point'];
 
@@ -1868,7 +1868,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @param array $question
 	 * @return string $max_min_result 
 	 */
-	public function qsm_max_min_points( $options , $question ) {
+	public static function qsm_max_min_points( $options , $question ) {
     
     $max_value_array = array();
     $min_value_array = array();
@@ -1901,7 +1901,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
     $question_required = ( 0 === unserialize($question['question_settings'])['required']);
     $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
       
-    return $this->qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
+    return QMNQuizManager::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
     
 	}
   /**
@@ -1914,7 +1914,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
    * @param array $multi_response
 	 * @return string $max_min_result
 	 */
-	public function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response) {
+	public static function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response) {
     
     $max_min_result = array(
       'max_point' => 0,
