@@ -1631,63 +1631,20 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 							$question = $questions[ $page_question_id ];
 							// Ignore non points questions from result
-							$question_type_new = $question['question_type_new'];
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
-              $question_is_required = (unserialize($question['question_settings']))['required'];
 
 							// Reset question-specific variables
 							$user_answer    = '';
 							$correct_answer = '';
 							$correct_status = 'incorrect';
 							$answer_points  = 0;
-              $max_value_array = array();
-              $min_value_array = array();
 
-              // Get total correct points
-              if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
-                if ( ! in_array( $question_id, $hidden_questions ) ) {
-                  if ($question_type_new == 4 || $question_type_new == 10) {
-                    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                        if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                          $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                          if (intval($single_answer_arr[1]) > 0) {
-                            array_push($max_value_array, $single_answer_arr[1]);
-                          }
-                          if (intval($single_answer_arr[1]) < 0) {
-                            array_push($min_value_array, $single_answer_arr[1]);
-                          }
-                        }
-                    }
-                    if (empty($max_value_array) || empty($min_value_array)){
-                      if (empty($max_value_array)){
-                        if ( 0 ===$question_is_required ){
-                          $max_value = max($min_value_array) ? max($min_value_array) : 0;
-                        } else {
-                          $max_value = 0;
-                        }
-                        $min_value = min($min_value_array) ? min($min_value_array): 0;
-
-                      }
-                      if (empty($min_value_array)){
-                        if ( 0 === $question_is_required ){
-                          $min_value = min($max_value_array) ? min($max_value_array) : 0;
-                        } else {
-                          $min_value = 0;
-                        }
-                        $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                      }             
-                    } else {
-                      $max_value            = max($max_value_array);
-                      $min_value            = min($min_value_array);
-                    }
-                  } else {
-                      $max_value            = max(array_column($question['answers'], '1'));
-                      $min_value            = min(array_column($question['answers'], '1'));
-                  }                                
-                  $total_possible_points += $max_value;
-                  $minimum_possible_points += $min_value;
-                }
-              }
+              // Get maximum and minimum points for the quiz
+              if ( ! in_array( $question_id, $hidden_questions ) ) {
+                $max_min_result = $this->qsm_max_min_points($options,$question);
+                $total_possible_points += $max_min_result['max_point'];
+                $minimum_possible_points += $max_min_result['min_point'];
+              }            
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1771,58 +1728,16 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
             
-						$question_is_required = (unserialize($question['question_settings']))['required'];
             // Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
 						$correct_status = 'incorrect';
 						$answer_points  = 0;
-						$max_value_array = array();
-            $min_value_array = array();
 
-            // Get total correct points
-            if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
-              if ($question_type_new == 4 || $question_type_new == 10) {
-                foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                    if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                      $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                      if (intval($single_answer_arr[1]) > 0) {
-                        array_push($max_value_array, $single_answer_arr[1]);
-                      }
-                      if (intval($single_answer_arr[1]) < 0) {
-                        array_push($min_value_array, $single_answer_arr[1]);
-                      }
-                    }
-                }
-                if (empty($max_value_array) || empty($min_value_array)){
-                  if (empty($max_value_array)){
-                    if ( 0 ===$question_is_required ){
-                      $max_value = max($min_value_array) ? max($min_value_array) : 0;
-                    } else {
-                      $max_value = 0;
-                    }
-                    $min_value = min($min_value_array) ? min($min_value_array): 0;
-
-                  }
-                  if (empty($min_value_array)){
-                    if ( 0 === $question_is_required ){
-                      $min_value = min($max_value_array) ? min($max_value_array) : 0;
-                    } else {
-                      $min_value = 0;
-                    }
-                    $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                  }             
-                } else {
-                  $max_value            = max($max_value_array);
-                  $min_value            = min($min_value_array);
-                }
-              } else {
-                  $max_value            = max(array_column($question['answers'], '1'));
-                  $min_value            = min(array_column($question['answers'], '1'));
-              }                                
-              $total_possible_points += $max_value;
-              $minimum_possible_points += $min_value;
-            }
+            // Get maximum and minimum points for the quiz
+            $max_min_result = $this->qsm_max_min_points($options,$question);
+            $total_possible_points += $max_min_result['max_point'];
+            $minimum_possible_points += $max_min_result['min_point'];
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1884,6 +1799,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 			}
 		}
+    
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
@@ -1942,6 +1858,118 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$qmn_quiz_comments = esc_textarea( stripslashes( $_POST['mlwQuizComments'] ) );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
+	}
+
+  /**
+	 * computes maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $options 
+	 * @param array $question
+	 * @return string $max_min_result 
+	 */
+	public function qsm_max_min_points( $options , $question ) {
+    
+    $max_value_array = array();
+    $min_value_array = array();
+    
+    $valid_grading_system = ($options->system == 1 || $options->system == 3);
+    $valid_answer_array= (isset($question['answers']) && !empty($question['answers']));
+
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( !($valid_answer_array && $valid_grading_system)){
+      return $max_min_result;
+    }
+
+    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
+      if (isset($single_answer_arr[1])) {
+        $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
+        if (intval($single_answer_arr[1]) > 0) {
+          array_push($max_value_array, $single_answer_arr[1]);
+        }
+        if (intval($single_answer_arr[1]) < 0) {
+          array_push($min_value_array, $single_answer_arr[1]);
+        }
+      }
+    }
+
+    $question_type = $question['question_type_new'];
+    $question_required = ( 0 === unserialize($question['question_settings'])['required']);
+    $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
+      
+    return $this->qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
+    
+	}
+  /**
+	 * evaluates conditions and returns maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $max_value_array
+	 * @param array $min_value_array
+   * @param array $question_required
+   * @param array $multi_response
+	 * @return string $max_min_result
+	 */
+	public function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response) {
+    
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( empty($max_value_array) && empty($min_value_array) ){
+      return $max_min_result;
+    }
+    
+    if ( empty($max_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    if ( empty($max_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    
+    if ( empty($min_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = array_sum($max_value_array);              
+    }
+    if ( empty($min_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = array_sum($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array) &&  $multi_response ){
+      $max_min_result['max_point'] = array_sum($max_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array)  &&  !$multi_response ){
+      $max_min_result['max_point'] = max($max_value_array);
+      $max_min_result['min_point'] = min($min_value_array);
+    }  
+    
+    return $max_min_result;
 	}
 
 	/**
