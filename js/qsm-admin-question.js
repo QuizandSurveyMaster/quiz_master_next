@@ -861,52 +861,52 @@ var import_button;
 			MicroModal.show('modal-7');
 			$('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));
 			$('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
-
-			// removes question from database
-			$('#delete-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-					console.log(question_id);
-					$.ajax({
-						url: ajaxurl,
-						method: 'POST',
-						data: {
-							'action': 'qsm_delete_question_from_database',
-							'question_id': question_id,
-							'nonce': qsmQuestionSettings.single_question_nonce
-						},
-						success: function (response) {
-							var data = jQuery.parseJSON(response);
-							if (data.success === true) {
-
-								console.log(data.message);
-							} else {
-								console.log(data.message);
-							}
-						}
-					});
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
-
-			// unlink question from  a particular quiz.
-			$('#unlink-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-
-					console.log(question_id);
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
 		});
+		// removes question from database
+		$('#delete-question-button').click(function (event) {
+			event.preventDefault();
+			if (confirm('Are you sure?')) {
+				var question_id = $(this).data('question-iid');
+				console.log(question_id);
+				$.ajax({
+					url: ajaxurl,
+					method: 'POST',
+					data: {
+						'action': 'qsm_delete_question_from_database',
+						'question_id': question_id,
+						'nonce': qsmQuestionSettings.single_question_nonce
+					},
+					success: function (response) {
+						var data = jQuery.parseJSON(response);
+						if (data.success === true) {
+
+							console.log(data.message);
+						} else {
+							console.log(data.message);
+						}
+					}
+				});
+				remove.parents('.question').remove();
+				QSMQuestion.countTotal();
+				$('.save-page-button').trigger('click');
+			}
+			MicroModal.close('modal-7');
+		});
+
+		// unlink question from  a particular quiz.
+		$('#unlink-question-button').click(function (event) {
+			event.preventDefault();
+			if (confirm('Are you sure?')) {
+				var question_id = $(this).data('question-iid');
+
+				console.log(question_id);
+				remove.parents('.question').remove();
+				QSMQuestion.countTotal();
+				$('.save-page-button').trigger('click');
+			}
+			MicroModal.close('modal-7');
+		});
+		
 		$('.questions').on('click', '.delete-page-button', function (event) {
 			event.preventDefault();
 			if (confirm('Are you sure?')) {
