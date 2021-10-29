@@ -171,6 +171,7 @@ class QSM_Emails {
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 		// Prepares our content.
 		$response_data['email_template_array'] = true;
+		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
 		//convert css classes to inline 
 		$content = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner($content);
