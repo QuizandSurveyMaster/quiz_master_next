@@ -956,11 +956,13 @@ function qmnInit() {
 					var radio_group = jQuery(this).attr('name');
 					jQuery('input[type=radio][name=' + radio_group + ']').prop('disabled', true);
 					let radio_value =jQuery(this).val();
-					let disableAnswer = {};
-					disableAnswer[key]=[];
+					let disableAnswer = {};					
 					if ( localStorage.getItem( "disable_answer" ) ){
 						disableAnswer = JSON.parse(localStorage.getItem("disable_answer"));
 					}
+					if (!disableAnswer[key]){
+						disableAnswer[key]=[];
+					} 
 					let disabledQuestions = disableAnswer[key].map(element => element[0]);
 					if (! disabledQuestions.includes(radio_group) ){
 						disableAnswer[key].push([radio_group, radio_value]);
@@ -976,13 +978,13 @@ function qmnInit() {
 						});
 					}
 				}
-				jQuery(document).on('qsm_after_quiz_submit',function(event){
+				jQuery(document).on('qsm_after_quiz_submit',function(event, quiz_form_id ){
 					event.preventDefault();
 					if(localStorage.getItem("disable_answer")){
 						let disabledAnswer2 = JSON.parse(localStorage.getItem("disable_answer"));
 						if(disabledAnswer2[key]){
 							delete disabledAnswer2[key];
-							localStorage.setItem("disable_answer",JSON.stringify(disableAnswer2));						}
+							localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
 					}			
 				});
 			}
