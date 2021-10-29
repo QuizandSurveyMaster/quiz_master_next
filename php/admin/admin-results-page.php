@@ -4,6 +4,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_results_page($hook){
+	if ( 'qsm_page_mlw_quiz_results' != $hook ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-dialog' );
+	wp_enqueue_script( 'jquery-ui-button' );
+	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
+
+/**
  * This function generates the admin side quiz results page
  *
  * @return void
@@ -210,14 +228,6 @@ function qsm_results_overview_tab_content() {
 		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
 	}
 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ) );
-	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array() );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	?>
 <script type="text/javascript">
 var $j = jQuery.noConflict();

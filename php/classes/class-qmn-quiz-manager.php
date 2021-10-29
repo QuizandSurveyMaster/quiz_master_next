@@ -78,6 +78,7 @@ class QMNQuizManager {
 					$mimes[] = 'image/png';
 					$mimes[] = 'image/x-icon';
 					$mimes[] = 'image/gif';
+					$mimes[] = 'image/webp';
 				} elseif ( $value == 'doc' ) {
 					$mimes[] = 'application/msword';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -362,11 +363,12 @@ class QMNQuizManager {
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
 				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
 				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'quiz_processing_message'            => $qmn_quiz_options->quiz_processing_message,
 				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
 
-			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			// Checks if we should be showing quiz or results page.
 			if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
@@ -375,14 +377,14 @@ class QMNQuizManager {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 
-			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables );
+			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			$return_display .= '<script>
                             window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . json_encode( $qmn_filtered_json ) . '
                     </script>';
 
 			$return_display .= ob_get_clean();
-			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 		}
 		return $return_display;
 	}
@@ -1569,7 +1571,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public function check_answers( $options, $quiz_data ) {
+	public static function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
 
@@ -1596,6 +1598,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$question_data         = array();
 		$total_possible_points = 0;
 		$attempted_question    = 0;
+    $minimum_possible_points = 0;
 
 		// Question types to calculate result on
 		$result_question_types = array(
@@ -1628,8 +1631,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
+              $question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
-							$question_type_new = $question['question_type_new'];
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
 							// Reset question-specific variables
@@ -1638,26 +1641,12 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							$correct_status = 'incorrect';
 							$answer_points  = 0;
 
-							// Get total correct points
-							if ( ( $options->system == 3 || $options->system == 1 ) && isset( $question['answers'] ) && ! empty( $question['answers'] ) ) {
-								if ( ! in_array( $question_id, $hidden_questions ) ) {
-									if ( $question_type_new == 4 || $question_type_new == 10 ) {
-										foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
-											if ( $options->system == 1 && isset( $single_answer_arr[1] ) ) {
-												$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
-												$total_possible_points = $total_possible_points + $single_answer_arr[1];
-											}
-											if ( $options->system == 3 && isset( $single_answer_arr[2] ) && $single_answer_arr[2] == 1 ) {
-												$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
-												$total_possible_points = $total_possible_points + $single_answer_arr[1];
-											}
-										}
-									} else {
-										$max_value             = max( array_column( $question['answers'], '1' ) );
-										$total_possible_points = $total_possible_points + $max_value;
-									}
-								}
-							}
+              // Get maximum and minimum points for the quiz
+              if ( ! in_array( $question_id, $hidden_questions ) ) {
+                $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+                $total_possible_points += $max_min_result['max_point'];
+                $minimum_possible_points += $max_min_result['min_point'];
+              }            
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1740,31 +1729,16 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-
-						// Reset question-specific variables
+            // Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
 						$correct_status = 'incorrect';
 						$answer_points  = 0;
 
-						// Get total correct points
-						if ( ( $options->system == 3 || $options->system == 1 ) && isset( $question['answers'] ) && ! empty( $question['answers'] ) ) {
-							if ( $question_type_new == 4 || $question_type_new == 10 ) {
-								foreach ( $question['answers'] as $single_answerk_key => $single_answer_arr ) {
-									if ( $options->system == 1 && isset( $single_answer_arr[1] ) ) {
-										$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
-										$total_possible_points = $total_possible_points + $single_answer_arr[1];
-									}
-									if ( $options->system == 3 && isset( $single_answer_arr[2] ) && $single_answer_arr[2] == 1 ) {
-										$single_answer_arr[1] = apply_filters( 'qsm_single_answer_arr', $single_answer_arr[1] );
-										$total_possible_points = $total_possible_points + $single_answer_arr[1];
-									}
-								}
-							} else {
-								$max_value             = max( array_column( $question['answers'], '1' ) );
-								$total_possible_points = $total_possible_points + $max_value;
-							}
-						}
+            // Get maximum and minimum points for the quiz
+            $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+            $total_possible_points += $max_min_result['max_point'];
+            $minimum_possible_points += $max_min_result['min_point'];
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1826,6 +1800,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 			}
 		}
+    
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
@@ -1864,6 +1839,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'question_answers_array'    => $question_data,
 			'total_possible_points'     => $total_possible_points,
 			'total_attempted_questions' => $attempted_question,
+      'minimum_possible_points'   => $minimum_possible_points,
 		), $options, $quiz_data );
 	}
 
@@ -1883,6 +1859,118 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$qmn_quiz_comments = esc_textarea( stripslashes( $_POST['mlwQuizComments'] ) );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
+	}
+
+  /**
+	 * computes maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $options 
+	 * @param array $question
+	 * @return string $max_min_result 
+	 */
+	public static function qsm_max_min_points( $options , $question ) {
+    
+    $max_value_array = array();
+    $min_value_array = array();
+    
+    $valid_grading_system = ($options->system == 1 || $options->system == 3);
+    $valid_answer_array= (isset($question['answers']) && !empty($question['answers']));
+
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( !($valid_answer_array && $valid_grading_system)){
+      return $max_min_result;
+    }
+
+    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
+      if (isset($single_answer_arr[1])) {
+        $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
+        if (intval($single_answer_arr[1]) > 0) {
+          array_push($max_value_array, $single_answer_arr[1]);
+        }
+        if (intval($single_answer_arr[1]) < 0) {
+          array_push($min_value_array, $single_answer_arr[1]);
+        }
+      }
+    }
+
+    $question_type = $question['question_type_new'];
+    $question_required = ( 0 === unserialize($question['question_settings'])['required']);
+    $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
+      
+    return QMNQuizManager::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
+    
+	}
+  /**
+	 * evaluates conditions and returns maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $max_value_array
+	 * @param array $min_value_array
+   * @param array $question_required
+   * @param array $multi_response
+	 * @return string $max_min_result
+	 */
+	public static function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response) {
+    
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( empty($max_value_array) && empty($min_value_array) ){
+      return $max_min_result;
+    }
+    
+    if ( empty($max_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    if ( empty($max_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    
+    if ( empty($min_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = array_sum($max_value_array);              
+    }
+    if ( empty($min_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = array_sum($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array) &&  $multi_response ){
+      $max_min_result['max_point'] = array_sum($max_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array)  &&  !$multi_response ){
+      $max_min_result['max_point'] = max($max_value_array);
+      $max_min_result['min_point'] = min($min_value_array);
+    }  
+    
+    return $max_min_result;
 	}
 
 	/**

@@ -17,21 +17,20 @@ function qmn_addons_page() {
 	global $mlwQuizMasterNext;
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+	
 	?>
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
-		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 		<?php
 		if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
 			?>
-		<a class="button button-default" href="?page=qmn_addons"><span style="margin-top: 4px;"
+		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
 			<?php _e( 'Back to list', 'quiz-master-next' ); ?></a>
 		<?php
 		}
 		?>
+		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -65,7 +64,7 @@ function qmn_addons_page() {
  */
 function qsm_generate_featured_addons() {
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+	wp_localize_script( 'qsm_admin_js', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 <div class="qsm-addon-browse-addons">
@@ -330,8 +329,6 @@ add_action( 'plugins_loaded', 'qsm_featured_addons_tab' );
  */
 function qsm_display_optin_page() {
 	 global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
-	wp_localize_script( 'qsm_admin_script', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	?>
 <div class="wrap about-wrap">
 

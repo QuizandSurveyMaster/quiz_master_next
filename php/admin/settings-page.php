@@ -40,6 +40,21 @@ class QMNGlobalSettingsPage {
 			$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] )  ;			
 			return $new_value;		 
 		}, 10, 2 );
+		add_action( 'admin_enqueue_scripts', array($this, 'qsm_admin_enqueue_scripts_settings_page') );
+	}
+
+	/**
+	 * Loads admin scripts and style
+	 *
+	 * @since 7.3.5
+	 */
+	public function qsm_admin_enqueue_scripts_settings_page($hook){
+		if ( 'qsm_page_qmn_global_settings' != $hook ) {
+			return;
+		}	
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'qmn_datetime_js', plugins_url( '../../js/jquery.datetimepicker.full.min.js', __FILE__ ) );
+    wp_enqueue_style( 'qsm_datetime_style', plugins_url( '../../css/jquery.datetimepicker.css', __FILE__ ) );
 	}
 
 	/**
@@ -424,9 +439,6 @@ class QMNGlobalSettingsPage {
 	 */
 	public static function display_page() {
 				global $mlwQuizMasterNext;
-				wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-				wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-				wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
 				$active_tab = "qmn_global_settings";
                 if(isset($_GET["tab"])){
                     if($_GET["tab"] == "qmn_global_settings"){
@@ -1071,8 +1083,6 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function qsm_global_quiz_dates() {
-		wp_enqueue_script( 'qmn_datetime_js', plugins_url( '../../js/jquery.datetimepicker.full.min.js', __FILE__ ) );
-        wp_enqueue_style( 'qsm_datetime_style', plugins_url( '../../css/jquery.datetimepicker.css', __FILE__ ) );
 		global $globalQuizsetting;
 		$qsm_scheduled_time_start	=(isset($globalQuizsetting['scheduled_time_start'])  && '' !== $globalQuizsetting['scheduled_time_start'] ?  $globalQuizsetting['scheduled_time_start'] :"");
 		$qsm_scheduled_time_end	=(isset($globalQuizsetting['scheduled_time_end'])  && '' !== $globalQuizsetting['scheduled_time_end'] ?  $globalQuizsetting['scheduled_time_end'] :"");

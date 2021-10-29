@@ -10,6 +10,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_results($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
+		return;
+	}
+	if( isset($_GET['tab'] ) && "results-pages" === $_GET['tab'] ){
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
+		wp_enqueue_editor();
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_results');
+
+
+
+/**
  * Adds the Results Page tab to the Quiz Settings page.
  *
  * @since 6.1.0
@@ -33,7 +54,7 @@ function qsm_options_results_tab_content() {
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),
 	);
-
+	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && $enabled != 'cancelled' ) {
@@ -42,11 +63,6 @@ function qsm_options_results_tab_content() {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
 	}
 	$categories = $wpdb->get_results( $query, ARRAY_N );
-
-	wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version );
-	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
-	wp_enqueue_editor();
-	wp_enqueue_media();
 	?>
 
 <!-- Results Page Section -->
@@ -146,35 +162,30 @@ function qsm_options_results_tab_content() {
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
 						$variable_list                                = qsm_text_template_variable_list();
-						$email_exta_variable                          = array(
-							'%CONTACT_X%'   => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-							'%CONTACT_ALL%' => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-						);
-						$variable_list                                = array_merge( $email_exta_variable, $variable_list );
-						$variable_list['%AVERAGE_CATEGORY_POINTS_X%'] = __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' );
-						$variable_list['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
-						$variable_list['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
-						$variable_list['%QUESTION_ANSWER_X%']         = __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' );
-						unset( $variable_list['%QUESTION%'] );
-						unset( $variable_list['%USER_ANSWER%'] );
-						unset( $variable_list['%USER_ANSWERS_DEFAULT%'] );
-						unset( $variable_list['%QUESTION_POINT_SCORE%'] );
-						unset( $variable_list['%CORRECT_ANSWER%'] );
-						unset( $variable_list['%USER_COMMENTS%'] );
-						unset( $variable_list['%CORRECT_ANSWER_INFO%'] );
-						unset( $variable_list['%CURRENT_DATE%'] );
+						$variable_list['Core']['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
+						$variable_list['Core']['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
+						//filter to add or remove variables from variable list for pdf tab
+						$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
 						if ( $variable_list ) {
-							foreach ( $variable_list as $key => $s_variable ) {
+							foreach ( $variable_list as $category_name => $category_variables ) {
 								?>
-				<div class="popup-template-span-wrap">
-					<span class="qsm-text-template-span">
-						<button class="button button-default"><?php echo $key; ?></button>
-						<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-							<span class="qsm-tooltips"><?php echo $s_variable; ?></span>
-						</span>
-					</span>
-				</div>
-				<?php
+								<div><h2><?php echo $category_name;?></h2></div>
+								<?php
+                foreach ($category_variables as $variable_key => $variable) {
+                ?>
+								<div class="popup-template-span-wrap">
+									<span class="qsm-text-template-span">
+										<span class="button button-default template-variable"><?php echo $variable_key; ?></span>
+										<span class="button click-to-copy">Click to Copy</span>
+										<span class="temp-var-seperator">
+											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+												<span class="qsm-tooltips"><?php echo $variable; ?></span>
+											</span>											
+										</span>						
+									</span>
+								</div>
+								<?php
+                }
 							}
 						}
 						?>
