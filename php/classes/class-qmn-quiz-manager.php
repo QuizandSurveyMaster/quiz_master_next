@@ -1571,7 +1571,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @return array The results of the user's score
 	 */
 	public static function check_answers( $options, $quiz_data ) {
-
+		echo 'rashmisingh';die('123344444');
 		global $mlwQuizMasterNext;
 
 		// Load the pages and questions
