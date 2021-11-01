@@ -1444,6 +1444,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							'deleted'         => 0,
 							'unique_id'       => $unique_id,
 							'form_type'       => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+							'page_url'        => $_SERVER["HTTP_REFERER"],
+							'page_name'       => url_to_postid( $_SERVER["HTTP_REFERER"] ) ?  get_the_title( url_to_postid( $_SERVER["HTTP_REFERER"] )) : '',
 						),
 						array(
 							'%d',
@@ -1465,6 +1467,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							'%d',
 							'%s',
 							'%d',
+							'%s',
+							'%s',
 						)
 					);
 					$results_id     = $wpdb->insert_id;

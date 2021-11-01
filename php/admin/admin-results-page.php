@@ -22,6 +22,41 @@ function qsm_admin_enqueue_scripts_results_page($hook){
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
 
 /**
+ * @since 7.0
+ * add per page option in screen option in results
+ */
+function qsm_results_page_screen_options() {
+	$screen = get_current_screen();
+
+	// get out of here if we are not on our settings page
+	if ( ! is_object( $screen ) || $screen->id != "qsm_page_mlw_quiz_results" ) {
+		return;
+	}
+
+	$args = array(
+		'label'   => __( 'Number of items per page:', 'quiz-master-next' ),
+		'default' => 10,
+		'option'  => 'qsm_results_per_page',
+	);
+	add_screen_option( 'per_page', $args );
+}
+add_action( "load-qsm_page_mlw_quiz_results",'qsm_results_page_screen_options');
+
+add_filter( 'set-screen-option', 'qsm_results_set_screen_option', 10, 3 );
+add_filter( 'set_screen_option_qsm_results_per_page', 'qsm_results_set_screen_option', 10, 3 );
+/**
+ * @since 7.0
+ * @param str $status
+ * @param arr $option
+ * @param str $value
+ * @return str Save screen option value
+ */
+function qsm_results_set_screen_option( $status, $option, $value ) {
+	if ( 'qsm_results_per_page' == $option ) {
+		return $value;
+	}
+}
+/**
  * This function generates the admin side quiz results page
  *
  * @return void
@@ -360,15 +395,21 @@ function deleteResults(id, quizName) {
 				$table_heading_displays .= '<th>' . esc_html__( 'Score', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Time To Complete', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Name', 'quiz-master-next' ) . '</th>';
-				$table_heading_displays .= '<th>' . esc_html__( 'Business', 'quiz-master-next' ) . '</th>';
+				// $table_heading_displays .= '<th>' . esc_html__( 'Business', 'quiz-master-next' ) . '</th>';
+				
 				$table_heading_displays .= '<th>' . esc_html__( 'Email', 'quiz-master-next' ) . '</th>';
-				$table_heading_displays .= '<th>' . esc_html__( 'Phone', 'quiz-master-next' ) . '</th>';
-				$table_heading_displays .= '<th>' . esc_html__( 'User', 'quiz-master-next' ) . '</th>';
+				// $table_heading_displays .= '<th>' . esc_html__( 'Phone', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'User ID', 'quiz-master-next' ) . '</th>';
+
+				$table_heading_displays .= '<th>' . esc_html__( 'Page Name', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th>' . esc_html__( 'Page URL', 'quiz-master-next' ) . '</th>';
+
 				$table_heading_displays .= '<th>' . esc_html__( 'Time Taken', 'quiz-master-next' ) . '</th>';
-				$table_heading_displays .= '<th>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
+				// $table_heading_displays .= '<th>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
 
 				$table_heading_displays = apply_filters('mlw_qmn_admin_results_page_headings', $table_heading_displays);
 				echo $table_heading_displays;
+
 				?>
 			</tr>
 		</thead>
@@ -421,18 +462,20 @@ function deleteResults(id, quizName) {
 					}
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_complete_time . "</span></td>";
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name . "</span></td>";
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
+					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email . "</span></td>";
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
+					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
 					if ( 0 == $mlw_quiz_info->user ) {
 						$quiz_result_item_inner .= "<td><span style='font-size:16px;'>Visitor</span></td>";
 					} else {
 						$quiz_result_item_inner .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user . "'>" . $mlw_quiz_info->user . "</a></span></td>";
 					}
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->page_name . "</span></td>";
+					$quiz_result_item_inner .= "<td><span style='font-size:16px;'><a href=\"" . $mlw_quiz_info->page_url . "\" >".$mlw_quiz_info->page_url."</span></td>";
 					$date        = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 					$time        = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'><abbr title='$date $time'>$date</abbr></span></td>";
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
+					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
 					$quiz_result_item .= apply_filters('mlw_qmn_admin_results_page_result', $quiz_result_item_inner, $mlw_quiz_info);
 					$quiz_result_item .= "</tr>";
 					$quotes_list .= $quiz_result_item;
