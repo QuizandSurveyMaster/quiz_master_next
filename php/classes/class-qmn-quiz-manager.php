@@ -1570,22 +1570,21 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public static function check_answers( $options, $quiz_data ) {
-		echo 'rashmisingh';die('123344444');
+	public function check_answers( $options, $quiz_data ) {
+		//echo 'qsm user block';die('67676767');
 		global $mlwQuizMasterNext;
-
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? sanitize_text_field( intval( $_POST['total_questions'] ) ) : 0;
+
 		$question_list   = array();
 		if ( isset( $_POST['qmn_question_list'] ) ) {
 			$qmn_question_list = sanitize_text_field( $_POST['qmn_question_list'] );
 			$question_list     = explode( 'Q', $qmn_question_list );
 		}
-
 		// Prepare variables
 		$points_earned         = 0;
 		$total_correct         = 0;
