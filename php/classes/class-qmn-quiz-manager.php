@@ -1571,12 +1571,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @return array The results of the user's score
 	 */
 	public function check_answers( $options, $quiz_data ) {
-		//echo 'qsm user block';die('67676767');
 		global $mlwQuizMasterNext;
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? sanitize_text_field( intval( $_POST['total_questions'] ) ) : 0;
 
@@ -1596,7 +1594,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$question_data         = array();
 		$total_possible_points = 0;
 		$attempted_question    = 0;
-    $minimum_possible_points = 0;
+    	$minimum_possible_points = 0;
 
 		// Question types to calculate result on
 		$result_question_types = array(
@@ -1615,7 +1613,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 		// If deprecated pagination setting is not used, use new system...
 		if ( 0 == $options->question_from_total && 0 !== count( $pages ) ) {
-
 			// Cycle through each page in quiz.
 			foreach ( $pages as $page ) {
 
@@ -1624,15 +1621,13 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// Cycle through each question that appeared to the user
 					foreach ( $question_list as $question_id ) {
-
 						// When the questions are the same...
 						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
-              $question_type_new = $question['question_type_new'];
+              				$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
-
 							// Reset question-specific variables
 							$user_answer    = '';
 							$correct_answer = '';
