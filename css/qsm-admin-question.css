@@ -364,7 +364,7 @@ div#correct_answer_info_area {
 }
 
 .qsm-row select,
-.qsm-row input[type=text],
+.questionElements .qsm-row input[type=text],
 .qsm-row textarea {
     width: 100%;
     max-width: 100%;
