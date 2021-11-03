@@ -490,7 +490,8 @@ var import_button;
 				answers: answers,
 				answerEditor: answerType,
 				matchAnswer: matchAnswer,
-				other_settings: advanced_option
+				other_settings: advanced_option,
+				rest_nonce: qsmQuestionSettings.rest_user_nonce
 			}, {
 				headers: {
 					'X-WP-Nonce': qsmQuestionSettings.nonce

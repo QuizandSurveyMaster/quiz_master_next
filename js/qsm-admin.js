@@ -46,7 +46,7 @@ var QSMQuizzesSurveys;
 			});
 		},
 		deleteQuiz: function (quiz_id) {
-			$('#delete_quiz_id').val(quiz_id);
+			$('#delete_quiz_id').val(btoa(quiz_id+'QID'));
 			$.each(qsmQuizObject, function (i, val) {
 				if (val.id == quiz_id) {
 					$('#delete_quiz_name').val(val.name);
@@ -64,7 +64,7 @@ var QSMQuizzesSurveys;
 			MicroModal.show('modal-3');
 		},
 		duplicateQuiz: function (quiz_id) {
-			$('#duplicate_quiz_id').val(quiz_id);
+			$('#duplicate_quiz_id').val(btoa(quiz_id+'QID'));
 			MicroModal.show('modal-4');
 		},
 		/**

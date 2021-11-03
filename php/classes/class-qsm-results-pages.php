@@ -340,6 +340,12 @@ class QSM_Results_Pages {
 			} else {
 				$pages[ $i ]['conditions'] = array();
 			}
+
+			// Sanitize template data 
+			// if ( isset( $pages[ $i ]['page'] ) ) {
+			// 	// Sanitizes the conditions.
+			// 	$pages[ $i ]['page'] = esc_html( $pages[ $i ]['page'] );
+			// }
 		}
 
 		global $wpdb;

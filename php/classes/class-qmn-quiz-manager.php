@@ -296,7 +296,7 @@ class QMNQuizManager {
 			// Loads Quiz Template.
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
-				$return_display .= '<style type="text/css">' . htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) . '</style>';
+				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../../css/qmn_quiz.css', __FILE__ ) );
 				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
@@ -310,7 +310,7 @@ class QMNQuizManager {
 				} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
-					echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
+					echo "<style type='text/css'>" . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . "</style>";
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', plugins_url( '../../css/animate.css', __FILE__ ) );
@@ -361,8 +361,8 @@ class QMNQuizManager {
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
 				'form_disable_autofill'              => isset( $qmn_quiz_options->form_disable_autofill ) ? $qmn_quiz_options->form_disable_autofill : '',
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
-				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
-				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'quick_result_correct_answer_text'   => sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text ),
+				'quick_result_wrong_answer_text'     => sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text ),
 				'quiz_processing_message'            => $qmn_quiz_options->quiz_processing_message,
 				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
@@ -675,10 +675,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
-			'email'     => $options->email_error_text,
-			'number'    => $options->number_error_text,
-			'incorrect' => $options->incorrect_error_text,
-			'empty'     => $options->empty_error_text,
+			'email'     => sanitize_text_field( $options->email_error_text ),
+			'number'    => sanitize_text_field( $options->number_error_text ),
+			'incorrect' => sanitize_text_field( $options->incorrect_error_text ),
+			'empty'     => sanitize_text_field( $options->empty_error_text ),
 		);
 
 		wp_enqueue_script( 'progress-bar', plugins_url( '../../js/progressbar.min.js', __FILE__ ) );
@@ -861,14 +861,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
-					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 				}
 				if ( 2 == $question['comments'] ) {
-					echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)' ></textarea>";
+					echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)' ></textarea>";
 				}
 					// Checks if a hint is entered.
 				if ( ! empty( $question['hints'] ) ) {
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . $options->hint_text . '<span class="qsm_tooltiptext">' . htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) . '</span></div>';
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 				}
 				?>
 	</div>
@@ -932,14 +932,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
-						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 					}
 					if ( 2 == $question['comments'] ) {
-						echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)' ></textarea>";
+						echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)' ></textarea>";
 					}
 						// Checks if a hint is entered.
 					if ( ! empty( $question['hints'] ) ) {
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . $options->hint_text . '<span class="qsm_tooltiptext">' . htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) . '</span></div>';
+						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 					}
 					?>
 	</div>
@@ -999,12 +999,12 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 <!-- View for pagination -->
 <script type="text/template" id="tmpl-qsm-pagination-<?php echo $options->quiz_id; ?>">
 	<div class="qsm-pagination qmn_pagination border margin-bottom">
-			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
+			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_attr( sanitize_text_field( $options->previous_button_text ) ); ?></a>
 			<span class="qmn_page_message"></span>
 			<div class="qmn_page_counter_message"></div>
 			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
-			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( htmlspecialchars_decode( $options->submit_button_text, ENT_QUOTES ) ); ?>' />
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_attr( sanitize_text_field( $options->next_button_text ) ); ?></a>
+			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( sanitize_text_field( $options->submit_button_text ) ); ?>' />
 			</div>
 		</script>
 <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
@@ -1103,17 +1103,17 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 			if ( 0 == $mlw_question->comments ) {
-				$question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+				$question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 				$question_display .= '<br />';
 			}
 			if ( 2 == $mlw_question->comments ) {
-				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . htmlspecialchars_decode( $qmn_quiz_options->comment_field_text, ENT_QUOTES ) . "' onclick='qmnClearField(this)'></textarea>";
+				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . sanitize_text_field( $qmn_quiz_options->comment_field_text ) . "' onclick='qmnClearField(this)'></textarea>";
 				$question_display .= '<br />';
 			}
 
 			// Checks if a hint is entered.
 			if ( ! empty( $mlw_question->hints ) ) {
-				$question_display .= '<div title="' . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
+				$question_display .= '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $qmn_quiz_options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . '</span></div>';
 				$question_display .= '<br /><br />';
 			}
 			$question_display .= '</div><!-- .quiz_section -->';
@@ -2532,8 +2532,8 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'amount'           => $qmn_quiz_options->pagination,
 			'section_comments' => $qmn_quiz_options->comment_section,
 			'total_questions'  => $total_questions,
-			'previous_text'    => $qmn_quiz_options->previous_button_text,
-			'next_text'        => $qmn_quiz_options->next_button_text,
+			'previous_text'    => sanitize_text_field( $qmn_quiz_options->previous_button_text ),
+			'next_text'        => sanitize_text_field( $qmn_quiz_options->next_button_text ),
 		);
 	}
 	return $display;

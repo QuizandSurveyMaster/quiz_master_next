@@ -126,6 +126,7 @@ function qsm_options_questions_tab_content() {
 		'show_correct_info_text' => __( 'Add Correct Answer Info', 'quiz-master-next' ),
 		'question_bank_nonce'    => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
+		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 	);
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
 

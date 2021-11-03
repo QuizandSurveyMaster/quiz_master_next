@@ -186,7 +186,7 @@ function qsm_generate_fb_header_metadata() {
 			if ( empty( $get_fb_sharing_image ) ) {
 				$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
 			}
-			if ( $get_fb_sharing_image !== '' ) {
+			if ( $get_fb_sharing_image !== '' && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
 				$default_fb_image = $get_fb_sharing_image;
 			}
 			$post     = $wp_query->get_queried_object();
