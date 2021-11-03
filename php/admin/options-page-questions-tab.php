@@ -395,7 +395,10 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-																echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+															if( isset( $type["options"]["add_separate_option_text"] ) && $type["options"]["add_separate_option_text"] !='' ){
+																echo "<option disabled>---".$type["options"]["add_separate_option_text"]."---</option>";
+															}
+															echo "<option value='{$type['slug']}'>{$type['name']}</option>";
 														}
 														?>
 													</select>

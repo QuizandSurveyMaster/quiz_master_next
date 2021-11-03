@@ -1128,7 +1128,7 @@ var import_button;
 		$(document).on('change', '#question_type', function() {
 
 			var question_val = $('#question_type').val();
-			if(!QSMQuestion.question_type_change(previous_question_val, question_val)) return;
+			QSMQuestion.question_type_change(previous_question_val, question_val);
 
 			if (6 == question_val) {
 				var question_description = wp.editor.getContent('question-text');
