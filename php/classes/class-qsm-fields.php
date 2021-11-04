@@ -24,47 +24,51 @@ class QSM_Fields {
     $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
     
     // If nonce is correct, save settings
-    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
+    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings' ) ) {
 
-      // Cycle through fields to retrieve all posted values      
-      $settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
-      foreach ( $fields as $field ) {
+		// Cycle through fields to retrieve all posted values      
+		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
+		foreach ( $fields as $field ) {
 
-        // Sanitize the values based on type
-        $sanitized_value = '';
-        switch ( $field["type"] ) {
-          case 'text':
-            $sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
-            break;
+			// Sanitize the values based on type
+			$sanitized_value = '';
+			switch ( $field["type"] ) {
+				case 'text':
+					$sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
+					break;
 
-          case 'radio':
-          case 'date':
-            $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
-            break;
+				case 'url':
+					$sanitized_value = esc_url_raw( $_POST[ $field["id"] ] );
+					break;
 
-          case 'number':
-            $sanitized_value = intval( $_POST[ $field["id"] ] );
-            break;
+				case 'radio':
+				case 'date':
+					$sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
+					break;
 
-          case 'editor':
-            $sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
-            break;
+				case 'number':
+					$sanitized_value = intval( $_POST[ $field["id"] ] );
+					break;
 
-          default:
-            $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
-            break;
-        }
-        $settings_array[ $field["id"] ] = $sanitized_value;
-      }
+				case 'editor':
+					$sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
+					break;
+
+				default:
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
+					break;
+			}
+			$settings_array[ $field["id"] ] = $sanitized_value;
+      	}
             
-      // Update the settings and show alert based on outcome
-      $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
-      if ( false !== $results ) {
-  			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
-  			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
-  		} else {
-  			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
-  		}
+      	// Update the settings and show alert based on outcome
+		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
+		}
     }
 
     // Retrieve the settings for this section
@@ -172,6 +176,36 @@ class QSM_Fields {
 	</th>
 	<td>
 		<input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
+			value="<?php echo $value; ?>" />
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
+  }
+
+  
+  /**
+   * Generates a text field
+   *
+   * @since 5.0.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_url_field( $field, $value ) {
+    ?>
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<input type="url" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
 			value="<?php echo $value; ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
 		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>

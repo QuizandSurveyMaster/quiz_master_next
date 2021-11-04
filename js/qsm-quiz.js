@@ -935,39 +935,70 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 
 function qmnInit() {
 	if (typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
-		for (var key in qmn_quiz_data) {
-			if (qmn_quiz_data[key].ajax_show_correct === '1') {
-				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					var chosen_answer = jQuery(this).val();
-					var question_id = jQuery(this).attr('name').replace(/question/i, '');
-					var chosen_id = jQuery(this).attr('id');
-					jQuery.each(qmn_quiz_data[key].question_list, function (i, value) {
-						if (question_id == value.question_id) {
-							jQuery.each(value.answers, function (j, answer) {
-								if (answer[0] === chosen_answer) {
-									if (answer[2] !== 1) {
-										jQuery('#' + chosen_id).parent().addClass("qmn_incorrect_answer");
-									}
+		let key = Object.keys(qmn_quiz_data)[0];
+		if (qmn_quiz_data[key].ajax_show_correct === '1') {
+			jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
+				var chosen_answer = jQuery(this).val();
+				var question_id = jQuery(this).attr('name').replace(/question/i, '');
+				var chosen_id = jQuery(this).attr('id');
+				jQuery.each(qmn_quiz_data[key].question_list, function (i, value) {
+					if (question_id == value.question_id) {
+						jQuery.each(value.answers, function (j, answer) {
+							if (answer[0] === chosen_answer) {
+								if (answer[2] !== 1) {
+									jQuery('#' + chosen_id).parent().addClass("qmn_incorrect_answer");
 								}
-								if (answer[2] === 1) {
-									jQuery(':radio[name=question' + question_id + '][value="' + answer[0] + '"]').parent().addClass("qmn_correct_answer");
-								}
-							});
-						}
+							}
+							if (answer[2] === 1) {
+								jQuery(':radio[name=question' + question_id + '][value="' + answer[0] + '"]').parent().addClass("qmn_correct_answer");
+							}
+						});
+					}
+				});
+			});
+		}
+
+		if (qmn_quiz_data[key].disable_answer === '1') {
+						
+			jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
+				var radio_group = jQuery(this).attr('name');
+				jQuery('input[type=radio][name=' + radio_group + ']').prop('disabled', true);
+				let radio_value =jQuery(this).val();
+				let disableAnswer = {};					
+				if ( localStorage.getItem( "disable_answer" ) ){
+					disableAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				}
+				if (!disableAnswer[key]){
+					disableAnswer[key]=[];
+				} 
+				let disabledQuestions = disableAnswer[key].map(element => element[0]);
+				if (! disabledQuestions.includes(radio_group) ){
+					disableAnswer[key].push([radio_group, radio_value]);
+				}
+				localStorage.setItem("disable_answer",JSON.stringify(disableAnswer));
+			});
+
+			if(localStorage.getItem("disable_answer")){
+				let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				if(disabledAnswer[key]){
+					disabledAnswer[key].forEach(element => {
+						jQuery('#'+element[0]+'_'+element[1]).prop('checked', true).trigger('change')
 					});
-				});
+				}
 			}
+			jQuery(document).on('qsm_after_quiz_submit',function(event, quiz_form_id ){
+				event.preventDefault();
+				if(localStorage.getItem("disable_answer")){
+					let disabledAnswer2 = JSON.parse(localStorage.getItem("disable_answer"));
+					if(disabledAnswer2[key]){
+						delete disabledAnswer2[key];
+						localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
+				}			
+			});
+		}
 
-			if (qmn_quiz_data[key].disable_answer === '1') {
-				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					var radio_group = jQuery(this).attr('name');
-					jQuery('input[type=radio][name=' + radio_group + ']').prop('disabled', true);
-				});
-			}
-
-			if (qmn_quiz_data[key].hasOwnProperty('pagination')) {
-				qmnInitPagination(qmn_quiz_data[key].quiz_id);
-			}
+		if (qmn_quiz_data[key].hasOwnProperty('pagination')) {
+			qmnInitPagination(qmn_quiz_data[key].quiz_id);
 		}
 	}
 }

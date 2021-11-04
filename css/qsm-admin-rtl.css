@@ -1292,10 +1292,13 @@ h3.addon_category_name {
 
 .qsm_tab_content input[type="text"],
 .qsm_tab_content input[type="number"],
+.qsm_tab_content input[type="url"],
 .qsm_global_settings input[type="text"],
 .qsm_global_settings input[type="number"],
 .qsm_global_settings input[type="email"],
+.qsm_global_settings input[type="url"],
 .qsm-addon-setting-wrap input[type="email"],
+.qsm-addon-setting-wrap input[type="url"],
 .qsm-addon-setting-wrap input[type="text"],
 .qsm-addon-setting-wrap input[type="number"] {
 	background: #ffffff none repeat scroll 0 0;
@@ -2166,3 +2169,7 @@ td.scheduled_time_start {
 .popup-template-span-wrap .qsm-text-template-span .popup-copied-des span.dashicons{
 	line-height: 1;
 } 
+
+#result_page_fb_image {
+	width: 25em;
+}
