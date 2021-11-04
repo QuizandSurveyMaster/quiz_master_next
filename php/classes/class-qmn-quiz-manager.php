@@ -1471,7 +1471,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					$results_id     = $wpdb->insert_id;
 				}
 			}
+			$qmn_array_for_variables['response_saved'] = isset($results_insert) ? $results_insert : false;
 			$qmn_array_for_variables['result_id'] = $results_id;
+			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 
 			// Converts date to the preferred format
 			global $mlwQuizMasterNext;
@@ -1556,6 +1558,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'display'  => htmlspecialchars_decode( $result_display ),			
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
+
+		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
 
 		return $return_array;
 	}

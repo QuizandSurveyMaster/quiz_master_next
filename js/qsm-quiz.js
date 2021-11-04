@@ -883,6 +883,14 @@ function qmnFormSubmit(quiz_form_id) {
 		type: 'POST',
 		success: function (response) {
 			response=JSON.parse(response);
+			if (window.qsm_results_data === undefined) {
+				window.qsm_results_data = new Object();
+			}
+			window.qsm_results_data[quizID]={
+				'save_response' : response.result_status['save_response'],
+				'id'     : response.result_status['id']
+			};		
+
 			if(response.quizExpired){
 				MicroModal.show('modal-4');
 				return false;

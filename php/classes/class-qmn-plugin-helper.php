@@ -840,7 +840,7 @@ class QMNPluginHelper
 
         $incorrect_answer="<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
 		$correct_answer="<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
-		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;";
+		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
 		$html = str_replace( '<br/>', '<br>', $html );
 		$html = str_replace( '<br />', '<br>', $html );
 		$html = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $html );
