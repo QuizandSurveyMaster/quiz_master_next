@@ -409,6 +409,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'qmn_quiz_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
+				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
 				wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 				$quiz_result   = unserialize( $result_data['quiz_results'] );
 				$response_data = array(
@@ -1470,7 +1471,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					$results_id     = $wpdb->insert_id;
 				}
 			}
+			$qmn_array_for_variables['response_saved'] = isset($results_insert) ? $results_insert : false;
 			$qmn_array_for_variables['result_id'] = $results_id;
+			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 
 			// Converts date to the preferred format
 			global $mlwQuizMasterNext;
@@ -1555,6 +1558,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'display'  => htmlspecialchars_decode( $result_display ),			
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
+
+		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
 
 		return $return_array;
 	}
