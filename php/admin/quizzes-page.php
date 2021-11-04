@@ -43,16 +43,18 @@ function qsm_generate_quizzes_surveys_page() {
 
 	
 	// Delete quiz.
-	if ( isset( $_POST['qsm_delete_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
-		$quiz_id   = intval( $_POST['delete_quiz_id'] );
-		do_action('qsm_before_delete_quiz' , $quiz_id);
+	if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
+		$quiz_id   = base64_decode( sanitize_text_field( $_POST['delete_quiz_id'] ), true );
+		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
+		do_action( 'qsm_before_delete_quiz' , $quiz_id );
 		$quiz_name = sanitize_text_field( $_POST['delete_quiz_name'] );
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
 
 	// Duplicate Quiz.
-	if ( isset( $_POST['qsm_duplicate_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
-		$quiz_id   = intval( $_POST['duplicate_quiz_id'] );
+	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
+		$quiz_id   = base64_decode( sanitize_text_field( $_POST['duplicate_quiz_id'] ), true );
+		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		$quiz_name = sanitize_text_field( htmlspecialchars( $_POST['duplicate_new_quiz_name'], ENT_QUOTES ) );
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) ? sanitize_text_field( $_POST['duplicate_questions'] ) : 0 );
 	}

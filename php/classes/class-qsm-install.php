@@ -703,7 +703,7 @@ class QSM_Install {
 		$field_array = array(
 			'id'      => 'result_page_fb_image',
 			'label'   => __( 'Logo URL', 'quiz-master-next' ),
-			'type'    => 'text',
+			'type'    => 'url',
 			'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 			'tooltip' => __( 'Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next' ),
 			'help'    => __( 'If left blank, this will default to QSM logo', 'quiz-master-next' ),

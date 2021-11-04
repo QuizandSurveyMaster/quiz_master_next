@@ -296,7 +296,7 @@ class QMNQuizManager {
 			// Loads Quiz Template.
 			// The quiz_stye is misspelled because it has always been misspelled and fixing it would break many sites :(.
 			if ( 'default' == $qmn_quiz_options->theme_selected ) {
-				$return_display .= '<style type="text/css">' . htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) . '</style>';
+				$return_display .= '<style type="text/css">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
 				wp_enqueue_style( 'qmn_quiz_style', plugins_url( '../../css/qmn_quiz.css', __FILE__ ) );
 				wp_style_add_data( 'qmn_quiz_style', 'rtl', 'replace' );
 			} else {
@@ -310,7 +310,7 @@ class QMNQuizManager {
 				} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
-					echo "<style type='text/css'>{$qmn_quiz_options->quiz_stye}</style>";
+					echo "<style type='text/css'>" . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . "</style>";
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', plugins_url( '../../css/animate.css', __FILE__ ) );
@@ -361,14 +361,14 @@ class QMNQuizManager {
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
 				'form_disable_autofill'              => isset( $qmn_quiz_options->form_disable_autofill ) ? $qmn_quiz_options->form_disable_autofill : '',
 				'enable_quick_correct_answer_info'   => isset( $qmn_quiz_options->enable_quick_correct_answer_info ) ? $qmn_quiz_options->enable_quick_correct_answer_info : 0,
-				'quick_result_correct_answer_text'   => $qmn_quiz_options->quick_result_correct_answer_text,
-				'quick_result_wrong_answer_text'     => $qmn_quiz_options->quick_result_wrong_answer_text,
+				'quick_result_correct_answer_text'   => sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text ),
+				'quick_result_wrong_answer_text'     => sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text ),
 				'quiz_processing_message'            => $qmn_quiz_options->quiz_processing_message,
 				'not_allow_after_expired_time'     => $qmn_quiz_options->not_allow_after_expired_time,
 				'scheduled_time_end'     => strtotime($qmn_quiz_options->scheduled_time_end),
 			);
 
-			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			// Checks if we should be showing quiz or results page.
 			if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
@@ -377,14 +377,14 @@ class QMNQuizManager {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 
-			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables );
+			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 			$return_display .= '<script>
                             window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . json_encode( $qmn_filtered_json ) . '
                     </script>';
 
 			$return_display .= ob_get_clean();
-			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables );
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 		}
 		return $return_display;
 	}
@@ -409,6 +409,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'qmn_quiz_common_style', plugins_url( '../../css/common.css', __FILE__ ) );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
+				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
 				wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
 				$quiz_result   = unserialize( $result_data['quiz_results'] );
 				$response_data = array(
@@ -675,10 +676,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
-			'email'     => $options->email_error_text,
-			'number'    => $options->number_error_text,
-			'incorrect' => $options->incorrect_error_text,
-			'empty'     => $options->empty_error_text,
+			'email'     => sanitize_text_field( $options->email_error_text ),
+			'number'    => sanitize_text_field( $options->number_error_text ),
+			'incorrect' => sanitize_text_field( $options->incorrect_error_text ),
+			'empty'     => sanitize_text_field( $options->empty_error_text ),
 		);
 
 		wp_enqueue_script( 'progress-bar', plugins_url( '../../js/progressbar.min.js', __FILE__ ) );
@@ -861,14 +862,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		<?php
 					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
-					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 				}
 				if ( 2 == $question['comments'] ) {
-					echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)' ></textarea>";
+					echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)' ></textarea>";
 				}
 					// Checks if a hint is entered.
 				if ( ! empty( $question['hints'] ) ) {
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . $options->hint_text . '<span class="qsm_tooltiptext">' . htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) . '</span></div>';
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 				}
 				?>
 	</div>
@@ -932,14 +933,14 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		<?php
 						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
-						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 					}
 					if ( 2 == $question['comments'] ) {
-						echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( htmlspecialchars_decode( $options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)' ></textarea>";
+						echo "<textarea class='qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)' ></textarea>";
 					}
 						// Checks if a hint is entered.
 					if ( ! empty( $question['hints'] ) ) {
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . $options->hint_text . '<span class="qsm_tooltiptext">' . htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) . '</span></div>';
+						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 					}
 					?>
 	</div>
@@ -999,12 +1000,12 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 <!-- View for pagination -->
 <script type="text/template" id="tmpl-qsm-pagination-<?php echo $options->quiz_id; ?>">
 	<div class="qsm-pagination qmn_pagination border margin-bottom">
-			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
+			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_attr( sanitize_text_field( $options->previous_button_text ) ); ?></a>
 			<span class="qmn_page_message"></span>
 			<div class="qmn_page_counter_message"></div>
 			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
-			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( htmlspecialchars_decode( $options->submit_button_text, ENT_QUOTES ) ); ?>' />
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_attr( sanitize_text_field( $options->next_button_text ) ); ?></a>
+			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( sanitize_text_field( $options->submit_button_text ) ); ?>' />
 			</div>
 		</script>
 <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
@@ -1103,17 +1104,17 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$question_display .= $mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 			if ( 0 == $mlw_question->comments ) {
-				$question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->comment_field_text, ENT_QUOTES ) ) . "' onclick='qmnClearField(this)'/>";
+				$question_display .= "<input type='text' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . esc_attr( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 				$question_display .= '<br />';
 			}
 			if ( 2 == $mlw_question->comments ) {
-				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . htmlspecialchars_decode( $qmn_quiz_options->comment_field_text, ENT_QUOTES ) . "' onclick='qmnClearField(this)'></textarea>";
+				$question_display .= "<textarea cols='70' rows='5' class='mlw_qmn_question_comment' id='mlwComment" . $mlw_question->question_id . "' name='mlwComment" . $mlw_question->question_id . "' placeholder='" . sanitize_text_field( $qmn_quiz_options->comment_field_text ) . "' onclick='qmnClearField(this)'></textarea>";
 				$question_display .= '<br />';
 			}
 
 			// Checks if a hint is entered.
 			if ( ! empty( $mlw_question->hints ) ) {
-				$question_display .= '<div title="' . esc_attr( htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . "\" class='qsm_hint mlw_qmn_hint_link'>{$qmn_quiz_options->hint_text}</div>";
+				$question_display .= '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $qmn_quiz_options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ) . '</span></div>';
 				$question_display .= '<br /><br />';
 			}
 			$question_display .= '</div><!-- .quiz_section -->';
@@ -1470,7 +1471,9 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					$results_id     = $wpdb->insert_id;
 				}
 			}
+			$qmn_array_for_variables['response_saved'] = isset($results_insert) ? $results_insert : false;
 			$qmn_array_for_variables['result_id'] = $results_id;
+			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 
 			// Converts date to the preferred format
 			global $mlwQuizMasterNext;
@@ -1556,6 +1559,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
 		);
 
+		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
+
 		return $return_array;
 	}
 
@@ -1570,7 +1575,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public function check_answers( $options, $quiz_data ) {
+	public static function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
 
@@ -1633,64 +1638,22 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
+              $question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
-							$question_type_new = $question['question_type_new'];
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
-              $question_is_required = (unserialize($question['question_settings']))['required'];
 
 							// Reset question-specific variables
 							$user_answer    = '';
 							$correct_answer = '';
 							$correct_status = 'incorrect';
 							$answer_points  = 0;
-              $max_value_array = array();
-              $min_value_array = array();
 
-              // Get total correct points
-              if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
-                if ( ! in_array( $question_id, $hidden_questions ) ) {
-                  if ($question_type_new == 4 || $question_type_new == 10) {
-                    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                        if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                          $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                          if (intval($single_answer_arr[1]) > 0) {
-                            array_push($max_value_array, $single_answer_arr[1]);
-                          }
-                          if (intval($single_answer_arr[1]) < 0) {
-                            array_push($min_value_array, $single_answer_arr[1]);
-                          }
-                        }
-                    }
-                    if (empty($max_value_array) || empty($min_value_array)){
-                      if (empty($max_value_array)){
-                        if ( 0 ===$question_is_required ){
-                          $max_value = max($min_value_array) ? max($min_value_array) : 0;
-                        } else {
-                          $max_value = 0;
-                        }
-                        $min_value = min($min_value_array) ? min($min_value_array): 0;
-
-                      }
-                      if (empty($min_value_array)){
-                        if ( 0 === $question_is_required ){
-                          $min_value = min($max_value_array) ? min($max_value_array) : 0;
-                        } else {
-                          $min_value = 0;
-                        }
-                        $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                      }             
-                    } else {
-                      $max_value            = max($max_value_array);
-                      $min_value            = min($min_value_array);
-                    }
-                  } else {
-                      $max_value            = max(array_column($question['answers'], '1'));
-                      $min_value            = min(array_column($question['answers'], '1'));
-                  }                                
-                  $total_possible_points += $max_value;
-                  $minimum_possible_points += $min_value;
-                }
-              }
+              // Get maximum and minimum points for the quiz
+              if ( ! in_array( $question_id, $hidden_questions ) ) {
+                $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+                $total_possible_points += $max_min_result['max_point'];
+                $minimum_possible_points += $max_min_result['min_point'];
+              }            
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1773,59 +1736,16 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-            
-						$question_is_required = (unserialize($question['question_settings']))['required'];
             // Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
 						$correct_status = 'incorrect';
 						$answer_points  = 0;
-						$max_value_array = array();
-            $min_value_array = array();
 
-            // Get total correct points
-            if (($options->system == 3 || $options->system == 1) && isset($question['answers']) && ! empty($question['answers'])) {
-              if ($question_type_new == 4 || $question_type_new == 10) {
-                foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
-                    if (($options->system == 1 || $options->system == 3) && isset($single_answer_arr[1])) {
-                      $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
-                      if (intval($single_answer_arr[1]) > 0) {
-                        array_push($max_value_array, $single_answer_arr[1]);
-                      }
-                      if (intval($single_answer_arr[1]) < 0) {
-                        array_push($min_value_array, $single_answer_arr[1]);
-                      }
-                    }
-                }
-                if (empty($max_value_array) || empty($min_value_array)){
-                  if (empty($max_value_array)){
-                    if ( 0 ===$question_is_required ){
-                      $max_value = max($min_value_array) ? max($min_value_array) : 0;
-                    } else {
-                      $max_value = 0;
-                    }
-                    $min_value = min($min_value_array) ? min($min_value_array): 0;
-
-                  }
-                  if (empty($min_value_array)){
-                    if ( 0 === $question_is_required ){
-                      $min_value = min($max_value_array) ? min($max_value_array) : 0;
-                    } else {
-                      $min_value = 0;
-                    }
-                    $max_value = max($max_value_array) ? max($max_value_array) : 0 ;
-                  }             
-                } else {
-                  $max_value            = max($max_value_array);
-                  $min_value            = min($min_value_array);
-                }
-              } else {
-                  $max_value            = max(array_column($question['answers'], '1'));
-                  $min_value            = min(array_column($question['answers'], '1'));
-              }                                
-              $total_possible_points += $max_value;
-              $minimum_possible_points += $min_value;
-            }
+            // Get maximum and minimum points for the quiz
+            $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+            $total_possible_points += $max_min_result['max_point'];
+            $minimum_possible_points += $max_min_result['min_point'];
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1887,6 +1807,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				}
 			}
 		}
+    
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
@@ -1945,6 +1866,118 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$qmn_quiz_comments = esc_textarea( stripslashes( $_POST['mlwQuizComments'] ) );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
+	}
+
+  /**
+	 * computes maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $options 
+	 * @param array $question
+	 * @return string $max_min_result 
+	 */
+	public static function qsm_max_min_points( $options , $question ) {
+    
+    $max_value_array = array();
+    $min_value_array = array();
+    
+    $valid_grading_system = ($options->system == 1 || $options->system == 3);
+    $valid_answer_array= (isset($question['answers']) && !empty($question['answers']));
+
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( !($valid_answer_array && $valid_grading_system)){
+      return $max_min_result;
+    }
+
+    foreach ($question['answers'] as $single_answerk_key => $single_answer_arr) {
+      if (isset($single_answer_arr[1])) {
+        $single_answer_arr[1] = apply_filters('qsm_single_answer_arr', $single_answer_arr[1]);
+        if (intval($single_answer_arr[1]) > 0) {
+          array_push($max_value_array, $single_answer_arr[1]);
+        }
+        if (intval($single_answer_arr[1]) < 0) {
+          array_push($min_value_array, $single_answer_arr[1]);
+        }
+      }
+    }
+
+    $question_type = $question['question_type_new'];
+    $question_required = ( 0 === unserialize($question['question_settings'])['required']);
+    $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
+      
+    return QMNQuizManager::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
+    
+	}
+  /**
+	 * evaluates conditions and returns maximum and minimum points for a quiz
+	 *
+	 * @since 7.3.5
+	 * @param array $max_value_array
+	 * @param array $min_value_array
+   * @param array $question_required
+   * @param array $multi_response
+	 * @return string $max_min_result
+	 */
+	public static function qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response) {
+    
+    $max_min_result = array(
+      'max_point' => 0,
+      'min_point' => 0
+    );
+
+    if ( empty($max_value_array) && empty($min_value_array) ){
+      return $max_min_result;
+    }
+    
+    if ( empty($max_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = max($min_value_array);
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    if ( empty($max_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    if ( empty($max_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['max_point'] = 0;
+      $max_min_result['min_point'] = min($min_value_array); 
+    }
+    
+    if ( empty($min_value_array) && $question_required &&  $multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = array_sum($max_value_array);              
+    }
+    if ( empty($min_value_array) && $question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = min($max_value_array);
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  $multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = array_sum($max_value_array);
+    }
+    if ( empty($min_value_array) && !$question_required &&  !$multi_response ){
+      $max_min_result['min_point'] = 0;
+      $max_min_result['max_point'] = max($max_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array) &&  $multi_response ){
+      $max_min_result['max_point'] = array_sum($max_value_array);
+      $max_min_result['min_point'] = array_sum($min_value_array);
+    }
+    
+    if ( !empty($max_value_array) && !empty($min_value_array)  &&  !$multi_response ){
+      $max_min_result['max_point'] = max($max_value_array);
+      $max_min_result['min_point'] = min($min_value_array);
+    }  
+    
+    return $max_min_result;
 	}
 
 	/**
@@ -2507,8 +2540,8 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'amount'           => $qmn_quiz_options->pagination,
 			'section_comments' => $qmn_quiz_options->comment_section,
 			'total_questions'  => $total_questions,
-			'previous_text'    => $qmn_quiz_options->previous_button_text,
-			'next_text'        => $qmn_quiz_options->next_button_text,
+			'previous_text'    => sanitize_text_field( $qmn_quiz_options->previous_button_text ),
+			'next_text'        => sanitize_text_field( $qmn_quiz_options->next_button_text ),
 		);
 	}
 	return $display;

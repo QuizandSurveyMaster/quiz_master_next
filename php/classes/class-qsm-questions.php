@@ -72,15 +72,17 @@ class QSM_Questions {
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
 		// Get all question IDs needed.
-		$total_pages = count( $pages );
-		for ( $i = 0; $i < $total_pages; $i++ ) {
-			foreach ( $pages[ $i ] as $question ) {
-				$question_id                  = intval( $question );
-				$question_ids[]               = $question_id;
-				$page_for_ids[ $question_id ] = $i;
+		if ( ! empty( $pages ) ) {
+			$total_pages = count( $pages );
+			for ( $i = 0; $i < $total_pages; $i++ ) {
+				foreach ( $pages[ $i ] as $question ) {
+					$question_id                  = intval( $question );
+					$question_ids[]               = $question_id;
+					$page_for_ids[ $question_id ] = $i;
+				}
 			}
 		}
-
+		
 		// If we have any question IDs, get the questions.
 		if ( count( $question_ids ) > 0 ) {
 

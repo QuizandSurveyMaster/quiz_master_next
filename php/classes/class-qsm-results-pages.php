@@ -159,6 +159,10 @@ class QSM_Results_Pages {
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
 			$page = htmlspecialchars_decode( $content, ENT_QUOTES );
+
+			//last chance to filter $page
+			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
+
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page' );
 			?>
@@ -340,6 +344,12 @@ class QSM_Results_Pages {
 			} else {
 				$pages[ $i ]['conditions'] = array();
 			}
+
+			// Sanitize template data 
+			// if ( isset( $pages[ $i ]['page'] ) ) {
+			// 	// Sanitizes the conditions.
+			// 	$pages[ $i ]['page'] = esc_html( $pages[ $i ]['page'] );
+			// }
 		}
 
 		global $wpdb;

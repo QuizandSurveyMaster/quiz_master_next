@@ -124,7 +124,7 @@ var QSMContact;
       var contactEach;
       $.each( contactFields, function( i, val ) {
         contactEach = {
-          label: $( this ).find( '.label-control' ).val(),
+          label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
           type: $( this ).find( '.type-control' ).val(),
           required: $( this ).find( '.required-control' ).prop( 'checked' ),
           use: $( this ).find( '.use-control' ).val()

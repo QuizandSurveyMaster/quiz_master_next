@@ -1038,7 +1038,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_logo_url() {
 		global $globalQuizsetting;
 		$qsm_result_page_fb_image	=(isset($globalQuizsetting['result_page_fb_image'])  && '' !== $globalQuizsetting['result_page_fb_image'] ?  $globalQuizsetting['result_page_fb_image'] : QSM_PLUGIN_URL . 'assets/icon-200x200.png');				
-		echo '<input type="text" id="result_page_fb_image" name="qsm-quiz-settings[result_page_fb_image]" value="'.$qsm_result_page_fb_image.'">
+		echo '<input type="url" id="result_page_fb_image" name="qsm-quiz-settings[result_page_fb_image]" value="'.$qsm_result_page_fb_image.'">
 		<span class="qsm-opt-desc">If left blank, this will default to QSM logo</span>';
 	}
 	
