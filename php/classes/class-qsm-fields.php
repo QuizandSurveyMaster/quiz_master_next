@@ -176,7 +176,7 @@ class QSM_Fields {
 	</th>
 	<td>
 		<input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
-			value="<?php echo $value; ?>" />
+			value="<?php echo esc_attr( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
 		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
@@ -206,7 +206,7 @@ class QSM_Fields {
 	</th>
 	<td>
 		<input type="url" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
-			value="<?php echo $value; ?>" />
+			value="<?php echo esc_url( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
 		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
