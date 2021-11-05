@@ -354,43 +354,6 @@ function qsm_display_optin_page() {
 		<div id="wpas-mailchimp-signup-form-wrapper">
 			<div id="status"></div>
 			<!-- Begin Sendinblue Form -->
-			<!-- START - We recommend to place the below code in head tag of your website html  -->
-			<style>
-			@font-face {
-				font-display: block;
-				font-family: Roboto;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
-			}
-
-			@font-face {
-				font-display: fallback;
-				font-family: Roboto;
-				font-weight: 600;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
-			}
-
-			@font-face {
-				font-display: fallback;
-				font-family: Roboto;
-				font-weight: 700;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
-			}
-
-			#sib-container input:-ms-input-placeholder {
-				text-align: left;
-				font-family: "Helvetica", sans-serif;
-				color: #c0ccda;
-				border-width: px;
-			}
-
-			#sib-container input::placeholder {
-				text-align: left;
-				font-family: "Helvetica", sans-serif;
-				color: #c0ccda;
-				border-width: px;
-			}
-			</style>
-			<!--  END - We recommend to place the above code in head tag of your website html -->
 
 			<!-- START - We recommend to place the below code where you want the form in your website html  -->
 			<div class="sib-form" style="text-align: center;">
@@ -541,6 +504,42 @@ function qsm_admin_get_free_addon_page_scripts_style($hook){
 
 		var AUTOHIDE = Boolean(0);';
 		wp_add_inline_script('jquery', $qsm_sibforms_inline_js);
+
+		$qsm_sibforms_inline_css = '@font-face {
+			font-display: block;
+			font-family: Roboto;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+		}
+
+		@font-face {
+			font-display: fallback;
+			font-family: Roboto;
+			font-weight: 600;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+		}
+
+		@font-face {
+			font-display: fallback;
+			font-family: Roboto;
+			font-weight: 700;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+		}
+
+		#sib-container input:-ms-input-placeholder {
+			text-align: left;
+			font-family: "Helvetica", sans-serif;
+			color: #c0ccda;
+			border-width: px;
+		}
+
+		#sib-container input::placeholder {
+			text-align: left;
+			font-family: "Helvetica", sans-serif;
+			color: #c0ccda;
+			border-width: px;
+		}';
+		wp_add_inline_style( 'qsm_sibforms_css', $qsm_sibforms_inline_css );
+
 	}
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style' );
