@@ -883,6 +883,14 @@ function qmnFormSubmit(quiz_form_id) {
 		type: 'POST',
 		success: function (response) {
 			response=JSON.parse(response);
+			if (window.qsm_results_data === undefined) {
+				window.qsm_results_data = new Object();
+			}
+			window.qsm_results_data[quizID]={
+				'save_response' : response.result_status['save_response'],
+				'id'     : response.result_status['id']
+			};		
+
 			if(response.quizExpired){
 				MicroModal.show('modal-4');
 				return false;
@@ -974,7 +982,9 @@ function qmnInit() {
 				let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
 				if(disabledAnswer[key]){
 					disabledAnswer[key].forEach(element => {
-						jQuery('#'+element[0]+'_'+element[1]).prop('checked', true).trigger('change')
+						let element1=element[1];
+						element1.replace("","-");
+						jQuery('#'+element[0]+'-'+element1+' input').prop('checked', true).trigger('change');
 					});
 				}
 			}

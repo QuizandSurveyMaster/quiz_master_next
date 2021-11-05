@@ -169,29 +169,12 @@ class QSM_Emails {
 		}
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
-
 		// Prepares our content.
-		$incorrect_answer="<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
-		$correct_answer="<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
-		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;";
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
-        $response_data['email_template_array'] = true;
+		$response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
-		$content = str_replace( '<br/>', '<br>', $content );
-		$content = str_replace( '<br />', '<br>', $content );
-		$content = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $content );
-		$content = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $content );
-		$content = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer qmn_image_option">', "$correct_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-simple-option qmn_image_option">', "$simple_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer ">', "$correct_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-simple-option ">', "$simple_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $content );
-		$content = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $content );
-		$content = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $content );
-		$content = str_replace( '<span class="qmn_user_incorrect_answer">', "$correct_answer ", $content );
-		$content = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $content );
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
+		//convert css classes to inline 
+		$content = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner($content);
 		$content = html_entity_decode( $content );
 
 		// Prepares our from name and email.
