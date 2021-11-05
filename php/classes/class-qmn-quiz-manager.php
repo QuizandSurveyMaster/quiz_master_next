@@ -15,6 +15,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QMNQuizManager {
 
+	/**
+	 * mathjax_location, mathjax_version
+	 *
+	 * @var string
+	 * @since 7.3.5
+	 */
+	public $mathjax_location 	= 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+	public $mathjax_version 	= '2.7.5';
+
 	protected $qsm_background_email;
 	/**
 	 * Main Construct Function
@@ -252,8 +261,7 @@ class QMNQuizManager {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-tooltip' );
 			wp_enqueue_script( 'qsm_quiz', plugins_url( '../../js/qsm-quiz.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
-			$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-			wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+			wp_enqueue_script( 'math_jax', $this->mathjax_location, false, $this->mathjax_version, false );
 			$result_unique_id = sanitize_text_field( $_GET['result_id'] );
 			$query            = $wpdb->prepare( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id );
 			$result           = $wpdb->get_row( $query, ARRAY_A );
@@ -411,8 +419,7 @@ class QMNQuizManager {
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
-				$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-				wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+				wp_enqueue_script( 'math_jax', $this->mathjax_location, false,  $this->mathjax_version, false );
 				$quiz_result   = unserialize( $result_data['quiz_results'] );
 				$response_data = array(
 					'quiz_id'                => $result_data['quiz_id'],
@@ -705,8 +712,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				),
 			)
 		);
-		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+		wp_enqueue_script( 'math_jax', $this->mathjax_location, false, $this->mathjax_version, false );
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
 		global $mlw_qmn_section_count;

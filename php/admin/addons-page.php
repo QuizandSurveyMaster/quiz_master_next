@@ -476,9 +476,6 @@ function qsm_admin_get_free_addon_page_scripts_style($hook){
 		$qsm_sibforms_css_url = 'https://sibforms.com/forms/end-form/build/sib-styles.css';
 		wp_enqueue_style( 'qsm_sibforms_css',  $qsm_sibforms_css_url);
 
-		// $qsm_sibforms_js_url = 'https://sibforms.com/forms/end-form/build/main.js';
-		// wp_enqueue_script( 'qsm_sibforms_js',  $qsm_sibforms_js_url, array('jquery'));
-
 		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
 		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array());
 
