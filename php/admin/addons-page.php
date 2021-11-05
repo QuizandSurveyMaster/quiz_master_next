@@ -17,7 +17,7 @@ function qmn_addons_page() {
 	global $mlwQuizMasterNext;
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
-	
+
 	?>
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
@@ -390,11 +390,6 @@ function qsm_display_optin_page() {
 				border-width: px;
 			}
 			</style>
-			<link rel="stylesheet" href="https://assets.sendinblue.com/component/form/2ef8d8058c0694a305b0.css">
-			<link rel="stylesheet" href="https://assets.sendinblue.com/component/clickable/b056d6397f4ba3108595.css">
-			<link rel="stylesheet"
-				href="https://assets.sendinblue.com/component/progress-indicator/f86d65a4a9331c5e2851.css">
-			<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
 			<!--  END - We recommend to place the above code in head tag of your website html -->
 
 			<!-- START - We recommend to place the below code where you want the form in your website html  -->
@@ -493,32 +488,8 @@ function qsm_display_optin_page() {
 			<!-- END - We recommend to place the below code where you want the form in your website html  -->
 
 			<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
-			<script>
-			window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
-
-			window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
-				"The information provided is invalid. Please review the field format and try again.";
-
-			window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
-
-			window.GENERIC_INVALID_MESSAGE =
-				"The information provided is invalid. Please review the field format and try again.";
-
-
-
-
-			window.translation = {
-				common: {
-					selectedList: '{quantity} list selected',
-					selectedLists: '{quantity} lists selected'
-				}
-			};
-
-			var AUTOHIDE = Boolean(0);
-			</script>
 			<script src="https://sibforms.com/forms/end-form/build/main.js">
 			</script>
-			<script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
 			<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
 			<!-- End Sendinblue Form -->
 		</div>
@@ -527,4 +498,51 @@ function qsm_display_optin_page() {
 </div>
 <?php
 }
+function qsm_admin_get_free_addon_page_scripts_style($hook){
+	if ( $hook == 'qsm_page_qsm-free-addon') {
+
+		$qsm_sendinblue_component_form_url = 'https://assets.sendinblue.com/component/form/2ef8d8058c0694a305b0.css';
+		wp_enqueue_style( 'qsm_sendinblue_component_form',  $qsm_sendinblue_component_form_url);
+
+		$qsm_sendinblue_component_clickable_url = 'https://assets.sendinblue.com/component/clickable/b056d6397f4ba3108595.css';
+		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  $qsm_sendinblue_component_clickable_url);
+
+		$qsm_sendinblue_progress_indicator_url = 'https://assets.sendinblue.com/component/progress-indicator/f86d65a4a9331c5e2851.css';
+		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  $qsm_sendinblue_progress_indicator_url);
+
+		$qsm_sibforms_css_url = 'https://sibforms.com/forms/end-form/build/sib-styles.css';
+		wp_enqueue_style( 'qsm_sibforms_css',  $qsm_sibforms_css_url);
+
+		// $qsm_sibforms_js_url = 'https://sibforms.com/forms/end-form/build/main.js';
+		// wp_enqueue_script( 'qsm_sibforms_js',  $qsm_sibforms_js_url, array('jquery'));
+
+		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
+		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array());
+
+		$qsm_sibforms_inline_js = 'window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
+
+		window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
+			"The information provided is invalid. Please review the field format and try again.";
+
+		window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+
+		window.GENERIC_INVALID_MESSAGE =
+			"The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+		window.translation = {
+			common: {
+				selectedList: "{quantity} list selected",
+				selectedLists: "{quantity} lists selected"
+			}
+		};
+
+		var AUTOHIDE = Boolean(0);';
+		wp_add_inline_script('jquery', $qsm_sibforms_inline_js);
+	}
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style' );
+
 ?>
