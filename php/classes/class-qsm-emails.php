@@ -170,6 +170,10 @@ class QSM_Emails {
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 		// Prepares our content.
+		$incorrect_answer="<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
+		$correct_answer="<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
+		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;";
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
 		$response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content = apply_filters( 'qmn_email_template_variable_results', $content );
@@ -188,7 +192,6 @@ class QSM_Emails {
 		$content = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $content );
 		$content = str_replace( '<span class="qmn_user_correct_answer">', "$correct_answer ", $content );
 		$content = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $content );
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
 		//convert css classes to inline
 		$content = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner($content);
 		$content = html_entity_decode( $content );

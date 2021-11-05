@@ -829,9 +829,6 @@ class QMNPluginHelper
         }
         add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
 	}
-<<<<<<< HEAD
-}
-=======
 
     /**
 	 *
