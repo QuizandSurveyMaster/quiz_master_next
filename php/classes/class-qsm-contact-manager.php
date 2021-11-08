@@ -47,8 +47,8 @@ class QSM_Contact_Manager {
 
 		// Loads fields.
 		$fields = self::load_fields();
-                
-                $contact_disable_autofill = $options->contact_disable_autofill;                        
+
+                $contact_disable_autofill = $options->contact_disable_autofill;
 
 		// If fields are empty and backwards-compatible fields are turned on then, use older system.
 		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
@@ -76,7 +76,7 @@ class QSM_Contact_Manager {
 				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserComp' placeholder="<?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?>" value='' />
 				<?php
 			}
-                        
+
 			// Check for email field.
 			if ( 2 != $options->user_email ) {
 				$class = '';
@@ -102,7 +102,7 @@ class QSM_Contact_Manager {
 			}
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
 
-			// Cycle through each of the contact fields.                       
+			// Cycle through each of the contact fields.
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 
@@ -330,14 +330,14 @@ class QSM_Contact_Manager {
 
 		$total_fields = count( $fields );
 		for ( $i = 0; $i < $total_fields; $i++ ) {                         
-            $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
-			$fields[ $i ] = array(
-				'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
-				'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
-				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
-				'required' => sanitize_text_field( $fields[ $i ]['required'] ),
-			);
-		}                
+        $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
+			  $fields[ $i ] = array(
+          'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
+          'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
+          'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
+          'required' => sanitize_text_field( $fields[ $i ]['required'] ),
+        );
+		}
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', serialize( $fields ) );
