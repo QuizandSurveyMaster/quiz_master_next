@@ -145,7 +145,7 @@ function qsm_generate_featured_addons() {
 						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
@@ -191,7 +191,7 @@ function qsm_generate_featured_addons() {
 						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
@@ -240,7 +240,7 @@ function qsm_generate_featured_addons() {
 						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
