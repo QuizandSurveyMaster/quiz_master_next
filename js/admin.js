@@ -312,22 +312,26 @@ var QSMAdmin;
                 $(this).parents('tr').next('tr').show();
             }
         });
-        $(document).on('click', '#show-all-variable .qsm-text-template-span > .button', function (e) {
+        $(document).on('click', '#show-all-variable .qsm-text-template-span ', function (e) {
             e.preventDefault();
+            let templateSpan = jQuery(this);
+            let templateVariable= jQuery(this).children('.template-variable');
             var $temp = $("<input>");
             $("body").append($temp);
-            $temp.val(jQuery(this).text()).select();
+            $temp.val(templateVariable.text()).select();
             document.execCommand("copy");
             $temp.remove();
-            var button_width = $(this).width();
-            var button_txt = $(this).text();
-            $(this).css('width', button_width);
-            $(this).text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
-            var this_par = $(this);
+            var button_width = templateSpan.width();
+            var button_txt = templateSpan.html()
+            templateSpan.css('width', button_width);
+            templateSpan.text('').html('<span class="popup-copied-des"><span class="dashicons dashicons-yes"></span> Copied!</span>');
             setTimeout(function () {
-                this_par.css('width', 'auto');
-                this_par.text('').text(button_txt);
+                templateSpan.css('width', 'auto');
+                templateSpan.html(button_txt);
             }, 1000);
+        });
+        $(document).on('click', ' .qsm-active-addons .no_addons_installed a', function (e) {
+            $('.qsm-addon-anchor-left .qsm-install-addon a').trigger('click');
         });
         $(document).on('click', '.qsm-addon-anchor-left .qsm-install-addon a', function (e) {
             e.preventDefault();
@@ -370,5 +374,29 @@ var QSMAdmin;
                 button.nextAll('.qsm_featured_image_preview').attr('src', attachment.url);
             }).open();
         });
+
+        $(document).on('change', '.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]', function () {            
+            var value = $(this).val();                               
+            if (value == '0' ) {                
+                $('.global_setting_system').parents('tr').show();
+                $('.global_setting_score_roundoff').parents('tr').show();
+            }else {
+                $('.global_setting_system').parents('tr').hide();
+                $('.global_setting_score_roundoff').parents('tr').hide();
+    
+            }
+        });
+        $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {            
+            var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();  
+            var value1 = $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').val();                              
+            if (value != '1'  && value1 == '0' ) {                                         
+                $('.global_setting_score_roundoff').parents('tr').show();
+            }else {                
+                $('.global_setting_score_roundoff').parents('tr').hide();    
+            }
+        });
+        $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');
+        $('.global_setting_system input[name="qsm-quiz-settings[system]"]').trigger('change');
+
     });
 }(jQuery));

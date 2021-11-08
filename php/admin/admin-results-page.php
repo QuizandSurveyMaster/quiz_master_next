@@ -4,6 +4,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_results_page($hook){
+	if ( 'qsm_page_mlw_quiz_results' != $hook ) {
+		return;
+	}	
+	global $mlwQuizMasterNext;
+	wp_enqueue_script( 'jquery' );
+	wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-dialog' );
+	wp_enqueue_script( 'jquery-ui-button' );
+	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
+
+/**
  * This function generates the admin side quiz results page
  *
  * @return void
@@ -88,7 +106,7 @@ function qsm_results_overview_tab_content() {
 		// Variables from delete result form.
 		$mlw_delete_results_id   = intval( $_POST['result_id'] );
 		$mlw_delete_results_name = sanitize_text_field( $_POST['delete_quiz_name'] );
-
+		do_action('qsm_before_delete_result' , $mlw_delete_results_id);
 		// Updates table to mark results as deleted.
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_results',
@@ -154,18 +172,20 @@ function qsm_results_overview_tab_content() {
 	// Prepares the SQL to retrieve the results.
 	$table_limit       = 40;
 	$search_phrase_sql = '';
-	$order_by_sql      = 'ORDER BY result_id DESC';
+	$delete = 'deleted=0';
+	$delete  = apply_filters( 'qsm_results_delete_clause', $delete );
+	$order_by_sql      = 'ORDER BY time_taken_real DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
 		$sanitized_search_phrase = sanitize_text_field( $_GET['qsm_search_phrase'] );
-		$search_phrase_percents  = '%' . $wpdb->esc_like( $sanitized_search_phrase ) . '%';
+		$search_phrase_percents  = '%' . esc_sql( $wpdb->esc_like( $sanitized_search_phrase ) ) . '%';
 		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
-		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 {$search_phrase_sql}" );
+		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} {$search_phrase_sql}" );
 	}
 
 	// Gets the order by arg. Uses switch to create SQL to prevent SQL injection.
@@ -188,8 +208,8 @@ function qsm_results_overview_tab_content() {
 				$order_by_sql = ' ORDER BY correct_score DESC';
 				break;
 			default:
-				$order_by     = 'quiz_name';
-				$order_by_sql = ' ORDER BY result_id DESC';
+				$order_by     = 'time_taken_real';
+				$order_by_sql = ' ORDER BY time_taken_real DESC';
 		}
 	}
 
@@ -203,19 +223,11 @@ function qsm_results_overview_tab_content() {
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
 		$quiz_id       = intval( $_GET['quiz_id'] );
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
 	} else {
-		$mlw_quiz_data = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE deleted=0 $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) );
+		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
 	}
 
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ) );
-	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array() );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	?>
 <script type="text/javascript">
 var $j = jQuery.noConflict();
@@ -272,7 +284,7 @@ function deleteResults(id, quizName) {
 					?>
 			<a class="prev-page button"
 				href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>">
-				<< /a>
+				<</a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of
 						<?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php
@@ -314,18 +326,20 @@ function deleteResults(id, quizName) {
 		<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
 		<?php
 			}
+			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? esc_attr( sanitize_text_field( $_GET['qsm_search_phrase'] ) ) : '';
+			$qmn_order_by = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? $_GET['qmn_order_by'] : 'default';
 			?>
 		<input type="hidden" name="page" value="mlw_quiz_results">
 		<p class="search-box">
 			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="">
+			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo $qsm_search_phrase; ?>">
 			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
 			<select id="qmn_order_by" name="qmn_order_by">
-				<option value="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
-				<option value="name"><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
-				<option value="point_score"><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
-				<option value="correct_score"><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
-				<option value="default"><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+				<option value="default" <?php selected( $qmn_order_by, 'default' ); ?>><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
+				<option value="quiz_name" <?php selected( $qmn_order_by, 'quiz_name' ); ?>><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></option>
+				<option value="name" <?php selected( $qmn_order_by, 'name' ); ?>><?php esc_html_e( 'User Name', 'quiz-master-next' ); ?></option>
+				<option value="point_score" <?php selected( $qmn_order_by, 'point_score' ); ?>><?php esc_html_e( 'Points', 'quiz-master-next' ); ?></option>
+				<option value="correct_score" <?php selected( $qmn_order_by, 'correct_score' ); ?>><?php esc_html_e( 'Correct Percent', 'quiz-master-next' ); ?></option>
 			</select>
 			<button class="button"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></button>
 		</p>

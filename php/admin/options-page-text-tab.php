@@ -113,36 +113,6 @@ function mlw_options_text_tab_content() {
             $mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
             ?>
         </div>
-        <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
-            <div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
-                <div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
-                    <header class="qsm-popup__header">
-                            <h2 class="qsm-popup__title"><?php _e('Template Variables', 'quiz-master-next'); ?></h2>                            
-                    </header>
-                    <main class="qsm-popup__content" id="show-all-variable-content">
-                        <?php
-                        $variable_list = qsm_text_template_variable_list();
-                        if( $variable_list ){
-                            foreach ( $variable_list as $key => $s_variable ) { ?>
-                                <div class="popup-template-span-wrap">
-                                    <span class="qsm-text-template-span">
-                                        <button class="button button-default"><?php echo $key; ?></button>                                    
-                                        <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                                            <span class="qsm-tooltips"><?php echo $s_variable; ?></span>
-                                        </span>                                    
-                                    </span>
-                                </div>
-                            <?php                     
-                            }
-                        }
-                        ?>
-                    </main>
-                    <footer class="qsm-popup__footer" style="text-align: right;">                            
-                            <button class="button button-default" data-micromodal-close="" aria-label="Close this dialog window"><?php _e('Close', 'quiz-master-next'); ?></button>
-                    </footer>
-                </div>
-            </div>
-        </div>
         <?php
 }
 

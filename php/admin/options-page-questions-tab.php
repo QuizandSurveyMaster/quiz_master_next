@@ -8,6 +8,32 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_questions($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
+		return;
+	}
+	if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
+		global $mlwQuizMasterNext;
+		if ( ! did_action( 'wp_enqueue_media' ) ) {
+			wp_enqueue_media();
+		}
+		wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
+		wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+		wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		wp_enqueue_editor();
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions');
+
+
 /**
  * Adds the settings for questions tab to the Quiz Settings page.
  *
@@ -29,14 +55,33 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
 function qsm_options_questions_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
+
 	$question_categories = $wpdb->get_results( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions", 'ARRAY_A' );
-	$quiz_id             = intval( $_GET['quiz_id'] );
-	$user_id             = get_current_user_id();
-	$form_type           = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-	$quiz_system         = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
-	$pages               = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-	$qpages              = array();
+	$enabled             = get_option( 'qsm_multiple_category_enabled' );
+
+	if ( $enabled && 'cancelled' !== $enabled ) {
+		$question_categories = array();
+		$terms               = get_terms(
+			array(
+				'taxonomy'   => 'qsm_category',
+				'hide_empty' => false,
+			)
+		);
+		foreach ( $terms as $term ) {
+			$question_categories[] = array(
+				'category' => $term->name,
+				'cat_id'   => $term->term_id,
+			);
+		}
+	}
+
+	$quiz_id     = intval( $_GET['quiz_id'] );
+	$user_id     = get_current_user_id();
+	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$pages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+	$db_qpages   = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$qpages      = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
 			'id'           => 1,
@@ -75,25 +120,15 @@ function qsm_options_questions_tab_content() {
 		'categories'             => $question_categories,
 		'form_type'              => $form_type,
 		'quiz_system'            => $quiz_system,
+		// 'multiple_categories'    => $multiple_categories,
 		'hide_desc_text'         => __( 'Less Description', 'quiz-master-next' ),
 		'show_desc_text'         => __( 'Add Description', 'quiz-master-next' ),
 		'show_correct_info_text' => __( 'Add Correct Answer Info', 'quiz-master-next' ),
 		'question_bank_nonce'    => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
+		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 	);
-
-	// Scripts and styles.
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	if ( ! did_action( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
-	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-	wp_enqueue_editor();
-	wp_enqueue_media();
 
 	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
@@ -244,17 +279,17 @@ function qsm_options_questions_tab_content() {
 										'description'      => __( 'For this question type, users will see a Captcha field on front end.', 'quiz-master-next' ),
 									),
 									// array(
-									// 	'question_type_id' => '13',
-									// 	'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+									// 'question_type_id' => '13',
+									// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									// ),
 								);
-								
+
 								// disabling polar for form type quiz and system correct/incorrect
 								if ( $form_type == 0 && $quiz_system == 0 ) {
-									$polar_class = $polar_question_use = '';
+									$polar_class       = $polar_question_use = '';
 									$description_arr[] = array(
-											'question_type_id' => '13',
-											'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
+										'question_type_id' => '13',
+										'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									);
 								} else {
 									$polar_class        = 'qsm_show_question_type_13';
@@ -373,6 +408,17 @@ function qsm_options_questions_tab_content() {
 														),
 														'default' => '0',
 													),
+													'match-answer' => array(
+														'label' => __( 'Match Answer', 'quiz-master-next' ),
+														'type' => 'select',
+														'priority' => '3',
+														'options' => array(
+															'random' => __( 'Randomly', 'quiz-master-next' ),
+															'sequence' => __( 'Sequentially', 'quiz-master-next' ),
+														),
+														'default' => 'random',
+														'show' => '14',
+													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
 												$keys                   = array_column( $simple_question_option, 'priority' );
@@ -407,15 +453,27 @@ function qsm_options_questions_tab_content() {
 									</h2>
 									<div class="inside">
 										<?php
-										$category_question_option = array(
-											'categories' => array(
-												'label'    => __( '', 'quiz-master-next' ),
-												'type'     => 'category',
-												'priority' => '5',
-												'default'  => '',
-												'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category',
-											),
-										);
+										$enabled_multiple_category = get_option( 'qsm_multiple_category_enabled' );
+										if ( $enabled_multiple_category && 'cancelled' !== $enabled_multiple_category ) {
+											$category_question_option = array(
+												'categories' => array(
+													'label' => __( '', 'quiz-master-next' ),
+													'type' => 'multi_category',
+													'priority' => '5',
+													'default' => '',
+												),
+											);
+										} else {
+											$category_question_option = array(
+												'categories' => array(
+													'label' => __( '', 'quiz-master-next' ),
+													'type' => 'category',
+													'priority' => '5',
+													'default' => '',
+													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Category',
+												),
+											);
+										}
 										$category_question_option = apply_filters( 'qsm_question_category_option', $category_question_option );
 										$keys                     = array_column( $category_question_option, 'priority' );
 										array_multisort( $keys, SORT_ASC, $category_question_option );
@@ -692,6 +750,80 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
+<div class="qsm-popup qsm-popup-slide" id="modal-8" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-8-title">
+			<header class="qsm-popup__header">
+				<h3 class="qsm-popup__title" id="modal-8-title"><?php _e( 'Alert', 'quiz-master-next' ); ?>
+				</h3>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			</header>
+			<hr />
+			<main class="qsm-popup__content" id="modal-8-content">
+				<div class="modal-8-table">
+				</div>
+			</main>
+			<hr />
+			<footer class="qsm-popup__footer">
+				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+
+<div class="qsm-popup qsm-popup-slide" id="modal-9" aria-hidden="false">
+	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
+		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-9-title">
+			<header class="qsm-popup__header">
+				<h3 class="qsm-popup__title" id="modal-9-title"><?php _e( 'Add New Category', 'quiz-master-next' ); ?>
+				</h3>
+				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
+			</header>
+			<hr />
+			<main class="qsm-popup__content" id="modal-9-content">
+				<table class="modal-9-table">
+					<tr>
+						<td><?php _e( 'Category Name', 'quiz-master-next' ); ?>
+						</td>
+						<td><input type="text" id="new-category-name" /></td>
+					<tr>
+					<tr>
+						<td><?php _e( 'Parent Category', 'quiz-master-next' ); ?>
+						</td>
+						<td>
+							<?php
+							wp_dropdown_categories(
+								array(
+									'taxonomy'             => 'qsm_category',
+									'descendants_and_self' => 0,
+									'selected_cats'        => true,
+									'echo'                 => true,
+									'id'                   => 'qsm-parent-category',
+									'hide_empty'           => false,
+									'hirerichal'           => 1,
+									'show_option_none'     => 'None',
+									'option_none_value'    => -1,
+									'orderby'              => 'name',
+								)
+							);
+							?>
+						</td>
+					<tr>
+				</table>
+				<div class="info"></div>
+			</main>
+			<hr />
+			<footer class="qsm-popup__footer">
+				<button id="save-multi-category-button"
+					class="qsm-popup__btn qsm-popup__btn-primary"></span><?php _e( 'Save', 'quiz-master-next' ); ?></button>
+				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
+					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+			</footer>
+		</div>
+	</div>
+</div>
+
 <?php
 }
 
@@ -915,4 +1047,22 @@ function qsm_delete_question_from_database() {
 	exit;
 }
 add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_from_database' );
+
+add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
+
+function qsm_save_new_category() {
+
+	$category   = sanitize_text_field( $_POST['name'] );
+	$parent     = (int) $_POST['parent'];
+	$parent     = ( $parent == -1 ) ? 0 : $parent;
+	$term_array = wp_insert_term(
+		$category,
+		'qsm_category',
+		array(
+			'parent' => $parent,
+		)
+	);
+	echo json_encode( $term_array );
+	exit;
+}
 ?>

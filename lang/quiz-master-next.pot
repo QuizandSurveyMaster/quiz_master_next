@@ -862,6 +862,7 @@ msgstr ""
 #: php/admin/functions.php:552 php/admin/quizzes-page.php:496
 #: php/admin/quizzes-page.php:524 php/admin/quizzes-page.php:551
 #: php/admin/quizzes-page.php:570
+#: php/shortcodes.php:252,269
 msgid "Cancel"
 msgstr ""
 
@@ -2803,4 +2804,18 @@ msgstr ""
 #: php/classes/lib/wp-background-process.php:423
 #, php-format
 msgid "Every %d Minutes"
+msgstr ""
+
+#: php/shortcodes.php:250
+msgid "Time is Up!"
+msgstr ""
+
+#: php/shortcodes.php:250
+#, php-format
+msgid "Time's up"
+msgstr ""
+
+#: php/shortcodes.php:252
+#, php-format
+msgid "Submit Quiz"
 msgstr ""

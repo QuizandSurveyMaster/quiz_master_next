@@ -22,6 +22,7 @@ var QSMContact;
               '<option value="text">Small Open Answer</option>' +
               '<option value="email">Email</option>' +
               '<option value="checkbox">Checkbox</option>' +
+              '<option value="date">Date</option>' +
             '</select>' +
           '</div>' +
           '<div class="contact-form-group">' +
@@ -60,6 +61,9 @@ var QSMContact;
           break;
         case 'checkbox':
           contactField.find( '.type-control option[value="checkbox"]').prop( 'selected', true );
+          break;
+        case 'date':
+          contactField.find( '.type-control option[value="date"]').prop( 'selected', true );
           break;
         default:
 
@@ -120,7 +124,7 @@ var QSMContact;
       var contactEach;
       $.each( contactFields, function( i, val ) {
         contactEach = {
-          label: $( this ).find( '.label-control' ).val(),
+          label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
           type: $( this ).find( '.type-control' ).val(),
           required: $( this ).find( '.required-control' ).prop( 'checked' ),
           use: $( this ).find( '.use-control' ).val()

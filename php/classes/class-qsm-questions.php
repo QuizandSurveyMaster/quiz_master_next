@@ -24,6 +24,14 @@ class QSM_Questions {
 		$question_id = intval( $question_id );
 		$question    = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id = %d LIMIT 1", $question_id ), 'ARRAY_A' );
 		if ( ! is_null( $question ) ) {
+			$multicategories = array();
+			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
+			if (!empty($multicategories_res)){
+				foreach ($multicategories_res as $cat) {
+					$multicategories[] = $cat['term_id'];
+				}
+			}
+			$question['multicategories'] = $multicategories;
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -64,15 +72,17 @@ class QSM_Questions {
 		$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 
 		// Get all question IDs needed.
-		$total_pages = count( $pages );
-		for ( $i = 0; $i < $total_pages; $i++ ) {
-			foreach ( $pages[ $i ] as $question ) {
-				$question_id                  = intval( $question );
-				$question_ids[]               = $question_id;
-				$page_for_ids[ $question_id ] = $i;
+		if ( ! empty( $pages ) ) {
+			$total_pages = count( $pages );
+			for ( $i = 0; $i < $total_pages; $i++ ) {
+				foreach ( $pages[ $i ] as $question ) {
+					$question_id                  = intval( $question );
+					$question_ids[]               = $question_id;
+					$page_for_ids[ $question_id ] = $i;
+				}
 			}
 		}
-
+		
 		// If we have any question IDs, get the questions.
 		if ( count( $question_ids ) > 0 ) {
 
@@ -83,7 +93,11 @@ class QSM_Questions {
 
 			// Loop through questions and prepare serialized data.
 			foreach ( $question_array as $question ) {
+				$multicategories = self::get_question_categories($question['question_id']);
+				//get_question_categories
 
+				$question['multicategories'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+				$question['multicategoriesobject'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {
@@ -136,7 +150,14 @@ class QSM_Questions {
 
 		// Loop through questions and prepare serialized data.
 		foreach ( $questions as $question ) {
-
+			$multicategories = array();
+			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
+			if (!empty($multicategories_res)){
+				foreach ($multicategories_res as $cat) {
+					$multicategories[] = $cat['term_id'];
+				}
+			}
+			$question['multicategories'] = $multicategories;
 			// Prepare answers.
 			$answers = maybe_unserialize( $question['answer_array'] );
 			if ( ! is_array( $answers ) ) {
@@ -243,6 +264,7 @@ class QSM_Questions {
 			'hint'        => '',
 			'order'       => 1,
 			'category'    => '',
+			'multicategories' => '',
 		);
 		$data     = wp_parse_args( $data, $defaults );
 
@@ -263,9 +285,15 @@ class QSM_Questions {
 			$answers[ $key ] = $answers_array;
 		}
 
+		$question_name = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
+		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
+		if ( $trim_question_description ) {
+			$question_name = trim( preg_replace( '/\s+/', ' ', $question_name ) );
+		}
+
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
-			'question_name'        => trim( preg_replace( '/\s+/', ' ', htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES ) ) ),
+			'question_name'        => $question_name,
 			'answer_array'         => serialize( $answers ),
 			'question_answer_info' => $data['answer_info'],
 			'comments'             => htmlspecialchars( $data['comments'], ENT_QUOTES ),
@@ -276,6 +304,7 @@ class QSM_Questions {
 			'category'             => sanitize_text_field( $data['category'] ),
 			'deleted'              => 0,
 		);
+		$values = apply_filters('qsm_save_question_data', $values);
 
 		$types = array(
 			'%d',
@@ -297,11 +326,13 @@ class QSM_Questions {
 				$values,
 				$types
 			);
+			$question_id = $wpdb->insert_id;
 		} else {
+			$question_id = intval($data['ID']);
 			$results = $wpdb->update(
 				$wpdb->prefix . 'mlw_questions',
 				$values,
-				array( 'question_id' => intval( $data['ID'] ) ),
+				array( 'question_id' => $question_id ),
 				$types,
 				array( '%d' )
 			);
@@ -313,10 +344,146 @@ class QSM_Questions {
 			throw new Exception( $msg );
 		}
 
-		if ( $is_creating ) {
-			return $wpdb->insert_id;
-		} else {
-			return $data['ID'];
+		/**
+		 * Process Question Categories
+		 */
+		$question_terms_table = $wpdb->prefix . "mlw_question_terms";
+		$wpdb->delete($question_terms_table, array('question_id' => $question_id, 'taxonomy' => 'qsm_category'));
+		if (!empty($data['multicategories'])) {
+			foreach ($data['multicategories'] as $term_id) {
+				$term_rel_data = array(
+					'question_id' => $question_id,
+					'quiz_id' => intval($data['quiz_id']),
+					'term_id' => $term_id,
+					'taxonomy' => 'qsm_category',
+				);
+				$wpdb->insert($question_terms_table, $term_rel_data);
+			}
 		}
+
+		return $question_id;
 	}
+
+	/**
+	 * Get categories for a quiz
+	 *
+	 * @since 7.2.1
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_quiz_categories( $quiz_id = 0 ) {
+		global $wpdb;
+		$categories = array();
+		if ( 0 !== $quiz_id ) {
+			$questions		 = QSM_Questions::load_questions_by_pages( $quiz_id );
+			$question_ids	 = array_column( $questions, 'question_id' );
+			$question_ids	 = implode( ',', $question_ids );
+			$question_terms	 = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+			$term_ids 		 = ! empty( $question_terms ) ? array_unique( array_column( $question_terms, 'term_id' ) ) : array();
+			
+			$cat_array = self::get_question_categories_from_quiz_id( $quiz_id );
+			$enabled = get_option( 'qsm_multiple_category_enabled' );
+			if ( $enabled && $enabled != 'cancelled' && ! empty( $cat_array ) ) {
+				$term_ids = array_unique( array_merge( $term_ids, $cat_array ) );
+			}
+
+			$categories = self::get_question_categories_from_term_ids( $term_ids );
+		}
+		return $categories;
+	}
+
+	/**
+	 * Get categories from quiz id
+	 *
+	 * @since 7.3.3
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_question_categories_from_quiz_id( $quiz_id ) {
+		$cat_array = array();
+		$questions = self::load_questions_by_pages( $quiz_id );
+		foreach ( $questions as $single_question ) {
+			if ( isset( $single_question['multicategories'] ) && is_array( $single_question['multicategories'] ) ) {
+				foreach( $single_question['multicategories'] as $cat_id ) {
+					$cat_array[] = $cat_id;
+				}
+			}
+		}
+		return $cat_array;
+	}
+
+	/**
+	 * Get categories from term ids
+	 *
+	 * @since 7.3.3
+	 * @param int $term_ids Term IDs of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_question_categories_from_term_ids( $term_ids ) {
+		$categories = array();
+		if ( ! empty( $term_ids ) ) {
+			$categories_names	 = array();
+			$categories_tree	 = array();
+			$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => $term_ids, 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+			if ( ! empty( $terms ) ) {
+				foreach ( $terms as $tax ) {
+					$categories_names[$tax->term_id] = $tax->name;
+					$taxs[$tax->parent][]			 = $tax;
+				}
+				$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+			}
+			$categories = array(
+				'list'	 => $categories_names,
+				'tree'	 => $categories_tree,
+			);
+		}
+		return $categories;
+	}
+
+	/**
+	 * Get categories for a Question
+	 *
+	 * @since 7.2.1
+	 * @param int $quiz_id The ID of the quiz.
+	 * @return array The array of categories.
+	 */
+	public static function get_question_categories( $question_id = 0 ) {
+		global $wpdb;
+		$categories_tree	 = array();
+		$categories_names	 = array();
+		if ( 0 !== $question_id ) {
+			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
+			if ( ! empty( $question_terms ) ) {
+				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
+				if ( ! empty( $term_ids ) ) {
+					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+					if ( ! empty( $terms ) ) {
+						foreach ( $terms as $tax ) {
+							$categories_names[$tax->term_id] = $tax->name;
+							$taxs[$tax->parent][]			 = $tax;
+						}
+						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+
+					}
+				}
+			}
+		}
+		return array('category_name'=>$categories_names,"category_tree"=>$categories_tree);
+	}
+	/**
+	 * Create tree structure of terms.
+	 *
+	 * @since 7.2.1
+	 */
+	public static function create_terms_tree( &$list, $parent ) {
+		$taxTree = array();
+		foreach ( $parent as $ind => $val ) {
+			if ( isset( $list[$val->term_id] ) ) {
+				$val->children = self::create_terms_tree( $list, $list[$val->term_id] );
+			}
+			$taxTree[] = $val;
+		}
+		return $taxTree;
+	}
+
 }

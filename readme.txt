@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.2.0
+Stable tag: 7.3.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 == Description ==
 
 = Demoes! =
-* [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin) 
+* [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin)
 * [Sample Survey](https://quizandsurveymaster.com/quiz/sample-survey/?utm_source=readme&utm_medium=plugin&utm_content=sample-survey&utm_campaign=qsm_plugin)
 * [Personality Quiz](https://quizandsurveymaster.com/quiz/personality-quiz/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
 * [Quiz with Leaderboard](https://demo.quizandsurveymaster.com/advanced-leaderboard-demo/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
@@ -39,7 +39,7 @@ You can customize anything your users will see and engage with. Everything from 
 You can have **multiple choice** (radio buttons), **true and false**, **open answer** question, **drop down**, **multiple response** (checkboxes), **fill in the blank**, **number**, **captcha**, **polar** (slider) and **accept**. We release more questions types with every major release.
 
 = Customize Results Based on Score =
-Using our quiz builder plugin, you can customize the results page based on the user's score. 
+Using our quiz builder plugin, you can customize the results page based on the user's score.
 
 = Emails After Quiz =
 After the user takes a quiz or survey, you can have the plugin email you and the user with results. This too can be customized with your own text.
@@ -51,9 +51,9 @@ Your quiz or survey can be graded with an incorrect/correct system or a points-b
 You can assign categories to your questions using our quiz maker plugin. You can then show the user their score in a **particular** category or an average score of the categories.
 
 = Countdown Timer =
-Add countdown timer to your quizzes and effectively create skills assessment or online exams on your website. 
+Add countdown timer to your quizzes and effectively create skills assessment or online exams on your website.
 
-= Lead Generation = 
+= Lead Generation =
 You can integrate Mailchimp, Activecampaign, Zapier, Campaign Monitor, Get Response to your quiz or surveys in order to create drip email campaigns and reachout to your audience. Checkout our [integrations](https://quizandsurveymaster.com/downloads/category/integrations/).
 
 = Other Useful Features =
@@ -88,8 +88,8 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
 * [Logic](https://quizandsurveymaster.com/downloads/logic/?utm_source=readme&utm_medium=plugin&utm_content=logic&utm_campaign=qsm_plugin)
 * [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=readme&utm_medium=plugin&utm_content=user-dashboard&utm_campaign=qsm_plugin)
-* [URL Parameters](http://bit.ly/2I1ZM6g)
-* [Google Analytics Tracking](http://bit.ly/2AAgABs)
+* [URL Parameters](https://quizandsurveymaster.com/downloads/url-parameters/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=readme&utm_content=url-parameters)
+* [Google Analytics Tracking](https://quizandsurveymaster.com/downloads/google-analytics-tracking/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=readme)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
@@ -102,8 +102,8 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 
 = More free plugins for your WordPress Site =
 
-* [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
-* [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
+* 🎨 [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
+* 🔒 [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
 
 == Installation ==
 
@@ -132,19 +132,84 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Screenshots ==
 
 1. Dashboard
-2. Create New Quiz or Survey
-3. Question Type
+2. Create New Quiz Or Survey
+3. Adding Questions / Answers
 4. Questions
 5. All Quizzes & Surveys
 6. Contact Field
-7. Frontend View
-8. Frontend View with Answer
-9. Answer
-10. Database
+7. Style Tab
+8. Featured Image
+9. Frontend View with Answer
+10. Answer
 11. Stats
 12. Reporting and analysis result
+13. Customizing Themes
+14. QSM Breeze Theme
+15. QSM Fragrance Theme
+16. QSM Ivory Theme
+17. QSM Pool Theme
+18. Database
 
 == Changelog ==
+= 7.3.4 (October 1, 2021) =
+* Bug: Fixed the issue with validation of date field for contact section
+
+= 7.3.3 (October 1, 2021) =
+* Bug: Fixed the issue where %AVERAGE_CATEGORY_POINTS_X% was calculating total instead of average.
+* Bug: Fixed the issue where no category found for questions imported from question bank.
+* Bug: Fixed the issue where the limit number of questions per category was not working.
+* Bug: Fixed the issue with "Limit question per category" setting when "Random" option is enabled
+* Bug: Fixed the issue where timer was not showing on single page quiz.
+* Bug: Fixed the issue when recaptcha button not showing when question per page quiz options is enabled.
+* Bug: Fixed the issues while duplicating a quiz.
+* Bug: Fixed the issue where date question type shows date in reverse order on the results page and in emails.
+* Feature: Added date field in quiz contact tab.
+* Enhancement: Added Correct/Incorrect answers in different color in email.
+
+= 7.3.2 (September 06, 2021) =
+* Bug: Added Translation for Time is up and Cancel button.
+* Bug: Fixed the issue of category name not visible.
+* Bug: Fixed the issue of limit number of questions per category is not working.
+* Bug: Fixed the issue of results page and email showing only 1 question and its answer multiple times.
+* Bug: Fixed the issue of %POLL_RESULT_X% not displaying images while using rich answers.
+* Bug: Fixed the issue of %AVERAGE_CATEGORY_POINTS_X% variable not working.
+* Bug: Fixed the issue of validation errors appearing on the questions before entering the responses.
+* Bug: Fixed the issue of timer not showing on the quiz.
+* Bug: Fixed security issue to prevent Cross-Site Scripting attacks.
+
+
+= 7.3.1 (August 13, 2021) =
+* Bug: Fixed the error on updating database.
+* Bug: Fixed the issue of everything displayed in the same line in the results page.
+* Bug: Fixed the issue of fill in the blank question type not showing user answer and correct answer in the results page and email.
+* Feature: Added global default settings for quiz options.
+* Enhancement: Added option to deny quiz submission after end date/time
+* Enhancement: Made order of random questions same on the results page and the quiz frontend.
+
+
+= 7.3.0 (July 29, 2021) =
+* Feature: Added option to add multiple categories to single question.
+* Feature: Added option to display quiz results based on category points.
+* Enhancement: Extended category based template variables to support multiple categories.
+* Bug: Fixed issue with quiz duplication.
+
+= 7.2.3 (July 15, 2021) =
+* Bug: Fixed issue fatal error on php version below 7.3.
+
+= 7.2.2 (July 14, 2021) =
+* Feature: Implemented multiple fill in the blanks support.
+* Feature: Implemented new template variable %TIMER_SECONDS% to show left over seconds.
+* Feature: Implemented new option to limit number of questions per category.
+* Bug: Fixed issue with template variable %AMOUNT_INCORRECT%.
+* Bug: Fixed issue of undefined index notice of facebook app id.
+* Bug: Fixed issue with saving conditions in email and results tab.
+* Bug: Fixed issue of wordpress database error notice on fresh installation.
+* Bug: Fixed issue with validation on retake quiz
+
+= 7.2.1 (June 25, 2021) =
+* Bug: Fixed layout issues with rtl languages.
+* Bug: Fixed issue of user comments not appearing on admin result page.
+* Bug: Fixed issue with recaptcha not appearing on random quiz.
 
 = 7.2.0 (June 21, 2021) =
 * Feature: Introduced QSM Themes.
@@ -184,7 +249,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: UI improvements for Quiz Editor.
 
 = 7.1.13 (March 9, 2021) =
-* Bug: Fixed several security issues. 
+* Bug: Fixed several security issues.
 * Bug: Fixed the issue of audio and video player not showing in question content
 * Bug: Fixed the issue of [latex] shortcode not showing Red cross mark for incorrect option.
 * Bug: Fixed the issue required field getting surpassed by spaces in contact form.
@@ -407,7 +472,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Customized text using the "Text tab" and remove from "Options Tab" for user is not logged in
 * Bug: Fixed share Quizz's results on Social Media ( https://wordpress.org/support/topic/sharing-to-social-media/ )
 * Bug: For polar question type added the validation while creating option
-* Bug: Solved phone number field validation 
+* Bug: Solved phone number field validation
 * Bug: Solved User Dashboard addon issue for first row
 * Feature: Special capabilities #810 ( https://github.com/QuizandSurveyMaster/quiz_master_next/issues/810 )
 * Feature: Added Show JS Error library to show the JS Error in quiz page
@@ -478,7 +543,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * XSS Vulnerability (https://github.com/QuizandSurveyMaster/quiz_master_next/issues/795)
 
 = 6.3.4 (Oct 24, 2019) =
-* Massive overhaule for being responsive in admin panel. 
+* Massive overhaule for being responsive in admin panel.
 * Checkbox limit ([Issue #743] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/743)
 * Logic addon bug ([Issue #760] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/760)
 * Add filter to results array ([Issue #785] https://github.com/QuizandSurveyMaster/quiz_master_next/issues/785)
@@ -490,7 +555,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Radio buttons hard to select ([WP Issue] (https://wordpress.org/support/topic/radio-buttons-are-hard-to-select-on-mobile-devices/))
 * Results page enhancements
 
-= 6.3.2 (July 06, 2019) = 
+= 6.3.2 (July 06, 2019) =
 * UI Changes
 * Addons Pricing Page Update
 * Free Addon Page Added
@@ -504,8 +569,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 6.3.1 (May 19, 2019) =
 * Closed Bug: Duplicate post issue ([Issue #758](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/758))
 * Closed Enhancement: Option to turn off autofill ([WP Issue](https://wordpress.org/support/topic/can-you-add-an-option-to-turn-off-autofill-on-galaxy-phones-and-other-devices/))
-* Added Feature: Preview quiz within the quiz edit page. 
-* Added Feature: Auto save quiz and questions 
+* Added Feature: Preview quiz within the quiz edit page.
+* Added Feature: Auto save quiz and questions
 * Closed Enhancement: Disable autofill for contact fields ([Issue #718](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/718))
 * Closed Enhancement: Added %POLL_RESULTS_X% tag for results page to show poll results ([Issue #458](https://github.com/QuizandSurveyMaster/quiz_master_next/issues/458))
 * Closed Bug: Facebook Share not working properly ([WP Issue](https://wordpress.org/support/topic/facebook-share-40/))

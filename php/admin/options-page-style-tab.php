@@ -8,6 +8,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_style($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
+		return;
+	}	
+	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
+		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version , true );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_media();
+	}
+	
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style');
+
+/**
  * Adds the Style tab to the Quiz Settings page.
  *
  * @return void
@@ -36,7 +57,7 @@ function qsm_options_styling_tab_content() {
 
 		$style_quiz_id = intval( $_POST['style_quiz_id'] );
 		$quiz_theme    = sanitize_text_field( $_POST['save_quiz_theme'] );
-		$quiz_style    = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST['quiz_css'] ), ENT_QUOTES ) );
+		$quiz_style    = sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) );
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
@@ -92,15 +113,6 @@ jQuery(document).ready(function() {
 	</ul>
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
-	<?php
-	// Include required custom js and css
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_media();
-	?>
 	<script type="text/javascript">
 	jQuery(document).ready(function() {
 		jQuery(document).on('click', '.qsm-activate-theme', function() {
@@ -131,7 +143,7 @@ jQuery(document).ready(function() {
 		$quiz_id  = (int) $_GET['quiz_id'];
 		$theme_id = (int) $_POST['quiz_theme_id'];
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
-		if ( $_POST['save_featured_image'] == 'Save' ) {
+		if (isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
@@ -290,7 +302,7 @@ jQuery(document).ready(function() {
 		<table class="form-table">
 			<tr>
 				<td><textarea style="width: 100%; height: 700px;" id="quiz_css"
-						name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
+						name="quiz_css"><?php echo preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $mlw_quiz_options->quiz_stye ); ?></textarea></td>
 			</tr>
 		</table>
 		<?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
