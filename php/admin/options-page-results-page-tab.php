@@ -20,7 +20,8 @@ function qsm_admin_enqueue_scripts_options_page_results($hook){
 	}
 	if( isset($_GET['tab'] ) && "results-pages" === $_GET['tab'] ){
 		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
+		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
 		wp_enqueue_script( 'qsm_results_admin_script', plugins_url( '../../js/qsm-admin-results.js', __FILE__ ), array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 		wp_enqueue_editor();
 		wp_enqueue_media();
@@ -180,8 +181,8 @@ function qsm_options_results_tab_content() {
 										<span class="temp-var-seperator">
 											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 												<span class="qsm-tooltips"><?php echo $variable; ?></span>
-											</span>											
-										</span>						
+											</span>
+										</span>
 									</span>
 								</div>
 								<?php

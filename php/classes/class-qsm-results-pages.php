@@ -321,6 +321,8 @@ class QSM_Results_Pages {
 			return false;
 		}
 
+		$is_not_allow_html = apply_filters( 'qsm_admin_results_page_disallow_html', true );
+
 		// Sanitizes data in pages.
 		$total = count( $pages );
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -346,10 +348,10 @@ class QSM_Results_Pages {
 			}
 
 			// Sanitize template data 
-			// if ( isset( $pages[ $i ]['page'] ) ) {
-			// 	// Sanitizes the conditions.
-			// 	$pages[ $i ]['page'] = esc_html( $pages[ $i ]['page'] );
-			// }
+			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
+				// Sanitizes the conditions.
+				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
+			}
 		}
 
 		global $wpdb;

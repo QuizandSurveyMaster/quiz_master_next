@@ -278,7 +278,20 @@ class QSM_Contact_Manager {
 	 */
 	public static function load_fields() {
 		global $mlwQuizMasterNext;
-		return maybe_unserialize( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' ) );
+
+		$fields = maybe_unserialize( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' ) );
+		
+		$total_fields = count( $fields );
+		for ( $i = 0; $i < $total_fields; $i++ ) {                         
+			$fields[ $i ] = array(
+				'label'    => esc_attr( $fields[ $i ]['label'] ),
+				'use'      => $fields[ $i ]['use'],
+				'type'     => $fields[ $i ]['type'],
+				'required' => $fields[ $i ]['required'],
+			);
+		}
+
+		return $fields;
 	}
 
 	/**
@@ -303,17 +316,21 @@ class QSM_Contact_Manager {
 		if ( 0 === $quiz_id ) {
 			return false;
 		}
-                //Allow br and anchor tag
-                $allowed_html = array(
-                    "a" => array(
-                        "href" => array(),
-                    )
-                );     
+
+		//Allow br and anchor tag
+		$allowed_html = array(
+			"a" => array(
+				"href" => array(),
+			)
+		);   
+
+		$is_not_allow_html = apply_filters( 'qsm_admin_contact_label_disallow_html', true );
+
 		$total_fields = count( $fields );
 		for ( $i = 0; $i < $total_fields; $i++ ) {                         
-                        $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
+            $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
 			$fields[ $i ] = array(
-				'label'    => $label,
+				'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
 				'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
 				'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
 				'required' => sanitize_text_field( $fields[ $i ]['required'] ),

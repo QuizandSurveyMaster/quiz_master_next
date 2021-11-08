@@ -20,7 +20,7 @@ function qsm_admin_enqueue_scripts_quizzes_page($hook){
 	global $mlwQuizMasterNext;
 	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
 	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
+	wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version, true);
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quizzes_page');
@@ -41,7 +41,7 @@ function qsm_generate_quizzes_surveys_page() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	
+
 	// Delete quiz.
 	if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( $_POST['delete_quiz_id'] ), true );
@@ -254,7 +254,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 			<?php echo esc_html( PHP_VERSION ); ?>!
 			<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-			<a href="http://bit.ly/2lyrrm8" target="_blank"
+			<a href="https://quizandsurveymaster.com/increased-minimum-php-version-qsm-6-0/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=minimum-php-notice" target="_blank"
 				rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 		</p>
 	</div>
@@ -648,7 +648,7 @@ function qsm_generate_quizzes_surveys_page() {
 						<label>
 							<input type="checkbox" name="qsm_delete_from_db" />
 							<?php _e( 'Delete items from database?', 'quiz-master-next' ); ?>
-						</label>						
+						</label>
 					</form>
 				</main>
 				<footer class="qsm-popup__footer">
@@ -714,13 +714,13 @@ function qsm_generate_quizzes_surveys_page() {
 
 	<!-- Templates -->
 	<script type="text/template" id="tmpl-no-quiz">
-		<div class="qsm-no-quiz-wrapper">           
+		<div class="qsm-no-quiz-wrapper">
 				<span class="dashicons dashicons-format-chat"></span>
 				<h2><?php _e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
 				<div class="buttons">
 					<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
-				</div>   
+				</div>
 				<h3><?php _e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
 				<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>
