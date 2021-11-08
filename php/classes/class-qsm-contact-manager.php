@@ -280,15 +280,17 @@ class QSM_Contact_Manager {
 		global $mlwQuizMasterNext;
 
 		$fields = maybe_unserialize( $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'contact_form' ) );
-		
-		$total_fields = count( $fields );
-		for ( $i = 0; $i < $total_fields; $i++ ) {                         
-			$fields[ $i ] = array(
-				'label'    => esc_attr( $fields[ $i ]['label'] ),
-				'use'      => $fields[ $i ]['use'],
-				'type'     => $fields[ $i ]['type'],
-				'required' => $fields[ $i ]['required'],
-			);
+
+		if ( ! empty( $fields ) ) {
+			$total_fields = count( $fields );
+			for ( $i = 0; $i < $total_fields; $i++ ) {                         
+				$fields[ $i ] = array(
+					'label'    => esc_attr( $fields[ $i ]['label'] ),
+					'use'      => $fields[ $i ]['use'],
+					'type'     => $fields[ $i ]['type'],
+					'required' => $fields[ $i ]['required'],
+				);
+			}
 		}
 
 		return $fields;

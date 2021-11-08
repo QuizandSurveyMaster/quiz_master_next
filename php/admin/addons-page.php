@@ -37,10 +37,10 @@ function qmn_addons_page() {
 		foreach ( $tab_array as $tab ) {
 				$active_class = '';
 			if ( $active_tab == $tab['slug'] ) {
-				$active_class = 'nav-tab-active';
+				$active_class = ' nav-tab-active';
 			}
-			echo "<a href=\"?page=qmn_addons&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
-		}
+			echo '<a href="?page=qmn_addons&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+        }
 		?>
 	</h2>
 	<div>
@@ -100,9 +100,9 @@ function qsm_generate_featured_addons() {
 			}
 			?>
 		<div class="installed_addon">
-			<span class="installed_addon_name"><?php echo $tab['title']; ?></span>
+			<span class="installed_addon_name"><?php echo esc_html( $tab['title'] ); ?></span>
 			<span class="installed_addon_link">
-				<a class="button button-default" href="?page=qmn_addons&tab=<?php echo $tab['slug']; ?>"><span
+				<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 						class="dashicons dashicons-admin-generic"></span>
 					<?php _e( 'Settings', 'quiz-master-next' ); ?></a>
 			</span>
@@ -142,28 +142,28 @@ function qsm_generate_featured_addons() {
 						?>
 				<div>
 					<div class="addon-itd-wrap">
-						<div class="addon-image" style="background-image: url('<?php echo $single_arr['img']; ?>')">
+						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo $single_arr['link']; ?>" target="_blank">
-								<?php echo $single_arr['name']; ?>
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html__( 'Show more', 'quiz-master-next' ) . '</a>';
 							}
 							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
-							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
+							class="button button-primary addon-price-btn"><?php esc_html_e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
 						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
+							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+							target="_blank"><?php esc_html_e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
@@ -188,28 +188,28 @@ function qsm_generate_featured_addons() {
 						?>
 				<div>
 					<div class="addon-itd-wrap">
-						<div class="addon-image" style="background-image: url('<?php echo $single_arr['img']; ?>')">
+						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo $single_arr['link']; ?>" target="_blank">
-								<?php echo $single_arr['name']; ?>
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html__( 'Show more', 'quiz-master-next' ) . '</a>';
 							}
 							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
-							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
+							class="button button-primary addon-price-btn"><?php esc_html_e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
 						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
+							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+							target="_blank"><?php esc_html_e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
@@ -237,28 +237,28 @@ function qsm_generate_featured_addons() {
 						?>
 				<div>
 					<div class="addon-itd-wrap">
-						<div class="addon-image" style="background-image: url('<?php echo $single_arr['img']; ?>')">
+						<div class="addon-image" style="background-image: url('<?php echo esc_url( $single_arr['img'] ); ?>')">
 						</div>
 						<div class="addon-title-descption">
-							<a class="addon-title" href="<?php echo $single_arr['link']; ?>" target="_blank">
-								<?php echo $single_arr['name']; ?>
+							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank">
+								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . $single_arr['link'] . '">' . __( 'Show more', 'quiz-master-next' ) . '</a>';
+								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . esc_html__( 'Show more', 'quiz-master-next' ) . '</a>';
 							}
 							?>
 						</div>
 					</div>
 					<div class="addon-price">
 						<button
-							class="button button-primary addon-price-btn"><?php _e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo array_values( $single_arr['price'] )[0]; ?></button>
+							class="button button-primary addon-price-btn"><?php esc_html_e( 'Price: ', 'quiz-master-next' ); ?>$<?php echo esc_html( array_values( $single_arr['price'] )[0] ); ?></button>
 						<a class="button button-primary addon-get-link" rel="noopener"
-							href="<?php echo $single_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-							target="_blank"><?php _e( 'Get This Addon', 'quiz-master-next' ); ?> <span
+							href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+							target="_blank"><?php esc_html_e( 'Get This Addon', 'quiz-master-next' ); ?> <span
 								class="dashicons dashicons-arrow-right-alt2"></span></a>
 					</div>
 				</div>
@@ -288,16 +288,16 @@ function qsm_generate_featured_addons() {
 			<div class="bundle-icon">
 				<?php
 				if ( ! empty( $bundles_arr['icon'] ) ) {
-					echo '<img src="' . $bundles_arr['icon'] . '" />';
+					echo '<img src="' . esc_url( $bundles_arr['icon'] ) . '" />';
 				}
 				?>
 			</div>
-			<h3><?php echo $bundles_arr['name']; ?></h3>
-			<p><?php echo $bundles_arr['desc']; ?></p>
-			<a href="<?php echo $bundles_arr['link']; ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+			<h3><?php echo esc_html( $bundles_arr['name'] ); ?></h3>
+			<p><?php echo esc_html( $bundles_arr['desc'] ); ?></p>
+			<a href="<?php echo esc_url( $bundles_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
-				<?php echo _e( 'Get now', 'quiz-master-next' ); ?>
-				$<?php echo array_values( $bundles_arr['price'] )[0]; ?>
+				<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>
+				$<?php echo esc_html( array_values( $bundles_arr['price'] )[0] ); ?>
 				<span class="dashicons dashicons-arrow-right-alt2"></span>
 			</a>
 		</div>
@@ -348,7 +348,7 @@ function qsm_display_optin_page() {
 				</div> -->
 		</div>
 
-		<p><?php echo __( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master', 'quiz-master-next' ) . '</b>,' . __( ' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master ', 'quiz-master-next' ) . '</b>' . __( 'to its full potential. ', 'quiz-master-next' ) . '<a href="https://quizandsurveymaster.com/privacy-policy/" target="_blank">' . __( 'View our privacy policy', 'quiz-master-next' ) . '</a>'; ?>
+		<p><?php esc_html_e( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master', 'quiz-master-next' ) . '</b>,' . __( ' let you know when new or updated addons are being released and provide informative articles that show you how to use ', 'quiz-master-next' ) . '<b>' . __( 'Quiz and Survey Master ', 'quiz-master-next' ) . '</b>' . __( 'to its full potential. ', 'quiz-master-next' ) . '<a href="https://quizandsurveymaster.com/privacy-policy/" target="_blank">' . __( 'View our privacy policy', 'quiz-master-next' ) . '</a>'; ?>
 		</p>
 
 		<div id="wpas-mailchimp-signup-form-wrapper">
