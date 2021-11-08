@@ -397,6 +397,15 @@ var QSMAdmin;
         });
         $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');
         $('.global_setting_system input[name="qsm-quiz-settings[system]"]').trigger('change');
-
+        
+        $('#results-screen-option-button').on('click', function(event){
+			event.preventDefault;
+			MicroModal.show('modal-results-screen-option');
+		});
+        $('#save-results-screen-option-button').on('click', function(event){
+			event.preventDefault;
+			MicroModal.close('modal-results-screen-option');
+            $('#results-screen-option-form').submit();
+		});
     });
 }(jQuery));

@@ -18,44 +18,10 @@ function qsm_admin_enqueue_scripts_results_page($hook){
 	wp_enqueue_script( 'jquery-ui-dialog' );
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $mlwQuizMasterNext->version, true);
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
 
-/**
- * @since 7.0
- * add per page option in screen option in results
- */
-function qsm_results_page_screen_options() {
-	$screen = get_current_screen();
-
-	// get out of here if we are not on our settings page
-	if ( ! is_object( $screen ) || $screen->id != "qsm_page_mlw_quiz_results" ) {
-		return;
-	}
-
-	$args = array(
-		'label'   => __( 'Number of items per page:', 'quiz-master-next' ),
-		'default' => 10,
-		'option'  => 'qsm_results_per_page',
-	);
-	add_screen_option( 'per_page', $args );
-}
-add_action( "load-qsm_page_mlw_quiz_results",'qsm_results_page_screen_options');
-
-add_filter( 'set-screen-option', 'qsm_results_set_screen_option', 10, 3 );
-add_filter( 'set_screen_option_qsm_results_per_page', 'qsm_results_set_screen_option', 10, 3 );
-/**
- * @since 7.0
- * @param str $status
- * @param arr $option
- * @param str $value
- * @return str Save screen option value
- */
-function qsm_results_set_screen_option( $status, $option, $value ) {
-	if ( 'qsm_results_per_page' == $option ) {
-		return $value;
-	}
-}
 /**
  * This function generates the admin side quiz results page
  *
@@ -76,7 +42,10 @@ function qsm_generate_admin_results_page() {
 
 	?>
 <div class="wrap">
-	<h2><?php esc_html_e( 'Quiz Results', 'quiz-master-next' ); ?></h2>
+	<div style="display:flex;justify-content:space-between;align-items:center;">
+	<h2 style="font-size:2em"><?php esc_html_e( 'Quiz Results', 'quiz-master-next' ); ?></h2>
+	<span id="results-screen-option-button" class="button">Screen Options</span>
+	</div>
 	<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 	<?php qsm_show_adverts(); ?>
 	<h2 class="nav-tab-wrapper">
@@ -381,6 +350,55 @@ function deleteResults(id, quizName) {
 	</form>
 </div>
 
+<?php
+//process screen options
+$user_id = get_current_user_id();
+$results_screen_option = get_user_meta( $user_id, 'results_screen_option');
+if(!empty($results_screen_option)){
+	unserialize($results_screen_option);
+}
+if (empty($results_screen_option)){
+	$results_screen_option= array(
+		'page_url' => '0',
+		'page_name' => '0',
+		'business' => '1',
+		'phone' => '1',
+		'ip_address' => '1'
+	);
+}
+
+if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["results-screen_option_nonce"], 'results_screen_option' ) ) {
+
+	$results_screen_option['page_url'] = isset($_POST['page_url'])?$_POST['page_url']:"0";
+	$results_screen_option['page_name'] = isset($_POST['page_name'])?$_POST['page_name']:"0";
+	$results_screen_option['business'] = isset($_POST['business'])?$_POST['business']:"0";
+	$results_screen_option['phone'] = isset($_POST['phone'])?$_POST['phone']:"0";
+	$results_screen_option['ip_address'] = isset($_POST['ip_address']) ? $_POST['ip_address']:"0";	
+	add_user_meta( $user_id, 'results_screen_option',$results_screen_option, true);
+}
+
+$url_style = ' style="display:none;" ';
+$name_style = ' style="display:none;" ';
+$business_style = "";
+$phone_style= "";
+$ip_address_style ="";
+if ( "1" === $results_screen_option['page_url'] ){
+	$url_style = '';
+}
+if ( "1" === $results_screen_option['page_name'] ){
+	$name_style  = '';
+}
+if ( "0" === $results_screen_option['business'] ){
+	$business_style = ' style="display:none;" ' ;
+}
+if ( "0" === $results_screen_option['phone'] ){
+	$phone_style=  ' style="display:none;" ' ;
+}
+if ( "0" === $results_screen_option['ip_address'] ){
+	$ip_address_style = ' style="display:none;" ' ;
+}
+
+?>
 <form action="" method="post" name="bulk_delete_form">
 	<input type="hidden" name="bulk_delete" value="confirmation" />
 	<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
@@ -395,17 +413,17 @@ function deleteResults(id, quizName) {
 				$table_heading_displays .= '<th>' . esc_html__( 'Score', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Time To Complete', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Name', 'quiz-master-next' ) . '</th>';
-				// $table_heading_displays .= '<th>' . esc_html__( 'Business', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th'.$business_style.'>' . esc_html__( 'Business', 'quiz-master-next' ) . '</th>';
 				
 				$table_heading_displays .= '<th>' . esc_html__( 'Email', 'quiz-master-next' ) . '</th>';
-				// $table_heading_displays .= '<th>' . esc_html__( 'Phone', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th'.$phone_style.'>' . esc_html__( 'Phone', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'User ID', 'quiz-master-next' ) . '</th>';
 
-				$table_heading_displays .= '<th>' . esc_html__( 'Page Name', 'quiz-master-next' ) . '</th>';
-				$table_heading_displays .= '<th>' . esc_html__( 'Page URL', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th'.$name_style.'>' . esc_html__( 'Page Name', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th'.$url_style.'>' . esc_html__( 'Page URL', 'quiz-master-next' ) . '</th>';
 
 				$table_heading_displays .= '<th>' . esc_html__( 'Time Taken', 'quiz-master-next' ) . '</th>';
-				// $table_heading_displays .= '<th>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
+				$table_heading_displays .= '<th'.$ip_address_style.'>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
 
 				$table_heading_displays = apply_filters('mlw_qmn_admin_results_page_headings', $table_heading_displays);
 				echo $table_heading_displays;
@@ -462,20 +480,20 @@ function deleteResults(id, quizName) {
 					}
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_complete_time . "</span></td>";
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->name . "</span></td>";
-					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
+					$quiz_result_item_inner .= "<td".$business_style."><span style='font-size:16px;'>" . $mlw_quiz_info->business . "</span></td>";
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->email . "</span></td>";
-					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
+					$quiz_result_item_inner .= "<td".$phone_style."><span style='font-size:16px;'>" . $mlw_quiz_info->phone . "</span></td>";
 					if ( 0 == $mlw_quiz_info->user ) {
 						$quiz_result_item_inner .= "<td><span style='font-size:16px;'>Visitor</span></td>";
 					} else {
 						$quiz_result_item_inner .= "<td><span style='font-size:16px;'><a href='user-edit.php?user_id=" . $mlw_quiz_info->user . "'>" . $mlw_quiz_info->user . "</a></span></td>";
 					}
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->page_name . "</span></td>";
-					$quiz_result_item_inner .= "<td><span style='font-size:16px;'><a href=\"" . $mlw_quiz_info->page_url . "\" >".$mlw_quiz_info->page_url."</span></td>";
+					$quiz_result_item_inner .= "<td".$name_style."><span style='font-size:16px;'>" . $mlw_quiz_info->page_name . "</span></td>";
+					$quiz_result_item_inner .= "<td".$url_style."><span style='font-size:16px;'><a href=\"" . $mlw_quiz_info->page_url . "\" >".$mlw_quiz_info->page_url."</span></td>";
 					$date        = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 					$time        = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 					$quiz_result_item_inner .= "<td><span style='font-size:16px;'><abbr title='$date $time'>$date</abbr></span></td>";
-					// $quiz_result_item_inner .= "<td><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
+					$quiz_result_item_inner .= "<td".$ip_address_style."><span style='font-size:16px;'>" . $mlw_quiz_info->user_ip . "</span></td>";
 					$quiz_result_item .= apply_filters('mlw_qmn_admin_results_page_result', $quiz_result_item_inner, $mlw_quiz_info);
 					$quiz_result_item .= "</tr>";
 					$quotes_list .= $quiz_result_item;
@@ -499,7 +517,52 @@ function deleteResults(id, quizName) {
 				value='<?php esc_html_e( 'Delete Results', 'quiz-master-next' ); ?>' /></p>
 	</form>
 </div>
+
+<!-- Popup for screen options -->
+<div class="qsm-popup qsm-popup-slide" id="modal-results-screen-option" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-results-screen-option-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-results-screen-option-title"><?php _e( 'Choose Columns to hide/show', 'quiz-master-next' ); ?></h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-results-screen-option-content">
+					<form action='' method='post' id="results-screen-option-form" style="display:flex; flex-direction:column;">
+						<label>
+							<input type="checkbox" value="1" name="page_url" <?php checked( $results_screen_option['page_url'], "1", true )?>/>
+							<?php _e( 'Page URL', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="page_name" value="1" <?php checked( $results_screen_option['page_name'], "1", true )?>/>
+							<?php _e( 'Page Name', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" value="1" name="business" <?php checked( $results_screen_option['business'], "1", true )?>/>
+							<?php _e( 'Business', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="phone" value="1" <?php checked( $results_screen_option['phone'], "1", true )?>/>
+							<?php _e( 'Phone', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="ip_address" value="1" <?php checked( $results_screen_option['ip_address'], "1", true )?>/>
+							<?php _e( 'IP Address', 'quiz-master-next' ); ?>
+						</label>
+						<?php wp_nonce_field( 'results_screen_option', 'results-screen_option_nonce' ); ?>
+					</form>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="save-results-screen-option-button"
+						class="qsm-popup__btn qsm-popup__btn-primary"><?php _e( 'Save', 'quiz-master-next' ); ?></button>
+					<button class="qsm-popup__btn" data-micromodal-close
+						aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+				</footer>
+			</div>
+		</div>
+	</div>
 <?php
 }
+
+
 
 ?>
