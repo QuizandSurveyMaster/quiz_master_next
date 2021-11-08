@@ -123,7 +123,7 @@ function qsm_generate_dashboard_page() {
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<div class="qsm-welcome-panel-close">
-			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
 			<p class="current_version"><?php echo esc_html( $mlwQuizMasterNext->version ); ?></p>
 		</div>
 		<a class="qsm-welcome-panel-dismiss" href="#"
@@ -361,7 +361,7 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 				<li>
 					<a href="<?php echo esc_url( $single_arr['link'] ); ?>?utm_source=dashboard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 						target="_blank" rel="noopener">
-						<img src="<?php echo esc_url( $single_arr['img'] ); ?>" title="<?php echo esc_attr( $single_arr['name'] ); ?>">
+						<img src="<?php echo esc_url( $single_arr['img'] ); ?>" title="<?php echo esc_attr( $single_arr['name'] ); ?>" alt="<?php echo esc_attr( $single_arr['name'] ); ?>" >
 					</a>
 				</li>
 				<?php
@@ -406,9 +406,9 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 				<li>
 					<?php
 						if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != '' ) {
-							echo '<img src="' . esc_url( get_avatar_url( $single_result_arr['user'] ) ) . '" class="avatar avatar-50 photo">';
+							echo '<img src="' . esc_url( get_avatar_url( $single_result_arr['user'] ) ) . '" class="avatar avatar-50 photo" alt="User Avatar">';
 						} else {
-							echo '<img src="' . esc_url( QSM_PLUGIN_URL . '/assets/default_image.png' ) . '" class="avatar avatar-50 photo">';
+							echo '<img src="' . esc_url( QSM_PLUGIN_URL . '/assets/default_image.png' ) . '" class="avatar avatar-50 photo" alt="Default Image">';
 						}
 						?>
 					<div class="rtq-main-wrapper">
