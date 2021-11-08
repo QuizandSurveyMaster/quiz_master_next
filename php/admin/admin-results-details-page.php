@@ -15,7 +15,7 @@ function qsm_admin_enqueue_scripts_results_detail_page($hook){
     wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
     $mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 	wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
-    wp_enqueue_script( 'jquery-ui-core');
+    wp_enqueue_script( 'jquery-ui-slider');
     wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url( '../../js/jquery.ui.slider-rtl.js', __FILE__ ) );
     wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url( '../../css/jquery.ui.slider-rtl.css', __FILE__ ) );
 }

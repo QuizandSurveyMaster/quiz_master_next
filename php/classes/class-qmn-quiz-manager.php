@@ -692,7 +692,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		);
 
 		wp_enqueue_script( 'progress-bar', plugins_url( '../../js/progressbar.min.js', __FILE__ ) );
-		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', plugins_url( '../../js/jquery.ui.slider-rtl.js', __FILE__ ) );
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css', plugins_url( '../../css/jquery.ui.slider-rtl.css', __FILE__ ) );
 		wp_enqueue_script( 'jquery-touch-punch' );
@@ -1220,11 +1220,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$end_section  = '<br />';
 			$end_section .= "<div class='qsm-auto-page-row quiz_section quiz_end' {$style}>";
 			$end_section .= $section_display;
-			$end_section .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->submit_button_text, ENT_QUOTES ) ) . "' />";
+			$end_section .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ) . "' />";
 			$end_section .= '</div>';
 		} else {
 			$end_section .= "<div class='qsm-auto-page-row quiz_section quiz_end empty_quiz_end' {$style}>";
-			$end_section .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( htmlspecialchars_decode( $qmn_quiz_options->submit_button_text, ENT_QUOTES ) ) . "' />";
+			$end_section .= "<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='" . esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ) . "' />";
 			$end_section .= '</div>';
 		}
 
