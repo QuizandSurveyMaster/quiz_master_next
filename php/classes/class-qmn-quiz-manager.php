@@ -1572,6 +1572,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				'id' => $qmn_array_for_variables['result_unique_id']
 			)
 		);
+		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
 		return $return_array;
 	}
 
