@@ -1575,6 +1575,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
+
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? sanitize_text_field( intval( $_POST['total_questions'] ) ) : 0;
 
@@ -1610,7 +1611,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			14, // Fill In The Blank
 			13, // Polar.
 		);
-
 		// If deprecated pagination setting is not used, use new system...
 		if ( 0 == $options->question_from_total && 0 !== count( $pages ) ) {
 			// Cycle through each page in quiz.
@@ -1643,6 +1643,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
+							print_r($results_array);die;
 							if ( isset( $results_array['question_type'] ) && $results_array['question_type'] == 'file_upload' ) {
 								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
 							}
