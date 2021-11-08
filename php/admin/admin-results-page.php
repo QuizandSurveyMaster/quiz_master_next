@@ -326,7 +326,7 @@ function deleteResults(id, quizName) {
 		<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
 		<?php
 			}
-			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( $_GET['qsm_search_phrase'] ) : '';
+			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? esc_attr( sanitize_text_field( $_GET['qsm_search_phrase'] ) ) : '';
 			$qmn_order_by = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? $_GET['qmn_order_by'] : 'default';
 			?>
 		<input type="hidden" name="page" value="mlw_quiz_results">

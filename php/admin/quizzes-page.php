@@ -254,7 +254,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 			<?php echo esc_html( PHP_VERSION ); ?>!
 			<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-			<a href="http://bit.ly/2lyrrm8" target="_blank"
+			<a href="https://quizandsurveymaster.com/increased-minimum-php-version-qsm-6-0/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=minimum-php-notice" target="_blank"
 				rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 		</p>
 	</div>

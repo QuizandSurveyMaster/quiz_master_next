@@ -35,7 +35,7 @@ function qsm_generate_about_page() {
 	<?php } elseif($active_tab == 'about') {?>
 	<style>
 	div.qsm_icon_wrap {
-		background: <?php echo 'url("'. plugins_url('../../assets/icon-128x128.png', __FILE__) . '" )';
+		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
 		?>no-repeat;
 	}
 	</style>
@@ -50,9 +50,9 @@ function qsm_generate_about_page() {
             foreach ($tab_array as $tab) {
                 $active_class = '';
                 if ($active_tab == $tab['slug']) {
-                    $active_class = 'nav-tab-active';
+                    $active_class = ' nav-tab-active';
                 }
-                echo "<a href=\"?page=qsm_quiz_about&tab={$tab['slug']}\" class=\"nav-tab $active_class\">{$tab['title']}</a>";
+                echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
             }
             ?>
 		</h2>
@@ -103,7 +103,7 @@ function qsm_generate_about_page() {
 							$contributor_list .= '</li>';
 						}
 						$contributor_list .= '</ul>';
-						echo $contributor_list;
+						echo wp_kses_post( $contributor_list );
 					}
 					?>
 				<a href="https://github.com/QuizandSurveyMaster/quiz_master_next" rel="noopener" target="_blank"
@@ -143,7 +143,7 @@ function qsm_documentation_meta_box_content() {
  * @since 4.4.0
  */
 function qsm_system_meta_box_content() {
-	echo qsm_get_system_info();
+	echo wp_kses_post( qsm_get_system_info() );
 }
 
 /**

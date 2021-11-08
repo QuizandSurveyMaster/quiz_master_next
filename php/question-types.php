@@ -1303,8 +1303,8 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$autofill_att   = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	$input_text     = '';
-	$first_point    = isset( $answers[0][1] ) ? $answers[0][1] : 0;
-	$second_point   = isset( $answers[1][1] ) ? $answers[1][1] : 0;
+	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
+	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
 	$is_reverse     = false;
 	$check_point    = $second_point;
 	$font_weight_lc = 'right-polar-title';
@@ -1316,30 +1316,34 @@ function qmn_polar_display( $id, $question, $answers ) {
 		$font_weight_rc = 'right-polar-title';
 	}
 	$total_answer = count( $answers );
+	$id = esc_attr( intval( $id ) );
+	$answar1 = esc_attr( $first_point );
+	$answar2 = esc_attr( $second_point );
+	ob_start();
 	?>
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
 		$('#slider-' + '<?php echo $id; ?>').slider({
 			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
-			max: <?php echo $answers[0][1]; ?>,
-			min: <?php echo $answers[1][1]; ?>,
+			max: <?php echo $answar1; ?>,
+			min: <?php echo $answar2; ?>,
 			isRTL: true,
 			<?php } else { ?>
-			min: <?php echo $answers[0][1]; ?>,
-			max: <?php echo $answers[1][1]; ?>,
+			min: <?php echo $answar1; ?>,
+			max: <?php echo $answar2; ?>,
 			<?php } ?>
 			step: 1,
 			value: <?php echo $check_point / 2; ?>,
 			change: function(event, ui) {
 				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
 					'.qmn_polar').val(ui.value);
-				if (ui.value == <?php echo $answers[0][1]; ?>) {
+				if (ui.value == <?php echo $answar1; ?>) {
 					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '900');
 					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
 						'.right-polar-title').css('font-weight', '100');
-				} else if (ui.value == <?php echo $answers[1][1]; ?>) {
+				} else if (ui.value == <?php echo $answar2; ?>) {
 					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '100');
 					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
@@ -1367,7 +1371,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
 					'.right-polar-title').css('font-weight', '400');
 				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
-					'.qmn_polar').val(<?php echo $check_point / 2; ?>);
+					'.qmn_polar').val(<?php echo esc_attr( $check_point / 2 ); ?>);
 			}
 		});
 		var maxHeight = Math.max.apply(null, $(
@@ -1379,6 +1383,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 })(jQuery);
 </script>
 <?php
+	$input_text .= ob_get_clean();
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
@@ -1387,10 +1392,10 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title, $id );
 	// $question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
-	$input_text .= "<div class='left-polar-title'>" . $answers[0][0] . '</div>';
+ 	$input_text .= "<div class='left-polar-title'>" . esc_html( $answers[0][0] ). '</div>';
 	$input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
 	$input_text .= '<div id="slider-' . $id . '"></div></div>';
-	$input_text .= "<div class='right-polar-title'>" . $answers[1][0] . '</div>';
+	$input_text .= "<div class='right-polar-title'>" . esc_html( $answers[1][0] ) . '</div>';
 	/*
 	if (strpos($question, '%POLAR_SLIDER%') !== false) {
 	$question = str_replace("%POLAR_SLIDER%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));

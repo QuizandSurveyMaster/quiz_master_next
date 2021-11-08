@@ -1317,8 +1317,8 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$autofill_att   = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	$input_text     = '';
-	$first_point    = isset( $answers[0][1] ) ? $answers[0][1] : 0;
-	$second_point   = isset( $answers[1][1] ) ? $answers[1][1] : 0;
+	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
+	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
 	$is_reverse     = false;
 	$check_point    = $second_point;
 	$font_weight_lc = 'right-polar-title';
@@ -1330,6 +1330,10 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		$font_weight_rc = 'right-polar-title';
 	}
 	$total_answer = count( $answers );
+	$id = esc_attr( intval( $id ) );
+	$answar1 = esc_attr( $first_point );
+	$answar2 = esc_attr( $second_point );
+	ob_start();
 	?>
 <script type="text/javascript">
 (function($) {
@@ -1337,12 +1341,12 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 
 		$('#slider-' + '<?php echo $id; ?>').slider({
 			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
-			max: <?php echo $answers[0][1]; ?>,
-			min: <?php echo $answers[1][1]; ?>,
+			max: <?php echo $answar1; ?>,
+			min: <?php echo $answar2; ?>,
 			isRTL: true,
 			<?php } else { ?>
-			min: <?php echo $answers[0][1]; ?>,
-			max: <?php echo $answers[1][1]; ?>,
+			min: <?php echo $answar1; ?>,
+			max: <?php echo $answar2; ?>,
 			<?php } ?>
 			step: 1,
 			range: false,
@@ -1363,12 +1367,13 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 })(jQuery);
 </script>
 <?php
+	$input_text .= ob_get_clean();
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
 		$mlw_requireClass = '';
 	}
-	if ( $answer['points'] == $answers[0][1] ) {
+	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
 		$right_polar_title_style = "style='font-weight:100';";
 	} elseif ( $answer['points'] == $check_point / 2 ) {
