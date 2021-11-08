@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function qsm_admin_enqueue_scripts_stats_page($hook){
 	if ( 'qsm_page_qmn_stats' != $hook ) {
 		return;
-	}	
+	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script('ChartJS', plugins_url( '../../js/Chart.min.js' , __FILE__ ));
-	
+	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/Chart.min.js');
+
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
 
@@ -103,7 +103,7 @@ function qmn_stats_overview_content()
 	foreach($data as $stat) {
 		$labels .= '"",';
 		$value .= "$stat,";
-	}        
+	}
 	?>
 	<style>
 		.postbox:after {
@@ -164,7 +164,7 @@ function qmn_stats_overview_content()
                                                     }]},
                                                     options: {
                                                   responsive: true, // Instruct chart js to respond nicely.
-                                                  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height 
+                                                  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
                                                 }
                                             });
 					}

@@ -14,9 +14,9 @@ function qsm_admin_enqueue_scripts_options_page_contact($hook){
 	}
   if(  isset($_GET['tab'] ) && "contact" === $_GET['tab']){
     global $mlwQuizMasterNext;
-    wp_enqueue_script( 'qsm_contact_admin_script', plugins_url( '../../js/qsm-admin-contact.js' , __FILE__ ), array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
-    wp_enqueue_style( 'qsm_contact_admin_style', plugins_url( '../../css/qsm-admin-contact.css' , __FILE__ ), array(), $mlwQuizMasterNext->version );
-  }	
+    wp_enqueue_script( 'qsm_contact_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-contact.js', array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
+    wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $mlwQuizMasterNext->version );
+  }
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact');
 
@@ -84,7 +84,7 @@ function qsm_contact_form_admin_ajax() {
         $nonce = $_POST['nonce'];
         if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-contact-save' ) )
             die ( 'Busted!');
-    
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	// Sends posted form data to Contact Manager to sanitize and save.

@@ -449,11 +449,6 @@ function qsm_display_optin_page() {
 				</div>
 			</div>
 			<!-- END - We recommend to place the below code where you want the form in your website html  -->
-
-			<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
-			<script src="https://sibforms.com/forms/end-form/build/main.js">
-			</script>
-			<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
 			<!-- End Sendinblue Form -->
 		</div>
 	</div>
@@ -464,20 +459,13 @@ function qsm_display_optin_page() {
 function qsm_admin_get_free_addon_page_scripts_style($hook){
 	if ( $hook == 'qsm_page_qsm-free-addon') {
 
-		$qsm_sendinblue_component_form_url = 'https://assets.sendinblue.com/component/form/2ef8d8058c0694a305b0.css';
-		wp_enqueue_style( 'qsm_sendinblue_component_form',  $qsm_sendinblue_component_form_url);
-
-		$qsm_sendinblue_component_clickable_url = 'https://assets.sendinblue.com/component/clickable/b056d6397f4ba3108595.css';
-		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  $qsm_sendinblue_component_clickable_url);
-
-		$qsm_sendinblue_progress_indicator_url = 'https://assets.sendinblue.com/component/progress-indicator/f86d65a4a9331c5e2851.css';
-		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  $qsm_sendinblue_progress_indicator_url);
-
-		$qsm_sibforms_css_url = 'https://sibforms.com/forms/end-form/build/sib-styles.css';
-		wp_enqueue_style( 'qsm_sibforms_css',  $qsm_sibforms_css_url);
-
+		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css');
+		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css');
+		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css');
+		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css' );
+		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js', array(),'',true);
 		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
-		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array());
+		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(),'',true);
 
 		$qsm_sibforms_inline_js = 'window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
 

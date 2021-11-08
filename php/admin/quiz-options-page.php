@@ -24,12 +24,12 @@ function qsm_admin_enqueue_scripts_quiz_options_page($hook){
 		wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-button' );
-		wp_enqueue_script( 'qmn_datetime_js', plugins_url( '../../js/jquery.datetimepicker.full.min.js', __FILE__ ) );
-		wp_enqueue_style( 'qsm_datetime_style', plugins_url( '../../css/jquery.datetimepicker.css', __FILE__ ) );
+		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+		wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
 		wp_enqueue_script( 'jquery-ui-tabs' );
 		wp_enqueue_script( 'jquery-effects-blind' );
 		wp_enqueue_script( 'jquery-effects-explode' );
-		wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
+		wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
 		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
 	}

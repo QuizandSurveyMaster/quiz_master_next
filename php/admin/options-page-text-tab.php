@@ -23,7 +23,7 @@ add_action( "plugins_loaded", 'qmn_settings_text_tab', 5 );
 function mlw_options_text_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	//wp_enqueue_style( 'qmn_admin_style', plugins_url( '../../css/qsm-admin.css' , __FILE__ ) );
+	//wp_enqueue_style( 'qmn_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css' );
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
@@ -42,18 +42,18 @@ function mlw_options_text_tab_content() {
                                     $text_text_arr[] = $single_text_arr;
                                 }
                             }
-                        }                        
+                        }
                         ?>
                         <div class="qsm-text-header">
                             <div class="message-dropdown">
                                 <div class="qsm-row">
-                                    <label><?php _e('Select Message', 'quiz-master-next'); ?></label>                                    
+                                    <label><?php _e('Select Message', 'quiz-master-next'); ?></label>
                                     <select id="qsm_question_text_message_id">
                                         <?php if( $editor_text_arr ){
                                         foreach ( $editor_text_arr as $key => $single_editor_arr ) {
                                             ?>
                                             <option value="<?php echo $single_editor_arr['id']; ?>"><?php echo $single_editor_arr['label']; ?></option>
-                                        <?php 
+                                        <?php
                                         }
                                             } ?>
                                     </select>
@@ -66,7 +66,7 @@ function mlw_options_text_tab_content() {
                         </div>
                         <div class="qsm-text-conent">
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
-                            <?php 
+                            <?php
                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[0]['id'] );
                             wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array(  'textarea_rows' => 10 ) );
                             ?>
@@ -86,14 +86,14 @@ function mlw_options_text_tab_content() {
                                     foreach ( $allowed_variables as $variable ) { ?>
                                         <span class="qsm-text-template-span">
                                             <button class="button button-default"><?php echo $variable; ?></button>
-                                            <?php if( isset( $variable_list[ $variable ] ) ){                                            
-                                                ?>                                            
+                                            <?php if( isset( $variable_list[ $variable ] ) ){
+                                                ?>
                                                 <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
                                                     <span class="qsm-tooltips"><?php echo $variable_list[ $variable ]; ?></span>
                                                 </span>
                                             <?php } ?>
                                         </span>
-                                    <?php                     
+                                    <?php
                                     }
                                 }
                                 ?>
@@ -109,7 +109,7 @@ function mlw_options_text_tab_content() {
         </div>
         <div class="qsm-text-label-wrapper">
             <h2><?php _e("Customize Labels", 'quiz-master-next'); ?></h2>
-            <?php        
+            <?php
             $mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
             ?>
         </div>
@@ -141,14 +141,14 @@ function qsm_get_question_text_message(){
             foreach ($quiz_text_allowed_variables as $variable ) {
                 $allowed_text .= '<span class="qsm-text-template-span">';
                 $allowed_text .= '<button class="button button-default">'. $variable .'</button>';
-                if( isset( $variable_list[ $variable ] ) ){                                                 
+                if( isset( $variable_list[ $variable ] ) ){
                     $allowed_text .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
                     $allowed_text .= '<span class="qsm-tooltips">'. $variable_list[ $variable ] . '</span>';
                     $allowed_text .= '</span>';
                 }
                 $allowed_text .= '</span>';
             }
-        }        
+        }
         $return = array(
             'text_message' => $settings,
             'allowed_variable_text' => $allowed_text,
@@ -162,7 +162,7 @@ add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_mess
 
 /**
  * Update the text string in DB
- * 
+ *
  * @since 7.0
  */
 function qsm_update_text_message(){
