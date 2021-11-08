@@ -251,9 +251,7 @@ function qsm_find_key_from_array( $search_value, $array ) {
 function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 	global $wpdb, $mlwQuizMasterNext;
 	$page_link = qsm_get_post_id_from_quiz_id( $mlw_quiz_array['quiz_id'] );
-	if ( false !== strpos( $content, '%FACEBOOK_SHARE%' ) || false !== strpos( $content, '%TWITTER_SHARE%' ) ) {
-		// wp_enqueue_script( 'qmn_quiz_social_share', QSM_PLUGIN_JS_URL.'/qmn_social_share.js' );
-	}
+
 	if ( false !== strpos( $content, '%FACEBOOK_SHARE%' ) ) {
 		$settings        = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '594986844960937';
