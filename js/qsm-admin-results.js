@@ -66,12 +66,16 @@ var QSMAdminResults;
 		},
 		addCondition: function ($page, category, criteria, operator, value) {
 			var template = wp.template( 'results-page-condition' );
-			$page.find('.results-page-when-conditions').append(template({
-							'category': category,
-							'criteria': criteria,
-							'operator': operator,
-							'value': value
-			}));
+			try{
+				$page.find('.results-page-when-conditions').append(template({
+					'category': category,
+					'criteria': criteria,
+					'operator': operator,
+					'value': value
+				}));
+			}catch(e){
+				//unhandled error
+			}			
 		},
 		newCondition: function( $page ) {
 			QSMAdminResults.addCondition($page, '', 'score', 'equal', 0);
