@@ -16,13 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QMNQuizManager {
 
 	/**
-	 * mathjax_location, mathjax_version
+	 * mathjax_location, mathjax_version, $common_css
 	 *
 	 * @var string
 	 * @since 7.3.5
 	 */
 	public $mathjax_location 	= 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
 	public $mathjax_version 	= '2.7.5';
+	public $common_css			=  QSM_PLUGIN_CSS_URL.'/common.css';
 
 	protected $qsm_background_email;
 	/**
@@ -255,7 +256,7 @@ class QMNQuizManager {
 		if ( isset( $_GET['result_id'] ) && $_GET['result_id'] != '' ) {
 			global $wpdb;
 			global $mlwQuizMasterNext;
-			wp_enqueue_style( 'qmn_quiz_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+			wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
 			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_script( 'jquery' );
@@ -323,7 +324,7 @@ class QMNQuizManager {
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL.'/animate.css' );
-			wp_enqueue_style( 'qmn_quiz_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+			wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
 			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
@@ -415,7 +416,7 @@ class QMNQuizManager {
 			global $wpdb;
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
-				wp_enqueue_style( 'qmn_quiz_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+				wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
