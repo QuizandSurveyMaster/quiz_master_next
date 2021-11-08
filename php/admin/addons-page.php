@@ -156,7 +156,7 @@ function qsm_generate_featured_addons() {
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
+								echo '<a class="read-more read-more-1" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
 							}
 							?>
 						</div>
@@ -202,7 +202,7 @@ function qsm_generate_featured_addons() {
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
+								echo '<a class="read-more read-more-2" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
 							}
 							?>
 						</div>
@@ -251,7 +251,7 @@ function qsm_generate_featured_addons() {
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
-								echo '<a class="read-more" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
+								echo '<a class="read-more read-more-3" href="' . esc_url( $single_arr['link'] ) . '">' . $show_more . '</a>';
 							}
 							?>
 						</div>
