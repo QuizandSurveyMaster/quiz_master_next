@@ -15,16 +15,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qsm_admin_enqueue_scripts_options_page_style($hook){
 	if ( 'admin_page_mlw_quiz_options' != $hook ) {
 		return;
-	}	
+	}
 	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
 		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-		wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-		wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version , true );
+		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
+		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+		wp_enqueue_script( 'qsm_theme_color_js', QSM_PLUGIN_JS_URL.'/qsm-theme-color.js', array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version , true );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_media();
 	}
-	
+
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style');
 
@@ -50,7 +51,7 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
+	wp_enqueue_style( 'qsm_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css', array(), $mlwQuizMasterNext->version );
 	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	$quiz_id = intval( $_GET['quiz_id'] );
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
@@ -268,7 +269,7 @@ jQuery(document).ready(function() {
 			<?php
 			foreach ( $registered_templates as $slug => $template ) {
 				?>
-			<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="qsm-info-widget 
+			<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="qsm-info-widget
 													<?php
 													if ( $mlw_quiz_options->theme_selected == $slug ) {
 																echo 'mlw_qmn_themeBlockActive';
@@ -278,7 +279,7 @@ jQuery(document).ready(function() {
 			<?php
 			}
 			?>
-			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget 
+			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget
 			<?php
 			if ( $mlw_quiz_options->theme_selected == 'default' ) {
 					echo 'mlw_qmn_themeBlockActive';
