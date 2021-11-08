@@ -1566,10 +1566,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'quizExpired'=>false,
 			'display'  => htmlspecialchars_decode( $result_display ),
 			'redirect' => apply_filters( 'mlw_qmn_template_variable_results_page', $results_pages['redirect'], $qmn_array_for_variables ),
+			'result_status' => array(
+				'save_response' => $qmn_array_for_variables['response_saved'],
+				'id' => $qmn_array_for_variables['result_unique_id']
+			)
 		);
-
-		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
-
 		return $return_array;
 	}
 
