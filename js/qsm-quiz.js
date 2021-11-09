@@ -982,8 +982,7 @@ function qmnInit() {
 				let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
 				if(disabledAnswer[key]){
 					disabledAnswer[key].forEach(element => {
-						let element1=element[1];
-						element1.replace("","-");
+						let element1=element[1].replaceAll(' ','-');
 						jQuery('#'+element[0]+'-'+element1+' input').prop('checked', true).trigger('change');
 					});
 				}

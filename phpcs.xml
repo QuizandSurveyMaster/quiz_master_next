@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<ruleset name="PHPCS Coding Standards">
+	<description>PHPCS dev PHP_CodeSniffer ruleset.</description>
+
+	<file>.</file>
+
+	<!-- Exclude paths -->
+	<exclude-pattern>.js</exclude-pattern>
+	<exclude-pattern>.css</exclude-pattern>
+	<exclude-pattern>*/lang/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	
+	<!-- Show progress, show the error codes for each message (source). -->
+	<arg value="ps" />
+
+	<!-- Strip the file paths in reports down to the relevant bit. -->
+	<arg name="basepath" value="./" />
+
+	<!-- Check up to 8 files simultaneously. -->
+    <!--<arg name="parallel" value="4" />-->
+
+	<!-- Configs -->
+	<config name="minimum_supported_wp_version" value="5.0" /> <!-- Minimum WP Version -->
+	<config name="testVersion" value="5.6" /> <!-- Minimum PHP Version -->
+	<config name="text_domain" value="quiz-master-next"/>
+	<config name="installed_paths" value="D:\Laragon\wpcs" />
+
+	<!-- Rules -->
+	<rule ref="Squiz">
+		<exclude name="Squiz"/>
+		<exclude-pattern>index.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress">
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+        <!-- <exclude name="WordPress.PHP.StrictInArray.MissingTrueStrict"/>
+		<exclude name="WordPress.Security.NonceVerification"/>
+		<exclude name="WordPress.DB.SlowDBQuery"/>
+		<exclude name="WordPress.DB.DirectDatabaseQuery"/> -->
+		<exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found"/>
+		<exclude name="WordPress.NamingConventions"/>
+    </rule>
+	<rule ref="WordPress-Core" />
+	<rule ref="WordPress-Extra" />
+	<!--<rule ref="WordPress-VIP-Go" /> -->
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="quiz-master-next" />
+		</properties>
+	</rule>
+
+	<!--<rule ref="PHPCompatibility">-->
+		<!--<exclude-pattern>tests/</exclude-pattern>-->
+		<!--&lt;!&ndash; Marked some internal method with DoubleUnderscore before method name &ndash;&gt;-->
+		<!--<exclude name="PHPCompatibility.FunctionNameRestrictions.ReservedFunctionNames.MethodDoubleUnderscore"/>-->
+	<!--</rule>-->
+
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
+		<exclude-pattern>tests/*</exclude-pattern>
+		<exclude-pattern>src/*</exclude-pattern>
+	</rule>
+
+	<rule ref="PEAR">
+		<exclude-pattern>.</exclude-pattern>
+		<exclude name="PEAR.NamingConventions.ValidClassName.Invalid"/>
+		<exclude name="PEAR.Commenting.FileComment"/>
+	</rule>
+	<rule ref="PEAR.Functions.FunctionCallSignature.EmptyLine">
+		<exclude-pattern>tests/e2e-tests/</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic.Commenting">
+		<exclude-pattern>tests/</exclude-pattern>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+		<exclude-pattern>languages/</exclude-pattern>
+		<exclude-pattern>i18n/</exclude-pattern>
+		<exclude-pattern>src/</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic">
+		<exclude-pattern>.</exclude-pattern>
+		<exclude name="Generic.Commenting.DocComment.SpacingBeforeTags"/>
+		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.NonIndentTabsUsed" />
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent.TabsUsed" />
+		<exclude name="Generic.PHP.ClosingPHPTag.NotFound" />
+		<exclude name="Generic.Files.LineLength.TooLong" />
+	</rule>
+</ruleset>
