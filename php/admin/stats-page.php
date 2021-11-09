@@ -17,7 +17,7 @@ function qsm_admin_enqueue_scripts_stats_page($hook){
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/Chart.min.js');
+	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js');
 
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
