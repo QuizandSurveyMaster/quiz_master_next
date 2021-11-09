@@ -777,7 +777,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$quiz_display .= "<input type='hidden' class='qmn_quiz_id' name='qmn_quiz_id' id='qmn_quiz_id' value='{$quiz_data['quiz_id']}'/>";
 		$quiz_display .= "<input type='hidden' name='complete_quiz' value='confirmation' />";
 		if ( isset( $_GET['payment_id'] ) && $_GET['payment_id'] != '' ) {
-			$quiz_display .= "<input type='hidden' name='main_payment_id' value='" . $_GET['payment_id'] . "' />";
+			$quiz_display .= "<input type='hidden' name='main_payment_id' value='" . esc_attr( $_GET['payment_id'] ) . "' />";
 		}
 		$quiz_display  = apply_filters( 'qmn_end_quiz_form', $quiz_display, $options, $quiz_data );
 		$quiz_display .= '</form>';
@@ -811,7 +811,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
 			$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
 			?>
-<section class="qsm-page <?php echo $animation_effect; ?>">
+<section class="qsm-page <?php echo esc_attr( $animation_effect ); ?>">
 	<div class="quiz_section quiz_begin">
 		<div class='qsm-before-message mlw_qmn_message_before'>
 			<?php
@@ -835,7 +835,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$pages = apply_filters( 'qsm_display_pages', $pages, $options->quiz_id, $options );
 		if ( 1 == count( $pages ) ) {
 			?>
-<section class="qsm-page <?php echo $animation_effect; ?>">
+<section class="qsm-page <?php echo esc_attr( $animation_effect ); ?>">
 	<?php
 
 			if ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) {
@@ -891,7 +891,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				?>
 	<div class="quiz_section quiz_begin">
 		<label for='mlwQuizComments'
-			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
+			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 	<?php
@@ -902,7 +902,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 				?>
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
 		<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
@@ -922,10 +922,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$qpage_id              = ( isset( $qpage['id'] ) ? $qpage['id'] : $key );
 				$page_key              = ( isset( $qpage['pagekey'] ) ? $qpage['pagekey'] : $key );
 				$hide_prevbtn          = ( isset( $qpage['hide_prevbtn'] ) ? $qpage['hide_prevbtn'] : 0 );
-								$style = "style='display: none;'";
+				$style = "style='display: none;'";
 				?>
-<section class="qsm-page <?php echo $animation_effect; ?> qsm-page-<?php echo $qpage_id; ?>"
-	data-pid="<?php echo $qpage_id; ?>" data-prevbtn="<?php echo $hide_prevbtn; ?>" <?php echo $style; ?>>
+<section class="qsm-page <?php echo esc_attr( $animation_effect ); ?> qsm-page-<?php echo esc_attr( $qpage_id ); ?>"
+	data-pid="<?php echo esc_attr( $qpage_id ); ?>" data-prevbtn="<?php echo $hide_prevbtn; ?>" <?php echo $style; ?>>
 	<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
 	<?php
 				foreach ( $page as $question_id ) {
@@ -979,7 +979,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 <section class="qsm-page">
 	<div class="quiz_section quiz_begin">
 		<label for='mlwQuizComments'
-			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
+			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 </section>
@@ -991,7 +991,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			?>
 <section class="qsm-page" style="display: none;">
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
 		<?php
 			if ( 1 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
@@ -1008,7 +1008,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		do_action( 'qsm_after_all_section' );
 		?>
 <!-- View for pagination -->
-<script type="text/template" id="tmpl-qsm-pagination-<?php echo $options->quiz_id; ?>">
+<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
 	<div class="qsm-pagination qmn_pagination border margin-bottom">
 			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_attr( sanitize_text_field( $options->previous_button_text ) ); ?></a>
 			<span class="qmn_page_message"></span>
@@ -1267,7 +1267,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
 		$qsm_option = array_map("unserialize", $qsm_option);
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
-		$timezone = $_POST['currentuserTimeZone'];
+		$timezone = sanitize_text_field( $_POST['currentuserTimeZone'] );
 		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
 		if('1'=== $qsm_option['quiz_options']['not_allow_after_expired_time'] && $_POST['currentuserTime'] > $dtUtcDate){
 			echo json_encode( array('quizExpired'=>true) );
@@ -1373,7 +1373,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			}
 		}
 
-		$mlw_qmn_pagetime                            = isset( $_POST['pagetime'] ) ? $_POST['pagetime'] : array();
+		$mlw_qmn_pagetime                            = isset( $_POST['pagetime'] ) ? sanitize_text_field( $_POST['pagetime'] ) : array();
 		$mlw_qmn_timer                               = isset( $_POST['timer'] ) ? sanitize_text_field( intval( $_POST['timer'] ) ) : 0;
 		$mlw_qmn_timer_ms                            = isset( $_POST['timer_ms'] ) ? sanitize_text_field( intval( $_POST['timer_ms'] ) ) : 0;
 		$qmn_array_for_variables['user_id']          = get_current_user_id();
@@ -1417,7 +1417,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				global $wpdb;
 				$table_name = $wpdb->prefix . 'mlw_results';
 				if ( isset( $_POST['update_result'] ) && ! empty( $_POST['update_result'] ) ) {
-					$results_id     = $_POST['update_result'];
+					$results_id     = sanitize_text_field( $_POST['update_result'] );
 					$results_update = $wpdb->update(
 						$table_name,
 						array(

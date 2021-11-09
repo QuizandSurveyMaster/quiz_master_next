@@ -38,7 +38,7 @@ function qmn_generate_stats_page()
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'quiz-and-survey-submissions';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? esc_attr( $_GET[ 'tab' ] ) : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">

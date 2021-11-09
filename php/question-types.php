@@ -1324,7 +1324,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
-		$('#slider-' + '<?php echo $id; ?>').slider({
+		$('#slider-' + '<?php echo esc_attr( $id ); ?>').slider({
 			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
 			max: <?php echo $answar1; ?>,
 			min: <?php echo $answar2; ?>,
@@ -1334,51 +1334,51 @@ function qmn_polar_display( $id, $question, $answers ) {
 			max: <?php echo $answar2; ?>,
 			<?php } ?>
 			step: 1,
-			value: <?php echo $check_point / 2; ?>,
+			value: <?php echo esc_attr( $check_point / 2 ); ?>,
 			change: function(event, ui) {
-				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 					'.qmn_polar').val(ui.value);
 				if (ui.value == <?php echo $answar1; ?>) {
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '900');
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.right-polar-title').css('font-weight', '100');
 				} else if (ui.value == <?php echo $answar2; ?>) {
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '100');
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.right-polar-title').css('font-weight', '900');
-				} else if (ui.value == <?php echo $check_point / 2; ?>) {
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+				} else if (ui.value == <?php echo esc_attr( $check_point / 2 ); ?>) {
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '400');
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.right-polar-title').css('font-weight', '400');
-				} else if (ui.value > <?php echo $check_point / 2; ?>) {
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
-						'.<?php echo $font_weight_rc; ?>').css('font-weight', '400');
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
-						'.<?php echo $font_weight_lc; ?>').css('font-weight', '600');
-				} else if (ui.value < <?php echo $check_point / 2; ?>) {
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
-						'.<?php echo $font_weight_rc; ?>').css('font-weight', '600');
-					$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
-						'.<?php echo $font_weight_lc; ?>').css('font-weight', '400');
+				} else if (ui.value > <?php echo esc_attr( $check_point / 2 ); ?>) {
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
+						'.<?php echo esc_attr( $font_weight_rc ); ?>').css('font-weight', '400');
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
+						'.<?php echo esc_attr( $font_weight_lc ); ?>').css('font-weight', '600');
+				} else if (ui.value < <?php echo esc_attr( $check_point / 2 ); ?>) {
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
+						'.<?php echo esc_attr( $font_weight_rc ); ?>').css('font-weight', '600');
+					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
+						'.<?php echo esc_attr( $font_weight_lc ); ?>').css('font-weight', '400');
 				}
 			},
 			create: function(event, ui) {
-				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 					'.left-polar-title').css('font-weight', '400');
-				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 					'.right-polar-title').css('font-weight', '400');
-				$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').find(
+				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 					'.qmn_polar').val(<?php echo esc_attr( $check_point / 2 ); ?>);
 			}
 		});
 		var maxHeight = Math.max.apply(null, $(
-			".question-section-id-<?php echo $id; ?> .question-type-polar-s > div").map(function() {
+			".question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s > div").map(function() {
 			return $(this).height();
 		}).get());
-		$('.question-section-id-<?php echo $id; ?> .question-type-polar-s').height(maxHeight);
+		$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').height(maxHeight);
 	});
 })(jQuery);
 </script>

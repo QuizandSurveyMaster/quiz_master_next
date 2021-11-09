@@ -22,7 +22,7 @@ function qsm_generate_about_page() {
 		return;
 	}
 	$tab_array = [['slug'=>'about', 'title'=>'About'],['slug'=>'help', 'title' => 'Help']];
-	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'about';
+	$active_tab = isset($_GET['tab']) ? esc_attr( $_GET['tab'] ) : 'about';
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );

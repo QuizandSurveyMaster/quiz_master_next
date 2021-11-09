@@ -614,9 +614,9 @@ function qsm_create_new_quiz_from_wizard() {
 		unset( $_POST['_wp_http_referer'] );
 		unset( $_POST['quiz_theme_id'] );
 		$setting_arr = array(
-			'quiz_options' => serialize( $_POST ),
+			'quiz_options' => $_POST,
 		);
-		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, serialize( $setting_arr ) );
+		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, maybe_serialize( $setting_arr ) );
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

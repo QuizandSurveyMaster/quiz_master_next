@@ -175,7 +175,7 @@ function qsm_options_questions_tab_content() {
 		<a href="#" class="button"><?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?></a>
 	</p>
 </div>
-<div class="questions quiz_form_type_<?php echo $form_type; ?> quiz_quiz_systen_<?php echo $quiz_system; ?>">
+<div class="questions quiz_form_type_<?php echo esc_attr($form_type); ?> quiz_quiz_systen_<?php echo esc_attr($quiz_system); ?>">
 	<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
 		<div class="qsm-spinner-loader"></div>
 	</div>
@@ -301,8 +301,8 @@ function qsm_options_questions_tab_content() {
 									foreach ( $description_arr as $value ) {
 										$question_type_id = $value['question_type_id'];
 										?>
-								<p id="question_type_<?php echo $question_type_id; ?>_description"
-									class="question-type-description"><?php echo $value['description']; ?></p>
+								<p id="question_type_<?php echo esc_attr($question_type_id); ?>_description"
+									class="question-type-description"><?php echo esc_attr($value['description']); ?></p>
 								<?php
 									}
 								}
@@ -369,7 +369,7 @@ function qsm_options_questions_tab_content() {
 														$document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
 														$document_text .= '<span class="dashicons dashicons-media-document"></span>';
 														$document_text .= '</a>';
-														echo $document_text;
+														echo esc_html( $document_text );
 														?>
 													</label>
 													<select name="question_type" id="question_type">
@@ -837,7 +837,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	$nonce = $_POST['nonce'];
+	$nonce = sanitize_text_field( $_POST['nonce'] );
 	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
@@ -936,7 +936,7 @@ function qsm_send_data_sendy() {
 			),
 		)
 	);
-	echo isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ? $result['body'] : '';
+	echo isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ? esc_html( $result['body'] ) : '';
 	exit;
 }
 
@@ -1030,7 +1030,7 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
-	$question_id = $_POST['question_id'];
+	$question_id = sanitize_text_field( $_POST['question_id'] );
 
 	if ( $question_id ) {
 		global $wpdb;
@@ -1054,7 +1054,7 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 
 	$category   = sanitize_text_field( $_POST['name'] );
-	$parent     = (int) $_POST['parent'];
+	$parent     = (int) sanitize_text_field( $_POST['parent'] );
 	$parent     = ( $parent == -1 ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,

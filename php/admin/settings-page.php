@@ -160,13 +160,13 @@ class QMNGlobalSettingsPage {
 			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
 			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
 			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo $message;
+			echo esc_html( $message );
 			?>
 	</p>
 	<p class="category-action">
 		<?php
 			$buttons = sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo $buttons;
+			echo esc_html( $buttons );
 			?>
 	</p>
 </div>
@@ -1026,7 +1026,7 @@ class QMNGlobalSettingsPage {
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_quiz_animation) && $qsm_quiz_animation ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
-		echo $string;
+		echo esc_html( $string );
 	}
 
 		/**
@@ -1074,7 +1074,7 @@ class QMNGlobalSettingsPage {
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_randomness_order) && $qsm_randomness_order ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
-		echo $string;
+		echo esc_html( $string );
 	}
 	/**
 	 * Generates Quiz Global  Field For Quiz Dates

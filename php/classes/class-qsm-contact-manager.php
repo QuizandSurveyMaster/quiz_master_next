@@ -131,7 +131,7 @@ class QSM_Contact_Manager {
                                                             $class = 'mlwPhoneNumber mlwRequiredNumber qsm_required_text';
                                                         }
 							?>
-							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
                                                         <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo $fields[ $i ]['use'] == 'phone' ? 'text' : 'text'; ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
@@ -141,7 +141,7 @@ class QSM_Contact_Manager {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
 							?>
-							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
                                                         <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
@@ -152,7 +152,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<input type='checkbox' id='contact_field_<?php echo $i; ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='checked' />
-							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo $i; ?>'><?php echo $fields[ $i ]['label']; ?></label>
+							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo $i; ?>'><?php echo esc_html( $fields[ $i ]['label'] ); ?></label>
 							<?php
 							break;
 
@@ -161,7 +161,7 @@ class QSM_Contact_Manager {
 								$class = 'mlwRequiredDate qsm_required_date';
 							}
 							?>
-							<span class='mlw_qmn_question qsm_question'><?php echo $fields[ $i ]['label']; ?></span>
+							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
 							<input type='date' id='contact_field_<?php echo $i; ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='' />
 							<?php
 							break;

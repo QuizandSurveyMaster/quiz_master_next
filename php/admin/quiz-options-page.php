@@ -67,7 +67,7 @@ function qsm_generate_quiz_options() {
 
 	// Gets registered tabs for the options page and set current tab.
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET[ 'tab' ] ) ? stripslashes( $_GET[ 'tab' ] ) : __( 'Questions', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET[ 'tab' ] ) ? esc_attr( stripslashes( $_GET[ 'tab' ] ) ) : __( 'Questions', 'quiz-master-next' ) ) );
 
 	// Prepares quiz.
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
@@ -131,12 +131,12 @@ function qsm_generate_quiz_options() {
 <div class="wrap">
 	<div class='mlw_quiz_options'>
 		<h1 style="margin-bottom: 10px;">
-			<?php echo $quiz_name; ?>
+			<?php echo esc_html( $quiz_name ); ?>
 			<?php
                         if( $post_status == 'draft' ){ ?>
 			<form method="POST" action="">
 				<?php wp_nonce_field( 'qsm_update_quiz_status','qsm_update_quiz_status_nonce' ); ?>
-				<input type="hidden" name="quiz_post_id" value="<?php echo $post_id; ?>" />
+				<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
 				<input type="submit" class="button button-primary"
 					value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
 			</form>
@@ -147,10 +147,10 @@ function qsm_generate_quiz_options() {
 				<span class="dashicons dashicons-edit"></span>
 			</a>
 			<a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank"
-				href="<?php echo $post_permalink; ?>">
+			   href="<?php echo esc_url( $post_permalink ); ?>">
 				<span class="dashicons dashicons-welcome-view-site"></span>
 			</a>
-			<a class="button button-default qsm-btn-quiz-edit" href="<?php echo $edit_link; ?>">
+			<a class="button button-default qsm-btn-quiz-edit" href="<?php echo esc_url( $edit_link ); ?>">
 				<span class="dashicons dashicons-admin-settings"></span>
 			</a>
 		</h1>
@@ -209,7 +209,7 @@ function qsm_generate_quiz_options() {
 		</div>
 		<?php
 			qsm_show_adverts();
-			echo $mlw_output;
+			echo esc_html( $mlw_output );
 			?>
 	</div>
 	<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
@@ -223,9 +223,9 @@ function qsm_generate_quiz_options() {
 					<form action='' method='post' id="edit-name-form">
 						<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
 						<input type="text" id="edit_quiz_name" name="edit_quiz_name"
-							value="<?php echo $quiz_name; ?>" />
+							value="<?php echo esc_attr( $quiz_name ); ?>" />
 						<input type="hidden" id="edit_quiz_id" name="edit_quiz_id"
-							value="<?php echo isset($_GET['quiz_id']) && is_int($_GET['quiz_id']) ? (int) $_GET['quiz_id'] : '0'; ?>" />
+							value="<?php echo isset($_GET['quiz_id']) && is_int($_GET['quiz_id']) ? (int) esc_attr( $_GET['quiz_id'] ) : '0'; ?>" />
 						<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
 					</form>
 				</main>

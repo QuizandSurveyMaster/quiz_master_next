@@ -52,7 +52,7 @@ function mlw_options_text_tab_content() {
                                         <?php if( $editor_text_arr ){
                                         foreach ( $editor_text_arr as $key => $single_editor_arr ) {
                                             ?>
-                                            <option value="<?php echo $single_editor_arr['id']; ?>"><?php echo $single_editor_arr['label']; ?></option>
+                                            <option value="<?php echo esc_attr( $single_editor_arr['id'] ); ?>"><?php echo esc_attr( $single_editor_arr['label'] ); ?></option>
                                         <?php
                                         }
                                             } ?>
@@ -85,11 +85,11 @@ function mlw_options_text_tab_content() {
                                 if( $allowed_variables ){
                                     foreach ( $allowed_variables as $variable ) { ?>
                                         <span class="qsm-text-template-span">
-                                            <button class="button button-default"><?php echo $variable; ?></button>
+                                            <button class="button button-default"><?php echo esc_html( $variable ); ?></button>
                                             <?php if( isset( $variable_list[ $variable ] ) ){
                                                 ?>
                                                 <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-                                                    <span class="qsm-tooltips"><?php echo $variable_list[ $variable ]; ?></span>
+                                                    <span class="qsm-tooltips"><?php echo esc_html( $variable_list[ $variable ] ); ?></span>
                                                 </span>
                                             <?php } ?>
                                         </span>

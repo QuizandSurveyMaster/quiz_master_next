@@ -36,7 +36,7 @@ function qsm_generate_admin_results_page() {
 
 	// Retrieves the current stab and all registered tabs.
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Quiz Results', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
 
 	?>
