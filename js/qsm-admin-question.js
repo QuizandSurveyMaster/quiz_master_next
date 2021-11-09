@@ -323,6 +323,7 @@ var import_button;
 			if ($('#answers').find('.answers-single').length == 0) {
 				$('#new-answer-button').trigger('click');
 			}
+			jQuery(document).trigger('qsm_after_add_question', [model]);
 		},
 		addQuestionToPage: function (model) {
 			var page = model.get('page') + 1;
