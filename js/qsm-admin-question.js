@@ -116,8 +116,13 @@ var import_button;
 				$cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
 				$cat_html += '<option value="">All Questions</option>';
 				$.each(category_arr, function (index, value) {
-					if (value.category !== '')
-						$cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+					if (value.category !== '') {
+						if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
+							$cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
+						} else {
+							$cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+						}
+					}
 				});
 				$cat_html += '</select>';
 				$('#question-bank').prepend($cat_html);
@@ -135,14 +140,23 @@ var import_button;
 			if (question.question_title !== "undefined" && question.question_title !== "") {
 				questionText = question.question_title;
 			}
-			$('#question-bank').append(template({ id: question.id, question: questionText, category: question.category, quiz_name: question.quiz_name }));
+			$('#question-bank').append(template({
+				id: question.id,
+				question: questionText,
+				category: question.category,
+				quiz_name: question.quiz_name
+			}));
 		},
 		addQuestionFromQuestionBank: function (questionID) {
 			//MicroModal.close( 'modal-2' );
 			//QSMAdmin.displayAlert( 'Adding question...', 'info' );
-			var model = new QSMQuestion.question({ id: questionID });
+			var model = new QSMQuestion.question({
+				id: questionID
+			});
 			model.fetch({
-				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+				headers: {
+					'X-WP-Nonce': qsmQuestionSettings.nonce
+				},
 				url: wpApiSettings.root + 'quiz-survey-master/v1/questions/' + questionID,
 				success: QSMQuestion.questionBankSuccess,
 				error: QSMAdmin.displayError
@@ -174,13 +188,19 @@ var import_button;
 		},
 		addCategory: function (category) {
 			var template = wp.template('single-category');
-			$('#categories').prepend(template({ category: category }));
+			$('#categories').prepend(template({
+				category: category
+			}));
 		},
 		loadQuestions: function () {
 			QSMAdmin.displayAlert('Loading questions...', 'info');
 			QSMQuestion.questions.fetch({
-				headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
-				data: { quizID: qsmQuestionSettings.quizID },
+				headers: {
+					'X-WP-Nonce': qsmQuestionSettings.nonce
+				},
+				data: {
+					quizID: qsmQuestionSettings.quizID
+				},
 				success: QSMQuestion.loadSuccess,
 				error: QSMAdmin.displayError
 			});
@@ -243,7 +263,6 @@ var import_button;
 				pageInfo.set('questions', singlePage);
 				qpages.push(pageInfo.attributes);
 			});
-			console.log(pages);
 			var data = {
 				action: 'qsm_save_pages',
 				pages: pages,
@@ -268,7 +287,12 @@ var import_button;
 			if (typeof pageID == 'undefined' || pageID == '') {
 				var newPageID = QSMQuestion.qpages.length + 1;
 				var pageID = newPageID;
-				var pageInfo = QSMQuestion.qpages.add({ id: newPageID, quizID: qsmQuestionSettings.quizID, pagekey: qsmRandomID(8), hide_prevbtn: 0 });
+				var pageInfo = QSMQuestion.qpages.add({
+					id: newPageID,
+					quizID: qsmQuestionSettings.quizID,
+					pagekey: qsmRandomID(8),
+					hide_prevbtn: 0
+				});
 			}
 			var pageInfo = QSMQuestion.qpages.get(pageID);
 			$('.questions').append(template(pageInfo));
@@ -325,22 +349,25 @@ var import_button;
 			if (questionName == '')
 				questionName = 'Your new question!';
 
-			$('.page:nth-child(' + page + ')').append(template({ id: model.id, category: model.get('category'), question: questionName }));
+			$('.page:nth-child(' + page + ')').append(template({
+				id: model.id,
+				category: model.get('category'),
+				question: questionName
+			}));
 			setTimeout(QSMQuestion.removeNew, 250);
 		},
 		createQuestion: function (page) {
 			QSMAdmin.displayAlert('Creating question...', 'info');
-			QSMQuestion.questions.create(
-				{
-					quizID: qsmQuestionSettings.quizID,
-					page: page
+			QSMQuestion.questions.create({
+				quizID: qsmQuestionSettings.quizID,
+				page: page
+			}, {
+				headers: {
+					'X-WP-Nonce': qsmQuestionSettings.nonce
 				},
-				{
-					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
-					success: QSMQuestion.addNewQuestion,
-					error: QSMAdmin.displayError
-				}
-			);
+				success: QSMQuestion.addNewQuestion,
+				error: QSMAdmin.displayError
+			});
 		},
 		duplicateQuestion: function (questionID) {
 			QSMAdmin.displayAlert('Duplicating question...', 'info');
@@ -348,9 +375,10 @@ var import_button;
 			var newModel = _.clone(model.attributes);
 			newModel.id = null;
 			QSMQuestion.questions.create(
-				newModel,
-				{
-					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
+				newModel, {
+					headers: {
+						'X-WP-Nonce': qsmQuestionSettings.nonce
+					},
 					success: QSMQuestion.addNewQuestion,
 					error: QSMAdmin.displayError
 				}
@@ -388,9 +416,14 @@ var import_button;
 			if (!category) {
 				category = '';
 			}
+			var multicategories = [];
+			$.each($("input[name='tax_input[qsm_category][]']:checked"), function () {
+				multicategories.push($(this).val());
+			});
 			var featureImageID = $('.qsm-feature-image-id').val();
 			var featureImageSrc = $('.qsm-feature-image-src').val();
 			var answerType = $('#change-answer-editor').val();
+			var matchAnswer = $('#match-answer').val();
 
 			var answers = [];
 			var $answers = jQuery('.answers-single');
@@ -436,34 +469,38 @@ var import_button;
 					advanced_option[element_id] = $(this).find('select').val();
 				} else if ($(this).find('input[type="checkbox"]').length > 0) {
 					var element_id = $(this).find('input[type="checkbox"]').attr('name');
-					var multi_value = $(this).find('input[type="checkbox"]:checked').map(function () { return this.value; }).get().join(',');
+					var multi_value = $(this).find('input[type="checkbox"]:checked').map(function () {
+						return this.value;
+					}).get().join(',');
 					element_id = element_id.replace('[]', '');
 					advanced_option[element_id] = multi_value;
 				}
 			});
-			model.save(
-				{
-					type: type,
-					name: name,
-					question_title: question_title,
-					answerInfo: answerInfo,
-					comments: comments,
-					hint: hint,
-					category: category,
-					featureImageID: featureImageID,
-					featureImageSrc: featureImageSrc,
-					answers: answers,
-					answerEditor: answerType,
-					other_settings: advanced_option
+			model.save({
+				type: type,
+				name: name,
+				question_title: question_title,
+				answerInfo: answerInfo,
+				comments: comments,
+				hint: hint,
+				category: category,
+				multicategories: multicategories,
+				featureImageID: featureImageID,
+				featureImageSrc: featureImageSrc,
+				answers: answers,
+				answerEditor: answerType,
+				matchAnswer: matchAnswer,
+				other_settings: advanced_option,
+				rest_nonce: qsmQuestionSettings.rest_user_nonce
+			}, {
+				headers: {
+					'X-WP-Nonce': qsmQuestionSettings.nonce
 				},
-				{
-					headers: { 'X-WP-Nonce': qsmQuestionSettings.nonce },
-					success: QSMQuestion.saveSuccess,
-					error: QSMAdmin.displayError,
-					type: 'POST'
-				}
-			);
-			//CurrentElement.parents('.questionElements').slideUp('slow');                        
+				success: QSMQuestion.saveSuccess,
+				error: QSMAdmin.displayError,
+				type: 'POST'
+			});
+			jQuery(document).trigger('qsm_save_question', [questionID, CurrentElement]);
 		},
 		saveSuccess: function (model) {
 			QSMAdmin.displayAlert('Question was saved!', 'success');
@@ -474,7 +511,12 @@ var import_button;
 			if (new_question_title !== '') {
 				questionName = $.QSMSanitize(new_question_title);
 			}
-			$('.question[data-question-id=' + model.id + ']').replaceWith(template({ id: model.id, type: model.get('type'), category: model.get('category'), question: questionName }));
+			$('.question[data-question-id=' + model.id + ']').replaceWith(template({
+				id: model.id,
+				type: model.get('type'),
+				category: model.get('category'),
+				question: questionName
+			}));
 			setTimeout(function () {
 				$('#save-edit-question-spinner').removeClass('is-active');
 			}, 250);
@@ -486,9 +528,28 @@ var import_button;
 			}
 			var answerTemplate = wp.template('single-answer');
 			if (answer.length >= 7 && answer[6] == 'image') {
-				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], caption: answer[3], count: answer[4], question_id: answer[5], answerType: answer[6], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+				$('#answers').append(answerTemplate({
+					answer: decodeEntities(answer[0]),
+					points: answer[1],
+					correct: answer[2],
+					caption: answer[3],
+					count: answer[4],
+					question_id: answer[5],
+					answerType: answer[6],
+					form_type: qsmQuestionSettings.form_type,
+					quiz_system: qsmQuestionSettings.quiz_system
+				}));
 			} else {
-				$('#answers').append(answerTemplate({ answer: decodeEntities(answer[0]), points: answer[1], correct: answer[2], count: answer[3], question_id: answer[4], answerType: answer[5], form_type: qsmQuestionSettings.form_type, quiz_system: qsmQuestionSettings.quiz_system }));
+				$('#answers').append(answerTemplate({
+					answer: decodeEntities(answer[0]),
+					points: answer[1],
+					correct: answer[2],
+					count: answer[3],
+					question_id: answer[4],
+					answerType: answer[5],
+					form_type: qsmQuestionSettings.form_type,
+					quiz_system: qsmQuestionSettings.quiz_system
+				}));
 			}
 
 			// show points field only for polar in survey and simple form
@@ -596,6 +657,16 @@ var import_button;
 			if (get_limit_fu === null || typeof get_limit_fu === "undefined") {
 				get_limit_fu = '0';
 			}
+			//Get checked question type
+			var multicategories = question.get('multicategories');
+			$("input[name='tax_input[qsm_category][]']:checkbox").attr("checked", false);
+			if (multicategories === null || typeof multicategories === "undefined") {
+				//No Action Require
+			} else {
+				$.each(multicategories, function (i, val) {
+					$("input[name='tax_input[qsm_category][]']:checkbox[value='" + val + "']").attr("checked", "true");
+				});
+			}
 			//Get featured image
 			var get_featureImageSrc = question.get('featureImageSrc');
 			var get_featureImageID = question.get('featureImageID');
@@ -605,8 +676,7 @@ var import_button;
 			//Get checked question type
 			var get_file_upload_type = question.get('file_upload_type');
 			$("input[name='file_upload_type[]']:checkbox").attr("checked", false);
-			if (get_file_upload_type === null || typeof get_file_upload_type === "undefined") {
-			} else {
+			if (get_file_upload_type === null || typeof get_file_upload_type === "undefined") {} else {
 				var fut_arr = get_file_upload_type.split(",");
 				$.each(fut_arr, function (i) {
 					$("input[name='file_upload_type[]']:checkbox[value='" + fut_arr[i] + "']").attr("checked", "true");
@@ -660,8 +730,7 @@ var import_button;
 			}
 			//Append extra settings
 			var all_setting = question.get('settings');
-			if (all_setting === null || typeof all_setting === "undefined") {
-			} else {
+			if (all_setting === null || typeof all_setting === "undefined") {} else {
 				$.each(all_setting, function (index, value) {
 					if ($('#' + index + '_area').length > 0) {
 						if ($('#' + index + '_area').find('input[type="checkbox"]').length > 1) {
@@ -674,6 +743,9 @@ var import_button;
 								$('#' + index).val(value);
 						}
 					}
+					if (index == 'matchAnswer') {
+						$('#match-answer').val(value);
+					}
 				});
 			}
 			CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
@@ -681,6 +753,10 @@ var import_button;
 			//MicroModal.show( 'modal-1' );
 			$('.questions').sortable('disable');
 			$('.page').sortable('disable');
+
+			QSMQuestion.sync_child_parent_category(questionID);
+
+			jQuery(document).trigger('qsm_open_edit_popup', [questionID, CurrentElement]);
 		},
 		openEditPagePopup: function (pageID) {
 			var page = QSMQuestion.qpages.get(pageID);
@@ -709,11 +785,27 @@ var import_button;
 			};
 			wp.editor.initialize('question-text', settings);
 			wp.editor.initialize('correct_answer_info', settings);
+		},
+		sync_child_parent_category: function (questionID) {
+			$('.qsm_category_checklist').find('input').each(function (index, input) {
+				$(input).bind('change', function () {
+					var checkbox = $(this);
+					var is_checked = $(checkbox).is(':checked');
+					if (is_checked) {
+						$(checkbox).parents('li').children('label').children('input').prop("checked", true);
+					} else {
+						$(checkbox).parentsUntil('ul').find('input').prop("checked", false);
+					}
+					jQuery(document).trigger('qsm_sync_child_parent_category', [checkbox, questionID]);
+				});
+			});
 		}
 	};
 
 	$(function () {
-		QSMQuestion.pageCollection = Backbone.Collection.extend({ model: QSMQuestion.page });
+		QSMQuestion.pageCollection = Backbone.Collection.extend({
+			model: QSMQuestion.page
+		});
 		QSMQuestion.qpages = new QSMQuestion.pageCollection();
 		QSMQuestion.questionCollection = Backbone.Collection.extend({
 			url: wpApiSettings.root + 'quiz-survey-master/v1/questions',
@@ -750,6 +842,7 @@ var import_button;
 
 		$('.questions').on('click', '.edit-question-button', function (event) {
 			event.preventDefault();
+			$('.qsm-category-filter').trigger('keyup');
 			QSMQuestion.openEditPopup($(this).parents('.question').data('question-id'), $(this));
 		});
 		$('.questions').on('click', '.edit-page-button', function (event) {
@@ -769,52 +862,44 @@ var import_button;
 			MicroModal.show('modal-7');
 			$('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));
 			$('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
-
-			// removes question from database
-			$('#delete-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-					console.log(question_id);
-					$.ajax({
-						url: ajaxurl,
-						method: 'POST',
-						data: {
-							'action': 'qsm_delete_question_from_database',
-							'question_id': question_id,
-							'nonce': qsmQuestionSettings.single_question_nonce
-						},
-						success: function (response) {
-							var data = jQuery.parseJSON(response);
-							if (data.success === true) {
-
-								console.log(data.message);
-							} else {
-								console.log(data.message);
-							}
-						}
-					});
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
-
-			// unlink question from  a particular quiz.
-			$('#unlink-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-
-					console.log(question_id);
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
 		});
+		// removes question from database
+		$('#delete-question-button').click(function (event) {
+			event.preventDefault();
+			var question_id = $(this).data('question-iid');
+			$.ajax({
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					'action': 'qsm_delete_question_from_database',
+					'question_id': question_id,
+					'nonce': qsmQuestionSettings.single_question_nonce
+				},
+				success: function (response) {
+					var data = jQuery.parseJSON(response);
+					if (data.success === true) {
+						console.log(data.message);
+					} else {
+						console.log(data.message);
+					}
+				}
+			});
+			remove.parents('.question').remove();
+			QSMQuestion.countTotal();
+			$('.save-page-button').trigger('click');
+			MicroModal.close('modal-7');
+		});
+
+		// unlink question from  a particular quiz.
+		$('#unlink-question-button').click(function (event) {
+			event.preventDefault();
+			var question_id = $(this).data('question-iid');
+			remove.parents('.question').remove();
+			QSMQuestion.countTotal();
+			$('.save-page-button').trigger('click');
+			MicroModal.close('modal-7');
+		});
+		
 		$('.questions').on('click', '.delete-page-button', function (event) {
 			event.preventDefault();
 			if (confirm('Are you sure?')) {
@@ -839,6 +924,26 @@ var import_button;
 					alert('Text/HTML Section cannot be empty');
 					return false;
 				}
+			}
+			if (14 == questionElements.find('#question_type').val()) {
+				question_description = wp.editor.getContent('question-text').trim();
+				blanks = question_description.match(/%BLANK%/g);
+				options_length = $('.answer-text-div').length
+				if ($('#match-answer').val() == 'sequence') {
+					if (blanks == null || blanks.length != options_length) {
+						$('.modal-8-table').html('Number of <strong>%BLANK%</strong> should be equal to options for sequential matching');
+						MicroModal.show('modal-8');
+						return false;
+					}
+				} else {
+					if (blanks == null || options_length === 0) {
+						$('.modal-8-table').html('Atleast one <strong>%BLANK%</strong> and one option is required.');
+						MicroModal.show('modal-8');
+						return false;
+					}
+				}
+
+
 			}
 			$('#save-edit-question-spinner').addClass('is-active');
 			var model_html = $('#modal-1-content').html();
@@ -1173,6 +1278,7 @@ var import_button;
 			}
 		});
 	}
+
 	function qsmRandomID(length) {
 		var result = '';
 		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -1182,4 +1288,91 @@ var import_button;
 		}
 		return result;
 	}
+	$(document).on('keyup', '.qsm-category-filter', function () {
+		search_term = $.trim($(this).val());
+		if (search_term == '') {
+			$('.qsm_category_checklist li').each(function () {
+				$(this).show()
+			});
+		} else {
+			search_term = new RegExp(search_term, 'i');
+			$('.qsm_category_checklist li').each(function () {
+				search_string = $(this).children('label').text();
+				result = search_string.search(search_term);
+				if (result > -1) {
+					$(this).show();
+					if ($(this).parent('ul').hasClass('children')) {
+						$(this).parents('li').show();
+					}
+				} else {
+					$(this).hide();
+				}
+			});
+
+		}
+	});
+
+	$(document).on('click', '.add-multiple-category', function (e) {
+		e.preventDefault();
+		MicroModal.show('modal-9', {
+			onClose: function () {
+				$('#modal-9-content .info').html('');
+				$('#new-category-name').val('');
+				$('#qsm-parent-category').val(-1);
+			}
+		});
+	});
+
+	$(document).on('click', '#save-multi-category-button', function (e) {
+		e.preventDefault();
+		duplicate = false;
+		new_category = $('#new-category-name').val().trim();
+		parent_category = $('#qsm-parent-category option:selected').val();
+		if (new_category == '') {
+			$('#modal-9-content .info').html('Category cannot be empty');
+			return false;
+		} else {
+			$('#qsm-parent-category option').each(function () {
+				if ($(this).text().toLowerCase() == new_category.toLowerCase()) {
+					duplicate = true;
+					$('#modal-9-content .info').html('Category ' + new_category + ' already exists in database');
+					return false;
+				}
+			});
+
+			if (!duplicate) {
+				var new_category_data = {
+					action: 'save_new_category',
+					name: new_category,
+					parent: parent_category
+				};
+				$('#modal-9-content .info').html('');
+				jQuery.ajax(ajaxurl, {
+					data: new_category_data,
+					method: 'POST',
+					success: function (response) {
+						result = JSON.parse(response);
+						if (result.term_id > 0) {
+							$('#qsm-parent-category').append('<option class="level-0" value="' + result.term_id + '">' + new_category + '</option>');
+							if (parent_category == -1) {
+								$('.qsm_category_checklist').prepend('<li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" checked="checked" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li>');
+							} else {
+								if ($('.qsm_category_checklist li#qsm_category-' + parent_category).children('ul').length > 0) {
+									$('.qsm_category_checklist li#qsm_category-' + parent_category).children('ul').append('<li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li>');
+								} else {
+									$('.qsm_category_checklist li#qsm_category-' + parent_category).append('<ul class="children"><li id="qsm_category-' + result.term_id + '"><label class="selectit"><input value="' + result.term_id + '" type="checkbox" name="tax_input[qsm_category][]"  id="in-qsm_category-' + result.term_id + '"> ' + new_category + '</label></li></ul>')
+								}
+								$('.qsm_category_checklist li#qsm_category-' + result.term_id).children('label').children('input').prop('checked', true);
+								$('.qsm_category_checklist li#qsm_category-' + result.term_id).parents('li').each(function () {
+									console.log($(this).children('label').children('input'));
+									$(this).children('label').children('input').prop('checked', true);
+								});
+							}
+							MicroModal.close('modal-9')
+						}
+					}
+				});
+			}
+		}
+	});
 }(jQuery));

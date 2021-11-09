@@ -10,6 +10,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_quiz_options_page($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook) {
+		return;
+	}
+	if ( isset($_GET['tab'] ) && "options" === $_GET['tab']){
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'jquery' );
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-button' );
+		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+		wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+		wp_enqueue_script( 'jquery-ui-tabs' );
+		wp_enqueue_script( 'jquery-effects-blind' );
+		wp_enqueue_script( 'jquery-effects-explode' );
+		wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+	}
+
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quiz_options_page');
+
+/**
  * This function allows for the editing of quiz options.
  *
  * @return void
@@ -23,7 +51,7 @@ function qsm_generate_quiz_options() {
 	}
         global $wpdb;
 	global $mlwQuizMasterNext;
-        
+
         //Check user capability
         $user = wp_get_current_user();
         if ( in_array( 'author', (array) $user->roles ) ) {
@@ -47,24 +75,7 @@ function qsm_generate_quiz_options() {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 	}
-
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_script( 'qmn_datetime_js', plugins_url( '../../js/jquery.datetimepicker.full.min.js', __FILE__ ) );
-        wp_enqueue_style( 'qsm_datetime_style', plugins_url( '../../css/jquery.datetimepicker.css', __FILE__ ) );
-	wp_enqueue_script( 'jquery-ui-tabs' );
-	wp_enqueue_script( 'jquery-effects-blind' );
-	wp_enqueue_script( 'jquery-effects-explode' );
-
-	wp_enqueue_script( 'qmn_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'backbone', 'underscore', 'wp-util' ), $mlwQuizMasterNext->version, true );
-        wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-    wp_enqueue_style( 'qmn_jquery_redmond_theme', plugins_url( '../../css/jquery-ui.css', __FILE__ ) );
-	wp_enqueue_script( 'math_jax', '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML' );
-        wp_localize_script('qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ));
+	wp_localize_script('qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ));
         // Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
             //$quiz_id   = intval( $_POST['edit_quiz_id'] );
@@ -72,17 +83,17 @@ function qsm_generate_quiz_options() {
             $mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
         //Update post status
-        if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( $_POST['qsm_update_quiz_status_nonce'], 'qsm_update_quiz_status' ) ) {            
+        if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( $_POST['qsm_update_quiz_status_nonce'], 'qsm_update_quiz_status' ) ) {
             $quiz_post_id = sanitize_text_field( $_POST['quiz_post_id'] );
             $arg_post_arr = array(
                 'ID'           => $quiz_post_id,
                 'post_status'   => 'publish',
-            );        
+            );
             $update_status = wp_update_post( $arg_post_arr );
             if ( false !== $update_status ) {
                 $mlwQuizMasterNext->alertManager->newAlert( __( 'Quiz status has been updated successfully to publish.', 'quiz-master-next' ), 'success' );
                 $mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Status Has Been Updated: $quiz_post_id" );
-            } else {                    
+            } else {
                 $mlwQuizMasterNext->alertManager->newAlert( __( 'An error occurred while trying to update the status of your quiz or survey. Please try again.', 'quiz-master-next' ), 'error' );
                 $mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', "", 0, 'error' );
             }
@@ -106,7 +117,7 @@ function qsm_generate_quiz_options() {
         // The Loop
         $post_status = $post_id = $post_permalink = $edit_link = '';
         if ($the_query->have_posts()) {
-            while ($the_query->have_posts()) {                
+            while ($the_query->have_posts()) {
                 $the_query->the_post();
                 $post_permalink = get_the_permalink(get_the_ID());
                 $post_status = get_post_status( get_the_ID() );
@@ -129,7 +140,7 @@ function qsm_generate_quiz_options() {
 				<input type="submit" class="button button-primary"
 					value="<?php _e('Publish Quiz', 'quiz-master-next'); ?>" />
 			</form>
-			<?php                         
+			<?php
                         }
                         ?>
 			<a href="#" title="Edit Name" class="edit-quiz-name">
@@ -176,7 +187,7 @@ function qsm_generate_quiz_options() {
 					?>
 		</div>
 		<?php
-			} else {                            
+			} else {
 				?>
 		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
 			<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>

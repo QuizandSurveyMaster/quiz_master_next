@@ -9,6 +9,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_quizzes_page($hook){
+	if ( 'qsm_page_mlw_quiz_list' != $hook ) {
+		return;
+	}
+	global $mlwQuizMasterNext;
+	wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
+	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
+	wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
+	wp_enqueue_script( 'qsm_admin_js', QSM_PLUGIN_JS_URL.'/qsm-admin.js', array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version, true);
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quizzes_page');
+
+/**
  * Generates the quizzes and surveys page
  *
  * @since 5.0
@@ -24,25 +41,20 @@ function qsm_generate_quizzes_surveys_page() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	// Enqueue our styles and scripts.
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/qsm-admin.js', __FILE__ ), array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
 
 	// Delete quiz.
-	if ( isset( $_POST['qsm_delete_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
-		$quiz_id   = intval( $_POST['delete_quiz_id'] );
+	if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
+		$quiz_id   = base64_decode( sanitize_text_field( $_POST['delete_quiz_id'] ), true );
+		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
+		do_action( 'qsm_before_delete_quiz' , $quiz_id );
 		$quiz_name = sanitize_text_field( $_POST['delete_quiz_name'] );
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
 
 	// Duplicate Quiz.
-	if ( isset( $_POST['qsm_duplicate_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
-		$quiz_id   = intval( $_POST['duplicate_quiz_id'] );
+	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
+		$quiz_id   = base64_decode( sanitize_text_field( $_POST['duplicate_quiz_id'] ), true );
+		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		$quiz_name = sanitize_text_field( htmlspecialchars( $_POST['duplicate_new_quiz_name'], ENT_QUOTES ) );
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) ? sanitize_text_field( $_POST['duplicate_questions'] ) : 0 );
 	}
@@ -99,28 +111,11 @@ function qsm_generate_quizzes_surveys_page() {
 		$where  = " quiz_name LIKE '%$search%'";
 	}
 
-	/*
-	if ( isset($_POST['btnSearchQuiz']) || isset($_POST['s']) && $_POST['s'] != '' ) {
-		$delete_action = '';
-		if (isset($_POST['take_action']) && isset($_POST['qsm-ql-action-top']) || isset($_POST['take_action']) && isset($_POST['qsm-ql-action-bottom'])) {
-			$delete_action = 'multiple_delete';
-		}
-		?>
-<script type="text/javascript">
-var paged = '<?php echo $paged; ?>';
-var s = ['<?php echo $search; ?>'];
-var action = ['<?php echo $delete_action; ?>'];
-window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
-</script>
-<?php
-	} */
-
 	// Multiple Delete quiz.
 	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( $_POST['qsm_search_multiple_delete_nonce'], 'qsm_search_multiple_delete' ) ) {
 		if ( ( isset( $_POST['qsm-ql-action-top'] ) && $_POST['qsm-ql-action-top'] == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && $_POST['qsm-ql-action-bottom'] == 'delete_pr' ) ) {
-			$quiz_ids_arr = $_POST['chk_remove_all'];
+			$quiz_ids_arr = isset($_POST['chk_remove_all'])?$_POST['chk_remove_all']: false ;
 			if ( $quiz_ids_arr ) {
-				$_POST['qsm_delete_question_from_qb'] = 1;
 				foreach ( $quiz_ids_arr as $quiz_id ) {
 					$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_id );
 				}
@@ -136,7 +131,8 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 		$num_of_pages = ceil( $total / $limit );
 	} else {
 		$condition    = ' WHERE deleted=0';
-		$total        = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes %1s", $condition ) );
+		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
+		$total        = $wpdb->get_var( stripslashes($wpdb->prepare( "SELECT COUNT(`quiz_id`) FROM {$wpdb->prefix}mlw_quizzes %1s", $condition ) ));
 		$num_of_pages = ceil( $total / $limit );
 	}
 
@@ -176,6 +172,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
 		$search_quiz = htmlspecialchars( $_POST['s'], ENT_QUOTES );
 		$condition   = " WHERE deleted=0 AND quiz_name LIKE '%$search_quiz%'";
+		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
 		$qry         = stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
 		$quizzes     = $wpdb->get_results( $qry );
 
@@ -242,8 +239,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 		);
 	}
 	$total_count = count( $quiz_json_array );
-
-	wp_localize_script( 'qsm_admin_script', 'qsmQuizObject', $quiz_json_array );
+	wp_localize_script( 'qsm_admin_js', 'qsmQuizObject', $quiz_json_array );
 	?>
 <div class="wrap qsm-quizes-page">
 	<h1>
@@ -258,8 +254,8 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 		<p><?php esc_html_e( 'Your site is using PHP version', 'quiz-master-next' ); ?>
 			<?php echo esc_html( PHP_VERSION ); ?>!
 			<?php esc_html_e( 'Starting in QSM 6.0, your version of PHP will no longer be supported.', 'quiz-master-next' ); ?>
-			<a href="http://bit.ly/2lyrrm8"
-				target="_blank"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
+			<a href="https://quizandsurveymaster.com/increased-minimum-php-version-qsm-6-0/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=minimum-php-notice" target="_blank"
+				rel="noopener"><?php esc_html_e( "Click here to learn more about QSM's minimum PHP version change.", 'quiz-master-next' ); ?></a>
 		</p>
 	</div>
 	<?php
@@ -287,7 +283,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 					<?php if ( class_exists( 'QSM_Export_Import' ) ) { ?>
 					<a class="button button-primary"
 						href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>"
-						target="_blank"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
+						target="_blank" rel="noopener"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
 					<?php } else { ?>
 					<a id="show_import_export_popup" href="#" style="position: relative;top: 0px;"
 						class="add-new-h2 button-primary"><?php _e( 'Import & Export', 'quiz-master-next' ); ?></a>
@@ -295,12 +291,12 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 				</p>
 				<div class="tablenav top">
 					<div class="alignleft actions bulkactions">
-						<select name="qsm-ql-action-top">
+						<select id="bulk-action-top" name="qsm-ql-action-top">
 							<option selected="selected" value="none"><?php _e( 'Bulk Actions', 'quiz-master-next' ); ?>
 							</option>
 							<option value="delete_pr"><?php _e( 'Delete Permanently', 'quiz-master-next' ); ?></option>
 						</select>
-						<input id="take_action" name="take_action" class="button action" type="submit"
+						<input id="bulk-submit" name="bulk-submit-top" class="button" type="button"
 							value="<?php esc_attr_e( 'Apply', 'quiz-master-next' ); ?>">
 					</div>
 					<div class="tablenav-pages">
@@ -419,7 +415,7 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 									<a class="qsm-action-link"
 										href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e( 'View Results', 'quiz-master-next' ); ?></a>
 									|
-									<a class="qsm-action-link" target="_blank"
+									<a class="qsm-action-link" target="_blank" rel="noopener"
 										href="<?php echo $single_arr['link']; ?>"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
 								</div>
 							</td>
@@ -489,13 +485,13 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 					</tfoot>
 				</table>
 				<div class="tablenav bottom">
-					<select name="qsm-ql-action-bottom">
+					<select id="bulk-action-bottom" name="qsm-ql-action-bottom">
 						<option selected="selected" value="none"><?php _e( 'Bulk Actions', 'quiz-master-next' ); ?>
 						</option>
 						<option value="delete_pr"><?php _e( 'Delete Permanently', 'quiz-master-next' ); ?></option>
 					</select>
-					<input id="take_action" name="take_action" class="button action" type="submit"
-						value="<?php esc_attr_e( 'Apply', 'quiz-master-next' ); ?>">
+					<input id="bulk-submit" name="bulk-submit-bottom" class="button" type="button"
+							value="<?php esc_attr_e( 'Apply', 'quiz-master-next' ); ?>">
 					<div class="tablenav-pages">
 						<span
 							class="displaying-num"><?php echo number_format_i18n( $total ) . ' ' . sprintf( _n( 'item', 'items', $total ), number_format_i18n( $total ) ); ?></span>
@@ -608,12 +604,16 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 				</header>
 				<main class="qsm-popup__content" id="modal-5-content">
-					<form action='' method='post' id="delete-quiz-form">
+					<form action='' method='post' id="delete-quiz-form" style="display:flex; flex-direction:column;">
 						<h3><b><?php _e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b>
 						</h3>
 						<label>
-							<input type="checkbox" value="1" name="qsm_delete_question_from_qb" checked="checked" />
+							<input type="checkbox" value="1" name="qsm_delete_question_from_qb" />
 							<?php _e( 'Delete question from question bank?', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="qsm_delete_from_db" value="1"/>
+							<?php _e( 'Delete items from database?', 'quiz-master-next' ); ?>
 						</label>
 						<?php wp_nonce_field( 'qsm_delete_quiz', 'qsm_delete_quiz_nonce' ); ?>
 						<input type='hidden' id='delete_quiz_id' name='delete_quiz_id' value='' />
@@ -629,6 +629,38 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 			</div>
 		</div>
 	</div>
+	<!-- Popup for bulk delete quiz -->
+	<div class="qsm-popup qsm-popup-slide" id="modal-bulk-delete" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-5-title">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-5-title"><?php _e( 'Bulk Delete', 'quiz-master-next' ); ?></h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="modal-5-content">
+					<form action='' method='post' id="bult-delete-quiz-form" style="display:flex; flex-direction:column;">
+						<h3><b><?php _e( 'Are you sure you want to delete selected quiz or survey?', 'quiz-master-next' ); ?></b>
+						</h3>
+						<label>
+							<input type="checkbox" name="qsm_delete_question_from_qb" checked="checked" />
+							<?php _e( 'Delete question from question bank?', 'quiz-master-next' ); ?>
+						</label>
+						<label>
+							<input type="checkbox" name="qsm_delete_from_db" />
+							<?php _e( 'Delete items from database?', 'quiz-master-next' ); ?>
+						</label>
+					</form>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button id="bulk-delete-quiz-button"
+						class="qsm-popup__btn qsm-popup__btn-primary"><?php _e( 'Delete', 'quiz-master-next' ); ?></button>
+					<button class="qsm-popup__btn" data-micromodal-close
+						aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+				</footer>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Popup for export import upsell -->
 	<div class="qsm-popup qsm-popup-slide" id="modal-export-import" aria-hidden="true">
@@ -682,13 +714,13 @@ window.location = "?page=mlw_quiz_list&paged=1&s=" + s + "&action=" + action;
 
 	<!-- Templates -->
 	<script type="text/template" id="tmpl-no-quiz">
-		<div class="qsm-no-quiz-wrapper">           
+		<div class="qsm-no-quiz-wrapper">
 				<span class="dashicons dashicons-format-chat"></span>
 				<h2><?php _e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
 				<div class="buttons">
 					<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
-				</div>   
+				</div>
 				<h3><?php _e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
 				<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 			</div>

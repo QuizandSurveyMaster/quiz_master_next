@@ -17,21 +17,20 @@ function qmn_addons_page() {
 	global $mlwQuizMasterNext;
 	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+
 	?>
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
-		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 		<?php
 		if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
 			?>
-		<a class="button button-default" href="?page=qmn_addons"><span style="margin-top: 4px;"
+		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
 			<?php _e( 'Back to list', 'quiz-master-next' ); ?></a>
 		<?php
 		}
 		?>
+		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -65,7 +64,7 @@ function qmn_addons_page() {
  */
 function qsm_generate_featured_addons() {
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
+	wp_localize_script( 'qsm_admin_js', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 	?>
 <div class="qsm-addon-browse-addons">
@@ -114,9 +113,13 @@ function qsm_generate_featured_addons() {
 	} else {
 		?>
 	<div class="no_addons_installed">
-		<?php
+		<div>
+			<?php
 			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
 		?>
+		</div>
+		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
+			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}
@@ -284,7 +287,9 @@ function qsm_generate_featured_addons() {
 		<div class="qsm-info-widget">
 			<div class="bundle-icon">
 				<?php
-							echo '<img src="' . QSM_PLUGIN_URL . 'assets/' . $bundles_arr['name'] . '.png" />';
+				if ( ! empty( $bundles_arr['icon'] ) ) {
+					echo '<img src="' . $bundles_arr['icon'] . '" />';
+				}
 				?>
 			</div>
 			<h3><?php echo $bundles_arr['name']; ?></h3>
@@ -324,8 +329,6 @@ add_action( 'plugins_loaded', 'qsm_featured_addons_tab' );
  */
 function qsm_display_optin_page() {
 	 global $mlwQuizMasterNext;
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $mlwQuizMasterNext->version );
-	wp_localize_script( 'qsm_admin_script', 'qsmAdminObject', array( 'saveNonce' => wp_create_nonce( 'ajax-nonce-sendy-save' ) ) );
 	?>
 <div class="wrap about-wrap">
 
@@ -351,48 +354,6 @@ function qsm_display_optin_page() {
 		<div id="wpas-mailchimp-signup-form-wrapper">
 			<div id="status"></div>
 			<!-- Begin Sendinblue Form -->
-			<!-- START - We recommend to place the below code in head tag of your website html  -->
-			<style>
-			@font-face {
-				font-display: block;
-				font-family: Roboto;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
-			}
-
-			@font-face {
-				font-display: fallback;
-				font-family: Roboto;
-				font-weight: 600;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
-			}
-
-			@font-face {
-				font-display: fallback;
-				font-family: Roboto;
-				font-weight: 700;
-				src: url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
-			}
-
-			#sib-container input:-ms-input-placeholder {
-				text-align: left;
-				font-family: "Helvetica", sans-serif;
-				color: #c0ccda;
-				border-width: px;
-			}
-
-			#sib-container input::placeholder {
-				text-align: left;
-				font-family: "Helvetica", sans-serif;
-				color: #c0ccda;
-				border-width: px;
-			}
-			</style>
-			<link rel="stylesheet" href="https://assets.sendinblue.com/component/form/2ef8d8058c0694a305b0.css">
-			<link rel="stylesheet" href="https://assets.sendinblue.com/component/clickable/b056d6397f4ba3108595.css">
-			<link rel="stylesheet"
-				href="https://assets.sendinblue.com/component/progress-indicator/f86d65a4a9331c5e2851.css">
-			<link rel="stylesheet" href="https://sibforms.com/forms/end-form/build/sib-styles.css">
-			<!--  END - We recommend to place the above code in head tag of your website html -->
 
 			<!-- START - We recommend to place the below code where you want the form in your website html  -->
 			<div class="sib-form" style="text-align: center;">
@@ -488,35 +449,6 @@ function qsm_display_optin_page() {
 				</div>
 			</div>
 			<!-- END - We recommend to place the below code where you want the form in your website html  -->
-
-			<!-- START - We recommend to place the below code in footer or bottom of your website html  -->
-			<script>
-			window.REQUIRED_CODE_ERROR_MESSAGE = 'Please choose a country code';
-
-			window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
-				"The information provided is invalid. Please review the field format and try again.";
-
-			window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
-
-			window.GENERIC_INVALID_MESSAGE =
-				"The information provided is invalid. Please review the field format and try again.";
-
-
-
-
-			window.translation = {
-				common: {
-					selectedList: '{quantity} list selected',
-					selectedLists: '{quantity} lists selected'
-				}
-			};
-
-			var AUTOHIDE = Boolean(0);
-			</script>
-			<script src="https://sibforms.com/forms/end-form/build/main.js">
-			</script>
-			<script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
-			<!-- END - We recommend to place the above code in footer or bottom of your website html  -->
 			<!-- End Sendinblue Form -->
 		</div>
 	</div>
@@ -524,4 +456,77 @@ function qsm_display_optin_page() {
 </div>
 <?php
 }
+function qsm_admin_get_free_addon_page_scripts_style($hook){
+	if ( $hook == 'qsm_page_qsm-free-addon') {
+
+		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css');
+		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css');
+		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css');
+		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css' );
+		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js', array(),'',true);
+		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
+		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(),'',true);
+
+		$qsm_sibforms_inline_js = 'window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
+
+		window.EMAIL_INVALID_MESSAGE = window.SMS_INVALID_MESSAGE =
+			"The information provided is invalid. Please review the field format and try again.";
+
+		window.REQUIRED_ERROR_MESSAGE = "This field cannot be left blank. ";
+
+		window.GENERIC_INVALID_MESSAGE =
+			"The information provided is invalid. Please review the field format and try again.";
+
+
+
+
+		window.translation = {
+			common: {
+				selectedList: "{quantity} list selected",
+				selectedLists: "{quantity} lists selected"
+			}
+		};
+
+		var AUTOHIDE = Boolean(0);';
+		wp_add_inline_script('jquery', $qsm_sibforms_inline_js);
+
+		$qsm_sibforms_inline_css = '@font-face {
+			font-display: block;
+			font-family: Roboto;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/normal/normal/25c678feafdc175a70922a116c9be3e7.woff) format("woff")
+		}
+
+		@font-face {
+			font-display: fallback;
+			font-family: Roboto;
+			font-weight: 600;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/6e9caeeafb1f3491be3e32744bc30440.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/medium/normal/71501f0d8d5aa95960f6475d5487d4c2.woff) format("woff")
+		}
+
+		@font-face {
+			font-display: fallback;
+			font-family: Roboto;
+			font-weight: 700;
+			src: url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/3ef7cf158f310cf752d5ad08cd0e7e60.woff2) format("woff2"), url(https://assets.sendinblue.com/font/Roboto/Latin/bold/normal/ece3a1d82f18b60bcce0211725c476aa.woff) format("woff")
+		}
+
+		#sib-container input:-ms-input-placeholder {
+			text-align: left;
+			font-family: "Helvetica", sans-serif;
+			color: #c0ccda;
+			border-width: px;
+		}
+
+		#sib-container input::placeholder {
+			text-align: left;
+			font-family: "Helvetica", sans-serif;
+			color: #c0ccda;
+			border-width: px;
+		}';
+		wp_add_inline_style( 'qsm_sibforms_css', $qsm_sibforms_inline_css );
+
+	}
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style' );
+
 ?>

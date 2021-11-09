@@ -48,15 +48,26 @@ class QSM_Emails {
 				// Cycle through each condition to see if we should sent this email.
 				foreach ( $email['conditions'] as $condition ) {
 					$value = $condition['value'];
-
+					$category = '';
+					if( isset($condition['category'])){
+						$category = $condition['category'];
+					}
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							$test = $response_data['total_score'];
+							if( $category != '' ){
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
+							} else {
+								$test = $response_data['total_score'];
+							}
 							break;
 
 						case 'points':
-							$test = $response_data['total_points'];
+							if( $category != '' ){
+								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
+							} else {
+								$test = $response_data['total_points'];
+							}
 							break;
 
 						default:
@@ -158,13 +169,12 @@ class QSM_Emails {
 		}
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
-
 		// Prepares our content.
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );                
-                $response_data['email_template_array'] = true;
+		$response_data['email_template_array'] = true;
 		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
-		$content = str_replace( '<br/>', '<br>', $content );
-		$content = str_replace( '<br />', '<br>', $content );
+		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
+		//convert css classes to inline 
+		$content = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner($content);
 		$content = html_entity_decode( $content );
 
 		// Prepares our from name and email.
@@ -201,6 +211,10 @@ class QSM_Emails {
 			$name      = sanitize_text_field( $response_data['user_name'] );
 			$headers[] = 'Reply-To: ' . $name . ' <' . $user_email . '>';
 		}
+		/**
+		 * Filter to modify email headers.
+		 */
+		$headers = apply_filters('qsm_send_results_email_headers', $headers, $response_data);
 
 		// Prepares our attachments. If %USER_EMAIL% was in the $to, then use the user email attachment filter.
 		$attachments = array();

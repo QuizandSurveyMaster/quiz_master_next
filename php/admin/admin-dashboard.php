@@ -87,6 +87,28 @@ function qsm_dashboard_screen_options( $status, $args ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_dashboard_page($hook){
+	if ( 'toplevel_page_qsm_dashboard' != $hook ) {
+		return;
+	}
+	global $mlwQuizMasterNext;
+	wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
+	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
+	wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
+	wp_enqueue_script( 'dashboard' );
+	if ( wp_is_mobile() ) {
+		wp_enqueue_script( 'jquery-touch-punch' );
+	}
+	wp_enqueue_script ( 'productstash-config', QSM_PLUGIN_JS_URL.'/qsm-productstash-config.js');
+	wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page');
+
+/**
  * @since 7.0
  * @return HTMl Dashboard for QSM
  */
@@ -96,18 +118,7 @@ function qsm_generate_dashboard_page() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_admin_script', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_admin_dashboard_css', plugins_url( '../../css/admin-dashboard.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_ui_css', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
-	wp_enqueue_script( 'dashboard' );
-	if ( wp_is_mobile() ) {
-		wp_enqueue_script( 'jquery-touch-punch' );
-	}
-	?>
+?>
 <div class="wrap">
 	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
@@ -133,28 +144,33 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php _e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Beautify QSM with Themes', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
 				<div class="welcome-panel-column welcome-panel-last">
 					<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
-						<li><a target="_blank" rel="noopener" href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
+						<li><a target="_blank" rel="noopener"
+								href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
 									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Contact Support', 'quiz-master-next' ); ?></a>
 						</li>
@@ -166,6 +182,9 @@ function qsm_generate_dashboard_page() {
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
+						</li>
+						<li><a href="#" class="welcome-icon" id="whatsnew"><span
+									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -501,7 +520,8 @@ function qsm_dashboard_what_new( $widget_id ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
 				<li>
-					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard" target="_blank" rel="noopener">
+					<a href="<?php echo $single_feed_arr['link']; ?>?utm_source=plugin&utm_medium=dashboard"
+						target="_blank" rel="noopener">
 						<?php echo $single_feed_arr['title']; ?>
 					</a>
 					<div class="post-description">

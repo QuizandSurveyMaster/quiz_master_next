@@ -320,6 +320,37 @@ function qsm_display_question_option( $key, $single_option ) {
 <?php
 			break;
 
+		case 'multi_category':
+			?>
+<div id="multi_category_area" class="qsm-row <?php echo $show_class; ?>">
+	<label>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
+	</label>
+	<div id="multi_categories_wrapper" class="categorydiv">
+		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
+		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
+			<?php
+						wp_terms_checklist(
+							0,
+							array(
+								'taxonomy'             => 'qsm_category',
+								'descendants_and_self' => 0,
+								'selected_cats'        => false,
+								'echo'                 => true,
+							)
+						);
+			?>
+		</ul>
+		<a href='#' class='button button-primary add-multiple-category'>
+			<?php _e( '+ Add New Category ', 'quiz-master-next' ); ?>
+		</a>
+	</div>
+</div>
+<?php
+			break;
+
 		case 'multi_checkbox':
 			?>
 <div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
@@ -478,7 +509,7 @@ function qsm_create_new_quiz_wizard() {
 								'value'       => 0,
 							),
 							'system'                 => array(
-								'option_name' => __( 'Graded System', 'quiz-master-next' ),
+								'option_name' => __( 'Grading System', 'quiz-master-next' ),
 								'value'       => 0,
 							),
 							'pagination'             => array(
@@ -624,41 +655,41 @@ function qsm_create_new_quiz_wizard() {
  */
 function qsm_text_template_variable_list() {
 	$variable_list = array(
-		'%POINT_SCORE%'             => __( 'Score for the quiz when using points', 'quiz-master-next' ),
-		'%MAXIMUM_POINTS%'          => __( 'Maximum possible points one can score', 'quiz-master-next' ),
-		'%AVERAGE_POINT%'           => __( 'The average amount of points user had per question', 'quiz-master-next' ),
-		'%AMOUNT_CORRECT%'          => __( 'The number of correct answers the user had', 'quiz-master-next' ),
-		'%AMOUNT_INCORRECT%'        => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
-		'%AMOUNT_ATTEMPTED%'        => __( 'The number of questions are attempted', 'quiz-master-next' ),
-		'%TOTAL_QUESTIONS%'         => __( 'The total number of questions in the quiz', 'quiz-master-next' ),
-		'%CORRECT_SCORE%'           => __( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
-		'%USER_NAME%'               => __( 'The name the user entered before the quiz', 'quiz-master-next' ),
-		'%FULL_NAME%'               => __( 'The full name of user with first name and last name', 'quiz-master-next' ),
-		'%USER_BUSINESS%'           => __( 'The business the user entered before the quiz', 'quiz-master-next' ),
-		'%USER_PHONE%'              => __( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
-		'%USER_EMAIL%'              => __( 'The email the user entered before the quiz', 'quiz-master-next' ),
-		'%QUIZ_NAME%'               => __( 'The name of the quiz', 'quiz-master-next' ),
-		'%QUIZ_LINK%'               => __( 'The link of the quiz', 'quiz-master-next' ),
-		'%QUESTIONS_ANSWERS%'       => __( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
-		'%COMMENT_SECTION%'         => __( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
-		'%TIMER%'                   => __( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
-		'%TIMER_MINUTES%'           => __( 'The amount of time user spent on quiz in minutes', 'quiz-master-next' ),
-		'%CATEGORY_POINTS_X%'       => __( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
-		'%CATEGORY_SCORE_X%'        => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
-		'%CATEGORY_AVERAGE_POINTS%' => __( 'The average points from all categories.', 'quiz-master-next' ),
-		'%CATEGORY_AVERAGE_SCORE%'  => __( 'The average score from all categories.', 'quiz-master-next' ),
-		'%QUESTION%'                => __( 'The question that the user answered', 'quiz-master-next' ),
-		'%USER_ANSWER%'             => __( 'The answer the user gave for the question', 'quiz-master-next' ),
-		'%USER_ANSWERS_DEFAULT%'    => __( 'The answer the user gave for the question with default design', 'quiz-master-next' ),
-		'%CORRECT_ANSWER%'          => __( 'The correct answer for the question', 'quiz-master-next' ),
-		'%USER_COMMENTS%'           => __( 'The comments the user provided in the comment field for the question', 'quiz-master-next' ),
-		'%CORRECT_ANSWER_INFO%'     => __( 'Reason why the correct answer is the correct answer', 'quiz-master-next' ),
-		'%CURRENT_DATE%'            => __( 'The Current Date', 'quiz-master-next' ),
-		'%QUESTION_POINT_SCORE%'    => __( 'Point Score of the question', 'quiz-master-next' ),
-		'%QUESTION_MAX_POINTS%'     => __( 'Maximum points of the question', 'quiz-master-next' ),
-		'%FACEBOOK_SHARE%'          => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-		'%TWITTER_SHARE%'           => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
-		'%RESULT_LINK%'             => __( 'The link of the result page.', 'quiz-master-next' ),
+		'Core' => array(
+			'%POINT_SCORE%'             => __( 'Score for the quiz when using points', 'quiz-master-next' ),
+			'%MAXIMUM_POINTS%'          => __( 'Maximum possible points one can score', 'quiz-master-next' ),
+      '%MINIMUM_POINTS%'          => __( 'Minimum possible points one can score', 'quiz-master-next' ),
+			'%AVERAGE_POINT%'           => __( 'The average amount of points user had per question', 'quiz-master-next' ),
+			'%AMOUNT_CORRECT%'          => __( 'The number of correct answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_INCORRECT%'        => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_ATTEMPTED%'        => __( 'The number of questions are attempted', 'quiz-master-next' ),
+			'%TOTAL_QUESTIONS%'         => __( 'The total number of questions in the quiz', 'quiz-master-next' ),
+			'%CORRECT_SCORE%'           => __( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
+			'%USER_NAME%'               => __( 'The name the user entered before the quiz', 'quiz-master-next' ),
+			'%FULL_NAME%'               => __( 'The full name of user with first name and last name', 'quiz-master-next' ),
+			'%USER_BUSINESS%'           => __( 'The business the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_PHONE%'              => __( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_EMAIL%'              => __( 'The email the user entered before the quiz', 'quiz-master-next' ),
+			'%QUIZ_NAME%'               => __( 'The name of the quiz', 'quiz-master-next' ),
+			'%QUIZ_LINK%'               => __( 'The link of the quiz', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS%'       => __( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
+			'%COMMENT_SECTION%'         => __( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
+			'%TIMER%'                   => __( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
+			'%TIMER_MINUTES%'           => __( 'The amount of time user spent on quiz in minutes i.e. If total time is 3 minutes 38 seconds. This will output 3', 'quiz-master-next' ),
+			'%TIMER_SECONDS%'           => __( 'The left over seconds user spent on quiz. i.e. If total time is 3 minutes 38 seconds. This will output 38', 'quiz-master-next' ),
+			'%CATEGORY_POINTS_X%'       => __( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_SCORE_X%'        => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_POINTS%' => __( 'The average points from all categories.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_SCORE%'  => __( 'The average score from all categories.', 'quiz-master-next' ),
+			'%QUESTION_MAX_POINTS%'     => __( 'Maximum points of the question', 'quiz-master-next' ),
+			'%FACEBOOK_SHARE%'          => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
+			'%TWITTER_SHARE%'           => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
+			'%RESULT_LINK%'             => __( 'The link of the result page.', 'quiz-master-next' ),
+			'%CONTACT_X%'  						  => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%CONTACT_ALL%'             => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%AVERAGE_CATEGORY_POINTS_X%'=> __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_X%'       => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+		)		
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
 	return $variable_list;
@@ -700,15 +731,27 @@ function qsm_update_question_type_col_val() {
  */
 function qsm_check_create_tables() {
 	global $wpdb;
+	$install         = false;
+
 	$quiz_table_name = $wpdb->prefix . 'mlw_quizzes';
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
-		QSM_Install::install();
+		$install = true;
 	}
 
 	$quiz_theme_table_name = $wpdb->prefix . 'mlw_themes';
 	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) != $quiz_theme_table_name ) {
+		$install = true;
+	}
+
+	$question_terms_table_name = $wpdb->prefix . 'mlw_question_terms';
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_terms_table_name'" ) != $question_terms_table_name ) {
+		$install = true;
+	}
+
+	if ( $install ) {
 		QSM_Install::install();
 	}
+
 }
 add_action( 'admin_init', 'qsm_check_create_tables' );
 
@@ -934,8 +977,12 @@ function qsm_generate_roadmap_page() {
 	iframe {
 		height: 1350px;
 	}
+
+	body::-webkit-scrollbar {
+		width: 0px;
+	}
 	</style>
-	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="900" width="100%"
+	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="1350px" width="100%"
 		frameborder="0"></iframe>
 	<script>
 	var ps_config = {

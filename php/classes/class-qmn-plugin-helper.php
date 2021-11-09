@@ -176,6 +176,7 @@ class QMNPluginHelper
             $limit = ' limit ' . $offset . ', ' . $limit;
         }
         // Get quizzes and return them
+        $delete  = apply_filters( 'quiz_query_delete_clause', $delete );
         $quizzes = $wpdb->get_results(stripslashes($wpdb->prepare("SELECT * FROM {$wpdb->prefix}mlw_quizzes %1s %2s %3s ORDER BY %4s %5s %6s", $delete, $user_str, $where_str, $order_field, $order_direction, $limit)));
         return $quizzes;
     }
@@ -405,7 +406,13 @@ class QMNPluginHelper
         }
         if (2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order) {
             shuffle($answers);
+            update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
+		/**
+		 * Filter Answers of specific question before display
+		 */
+		$answers = apply_filters('qsm_single_question_answers', $answers, $question, $quiz_options);
+
         foreach ($this->question_types as $type) {
             if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
                 if ($type["graded"]) {
@@ -414,8 +421,11 @@ class QMNPluginHelper
                         $display .= "<span class='mlw_qmn_question_number'>$qmn_total_questions. </span>";
                     }
                 }
-                if ($quiz_options->show_category_on_front && $question->category != '') {
-                    $display .= '<div class="quiz-cat">[ ' . $question->category . ' ]</div>';
+                if ($quiz_options->show_category_on_front ) {                    
+                    $categories = QSM_Questions::get_question_categories( $question_id );                   
+                    if(!empty($categories['category_name'])){
+                        $display .= '<div class="quiz-cat">[ ' .implode(',' ,$categories['category_name']) . ' ]</div>';
+                    }                    
                 }
                 $display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
             }
@@ -656,6 +666,197 @@ class QMNPluginHelper
      */
     public function get_settings_tabs()
     {
-        return $this->settings_tabs;
+        return apply_filters('qmn_quiz_setting_tabs' , $this->settings_tabs);
+    }
+
+    	/**
+	 * global animatiocv array return
+	 *
+	 * @since 4.7.1
+	 */
+	public function quiz_animation_effect( ) {
+		
+
+		return array(
+			array(
+				'label' => __( 'bounce', 'quiz-master-next' ),
+				'value' => 'bounce',
+			),
+			array(
+				'label' => __( 'flash', 'quiz-master-next' ),
+				'value' => 'flash',
+			),
+			array(
+				'label' => __( 'pulse', 'quiz-master-next' ),
+				'value' => 'pulse',
+			),
+			array(
+				'label' => __( 'rubberBand', 'quiz-master-next' ),
+				'value' => 'rubberBand',
+			),
+			array(
+				'label' => __( 'shake', 'quiz-master-next' ),
+				'value' => 'shake',
+			),
+			array(
+				'label' => __( 'swing', 'quiz-master-next' ),
+				'value' => 'swing',
+			),
+			array(
+				'label' => __( 'tada', 'quiz-master-next' ),
+				'value' => 'tada',
+			),
+			array(
+				'label' => __( 'wobble', 'quiz-master-next' ),
+				'value' => 'wobble',
+			),
+			array(
+				'label' => __( 'jello', 'quiz-master-next' ),
+				'value' => 'jello',
+			),
+			array(
+				'label' => __( 'heartBeat', 'quiz-master-next' ),
+				'value' => 'heartBeat',
+			),
+			array(
+				'label' => __( 'No animation', 'quiz-master-next' ),
+				'value' => '',
+			),
+		);
+
+	}
+
+    /**
+	 * converts dates into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses QMNQuizManager:submit_results() submits and displays results
+     * @uses qsm_generate_results_details_tab() generates admin results page
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_to_preferred_date_format($qsm_qna_array){
+        global $mlwQuizMasterNext;
+        $quiz_options= $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+        $qsm_quiz_settings = unserialize($quiz_options->quiz_settings);
+        $qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
+        $qsm_global_settings = get_option( 'qsm-quiz-settings' );
+        //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
+        if (isset($qsm_quiz_options['preferred_date_format'])){
+            $preferred_date_format= $qsm_quiz_options['preferred_date_format'];
+        } elseif ( isset($qsm_global_settings['preferred_date_format']) ){
+            $preferred_date_format= isset($qsm_global_settings['preferred_date_format']);
+        }else{
+            $preferred_date_format= get_option( 'date_format');
+        }
+        //filter date format
+        $GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format);
+
+        $qsm_qna_array = $this->convert_contacts_to_preferred_date_format($qsm_qna_array);
+        $qsm_qna_array = $this->convert_answers_to_preferred_date_format($qsm_qna_array);
+        $this->convert_questions_to_preferred_date_format();        
+           
+        return $qsm_qna_array;
+	}
+
+    /**
+	 * converts contacts into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_contacts_to_preferred_date_format($qsm_qna_array){
+
+        $qsm_contact_array = $qsm_qna_array['contact'];
+        foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact){
+            if ("date" === $qsm_contact['type'] && null!==$GLOBALS['qsm_date_format']){
+                $qsm_qna_array['contact'][$qsm_contact_id]['value']=date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qsm_contact['value'])));
+            }
+        }
+        return $qsm_qna_array;
+	}
+
+    /**
+	 * converts answers into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_answers_to_preferred_date_format($qsm_qna_array){
+
+        $qsm_qna_list = $qsm_qna_array['question_answers_array'];
+        foreach ($qsm_qna_list as $qna_id => $qna){
+            if ("12"===$qna['question_type'] && null!==$GLOBALS['qsm_date_format']){
+                $qsm_qna_array['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
+                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));           
+            }
+        }
+        return $qsm_qna_array;
+	}
+
+    /**
+	 * converts questions into preferred date format
+	 *
+	 * @since 7.3.3
+	 * @param array $qsm_qna_array The array of results for the quiz
+	 * @uses convert_to_preferred_date_format()
+	 * @return array $qsm_qna_array date formatted array of results for the quiz
+	 */
+
+	public function convert_questions_to_preferred_date_format(){
+        
+        if(!function_exists('qsm_convert_question_array_date_format')){
+            function qsm_convert_question_array_date_format($questions){	
+                foreach ($questions as $question_id => $question_to_convert){
+                    if("12"=== $question_to_convert['question_type_new']){
+                        foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
+                            $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
+                        }	
+                    }
+                }
+                return $questions;
+            }
+        } 
+        add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
+	}
+
+    /**
+	 * 
+	 *
+	 * @since 7.3.5
+	 * @param array 
+	 * @uses 
+	 * @return array 
+	 */
+
+    public function qsm_results_css_inliner($html){
+
+        $incorrect_answer="<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
+		$correct_answer="<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
+		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
+		$html = str_replace( '<br/>', '<br>', $html );
+		$html = str_replace( '<br />', '<br>', $html );
+		$html = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $html );
+		$html = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $html );
+		$html = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer qmn_image_option">', "$correct_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-simple-option qmn_image_option">', "$simple_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer ">', "$correct_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-simple-option ">', "$simple_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $html );
+		$html = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $html );
+		$html = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $html );
+		$html = str_replace( '<span class="qmn_user_incorrect_answer">', "$correct_answer ", $html );
+		$html = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
+
+        return $html;
     }
 }

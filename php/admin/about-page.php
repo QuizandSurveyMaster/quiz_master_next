@@ -23,9 +23,6 @@ function qsm_generate_about_page() {
 	}
 	$tab_array = [['slug'=>'about', 'title'=>'About'],['slug'=>'help', 'title' => 'Help']];
 	$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'about';
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_script( 'qsm_admin_js', plugins_url( '../../js/admin.js', __FILE__ ), array( 'jquery' ), $version );
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );

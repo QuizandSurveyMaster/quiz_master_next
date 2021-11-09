@@ -119,15 +119,16 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
-		foreach ( $answers as $answer ) {
+		foreach ( $answers as $answer_index => $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
+				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
 				if ( $answerEditor === 'rich' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap' id='question$id-$mlw_answer_total'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question$id-$mlw_answer_total'>";
 				} elseif ( $answerEditor === 'image' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option' id='question$id-$mlw_answer_total'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option {$answer_class}' id='question$id-$mlw_answer_total'>";
 				} else {
-					$question_display .= "<div class='qmn_mc_answer_wrap' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
+					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
 				}
 				$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' />";
 				$question_display .= "<label for='question" . $id . '_' . $mlw_answer_total . "'>";
@@ -177,7 +178,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text              = array();
 	foreach ( $answers as $answer ) {
 		if ( $answerEditor === 'rich' ) {
-			$answer_option    = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+			$answer_option    = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 			$sinel_answer_cmp = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $answer_option ) );
 			if ( $rich_text_comapre == $sinel_answer_cmp ) {
 				$return_array['points']    = $answer[1];
@@ -330,10 +331,11 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	$question_display  .= "<div class='qmn_radio_answers qmn_radio_horizontal_answers $mlw_requireClass'>";
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
-		foreach ( $answers as $answer ) {
+		foreach ( $answers as $answer_index => $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				$question_display .= "<span class='mlw_horizontal_choice'><input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' /><label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
+				$question_display .= "<span class='mlw_horizontal_choice {$answer_class}'><input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' /><label for='question" . $id . '_' . $mlw_answer_total . "'>";
 				if ( $answerEditor === 'image' ) {
 					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
 				} else {
@@ -344,6 +346,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				$question_display .= '</span>';
 			}
 		}
+		$question_display =apply_filters( 'qmn_horizontal_multiple_choice_question_display', $question_display, $id, $question, $answers );
 		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
 	}
 	$question_display .= '</div>';
@@ -1162,7 +1165,7 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
 		$mlw_requireClass = '';}
-	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "' />";
+	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "[]' />";
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
@@ -1182,34 +1185,89 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
  * @since 4.4.0
  */
 function qmn_fill_blank_review( $id, $question, $answers ) {
+	global $mlwQuizMasterNext;
+	$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'matchAnswer' );
 	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
+		'points'            => 0,
+		'correct'           => 'incorrect',
+		'user_text'         => '',
+		'correct_text'      => '',
+		'user_compare_text' => '',
 	);
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
-		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$return_array['user_text'] = $mlw_user_answer;
-	foreach ( $answers as $answer ) {
-		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
-			$return_array['correct'] = 'correct';
-			$return_array['points']  = $answer[1];
-			break;
+	$correct_text=$user_input = $user_text = array();
+	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
+		foreach ( $_POST[ 'question' . $id ] as $input ) {
+			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
+			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
+				$user_input[] = mb_strtoupper( $mlw_user_answer );
+				$user_text[]  = $mlw_user_answer;
 		}
 	}
+	
+	$total_correct = $user_correct = 0;
+	if ( $match_answer == 'sequence' ) {
+		foreach ( $answers as $key => $answer ) {
+			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
+			if ( mb_strtoupper( $decode_user_text ) == $user_input[ $key ] ) {
+				$return_array['points'] += $answer[1];
+				$user_correct += 1;
+			}
+			$total_correct++;
+			$correct_text[]=$answers[$key][0];
+		}
+		$return_array['correct_text'] = implode( '.', $correct_text );
+		$return_array['user_text'] = implode( '.', $user_text );
+		$return_array['user_compare_text'] = implode( '=====', $user_text );
+		if($total_correct == $user_correct){
+			$return_array['correct']   = 'correct';
+		}
+	} else {
+		$answers_array = array();
+		$correct = true;
+		foreach($answers as $answer){
+			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
+			$answers_array[] = mb_strtoupper( $decode_user_text );
+		}
+		$total_user_input = sizeof($user_input);
+		$total_option = sizeof($answers);
+		if($total_user_input < $total_option){
+			foreach($user_input as $k => $input){
+				$key = array_search( $input, $answers_array );
+				if($key !== false){					
+					$return_array['points'] += $answers[$key][1];	
+				} else {
+					$correct = false;
+				}
+				$correct_text[]=$answers[$key][0];
+			}
+		} else {
+			foreach($answers_array as $k => $answer){
+				$key = array_search( $answer, $user_input );
+				if($key !== false){				
+					$return_array['points'] += $answers[$k][1];	
+				} else {
+					$correct = false;
+				}
+				$correct_text[]=$answers[$k][0];
+			}
+		}
+		if($correct){
+			$return_array['correct']   = 'correct';
+		}
+		$return_array['user_text'] = implode( '.', $user_text );
+		$return_array['correct_text'] = implode( '.', $correct_text );
+		$return_array['user_compare_text'] = implode( '=====', $user_text );
+	}
+
 	/**
 	 * Hook to filter answers array
 	 */
+
 	return apply_filters( 'qmn_fill_blank_review', $return_array, $answers );
 }
 
@@ -1409,11 +1467,11 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		}
 	}
 	if ( $new_question_title != '' ) {
-		$question_display  .= "<span class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</span>';
+		$question_display  .= "<div class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 
-	$question_display .= "<span class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</span>';
+	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
 	return $question_display;
 }
 ?>
