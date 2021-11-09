@@ -256,7 +256,7 @@ class QMNQuizManager {
 		if ( isset( $_GET['result_id'] ) && $_GET['result_id'] != '' ) {
 			global $wpdb;
 			global $mlwQuizMasterNext;
-			wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
+			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css );
 			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			wp_enqueue_script( 'jquery' );
@@ -324,7 +324,7 @@ class QMNQuizManager {
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL.'/animate.css' );
-			wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
+			wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css );
 			wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 			wp_enqueue_style( 'dashicons' );
 			$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $quiz );
@@ -416,7 +416,7 @@ class QMNQuizManager {
 			global $wpdb;
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
-				wp_enqueue_style( 'qmn_quiz_common_style', $common_css );
+				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css );
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
@@ -1572,6 +1572,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				'id' => $qmn_array_for_variables['result_unique_id']
 			)
 		);
+		$return_array = apply_filters( 'qsm_submit_results_return_array', $return_array, $qmn_array_for_variables );
 		return $return_array;
 	}
 
