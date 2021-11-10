@@ -307,7 +307,7 @@ class QSM_Emails {
 		// Updates the database with new array to prevent running this step next time.
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'user_email_template' => serialize( $emails ) ),
+			array( 'user_email_template' => maybe_serialize( $emails ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
@@ -473,7 +473,7 @@ class QSM_Emails {
 		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'user_email_template' => serialize( $emails ) ),
+			array( 'user_email_template' => maybe_serialize( $emails ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )

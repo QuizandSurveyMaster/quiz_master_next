@@ -340,7 +340,7 @@ class QSM_Contact_Manager {
 		}
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
-		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', serialize( $fields ) );
+		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', $fields );
 	}
 }
 ?>

@@ -386,7 +386,7 @@ function deleteResults(id, quizName) {
 						$alternate = ' class="alternate"';
 					}
 					$mlw_complete_time     = '';
-					$mlw_qmn_results_array = @unserialize( $mlw_quiz_info->quiz_results );
+					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 					$hidden_questions      = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 					if ( is_array( $mlw_qmn_results_array ) ) {
 						$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );

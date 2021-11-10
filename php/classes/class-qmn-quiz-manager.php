@@ -1411,7 +1411,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$results_array['hidden_questions']          = $qmn_array_for_variables['hidden_questions'];
 				$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
 				$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
-				$serialized_results                         = serialize( $results_array );
+				$serialized_results                         = maybe_serialize( $results_array );
 
 				// Inserts the responses in the database.
 				global $wpdb;

@@ -391,8 +391,8 @@ class QMNPluginHelper
         global $qmn_total_questions;
         $question = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", intval($question_id)));
         $answers = array();
-        if (is_serialized($question->answer_array) && is_array(@unserialize($question->answer_array))) {
-            $answers = @unserialize($question->answer_array);
+        if (is_serialized($question->answer_array) && is_array(maybe_unserialize($question->answer_array))) {
+            $answers = maybe_unserialize($question->answer_array);
         } else {
             $mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
             $mlw_answer_array_correct[$question->correct_answer - 1] = 1;

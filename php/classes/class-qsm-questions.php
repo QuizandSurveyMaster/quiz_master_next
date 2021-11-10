@@ -294,13 +294,13 @@ class QSM_Questions {
 		$values = array(
 			'quiz_id'              => intval( $data['quiz_id'] ),
 			'question_name'        => $question_name,
-			'answer_array'         => serialize( $answers ),
+			'answer_array'         => maybe_serialize( $answers ),
 			'question_answer_info' => $data['answer_info'],
 			'comments'             => htmlspecialchars( $data['comments'], ENT_QUOTES ),
 			'hints'                => htmlspecialchars( $data['hint'], ENT_QUOTES ),
 			'question_order'       => intval( $data['order'] ),
 			'question_type_new'    => sanitize_text_field( $data['type'] ),
-			'question_settings'    => serialize( $settings ),
+			'question_settings'    => maybe_serialize( $settings ),
 			'category'             => sanitize_text_field( $data['category'] ),
 			'deleted'              => 0,
 		);

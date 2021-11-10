@@ -449,7 +449,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							|
 							<?php
 									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = @unserialize( $single_result_arr['quiz_results'] );
+									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
 							if ( is_array( $mlw_qmn_results_array ) ) {
 								$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 								if ( $mlw_complete_hours > 0 ) {
