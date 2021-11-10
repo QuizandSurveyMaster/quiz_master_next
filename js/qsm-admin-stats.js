@@ -1,12 +1,12 @@
 window.onload = function(){
   var graph_ctx = document.getElementById("graph_canvas").getContext("2d");
-  var stats_graph = new Chart(graph_ctx, {
+  window.stats_graph = new Chart(graph_ctx, {
     type: 'line',
     data: {
-        labels: [qsm_admin_stats.labels],
+        labels: qsm_admin_stats.labels,
         datasets: [{
             label: 'Quiz Submissions', // Name the series
-            data: [qsm_admin_stats.value], // Specify the data values array
+            data: qsm_admin_stats.value, // Specify the data values array
             fill: false,
             borderColor: '#2196f3', // Add custom color border (Line)
             backgroundColor: '#2196f3', // Add custom color background (Points and Fill)

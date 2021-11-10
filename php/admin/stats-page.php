@@ -98,11 +98,11 @@ function qmn_stats_overview_content()
 		$range = sanitize_text_field( $_POST["range"] );
 	}
 	$data = qmn_load_stats($range, 7);
-	$labels = "";
-	$value = "";
+	$labels = array();
+	$value = array();
 	foreach($data as $stat) {
-		$labels .= '"",';
-		$value .= "$stat,";
+		array_push($labels,"");
+		array_push($value,intval($stat));
 	}
 
 	$qsm_admin_stats = array(
