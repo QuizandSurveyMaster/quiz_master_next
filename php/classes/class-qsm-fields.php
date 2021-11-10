@@ -240,7 +240,7 @@ class QSM_Fields {
 		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
 		<?php } ?>
 		<br />
-		<b style="color: red;">Note: </b><?php echo isset($field['note']) ? esc_html( $field['note'] ) : ''; ?>
+		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? esc_html( $field['note'] ) : ''; ?>
 	</td>
 </tr>
 <?php
