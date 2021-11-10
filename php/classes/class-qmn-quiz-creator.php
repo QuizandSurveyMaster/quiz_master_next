@@ -355,7 +355,7 @@ class QMNQuizCreator {
 		$logic_table_exists     = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $logic_table ) );
 		$question_term_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $question_term ) );
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
-		$quiz_settings          = unserialize( $mlw_qmn_duplicate_data->quiz_settings );
+		$quiz_settings          = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
 		if ( $is_duplicating_questions == 0 ) {
 			$quiz_settings['pages'] = '';
 		}
@@ -408,7 +408,7 @@ class QMNQuizCreator {
 				'timer_limit'              => $mlw_qmn_duplicate_data->timer_limit,
 				'quiz_stye'                => $mlw_qmn_duplicate_data->quiz_stye,
 				'question_numbering'       => $mlw_qmn_duplicate_data->question_numbering,
-				'quiz_settings'            => serialize( $quiz_settings ),
+				'quiz_settings'            => maybe_serialize( $quiz_settings ),
 				'theme_selected'           => $mlw_qmn_duplicate_data->theme_selected,
 				'last_activity'            => date( 'Y-m-d H:i:s' ),
 				'require_log_in'           => $mlw_qmn_duplicate_data->require_log_in,
@@ -634,7 +634,7 @@ class QMNQuizCreator {
 					$mlwQuizMasterNext->log_manager->add( 'Error 0020', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 				}
 			}
-			$update_quiz_settings['pages'] = serialize( $update_pages );
+			$update_quiz_settings['pages'] = maybe_serialize( $update_pages );
 			// saves data in logic table first or else in quiz_settings
 			$value_array = array();
 			if ( is_array( $logic_rules ) && ! empty( $logic_rules ) ) {
@@ -644,7 +644,7 @@ class QMNQuizCreator {
 					foreach ( $logic_rules as $logic_data ) {
 						$data          = array(
 							$mlw_new_id,
-							serialize( $logic_data ),
+							maybe_serialize( $logic_data ),
 						);
 						$value_array[] = stripslashes( $wpdb->prepare( '(%d, %s)', $data ) );
 					}
@@ -664,7 +664,7 @@ class QMNQuizCreator {
 			$wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
-					'quiz_settings' => serialize( $update_quiz_settings ),
+					'quiz_settings' => maybe_serialize( $update_quiz_settings ),
 				),
 				array(
 					'quiz_id' => $mlw_new_id,
@@ -711,15 +711,14 @@ class QMNQuizCreator {
 		global $wpdb;
 		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
+		if ( is_array( maybe_unserialize( $qmn_quiz_settings ) ) ) {
+			$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		}
 		$qmn_settings_array[ $setting_name ] = $setting_value;
-		$qmn_serialized_array                = serialize( $qmn_settings_array );
 		$results                             = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
-				'quiz_settings' => $qmn_serialized_array,
+				'quiz_settings' => maybe_serialize( $qmn_settings_array ),
 			),
 			array( 'quiz_id' => $this->quiz_id ),
 			array(
@@ -746,17 +745,16 @@ class QMNQuizCreator {
 		global $wpdb;
 		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
+		if ( is_array( maybe_unserialize( $qmn_quiz_settings ) ) ) {
+			$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		}
 		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
 			unset( $qmn_settings_array[ $setting_name ] );
 		}
-		$qmn_serialized_array = serialize( $qmn_settings_array );
 		$results              = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
-				'quiz_settings' => $qmn_serialized_array,
+				'quiz_settings' => maybe_serialize( $qmn_settings_array ),
 			),
 			array( 'quiz_id' => $this->quiz_id ),
 			array(

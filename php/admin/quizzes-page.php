@@ -365,13 +365,13 @@ function qsm_generate_quizzes_surveys_page() {
 						<tr>
 							<td class="manage-column column-cb check-column" id="cb"><input type="checkbox"
 									name="delete-all-shortcodes-1" id="delete-all-shortcodes-1" value="0"></td>
-							<th class="<?php echo $orderby_class; ?>">
+							<th class="<?php echo esc_attr( $orderby_class ); ?>">
 								<?php
 									$paged_slug    = isset( $_GET['paged'] ) && $_GET['paged'] != '' ? '&paged=' . esc_attr( $_GET['paged'] ) : '';
 									$searched_slug = isset( $_GET['s'] ) && $_GET['s'] != '' ? '&s=' . esc_attr( $_GET['s'] ) : '';
 									$sorting_url   = '?page=mlw_quiz_list' . $paged_slug . $searched_slug;
 								?>
-								<a href="<?php echo $sorting_url . $orderby_slug; ?>">
+								<a href="<?php echo esc_url(  $sorting_url . $orderby_slug ); ?>">
 									<span><?php esc_html_e( 'Title', 'quiz-master-next' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
@@ -379,8 +379,8 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Participants', 'quiz-master-next' ); ?></th>
-							<th class="<?php echo $orderby_date_class; ?>">
-								<a href="<?php echo $sorting_url . $orderby_date_slug; ?>">
+							<th class="<?php echo esc_attr( $orderby_date_class ); ?>">
+								<a href="<?php echo esc_url( $sorting_url . $orderby_date_slug ); ?>">
 									<span><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
@@ -392,17 +392,16 @@ function qsm_generate_quizzes_surveys_page() {
 						if ( $quiz_json_array ) {
 							foreach ( $quiz_json_array as $key => $single_arr ) {
 								?>
-						<tr class="qsm-quiz-row" data-id="<?php echo $single_arr['id']; ?>">
+						<tr class="qsm-quiz-row" data-id="<?php echo esc_attr( $single_arr['id'] ); ?>">
 							<th class="check-column">
 								<input type="checkbox" class="chk_remove_all" name="chk_remove_all[]"
-									id="chk_remove_all" value="<?php echo $single_arr['id']; ?>">
+									id="chk_remove_all" value="<?php echo esc_attr( $single_arr['id'] ); ?>">
 							</th>
 							<td class="post-title column-title">
 								<a class="row-title"
-									href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>"
-									aria-label="<?php echo $single_arr['name']; ?>">
-									<?php echo $single_arr['name']; ?> <b
-										style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></b>
+									href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"
+									aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>">
+									<?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></strong>
 								</a>
 								<div class="row-actions">
 									<a class="qsm-action-link"
@@ -416,20 +415,19 @@ function qsm_generate_quizzes_surveys_page() {
 										href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e( 'View Results', 'quiz-master-next' ); ?></a>
 									|
 									<a class="qsm-action-link" target="_blank" rel="noopener"
-										href="<?php echo $single_arr['link']; ?>"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
+									   href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
 								</div>
 							</td>
 							<td>
 								<a href="#" class="qsm-list-shortcode-view">
 									<span class="dashicons dashicons-welcome-view-site"></span>
 								</a>
-								<div class="sc-content sc-embed">[qsm quiz=<?php echo $single_arr['id']; ?>]</div>
-								<div class="sc-content sc-link">[qsm_link
-									id=<?php echo $single_arr['id']; ?>]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]
+								<div class="sc-content sc-embed">[qsm quiz=<?php echo esc_attr( $single_arr['id'] ); ?>]</div>
+								<div class="sc-content sc-link">[qsm_link id=<?php echo esc_attr( $single_arr['id'] ); ?>]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]
 								</div>
 							</td>
 							<td>
-								<?php echo $single_arr['views']; ?>
+								<?php echo esc_html( $single_arr['views'] ); ?>
 								<div class="row-actions">
 									<a class="qsm-action-link qsm-action-link-reset"
 										href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a>
@@ -438,15 +436,15 @@ function qsm_generate_quizzes_surveys_page() {
 							<td class="comments column-comments" style="text-align: left;">
 								<span class="post-com-count post-com-count-approved">
 									<span class="comment-count-approved"
-										aria-hidden="true"><?php echo $single_arr['taken']; ?></span>
+										aria-hidden="true"><?php echo esc_html( $single_arr['taken'] ); ?></span>
 									<span
-										class="screen-reader-text"><?php echo $single_arr['taken'] . __( 'Participants', 'quiz-master-next' ); ?>
+										class="screen-reader-text"><?php echo esc_html( $single_arr['taken'] ) . __( 'Participants', 'quiz-master-next' ) ; ?>
 									</span>
 								</span>
 							</td>
 							<td>
 								<abbr
-									title="<?php echo $single_arr['lastActivityDateTime']; ?>"><?php echo $single_arr['lastActivity']; ?></abbr>
+									title="<?php echo esc_html( $single_arr['lastActivityDateTime'] ); ?>"><?php echo esc_html( $single_arr['lastActivity'] ); ?></abbr>
 							</td>
 						</tr>
 						<?php
@@ -466,8 +464,8 @@ function qsm_generate_quizzes_surveys_page() {
 						<tr>
 							<td class="manage-column column-cb check-column" id="cb"><input type="checkbox"
 									name="delete-all-shortcodes-2" id="delete-all-shortcodes-2" value="0"></td>
-							<th class="<?php echo $orderby_class; ?>">
-								<a href="<?php echo $sorting_url . $orderby_slug; ?>">
+							<th class="<?php echo esc_attr( $orderby_class ); ?>" scope="col">
+								<a href="<?php echo esc_url( $sorting_url . $orderby_slug ); ?>">
 									<span><?php esc_html_e( 'Title', 'quiz-master-next' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
@@ -475,8 +473,8 @@ function qsm_generate_quizzes_surveys_page() {
 							<th><?php esc_html_e( 'Shortcode', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Views', 'quiz-master-next' ); ?></th>
 							<th><?php esc_html_e( 'Participants', 'quiz-master-next' ); ?></th>
-							<th class="<?php echo $orderby_date_class; ?>">
-								<a href="<?php echo $sorting_url . $orderby_date_slug; ?>">
+							<th class="<?php echo esc_attr( $orderby_date_class ); ?>" scope="col">
+								<a href="<?php echo esc_url( $sorting_url . $orderby_date_slug ); ?>">
 									<span><?php esc_html_e( 'Last Modified', 'quiz-master-next' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>

@@ -13,8 +13,7 @@ function qsm_admin_enqueue_scripts_results_detail_page($hook){
 	global $mlwQuizMasterNext;
 	wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
     wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-    $mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-	wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+	wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
     wp_enqueue_script( 'jquery-ui-slider');
     wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js');
     wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
@@ -32,14 +31,15 @@ function qsm_generate_result_details() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-    $active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'results';
+    $active_tab = isset( $_GET[ 'tab' ] ) ? esc_attr( $_GET[ 'tab' ] ) : 'results';
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();
     ?>
-    <style>
-    .prettyprint {
-       width: 200px;
-   }
-</style>
+	<style type="text/css">
+		.prettyprint {width: 200px;}
+		.result-tab-content p {font-size: 16px;}
+		.qmn_question_answer b {font-size: 18px;margin-bottom: 0;display: block;}
+		.qmn_question_answer {margin-bottom: 30px;font-size: 16px;line-height: 1.5;}
+	</style>
 <div class="wrap">
 	<h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
 	<h2 class="nav-tab-wrapper">
@@ -49,27 +49,10 @@ function qsm_generate_result_details() {
         if ( $active_tab == $tab['slug'] ) {
            $active_class = 'nav-tab-active';
        }
-       echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . $tab['slug'] . "\" class=\"nav-tab $active_class\">" . $tab['title'] . "</a>";
+       echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . esc_attr( $tab['slug'] ) . "\" class=\"nav-tab $active_class\">" . esc_html( $tab['title'] ) . "</a>";
    }
    ?>
 </h2>
-<style type="text/css">
-.result-tab-content p {
-  font-size: 16px;
-}
-
-.qmn_question_answer b {
-  font-size: 18px;
-  margin-bottom: 0;
-  display: block;
-}
-
-.qmn_question_answer {
-  margin-bottom: 30px;
-  font-size: 16px;
-  line-height: 1.5;
-}
-</style>
 <div class="result-tab-content">
   <?php
   foreach( $tab_array as $tab ) {
@@ -342,4 +325,3 @@ function qsm_results_details_tab() {
 	$mlwQuizMasterNext->pluginHelper->register_results_settings_tab( "Results", "qsm_generate_results_details_tab" );
 }
 add_action( "plugins_loaded", 'qsm_results_details_tab' );
-?>

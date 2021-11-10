@@ -34,7 +34,7 @@ window.location.href = '<?php echo $url; ?>';
  * @return void
  */
 function link_featured_image( $quiz_id ) {
-	$url = trim( $_POST['quiz_featured_image'] );
+	$url = esc_url_raw( $_POST['quiz_featured_image'] );
 	if ( ! empty( $url ) ) {
 		update_option( "quiz_featured_image_$quiz_id", $url );
 	}
@@ -231,50 +231,50 @@ function qsm_display_question_option( $key, $single_option ) {
 	switch ( $type ) {
 		case 'text':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
-	<input type="text" name="<?php echo $key; ?>"
-		value="<?php echo isset( $single_option['default'] ) ? $single_option['default'] : ''; ?>"
-		id="<?php echo $key; ?>" />
+	<input type="text" name="<?php echo esc_attr($key); ?>"
+		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
+		id="<?php echo esc_attr($key); ?>" />
 </div>
 <?php
 			break;
 
 		case 'number':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
-	<input type="number" name="<?php echo $key; ?>"
-		value="<?php echo isset( $single_option['default'] ) ? $single_option['default'] : ''; ?>"
-		id="<?php echo $key; ?>" />
+	<input type="number" name="<?php echo esc_attr($key); ?>"
+		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
+		id="<?php echo esc_attr($key); ?>" />
 </div>
 <?php
 			break;
 
 		case 'select':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
-	<select name="<?php echo $key; ?>" id="<?php echo $key; ?>">
+	<select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>">
 		<?php
-			$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
+			$default = isset( $single_option['default'] ) ? esc_html($single_option['default']) : '';
 			if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
-				foreach ( $single_option['options'] as $key => $value ) {
-					$selected = $key === $default ? 'selected = selected' : '';
+				foreach ( $single_option['options'] as $okey => $value ) {
+					$selected = ($okey === $default) ? 'selected = selected' : '';
 					?>
-		<option value="<?php echo $key; ?>" <?php echo $selected; ?>><?php echo $value; ?></option>
+		<option value="<?php echo esc_attr($okey); ?>" <?php echo $selected; ?>><?php echo esc_attr($value); ?></option>
 		<?php
 				}
 			}
@@ -286,25 +286,25 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'textarea':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
-	<textarea id="<?php echo $key; ?>"
-		name="<?php echo $key; ?>"><?php echo isset( $single_option['default'] ) ? $single_option['default'] : ''; ?></textarea>
+	<textarea id="<?php echo esc_attr($key); ?>"
+		name="<?php echo esc_attr($key); ?>"><?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?></textarea>
 </div>
 <?php
 			break;
 
 		case 'category':
 			?>
-<div id="category_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
 	<div id="categories">
 		<a id="qsm-category-add-toggle" class="hide-if-no-js">
@@ -322,11 +322,11 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'multi_category':
 			?>
-<div id="multi_category_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
 		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
@@ -353,11 +353,11 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'multi_checkbox':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
 	<?php
 			$parent_key = $key;
@@ -366,8 +366,8 @@ function qsm_display_question_option( $key, $single_option ) {
 				foreach ( $single_option['options'] as $key => $value ) {
 					$selected = $key === $default ? 'checked' : '';
 					?>
-	<input name="<?php echo $parent_key; ?>[]" type="checkbox" value="<?php echo $key; ?>" <?php echo $selected; ?> />
-	<?php echo $value; ?><br />
+	<input name="<?php echo esc_attr($parent_key); ?>[]" type="checkbox" value="<?php echo esc_attr($key); ?>" <?php echo $selected; ?> />
+	<?php echo esc_attr($value); ?><br />
 	<?php
 				}
 			}
@@ -378,7 +378,7 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'single_checkbox':
 			?>
-<div id="<?php echo $key; ?>_area" class="qsm-row <?php echo $show_class; ?>">
+<div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php
 			$parent_key = $key;
@@ -387,15 +387,15 @@ function qsm_display_question_option( $key, $single_option ) {
 				foreach ( $single_option['options'] as $key => $value ) {
 					$selected = $key === $default ? 'checked' : '';
 					?>
-		<input name="<?php echo $parent_key; ?>" id="<?php echo $parent_key; ?>" type="checkbox"
-			value="<?php echo $key; ?>" <?php echo $selected; ?> />
+		<input name="<?php echo esc_attr($parent_key); ?>" id="<?php echo esc_attr($parent_key); ?>" type="checkbox"
+			value="<?php echo esc_attr($key); ?>" <?php echo $selected; ?> />
 		<?php
 				}
 			}
 			?>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo esc_html($tooltip); ?>
+		<?php echo esc_html($document_text); ?>
 	</label>
 </div>
 <?php
@@ -595,14 +595,14 @@ function qsm_create_new_quiz_wizard() {
 												foreach ( $popular_addons as $key => $single_arr ) {
 													?>
 											<div>
-												<a href="<?php echo $single_arr['link']; ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+												<a href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 													target="_blank" rel="noopener">
 													<span class="addon-itd-wrap">
-														<img alt="" src="<?php echo $single_arr['img']; ?>" />
+														<img alt="" src="<?php echo esc_url($single_arr['img']); ?>" />
 													</span>
 													<span class="addon-price">
 														<a class="addon-get-link"
-															href="<?php echo $single_arr['link']; ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+															href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank" rel="noopener">
 															<?php
 															_e( 'Buy now', 'quiz-master-next' );
@@ -842,7 +842,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	</div>
 	<span class="more-details" style="display: none;"><?php _e( 'Templates', 'quiz-master-next' ); ?></span>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo $theme['theme_name']; ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme['theme_name'] ); ?></h2>
 		<div class="theme-actions">
 			<?php
 			if ( $saved_quiz_theme != $theme_id ) {
@@ -915,16 +915,16 @@ function qsm_get_default_wizard_themes() {
 			?>
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo $theme_screenshot; ?>" />
+		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo $theme_demo; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo $theme_url; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo $theme_name; ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
 	</div>
 </div>
 <?php
@@ -943,16 +943,16 @@ function qsm_get_market_themes() {
 			?>
 <div class="theme-wrapper theme market-theme">
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo $theme_screenshot; ?>" />
+		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo $theme_demo; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+			   href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo $theme_url; ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo $theme_name; ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
 	</div>
 </div>
 <?php

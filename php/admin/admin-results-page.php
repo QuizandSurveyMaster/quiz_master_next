@@ -36,7 +36,7 @@ function qsm_generate_admin_results_page() {
 
 	// Retrieves the current stab and all registered tabs.
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? $_GET['tab'] : __( 'Quiz Results', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
 
 	?>
@@ -386,7 +386,7 @@ function deleteResults(id, quizName) {
 						$alternate = ' class="alternate"';
 					}
 					$mlw_complete_time     = '';
-					$mlw_qmn_results_array = @unserialize( $mlw_quiz_info->quiz_results );
+					$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 					$hidden_questions      = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
 					if ( is_array( $mlw_qmn_results_array ) ) {
 						$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );

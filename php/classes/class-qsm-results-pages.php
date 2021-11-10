@@ -294,7 +294,7 @@ class QSM_Results_Pages {
 		// Updates the database with new array to prevent running this step next time.
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
@@ -357,7 +357,7 @@ class QSM_Results_Pages {
 		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )

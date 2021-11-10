@@ -17,7 +17,7 @@ function qsm_admin_enqueue_scripts_stats_page($hook){
 		return;
 	}
 	global $mlwQuizMasterNext;
-	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/Chart.min.js');
+	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js');
 
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
@@ -38,7 +38,7 @@ function qmn_generate_stats_page()
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'quiz-and-survey-submissions';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? esc_attr( $_GET[ 'tab' ] ) : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">

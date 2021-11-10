@@ -20,9 +20,7 @@ function qsm_admin_enqueue_scripts_options_page_email($hook){
 	}
 	if ( isset($_GET['tab'] ) && "emails" === $_GET['tab'] ){
 		global $mlwQuizMasterNext;
-		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
-		wp_enqueue_script( 'qsm_emails_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-emails.js', array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true);
+		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );		wp_enqueue_script( 'qsm_emails_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-emails.js', array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true);
 		wp_enqueue_editor();
 		wp_enqueue_media();
 	}
@@ -135,7 +133,7 @@ function qsm_options_emails_tab_content() {
 					<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
 					<option value="" disabled><?php _e( '---Select Category---', 'quiz-master-next' ); ?></option>
 					<?php foreach ( $categories as $cat ) { ?>
-					<option value="<?php echo $cat[0]; ?>" <# if (data.category == '<?php echo $cat[0]; ?>') { #>selected<# } #>><?php echo $cat[0]; ?></option>
+					<option value="<?php echo esc_attr($cat[0]); ?>" <# if (data.category == '<?php echo esc_attr($cat[0]); ?>') { #>selected<# } #>><?php echo esc_attr($cat[0]); ?></option>
 					<?php } ?>
 					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
 				</select>
@@ -183,17 +181,17 @@ function qsm_options_emails_tab_content() {
 						if ( $variable_list ) {
 							foreach ( $variable_list as $category_name => $category_variables ) {
 								?>
-								<div><h2><?php echo $category_name;?></h2></div>
+								<div><h2><?php echo esc_attr($category_name);?></h2></div>
 								<?php
                 foreach ($category_variables as $variable_key => $variable) {
                 ?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
-										<span class="button button-default template-variable"><?php echo $variable_key; ?></span>
+										<span class="button button-default template-variable"><?php echo esc_attr($variable_key); ?></span>
 										<span class="button click-to-copy">Click to Copy</span>
 										<span class="temp-var-seperator">
 											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-												<span class="qsm-tooltips"><?php echo $variable; ?></span>
+												<span class="qsm-tooltips"><?php echo esc_attr($variable); ?></span>
 											</span>
 										</span>
 									</span>

@@ -449,7 +449,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							|
 							<?php
 									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = @unserialize( $single_result_arr['quiz_results'] );
+									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
 							if ( is_array( $mlw_qmn_results_array ) ) {
 								$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 								if ( $mlw_complete_hours > 0 ) {
@@ -614,9 +614,9 @@ function qsm_create_new_quiz_from_wizard() {
 		unset( $_POST['_wp_http_referer'] );
 		unset( $_POST['quiz_theme_id'] );
 		$setting_arr = array(
-			'quiz_options' => serialize( $_POST ),
+			'quiz_options' => $_POST,
 		);
-		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, serialize( $setting_arr ) );
+		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, maybe_serialize( $setting_arr ) );
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
