@@ -192,12 +192,12 @@ function qsm_generate_fb_header_metadata() {
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
 			?>
-<meta property="og:url" content="<?php echo $sharing_page_id . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
+<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="<?php echo $pagename; ?>" />
-<meta property="og:description" content="<?php echo $sharing; ?>" />
-<meta property="og:image" content="<?php echo $default_fb_image; ?>" />
-<meta property="fb:app_id" content="<?php echo $facebook_app_id; ?>" />
+<meta property="og:title" content="<?php echo esc_attr( $pagename ); ?>" />
+<meta property="og:description" content="<?php echo esc_attr( $sharing ); ?>" />
+<meta property="og:image" content="<?php echo esc_url( $default_fb_image ); ?>" />
+<meta property="fb:app_id" content="<?php echo esc_attr( $facebook_app_id ); ?>" />
 <?php
 		}
 	}

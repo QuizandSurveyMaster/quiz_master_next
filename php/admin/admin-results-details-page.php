@@ -13,8 +13,7 @@ function qsm_admin_enqueue_scripts_results_detail_page($hook){
 	global $mlwQuizMasterNext;
 	wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
     wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-    $mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-	wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+	wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
     wp_enqueue_script( 'jquery-ui-slider');
     wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js');
     wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
