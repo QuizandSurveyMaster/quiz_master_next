@@ -19,9 +19,6 @@ function qsm_admin_enqueue_scripts_options_page_style($hook){
 	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
 		global $mlwQuizMasterNext;
 		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
-		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
-		wp_enqueue_script( 'qsm_theme_color_js', QSM_PLUGIN_JS_URL.'/qsm-theme-color.js', array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version , true );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_media();
 	}

@@ -20,9 +20,7 @@ function qsm_admin_enqueue_scripts_options_page_email($hook){
 	}
 	if ( isset($_GET['tab'] ) && "emails" === $_GET['tab'] ){
 		global $mlwQuizMasterNext;
-		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
-		wp_enqueue_script( 'qsm_emails_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-emails.js', array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true);
+		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );		wp_enqueue_script( 'qsm_emails_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-emails.js', array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true);
 		wp_enqueue_editor();
 		wp_enqueue_media();
 	}
