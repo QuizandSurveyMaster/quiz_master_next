@@ -30,10 +30,8 @@ function qsm_admin_enqueue_scripts_quiz_options_page($hook){
 		wp_enqueue_script( 'jquery-effects-blind' );
 		wp_enqueue_script( 'jquery-effects-explode' );
 		wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-		$mathjax_location = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-		wp_enqueue_script( 'math_jax', $mathjax_location, false, '2.7.5', false );
+		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 	}
-
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quiz_options_page');
 
