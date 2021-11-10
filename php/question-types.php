@@ -247,11 +247,9 @@ function qmn_date_display( $id, $question, $answers ) {
 		$mlw_requireClass = 'mlwRequiredDate';
 	} else {
 		$mlw_requireClass = '';}
-	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
 	$question_display  .= "<input type='date' class='mlw_answer_date $mlw_requireClass' name='question" . $id . "' id='question" . $id . "' value=''/>";
-	// $question_display .= "<script>jQuery(document).ready(function () { jQuery('#question".$id."').datepicker();  });</script>";
 	return apply_filters( 'qmn_date_display_front', $question_display, $id, $question, $answers );
 }
 
