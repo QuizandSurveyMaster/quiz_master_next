@@ -227,7 +227,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 		$quiz_json_array[] = array(
 			'id'                   => $quiz->quiz_id,
-			'name'                 => esc_html( $quiz->quiz_name ),
+			'name'                 => $quiz->quiz_name,
 			'link'                 => $post_to_quiz_array[ $quiz->quiz_id ]['link'],
 			'postID'               => $post_to_quiz_array[ $quiz->quiz_id ]['id'],
 			'views'                => $quiz->quiz_views,
@@ -398,10 +398,7 @@ function qsm_generate_quizzes_surveys_page() {
 									id="chk_remove_all" value="<?php echo esc_attr( $single_arr['id'] ); ?>">
 							</th>
 							<td class="post-title column-title">
-								<a class="row-title"
-									href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"
-									aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>">
-									<?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></strong>
+								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo $single_arr['name']; ?> <strong style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></strong>
 								</a>
 								<div class="row-actions">
 									<a class="qsm-action-link"
@@ -427,7 +424,7 @@ function qsm_generate_quizzes_surveys_page() {
 								</div>
 							</td>
 							<td>
-								<?php echo esc_html( $single_arr['views'] ); ?>
+								<?php echo $single_arr['views']; ?>
 								<div class="row-actions">
 									<a class="qsm-action-link qsm-action-link-reset"
 										href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a>
@@ -435,16 +432,12 @@ function qsm_generate_quizzes_surveys_page() {
 							</td>
 							<td class="comments column-comments" style="text-align: left;">
 								<span class="post-com-count post-com-count-approved">
-									<span class="comment-count-approved"
-										aria-hidden="true"><?php echo esc_html( $single_arr['taken'] ); ?></span>
-									<span
-										class="screen-reader-text"><?php echo esc_html( $single_arr['taken'] ) . __( 'Participants', 'quiz-master-next' ) ; ?>
-									</span>
+									<span class="comment-count-approved" aria-hidden="true"><?php echo $single_arr['taken']; ?></span>
+									<span class="screen-reader-text"><?php echo $single_arr['taken'] . __( 'Participants', 'quiz-master-next' ) ; ?></span>
 								</span>
 							</td>
 							<td>
-								<abbr
-									title="<?php echo esc_html( $single_arr['lastActivityDateTime'] ); ?>"><?php echo esc_html( $single_arr['lastActivity'] ); ?></abbr>
+								<abbr title="<?php echo esc_html( $single_arr['lastActivityDateTime'] ); ?>"><?php echo $single_arr['lastActivity']; ?></abbr>
 							</td>
 						</tr>
 						<?php

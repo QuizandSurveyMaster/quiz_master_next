@@ -233,13 +233,11 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
-	<input type="text" name="<?php echo esc_attr($key); ?>"
-		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
-		id="<?php echo esc_attr($key); ?>" />
+	<input type="text" name="<?php echo esc_attr($key); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>" id="<?php echo esc_attr($key); ?>" />
 </div>
 <?php
 			break;
@@ -248,13 +246,11 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
-	<input type="number" name="<?php echo esc_attr($key); ?>"
-		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
-		id="<?php echo esc_attr($key); ?>" />
+	<input type="number" name="<?php echo esc_attr($key); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>" id="<?php echo esc_attr($key); ?>" />
 </div>
 <?php
 			break;
@@ -263,13 +259,13 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
 	<select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>">
 		<?php
-			$default = isset( $single_option['default'] ) ? esc_html($single_option['default']) : '';
+			$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
 			if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 				foreach ( $single_option['options'] as $okey => $value ) {
 					$selected = ($okey === $default) ? 'selected = selected' : '';
@@ -288,12 +284,11 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
-	<textarea id="<?php echo esc_attr($key); ?>"
-		name="<?php echo esc_attr($key); ?>"><?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?></textarea>
+	<textarea id="<?php echo esc_attr($key); ?>" name="<?php echo esc_attr($key); ?>"><?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?></textarea>
 </div>
 <?php
 			break;
@@ -302,7 +297,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
@@ -324,7 +319,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
@@ -355,7 +350,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>
@@ -393,7 +388,7 @@ function qsm_display_question_option( $key, $single_option ) {
 				}
 			}
 			?>
-		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
 		<?php echo $tooltip; ?>
 		<?php echo $document_text; ?>
 	</label>

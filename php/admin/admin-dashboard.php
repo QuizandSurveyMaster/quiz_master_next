@@ -71,7 +71,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
 		<label for="<?php echo esc_attr( $key ); ?>-hide"><input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide"
 				type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php
 												if ( ! in_array( $key, $hidden_box_arr ) ) {
-													?> checked="checked" <?php } ?>><?php echo esc_html( $value['title'] ); ?></label>
+													?> checked="checked" <?php } ?>><?php echo $value['title']; ?></label>
 		<?php
 
 									}
@@ -124,7 +124,7 @@ function qsm_generate_dashboard_page() {
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<div class="qsm-welcome-panel-close">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
-			<p class="current_version"><?php echo esc_html( $mlwQuizMasterNext->version ); ?></p>
+			<p class="current_version"><?php echo $mlwQuizMasterNext->version; ?></p>
 		</div>
 		<a class="qsm-welcome-panel-dismiss" href="#"
 			aria-label="Dismiss the welcome panel"><?php _e( 'Dismiss', 'quiz-master-next' ); ?></a>
@@ -423,7 +423,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 								echo esc_html__( 'Guest', 'quiz-master-next' );
 							}
 									esc_html_e( ' took quiz ', 'quiz-master-next' );
-									echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . esc_html( $single_result_arr['quiz_name'] ) . '</a>';
+									echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . $single_result_arr['quiz_name'] . '</a>';
 							?>
 						</span>
 						<span class="rtq-result-info">
@@ -466,8 +466,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 									echo $mlw_complete_time;
 							?>
 						</span>
-						<span
-							class="rtq-time-taken"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ) ); ?></span>
+						<span class="rtq-time-taken"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ); ?></span>
 						<p class="row-actions-c">
 							<a
 								href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
@@ -489,7 +488,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					?>
 				</a>
 				<?php
-					echo isset( $mlw_result_data['total_result'] ) ? '(' . esc_html( $mlw_result_data['total_result'] ) . ')' : '';
+					echo isset( $mlw_result_data['total_result'] ) ? '(' . $mlw_result_data['total_result'] . ')' : '';
 				?>
 			</p>
 		</div>
@@ -522,10 +521,10 @@ function qsm_dashboard_what_new( $widget_id ) {
 				<li>
 					<a href="<?php echo esc_url( $single_feed_arr['link'] ); ?>?utm_source=plugin&utm_medium=dashboard"
 						target="_blank" rel="noopener">
-						<?php echo esc_html( $single_feed_arr['title'] ); ?>
+						<?php echo $single_feed_arr['title']; ?>
 					</a>
 					<div class="post-description">
-						<?php echo esc_html( $single_feed_arr['excerpt'] ); ?>
+						<?php echo $single_feed_arr['excerpt']; ?>
 					</div>
 				</li>
 				<?php
@@ -576,8 +575,8 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						$cl_str      = $expload_str[1];
 						?>
 
-				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo esc_html( trim( $cl_type ) ); ?></span>
-					<?php echo esc_html( $cl_str ); ?></li>
+				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
+					<?php echo $cl_str; ?></li>
 				<?php
 						$i++;
 					}

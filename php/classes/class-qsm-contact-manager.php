@@ -152,7 +152,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<input type='checkbox' id='contact_field_<?php echo $i; ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo $i; ?>' value='checked' />
-							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo $i; ?>'><?php echo esc_html( $fields[ $i ]['label'] ); ?></label>
+							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo $i; ?>'><?php echo $fields[ $i ]['label']; ?></label>
 							<?php
 							break;
 

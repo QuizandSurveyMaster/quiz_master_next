@@ -1391,10 +1391,10 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title );
-	$input_text        .= "<div class='left-polar-title' $left_polar_title_style>" . esc_html( $answers[0][0] ) . '</div>';
+	$input_text        .= "<div class='left-polar-title' $left_polar_title_style>" . $answers[0][0] . '</div>';
 	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"></div></div>';
-	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . esc_html( $answers[1][0] ) . '</div>';
+	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . '</div>';
 	$question           = $input_text;
 	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );

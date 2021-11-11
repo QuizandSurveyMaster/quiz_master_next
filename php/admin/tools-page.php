@@ -109,7 +109,7 @@ function qsm_restore_function() {
 			<?php
 			foreach ( $quizzes as $quiz ) {
 				?>
-				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo esc_html( $quiz->quiz_name ); ?></option>
+				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo $quiz->quiz_name; ?></option>
 				<?php
 			}
 			?>
@@ -143,7 +143,7 @@ function qsm_audit_box() {
 	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
-        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
+        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo $audit_total; ?></p>
 	<?php
 
 	// Determine which navigation to show.

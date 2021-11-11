@@ -167,18 +167,17 @@ class QSM_Fields {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<input type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
-			value="<?php echo esc_attr( $value ); ?>" />
+		<input type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -197,10 +196,10 @@ class QSM_Fields {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -208,7 +207,7 @@ class QSM_Fields {
 		<input type="url" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value="<?php echo esc_url( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -219,10 +218,10 @@ class QSM_Fields {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -237,10 +236,10 @@ class QSM_Fields {
 			<?php } ?>
 		</select>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 		<br />
-		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? esc_html( $field['note'] ) : ''; ?>
+		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? $field['note'] : ''; ?>
 	</td>
 </tr>
 <?php
@@ -257,7 +256,7 @@ class QSM_Fields {
     ?>
 <tr>
 	<th scope="row">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 			<?php
           if ( is_array( $field["variables"] ) ) {
             ?>
@@ -299,21 +298,21 @@ jQuery(function() {
 </script>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td class="<?php echo esc_attr( $field["id"] ); ?>">
 		<?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
-		<span class="qsm-ph_text"><?php echo esc_html( $field['ph_text'] ); ?></span>
+		<span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
 		<?php } ?>
 		<input autocomplete="off" type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value="<?php echo $value; ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -331,10 +330,10 @@ jQuery(function() {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -342,7 +341,7 @@ jQuery(function() {
 		<input type="number" step="1" min="0" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value="<?php echo $value; ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -361,10 +360,10 @@ jQuery(function() {
     ?>
 <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -373,16 +372,14 @@ jQuery(function() {
 			<?php
               foreach ( $field["options"] as $option ) {
                 ?>
-			<input type="radio" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
-				name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $value ); ?>
-				value="<?php echo esc_attr( $option["value"] ); ?>" />
-			<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"><?php echo esc_html( $option["label"] ); ?></label><br />
-			<?php
+				<input type="radio" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
+				<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"><?php echo $option["label"]; ?></label><br />
+				<?php
               }
             ?>
 		</fieldset>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -401,10 +398,10 @@ jQuery(function() {
     ?>
 <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -413,14 +410,13 @@ jQuery(function() {
 			<?php
               foreach ( $field["options"] as $option ) {
                 ?>
-			<option <?php selected( $option["value"], $value ); ?> value="<?php echo esc_attr( $option["value"] ); ?>">
-				<?php echo esc_html( $option["label"] ); ?></option>
-			<?php
+				<option <?php selected( $option["value"], $value ); ?> value="<?php echo esc_attr( $option["value"] ); ?>"><?php echo esc_html( $option["label"] ); ?></option>
+				<?php
               }
             ?>
 		</select>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -441,10 +437,10 @@ jQuery(function() {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -487,7 +483,7 @@ jQuery(function() {
 		<input type="hidden" class="catergory_comma_values" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value='<?php echo esc_attr( $value ); ?>'>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -520,13 +516,13 @@ jQuery(function() {
 		<a href="#" id="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_attr( $field["label"] ); ?></a>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo esc_html( $field['tooltip'] ); ?></span>
+			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html($field['help']); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -544,7 +540,7 @@ jQuery(function() {
     ?>
 <tr valign="top">
 	<th scope="row">
-		<h2 class="section_heading"><?php echo esc_html( $field["label"] ); ?></h2>
+		<h2 class="section_heading"><?php echo $field["label"]; ?></h2>
 	</th>
 	<td>
 	</td>
@@ -566,7 +562,7 @@ jQuery(function() {
 <tr valign="top"
 	<?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field["label"] ); ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo $field["label"]; ?></label>
 	</th>
 	<td>
 		<fieldset class="buttonset buttonset-hide" data-hide='1'>
@@ -582,7 +578,7 @@ jQuery(function() {
             ?>
 		</fieldset>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo esc_html( $field['help'] ); ?></span>
+		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
 		<?php } ?>
 	</td>
 </tr>
