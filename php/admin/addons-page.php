@@ -152,7 +152,7 @@ function qsm_generate_featured_addons() {
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
+								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -198,7 +198,7 @@ function qsm_generate_featured_addons() {
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
+								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -247,7 +247,7 @@ function qsm_generate_featured_addons() {
 								<?php echo esc_html( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
+								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -295,8 +295,8 @@ function qsm_generate_featured_addons() {
 				}
 				?>
 			</div>
-			<h3><?php echo esc_html( $bundles_arr['name'] ); ?></h3>
-			<p><?php echo esc_html( $bundles_arr['desc'] ); ?></p>
+			<h3><?php echo $bundles_arr['name']; ?></h3>
+			<p><?php echo $bundles_arr['desc']; ?></p>
 			<a href="<?php echo esc_url( $bundles_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
 				<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>

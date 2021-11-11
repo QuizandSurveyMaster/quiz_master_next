@@ -1392,10 +1392,10 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title, $id );
 	// $question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
- 	$input_text .= "<div class='left-polar-title'>" . esc_html( $answers[0][0] ). '</div>';
+ 	$input_text .= "<div class='left-polar-title'>" . $answers[0][0]. '</div>';
 	$input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
 	$input_text .= '<div id="slider-' . $id . '"></div></div>';
-	$input_text .= "<div class='right-polar-title'>" . esc_html( $answers[1][0] ) . '</div>';
+	$input_text .= "<div class='right-polar-title'>" . $answers[1][0] . '</div>';
 	/*
 	if (strpos($question, '%POLAR_SLIDER%') !== false) {
 	$question = str_replace("%POLAR_SLIDER%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));

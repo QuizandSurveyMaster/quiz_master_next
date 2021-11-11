@@ -934,7 +934,7 @@ function qsm_send_data_sendy() {
 			),
 		)
 	);
-	echo isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ? esc_html( $result['body'] ) : '';
+	echo isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ? $result['body'] : '';
 	exit;
 }
 

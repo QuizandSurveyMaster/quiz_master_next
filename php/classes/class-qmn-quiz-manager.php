@@ -209,7 +209,7 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		if ( $answer_array && $got_ans === false ) {
 			foreach ( $answer_array as $key => $value ) {
-				if ( esc_html( $value[0] ) == esc_html( $answer ) && $value[2] == 1 ) {
+				if ( $value[0] == $answer && $value[2] == 1 ) {
 					$got_ans        = true;
 					$correct_answer = true;
 					break;
@@ -890,8 +890,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data );
 				?>
 	<div class="quiz_section quiz_begin">
-		<label for='mlwQuizComments'
-			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
+		<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 	<?php
@@ -902,7 +901,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 				?>
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
 		<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
@@ -979,7 +978,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 <section class="qsm-page">
 	<div class="quiz_section quiz_begin">
 		<label for='mlwQuizComments'
-			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo esc_html( $message_comments ); ?></label>
+			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 </section>
@@ -991,7 +990,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			?>
 <section class="qsm-page" style="display: none;">
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo esc_html( $message_after ); ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
 		<?php
 			if ( 1 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );
@@ -1365,11 +1364,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
 			if ( $qmn_array_for_variables['user_email'] == 'None' ) {
-				$qmn_array_for_variables['user_email'] = esc_html( $current_user->user_email );
+				$qmn_array_for_variables['user_email'] = $current_user->user_email;
 			}
 
 			if ( $qmn_array_for_variables['user_name'] == 'None' ) {
-				$qmn_array_for_variables['user_name'] = esc_html( $current_user->display_name );
+				$qmn_array_for_variables['user_name'] = $current_user->display_name;
 			}
 		}
 

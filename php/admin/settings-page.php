@@ -1026,7 +1026,7 @@ class QMNGlobalSettingsPage {
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_quiz_animation) && $qsm_quiz_animation ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
-		echo esc_html( $string );
+		echo $string;
 	}
 
 		/**
@@ -1074,7 +1074,7 @@ class QMNGlobalSettingsPage {
 					$string.='<option value="'.$value['value'].'" '.(isset($qsm_randomness_order) && $qsm_randomness_order ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
 				}
 				$string.='</select>';
-		echo esc_html( $string );
+		echo $string;
 	}
 	/**
 	 * Generates Quiz Global  Field For Quiz Dates

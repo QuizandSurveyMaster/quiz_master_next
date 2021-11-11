@@ -54,7 +54,7 @@ class QSM_Changelog_Generator {
 
 			// Echos or returns HTML list based on $echo parameter
 			if ( true === $echo ) {
-				echo esc_html( $display );
+				echo $display;
 			} else {
 				return $display;
 			}

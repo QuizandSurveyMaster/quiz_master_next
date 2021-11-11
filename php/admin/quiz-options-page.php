@@ -96,8 +96,6 @@ function qsm_generate_quiz_options() {
                 $mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', "", 0, 'error' );
             }
 	}
-	?>
-<?php
         // Get quiz post based on quiz id
         $args = array(
             'posts_per_page' => 1,
@@ -129,7 +127,7 @@ function qsm_generate_quiz_options() {
 <div class="wrap">
 	<div class='mlw_quiz_options'>
 		<h1 style="margin-bottom: 10px;">
-			<?php echo esc_html( $quiz_name ); ?>
+			<?php echo $quiz_name; ?>
 			<?php
                         if( $post_status == 'draft' ){ ?>
 			<form method="POST" action="">
