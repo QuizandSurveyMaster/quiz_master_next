@@ -984,24 +984,35 @@ function qmn_captcha_display( $id, $question, $answers ) {
 	$question_display  .= $question_title . '</span>';
 	$question_display  .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
 	$question_display  .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
-	$question_display  .= "<script>
-  var mlw_code = '';
-  var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
-  var mlw_code_length = 5;
-  for (var i=0; i<mlw_code_length; i++) {
-          var rnum = Math.floor(Math.random() * mlw_chars.length);
-          mlw_code += mlw_chars.substring(rnum,rnum+1);
-      }
-      var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
-      mlw_captchaCTX.font = 'normal 24px Verdana';
-      mlw_captchaCTX.strokeStyle = '#000000';
-      mlw_captchaCTX.clearRect(0,0,100,50);
-      mlw_captchaCTX.strokeText(mlw_code,10,30,70);
-      mlw_captchaCTX.textBaseline = 'middle';
-      document.getElementById('mlw_code_captcha').value = mlw_code;
-      </script>
-      ";
+	add_action( 'wp_footer', 'qsm_captcha_display_inline_script' , 1 );
 	return apply_filters( 'qmn_captcha_display_front', $question_display, $id, $question, $answers );
+}
+
+/**
+ * This function adds the inline scripts for displaying the captcha question
+ *
+ * @since 7.3.5
+ */
+
+function qsm_captcha_display_inline_script(){
+	?>
+	<script>
+		var mlw_code = '';
+		var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+		var mlw_code_length = 5;
+		for (var i=0; i<mlw_code_length; i++) {
+						var rnum = Math.floor(Math.random() * mlw_chars.length);
+						mlw_code += mlw_chars.substring(rnum,rnum+1);
+				}
+		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
+		mlw_captchaCTX.font = 'normal 24px Verdana';
+		mlw_captchaCTX.strokeStyle = '#000000';
+		mlw_captchaCTX.clearRect(0,0,100,50);
+		mlw_captchaCTX.strokeText(mlw_code,10,30,70);
+		mlw_captchaCTX.textBaseline = 'middle';
+		document.getElementById('mlw_code_captcha').value = mlw_code;
+	</script>
+	<?php
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' );
