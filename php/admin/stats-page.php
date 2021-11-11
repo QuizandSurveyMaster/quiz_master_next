@@ -18,7 +18,7 @@ function qsm_admin_enqueue_scripts_stats_page($hook){
 	}
 	global $mlwQuizMasterNext;
 	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js');
-
+	wp_enqueue_script('qsm-admin-stats', QSM_PLUGIN_JS_URL.'/qsm-admin-stats.js',false, $mlwQuizMasterNext->version,true);
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
 
@@ -98,12 +98,18 @@ function qmn_stats_overview_content()
 		$range = sanitize_text_field( $_POST["range"] );
 	}
 	$data = qmn_load_stats($range, 7);
-	$labels = "";
-	$value = "";
+	$labels = array();
+	$value = array();
 	foreach($data as $stat) {
-		$labels .= '"",';
-		$value .= "$stat,";
+		array_push($labels,"");
+		array_push($value,intval($stat));
 	}
+
+	$qsm_admin_stats = array(
+		'labels' => $labels,
+		'value'  => $value
+	);
+	wp_localize_script( 'qsm-admin-stats', 'qsm_admin_stats', $qsm_admin_stats);
 	?>
 	<style>
 		.postbox:after {
@@ -132,43 +138,6 @@ function qmn_stats_overview_content()
 			</form>
 			<div>
 				<canvas id="graph_canvas"></canvas>
-				<script>
-					var graph_data = {
-						labels : [<?php echo $labels; ?>],
-						datasets : [
-							{
-								label: "",
-								fillColor : "rgba(220,220,220,0.2)",
-								strokeColor : "rgba(220,220,220,1)",
-								pointColor : "rgba(220,220,220,1)",
-								pointStrokeColor : "#fff",
-								pointHighlightFill : "#fff",
-								pointHighlightStroke : "rgba(220,220,220,1)",
-								data : [3,0,2,24,0,27,7]
-							}
-						]
-					}
-					window.onload = function(){
-						var graph_ctx = document.getElementById("graph_canvas").getContext("2d");
-						window.stats_graph = new Chart(graph_ctx, {
-                                                type: 'line',
-                                                data: {
-                                                    labels: [<?php echo $labels; ?>],
-                                                    datasets: [{
-                                                        label: 'Quiz Submissions', // Name the series
-                                                        data: [<?php echo $value; ?>], // Specify the data values array
-                                                        fill: false,
-                                                        borderColor: '#2196f3', // Add custom color border (Line)
-                                                        backgroundColor: '#2196f3', // Add custom color background (Points and Fill)
-                                                        borderWidth: 1 // Specify bar border width
-                                                    }]},
-                                                    options: {
-                                                  responsive: true, // Instruct chart js to respond nicely.
-                                                  maintainAspectRatio: false, // Add to prevent default behaviour of full-width/height
-                                                }
-                                            });
-					}
-				</script>
 			</div>
 		</div>
 	</div>
