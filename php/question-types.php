@@ -168,7 +168,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	);
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = $_POST[ 'question' . $id ];
+		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -193,7 +193,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 		} else {
 			$mlw_user_answer = '';
 			if ( isset( $_POST[ 'question' . $id ] ) ) {
-				$mlw_user_answer = $_POST[ 'question' . $id ];
+				$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
 				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
 				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
 			}
@@ -371,7 +371,7 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = $_POST[ 'question' . $id ];
+		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -395,7 +395,7 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		} else {
 			$mlw_user_answer = '';
 			if ( isset( $_POST[ 'question' . $id ] ) ) {
-				$mlw_user_answer = $_POST[ 'question' . $id ];
+				$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
 				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
 				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
 			}
@@ -488,7 +488,7 @@ function qmn_drop_down_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = $_POST[ 'question' . $id ];
+		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';

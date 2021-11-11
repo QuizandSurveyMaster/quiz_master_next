@@ -116,7 +116,7 @@ class QMNQuizManager {
 				exit;
 			}
 			$upload_dir = wp_upload_dir();
-			$datafile   = $_FILES['file']['tmp_name'];
+			$datafile   = sanitize_text_field( $_FILES['file']['tmp_name'] );
 			// $file_name = $_FILES["file"]["name"];
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
@@ -199,8 +199,8 @@ class QMNQuizManager {
 	 */
 	public function qsm_get_question_quick_result() {
 		global $wpdb;
-		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-		$answer            = isset( $_POST['answer'] ) ? stripslashes_deep( $_POST['answer'] ) : '';
+		$question_id       = isset( $_POST['question_id'] ) ? intval( sanitize_text_field( $_POST['question_id'] ) ) : 0;
+		$answer            = isset( $_POST['answer'] ) ?  sanitize_text_field( stripslashes_deep( $_POST['answer'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = unserialize( $question_array['answer_array'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
@@ -1380,7 +1380,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		$qmn_array_for_variables['timer_ms']         = $mlw_qmn_timer_ms;
 		$qmn_array_for_variables['time_taken']       = current_time( 'h:i:s A m/d/Y' );
 		$qmn_array_for_variables['contact']          = $contact_responses;
-		$qmn_array_for_variables['hidden_questions'] = isset( $_POST['qsm_hidden_questions'] ) ? json_decode( html_entity_decode( stripslashes( $_POST['qsm_hidden_questions'] ) ), true ) : array();
+		$hidden_questions                            = isset( $_POST['qsm_hidden_questions'] ) ? json_decode( html_entity_decode( stripslashes( $_POST['qsm_hidden_questions'] ) ), true ) : array();
+		$qmn_array_for_variables['hidden_questions'] = array_map( 'sanitize_text_field', $hidden_questions );
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'] ) && $_POST['mlw_user_captcha'] == $_POST['mlw_code_captcha'] ) ) {
@@ -1393,7 +1394,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			$results_id = 0;
 			// If the store responses in database option is set to Yes.
 			if ( 0 != $qmn_quiz_options->store_responses ) {
-
 				// Creates our results array.
 				$results_array = array(
 					intval( $qmn_array_for_variables['timer'] ),
