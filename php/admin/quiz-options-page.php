@@ -207,7 +207,7 @@ function qsm_generate_quiz_options() {
 		</div>
 		<?php
 			qsm_show_adverts();
-			echo esc_html( $mlw_output );
+			echo $mlw_output;
 			?>
 	</div>
 	<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
