@@ -234,8 +234,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<input type="text" name="<?php echo esc_attr($key); ?>"
 		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
@@ -249,8 +249,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<input type="number" name="<?php echo esc_attr($key); ?>"
 		value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>"
@@ -264,8 +264,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>">
 		<?php
@@ -289,8 +289,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<textarea id="<?php echo esc_attr($key); ?>"
 		name="<?php echo esc_attr($key); ?>"><?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?></textarea>
@@ -303,8 +303,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<div id="categories">
 		<a id="qsm-category-add-toggle" class="hide-if-no-js">
@@ -325,8 +325,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
 		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
@@ -356,8 +356,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 	<?php
 			$parent_key = $key;
@@ -394,8 +394,8 @@ function qsm_display_question_option( $key, $single_option ) {
 			}
 			?>
 		<?php echo isset( $single_option['label'] ) ? esc_html($single_option['label']) : ''; ?>
-		<?php echo esc_html($tooltip); ?>
-		<?php echo esc_html($document_text); ?>
+		<?php echo $tooltip; ?>
+		<?php echo $document_text; ?>
 	</label>
 </div>
 <?php

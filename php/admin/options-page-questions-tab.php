@@ -367,7 +367,7 @@ function qsm_options_questions_tab_content() {
 														$document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
 														$document_text .= '<span class="dashicons dashicons-media-document"></span>';
 														$document_text .= '</a>';
-														echo esc_html( $document_text );
+														echo $document_text;
 														?>
 													</label>
 													<select name="question_type" id="question_type">
