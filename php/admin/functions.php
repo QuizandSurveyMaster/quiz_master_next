@@ -20,11 +20,8 @@ add_action( 'qmn_quiz_created', 'qsm_redirect_to_edit_page', 10, 1 );
  */
 function qsm_redirect_to_edit_page( $quiz_id ) {
 	link_featured_image( $quiz_id );
-	$url = admin_url( 'admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id );?>
-<script>
-window.location.href = '<?php echo $url; ?>';
-</script>
-<?php
+	$url = admin_url( 'admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id );
+	wp_redirect($url);
 }
 
 /**

@@ -41,7 +41,7 @@ add_action("plugins_loaded", 'qsm_settings_contact_tab', 5);
 function qsm_options_contact_tab_content() {
   global $wpdb;
   global $mlwQuizMasterNext;
-  $quiz_id = intval( $_GET["quiz_id"] );
+  $quiz_id = intval( sanitize_text_field( $_GET["quiz_id"] ) );
 
   $contact_form = QSM_Contact_Manager::load_fields();
   wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce('ajax-nonce-contact-save') ) );

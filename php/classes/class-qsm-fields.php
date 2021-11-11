@@ -432,7 +432,7 @@ jQuery(function() {
    */
   public static function generate_category_field( $field, $value ) {
 	global $wpdb;
-	$quiz_id = isset($_GET['quiz_id']) ? $_GET['quiz_id'] : 0;	
+	$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( $_GET['quiz_id'] ) : 0;
 	$explode_cat = explode(',', $value);
     ?>
 <tr valign="top">

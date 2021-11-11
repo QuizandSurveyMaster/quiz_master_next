@@ -274,8 +274,13 @@ class QSM_Questions {
 		$settings = wp_parse_args( $settings, $defaults );
 
 		foreach ( $answers as $key => $answer ) {
+			if ('rich' == $settings['answerEditor']) {
+				$answer_text = wp_kses_post( $answer[0] );
+			} else {
+				$answer_text = sanitize_text_field( $answer[0] );
+			}
 			$answers_array = array(
-				htmlspecialchars( $answer[0], ENT_QUOTES ),
+				htmlspecialchars( $answer_text, ENT_QUOTES ),
 				floatval( $answer[1] ),
 				intval( $answer[2] ),
 			);
@@ -295,9 +300,9 @@ class QSM_Questions {
 			'quiz_id'              => intval( $data['quiz_id'] ),
 			'question_name'        => $question_name,
 			'answer_array'         => maybe_serialize( $answers ),
-			'question_answer_info' => $data['answer_info'],
-			'comments'             => htmlspecialchars( $data['comments'], ENT_QUOTES ),
-			'hints'                => htmlspecialchars( $data['hint'], ENT_QUOTES ),
+			'question_answer_info' => wp_kses_post( $data['answer_info'] ),
+			'comments'             => sanitize_text_field( $data['comments'] ),
+			'hints'                => sanitize_text_field( $data['hint'] ),
 			'question_order'       => intval( $data['order'] ),
 			'question_type_new'    => sanitize_text_field( $data['type'] ),
 			'question_settings'    => maybe_serialize( $settings ),

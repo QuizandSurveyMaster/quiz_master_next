@@ -49,7 +49,7 @@ function qsm_generate_result_details() {
         if ( $active_tab == $tab['slug'] ) {
            $active_class = 'nav-tab-active';
        }
-       echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . esc_attr( $tab['slug'] ) . "\" class=\"nav-tab $active_class\">" . esc_html( $tab['title'] ) . "</a>";
+       echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( sanitize_text_field( $_GET["result_id"] ) ) . "&&tab=" . esc_attr( $tab['slug'] ) . "\" class=\"nav-tab $active_class\">" . esc_html( $tab['title'] ) . "</a>";
    }
    ?>
 </h2>
@@ -80,7 +80,7 @@ function qsm_generate_results_details_tab() {
 	global $mlwQuizMasterNext;
 
 	// Gets results data.
-	$result_id    = intval( $_GET["result_id"] );
+	$result_id    = intval( sanitize_text_field( $_GET["result_id"] ) );
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
 
 
