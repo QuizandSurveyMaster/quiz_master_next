@@ -71,7 +71,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
 		<label for="<?php echo esc_attr( $key ); ?>-hide"><input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide"
 				type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php
 												if ( ! in_array( $key, $hidden_box_arr ) ) {
-													?> checked="checked" <?php } ?>><?php echo $value['title']; ?></label>
+													?> checked="checked" <?php } ?>><?php echo esc_html( $value['title'] ); ?></label>
 		<?php
 
 									}
@@ -521,10 +521,10 @@ function qsm_dashboard_what_new( $widget_id ) {
 				<li>
 					<a href="<?php echo esc_url( $single_feed_arr['link'] ); ?>?utm_source=plugin&utm_medium=dashboard"
 						target="_blank" rel="noopener">
-						<?php echo $single_feed_arr['title']; ?>
+						<?php echo esc_html( $single_feed_arr['title'] ); ?>
 					</a>
 					<div class="post-description">
-						<?php echo $single_feed_arr['excerpt']; ?>
+						<?php echo wp_kses_post( $single_feed_arr['excerpt'] ); ?>
 					</div>
 				</li>
 				<?php
@@ -576,7 +576,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						?>
 
 				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
-					<?php echo $cl_str; ?></li>
+					<?php echo esc_html( $cl_str ); ?></li>
 				<?php
 						$i++;
 					}

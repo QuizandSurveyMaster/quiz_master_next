@@ -1326,8 +1326,8 @@ function qmn_polar_display( $id, $question, $answers ) {
 	}
 	$total_answer = count( $answers );
 	$id = esc_attr( intval( $id ) );
-	$answar1 = esc_attr( $first_point );
-	$answar2 = esc_attr( $second_point );
+	$answar1 = $first_point;
+	$answar2 = $second_point;
 	ob_start();
 	?>
 <script type="text/javascript">
@@ -1335,24 +1335,24 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$(document).ready(function() {
 		$('#slider-' + '<?php echo esc_attr( $id ); ?>').slider({
 			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
-			max: <?php echo $answar1; ?>,
-			min: <?php echo $answar2; ?>,
+			max: <?php echo esc_attr( $answar1 ); ?>,
+			min: <?php echo esc_attr( $answar2 ); ?>,
 			isRTL: true,
 			<?php } else { ?>
-			min: <?php echo $answar1; ?>,
-			max: <?php echo $answar2; ?>,
+			min: <?php echo esc_attr( $answar1 ); ?>,
+			max: <?php echo esc_attr( $answar2 ); ?>,
 			<?php } ?>
 			step: 1,
 			value: <?php echo esc_attr( $check_point / 2 ); ?>,
 			change: function(event, ui) {
 				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 					'.qmn_polar').val(ui.value);
-				if (ui.value == <?php echo $answar1; ?>) {
+				if (ui.value == <?php echo esc_attr( $answar1 ); ?>) {
 					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '900');
 					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.right-polar-title').css('font-weight', '100');
-				} else if (ui.value == <?php echo $answar2; ?>) {
+				} else if (ui.value == <?php echo esc_attr( $answar2 ); ?>) {
 					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
 						'.left-polar-title').css('font-weight', '100');
 					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(

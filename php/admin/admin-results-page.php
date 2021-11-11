@@ -322,7 +322,7 @@ function deleteResults(id, quizName) {
 		<input type="hidden" name="page" value="mlw_quiz_results">
 		<p class="search-box">
 			<label for="qsm_search_phrase"><?php esc_html_e( 'Search Results', 'quiz-master-next' ); ?></label>
-			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo $qsm_search_phrase; ?>">
+			<input type="search" id="qsm_search_phrase" name="qsm_search_phrase" value="<?php echo esc_attr($qsm_search_phrase); ?>">
 			<label for="qmn_order_by"><?php esc_html_e( 'Order By', 'quiz-master-next' ); ?></label>
 			<select id="qmn_order_by" name="qmn_order_by">
 				<option value="default" <?php selected( $qmn_order_by, 'default' ); ?>><?php esc_html_e( 'Default (Time)', 'quiz-master-next' ); ?></option>
