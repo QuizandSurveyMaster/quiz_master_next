@@ -416,11 +416,7 @@ class QMNQuizManager {
 			global $wpdb;
 			$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $id ), ARRAY_A );
 			if ( $result_data ) {
-<<<<<<< HEAD
 				wp_enqueue_style( 'qmn_quiz_common_style', $this->common_css );
-=======
-				wp_enqueue_style( 'qmn_quiz_common_style',  $this->common_css );
->>>>>>> CU-1uamggf_move-inline-scripts_Manoj-Rao
 				wp_style_add_data( 'qmn_quiz_common_style', 'rtl', 'replace' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ));
