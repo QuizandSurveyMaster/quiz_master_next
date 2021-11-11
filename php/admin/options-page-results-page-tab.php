@@ -48,7 +48,7 @@ add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
 function qsm_options_results_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = intval( $_GET['quiz_id'] );
+	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 	$js_data = array(
 		'quizID' => $quiz_id,
 		'nonce'  => wp_create_nonce( 'wp_rest' ),

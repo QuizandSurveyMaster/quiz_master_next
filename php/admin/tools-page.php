@@ -133,7 +133,7 @@ function qsm_audit_box() {
 	// If user has gone to the next audit page, load current page and beginning.
 	// Else, start at 0.
 	if ( isset( $_GET['audit_page'] ) ) {
-		$page  = intval( $_GET['audit_page'] ) + 1;
+		$page  = intval( sanitize_text_field( $_GET['audit_page'] ) ) + 1;
 		$begin = $table_limit * $begin;
 	} else {
 		$page  = 0;
