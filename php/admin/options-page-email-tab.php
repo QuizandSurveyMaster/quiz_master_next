@@ -50,7 +50,7 @@ add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
 function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id     = intval( $_GET['quiz_id'] );
+	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 		$user_id = get_current_user_id();
 	$js_data     = array(
 		'quizID'      => $quiz_id,

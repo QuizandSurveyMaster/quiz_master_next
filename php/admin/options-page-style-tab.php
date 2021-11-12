@@ -119,6 +119,9 @@ function qsm_options_styling_tab_content() {
 	global $mlwQuizMasterNext;
 
 	$quiz_id = intval( $_GET['quiz_id'] );
+	wp_enqueue_style( 'qsm_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css', array(), $mlwQuizMasterNext->version );
+	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
 
 		$style_quiz_id = intval( $_POST['style_quiz_id'] );
@@ -163,8 +166,8 @@ function qsm_options_styling_tab_content() {
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
 	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( $_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration' ) ) {
-		$quiz_id  = (int) $_GET['quiz_id'];
-		$theme_id = (int) $_POST['quiz_theme_id'];
+		$quiz_id  = (int) sanitize_text_field( $_GET['quiz_id'] );
+		$theme_id = (int) sanitize_text_field( $_POST['quiz_theme_id'] );
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
 		if (isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
@@ -398,7 +401,7 @@ function qsm_register_theme_Setting_submenu_page() {
 
 function qsm_display_theme_settings() {
 	 global $mlwQuizMasterNext, $wpdb;
-	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
 	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {

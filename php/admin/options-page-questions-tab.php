@@ -74,7 +74,7 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     = intval( $_GET['quiz_id'] );
+	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 	$user_id     = get_current_user_id();
 	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );

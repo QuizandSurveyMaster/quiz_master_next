@@ -217,11 +217,11 @@ function qsm_display_question_option( $key, $single_option ) {
 	$document_text = '';
 	if ( isset( $single_option['tooltip'] ) && $single_option['tooltip'] != '' ) {
 		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
-		$tooltip .= '<span class="qsm-tooltips">' . $single_option['tooltip'] . '</span>';
+		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
 		$tooltip .= '</span>';
 	}
 	if ( isset( $single_option['documentation_link'] ) && $single_option['documentation_link'] != '' ) {
-		$document_text .= '<a class="qsm-question-doc" href="' . $single_option['documentation_link'] . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
 		$document_text .= '<span class="dashicons dashicons-media-document"></span>';
 		$document_text .= '</a>';
 	}
@@ -231,8 +231,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<input type="text" name="<?php echo esc_attr($key); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>" id="<?php echo esc_attr($key); ?>" />
 </div>
@@ -244,8 +244,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<input type="number" name="<?php echo esc_attr($key); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?>" id="<?php echo esc_attr($key); ?>" />
 </div>
@@ -257,8 +257,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<select name="<?php echo esc_attr($key); ?>" id="<?php echo esc_attr($key); ?>">
 		<?php
@@ -282,8 +282,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<textarea id="<?php echo esc_attr($key); ?>" name="<?php echo esc_attr($key); ?>"><?php echo isset( $single_option['default'] ) ? esc_html($single_option['default']) : ''; ?></textarea>
 </div>
@@ -295,8 +295,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<div id="categories">
 		<a id="qsm-category-add-toggle" class="hide-if-no-js">
@@ -317,8 +317,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
 		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
@@ -348,8 +348,8 @@ function qsm_display_question_option( $key, $single_option ) {
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<?php
 			$parent_key = $key;
@@ -386,8 +386,8 @@ function qsm_display_question_option( $key, $single_option ) {
 			}
 			?>
 		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
-		<?php echo $tooltip; ?>
-		<?php echo $document_text; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 </div>
 <?php
