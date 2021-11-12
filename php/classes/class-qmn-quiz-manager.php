@@ -116,7 +116,7 @@ class QMNQuizManager {
 				exit;
 			}
 			$upload_dir = wp_upload_dir();
-			$datafile   = sanitize_text_field( $_FILES['file']['tmp_name'] );
+			$datafile   = $_FILES['file']['tmp_name'];
 			// $file_name = $_FILES["file"]["name"];
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
