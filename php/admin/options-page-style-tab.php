@@ -118,7 +118,6 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	$quiz_id = intval( $_GET['quiz_id'] );
 	wp_enqueue_style( 'qsm_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css', array(), $mlwQuizMasterNext->version );
 	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
