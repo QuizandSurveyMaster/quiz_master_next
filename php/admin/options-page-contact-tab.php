@@ -18,7 +18,7 @@ function qsm_admin_enqueue_scripts_options_page_contact($hook){
     wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $mlwQuizMasterNext->version );
   }
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact', 20 );
 
 /**
 * This function adds the contact tab using our API.

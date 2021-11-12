@@ -407,7 +407,6 @@ function qsm_create_new_quiz_wizard() {
 	global $mlwQuizMasterNext;
 	global $themes_data;
 	qsm_fetch_theme_data();
-	ob_start();
 	?>
 <div class="qsm-popup qsm-popup-slide" id="model-wizard" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -640,7 +639,6 @@ function qsm_create_new_quiz_wizard() {
 	</div>
 </div>
 <?php
-return ob_get_clean();
 }
 
 /**
