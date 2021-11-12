@@ -26,7 +26,7 @@ function qsm_admin_enqueue_scripts_options_page_email($hook){
 	}
 
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_email');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_email', 20);
 
 
 /**

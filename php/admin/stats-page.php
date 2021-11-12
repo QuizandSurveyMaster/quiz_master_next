@@ -20,7 +20,7 @@ function qsm_admin_enqueue_scripts_stats_page($hook){
 	wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js', array(),'3.6.0',true);
 	wp_enqueue_script('qsm-admin-stats', QSM_PLUGIN_JS_URL.'/qsm-admin-stats.js',false, $mlwQuizMasterNext->version,true);
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_stats_page', 20 );
 
 
 /**

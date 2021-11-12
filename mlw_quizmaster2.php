@@ -219,7 +219,7 @@ class MLWQuizMasterNext {
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );

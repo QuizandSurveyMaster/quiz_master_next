@@ -30,7 +30,7 @@ function qsm_admin_enqueue_scripts_options_page_questions($hook){
 		wp_enqueue_media();
 	}
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions', 20);
 
 
 /**

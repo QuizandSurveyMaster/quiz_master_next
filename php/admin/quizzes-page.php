@@ -23,7 +23,7 @@ function qsm_admin_enqueue_scripts_quizzes_page($hook){
 	wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 	wp_enqueue_script( 'qsm_admin_js', QSM_PLUGIN_JS_URL.'/qsm-admin.js', array( 'wp-util', 'underscore', 'jquery', 'micromodal_script', 'jquery-ui-accordion' ), $mlwQuizMasterNext->version, true);
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quizzes_page');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quizzes_page', 20);
 
 /**
  * Generates the quizzes and surveys page

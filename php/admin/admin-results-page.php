@@ -19,7 +19,7 @@ function qsm_admin_enqueue_scripts_results_page($hook){
 	wp_enqueue_script( 'jquery-ui-button' );
 	wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page', 20);
 
 /**
  * This function generates the admin side quiz results page

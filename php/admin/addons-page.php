@@ -530,6 +530,6 @@ function qsm_admin_get_free_addon_page_scripts_style($hook){
 
 	}
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style' );
+add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style', 20 );
 
 ?>

@@ -106,7 +106,7 @@ function qsm_admin_enqueue_scripts_dashboard_page($hook){
 	wp_enqueue_script ( 'productstash-config', QSM_PLUGIN_JS_URL.'/qsm-productstash-config.js');
 	wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page', 20);
 
 /**
  * @since 7.0
