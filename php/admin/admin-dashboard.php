@@ -282,7 +282,7 @@ function qsm_generate_dashboard_page() {
 	</div><!-- dashboard-widgets-wrap -->
 </div>
 <!-- Popup for new wizard -->
-<?php echo wp_kses_post( qsm_create_new_quiz_wizard() ); ?>
+<?php qsm_create_new_quiz_wizard(); ?>
 <?php
 }
 
