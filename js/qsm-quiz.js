@@ -927,7 +927,8 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 		$container.append('<div class="qmn_results_page"></div>');
 		$container.find('.qmn_results_page').html(results.display);
 		qsmScrollTo($container);
-		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+		// run MathJax on the new content
+		MathJax.typesetPromise();
 		// Fires after result is populates via ajax
 		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}

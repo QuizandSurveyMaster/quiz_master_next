@@ -21,10 +21,80 @@ function qsm_admin_enqueue_scripts_options_page_style($hook){
 		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_media();
+		wp_enqueue_style( 'qsm_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin.css', array(), $mlwQuizMasterNext->version );
+		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 	}
 
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style');
+
+
+/**
+ * Loads inline scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_options_page_style_tab_inline_scripts(){
+	global $pagenow;
+
+	if ( 'admin.php' !== $pagenow && 'mlw_quiz_options' !== $_GET['page']) {
+		return;
+	}
+	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
+		?>
+		<script>
+		function mlw_qmn_theme(theme) {
+			document.getElementById('save_quiz_theme').value = theme;
+			jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
+			jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
+
+		}
+		jQuery(document).ready(function() {
+			jQuery('.quiz_style_tab').click(function(e) {
+				e.preventDefault();
+				var current_id = jQuery(this).attr('data-id');
+				jQuery('.quiz_style_tab').removeClass('current');
+				jQuery(this).addClass('current');
+				jQuery('.quiz_style_tab_content').hide();
+				jQuery('#' + current_id).show();
+			});
+		});
+		</script>
+		<script type="text/javascript">
+		jQuery(document).ready(function() {
+			jQuery(document).on('click', '.qsm-activate-theme', function() {
+				jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
+			});
+			jQuery(document).on('input', '.quiz_featured_image', function() {
+				jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
+			});
+
+			jQuery(document).on('click', '.filter-links a', function() {
+				current_id = jQuery(this).attr('data-id');
+				jQuery(this).parents('.filter-links').find('li a').each(function() {
+					jQuery(this).removeClass('current');
+				});
+				jQuery(this).addClass('current');
+				jQuery(this).parents('#qsm_themes').find('.themes-container').children('div').each(function() {
+					if (jQuery(this).hasClass(current_id)) {
+						jQuery(this).show();
+					} else {
+						jQuery(this).hide();
+					}
+				});
+			})
+		});
+		</script>
+	<?php
+	}
+}
+add_action( 'admin_footer', 'qsm_options_page_style_tab_inline_scripts', 1 );
+
+/**
+ * This function adds the inline scripts for quiz options style tab
+ *
+ * @since 7.3.5
+ */
 
 /**
  * Adds the Style tab to the Quiz Settings page.
@@ -73,24 +143,6 @@ function qsm_options_styling_tab_content() {
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>
-<script>
-function mlw_qmn_theme(theme) {
-	document.getElementById('save_quiz_theme').value = theme;
-	jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
-	jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
-
-}
-jQuery(document).ready(function() {
-	jQuery('.quiz_style_tab').click(function(e) {
-		e.preventDefault();
-		var current_id = jQuery(this).attr('data-id');
-		jQuery('.quiz_style_tab').removeClass('current');
-		jQuery(this).addClass('current');
-		jQuery('.quiz_style_tab_content').hide();
-		jQuery('#' + current_id).show();
-	});
-});
-</script>
 
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
@@ -111,31 +163,6 @@ jQuery(document).ready(function() {
 	</ul>
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
-	<script type="text/javascript">
-	jQuery(document).ready(function() {
-		jQuery(document).on('click', '.qsm-activate-theme', function() {
-			jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
-		});
-		jQuery(document).on('input', '.quiz_featured_image', function() {
-			jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
-		});
-
-		jQuery(document).on('click', '.filter-links a', function() {
-			current_id = jQuery(this).attr('data-id');
-			jQuery(this).parents('.filter-links').find('li a').each(function() {
-				jQuery(this).removeClass('current');
-			});
-			jQuery(this).addClass('current');
-			jQuery(this).parents('#qsm_themes').find('.themes-container').children('div').each(function() {
-				if (jQuery(this).hasClass(current_id)) {
-					jQuery(this).show();
-				} else {
-					jQuery(this).hide();
-				}
-			});
-		})
-	});
-	</script>
 	<?php
 	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( $_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration' ) ) {
 		$quiz_id  = (int) sanitize_text_field( $_GET['quiz_id'] );
@@ -277,9 +304,9 @@ jQuery(document).ready(function() {
 			}
 			?>
 	"><?php _e( 'Custom', 'quiz-master-next' ); ?></div>
-			<script>
-			mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
-			</script>
+			<?php
+			wp_add_inline_script('qmn_admin_js', 'mlw_qmn_theme(\''.$mlw_quiz_options->theme_selected.'\')' );
+			?>
 		</div>
 		<button id="save_styles_button" class="button-primary">
 			<?php _e( 'Save Quiz Style', 'quiz-master-next' ); ?>
@@ -365,7 +392,7 @@ jQuery(document).ready(function() {
 <?php
 }
 
-					add_action( 'admin_menu', 'qsm_register_theme_Setting_submenu_page' );
+add_action( 'admin_menu', 'qsm_register_theme_Setting_submenu_page' );
 
 function qsm_register_theme_Setting_submenu_page() {
 	add_submenu_page( null, __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );

@@ -341,12 +341,6 @@ class QMNQuizManager {
 				'quiz_system' => $qmn_quiz_options->system,
 				'user_ip'     => $this->get_user_ip(),
 			);
-
-			$return_display .= '<script>
-                            if (window.qmn_quiz_data === undefined) {
-                                    window.qmn_quiz_data = new Object();
-                            }
-                    </script>';
 			$qpages          = array();
 			$qpages_arr      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 			if ( ! empty( $qpages_arr ) ) {
@@ -389,12 +383,10 @@ class QMNQuizManager {
 
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
-			$return_display .= '<script>
-                            window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . json_encode( $qmn_filtered_json ) . '
-                    </script>';
-
 			$return_display .= ob_get_clean();
 			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+			$qmn_quiz_data[$qmn_json_data['quiz_id']] = $qmn_filtered_json;
+			wp_localize_script( 'qsm_quiz', 'qmn_quiz_data', $qmn_quiz_data );
 		}
 		return $return_display;
 	}
@@ -692,7 +684,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'empty'     => sanitize_text_field( $options->empty_error_text ),
 		);
 
-		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL.'/progressbar.min.js');
+		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL.'/progressbar.min.js',array(),'1.1.0',true);
 		wp_enqueue_script( 'jquery-ui-slider' );
 		wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js' );
 		wp_enqueue_style( 'jquery-ui-slider-rtl-css',  QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
