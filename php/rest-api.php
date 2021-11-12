@@ -464,9 +464,9 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
  */
 function qsm_rest_get_question( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
-	if ( is_user_logged_in() ) {  
+	if ( is_user_logged_in() ) { 
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
+		if (isset($current_user) && 0 !== $current_user ) {
 			$question = QSM_Questions::load_question( $request['id'] );
 			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);			
 			if ( ! empty( $question ) ) {
