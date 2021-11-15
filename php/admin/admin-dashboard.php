@@ -208,7 +208,7 @@ function qsm_generate_dashboard_page() {
 			),
 			'dashboard_latest_blogs'          => array(
 				'sidebar'  => 'normal',
-				'callback' => 'qsm_dashboard_latest_blog',
+				'callback' => 'qsm_dashboard_latest_blogs',
 				'title'    => 'Latest Blogs',
 			),
 			'dashboard_chagelog'          => array(
