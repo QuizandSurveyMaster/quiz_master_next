@@ -183,9 +183,6 @@ function qsm_generate_dashboard_page() {
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
-						<!-- <li><a target="_blank" rel="noopener" href="https://app.productstash.io/qsm" class="welcome-icon" id="whatsnew"><span
-									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
-						</li> -->
 					</ul>
 				</div>
 			</div>
@@ -210,8 +207,8 @@ function qsm_generate_dashboard_page() {
 				'title'    => 'roadmap',
 			),
 			'dashboard_latest_blogs'          => array(
-				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_latest_blogs',
+				'sidebar'  => 'normal',
+				'callback' => 'qsm_dashboard_latest_blog',
 				'title'    => 'Latest Blogs',
 			),
 			'dashboard_chagelog'          => array(
@@ -511,10 +508,10 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest Blogs", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest Blogs", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
