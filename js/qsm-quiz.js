@@ -1296,7 +1296,7 @@ jQuery(function () {
 				//Reload the timer and pagination
 				qmnDoInit();
 				
-				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+				MathJax.typesetPromise();
 
 				// trigger fired on successfull retake quiz
 				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
@@ -1333,7 +1333,7 @@ jQuery(function () {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1374,21 +1374,14 @@ jQuery(function () {
 					$this.find('.quick-question-res-p').remove();
 					$this.find('.qsm-inline-correct-info').remove();
 					if (data.success == 'correct') {
-
 					} else if (data.success == 'incorrect') {
-
-
-
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-
 						setTimeout(function () {
 							$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 						}, 1000);
-
-
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);

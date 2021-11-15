@@ -956,20 +956,3 @@ function qsm_get_market_themes() {
 <?php
 	}
 }
-
-/**
- * Display roadmap page
- *
- * @since 7.1.11
- */
-function qsm_generate_roadmap_page() {
-	wp_add_inline_style('qsm_admin_style', 'iframe {height: 1350px;}body::-webkit-scrollbar{width: 0px;}');
-	wp_add_inline_script( 'qmn_admin_js', 'var ps_config = {productId: "d24ad9de-78c7-4835-a2a8-3f5ee0317f31"};');
-	wp_enqueue_script( 'productstash_roadmap','https://app.productstash.io/js/productstash-embed.js',array(),false,true);
-?>
-<div class="wrap">
-	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="1350px" width="100%"
-		frameborder="0"></iframe>
-</div>
-<?php
-}

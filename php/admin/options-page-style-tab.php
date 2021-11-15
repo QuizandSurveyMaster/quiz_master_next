@@ -34,10 +34,14 @@ add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_sty
  */
 function qsm_options_page_style_tab_inline_scripts(){
 	global $pagenow;
-
-	if ( 'admin.php' !== $pagenow && 'mlw_quiz_options' !== $_GET['page']) {
+	
+	if ( 'admin.php' !== $pagenow) {
 		return;
 	}
+	if (isset($_GET['page']) && 'mlw_quiz_options' !== $_GET['page']) {
+		return;
+	}
+
 	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
 		?>
 		<script>
