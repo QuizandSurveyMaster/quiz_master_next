@@ -427,7 +427,7 @@ class QSM_Quiz_Settings
 				$settings_array[$section] = array();
 			}
 
-			$unserialized_section = unserialize( $settings_array[$section] );
+			$unserialized_section = maybe_unserialize( $settings_array[$section] );
 
 			// Cycle through each setting in section
 			foreach ( $fields as $field ) {

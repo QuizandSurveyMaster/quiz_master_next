@@ -15,7 +15,7 @@ function qsm_admin_enqueue_scripts_results_detail_page($hook){
     wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 	wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
     wp_enqueue_script( 'jquery-ui-slider');
-    wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js');
+    wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array('jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider'), $mlwQuizMasterNext->version, true);
     wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
 }
 add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_detail_page', 20);

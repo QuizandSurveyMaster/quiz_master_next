@@ -574,10 +574,6 @@ function qsm_create_new_quiz_wizard() {
 								<div class="qsm-quiz-page-addon qsm-addon-page-list">
 									<?php
 										$popular_addons = qsm_get_widget_data( 'popular_products' );
-									if ( empty( $popular_addons ) ) {
-										$qsm_admin_dd   = qsm_fetch_data_from_script();
-										$popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
-									}
 									?>
 									<div class="qsm_popular_addons" id="qsm_popular_addons">
 										<div class="popuar-addon-ul">
@@ -914,7 +910,7 @@ function qsm_get_default_wizard_themes() {
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme_name ); ?></h2>
 	</div>
 </div>
 <?php
