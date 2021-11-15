@@ -183,9 +183,9 @@ function qsm_generate_dashboard_page() {
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a target="_blank" rel="noopener" href="https://app.productstash.io/qsm" class="welcome-icon" id="whatsnew"><span
+						<!-- <li><a target="_blank" rel="noopener" href="https://app.productstash.io/qsm" class="welcome-icon" id="whatsnew"><span
 									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
-						</li>
+						</li> -->
 					</ul>
 				</div>
 			</div>
@@ -204,20 +204,20 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_recent_taken_quiz',
 				'title'    => 'Recent Taken Quiz',
 			),
-			'dashboard_what_new'          => array(
+			'dashboard_roadmap'          => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_what_new',
-				'title'    => 'Latest news',
+				'callback' => 'qsm_dashboard_roadmap',
+				'title'    => 'roadmap',
+			),
+			'dashboard_latest_blogs'          => array(
+				'sidebar'  => 'side',
+				'callback' => 'qsm_dashboard_latest_blogs',
+				'title'    => 'Latest Blogs',
 			),
 			'dashboard_chagelog'          => array(
 				'sidebar'  => 'side',
 				'callback' => 'qsm_dashboard_chagelog',
 				'title'    => 'Changelog',
-			),
-			'dashboard_roadmap'          => array(
-				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_roadmap',
-				'title'    => 'roadmap',
 			),
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
@@ -507,14 +507,14 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
  * @param str $widget_id
  * Generate posts
  */
-function qsm_dashboard_what_new( $widget_id ) {
+function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "'what's New", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest Blogs", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "What's New", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest Blogs", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
@@ -653,10 +653,10 @@ function qsm_dashboard_roadmap( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "QSM Roadmap", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php _e( "Whats Next", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "QSM Roadmap", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Whats Next", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
