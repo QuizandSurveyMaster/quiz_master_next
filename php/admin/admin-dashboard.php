@@ -183,7 +183,7 @@ function qsm_generate_dashboard_page() {
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a href="#" class="welcome-icon" id="whatsnew"><span
+						<li><a target="_blank" rel="noopener" href="https://app.productstash.io/qsm" class="welcome-icon" id="whatsnew"><span
 									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
@@ -213,6 +213,11 @@ function qsm_generate_dashboard_page() {
 				'sidebar'  => 'side',
 				'callback' => 'qsm_dashboard_chagelog',
 				'title'    => 'Changelog',
+			),
+			'dashboard_roadmap'          => array(
+				'sidebar'  => 'side',
+				'callback' => 'qsm_dashboard_roadmap',
+				'title'    => 'roadmap',
 			),
 		);
 		$qsm_dashboard_widget = apply_filters( 'qsm_dashboard_widget', $qsm_dashboard_widget );
@@ -638,3 +643,50 @@ function qsm_reset_transient_dashboard( $upgrader_object, $options ) {
 	}
 }
 add_action( 'upgrader_process_complete', 'qsm_reset_transient_dashboard', 10, 2 );
+
+/**
+ * @since 7.0
+ * @param str $widget_id
+ * Generate posts
+ */
+function qsm_dashboard_roadmap( $widget_id ) {
+	?>
+<div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
+	<button type="button" class="handlediv" aria-expanded="true">
+		<span class="screen-reader-text">Toggle panel: <?php _e( "QSM Roadmap", 'quiz-master-next' ); ?></span>
+		<span class="toggle-indicator" aria-hidden="true"></span>
+	</button>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "QSM Roadmap", 'quiz-master-next' ); ?></span></h2>
+	<div class="inside">
+		<div class="main">
+			<ul class="what-new-ul">
+				<li>
+					<a href="https://app.productstash.io/qsm#/roadmap"
+						target="_blank" rel="noopener"> Roadmap
+					</a>
+					<div class="post-description">
+						Visit out public Roadmap to checkout what's in the development pipepline of QSM. 
+					</div>
+				</li>
+				<li>
+					<a href="https://app.productstash.io/qsm#/updates"
+						target="_blank" rel="noopener">Recent Updates
+					</a>
+					<div class="post-description">
+						Checkout our updates page to know more about our recent releases
+					</div>
+				</li>
+				<li>
+					<a href="https://app.productstash.io/qsm#/ideas"
+						target="_blank" rel="noopener">Submit your ideas
+					</a>
+					<div class="post-description">
+						We are open your suggestions on how to improve QSM. Please visit our ideas page to share your thoughts.
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<?php
+}
