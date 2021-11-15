@@ -5,23 +5,33 @@
  * @param string $name
  */
 function qsm_get_widget_data( $name ) {
-	$qsm_admin_dd = qsm_fetch_data_from_script();
+	$qsm_admin_dd = json_decode(file_get_contents(QSM_PLUGIN_PATH.'/data/parsing_script.json'),true);
 	return isset( $qsm_admin_dd[ $name ] ) ? $qsm_admin_dd[ $name ] : array();
 }
 
-
-function qsm_fetch_data_from_script() {
-	$args           = array(
-		'timeout'   => 10,
-		'sslverify' => false,
-	);
-	$fetch_api_data = wp_remote_get( 'https://t6k8i7j6.stackpathcdn.com/wp-content/parsing_script.json?v=1', $args );
-	if ( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ) {
-		$qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
-		return json_decode( $qsm_admin_dd, true );
+/**
+ * @since 7.3.5
+ * @return array $blog_data
+ */
+function qsm_get_blog_data_rss(){
+	include_once( ABSPATH . WPINC . '/feed.php' );
+	$blog_data_obj = fetch_feed( 'https://quizandsurveymaster.com/feed/' );
+	$maxitems = 0;
+	if ( ! is_wp_error( $blog_data_obj ) ){
+		$maxitems = $blog_data_obj->get_item_quantity( 2 ); 
+		$blog_data_items = $blog_data_obj->get_items( 0, $maxitems );
 	}
-	return array();
+	$blog_data = array();
+	foreach ( $blog_data_items as $item ){
+		$blog_data[]= array(
+			'link' => esc_url( $item->get_permalink() ),
+			'title' => esc_html( $item->get_title() ),
+			'excerpt' => esc_html( $item->get_description() )				
+		);
+	}
+	return $blog_data;
 }
+
 /**
  * @since 7.0
  * @param str $widget_id
@@ -516,7 +526,7 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 		<div class="main">
 			<ul class="what-new-ul">
 				<?php
-										$feed_posts_array = qsm_get_widget_data( 'blog_post' );
+				$feed_posts_array = qsm_get_blog_data_rss();
 				if ( ! empty( $feed_posts_array ) ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
