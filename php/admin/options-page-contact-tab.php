@@ -72,7 +72,6 @@ function qsm_options_contact_tab_content() {
 }
 
 add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
-//add_action( 'wp_ajax_nopriv_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 
 /**
  * Saves the contact form from the quiz settings tab

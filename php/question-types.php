@@ -1316,83 +1316,19 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
 	$is_reverse     = false;
 	$check_point    = $second_point;
-	$font_weight_lc = 'right-polar-title';
-	$font_weight_rc = 'left-polar-title';
 	if ( $first_point > $second_point ) {
 		$is_reverse     = true;
 		$check_point    = $first_point;
-		$font_weight_lc = 'left-polar-title';
-		$font_weight_rc = 'right-polar-title';
 	}
 	$total_answer = count( $answers );
 	$id = esc_attr( intval( $id ) );
 	$answar1 = $first_point;
 	$answar2 = $second_point;
-	ob_start();
-	?>
-<script type="text/javascript">
-(function($) {
-	$(document).ready(function() {
-		$('#slider-' + '<?php echo esc_attr( $id ); ?>').slider({
-			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
-			max: <?php echo esc_attr( $answar1 ); ?>,
-			min: <?php echo esc_attr( $answar2 ); ?>,
-			isRTL: true,
-			<?php } else { ?>
-			min: <?php echo esc_attr( $answar1 ); ?>,
-			max: <?php echo esc_attr( $answar2 ); ?>,
-			<?php } ?>
-			step: 1,
-			value: <?php echo esc_attr( $check_point / 2 ); ?>,
-			change: function(event, ui) {
-				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-					'.qmn_polar').val(ui.value);
-				if (ui.value == <?php echo esc_attr( $answar1 ); ?>) {
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.left-polar-title').css('font-weight', '900');
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.right-polar-title').css('font-weight', '100');
-				} else if (ui.value == <?php echo esc_attr( $answar2 ); ?>) {
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.left-polar-title').css('font-weight', '100');
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.right-polar-title').css('font-weight', '900');
-				} else if (ui.value == <?php echo esc_attr( $check_point / 2 ); ?>) {
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.left-polar-title').css('font-weight', '400');
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.right-polar-title').css('font-weight', '400');
-				} else if (ui.value > <?php echo esc_attr( $check_point / 2 ); ?>) {
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.<?php echo esc_attr( $font_weight_rc ); ?>').css('font-weight', '400');
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.<?php echo esc_attr( $font_weight_lc ); ?>').css('font-weight', '600');
-				} else if (ui.value < <?php echo esc_attr( $check_point / 2 ); ?>) {
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.<?php echo esc_attr( $font_weight_rc ); ?>').css('font-weight', '600');
-					$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-						'.<?php echo esc_attr( $font_weight_lc ); ?>').css('font-weight', '400');
-				}
-			},
-			create: function(event, ui) {
-				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-					'.left-polar-title').css('font-weight', '400');
-				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-					'.right-polar-title').css('font-weight', '400');
-				$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').find(
-					'.qmn_polar').val(<?php echo esc_attr( $check_point / 2 ); ?>);
-			}
-		});
-		var maxHeight = Math.max.apply(null, $(
-			".question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s > div").map(function() {
-			return $(this).height();
-		}).get());
-		$('.question-section-id-<?php echo esc_attr( $id ); ?> .question-type-polar-s').height(maxHeight);
-	});
-})(jQuery);
-</script>
-<?php
-	$input_text .= ob_get_clean();
+	$slider_date_atts ='';
+	$slider_date_atts.=' data-answer1="'.$answar1.'" ';
+	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
+	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
+	$slider_date_atts.=' data-is_required="'.$required .'" ';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
@@ -1400,19 +1336,12 @@ function qmn_polar_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title, $id );
-	// $question_title = "<div class='mlw_qmn_question polar-question-title'>". do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)) ."</div>";
  	$input_text .= "<div class='left-polar-title'>" . $answers[0][0]. '</div>';
 	$input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
-	$input_text .= '<div id="slider-' . $id . '"></div></div>';
+	$input_text .= '<div id="slider-' . $id . '" '.$slider_date_atts.'></div></div>';
 	$input_text .= "<div class='right-polar-title'>" . $answers[1][0] . '</div>';
-	/*
-	if (strpos($question, '%POLAR_SLIDER%') !== false) {
-	$question = str_replace("%POLAR_SLIDER%", $input_text, do_shortcode(htmlspecialchars_decode($question, ENT_QUOTES)));
-	}*/
 	$question = $input_text;
-	// $question_title = apply_filters('the_content', $question);
 	$question_display .= $question_title . "<span class='mlw_qmn_question question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
-
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
 }
 
