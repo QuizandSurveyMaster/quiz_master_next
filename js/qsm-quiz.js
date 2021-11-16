@@ -1510,34 +1510,11 @@ jQuery(function () {
 
 jQuery(document).ready(function() {
 	qsmPolarSlider('question');
-	// qsmPolarSliderQuestion();
 });
 jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
 	event.preventDefault;
 	qsmPolarSlider('answer');
 });
-
-// function qsmPolarSliderQuestion(){
-// 	jQuery('#slider-6').slider({
-// 		max:15,
-// 		min: 5,
-// 		isRTL: false,
-// 		step: 1,
-// 		value: 15,
-// 		change: function(event, ui) {
-// 			// jQuery('#slider-6').slider( "option", "step", 1 );
-// 			qsmPolarSliderQuestionChange(ui, 15, 5);
-// 		},
-// 		create: function(ui) {
-// 			qsmPolarSliderQuestionCreate(ui);
-// 		}
-// 	});
-// 	var maxHeight = Math.max.apply(null,
-// 		jQuery(".question-section-id-6 .question-type-polar-s > div").map(function() {
-// 		return jQuery(this).height();
-// 	}).get());
-// 	jQuery('.question-section-id-6 .question-type-polar-s').height(maxHeight);
-// }
 
 function qsmPolarSlider(page){
 	let polarQuestions = jQuery('.question-type-polar-s');
