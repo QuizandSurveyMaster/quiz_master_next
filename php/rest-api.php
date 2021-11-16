@@ -387,14 +387,8 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
-			$nonce = 'wp_rest_nonce_' . $request['id'] . '_' . $current_user->ID;
-			if ( ! wp_verify_nonce( $request['rest_nonce'], $nonce ) ) {
-				return array(
-					'status' => 'error',
-					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
-				);
-			}
+		$stop = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
 				$request['emails'] = array();
 			}
@@ -446,14 +440,8 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
-			$nonce = 'wp_rest_nonce_' . $request['id'] . '_' . $current_user->ID;
-			if ( ! wp_verify_nonce( $request['rest_nonce'], $nonce ) ) {
-				return array(
-					'status' => 'error',
-					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
-				);
-			}
+		$stop = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
 				$request['pages'] = array();
 			}
@@ -641,14 +629,8 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
-			$nonce = 'wp_rest_nonce_' . $request['quizID'] . '_' . $current_user->ID;
-			if ( ! wp_verify_nonce( $request['rest_nonce'], $nonce ) ) {
-				return array(
-					'status' => 'error',
-					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
-				);
-			}
+		$stop = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			try {
 				$id                          = intval( $request['id'] );
 				$data                        = array(
@@ -735,4 +717,19 @@ function qsm_rest_get_categories( WP_REST_Request $request ) {
 		'status' => 'error',
 		'msg'	 => __( 'User not logged in', 'quiz-master-next' ),
 	);
+}
+
+/**
+ * Verify user nonce and if error occurs it will return array
+ */
+function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
+	// Makes sure user is logged in.
+	$nonce = 'wp_rest_nonce_' . $id . '_' . $user_id;
+	if ( ! wp_verify_nonce( $rest_nonce, $nonce ) ) {
+		return array(
+			'status' => 'error',
+			'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+		);
+	}
+	return false;
 }
