@@ -120,10 +120,9 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
 
-		$style_quiz_id = intval( $_POST['style_quiz_id'] );
+		$style_quiz_id = intval( sanitize_text_field( $_POST['style_quiz_id'] ) );
 		$quiz_theme    = sanitize_text_field( $_POST['save_quiz_theme'] );
 		$quiz_style    = sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) );
 
@@ -139,6 +138,7 @@ function qsm_options_styling_tab_content() {
 	}
 
 	if ( isset( $_GET['quiz_id'] ) ) {
+		$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();

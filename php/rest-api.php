@@ -388,6 +388,13 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
+			$nonce = 'wp_rest_nonce_' . $request['id'] . '_' . $current_user->ID;
+			if ( ! wp_verify_nonce( $request['rest_nonce'], $nonce ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+				);
+			}
 			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
 				$request['emails'] = array();
 			}
@@ -440,6 +447,13 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
+			$nonce = 'wp_rest_nonce_' . $request['id'] . '_' . $current_user->ID;
+			if ( ! wp_verify_nonce( $request['rest_nonce'], $nonce ) ) {
+				return array(
+					'status' => 'error',
+					'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+				);
+			}
 			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
 				$request['pages'] = array();
 			}

@@ -50,12 +50,13 @@ add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
 function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
-		$user_id = get_current_user_id();
-	$js_data     = array(
-		'quizID'      => $quiz_id,
-		'nonce'       => wp_create_nonce( 'wp_rest' ),
-		'qsm_user_ve' => get_user_meta( $user_id, 'rich_editing', true ),
+	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+	$user_id = get_current_user_id();
+	$js_data = array(
+		'quizID'      		=> $quiz_id,
+		'nonce'      		=> wp_create_nonce( 'wp_rest' ),
+		'qsm_user_ve' 		=> get_user_meta( $user_id, 'rich_editing', true ),
+		'rest_user_nonce' 	=> wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_emails_admin_script', 'qsmEmailsObject', $js_data );
 

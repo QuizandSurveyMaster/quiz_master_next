@@ -49,9 +49,11 @@ function qsm_options_results_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+	$user_id = get_current_user_id();
 	$js_data = array(
-		'quizID' => $quiz_id,
-		'nonce'  => wp_create_nonce( 'wp_rest' ),
+		'quizID' 			=> $quiz_id,
+		'nonce'  			=> wp_create_nonce( 'wp_rest' ),
+		'rest_user_nonce' 	=> wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
 	$categories = array();
