@@ -85,78 +85,13 @@ function qsm_options_emails_tab_content() {
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
 	<div class="qsm-alerts" style="margin-top: 20px;">
 		<?php
-					$mlwQuizMasterNext->alertManager->showAlerts();
+			$mlwQuizMasterNext->alertManager->showAlerts();
 		?>
 	</div>
 </section>
 
 <!-- Templates -->
-<script type="text/template" id="tmpl-email">
-	<div class="qsm-email">
-			<header class="qsm-email-header">
-				<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
-			</header>
-			<main class="qsm-email-content">
-				<div class="email-when">
-					<div class="email-content-header">
-						<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
-						<p><?php esc_html_e( 'Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next' ); ?></p>
-					</div>
-					<div class="email-when-conditions">
-						<!-- Conditions go here. Review template below. -->
-					</div>
-					<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
-				</div>
-				<div class="email-show">
-					<div class="email-content-header">
-						<h4><?php esc_html_e( '...Send', 'quiz-master-next' ); ?></h4>
-						<p><?php esc_html_e( 'Create the email that should be sent when the conditions are met.', 'quiz-master-next' ); ?></p>
-					</div>
-					<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
-					<?php do_action( 'qsm_after_send_email_label' ); ?>
-					<input type="email" class="to-email" value="{{ data.to }}">
-					<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
-					<input type="text" class="subject" value="{{ data.subject }}">
-					<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
-					<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
-					<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
-				</div>
-			</main>
-		</div>
-	</script>
-
-<script type="text/template" id="tmpl-email-condition">
-	<div class="email-condition">
-			<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-			<?php if ( ! empty( $categories ) ) { ?>
-				<select class="email-condition-category">
-					<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
-					<option value="" disabled><?php _e( '---Select Category---', 'quiz-master-next' ); ?></option>
-					<?php foreach ( $categories as $cat ) { ?>
-					<option value="<?php echo esc_attr($cat[0]); ?>" <# if (data.category == '<?php echo esc_attr($cat[0]); ?>') { #>selected<# } #>><?php echo esc_attr($cat[0]); ?></option>
-					<?php } ?>
-					<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
-				</select>
-			<?php } ?>
-			<select class="email-condition-criteria">
-				<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e( 'Total points earned', 'quiz-master-next' ); ?></option>
-				<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
-				<?php do_action( 'qsm_email_condition_criteria' ); ?>
-			</select>
-			<?php do_action( 'qsm_email_extra_condition_fields' ); ?>
-			<select class="email-condition-operator">
-				<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e( 'is equal to', 'quiz-master-next' ); ?></option>
-				<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e( 'is not equal to', 'quiz-master-next' ); ?></option>
-				<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
-				<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e( 'is greater than', 'quiz-master-next' ); ?></option>
-				<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
-				<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e( 'is less than', 'quiz-master-next' ); ?></option>
-				<?php do_action( 'qsm_email_condition_operator' ); ?>
-			</select>
-			<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">
-			<?php do_action( 'qsm_email_condition_value' ); ?>
-		</div>
-	</script>
+<?php add_action('admin_footer', 'qsm_options_emails_tab_template'); ?>
 <!--Template popup-->
 <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
@@ -209,6 +144,83 @@ function qsm_options_emails_tab_content() {
 		</div>
 	</div>
 </div>
+<?php
+}
+
+/**
+ * Adds the email templates that is displayed on the email tab..
+ *
+ * @since 7.3.5
+ */
+function qsm_options_emails_tab_template(){ ?>
+
+<script type="text/template" id="tmpl-email">
+	<div class="qsm-email">
+		<header class="qsm-email-header">
+			<div><button class="delete-email-button"><span class="dashicons dashicons-trash"></span></button></div>
+		</header>
+		<main class="qsm-email-content">
+			<div class="email-when">
+				<div class="email-content-header">
+					<h4><?php esc_html_e( 'When...', 'quiz-master-next' ); ?></h4>
+					<p><?php esc_html_e( 'Set conditions for when this email should be sent. Leave empty to set this as an email that is always sent.', 'quiz-master-next' ); ?></p>
+				</div>
+				<div class="email-when-conditions">
+					<!-- Conditions go here. Review template below. -->
+				</div>
+				<button class="new-condition button"><?php esc_html_e( 'Add additional condition', 'quiz-master-next' ); ?></button>
+			</div>
+			<div class="email-show">
+				<div class="email-content-header">
+					<h4><?php esc_html_e( '...Send', 'quiz-master-next' ); ?></h4>
+					<p><?php esc_html_e( 'Create the email that should be sent when the conditions are met.', 'quiz-master-next' ); ?></p>
+				</div>
+				<label><?php esc_html_e( 'Who to send the email to? Put %USER_EMAIL% to send to user', 'quiz-master-next' ); ?></label>
+				<?php do_action( 'qsm_after_send_email_label' ); ?>
+				<input type="email" class="to-email" value="{{ data.to }}">
+				<label><?php esc_html_e( 'Email Subject', 'quiz-master-next' ); ?></label>
+				<input type="text" class="subject" value="{{ data.subject }}">
+				<label><?php esc_html_e( 'Email Content', 'quiz-master-next' ); ?></label>
+				<textarea id="email-template-{{ data.id }}" class="email-template">{{{ data.content }}}</textarea>
+				<label><input type="checkbox" class="reply-to" <# if ( "true" == data.replyTo || true == data.replyTo ) { #>checked<# } #>>Add user email as Reply-To</label>
+			</div>
+		</main>
+	</div>
+</script>
+
+<script type="text/template" id="tmpl-email-condition">
+	<div class="email-condition">
+		<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
+		<?php if ( ! empty( $categories ) ) { ?>
+			<select class="email-condition-category">
+				<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
+				<option value="" disabled><?php _e( '---Select Category---', 'quiz-master-next' ); ?></option>
+				<?php foreach ( $categories as $cat ) { ?>
+				<option value="<?php echo esc_attr($cat[0]); ?>" <# if (data.category == '<?php echo esc_attr($cat[0]); ?>') { #>selected<# } #>><?php echo esc_attr($cat[0]); ?></option>
+				<?php } ?>
+				<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
+			</select>
+		<?php } ?>
+		<select class="email-condition-criteria">
+			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e( 'Total points earned', 'quiz-master-next' ); ?></option>
+			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
+			<?php do_action( 'qsm_email_condition_criteria' ); ?>
+		</select>
+		<?php do_action( 'qsm_email_extra_condition_fields' ); ?>
+		<select class="email-condition-operator">
+			<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e( 'is equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e( 'is not equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e( 'is greater than', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e( 'is less than', 'quiz-master-next' ); ?></option>
+			<?php do_action( 'qsm_email_condition_operator' ); ?>
+		</select>
+		<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">
+		<?php do_action( 'qsm_email_condition_value' ); ?>
+	</div>
+</script>
+
 <?php
 }
 ?>

@@ -234,15 +234,24 @@ function qsm_generate_quiz_options() {
 		</div>
 	</div>
 </div>
-
 <!-- Backbone Views -->
+<?php
+	add_action('admin_footer', 'qsm_quiz_options_notice_template');
+}
 
-<!-- View for Notices -->
-<script type="text/template" id="tmpl-notice">
-	<div class="notice notice-large notice-{{data.type}}">
+/**
+ * Adds the quiz option notice templates to the option tab.
+ *
+ * @since 7.3.5
+ */
+function qsm_quiz_options_notice_template(){
+	?>
+	<!-- View for Notices -->
+	<script type="text/template" id="tmpl-notice">
+		<div class="notice notice-large notice-{{data.type}}">
 			<p>{{data.message}}</p>
 		</div>
 	</script>
-<?php
+	<?php
 }
 ?>

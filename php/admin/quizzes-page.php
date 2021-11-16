@@ -702,51 +702,9 @@ function qsm_generate_quizzes_surveys_page() {
 			</div>
 		</div>
 	</div>
-
-	<!-- Templates -->
-	<script type="text/template" id="tmpl-no-quiz">
-		<div class="qsm-no-quiz-wrapper">
-				<span class="dashicons dashicons-format-chat"></span>
-				<h2><?php _e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
-				<div class="buttons">
-					<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
-					<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
-				</div>
-				<h3><?php _e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
-				<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-			</div>
-		</script>
-
-	<script type="text/template" id="tmpl-quiz-row">
-		<tr class="qsm-quiz-row" data-id="{{ data.id }}">
-			<td class="post-title column-title">
-			<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }} <b style="color: #222; text-transform: capitalize;">{{ data.post_status }}</b></a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
-			<div class="row-actions">
-			<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> |
-			<a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> |
-			<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> |
-			<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a> |
-			<a class="qsm-action-link" target="_blank" href="{{ data.link }}"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
-			</div>
-			</td>
-			<td>
-			<p class="sc-opener"><span class="dashicons dashicons-editor-contract"></span> Embed</p>
-			<div class="sc-content">[qsm quiz={{ data.id }}]</div>
-			<p class="sc-opener"><span class="dashicons dashicons-admin-links"></span> Link</p>
-			<div class="sc-content">[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</div>
-			</td>
-			<td>
-			{{ data.views }}/{{ data.taken }}
-			<div class="row-actions">
-			<a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a> |
-			<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id={{ data.id }}"><?php _e( 'Results', 'quiz-master-next' ); ?></a>
-			</div>
-			</td>
-			<td><abbr title="{{ data.lastActivityDateTime }}">{{ data.lastActivity }}</abbr></td>
-			</tr>
-		</script>
 </div>
 <?php
+add_action('admin_footer', 'qsm_generate_quizzes_surveys_page_template');
 }
 
 /**
@@ -784,5 +742,57 @@ function qsm_set_screen_option( $status, $option, $value ) {
 	if ( 'qsm_per_page' == $option ) {
 		return $value;
 	}
+}
+
+/**
+ * Generates the quizzes and surveys page templates
+ *
+ * @since 7.3.5
+ */
+function qsm_generate_quizzes_surveys_page_template(){
+	?>
+	<!-- Templates -->
+	<script type="text/template" id="tmpl-no-quiz">
+		<div class="qsm-no-quiz-wrapper">
+				<span class="dashicons dashicons-format-chat"></span>
+				<h2><?php _e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
+				<div class="buttons">
+					<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
+				</div>
+				<h3><?php _e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
+				<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/coE5W_WB-48" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</div>
+		</script>
+
+	<script type="text/template" id="tmpl-quiz-row">
+		<tr class="qsm-quiz-row" data-id="{{ data.id }}">
+			<td class="post-title column-title">
+				<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}" aria-label="{{ data.name }}">{{ data.name }} <b style="color: #222; text-transform: capitalize;">{{ data.post_status }}</b></a><a target="_blank" class="quiz-preview-link" href="{{ data.link }}"><span class="dashicons dashicons-external"></span></a>
+				<div class="row-actions">
+					<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php _e( 'Edit', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php _e( 'Post Settings', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link qsm-action-link-delete" href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link" target="_blank" href="{{ data.link }}"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
+				</div>
+			</td>
+			<td>
+				<p class="sc-opener"><span class="dashicons dashicons-editor-contract"></span> Embed</p>
+				<div class="sc-content">[qsm quiz={{ data.id }}]</div>
+				<p class="sc-opener"><span class="dashicons dashicons-admin-links"></span> Link</p>
+				<div class="sc-content">[qsm_link id={{ data.id }}]<?php _e( 'Click here', 'quiz-master-next' ); ?>[/qsm_link]</div>
+			</td>
+			<td>
+				{{ data.views }}/{{ data.taken }}
+				<div class="row-actions">
+					<a class="qsm-action-link qsm-action-link-reset" href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id={{ data.id }}"><?php _e( 'Results', 'quiz-master-next' ); ?></a>
+				</div>
+			</td>
+			<td><abbr title="{{ data.lastActivityDateTime }}">{{ data.lastActivity }}</abbr></td>
+		</tr>
+	</script>
+	<?php
 }
 ?>

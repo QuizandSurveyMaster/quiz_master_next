@@ -787,22 +787,22 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @param array $quiz_data The array of quiz data.
 	 * @return string The HTML for the pages
 	 */
-	public function display_pages( $options, $quiz_data ) {
-		global $mlwQuizMasterNext;
-		global $qmn_json_data;
-		ob_start();
-		$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-		$qpages                 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-		$questions              = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		$question_list          = '';
-		$contact_fields         = QSM_Contact_Manager::load_fields();
-		$animation_effect       = isset( $options->quiz_animation ) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
-		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && $options->enable_pagination_quiz == 1 ? true : false;
-		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
-			$qmn_json_data['first_page'] = true;
-			$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
-			$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
-			?>
+public function display_pages( $options, $quiz_data ) {
+	global $mlwQuizMasterNext;
+	global $qmn_json_data;
+	ob_start();
+	$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+	$qpages                 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$questions              = QSM_Questions::load_questions_by_pages( $options->quiz_id );
+	$question_list          = '';
+	$contact_fields         = QSM_Contact_Manager::load_fields();
+	$animation_effect       = isset( $options->quiz_animation ) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
+	$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && $options->enable_pagination_quiz == 1 ? true : false;
+	if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
+		$qmn_json_data['first_page'] = true;
+		$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
+		$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
+		?>
 <section class="qsm-page <?php echo esc_attr( $animation_effect ); ?>">
 	<div class="quiz_section quiz_begin">
 		<div class='qsm-before-message mlw_qmn_message_before'>
@@ -990,28 +990,38 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			?>
 	</div>
 	<?php
-				// Legacy code.
-				do_action( 'mlw_qmn_end_quiz_section' );
-			?>
+		// Legacy code.
+		do_action( 'mlw_qmn_end_quiz_section' );
+	?>
 </section>
 <?php
-		}
-		do_action( 'qsm_after_all_section' );
-		?>
-<!-- View for pagination -->
-<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
-	<div class="qsm-pagination qmn_pagination border margin-bottom">
+}
+do_action( 'qsm_after_all_section' );
+	/**
+ * quiz display page templates
+ *
+ * @since 7.3.5
+ */
+add_action( 'wp_footer', function () use ($options) {
+	?>
+	<!-- View for pagination -->
+	<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
+		<div class="qsm-pagination qmn_pagination border margin-bottom">
 			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_attr( sanitize_text_field( $options->previous_button_text ) ); ?></a>
 			<span class="qmn_page_message"></span>
 			<div class="qmn_page_counter_message"></div>
 			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
 			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_attr( sanitize_text_field( $options->next_button_text ) ); ?></a>
 			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( sanitize_text_field( $options->submit_button_text ) ); ?>' />
-			</div>
-		</script>
+		</div>
+	</script>
+<?php
+});
+?>
 <input type='hidden' name='qmn_question_list' value='<?php echo esc_attr( $question_list ); ?>' />
 <?php
-		return ob_get_clean();
+
+	return ob_get_clean();
 	}
 
 	/**
@@ -2621,3 +2631,4 @@ add_filter(
 		return $exts;
 	}
 );
+
