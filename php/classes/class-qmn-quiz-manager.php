@@ -1643,7 +1643,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
-							print_r($results_array);die;
 							if ( isset( $results_array['question_type'] ) && $results_array['question_type'] == 'file_upload' ) {
 								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
 							}
