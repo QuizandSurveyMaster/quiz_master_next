@@ -1512,7 +1512,7 @@ jQuery(document).ready(function() {
 	qsmPolarSlider('question');
 });
 jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
-	event.preventDefault;
+	event.preventDefault();
 	qsmPolarSlider('answer');
 });
 
