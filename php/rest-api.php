@@ -387,7 +387,8 @@ function qsm_rest_save_emails( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
+		$stop = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			if ( ! isset( $request['emails'] ) || ! is_array( $request['emails'] ) ) {
 				$request['emails'] = array();
 			}
@@ -439,7 +440,8 @@ function qsm_rest_save_results( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
+		$stop = qsm_verify_rest_user_nonce( $request['id'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			if ( ! isset( $request['pages'] ) || ! is_array( $request['pages'] ) ) {
 				$request['pages'] = array();
 			}
@@ -468,6 +470,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$question = QSM_Questions::load_question( $request['id'] );
+			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);			
 			if ( ! empty( $question ) ) {
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 				$question         = array(
@@ -478,7 +481,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 					'answerInfo'     => $question['question_answer_info'],
 					'comments'       => $question['comments'],
 					'hint'           => $question['hints'],
-					'category'       => $question['category'],
+					'category'       => (isset($categorysArray['category_name']) && !empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']):"" ) ,
 					'multicategories'=> $question['multicategories'],
 					'required'       => $question['settings']['required'],
 					'answers'        => $question['answers'],
@@ -623,11 +626,11 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
  * @return array An array that contains the key 'id' for the new question.
  */
 function qsm_rest_save_question( WP_REST_Request $request ) {
-
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-		if ( 0 !== $current_user ) {
+		$stop = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
+		if ( ! $stop ) {
 			try {
 				$id                          = intval( $request['id'] );
 				$data                        = array(
@@ -636,7 +639,7 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					'name'        => $request['name'],
 					'answer_info' => $request['answerInfo'],
 					'comments'    => $request['comments'],
-					'hint'        => $request['hint'],
+					'hint'        => preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $request['hint'] ),
 					'order'       => 1,
 					'category'    => $request['category'],
 					'multicategories'   => $request['multicategories'],
@@ -714,4 +717,19 @@ function qsm_rest_get_categories( WP_REST_Request $request ) {
 		'status' => 'error',
 		'msg'	 => __( 'User not logged in', 'quiz-master-next' ),
 	);
+}
+
+/**
+ * Verify user nonce and if error occurs it will return array
+ */
+function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
+	// Makes sure user is logged in.
+	$nonce = 'wp_rest_nonce_' . $id . '_' . $user_id;
+	if ( ! wp_verify_nonce( $rest_nonce, $nonce ) ) {
+		return array(
+			'status' => 'error',
+			'msg'    => __( 'Unauthorized!', 'quiz-master-next' ),
+		);
+	}
+	return false;
 }

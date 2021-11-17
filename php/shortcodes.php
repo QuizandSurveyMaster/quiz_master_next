@@ -186,18 +186,18 @@ function qsm_generate_fb_header_metadata() {
 			if ( empty( $get_fb_sharing_image ) ) {
 				$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
 			}
-			if ( $get_fb_sharing_image !== '' ) {
+			if ( $get_fb_sharing_image !== '' && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
 				$default_fb_image = $get_fb_sharing_image;
 			}
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
 			?>
-<meta property="og:url" content="<?php echo $sharing_page_id . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
+<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="<?php echo $pagename; ?>" />
-<meta property="og:description" content="<?php echo $sharing; ?>" />
-<meta property="og:image" content="<?php echo $default_fb_image; ?>" />
-<meta property="fb:app_id" content="<?php echo $facebook_app_id; ?>" />
+<meta property="og:title" content="<?php echo esc_attr( $pagename ); ?>" />
+<meta property="og:description" content="<?php echo esc_attr( $sharing ); ?>" />
+<meta property="og:image" content="<?php echo esc_url( $default_fb_image ); ?>" />
+<meta property="fb:app_id" content="<?php echo esc_attr( $facebook_app_id ); ?>" />
 <?php
 		}
 	}

@@ -43,7 +43,7 @@ function qsm_show_adverts() {
                 $ad_text = str_replace('[link]', $link, $all_ads['ads'][$rand_int]['text']);
 		?>
 <div class="help-decide">
-	<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?>
+	<p><?php echo wp_kses_post( $ad_text ) . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?>
 	</p>
 </div>
 <?php

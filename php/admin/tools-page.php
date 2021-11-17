@@ -109,7 +109,7 @@ function qsm_restore_function() {
 			<?php
 			foreach ( $quizzes as $quiz ) {
 				?>
-				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo esc_html( $quiz->quiz_name ); ?></option>
+				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo wp_kses_post( $quiz->quiz_name ); ?></option>
 				<?php
 			}
 			?>
@@ -133,7 +133,7 @@ function qsm_audit_box() {
 	// If user has gone to the next audit page, load current page and beginning.
 	// Else, start at 0.
 	if ( isset( $_GET['audit_page'] ) ) {
-		$page  = intval( $_GET['audit_page'] ) + 1;
+		$page  = intval( sanitize_text_field( $_GET['audit_page'] ) ) + 1;
 		$begin = $table_limit * $begin;
 	} else {
 		$page  = 0;

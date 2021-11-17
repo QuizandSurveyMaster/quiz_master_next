@@ -274,10 +274,9 @@ class QSM_Quiz_Settings
             $this->settings[ $setting ] = $serialized_value;   
             // Update the database.
             global $wpdb;
-            $serialized_settings = serialize( $this->settings );        
             $results = $wpdb->update(
               $wpdb->prefix . 'mlw_quizzes',
-              array( 'quiz_settings' => $serialized_settings ),
+              array( 'quiz_settings' => maybe_serialize( $this->settings ) ),
               array( 'quiz_id' => $this->quiz_id ),
               array( '%s' ),
               array( '%d' )
@@ -289,169 +288,161 @@ class QSM_Quiz_Settings
               return true;
             }
 
-      }
+	}
 
-  /**
-   * Loads the settings for the quiz
-   *
-   * @since 5.0.0
-   */
-  private function load_settings() {
+	/**
+	 * Loads the settings for the quiz
+	 *
+	 * @since 5.0.0
+	 */
+	private function load_settings() {
 
 		global $wpdb;
 		$settings_array = array();
 
-    // Loads the settings from the database
-    $settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
+		// Loads the settings from the database
+		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
 
-    // Unserializes array
+		// Unserializes array
 		if ( is_serialized( $settings ) && is_array( @unserialize( $settings ) ) ) {
 			$settings_array = @unserialize( $settings );
 		}
 
-    // If the value is not an array, create an empty array
+		// If the value is not an array, create an empty array
 		if ( ! is_array( $settings_array ) ) {
-      $settings_array = array();
+			$settings_array = array();
 		}
 
-    // If some options are missing
-    if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array["quiz_text"] ) || ! isset( $settings_array["quiz_leaderboards"] ) ) {
+		// If some options are missing
+		if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array["quiz_text"] ) || ! isset( $settings_array["quiz_leaderboards"] ) ) {
 
-      // Load the old options system
-      $quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
+			// Load the old options system
+			$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
 
-      // If no leadboard is present
-      if ( ! isset( $settings_array["quiz_leaderboards"] ) ) {
+			// If no leadboard is present
+			if ( ! isset( $settings_array["quiz_leaderboards"] ) ) {
 
-        $settings_array["quiz_leaderboards"] = serialize( array(
-          'template' => $quiz_options->leaderboard_template
-        ) );
-      }
+				$settings_array["quiz_leaderboards"] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
+			}
 
-      // If no options are present
-      if ( ! isset( $settings_array['quiz_options'] ) ) {
+			// If no options are present
+			if ( ! isset( $settings_array['quiz_options'] ) ) {
 
-        // Sets up older scheduled timeframe settings
-        if ( is_serialized( $quiz_options->scheduled_timeframe) && is_array( @unserialize( $quiz_options->scheduled_timeframe ) ) ) {
-          $scheduled_timeframe = @unserialize( $quiz_options->scheduled_timeframe );
-        } else {
-          $scheduled_timeframe = array(
-            'start' => '',
-            'end' => ''
-          );
-        }
+				// Sets up older scheduled timeframe settings
+				if ( is_serialized( $quiz_options->scheduled_timeframe ) && is_array( @unserialize( $quiz_options->scheduled_timeframe ) ) ) {
+					$scheduled_timeframe = @unserialize( $quiz_options->scheduled_timeframe );
+				} else {
+					$scheduled_timeframe = array(
+						'start'	 => '',
+						'end'	 => ''
+					);
+				}
 
-        // Prepares new quiz_options section's settings
-        $settings_array['quiz_options'] = serialize( array(
-          'system' => $quiz_options->quiz_system,
-  				'loggedin_user_contact' => $quiz_options->loggedin_user_contact,
-  				'contact_info_location' => $quiz_options->contact_info_location,
-  				'user_name' => $quiz_options->user_name,
-  				'user_comp' => $quiz_options->user_comp,
-  				'user_email' => $quiz_options->user_email,
-  				'user_phone' => $quiz_options->user_phone,
-  				'comment_section' => $quiz_options->comment_section,
-  				'randomness_order' => $quiz_options->randomness_order,
-  				'question_from_total' => $quiz_options->question_from_total,
-          'question_per_category' => $quiz_options->question_per_category,
-  				'total_user_tries' => $quiz_options->total_user_tries,
-  				'social_media' => $quiz_options->social_media,
-  				'pagination' => $quiz_options->pagination,
-  				'timer_limit' => $quiz_options->timer_limit,
-  				'question_numbering' => $quiz_options->question_numbering,
-  				'require_log_in' => $quiz_options->require_log_in,
-  				'limit_total_entries' => $quiz_options->limit_total_entries,
-          'scheduled_time_start'=> $scheduled_timeframe["start"],
-  				'scheduled_time_end' => $scheduled_timeframe["end"],
-  				'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
-  				'ajax_show_correct' => $quiz_options->ajax_show_correct ,
-          'preferred_date_format'=>$quiz_options->preferred_date_format
-        ) );
-      }
+				// Prepares new quiz_options section's settings
+				$settings_array['quiz_options'] = maybe_serialize( array(
+					'system'					 => $quiz_options->quiz_system,
+					'loggedin_user_contact'		 => $quiz_options->loggedin_user_contact,
+					'contact_info_location'		 => $quiz_options->contact_info_location,
+					'user_name'					 => $quiz_options->user_name,
+					'user_comp'					 => $quiz_options->user_comp,
+					'user_email'				 => $quiz_options->user_email,
+					'user_phone'				 => $quiz_options->user_phone,
+					'comment_section'			 => $quiz_options->comment_section,
+					'randomness_order'			 => $quiz_options->randomness_order,
+					'question_from_total'		 => $quiz_options->question_from_total,
+					'question_per_category'		 => $quiz_options->question_per_category,
+					'total_user_tries'			 => $quiz_options->total_user_tries,
+					'social_media'				 => $quiz_options->social_media,
+					'pagination'				 => $quiz_options->pagination,
+					'timer_limit'				 => $quiz_options->timer_limit,
+					'question_numbering'		 => $quiz_options->question_numbering,
+					'require_log_in'			 => $quiz_options->require_log_in,
+					'limit_total_entries'		 => $quiz_options->limit_total_entries,
+					'scheduled_time_start'		 => $scheduled_timeframe["start"],
+					'scheduled_time_end'		 => $scheduled_timeframe["end"],
+					'disable_answer_onselect'	 => $quiz_options->disable_answer_onselect,
+					'ajax_show_correct'			 => $quiz_options->ajax_show_correct,
+					'preferred_date_format'		 => $quiz_options->preferred_date_format
+					) );
+			}
 
-      // If no text is present
-      if ( ! isset( $settings_array["quiz_text"] ) ) {
+			// If no text is present
+			if ( ! isset( $settings_array["quiz_text"] ) ) {
 
-        // Sets up older pagination text
-        if ( is_serialized( $quiz_options->pagination_text) && is_array( @unserialize( $quiz_options->pagination_text ) ) ) {
-          $pagination_text = @unserialize( $quiz_options->pagination_text );
-        } else {
-          $pagination_text = array(
-            __( 'Previous', 'quiz-master-next' ),
-            __( 'Next', 'quiz-master-next' )
-          );
-        }
+				// Sets up older pagination text
+				if ( is_serialized( $quiz_options->pagination_text ) && is_array( @unserialize( $quiz_options->pagination_text ) ) ) {
+					$pagination_text = @unserialize( $quiz_options->pagination_text );
+				} else {
+					$pagination_text = array(
+						__( 'Previous', 'quiz-master-next' ),
+						__( 'Next', 'quiz-master-next' )
+					);
+				}
 
-        // Sets up older social sharing text
-        if ( is_serialized( $quiz_options->social_media_text) && is_array( @unserialize( $quiz_options->social_media_text ) ) ) {
-          $social_media_text = @unserialize( $quiz_options->social_media_text );
-        } else {
-          $social_media_text = array(
-            'twitter' => $quiz_options->social_media_text,
-            'facebook' => $quiz_options->social_media_text
+				// Sets up older social sharing text
+				if ( is_serialized( $quiz_options->social_media_text ) && is_array( @unserialize( $quiz_options->social_media_text ) ) ) {
+					$social_media_text = @unserialize( $quiz_options->social_media_text );
+				} else {
+					$social_media_text = array(
+						'twitter'	 => $quiz_options->social_media_text,
+						'facebook'	 => $quiz_options->social_media_text
+					);
+				}
 
-          );
-        }
+				// Prepares new quiz_text section's settings
+				$settings_array["quiz_text"] = maybe_serialize( array(
+					'message_before'			 => $quiz_options->message_before,
+					'message_comment'			 => $quiz_options->message_comment,
+					'message_end_template'		 => $quiz_options->message_end_template,
+					'comment_field_text'		 => $quiz_options->comment_field_text,
+					'question_answer_template'	 => $quiz_options->question_answer_template,
+					'submit_button_text'		 => $quiz_options->submit_button_text,
+					'name_field_text'			 => $quiz_options->name_field_text,
+					'business_field_text'		 => $quiz_options->business_field_text,
+					'email_field_text'			 => $quiz_options->email_field_text,
+					'phone_field_text'			 => $quiz_options->phone_field_text,
+					'total_user_tries_text'		 => $quiz_options->total_user_tries_text,
+					'twitter_sharing_text'		 => $social_media_text["twitter"],
+					'facebook_sharing_text'		 => $social_media_text["facebook"],
+					'previous_button_text'		 => $pagination_text[0],
+					'next_button_text'			 => $pagination_text[1],
+					'require_log_in_text'		 => $quiz_options->require_log_in_text,
+					'limit_total_entries_text'	 => $quiz_options->limit_total_entries_text,
+					'scheduled_timeframe_text'	 => $quiz_options->scheduled_timeframe_text
+					) );
+			}
 
-        // Prepares new quiz_text section's settings
-        $settings_array["quiz_text"] = serialize( array(
-          'message_before' => $quiz_options->message_before,
-  				'message_comment' => $quiz_options->message_comment,
-  				'message_end_template' => $quiz_options->message_end_template,
-  				'comment_field_text' => $quiz_options->comment_field_text,
-  				'question_answer_template' => $quiz_options->question_answer_template,
-  				'submit_button_text' => $quiz_options->submit_button_text,
-  				'name_field_text' => $quiz_options->name_field_text,
-  				'business_field_text' => $quiz_options->business_field_text,
-  				'email_field_text' => $quiz_options->email_field_text,
-  				'phone_field_text' => $quiz_options->phone_field_text,
-  				'total_user_tries_text' => $quiz_options->total_user_tries_text,
-  				'twitter_sharing_text' => $social_media_text["twitter"],
-          'facebook_sharing_text' => $social_media_text["facebook"],
-  				'previous_button_text' => $pagination_text[0],
-          'next_button_text' => $pagination_text[1],
-  				'require_log_in_text' => $quiz_options->require_log_in_text,
-  				'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
-  				'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text
-        ) );
-      }
+			// Update new settings system
+			$results			 = $wpdb->update(
+				$wpdb->prefix . "mlw_quizzes", array( 'quiz_settings' => maybe_serialize( $settings_array ) ), array( 'quiz_id' => $this->quiz_id ), array( '%s' ), array( '%d' )
+			);
+		}
 
-      // Update new settings system
-      $serialized_array = serialize( $settings_array );
-      $results = $wpdb->update(
-  			$wpdb->prefix . "mlw_quizzes",
-  			array( 'quiz_settings' => $serialized_array ),
-  			array( 'quiz_id' => $this->quiz_id ),
-  			array( '%s' ),
-  			array( '%d' )
-  		);
-    }
+		// Cycle through registered settings
+		$registered_fields = $this->registered_fields;
+		foreach ( $registered_fields as $section => $fields ) {
 
-    // Cycle through registered settings
-    $registered_fields = $this->registered_fields;
-    foreach ( $registered_fields as $section => $fields ) {
+			// Check if section exists in settings and, if not, set it to empty array
+			if ( ! isset( $settings_array[$section] ) ) {
+				$settings_array[$section] = array();
+			}
 
-      // Check if section exists in settings and, if not, set it to empty array
-      if ( ! isset( $settings_array[ $section ] ) ) {
-        $settings_array[ $section ] = array();
-      }
+			$unserialized_section = maybe_unserialize( $settings_array[$section] );
 
-      $unserialized_section = unserialize( $settings_array[ $section ] );
+			// Cycle through each setting in section
+			foreach ( $fields as $field ) {
 
-      // Cycle through each setting in section
-      foreach ( $fields as $field ) {
+				// Check if setting exists in section settings and, if not, set it to the default
+				if ( ! isset( $unserialized_section[$field["id"]] ) ) {
+					$unserialized_section[$field["id"]] = $field["default"];
+				}
+			}
 
-        // Check if setting exists in section settings and, if not, set it to the default
-        if ( ! isset( $unserialized_section[ $field["id"] ] ) ) {
-          $unserialized_section[ $field["id"] ] = $field["default"];
-        }
-      }
+			$settings_array[$section] = maybe_serialize( $unserialized_section );
+		}
 
-      $settings_array[ $section ] = serialize( $unserialized_section );
-    }
-
-    $this->settings = $settings_array;
-  }
+		$this->settings = $settings_array;
+	}
 
 	/**
 	 * Loads the old object model of options for backwards compatibility

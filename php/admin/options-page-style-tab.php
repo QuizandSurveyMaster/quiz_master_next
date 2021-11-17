@@ -8,6 +8,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_style($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
+		return;
+	}
+	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
+		global $mlwQuizMasterNext;
+		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
+		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_media();
+	}
+
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style', 20);
+
+/**
+ * This function adds the inline scripts for quiz options style tab
+ *
+ * @since 7.3.5
+ */
+
+/**
  * Adds the Style tab to the Quiz Settings page.
  *
  * @return void
@@ -29,14 +54,11 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	$quiz_id = intval( $_GET['quiz_id'] );
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == $_POST['save_style_options'] ) {
 
-		$style_quiz_id = intval( $_POST['style_quiz_id'] );
+		$style_quiz_id = intval( sanitize_text_field( $_POST['style_quiz_id'] ) );
 		$quiz_theme    = sanitize_text_field( $_POST['save_quiz_theme'] );
-		$quiz_style    = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST['quiz_css'] ), ENT_QUOTES ) );
+		$quiz_style    = sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) );
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
@@ -50,28 +72,11 @@ function qsm_options_styling_tab_content() {
 	}
 
 	if ( isset( $_GET['quiz_id'] ) ) {
+		$quiz_id = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 		$mlw_quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 	}
 	$registered_templates = $mlwQuizMasterNext->pluginHelper->get_quiz_templates();
 	?>
-<script>
-function mlw_qmn_theme(theme) {
-	document.getElementById('save_quiz_theme').value = theme;
-	jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
-	jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
-
-}
-jQuery(document).ready(function() {
-	jQuery('.quiz_style_tab').click(function(e) {
-		e.preventDefault();
-		var current_id = jQuery(this).attr('data-id');
-		jQuery('.quiz_style_tab').removeClass('current');
-		jQuery(this).addClass('current');
-		jQuery('.quiz_style_tab_content').hide();
-		jQuery('#' + current_id).show();
-	});
-});
-</script>
 
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
@@ -93,51 +98,17 @@ jQuery(document).ready(function() {
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
-	// Include required custom js and css
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	wp_enqueue_script( 'qsm_theme_color_js', plugins_url( '../../js/qsm-theme-color.js', __FILE__ ), array( 'jquery', 'wp-color-picker', 'micromodal_script' ), $mlwQuizMasterNext->version );
-	wp_enqueue_style( 'wp-color-picker' );
-	wp_enqueue_style( 'qsm_admin_style', plugins_url( '../../css/qsm-admin.css', __FILE__ ) );
-	wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-	wp_enqueue_media();
-	?>
-	<script type="text/javascript">
-	jQuery(document).ready(function() {
-		jQuery(document).on('click', '.qsm-activate-theme', function() {
-			jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
-		});
-		jQuery(document).on('input', '.quiz_featured_image', function() {
-			jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
-		});
-
-		jQuery(document).on('click', '.filter-links a', function() {
-			current_id = jQuery(this).attr('data-id');
-			jQuery(this).parents('.filter-links').find('li a').each(function() {
-				jQuery(this).removeClass('current');
-			});
-			jQuery(this).addClass('current');
-			jQuery(this).parents('#qsm_themes').find('.themes-container').children('div').each(function() {
-				if (jQuery(this).hasClass(current_id)) {
-					jQuery(this).show();
-				} else {
-					jQuery(this).hide();
-				}
-			});
-		})
-	});
-	</script>
-	<?php
 	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( $_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration' ) ) {
-		$quiz_id  = (int) $_GET['quiz_id'];
-		$theme_id = (int) $_POST['quiz_theme_id'];
+		$quiz_id  = (int) sanitize_text_field( $_GET['quiz_id'] );
+		$theme_id = (int) sanitize_text_field( $_POST['quiz_theme_id'] );
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
-		if ( $_POST['save_featured_image'] == 'Save' ) {
+		if (isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved For Quiz Number $quiz_id" );
 		}
-		$featured_image = isset( $_POST['quiz_featured_image'] ) ? trim( $_POST['quiz_featured_image'] ) : '';
+		$featured_image = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( $_POST['quiz_featured_image'] ) : '';
 		if ( ! empty( $quiz_id ) ) {
 			update_option( "quiz_featured_image_$quiz_id", $featured_image );
 		}
@@ -156,7 +127,7 @@ jQuery(document).ready(function() {
 		unset( $_POST['_wp_http_referer'] );
 		$settings_array = array();
 		array_map( 'sanitize_text_field', $_POST['settings'] );
-		$settings_array = serialize( $_POST['settings'] );
+		$settings_array = maybe_serialize( $_POST['settings'] );
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings(
 			$quiz_id,
 			$saved_quiz_theme,
@@ -225,9 +196,9 @@ jQuery(document).ready(function() {
 		</div>
 		<div class="theme-featured-image" style="display:none;">
 			<input type="text" class="quiz_featured_image" name="quiz_featured_image"
-				value="<?php echo $featured_image; ?>" />
+				value="<?php echo esc_url( $featured_image ); ?>" />
 			<a id="set_featured_image" class="button "><?php _e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
-			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo $featured_image; ?>"><br>
+			<br><img alt="" class="qsm_featured_image_preview" src="<?php echo esc_url( $featured_image ); ?>"><br>
 			<input type="submit" name="save_featured_image" class="button button-primary"
 				value="<?php _e( 'Save', 'quiz-master-next' ); ?>" />
 
@@ -256,26 +227,20 @@ jQuery(document).ready(function() {
 			<?php
 			foreach ( $registered_templates as $slug => $template ) {
 				?>
-			<div onclick="mlw_qmn_theme('<?php echo $slug; ?>');" id="mlw_qmn_theme_block_<?php echo $slug; ?>" class="qsm-info-widget 
-													<?php
-													if ( $mlw_quiz_options->theme_selected == $slug ) {
-																echo 'mlw_qmn_themeBlockActive';
-													}
-													?>
-		"><?php echo $template['name']; ?></div>
+			<div onclick="mlw_qmn_theme('<?php echo esc_attr( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected == $slug ) ? 'mlw_qmn_themeBlockActive' : '';?> "><?php echo esc_attr($template['name']); ?></div>
 			<?php
 			}
 			?>
-			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget 
+			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget
 			<?php
 			if ( $mlw_quiz_options->theme_selected == 'default' ) {
 					echo 'mlw_qmn_themeBlockActive';
 			}
 			?>
 	"><?php _e( 'Custom', 'quiz-master-next' ); ?></div>
-			<script>
-			mlw_qmn_theme('<?php echo $mlw_quiz_options->theme_selected; ?>');
-			</script>
+			<?php
+			wp_add_inline_script('qmn_admin_js', 'mlw_qmn_theme(\''.$mlw_quiz_options->theme_selected.'\')' );
+			?>
 		</div>
 		<button id="save_styles_button" class="button-primary">
 			<?php _e( 'Save Quiz Style', 'quiz-master-next' ); ?>
@@ -290,7 +255,7 @@ jQuery(document).ready(function() {
 		<table class="form-table">
 			<tr>
 				<td><textarea style="width: 100%; height: 700px;" id="quiz_css"
-						name="quiz_css"><?php echo $mlw_quiz_options->quiz_stye; ?></textarea></td>
+						name="quiz_css"><?php echo preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $mlw_quiz_options->quiz_stye ); ?></textarea></td>
 			</tr>
 		</table>
 		<?php wp_nonce_field( 'qsm_style_tab_nonce_action', 'qsm_style_tab_nonce' ); ?>
@@ -320,17 +285,17 @@ jQuery(document).ready(function() {
 								?>
 						<tr valign="top">
 							<th scope="row" class="qsm-opt-tr">
-								<label for="form_type"><?php echo $theme_val['label']; ?></label>
-								<input type="hidden" name="settings[<?php echo $i; ?>][label]"
-									value="<?php echo $theme_val['label']; ?>">
-								<input type="hidden" name="settings[<?php echo $i; ?>][id]"
-									value="<?php echo $theme_val['id']; ?>">
-								<input type="hidden" name="settings[<?php echo $i; ?>][type]" value="color">
+								<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][label]"
+									value="<?php echo esc_attr( $theme_val['label'] ); ?>">
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][id]"
+									value="<?php echo esc_attr( $theme_val['id'] ); ?>">
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][type]" value="color">
 							</th>
 							<td>
-								<input name="settings[<?php echo $i; ?>][default]" type="text"
-									value="<?php echo $theme_val['default']; ?>"
-									data-default-color="<?php echo $theme_val['default']; ?>" class="my-color-field" />
+								<input name="settings[<?php echo esc_attr( $i ); ?>][default]" type="text"
+									value="<?php echo esc_attr( $theme_val['default'] ); ?>"
+									data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
 							</td>
 						</tr>
 						<?php
@@ -361,7 +326,7 @@ jQuery(document).ready(function() {
 <?php
 }
 
-					add_action( 'admin_menu', 'qsm_register_theme_Setting_submenu_page' );
+add_action( 'admin_menu', 'qsm_register_theme_Setting_submenu_page' );
 
 function qsm_register_theme_Setting_submenu_page() {
 	add_submenu_page( null, __( 'Theme Settings', 'quiz-master-next' ), __( 'Theme Settings', 'quiz-master-next' ), 'manage_options', 'qmn_theme_settings', 'qsm_display_theme_settings' );
@@ -369,7 +334,7 @@ function qsm_register_theme_Setting_submenu_page() {
 
 function qsm_display_theme_settings() {
 	 global $mlwQuizMasterNext, $wpdb;
-	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
 	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
@@ -377,7 +342,7 @@ function qsm_display_theme_settings() {
 		unset( $_POST['_wp_http_referer'] );
 		$settings_array = array();
 		array_map( 'sanitize_text_field', $_POST['settings'] );
-		$settings_array = serialize( $_POST['settings'] );
+		$settings_array = maybe_serialize( $_POST['settings'] );
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">
@@ -390,8 +355,8 @@ function qsm_display_theme_settings() {
 <div class="wrap">
 	<h1 style="margin-bottom: 10px;">
 		<?php
-						$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
-						echo $quiz_name;
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
+		echo esc_attr( $quiz_name );
 		?>
 		<a href="<?php echo admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' ) . $quiz_id . '&tab=style'; ?>"
 			class="edit-quiz-name button button-primary"><?php _e( 'Back to themes', 'quiz-master-next' ); ?></a>
@@ -408,11 +373,11 @@ function qsm_display_theme_settings() {
 					?>
 			<tr valign="top">
 				<th scope="row" class="qsm-opt-tr">
-					<label for="form_type"><?php echo $theme_val['label']; ?></label>
+					<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
 				</th>
 				<td>
-					<input name="<?php echo $theme_val['id']; ?>" type="text" value="<?php echo $setting_val; ?>"
-						data-default-color="<?php echo $setting_val; ?>" class="my-color-field" />
+					<input name="<?php echo esc_attr( $theme_val['id'] ); ?>" type="text" value="<?php echo esc_attr( $setting_val ); ?>"
+						data-default-color="<?php echo esc_attr( $setting_val ); ?>" class="my-color-field" />
 				</td>
 			</tr>
 			<?php

@@ -397,6 +397,7 @@ var import_button;
 			}
 			var advanced_option = {};
 			var answerInfo = wp.editor.getContent('correct_answer_info');
+			var quizID = parseInt( qsmTextTabObject.quiz_id );
 			var type = $("#question_type").val();
 			var comments = $("#comments").val();
 			advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
@@ -477,6 +478,7 @@ var import_button;
 				}
 			});
 			model.save({
+				quizID: quizID,
 				type: type,
 				name: name,
 				question_title: question_title,
@@ -490,7 +492,8 @@ var import_button;
 				answers: answers,
 				answerEditor: answerType,
 				matchAnswer: matchAnswer,
-				other_settings: advanced_option
+				other_settings: advanced_option,
+				rest_nonce: qsmQuestionSettings.rest_user_nonce
 			}, {
 				headers: {
 					'X-WP-Nonce': qsmQuestionSettings.nonce
@@ -861,52 +864,44 @@ var import_button;
 			MicroModal.show('modal-7');
 			$('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));
 			$('#delete-question-button').attr('data-question-iid', $(this).data('question-iid'));
-
-			// removes question from database
-			$('#delete-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-					console.log(question_id);
-					$.ajax({
-						url: ajaxurl,
-						method: 'POST',
-						data: {
-							'action': 'qsm_delete_question_from_database',
-							'question_id': question_id,
-							'nonce': qsmQuestionSettings.single_question_nonce
-						},
-						success: function (response) {
-							var data = jQuery.parseJSON(response);
-							if (data.success === true) {
-
-								console.log(data.message);
-							} else {
-								console.log(data.message);
-							}
-						}
-					});
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
-
-			// unlink question from  a particular quiz.
-			$('#unlink-question-button').click(function (event) {
-				event.preventDefault();
-				if (confirm('Are you sure?')) {
-					var question_id = $(this).data('question-iid');
-
-					console.log(question_id);
-					remove.parents('.question').remove();
-					QSMQuestion.countTotal();
-					$('.save-page-button').trigger('click');
-				}
-				MicroModal.close('modal-7');
-			});
 		});
+		// removes question from database
+		$('#delete-question-button').click(function (event) {
+			event.preventDefault();
+			var question_id = $(this).data('question-iid');
+			$.ajax({
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					'action': 'qsm_delete_question_from_database',
+					'question_id': question_id,
+					'nonce': qsmQuestionSettings.single_question_nonce
+				},
+				success: function (response) {
+					var data = jQuery.parseJSON(response);
+					if (data.success === true) {
+						console.log(data.message);
+					} else {
+						console.log(data.message);
+					}
+				}
+			});
+			remove.parents('.question').remove();
+			QSMQuestion.countTotal();
+			$('.save-page-button').trigger('click');
+			MicroModal.close('modal-7');
+		});
+
+		// unlink question from  a particular quiz.
+		$('#unlink-question-button').click(function (event) {
+			event.preventDefault();
+			var question_id = $(this).data('question-iid');
+			remove.parents('.question').remove();
+			QSMQuestion.countTotal();
+			$('.save-page-button').trigger('click');
+			MicroModal.close('modal-7');
+		});
+
 		$('.questions').on('click', '.delete-page-button', function (event) {
 			event.preventDefault();
 			if (confirm('Are you sure?')) {
@@ -1175,7 +1170,7 @@ var import_button;
 			}
 		});
 
-		//Open file upload on feature image                
+		//Open file upload on feature image
 		$('body').on('click', '.qsm-feature-image-upl', function (e) {
 			e.preventDefault();
 			var button = $(this),

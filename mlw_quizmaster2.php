@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.3.4
+ * Version: 7.3.5
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.4
+ * @version 7.3.5
  * @package QSM
  */
 
@@ -24,6 +24,10 @@ define( 'QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'hide_qsm_adv', true );
 define( 'QSM_THEME_PATH', plugin_dir_path( __DIR__ ) );
 define( 'QSM_THEME_SLUG', plugins_url( '/' ) );
+define('QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css');
+define('QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js');
+define('QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php');
+define('QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next');
 
 /**
  * This class is the main class of the plugin
@@ -41,7 +45,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.3.4';
+	public $version = '7.3.5';
 
 	/**
 	 * QSM Alert Manager Object
@@ -215,7 +219,7 @@ class MLWQuizMasterNext {
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
@@ -247,13 +251,19 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
 		global $mlwQuizMasterNext;
+		//common scripts and styles
+		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
+		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+		wp_enqueue_script( 'qmn_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util' ), $this->version, true );
+
 		if ( $hook == 'admin_page_mlw_quiz_options' ) {
 			wp_enqueue_script( 'wp-tinymce' );
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
 		}
 
 		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
-			wp_enqueue_script( 'qsm_quiz_wizard_script', plugins_url( 'js/qsm-quiz-wizard.js', __FILE__ ), array( 'jquery', 'micromodal_script' ), $this->version );
-			wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), $this->version );
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
+			wp_enqueue_script( 'qsm_quiz_wizard_script', plugins_url( 'js/qsm-quiz-wizard.js', __FILE__ ), array( 'jquery', 'micromodal_script' ), $this->version);
 			wp_enqueue_media();
 		}
 
@@ -261,7 +271,6 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version, true );
 			wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		}
-
 	}
 
 	/**
@@ -398,9 +407,6 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
-			add_submenu_page( 'qsm_dashboard', __( 'What\'s Next', 'quiz-master-next' ), __( 'What\'s Next', 'quiz-master-next' ), 'moderate_comments', 'qsm_roadmap_page', 'qsm_generate_roadmap_page' );
-			// Merging Help page in About page
-			// add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_about', 'qsm_generate_about_page' );
 			// Register screen option for dashboard page
 			add_action( 'screen_settings', 'qsm_dashboard_screen_options', 10, 2 );
@@ -462,14 +468,14 @@ class MLWQuizMasterNext {
 			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
 			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
 			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo $message;
+			echo wp_kses_post( $message );
 			?>
 	</p>
 	<p class="category-action">
 			<?php
 			$buttons  = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
 			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo $buttons;
+			echo wp_kses_post( $buttons );
 			?>
 	</p>
 </div>

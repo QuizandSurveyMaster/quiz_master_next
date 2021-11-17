@@ -24,47 +24,51 @@ class QSM_Fields {
     $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
     
     // If nonce is correct, save settings
-    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings') ) {
+    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings' ) ) {
 
-      // Cycle through fields to retrieve all posted values      
-      $settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
-      foreach ( $fields as $field ) {
+		// Cycle through fields to retrieve all posted values      
+		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
+		foreach ( $fields as $field ) {
 
-        // Sanitize the values based on type
-        $sanitized_value = '';
-        switch ( $field["type"] ) {
-          case 'text':
-            $sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
-            break;
+			// Sanitize the values based on type
+			$sanitized_value = '';
+			switch ( $field["type"] ) {
+				case 'text':
+					$sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
+					break;
 
-          case 'radio':
-          case 'date':
-            $sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
-            break;
+				case 'url':
+					$sanitized_value = esc_url_raw( $_POST[ $field["id"] ] );
+					break;
 
-          case 'number':
-            $sanitized_value = intval( $_POST[ $field["id"] ] );
-            break;
+				case 'radio':
+				case 'date':
+					$sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
+					break;
 
-          case 'editor':
-            $sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
-            break;
+				case 'number':
+					$sanitized_value = intval( $_POST[ $field["id"] ] );
+					break;
 
-          default:
-            $sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
-            break;
-        }
-        $settings_array[ $field["id"] ] = $sanitized_value;
-      }
+				case 'editor':
+					$sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
+					break;
+
+				default:
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
+					break;
+			}
+			$settings_array[ $field["id"] ] = $sanitized_value;
+      	}
             
-      // Update the settings and show alert based on outcome
-      $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
-      if ( false !== $results ) {
-  			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
-  			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
-  		} else {
-  			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
-  		}
+      	// Update the settings and show alert based on outcome
+		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
+		}
     }
 
     // Retrieve the settings for this section
@@ -163,18 +167,47 @@ class QSM_Fields {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<input type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
-			value="<?php echo $value; ?>" />
+		<input type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
+		<?php } ?>
+	</td>
+</tr>
+<?php
+  }
+
+  
+  /**
+   * Generates a text field
+   *
+   * @since 5.0.0
+   * @param array $field The array that contains the data for the input field
+   * @param mixed $value The current value of the setting
+   */
+  public static function generate_url_field( $field, $value ) {
+    ?>
+<tr valign="top">
+	<th scope="row" class="qsm-opt-tr">
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
+		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
+		</span>
+		<?php } ?>
+	</th>
+	<td>
+		<input type="url" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
+			value="<?php echo esc_url( $value ); ?>" />
+		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -185,28 +218,28 @@ class QSM_Fields {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<select id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>">
+		<select id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>">
 			<option value="">Select Page</option>
 			<?php
               $pages = get_pages(); 
               foreach ( $pages as $page ) { ?>
 			<option value="<?php echo get_page_link( $page->ID ) ?>"
-				<?php selected($value, get_page_link( $page->ID )); ?>><?php echo $page->post_title ?></option>;
+				<?php selected($value, get_page_link( $page->ID )); ?>><?php echo wp_kses_post( $page->post_title ); ?></option>;
 			<?php } ?>
 		</select>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 		<br />
-		<b style="color: red;">Note: </b><?php echo isset($field['note']) ? $field['note'] : ''; ?>
+		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? $field['note'] : ''; ?>
 	</td>
 </tr>
 <?php
@@ -223,7 +256,7 @@ class QSM_Fields {
     ?>
 <tr>
 	<th scope="row">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 			<?php
           if ( is_array( $field["variables"] ) ) {
             ?>
@@ -232,7 +265,7 @@ class QSM_Fields {
 			<?php
             foreach ( $field["variables"] as $variable ) {
               ?>
-			<p style="margin: 2px 0">- <?php echo $variable; ?></p>
+			<p style="margin: 2px 0">- <?php echo wp_kses_post( $variable ); ?></p>
 			<?php
             }
           }
@@ -255,31 +288,23 @@ class QSM_Fields {
    */
   public static function generate_date_field( $field, $value ) {    
     ?>
-<script>
-jQuery(function() {
-	jQuery("#<?php echo $field["id"]; ?>").datetimepicker({
-		format: 'm/d/Y H:i',
-		step: 1
-	});
-});
-</script>
+
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
-	<td class="<?php echo $field["id"]; ?>">
+	<td class="<?php echo esc_attr( $field["id"] ); ?>">
 		<?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
-		<span class="qsm-ph_text"><?php echo $field['ph_text']; ?></span>
+		<span class="qsm-ph_text"><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
 		<?php } ?>
-		<input autocomplete="off" type="text" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
-			value="<?php echo $value; ?>" />
+		<input autocomplete="off" type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -297,18 +322,17 @@ jQuery(function() {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<input type="number" step="1" min="0" id="<?php echo $field["id"]; ?>" name="<?php echo $field["id"]; ?>"
-			value="<?php echo $value; ?>" />
+		<input type="number" step="1" min="0" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" />
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -327,10 +351,10 @@ jQuery(function() {
     ?>
 <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -339,17 +363,14 @@ jQuery(function() {
 			<?php
               foreach ( $field["options"] as $option ) {
                 ?>
-			<input type="radio" id="<?php echo $field["id"] . '-' . $option["value"]; ?>"
-				name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $value ); ?>
-				value="<?php echo $option["value"]; ?>" />
-			<label
-				for="<?php echo $field["id"] . '-' . $option["value"]; ?>"><?php echo $option["label"]; ?></label><br />
-			<?php
+				<input type="radio" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $value ); ?> value="<?php echo esc_attr( $option["value"] ); ?>" />
+				<label for="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"><?php echo wp_kses_post( $option["label"] ); ?></label><br />
+				<?php
               }
             ?>
 		</fieldset>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -368,26 +389,25 @@ jQuery(function() {
     ?>
 <tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<select name="<?php echo $field["id"]; ?>">
+		<select name="<?php echo esc_attr( $field["id"] ); ?>">
 			<?php
               foreach ( $field["options"] as $option ) {
                 ?>
-			<option <?php selected( $option["value"], $value ); ?> value="<?php echo $option["value"]; ?>">
-				<?php echo $option["label"]; ?></option>
-			<?php
+				<option <?php selected( $option["value"], $value ); ?> value="<?php echo esc_attr( $option["value"] ); ?>"><?php echo wp_kses_post( $option["label"] ); ?></option>
+				<?php
               }
             ?>
 		</select>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -403,15 +423,15 @@ jQuery(function() {
    */
   public static function generate_category_field( $field, $value ) {
 	global $wpdb;
-	$quiz_id = isset($_GET['quiz_id']) ? $_GET['quiz_id'] : 0;	
+	$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( $_GET['quiz_id'] ) : 0;
 	$explode_cat = explode(',', $value);
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
@@ -440,7 +460,7 @@ jQuery(function() {
 					echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
 				} else {
 					foreach ( $cat_array as $single_cat ) {
-						?><option <?php echo in_array( $single_cat, $explode_cat ) ? 'selected' : ''; ?> value="<?php echo $single_cat; ?>"><?php echo $single_cat; ?></option><?php
+						?><option <?php echo in_array( $single_cat, $explode_cat ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $single_cat ); ?>"><?php echo wp_kses_post( $single_cat ); ?></option><?php
 					}
 				}
 				?></select><?php
@@ -451,10 +471,10 @@ jQuery(function() {
 			echo 'No catergory found.';
 		}
 		?>
-		<input type="hidden" class="catergory_comma_values" name="<?php echo $field["id"]; ?>"
-			value='<?php echo $value; ?>'>
+		<input type="hidden" class="catergory_comma_values" name="<?php echo esc_attr( $field["id"] ); ?>"
+			value='<?php echo esc_attr( $value ); ?>'>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -484,16 +504,16 @@ jQuery(function() {
   public static function generate_hide_show_field( $field, $value ) { ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
-		<a href="#" id="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></a>
+		<a href="#" id="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_attr( $field["label"] ); ?></a>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-			<span class="qsm-tooltips"><?php echo $field['tooltip']; ?></span>
+			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
@@ -511,7 +531,7 @@ jQuery(function() {
     ?>
 <tr valign="top">
 	<th scope="row">
-		<h2 class="section_heading"><?php echo $field["label"]; ?></h2>
+		<h2 class="section_heading"><?php echo wp_kses_post( $field['label'] ); ?></h2>
 	</th>
 	<td>
 	</td>
@@ -533,23 +553,23 @@ jQuery(function() {
 <tr valign="top"
 	<?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
 	<th scope="row" class="qsm-opt-tr">
-		<label for="<?php echo $field["id"]; ?>"><?php echo $field["label"]; ?></label>
+		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 	</th>
 	<td>
 		<fieldset class="buttonset buttonset-hide" data-hide='1'>
 			<?php
               foreach ( $field["options"] as $option ) {
                 ?>
-			<input type="checkbox" id="<?php echo $field["id"] . '-' . $option["value"]; ?>"
-				name="<?php echo $field["id"]; ?>" <?php checked( $option["value"], $score_roundoff ); ?>
-				value="<?php echo $option["value"]; ?>" />
+			<input type="checkbox" id="<?php echo esc_attr( $field["id"] . '-' . $option["value"] ); ?>"
+				name="<?php echo esc_attr( $field["id"] ); ?>" <?php checked( $option["value"], $score_roundoff ); ?>
+				value="<?php echo esc_attr( $option["value"] ); ?>" />
 			<br />
 			<?php
               }
             ?>
 		</fieldset>
 		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
-		<span class="qsm-opt-desc"><?php echo $field['help']; ?></span>
+		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>

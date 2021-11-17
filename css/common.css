@@ -334,3 +334,13 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm_tooltip:hover .qsm_tooltiptext {
   visibility: visible;
 }
+.qsm_quiz_processing_box {
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+}
+.qsm_quiz_processing_box .qsm_quiz_processing_message{
+    margin: 10px 0;
+}

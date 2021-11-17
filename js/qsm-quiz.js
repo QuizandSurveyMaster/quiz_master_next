@@ -873,7 +873,7 @@ function qmnFormSubmit(quiz_form_id) {
 	}
 	jQuery(document).trigger('qsm_before_quiz_submit', [quiz_form_id]);
 	jQuery('#' + quiz_form_id + ' input[type=submit]').attr('disabled', 'disabled');
-	qsmDisplayLoading($container);
+	qsmDisplayLoading($container, quiz_id);
 	// console.log( 'submitted data:' + unindexed_array );
 	jQuery.ajax({
 		url: qmn_ajax_object.ajaxurl,
@@ -883,6 +883,14 @@ function qmnFormSubmit(quiz_form_id) {
 		type: 'POST',
 		success: function (response) {
 			response=JSON.parse(response);
+			if (window.qsm_results_data === undefined) {
+				window.qsm_results_data = new Object();
+			}
+			window.qsm_results_data[quizID]={
+				'save_response' : response.result_status['save_response'],
+				'id'     : response.result_status['id']
+			};		
+
 			if(response.quizExpired){
 				MicroModal.show('modal-4');
 				return false;
@@ -891,68 +899,107 @@ function qmnFormSubmit(quiz_form_id) {
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 			}
-			
 		}
 	});
 
 	return false;
 }
 
-function qsmDisplayLoading($container) {
+function qsmDisplayLoading($container, quiz_id) {
+	var loader_html = '<div class="qsm_quiz_processing_box">';
+	loader_html += '<div class="qsm-spinner-loader qsm_quiz_processing_loader"></div>';
+	if (qmn_quiz_data[quiz_id].hasOwnProperty('quiz_processing_message') && qmn_quiz_data[quiz_id].quiz_processing_message != '') {
+		loader_html += '<div class="qsm_quiz_processing_message">'+qmn_quiz_data[quiz_id].quiz_processing_message+'</div>';
+	}
+	loader_html += '</div>';
 	$container.empty();
-	$container.append('<div class="qsm-spinner-loader"></div>');
+	$container.append(loader_html);
 	qsmScrollTo($container);
 }
 
 function qmnDisplayResults(results, quiz_form_id, $container) {
 	$container.empty();
+	jQuery(document).trigger('qsm_before_display_result', [results, quiz_form_id, $container]);
 	if (results.redirect) {
 		window.location.replace(results.redirect);
 	} else {
 		$container.append('<div class="qmn_results_page"></div>');
 		$container.find('.qmn_results_page').html(results.display);
 		qsmScrollTo($container);
-		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+		// run MathJax on the new content
+		MathJax.typesetPromise();
 		// Fires after result is populates via ajax
-		jQuery(document).trigger('qsm_after_display_result');
+		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
 }
 
 function qmnInit() {
 	if (typeof qmn_quiz_data != 'undefined' && qmn_quiz_data) {
-		for (var key in qmn_quiz_data) {
-			if (qmn_quiz_data[key].ajax_show_correct === '1') {
-				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					var chosen_answer = jQuery(this).val();
-					var question_id = jQuery(this).attr('name').replace(/question/i, '');
-					var chosen_id = jQuery(this).attr('id');
-					jQuery.each(qmn_quiz_data[key].question_list, function (i, value) {
-						if (question_id == value.question_id) {
-							jQuery.each(value.answers, function (j, answer) {
-								if (answer[0] === chosen_answer) {
-									if (answer[2] !== 1) {
-										jQuery('#' + chosen_id).parent().addClass("qmn_incorrect_answer");
-									}
+		let key = Object.keys(qmn_quiz_data)[0];
+		if (qmn_quiz_data[key].ajax_show_correct === '1') {
+			jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
+				var chosen_answer = jQuery(this).val();
+				var question_id = jQuery(this).attr('name').replace(/question/i, '');
+				var chosen_id = jQuery(this).attr('id');
+				jQuery.each(qmn_quiz_data[key].question_list, function (i, value) {
+					if (question_id == value.question_id) {
+						jQuery.each(value.answers, function (j, answer) {
+							if (answer[0] === chosen_answer) {
+								if (answer[2] !== 1) {
+									jQuery('#' + chosen_id).parent().addClass("qmn_incorrect_answer");
 								}
-								if (answer[2] === 1) {
-									jQuery(':radio[name=question' + question_id + '][value="' + answer[0] + '"]').parent().addClass("qmn_correct_answer");
-								}
-							});
-						}
+							}
+							if (answer[2] === 1) {
+								jQuery(':radio[name=question' + question_id + '][value="' + answer[0] + '"]').parent().addClass("qmn_correct_answer");
+							}
+						});
+					}
+				});
+			});
+		}
+
+		if (qmn_quiz_data[key].disable_answer === '1') {
+						
+			jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
+				var radio_group = jQuery(this).attr('name');
+				jQuery('input[type=radio][name=' + radio_group + ']').prop('disabled', true);
+				let radio_value =jQuery(this).val();
+				let disableAnswer = {};					
+				if ( localStorage.getItem( "disable_answer" ) ){
+					disableAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				}
+				if (!disableAnswer[key]){
+					disableAnswer[key]=[];
+				} 
+				let disabledQuestions = disableAnswer[key].map(element => element[0]);
+				if (! disabledQuestions.includes(radio_group) ){
+					disableAnswer[key].push([radio_group, radio_value]);
+				}
+				localStorage.setItem("disable_answer",JSON.stringify(disableAnswer));
+			});
+
+			if(localStorage.getItem("disable_answer")){
+				let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
+				if(disabledAnswer[key]){
+					disabledAnswer[key].forEach(element => {
+						let element1=element[1].replaceAll(' ','-');
+						jQuery('#'+element[0]+'-'+element1+' input').prop('checked', true).trigger('change');
 					});
-				});
+				}
 			}
+			jQuery(document).on('qsm_after_quiz_submit',function(event, quiz_form_id ){
+				event.preventDefault();
+				if(localStorage.getItem("disable_answer")){
+					let disabledAnswer2 = JSON.parse(localStorage.getItem("disable_answer"));
+					if(disabledAnswer2[key]){
+						delete disabledAnswer2[key];
+						localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
+				}			
+			});
+		}
 
-			if (qmn_quiz_data[key].disable_answer === '1') {
-				jQuery('#quizForm' + qmn_quiz_data[key].quiz_id + ' .qmn_quiz_radio').change(function () {
-					var radio_group = jQuery(this).attr('name');
-					jQuery('input[type=radio][name=' + radio_group + ']').prop('disabled', true);
-				});
-			}
-
-			if (qmn_quiz_data[key].hasOwnProperty('pagination')) {
-				qmnInitPagination(qmn_quiz_data[key].quiz_id);
-			}
+		if (qmn_quiz_data[key].hasOwnProperty('pagination')) {
+			qmnInitPagination(qmn_quiz_data[key].quiz_id);
 		}
 	}
 }
@@ -1235,7 +1282,7 @@ jQuery(function () {
 		e.preventDefault();
 		var quiz_id = jQuery(this).data('quiz_id');
 		var parent_div = jQuery(this).parents('.qsm-quiz-container');
-		qsmDisplayLoading(parent_div);
+		qsmDisplayLoading(parent_div, quiz_id);
 		jQuery.ajax({
 			type: 'POST',
 			url: qmn_ajax_object.ajaxurl,
@@ -1248,7 +1295,7 @@ jQuery(function () {
 				//Reload the timer and pagination
 				qmnDoInit();
 				
-				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+				MathJax.typesetPromise();
 
 				// trigger fired on successfull retake quiz
 				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
@@ -1285,7 +1332,7 @@ jQuery(function () {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1326,21 +1373,14 @@ jQuery(function () {
 					$this.find('.quick-question-res-p').remove();
 					$this.find('.qsm-inline-correct-info').remove();
 					if (data.success == 'correct') {
-
 					} else if (data.success == 'incorrect') {
-
-
-
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-
 						setTimeout(function () {
 							$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 						}, 1000);
-
-
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1466,6 +1506,28 @@ jQuery(function () {
 		window.open(url, "Share", sqShareOptions);
 		return false;
 	});
+});
+
+// captcha question type
+
+jQuery(document).ready(function() {
+	let captchaElement = jQuery('#mlw_code_captcha');
+	if (captchaElement.length !== 0){
+		var mlw_code = '';
+		var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+		var mlw_code_length = 5;
+		for (var i=0; i<mlw_code_length; i++) {
+						var rnum = Math.floor(Math.random() * mlw_chars.length);
+						mlw_code += mlw_chars.substring(rnum,rnum+1);
+				}
+		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
+		mlw_captchaCTX.font = 'normal 24px Verdana';
+		mlw_captchaCTX.strokeStyle = '#000000';
+		mlw_captchaCTX.clearRect(0,0,100,50);
+		mlw_captchaCTX.strokeText(mlw_code,10,30,70);
+		mlw_captchaCTX.textBaseline = 'middle';
+		document.getElementById('mlw_code_captcha').value = mlw_code;
+	}	
 });
 
 var qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);

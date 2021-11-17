@@ -703,7 +703,7 @@ class QSM_Install {
 		$field_array = array(
 			'id'      => 'result_page_fb_image',
 			'label'   => __( 'Logo URL', 'quiz-master-next' ),
-			'type'    => 'text',
+			'type'    => 'url',
 			'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
 			'tooltip' => __( 'Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next' ),
 			'help'    => __( 'If left blank, this will default to QSM logo', 'quiz-master-next' ),
@@ -1145,6 +1145,16 @@ class QSM_Install {
 			'type'    => 'text',
 			'default' => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
 			'tooltip' => __( 'Text to show when the selected option is wrong answer.', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers quick result wrong answer setting
+		$field_array = array(
+			'id'      => 'quiz_processing_message',
+			'label'   => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
+			'type'    => 'text',
+			'default' => __( '', 'quiz-master-next' ),
+			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 

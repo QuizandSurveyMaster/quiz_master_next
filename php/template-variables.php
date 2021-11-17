@@ -72,6 +72,7 @@ add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_quiz_links'
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_date', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_current_user', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_quiz_page', 'mlw_qmn_variable_social_share', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_points', 10, 2 );
 
 /**
  * @since 6.4.11
@@ -250,9 +251,7 @@ function qsm_find_key_from_array( $search_value, $array ) {
 function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 	global $wpdb, $mlwQuizMasterNext;
 	$page_link = qsm_get_post_id_from_quiz_id( $mlw_quiz_array['quiz_id'] );
-	if ( false !== strpos( $content, '%FACEBOOK_SHARE%' ) || false !== strpos( $content, '%TWITTER_SHARE%' ) ) {
-		// wp_enqueue_script( 'qmn_quiz_social_share', plugins_url( '../../js/qmn_social_share.js' , __FILE__ ) );
-	}
+
 	if ( false !== strpos( $content, '%FACEBOOK_SHARE%' ) ) {
 		$settings        = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '594986844960937';
@@ -908,13 +907,19 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 			}
 		}
+
 	} else {
-		if ( $answer['correct'] === 'correct' ) {
+		if ( isset( $mlw_quiz_array['form_type'] )  && "1" === $mlw_quiz_array['form_type'] ){
 			$user_answer_class     = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
-			$user_answer_class     = 'qmn_user_incorrect_answer';
-			$question_answer_class = 'qmn_question_answer_incorrect';
+			if ( $answer['correct'] === 'correct' ) {
+				$user_answer_class     = 'qmn_user_correct_answer';
+				$question_answer_class = 'qmn_question_answer_correct';
+			} else {
+				$user_answer_class     = 'qmn_user_incorrect_answer';
+				$question_answer_class = 'qmn_question_answer_incorrect';
+			}
 		}
 	}
 	$open_span_tag = '<span class="'.$user_answer_class.'">';
@@ -1104,6 +1109,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							if ( $answer['question_type'] == 13 ) {
 								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
+
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$single_answer_option = $single_answer[0];
@@ -1244,12 +1250,14 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$mlw_question_answer_display = str_replace( '%QUESTION_MAX_POINTS%', $question_max_point, $mlw_question_answer_display );
 
 	$mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
+	
 	if ( $total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
 		$extra_border_bottom_class = 'qsm-remove-border-bottom';
 	}
 	$mlw_question_answer_display = apply_filters( 'qsm_question_answers_template_variable', $mlw_question_answer_display, $mlw_quiz_array, $answer );
 	$question_obj                = ( isset( $questions[ $answer['id'] ] ) ? $questions[ $answer['id'] ] : null );
 	$display                     = "<div class='qmn_question_answer $extra_border_bottom_class $question_answer_class'>" . apply_filters( 'qmn_variable_question_answers', $mlw_question_answer_display, $mlw_quiz_array, $question_obj ) . '</div>';
+
 	return $display;
 }
 function qsm_get_question_maximum_points( $question = array() ) {
@@ -1312,78 +1320,50 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$autofill_att   = $autofill ? "autocomplete='off' " : '';
 	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	$input_text     = '';
-	$first_point    = isset( $answers[0][1] ) ? $answers[0][1] : 0;
-	$second_point   = isset( $answers[1][1] ) ? $answers[1][1] : 0;
+	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
+	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
+	$mid_point = ( $second_point - $first_point ) / 2;
 	$is_reverse     = false;
-	$check_point    = $second_point;
-	$font_weight_lc = 'right-polar-title';
-	$font_weight_rc = 'left-polar-title';
 	if ( $first_point > $second_point ) {
 		$is_reverse     = true;
-		$check_point    = $first_point;
-		$font_weight_lc = 'left-polar-title';
-		$font_weight_rc = 'right-polar-title';
+		$mid_point = ( $first_point - $second_point ) / 2;
 	}
 	$total_answer = count( $answers );
-	?>
-<script type="text/javascript">
-(function($) {
-	$(document).ready(function() {
-
-		$('#slider-' + '<?php echo $id; ?>').slider({
-			<?php if ( $total_answer == 2 && $is_reverse ) { ?>
-			max: <?php echo $answers[0][1]; ?>,
-			min: <?php echo $answers[1][1]; ?>,
-			isRTL: true,
-			<?php } else { ?>
-			min: <?php echo $answers[0][1]; ?>,
-			max: <?php echo $answers[1][1]; ?>,
-			<?php } ?>
-			step: 1,
-			range: false,
-			value: <?php echo esc_attr( $answer['points'] ); ?>,
-			slide: function slider_slide(event, ui) {
-				return false; // this code not allow to dragging
-			},
-			create: function (event, ui){
-				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]); // This code allow to apply js code on polar slider on result page
-			}
-		});
-		var maxHeight = Math.max.apply(null, $(".mlw-qmn-question-result-<?php echo $id; ?>> div").map(
-			function() {
-				return $(this).height();
-			}).get());
-		$('.mlw-qmn-question-result-<?php echo $id; ?>').height(maxHeight);
-	});
-})(jQuery);
-</script>
-<?php
+	$id = esc_attr( intval( $id ) );
+	$answar1 = $first_point;
+	$answar2 = $second_point;
+	$user_answer = $answer[1] ;
+	$slider_date_atts ='';
+	$slider_date_atts.=' data-answer1="'.$answar1.'" ';
+	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
+	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
+	$slider_date_atts.=' data-answer_value="'.$user_answer.'" ';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
 		$mlw_requireClass = '';
 	}
-	if ( $answer['points'] == $answers[0][1] ) {
+	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
-		$right_polar_title_style = "style='font-weight:100';";
-	} elseif ( $answer['points'] == $check_point / 2 ) {
-		$left_polar_title_style  = "style='font-weight:400;'";
-		$right_polar_title_style = "style='font-weight400;'";
-	} elseif ( $answer['points'] > $check_point / 2 ) {
+		$right_polar_title_style = "style='font-weight:100;'";
+	} elseif ( $answer['points'] == $answar2 ){
+		$left_polar_title_style  = "style='font-weight:100;'";
+		$right_polar_title_style = "style='font-weight:900;'";
+	}elseif ( $answer['points'] == $mid_point ){
+		$left_polar_title_style  = "style='font-weight:600;'";
+		$right_polar_title_style = "style='font-weight:600;'";
+	} elseif ( $answer['points'] < $mid_point ){
 		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:600;'";
-	} elseif ( $answer['points'] < $check_point / 2 ) {
+	}	elseif ( $answer['points'] > $mid_point ){
 		$left_polar_title_style  = "style='font-weight:600;'";
-		$right_polar_title_style = "style='font-weight:400;'";
-	} else {
-		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:400;'";
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title );
-	$input_text        .= "<div class='left-polar-title' $left_polar_title_style>" . $answers[0][0] . '</div>';
-	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
-	$input_text        .= '<div id="slider-' . $id . '"></div></div>';
+	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
+	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
+	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"'.$slider_date_atts.'></div></div>';
 	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . '</div>';
 	$question           = $input_text;
 	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
@@ -1403,4 +1383,20 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 		$data = stripslashes( $data );
 	}
 	return unserialize( $data );
+}
+
+/**
+ * Replace minimum points variable with actual miniumum points
+ *
+ * @since 7.0.2
+ *
+ * @param string $content
+ * @param array  $mlw_quiz_array
+ * @return string $content
+ */
+function qsm_variable_minimum_points( $content, $mlw_quiz_array ) {
+	if ( isset( $mlw_quiz_array['minimum_possible_points'] ) ) {
+		$content = str_replace( '%MINIMUM_POINTS%', $mlw_quiz_array['minimum_possible_points'], $content );
+	}
+	return $content;
 }

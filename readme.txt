@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.4
+Stable tag: 7.3.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -88,8 +88,8 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * [Export Results](https://quizandsurveymaster.com/downloads/export-results/?utm_source=readme&utm_medium=plugin&utm_content=export-results&utm_campaign=qsm_plugin)
 * [Logic](https://quizandsurveymaster.com/downloads/logic/?utm_source=readme&utm_medium=plugin&utm_content=logic&utm_campaign=qsm_plugin)
 * [User Dashboard](https://quizandsurveymaster.com/downloads/user-dashboard/?utm_source=readme&utm_medium=plugin&utm_content=user-dashboard&utm_campaign=qsm_plugin)
-* [URL Parameters](http://bit.ly/2I1ZM6g)
-* [Google Analytics Tracking](http://bit.ly/2AAgABs)
+* [URL Parameters](https://quizandsurveymaster.com/downloads/url-parameters/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=readme&utm_content=url-parameters)
+* [Google Analytics Tracking](https://quizandsurveymaster.com/downloads/google-analytics-tracking/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=readme)
 * [Landing Page](https://quizandsurveymaster.com/downloads/landing-page/?utm_source=readme&utm_medium=plugin&utm_content=landing-page&utm_campaign=qsm_plugin)
 * [MailChimp Integration](https://quizandsurveymaster.com/downloads/mailchimp-integration/?utm_source=readme&utm_medium=plugin&utm_content=mailchimp-integration&utm_campaign=qsm_plugin)
 * And **many** more available in our [Quiz And Survey Master Addon Store](https://quizandsurveymaster.com/addons/?utm_source=readme&utm_medium=plugin&utm_content=all-addons&utm_campaign=qsm_plugin)
@@ -151,6 +151,25 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.5 (November 17, 2021) =
+* Bug: Fixed issue while permanently deleting bulk quizzes
+* Bug: Fixed issue while editing questions imported from question bank
+* Bug: Fixed issue with question categories
+* Bug: Fixed various security vulnerabilities
+* Bug: Fixed Authenticated SQL injection
+* Bug: Fixed issues with polar question type
+* Bug: Fixed issue where multiple popups were appearing
+* Bug: Fixed issues where refreshing the page resets answered questions
+* Feature: Added support for webp file format
+* Feature: Added new template variable %MINIMUM_POINTS%
+* Enhancement: Replaced shortened urls with original urls
+* Enhancement: Refactored code to enqueue JS and CSS files as per coding standards
+* Enhancement: Refactored code to utilise libraries bundled with WordPress core
+* Enhancement: Updated out of date libraries
+* Enhancement: Removed CDN and third party server scripts
+* Enhancement: Sanitized, Escaped, and Validated all variable, file uploads and data
+* Enhancement: Moved inline scripts to wp_enqueue_script and wp_add_inline_script
+
 = 7.3.4 (October 1, 2021) =
 * Bug: Fixed the issue with validation of date field for contact section
 

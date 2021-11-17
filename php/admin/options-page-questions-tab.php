@@ -8,6 +8,31 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Loads admin scripts and style
+ *
+ * @since 7.3.5
+ */
+function qsm_admin_enqueue_scripts_options_page_questions($hook){
+	if ( 'admin_page_mlw_quiz_options' != $hook ) {
+		return;
+	}
+	if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
+		global $mlwQuizMasterNext;
+		if ( ! did_action( 'wp_enqueue_media' ) ) {
+			wp_enqueue_media();
+		}
+		wp_enqueue_script( 'qsm_admin_question_js', QSM_PLUGIN_JS_URL.'/qsm-admin-question.js', array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
+		wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $mlwQuizMasterNext->version );
+		wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );		wp_enqueue_editor();
+		wp_enqueue_media();
+	}
+}
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions', 20);
+
+
 /**
  * Adds the settings for questions tab to the Quiz Settings page.
  *
@@ -49,7 +74,7 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     = intval( $_GET['quiz_id'] );
+	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
 	$user_id     = get_current_user_id();
 	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
@@ -100,20 +125,9 @@ function qsm_options_questions_tab_content() {
 		'show_correct_info_text' => __( 'Add Correct Answer Info', 'quiz-master-next' ),
 		'question_bank_nonce'    => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
+		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 	);
-
-	// Scripts and styles.
-	wp_enqueue_script( 'micromodal_script', plugins_url( '../../js/micromodal.min.js', __FILE__ ) );
-	if ( ! did_action( 'wp_enqueue_media' ) ) {
-		wp_enqueue_media();
-	}
-	wp_enqueue_script( 'qsm_admin_question_js', plugins_url( '../../js/qsm-admin-question.js', __FILE__ ), array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
 	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
-	wp_enqueue_style( 'qsm_admin_question_css', plugins_url( '../../css/qsm-admin-question.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
-	wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-	wp_enqueue_script( 'math_jax', '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML' );
-	wp_enqueue_editor();
-	wp_enqueue_media();
 
 	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
@@ -159,7 +173,7 @@ function qsm_options_questions_tab_content() {
 		<a href="#" class="button"><?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?></a>
 	</p>
 </div>
-<div class="questions quiz_form_type_<?php echo $form_type; ?> quiz_quiz_systen_<?php echo $quiz_system; ?>">
+<div class="questions quiz_form_type_<?php echo esc_attr($form_type); ?> quiz_quiz_systen_<?php echo esc_attr($quiz_system); ?>">
 	<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
 		<div class="qsm-spinner-loader"></div>
 	</div>
@@ -285,15 +299,15 @@ function qsm_options_questions_tab_content() {
 									foreach ( $description_arr as $value ) {
 										$question_type_id = $value['question_type_id'];
 										?>
-								<p id="question_type_<?php echo $question_type_id; ?>_description"
-									class="question-type-description"><?php echo $value['description']; ?></p>
+								<p id="question_type_<?php echo esc_attr($question_type_id); ?>_description"
+									class="question-type-description"><?php echo esc_attr($value['description']); ?></p>
 								<?php
 									}
 								}
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper"
-								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
+								 class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
 								<label class="answer-header">
 									<?php _e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -349,17 +363,15 @@ function qsm_options_questions_tab_content() {
 													<label>
 														<?php _e( 'Question Type', 'quiz-master-next' ); ?>
 														<?php
-														$document_text  = '';
-														$document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-														$document_text .= '<span class="dashicons dashicons-media-document"></span>';
-														$document_text .= '</a>';
-														echo $document_text;
+														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+														echo '<span class="dashicons dashicons-media-document"></span>';
+														echo '</a>';
 														?>
 													</label>
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-																echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+															echo "<option value='{$type['slug']}'>{$type['name']}</option>";
 														}
 														?>
 													</select>
@@ -622,82 +634,8 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
-<!-- View for Page -->
-<script type="text/template" id="tmpl-page">
-	<div class="page page-new" data-page-id="{{data.id }}">
-			<div class="page-header">
-				<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
-				<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
-			</div>
-			<div class="page-footer">
-				<div class="page-header-buttons">
-					<a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Create New Question', 'quiz-master-next' ); ?></a>
-					<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></a>
-				</div>
-			</div>
-		</div>
-	</script>
+<?php add_action('admin_footer', 'qsm_options_questions_tab_template'); ?>
 
-<!-- View for Question -->
-<script type="text/template" id="tmpl-question">
-	<div class="question question-new" data-question-id="{{data.id }}">
-			<div class="question-content">
-				<div><span class="dashicons dashicons-move"></span></div>
-				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
-				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-				<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
-				<div class="question-content-text">{{{data.question}}}</div>
-				<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
-			</div>
-		</div>
-	</script>
-
-<!-- View for question in question bank -->
-<script type="text/template" id="tmpl-single-question-bank-question">
-	<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
-			<div class="question-bank-selection">
-				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
-			</div>
-			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-			<div><a href="#" class="import-button button"><?php _e( 'Add Question', 'quiz-master-next' ); ?></a></div>
-		</div>
-	</script>
-
-<!-- View for single category -->
-<script type="text/template" id="tmpl-single-category">
-	<div class="category">
-			<label><input type="radio" name="category" class="category-radio" value="{{data.category}}">{{data.category}}</label>
-		</div>
-	</script>
-
-<!-- View for single answer -->
-<script type="text/template" id="tmpl-single-answer">
-	<div class="answers-single">
-			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
-			<div class="answer-text-div">
-				<# if ( 'rich' == data.answerType ) { #>
-					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
-				<# } else if ( 'image' == data.answerType ) { #>
-					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
-					<a href="#" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
-					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
-				<# } else { #>
-					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
-				<# } #>
-			</div>
-			<# if ( 0 == data.form_type ) { #>
-				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-				<# } #>
-				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e( 'Correct', 'quiz-master-next' ); ?></label></div>
-				<# } #>
-			<# } else { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-			<# } #>
-			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
-		</div>
-	</script>
 <div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">
@@ -813,7 +751,7 @@ function qsm_options_questions_tab_content() {
 }
 
 add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
-// add_action( 'wp_ajax_nopriv_qsm_save_pages', 'qsm_ajax_save_pages' );
+
 
 /**
  * Saves the pages and order from the Questions tab
@@ -821,7 +759,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	$nonce = $_POST['nonce'];
+	$nonce = sanitize_text_field( $_POST['nonce'] );
 	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
@@ -845,7 +783,6 @@ function qsm_ajax_save_pages() {
 }
 
 add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
-// add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
 
 /**
  * Loads all the questions and echos out JSON
@@ -875,7 +812,6 @@ function qsm_load_all_quiz_questions_ajax() {
 }
 
 add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
-// add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
 
 /**
  * @version 6.3.2
@@ -1014,7 +950,7 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
-	$question_id = $_POST['question_id'];
+	$question_id = sanitize_text_field( $_POST['question_id'] );
 
 	if ( $question_id ) {
 		global $wpdb;
@@ -1038,7 +974,7 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 
 	$category   = sanitize_text_field( $_POST['name'] );
-	$parent     = (int) $_POST['parent'];
+	$parent     = (int) sanitize_text_field( $_POST['parent'] );
 	$parent     = ( $parent == -1 ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,
@@ -1049,5 +985,91 @@ function qsm_save_new_category() {
 	);
 	echo json_encode( $term_array );
 	exit;
+}
+
+/**
+ * Adds the templates for the options for questions tab.
+ *
+ * @since 7.3.5
+ */
+function qsm_options_questions_tab_template(){
+	?>
+	<!-- View for Page -->
+	<script type="text/template" id="tmpl-page">
+		<div class="page page-new" data-page-id="{{data.id }}">
+				<div class="page-header">
+					<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
+					<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
+				</div>
+				<div class="page-footer">
+					<div class="page-header-buttons">
+						<a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Create New Question', 'quiz-master-next' ); ?></a>
+						<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></a>
+					</div>
+				</div>
+			</div>
+		</script>
+
+	<!-- View for Question -->
+	<script type="text/template" id="tmpl-question">
+		<div class="question question-new" data-question-id="{{data.id }}">
+				<div class="question-content">
+					<div><span class="dashicons dashicons-move"></span></div>
+					<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
+					<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
+					<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
+					<div class="question-content-text">{{{data.question}}}</div>
+					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
+				</div>
+			</div>
+		</script>
+
+	<!-- View for question in question bank -->
+	<script type="text/template" id="tmpl-single-question-bank-question">
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+				<div class="question-bank-selection">
+					<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
+				</div>
+				<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
+				<div><a href="#" class="import-button button"><?php _e( 'Add Question', 'quiz-master-next' ); ?></a></div>
+			</div>
+		</script>
+
+	<!-- View for single category -->
+	<script type="text/template" id="tmpl-single-category">
+		<div class="category">
+				<label><input type="radio" name="category" class="category-radio" value="{{data.category}}">{{data.category}}</label>
+			</div>
+		</script>
+
+	<!-- View for single answer -->
+	<script type="text/template" id="tmpl-single-answer">
+		<div class="answers-single">
+			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
+			<div class="answer-text-div">
+				<# if ( 'rich' == data.answerType ) { #>
+					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
+				<# } else if ( 'image' == data.answerType ) { #>
+					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
+					<a href="#" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
+					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
+				<# } else { #>
+					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+				<# } #>
+			</div>
+			<# if ( 0 == data.form_type ) { #>
+				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+				<# } #>
+				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e( 'Correct', 'quiz-master-next' ); ?></label></div>
+				<# } #>
+			<# } else { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+			<# } #>
+			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
+		</div>
+	</script>
+	<?php
 }
 ?>

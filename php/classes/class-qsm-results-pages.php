@@ -159,6 +159,10 @@ class QSM_Results_Pages {
 			// Decodes special characters, runs through our template
 			// variables, and then outputs the text.
 			$page = htmlspecialchars_decode( $content, ENT_QUOTES );
+
+			//last chance to filter $page
+			$page = apply_filters( 'qsm_template_variable_results_page', $page, $response_data );
+
 			echo apply_filters( 'mlw_qmn_template_variable_results_page', $page, $response_data );
 			do_action( 'qsm_after_results_page' );
 			?>
@@ -290,7 +294,7 @@ class QSM_Results_Pages {
 		// Updates the database with new array to prevent running this step next time.
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
@@ -317,6 +321,8 @@ class QSM_Results_Pages {
 			return false;
 		}
 
+		$is_not_allow_html = apply_filters( 'qsm_admin_results_page_disallow_html', true );
+
 		// Sanitizes data in pages.
 		$total = count( $pages );
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -340,12 +346,18 @@ class QSM_Results_Pages {
 			} else {
 				$pages[ $i ]['conditions'] = array();
 			}
+
+			// Sanitize template data 
+			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
+				// Sanitizes the conditions.
+				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
+			}
 		}
 
 		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
