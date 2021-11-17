@@ -262,6 +262,7 @@ class QMNQuizManager {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-tooltip' );
 			wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL.'/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version );
+			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 			wp_enqueue_script( 'math_jax',$this->mathjax_url , false , $this->mathjax_version , true );
 			$result_unique_id = sanitize_text_field( $_GET['result_id'] );
 			$query            = $wpdb->prepare( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id );
@@ -693,6 +694,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		wp_style_add_data( 'qsm_model_css', 'rtl', 'replace' );
 		wp_enqueue_script( 'qsm_model_js', QSM_PLUGIN_JS_URL.'/micromodal.min.js');
 		wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL.'/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip', 'progress-bar' ), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 		wp_localize_script(
 			'qsm_quiz',
 			'qmn_ajax_object',
