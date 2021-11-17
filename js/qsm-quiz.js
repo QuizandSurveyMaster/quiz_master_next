@@ -1621,11 +1621,6 @@ function qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse){
 			lowerMidClass).css('font-weight', '400');
 		jQuery('.question-section-id-6  .question-type-polar-s').find(
 			upperMidClass).css('font-weight', '600');
-	} else {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.left-polar-title').css('font-weight', '400');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.right-polar-title').css('font-weight', '400');
 	}
 }
 
