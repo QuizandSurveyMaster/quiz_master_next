@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.4
+Stable tag: 7.3.5
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,25 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.5 (November 17, 2021) =
+* Bug: Fixed issue while permanently deleting bulk quizzes
+* Bug: Fixed issue while editing questions imported from question bank
+* Bug: Fixed issue with question categories
+* Bug: Fixed various security vulnerabilities
+* Bug: Fixed Authenticated SQL injection
+* Bug: Fixed issues with polar question type
+* Bug: Fixed issue where multiple popups were appearing
+* Bug: Fixed issues where refreshing the page resets answered questions
+* Feature: Added support for webp file format
+* Feature: Added new template variable %MINIMUM_POINTS%
+* Enhancement: Replaced shortened urls with original urls
+* Enhancement: Refactored code to enqueue JS and CSS files as per coding standards
+* Enhancement: Refactored code to utilise libraries bundled with WordPress core
+* Enhancement: Updated out of date libraries
+* Enhancement: Removed CDN and third party server scripts
+* Enhancement: Sanitized, Escaped, and Validated all variable, file uploads and data
+* Enhancement: Moved inline scripts to wp_enqueue_script and wp_add_inline_script
+
 = 7.3.4 (October 1, 2021) =
 * Bug: Fixed the issue with validation of date field for contact section
 
