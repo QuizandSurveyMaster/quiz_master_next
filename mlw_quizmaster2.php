@@ -219,7 +219,7 @@ class MLWQuizMasterNext {
 		add_action( 'init', array( $this, 'register_quiz_post_types' ) );
 		add_filter( 'parent_file', array( &$this, 'parent_file' ), 9999, 1 );
 		add_action( 'plugins_loaded', array( &$this, 'qsm_load_textdomain' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'qsm_admin_scripts_style' ), 10 );
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
@@ -407,9 +407,6 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Stats', 'quiz-master-next' ), __( 'Stats', 'quiz-master-next' ), 'moderate_comments', 'qmn_stats', 'qmn_generate_stats_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'Addon Settings', 'quiz-master-next' ), '<span style="color:#f39c12;">' . __( 'Addon Settings', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qmn_addons', 'qmn_addons_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'Get a Free Addon', 'quiz-master-next' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'quiz-master-next' ) . '</span>', 'moderate_comments', 'qsm-free-addon', 'qsm_display_optin_page' );
-			add_submenu_page( 'qsm_dashboard', __( 'What\'s Next', 'quiz-master-next' ), __( 'What\'s Next', 'quiz-master-next' ), 'moderate_comments', 'qsm_roadmap_page', 'qsm_generate_roadmap_page' );
-			// Merging Help page in About page
-			// add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_about_page', 'qsm_generate_about_page' );
 			add_submenu_page( 'qsm_dashboard', __( 'About', 'quiz-master-next' ), __( 'About', 'quiz-master-next' ), 'moderate_comments', 'qsm_quiz_about', 'qsm_generate_about_page' );
 			// Register screen option for dashboard page
 			add_action( 'screen_settings', 'qsm_dashboard_screen_options', 10, 2 );

@@ -30,7 +30,7 @@ function qsm_admin_enqueue_scripts_options_page_questions($hook){
 		wp_enqueue_media();
 	}
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions', 20);
 
 
 /**
@@ -636,82 +636,8 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
-<!-- View for Page -->
-<script type="text/template" id="tmpl-page">
-	<div class="page page-new" data-page-id="{{data.id }}">
-			<div class="page-header">
-				<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
-				<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
-			</div>
-			<div class="page-footer">
-				<div class="page-header-buttons">
-					<a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Create New Question', 'quiz-master-next' ); ?></a>
-					<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></a>
-				</div>
-			</div>
-		</div>
-	</script>
+<?php add_action('admin_footer', 'qsm_options_questions_tab_template'); ?>
 
-<!-- View for Question -->
-<script type="text/template" id="tmpl-question">
-	<div class="question question-new" data-question-id="{{data.id }}">
-			<div class="question-content">
-				<div><span class="dashicons dashicons-move"></span></div>
-				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
-				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-				<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
-				<div class="question-content-text">{{{data.question}}}</div>
-				<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
-			</div>
-		</div>
-	</script>
-
-<!-- View for question in question bank -->
-<script type="text/template" id="tmpl-single-question-bank-question">
-	<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
-			<div class="question-bank-selection">
-				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
-			</div>
-			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-			<div><a href="#" class="import-button button"><?php _e( 'Add Question', 'quiz-master-next' ); ?></a></div>
-		</div>
-	</script>
-
-<!-- View for single category -->
-<script type="text/template" id="tmpl-single-category">
-	<div class="category">
-			<label><input type="radio" name="category" class="category-radio" value="{{data.category}}">{{data.category}}</label>
-		</div>
-	</script>
-
-<!-- View for single answer -->
-<script type="text/template" id="tmpl-single-answer">
-	<div class="answers-single">
-			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
-			<div class="answer-text-div">
-				<# if ( 'rich' == data.answerType ) { #>
-					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
-				<# } else if ( 'image' == data.answerType ) { #>
-					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
-					<a href="#" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
-					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
-				<# } else { #>
-					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
-				<# } #>
-			</div>
-			<# if ( 0 == data.form_type ) { #>
-				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-				<# } #>
-				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
-					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e( 'Correct', 'quiz-master-next' ); ?></label></div>
-				<# } #>
-			<# } else { #>
-					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
-			<# } #>
-			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
-		</div>
-	</script>
 <div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">
@@ -827,7 +753,7 @@ function qsm_options_questions_tab_content() {
 }
 
 add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
-// add_action( 'wp_ajax_nopriv_qsm_save_pages', 'qsm_ajax_save_pages' );
+
 
 /**
  * Saves the pages and order from the Questions tab
@@ -859,7 +785,6 @@ function qsm_ajax_save_pages() {
 }
 
 add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
-// add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
 
 /**
  * Loads all the questions and echos out JSON
@@ -889,7 +814,6 @@ function qsm_load_all_quiz_questions_ajax() {
 }
 
 add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
-// add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
 
 /**
  * @version 6.3.2
@@ -1063,5 +987,91 @@ function qsm_save_new_category() {
 	);
 	echo json_encode( $term_array );
 	exit;
+}
+
+/**
+ * Adds the templates for the options for questions tab.
+ *
+ * @since 7.3.5
+ */
+function qsm_options_questions_tab_template(){
+	?>
+	<!-- View for Page -->
+	<script type="text/template" id="tmpl-page">
+		<div class="page page-new" data-page-id="{{data.id }}">
+				<div class="page-header">
+					<div><span class="dashicons dashicons-move"></span> <a href="#" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
+					<div><a href="#" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
+				</div>
+				<div class="page-footer">
+					<div class="page-header-buttons">
+						<a href="#" class="new-question-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Create New Question', 'quiz-master-next' ); ?></a>
+						<a href="#" class="add-question-bank-button button"><span class="dashicons dashicons-plus"></span> <?php _e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></a>
+					</div>
+				</div>
+			</div>
+		</script>
+
+	<!-- View for Question -->
+	<script type="text/template" id="tmpl-question">
+		<div class="question question-new" data-question-id="{{data.id }}">
+				<div class="question-content">
+					<div><span class="dashicons dashicons-move"></span></div>
+					<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
+					<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
+					<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
+					<div class="question-content-text">{{{data.question}}}</div>
+					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
+				</div>
+			</div>
+		</script>
+
+	<!-- View for question in question bank -->
+	<script type="text/template" id="tmpl-single-question-bank-question">
+		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
+				<div class="question-bank-selection">
+					<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
+				</div>
+				<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
+				<div><a href="#" class="import-button button"><?php _e( 'Add Question', 'quiz-master-next' ); ?></a></div>
+			</div>
+		</script>
+
+	<!-- View for single category -->
+	<script type="text/template" id="tmpl-single-category">
+		<div class="category">
+				<label><input type="radio" name="category" class="category-radio" value="{{data.category}}">{{data.category}}</label>
+			</div>
+		</script>
+
+	<!-- View for single answer -->
+	<script type="text/template" id="tmpl-single-answer">
+		<div class="answers-single">
+			<div><a href="#" class="delete-answer-button"><span class="dashicons dashicons-trash"></span></a></div>
+			<div class="answer-text-div">
+				<# if ( 'rich' == data.answerType ) { #>
+					<textarea id="answer-{{data.question_id}}-{{data.count}}"></textarea>
+				<# } else if ( 'image' == data.answerType ) { #>
+					<input type="text" class="answer-text" id="featured_image_textbox" value="{{data.answer}}" placeholder="Insert image URL"/>
+					<a href="#" id="set_featured_image"><span class="dashicons dashicons-insert"></span></a>
+					<input type="text" class="answer-caption" id="featured_image_caption" value="{{data.caption}}" placeholder="Image Caption"/>
+				<# } else { #>
+					<input type="text" class="answer-text" value="{{data.answer}}" placeholder="Your answer"/>
+				<# } #>
+			</div>
+			<# if ( 0 == data.form_type ) { #>
+				<# if ( 1 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+				<# } #>
+				<# if ( 0 == data.quiz_system || 3 == data.quiz_system ) { #>
+					<div><label class="correct-answer"><input type="checkbox" class="answer-correct" value="1" <# if ( 1 == data.correct ) { #> checked="checked" <# } #>/> <?php _e( 'Correct', 'quiz-master-next' ); ?></label></div>
+				<# } #>
+			<# } else { #>
+					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
+			<# } #>
+			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
+		</div>
+	</script>
+	<?php
 }
 ?>

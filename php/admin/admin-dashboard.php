@@ -5,23 +5,33 @@
  * @param string $name
  */
 function qsm_get_widget_data( $name ) {
-	$qsm_admin_dd = qsm_fetch_data_from_script();
+	$qsm_admin_dd = json_decode(file_get_contents(QSM_PLUGIN_PATH.'/data/parsing_script.json'),true);
 	return isset( $qsm_admin_dd[ $name ] ) ? $qsm_admin_dd[ $name ] : array();
 }
 
-
-function qsm_fetch_data_from_script() {
-	$args           = array(
-		'timeout'   => 10,
-		'sslverify' => false,
-	);
-	$fetch_api_data = wp_remote_get( 'https://t6k8i7j6.stackpathcdn.com/wp-content/parsing_script.json?v=1', $args );
-	if ( is_array( $fetch_api_data ) && isset( $fetch_api_data['response'] ) && isset( $fetch_api_data['response']['code'] ) && $fetch_api_data['response']['code'] == 200 ) {
-		$qsm_admin_dd = wp_remote_retrieve_body( $fetch_api_data );
-		return json_decode( $qsm_admin_dd, true );
+/**
+ * @since 7.3.5
+ * @return array $blog_data
+ */
+function qsm_get_blog_data_rss(){
+	include_once( ABSPATH . WPINC . '/feed.php' );
+	$blog_data_obj = fetch_feed( 'https://quizandsurveymaster.com/feed/' );
+	$maxitems = 0;
+	if ( ! is_wp_error( $blog_data_obj ) ){
+		$maxitems = $blog_data_obj->get_item_quantity( 2 ); 
+		$blog_data_items = $blog_data_obj->get_items( 0, $maxitems );
 	}
-	return array();
+	$blog_data = array();
+	foreach ( $blog_data_items as $item ){
+		$blog_data[]= array(
+			'link' => esc_url( $item->get_permalink() ),
+			'title' => esc_html( $item->get_title() ),
+			'excerpt' => esc_html( $item->get_description() )				
+		);
+	}
+	return $blog_data;
 }
+
 /**
  * @since 7.0
  * @param str $widget_id
@@ -106,7 +116,7 @@ function qsm_admin_enqueue_scripts_dashboard_page($hook){
 	wp_enqueue_script ( 'productstash-config', QSM_PLUGIN_JS_URL.'/qsm-productstash-config.js');
 	wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page');
+add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page', 20);
 
 /**
  * @since 7.0
@@ -183,9 +193,6 @@ function qsm_generate_dashboard_page() {
 								class="welcome-icon"><span
 									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
-						<li><a href="#" class="welcome-icon" id="whatsnew"><span
-									class="dashicons dashicons-bell"></span>&nbsp;&nbsp;<?php _e( 'What\'s New', 'quiz-master-next' ); ?></a>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -204,10 +211,15 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_recent_taken_quiz',
 				'title'    => 'Recent Taken Quiz',
 			),
-			'dashboard_what_new'          => array(
+			'dashboard_roadmap'          => array(
 				'sidebar'  => 'side',
-				'callback' => 'qsm_dashboard_what_new',
-				'title'    => 'Latest news',
+				'callback' => 'qsm_dashboard_roadmap',
+				'title'    => 'roadmap',
+			),
+			'dashboard_latest_blogs'          => array(
+				'sidebar'  => 'normal',
+				'callback' => 'qsm_dashboard_latest_blogs',
+				'title'    => 'Latest Blogs',
 			),
 			'dashboard_chagelog'          => array(
 				'sidebar'  => 'side',
@@ -282,7 +294,7 @@ function qsm_generate_dashboard_page() {
 	</div><!-- dashboard-widgets-wrap -->
 </div>
 <!-- Popup for new wizard -->
-<?php echo wp_kses_post( qsm_create_new_quiz_wizard() ); ?>
+<?php qsm_create_new_quiz_wizard(); ?>
 <?php
 }
 
@@ -502,19 +514,19 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
  * @param str $widget_id
  * Generate posts
  */
-function qsm_dashboard_what_new( $widget_id ) {
+function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "'what's New", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "What's New", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
 				<?php
-										$feed_posts_array = qsm_get_widget_data( 'blog_post' );
+				$feed_posts_array = qsm_get_blog_data_rss();
 				if ( ! empty( $feed_posts_array ) ) {
 					foreach ( $feed_posts_array as $key => $single_feed_arr ) {
 						?>
@@ -638,3 +650,50 @@ function qsm_reset_transient_dashboard( $upgrader_object, $options ) {
 	}
 }
 add_action( 'upgrader_process_complete', 'qsm_reset_transient_dashboard', 10, 2 );
+
+/**
+ * @since 7.0
+ * @param str $widget_id
+ * Generate posts
+ */
+function qsm_dashboard_roadmap( $widget_id ) {
+	?>
+<div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
+	<button type="button" class="handlediv" aria-expanded="true">
+		<span class="screen-reader-text">Toggle panel: <?php _e( "What's Next", 'quiz-master-next' ); ?></span>
+		<span class="toggle-indicator" aria-hidden="true"></span>
+	</button>
+	<h2 class="hndle ui-sortable-handle"><span><?php _e( "What's Next", 'quiz-master-next' ); ?></span></h2>
+	<div class="inside">
+		<div class="main">
+			<ul class="what-new-ul">
+				<li>
+					<a href="https://app.productstash.io/qsm#/roadmap"
+						target="_blank" rel="noopener"> Roadmap
+					</a>
+					<div class="post-description">
+						Visit out public Roadmap to checkout what's in the development pipepline of QSM. 
+					</div>
+				</li>
+				<li>
+					<a href="https://app.productstash.io/qsm#/updates"
+						target="_blank" rel="noopener">Recent Updates
+					</a>
+					<div class="post-description">
+						Checkout our updates page to know more about our recent releases
+					</div>
+				</li>
+				<li>
+					<a href="https://app.productstash.io/qsm#/ideas"
+						target="_blank" rel="noopener">Submit your ideas
+					</a>
+					<div class="post-description">
+						We are open your suggestions on how to improve QSM. Please visit our ideas page to share your thoughts.
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<?php
+}

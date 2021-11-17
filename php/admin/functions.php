@@ -407,7 +407,6 @@ function qsm_create_new_quiz_wizard() {
 	global $mlwQuizMasterNext;
 	global $themes_data;
 	qsm_fetch_theme_data();
-	ob_start();
 	?>
 <div class="qsm-popup qsm-popup-slide" id="model-wizard" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
@@ -575,10 +574,6 @@ function qsm_create_new_quiz_wizard() {
 								<div class="qsm-quiz-page-addon qsm-addon-page-list">
 									<?php
 										$popular_addons = qsm_get_widget_data( 'popular_products' );
-									if ( empty( $popular_addons ) ) {
-										$qsm_admin_dd   = qsm_fetch_data_from_script();
-										$popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
-									}
 									?>
 									<div class="qsm_popular_addons" id="qsm_popular_addons">
 										<div class="popuar-addon-ul">
@@ -640,7 +635,6 @@ function qsm_create_new_quiz_wizard() {
 	</div>
 </div>
 <?php
-return ob_get_clean();
 }
 
 /**
@@ -916,7 +910,7 @@ function qsm_get_default_wizard_themes() {
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme_name ); ?></h2>
 	</div>
 </div>
 <?php
@@ -957,21 +951,4 @@ function qsm_get_market_themes() {
 </div>
 <?php
 	}
-}
-
-/**
- * Display roadmap page
- *
- * @since 7.1.11
- */
-function qsm_generate_roadmap_page() {
-	wp_add_inline_style('qsm_admin_style', 'iframe {height: 1350px;}body::-webkit-scrollbar{width: 0px;}');
-	wp_add_inline_script( 'qmn_admin_js', 'var ps_config = {productId: "d24ad9de-78c7-4835-a2a8-3f5ee0317f31"};');
-	wp_enqueue_script( 'productstash_roadmap','https://app.productstash.io/js/productstash-embed.js',array(),false,true);
-?>
-<div class="wrap">
-	<iframe src="https://app.productstash.io/roadmaps/5f7b1a36636db50029f51d5c/public" height="1350px" width="100%"
-		frameborder="0"></iframe>
-</div>
-<?php
 }

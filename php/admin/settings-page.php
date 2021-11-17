@@ -40,7 +40,7 @@ class QMNGlobalSettingsPage {
 			$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] )  ;
 			return $new_value;
 		}, 10, 2 );
-		add_action( 'admin_enqueue_scripts', array($this, 'qsm_admin_enqueue_scripts_settings_page') );
+		add_action( 'admin_enqueue_scripts', array($this, 'qsm_admin_enqueue_scripts_settings_page'), 20 );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class QMNGlobalSettingsPage {
 		}
 		global $mlwQuizMasterNext;
 		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js');
-    	wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+    wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
 	}
 
 	/**

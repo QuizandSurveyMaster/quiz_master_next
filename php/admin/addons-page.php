@@ -132,10 +132,6 @@ function qsm_generate_featured_addons() {
 	<div class="qsm-quiz-page-addon qsm-addon-page-list">
 		<?php
 		$popular_addons = qsm_get_widget_data( 'popular_products' );
-		if ( empty( $popular_addons ) ) {
-			$qsm_admin_dd   = qsm_fetch_data_from_script();
-			$popular_addons = isset( $qsm_admin_dd['popular_products'] ) ? $qsm_admin_dd['popular_products'] : array();
-		}
 		?>
 		<div class="qsm_popular_addons" id="qsm_popular_addons">
 			<div class="popuar-addon-ul">
@@ -179,10 +175,6 @@ function qsm_generate_featured_addons() {
 		<div class="qsm_popular_addons" id="qsm_onsale_addons" style="display: none;">
 			<?php
 			$qsm_onsale_addons = qsm_get_widget_data( 'on_sale_products' );
-			if ( empty( $qsm_onsale_addons ) ) {
-				$qsm_admin_dd      = qsm_fetch_data_from_script();
-				$qsm_onsale_addons = isset( $qsm_admin_dd['on_sale_products'] ) ? $qsm_admin_dd['on_sale_products'] : array();
-			}
 			?>
 			<div class="popuar-addon-ul">
 				<?php
@@ -225,10 +217,6 @@ function qsm_generate_featured_addons() {
 		<div class="qsm_popular_addons" id="qsm_new_addons" style="display: none;">
 			<?php
 			$new_addons = qsm_get_widget_data( 'new_addons' );
-			if ( empty( $popular_addons ) ) {
-				$qsm_admin_dd = qsm_fetch_data_from_script();
-				$new_addons   = isset( $qsm_admin_dd['new_addons'] ) ? $qsm_admin_dd['new_addons'] : array();
-			}
 			?>
 			<div class="popuar-addon-ul">
 				<?php
@@ -275,10 +263,6 @@ function qsm_generate_featured_addons() {
 	<div class="qsm-addon-news-ads">
 		<?php
 		$bundles = qsm_get_widget_data( 'bundles' );
-		if ( empty( $bundles ) ) {
-			$qsm_admin_dd = qsm_fetch_data_from_script();
-			$bundles      = isset( $qsm_admin_dd['bundles'] ) ? $qsm_admin_dd['bundles'] : array();
-		}
 		?>
 		<?php
 		if ( $bundles ) {
@@ -530,6 +514,6 @@ function qsm_admin_get_free_addon_page_scripts_style($hook){
 
 	}
 }
-add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style' );
+add_action( 'admin_enqueue_scripts', 'qsm_admin_get_free_addon_page_scripts_style', 20 );
 
 ?>
