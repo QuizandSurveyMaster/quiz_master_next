@@ -356,9 +356,9 @@ function qsm_display_question_option( $key, $single_option ) {
 			if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 				foreach ( $single_option['options'] as $key => $value ) {
 					?>
-	<input name="<?php echo esc_attr($parent_key); ?>[]" type="checkbox" value="<?php echo esc_attr($key); ?>" <?php echo ($key === $default ? 'checked' : ''); ?> />
-	<?php echo esc_attr($value); ?><br />
-	<?php
+					<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ($key === $default) ? 'checked' : ''; ?> />
+					<?php echo esc_attr( $value ); ?><br />
+					<?php
 				}
 			}
 			?>
@@ -376,7 +376,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
 				foreach ( $single_option['options'] as $key => $value ) {
 					?>
-					<input name="<?php echo esc_attr($parent_key); ?>" id="<?php echo esc_attr($parent_key); ?>" type="checkbox"value="<?php echo esc_attr($key); ?>" <?php echo ($key === $default ? 'checked' : ''); ?> />
+					<input name="<?php echo esc_attr($parent_key); ?>" id="<?php echo esc_attr($parent_key); ?>" type="checkbox"value="<?php echo esc_attr($key); ?>" <?php echo ($key === $default) ? 'checked' : ''; ?> />
 					<?php
 				}
 			}

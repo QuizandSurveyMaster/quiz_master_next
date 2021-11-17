@@ -69,24 +69,23 @@ function qsm_dashboard_screen_options( $status, $args ) {
 	<fieldset class="metabox-prefs">
 		<legend>Boxes</legend>
 		<?php
-				$hidden_box        = get_user_option( "metaboxhidden_$page_id", $user->ID );
-				$hidden_box_arr    = ! empty( $hidden_box ) ? $hidden_box : array();
-				$registered_widget = get_option( 'qsm_dashboard_widget_arr', array() );
-								$registered_widget['welcome_panel'] = array(
-									'title' => __( 'Welcome', 'quiz-master-next' ),
-								);
-								if ( $registered_widget ) {
-									foreach ( $registered_widget as $key => $value ) {
-										?>
-		<label for="<?php echo esc_attr( $key ); ?>-hide"><input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide"
-				type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php
-												if ( ! in_array( $key, $hidden_box_arr ) ) {
-													?> checked="checked" <?php } ?>><?php echo wp_kses_post( $value['title'] ); ?></label>
-		<?php
-
-									}
-								}
-								?>
+		$hidden_box							 = get_user_option( "metaboxhidden_$page_id", $user->ID );
+		$hidden_box_arr						 = ! empty( $hidden_box ) ? $hidden_box : array();
+		$registered_widget					 = get_option( 'qsm_dashboard_widget_arr', array() );
+		$registered_widget['welcome_panel']	 = array(
+			'title' => __( 'Welcome', 'quiz-master-next' ),
+		);
+		if ( $registered_widget ) {
+			foreach ( $registered_widget as $key => $value ) {
+				?>
+				<label for="<?php echo esc_attr( $key ); ?>-hide">
+					<input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide" type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php echo ( ! in_array( $key, $hidden_box_arr ) ) ? 'checked="checked"' : ''; ?>>
+					<?php echo wp_kses_post( $value['title'] ); ?>
+				</label>
+				<?php
+			}
+		}
+		?>
 	</fieldset>
 	<?php wp_nonce_field( 'screen-options-nonce', 'screenoptionnonce', false, false ); ?>
 </form>
