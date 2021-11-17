@@ -1519,56 +1519,10 @@ jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
 function qsmPolarSlider(page){
 	let polarQuestions = jQuery('.question-type-polar-s');
 	if (polarQuestions.length >0){
-		polarQuestions.each( function(){
+		polarQuestions.each( function(){			
 			let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
 			let questionID = polarQuestion.attr('id').replace('slider-','');
-			let isReverse = Boolean(parseInt(polarQuestion.attr("data-is_reverse")));
-			let answer1 = parseInt( polarQuestion.attr("data-answer1") );
-			let answer2 = parseInt( polarQuestion.attr("data-answer2") );
-			let max;
-			let min;
-			if (isReverse){
-				max = answer1;
-				min = answer2;
-			} else {
-				max = answer2;
-				min = answer1;
-			}
-			let step;
-			let value;
-			if ('answer'=== page){
-				step = max-min;
-				value = parseInt( polarQuestion.attr("data-answer_value") );
-			} else { 
-				step = parseInt(max-min)/2;
-				value = min+step;
-			}
-			polarQuestions.find('#slider-'+questionID).slider({
-				max: max,
-				min: min,
-				isRTL:isReverse,
-				step: step,
-				range: false,
-				value: value,
-				slide: function slider_slide(event, ui) {
-					if('answer'=== page){
-						return false;
-					}			
-				},
-				change: function ( event, ui ){
-					if('answer'!== page){
-						jQuery('#slider-'+questionID).slider( "option", "step", max-min);
-						qsmPolarSliderQuestionChange(ui, answer1, answer2 );
-					}
-				},
-				create: function (event, ui){
-					if('answer'=== page){
-						jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
-					} else {
-						qsmPolarSliderQuestionCreate();
-					}
-				}
-			});
+			qsmPolarSliderEach(polarQuestion,questionID,page);
 			if ('answer'=== page){
 				let maxHeight = Math.max.apply(null, jQuery(".mlw-qmn-question-result-"+questionID+" >> div").map(
 					function() {
@@ -1584,6 +1538,56 @@ function qsmPolarSlider(page){
 			}
 		});
 	}	
+}
+
+function qsmPolarSliderEach(polarQuestion,questionID,page){
+	let isReverse = Boolean(parseInt(polarQuestion.attr("data-is_reverse")));
+	let answer1 = parseInt( polarQuestion.attr("data-answer1") );
+	let answer2 = parseInt( polarQuestion.attr("data-answer2") );
+	let max;
+	let min;
+	if (isReverse){
+		max = answer1;
+		min = answer2;
+	} else {
+		max = answer2;
+		min = answer1;
+	}
+	let step;
+	let value;
+	if ('answer'=== page){
+		step = max-min;
+		value = parseInt( polarQuestion.attr("data-answer_value") );
+	} else { 
+		step = parseInt(max-min)/2;
+		value = min+step;
+	}
+	polarQuestion.slider({
+		max: max,
+		min: min,
+		isRTL:isReverse,
+		step: step,
+		range: false,
+		value: value,
+		slide: function slider_slide(event, ui) {
+			if('answer'=== page){
+				return false;
+			}			
+		},
+		change: function ( event, ui ){
+			if('answer'!== page){
+				jQuery('#slider-'+questionID).slider( "option", "step", max-min);
+				qsmPolarSliderQuestionChange(ui, answer1, answer2 );
+			}
+		},
+		create: function (event, ui){
+			if('answer'=== page){
+				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
+			} else {
+				qsmPolarSliderQuestionCreate();
+			}
+		}
+	});
 }
 
 function qsmPolarSliderQuestionChange(ui, answer1, answer2){
