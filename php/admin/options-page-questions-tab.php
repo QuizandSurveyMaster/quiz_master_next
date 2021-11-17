@@ -363,11 +363,9 @@ function qsm_options_questions_tab_content() {
 													<label>
 														<?php _e( 'Question Type', 'quiz-master-next' ); ?>
 														<?php
-														$document_text  = '';
-														$document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-														$document_text .= '<span class="dashicons dashicons-media-document"></span>';
-														$document_text .= '</a>';
-														echo $document_text;
+														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+														echo '<span class="dashicons dashicons-media-document"></span>';
+														echo '</a>';
 														?>
 													</label>
 													<select name="question_type" id="question_type">
