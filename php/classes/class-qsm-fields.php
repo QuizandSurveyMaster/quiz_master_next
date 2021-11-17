@@ -288,14 +288,7 @@ class QSM_Fields {
    */
   public static function generate_date_field( $field, $value ) {    
     ?>
-<script>
-jQuery(function() {
-	jQuery("#<?php echo esc_attr( $field["id"] ); ?>").datetimepicker({
-		format: 'm/d/Y H:i',
-		step: 1
-	});
-});
-</script>
+
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_html( $field['label'] ); ?></label>

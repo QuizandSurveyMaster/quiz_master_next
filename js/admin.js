@@ -400,3 +400,62 @@ var QSMAdmin;
 
     });
 }(jQuery));
+
+// result page
+function deleteResults(id, quizName) {
+	jQuery("#delete_dialog").dialog({
+		autoOpen: false,
+		buttons: {
+			Cancel: function() {
+				$j(this).dialog('close');
+			}
+		}
+	});
+	jQuery("#delete_dialog").dialog('open');
+	var idHidden = document.getElementById("result_id");
+	var idHiddenName = document.getElementById("delete_quiz_name");
+	idHidden.value = id;
+	idHiddenName.value = quizName;
+};
+//quiz options style tab
+
+function mlw_qmn_theme(theme) {
+    document.getElementById('save_quiz_theme').value = theme;
+    jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
+    jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
+  
+  }
+  jQuery(document).ready(function() {
+    jQuery('.quiz_style_tab').click(function(e) {
+      e.preventDefault();
+      var current_id = jQuery(this).attr('data-id');
+      jQuery('.quiz_style_tab').removeClass('current');
+      jQuery(this).addClass('current');
+      jQuery('.quiz_style_tab_content').hide();
+      jQuery('#' + current_id).show();
+    });
+  });
+  
+  jQuery(document).ready(function() {
+    jQuery(document).on('click', '.qsm-activate-theme', function() {
+      jQuery(this).parents('.theme-wrapper').find('input[name=quiz_theme_id]').prop("checked", true);
+    });
+    jQuery(document).on('input', '.quiz_featured_image', function() {
+      jQuery('.qsm_featured_image_preview').attr('src', jQuery(this).val());
+    });
+  
+    jQuery(document).on('click', '.filter-links a', function() {
+      current_id = jQuery(this).attr('data-id');
+      jQuery(this).parents('.filter-links').find('li a').each(function() {
+        jQuery(this).removeClass('current');
+      });
+      jQuery(this).addClass('current');
+      jQuery(this).parents('#qsm_themes').find('.themes-container').children('div').each(function() {
+        if (jQuery(this).hasClass(current_id)) {
+          jQuery(this).show();
+        } else {
+          jQuery(this).hide();
+        }
+      });
+    })
+  });
