@@ -397,7 +397,7 @@ var import_button;
 			}
 			var advanced_option = {};
 			var answerInfo = wp.editor.getContent('correct_answer_info');
-			var quizID = qsmTextTabObject.quiz_id;
+			var quizID = parseInt( qsmTextTabObject.quiz_id );
 			var type = $("#question_type").val();
 			var comments = $("#comments").val();
 			advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
