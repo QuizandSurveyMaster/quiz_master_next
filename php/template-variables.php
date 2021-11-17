@@ -1322,9 +1322,11 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$input_text     = '';
 	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
 	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
+	$mid_point = ( $second_point - $first_point ) / 2;
 	$is_reverse     = false;
 	if ( $first_point > $second_point ) {
 		$is_reverse     = true;
+		$mid_point = ( $first_point - $second_point ) / 2;
 	}
 	$total_answer = count( $answers );
 	$id = esc_attr( intval( $id ) );
@@ -1341,12 +1343,21 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	} else {
 		$mlw_requireClass = '';
 	}
-	if ( $answer[1] == $answar1 ) {
+	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
 		$right_polar_title_style = "style='font-weight:100;'";
-	} elseif ( $answer[1] == $answar2 ){
+	} elseif ( $answer['points'] == $answar2 ){
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
+	}elseif ( $answer['points'] == $mid_point ){
+		$left_polar_title_style  = "style='font-weight:100;'";
+		$right_polar_title_style = "style='font-weight:900;'";
+	} elseif ( $answer['points'] < $mid_point ){
+		$left_polar_title_style  = "style='font-weight:400;'";
+		$right_polar_title_style = "style='font-weight:600;'";
+	}	elseif ( $answer['points'] > $mid_point ){
+		$left_polar_title_style  = "style='font-weight:600;'";
+		$right_polar_title_style = "style='font-weight:400;'";
 	} else {
 		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:400;'";
