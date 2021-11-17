@@ -85,7 +85,7 @@ function mlw_options_text_tab_content() {
                                 if( $allowed_variables ){
                                     foreach ( $allowed_variables as $variable ) { ?>
                                         <span class="qsm-text-template-span">
-                                            <button class="button button-default"><?php echo esc_html( $variable ); ?></button>
+                                            <button class="button button-default"><?php echo wp_kses_post( $variable ); ?></button>
                                             <?php if( isset( $variable_list[ $variable ] ) ){
                                                 ?>
                                                 <span class="dashicons dashicons-editor-help qsm-tooltips-icon">

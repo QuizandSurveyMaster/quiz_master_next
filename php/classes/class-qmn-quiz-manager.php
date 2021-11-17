@@ -807,7 +807,7 @@ public function display_pages( $options, $quiz_data ) {
 	<div class="quiz_section quiz_begin">
 		<div class='qsm-before-message mlw_qmn_message_before'>
 			<?php
-							echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
+			echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
 			?>
 		</div>
 		<?php
@@ -838,14 +838,14 @@ public function display_pages( $options, $quiz_data ) {
 	<div class="quiz_section quiz_begin">
 		<div class='qsm-before-message mlw_qmn_message_before'>
 			<?php
-						echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
-				?>
+			echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
+			?>
 		</div>
 		<?php
-				if ( 0 == $options->contact_info_location ) {
-					echo QSM_Contact_Manager::display_fields( $options );
-				}
-				?>
+		if ( 0 == $options->contact_info_location ) {
+			echo QSM_Contact_Manager::display_fields( $options );
+		}
+		?>
 	</div>
 	<?php
 			}
@@ -862,7 +862,7 @@ public function display_pages( $options, $quiz_data ) {
 	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
 		data-qid="<?php echo esc_attr($question_id); ?>">
 		<?php
-					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
+				echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
 					echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 				}
@@ -879,10 +879,9 @@ public function display_pages( $options, $quiz_data ) {
 			}
 			if ( 0 == $options->comment_section ) {
 				$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
-				$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data );
 				?>
 	<div class="quiz_section quiz_begin">
-		<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
+		<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data ); ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 	<?php
@@ -890,10 +889,9 @@ public function display_pages( $options, $quiz_data ) {
 			}
 			if ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) {
 				$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
-				$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 				?>
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data ); ?></div>
 		<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
@@ -913,10 +911,9 @@ public function display_pages( $options, $quiz_data ) {
 				$qpage_id              = ( isset( $qpage['id'] ) ? $qpage['id'] : $key );
 				$page_key              = ( isset( $qpage['pagekey'] ) ? $qpage['pagekey'] : $key );
 				$hide_prevbtn          = ( isset( $qpage['hide_prevbtn'] ) ? $qpage['hide_prevbtn'] : 0 );
-				$style = "style='display: none;'";
 				?>
 <section class="qsm-page <?php echo esc_attr( $animation_effect ); ?> qsm-page-<?php echo esc_attr( $qpage_id ); ?>"
-	data-pid="<?php echo esc_attr( $qpage_id ); ?>" data-prevbtn="<?php echo $hide_prevbtn; ?>" <?php echo $style; ?>>
+		 data-pid="<?php echo esc_attr( $qpage_id ); ?>" data-prevbtn="<?php echo esc_attr( $hide_prevbtn ); ?>" style='display: none;'>
 	<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
 	<?php
 				foreach ( $page as $question_id ) {
@@ -932,7 +929,7 @@ public function display_pages( $options, $quiz_data ) {
 	<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
 		data-qid='<?php echo esc_attr($question_id); ?>'>
 		<?php
-						echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
+					echo $mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
 						echo "<input type='text' class='qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment' id='mlwComment$question_id' name='mlwComment$question_id' placeholder='" . esc_attr( sanitize_text_field( $options->comment_field_text ) ) . "' onclick='qmnClearField(this)'/>";
 					}
@@ -965,12 +962,11 @@ public function display_pages( $options, $quiz_data ) {
 
 		if ( count( $pages ) > 1 && 0 == $options->comment_section ) {
 			$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
-			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data );
 			?>
 <section class="qsm-page">
 	<div class="quiz_section quiz_begin">
 		<label for='mlwQuizComments'
-			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo $message_comments; ?></label>
+			class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data ); ?></label>
 		<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 	</div>
 </section>
@@ -978,11 +974,10 @@ public function display_pages( $options, $quiz_data ) {
 		}
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
 			$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
-			$message_after = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data );
 			?>
 <section class="qsm-page" style="display: none;">
 	<div class="quiz_section">
-		<div class='qsm-after-message mlw_qmn_message_end'><?php echo $message_after; ?></div>
+		<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data ); ?></div>
 		<?php
 			if ( 1 == $options->contact_info_location ) {
 				echo QSM_Contact_Manager::display_fields( $options );

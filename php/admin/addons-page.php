@@ -103,7 +103,7 @@ function qsm_generate_featured_addons() {
 			}
 			?>
 		<div class="installed_addon">
-			<span class="installed_addon_name"><?php echo esc_html( $tab['title'] ); ?></span>
+			<span class="installed_addon_name"><?php echo wp_kses_post( $tab['title'] ); ?></span>
 			<span class="installed_addon_link">
 				<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 						class="dashicons dashicons-admin-generic"></span>
@@ -145,7 +145,7 @@ function qsm_generate_featured_addons() {
 						</div>
 						<div class="addon-title-descption">
 							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
-								<?php echo esc_html( $single_arr['name'] ); ?>
+								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
@@ -187,7 +187,7 @@ function qsm_generate_featured_addons() {
 						</div>
 						<div class="addon-title-descption">
 							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
-								<?php echo esc_html( $single_arr['name'] ); ?>
+								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
@@ -232,7 +232,7 @@ function qsm_generate_featured_addons() {
 						</div>
 						<div class="addon-title-descption">
 							<a class="addon-title" href="<?php echo esc_url( $single_arr['link'] ); ?>" target="_blank" rel="noopener">
-								<?php echo esc_html( $single_arr['name'] ); ?>
+								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
 								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
@@ -279,8 +279,8 @@ function qsm_generate_featured_addons() {
 				}
 				?>
 			</div>
-			<h3><?php echo esc_html( $bundles_arr['name'] ); ?></h3>
-			<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
+			<h3><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
+			<p><?php echo wp_kses_post_post( $bundles_arr['desc'] ); ?></p>
 			<a href="<?php echo esc_url( $bundles_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
 				<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>

@@ -307,7 +307,7 @@ function qsm_options_questions_tab_content() {
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper"
-								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo $polar_class; ?>">
+								 class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
 								<label class="answer-header">
 									<?php _e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -362,18 +362,14 @@ function qsm_options_questions_tab_content() {
 												<div class="qsm-row">
 													<label>
 														<?php _e( 'Question Type', 'quiz-master-next' ); ?>
-														<?php
-														$document_text  = '';
-														$document_text .= '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-														$document_text .= '<span class="dashicons dashicons-media-document"></span>';
-														$document_text .= '</a>';
-														echo $document_text;
-														?>
+														<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="<?php _e( 'View Documentation', 'quiz-master-next' );?>">
+															<span class="dashicons dashicons-media-document"></span>
+														</a>
 													</label>
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-																echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+															echo "<option value='{$type['slug']}'>{$type['name']}</option>";
 														}
 														?>
 													</select>

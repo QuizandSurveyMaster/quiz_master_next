@@ -127,7 +127,7 @@ function qsm_generate_quiz_options() {
 <div class="wrap">
 	<div class='mlw_quiz_options'>
 		<h1 style="margin-bottom: 10px;">
-			<?php echo $quiz_name; ?>
+			<?php echo wp_kses_post( $quiz_name ); ?>
 			<?php
                         if( $post_status == 'draft' ){ ?>
 			<form method="POST" action="">
@@ -167,7 +167,7 @@ function qsm_generate_quiz_options() {
 						}
 						?>
 			<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>"
-				class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo esc_html( $tab['title'] ); ?></a>
+				class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
 			<?php
 					}
 					?>
@@ -195,17 +195,16 @@ function qsm_generate_quiz_options() {
 			}
 			$mlw_output = ob_get_contents();
 			ob_end_clean();
-
 			// Shows alerts, ads, then tab content.
 			?>
-		<div class="qsm-alerts">
-			<?php
+			<div class="qsm-alerts">
+				<?php
 				$mlwQuizMasterNext->alertManager->showAlerts();
 				?>
-		</div>
-		<?php
+			</div>
+			<?php
 			qsm_show_adverts();
-			echo $mlw_output;
+			echo apply_filters('qsm_quiz_options_tab_content', $mlw_output);
 			?>
 	</div>
 	<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">

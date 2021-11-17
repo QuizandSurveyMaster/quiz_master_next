@@ -160,13 +160,13 @@ class QMNGlobalSettingsPage {
 			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
 			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
 			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo esc_html( $message );
+			echo wp_kses_post( $message );
 			?>
 	</p>
 	<p class="category-action">
 		<?php
 			$buttons = sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo esc_html( $buttons );
+			echo wp_kses_post( $buttons );
 			?>
 	</p>
 </div>
@@ -1018,15 +1018,14 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_quiz_animation() {
 		global $globalQuizsetting;
 		global $mlwQuizMasterNext;
-		$qsm_quiz_animation	=(isset($globalQuizsetting['quiz_animation'])  && '' !== $globalQuizsetting['quiz_animation'] ?  $globalQuizsetting['quiz_animation'] :"");
-		$options = $mlwQuizMasterNext->pluginHelper->quiz_animation_effect();
+		$qsm_quiz_animation	 = (isset( $globalQuizsetting['quiz_animation'] ) && '' !== $globalQuizsetting['quiz_animation'] ? $globalQuizsetting['quiz_animation'] : "");
+		$options			 = $mlwQuizMasterNext->pluginHelper->quiz_animation_effect();
 
-			$string= '<select  name="qsm-quiz-settings[quiz_animation]">';
-				foreach($options as $value){
-					$string.='<option value="'.$value['value'].'" '.(isset($qsm_quiz_animation) && $qsm_quiz_animation ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
-				}
-				$string.='</select>';
-		echo $string;
+		echo '<select  name="qsm-quiz-settings[quiz_animation]">';
+		foreach ( $options as $value ) {
+			echo '<option value="' . esc_attr( $value['value'] ) . '" ' . (isset( $qsm_quiz_animation ) && $qsm_quiz_animation == $value['value'] ? "Selected" : "") . ' >' . esc_html( $value['label'] ) . '</option>';
+		}
+		echo '</select>';
 	}
 
 		/**
@@ -1069,12 +1068,11 @@ class QMNGlobalSettingsPage {
 				'value' => 0,
 			),
 		);
-		$string= '<select name="qsm-quiz-settings[randomness_order]">';
-				foreach($options as $value){
-					$string.='<option value="'.$value['value'].'" '.(isset($qsm_randomness_order) && $qsm_randomness_order ==$value['value'] ? "Selected": "").' >'.$value['label'].'</option>';
-				}
-				$string.='</select>';
-		echo $string;
+		echo '<select name="qsm-quiz-settings[randomness_order]">';
+		foreach($options as $value){
+			echo '<option value="' . esc_attr( $value['value'] ) . '" ' . (isset( $qsm_randomness_order ) && $qsm_randomness_order == $value['value'] ? "Selected" : "") . ' >' . esc_html( $value['label'] ) . '</option>';
+		}
+		echo '</select>';
 	}
 	/**
 	 * Generates Quiz Global  Field For Quiz Dates

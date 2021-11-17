@@ -55,7 +55,7 @@ function qsm_generate_admin_results_page() {
 				$tab_url = "?page=mlw_quiz_results&tab={$tab['slug']}";
 				?>
 		<a href="<?php echo esc_url_raw( $tab_url ); ?>"
-			class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo esc_html( $tab['title'] ); ?></a>
+			class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
 		<?php
 			}
 			?>
@@ -283,7 +283,7 @@ function deleteResults(id, quizName) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
 					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
-					<span class="paging-input"><?php echo $mlw_current_page; ?> of <?php echo $mlw_total_pages; ?></span>
+					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php
 					if ( $results_left > $table_limit ) {
 						?>
@@ -293,7 +293,7 @@ function deleteResults(id, quizName) {
 				} elseif ( 0 == $result_page ) {
 					if ( $results_left > $table_limit ) {
 						?>
-						<span class="paging-input"><?php echo $mlw_current_page; ?> of <?php echo $mlw_total_pages; ?></span>
+						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
@@ -301,7 +301,7 @@ function deleteResults(id, quizName) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
 					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><< /a>
-					<span class="paging-input"><?php echo $mlw_current_page; ?> of <?php echo $mlw_total_pages; ?></span>
+					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 					<?php
 				}
@@ -356,9 +356,7 @@ function deleteResults(id, quizName) {
 				$table_heading_displays .= '<th>' . esc_html__( 'User', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'Time Taken', 'quiz-master-next' ) . '</th>';
 				$table_heading_displays .= '<th>' . esc_html__( 'IP Address', 'quiz-master-next' ) . '</th>';
-
-				$table_heading_displays = apply_filters('mlw_qmn_admin_results_page_headings', $table_heading_displays);
-				echo $table_heading_displays;
+				echo apply_filters('mlw_qmn_admin_results_page_headings', $table_heading_displays);
 				?>
 			</tr>
 		</thead>
@@ -431,7 +429,7 @@ function deleteResults(id, quizName) {
 				$quotes_list .= "<tr{$alternate}><td colspan='12' style='text-align: center;'>" . __( 'No record found.', 'quiz-master-next' ) . "</td></tr>";
 			}
 			$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
-			echo $display;
+			echo wp_kses_post( $display );
 			?>
 	</table>
 </form>

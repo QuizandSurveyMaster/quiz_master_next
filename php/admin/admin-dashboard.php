@@ -81,7 +81,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
 		<label for="<?php echo esc_attr( $key ); ?>-hide"><input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide"
 				type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php
 												if ( ! in_array( $key, $hidden_box_arr ) ) {
-													?> checked="checked" <?php } ?>><?php echo esc_html( $value['title'] ); ?></label>
+													?> checked="checked" <?php } ?>><?php echo wp_kses_post( $value['title'] ); ?></label>
 		<?php
 
 									}
@@ -134,7 +134,7 @@ function qsm_generate_dashboard_page() {
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<div class="qsm-welcome-panel-close">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
-			<p class="current_version"><?php echo $mlwQuizMasterNext->version; ?></p>
+			<p class="current_version"><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
 		</div>
 		<a class="qsm-welcome-panel-dismiss" href="#"
 			aria-label="Dismiss the welcome panel"><?php _e( 'Dismiss', 'quiz-master-next' ); ?></a>
@@ -342,7 +342,7 @@ function qsm_wizard_template_quiz_options() {
 	} else {
 		$recommended_addon_str .= __( 'No addons are found!', 'quiz-master-next' );
 	}
-	echo $recommended_addon_str;
+	echo wp_kses_post( $recommended_addon_str );
 	exit;
 }
 add_action( 'wp_ajax_qsm_wizard_template_quiz_options', 'qsm_wizard_template_quiz_options' );
@@ -475,7 +475,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 										$mlw_complete_time   .= "$mlw_complete_seconds seconds";
 							}
 									_e( ' Time to complete ', 'quiz-master-next' );
-									echo $mlw_complete_time;
+									echo wp_kses_post( $mlw_complete_time );
 							?>
 						</span>
 						<span class="rtq-time-taken"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ); ?></span>
@@ -533,7 +533,7 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 				<li>
 					<a href="<?php echo esc_url( $single_feed_arr['link'] ); ?>?utm_source=plugin&utm_medium=dashboard"
 						target="_blank" rel="noopener">
-						<?php echo esc_html( $single_feed_arr['title'] ); ?>
+						<?php echo wp_kses_post( $single_feed_arr['title'] ); ?>
 					</a>
 					<div class="post-description">
 						<?php echo wp_kses_post( $single_feed_arr['excerpt'] ); ?>
@@ -588,7 +588,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						?>
 
 				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
-					<?php echo esc_html( $cl_str ); ?></li>
+					<?php echo wp_kses_post( $cl_str ); ?></li>
 				<?php
 						$i++;
 					}
