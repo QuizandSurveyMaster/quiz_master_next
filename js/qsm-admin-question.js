@@ -397,6 +397,7 @@ var import_button;
 			}
 			var advanced_option = {};
 			var answerInfo = wp.editor.getContent('correct_answer_info');
+			var quizID = parseInt( qsmTextTabObject.quiz_id );
 			var type = $("#question_type").val();
 			var comments = $("#comments").val();
 			advanced_option['required'] = $(".questionElements input[name='required']").is(":checked") ? 0 : 1;
@@ -477,6 +478,7 @@ var import_button;
 				}
 			});
 			model.save({
+				quizID: quizID,
 				type: type,
 				name: name,
 				question_title: question_title,
@@ -899,7 +901,7 @@ var import_button;
 			$('.save-page-button').trigger('click');
 			MicroModal.close('modal-7');
 		});
-		
+
 		$('.questions').on('click', '.delete-page-button', function (event) {
 			event.preventDefault();
 			if (confirm('Are you sure?')) {
@@ -1168,7 +1170,7 @@ var import_button;
 			}
 		});
 
-		//Open file upload on feature image                
+		//Open file upload on feature image
 		$('body').on('click', '.qsm-feature-image-upl', function (e) {
 			e.preventDefault();
 			var button = $(this),
