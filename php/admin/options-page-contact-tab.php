@@ -42,9 +42,9 @@ function qsm_options_contact_tab_content() {
   global $wpdb;
   global $mlwQuizMasterNext;
   $quiz_id = intval( sanitize_text_field( $_GET["quiz_id"] ) );
-
+  $user_id = get_current_user_id();
   $contact_form = QSM_Contact_Manager::load_fields();
-  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce('ajax-nonce-contact-save') ) );
+  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) );
 
   /**
    * Example contact form array
@@ -80,14 +80,17 @@ add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
  * @return void
  */
 function qsm_contact_form_admin_ajax() {
-        $nonce = $_POST['nonce'];
-        if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-contact-save' ) )
-            die ( 'Busted!');
-
+  $nonce = sanitize_text_field( $_POST['nonce'] );
+  $quiz_id = intval( sanitize_text_field( $_POST['quiz_id'] ) );
+  $user_id = get_current_user_id();
+  if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
+    die ( 'Busted!');
+  }
+    
 	global $wpdb;
 	global $mlwQuizMasterNext;
 	// Sends posted form data to Contact Manager to sanitize and save.
-	$results['status'] =  QSM_Contact_Manager::save_fields( intval( $_POST['quiz_id'] ), $_POST['contact_form'] );
+	$results['status'] =  QSM_Contact_Manager::save_fields( $quiz_id, $_POST['contact_form'] );
 	echo wp_json_encode( $results );
 	die();
 }
