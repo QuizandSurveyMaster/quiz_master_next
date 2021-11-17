@@ -73,7 +73,7 @@ function qsmPolarSliderEach(polarQuestion,questionID,page){
 			if('answer'=== page){
 				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
 			} else {
-				qsmPolarSliderQuestionCreate(questionID, (max-min)/2 );
+				qsmPolarSliderQuestionCreate(questionID, '' );
 			}
 		}
 	});
