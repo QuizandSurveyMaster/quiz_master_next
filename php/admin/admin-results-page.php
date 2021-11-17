@@ -410,7 +410,7 @@ function qsm_results_overview_tab_content() {
 				$quotes_list .= "<tr{$alternate}><td colspan='12' style='text-align: center;'>" . __( 'No record found.', 'quiz-master-next' ) . "</td></tr>";
 			}
 			$display .= "<tbody id=\"the-list\">{$quotes_list}</tbody>";
-			echo wp_kses_post( $display );
+			echo $display ;
 			?>
 	</table>
 </form>
