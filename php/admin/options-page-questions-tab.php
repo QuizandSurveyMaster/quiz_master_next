@@ -753,7 +753,7 @@ function qsm_options_questions_tab_content() {
 }
 
 add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
-// add_action( 'wp_ajax_nopriv_qsm_save_pages', 'qsm_ajax_save_pages' );
+
 
 /**
  * Saves the pages and order from the Questions tab
@@ -785,7 +785,6 @@ function qsm_ajax_save_pages() {
 }
 
 add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
-// add_action( 'wp_ajax_nopriv_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_ajax' );
 
 /**
  * Loads all the questions and echos out JSON
@@ -815,7 +814,6 @@ function qsm_load_all_quiz_questions_ajax() {
 }
 
 add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
-// add_action( 'wp_ajax_nopriv_qsm_send_data_sendy', 'qsm_send_data_sendy' );
 
 /**
  * @version 6.3.2
