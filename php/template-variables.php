@@ -1350,16 +1350,13 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
 	}elseif ( $answer['points'] == $mid_point ){
-		$left_polar_title_style  = "style='font-weight:100;'";
-		$right_polar_title_style = "style='font-weight:900;'";
+		$left_polar_title_style  = "style='font-weight:600;'";
+		$right_polar_title_style = "style='font-weight:600;'";
 	} elseif ( $answer['points'] < $mid_point ){
 		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:600;'";
 	}	elseif ( $answer['points'] > $mid_point ){
 		$left_polar_title_style  = "style='font-weight:600;'";
-		$right_polar_title_style = "style='font-weight:400;'";
-	} else {
-		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:400;'";
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
