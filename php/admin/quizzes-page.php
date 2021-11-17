@@ -319,9 +319,9 @@ function qsm_generate_quizzes_surveys_page() {
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
-								<span class="total-pages"><?php echo $paged; ?></span>
+								<span class="total-pages"><?php echo esc_html( $paged ); ?></span>
 								<?php _e( 'of', 'quiz-master-next' ); ?>
-								<span class="total-pages"><?php echo $num_of_pages; ?></span>
+								<span class="total-pages"><?php echo esc_html( $num_of_pages ); ?></span>
 							</span>
 							<?php if ( $paged == $num_of_pages ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>
@@ -398,18 +398,18 @@ function qsm_generate_quizzes_surveys_page() {
 									id="chk_remove_all" value="<?php echo esc_attr( $single_arr['id'] ); ?>">
 							</th>
 							<td class="post-title column-title">
-								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo $single_arr['name']; ?> <strong style="color: #222; text-transform: capitalize;"><?php echo $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : ''; ?></strong>
+								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo esc_html( $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : '' ); ?></strong>
 								</a>
 								<div class="row-actions">
 									<a class="qsm-action-link"
-										href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e( 'Edit', 'quiz-master-next' ); ?></a>
+									   href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php _e( 'Edit', 'quiz-master-next' ); ?></a>
 									|
 									<a class="qsm-action-link qsm-action-link-duplicate"
 										href="#"><?php _e( 'Duplicate', 'quiz-master-next' ); ?></a> |
 									<a class="qsm-action-link qsm-action-link-delete"
 										href="#"><?php _e( 'Delete', 'quiz-master-next' ); ?></a> |
 									<a class="qsm-action-link"
-										href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo $single_arr['id']; ?>"><?php _e( 'View Results', 'quiz-master-next' ); ?></a>
+									   href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php _e( 'View Results', 'quiz-master-next' ); ?></a>
 									|
 									<a class="qsm-action-link" target="_blank" rel="noopener"
 									   href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php _e( 'Preview', 'quiz-master-next' ); ?></a>
@@ -424,7 +424,7 @@ function qsm_generate_quizzes_surveys_page() {
 								</div>
 							</td>
 							<td>
-								<?php echo $single_arr['views']; ?>
+								<?php echo esc_html( $single_arr['views'] ); ?>
 								<div class="row-actions">
 									<a class="qsm-action-link qsm-action-link-reset"
 										href="#"><?php _e( 'Reset', 'quiz-master-next' ); ?></a>
@@ -432,12 +432,12 @@ function qsm_generate_quizzes_surveys_page() {
 							</td>
 							<td class="comments column-comments" style="text-align: left;">
 								<span class="post-com-count post-com-count-approved">
-									<span class="comment-count-approved" aria-hidden="true"><?php echo $single_arr['taken']; ?></span>
-									<span class="screen-reader-text"><?php echo $single_arr['taken'] . __( 'Participants', 'quiz-master-next' ) ; ?></span>
+									<span class="comment-count-approved" aria-hidden="true"><?php echo esc_html( $single_arr['taken'] ); ?></span>
+									<span class="screen-reader-text"><?php echo esc_html( $single_arr['taken'] . __( 'Participants', 'quiz-master-next' ) ) ; ?></span>
 								</span>
 							</td>
 							<td>
-								<abbr title="<?php echo esc_html( $single_arr['lastActivityDateTime'] ); ?>"><?php echo $single_arr['lastActivity']; ?></abbr>
+								<abbr title="<?php echo esc_html( $single_arr['lastActivityDateTime'] ); ?>"><?php echo esc_html( $single_arr['lastActivity'] ); ?></abbr>
 							</td>
 						</tr>
 						<?php
@@ -503,9 +503,9 @@ function qsm_generate_quizzes_surveys_page() {
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
-								<span class="total-pages"><?php echo $paged; ?></span>
+								<span class="total-pages"><?php echo esc_html( $paged ); ?></span>
 								<?php _e( 'of', 'quiz-master-next' ); ?>
-								<span class="total-pages"><?php echo $num_of_pages; ?></span>
+								<span class="total-pages"><?php echo esc_html( $num_of_pages ); ?></span>
 							</span>
 							<?php if ( $paged == $num_of_pages ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>

@@ -352,14 +352,14 @@ function qsm_options_styling_tab_content() {
 						<tr valign="top">
 							<th scope="row" class="qsm-opt-tr">
 								<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
-								<input type="hidden" name="settings[<?php echo $i; ?>][label]"
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][label]"
 									value="<?php echo esc_attr( $theme_val['label'] ); ?>">
-								<input type="hidden" name="settings[<?php echo $i; ?>][id]"
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][id]"
 									value="<?php echo esc_attr( $theme_val['id'] ); ?>">
-								<input type="hidden" name="settings[<?php echo $i; ?>][type]" value="color">
+								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][type]" value="color">
 							</th>
 							<td>
-								<input name="settings[<?php echo $i; ?>][default]" type="text"
+								<input name="settings[<?php echo esc_attr( $i ); ?>][default]" type="text"
 									value="<?php echo esc_attr( $theme_val['default'] ); ?>"
 									data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
 							</td>
