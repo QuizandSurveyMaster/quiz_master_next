@@ -21,7 +21,6 @@ function qsm_admin_enqueue_scripts_options_page_style($hook){
 		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_media();
-		// wp_enqueue_script( 'qsm-admin-style-tab',QSM_PLUGIN_JS_URL.'/qsm-admin-style-tab.js',array(),$mlwQuizMasterNext->version, false);
 	}
 
 }

@@ -416,7 +416,7 @@ function deleteResults(id, quizName) {
 	var idHiddenName = document.getElementById("delete_quiz_name");
 	idHidden.value = id;
 	idHiddenName.value = quizName;
-};
+}
 //quiz options style tab
 
 function mlw_qmn_theme(theme) {
@@ -445,7 +445,7 @@ function mlw_qmn_theme(theme) {
     });
   
     jQuery(document).on('click', '.filter-links a', function() {
-      current_id = jQuery(this).attr('data-id');
+      let current_id = jQuery(this).attr('data-id');
       jQuery(this).parents('.filter-links').find('li a').each(function() {
         jQuery(this).removeClass('current');
       });
