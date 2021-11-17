@@ -23,10 +23,10 @@ function qsmPolarSlider(page){
 				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
 			} else {
 				let maxHeight = Math.max.apply(null,
-					jQuery(".question-section-id-6 .question-type-polar-s > div").map(function() {
+					jQuery(".question-section-id-"+questionID+" .question-type-polar-s > div").map(function() {
 					return jQuery(this).height();
 				}).get());
-				jQuery('.question-section-id-6 .question-type-polar-s').height(maxHeight);
+				jQuery('.question-section-id-'+questionID+' .question-type-polar-s').height(maxHeight);
 			}
 		});
 	}	
@@ -66,21 +66,21 @@ function qsmPolarSliderEach(polarQuestion,questionID,page){
 		},
 		change: function ( event, ui ){
 			if('answer'!== page){
-				qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse );
+				qsmPolarSliderQuestionChange(ui,questionID, answer1, answer2, value , isReverse );
 			}
 		},
 		create: function (event, ui){
 			if('answer'=== page){
 				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
 			} else {
-				qsmPolarSliderQuestionCreate(value);
+				qsmPolarSliderQuestionCreate(questionID, '' );
 			}
 		}
 	});
 }
 
-function qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse){
-	jQuery('.question-section-id-6  .question-type-polar-s').find(
+function qsmPolarSliderQuestionChange(ui,questionID, answer1, answer2, value , isReverse){
+	jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 		'.qmn_polar').val(ui.value);
 	let lowerMidClass = '.left-polar-title';
 	let upperMidClass = '.right-polar-title';
@@ -89,38 +89,38 @@ function qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse){
 		upperMidClass = '.left-polar-title';
 	}
 	if ( ui.value == answer1 ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '900');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.right-polar-title').css('font-weight', '100');
 	} else if (ui.value == answer2 ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '100');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.right-polar-title').css('font-weight', '900');
 	} else if (ui.value == value) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '400');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.right-polar-title').css('font-weight', '400');
 	} else if (ui.value < value ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			lowerMidClass).css('font-weight', '600');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			upperMidClass).css('font-weight', '400');
 	} else if (ui.value > value ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			lowerMidClass).css('font-weight', '400');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
+		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			upperMidClass).css('font-weight', '600');
 	}
 }
 
-function qsmPolarSliderQuestionCreate(value){
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
+function qsmPolarSliderQuestionCreate(questionID, value){
+	jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 		'.left-polar-title').css('font-weight', '400');
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
+	jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 		'.right-polar-title').css('font-weight', '400');
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
+	jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 		'.qmn_polar').val(value);
 }
