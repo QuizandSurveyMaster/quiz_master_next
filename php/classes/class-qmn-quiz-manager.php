@@ -1633,7 +1633,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 							// Get maximum and minimum points for the quiz
 							if ( ! in_array( $question_id, $hidden_questions ) ) {
-								$this->min_max_points();
+								$this->min_max_points(); 
 							}            
 
 							// Send question to our grading function
