@@ -1,35 +1,45 @@
 //polar question type
 
 jQuery(document).ready(function() {
-	qsmPolarSlider('question');
+	let polarQuestions = jQuery('.question-type-polar-s');
+	if(polarQuestions.length >0){
+		let page = 'question';
+		if(jQuery('body').hasClass('wp-admin')){
+			page = 'admin'
+		}
+		qsmPolarSlider(page,polarQuestions);
+	}
+	
 });
 jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
 	event.preventDefault();
-	qsmPolarSlider('answer');
+	let polarQuestions = jQuery('.question-type-polar-s');
+	if(polarQuestions.length >0){
+		qsmPolarSlider('answer', polarQuestions);
+	}	
 });
 
-function qsmPolarSlider(page){
-	let polarQuestions = jQuery('.question-type-polar-s');
-	if (polarQuestions.length >0){
-		polarQuestions.each( function(){			
-			let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
-			let questionID = polarQuestion.attr('id').replace('slider-','');
-			qsmPolarSliderEach(polarQuestion,questionID,page);
-			if ('answer'=== page){
-				let maxHeight = Math.max.apply(null, jQuery(".mlw-qmn-question-result-"+questionID+" >> div").map(
-					function() {
-						return jQuery(this).height();
-					}).get());
-				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
-			} else {
-				let maxHeight = Math.max.apply(null,
-					jQuery(".question-section-id-"+questionID+" .question-type-polar-s > div").map(function() {
+function qsmPolarSlider(page , polarQuestions){
+	polarQuestions.each( function(){			
+		let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
+		let questionID = polarQuestion.attr('id').replace('slider-','');
+		qsmPolarSliderEach(polarQuestion,questionID,page);
+		if ('answer' === page || 'admin' === page){
+			let heightArray = jQuery(".mlw-qmn-question-result-"+questionID+" >> div").map(
+				function() {
 					return jQuery(this).height();
-				}).get());
-				jQuery('.question-section-id-'+questionID+' .question-type-polar-s').height(maxHeight);
-			}
-		});
-	}	
+				}).get();
+			let maxHeight = Math.max.apply(null, heightArray);
+			jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
+		} else {
+			let heightArray = jQuery(".question-section-id-"+questionID+" .question-type-polar-s > div").map(function() {
+				return jQuery(this).height();
+			}).get();
+			let maxHeight = Math.max.apply(null,heightArray);
+				
+			jQuery('.question-section-id-'+questionID+' .question-type-polar-s').height(maxHeight);
+		}
+	});
 }
 
 function qsmPolarSliderEach(polarQuestion,questionID,page){
@@ -47,7 +57,7 @@ function qsmPolarSliderEach(polarQuestion,questionID,page){
 	}
 	let step = 1 ;
 	let value;
-	if ('answer'=== page){
+	if ('answer'=== page || 'admin' === page){
 		value = parseInt( polarQuestion.attr("data-answer_value") );
 	} else { 
 		value = parseInt((max-min)/2) + min ;
@@ -60,18 +70,20 @@ function qsmPolarSliderEach(polarQuestion,questionID,page){
 		range: false,
 		value: value,
 		slide: function slider_slide(event, ui) {
-			if('answer'=== page){
+			if('answer'=== page || 'admin' === page){
 				return false;
 			}			
 		},
 		change: function ( event, ui ){
-			if('answer'!== page){
+			if('answer'!== page || 'admin' !== page){
 				qsmPolarSliderQuestionChange(ui,questionID, answer1, answer2, value , isReverse );
 			}
 		},
 		create: function (event, ui){
-			if('answer'=== page){
+			if('answer'=== page || 'admin' === page){
 				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
+				jQuery(this).find('a').css({'display':'flex','align-items':'center','text-decoration':'none','color':'white'});
+				jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
 			} else {
 				qsmPolarSliderQuestionCreate(questionID, '' );
 			}
