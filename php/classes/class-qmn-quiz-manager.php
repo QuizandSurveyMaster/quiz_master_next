@@ -1570,22 +1570,20 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public static function check_answers( $options, $quiz_data ) {
-
+	public function check_answers( $options, $quiz_data ) {
 		global $mlwQuizMasterNext;
-
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
 
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? sanitize_text_field( intval( $_POST['total_questions'] ) ) : 0;
+
 		$question_list   = array();
 		if ( isset( $_POST['qmn_question_list'] ) ) {
 			$qmn_question_list = sanitize_text_field( $_POST['qmn_question_list'] );
 			$question_list     = explode( 'Q', $qmn_question_list );
 		}
-
 		// Prepare variables
 		$points_earned         = 0;
 		$total_correct         = 0;
@@ -1613,10 +1611,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			14, // Fill In The Blank
 			13, // Polar.
 		);
-
 		// If deprecated pagination setting is not used, use new system...
 		if ( 0 == $options->question_from_total && 0 !== count( $pages ) ) {
-
 			// Cycle through each page in quiz.
 			foreach ( $pages as $page ) {
 
@@ -1625,26 +1621,20 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// Cycle through each question that appeared to the user
 					foreach ( $question_list as $question_id ) {
-
 						// When the questions are the same...
-						if ( $page_questiong_id == $question_id ) {
+						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
-              $question_type_new = $question['question_type_new'];
+              				$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
-							// Reset question-specific variables
-							$user_answer    = '';
-							$correct_answer = '';
-							$correct_status = 'incorrect';
-							$answer_points  = 0;
 
-              // Get maximum and minimum points for the quiz
-              if ( ! in_array( $question_id, $hidden_questions ) ) {
-                $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
-                $total_possible_points += $max_min_result['max_point'];
-                $minimum_possible_points += $max_min_result['min_point'];
-              }            
+							$this->question_variables();
+
+							// Get maximum and minimum points for the quiz
+							if ( ! in_array( $question_id, $hidden_questions ) ) {
+								$this->min_max_points(); 
+							}            
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1669,49 +1659,8 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 										}
 									}
 								}
-								$user_answer       = $results_array['user_text'];
-								$correct_answer    = $results_array['correct_text'];
-								$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
-
-								if ( trim( $user_answer ) != '' ) {
-									if ( $user_answer != 'No Answer Provided' ) {
-										$attempted_question++;
-									}
-								}
-
-								// If a comment was submitted
-								if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-									$comment = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'mlwComment' . $question['question_id'] ] ), ENT_QUOTES ) );
-								} else {
-									$comment = '';
-								}
-
-								// Get text for question
-								$question_text = $question['question_name'];
-								if ( isset( $results_array['question_text'] ) ) {
-									$question_text = $results_array['question_text'];
-								}
-
-								// Save question data into new array in our array
-								$question_data[] = apply_filters(
-									'qmn_answer_array',
-									array(
-										$question_text,
-										htmlspecialchars( $user_answer, ENT_QUOTES ),
-										htmlspecialchars( $correct_answer, ENT_QUOTES ),
-										$comment,
-										'correct'        => $correct_status,
-										'id'             => $question['question_id'],
-										'points'         => $answer_points,
-										'category'       => $question['category'],
-										'multicategories' => $question['multicategories'],
-										'question_type'  => $question['question_type_new'],
-										'question_title' => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
-										'user_compare_text' => $user_compare_text,
-									),
-									$options,
-									$quiz_data
-								);
+								
+								$this->call_question_data();
 							}
 							break;
 						}
@@ -1727,16 +1676,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-            // Reset question-specific variables
-						$user_answer    = '';
-						$correct_answer = '';
-						$correct_status = 'incorrect';
-						$answer_points  = 0;
+            			// Reset question-specific variables
+						$this->question_variables();
 
-            // Get maximum and minimum points for the quiz
-            $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
-            $total_possible_points += $max_min_result['max_point'];
-            $minimum_possible_points += $max_min_result['min_point'];
+						// Get maximum and minimum points for the quiz
+						$this->min_max_points();
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1751,47 +1695,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 								$total_correct += 1;
 								$correct_status = 'correct';
 							}
-							$user_answer       = $results_array['user_text'];
-							$correct_answer    = $results_array['correct_text'];
-							$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
-							if ( trim( $user_answer ) != '' ) {
-								if ( $user_answer != 'No Answer Provided' ) {
-									$attempted_question++;
-								}
-							}
-							// If a comment was submitted
-							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-								$comment = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'mlwComment' . $question['question_id'] ] ), ENT_QUOTES ) );
-							} else {
-								$comment = '';
-							}
+												
 
-							// Get text for question
-							$question_text = $question['question_name'];
-							if ( isset( $results_array['question_text'] ) ) {
-								$question_text = $results_array['question_text'];
-							}
-
-							// Save question data into new array in our array
-							$question_data[] = apply_filters(
-								'qmn_answer_array',
-								array(
-									$question_text,
-									htmlspecialchars( $user_answer, ENT_QUOTES ),
-									htmlspecialchars( $correct_answer, ENT_QUOTES ),
-									$comment,
-									'correct'           => $correct_status,
-									'id'                => $question['question_id'],
-									'points'            => $answer_points,
-									'category'          => $question['category'],
-									'multicategories'	=> $question['multicategories'],
-									'question_type'     => $question['question_type_new'],
-									'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
-									'user_compare_text' => $user_compare_text,
-								),
-								$options,
-								$quiz_data
-							);
+							$this->call_question_data();
+							
 						}
 						break;
 					}
@@ -1839,6 +1746,75 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 			'total_attempted_questions' => $attempted_question,
       'minimum_possible_points'   => $minimum_possible_points,
 		), $options, $quiz_data );
+	}
+
+
+	public function min_max_points(){
+		$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+		$total_possible_points += $max_min_result['max_point'];
+		$minimum_possible_points += $max_min_result['min_point'];
+	}
+
+	/**
+ 	* function to call marks
+ 	*/
+
+	 public function question_variables(){
+		 // Reset question-specific variables
+		 $user_answer    = '';
+		 $correct_answer = '';
+		 $correct_status = 'incorrect';
+		 $answer_points  = 0;
+	 }
+
+	/**
+	 * create function to call 
+	*/
+
+	public function call_question_data(){
+
+		$user_answer       = $results_array['user_text'];
+		$correct_answer    = $results_array['correct_text'];
+		$user_compare_text = isset( $results_array['user_compare_text'] ) ? $results_array['user_compare_text'] : '';
+
+		if ( trim( $user_answer ) != '' ) {
+			if ( $user_answer != 'No Answer Provided' ) {
+				$attempted_question++;
+			}
+		}
+
+		// If a comment was submitted
+		if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
+			$comment = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'mlwComment' . $question['question_id'] ] ), ENT_QUOTES ) );
+		} else {
+			$comment = '';
+		}
+
+		// Get text for question
+		$question_text = $question['question_name'];
+		if ( isset( $results_array['question_text'] ) ) {
+			$question_text = $results_array['question_text'];
+		}
+		// Save question data into new array in our array
+		$question_data[] = apply_filters(
+			'qmn_answer_array',
+			array(
+				$question_text,
+				htmlspecialchars( $user_answer, ENT_QUOTES ),
+				htmlspecialchars( $correct_answer, ENT_QUOTES ),
+				$comment,
+				'correct'           => $correct_status,
+				'id'                => $question['question_id'],
+				'points'            => $answer_points,
+				'category'          => $question['category'],
+				'multicategories'	=> $question['multicategories'],
+				'question_type'     => $question['question_type_new'],
+				'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+				'user_compare_text' => $user_compare_text,
+			),
+			$options,
+			$quiz_data
+		);
 	}
 
 	/**
