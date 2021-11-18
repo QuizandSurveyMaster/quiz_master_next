@@ -1629,11 +1629,11 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
-							$this->question_variables();
+							$this->question_variables($user_answer, $correct_answer, $correct_status, $answer_points);
 
 							// Get maximum and minimum points for the quiz
 							if ( ! in_array( $question_id, $hidden_questions ) ) {
-								$this->min_max_points(); 
+								$this->min_max_points($options,$question, $total_possible_points, $minimum_possible_points); 
 							}            
 
 							// Send question to our grading function
@@ -1677,10 +1677,10 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
             			// Reset question-specific variables
-						$this->question_variables();
+						$this->question_variables($user_answer, $correct_answer, $correct_status, $answer_points);
 
 						// Get maximum and minimum points for the quiz
-						$this->min_max_points();
+						$this->min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1749,7 +1749,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	}
 
 
-	public function min_max_points(){
+	public function min_max_points($options,$question, $total_possible_points, $minimum_possible_points){
 		$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
 		$total_possible_points += $max_min_result['max_point'];
 		$minimum_possible_points += $max_min_result['min_point'];
@@ -1759,7 +1759,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
  	* function to call marks
  	*/
 
-	 public function question_variables(){
+	 public function question_variables($user_answer, $correct_answer, $correct_status, $answer_points){
 		 // Reset question-specific variables
 		 $user_answer    = '';
 		 $correct_answer = '';
