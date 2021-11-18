@@ -1633,7 +1633,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
               $question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
-
 							// Reset question-specific variables
 							$user_answer    = '';
 							$correct_answer = '';
