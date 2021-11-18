@@ -80,7 +80,7 @@ function qsmPolarSliderEach(polarQuestion,questionID,page){
 			}
 		},
 		create: function (event, ui){
-			if('answer'=== page || 'admin' === page){
+			if('answer'=== page){
 				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
 			} else if ( 'admin' === page ) {
 				jQuery(this).find('a').css({'display':'flex','align-items':'center','text-decoration':'none','color':'white'});
