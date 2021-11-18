@@ -1629,7 +1629,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
-							$this->question_variables($user_answer, $correct_answer, $correct_status, $answer_points);
+							$this->question_variables();
 
 							// Get maximum and minimum points for the quiz
 							if ( ! in_array( $question_id, $hidden_questions ) ) {
@@ -1660,7 +1660,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 									}
 								}
 								
-								$this->call_question_data();
+								$this->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							}
 							break;
 						}
@@ -1677,7 +1677,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
             			// Reset question-specific variables
-						$this->question_variables($user_answer, $correct_answer, $correct_status, $answer_points);
+						$this->question_variables();
 
 						// Get maximum and minimum points for the quiz
 						$this->min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
@@ -1697,7 +1697,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 							}
 												
 
-							$this->call_question_data();
+							$this->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							
 						}
 						break;
@@ -1759,7 +1759,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
  	* function to call marks
  	*/
 
-	 public function question_variables($user_answer, $correct_answer, $correct_status, $answer_points){
+	 public function question_variables(){
 		 // Reset question-specific variables
 		 $user_answer    = '';
 		 $correct_answer = '';
@@ -1771,7 +1771,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 	 * create function to call 
 	*/
 
-	public function call_question_data(){
+	public function call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data){
 
 		$user_answer       = $results_array['user_text'];
 		$correct_answer    = $results_array['correct_text'];
