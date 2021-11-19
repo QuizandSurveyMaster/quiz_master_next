@@ -1479,7 +1479,7 @@ add_action( 'wp_footer', function () use ($options) {
 					$results_id     = $wpdb->insert_id;
 				}
 			}
-			$qmn_array_for_variables['response_saved'] = isset($results_insert) ? $results_insert : false;
+			$qmn_array_for_variables['response_saved'] = isset($results_insert) ? $results_insert : 0;
 			$qmn_array_for_variables['result_id'] = $results_id;
 			$qmn_array_for_variables['result_unique_id'] = $unique_id;
 
