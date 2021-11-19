@@ -1508,131 +1508,27 @@ jQuery(function () {
 	});
 });
 
+// captcha question type
+
 jQuery(document).ready(function() {
-	qsmPolarSlider('question');
-});
-jQuery(document).on('qsm_after_quiz_submit',function(event,quiz_form_id){
-	event.preventDefault();
-	qsmPolarSlider('answer');
-});
-
-function qsmPolarSlider(page){
-	let polarQuestions = jQuery('.question-type-polar-s');
-	if (polarQuestions.length >0){
-		polarQuestions.each( function(){			
-			let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
-			let questionID = polarQuestion.attr('id').replace('slider-','');
-			qsmPolarSliderEach(polarQuestion,questionID,page);
-			if ('answer'=== page){
-				let maxHeight = Math.max.apply(null, jQuery(".mlw-qmn-question-result-"+questionID+" >> div").map(
-					function() {
-						return jQuery(this).height();
-					}).get());
-				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
-			} else {
-				let maxHeight = Math.max.apply(null,
-					jQuery(".question-section-id-6 .question-type-polar-s > div").map(function() {
-					return jQuery(this).height();
-				}).get());
-				jQuery('.question-section-id-6 .question-type-polar-s').height(maxHeight);
-			}
-		});
+	let captchaElement = jQuery('#mlw_code_captcha');
+	if (captchaElement.length !== 0){
+		var mlw_code = '';
+		var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+		var mlw_code_length = 5;
+		for (var i=0; i<mlw_code_length; i++) {
+						var rnum = Math.floor(Math.random() * mlw_chars.length);
+						mlw_code += mlw_chars.substring(rnum,rnum+1);
+				}
+		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
+		mlw_captchaCTX.font = 'normal 24px Verdana';
+		mlw_captchaCTX.strokeStyle = '#000000';
+		mlw_captchaCTX.clearRect(0,0,100,50);
+		mlw_captchaCTX.strokeText(mlw_code,10,30,70);
+		mlw_captchaCTX.textBaseline = 'middle';
+		document.getElementById('mlw_code_captcha').value = mlw_code;
 	}	
-}
-
-function qsmPolarSliderEach(polarQuestion,questionID,page){
-	let isReverse = Boolean(parseInt(polarQuestion.attr("data-is_reverse")));
-	let answer1 = parseInt( polarQuestion.attr("data-answer1") );
-	let answer2 = parseInt( polarQuestion.attr("data-answer2") );
-	let max;
-	let min;
-	if (isReverse){
-		max = answer1;
-		min = answer2;
-	} else {
-		max = answer2;
-		min = answer1;
-	}
-	let step = 1 ;
-	let value;
-	if ('answer'=== page){
-		value = parseInt( polarQuestion.attr("data-answer_value") );
-	} else { 
-		value = parseInt((max-min)/2) + min ;
-	}
-	polarQuestion.slider({
-		max: max,
-		min: min,
-		isRTL:isReverse,
-		step: step,
-		range: false,
-		value: value,
-		slide: function slider_slide(event, ui) {
-			if('answer'=== page){
-				return false;
-			}			
-		},
-		change: function ( event, ui ){
-			if('answer'!== page){
-				qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse );
-			}
-		},
-		create: function (event, ui){
-			if('answer'=== page){
-				jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
-			} else {
-				qsmPolarSliderQuestionCreate(value);
-			}
-		}
-	});
-}
-
-function qsmPolarSliderQuestionChange(ui, answer1, answer2, value , isReverse){
-	jQuery('.question-section-id-6  .question-type-polar-s').find(
-		'.qmn_polar').val(ui.value);
-	let lowerMidClass = '.left-polar-title';
-	let upperMidClass = '.right-polar-title';
-	if (isReverse){
-		lowerMidClass = '.right-polar-title';
-		upperMidClass = '.left-polar-title';
-	}
-	if ( ui.value == answer1 ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.left-polar-title').css('font-weight', '900');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.right-polar-title').css('font-weight', '100');
-	} else if (ui.value == answer2 ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.left-polar-title').css('font-weight', '100');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.right-polar-title').css('font-weight', '900');
-	} else if (ui.value == value) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.left-polar-title').css('font-weight', '400');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			'.right-polar-title').css('font-weight', '400');
-	} else if (ui.value < value ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			lowerMidClass).css('font-weight', '600');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			upperMidClass).css('font-weight', '400');
-	} else if (ui.value > value ) {
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			lowerMidClass).css('font-weight', '400');
-		jQuery('.question-section-id-6  .question-type-polar-s').find(
-			upperMidClass).css('font-weight', '600');
-	}
-}
-
-function qsmPolarSliderQuestionCreate(value){
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
-		'.left-polar-title').css('font-weight', '400');
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
-		'.right-polar-title').css('font-weight', '400');
-	jQuery('.question-section-id-6 .question-type-polar-s').find(
-		'.qmn_polar').val(value);
-}
-
+});
 
 var qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
 var quizType = 'default';
