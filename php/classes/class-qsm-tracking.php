@@ -173,17 +173,17 @@ class QSM_Tracking {
 		// If the notice has already been shown, return.
 		if ( $show_notice ) {
 			return;
-		}		
+		}
 
 		// If the tracking variable has already been set, return.
 		if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' ) {
 			return;
-		}			
+		}
 
 		// If the user does not have the required permissions, return.
 		if( ! current_user_can( 'manage_options' ) ) {
 			return;
-		}			
+		}
 
 		// If the site is on a dev or staging site, we do not need the data.
 		if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
@@ -194,7 +194,7 @@ class QSM_Tracking {
 			echo '<div class="updated">';
 				echo '<p>' . __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
 				echo '<p>' . __( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
-				echo '<p><a href="http://bit.ly/2w6f34x" target="_blank">' . __( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
+				echo '<p><a href="https://quizandsurveymaster.com/what-the-plugin-tracks/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=tracking-notice" target="_blank">' . __( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
 				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
 				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
 			echo '</div>';
@@ -221,7 +221,7 @@ class QSM_Tracking {
         		$settings['tracking_allowed'] = '0';
         		update_option( 'qmn-settings', $settings );
 			}
-			  
+
 			// Prevents notice from being shown again.
       		update_option( 'qmn-tracking-notice', '1' );
     	}

@@ -883,6 +883,14 @@ function qmnFormSubmit(quiz_form_id) {
 		type: 'POST',
 		success: function (response) {
 			response=JSON.parse(response);
+			if (window.qsm_results_data === undefined) {
+				window.qsm_results_data = new Object();
+			}
+			window.qsm_results_data[quizID]={
+				'save_response' : response.result_status['save_response'],
+				'id'     : response.result_status['id']
+			};		
+
 			if(response.quizExpired){
 				MicroModal.show('modal-4');
 				return false;
@@ -891,7 +899,6 @@ function qmnFormSubmit(quiz_form_id) {
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
 			}
-			
 		}
 	});
 
@@ -919,7 +926,8 @@ function qmnDisplayResults(results, quiz_form_id, $container) {
 		$container.append('<div class="qmn_results_page"></div>');
 		$container.find('.qmn_results_page').html(results.display);
 		qsmScrollTo($container);
-		MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+		// run MathJax on the new content
+		MathJax.typesetPromise();
 		// Fires after result is populates via ajax
 		jQuery(document).trigger('qsm_after_display_result', [results, quiz_form_id, $container]);
 	}
@@ -974,8 +982,7 @@ function qmnInit() {
 				let disabledAnswer = JSON.parse(localStorage.getItem("disable_answer"));
 				if(disabledAnswer[key]){
 					disabledAnswer[key].forEach(element => {
-						let element1=element[1];
-						element1.replace("","-");
+						let element1=element[1].replaceAll(' ','-');
 						jQuery('#'+element[0]+'-'+element1+' input').prop('checked', true).trigger('change');
 					});
 				}
@@ -1288,7 +1295,7 @@ jQuery(function () {
 				//Reload the timer and pagination
 				qmnDoInit();
 				
-				MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+				MathJax.typesetPromise();
 
 				// trigger fired on successfull retake quiz
 				jQuery(document).trigger('qsm_retake_quiz', [quiz_id]);
@@ -1325,7 +1332,7 @@ jQuery(function () {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1366,21 +1373,14 @@ jQuery(function () {
 					$this.find('.quick-question-res-p').remove();
 					$this.find('.qsm-inline-correct-info').remove();
 					if (data.success == 'correct') {
-
 					} else if (data.success == 'incorrect') {
-
-
-
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
-
 						setTimeout(function () {
 							$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 						}, 1000);
-
-
 					}
-					MathJax.Hub.queue.Push(["Typeset", MathJax.Hub]);
+					MathJax.typesetPromise();
 				},
 				error: function (errorThrown) {
 					alert(errorThrown);
@@ -1506,6 +1506,28 @@ jQuery(function () {
 		window.open(url, "Share", sqShareOptions);
 		return false;
 	});
+});
+
+// captcha question type
+
+jQuery(document).ready(function() {
+	let captchaElement = jQuery('#mlw_code_captcha');
+	if (captchaElement.length !== 0){
+		var mlw_code = '';
+		var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+		var mlw_code_length = 5;
+		for (var i=0; i<mlw_code_length; i++) {
+						var rnum = Math.floor(Math.random() * mlw_chars.length);
+						mlw_code += mlw_chars.substring(rnum,rnum+1);
+				}
+		var mlw_captchaCTX = document.getElementById('mlw_captcha').getContext('2d');
+		mlw_captchaCTX.font = 'normal 24px Verdana';
+		mlw_captchaCTX.strokeStyle = '#000000';
+		mlw_captchaCTX.clearRect(0,0,100,50);
+		mlw_captchaCTX.strokeText(mlw_code,10,30,70);
+		mlw_captchaCTX.textBaseline = 'middle';
+		document.getElementById('mlw_code_captcha').value = mlw_code;
+	}	
 });
 
 var qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);

@@ -32,7 +32,8 @@ var QSMAdminResults;
 				pages.push(page);
 			});
 			var data = {
-				'pages': pages
+				'pages': pages,
+				'rest_nonce': qsmResultsObject.rest_user_nonce
 			}
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmResultsObject.quizID + '/results',

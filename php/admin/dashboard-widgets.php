@@ -176,11 +176,11 @@ function qmn_snapshot_dashboard_widget()
 	<ul class="qmn_dashboard_list">
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_qmn_today_taken; ?></strong>
+				<strong><?php echo esc_html( $mlw_qmn_today_taken ); ?></strong>
 				<?php _e('quizzes taken today', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
-					echo $mlw_qmn_analyze_today."% ";
+					echo esc_html( $mlw_qmn_analyze_today."% " );
 					if ($mlw_qmn_analyze_today >= 0)
 					{
 						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
@@ -195,11 +195,11 @@ function qmn_snapshot_dashboard_widget()
 		</li>
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_qmn_this_week_taken; ?></strong>
+				<strong><?php echo esc_html( $mlw_qmn_this_week_taken ); ?></strong>
 				<?php _e('quizzes taken last 7 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
-					echo $mlw_qmn_analyze_week."% ";
+					echo esc_html( $mlw_qmn_analyze_week."% " );
 					if ($mlw_qmn_analyze_week >= 0)
 					{
 						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
@@ -214,11 +214,11 @@ function qmn_snapshot_dashboard_widget()
 		</li>
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_qmn_this_month_taken; ?></strong>
+				<strong><?php echo esc_html( $mlw_qmn_this_month_taken ); ?></strong>
 				<?php _e('quizzes taken last 30 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
-					echo $mlw_qmn_analyze_month."% ";
+					echo esc_html( $mlw_qmn_analyze_month."% " );
 					if ($mlw_qmn_analyze_month >= 0)
 					{
 						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
@@ -233,11 +233,11 @@ function qmn_snapshot_dashboard_widget()
 		</li>
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_qmn_this_quater_taken; ?></strong>
+				<strong><?php echo esc_html( $mlw_qmn_this_quater_taken ); ?></strong>
 				<?php _e('quizzes taken last 120 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
-					echo $mlw_qmn_analyze_quater."% ";
+					echo esc_html( $mlw_qmn_analyze_quater."% " );
 					if ($mlw_qmn_analyze_quater >= 0)
 					{
 						echo "<img src='".plugin_dir_url( __FILE__ )."../images/green_triangle.png'/>";
@@ -252,25 +252,25 @@ function qmn_snapshot_dashboard_widget()
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_stat_total_active_quiz; ?></strong>
+				<strong><?php echo esc_html( $mlw_stat_total_active_quiz ); ?></strong>
 				<?php _e('total active quizzes', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php echo $mlw_stat_total_questions; ?></strong>
+				<strong><?php echo esc_html( $mlw_stat_total_questions ); ?></strong>
 				<?php _e('total active questions', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php if (!is_null($mlw_stat_most_popular_quiz)) { echo $mlw_stat_most_popular_quiz->quiz_name; } ?></strong>
+				<strong><?php if (!is_null($mlw_stat_most_popular_quiz)) { echo wp_kses_post( $mlw_stat_most_popular_quiz->quiz_name); } ?></strong>
 				<?php _e('most popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php if (!is_null($mlw_stat_least_popular_quiz)) { echo $mlw_stat_least_popular_quiz->quiz_name; } ?></strong>
+				<strong><?php if (!is_null($mlw_stat_least_popular_quiz)) { echo wp_kses_post( $mlw_stat_least_popular_quiz->quiz_name ); } ?></strong>
 				<?php _e('least popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>

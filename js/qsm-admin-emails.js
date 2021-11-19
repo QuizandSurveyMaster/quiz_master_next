@@ -35,7 +35,8 @@ var QSMAdminEmails;
 				emails.push( email );
 			});
 			var data = {
-				'emails': emails
+				'emails': emails,
+				'rest_nonce': qsmEmailsObject.rest_user_nonce
 			}
 			$.ajax({
 				url: wpApiSettings.root + 'quiz-survey-master/v1/quizzes/' + qsmEmailsObject.quizID + '/emails',
