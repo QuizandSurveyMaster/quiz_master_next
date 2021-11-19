@@ -84,11 +84,6 @@ function qsm_options_emails_tab_content() {
 	</div>
 	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
-	<div class="qsm-alerts" style="margin-top: 20px;">
-		<?php
-			$mlwQuizMasterNext->alertManager->showAlerts();
-		?>
-	</div>
 </section>
 
 <!-- Templates -->
