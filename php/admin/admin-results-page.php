@@ -321,7 +321,7 @@ function qsm_results_overview_tab_content() {
 	<input type="hidden" name="bulk_delete" value="confirmation" />
 	<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 	<?php wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' ); ?>
-	<table class=widefat>
+	<table class="widefat">
 		<thead>
 			<tr>
 				<th><input type="checkbox" id="qmn_check_all" /></th>
@@ -347,7 +347,7 @@ function qsm_results_overview_tab_content() {
 		</thead>
 		<tbody id="the-list">
 		<?php
-			$alternate   = "";
+			$alternate = "";
 			if ( $mlw_quiz_data ) {
 				foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 					$quiz_result_item = '';
@@ -376,7 +376,7 @@ function qsm_results_overview_tab_content() {
 					$out_of_q    = $mlw_quiz_info->total - $hidden_questions;
 
 					?>
-					<tr <?php esc_attr_e( $alternate ); ?>>
+					<tr <?php echo esc_attr( $alternate ); ?>>
 						<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>" /></td>
 						<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&&result_id=<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $mlw_quiz_info->quiz_name ); ?>" href='#'>Delete</a></span></div></td>
 						<?php
@@ -415,7 +415,7 @@ function qsm_results_overview_tab_content() {
 					</tr><?php
 				}
 			} else { ?>
-				<tr <?php esc_attr_e( $alternate ); ?>>
+				<tr <?php echo esc_attr( $alternate ); ?>>
 					<td colspan="12" style="text-align: center;"><?php esc_html_e( 'No record found.', 'quiz-master-next' ); ?></td>
 				</tr><?php
 			}
