@@ -810,8 +810,8 @@ public function display_pages( $options, $quiz_data ) {
 			<div class='qsm-before-message mlw_qmn_message_before'>
 				<?php
 				$editor_text  = $wp_embed->run_shortcode( $message_before );
-				$editor_texts  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
-				echo do_shortcode( wp_kses_post( $editor_texts ) );
+				$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+				echo do_shortcode( wp_kses_post( $editor_text ) );
 				?>
 			</div>
 			<?php
@@ -843,8 +843,8 @@ public function display_pages( $options, $quiz_data ) {
 					<div class='qsm-before-message mlw_qmn_message_before'>
 						<?php
 						$editor_text  = $wp_embed->run_shortcode( $message_before );
-						$editor_textss  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
-						echo do_shortcode( wp_kses_post( $editor_textss ) );
+						$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
+						echo do_shortcode( wp_kses_post( $editor_text ) );
 						?>
 					</div>
 					<?php
