@@ -1055,7 +1055,7 @@ add_action( 'wp_footer', function () use ($options) {
 			$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 				
 			$section_display .= "<div class='mlw_qmn_message_before'>" . 				
-			echo do_shortcode( wp_kses_post( $editor_text ) ) . '</div>';
+			 do_shortcode( wp_kses_post( $editor_text ) ) . '</div>';
 			if ( 0 == $qmn_quiz_options->contact_info_location ) {
 				$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 			}
