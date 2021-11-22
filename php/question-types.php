@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_choice' );
 
 /**
@@ -33,11 +34,10 @@ function qmn_question_type_file_upload() {
  * @param $id The ID of the multiple choice question
  * @param $question The question that is being edited.
  * @param @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 6.3.7
  */
 function qmn_file_upload_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
@@ -46,14 +46,14 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 		$mlw_requireClass = '';}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<div style=''></div><input type='file' class='mlw_answer_file_upload $mlw_requireClass'/>";
-	$question_display  .= "<div style='display: none;' class='loading-uploaded-file'><img src='" . get_site_url() . "/wp-includes/images/spinner-2x.gif'></div>";
-	$question_display  .= "<div style='display: none;' class='remove-uploaded-file'><span class='dashicons dashicons-trash'></span></div>";
-	$question_display  .= "<input class='mlw_file_upload_hidden_value' type='hidden' name='question" . $id . "' value='' />";
-	$question_display  .= "<span style='display: none;' class='mlw-file-upload-error-msg'></span>";
-	$question_display  .= "<input class='mlw_file_upload_hidden_path' type='hidden' value='' />";
-	return apply_filters( 'qmn_file_upload_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_requireClass);?>"/>
+		<div style="display: none;" class="loading-uploaded-file"><img src=" <?php esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif'); ?>"></div>
+		<div style="display: none;" class="remove-uploaded-file"><span class="dashicons dashicons-trash"></span></div>
+		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="" />
+		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
+		<input class="mlw_file_upload_hidden_path" type="hidden" value="" /> <?php
+	echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -101,11 +101,10 @@ function qmn_file_upload_review( $id, $question, $answers ) {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_multiple_choice_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$required           = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
@@ -113,10 +112,11 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredRadio';
 	} else {
-		$mlw_requireClass = '';}
+		$mlw_requireClass = '';
+	}
 	// $question_title = apply_filters('the_content', $question);
-	$question_display .= qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
-	$question_display .= "<div class='qmn_radio_answers $mlw_requireClass'>";
+	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
+	?> <div class='qmn_radio_answers $mlw_requireClass'> <?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer_index => $answer ) {
@@ -124,29 +124,29 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 			if ( $answer[0] != '' ) {
 				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
 				if ( $answerEditor === 'rich' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question$id-$mlw_answer_total'>";
+					?> <div class='qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'> <?php
 				} elseif ( $answerEditor === 'image' ) {
-					$question_display .= "<div class='qmn_mc_answer_wrap qmn_image_option {$answer_class}' id='question$id-$mlw_answer_total'>";
+					?> <div class='qmn_mc_answer_wrap qmn_image_option <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'> <?php
 				} else {
-					$question_display .= "<div class='qmn_mc_answer_wrap {$answer_class}' id='question" . $id . '-' . str_replace( ' ', '-', esc_attr( $answer[0] ) ) . "'>";
+					?> <div class="qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>" id="<?php echo esc_attr( 'question' . $id . '-' . str_replace( ' ', '-', $answer[0] ) ); ?> "> <?php
 				}
-				$question_display .= "<input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' />";
-				$question_display .= "<label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				?> <input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr('question' . $id  ); ?>" id="<?php echo esc_attr('question'. $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /> <?php
+				?> <label for="<?php echo esc_attr( 'question'. $id . '_' . $mlw_answer_total ); ?>"> <?php
 				if ( $answerEditor === 'image' ) {
-					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
-					$question_display .= '<span class="qsm_image_caption">' . trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) . '</span>';
+					?> 	<img src="<?php echo esc_attr( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+						<span class="qsm_image_caption"><?php echo esc_html( trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) ); ?></span><?php
 				} else {
-					$question_display .= trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ),  wp_kses_allowed_html( 'post' ) );
 				}
-				$question_display .= '</label>';
-				$question_display  = apply_filters( 'qsm_multiple_choice_display_loop', $question_display, $id, $question, $answers );
-				$question_display .= '</div>';
+				?> </label> <?php
+				echo apply_filters( 'qsm_multiple_choice_display_loop', ' ', $id, $question, $answers );
+				?> </div> <?php
 			}
 		}
-		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
+		?> <input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ) ; ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" /> <?php
 	}
-	$question_display .= '</div>';
-	return apply_filters( 'qmn_multiple_choice_display_front', $question_display, $id, $question, $answers );
+	?> </div> <?php
+	echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -236,11 +236,10 @@ function qmn_question_type_date() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 6.3.7
  */
 function qmn_date_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
@@ -248,9 +247,9 @@ function qmn_date_display( $id, $question, $answers ) {
 	} else {
 		$mlw_requireClass = '';}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<input type='date' class='mlw_answer_date $mlw_requireClass' name='question" . $id . "' id='question" . $id . "' value=''/>";
-	return apply_filters( 'qmn_date_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?> <input type="date" class="mlw_answer_date <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>" value="" /> <?php
+	echo apply_filters( 'qmn_date_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -310,11 +309,10 @@ function qmn_question_type_horizontal_multiple_choice() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
@@ -325,31 +323,31 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
-	$question_display  .= "<div class='qmn_radio_answers qmn_radio_horizontal_answers $mlw_requireClass'>";
+	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
+	?> <div class="qmn_radio_answers qmn_radio_horizontal_answers <?php echo esc_attr( $mlw_requireClass ); ?>"> <?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer_index => $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
 				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
-				$question_display .= "<span class='mlw_horizontal_choice {$answer_class}'><input type='radio' class='qmn_quiz_radio' name='question" . $id . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . $answer[0] . "' /><label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				?> <span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>"><input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?> " id="question<?php echo esc_attr( $id ). '_' .esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /><label for="question<?php echo esc_attr( $id ). '_' .esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
+					?> <img src=" <?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /> <?php
 				} else {
-					$question_display .= trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
-				$question_display .= '</label>';
-				$question_display  = apply_filters( 'qsm_multiple_choice_horizontal_display_loop', $question_display, $id, $question, $answers );
-				$question_display .= '</span>';
+				?> </label> <?php
+				echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answers );
+				?> </span> <?php
 			}
 		}
-		$question_display =apply_filters( 'qmn_horizontal_multiple_choice_question_display', $question_display, $id, $question, $answers );
-		$question_display .= "<input type='radio' style='display: none;' name='question" . $id . "' id='question" . $id . "_none' checked='checked' value='' />";
+		echo apply_filters( 'qmn_horizontal_multiple_choice_question_display', '', $id, $question, $answers );
+		?> <input type="radio" style="display: none;" name="question <?php echo esc_attr( $id ); ?> " id="question<?php echo esc_attr( $id ); ?>_none" checked="checked" value="" /> <?php
 	}
-	$question_display .= '</div>';
+	?> </div> <?php
 
-	return apply_filters( 'qmn_horizontal_multiple_choice_display_front', $question_display, $id, $question, $answers );
+	echo apply_filters( 'qmn_horizontal_multiple_choice_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -439,11 +437,10 @@ function qmn_question_type_drop_down() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_drop_down_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( 0 == $required ) {
@@ -453,20 +450,20 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<select class='qsm_select $require_class' name='question" . $id . "'>";
-	$question_display  .= "<option value=''>" . __( 'Please select your answer', 'quiz-master-next' ) . '</option>';
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><select class="qsm_select $require_class" name="question<?php echo esc_attr( $id ); ?>"><?php
+	?><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' );?></option><?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				$question_display .= "<option value='" . esc_attr( $answer[0] ) . "'>" . htmlspecialchars_decode( $answer[0], ENT_QUOTES ) . '</option>';
+				?><option value="<?php echo esc_attr( $answer[0] ); ?>"><?php esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option><?php
 			}
 		}
 	}
-	$question_display .= '</select>';
-	return apply_filters( 'qmn_drop_down_display_front', $question_display, $id, $question, $answers );
+	?> </select> <?php
+	echo apply_filters( 'qmn_drop_down_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -531,11 +528,10 @@ function qmn_question_type_small_open() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_small_open_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
@@ -548,9 +544,9 @@ function qmn_small_open_display( $id, $question, $answers ) {
 		$mlw_requireClass = '';}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= '<input ' . $autofill_att . $limit_text_att . " type='text' class='mlw_answer_open_text $mlw_requireClass' name='question" . $id . "' />";
-	return apply_filters( 'qmn_small_open_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><input <?php echo esc_attr( $autofill_att . $limit_text_att ); ?> type="text" class="mlw_answer_open_text <?php echo esc_attr($mlw_requireClass); ?>" name="question<?php echo esc_attr( $id ); ?>" /><?php
+	echo apply_filters( 'qmn_small_open_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -610,11 +606,11 @@ function qmn_question_type_multiple_response() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_multiple_response_display( $id, $question, $answers ) {
-	$question_display = $limit_mr_text = '';
+	$limit_mr_text = '';
 	global $mlwQuizMasterNext;
 	$required                = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
@@ -628,28 +624,28 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<div class='qmn_check_answers $mlw_requireClass'>";
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><div class="qmn_check_answers <?php echo esc_attr( $mlw_requireClass ); ?> "><?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				$question_display .= '<div class="qsm_check_answer">';
-				$question_display .= "<input type='hidden' name='question" . $id . "' value='This value does not matter' />";
-				$question_display .= "<input type='checkbox' " . $limit_mr_text . " name='question" . $id . '_' . $mlw_answer_total . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . esc_attr( $answer[0] ) . "' /> <label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				?><div class="qsm_check_answer">
+					<input type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="This value does not matter" />
+					<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?> " /> <label for="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
+					?><img src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
 				} else {
-					$question_display .= trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
-				$question_display .= '</label>';
-				$question_display .= '</div>';
+				?></label>
+				</div><?php
 			}
 		}
 	}
-	$question_display .= '</div>';
-	return apply_filters( 'qmn_multiple_response_display_front', $question_display, $id, $question, $answers );
+	?></div><?php
+	echo apply_filters( 'qmn_multiple_response_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -719,11 +715,10 @@ function qmn_question_type_large_open() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_large_open_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required   = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_text = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
@@ -734,9 +729,9 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<textarea class='mlw_answer_open_text {$mlw_requireClass}' {$limit_text_att} cols='70' rows='5' name='question{$id}' /></textarea>";
-	return apply_filters( 'qmn_large_open_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" <?php echo esc_attr( $limit_text_att ); ?> cols="70" rows="5" name="question<?php echo esc_attr( $id ); ?>" /></textarea><?php
+	echo apply_filters( 'qmn_large_open_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -804,13 +799,11 @@ function qmn_question_type_text_block() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_text_block_display( $id, $question, $answers ) {
-	$question_display  = '';
-	$question_display .= do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) );
-	return $question_display;
+	echo wp_kses ( do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_number' );
@@ -835,11 +828,10 @@ function qmn_question_type_number() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_number_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_text     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
@@ -850,9 +842,9 @@ function qmn_number_display( $id, $question, $answers ) {
 		$mlw_requireClass = '';}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<input type='number' $limit_text_att class='mlw_answer_number $mlw_requireClass' name='question" . $id . "' />";
-	return apply_filters( 'qmn_number_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><input type="number" <?php echo esc_attr( $limit_text_att ); ?> class="mlw_answer_number <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php echo esc_attr( $id ); ?>" /><?php
+	echo apply_filters( 'qmn_number_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -919,22 +911,21 @@ function qmn_question_type_accept() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_accept_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredAccept';
 	} else {
 		$mlw_requireClass = '';}
-	$question_display .= "<div class='qmn_accept_answers'>";
-	$question_display .= "<input type='checkbox' id='mlwAcceptance' class='$mlw_requireClass ' />";
-	$question_display .= "<label for='mlwAcceptance'><span class='qmn_accept_text'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span></label>';
-	$question_display .= '</div>';
-	return apply_filters( 'qmn_accept_display_front', $question_display, $id, $question, $answers );
+	?><div class="qmn_accept_answers">
+		<input type="checkbox" id="mlwAcceptance" class="<?php echo esc_attr( $mlw_requireClass ); ?>" />
+		<label for="mlwAcceptance"><span class="qmn_accept_text"><?php echo wp_kses( do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) ); ?></span></label>
+	</div><?php
+	echo apply_filters( 'qmn_accept_display_front', '', $id, $question, $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_captcha' );
@@ -964,27 +955,28 @@ function qmn_question_type_captcha() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_captcha_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredCaptcha';
 	} else {
-		$mlw_requireClass = '';}
-	$question_display  .= "<div class='mlw_captchaWrap'>";
-	$question_display  .= "<canvas alt='' id='mlw_captcha' class='mlw_captcha' width='100' height='50'></canvas>";
-	$question_display  .= '</div>';
-	$question_display  .= "<span class='mlw_qmn_question'>";
+		$mlw_requireClass = '';
+	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_title     = qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= $question_title . '</span>';
-	$question_display  .= "<input type='text' class='mlw_answer_open_text $mlw_requireClass' id='mlw_captcha_text' name='mlw_user_captcha'/>";
-	$question_display  .= "<input type='hidden' name='mlw_code_captcha' id='mlw_code_captcha' value='none' />";
-	return apply_filters( 'qmn_captcha_display_front', $question_display, $id, $question, $answers );
+	?>
+	<span class="mlw_qmn_question">
+		<?php qsm_question_title_func( $question, '', $new_question_title, $id ); ?>
+	</span>
+	<div class="mlw_captchaWrap">
+		<canvas alt="" id="mlw_captcha" class="mlw_captcha" width="100" height="50"></canvas>
+	</div>
+	<input type="text" class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" id="mlw_captcha_text" name="mlw_user_captcha"/>
+	<input type="hidden" name="mlw_code_captcha" id="mlw_code_captcha" value="none" /><?php
+	echo apply_filters( 'qmn_captcha_display_front', '', $id, $question, $answers );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' );
@@ -1006,11 +998,10 @@ function qmn_question_type_horizontal_multiple_response() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Contains all the content of the question
+ *
  * @since 4.4.0
  */
 function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	if ( $required == 0 ) {
@@ -1025,26 +1016,26 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	$question_display  .= "<div class='qmn_check_answers qmn_multiple_horizontal_check $mlw_requireClass'>";
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	?><div class="qmn_check_answers qmn_multiple_horizontal_check <?php echo esc_attr( $mlw_requireClass ); ?>"><?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				$question_display .= "<input type='hidden' name='question" . $id . "' value='This value does not matter' />";
-				$question_display .= "<span class='mlw_horizontal_multiple'><input type='checkbox' " . $limit_mr_text . " name='question" . $id . '_' . $mlw_answer_total . "' id='question" . $id . '_' . $mlw_answer_total . "' value='" . esc_attr( $answer[0] ) . "' /> <label for='question" . $id . '_' . $mlw_answer_total . "'>";
+				?><input type="hidden" name="question<?php echo esc_attr( $id ); ?> " value="This value does not matter" />
+				<span class="mlw_horizontal_multiple"><input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /> <label for="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					$question_display .= '<img src="' . trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '" />';
+					?><img src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
 				} else {
-					$question_display .= trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
-				$question_display .= '&nbsp;</label></span>';
+				?></label></span><?php
 			}
 		}
 	}
-	$question_display .= '</div>';
-	return apply_filters( 'qmn_horizontal_multiple_response_display_front', $question_display, $id, $question, $answers );
+	?></div><?php
+	echo apply_filters( 'qmn_horizontal_multiple_response_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -1131,11 +1122,9 @@ function qmn_question_type_fill_blank() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Returns the content of the question
  * @since 4.4.0
  */
 function qmn_fill_blank_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
@@ -1152,8 +1141,8 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	}
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_display  .= qsm_question_title_func( $question, '', $new_question_title, $id );
-	return apply_filters( 'qmn_fill_blank_display_front', $question_display, $id, $question, $answers );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
+	echo apply_filters( 'qmn_fill_blank_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -1187,7 +1176,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_text[]  = $mlw_user_answer;
 		}
 	}
-	
+
 	$total_correct = $user_correct = 0;
 	if ( $match_answer == 'sequence' ) {
 		foreach ( $answers as $key => $answer ) {
@@ -1219,8 +1208,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		if($total_user_input < $total_option){
 			foreach($user_input as $k => $input){
 				$key = array_search( $input, $answers_array );
-				if($key !== false){					
-					$return_array['points'] += $answers[$key][1];	
+				if($key !== false){
+					$return_array['points'] += $answers[$key][1];
 				} else {
 					$correct = false;
 				}
@@ -1229,8 +1218,8 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		} else {
 			foreach($answers_array as $k => $answer){
 				$key = array_search( $answer, $user_input );
-				if($key !== false){				
-					$return_array['points'] += $answers[$k][1];	
+				if($key !== false){
+					$return_array['points'] += $answers[$k][1];
 				} else {
 					$correct = false;
 				}
@@ -1272,11 +1261,9 @@ function qmn_question_type_polar() {
  * @params $id The ID of the multiple choice question
  * @params $question The question that is being edited.
  * @params @answers The array that contains the answers to the question.
- * @return $question_display Returns the content of the question
  * @since 6.4.1
  */
 function qmn_polar_display( $id, $question, $answers ) {
-	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
@@ -1307,14 +1294,14 @@ function qmn_polar_display( $id, $question, $answers ) {
 		$mlw_requireClass = '';
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_title     = qsm_question_title_func( $question, '', $new_question_title, $id );
+	qsm_question_title_func( $question, '', $new_question_title, $id );
  	$input_text .= "<div class='left-polar-title'>" . $answers[0][0]. '</div>';
 	$input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
 	$input_text .= '<div id="slider-' . $id . '" '.$slider_date_atts.'></div></div>';
 	$input_text .= "<div class='right-polar-title'>" . $answers[1][0] . '</div>';
 	$question = $input_text;
-	$question_display .= $question_title . "<span class='mlw_qmn_question question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
-	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
+	?><span class="mlw_qmn_question question-type-polar-s"><?php echo wp_kses( do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) ); ?></span><?php
+	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
 }
 
 /**
@@ -1365,7 +1352,6 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	$question_title    = $wp_embed->run_shortcode( $question_title );
 	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
 	$polar_extra_class = '';
-	$question_display  = '';
 	if ( $question_type == 'polar' ) {
 		$polar_extra_class = 'question-type-polar-s';
 	}
@@ -1378,15 +1364,14 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	if ( $question_id ) {
 		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
 		if ( $featureImageID ) {
-			$question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
+			?> <div class="qsm-featured-image"><?php echo wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) ; ?></div><?php
 		}
 	}
 	if ( $new_question_title != '' ) {
-		$question_display  .= "<div class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</div>';
+		?><div class='mlw_qmn_new_question'><?php echo esc_html( sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) );?> </div><?php
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 
-	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
-	return $question_display;
+	?> <div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' ><?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . esc_attr(  $deselect_answer ) ;?></div><?php
 }
 ?>
