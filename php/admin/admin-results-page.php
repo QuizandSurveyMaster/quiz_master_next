@@ -413,6 +413,7 @@ function qsm_results_overview_tab_content() {
 						
 						<td><span style="font-size:16px;"><abbr title="<?php echo esc_attr( $date . $time ); ?>"><?php echo esc_html( $date ); ?></abbr></span></td>
 						<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->user_ip ); ?></span></td>
+						<?php echo wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', '', $mlw_quiz_info ) ); ?>
 					</tr><?php
 				}
 			} else { ?>
