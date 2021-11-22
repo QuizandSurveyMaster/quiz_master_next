@@ -397,6 +397,13 @@ var QSMAdmin;
         });
         $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');
         $('.global_setting_system input[name="qsm-quiz-settings[system]"]').trigger('change');
+        
+        $(document).on('click', '#the-list .delete_table_quiz_results_item', function (e) {
+            e.preventDefault();
+            var qid = $(this).data('quiz-id');
+            var qname = $(this).data('quiz-name');
+            deleteResults(qid, qname);
+        });
 
     });
 }(jQuery));
@@ -407,7 +414,7 @@ function deleteResults(id, quizName) {
 		autoOpen: false,
 		buttons: {
 			Cancel: function() {
-				$j(this).dialog('close');
+				jQuery(this).dialog('close');
 			}
 		}
 	});
