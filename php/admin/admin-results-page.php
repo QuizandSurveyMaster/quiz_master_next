@@ -341,6 +341,7 @@ function qsm_results_overview_tab_content() {
 
 				foreach( $th_elements as $th ) {
 					echo '<th>' . esc_html( $th ) . '</th>';
+
 				}
 				?>
 			</tr>
@@ -378,20 +379,20 @@ function qsm_results_overview_tab_content() {
 					?>
 					<tr <?php echo esc_attr( $alternate ); ?>>
 						<td><input type="checkbox" class="qmn_delete_checkbox" name="delete_results[]" value="<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>" /></td>
-						<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&&result_id=<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $mlw_quiz_info->quiz_name ); ?>" href='#'>Delete</a></span></div></td>
+						<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->quiz_name ); ?></span><div class="row-actions"><span style="color:green;font-size:16px;"><a href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>"><?php esc_html_e( 'View', 'quiz-master-next' ); ?></a> | <a style="color: red;" class="delete_table_quiz_results_item" data-quiz-id="<?php echo esc_attr( $mlw_quiz_info->result_id ); ?>" data-quiz-name="<?php echo esc_attr( $mlw_quiz_info->quiz_name ); ?>" href='#'><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a></span></div></td>
 						<?php
 						$form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
 						if ( $form_type == 1 || $form_type == 2 ) { ?>
-							<td><span style="font-size:16px;"><?php esc_html__( 'Not Graded', 'quiz-master-next' ); ?></span></td><?php
+							<td><span style="font-size:16px;"><?php esc_html_e( 'Not Graded', 'quiz-master-next' ); ?></span></td><?php
 						} else {
 							if ( $mlw_quiz_info->quiz_system == 0 ) { ?>
-								<td class="post-title column-title"><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->correct ); ?> out of <?php echo esc_html( $out_of_q ); ?> or <?php echo esc_html( $mlw_quiz_info->correct_score ); ?>%</span></td> <?php
+								<td class="post-title column-title"><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->correct ); ?> <?php esc_html_e( 'out of', 'quiz-master-next' ); ?> <?php echo esc_html( $out_of_q ); ?> <?php esc_html_e( 'or', 'quiz-master-next' ); ?> <?php echo esc_html( $mlw_quiz_info->correct_score ); ?>%</span></td> <?php
 							}
 							if ( $mlw_quiz_info->quiz_system == 1 ) { ?>
-								<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->point_score ); ?> Points</span></td><?php
+								<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->point_score ); ?> <?php esc_html_e( 'Points', 'quiz-master-next' ); ?></span></td><?php
 							}
 							if ( $mlw_quiz_info->quiz_system == 3 ) { ?>
-								<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->correct ); ?> out of <?php echo esc_html( $out_of_q );?> or <?php echo esc_html( $mlw_quiz_info->correct_score ); ?>%</span><br/><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->point_score ); ?> Points</span></td><?php
+								<td><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->correct ); ?> <?php esc_html_e( 'out of', 'quiz-master-next' ); ?> <?php echo esc_html( $out_of_q );?> <?php esc_html_e( 'or', 'quiz-master-next' ); ?> <?php echo esc_html( $mlw_quiz_info->correct_score ); ?>%</span><br/><span style="font-size:16px;"><?php echo esc_html( $mlw_quiz_info->point_score ); ?> <?php esc_html_e( 'Points', 'quiz-master-next' ); ?></span></td><?php
 							}
 						} ?>
 
@@ -405,7 +406,7 @@ function qsm_results_overview_tab_content() {
 						if ( 0 == $mlw_quiz_info->user ) { ?>
 							<td><span style="font-size:16px;">Visitor</span></td><?php
 						} else { ?>
-							<td><span style="font-size:16px;"><a href="user-edit.php?user_id=<?php echo esc_attr( $mlw_quiz_info->user ); ?>"><?php echo esc_html( $mlw_quiz_info->user ); ?></a></span></td><?php
+							<td><span style="font-size:16px;"><a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $mlw_quiz_info->user ) ); ?>"><?php echo esc_html( $mlw_quiz_info->user ); ?></a></span></td><?php
 						}
 						$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 						$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) ); ?>
