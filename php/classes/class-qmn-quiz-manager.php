@@ -809,7 +809,6 @@ public function display_pages( $options, $quiz_data ) {
 		<div class="quiz_section quiz_begin">
 			<div class='qsm-before-message mlw_qmn_message_before'>
 				<?php
-				//echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
 				$editor_text  = $wp_embed->run_shortcode( $message_before );
 				$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 				echo do_shortcode( wp_kses_post( $editor_text ) );
@@ -843,7 +842,6 @@ public function display_pages( $options, $quiz_data ) {
 				<div class="quiz_section quiz_begin">
 					<div class='qsm-before-message mlw_qmn_message_before'>
 						<?php
-						//echo $this->qsm_convert_editor_text_to_shortcode( $message_before );
 						$editor_text  = $wp_embed->run_shortcode( $message_before );
 						$editor_text  = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 						echo do_shortcode( wp_kses_post( $editor_text ) );
