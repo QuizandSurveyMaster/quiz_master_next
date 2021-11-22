@@ -339,7 +339,7 @@ function qsm_results_overview_tab_content() {
 					'ip' 			=> __( 'IP Address', 'quiz-master-next' ),
 				) );
 
-				foreach( $th_elements as $key => $th ) {
+				foreach( $th_elements as $th ) {
 					echo '<th>' . esc_html( $th ) . '</th>';
 				}
 				?>
