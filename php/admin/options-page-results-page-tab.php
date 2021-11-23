@@ -10,26 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_options_page_results($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook ) {
-		return;
-	}
-	if( isset($_GET['tab'] ) && "results-pages" === $_GET['tab'] ){
-		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );		wp_enqueue_script( 'qsm_results_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-results.js', array( 'jquery-ui-sortable', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
-		wp_enqueue_editor();
-		wp_enqueue_media();
-	}
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_results');
-
-
-
-/**
  * Adds the Results Page tab to the Quiz Settings page.
  *
  * @since 6.1.0
@@ -55,7 +35,7 @@ function qsm_options_results_tab_content() {
 		'nonce'  			=> wp_create_nonce( 'wp_rest' ),
 		'rest_user_nonce' 	=> wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
-	wp_localize_script( 'qsm_results_admin_script', 'qsmResultsObject', $js_data );
+	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && $enabled != 'cancelled' ) {

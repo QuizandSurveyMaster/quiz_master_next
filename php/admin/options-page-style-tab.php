@@ -8,25 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_options_page_style($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook ) {
-		return;
-	}
-	if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
-		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
-		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_media();
-	}
-
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_style', 20);
-
-/**
  * This function adds the inline scripts for quiz options style tab
  *
  * @since 7.3.5
@@ -239,7 +220,7 @@ function qsm_options_styling_tab_content() {
 			?>
 	"><?php _e( 'Custom', 'quiz-master-next' ); ?></div>
 			<?php
-			wp_add_inline_script('qmn_admin_js', 'mlw_qmn_theme(\''.$mlw_quiz_options->theme_selected.'\')' );
+			wp_add_inline_script('qsm_admin_js', 'mlw_qmn_theme(\''.$mlw_quiz_options->theme_selected.'\')' );
 			?>
 		</div>
 		<button id="save_styles_button" class="button-primary">

@@ -4,23 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_options_page_contact($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook  ) {
-		return;
-	}
-  if(  isset($_GET['tab'] ) && "contact" === $_GET['tab']){
-    global $mlwQuizMasterNext;
-    wp_enqueue_script( 'qsm_contact_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-contact.js', array( 'jquery-ui-sortable' ), $mlwQuizMasterNext->version, true );
-    wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $mlwQuizMasterNext->version );
-  }
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_contact', 20 );
-
-/**
 * This function adds the contact tab using our API.
 *
 * @return type description
@@ -44,23 +27,7 @@ function qsm_options_contact_tab_content() {
   $quiz_id = intval( sanitize_text_field( $_GET["quiz_id"] ) );
   $user_id = get_current_user_id();
   $contact_form = QSM_Contact_Manager::load_fields();
-  wp_localize_script( 'qsm_contact_admin_script', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) );
-
-  /**
-   * Example contact form array
-   * array(
-   *  array(
-   *    'label' => 'Name',
-   *    'type' => 'text',
-   *    'answers' => array(
-   *      'one',
-   *      'two'
-   *    ),
-   *    'required' => true
-   *    )
-   *  )
-   */
-
+  wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) );
   ?>
   <h2 style="display: none;"><?php _e( 'Contact', 'quiz-master-next' ); ?></h2>
   <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>

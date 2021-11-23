@@ -1349,15 +1349,25 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	} elseif ( $answer['points'] == $answar2 ){
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
-	}elseif ( $answer['points'] == $mid_point ){
+	}	elseif ( $answer['points'] == $mid_point ){
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:600;'";
-	} elseif ( $answer['points'] < $mid_point ){
-		$left_polar_title_style  = "style='font-weight:400;'";
-		$right_polar_title_style = "style='font-weight:600;'";
-	}	elseif ( $answer['points'] > $mid_point ){
-		$left_polar_title_style  = "style='font-weight:600;'";
-		$right_polar_title_style = "style='font-weight:400;'";
+	} elseif ($is_reverse){
+		if( $answer['points'] < $mid_point ){
+			$left_polar_title_style  = "style='font-weight:600;'";
+			$right_polar_title_style = "style='font-weight:400;'";
+		}	elseif ( $answer['points'] > $mid_point ){
+			$left_polar_title_style  = "style='font-weight:400;'";
+			$right_polar_title_style = "style='font-weight:600;'";
+		}
+	} elseif(!$is_reverse) {
+		if ( $answer['points'] < $mid_point ){
+			$left_polar_title_style  = "style='font-weight:400;'";
+			$right_polar_title_style = "style='font-weight:600;'";
+		}	elseif ( $answer['points'] > $mid_point ){
+			$left_polar_title_style  = "style='font-weight:600;'";
+			$right_polar_title_style = "style='font-weight:400;'";
+		}
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$question_title     = qsm_question_title_func( $question, '', $new_question_title );

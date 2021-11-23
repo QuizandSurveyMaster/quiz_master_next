@@ -1094,7 +1094,7 @@ class QMNGlobalSettingsPage {
 				<input autocomplete="off" type="text" id="scheduled_time_end" name="qsm-quiz-settings[scheduled_time_end]" value="'.$qsm_scheduled_time_end.'">
 				<span class="qsm-opt-desc"> If set, Quiz will not be accessible after this date</span>
 			 </div>';
-			wp_add_inline_script( 'qmn_admin_js', 'jQuery(function(){jQuery("#scheduled_time_start,#scheduled_time_end").datetimepicker({format: "m/d/Y H:i",step: 1});});');
+			wp_add_inline_script( 'qsm_admin_js', 'jQuery(function(){jQuery("#scheduled_time_start,#scheduled_time_end").datetimepicker({format: "m/d/Y H:i",step: 1});});');
 	}
 /**
 	 * Generates Quiz Global  Field For Do not allow quiz submission after the end date/time

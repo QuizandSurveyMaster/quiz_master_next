@@ -248,29 +248,103 @@ class MLWQuizMasterNext {
 	 * Loads admin scripts and style
 	 *
 	 * @since 7.1.16
+	 * @since 7.3.5 admin scripts consolidated
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
 		global $mlwQuizMasterNext;
-		//common scripts and styles
+		//admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-		wp_enqueue_script( 'qmn_admin_js', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util' ), $this->version, true );
-
-		if ( $hook == 'admin_page_mlw_quiz_options' ) {
-			wp_enqueue_script( 'wp-tinymce' );
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
-		}
-
+		//dashboard and quiz list pages
 		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qmn_admin_js'), $this->version, true);
-			wp_enqueue_script( 'qsm_quiz_wizard_script', plugins_url( 'js/qsm-quiz-wizard.js', __FILE__ ), array( 'jquery', 'micromodal_script' ), $this->version);
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
 			wp_enqueue_media();
+			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
+			wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
+			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 		}
+		// dashboard
+		if ( $hook == 'toplevel_page_qsm_dashboard' ){
+			wp_enqueue_script( 'dashboard' );
+			if ( wp_is_mobile() ) {
+				wp_enqueue_script( 'jquery-touch-punch' );
+			}
+		}
+		// result details page
+		if ($hook == 'admin_page_qsm_quiz_result_details'){
+			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
+			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+			wp_enqueue_script( 'jquery-ui-slider');
+			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array('jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider'), $this->version, true);
+			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
+			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $this->version, true );
+			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+		}
+		//results page
+		if ($hook == 'qsm_page_mlw_quiz_results'){
+			wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'jquery-ui-core' );
+			wp_enqueue_script( 'jquery-ui-dialog' );
+			wp_enqueue_script( 'jquery-ui-button' );
+			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+		}
+		//stats page
+		if ( $hook == 'qsm_page_qmn_stats'){
+			wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js', array(),'3.6.0',true);
+		}
+		//quiz option pages
+		if ($hook == 'admin_page_mlw_quiz_options'){
+			wp_enqueue_script( 'wp-tinymce' );
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
+			if(  isset($_GET['tab'] ) && "contact" === $_GET['tab']){
+				wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
+			}
+			if ( isset($_GET['tab'] ) && "emails" === $_GET['tab'] ){
+				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+				wp_enqueue_editor();
+				wp_enqueue_media();
+			}
+			if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
+				if ( ! did_action( 'wp_enqueue_media' ) ) {
+					wp_enqueue_media();
+				}
+				wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $this->version );
+				wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+				wp_enqueue_editor();
+				wp_enqueue_media();
+			}
 
-		if ( strpos( $hook, 'qsm' ) !== false || strpos( $hook, 'mlw_quiz' ) !== false ) {
-			wp_enqueue_script( 'qsm_admin_notices_script', plugins_url( 'js/qsm-admin-notices.js', __FILE__ ), array( 'jquery' ), $this->version, true );
-			wp_localize_script( 'qsm_admin_notices_script', 'qsm_notices_ajax_object', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+			if( isset($_GET['tab'] ) && "results-pages" === $_GET['tab'] ){
+				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+				wp_enqueue_script( 'qsm_results_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-results.js', array( 'jquery-ui-sortable', 'qsm_admin_js' ), $this->version, true );
+				wp_enqueue_editor();
+				wp_enqueue_media();
+			}
+
+			if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
+				wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
+				wp_enqueue_style( 'wp-color-picker' );
+				wp_enqueue_media();
+			}
+
+			if ( isset($_GET['tab'] ) && "options" === $_GET['tab']){
+				wp_enqueue_script( 'jquery' );
+				wp_enqueue_script( 'jquery-ui-core' );
+				wp_enqueue_script( 'jquery-ui-dialog' );
+				wp_enqueue_script( 'jquery-ui-button' );
+				wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+				wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+				wp_enqueue_script( 'jquery-ui-tabs' );
+				wp_enqueue_script( 'jquery-effects-blind' );
+				wp_enqueue_script( 'jquery-effects-explode' );
+				wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+			}
 		}
+		//load admin JS after all dependencies are loaded
+		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util','jquery-ui-sortable'), $this->version, true );
 	}
 
 	/**
