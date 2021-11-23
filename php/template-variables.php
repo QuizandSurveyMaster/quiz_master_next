@@ -940,7 +940,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	} else {
 		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . htmlspecialchars_decode( $answer[0], ENT_QUOTES ) . '</b>', $mlw_question_answer_display );
 	}
-	$mlw_question_answer_display = qsm_question_title_func( $mlw_question_answer_display );
+	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display );
 	$extra_border_bottom_class   = '';
 	$remove_border               = true;
 	if ( strpos( $mlw_question_answer_display, '%USER_ANSWERS_DEFAULT%' ) !== false ) {
@@ -1250,7 +1250,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$mlw_question_answer_display = str_replace( '%QUESTION_MAX_POINTS%', $question_max_point, $mlw_question_answer_display );
 
 	$mlw_question_answer_display = wp_kses_post( $mlw_question_answer_display );
-	
+
 	if ( $total_question_cnt == $qsm_question_cnt && $remove_border == false ) {
 		$extra_border_bottom_class = 'qsm-remove-border-bottom';
 	}
@@ -1338,10 +1338,9 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
 	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
 	$slider_date_atts.=' data-answer_value="'.$user_answer.'" ';
+	$mlw_requireClass = '';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
-	} else {
-		$mlw_requireClass = '';
 	}
 	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
@@ -1349,7 +1348,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	} elseif ( $answer['points'] == $answar2 ){
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
-	}elseif ( $answer['points'] == $mid_point ){
+	}	elseif ( $answer['points'] == $mid_point ){
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:600;'";
 	} elseif ( $answer['points'] < $mid_point ){
@@ -1359,8 +1358,17 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:400;'";
 	}
+	if ($is_reverse){
+		if( $answer['points'] < $mid_point ){
+			$left_polar_title_style  = "style='font-weight:600;'";
+			$right_polar_title_style = "style='font-weight:400;'";
+		}	elseif ( $answer['points'] > $mid_point ){
+			$left_polar_title_style  = "style='font-weight:400;'";
+			$right_polar_title_style = "style='font-weight:600;'";
+		}
+	}
+
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$question_title     = qsm_question_title_func( $question, '', $new_question_title );
 	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
 	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"'.$slider_date_atts.'></div></div>';
@@ -1399,4 +1407,46 @@ function qsm_variable_minimum_points( $content, $mlw_quiz_array ) {
 		$content = str_replace( '%MINIMUM_POINTS%', $mlw_quiz_array['minimum_possible_points'], $content );
 	}
 	return $content;
+}
+
+/**
+ * Replace question title variable with actual question title
+ *
+ * @since 7.3.6
+ *
+ * @param string $question
+ * @param string $question_type
+ * @param string $new_question_title
+ * @param int  $question_id
+ * @return string $question_display
+ */
+function qsm_varibale_question_title_func( $question, $question_type = '', $new_question_title = '', $question_id = 0 ) {
+	$question_title = $question;
+	global $wp_embed, $mlwQuizMasterNext;
+	$question_title    = $wp_embed->run_shortcode( $question_title );
+	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
+	$polar_extra_class = '';
+	$question_display  = '';
+	if ( $question_type == 'polar' ) {
+		$polar_extra_class = 'question-type-polar-s';
+	}
+	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+	$deselect_answer  = '';
+	if ( isset( $qmn_quiz_options->enable_deselect_option ) && $qmn_quiz_options->enable_deselect_option == 1 && ( $question_type == 'multiple_choice' || $question_type == 'horizontal_multiple_choice' ) ) {
+		$deselect_answer = '<a href="#" class="qsm-deselect-answer">Deselect Answer</a>';
+	}
+
+	if ( $question_id ) {
+		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
+		if ( $featureImageID ) {
+			$question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
+		}
+	}
+	if ( $new_question_title != '' ) {
+		$question_display  .= "<div class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</div>';
+		$polar_extra_class .= ' qsm_remove_bold';
+	}
+
+	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
+	return $question_display;
 }

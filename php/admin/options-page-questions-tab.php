@@ -9,29 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_options_page_questions($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook ) {
-		return;
-	}
-	if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
-		global $mlwQuizMasterNext;
-		if ( ! did_action( 'wp_enqueue_media' ) ) {
-			wp_enqueue_media();
-		}
-		wp_enqueue_script( 'qsm_admin_question_js', QSM_PLUGIN_JS_URL.'/qsm-admin-question.js', array( 'backbone', 'underscore', 'jquery-ui-sortable', 'wp-util', 'micromodal_script', 'qmn_admin_js' ), $mlwQuizMasterNext->version, true );
-		wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $mlwQuizMasterNext->version );
-		wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );		wp_enqueue_editor();
-		wp_enqueue_media();
-	}
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_options_page_questions', 20);
-
 
 /**
  * Adds the settings for questions tab to the Quiz Settings page.
@@ -127,7 +104,7 @@ function qsm_options_questions_tab_content() {
 		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
 		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
 	);
-	wp_localize_script( 'qsm_admin_question_js', 'qsmQuestionSettings', $json_data );
+	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
 	// Load Question Types.
 	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
