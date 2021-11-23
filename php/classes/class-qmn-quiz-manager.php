@@ -1585,7 +1585,7 @@ add_action( 'wp_footer', function () use ($options) {
 	 * @uses QMNPluginHelper:display_review() Scores the question
 	 * @return array The results of the user's score
 	 */
-	public static function check_answers( $options, $quiz_data ) {
+	public function check_answers( $options, $quiz_data ) {
 
 		global $mlwQuizMasterNext;
 		// Load the pages and questions
@@ -1645,11 +1645,11 @@ add_action( 'wp_footer', function () use ($options) {
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
-							QMNQuizManager::question_variables();
+							$this->question_variables();
 
 							// Get maximum and minimum points for the quiz
 							if ( ! in_array( $question_id, $hidden_questions ) ) {
-								QMNQuizManager::min_max_points($options,$question, $total_possible_points, $minimum_possible_points); 
+								$this->min_max_points($options,$question, $total_possible_points, $minimum_possible_points); 
 							}            
 
 							// Send question to our grading function
@@ -1676,7 +1676,7 @@ add_action( 'wp_footer', function () use ($options) {
 									}
 								}
 								
-								QMNQuizManager::call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
+								$this->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							}
 							break;
 						}
@@ -1693,10 +1693,10 @@ add_action( 'wp_footer', function () use ($options) {
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
             			// Reset question-specific variables
-						QMNQuizManager::question_variables();
+						$this->question_variables();
 
 						// Get maximum and minimum points for the quiz
-						QMNQuizManager::min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
+						$this->min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1713,7 +1713,7 @@ add_action( 'wp_footer', function () use ($options) {
 							}
 												
 
-							QMNQuizManager::call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
+							$this->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							
 						}
 						break;
@@ -1764,7 +1764,7 @@ add_action( 'wp_footer', function () use ($options) {
 		), $options, $quiz_data );
 	}
 
-	public static function min_max_points($options,$question, $total_possible_points, $minimum_possible_points){
+	public function min_max_points($options,$question, $total_possible_points, $minimum_possible_points){
 		$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
 		$total_possible_points += $max_min_result['max_point'];
 		$minimum_possible_points += $max_min_result['min_point'];
@@ -1774,7 +1774,7 @@ add_action( 'wp_footer', function () use ($options) {
  	* function to call marks
  	*/
 
-	 public static function question_variables(){
+	 public function question_variables(){
 		 // Reset question-specific variables
 		 $user_answer    = '';
 		 $correct_answer = '';
@@ -1786,7 +1786,7 @@ add_action( 'wp_footer', function () use ($options) {
 	 * create function to call 
 	*/
 
-	public static function call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data){
+	public function call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data){
 
 		$user_answer       = $results_array['user_text'];
 		$correct_answer    = $results_array['correct_text'];
