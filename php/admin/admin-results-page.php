@@ -429,7 +429,7 @@ function qsm_results_overview_tab_content() {
 		}
 	} ?>
 
-	<table class="widefat">
+	<table class="widefat" aria-label="<?php esc_html_e( 'Results Table','quiz-master-next' ); ?>">
 		<thead>
 			<tr>
 				<th><input type="checkbox" id="qmn_check_all" /></th>
@@ -478,3 +478,4 @@ function qsm_results_overview_tab_content() {
 </div>
 <?php
 }
+?>
