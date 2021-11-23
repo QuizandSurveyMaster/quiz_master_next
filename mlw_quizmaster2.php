@@ -297,50 +297,44 @@ class MLWQuizMasterNext {
 		if ($hook == 'admin_page_mlw_quiz_options'){
 			wp_enqueue_script( 'wp-tinymce' );
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
-			if(  isset($_GET['tab'] ) && "contact" === $_GET['tab']){
-				wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
-			}
-			if ( isset($_GET['tab'] ) && "emails" === $_GET['tab'] ){
-				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				wp_enqueue_editor();
-				wp_enqueue_media();
-			}
 			if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
-				if ( ! did_action( 'wp_enqueue_media' ) ) {
-					wp_enqueue_media();
-				}
 				wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $this->version );
 				wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
 				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 				wp_enqueue_editor();
 				wp_enqueue_media();
 			}
-
-			if( isset($_GET['tab'] ) && "results-pages" === $_GET['tab'] ){
-				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				wp_enqueue_script( 'qsm_results_admin_script', QSM_PLUGIN_JS_URL.'/qsm-admin-results.js', array( 'jquery-ui-sortable', 'qsm_admin_js' ), $this->version, true );
-				wp_enqueue_editor();
-				wp_enqueue_media();
-			}
-
-			if( isset($_GET['tab'] ) && "style" === $_GET['tab']){
-				wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL.'/micromodal.min.js' );
-				wp_enqueue_style( 'wp-color-picker' );
-				wp_enqueue_media();
-			}
-
-			if ( isset($_GET['tab'] ) && "options" === $_GET['tab']){
-				wp_enqueue_script( 'jquery' );
-				wp_enqueue_script( 'jquery-ui-core' );
-				wp_enqueue_script( 'jquery-ui-dialog' );
-				wp_enqueue_script( 'jquery-ui-button' );
-				wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
-				wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
-				wp_enqueue_script( 'jquery-ui-tabs' );
-				wp_enqueue_script( 'jquery-effects-blind' );
-				wp_enqueue_script( 'jquery-effects-explode' );
-				wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+			if (isset($_GET['tab'])){
+				if( "contact" === $_GET['tab']){
+					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
+				}
+				if( "emails" === $_GET['tab'] ){
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+				}
+				if( "results-pages" === $_GET['tab'] ){
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+				}
+				if( "style" === $_GET['tab']){
+					wp_enqueue_style( 'wp-color-picker' );
+					wp_enqueue_media();
+				}
+				if ( "options" === $_GET['tab']){
+					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+					wp_enqueue_script( 'jquery' );
+					wp_enqueue_script( 'jquery-ui-core' );
+					wp_enqueue_script( 'jquery-ui-dialog' );
+					wp_enqueue_script( 'jquery-ui-button' );
+					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+					wp_enqueue_script( 'jquery-ui-tabs' );
+					wp_enqueue_script( 'jquery-effects-blind' );
+					wp_enqueue_script( 'jquery-effects-explode' );
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+				}
 			}
 		}
 		//load admin JS after all dependencies are loaded
