@@ -342,8 +342,6 @@ function qsm_results_overview_tab_content() {
 	if ( $mlw_quiz_data ) {
 		foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 			$quiz_infos[] = $mlw_quiz_info;
-			$quiz_result_item = '';
-			$quiz_result_item_inner = '';
 			$mlw_complete_time     = '';
 			$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 			$hidden_questions      = isset( $mlw_qmn_results_array['hidden_questions'] ) ? count( $mlw_qmn_results_array['hidden_questions'] ) : 0;
