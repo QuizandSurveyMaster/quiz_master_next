@@ -93,7 +93,7 @@ function qmn_stats_overview_content()
 		'labels' => $labels,
 		'value'  => $value
 	);
-	wp_localize_script( 'qsm-admin-stats', 'qsm_admin_stats', $qsm_admin_stats);
+	wp_localize_script( 'qsm_admin_js', 'qsm_admin_stats', $qsm_admin_stats);
 	?>
 	<style>
 		.postbox:after {
