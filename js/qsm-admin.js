@@ -396,6 +396,13 @@ var QSMAdmin;
     $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');
     $('.global_setting_system input[name="qsm-quiz-settings[system]"]').trigger('change');
 
+    $(document).on('click', '#the-list .delete_table_quiz_results_item', function (e) {
+        e.preventDefault();
+        var qid = $(this).data('quiz-id');
+        var qname = $(this).data('quiz-name');
+        deleteResults(qid, qname);
+    });
+
 }(jQuery));
 
 // result page
