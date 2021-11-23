@@ -1645,11 +1645,11 @@ add_action( 'wp_footer', function () use ($options) {
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
-							(new self)->question_variables();
+							QMNQuizManager::question_variables();
 
 							// Get maximum and minimum points for the quiz
 							if ( ! in_array( $question_id, $hidden_questions ) ) {
-								(new self)->min_max_points($options,$question, $total_possible_points, $minimum_possible_points); 
+								QMNQuizManager::min_max_points($options,$question, $total_possible_points, $minimum_possible_points); 
 							}            
 
 							// Send question to our grading function
@@ -1676,7 +1676,7 @@ add_action( 'wp_footer', function () use ($options) {
 									}
 								}
 								
-								(new self)->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
+								QMNQuizManager::call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							}
 							break;
 						}
@@ -1693,10 +1693,10 @@ add_action( 'wp_footer', function () use ($options) {
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
             			// Reset question-specific variables
-						(new self)->question_variables();
+						QMNQuizManager::question_variables();
 
 						// Get maximum and minimum points for the quiz
-						(new self)->min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
+						QMNQuizManager::min_max_points($options,$question, $total_possible_points, $minimum_possible_points);
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1713,7 +1713,7 @@ add_action( 'wp_footer', function () use ($options) {
 							}
 												
 
-							(new self)->call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
+							QMNQuizManager::call_question_data($results_array, $attempted_question, $question, $correct_status, $answer_points, $options, $quiz_data);
 							
 						}
 						break;
