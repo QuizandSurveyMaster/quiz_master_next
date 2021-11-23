@@ -413,12 +413,12 @@ function qsm_results_overview_tab_content() {
 			}
 
 			if ( isset( $values['ip'] ) ) {
-				$values['ip']['content'][] = esc_html( $mlw_quiz_info->user_ip );
+				$values['ip']['content'][] = $mlw_quiz_info->user_ip;
 			}
 
 			foreach( $values as $k => $v ) {
 				if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip' ] ) ) {
-					$content = apply_filters( 'mlw_qmn_admin_results_page_result', '', $mlw_quiz_info, $k );
+					$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 					if ( isset( $values[$k] ) && ! empty( $content ) ) {
 						$values[$k]['content'][] = $content;
 					}
@@ -450,7 +450,7 @@ function qsm_results_overview_tab_content() {
 						<?php
 						foreach( $values as $k => $v ) {
 							if ( isset( $v['content'][$x] ) ) {
-								echo '<th><span style="font-size:16px;">' . wp_kses_post( $v['content'][$x] ) . '</span></th>';
+								echo '<th><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][$x], $quiz_infos[$x], $k ) ) . '</span></th>';
 							}
 						} ?>
 					</tr><?php
