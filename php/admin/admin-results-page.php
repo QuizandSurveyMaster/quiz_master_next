@@ -450,7 +450,7 @@ function qsm_results_overview_tab_content() {
 						<?php
 						foreach( $values as $k => $v ) {
 							if ( isset( $v['content'][$x] ) ) {
-								echo '<th><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][$x], $quiz_infos[$x], $k ) ) . '</span></th>';
+								echo '<td><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][$x], $quiz_infos[$x], $k ) ) . '</span></td>';
 							}
 						} ?>
 					</tr><?php
