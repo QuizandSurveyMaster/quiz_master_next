@@ -4,24 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_results_page($hook){
-	if ( 'qsm_page_mlw_quiz_results' != $hook ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'jquery-ui-core' );
-	wp_enqueue_script( 'jquery-ui-dialog' );
-	wp_enqueue_script( 'jquery-ui-button' );
-	wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_page', 20);
-
-/**
  * This function generates the admin side quiz results page
  *
  * @return void

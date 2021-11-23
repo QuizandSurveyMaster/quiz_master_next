@@ -10,32 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_quiz_options_page($hook){
-	if ( 'admin_page_mlw_quiz_options' != $hook) {
-		return;
-	}
-	if ( isset($_GET['tab'] ) && "options" === $_GET['tab']){
-		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-dialog' );
-		wp_enqueue_script( 'jquery-ui-button' );
-		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
-		wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
-		wp_enqueue_script( 'jquery-ui-tabs' );
-		wp_enqueue_script( 'jquery-effects-blind' );
-		wp_enqueue_script( 'jquery-effects-explode' );
-		wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-		wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-	}
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_quiz_options_page', 20);
-
-/**
  * This function allows for the editing of quiz options.
  *
  * @return void
@@ -73,7 +47,7 @@ function qsm_generate_quiz_options() {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 	}
-	wp_localize_script( 'qmn_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ) );
+	wp_localize_script( 'qsm_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ) );
 	// Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
 		//$quiz_id   = intval( $_POST['edit_quiz_id'] );

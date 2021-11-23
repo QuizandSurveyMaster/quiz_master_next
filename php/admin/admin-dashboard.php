@@ -96,28 +96,6 @@ function qsm_dashboard_screen_options( $status, $args ) {
 }
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_dashboard_page($hook){
-	if ( 'toplevel_page_qsm_dashboard' != $hook ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
-	wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-	wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
-	wp_enqueue_script( 'dashboard' );
-	if ( wp_is_mobile() ) {
-		wp_enqueue_script( 'jquery-touch-punch' );
-	}
-	wp_enqueue_script ( 'productstash-config', QSM_PLUGIN_JS_URL.'/qsm-productstash-config.js');
-	wp_enqueue_script ( 'productstash-popover', 'https://cdn.productstash.io/js/popover.min.js?v=0.1' );
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_dashboard_page', 20);
-
-/**
  * @since 7.0
  * @return HTMl Dashboard for QSM
  */

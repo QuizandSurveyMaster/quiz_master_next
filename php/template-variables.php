@@ -1338,10 +1338,9 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
 	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
 	$slider_date_atts.=' data-answer_value="'.$user_answer.'" ';
+	$mlw_requireClass = '';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
-	} else {
-		$mlw_requireClass = '';
 	}
 	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
@@ -1349,7 +1348,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	} elseif ( $answer['points'] == $answar2 ){
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
-	}elseif ( $answer['points'] == $mid_point ){
+	}	elseif ( $answer['points'] == $mid_point ){
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:600;'";
 	} elseif ( $answer['points'] < $mid_point ){
@@ -1359,6 +1358,16 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:400;'";
 	}
+	if ($is_reverse){
+		if( $answer['points'] < $mid_point ){
+			$left_polar_title_style  = "style='font-weight:600;'";
+			$right_polar_title_style = "style='font-weight:400;'";
+		}	elseif ( $answer['points'] > $mid_point ){
+			$left_polar_title_style  = "style='font-weight:400;'";
+			$right_polar_title_style = "style='font-weight:600;'";
+		}
+	}
+
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
 	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
