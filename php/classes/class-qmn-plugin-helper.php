@@ -386,7 +386,6 @@ class QMNPluginHelper
      */
     public function display_question($slug, $question_id, $quiz_options)
     {
-        $display = '';
         global $wpdb;
         global $qmn_total_questions;
         $question = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", intval($question_id)));
@@ -417,20 +416,20 @@ class QMNPluginHelper
             if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
                 if ($type["graded"]) {
                     $qmn_total_questions += 1;
-                    if ($quiz_options->question_numbering == 1) {
-                        $display .= "<span class='mlw_qmn_question_number'>$qmn_total_questions. </span>";
+                    if ($quiz_options->question_numbering == 1) { ?>
+                        <span class='mlw_qmn_question_number'><?php esc_html_e( $qmn_total_questions ); ?></span>
+                    <?php
                     }
                 }
-                if ($quiz_options->show_category_on_front ) {                    
-                    $categories = QSM_Questions::get_question_categories( $question_id );                   
+                if ($quiz_options->show_category_on_front ) {
+                    $categories = QSM_Questions::get_question_categories( $question_id );
                     if(!empty($categories['category_name'])){
-                        $display .= '<div class="quiz-cat">[ ' .implode(',' ,$categories['category_name']) . ' ]</div>';
-                    }                    
+                       ?><div class="quiz-cat"><?php esc_html_e('[' .implode(',' ,$categories['category_name']) . ']' ); ?></div><?php
+                    }
                 }
-                $display .= call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
+                call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
             }
         }
-        return $display;
     }
 
     /**
@@ -675,7 +674,7 @@ class QMNPluginHelper
 	 * @since 4.7.1
 	 */
 	public function quiz_animation_effect( ) {
-		
+
 
 		return array(
 			array(
@@ -755,8 +754,8 @@ class QMNPluginHelper
 
         $qsm_qna_array = $this->convert_contacts_to_preferred_date_format($qsm_qna_array);
         $qsm_qna_array = $this->convert_answers_to_preferred_date_format($qsm_qna_array);
-        $this->convert_questions_to_preferred_date_format();        
-           
+        $this->convert_questions_to_preferred_date_format();
+
         return $qsm_qna_array;
 	}
 
@@ -795,7 +794,7 @@ class QMNPluginHelper
         foreach ($qsm_qna_list as $qna_id => $qna){
             if ("12"===$qna['question_type'] && null!==$GLOBALS['qsm_date_format']){
                 $qsm_qna_array['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));           
+                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));
             }
         }
         return $qsm_qna_array;
@@ -811,29 +810,29 @@ class QMNPluginHelper
 	 */
 
 	public function convert_questions_to_preferred_date_format(){
-        
+
         if(!function_exists('qsm_convert_question_array_date_format')){
-            function qsm_convert_question_array_date_format($questions){	
+            function qsm_convert_question_array_date_format($questions){
                 foreach ($questions as $question_id => $question_to_convert){
                     if("12"=== $question_to_convert['question_type_new']){
                         foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
                             $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
-                        }	
+                        }
                     }
                 }
                 return $questions;
             }
-        } 
-        add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');              
+        }
+        add_filter( 'qsm_load_questions_by_pages','qsm_convert_question_array_date_format');
 	}
 
     /**
-	 * 
+	 *
 	 *
 	 * @since 7.3.5
-	 * @param array 
-	 * @uses 
-	 * @return array 
+	 * @param array
+	 * @uses
+	 * @return array
 	 */
 
     public function qsm_results_css_inliner($html){

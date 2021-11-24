@@ -116,7 +116,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	}
 	// $question_title = apply_filters('the_content', $question);
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
-	?> <div class='qmn_radio_answers <?php echo esc_attr( $mlw_requireClass ); ?>'> <?php
+	?> <div class="qmn_radio_answers <?php esc_attr_e( $mlw_requireClass ); ?>"> <?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer_index => $answer ) {
@@ -1134,7 +1134,8 @@ function qmn_fill_blank_display( $id, $question, $answers ) {
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
-		$mlw_requireClass = '';}
+		$mlw_requireClass = '';
+	}
 	$input_text = '<input ' . $autofill_att . $limit_text_att . " type='text' class='qmn_fill_blank $mlw_requireClass' name='question" . $id . "[]' />";
 	if ( strpos( $question, '%BLANK%' ) !== false ) {
 		$question = str_replace( '%BLANK%', $input_text, do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
