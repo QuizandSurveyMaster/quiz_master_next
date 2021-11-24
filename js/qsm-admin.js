@@ -40,10 +40,11 @@ var QSMAdmin;
             $('.qsm-tab').removeClass('nav-tab-active');
             $('.qsm-tab-content').hide();
             tab.addClass('nav-tab-active');
-            let tabID = tab.data('tab');
+            tabID = tab.data('tab');
             $('.tab-' + tabID).show();
         }
     };
+    $(function () {
     $('.qsm-tab').on('click', function (event) {
         event.preventDefault();
         QSMAdmin.selectTab($(this));
@@ -268,6 +269,7 @@ var QSMAdmin;
         }
     });
     $(document).on('click', '.qsm_tab_content input[name="system"]', function () {
+            var name = $(this).attr('name');
         var value = $(this).val();
         $('.qsm_hidden_tr_gradingsystem').hide();
         if (value == 0 || value == 3) {
@@ -357,7 +359,7 @@ var QSMAdmin;
     $(document).on('click', '#set_featured_image', function (e) {
         var button = $(this);
         e.preventDefault();
-        let custom_uploader = wp.media({
+            custom_uploader = wp.media({
             title: 'Set Featured Image',
             library: {
                 type: 'image'
@@ -383,6 +385,19 @@ var QSMAdmin;
             $('.global_setting_score_roundoff').parents('tr').hide();
 
         }
+    });
+    $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {            
+        var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();  
+        var value1 = $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').val();                              
+        if (value != '1'  && value1 == '0' ) {                                         
+            $('.global_setting_score_roundoff').parents('tr').show();
+        }else {                
+            $('.global_setting_score_roundoff').parents('tr').hide();    
+        }
+    });
+    $('.global_form_type_settiong  select[name="qsm-quiz-settings[form_type]"]').trigger('change');
+    $('.global_setting_system input[name="qsm-quiz-settings[system]"]').trigger('change');
+
     });
     $(document).on('change', '.global_setting_system input[name="qsm-quiz-settings[system]"]', function () {            
         var value = $('input[name="qsm-quiz-settings[system]"]:checked').val();  
@@ -854,7 +869,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         $(document).on('click', '#new_quiz_button', function () {
             $('#quiz_settings').find('.qsm-opt-desc').each(function () {
                 if ($(this)) {
-                    let desc = $(this);
+                    desc = $(this);
                     desc.parents('.input-group').find('label:first-child').append(desc);
                 }
             })
@@ -870,8 +885,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 		$('.category-action').html('Updating database<span></span>');
 		$('.category-action').prev().hide();
 		$('.category-action').prev().prev().hide();
-		let i = 0;
-		let category_interval = setInterval(() => {
+		i = 0;
+		category_interval = setInterval(() => {
 			if (i % 3 == 0) {
 				$('.category-action span').html(' .');
 			} else {
@@ -887,7 +902,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				value: 'enable'
 			},
 			success: function (r) {
-				let response = JSON.parse(r);
+				response = JSON.parse(r);
 				clearInterval(category_interval);
 				if (response.status) {
 					$('.category-action').parents('.multiple-category-notice').removeClass('notice-info').addClass('notice-success').html('<p>Database updated successfully.</p>');
@@ -1293,8 +1308,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 });
                 $( '#qsm_emails' ).on( 'click', '.new-condition', function( event ) {
                     event.preventDefault();
-                    let page = $( this ).closest( '.qsm-email' );
-                    QSMAdminEmails.newCondition( page );
+                    $page = $( this ).closest( '.qsm-email' );
+                    QSMAdminEmails.newCondition( $page );
                 });
                 $( '#qsm_emails' ).on( 'click', '.delete-email-button', function( event ) {
                     event.preventDefault();
@@ -1425,19 +1440,19 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }
                 if (pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0) {
                     var category_arr = qsmQuestionSettings.categories;
-                    let catHtml = '<select name="question-bank-cat" id="question-bank-cat">';
-                    catHtml += '<option value="">All Questions</option>';
+                    $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
+                    $cat_html += '<option value="">All Questions</option>';
                     $.each(category_arr, function (index, value) {
                         if (value.category !== '') {
                             if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
-                                catHtml += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
+                                $cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
                             } else {
-                                catHtml += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+                                $cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
                             }
                         }
                     });
-                    catHtml += '</select>';
-                    $('#question-bank').prepend(catHtml);
+                    $cat_html += '</select>';
+                    $('#question-bank').prepend($cat_html);
                     $('#question-bank-cat').val(pagination.category);
                 }
                 if (pagination.current_page == 1) {
@@ -1717,7 +1732,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 var file_upload_limit = $("#file_upload_limit").val();
                 var type_arr = [];
                 $.each($("input[name='file_upload_type[]']:checked"), function () {
-                    let type_value = $(this).val().replace(/,/g, '');
+                    type_value = $(this).val().replace(/,/g, '');
                     type_arr.push(type_value);
                 });
                 if ('new_category' == category) {
@@ -2168,7 +2183,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             });
             $('.questions').on('click', '.delete-question-button', function (event) {
                 event.preventDefault();
-                let remove = $(this);
+                remove = $(this);
                 // opens-up question-delete modal
                 MicroModal.show('modal-7');
                 $('#unlink-question-button').attr('data-question-iid', $(this).data('question-iid'));
@@ -2223,8 +2238,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             });
             $(document).on('click', '#save-popup-button', function (event) {
                 event.preventDefault();
-                let questionElements = $(this).parents('.questionElements');
-                let question_description;
+                questionElements = $(this).parents('.questionElements');
                 if (6 == questionElements.find('#question_type').val()) {
                     question_description = wp.editor.getContent('question-text').trim();
                     if (question_description == '' || question_description == null) {
@@ -2234,8 +2248,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }
                 if (14 == questionElements.find('#question_type').val()) {
                     question_description = wp.editor.getContent('question-text').trim();
-                    let blanks = question_description.match(/%BLANK%/g);
-                    let options_length = $('.answer-text-div').length
+                    blanks = question_description.match(/%BLANK%/g);
+                    options_length = $('.answer-text-div').length
                     if ($('#match-answer').val() == 'sequence') {
                         if (blanks == null || blanks.length != options_length) {
                             $('.modal-8-table').html('Number of <strong>%BLANK%</strong> should be equal to options for sequential matching');
@@ -2596,7 +2610,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             return result;
         }
         $(document).on('keyup', '.qsm-category-filter', function () {
-            let search_term = $.trim($(this).val());
+            search_term = $.trim($(this).val());
             if (search_term == '') {
                 $('.qsm_category_checklist li').each(function () {
                     $(this).show()
@@ -2604,8 +2618,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             } else {
                 search_term = new RegExp(search_term, 'i');
                 $('.qsm_category_checklist li').each(function () {
-                    let search_string = $(this).children('label').text();
-                    let result = search_string.search(search_term);
+                    search_string = $(this).children('label').text();
+                    result = search_string.search(search_term);
                     if (result > -1) {
                         $(this).show();
                         if ($(this).parent('ul').hasClass('children')) {
@@ -2632,9 +2646,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
     
         $(document).on('click', '#save-multi-category-button', function (e) {
             e.preventDefault();
-            let  duplicate = false;
-            let new_category = $('#new-category-name').val().trim();
-            let parent_category = $('#qsm-parent-category option:selected').val();
+            duplicate = false;
+            new_category = $('#new-category-name').val().trim();
+            parent_category = $('#qsm-parent-category option:selected').val();
             if (new_category == '') {
                 $('#modal-9-content .info').html('Category cannot be empty');
                 return false;
