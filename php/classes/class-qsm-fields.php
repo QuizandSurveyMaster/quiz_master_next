@@ -287,8 +287,12 @@ class QSM_Fields {
    * @param mixed $value The current value of the setting
    */
   public static function generate_date_field( $field, $value ) {    
-    ?>
+   
+$date_field_script = "jQuery(function() {	jQuery('#" . $field["id"]."').datetimepicker({ format: 'm/d/Y H:i', step: 1});});";
 
+wp_add_inline_script( 'qsm_admin_js', $date_field_script);
+
+?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
