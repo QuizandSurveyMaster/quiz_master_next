@@ -1365,6 +1365,7 @@ class QSM_Install {
   			trail_id mediumint(9) NOT NULL AUTO_INCREMENT,
   			action_user TEXT NOT NULL,
   			action TEXT NOT NULL,
+  			quiz_name TEXT NOT NULL,
   			time TEXT NOT NULL,
   			PRIMARY KEY  (trail_id)
   		) $charset_collate;";

@@ -101,7 +101,8 @@ function qsm_results_overview_tab_content() {
 			),
 			array( '%d' )
 		);
-
+		//get quiz id
+		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -111,7 +112,7 @@ function qsm_results_overview_tab_content() {
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name",  $quiz_id);
 
 		}
 	}
@@ -147,7 +148,7 @@ function qsm_results_overview_tab_content() {
 				}
 			}
 
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", $quiz_id );
 		}
 	}
 

@@ -64,7 +64,7 @@ function qsm_generate_quiz_options() {
 		$update_status	 = wp_update_post( $arg_post_arr );
 		if ( false !== $update_status ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Quiz status has been updated successfully to publish.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Status Has Been Updated: $quiz_post_id" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Status Has Been Updated: $quiz_post_id", $quiz_post_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'An error occurred while trying to update the status of your quiz or survey. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', "", 0, 'error' );

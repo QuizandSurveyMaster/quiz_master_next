@@ -61,11 +61,14 @@ class QSM_Fields {
 			$settings_array[ $field["id"] ] = $sanitized_value;
       	}
             
+		//get quiz id
+		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
+		
       	// Update the settings and show alert based on outcome
 		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
 		}

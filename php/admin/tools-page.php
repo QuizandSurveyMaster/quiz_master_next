@@ -140,7 +140,7 @@ function qsm_audit_box() {
 		$begin = 0;
 	}
 	$left         = $audit_total - ( $page * $table_limit );
-	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
+	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, quiz_name, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
         <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
@@ -184,6 +184,7 @@ function qsm_audit_box() {
 				<th>ID</th>
 				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
+				<th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
 			</tr>
 		</thead>
@@ -200,6 +201,7 @@ function qsm_audit_box() {
 				echo "<td>{$audit->trail_id}</td>";
 				echo "<td>{$audit->action_user}</td>";
 				echo "<td>{$audit->action}</td>";
+				echo "<td>{$audit->quiz_name}</td>";
 				echo "<td>{$audit->time}</td>";
 				echo "</tr>";
 			}

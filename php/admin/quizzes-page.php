@@ -62,7 +62,7 @@ function qsm_generate_quizzes_surveys_page() {
 		);
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Stats Have Been Reset For Quiz Number $quiz_id" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz Stats Have Been Reset For Quiz Number $quiz_id", $quiz_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error trying to reset stats. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
