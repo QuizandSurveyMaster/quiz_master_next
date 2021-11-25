@@ -1106,7 +1106,7 @@ add_action( 'wp_footer', function () use ($options) {
 			}
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
-			?><div class="quiz_section qsm-question-wrapper <?php echo esc_attr($animation_effect); ?> question-section-id-z<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count.' '.$categor_class ); ?>"><?php
+			?><div class="quiz_section qsm-question-wrapper <?php echo esc_attr($animation_effect); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count.' '.$categor_class ); ?>"><?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 				if ( 0 == $mlw_question->comments ) {
