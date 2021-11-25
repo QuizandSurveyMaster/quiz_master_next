@@ -1284,11 +1284,11 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$id = esc_attr( intval( $id ) );
 	$answar1 = $first_point;
 	$answar2 = $second_point;
-	$slider_date_atts ='';
-	$slider_date_atts.=' data-answer1="'.$answar1.'" ';
-	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
-	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
-	$slider_date_atts.=' data-is_required="'.$required .'" ';
+	$slider_data_atts ='';
+	$slider_data_atts.=' data-answer1='.$answar1.' ';
+	$slider_data_atts.=' data-answer2='.$answar2.' ';
+	$slider_data_atts.=' data-is_reverse='.intval($is_reverse).' ';
+	$slider_data_atts.=' data-is_required='.$required .' ';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
@@ -1296,13 +1296,18 @@ function qmn_polar_display( $id, $question, $answers ) {
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
- 	$input_text .= "<div class='left-polar-title'>" . $answers[0][0]. '</div>';
-	$input_text .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . $id . "' name='question" . $id . "' />";
-	$input_text .= '<div id="slider-' . $id . '" '.$slider_date_atts.'></div></div>';
-	$input_text .= "<div class='right-polar-title'>" . $answers[1][0] . '</div>';
-	$question = $input_text;
-	?><span class="mlw_qmn_question question-type-polar-s"><?php echo wp_kses( do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) ); ?></span><?php
-	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
+
+	?>
+	<span class="mlw_qmn_question question-type-polar-s">
+		<div class='left-polar-title'> <?php echo esc_html($answers[0][0]); ?> </div>
+		<div class='slider-main-wrapper'>
+			<input type='hidden' class='qmn_polar <?php echo esc_attr($mlw_requireClass);?>' id='question<?php echo esc_attr($id);?>' name='question<?php echo esc_attr($id);?>' />
+			<div id="slider-<?php echo esc_attr($id);?>" <?php echo esc_attr($slider_data_atts);?> ></div>
+		</div>
+		<div class='right-polar-title'><?php echo esc_html($answers[1][0]); ?></div>
+	</span>
+	<?php
+	
 }
 
 /**

@@ -86,6 +86,9 @@
 				} else {
 					qsmPolarSliderQuestionCreate(questionID, '' );
 				}
+				if ( isNaN(value) ){
+					jQuery(this).find('a').hide();
+				}
 			}
 		});
 	}
