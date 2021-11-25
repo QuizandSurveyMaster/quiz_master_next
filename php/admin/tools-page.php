@@ -184,7 +184,7 @@ function qsm_audit_box() {
 				<th>ID</th>
 				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
-				<th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
+				<th id="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
 			</tr>
 		</thead>
