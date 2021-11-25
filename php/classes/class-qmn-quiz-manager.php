@@ -770,7 +770,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' /><?php
 				if ( isset( $_GET['payment_id'] ) && $_GET['payment_id'] != '' ) {
-					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( $_GET['payment_id'] ); ?>" /><?php
+					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( sanitize_text_field( $_GET['payment_id'] ) ); ?>" /><?php
 				}
 				echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 			?></form>
@@ -790,7 +790,6 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 public function display_pages( $options, $quiz_data ) {
 	global $mlwQuizMasterNext, $wp_embed;
 	global $qmn_json_data;
-	ob_start();
 	$pages                  = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 	$qpages                 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 	$questions              = QSM_Questions::load_questions_by_pages( $options->quiz_id );
@@ -1018,8 +1017,6 @@ add_action( 'wp_footer', function () use ($options) {
 ?>
 <input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 <?php
-
-echo ob_get_clean();
 }
 
 	/**
@@ -1183,6 +1180,7 @@ echo ob_get_clean();
 		$section_display = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_optoin     = $qmn_quiz_options->pagination;
+		$display_n 			   = 'style="display: none;"';
 		// Legacy Code.
 		ob_start();
 		if ( ! empty( $qmn_quiz_options->message_end_template ) ) {
@@ -1200,12 +1198,12 @@ echo ob_get_clean();
 		ob_end_clean();
 		if ( ! empty( $section_display ) ) {
 			?><br />
-			<div class="qsm-auto-page-row quiz_section quiz_end" <?php echo $pagination_optoin > 0 ? 'style="display: none;"': ''; ?> ><?php
+			<div class="qsm-auto-page-row quiz_section quiz_end" <?php echo $pagination_optoin > 0 ? esc_attr( $display_n ) : ''; ?> ><?php
 			echo wp_kses( $section_display, wp_kses_allowed_html( 'post' ) );
 			?><input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			?></div><?php
 		} else {
-			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end" <?php echo $pagination_optoin > 0 ? 'style="display: none;"': ''; ?> >
+			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end" <?php echo $pagination_optoin > 0 ? esc_attr( $display_n ) : ''; ?> >
 				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			</div><?php
 		}
