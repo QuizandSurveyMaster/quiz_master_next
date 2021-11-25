@@ -1089,7 +1089,7 @@ echo ob_get_clean();
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( $pagination_optoin != 0 ) {
 				if ( $pagination_optoin == 1 ) {
-					?><div class="qsm-auto-page-row qsm-apc-<?php esc_attr_e( $current_page_number ); ?>" style="display: none;">';<?php
+					?><div class="qsm-auto-page-row qsm-apc-<?php esc_attr_e( $current_page_number ); ?>" style="display: none;"><?php
 					$current_page_number++;
 				} else {
 					if ( $pages_count % $pagination_optoin == 1 || $pages_count == 1 ) { // beginning of the row or first.
