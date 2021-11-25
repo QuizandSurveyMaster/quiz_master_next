@@ -462,7 +462,7 @@ class QMNQuizManager {
 	 * @return array The questions for the quiz
 	 * @deprecated 5.2.0 Use new class: QSM_Questions instead
 	 */
-public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
+	public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $question_amount = 0 ) {
 
 		// Prepare variables.
 		global $wpdb;
@@ -1181,9 +1181,7 @@ add_action( 'wp_footer', function () use ($options) {
 		$section_display = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_optoin     = $qmn_quiz_options->pagination;
-		$display_n 			   = 'style="display: none;"';
 		// Legacy Code.
-		ob_start();
 		if ( ! empty( $qmn_quiz_options->message_end_template ) ) {
 			$message_end      = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ) );
 			$message_end      = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables );
@@ -1195,9 +1193,7 @@ add_action( 'wp_footer', function () use ($options) {
 		}
 
 		do_action( 'mlw_qmn_end_quiz_section' );
-		$section_display .= ob_get_contents();
 		$qsm_d_none = $qmn_quiz_options->randomness_order == 0 ? 'qsm-d-none': '';
-		ob_end_clean();
 		if ( ! empty( $section_display ) ) {
 			?><br />
 			<div class="qsm-auto-page-row quiz_section quiz_end <?php echo esc_attr( $qsm_d_none ); ?>"><?php
@@ -1209,7 +1205,6 @@ add_action( 'wp_footer', function () use ($options) {
 				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			</div><?php
 		}
-
 	}
 
 	/**
