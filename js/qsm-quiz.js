@@ -1077,7 +1077,6 @@ function qmnNextSlide(pagination, go_to_top, quiz_form_id) {
 	} else {
 		jQuery(quiz_form_id).closest('.qmn_quiz_container').find('.pages_count').hide();
 	}
-	console.log(quiz_form_id);
 	qmnInitProgressbarOnClick(quiz_id, page_number, total_pages);
 	jQuery(document).trigger('qsm_auto_next_button_click_after', [quiz_form_id]);
 }
