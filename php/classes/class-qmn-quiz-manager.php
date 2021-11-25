@@ -1357,7 +1357,7 @@ add_action( 'wp_footer', function () use ($options) {
 		$qmn_array_for_variables['time_taken']       = current_time( 'h:i:s A m/d/Y' );
 		$qmn_array_for_variables['contact']          = $contact_responses;
 		$hidden_questions                            = isset( $_POST['qsm_hidden_questions'] ) ? json_decode( html_entity_decode( stripslashes( $_POST['qsm_hidden_questions'] ) ), true ) : array();
-		$qmn_array_for_variables['hidden_questions'] = array_map( 'sanitize_text_field', $hidden_questions );
+		$qmn_array_for_variables['hidden_questions'] = ! empty( $hidden_questions ) ? array_map( 'sanitize_text_field', $hidden_questions ) : array();
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'] ) && $_POST['mlw_user_captcha'] == $_POST['mlw_code_captcha'] ) ) {
