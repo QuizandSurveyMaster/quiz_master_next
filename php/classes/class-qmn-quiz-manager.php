@@ -1153,8 +1153,9 @@ add_action( 'wp_footer', function () use ($options) {
 		global $mlw_qmn_section_count;
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
+			$qsm_d_none = $qmn_quiz_options->randomness_order == 0 ? 'qsm-d-none': '';
 			?>
-			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count ); ?>" <?php echo $qmn_quiz_options->randomness_order == 0 ? 'style="display: none;"': ''; ?>">
+			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count.' '.$qsm_d_none ); ?>" >
 			<?php
 			$message_comments      = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ) );
 			$message_comments      = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables );
@@ -1195,16 +1196,17 @@ add_action( 'wp_footer', function () use ($options) {
 
 		do_action( 'mlw_qmn_end_quiz_section' );
 		$section_display .= ob_get_contents();
+		$qsm_d_none = $qmn_quiz_options->randomness_order == 0 ? 'qsm-d-none': '';
 		ob_end_clean();
 		if ( ! empty( $section_display ) ) {
 			?><br />
-			<div class="qsm-auto-page-row quiz_section quiz_end" <?php echo $pagination_optoin > 0 ? esc_attr( $display_n ) : ''; ?> ><?php
+			<div class="qsm-auto-page-row quiz_section quiz_end <?php echo esc_attr( $qsm_d_none ); ?>"><?php
 			echo wp_kses( $section_display, wp_kses_allowed_html( 'post' ) );
 			?><input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			?></div><?php
 		} else {
-			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end" <?php echo $pagination_optoin > 0 ? esc_attr( $display_n ) : ''; ?> >
-				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
+			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
+				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			</div><?php
 		}
 
@@ -2507,7 +2509,6 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			$questions       = QSM_Questions::load_questions_by_pages( $qmn_quiz_options->quiz_id );
 			$total_questions = count( $questions );
 		}
-		// $display .= "<style>.quiz_section { display: none; }</style>";
 
 		$qmn_json_data['pagination'] = array(
 			'amount'           => $qmn_quiz_options->pagination,
