@@ -281,12 +281,13 @@ function qsm_generate_results_details_tab() {
         echo '<div class="old_template_result_wrap">';
     }
 
+    $allowed_tags = wp_kses_allowed_html( 'post' );
     $is_allow_html = apply_filters('qsm_admin_results_details_page_allow_html', false);
     if ($is_allow_html) {
-        echo $template;
-    } else {
-        echo wp_kses_post($template);
+        $allowed_tags['script'] = array();
     }
+    echo wp_kses( $template, $allowed_tags );
+
     if( $new_template_result_detail == 0 ){
         echo '</div>';
     }

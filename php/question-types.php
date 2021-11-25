@@ -48,9 +48,9 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_requireClass ); ?>"/>
-		<div style="display: none;" class="loading-uploaded-file"><img alt="<?php esc_attr_e( $new_question_title ); ?>" src=" <?php esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif'); ?>"></div>
+		<div style="display: none;" class="loading-uploaded-file"><img alt="<?php echo esc_attr( $new_question_title ); ?>" src=" <?php esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif'); ?>"></div>
 		<div style="display: none;" class="remove-uploaded-file"><span class="dashicons dashicons-trash"></span></div>
-		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php esc_attr_e( $id ); ?>" value="" />
+		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="" />
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>
 		<input class="mlw_file_upload_hidden_path" type="hidden" value="" /> <?php
 	echo apply_filters( 'qmn_file_upload_display_front', '', $id, $question, $answers );
@@ -116,7 +116,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	}
 	// $question_title = apply_filters('the_content', $question);
 	qsm_question_title_func( $question, 'multiple_choice', $new_question_title, $id );
-	?> <div class="qmn_radio_answers <?php esc_attr_e( $mlw_requireClass ); ?>"> <?php
+	?> <div class='qmn_radio_answers <?php echo esc_attr( $mlw_requireClass ); ?>'> <?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer_index => $answer ) {
@@ -124,16 +124,16 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 			if ( $answer[0] != '' ) {
 				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
 				if ( $answerEditor === 'rich' ) {
-					?> <div class='qmn_mc_answer_wrap <?php esc_attr_e( $answer_class ); ?>' id='question<?php esc_attr_e( $id ); ?>-<?php esc_attr_e( $mlw_answer_total ); ?>'> <?php
+					?> <div class='qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'> <?php
 				} elseif ( $answerEditor === 'image' ) {
-					?> <div class='qmn_mc_answer_wrap qmn_image_option <?php esc_attr_e( $answer_class ); ?>' id='question<?php esc_attr_e( $id ); ?>-<?php esc_attr_e( $mlw_answer_total ); ?>'> <?php
+					?> <div class='qmn_mc_answer_wrap qmn_image_option <?php echo esc_attr( $answer_class ); ?>' id='question<?php echo esc_attr( $id ); ?>-<?php echo esc_attr( $mlw_answer_total ); ?>'> <?php
 				} else {
-					?> <div class="qmn_mc_answer_wrap <?php esc_attr_e( $answer_class ); ?>" id="<?php esc_attr_e( 'question' . $id . '-' . str_replace( ' ', '-', $answer[0] ) ); ?> "> <?php
+					?> <div class="qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>" id="<?php echo esc_attr( 'question' . $id . '-' . str_replace( ' ', '-', $answer[0] ) ); ?> "> <?php
 				}
-				?> <input type='radio' class='qmn_quiz_radio' name="<?php esc_attr_e('question' . $id  ); ?>" id="<?php esc_attr_e('question'. $id . '_' . $mlw_answer_total ); ?>" value="<?php esc_attr_e( $answer[0] ); ?>" /> <?php
-				?> <label for="<?php esc_attr_e( 'question'. $id . '_' . $mlw_answer_total ); ?>"> <?php
+				?> <input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr('question' . $id  ); ?>" id="<?php echo esc_attr('question'. $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /> <?php
+				?> <label for="<?php echo esc_attr( 'question'. $id . '_' . $mlw_answer_total ); ?>"> <?php
 				if ( $answerEditor === 'image' ) {
-					?> 	<img alt="<?php esc_attr_e( $new_question_title ); ?>" src="<?php esc_attr_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+					?> 	<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
 						<span class="qsm_image_caption"><?php esc_html_e( trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) ); ?></span><?php
 				} else {
 					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ),  wp_kses_allowed_html( 'post' ) );
@@ -143,7 +143,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 				?> </div> <?php
 			}
 		}
-		?> <input type="radio" style="display: none;" name="<?php esc_attr_e( 'question' . $id ) ; ?>" id="<?php esc_attr_e( 'question' . $id . '_none' ); ?>" checked="checked" value="" /> <?php
+		?> <input type="radio" style="display: none;" name="<?php echo esc_attr( 'question' . $id ) ; ?>" id="<?php echo esc_attr( 'question' . $id . '_none' ); ?>" checked="checked" value="" /> <?php
 	}
 	?> </div> <?php
 	echo apply_filters( 'qmn_multiple_choice_display_front', '', $id, $question, $answers );
@@ -248,7 +248,7 @@ function qmn_date_display( $id, $question, $answers ) {
 		$mlw_requireClass = '';}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?> <input type="date" class="mlw_answer_date <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php esc_attr_e( $id ); ?>" id="question<?php esc_attr_e( $id ); ?>" value="" /> <?php
+	?> <input type="date" class="mlw_answer_date <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ); ?>" value="" /> <?php
 	echo apply_filters( 'qmn_date_display_front', '', $id, $question, $answers );
 }
 
@@ -331,9 +331,9 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
 				$answer_class = apply_filters('qsm_answer_wrapper_class', '', $answer, $id);
-				?> <span class="mlw_horizontal_choice <?php esc_attr_e( $answer_class ); ?>"><input type="radio" class="qmn_quiz_radio" name="question<?php esc_attr_e( $id ); ?> " id="question<?php esc_attr_e( $id ). '_' .esc_attr( $mlw_answer_total ); ?>" value="<?php esc_attr_e( $answer[0] ); ?>" /><label for="question<?php esc_attr_e( $id ). '_' .esc_attr( $mlw_answer_total ); ?>"><?php
+				?> <span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>"><input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?> " id="question<?php echo esc_attr( $id ). '_' .esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /><label for="question<?php echo esc_attr( $id ). '_' .esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					?> <img alt="<?php esc_attr_e( $new_question_title ); ?>" src=" <?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /> <?php
+					?> <img alt="<?php echo esc_attr( $new_question_title ); ?>" src=" <?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /> <?php
 				} else {
 					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
@@ -343,7 +343,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 			}
 		}
 		echo apply_filters( 'qmn_horizontal_multiple_choice_question_display', '', $id, $question, $answers );
-		?> <input type="radio" style="display: none;" name="question <?php esc_attr_e( $id ); ?> " id="question<?php esc_attr_e( $id ); ?>_none" checked="checked" value="" /> <?php
+		?> <input type="radio" style="display: none;" name="question <?php echo esc_attr( $id ); ?> " id="question<?php echo esc_attr( $id ); ?>_none" checked="checked" value="" /> <?php
 	}
 	?> </div> <?php
 
@@ -451,14 +451,14 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?><select class="qsm_select $require_class" name="question<?php esc_attr_e( $id ); ?>"><?php
+	?><select class="qsm_select $require_class" name="question<?php echo esc_attr( $id ); ?>"><?php
 	?><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' );?></option><?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				?><option value="<?php esc_attr_e( $answer[0] ); ?>"><?php  esc_html_e( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option><?php
+				?><option value="<?php echo esc_attr( $answer[0] ); ?>"><?php  esc_html_e( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option><?php
 			}
 		}
 	}
@@ -545,7 +545,7 @@ function qmn_small_open_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?><input <?php esc_attr_e( $autofill_att . $limit_text_att ); ?> type="text" class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php esc_attr_e( $id ); ?>" /><?php
+	?><input <?php echo esc_attr( $autofill_att . $limit_text_att ); ?> type="text" class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php echo esc_attr( $id ); ?>" /><?php
 	echo apply_filters( 'qmn_small_open_display_front', '', $id, $question, $answers );
 }
 
@@ -632,10 +632,10 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
 				?><div class="qsm_check_answer">
-					<input type="hidden" name="question<?php esc_attr_e( $id ); ?>" value="This value does not matter" />
-					<input type="checkbox" <?php esc_attr_e( $limit_mr_text ); ?> name="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php esc_attr_e( $answer[0] ); ?> " /> <label for="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
+					<input type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="This value does not matter" />
+					<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?> " /> <label for="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					?><img alt="<?php esc_attr_e( $new_question_title ); ?>" src="<?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
+					?><img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
 				} else {
 					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
@@ -730,7 +730,7 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?><textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" <?php esc_attr_e( $limit_text_att ); ?> cols="70" rows="5" name="question<?php esc_attr_e( $id ); ?>" /></textarea><?php
+	?><textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_requireClass ); ?>" <?php echo esc_attr( $limit_text_att ); ?> cols="70" rows="5" name="question<?php echo esc_attr( $id ); ?>" /></textarea><?php
 	echo apply_filters( 'qmn_large_open_display_front', '', $id, $question, $answers );
 }
 
@@ -843,7 +843,7 @@ function qmn_number_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?><input type="number" <?php esc_attr_e( $limit_text_att ); ?> class="mlw_answer_number <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php esc_attr_e( $id ); ?>" /><?php
+	?><input type="number" <?php echo esc_attr( $limit_text_att ); ?> class="mlw_answer_number <?php echo esc_attr( $mlw_requireClass ); ?>" name="question<?php echo esc_attr( $id ); ?>" /><?php
 	echo apply_filters( 'qmn_number_display_front', '', $id, $question, $answers );
 }
 
@@ -1023,10 +1023,10 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				?><input type="hidden" name="question<?php esc_attr_e( $id ); ?> " value="This value does not matter" />
-				<span class="mlw_horizontal_multiple"><input type="checkbox" <?php esc_attr_e( $limit_mr_text ); ?> name="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php esc_attr_e( $answer[0] ); ?>" /> <label for="question<?php esc_attr_e( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
+				?><input type="hidden" name="question<?php echo esc_attr( $id ); ?> " value="This value does not matter" />
+				<span class="mlw_horizontal_multiple"><input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /> <label for="question<?php echo esc_attr( $id ). '_' . esc_attr( $mlw_answer_total ); ?>"><?php
 				if ( $answerEditor === 'image' ) {
-					?><img alt="<?php esc_attr_e( $new_question_title ); ?>" src="<?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
+					?><img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php esc_url_e( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" /><?php
 				} else {
 					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ), wp_kses_allowed_html( 'post' ) );
 				}
@@ -1373,6 +1373,6 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 
-	?> <div class='mlw_qmn_question <?php esc_attr_e( $polar_extra_class ); ?>' ><?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer ;?></div><?php
+	?> <div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' ><?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . esc_attr(  $deselect_answer ) ;?></div><?php
 }
 ?>
