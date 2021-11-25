@@ -715,7 +715,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
 		$randomness_class = $options->randomness_order == '0'? '':'random';
-		?><div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz <?php esc_attr_e( $auto_pagination_class ); ?> quiz_theme_<?php esc_attr_e( $saved_quiz_theme ." ".$randomness_class ); ?> '><?php
+		?><div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme ." ".$randomness_class ); ?> '><?php
 			// Get quiz post based on quiz id
 			$args      = array(
 				'posts_per_page' => 1,
@@ -740,7 +740,7 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				wp_reset_postdata();
 			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
-			?><form name="quizForm<?php esc_attr_e( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php esc_attr_e( $quiz_data['quiz_id'] ); ?>" action=" <?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate  enctype="multipart/form-data">
+			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action=" <?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate  enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span><?php
@@ -764,13 +764,13 @@ public function load_questions( $quiz_id, $quiz_options, $is_quiz_page, $questio
 				echo apply_filters( 'qmn_before_error_message', '', $options, $quiz_data );
 				?>
 				<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
-					<input type="hidden" name="total_questions" id="total_questions" value="<?php esc_attr_e( $qmn_total_questions ); ?>" />
+					<input type="hidden" name="total_questions" id="total_questions" value="<?php echo esc_attr( $qmn_total_questions ); ?>" />
 					<input type="hidden" name="timer" id="timer" value="0" />
 					<input type="hidden" name="timer_ms" id="timer_ms" value="0"/>
-					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php esc_attr_e( $quiz_data['quiz_id'] ); ?>" />
+					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' /><?php
 				if ( isset( $_GET['payment_id'] ) && $_GET['payment_id'] != '' ) {
-					?><input type="hidden" name="main_payment_id" value="<?php esc_attr_e( $_GET['payment_id'] ); ?>" /><?php
+					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( $_GET['payment_id'] ); ?>" /><?php
 				}
 				echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 			?></form>
@@ -1016,7 +1016,7 @@ add_action( 'wp_footer', function () use ($options) {
 <?php
 });
 ?>
-<input type="hidden" name="qmn_question_list" value="<?php esc_attr_e( $question_list ); ?>" />
+<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 <?php
 
 echo ob_get_clean();
@@ -1041,7 +1041,7 @@ echo ob_get_clean();
 			global $mlw_qmn_section_count;
 			$mlw_qmn_section_count += 1;
 			$animation_effect       = isset( $qmn_quiz_options->quiz_animation ) && $qmn_quiz_options->quiz_animation != '' ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
-			?><div class="qsm-auto-page-row quiz_section <?php esc_attr_e( $animation_effect ); ?> quiz_begin"><?php
+			?><div class="qsm-auto-page-row quiz_section <?php echo esc_attr( $animation_effect ); ?> quiz_begin"><?php
 			$message_before = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_before, ENT_QUOTES ) );
 			$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables );
 			$editor_text  = $wp_embed->run_shortcode( $message_before );
@@ -1089,11 +1089,11 @@ echo ob_get_clean();
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
 			if ( $pagination_optoin != 0 ) {
 				if ( $pagination_optoin == 1 ) {
-					?><div class="qsm-auto-page-row qsm-apc-<?php esc_attr_e( $current_page_number ); ?>" style="display: none;"><?php
+					?><div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;"><?php
 					$current_page_number++;
 				} else {
 					if ( $pages_count % $pagination_optoin == 1 || $pages_count == 1 ) { // beginning of the row or first.
-						?><div class="qsm-auto-page-row qsm-apc-<?php esc_attr_e( $current_page_number ); ?>" style="display: none;"><?php
+						?><div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;"><?php
 						$current_page_number++;
 					}
 				}
@@ -1109,14 +1109,14 @@ echo ob_get_clean();
 			}
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
-			?><div class="quiz_section qsm-question-wrapper <?php esc_attr_e($animation_effect); ?> question-section-id-z<?php esc_attr_e( $mlw_question->question_id ); ?> slide<?php esc_attr_e( $mlw_qmn_section_count.' '.$categor_class ); ?>"><?php
+			?><div class="quiz_section qsm-question-wrapper <?php echo esc_attr($animation_effect); ?> question-section-id-z<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count.' '.$categor_class ); ?>"><?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 				if ( 0 == $mlw_question->comments ) {
-					?><input type="text" class="mlw_qmn_question_comment" id="mlwComment <?php esc_attr_e( $mlw_question->question_id ); ?>" name="mlwComment <?php esc_attr_e( $mlw_question->question_id ); ?>" placeholder="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ); ?>" onclick="qmnClearField(this)" /><br /><?php
+					?><input type="text" class="mlw_qmn_question_comment" id="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ); ?>" onclick="qmnClearField(this)" /><br /><?php
 				}
 				if ( 2 == $mlw_question->comments ) {
-					?><textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment <?php esc_attr_e( $mlw_question->question_id ); ?>" name="mlwComment <?php esc_attr_e( $mlw_question->question_id ); ?>" placeholder="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ); ?>" onclick="qmnClearField(this)"></textarea><br /><?php
+					?><textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->comment_field_text ) ); ?>" onclick="qmnClearField(this)"></textarea><br /><?php
 				}
 
 				// Checks if a hint is entered.
@@ -1138,7 +1138,7 @@ echo ob_get_clean();
 			echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 			?></span><?php
 		}
-		?><input type="hidden" name="qmn_question_list" value="<?php esc_attr_e( $question_id_list ); ?>" /><?php
+		?><input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_id_list ); ?>" /><?php
 	}
 
 	/**
@@ -1157,7 +1157,7 @@ echo ob_get_clean();
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			?>
-			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php esc_attr_e( $mlw_qmn_section_count ); ?>" <?php echo $qmn_quiz_options->randomness_order == 0 ? 'style="display: none;"': ''; ?>">
+			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count ); ?>" <?php echo $qmn_quiz_options->randomness_order == 0 ? 'style="display: none;"': ''; ?>">
 			<?php
 			$message_comments      = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ) );
 			$message_comments      = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables );
@@ -1202,11 +1202,11 @@ echo ob_get_clean();
 			?><br />
 			<div class="qsm-auto-page-row quiz_section quiz_end" <?php echo $pagination_optoin > 0 ? 'style="display: none;"': ''; ?> ><?php
 			echo wp_kses( $section_display, wp_kses_allowed_html( 'post' ) );
-			?><input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
+			?><input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			?></div><?php
 		} else {
 			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end" <?php echo $pagination_optoin > 0 ? 'style="display: none;"': ''; ?> >
-				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
+				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
 			</div><?php
 		}
 
