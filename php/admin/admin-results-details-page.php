@@ -2,26 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Loads admin scripts and style
- *
- * @since 7.3.5
- */
-function qsm_admin_enqueue_scripts_results_detail_page($hook){
-	if ( 'admin_page_qsm_quiz_result_details' != $hook ) {
-		return;
-	}
-	global $mlwQuizMasterNext;
-	wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
-    wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-	wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-    wp_enqueue_script( 'jquery-ui-slider');
-    wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array('jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider'), $mlwQuizMasterNext->version, true);
-    wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
-    wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
-}
-add_action( 'admin_enqueue_scripts', 'qsm_admin_enqueue_scripts_results_detail_page', 20);
-
-/**
 * This function generates the results details that are shown the results page.
 *
 * @return type void
@@ -301,12 +281,13 @@ function qsm_generate_results_details_tab() {
         echo '<div class="old_template_result_wrap">';
     }
 
+    $allowed_tags = wp_kses_allowed_html( 'post' );
     $is_allow_html = apply_filters('qsm_admin_results_details_page_allow_html', false);
     if ($is_allow_html) {
-        echo $template;
-    } else {
-        echo wp_kses_post($template);
+        $allowed_tags['script'] = array();
     }
+    echo wp_kses( $template, $allowed_tags );
+
     if( $new_template_result_detail == 0 ){
         echo '</div>';
     }
