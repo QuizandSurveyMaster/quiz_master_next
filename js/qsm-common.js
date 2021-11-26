@@ -30,7 +30,7 @@
 				let maxHeight = Math.max.apply(null, heightArray);
 				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
 			} else {
-				let heightArray = jQuery(".question-section-id-"+questionID+" .question-type-polar-s > div").map(function() {
+				let heightArray = jQuery(".question-section-id-"+questionID+" .question-type-polar-s >> div").map(function() {
 					return jQuery(this).height();
 				}).get();
 				let maxHeight = Math.max.apply(null,heightArray);
