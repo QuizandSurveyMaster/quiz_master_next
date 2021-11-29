@@ -736,8 +736,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	$nonce = sanitize_text_field( $_POST['nonce'] );
-	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) ) {
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -795,8 +794,7 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  * Send data to sendy
  */
 function qsm_send_data_sendy() {
-	$nonce = $_POST['nonce'];
-	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sendy-save' ) ) {
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sendy-save' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -839,7 +837,7 @@ function qsm_send_data_sendy() {
 
 add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
 function qsm_dashboard_delete_result() {
-	$result_id = isset( $_POST['result_id'] ) ? sanitize_text_field( $_POST['result_id'] ) : 0;
+	$result_id = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 	if ( $result_id ) {
 		global $wpdb;
 		$wpdb->update(
@@ -927,8 +925,7 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
-	$question_id = sanitize_text_field( $_POST['question_id'] );
-
+	$question_id = intval( $_POST['question_id'] );
 	if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
@@ -951,7 +948,7 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 
 	$category   = sanitize_text_field( $_POST['name'] );
-	$parent     = (int) sanitize_text_field( $_POST['parent'] );
+	$parent     = intval( $_POST['parent'] );
 	$parent     = ( $parent == -1 ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,

@@ -100,19 +100,14 @@ function qsm_options_styling_tab_content() {
 	// Read all the themes
 	$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
-	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce(
-		$_POST['save_theme_settings_nonce'],
-		'save_theme_settings'
-	) ) {
+	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array = array();
-		array_map( 'sanitize_text_field', $_POST['settings'] );
-		$settings_array = maybe_serialize( $_POST['settings'] );
+		$settings_array = array_map( 'sanitize_text_field', $_POST['settings'] );
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings(
 			$quiz_id,
 			$saved_quiz_theme,
-			$settings_array
+			maybe_serialize( $settings_array )
 		);
 		$mlwQuizMasterNext->alertManager->newAlert(
 			__( 'The theme settings saved successfully.', 'quiz-master-next' ),
@@ -321,10 +316,8 @@ function qsm_display_theme_settings() {
 	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array = array();
-		array_map( 'sanitize_text_field', $_POST['settings'] );
-		$settings_array = maybe_serialize( $_POST['settings'] );
-		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
+		$settings_array	 = array_map( 'sanitize_text_field', $_POST['settings'] );
+		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, maybe_serialize( $settings_array ) );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">
 	<p><?php _e( 'Theme settings are saved!', 'quiz-master-next' ); ?></p>

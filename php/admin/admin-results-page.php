@@ -18,7 +18,7 @@ function qsm_generate_admin_results_page() {
 
 	// Retrieves the current stab and all registered tabs.
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
 
 	?>
@@ -276,10 +276,10 @@ function qsm_results_overview_tab_content() {
 		<?php
 			if ( isset( $_GET['quiz_id'] ) ) {
 				?>
-		<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
+		<input type="hidden" name="quiz_id" value="<?php echo intval( $_GET['quiz_id'] ); ?>" />
 		<?php
 			}
-			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? esc_attr( sanitize_text_field( $_GET['qsm_search_phrase'] ) ) : '';
+			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( $_GET['qsm_search_phrase'] ) : '';
 			$qmn_order_by = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( $_GET['qmn_order_by'] ) : 'default';
 			?>
 		<input type="hidden" name="page" value="mlw_quiz_results">

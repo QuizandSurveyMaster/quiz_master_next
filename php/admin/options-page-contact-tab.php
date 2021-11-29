@@ -47,10 +47,9 @@ add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
  * @return void
  */
 function qsm_contact_form_admin_ajax() {
-  $nonce = sanitize_text_field( $_POST['nonce'] );
   $quiz_id = intval( $_POST['quiz_id'] );
   $user_id = get_current_user_id();
-  if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
+  if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
     die ( 'Busted!');
   }
     

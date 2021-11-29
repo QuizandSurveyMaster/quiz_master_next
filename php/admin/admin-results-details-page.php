@@ -12,7 +12,7 @@ function qsm_generate_result_details() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-    $active_tab = isset( $_GET[ 'tab' ] ) ? esc_attr( $_GET[ 'tab' ] ) : 'results';
+    $active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field( $_GET[ 'tab' ] ) : 'results';
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();
     ?>
 	<style type="text/css">

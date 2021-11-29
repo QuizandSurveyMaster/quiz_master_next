@@ -770,7 +770,7 @@ class QMNQuizManager {
 					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' /><?php
 				if ( isset( $_GET['payment_id'] ) && $_GET['payment_id'] != '' ) {
-					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( sanitize_text_field( $_GET['payment_id'] ) ); ?>" /><?php
+					?><input type="hidden" name="main_payment_id" value="<?php echo sanitize_text_field( $_GET['payment_id'] ); ?>" /><?php
 				}
 				echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 			?></form>
@@ -1348,17 +1348,21 @@ add_action( 'wp_footer', function () use ($options) {
 			}
 		}
 
-		$mlw_qmn_pagetime                            = isset( $_POST['pagetime'] ) ? sanitize_text_field( $_POST['pagetime'] ) : array();
-		$mlw_qmn_timer                               = isset( $_POST['timer'] ) ? sanitize_text_field( intval( $_POST['timer'] ) ) : 0;
-		$mlw_qmn_timer_ms                            = isset( $_POST['timer_ms'] ) ? sanitize_text_field( intval( $_POST['timer_ms'] ) ) : 0;
-		$qmn_array_for_variables['user_id']          = get_current_user_id();
-		$qmn_array_for_variables['timer']            = $mlw_qmn_timer;
-		$qmn_array_for_variables['timer_ms']         = $mlw_qmn_timer_ms;
-		$qmn_array_for_variables['time_taken']       = current_time( 'h:i:s A m/d/Y' );
-		$qmn_array_for_variables['contact']          = $contact_responses;
-		$hidden_questions                            = isset( $_POST['qsm_hidden_questions'] ) ? json_decode( html_entity_decode( stripslashes( $_POST['qsm_hidden_questions'] ) ), true ) : array();
-		$qmn_array_for_variables['hidden_questions'] = ! empty( $hidden_questions ) ? array_map( 'sanitize_text_field', $hidden_questions ) : array();
-		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
+		$mlw_qmn_pagetime						 = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', $_POST['pagetime'] ) : array();
+		$mlw_qmn_timer							 = isset( $_POST['timer'] ) ? intval( $_POST['timer'] ) : 0;
+		$mlw_qmn_timer_ms						 = isset( $_POST['timer_ms'] ) ? intval( $_POST['timer_ms'] ) : 0;
+		$qmn_array_for_variables['user_id']		 = get_current_user_id();
+		$qmn_array_for_variables['timer']		 = $mlw_qmn_timer;
+		$qmn_array_for_variables['timer_ms']	 = $mlw_qmn_timer_ms;
+		$qmn_array_for_variables['time_taken']	 = current_time( 'h:i:s A m/d/Y' );
+		$qmn_array_for_variables['contact']		 = $contact_responses;
+		$hidden_questions						 = array();
+		if ( isset( $_POST['qsm_hidden_questions'] ) ) {
+			$hidden_questions	 = sanitize_text_field( $_POST['qsm_hidden_questions'] );
+			$hidden_questions	 = json_decode( $hidden_questions, true );
+		}
+		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
+		$qmn_array_for_variables					 = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'] ) && $_POST['mlw_user_captcha'] == $_POST['mlw_code_captcha'] ) ) {
 
@@ -1847,7 +1851,7 @@ add_action( 'wp_footer', function () use ($options) {
 	public function check_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$qmn_quiz_comments = '';
 		if ( isset( $_POST['mlwQuizComments'] ) ) {
-			$qmn_quiz_comments = esc_textarea( stripslashes( $_POST['mlwQuizComments'] ) );
+			$qmn_quiz_comments = sanitize_textarea_field( $_POST['mlwQuizComments'] );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
 	}
