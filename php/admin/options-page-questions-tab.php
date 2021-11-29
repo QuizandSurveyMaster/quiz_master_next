@@ -51,7 +51,7 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+	$quiz_id     = intval( $_GET['quiz_id'] );
 	$user_id     = get_current_user_id();
 	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
@@ -340,7 +340,7 @@ function qsm_options_questions_tab_content() {
 													<label>
 														<?php _e( 'Question Type', 'quiz-master-next' ); ?>
 														<?php
-														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
 														echo '<span class="dashicons dashicons-media-document"></span>';
 														echo '</a>';
 														?>
@@ -348,12 +348,12 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-															echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 														}
 														?>
 													</select>
 													<a class="question_info_tag hidden" target="_blank" rel="noopener"
-														href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e( 'How to use this option?', 'quiz-master-next' ); ?></a>
+														href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php esc_html_e( 'How to use this option?', 'quiz-master-next' ); ?></a>
 													<p class="hidden" id="question_type_info"></p>
 												</div>
 												<?php
@@ -466,8 +466,8 @@ function qsm_options_questions_tab_content() {
 									</h2>
 									<div class="inside">
 										<?php
-										echo '<a href="#" class="qsm-feature-image-upl">' . __( 'Upload Image', 'quiz-master-next' ) . '</a>
-                                                                <a href="#" class="qsm-feature-image-rmv" style="display:none">' . __( 'Remove Image', 'quiz-master-next' ) . '</a>'
+										echo '<a href="#" class="qsm-feature-image-upl">' . esc_html__( 'Upload Image', 'quiz-master-next' ) . '</a>
+                                                                <a href="#" class="qsm-feature-image-rmv" style="display:none">' . esc_html__( 'Remove Image', 'quiz-master-next' ) . '</a>'
 										. '<input type="hidden" name="qsm-feature-image-id" class="qsm-feature-image-id" value="">'
 										. '<input type="hidden" name="qsm-feature-image-src" class="qsm-feature-image-src" value="">';
 

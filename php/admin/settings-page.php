@@ -144,9 +144,9 @@ class QMNGlobalSettingsPage {
 		_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
 		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
 			flush_rewrite_rules( true );
-					echo '<div class="updated" style="padding: 10px;">';
-			echo '<span>' . __( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
-					echo '</div>';
+			echo '<div class="updated" style="padding: 10px;">';
+				echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
+			echo '</div>';
 		}
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
 		if ( $enabled == 'cancelled' ) {
@@ -240,7 +240,7 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['facebook_app_id'] ) ) {
 			$facebook_app_id = esc_attr( $settings['facebook_app_id'] );
 		}
-		echo "<input type='text' name='qmn-settings[facebook_app_id]' id='qmn-settings[facebook_app_id]' value='$facebook_app_id' />";
+		echo '<input type="text" name="qmn-settings[facebook_app_id]" id="qmn-settings[facebook_app_id]" value="' . esc_attr( $facebook_app_id ) . ' />';
 	}
 
 	/**
@@ -255,7 +255,7 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['cpt_slug'] ) ) {
 			$cpt_slug = esc_attr( $settings['cpt_slug'] );
 		}
-		echo "<input type='text' name='qmn-settings[cpt_slug]' id='qmn-settings[cpt_slug]' value='$cpt_slug' />";
+		echo '<input type="text" name="qmn-settings[cpt_slug]" id="qmn-settings[cpt_slug]" value="' . esc_attr( $cpt_slug ) . '" />';
 	}
 
 	/**
@@ -270,7 +270,7 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['plural_name'] ) ) {
 			$plural_name = esc_attr( $settings['plural_name'] );
 		}
-		echo "<input type='text' name='qmn-settings[plural_name]' id='qmn-settings[plural_name]' value='$plural_name' />";
+		echo '<input type="text" name="qmn-settings[plural_name]" id="qmn-settings[plural_name]" value="' . esc_attr( $plural_name ) . '" />';
 	}
 
 	/**
@@ -289,9 +289,10 @@ class QMNGlobalSettingsPage {
 		if ( $cpt_search == '1' ) {
 			$checked = " checked='checked'";
 		}
-				echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[cpt_search]' id='qmn-settings[cpt_search]' value='1'$checked />";
-				echo '<span class="slider round"></span></label>';
+
+		echo '<label class="switch">';
+			echo '<input type="checkbox" name="qmn-settings[cpt_search]" id="qmn-settings[cpt_search]" value="1"' . esc_attr( $checked ) . ' />';
+		echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -310,9 +311,10 @@ class QMNGlobalSettingsPage {
 		if ( $cpt_archive == '1' ) {
 			$checked = " checked='checked'";
 		}
-				echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[cpt_archive]' id='qmn-settings[cpt_archive]' value='1'$checked />";
-				echo '<span class="slider round"></span></label>';
+		
+		echo '<label class="switch">';
+			echo '<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings[cpt_archive]" value="1"' . esc_attr( $checked ) . '/>';
+		echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -331,9 +333,10 @@ class QMNGlobalSettingsPage {
 		if ( $cpt_archive == '1' ) {
 			$checked = " checked='checked'";
 		}
-				echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[delete_qsm_data]' id='qmn-settings[delete_qsm_data]' value='1'$checked />";
-				echo '<span class="slider round"></span></label>';
+				
+		echo '<label class="switch">';
+			echo '<input type="checkbox" name="qmn-settings[delete_qsm_data]" id="qmn-settings[delete_qsm_data]" value="1"' . esc_attr( $checked ) . '/>';
+		echo '<span class="slider round"></span></label>';
 	}
 
 	/**
@@ -348,15 +351,16 @@ class QMNGlobalSettingsPage {
 		if ( isset( $settings['background_quiz_email_process'] ) ) {
 			$background_quiz_email_process = esc_attr( $settings['background_quiz_email_process'] );
 		}
-				echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='1' " . checked( $background_quiz_email_process, '1', false ) . '/>';
-				echo __( 'Yes', 'quiz-master-next' );
+
+		echo '<label style="margin-bottom: 10px;display: inline-block;">';
+			echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='1' " . checked( $background_quiz_email_process, '1', false ) . '/>';
+				echo esc_html__( 'Yes', 'quiz-master-next' );
 				echo '</label>';
 				echo '<br/>';
 				echo '<label>';
-		echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='0' " . checked( $background_quiz_email_process, '0', false ) . '/>';
-				echo __( 'No', 'quiz-master-next' );
-				echo '</label>';
+			echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='0' " . checked( $background_quiz_email_process, '0', false ) . '/>';
+				echo esc_html__( 'No', 'quiz-master-next' );
+		echo '</label>';
 	}
 
 	/**
@@ -402,10 +406,11 @@ class QMNGlobalSettingsPage {
 		if ( $tracking_allowed == '2' ) {
 			$checked = " checked='checked'";
 		}
-				echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[tracking_allowed]' id='qmn-settings[tracking_allowed]' value='2'$checked /><span class='slider round'></span>";
-				echo '</label>';
-				echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
+
+		echo '<label class="switch">';
+			echo '<input type="checkbox" name="qmn-settings[tracking_allowed]" id="qmn-settings[tracking_allowed]" value="2"' . esc_attr( $checked ) . '/><span class="slider round"></span>';
+		echo '</label>';
+		echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . esc_html__( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -425,10 +430,10 @@ class QMNGlobalSettingsPage {
 			$checked = " checked='checked'";
 		}
 		echo '<label class="switch">';
-		echo "<input type='checkbox' name='qmn-settings[ip_collection]' id='qmn-settings[ip_collection]' value='1'$checked />";
+			echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
 		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>"
-		 . __( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+		 . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -438,28 +443,39 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public static function display_page() {
-				global $mlwQuizMasterNext;
+		global $mlwQuizMasterNext;
+		$active_tab = "qmn_global_settings";
+		if ( isset( $_GET["tab"] ) ) {
+			if ( $_GET["tab"] == "qmn_global_settings" ) {
 				$active_tab = "qmn_global_settings";
-                if(isset($_GET["tab"])){
-                    if($_GET["tab"] == "qmn_global_settings"){
-                        $active_tab = "qmn_global_settings";
-                    }else{
-                        $active_tab = "quiz-default-qptions";
-                    }
-                }
+			} else {
+				$active_tab = "quiz-default-qptions";
+			}
+		}
+		$g_class = $d_class = '';
+		if ( $active_tab == 'qmn_global_settings' ) {
+			$g_class = 'nav-tab-active';
+		}
+		if ( $active_tab == 'quiz-default-qptions' ) {
+			$d_class = 'nav-tab-active';
+		}
 		?>
 <div class="wrap">
 	<h2><?php _e( 'Global Settings', 'quiz-master-next' ); ?></h2>
 	<h2 class="nav-tab-wrapper">
                 <!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
-                <a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php if($active_tab == 'qmn_global_settings'){echo 'nav-tab-active';} ?> "><?php _e('Main Settings', 'quiz-master-next'); ?></a>
-                <a href="?page=qmn_global_settings&tab=quiz-default-qptions" class="nav-tab <?php if($active_tab == 'quiz-default-qptions'){echo 'nav-tab-active';} ?>"><?php _e('Quiz Default Options', 'quiz-master-next'); ?></a>
+                <a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo esc_attr( $g_class ); ?> "><?php esc_html_e('Main Settings', 'quiz-master-next'); ?></a>
+                <a href="?page=qmn_global_settings&tab=quiz-default-qptions" class="nav-tab <?php echo esc_attr( $d_class ); ?>"><?php esc_html_e('Quiz Default Options', 'quiz-master-next'); ?></a>
             </h2>
 	<form action="options.php" method="POST" class="qsm_global_settings">
-
-
-		<?php if($active_tab == 'qmn_global_settings'){ 	 settings_fields( 'qmn-settings-group' ); do_settings_sections( 'qmn_global_settings' ); }?>
-		<?php if($active_tab == 'quiz-default-qptions'){  settings_fields( 'qsm-quiz-settings-group' );   do_settings_sections( 'qsm_default_global_option' ); }?>
+		<?php if( $active_tab == 'qmn_global_settings' ) {
+			settings_fields( 'qmn-settings-group' );
+			do_settings_sections( 'qmn_global_settings' );
+		} ?>
+		<?php if( $active_tab == 'quiz-default-qptions' ) {
+			settings_fields( 'qsm-quiz-settings-group' );
+			do_settings_sections( 'qsm_default_global_option' );
+		} ?>
 		<?php submit_button(); ?>
 	</form>
 </div>
@@ -476,17 +492,17 @@ class QMNGlobalSettingsPage {
 		$settings                   = (array) get_option( 'qmn-settings' );
 		$new_template_result_detail = '1';
 		if ( isset( $settings['new_template_result_detail'] ) ) {
-					$new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
+			$new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
 		}
-				echo '<label style="margin-bottom: 10px;display: inline-block;">';
-		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' " . checked( $new_template_result_detail, '1', false ) . '/>';
-				echo __( 'New Template', 'quiz-master-next' );
-				echo '</label>';
-				echo '<br/>';
-				echo '<label>';
-		echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' " . checked( $new_template_result_detail, '0', false ) . '/>';
-				echo __( 'Old Template', 'quiz-master-next' );
-				echo '</label>';
+		echo '<label style="margin-bottom: 10px;display: inline-block;">';
+			echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' " . checked( $new_template_result_detail, '1', false ) . '/>';
+				echo esc_html__( 'New Template', 'quiz-master-next' );
+		echo '</label>';
+		echo '<br/>';
+		echo '<label>';
+			echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' " . checked( $new_template_result_detail, '0', false ) . '/>';
+				echo esc_html__( 'Old Template', 'quiz-master-next' );
+		echo '</label>';
 	}
 
 	/**
@@ -583,8 +599,8 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_questions_per_page() {
 		global $globalQuizsetting;
-		$qsm_pagination	=(isset($globalQuizsetting['pagination'])  && '' !== $globalQuizsetting['pagination'] ?  $globalQuizsetting['pagination'] :"0");
-		echo '<input type="number" step="1" min="0" id="pagination" name="qsm-quiz-settings[pagination]" value="'.$qsm_pagination.'">
+		$qsm_pagination	= isset( $globalQuizsetting['pagination'] ) && '' !== $globalQuizsetting['pagination'] ?  $globalQuizsetting['pagination'] : "0";
+		echo '<input type="number" step="1" min="0" id="pagination" name="qsm-quiz-settings[pagination]" value="' . esc_attr( $qsm_pagination ) . '">
 			  <span class="qsm-opt-desc">Override the default pagination created on questions tab</span>';
 	}
 
@@ -596,8 +612,8 @@ class QMNGlobalSettingsPage {
 	 */
 	public function qsm_global_time_limit_in_minutes() {
 		global $globalQuizsetting;
-		$qsm_timer_limit	=(isset($globalQuizsetting['timer_limit'])  && '' !== $globalQuizsetting['timer_limit'] ?  $globalQuizsetting['timer_limit'] :"0");
-		echo '<input type="number" step="1" min="0" id="timer_limit" name="qsm-quiz-settings[timer_limit]" value="'.$qsm_timer_limit.'">
+		$qsm_timer_limit =(isset($globalQuizsetting['timer_limit'])  && '' !== $globalQuizsetting['timer_limit'] ?  $globalQuizsetting['timer_limit'] :"0");
+		echo '<input type="number" step="1" min="0" id="timer_limit" name="qsm-quiz-settings[timer_limit]" value="'.esc_attr($qsm_timer_limit).'">
 			  <span class="qsm-opt-desc">Leave 0 for no time limit</span>';
 	}
 
@@ -643,7 +659,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_limit_attempts() {
 		global $globalQuizsetting;
 		$qsm_total_user_tries	=(isset($globalQuizsetting['total_user_tries'])  && '' !== $globalQuizsetting['total_user_tries'] ?  $globalQuizsetting['total_user_tries'] :"0");
-		echo '<input type="number" step="1" min="0" id="total_user_tries" name="qsm-quiz-settings[total_user_tries]" value="'.$qsm_total_user_tries.'">
+		echo '<input type="number" step="1" min="0" id="total_user_tries" name="qsm-quiz-settings[total_user_tries]" value="'.esc_attr($qsm_total_user_tries).'">
 			  <span class="qsm-opt-desc">Leave 0 for unlimited attempts</span>';
 	}
 
@@ -657,7 +673,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_limit_entries() {
 		global $globalQuizsetting;
 		$qsm_limit_total_entries	=(isset($globalQuizsetting['limit_total_entries'])  && '' !== $globalQuizsetting['limit_total_entries'] ?  $globalQuizsetting['limit_total_entries'] :"0");
-		echo '<input type="number" step="1" min="0" id="limit_total_entries" name="qsm-quiz-settings[limit_total_entries]" value="'.$qsm_limit_total_entries.'">
+		echo '<input type="number" step="1" min="0" id="limit_total_entries" name="qsm-quiz-settings[limit_total_entries]" value="'.esc_attr($qsm_limit_total_entries).'">
 			  <span class="qsm-opt-desc">Leave 0 for unlimited entries</span>';
 
 	}
@@ -671,7 +687,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_limit_number_of_questions() {
 		global $globalQuizsetting;
 		$qsm_question_from_total	=(isset($globalQuizsetting['question_from_total'])  && '' !== $globalQuizsetting['question_from_total'] ?  $globalQuizsetting['question_from_total'] :"0");
-		echo '<input type="number" step="1" min="0" id="question_from_total" name="qsm-quiz-settings[question_from_total]" value="'.$qsm_question_from_total.'">
+		echo '<input type="number" step="1" min="0" id="question_from_total" name="qsm-quiz-settings[question_from_total]" value="'.esc_attr($qsm_question_from_total).'">
 			  <span class="qsm-opt-desc">Leave 0 to load all questions</span>';
 	}
 
@@ -686,7 +702,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_limit_number_of_questions_per_category() {
 		global $globalQuizsetting;
 		$qsm_question_per_category	=(isset($globalQuizsetting['question_per_category'])  && '' !== $globalQuizsetting['question_per_category'] ?  $globalQuizsetting['question_per_category'] :"0");
-		echo '<input type="number" step="1" min="0" id="question_per_category" name="qsm-quiz-settings[question_per_category]" value="'.$qsm_question_per_category.'">
+		echo '<input type="number" step="1" min="0" id="question_per_category" name="qsm-quiz-settings[question_per_category]" value="'.esc_attr($qsm_question_per_category).'">
 			  <span class="qsm-opt-desc">Leave 0 to load all questions. You also need to set Limit Number of questions, as well as select Question Categories</span>';
 	}
 
@@ -1037,7 +1053,7 @@ class QMNGlobalSettingsPage {
 	public function qsm_global_logo_url() {
 		global $globalQuizsetting;
 		$qsm_result_page_fb_image	=(isset($globalQuizsetting['result_page_fb_image'])  && '' !== $globalQuizsetting['result_page_fb_image'] ?  $globalQuizsetting['result_page_fb_image'] : QSM_PLUGIN_URL . 'assets/icon-200x200.png');
-		echo '<input type="url" id="result_page_fb_image" name="qsm-quiz-settings[result_page_fb_image]" value="'.$qsm_result_page_fb_image.'">
+		echo '<input type="url" id="result_page_fb_image" name="qsm-quiz-settings[result_page_fb_image]" value="'.esc_url($qsm_result_page_fb_image).'">
 		<span class="qsm-opt-desc">If left blank, this will default to QSM logo</span>';
 	}
 
@@ -1086,12 +1102,12 @@ class QMNGlobalSettingsPage {
 		$qsm_scheduled_time_end	=(isset($globalQuizsetting['scheduled_time_end'])  && '' !== $globalQuizsetting['scheduled_time_end'] ?  $globalQuizsetting['scheduled_time_end'] :"");
 		echo '<div>
 				<span class="qsm-ph_text">Start Date</span>
-				<input autocomplete="off" type="text" id="scheduled_time_start" name="qsm-quiz-settings[scheduled_time_start]" value="'.$qsm_scheduled_time_start.'">
+				<input autocomplete="off" type="text" id="scheduled_time_start" name="qsm-quiz-settings[scheduled_time_start]" value="'.esc_attr($qsm_scheduled_time_start).'">
 				<span class="qsm-opt-desc">If set, Quiz will be accessible only after this date</span>
 			</div>';
 		echo '<div>
 				<span class="qsm-ph_text">End Date</span>
-				<input autocomplete="off" type="text" id="scheduled_time_end" name="qsm-quiz-settings[scheduled_time_end]" value="'.$qsm_scheduled_time_end.'">
+				<input autocomplete="off" type="text" id="scheduled_time_end" name="qsm-quiz-settings[scheduled_time_end]" value="'.esc_attr($qsm_scheduled_time_end).'">
 				<span class="qsm-opt-desc"> If set, Quiz will not be accessible after this date</span>
 			 </div>';
 			wp_add_inline_script( 'qsm_admin_js', 'jQuery(function(){jQuery("#scheduled_time_start,#scheduled_time_end").datetimepicker({format: "m/d/Y H:i",step: 1});});');
@@ -1121,7 +1137,7 @@ class QMNGlobalSettingsPage {
 
 		global $globalQuizsetting;
 		$preferred_date_format =(isset($globalQuizsetting['preferred_date_format'])? $globalQuizsetting['preferred_date_format'] : get_option( 'date_format' ));
-		echo '<input type="text" id="preferred_date_format" name="qsm-quiz-settings[preferred_date_format]" value="'.$preferred_date_format.'">';
+		echo '<input type="text" id="preferred_date_format" name="qsm-quiz-settings[preferred_date_format]" value="'.esc_attr($preferred_date_format).'">';
 		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
 
