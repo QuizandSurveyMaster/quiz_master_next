@@ -133,7 +133,7 @@ function qsm_audit_box() {
 	// If user has gone to the next audit page, load current page and beginning.
 	// Else, start at 0.
 	if ( isset( $_GET['audit_page'] ) ) {
-		$page  = intval( sanitize_text_field( $_GET['audit_page'] ) ) + 1;
+		$page  = intval( $_GET['audit_page'] ) + 1;
 		$begin = $table_limit * $begin;
 	} else {
 		$page  = 0;
@@ -194,14 +194,15 @@ function qsm_audit_box() {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
-					$alternate = ' class="alternate"';
-				}
-				echo "<tr{$alternate}>";
-				echo "<td>{$audit->trail_id}</td>";
-				echo "<td>{$audit->action_user}</td>";
-				echo "<td>{$audit->action}</td>";
-				echo "<td>{$audit->time}</td>";
-				echo "</tr>";
+					$alternate = 'alternate';
+				} ?>
+				<tr class="<?php echo $alternate; ?>">
+					<td><?php echo esc_attr( $audit->trail_id ); ?></td>
+					<td><?php echo esc_attr( $audit->action_user ); ?></td>
+					<td><?php echo esc_attr( $audit->action ); ?></td>
+					<td><?php echo esc_attr( $audit->time ); ?></td>
+				</tr>
+				<?php
 			}
 			?>
 		</tbody>

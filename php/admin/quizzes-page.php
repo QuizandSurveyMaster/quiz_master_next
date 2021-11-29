@@ -295,10 +295,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>
 							<a class="first-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the first page', 'quiz-master-next' ); ?>">&laquo;</a>
 							<a class="prev-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
@@ -311,10 +311,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
 							<a class="next-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the next page', 'quiz-master-next' ); ?>">&rsaquo;</a>
 							<a class="last-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the last page', 'quiz-master-next' ); ?>">&raquo;</a>
 							<?php } ?>
 						</span>
@@ -479,10 +479,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>
 							<a class="first-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the first page', 'quiz-master-next' ); ?>">&laquo;</a>
 							<a class="prev-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
@@ -495,10 +495,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
 							<a class="next-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the next page', 'quiz-master-next' ); ?>">&rsaquo;</a>
 							<a class="last-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . $search; ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the last page', 'quiz-master-next' ); ?>">&raquo;</a>
 							<?php } ?>
 						</span>
