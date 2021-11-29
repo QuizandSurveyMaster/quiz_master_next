@@ -15,7 +15,7 @@ function qmn_addons_page() {
 	}
 
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 
 	?>
@@ -280,7 +280,7 @@ function qsm_generate_featured_addons() {
 				?>
 			</div>
 			<h3><?php echo wp_kses_post( $bundles_arr['name'] ); ?></h3>
-			<p><?php echo wp_kses_post_post( $bundles_arr['desc'] ); ?></p>
+			<p><?php echo wp_kses_post( $bundles_arr['desc'] ); ?></p>
 			<a href="<?php echo esc_url( $bundles_arr['link'] ); ?>?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 				target="_blank" class="button button-primary addon-bundle-btn" rel="noopener">
 				<?php esc_html_e( 'Get now', 'quiz-master-next' ); ?>

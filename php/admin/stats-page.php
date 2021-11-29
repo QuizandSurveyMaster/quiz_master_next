@@ -22,7 +22,7 @@ function qmn_generate_stats_page()
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? esc_attr( $_GET[ 'tab' ] ) : 'quiz-and-survey-submissions';
+	$active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field( $_GET[ 'tab' ] ) : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">
@@ -30,14 +30,12 @@ function qmn_generate_stats_page()
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach($tab_array as $tab)
-			{
+			foreach($tab_array as $tab){
 				$active_class = '';
-				if ($active_tab == $tab['slug'])
-				{
-					$active_class = 'nav-tab-active';
+				if ($active_tab == $tab['slug']){
+					$active_class = ' nav-tab-active';
 				}
-				echo "<a href=\"?page=qmn_stats&tab=".$tab['slug']."\" class=\"nav-tab $active_class\">".$tab['title']."</a>";
+				echo '<a href="?page=qmn_stats&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
 			}
 			?>
 		</h2>
@@ -113,12 +111,12 @@ function qmn_stats_overview_content()
 		<div class="postbox">
 			<form action="" method="post">
 				<select name="range">
-					<option value="daily" <?php if ( $range == "daily" ) { echo 'selected="selected"'; } ?>><?php _e('Daily', 'quiz-master-next'); ?></option>
-					<option value="weekly" <?php if ( $range == "weekly" ) { echo 'selected="selected"'; } ?>><?php _e('Weekly', 'quiz-master-next'); ?></option>
-					<option value="monthly" <?php if ( $range == "monthly" ) { echo 'selected="selected"'; } ?>><?php _e('Monthly', 'quiz-master-next'); ?></option>
+					<option value="daily" <?php if ( $range == "daily" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Daily', 'quiz-master-next'); ?></option>
+					<option value="weekly" <?php if ( $range == "weekly" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Weekly', 'quiz-master-next'); ?></option>
+					<option value="monthly" <?php if ( $range == "monthly" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Monthly', 'quiz-master-next'); ?></option>
 					<?php do_action('qmn_quiz_taken_stats_options'); ?>
 				</select>
-				<button type="submit" class="button"><?php _e('Filter', 'quiz-master-next'); ?></button>
+				<button type="submit" class="button"><?php esc_html_e('Filter', 'quiz-master-next'); ?></button>
 			</form>
 			<div>
 				<canvas id="graph_canvas"></canvas>

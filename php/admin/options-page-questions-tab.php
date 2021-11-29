@@ -51,7 +51,7 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+	$quiz_id     = intval( $_GET['quiz_id'] );
 	$user_id     = get_current_user_id();
 	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
@@ -340,7 +340,7 @@ function qsm_options_questions_tab_content() {
 													<label>
 														<?php _e( 'Question Type', 'quiz-master-next' ); ?>
 														<?php
-														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+														echo '<a class="qsm-question-doc" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Question-Type" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
 														echo '<span class="dashicons dashicons-media-document"></span>';
 														echo '</a>';
 														?>
@@ -348,12 +348,12 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-															echo "<option value='{$type['slug']}'>{$type['name']}</option>";
+															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 														}
 														?>
 													</select>
 													<a class="question_info_tag hidden" target="_blank" rel="noopener"
-														href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php _e( 'How to use this option?', 'quiz-master-next' ); ?></a>
+														href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/question-types/"><?php esc_html_e( 'How to use this option?', 'quiz-master-next' ); ?></a>
 													<p class="hidden" id="question_type_info"></p>
 												</div>
 												<?php
@@ -466,8 +466,8 @@ function qsm_options_questions_tab_content() {
 									</h2>
 									<div class="inside">
 										<?php
-										echo '<a href="#" class="qsm-feature-image-upl">' . __( 'Upload Image', 'quiz-master-next' ) . '</a>
-                                                                <a href="#" class="qsm-feature-image-rmv" style="display:none">' . __( 'Remove Image', 'quiz-master-next' ) . '</a>'
+										echo '<a href="#" class="qsm-feature-image-upl">' . esc_html__( 'Upload Image', 'quiz-master-next' ) . '</a>
+                                                                <a href="#" class="qsm-feature-image-rmv" style="display:none">' . esc_html__( 'Remove Image', 'quiz-master-next' ) . '</a>'
 										. '<input type="hidden" name="qsm-feature-image-id" class="qsm-feature-image-id" value="">'
 										. '<input type="hidden" name="qsm-feature-image-src" class="qsm-feature-image-src" value="">';
 
@@ -736,8 +736,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	$nonce = sanitize_text_field( $_POST['nonce'] );
-	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sandy-page' ) ) {
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -795,8 +794,7 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  * Send data to sendy
  */
 function qsm_send_data_sendy() {
-	$nonce = $_POST['nonce'];
-	if ( ! wp_verify_nonce( $nonce, 'ajax-nonce-sendy-save' ) ) {
+	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sendy-save' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -839,7 +837,7 @@ function qsm_send_data_sendy() {
 
 add_action( 'wp_ajax_qsm_dashboard_delete_result', 'qsm_dashboard_delete_result' );
 function qsm_dashboard_delete_result() {
-	$result_id = isset( $_POST['result_id'] ) ? sanitize_text_field( $_POST['result_id'] ) : 0;
+	$result_id = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 	if ( $result_id ) {
 		global $wpdb;
 		$wpdb->update(
@@ -927,8 +925,7 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
-	$question_id = sanitize_text_field( $_POST['question_id'] );
-
+	$question_id = intval( $_POST['question_id'] );
 	if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
@@ -951,7 +948,7 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 function qsm_save_new_category() {
 
 	$category   = sanitize_text_field( $_POST['name'] );
-	$parent     = (int) sanitize_text_field( $_POST['parent'] );
+	$parent     = intval( $_POST['parent'] );
 	$parent     = ( $parent == -1 ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,
