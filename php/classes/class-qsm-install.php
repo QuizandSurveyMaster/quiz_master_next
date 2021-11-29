@@ -1463,7 +1463,6 @@ class QSM_Install {
 				require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 				dbDelta( $sql );
 			}
-
 			$table_name = $wpdb->prefix . 'mlw_quizzes';
 			// Update 0.5
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'comment_section'" ) != 'comment_section' ) {
@@ -1493,7 +1492,7 @@ class QSM_Install {
 				$update_sql                  = 'UPDATE ' . $table_name . " SET question_answer_template='" . $mlw_question_answer_default . "'";
 				$results                     = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 0.9.6
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'contact_info_location'" ) != 'contact_info_location' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD contact_info_location INT NOT NULL AFTER send_admin_email';
@@ -1501,7 +1500,7 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $table_name . ' SET contact_info_location=0';
 				$results    = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 1.0
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'email_from_text'" ) != 'email_from_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD email_from_text TEXT NOT NULL AFTER comment_field_text';
@@ -1509,7 +1508,7 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $table_name . " SET email_from_text='Wordpress'";
 				$results    = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 1.3.1
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'loggedin_user_contact'" ) != 'loggedin_user_contact' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD loggedin_user_contact INT NOT NULL AFTER randomness_order';
@@ -1517,7 +1516,7 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $table_name . ' SET loggedin_user_contact=0';
 				$results    = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 1.5.1
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'question_from_total'" ) != 'question_from_total' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD question_from_total INT NOT NULL AFTER comment_section';
@@ -1525,7 +1524,7 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $table_name . ' SET question_from_total=0';
 				$results    = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 1.6.1
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'total_user_tries'" ) != 'total_user_tries' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD total_user_tries INT NOT NULL AFTER question_from_total';
@@ -1533,13 +1532,17 @@ class QSM_Install {
 				$update_sql = 'UPDATE ' . $table_name . ' SET total_user_tries=0';
 				$results    = $wpdb->query( $update_sql );
 			}
+			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $audit_table . " LIKE 'quiz_name'" ) != 'quiz_name' ) {
+				$sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER action';
+				$results    = $wpdb->query( $sql );
+			}
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'total_user_tries_text'" ) != 'total_user_tries_text' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD total_user_tries_text TEXT NOT NULL AFTER total_user_tries';
 				$results    = $wpdb->query( $sql );
 				$update_sql = 'UPDATE ' . $table_name . " SET total_user_tries_text='Enter Your Text Here'";
 				$results    = $wpdb->query( $update_sql );
 			}
-
+			
 			// Update 1.8.1
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'message_end_template'" ) != 'message_end_template' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD message_end_template TEXT NOT NULL AFTER message_comment';
@@ -1803,6 +1806,8 @@ class QSM_Install {
 
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'mlw_results';
+			$audit_table = $wpdb->prefix . 'mlw_qm_audit_trail';
+
 			// Update 2.6.4
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'user'" ) != 'user' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD user INT NOT NULL AFTER phone';
@@ -1821,6 +1826,16 @@ class QSM_Install {
 			// Update 7.1.11
 			if ( $wpdb->get_var( "select data_type from information_schema.columns where table_name = '" . $wpdb->prefix . "mlw_results' and column_name = 'point_score'" ) != 'FLOAT' ) {
 				$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results MODIFY point_score FLOAT NOT NULL;' );
+			}
+
+			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $audit_table . " LIKE 'quiz_name'" ) != 'quiz_name' ) {
+				$sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER action';
+				$results    = $wpdb->query( $sql );
+				// $sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER action';
+				// $results    = $wpdb->query( $sql );
+				// $update_sql = $wpdb->prepare( "UPDATE {$table_name} SET comments=%d, hints=''", '1' );
+				// $results    = $wpdb->query( $update_sql );
+				
 			}
 			// Update 5.0.0
 			$settings = (array) get_option( 'qmn-settings', array() );

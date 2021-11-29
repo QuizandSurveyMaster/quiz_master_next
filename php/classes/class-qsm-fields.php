@@ -60,6 +60,8 @@ class QSM_Fields {
 			}
 			$settings_array[ $field["id"] ] = $sanitized_value;
       	}
+
+		  $quiz_id = intval( sanitize_text_field( $_GET["quiz_id"] ) );
             
 		//get quiz id
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;

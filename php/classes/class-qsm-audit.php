@@ -15,10 +15,16 @@ class QSM_Audit {
    * @return bool Returns true if successfull and false if fails
    */
   public function new_audit( $action, $quiz_id, $user = null ) {
+<<<<<<< Updated upstream
 
+=======
+    global $wpdb;
+>>>>>>> Stashed changes
     // Sanitizes action just in case 3rd party uses this funtion
     $action = sanitize_text_field( $action );
+    $quiz_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 
+		$quiz_name = esc_attr( $quiz_id );
     // Retrieves current user's data
     if ( is_null( $user ) ) {
       $current_user = wp_get_current_user();
@@ -47,6 +53,7 @@ class QSM_Audit {
         'time' => date("h:i:s A m/d/Y")
       ),
       array(
+        '%s',
         '%s',
         '%s',
         '%s'

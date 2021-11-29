@@ -143,7 +143,9 @@ function qsm_audit_box() {
 	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, quiz_name, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
-        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
+        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?>
+		<a class='button button-primary btn_export' id="btn_export" title='Export' ><?php esc_html_e('Export', 'quiz-master-next'); ?></a>
+		</p>
 	<?php
 
 	// Determine which navigation to show.
@@ -184,7 +186,11 @@ function qsm_audit_box() {
 				<th>ID</th>
 				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
+<<<<<<< Updated upstream
 				<th id="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
+=======
+				<th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
+>>>>>>> Stashed changes
 				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
 			</tr>
 		</thead>

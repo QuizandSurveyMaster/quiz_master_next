@@ -201,7 +201,11 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->theme_settings->activate_selected_theme( $new_quiz, $theme_id );
 
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next' ), 'success' );
+<<<<<<< Updated upstream
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name", $quiz_name);
+=======
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name", $quiz_post_id );
+>>>>>>> Stashed changes
 
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
