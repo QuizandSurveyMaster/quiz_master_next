@@ -28,7 +28,7 @@ function qsm_generate_quiz_options() {
 	$user = wp_get_current_user();
 	if ( in_array( 'author', (array) $user->roles ) ) {
 		$user_id		 = sanitize_text_field( $user->ID );
-		$quiz_id		 = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
+		$quiz_id		 = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 		$quiz_author_id	 = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_author_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d AND quiz_author_id=%d LIMIT 1", $quiz_id, $user_id ) );
 		if ( ! $quiz_author_id ) {
 			wp_die( 'You are not allow to edit this quiz, You need higher permission!' );
@@ -39,10 +39,10 @@ function qsm_generate_quiz_options() {
 
 	// Gets registered tabs for the options page and set current tab.
 	$tab_array	 = $mlwQuizMasterNext->pluginHelper->get_settings_tabs();
-	$active_tab	 = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( stripslashes( $_GET['tab'] ) ) : __( 'Questions', 'quiz-master-next' ) ) );
+	$active_tab	 = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : __( 'Questions', 'quiz-master-next' ) ) );
 
 	// Prepares quiz.
-	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	if ( isset( $_GET['quiz_id'] ) ) {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
@@ -51,7 +51,7 @@ function qsm_generate_quiz_options() {
 	// Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
 		//$quiz_id   = intval( $_POST['edit_quiz_id'] );
-		$quiz_name = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['edit_quiz_name'] ), ENT_QUOTES ) );
+		$quiz_name = sanitize_text_field( $_POST['edit_quiz_name'] );
 		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
 	//Update post status
@@ -173,7 +173,7 @@ function qsm_generate_quiz_options() {
 						<form action='' method='post' id="edit-name-form">
 							<label><?php _e( 'Name', 'quiz-master-next' ); ?></label>
 							<input type="text" id="edit_quiz_name" name="edit_quiz_name" value="<?php echo esc_attr( $quiz_name ); ?>" />
-							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset( $_GET['quiz_id'] ) && is_int( $_GET['quiz_id'] ) ? (int) esc_attr( $_GET['quiz_id'] ) : '0'; ?>" />
+							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset( $_GET['quiz_id'] ) && is_int( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '0'; ?>" />
 							<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
 						</form>
 					</main>

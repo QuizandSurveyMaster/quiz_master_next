@@ -168,7 +168,7 @@ add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_mess
 function qsm_update_text_message(){
     global $mlwQuizMasterNext;
     $text_id = isset( $_POST['text_id']  ) ? sanitize_text_field( $_POST['text_id'] ) : '';
-    $message = isset( $_POST['message']  ) ? wp_kses_post( stripslashes( $_POST['message'] ) ) : '';
+    $message = isset( $_POST['message']  ) ? sanitize_textarea_field( $_POST['message'] ) : '';
     $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
     $settings[ $text_id ] = $message;
     $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );

@@ -38,7 +38,7 @@ function qsm_generate_quizzes_surveys_page() {
 	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( $_POST['duplicate_quiz_id'] ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
-		$quiz_name = sanitize_text_field( htmlspecialchars( $_POST['duplicate_new_quiz_name'], ENT_QUOTES ) );
+		$quiz_name = htmlspecialchars( sanitize_text_field( $_POST['duplicate_new_quiz_name']), ENT_QUOTES );
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) ? sanitize_text_field( $_POST['duplicate_questions'] ) : 0 );
 	}
 
@@ -90,24 +90,23 @@ function qsm_generate_quizzes_surveys_page() {
 	$where  = '';
 	$search = '';
 	if ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] != '' ) {
-		$search = htmlspecialchars( $_REQUEST['s'], ENT_QUOTES );
+		$search = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) );
 		$where  = " quiz_name LIKE '%$search%'";
 	}
 
 	// Multiple Delete quiz.
 	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( $_POST['qsm_search_multiple_delete_nonce'], 'qsm_search_multiple_delete' ) ) {
 		if ( ( isset( $_POST['qsm-ql-action-top'] ) && $_POST['qsm-ql-action-top'] == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && $_POST['qsm-ql-action-bottom'] == 'delete_pr' ) ) {
-			$quiz_ids_arr = isset($_POST['chk_remove_all'])?$_POST['chk_remove_all']: false ;
-			if ( $quiz_ids_arr ) {
-				foreach ( $quiz_ids_arr as $quiz_id ) {
-					$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_id );
+			if ( isset( $_POST['chk_remove_all'] ) ) {
+				foreach ( $_POST['chk_remove_all'] as $quiz_id ) {
+					$mlwQuizMasterNext->quizCreator->delete_quiz( intval( $quiz_id ), intval( $quiz_id ) );
 				}
 			}
 		}
 	}
 	/*Set Request To Post as form method is Post.(AA)*/
 	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
-		$search       = htmlspecialchars( $_POST['s'], ENT_QUOTES );
+		$search       = htmlspecialchars( sanitize_text_field( $_POST['s'] ), ENT_QUOTES );
 		$condition    = " WHERE deleted=0 AND quiz_name LIKE '%$search%'";
 		$qry          = stripslashes( $wpdb->prepare( "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
 		$total        = $wpdb->get_var( $qry );
@@ -153,7 +152,7 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 	/*Written to get results form search.(AA)*/
 	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
-		$search_quiz = htmlspecialchars( $_POST['s'], ENT_QUOTES );
+		$search_quiz = htmlspecialchars( sanitize_text_field( $_POST['s'] ), ENT_QUOTES );
 		$condition   = " WHERE deleted=0 AND quiz_name LIKE '%$search_quiz%'";
 		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
 		$qry         = stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
@@ -261,7 +260,7 @@ function qsm_generate_quizzes_surveys_page() {
 						for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<!-- Changed Request to Post -->
 					<input type="search" id="quiz_search" name="s"
-						value="<?php echo isset( $_POST['s'] ) && $_POST['s'] != '' ? htmlspecialchars( $_POST['s'], ENT_QUOTES ) : ''; ?>">
+						value="<?php echo isset( $_POST['s'] ) && $_POST['s'] != '' ? sanitize_text_field( $_POST['s'] ) : ''; ?>">
 					<input id="search-submit" class="button" type="submit" name="btnSearchQuiz" value="Search Quiz">
 					<?php if ( class_exists( 'QSM_Export_Import' ) ) { ?>
 					<a class="button button-primary"
@@ -350,8 +349,8 @@ function qsm_generate_quizzes_surveys_page() {
 									name="delete-all-shortcodes-1" id="delete-all-shortcodes-1" value="0"></td>
 							<th class="<?php echo esc_attr( $orderby_class ); ?>">
 								<?php
-									$paged_slug    = isset( $_GET['paged'] ) && $_GET['paged'] != '' ? '&paged=' . esc_attr( $_GET['paged'] ) : '';
-									$searched_slug = isset( $_GET['s'] ) && $_GET['s'] != '' ? '&s=' . esc_attr( $_GET['s'] ) : '';
+									$paged_slug    = isset( $_GET['paged'] ) && $_GET['paged'] != '' ? '&paged=' . sanitize_text_field( $_GET['paged'] ) : '';
+									$searched_slug = isset( $_GET['s'] ) && $_GET['s'] != '' ? '&s=' . sanitize_text_field( $_GET['s'] ) : '';
 									$sorting_url   = '?page=mlw_quiz_list' . $paged_slug . $searched_slug;
 								?>
 								<a href="<?php echo esc_url(  $sorting_url . $orderby_slug ); ?>">

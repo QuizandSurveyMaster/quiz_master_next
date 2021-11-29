@@ -18,7 +18,7 @@ function qsm_generate_admin_results_page() {
 
 	// Retrieves the current stab and all registered tabs.
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : __( 'Quiz Results', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_admin_results_tabs();
 
 	?>
@@ -164,7 +164,7 @@ function qsm_results_overview_tab_content() {
 		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
 	}
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-		$quiz_id       = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+		$quiz_id       = intval( $_GET['quiz_id'] );
 		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} AND quiz_id='{$quiz_id}' {$search_phrase_sql}" );
 	} else {
 		$qsm_results_count = $wpdb->get_var( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE {$delete} {$search_phrase_sql}" );
@@ -196,7 +196,7 @@ function qsm_results_overview_tab_content() {
 	}
 
 	if ( isset( $_GET['qsm_results_page'] ) ) {
-		$result_page  = intval( sanitize_text_field( $_GET['qsm_results_page'] ) ) + 1;
+		$result_page  = intval( $_GET['qsm_results_page'] ) + 1;
 		$result_begin = $table_limit * $result_page;
 	} else {
 		$result_page  = 0;
@@ -204,7 +204,7 @@ function qsm_results_overview_tab_content() {
 	}
 	$results_left = $qsm_results_count - ( $result_page * $table_limit );
 	if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-		$quiz_id       = intval( sanitize_text_field( $_GET['quiz_id'] ) );
+		$quiz_id       = intval( $_GET['quiz_id'] );
 		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete AND quiz_id = %d $search_phrase_sql $order_by_sql LIMIT %d, %d", $quiz_id, $result_begin, $table_limit ) ) );
 	} else {
 		$mlw_quiz_data = $wpdb->get_results(stripslashes( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE $delete $search_phrase_sql $order_by_sql LIMIT %d, %d", $result_begin, $table_limit ) ) );
@@ -231,7 +231,7 @@ function qsm_results_overview_tab_content() {
 
 				$url_query_string = '';
 				if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-					$url_query_string .= '&&quiz_id=' . intval( sanitize_text_field( $_GET['quiz_id'] ) );
+					$url_query_string .= '&&quiz_id=' . intval( $_GET['quiz_id'] );
 				}
 
 				if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
@@ -276,10 +276,10 @@ function qsm_results_overview_tab_content() {
 		<?php
 			if ( isset( $_GET['quiz_id'] ) ) {
 				?>
-		<input type="hidden" name="quiz_id" value="<?php echo esc_attr( intval( $_GET['quiz_id'] ) ); ?>" />
+		<input type="hidden" name="quiz_id" value="<?php echo intval( $_GET['quiz_id'] ); ?>" />
 		<?php
 			}
-			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? esc_attr( sanitize_text_field( $_GET['qsm_search_phrase'] ) ) : '';
+			$qsm_search_phrase = ( isset( $_GET['qsm_search_phrase'] ) ) ? sanitize_text_field( $_GET['qsm_search_phrase'] ) : '';
 			$qmn_order_by = ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) ? sanitize_text_field( $_GET['qmn_order_by'] ) : 'default';
 			?>
 		<input type="hidden" name="page" value="mlw_quiz_results">

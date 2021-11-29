@@ -171,7 +171,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		}
 		$limit       = $limit == '' || $limit == 0 ? 20 : $limit;
 		$total_pages = ceil( $total_count / $limit );
-		$pageno      = isset( $_REQUEST['page'] ) ? (int) $_REQUEST['page'] : 1;
+		$pageno      = isset( $_REQUEST['page'] ) ? intval( $_REQUEST['page'] ) : 1;
 		$offset      = ( $pageno - 1 ) * $limit;
 
 		if ( ! empty( $category ) ) {
