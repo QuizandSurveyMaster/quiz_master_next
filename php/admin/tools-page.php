@@ -196,11 +196,11 @@ function qsm_audit_box() {
 				} else {
 					$alternate = 'alternate';
 				} ?>
-				<tr class="<?php echo $alternate; ?>">
-					<td><?php echo esc_attr( $audit->trail_id ); ?></td>
-					<td><?php echo esc_attr( $audit->action_user ); ?></td>
-					<td><?php echo esc_attr( $audit->action ); ?></td>
-					<td><?php echo esc_attr( $audit->time ); ?></td>
+				<tr class="<?php echo esc_attr( $alternate ); ?>">
+					<td><?php echo esc_html( $audit->trail_id ); ?></td>
+					<td><?php echo esc_html( $audit->action_user ); ?></td>
+					<td><?php echo esc_html( $audit->action ); ?></td>
+					<td><?php echo esc_html( $audit->time ); ?></td>
 				</tr>
 				<?php
 			}
