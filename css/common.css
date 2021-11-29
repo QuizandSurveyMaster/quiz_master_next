@@ -7,7 +7,7 @@
     display: block;
     text-align: center;
 }
-.mlw_qmn_question p:empty{
+.mlw_qmn_question p:empty, .qsm-d-none{
     display: none;
 }
 .MJXc-display{
@@ -66,7 +66,7 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question{
     background: #A5A5A5;
     border-color: #A5A5A5;
     border-radius: 0;
-    height: 20px;    
+    height: 20px;
 }
 .question-type-polar-s .ui-widget-content .ui-slider-handle{
     background: rgb(119, 113, 113);
@@ -126,7 +126,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 }
 .qsm-quiz-container .qsm-contact-type-checkbox input{
     display: inline-block;
-}   
+}
 .quiz_section .mlw_qmn_new_question{
     font-weight: bold;
     display: inline;
@@ -138,7 +138,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     display: block;
     margin-bottom: 10px;
 }
-.quiz_section iframe{    
+.quiz_section iframe{
     width: 100% !important;
     min-height: 315px !important;
 }
@@ -171,7 +171,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 * Design for new template variable QUESTION_WITH_ANSWER
 */
 
-.mlw_qmn_question .qmn_user_incorrect_answer{    
+.mlw_qmn_question .qmn_user_incorrect_answer{
     color: #dc3232;
     margin-bottom: 5px;
     padding-left: 10px;
@@ -185,7 +185,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     left: -10px;
 }
 
-.mlw_qmn_question .qmn_user_correct_answer{    
+.mlw_qmn_question .qmn_user_correct_answer{
     color: green;
     margin-bottom: 5px;
     padding-left: 10px;
@@ -229,12 +229,12 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
     top: 4px;
 }
 .mlw_qmn_question .qsm-text-simple-option{
-    display: block;    
+    display: block;
     margin-bottom: 5px;
     color: #808080;
     padding-left: 10px;
 }
-.mlw_qmn_question .qsm-text-simple-option:before{    
+.mlw_qmn_question .qsm-text-simple-option:before{
     content: "\f159";
     font-family: dashicons;
     position: relative;
@@ -296,7 +296,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
         bottom: auto;
         transform: none;
         margin-bottom: 30px;
-    }   
+    }
     .question-type-polar-s{
         height: auto !important;
     }

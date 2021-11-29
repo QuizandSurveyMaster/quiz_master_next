@@ -132,7 +132,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if(empty($contact_disable_autofill)){echo esc_attr( $value );} ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
 
@@ -142,7 +142,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php echo esc_attr( $value ); ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if(empty($contact_disable_autofill)){ echo esc_attr( $value ); } ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
 							<?php
 							break;
 
@@ -310,12 +310,12 @@ class QSM_Contact_Manager {
 			"a" => array(
 				"href" => array(),
 			)
-		);   
+		);
 
 		$is_not_allow_html = apply_filters( 'qsm_admin_contact_label_disallow_html', true );
 
 		$total_fields = count( $fields );
-		for ( $i = 0; $i < $total_fields; $i++ ) {                         
+		for ( $i = 0; $i < $total_fields; $i++ ) {
         $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
 			  $fields[ $i ] = array(
           'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
