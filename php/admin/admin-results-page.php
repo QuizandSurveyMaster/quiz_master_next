@@ -159,7 +159,7 @@ function qsm_results_overview_tab_content() {
 	$order_by_sql      = 'ORDER BY time_taken_real DESC';
 	if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
 		// Sanitizes the search phrase and then uses $wpdb->prepare to properly escape the queries after using $wpdb->esc_like.
-		$sanitized_search_phrase = sanitize_text_field( $_GET['qsm_search_phrase'] );
+		$sanitized_search_phrase = sanitize_text_field( wp_unslash( $_GET['qsm_search_phrase'] ) );
 		$search_phrase_percents  = '%' . esc_sql( $wpdb->esc_like( $sanitized_search_phrase ) ) . '%';
 		$search_phrase_sql       = $wpdb->prepare( ' AND (quiz_name LIKE %s OR name LIKE %s OR business LIKE %s OR email LIKE %s OR phone LIKE %s)', $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents, $search_phrase_percents );
 	}

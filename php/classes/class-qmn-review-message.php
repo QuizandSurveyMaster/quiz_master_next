@@ -94,9 +94,9 @@ class QMN_Review_Message {
 			$this->trigger,
 			'<br /><strong><em>~ QSM Team</em></strong><br /><br />'
 		);
-		echo '&nbsp;<a target="_blank" href="https://wordpress.org/support/plugin/quiz-master-next/reviews/#new-topic-0" class="button-primary">' . __( 'Yeah, you deserve it!', 'quiz-master-next' ) . '</a>';
-		echo '&nbsp;<a href="' . esc_url( $already_url ) . '" class="button-secondary">' . __( 'I already did!', 'quiz-master-next' ) . '</a>';
-  		echo '&nbsp;<a href="' . esc_url( $nope_url ) . '" class="button-secondary">' . __( 'No, this plugin is not good enough', 'quiz-master-next' ) . '</a>';
+		echo '&nbsp;<a target="_blank" href="https://wordpress.org/support/plugin/quiz-master-next/reviews/#new-topic-0" class="button-primary">' . esc_html__( 'Yeah, you deserve it!', 'quiz-master-next' ) . '</a>';
+		echo '&nbsp;<a href="' . esc_url( $already_url ) . '" class="button-secondary">' . esc_html__( 'I already did!', 'quiz-master-next' ) . '</a>';
+  		echo '&nbsp;<a href="' . esc_url( $nope_url ) . '" class="button-secondary">' . esc_html__( 'No, this plugin is not good enough', 'quiz-master-next' ) . '</a>';
 		echo "<br /><br /></div>";
 	}
 

@@ -200,7 +200,7 @@ class QMNQuizManager {
 	public function qsm_get_question_quick_result() {
 		global $wpdb;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-		$answer            = isset( $_POST['answer'] ) ?  sanitize_text_field( stripslashes_deep( $_POST['answer'] ) ) : '';
+		$answer            = isset( $_POST['answer'] ) ?  sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = unserialize( $question_array['answer_array'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
@@ -874,7 +874,7 @@ public function display_pages( $options, $quiz_data ) {
 							}
 								// Checks if a hint is entered.
 							if ( ! empty( $question['hints'] ) ) {
-								echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
+								echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . wp_kses_post( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 							}
 							?>
 				</div>
@@ -941,7 +941,7 @@ public function display_pages( $options, $quiz_data ) {
 							}
 								// Checks if a hint is entered.
 							if ( ! empty( $question['hints'] ) ) {
-								echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . sanitize_text_field( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
+								echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . wp_kses_post( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 							}
 						?>
 					</div>
