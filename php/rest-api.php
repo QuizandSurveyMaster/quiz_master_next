@@ -752,7 +752,7 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
  * @since 7.3.6
  * @return array
  */
-function qsm_get_quizzes_list( WP_REST_Request $request ){
+function qsm_get_quizzes_list( ){
 	global $wpdb;
 	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'" );
 	$qsm_quiz_list[] = array(
@@ -760,10 +760,10 @@ function qsm_get_quizzes_list( WP_REST_Request $request ){
 			'value' => ''
 	);
 	if( $quizzes ){
-			foreach( $quizzes as $key=>$value) {            
+			foreach( $quizzes as $quiz) {            
 					$qsm_quiz_list[] = array(
-							'label' => $value->quiz_name,
-							'value' => $value->quiz_id,
+							'label' => $quiz->quiz_name,
+							'value' => $quiz->quiz_id,
 					);            
 			}
 	}
