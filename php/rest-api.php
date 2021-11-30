@@ -132,6 +132,18 @@ function qsm_register_rest_routes() {
 				'permission_callback' => '__return_true',
 			)
 		);
+		// Get Categories of quiz
+		register_rest_route(
+			'quiz-survey-master/v2',
+			'/quizzlist/',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => 'qsm_get_quizzes_list',
+				'permission_callback' => '__return_true',
+			)
+		);
+		
+
 }
 
 /**
@@ -732,4 +744,28 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
 		);
 	}
 	return false;
+}
+
+/**
+ * Get the quizzes list
+ * 
+ * @since 7.3.6
+ * @return array
+ */
+function qsm_get_quizzes_list( WP_REST_Request $request ){
+	global $wpdb;
+	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'" );
+	$qsm_quiz_list[] = array(
+			'label' => __('Select the quiz', 'quiz-master-next'),
+			'value' => ''
+	);
+	if( $quizzes ){
+			foreach( $quizzes as $key=>$value) {            
+					$qsm_quiz_list[] = array(
+							'label' => $value->quiz_name,
+							'value' => $value->quiz_id,
+					);            
+			}
+	}
+	return $qsm_quiz_list;
 }
