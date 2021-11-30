@@ -405,20 +405,20 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							<?php
 							if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != 0 ) {
 								$edit_link = get_edit_profile_url( $single_result_arr['user'] );
-																		$actual_user = get_userdata( $single_result_arr['user'] );
-																		$user_name   = $single_result_arr['name'] == 'None' ? $actual_user->data->display_name : $single_result_arr['name'];
+								$actual_user = get_userdata( $single_result_arr['user'] );
+								$user_name = $single_result_arr['name'] == 'None' ? $actual_user->data->display_name : $single_result_arr['name'];
 								echo '<a href="' . esc_url( $edit_link ) . '">' . esc_html( $user_name ) . '</a>';
 							} else {
 								echo esc_html__( 'Guest', 'quiz-master-next' );
 							}
-									esc_html_e( ' took quiz ', 'quiz-master-next' );
-									echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . $single_result_arr['quiz_name'] . '</a>';
+							esc_html_e( ' took quiz ', 'quiz-master-next' );
+							echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . esc_html( $single_result_arr['quiz_name'] ) . '</a>';
 							?>
 						</span>
 						<span class="rtq-result-info">
 							<?php
-									$quotes_list                                       = '';
-																			$form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
+							$quotes_list = '';
+							$form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
 							if ( $form_type == 1 || $form_type == 2 ) {
 								$quotes_list .= __( 'Not Graded', 'quiz-master-next' );
 							} else {
@@ -433,29 +433,29 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 									$quotes_list .= $single_result_arr['point_score'] . ' Points';
 								}
 							}
-									echo wp_kses_post( $quotes_list );
+							echo wp_kses_post( $quotes_list );
 							?>
 							|
 							<?php
-									$mlw_complete_time     = '';
-									$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
+							$mlw_complete_time     = '';
+							$mlw_qmn_results_array = maybe_unserialize( $single_result_arr['quiz_results'] );
 							if ( is_array( $mlw_qmn_results_array ) ) {
 								$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 								if ( $mlw_complete_hours > 0 ) {
-											$mlw_complete_time .= "$mlw_complete_hours hours ";
+									$mlw_complete_time .= "$mlw_complete_hours hours ";
 								}
-										$mlw_complete_minutes = floor( ( $mlw_qmn_results_array[0] % 3600 ) / 60 );
+								$mlw_complete_minutes = floor( ( $mlw_qmn_results_array[0] % 3600 ) / 60 );
 								if ( $mlw_complete_minutes > 0 ) {
-										$mlw_complete_time .= "$mlw_complete_minutes minutes ";
+									$mlw_complete_time .= "$mlw_complete_minutes minutes ";
 								}
-										$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
-										$mlw_complete_time   .= "$mlw_complete_seconds seconds";
+								$mlw_complete_seconds = $mlw_qmn_results_array[0] % 60;
+								$mlw_complete_time   .= "$mlw_complete_seconds seconds";
 							}
-									_e( ' Time to complete ', 'quiz-master-next' );
-									echo wp_kses_post( $mlw_complete_time );
+							esc_html_e( ' Time to complete ', 'quiz-master-next' );
+							echo wp_kses_post( $mlw_complete_time );
 							?>
 						</span>
-						<span class="rtq-time-taken"><?php echo date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ); ?></span>
+						<span class="rtq-time-taken"><?php echo esc_html( date_i18n( get_option( 'date_format' ), strtotime( $single_result_arr['time_taken'] ) ) ); ?></span>
 						<p class="row-actions-c">
 							<a
 								href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
@@ -477,7 +477,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					?>
 				</a>
 				<?php
-					echo isset( $mlw_result_data['total_result'] ) ? '(' . $mlw_result_data['total_result'] . ')' : '';
+					echo isset( $mlw_result_data['total_result'] ) ? '(' . esc_html( $mlw_result_data['total_result'] ) . ')' : '';
 				?>
 			</p>
 		</div>

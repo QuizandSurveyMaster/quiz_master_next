@@ -28,9 +28,9 @@ function qsm_generate_result_details() {
      foreach( $tab_array as $tab ) {
         $active_class = '';
         if ( $active_tab == $tab['slug'] ) {
-           $active_class = 'nav-tab-active';
+           $active_class = ' nav-tab-active';
        }
-       echo "<a href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $_GET["result_id"] ) . "&&tab=" . esc_attr( $tab['slug'] ) . "\" class=\"nav-tab $active_class\">" . esc_html( $tab['title'] ) . "</a>";
+       echo '<a href="?page=qsm_quiz_result_details&result_id="' . intval( $_GET["result_id"] ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
    }
    ?>
 </h2>
@@ -80,8 +80,8 @@ function qsm_generate_results_details_tab() {
 
 	// If there is previous or next results, show buttons.
     echo '<div style="text-align:right; margin-top: 20px; margin-bottom: 20px;">';
-    echo '<h3 class="result-page-title">Quiz Result - '. $results_data->quiz_name .'</h3>';
-    echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. __( 'Back to Results', 'quiz-master-next' ) .'</a>';
+    echo '<h3 class="result-page-title">Quiz Result - '. esc_html( $results_data->quiz_name ) .'</h3>';
+    echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. esc_html__( 'Back to Results', 'quiz-master-next' ) .'</a>';
     if ( ! is_null( $previous_results ) && $previous_results ) {
         echo "<a class='button button-primary' title='View Previous Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" ><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
     }else{
