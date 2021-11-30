@@ -244,7 +244,8 @@ class QMNQuizManager {
 		ob_end_clean ();
 
 		// Open file
-		$qsm_open_file = fopen($qsm_export_filename,"w");
+		$qsm_open_file = fopen("php://output","w");
+		fputcsv($qsm_open_file, array('Trail ID', 'User', 'Action', 'Quiz Name', 'Form Data', 'Time'));
 
 		// loop for insert data into CSV file
 		foreach ($export_tool_data as $export_data)
@@ -254,6 +255,7 @@ class QMNQuizManager {
 				"action_user"=>$export_data->action_user,
 				"action"=>$export_data->action,
 				"quiz_name"=>$export_data->quiz_name,
+				"form_data"=>$export_data->form_data,
 				"time"=>$export_data->time
 			);
 			fputcsv($qsm_open_file,$qsm_export_array);
@@ -266,7 +268,6 @@ class QMNQuizManager {
 		header("Content-Description: File Transfer");
 		header("Content-Disposition: attachment; filename=".$qsm_export_filename);
 		header("Content-Type: text/csv;");
-		echo $qsm_export_filename;
 		exit;
 
 	}

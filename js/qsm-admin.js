@@ -428,8 +428,33 @@ var QSMAdmin;
                 action: "qsm_export_data",
             },
             success: function(response) {
-                console.log(response);
-                jQuery(".btn_export").attr("href", response)
+                //jQuery(".btn_export").attr("href", response);
+                /*
+                 * Make CSV downloadable
+                 */
+                var d = new Date();
+
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var output = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+                var downloadLink = document.createElement("a");
+                var fileData = ['\ufeff' + response];
+
+                var blobObject = new Blob(fileData, {
+                    type: "text/csv;charset=utf-8;"
+                });
+
+                var url = URL.createObjectURL(blobObject);
+                downloadLink.href = url;
+                downloadLink.download = "export_" + output + ".csv";
+                /*
+                 * Actually download CSV
+                 */
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+
             },
             error: function(errorThrown) {
                 alert(errorThrown);

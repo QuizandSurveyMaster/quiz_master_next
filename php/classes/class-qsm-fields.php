@@ -27,7 +27,8 @@ class QSM_Fields {
     if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings' ) ) {
 
 		// Cycle through fields to retrieve all posted values      
-		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
+		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+		$settings_array_json_convert = maybe_serialize( $settings_array );
 		foreach ( $fields as $field ) {
 
 			// Sanitize the values based on type
@@ -70,7 +71,7 @@ class QSM_Fields {
 		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id, $settings_array_json_convert );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
 		}

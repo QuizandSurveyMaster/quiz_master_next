@@ -113,11 +113,7 @@ function qsm_results_overview_tab_content() {
 		} else {
 			$quiz_id = $mlw_delete_results_id;
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
-<<<<<<< Updated upstream
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name",  $quiz_id);
-=======
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name", $quiz_id );
->>>>>>> Stashed changes
 
 		}
 	}

@@ -186,11 +186,7 @@ function qsm_audit_box() {
 				<th>ID</th>
 				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
-<<<<<<< Updated upstream
 				<th id="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
-=======
-				<th><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
->>>>>>> Stashed changes
 				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
 			</tr>
 		</thead>
@@ -201,7 +197,6 @@ function qsm_audit_box() {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
-<<<<<<< HEAD
 					$alternate = ' class="alternate"';
 				}
 				echo "<tr{$alternate}>";
@@ -211,17 +206,6 @@ function qsm_audit_box() {
 				echo "<td>{$audit->quiz_name}</td>";
 				echo "<td>{$audit->time}</td>";
 				echo "</tr>";
-=======
-					$alternate = 'alternate';
-				} ?>
-				<tr class="<?php echo esc_attr( $alternate ); ?>">
-					<td><?php echo esc_html( $audit->trail_id ); ?></td>
-					<td><?php echo esc_html( $audit->action_user ); ?></td>
-					<td><?php echo esc_html( $audit->action ); ?></td>
-					<td><?php echo esc_html( $audit->time ); ?></td>
-				</tr>
-				<?php
->>>>>>> origin/dev
 			}
 			?>
 		</tbody>

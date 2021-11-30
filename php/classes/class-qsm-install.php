@@ -1831,10 +1831,8 @@ class QSM_Install {
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $audit_table . " LIKE 'quiz_name'" ) != 'quiz_name' ) {
 				$sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER action';
 				$results    = $wpdb->query( $sql );
-				// $sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER action';
-				// $results    = $wpdb->query( $sql );
-				// $update_sql = $wpdb->prepare( "UPDATE {$table_name} SET comments=%d, hints=''", '1' );
-				// $results    = $wpdb->query( $update_sql );
+				 $sql        = 'ALTER TABLE ' . $audit_table . ' ADD form_data TEXT NOT NULL AFTER quiz_name';
+				 $results    = $wpdb->query( $sql );
 				
 			}
 			// Update 5.0.0
