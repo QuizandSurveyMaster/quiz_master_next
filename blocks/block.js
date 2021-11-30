@@ -1,3 +1,12 @@
+var quizListEndPoint =  wpApiSettings.root+'quiz-survey-master/v2/quizzlist/';
+var quizList;
+jQuery.ajax( quizListEndPoint , {
+	data: null ,
+	method: 'GET',
+	success : function(response){
+		quizList = response;
+	}
+});
 
 var el = wp.element.createElement,
 	registerBlockType = wp.blocks.registerBlockType,
@@ -15,7 +24,7 @@ registerBlockType( 'qsm/main-block', {
 	category: 'widgets',        
 
 	edit: function( props ) {
-                const quiz_arr = props.attributes.quiz_id;
+  	const quiz_arr = quizList;
 		return [
 			/*
 			 * The ServerSideRender element uses the REST API to automatically call
@@ -26,17 +35,16 @@ registerBlockType( 'qsm/main-block', {
 				block: 'qsm/main-block',
 				attributes: props.attributes,
 			} ),
-			
 			el( InspectorControls, {},
-                                el( 'p', { style: { padding: '0 16px' } },
-                                    el( SelectControl, {
-                                            label: 'Quiz/Survey ID',
-                                            value: props.attributes.quiz,
-                                            options: quiz_arr,
-                                            onChange: ( value ) => { props.setAttributes( { quiz: value } ); },
-                                    } )
-                                )				
-			),
+				el( 'p', { style: { padding: '0 16px' } },
+					el( SelectControl, {
+						label: 'Quiz/Survey ID',
+						value: props.attributes.quiz,
+						options: quiz_arr,
+						onChange: ( value ) => { props.setAttributes( { quiz: value } ); },
+					} )
+				)				
+    	)				
 		];
 	},
 
