@@ -304,8 +304,8 @@ class QSM_Quiz_Settings
 		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
 
 		// Unserializes array
-		if ( is_serialized( $settings ) && is_array( @unserialize( $settings ) ) ) {
-			$settings_array = @unserialize( $settings );
+		if ( is_array( maybe_unserialize( $settings ) ) ) {
+			$settings_array = maybe_unserialize( $settings );
 		}
 
 		// If the value is not an array, create an empty array
@@ -329,8 +329,8 @@ class QSM_Quiz_Settings
 			if ( ! isset( $settings_array['quiz_options'] ) ) {
 
 				// Sets up older scheduled timeframe settings
-				if ( is_serialized( $quiz_options->scheduled_timeframe ) && is_array( @unserialize( $quiz_options->scheduled_timeframe ) ) ) {
-					$scheduled_timeframe = @unserialize( $quiz_options->scheduled_timeframe );
+				if ( is_array( maybe_unserialize( $quiz_options->scheduled_timeframe ) ) ) {
+					$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
 				} else {
 					$scheduled_timeframe = array(
 						'start'	 => '',
@@ -370,8 +370,8 @@ class QSM_Quiz_Settings
 			if ( ! isset( $settings_array["quiz_text"] ) ) {
 
 				// Sets up older pagination text
-				if ( is_serialized( $quiz_options->pagination_text ) && is_array( @unserialize( $quiz_options->pagination_text ) ) ) {
-					$pagination_text = @unserialize( $quiz_options->pagination_text );
+				if ( is_array( maybe_unserialize( $quiz_options->pagination_text ) ) ) {
+					$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
 				} else {
 					$pagination_text = array(
 						__( 'Previous', 'quiz-master-next' ),
@@ -380,8 +380,8 @@ class QSM_Quiz_Settings
 				}
 
 				// Sets up older social sharing text
-				if ( is_serialized( $quiz_options->social_media_text ) && is_array( @unserialize( $quiz_options->social_media_text ) ) ) {
-					$social_media_text = @unserialize( $quiz_options->social_media_text );
+				if ( is_array( maybe_unserialize( $quiz_options->social_media_text ) ) ) {
+					$social_media_text = maybe_unserialize( $quiz_options->social_media_text );
 				} else {
 					$social_media_text = array(
 						'twitter'	 => $quiz_options->social_media_text,

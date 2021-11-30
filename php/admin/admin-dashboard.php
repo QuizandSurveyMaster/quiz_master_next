@@ -617,8 +617,7 @@ function qsm_create_new_quiz_from_wizard() {
 			'disable_scroll_next_previous_click' => sanitize_text_field( $_POST['disable_scroll_next_previous_click'] ),
 		);
 		$quiz_options	 = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
-		$setting_arr	 = array( 'quiz_options' => $quiz_options );
-		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, maybe_serialize( $setting_arr ) );
+		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
 	}
 }
 add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );

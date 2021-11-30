@@ -1390,8 +1390,6 @@ add_action( 'wp_footer', function () use ($options) {
 				$results_array['hidden_questions']          = $qmn_array_for_variables['hidden_questions'];
 				$results_array['total_possible_points']     = $qmn_array_for_variables['total_possible_points'];
 				$results_array['total_attempted_questions'] = $qmn_array_for_variables['total_attempted_questions'];
-				$serialized_results                         = maybe_serialize( $results_array );
-
 				// Inserts the responses in the database.
 				global $wpdb;
 				$table_name = $wpdb->prefix . 'mlw_results';
@@ -1407,7 +1405,7 @@ add_action( 'wp_footer', function () use ($options) {
 							'user_ip'         => $qmn_array_for_variables['user_ip'],
 							'time_taken'      => $qmn_array_for_variables['time_taken'],
 							'time_taken_real' => date( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => $serialized_results,
+							'quiz_results'    => maybe_serialize( $results_array ),
 						),
 						array( 'result_id' => $results_id )
 					);
@@ -1430,7 +1428,7 @@ add_action( 'wp_footer', function () use ($options) {
 							'user_ip'         => $qmn_array_for_variables['user_ip'],
 							'time_taken'      => $qmn_array_for_variables['time_taken'],
 							'time_taken_real' => date( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
-							'quiz_results'    => $serialized_results,
+							'quiz_results'    => maybe_serialize( $results_array ),
 							'deleted'         => 0,
 							'unique_id'       => $unique_id,
 							'form_type'       => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
