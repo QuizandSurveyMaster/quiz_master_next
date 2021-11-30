@@ -243,7 +243,7 @@ class QSM_Theme_Settings {
 		global $wpdb;
 		return $wpdb->update(
 			$wpdb->prefix . $this->settings_table,
-			array( 'quiz_theme_settings' => $settings ),
+			array( 'quiz_theme_settings' => maybe_serialize( $settings ) ),
 			array(
 				'quiz_id'  => $quiz_id,
 				'theme_id' => $theme_id,
