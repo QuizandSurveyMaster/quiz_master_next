@@ -65,7 +65,7 @@ function qsm_restore_function() {
 				'deleted' => 0,
 			),
 			array(
-				'quiz_id' => sanitize_text_field( intval( $_POST['restore_quiz'] ) ),
+				'quiz_id' => intval( $_POST['restore_quiz'] ),
 			),
 			array(
 				'%d',
@@ -83,7 +83,7 @@ function qsm_restore_function() {
 			$my_query = new WP_Query( array(
 				'post_type'  => 'qsm_quiz',
 				'meta_key'   => 'quiz_id',
-				'meta_value' => sanitize_text_field( intval( $_POST['restore_quiz'] ) ),
+				'meta_value' => intval( $_POST['restore_quiz'] ),
 			));
 			if ( $my_query->have_posts() ) {
 				while ( $my_query->have_posts() ) {
@@ -133,7 +133,7 @@ function qsm_audit_box() {
 	// If user has gone to the next audit page, load current page and beginning.
 	// Else, start at 0.
 	if ( isset( $_GET['audit_page'] ) ) {
-		$page  = intval( sanitize_text_field( $_GET['audit_page'] ) ) + 1;
+		$page  = intval( $_GET['audit_page'] ) + 1;
 		$begin = $table_limit * $begin;
 	} else {
 		$page  = 0;
@@ -194,14 +194,15 @@ function qsm_audit_box() {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
-					$alternate = ' class="alternate"';
-				}
-				echo "<tr{$alternate}>";
-				echo "<td>{$audit->trail_id}</td>";
-				echo "<td>{$audit->action_user}</td>";
-				echo "<td>{$audit->action}</td>";
-				echo "<td>{$audit->time}</td>";
-				echo "</tr>";
+					$alternate = 'alternate';
+				} ?>
+				<tr class="<?php echo esc_attr( $alternate ); ?>">
+					<td><?php echo esc_html( $audit->trail_id ); ?></td>
+					<td><?php echo esc_html( $audit->action_user ); ?></td>
+					<td><?php echo esc_html( $audit->action ); ?></td>
+					<td><?php echo esc_html( $audit->time ); ?></td>
+				</tr>
+				<?php
 			}
 			?>
 		</tbody>

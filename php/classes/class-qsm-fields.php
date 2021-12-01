@@ -352,8 +352,9 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
    */
   public static function generate_radio_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+	$class = $show_option ? $show_option . ' hidden qsm_hidden_tr' : '';
     ?>
-<tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr'"; } ?>>
+<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
@@ -390,8 +391,9 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
    */
   public static function generate_select_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
+	$class = $show_option ? $show_option : '';
     ?>
-<tr valign="top" <?php if( $show_option ){ echo "class='". $show_option ."'"; } ?>>
+<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
@@ -552,10 +554,10 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
   public static function generate_checkbox_field( $field, $value ) {
     $show_option = isset( $field['show_option'] ) ? $field['show_option'] : '';
 	global $mlwQuizMasterNext;
-	 $score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
+	$score_roundoff = $mlwQuizMasterNext->pluginHelper->get_section_setting('quiz_options',$field["id"] );
+	$class = $show_option ? $show_option . ' hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem' : '';
     ?>
-<tr valign="top"
-	<?php if( $show_option ){ echo "class='". $show_option ." hidden qsm_hidden_tr qsm_hidden_tr_gradingsystem'"; } ?>>
+<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
 	</th>
