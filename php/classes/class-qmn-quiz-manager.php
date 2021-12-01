@@ -1004,11 +1004,11 @@ add_action( 'wp_footer', function () use ($options) {
 	<!-- View for pagination -->
 	<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
 		<div class="qsm-pagination qmn_pagination border margin-bottom">
-			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_attr( $options->previous_button_text ); ?></a>
+			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
 			<span class="qmn_page_message"></span>
 			<div class="qmn_page_counter_message"></div>
 			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_attr( $options->next_button_text ); ?></a>
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
 			<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( $options->submit_button_text ); ?>' />
 		</div>
 	</script>
@@ -1110,15 +1110,15 @@ add_action( 'wp_footer', function () use ($options) {
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 				if ( 0 == $mlw_question->comments ) {
-					?><input type="text" class="mlw_qmn_question_comment" id="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $qmn_quiz_options->comment_field_text ); ?>" onclick="qmnClearField(this)" /><br /><?php
+					?><input type="text" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $qmn_quiz_options->comment_field_text ); ?>" onclick="qmnClearField(this)" /><br /><?php
 				}
 				if ( 2 == $mlw_question->comments ) {
-					?><textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment <?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $qmn_quiz_options->comment_field_text ); ?>" onclick="qmnClearField(this)"></textarea><br /><?php
+					?><textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $qmn_quiz_options->comment_field_text ); ?>" onclick="qmnClearField(this)"></textarea><br /><?php
 				}
 
 				// Checks if a hint is entered.
 				if ( ! empty( $mlw_question->hints ) ) {
-					?><div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php esc_html_e( sanitize_text_field( $qmn_quiz_options->hint_text ) ); ?><span class="qsm_tooltiptext"><?php echo wp_kses( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) ); ?></span></div><br /><br /><?php
+					?><div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php echo esc_html( $qmn_quiz_options->hint_text ); ?><span class="qsm_tooltiptext"><?php echo wp_kses( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $mlw_question->hints, ENT_QUOTES ) ), wp_kses_allowed_html( 'post' ) ); ?></span></div><br /><br /><?php
 				}
 			?></div><!-- .quiz_section --><?php
 			if ( $pagination_optoin == 0 ) {
