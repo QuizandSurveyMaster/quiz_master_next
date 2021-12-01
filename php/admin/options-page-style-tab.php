@@ -107,7 +107,7 @@ function qsm_options_styling_tab_content() {
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings(
 			$quiz_id,
 			$saved_quiz_theme,
-			maybe_serialize( $settings_array )
+			$settings_array
 		);
 		$mlwQuizMasterNext->alertManager->newAlert(
 			__( 'The theme settings saved successfully.', 'quiz-master-next' ),
@@ -317,7 +317,7 @@ function qsm_display_theme_settings() {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
 		$settings_array	 = array_map( 'sanitize_text_field', $_POST['settings'] );
-		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, maybe_serialize( $settings_array ) );
+		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">
 	<p><?php _e( 'Theme settings are saved!', 'quiz-master-next' ); ?></p>
