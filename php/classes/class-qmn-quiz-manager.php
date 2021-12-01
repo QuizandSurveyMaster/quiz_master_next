@@ -1238,8 +1238,8 @@ add_action( 'wp_footer', function () use ($options) {
 		$qmn_allowed_visit = true;
 		$quiz              = intval( $_POST['qmn_quiz_id'] );
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
-		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
+		$options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone = sanitize_text_field( $_POST['currentuserTimeZone'] );
@@ -1624,7 +1624,7 @@ add_action( 'wp_footer', function () use ($options) {
 						if ( $page_question_id == $question_id ) {
 
 							$question = $questions[ $page_question_id ];
-              $question_type_new = $question['question_type_new'];
+              				$question_type_new = $question['question_type_new'];
 							// Ignore non points questions from result
 							$hidden_questions  = is_array( $quiz_data['hidden_questions'] ) ? $quiz_data['hidden_questions'] : array();
 
@@ -1634,24 +1634,25 @@ add_action( 'wp_footer', function () use ($options) {
 							$correct_status = 'incorrect';
 							$answer_points  = 0;
 
-              // Get maximum and minimum points for the quiz
-              if ( ! in_array( $question_id, $hidden_questions ) ) {
-                $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
-                $total_possible_points += $max_min_result['max_point'];
-                $minimum_possible_points += $max_min_result['min_point'];
-              }
+							// Get maximum and minimum points for the quiz
+							if ( ! in_array( $question_id, $hidden_questions ) ) {
+								$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+								$total_possible_points += $max_min_result['max_point'];
+								$minimum_possible_points += $max_min_result['min_point'];
+							}
 
 							// Send question to our grading function
 							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
 							if ( isset( $results_array['question_type'] ) && $results_array['question_type'] == 'file_upload' ) {
 								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
 							}
+
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
 								if ( in_array( $question_type_new, $result_question_types ) ) {
 									if ( ! in_array( $question_id, $hidden_questions ) ) {
-										$points_earned += $results_array['points'];
-										$answer_points += $results_array['points'];
+										$points_earned += $results_array['points'] ? $results_array['points'] : 0;
+										$answer_points += $results_array['points'] ? $results_array['points'] : 0;
 									}
 								}
 
@@ -1722,16 +1723,16 @@ add_action( 'wp_footer', function () use ($options) {
 
 					// When the questions are the same...
 					if ( $question['question_id'] == $question_id ) {
-            // Reset question-specific variables
+            			// Reset question-specific variables
 						$user_answer    = '';
 						$correct_answer = '';
 						$correct_status = 'incorrect';
 						$answer_points  = 0;
 
-            // Get maximum and minimum points for the quiz
-            $max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
-            $total_possible_points += $max_min_result['max_point'];
-            $minimum_possible_points += $max_min_result['min_point'];
+						// Get maximum and minimum points for the quiz
+						$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
+						$total_possible_points += $max_min_result['max_point'];
+						$minimum_possible_points += $max_min_result['min_point'];
 
 						// Send question to our grading function
 						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
@@ -1832,7 +1833,7 @@ add_action( 'wp_footer', function () use ($options) {
 			'question_answers_array'    => $question_data,
 			'total_possible_points'     => $total_possible_points,
 			'total_attempted_questions' => $attempted_question,
-      'minimum_possible_points'   => $minimum_possible_points,
+      		'minimum_possible_points'   => $minimum_possible_points,
 		), $options, $quiz_data );
 	}
 
