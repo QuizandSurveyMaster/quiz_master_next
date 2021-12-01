@@ -1243,7 +1243,7 @@ add_action( 'wp_footer', function () use ($options) {
 			<div class="qsm-auto-page-row quiz_section quiz_end <?php echo esc_attr( $qsm_d_none ); ?>"><?php
 			echo wp_kses( $section_display, wp_kses_allowed_html( 'post' ) );
 			?><input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
-			?></div><?php
+			</div><?php
 		} else {
 			?><div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
 				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php esc_attr_e( sanitize_text_field( $qmn_quiz_options->submit_button_text ) ); ?>" />
