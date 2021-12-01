@@ -1240,7 +1240,7 @@ add_action( 'wp_footer', function () use ($options) {
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$options   = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 		$qsm_option  = isset( $options->quiz_settings ) ? @unserialize( $options->quiz_settings ) : array();
-		$qsm_option = array_map("unserialize", $qsm_option);
+		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone = sanitize_text_field( $_POST['currentuserTimeZone'] );
 		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
