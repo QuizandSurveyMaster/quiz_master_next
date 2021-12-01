@@ -314,16 +314,19 @@ class QSM_Contact_Manager {
 
 		$is_not_allow_html = apply_filters( 'qsm_admin_contact_label_disallow_html', true );
 
-		$total_fields = count( $fields );
-		for ( $i = 0; $i < $total_fields; $i++ ) {
-        $label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
-			  $fields[ $i ] = array(
-          'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
-          'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
-          'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
-          'required' => sanitize_text_field( $fields[ $i ]['required'] ),
-        );
+		if ( ! empty( $fields ) ) {
+			$total_fields = count( $fields );
+			for ( $i = 0; $i < $total_fields; $i++ ) {
+				$label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
+				$fields[ $i ] = array(
+					'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
+					'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
+					'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
+					'required' => sanitize_text_field( $fields[ $i ]['required'] ),
+				);
+			}
 		}
+
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 		return $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'contact_form', $fields );
