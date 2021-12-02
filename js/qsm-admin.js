@@ -966,11 +966,11 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
  * QSM - Contact Form
  */
 
- 
+ var QSMContact;
  (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         if (window.location.href.indexOf('tab=contact') > 0 ){
-            var QSMContact;
+            
             QSMContact = {
                 load : function() {
                     if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){
