@@ -230,7 +230,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -243,7 +243,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -256,7 +256,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -280,7 +280,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -293,7 +293,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -315,7 +315,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -346,7 +346,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -381,7 +381,7 @@ function qsm_display_question_option( $key, $single_option ) {
 				}
 			}
 			?>
-		<?php echo isset( $single_option['label'] ) ? esc_html( $single_option['label'] ) : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -814,7 +814,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			}
 			?>
 			">
-	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo (int) $theme_id; ?>"
+	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>"
 		<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
