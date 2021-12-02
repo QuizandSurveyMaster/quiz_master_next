@@ -444,15 +444,16 @@ function qsm_display_optin_page() {
 <?php
 }
 function qsm_admin_get_free_addon_page_scripts_style( $hook ) {
+	global $mlwQuizMasterNext;
 	if ( $hook == 'qsm_page_qsm-free-addon' ) {
 
-		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css');
-		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css');
-		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css');
-		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css' );
-		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js', array(),'',true);
+		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css', array(), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js'array(), $mlwQuizMasterNext->version,true);
 		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
-		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(),'',true);
+		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(), $mlwQuizMasterNext->version, true);
 
 		$qsm_sibforms_inline_js = 'window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
 

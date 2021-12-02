@@ -12,11 +12,12 @@
  * Register our block.
  */
 function qsm_block_init() {
+	global $mlwQuizMasterNext;
 	// Register our block editor script.
 	wp_register_script(
 		'qsm-quiz-block',
 		plugins_url( 'block.js', __FILE__ ),
-		array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-request' )
+		array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-editor', 'wp-api-request',$mlwQuizMasterNext->version, true )
 	);      
 	// Register our block, and explicitly define the attributes we accept.
 	register_block_type( 'qsm/main-block', array(

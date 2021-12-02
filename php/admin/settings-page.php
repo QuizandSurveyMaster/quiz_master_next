@@ -53,8 +53,8 @@ class QMNGlobalSettingsPage {
 			return;
 		}
 		global $mlwQuizMasterNext;
-		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js');
-    wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+		wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js',array(), $mlwQuizMasterNext->version, false);
+    	wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css', array(), $mlwQuizMasterNext->version );
 	}
 
 	/**
