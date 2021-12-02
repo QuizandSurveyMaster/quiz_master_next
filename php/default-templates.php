@@ -8,4 +8,4 @@ function qmn_register_default_templates() {
 	$mlwQuizMasterNext->pluginHelper->register_quiz_template( 'Gray', 'qmn_gray.css');
 }
 add_action( 'plugins_loaded', 'qmn_register_default_templates' );
-?>
+

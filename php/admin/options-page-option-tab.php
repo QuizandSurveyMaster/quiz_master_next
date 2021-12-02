@@ -25,7 +25,7 @@ function qsm_options_option_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
         ?>
-        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/options-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
+        <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/options-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
         <?php
 	$mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_options' );
 }

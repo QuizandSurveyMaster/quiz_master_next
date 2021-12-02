@@ -106,7 +106,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
 	$remaining = $total - ( $page * $per_page );
 
 	// Get the results.
-	if(0 !== $user_id){
+	if ( 0 !== $user_id ) {
 		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE user = %d OR email = %s ORDER BY result_id DESC LIMIT %d, %d", $user_id, $email, $begin, $per_page );
 	} else {
 		$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE email = %s ORDER BY result_id DESC LIMIT %d, %d", $email, $begin, $per_page );
