@@ -259,7 +259,7 @@ class MLWQuizMasterNext {
 		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
 			wp_enqueue_media();
-			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
+			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css', array(), $this->version );
 			wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
 			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 		}
@@ -272,14 +272,14 @@ class MLWQuizMasterNext {
 		}
 		// result details page
 		if ( $hook == 'admin_page_qsm_quiz_result_details' ) {
-			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 			wp_enqueue_script( 'jquery-ui-slider');
 			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true);
-			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
+			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css', array(), $this->version );
 			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $this->version, true );
-			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
 		}
 		//results page
 		if ( $hook == 'qsm_page_mlw_quiz_results' ) {
@@ -287,7 +287,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
-			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
 		}
 		//stats page
 		if ( $hook == 'qsm_page_qmn_stats' ) {
@@ -323,13 +323,13 @@ class MLWQuizMasterNext {
 					wp_enqueue_media();
 				}
 				if ( "options" === $_GET['tab'] ) {
-					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
+					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css', array(), $this->version );
 					wp_enqueue_script( 'jquery' );
 					wp_enqueue_script( 'jquery-ui-core' );
 					wp_enqueue_script( 'jquery-ui-dialog' );
 					wp_enqueue_script( 'jquery-ui-button' );
-					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js', array(), $this->version, true );
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );

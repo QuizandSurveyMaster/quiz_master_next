@@ -61,11 +61,11 @@ add_shortcode( 'qsm_link', 'qsm_quiz_link_shortcode' );
  * Shortcode call - [qsm_recent_quizzes no_of_quizzes=5 include_future_quizzes='no' ]
  */
 function qsm_display_recent_quizzes( $attrs ) {
-
+	global $mlwQuizMasterNext;
 	$no_of_quizzes          = isset( $attrs['no_of_quizzes'] ) ? $attrs['no_of_quizzes'] : 10;
 	$include_future_quizzes = isset( $attrs['include_future_quizzes'] ) ? $attrs['include_future_quizzes'] : true;
 	global $wpdb;
-	wp_enqueue_style( 'quizzes-list', plugins_url( '../css/quizzes-list.css', __FILE__ ) );
+	wp_enqueue_style( 'quizzes-list', QSM_PLUGIN_CSS_URL.'/quizzes-list.css',, array(), $mlwQuizMasterNext->version );
 
 	$query   = "SELECT quiz_id, quiz_name, quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE deleted=0 ORDER BY  quiz_id DESC";
 	$quizzes = $wpdb->get_results( $query );
