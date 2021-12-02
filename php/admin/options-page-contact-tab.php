@@ -34,7 +34,7 @@ function qsm_options_contact_tab_content() {
   ) );
   ?>
   <h2 style="display: none;"><?php esc_html_e( 'Contact', 'quiz-master-next' ); ?></h2>
-  <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
+  <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank" rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
   <div class="contact-message"></div>
   <a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Fields', 'quiz-master-next' ); ?></a>
   <div class="contact-form"></div>
