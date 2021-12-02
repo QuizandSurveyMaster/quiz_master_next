@@ -440,10 +440,10 @@ class QMNQuizManager {
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
 				echo htmlspecialchars_decode( $data['display'] );
 			} else {
-				echo _e( 'Invalid result id!', 'quiz-master-next' );
+				_e( 'Invalid result id!', 'quiz-master-next' );
 			}
 		} else {
-			echo _e( 'Invalid result id!', 'quiz-master-next' );
+			_e( 'Invalid result id!', 'quiz-master-next' );
 		}
 		$content = ob_get_clean();
 		return $content;
