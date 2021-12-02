@@ -21,18 +21,27 @@ function qsm_generate_about_page() {
 	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
-	$tab_array = [['slug'=>'about', 'title'=>'About'],['slug'=>'help', 'title' => 'Help']];
-	$active_tab = isset($_GET['tab']) ? sanitize_text_field( $_GET['tab'] ) : 'about';
+	$tab_array = [
+		[
+			'slug'  => 'about',
+			'title' => 'About',
+		],
+		[
+			'slug'  => 'help',
+			'title' => 'Help', 
+		],
+	];
+	$active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'about';
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 
-<?php if($active_tab == 'help'){?>
+<?php if ( $active_tab == 'help' ) {?>
 <div class="wrap qsm-help-page">
 	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-	<?php } elseif($active_tab == 'about') {?>
+	<?php } elseif ( $active_tab == 'about' ) {?>
 	<style>
 	div.qsm_icon_wrap {
 		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
@@ -47,9 +56,9 @@ function qsm_generate_about_page() {
 
 		<h2 class="nav-tab-wrapper">
 			<?php
-            foreach ($tab_array as $tab) {
+            foreach ( $tab_array as $tab ) {
                 $active_class = '';
-                if ($active_tab == $tab['slug']) {
+                if ( $active_tab == $tab['slug'] ) {
                     $active_class = ' nav-tab-active';
                 }
                 echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -59,7 +68,7 @@ function qsm_generate_about_page() {
 		<br />
 		<div>
 			<?php
-                if ($active_tab == 'help') {
+                if ( $active_tab == 'help' ) {
                     qsm_show_adverts();
 					?>
 			<div style="width:100%;" class="inner-sidebar1">
@@ -70,7 +79,7 @@ function qsm_generate_about_page() {
 				<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
 			</div>
 			<?php
-                } elseif($active_tab == 'about') {
+                } elseif ( $active_tab == 'about' ) {
 					?>
 			<div class="qsm-tab-content tab-3">
 				<h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors

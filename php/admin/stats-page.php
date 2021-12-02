@@ -15,14 +15,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 4.3.0
  * @return void
  */
-function qmn_generate_stats_page()
-{
-	if ( !current_user_can('moderate_comments') )
-	{
+function qmn_generate_stats_page() {
+	if ( ! current_user_can('moderate_comments') ) {
 		return;
 	}
 	global $mlwQuizMasterNext;
-	$active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field( $_GET[ 'tab' ] ) : 'quiz-and-survey-submissions';
+	$active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'quiz-and-survey-submissions';
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">
@@ -30,9 +28,9 @@ function qmn_generate_stats_page()
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php
-			foreach($tab_array as $tab){
+			foreach ( $tab_array as $tab ) {
 				$active_class = '';
-				if ($active_tab == $tab['slug']){
+				if ( $active_tab == $tab['slug'] ) {
 					$active_class = ' nav-tab-active';
 				}
 				echo '<a href="?page=qmn_stats&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -41,10 +39,8 @@ function qmn_generate_stats_page()
 		</h2>
 		<div>
 		<?php
-			foreach($tab_array as $tab)
-			{
-				if ($active_tab == $tab['slug'])
-				{
+			foreach ( $tab_array as $tab ) {
+				if ( $active_tab == $tab['slug'] ) {
 					call_user_func($tab['function']);
 				}
 			}
@@ -60,8 +56,7 @@ function qmn_generate_stats_page()
  * @since 4.3.0
  * @return void
  */
-function qmn_stats_overview_tab()
-{
+function qmn_stats_overview_tab() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_stats_settings_tab(__("Quiz And Survey Submissions", 'quiz-master-next'), "qmn_stats_overview_content");
 }
@@ -73,23 +68,22 @@ add_action("plugins_loaded", 'qmn_stats_overview_tab');
  * @since 4.3.0
  * @return void
  */
-function qmn_stats_overview_content()
-{
+function qmn_stats_overview_content() {
 	$range = "daily";
-	if (isset($_POST["range"]) && $_POST["range"] != '') {
-		$range = sanitize_text_field( $_POST["range"] );
+	if ( isset($_POST["range"]) && $_POST["range"] != '' ) {
+		$range = sanitize_text_field( wp_unslash( $_POST["range"] ) );
 	}
 	$data = qmn_load_stats($range, 7);
 	$labels = array();
 	$value = array();
-	foreach($data as $stat) {
+	foreach ( $data as $stat ) {
 		array_push($labels,"");
 		array_push($value,intval($stat));
 	}
 
 	$qsm_admin_stats = array(
 		'labels' => $labels,
-		'value'  => $value
+		'value'  => $value,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsm_admin_stats', $qsm_admin_stats);
 	?>
@@ -137,13 +131,13 @@ function qmn_stats_overview_content()
  * @param $amount int The amount of stats to pull
  * @return array The array of stats
  */
-function qmn_load_stats($type, $amount = 0) {
+function qmn_load_stats( $type, $amount = 0 ) {
 	$stats = array();
-	switch ($type) {
+	switch ( $type ) {
 		case 'daily':
 			global $wpdb;
-			for ($i=0; $i < $amount; $i++) {
-				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-$i, date("Y")));
+			for ( $i = 0; $i < $amount; $i++ ) {
+				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - $i, date("Y")));
 				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}
@@ -151,19 +145,19 @@ function qmn_load_stats($type, $amount = 0) {
 
 		case 'weekly':
 				global $wpdb;
-				for ($i=0; $i < $amount; $i++) {
-					$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-(6+($i*7)), date("Y")));
-					$stat_end_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")-($i*7), date("Y")));
+				for ( $i = 0; $i < $amount; $i++ ) {
+					$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - (6 + ($i * 7)), date("Y")));
+					$stat_end_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - ($i * 7), date("Y")));
 					$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 					array_unshift($stats, $retrieved_stats);
 				}
-				break;
+            break;
 
 		case 'monthly':
 			global $wpdb;
-			for ($i=0; $i < $amount; $i++) {
-				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")-$i, 1, date("Y")));
-				$stat_end_date = date("Y-m-t", mktime(0, 0, 0, date("m")-$i, date("d"), date("Y")));
+			for ( $i = 0; $i < $amount; $i++ ) {
+				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m") - $i, 1, date("Y")));
+				$stat_end_date = date("Y-m-t", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y")));
 				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}

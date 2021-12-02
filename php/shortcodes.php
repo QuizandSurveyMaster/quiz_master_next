@@ -133,7 +133,7 @@ function qsm_generate_fb_header_metadata() {
 			$facebook_app_id = esc_js( $settings['facebook_app_id'] );
 		}
 		global $mlwQuizMasterNext, $wpdb, $wp_query;
-		$result_id    = sanitize_text_field( $_GET['result_id'] );
+		$result_id    = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );
 		if ( $results_data ) {
 			// Prepare responses array.
@@ -192,7 +192,7 @@ function qsm_generate_fb_header_metadata() {
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
 			?>
-<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . sanitize_text_field( $_GET['result_id'] ); ?>" />
+<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="<?php echo esc_attr( $pagename ); ?>" />
 <meta property="og:description" content="<?php echo esc_attr( $sharing ); ?>" />
@@ -249,7 +249,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 		$return_display .= '<img src="' . QSM_PLUGIN_URL . 'assets/clock.png' . '" alt="clock.png"/>';
 		$return_display .= '<p class="qsm-time-up-text">'. __( 'Time is Up!', 'quiz-master-next' ) .'</p>';
 		$return_display .= '</div>';
-		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">'.  __( 'Cancel', 'quiz-master-next' ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'.__( 'Submit Quiz', 'quiz-master-next' ).'</button></footer>';		$return_display .= '</div>';
+		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">'.  __( 'Cancel', 'quiz-master-next' ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'.__( 'Submit Quiz', 'quiz-master-next' ).'</button></footer>';      $return_display .= '</div>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
 	}

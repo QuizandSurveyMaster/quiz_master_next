@@ -39,36 +39,36 @@ class QSM_Migrate {
 							if ( $term_data ) {
 								$term_id = $term_data->term_id;
 							} else {
-								$term_array	 = wp_insert_term( $data->category, 'qsm_category' );
-								$term_id	 = $term_array['term_id'];
+								$term_array  = wp_insert_term( $data->category, 'qsm_category' );
+								$term_id     = $term_array['term_id'];
 							}
 						}
 						$values_array[] = "($data->question_id, $data->quiz_id, $term_id, 'qsm_category')";
 					}
-					$values			 = join( ',', $values_array );
-					$insert_query	 = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
-					$result			 = $wpdb->query( $insert_query );
+					$values          = join( ',', $values_array );
+					$insert_query    = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
+					$result          = $wpdb->query( $insert_query );
 					if ( $result > 0 ) {
 						update_option( 'qsm_multiple_category_enabled', date( time() ) );
-						$response	 = array(
+						$response    = array(
 							'status' => true,
-							'count'	 => $result,
+							'count'  => $result,
 						);
-						$update		 = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
-						$updated	 = $wpdb->query( $update );
+						$update      = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
+						$updated     = $wpdb->query( $update );
 					} else {
 						$response = array(
 							'status' => false,
 						);
 					}
 				} else {
-					$response	 = array(
+					$response    = array(
 						'status' => true,
-						'count'	 => 0,
+						'count'  => 0,
 					);
 					update_option( 'qsm_multiple_category_enabled', date( time() ) );
 				}
-				echo json_encode( $response );
+				echo wp_json_encode( $response );
 				break;
 
 			case 'cancel':

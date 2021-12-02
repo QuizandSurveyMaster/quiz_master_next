@@ -15,8 +15,7 @@ class QMN_Log_Manager
    *
    * @since 4.5.0
    */
-  function __construct()
-  {
+  function __construct() {
     // create the log post type
     add_action( 'init', array( $this, 'register_post_type' ) );
     // create types taxonomy and default types
@@ -50,7 +49,7 @@ class QMN_Log_Manager
 			'rewrite'         => false,
 			'capability_type' => 'post',
 			'supports'        => array( 'title', 'editor' ),
-			'can_export'      => false
+			'can_export'      => false,
 		);
 
 		// Registers QSM logs post type with filtered $args
@@ -66,7 +65,7 @@ class QMN_Log_Manager
 		register_taxonomy( 'qmn_log_type', 'qmn_log', array( 'public' => defined( 'WP_DEBUG' ) && WP_DEBUG ) );
 		$types = $this->log_types();
 		foreach ( $types as $type ) {
-			if( ! term_exists( $type, 'qmn_log_type' ) ) {
+			if ( ! term_exists( $type, 'qmn_log_type' ) ) {
 				wp_insert_term( $type, 'qmn_log_type' );
 			}
 		}
@@ -99,7 +98,7 @@ class QMN_Log_Manager
 			'post_title'   => $title,
 			'post_content' => $message,
 			'post_parent'  => $parent,
-			'log_type'     => $type
+			'log_type'     => $type,
 		);
 		return $this->insert_log( $log_data );
 	}
@@ -117,7 +116,7 @@ class QMN_Log_Manager
 			'post_status'  => 'publish',
 			'post_parent'  => 0,
 			'post_content' => '',
-			'log_type'     => false
+			'log_type'     => false,
 		);
 		$args = wp_parse_args( $log_data, $defaults );
 
@@ -127,12 +126,12 @@ class QMN_Log_Manager
 		// store the log entry
 		$log_id = wp_insert_post( $args );
 		// set the log type, if any
-		if( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
+		if ( $log_data['log_type'] && $this->valid_type( $log_data['log_type'] ) ) {
 			wp_set_object_terms( $log_id, $log_data['log_type'], 'qmn_log_type', false );
 		}
 		// set log meta, if any
-		if( $log_id && ! empty( $log_meta ) ) {
-			foreach( (array) $log_meta as $key => $meta ) {
+		if ( $log_id && ! empty( $log_meta ) ) {
+			foreach ( (array) $log_meta as $key => $meta ) {
 				update_post_meta( $log_id, '_qmn_log_' . sanitize_key( $key ), $meta );
 			}
 		}
@@ -155,23 +154,23 @@ class QMN_Log_Manager
 			'post_parent'    => 0,
 			'post_type'      => 'qmn_log',
 			'posts_per_page' => intval($amount),
-			'post_status'    => 'publish'
+			'post_status'    => 'publish',
 		);
-		if( $type && $this->valid_type( $type ) ) {
+		if ( $type && $this->valid_type( $type ) ) {
 			$query_args['tax_query'] = array(
 				array(
 					'taxonomy' => 'qmn_log_type',
 					'field'    => 'slug',
-					'terms'    => $type
-				)
+					'terms'    => $type,
+				),
 			);
 		}
 		$logs = get_posts( $query_args );
-		if( $logs )
+		if ( $logs )
 			return $logs;
 		// no logs found
 		return false;
 	}
 }
 
-?>
+
