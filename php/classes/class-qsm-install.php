@@ -287,7 +287,7 @@ class QSM_Install {
 				),
 			),
 			'default' => 0,
-			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz' ),
+			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -326,7 +326,7 @@ class QSM_Install {
 				),
 			),
 			'default' => 0,
-			'ph_text' => __( '', 'quiz-master-next' ),
+			'ph_text' => '',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -1153,7 +1153,7 @@ class QSM_Install {
 			'id'      => 'quiz_processing_message',
 			'label'   => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => __( '', 'quiz-master-next' ),
+			'default' => '',
 			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
