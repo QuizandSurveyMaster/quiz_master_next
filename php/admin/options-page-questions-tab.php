@@ -831,7 +831,11 @@ function qsm_send_data_sendy() {
 			),
 		)
 	);
-	echo isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ? $result['body'] : '';
+
+	if ( isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ) {
+		$apiBody = json_decode( wp_remote_retrieve_body( $result ) );
+		echo wp_json_encode( $apiBody );
+	}
 	exit;
 }
 

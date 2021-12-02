@@ -203,7 +203,7 @@ function qsm_options_styling_tab_content() {
 			<?php
 			foreach ( $registered_templates as $slug => $template ) {
 				?>
-			<div onclick="mlw_qmn_theme('<?php echo esc_attr( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected == $slug ) ? 'mlw_qmn_themeBlockActive' : '';?> "><?php echo esc_attr($template['name']); ?></div>
+			<div onclick="mlw_qmn_theme('<?php echo esc_attr( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected == $slug ) ? 'mlw_qmn_themeBlockActive' : '';?> "><?php echo wp_kses_post( $template['name'] ); ?></div>
 			<?php
 			}
 			?>

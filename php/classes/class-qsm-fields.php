@@ -239,7 +239,7 @@ class QSM_Fields {
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 		<br />
-		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? $field['note'] : ''; ?>
+		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? wp_kses_post( $field['note'] ) : ''; ?>
 	</td>
 </tr>
 <?php
