@@ -477,7 +477,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					?>
 				</a>
 				<?php
-					echo isset( $mlw_result_data['total_result'] ) ? '(' . esc_html( $mlw_result_data['total_result'] ) . ')' : '';
+					echo isset( $mlw_result_data['total_result'] ) ? '(' . wp_kses_post( $mlw_result_data['total_result'] ) . ')' : '';
 				?>
 			</p>
 		</div>
