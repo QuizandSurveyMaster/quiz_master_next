@@ -60,8 +60,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?></span>
-                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?>" value='<?php echo esc_attr( $name ); ?>' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->name_field_text ); ?></span>
+                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo esc_attr( $options->name_field_text ); ?>" value='<?php echo esc_attr( $name ); ?>' />
 				<?php
 			}
 
@@ -72,8 +72,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?></span>
-				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserComp' placeholder="<?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?>" value='' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->business_field_text ); ?></span>
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserComp' placeholder="<?php echo esc_attr( $options->business_field_text ); ?>" value='' />
 				<?php
 			}
 
@@ -84,8 +84,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?></span>
-				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?>" value='<?php echo esc_attr( $email ); ?>' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->email_field_text ); ?></span>
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
 				<?php
 			}
 
@@ -96,8 +96,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?></span>
-                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='number' class='<?php echo esc_attr( $class ); ?>' name='mlwUserPhone' placeholder="<?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?>" value='' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->phone_field_text ); ?></span>
+                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='number' class='<?php echo esc_attr( $class ); ?>' name='mlwUserPhone' placeholder="<?php echo esc_attr( $options->phone_field_text ); ?>" value='' />
 				<?php
 			}
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
@@ -132,7 +132,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if ( $fields[ $i ]['use'] == 'phone' ) { ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if ( $fields[ $i ]['use'] == 'phone' ) { ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
 							<?php
 							break;
 
@@ -142,7 +142,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) { echo esc_attr( $value ); } ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) { echo esc_attr( $value ); } ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
 							<?php
 							break;
 

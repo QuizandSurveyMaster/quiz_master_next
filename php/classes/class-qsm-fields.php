@@ -24,7 +24,7 @@ class QSM_Fields {
     $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
     
     // If nonce is correct, save settings
-    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings' ) ) {
+    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) {
 
 		// Cycle through fields to retrieve all posted values      
 		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
@@ -34,24 +34,24 @@ class QSM_Fields {
 			$sanitized_value = '';
 			switch ( $field["type"] ) {
 				case 'text':
-					$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : '';
 					break;
 
 				case 'url':
-					$sanitized_value = esc_url_raw( $_POST[ $field["id"] ] );
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? esc_url_raw( wp_unslash( $_POST[ $field["id"] ] ) ) : '';
 					break;
 
 				case 'radio':
 				case 'date':
-					$sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) ) : '';
 					break;
 
 				case 'number':
-					$sanitized_value = intval( $_POST[ $field["id"] ] );
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? intval( $_POST[ $field["id"] ] ) : '';
 					break;
 
 				case 'editor':
-					$sanitized_value = wp_kses_post( wp_unslash( $_POST[ $field["id"] ] ) );
+					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? wp_kses_post( wp_unslash( $_POST[ $field["id"] ] ) ) : '';
 					break;
 
 				default:
@@ -82,7 +82,7 @@ class QSM_Fields {
     ?>
 <form action="" method="post">
 	<?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
-	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+	<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 	<table class="form-table" style="width: 100%;">
 		<?php
         $array_before_legacy = array();
@@ -110,10 +110,10 @@ class QSM_Fields {
         }
         ?>
 	</table>
-  <?php  if ( isset($_GET['tab']) && 'options' == $_GET['tab'] && $_GET['page'] == 'mlw_quiz_options' ) {?>
-      <button class="button" name="global_setting" type="submit"><?php _e('Set Global Defaults', 'quiz-master-next'); ?></button>
+  <?php  if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
+      <button class="button" name="global_setting" type="submit"><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></button>
   <?php } ?>
-	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+	<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
   
 </form>
 <?php
@@ -231,7 +231,7 @@ class QSM_Fields {
 			<?php
               $pages = get_pages(); 
               foreach ( $pages as $page ) { ?>
-			<option value="<?php echo get_page_link( $page->ID ) ?>"
+			<option value="<?php echo esc_url( get_page_link( $page->ID ) ); ?>"
 				<?php selected($value, get_page_link( $page->ID )); ?>><?php echo wp_kses_post( $page->post_title ); ?></option>;
 			<?php } ?>
 		</select>
@@ -261,7 +261,7 @@ class QSM_Fields {
           if ( is_array( $field["variables"] ) ) {
             ?>
 			<br>
-			<p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
+			<p><?php esc_html_e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
 			<?php
             foreach ( $field["variables"] as $variable ) {
               ?>

@@ -122,7 +122,7 @@ function qsm_generate_featured_addons() {
 		?>
 		</div>
 		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
+			href="#qsm_add_addons"><?php esc_html_e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}

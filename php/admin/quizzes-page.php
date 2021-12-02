@@ -26,7 +26,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 
 	// Delete quiz.
-	if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_delete_quiz_nonce'], 'qsm_delete_quiz' ) ) {
+	if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_delete_quiz_nonce'] ) ), 'qsm_delete_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['delete_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		do_action( 'qsm_before_delete_quiz' , $quiz_id );
@@ -35,7 +35,7 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Duplicate Quiz.
-	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
+	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_duplicate_quiz_nonce'] ) ), 'qsm_duplicate_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['duplicate_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		$quiz_name = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES );
@@ -43,7 +43,7 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Resets stats for a quiz.
-	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( $_POST['qsm_reset_stats_nonce'], 'qsm_reset_stats' ) ) {
+	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_reset_stats_nonce'] ) ), 'qsm_reset_stats' ) ) {
 		$quiz_id = intval( $_POST['reset_quiz_id'] );
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
@@ -95,8 +95,8 @@ function qsm_generate_quizzes_surveys_page() {
 	}
 
 	// Multiple Delete quiz.
-	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( $_POST['qsm_search_multiple_delete_nonce'], 'qsm_search_multiple_delete' ) ) {
-		if ( ( isset( $_POST['qsm-ql-action-top'] ) && $_POST['qsm-ql-action-top'] == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && $_POST['qsm-ql-action-bottom'] == 'delete_pr' ) ) {
+	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_search_multiple_delete_nonce'] ) ), 'qsm_search_multiple_delete' ) ) {
+		if ( ( isset( $_POST['qsm-ql-action-top'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-top'] ) ) == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-bottom'] ) ) == 'delete_pr' ) ) {
 			if ( isset( $_POST['chk_remove_all'] ) ) {
 				foreach ( $_POST['chk_remove_all'] as $quiz_id ) {
 					$mlwQuizMasterNext->quizCreator->delete_quiz( intval( $quiz_id ), intval( $quiz_id ) );
@@ -136,13 +136,13 @@ function qsm_generate_quizzes_surveys_page() {
 	if ( in_array( 'author', (array) $user->roles ) ) {
 		$post_arr['author__in'] = array( $user->ID );
 	}
-	if ( isset( $_GET['order'] ) && $_GET['order'] == 'asc' ) {
-		$post_arr['orderby'] = isset( $_GET['orderby'] ) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
+	if ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) == 'asc' ) {
+		$post_arr['orderby'] = isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) == 'title' ? 'title' : 'last_activity';
 		$post_arr['order']   = 'ASC';
 		// Load our quizzes.
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, $post_arr['orderby'], 'ASC', (array) $user->roles, $user->ID, $limit, $offset, $where );
-	} elseif ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
-		$post_arr['orderby'] = isset( $_GET['orderby'] ) && $_GET['orderby'] == 'title' ? 'title' : 'last_activity';
+	} elseif ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) == 'desc' ) {
+		$post_arr['orderby'] = isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) == 'title' ? 'title' : 'last_activity';
 		$post_arr['order']   = 'DESC';
 		// Load our quizzes.
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, $post_arr['orderby'], 'DESC', (array) $user->roles, $user->ID, $limit, $offset, $where );
@@ -325,19 +325,19 @@ function qsm_generate_quizzes_surveys_page() {
 						$orderby_date_slug = '&orderby=date&order=asc';
 						$orderby_class     = $orderby_date_class = 'sortable desc';
 						// Title order
-					if ( isset( $_GET['orderby'] ) && $_GET['orderby'] === 'title' ) {
-						if ( isset( $_GET['order'] ) && $_GET['order'] === 'asc' ) {
+					if ( isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) === 'title' ) {
+						if ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) === 'asc' ) {
 							$orderby_slug  = '&orderby=title&order=desc';
 							$orderby_class = 'sorted asc';
-						} elseif ( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
+						} elseif ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) === 'desc' ) {
 							$orderby_slug  = '&orderby=title&order=asc';
 							$orderby_class = 'sorted desc';
 						}
-					} elseif ( isset( $_GET['orderby'] ) && $_GET['orderby'] === 'date' ) {
-						if ( isset( $_GET['order'] ) && $_GET['order'] === 'asc' ) {
+					} elseif ( isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) === 'date' ) {
+						if ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) === 'asc' ) {
 							$orderby_date_slug  = '&orderby=date&order=desc';
 							$orderby_date_class = 'sorted asc';
-						} elseif ( isset( $_GET['order'] ) && $_GET['order'] === 'desc' ) {
+						} elseif ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) === 'desc' ) {
 							$orderby_date_slug  = '&orderby=date&order=asc';
 							$orderby_date_class = 'sorted desc';
 						}

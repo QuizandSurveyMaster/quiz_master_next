@@ -745,8 +745,8 @@ add_action( 'admin_init', 'qsm_check_create_tables' );
  * @since 7.0.0
  */
 function qsm_admin_page_access_func() {
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'quiz-master-next/mlw_quizmaster2.php' ) {
-		wp_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
+	if ( isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'quiz-master-next/mlw_quizmaster2.php' ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
 		exit;
 	}
 }

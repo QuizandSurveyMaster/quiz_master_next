@@ -47,7 +47,7 @@ function mlw_options_text_tab_content() {
                         <div class="qsm-text-header">
                             <div class="message-dropdown">
                                 <div class="qsm-row">
-                                    <label><?php _e('Select Message', 'quiz-master-next'); ?></label>
+                                    <label><?php esc_html_e('Select Message', 'quiz-master-next'); ?></label>
                                     <select id="qsm_question_text_message_id">
                                         <?php if ( $editor_text_arr ) {
                                         foreach ( $editor_text_arr as $key => $single_editor_arr ) {
@@ -61,7 +61,7 @@ function mlw_options_text_tab_content() {
                             </div>
                             <div class="save-text-changes">
                                 <span class="spinner" style="float: none;"></span>
-                                <button id="qsm_save_text_message" class="button button-primary"><?php _e('Save Text Message', 'quiz-master-next'); ?></button>
+                                <button id="qsm_save_text_message" class="button button-primary"><?php esc_html_e('Save Text Message', 'quiz-master-next'); ?></button>
                             </div>
                         </div>
                         <div class="qsm-text-conent">
@@ -74,8 +74,8 @@ function mlw_options_text_tab_content() {
                     </div>
                     <div id="postbox-container-1" class="postbox-container">
                         <div class="qsm-text-header">
-                            <h5><?php _e('Allowed Variables', 'quiz-master-next'); ?></h5>
-                            <span class="description"><?php _e('click to insert the variable', 'quiz-master-next'); ?></span>
+                            <h5><?php esc_html_e('Allowed Variables', 'quiz-master-next'); ?></h5>
+                            <span class="description"><?php esc_html_e('click to insert the variable', 'quiz-master-next'); ?></span>
                         </div>
                         <div class="qsm-text-conent qsm-text-allowed-variables">
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
@@ -105,10 +105,10 @@ function mlw_options_text_tab_content() {
                     </div>
                 </div>
             </div>
-            <div class="qsm_text_customize_label"><?php _e('Customize Labels', 'quiz-master-next'); ?> <span class="dashicons dashicons-arrow-down-alt"></span></div>
+            <div class="qsm_text_customize_label"><?php esc_html_e('Customize Labels', 'quiz-master-next'); ?> <span class="dashicons dashicons-arrow-down-alt"></span></div>
         </div>
         <div class="qsm-text-label-wrapper">
-            <h2><?php _e("Customize Labels", 'quiz-master-next'); ?></h2>
+            <h2><?php esc_html_e("Customize Labels", 'quiz-master-next'); ?></h2>
             <?php
             $mlwQuizMasterNext->pluginHelper->generate_settings_section( 'quiz_text', $text_text_arr );
             ?>

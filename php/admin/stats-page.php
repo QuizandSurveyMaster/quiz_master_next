@@ -24,7 +24,7 @@ function qmn_generate_stats_page() {
 	$tab_array = $mlwQuizMasterNext->pluginHelper->get_stats_tabs();
 	?>
 	<div class="wrap">
-		<h2><?php _e('Quiz/Survey Statistics', 'quiz-master-next'); ?></h2>
+		<h2><?php esc_html_e('Quiz/Survey Statistics', 'quiz-master-next'); ?></h2>
 		<?php qsm_show_adverts(); ?>
 		<h2 class="nav-tab-wrapper">
 			<?php

@@ -25,7 +25,8 @@ class QSM_Migrate {
 	public function enable_multiple_categories() {
 		global $wpdb;
 		global $mlwQuizMasterNext;
-		switch ( $_POST['value'] ) {
+		$value = isset( $_POST['value'] ) ? sanitize_text_field( wp_unslash( $_POST['value'] ) ) : '';
+		switch ( $value ) {
 			case 'enable':
 				$new_category  = '';
 				$term_id       = 0;

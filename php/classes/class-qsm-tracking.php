@@ -110,7 +110,7 @@ class QSM_Tracking {
     	$data["wp_version"] = get_bloginfo( 'version' );
     	$data["php_version"] = PHP_VERSION;
     	$data["mysql_version"] = $wpdb->db_version();
-    	$data["server_app"] = $_SERVER['SERVER_SOFTWARE'];
+    	$data["server_app"] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 
     	// Retrieve current plugin information
 		if ( ! function_exists( 'get_plugins' ) ) {
@@ -212,7 +212,7 @@ class QSM_Tracking {
     	if ( isset( $_GET["qmn_track_check"] ) ) {
 
 			// Checks if user opted into tracking.
-      		if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
+      		if ( sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) ) == 'opt_into_tracking' ) {
         		$settings = (array) get_option( 'qmn-settings' );
         		$settings['tracking_allowed'] = '2';
         		update_option( 'qmn-settings', $settings );

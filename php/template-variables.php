@@ -893,7 +893,7 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  */
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
 	global $mlwQuizMasterNext;
-	if ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ) {
+	if ( is_admin() && isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'qsm_quiz_result_details' ) {
 		$user_answer_class     = '';
 		$question_answer_class = '';
 		if ( isset( $mlw_quiz_array['form_type'] ) && $mlw_quiz_array['form_type'] == 0 ) {

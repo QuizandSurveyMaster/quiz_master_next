@@ -22,7 +22,7 @@ function qsm_generate_result_details() {
 		.qmn_question_answer {margin-bottom: 30px;font-size: 16px;line-height: 1.5;}
 	</style>
 <div class="wrap">
-	<h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
+	<h2 style="display: none;"><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
 	<h2 class="nav-tab-wrapper">
 		<?php
      foreach ( $tab_array as $tab ) {

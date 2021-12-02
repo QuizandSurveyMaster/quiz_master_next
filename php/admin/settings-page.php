@@ -141,8 +141,8 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function global_section() {
-		_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
-		if ( isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] ) {
+		esc_html_e( 'These settings are applied to the entire plugin and all quizzes.', 'quiz-master-next' );
+		if ( isset( $_GET['settings-updated'] ) ) {
 			flush_rewrite_rules( true );
 			echo '<div class="updated" style="padding: 10px;">';
 				echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
@@ -446,7 +446,7 @@ class QMNGlobalSettingsPage {
 		global $mlwQuizMasterNext;
 		$active_tab = "qmn_global_settings";
 		if ( isset( $_GET["tab"] ) ) {
-			if ( $_GET["tab"] == "qmn_global_settings" ) {
+			if ( sanitize_text_field( wp_unslash( $_GET["tab"] ) ) == "qmn_global_settings" ) {
 				$active_tab = "qmn_global_settings";
 			} else {
 				$active_tab = "quiz-default-qptions";

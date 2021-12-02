@@ -106,17 +106,17 @@ class QMNQuizManager {
 			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
 		}
 		$json          = array();
-		$file_name     = sanitize_file_name( $_FILES['file']['name'] );
+		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
 		if ( isset( $validate_file['type'] ) && $validate_file['type'] != false && in_array( $validate_file['type'], $mimes ) ) {
-			if ( $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
+			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
 				echo wp_json_encode( $json );
 				exit;
 			}
 			$upload_dir = wp_upload_dir();
-			$datafile   = $_FILES['file']['tmp_name'];
+			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['tmp_name'] ) ) : '';
 			// $file_name = $_FILES["file"]["name"];
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
@@ -321,7 +321,7 @@ class QMNQuizManager {
 				} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
-					echo "<style type='text/css'>" . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . "</style>";
+					echo "<style type='text/css'>" . wp_kses_post( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) ) . "</style>";
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL.'/animate.css', array(), $mlwQuizMasterNext->version );
@@ -378,7 +378,7 @@ class QMNQuizManager {
 			// Checks if we should be showing quiz or results page.
 			if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
 				$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_array_for_variables, $question_amount );
-			} elseif ( isset( $_POST['complete_quiz'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
+			} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 
@@ -439,12 +439,12 @@ class QMNQuizManager {
 					'result_id'              => $id,
 				);
 				$data          = QSM_Results_Pages::generate_pages( $response_data );
-				echo htmlspecialchars_decode( $data['display'] );
+				echo wp_kses_post( htmlspecialchars_decode( $data['display'] ) );
 			} else {
-				_e( 'Invalid result id!', 'quiz-master-next' );
+				esc_html_e( 'Invalid result id!', 'quiz-master-next' );
 			}
 		} else {
-			_e( 'Invalid result id!', 'quiz-master-next' );
+			esc_html_e( 'Invalid result id!', 'quiz-master-next' );
 		}
 		$content = ob_get_clean();
 		return $content;
@@ -741,7 +741,8 @@ class QMNQuizManager {
 				wp_reset_postdata();
 			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
-			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action=" <?php echo esc_url( $_SERVER['REQUEST_URI'] ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate  enctype="multipart/form-data">
+			$f_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( up_unslash( $_SERVER['REQUEST_URI'] ) ) : '#';
+			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $f_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span><?php
@@ -771,7 +772,8 @@ class QMNQuizManager {
 					<input type="hidden" class="qmn_quiz_id" name="qmn_quiz_id" id="qmn_quiz_id" value="<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" />
 					<input type='hidden' name='complete_quiz' value='confirmation' /><?php
 				if ( isset( $_GET['payment_id'] ) && $_GET['payment_id'] != '' ) {
-					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( $_GET['payment_id'] ); ?>" /><?php
+					$payment_id = sanitize_text_field( wp_unslash( $_GET['payment_id'] ) );
+					?><input type="hidden" name="main_payment_id" value="<?php echo esc_attr( $payment_id ); ?>" /><?php
 				}
 				echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
 			?></form>
@@ -1237,15 +1239,15 @@ add_action( 'wp_footer', function () use ( $options ) {
 		global $mlwQuizMasterNext;
 
 		$qmn_allowed_visit = true;
-		$quiz              = intval( $_POST['qmn_quiz_id'] );
+		$quiz              = isset( $_POST['qmn_quiz_id'] ) ? intval( $_POST['qmn_quiz_id'] ) : '';
 		$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 		$options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 		$qsm_option = isset( $options->quiz_settings ) ? maybe_unserialize( $options->quiz_settings ) : array();
 		$qsm_option = array_map( 'maybe_unserialize', $qsm_option );
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
-		$timezone = sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) );
+		$timezone = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
-		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && $_POST['currentuserTime'] > $dtUtcDate ) {
+		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate ) {
 			echo wp_json_encode( array( 'quizExpired' => true ) );
 			die();
 		}
@@ -1282,7 +1284,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 	 * Show quiz on button click
 	 */
 	public function qsm_get_quiz_to_reload() {
-		$quiz_id = sanitize_text_field( intval( $_POST['quiz_id'] ) );
+		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : '';
 		echo do_shortcode( '[qsm quiz="' . $quiz_id . '"]' );
 		exit;
 	}
@@ -1365,7 +1367,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
-		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
+		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
 
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables ) );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
