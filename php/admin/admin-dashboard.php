@@ -18,7 +18,7 @@ function qsm_get_blog_data_rss(){
 	$blog_data_obj = fetch_feed( 'https://quizandsurveymaster.com/feed/' );
 	$maxitems = 0;
 	if ( ! is_wp_error( $blog_data_obj ) ) {
-		$maxitems = $blog_data_obj->get_item_quantity( 2 ); 
+		$maxitems = $blog_data_obj->get_item_quantity( 2 );
 		$blog_data_items = $blog_data_obj->get_items( 0, $maxitems );
 	}
 	$blog_data = array();
@@ -26,7 +26,7 @@ function qsm_get_blog_data_rss(){
 		$blog_data[] = array(
 			'link'    => esc_url( $item->get_permalink() ),
 			'title'   => esc_html( $item->get_title() ),
-			'excerpt' => esc_html( $item->get_description() ),               
+			'excerpt' => esc_html( $item->get_description() ),
 		);
 	}
 	return $blog_data;
@@ -596,7 +596,9 @@ function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
 	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['qsm_new_quiz_nonce'] ) ), 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name   = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
+		$quiz_name = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
+		$quiz_name = htmlspecialchars( $quiz_name, ENT_QUOTES );
+
 		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
@@ -605,7 +607,7 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Quiz Options.
 		 */
 		$quiz_options    = array(
-			'quiz_name'                          => isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '',
+			'quiz_name'                          => $quiz_name,
 			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
 			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
 			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
@@ -662,7 +664,7 @@ function qsm_dashboard_roadmap( $widget_id ) {
 						target="_blank" rel="noopener"> Roadmap
 					</a>
 					<div class="post-description">
-						Visit out public Roadmap to checkout what's in the development pipepline of QSM. 
+						Visit out public Roadmap to checkout what's in the development pipepline of QSM.
 					</div>
 				</li>
 				<li>

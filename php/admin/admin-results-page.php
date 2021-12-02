@@ -84,8 +84,7 @@ function qsm_results_overview_tab_content() {
 
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
-
-		// Variables from delete result form.
+    
 		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action('qsm_before_delete_result' , $mlw_delete_results_id);
@@ -117,9 +116,9 @@ function qsm_results_overview_tab_content() {
 	}
 
 	// Check if bulk delete has been selected. If so, verify nonce.
-	if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
-
-		// Ensure the POST variable is an array
+if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
+		
+  // Ensure the POST variable is an array
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 			$d_result = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
 
@@ -304,7 +303,7 @@ function qsm_results_overview_tab_content() {
 	<input type="hidden" name="bulk_delete" value="confirmation" />
 	<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 	<?php wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' );
-	
+
 	$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
 		'score'         => __( 'Score', 'quiz-master-next' ),
 		'time_complete' => __( 'Time To Complete', 'quiz-master-next' ),
@@ -352,18 +351,18 @@ function qsm_results_overview_tab_content() {
 						$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ) );
 					} elseif ( $mlw_quiz_info->quiz_system == 1 ) {
 						$values['score']['content'][] = sprintf( '%1$s %2$s', esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
-					} elseif ( $mlw_quiz_info->quiz_system == 3 ) { 
+					} elseif ( $mlw_quiz_info->quiz_system == 3 ) {
 						$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s <br /> %6$s %7$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ), esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
-					} else { 
+					} else {
 						$values['score']['content'][] = esc_html__( 'Not Graded', 'quiz-master-next' );
 					}
 				}
 			}
-				
+
 			if ( isset( $values['time_complete'] ) ) {
 				$values['time_complete']['content'][] = $mlw_complete_time;
 			}
-			
+
 			if ( isset( $values['name'] ) ) {
 				$values['name']['content'][] = $mlw_quiz_info->name;
 			}
@@ -390,7 +389,7 @@ function qsm_results_overview_tab_content() {
 
 			$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
 			$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
-			
+
 			if ( isset( $values['time_taken'] ) ) {
 				$values['time_taken']['content'][] = '<abbr title="' . esc_attr( $date . $time ) . '">' . esc_html( $date ) . '</abbr>';
 			}
@@ -423,7 +422,7 @@ function qsm_results_overview_tab_content() {
 			</tr>
 		</thead>
 		<tbody id="the-list">
-			<?php 
+			<?php
 			$co = ! empty( $quiz_infos ) ? count( $quiz_infos ) : 0;
 			if ( $co > 0 ) {
 				for ( $x = 0; $x < $co; $x++ ) { ?>

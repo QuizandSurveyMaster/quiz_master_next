@@ -79,9 +79,10 @@ function qsm_options_styling_tab_content() {
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
-	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
+  if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
 		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) ) : '';
+
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
 		if ( isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
@@ -100,10 +101,10 @@ function qsm_options_styling_tab_content() {
 	// Read all the themes
 	$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
-	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
+	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array = isset( $_POST['settings'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) ) : array();
+		$settings_array = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings(
 			$quiz_id,
 			$saved_quiz_theme,
@@ -312,11 +313,11 @@ function qsm_display_theme_settings() {
 	 global $mlwQuizMasterNext, $wpdb;
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
-
-	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
-		unset( $_POST['save_theme_settings_nonce'] );
+  
+	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
+    unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array  = isset( $_POST['settings'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) ) : array();
+		$settings_array  = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">

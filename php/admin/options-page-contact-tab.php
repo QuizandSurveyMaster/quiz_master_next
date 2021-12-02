@@ -24,6 +24,7 @@ add_action("plugins_loaded", 'qsm_settings_contact_tab', 5);
 function qsm_options_contact_tab_content() {
   global $wpdb;
   global $mlwQuizMasterNext;
+
   $quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
   $user_id = get_current_user_id();
   $contact_form = QSM_Contact_Manager::load_fields();
@@ -53,10 +54,10 @@ add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 function qsm_contact_form_admin_ajax() {
   $quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
   $user_id = get_current_user_id();
-  if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
+  if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
     die ( 'Busted!');
   }
-    
+
 	global $wpdb;
 	global $mlwQuizMasterNext;
 

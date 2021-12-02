@@ -28,7 +28,7 @@ function qsm_generate_about_page() {
 		],
 		[
 			'slug'  => 'help',
-			'title' => 'Help', 
+			'title' => 'Help',
 		],
 	];
 	$active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'about';
@@ -94,7 +94,7 @@ function qsm_generate_about_page() {
 							$contributors = json_decode( wp_remote_retrieve_body( $response ) );
 						}
 					}
-					
+
 					if ( is_array( $contributors ) & ! empty( $contributors ) ) {
 						set_transient( 'qmn_contributors', $contributors, 3600 );
 						$contributor_list = '<ul class="wp-people-group">';
@@ -214,12 +214,11 @@ function qsm_get_system_info() {
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
 
-	$server_s = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ): '';
-
+	$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 	$sys_info .= '<h3>'. __('Server Information', 'quiz-master-next') .'</h3>';
 	$sys_info .= __('PHP : ', 'quiz-master-next') . PHP_VERSION . '<br />';
 	$sys_info .= __('MySQL : ', 'quiz-master-next') . $wpdb->db_version() . '<br />';
-	$sys_info .= __('Webserver : ', 'quiz-master-next') . $server_s . '<br />';
+	$sys_info .= __('Webserver : ', 'quiz-master-next') . $server_software . '<br />';
 
 	$total_quizzes          = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_quizzes LIMIT 1" );
 	$total_active_quizzes   = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0 LIMIT 1" );

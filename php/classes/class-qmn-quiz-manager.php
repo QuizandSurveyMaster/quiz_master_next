@@ -106,6 +106,7 @@ class QMNQuizManager {
 			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
 		}
 		$json          = array();
+
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
 		if ( isset( $validate_file['type'] ) && $validate_file['type'] != false && in_array( $validate_file['type'], $mimes ) ) {
@@ -116,6 +117,7 @@ class QMNQuizManager {
 				exit;
 			}
 			$upload_dir = wp_upload_dir();
+
 			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['tmp_name'] ) ) : '';
 			// $file_name = $_FILES["file"]["name"];
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
@@ -741,7 +743,7 @@ class QMNQuizManager {
 				wp_reset_postdata();
 			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
-			$f_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( up_unslash( $_SERVER['REQUEST_URI'] ) ) : '#';
+			$f_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( up_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
 			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $f_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
@@ -1247,6 +1249,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 		$dateStr = $qsm_option['quiz_options']['scheduled_time_end'];
 		$timezone = isset( $_POST['currentuserTimeZone'] ) ? sanitize_text_field( wp_unslash( $_POST['currentuserTimeZone'] ) ) : '';
 		$dtUtcDate = strtotime($dateStr. ' '. $timezone);
+
 		if ( '1' === $qsm_option['quiz_options']['not_allow_after_expired_time'] && isset( $_POST['currentuserTime'] ) && sanitize_text_field( wp_unslash( $_POST['currentuserTime'] ) ) > $dtUtcDate ) {
 			echo wp_json_encode( array( 'quizExpired' => true ) );
 			die();
@@ -2251,12 +2254,6 @@ add_action( 'wp_footer', function () use ( $options ) {
 			$ip_collection = $settings['ip_collection'];
 		}
 		if ( '1' != $ip_collection ) {
-			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
-				$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
-			} else {
-				$ip = __( 'Unknown', 'quiz-master-next' );
-			}
-
 			if ( getenv( 'HTTP_CLIENT_IP' ) ) {
 				$ip = getenv( 'HTTP_CLIENT_IP' );
 			} elseif ( getenv( 'HTTP_X_FORWARDED_FOR' ) ) {
@@ -2269,6 +2266,10 @@ add_action( 'wp_footer', function () use ( $options ) {
 				$ip = getenv( 'HTTP_FORWARDED' );
 			} elseif ( getenv( 'REMOTE_ADDR' ) ) {
 				$ip = getenv( 'REMOTE_ADDR' );
+			} elseif ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+				$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
+			} else {
+				$ip = __( 'Unknown', 'quiz-master-next' );
 			}
 		}
 

@@ -103,9 +103,9 @@ class QSM_Tracking {
   	private function load_data( $tracking ) {
     	global $wpdb;
     	global $mlwQuizMasterNext;
+
     	$data = array();
     	$data["plugin"] = "QSM";
-
     	$data['url']    = home_url();
     	$data["wp_version"] = get_bloginfo( 'version' );
     	$data["php_version"] = PHP_VERSION;

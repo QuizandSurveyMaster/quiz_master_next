@@ -56,7 +56,7 @@ function qsm_generate_quiz_options() {
 	}
 	//Update post status
 	if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_update_quiz_status_nonce'] ) ), 'qsm_update_quiz_status' ) ) {
-		$quiz_post_id    = isset( $_POST['quiz_post_id'] ) ? intval( $_POST['quiz_post_id'] ) : '';
+		$quiz_post_id    = isset( $_POST['quiz_post_id'] ) ? intval( $_POST['quiz_post_id'] ) : 0;
 		$arg_post_arr    = array(
 			'ID'          => $quiz_post_id,
 			'post_status' => 'publish',

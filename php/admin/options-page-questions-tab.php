@@ -736,7 +736,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -744,6 +744,7 @@ function qsm_ajax_save_pages() {
 	$json    = array(
 		'status' => 'error',
 	);
+
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
@@ -794,8 +795,8 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  * Send data to sendy
  */
 function qsm_send_data_sendy() {
-	if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sendy-save' ) ) {
-		die( 'Busted!' );
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sendy-save' ) ) {
+    die( 'Busted!' );
 	}
 
 	$sendy_url = 'http://sendy.expresstech.io';
@@ -868,7 +869,7 @@ function qsm_dashboard_delete_result() {
  * @since 7.1.3
  */
 function qsm_delete_question_question_bank() {
-	if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_question_bank_nonce' ) ) {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_question_bank_nonce' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -917,7 +918,7 @@ add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_qu
  * @since 7.1.11
  */
 function qsm_delete_question_from_database() {
-	if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_from_database' ) ) {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -929,8 +930,9 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
+
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-	if ( $question_id ) {
+  if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
 		echo wp_json_encode(
