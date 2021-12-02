@@ -431,7 +431,7 @@ function qsm_options_questions_tab_content() {
 										if ( $enabled_multiple_category && 'cancelled' !== $enabled_multiple_category ) {
 											$category_question_option = array(
 												'categories' => array(
-													'label' => __( '', 'quiz-master-next' ),
+													'label' => '',
 													'type' => 'multi_category',
 													'priority' => '5',
 													'default' => '',
@@ -440,7 +440,7 @@ function qsm_options_questions_tab_content() {
 										} else {
 											$category_question_option = array(
 												'categories' => array(
-													'label' => __( '', 'quiz-master-next' ),
+													'label' => '',
 													'type' => 'category',
 													'priority' => '5',
 													'default' => '',
