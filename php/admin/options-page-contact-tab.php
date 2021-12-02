@@ -55,8 +55,15 @@ function qsm_contact_form_admin_ajax() {
     
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	// Sends posted form data to Contact Manager to sanitize and save.
-	$results['status'] =  QSM_Contact_Manager::save_fields( $quiz_id, $_POST['contact_form'] );
+
+  $results = $data = array();
+  if ( isset( $_POST['contact_form'] ) ) {
+    $data = wp_unslash( $_POST['contact_form'] );
+  }
+
+  // Sends posted form data to Contact Manager to sanitize and save.
+  $results['status'] = QSM_Contact_Manager::save_fields( $quiz_id, $data );
+
 	echo wp_json_encode( $results );
 	die();
 }
