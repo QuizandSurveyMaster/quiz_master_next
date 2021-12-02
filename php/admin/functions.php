@@ -21,7 +21,7 @@ add_action( 'qmn_quiz_created', 'qsm_redirect_to_edit_page', 10, 1 );
 function qsm_redirect_to_edit_page( $quiz_id ) {
 	link_featured_image( $quiz_id );
 	$url = admin_url( 'admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id );
-	wp_redirect($url);
+	wp_safe_redirect($url);
 }
 
 /**
@@ -31,7 +31,7 @@ function qsm_redirect_to_edit_page( $quiz_id ) {
  * @return void
  */
 function link_featured_image( $quiz_id ) {
-	$url = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( $_POST['quiz_featured_image'] ) : '';
+	$url = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '';
 	if ( ! empty( $url ) ) {
 		update_option( "quiz_featured_image_$quiz_id", $url );
 	}
@@ -416,21 +416,21 @@ function qsm_create_new_quiz_wizard() {
 				<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
 				<main class="qsm-popup__content" id="modal-2-content">
 					<div class="qsm-wizard-menu">
-						<div class="qsm-logo"><img alt="" src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png">
+						<div class="qsm-logo"><img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ); ?>/assets/icon-128x128.png">
 						</div>
 						<div class="qsm-wizard-wrap active" data-show="select_themes">
 							<span
-								class="qsm-wizard-step-text"><?php echo _e( 'Select theme', 'quiz-master-next' ); ?></span>
+								class="qsm-wizard-step-text"><?php esc_html_e( 'Select theme', 'quiz-master-next' ); ?></span>
 						</div>
 						<div class="qsm-wizard-wrap" data-show="quiz_settings">
 							<span
-								class="qsm-wizard-step-text"><?php echo _e( 'Quiz Settings', 'quiz-master-next' ); ?></span>
+								class="qsm-wizard-step-text"><?php esc_html_e( 'Quiz Settings', 'quiz-master-next' ); ?></span>
 						</div>
 						<div class="qsm-wizard-wrap" data-show="addons_list">
-							<span class="qsm-wizard-step-text"><?php echo _e( 'Addons', 'quiz-master-next' ); ?></span>
+							<span class="qsm-wizard-step-text"><?php esc_html_e( 'Addons', 'quiz-master-next' ); ?></span>
 						</div>
 						<span class="qsm-wizard-step-text-optional">
-							<?php echo _e( '(Optional)', 'quiz-master-next' ); ?>
+							<?php esc_html_e( '(Optional)', 'quiz-master-next' ); ?>
 						</span>
 					</div>
 					<ul style="display: none;" class="qsm-new_menu_tab_items">
@@ -537,7 +537,7 @@ function qsm_create_new_quiz_wizard() {
 								echo '</div>';
 							}
 						} else {
-							_e( 'No settings found!', 'quiz-master-next' );
+							esc_html_e( 'No settings found!', 'quiz-master-next' );
 						}
 						?>
 					</div>
@@ -588,9 +588,9 @@ function qsm_create_new_quiz_wizard() {
 															href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank" rel="noopener">
 															<?php
-															_e( 'Buy now', 'quiz-master-next' );
+															esc_html_e( 'Buy now', 'quiz-master-next' );
 															echo ' : $ ';
-															echo array_values( $single_arr['price'] )[0];
+															echo esc_html( array_values( $single_arr['price'] )[0] );
 															?>
 														</a>
 													</span>
@@ -745,8 +745,8 @@ add_action( 'admin_init', 'qsm_check_create_tables' );
  * @since 7.0.0
  */
 function qsm_admin_page_access_func() {
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'quiz-master-next/mlw_quizmaster2.php' ) {
-		wp_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
+	if ( isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'quiz-master-next/mlw_quizmaster2.php' ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
 		exit;
 	}
 }
@@ -786,13 +786,13 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	<input style="display: none" type="radio" name="quiz_theme_id" value="0"
 		<?php checked( $saved_quiz_theme, '0', true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
+		<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
 		<div class="downloaded-theme-button">
 			<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo __( 'Default Theme', 'quiz-master-next' ); ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
 		<div class="theme-actions">
 			<?php if ( $saved_quiz_theme != 'default' ) { ?>
 			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>

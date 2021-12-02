@@ -495,10 +495,10 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
@@ -542,7 +542,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle">
-		<span><?php esc_html_e( 'Changelog ' . '( ' . $mlwQuizMasterNext->version . ' )', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</span>
 	</h2>
 	<div class="inside">
 		<div class="main">
@@ -564,7 +564,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						$cl_str      = $expload_str[1];
 						?>
 
-				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
+				<li><span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
 					<?php echo wp_kses_post( $cl_str ); ?></li>
 				<?php
 						$i++;
@@ -594,9 +594,11 @@ function qsm_dashboard_chagelog( $widget_id ) {
  */
 function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
-	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
+	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['qsm_new_quiz_nonce'] ) ), 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name   = isset( $_POST['quiz_name'] ) ? sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) ) : '';
+		$quiz_name = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
+		$quiz_name = htmlspecialchars( $quiz_name, ENT_QUOTES );
+
 		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
@@ -606,7 +608,7 @@ function qsm_create_new_quiz_from_wizard() {
 		 */
 		$quiz_options    = array(
 			'quiz_name'                          => $quiz_name,
-			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( $_POST['quiz_featured_image'] ) : '',
+			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
 			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
 			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
 			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
@@ -650,10 +652,10 @@ function qsm_dashboard_roadmap( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "What's Next", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "What's Next", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">

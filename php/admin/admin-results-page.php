@@ -83,10 +83,9 @@ function qsm_results_overview_tab_content() {
 	global $mlwQuizMasterNext;
 
 	// If nonce is correct, delete results.
-	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( $_POST['delete_results_nonce'], 'delete_results' ) ) {
-
-		// Variables from delete result form.
-		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : '';
+	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
+    
+		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action('qsm_before_delete_result' , $mlw_delete_results_id);
 		// Updates table to mark results as deleted.
@@ -117,13 +116,14 @@ function qsm_results_overview_tab_content() {
 	}
 
 	// Check if bulk delete has been selected. If so, verify nonce.
-	if ( isset( $_POST["bulk_delete"] ) && isset( $_POST["bulk_delete_nonce"] ) && wp_verify_nonce( $_POST['bulk_delete_nonce'], 'bulk_delete' ) ) {
-
-		// Ensure the POST variable is an array
+	if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
+		
+  		// Ensure the POST variable is an array
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
+			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
 
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
-			foreach ( $_POST["delete_results"] as $result ) {
+			foreach ( $delete_results as $result ) {
 
 				// Santize by ensuring the value is an int
 				$result_id = intval( $result );
@@ -222,7 +222,7 @@ function qsm_results_overview_tab_content() {
 	</div>
 	<div class="tablenav-pages">
 		<span
-			class="displaying-num"><?php echo sprintf( _n( 'One result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ); ?></span>
+			class="displaying-num"><?php echo sprintf( _n( 'One result', '%s results', $qsm_results_count, 'quiz-master-next' ), esc_html( number_format_i18n( $qsm_results_count ) ) ); ?></span>
 		<span class="pagination-links">
 			<?php
 				$mlw_qmn_previous_page = 0;
@@ -231,41 +231,41 @@ function qsm_results_overview_tab_content() {
 
 				$url_query_string = '';
 				if ( isset( $_GET['quiz_id'] ) && ! empty( $_GET['quiz_id'] ) ) {
-					$url_query_string .= '&&quiz_id=' . intval( $_GET['quiz_id'] );
+					$url_query_string .= '&quiz_id=' . intval( $_GET['quiz_id'] );
 				}
 
 				if ( isset( $_GET['qsm_search_phrase'] ) && ! empty( $_GET['qsm_search_phrase'] ) ) {
-					$url_query_string .= "&&qsm_search_phrase=$sanitized_search_phrase";
+					$url_query_string .= "&qsm_search_phrase=$sanitized_search_phrase";
 				}
 
 				if ( isset( $_GET['qmn_order_by'] ) && ! empty( $_GET['qmn_order_by'] ) ) {
-					$url_query_string .= "&&qmn_order_by=$order_by";
+					$url_query_string .= "&qmn_order_by=$order_by";
 				}
 
 				if ( $result_page > 0 ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
-					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
+					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><</a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
 					<?php
 					if ( $results_left > $table_limit ) {
 						?>
-						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
 				} elseif ( 0 == $result_page ) {
 					if ( $results_left > $table_limit ) {
 						?>
 						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
 				} elseif ( $results_left < $table_limit ) {
 					$mlw_qmn_previous_page = $result_page - 2;
 					?>
-					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><< /a>
+					<a class="prev-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$mlw_qmn_previous_page$url_query_string" ); ?>"><< /a>
 					<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
-					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
+					<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 					<?php
 				}
 				?>

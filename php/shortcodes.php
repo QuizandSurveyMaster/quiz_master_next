@@ -43,9 +43,10 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
 	if ( ! empty( $target ) ) {
-		$target_html = "target='" . esc_attr( $target ) . "'";
+		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
+	} else {
+		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
 	}
-	return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "' $target_html>" . esc_html( $content ) . '</a>';
 }
 
 add_shortcode( 'qsm_link', 'qsm_quiz_link_shortcode' );
@@ -191,8 +192,9 @@ function qsm_generate_fb_header_metadata() {
 			}
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
+			$result_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			?>
-<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
+<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $result_id ); ?>" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="<?php echo esc_attr( $pagename ); ?>" />
 <meta property="og:description" content="<?php echo esc_attr( $sharing ); ?>" />

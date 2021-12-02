@@ -118,11 +118,11 @@ function qsm_generate_featured_addons() {
 	<div class="no_addons_installed">
 		<div>
 			<?php
-			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
+			esc_html_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
 		?>
 		</div>
 		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
+			href="#qsm_add_addons"><?php esc_html_e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}
@@ -148,7 +148,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -190,7 +190,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -235,7 +235,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {

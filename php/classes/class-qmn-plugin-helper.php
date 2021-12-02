@@ -404,14 +404,15 @@ class QMNPluginHelper
                 if ( $type["graded"] ) {
                     $qmn_total_questions += 1;
                     if ( $quiz_options->question_numbering == 1 ) { ?>
-                        <span class='mlw_qmn_question_number'><?php esc_html_e( $qmn_total_questions ); ?></span>
+                        <span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
                     <?php
                     }
                 }
                 if ( $quiz_options->show_category_on_front ) {
                     $categories = QSM_Questions::get_question_categories( $question_id );
                     if ( ! empty($categories['category_name']) ) {
-                       ?><div class="quiz-cat"><?php esc_html_e('[' .implode(',' ,$categories['category_name']) . ']' ); ?></div><?php
+                        $cat_name = implode( ',' ,$categories['category_name'] );
+                       ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
                     }
                 }
                 call_user_func($type['display'], intval($question_id), $question->question_name, $answers);

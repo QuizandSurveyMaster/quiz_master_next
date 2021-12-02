@@ -305,25 +305,26 @@ class MLWQuizMasterNext {
 				wp_enqueue_media();
 			}
 			if ( isset($_GET['tab']) ) {
-				if ( "contact" === $_GET['tab'] ) {
+				$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
+				if ( "contact" === $tab ) {
 					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
 				}
-				if ( "emails" === $_GET['tab'] ) {
+				if ( "emails" === $tab ) {
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 				}
-				if ( "results-pages" === $_GET['tab'] ) {
+				if ( "results-pages" === $tab ) {
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 				}
-				if ( "style" === $_GET['tab'] ) {
+				if ( "style" === $tab ) {
 					wp_enqueue_style( 'wp-color-picker' );
 					wp_enqueue_media();
 				}
-				if ( "options" === $_GET['tab'] ) {
-					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
+				if ( "options" === $tab ) {
+					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
 					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css', array(), $this->version );
 					wp_enqueue_script( 'jquery' );
 					wp_enqueue_script( 'jquery-ui-core' );
@@ -440,12 +441,12 @@ class MLWQuizMasterNext {
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
 
-	public function parent_file( $parent_file ) {
+	public function parent_file( $file_name ) {
 		global $menu, $submenu, $parent_file, $submenu_file;
 		if ( 'edit-tags.php?taxonomy=qsm_category' == $submenu_file ) {
-			$parent_file = 'qsm_dashboard';
+			$file_name = 'qsm_dashboard';
 		}
-		return $parent_file;
+		return $file_name;
 	}
 
 	/**

@@ -155,7 +155,7 @@ function qsm_register_rest_routes() {
 function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
-		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( $_REQUEST['category'] ) : '';
+		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['category'] ) ) : '';
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
 	
 		$migrated = false;

@@ -212,7 +212,7 @@ class QSM_Tracking {
     	if ( isset( $_GET["qmn_track_check"] ) ) {
 
 			// Checks if user opted into tracking.
-      		if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
+      		if ( sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) ) == 'opt_into_tracking' ) {
         		$settings = (array) get_option( 'qmn-settings' );
         		$settings['tracking_allowed'] = '2';
         		update_option( 'qmn-settings', $settings );

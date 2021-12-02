@@ -37,7 +37,7 @@ function qsm_show_adverts() {
                 }
                 $count_ads = count($all_ads['ads']);
                 $ad_text  = '';
-		$rand_int = rand( 0, $count_ads - 1 );
+		        $rand_int = wp_rand( 0, $count_ads - 1 );
                 $link = '<a target="_blank" href="'. $all_ads['ads'][ $rand_int ]['link'] .'">'. $all_ads['ads'][ $rand_int ]['link_text'] .'</a>';
                 $link = str_replace('#38', '&', $link);
                 $ad_text = str_replace('[link]', $link, $all_ads['ads'][ $rand_int ]['text']);

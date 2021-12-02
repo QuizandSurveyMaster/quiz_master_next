@@ -22,27 +22,27 @@ function qsm_generate_result_details() {
 		.qmn_question_answer {margin-bottom: 30px;font-size: 16px;line-height: 1.5;}
 	</style>
 <div class="wrap">
-	<h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
+	<h2 style="display: none;"><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
 	<h2 class="nav-tab-wrapper">
-		<?php
-     foreach ( $tab_array as $tab ) {
+	<?php
+    foreach ( $tab_array as $tab ) {
         $active_class = '';
         if ( $active_tab == $tab['slug'] ) {
-           $active_class = ' nav-tab-active';
-       }
-       $result_id = isset($_GET["result_id"]) ? intval($_GET["result_id"]) : '';
-       echo '<a href="?page=qsm_quiz_result_details&result_id="' . $result_id . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-   }
-   ?>
+            $active_class = ' nav-tab-active';
+        }
+        $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
+        echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $result_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+    }
+    ?>
 </h2>
 <div class="result-tab-content">
-  <?php
-  foreach ( $tab_array as $tab ) {
-    if ( $active_tab == $tab['slug'] ) {
-       call_user_func( $tab['function'] );
-   }
-}
-?>
+    <?php
+    foreach ( $tab_array as $tab ) {
+        if ( $active_tab == $tab['slug'] ) {
+            call_user_func( $tab['function'] );
+        }
+    }
+    ?>
 </div>
 </div>
 <?php
@@ -57,16 +57,12 @@ function qsm_generate_result_details() {
 * @since 4.4.0
 */
 function qsm_generate_results_details_tab() {
-
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
 	// Gets results data.
-	$result_id    = isset($_GET["result_id"]) ? intval($_GET["result_id"]) : '';
+  $result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
-
-
-
 
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );

@@ -181,10 +181,10 @@ class QSM_Quiz_Settings
      */
     public function update_setting( $setting, $value ) {
         global $mlwQuizMasterNext;
-        print_r($value, true);
+
         // Return if empty.
         if ( empty( $setting ) ) {
-            $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Setting was empty with value equal to ' . print_r($value, true), 0, 'error');
+            $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Setting was empty with value equal to ' . wp_json_encode( $value ), 0, 'error');
             return false;
         }
 

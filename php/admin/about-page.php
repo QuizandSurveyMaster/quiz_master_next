@@ -213,6 +213,7 @@ function qsm_get_system_info() {
 		}
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
+
 	$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 	$sys_info .= '<h3>'. __('Server Information', 'quiz-master-next') .'</h3>';
 	$sys_info .= __('PHP : ', 'quiz-master-next') . PHP_VERSION . '<br />';

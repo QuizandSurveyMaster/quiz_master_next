@@ -103,7 +103,7 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function admin_notice_check() {
-		if ( isset( $_GET["qmn_review_notice_check"] ) && $_GET["qmn_review_notice_check"] == 'remove_message' ) {
+		if ( isset( $_GET["qmn_review_notice_check"] ) && sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) == 'remove_message' ) {
 			$this->trigger = $this->check_message_trigger();
 			$update_trigger = -1;
 			if ( $this->trigger === -1 ) {
@@ -117,7 +117,7 @@ class QMN_Review_Message {
 			}
 			update_option( 'qmn_review_message_trigger', $update_trigger );
 		}
-		if ( isset( $_GET["qmn_review_notice_check"] ) && $_GET["qmn_review_notice_check"] == 'already_did' ) {
+		if ( isset( $_GET["qmn_review_notice_check"] ) && sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) == 'already_did' ) {
 			update_option( 'qmn_review_message_trigger', -1 );
 		}
 	}
