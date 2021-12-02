@@ -323,7 +323,7 @@ class QMNQuizManager {
 				} elseif ( $registered_template && file_exists( get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
-					echo "<style type='text/css'>" . wp_kses_post( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) ) . "</style>";
+					echo "<style type='text/css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . "</style>";
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL.'/animate.css', array(), $mlwQuizMasterNext->version );
@@ -743,8 +743,8 @@ class QMNQuizManager {
 				wp_reset_postdata();
 			}
 			echo apply_filters( 'qsm_display_before_form', '', $options, $quiz_data );
-			$f_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $f_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
+			$quiz_form_action = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			?><form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $quiz_form_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span><?php
