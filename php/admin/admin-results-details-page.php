@@ -24,25 +24,25 @@ function qsm_generate_result_details() {
 <div class="wrap">
 	<h2 style="display: none;"><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
 	<h2 class="nav-tab-wrapper">
-		<?php
-     foreach ( $tab_array as $tab ) {
+	<?php
+    foreach ( $tab_array as $tab ) {
         $active_class = '';
         if ( $active_tab == $tab['slug'] ) {
             $active_class = ' nav-tab-active';
         }
-        $r_id = isset($_GET["result_id"]) ? intval($_GET["result_id"]) : '';
-        echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $r_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-   }
-   ?>
+        $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
+        echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $result_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+    }
+    ?>
 </h2>
 <div class="result-tab-content">
-  <?php
-  foreach ( $tab_array as $tab ) {
-    if ( $active_tab == $tab['slug'] ) {
-       call_user_func( $tab['function'] );
-   }
-}
-?>
+    <?php
+    foreach ( $tab_array as $tab ) {
+        if ( $active_tab == $tab['slug'] ) {
+            call_user_func( $tab['function'] );
+        }
+    }
+    ?>
 </div>
 </div>
 <?php

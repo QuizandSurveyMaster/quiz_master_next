@@ -116,14 +116,14 @@ function qsm_results_overview_tab_content() {
 	}
 
 	// Check if bulk delete has been selected. If so, verify nonce.
-if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
+	if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
 		
-  // Ensure the POST variable is an array
+  		// Ensure the POST variable is an array
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
-			$d_result = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
+			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
 
 			// Cycle through the POST array which should be an array of the result ids of the results the user wishes to delete
-			foreach ( $d_result as $result ) {
+			foreach ( $delete_results as $result ) {
 
 				// Santize by ensuring the value is an int
 				$result_id = intval( $result );

@@ -39,7 +39,7 @@ function qsm_options_styling_tab_content() {
 
 		$style_quiz_id = isset( $_POST['style_quiz_id'] ) ? intval( $_POST['style_quiz_id'] ) : '';
 		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
-		$quiz_style    = isset( $_POST['quiz_css'] ) ? sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) ) : '';
+		$quiz_style    = isset( $_POST['quiz_css'] ) ? htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ), ENT_QUOTES ) : '';
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
@@ -333,7 +333,7 @@ function qsm_display_theme_settings() {
 		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 		echo esc_attr( $quiz_name );
 		?>
-		<a href="<?php echo admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id . '&tab=style' ); ?>"
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id . '&tab=style' ) ); ?>"
 			class="edit-quiz-name button button-primary"><?php esc_html_e( 'Back to themes', 'quiz-master-next' ); ?></a>
 	</h1>
 	<form action="" method="post">

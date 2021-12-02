@@ -441,12 +441,12 @@ class MLWQuizMasterNext {
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
 
-	public function parent_file( $p_file ) {
+	public function parent_file( $file_name ) {
 		global $menu, $submenu, $parent_file, $submenu_file;
 		if ( 'edit-tags.php?taxonomy=qsm_category' == $submenu_file ) {
-			$p_file = 'qsm_dashboard';
+			$file_name = 'qsm_dashboard';
 		}
-		return $p_file;
+		return $file_name;
 	}
 
 	/**
