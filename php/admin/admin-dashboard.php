@@ -542,7 +542,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle">
-		<span><?php esc_html_e( 'Changelog ' . '( ' . $mlwQuizMasterNext->version . ' )', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</span>
 	</h2>
 	<div class="inside">
 		<div class="main">
@@ -564,7 +564,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						$cl_str      = $expload_str[1];
 						?>
 
-				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
+				<li><span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
 					<?php echo wp_kses_post( $cl_str ); ?></li>
 				<?php
 						$i++;
@@ -594,9 +594,9 @@ function qsm_dashboard_chagelog( $widget_id ) {
  */
 function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
-	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
+	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['qsm_new_quiz_nonce'] ) ), 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name   = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
+		$quiz_name   = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
 		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
@@ -605,16 +605,16 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Quiz Options.
 		 */
 		$quiz_options    = array(
-			'quiz_name'                          => sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ),
-			'quiz_featured_image'                => esc_url_raw( $_POST['quiz_featured_image'] ),
-			'form_type'                          => sanitize_text_field( wp_unslash( $_POST['form_type'] ) ),
-			'system'                             => sanitize_text_field( wp_unslash( $_POST['system'] ) ),
-			'pagination'                         => sanitize_text_field( wp_unslash( $_POST['pagination'] ) ),
-			'progress_bar'                       => sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ),
-			'timer_limit'                        => sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ),
-			'enable_pagination_quiz'             => sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ),
-			'require_log_in'                     => sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ),
-			'disable_scroll_next_previous_click' => sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ),
+			'quiz_name'                          => isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '',
+			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
+			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
+			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
+			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
+			'progress_bar'                       => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : '',
+			'timer_limit'                        => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
+			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
+			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 		);
 		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );

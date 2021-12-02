@@ -28,9 +28,10 @@ function qsm_generate_result_details() {
      foreach ( $tab_array as $tab ) {
         $active_class = '';
         if ( $active_tab == $tab['slug'] ) {
-           $active_class = ' nav-tab-active';
-       }
-       echo '<a href="?page=qsm_quiz_result_details&result_id="' . intval( $_GET["result_id"] ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
+            $active_class = ' nav-tab-active';
+        }
+        $r_id = intval( $_GET["result_id"] );
+        echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $r_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
    }
    ?>
 </h2>
@@ -56,16 +57,12 @@ function qsm_generate_result_details() {
 * @since 4.4.0
 */
 function qsm_generate_results_details_tab() {
-
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
 	// Gets results data.
-	$result_id    = intval( $_GET["result_id"] );
+	$result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
-
-
-
 
 	// Prepare plugin helper.
 	$quiz_id = intval( $results_data->quiz_id );

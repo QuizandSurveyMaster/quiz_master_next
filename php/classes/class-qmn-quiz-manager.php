@@ -1284,7 +1284,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 	 * Show quiz on button click
 	 */
 	public function qsm_get_quiz_to_reload() {
-		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : '';
+		$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 		echo do_shortcode( '[qsm quiz="' . $quiz_id . '"]' );
 		exit;
 	}
@@ -1680,7 +1680,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 
 								// If a comment was submitted
 								if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-									$comment = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'mlwComment' . $question['question_id'] ] ), ENT_QUOTES ) );
+									$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
 								} else {
 									$comment = '';
 								}
@@ -1760,7 +1760,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 							}
 							// If a comment was submitted
 							if ( isset( $_POST[ 'mlwComment' . $question['question_id'] ] ) ) {
-								$comment = sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'mlwComment' . $question['question_id'] ] ), ENT_QUOTES ) );
+								$comment = htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'mlwComment' . $question['question_id'] ] ) ), ENT_QUOTES );
 							} else {
 								$comment = '';
 							}
@@ -1853,7 +1853,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 	public function check_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		$qmn_quiz_comments = '';
 		if ( isset( $_POST['mlwQuizComments'] ) ) {
-			$qmn_quiz_comments = sanitize_textarea_field( $_POST['mlwQuizComments'] );
+			$qmn_quiz_comments = sanitize_textarea_field( wp_unslash( $_POST['mlwQuizComments'] ) );
 		}
 		return apply_filters( 'qmn_returned_comments', $qmn_quiz_comments, $qmn_quiz_options, $qmn_array_for_variables );
 	}
@@ -2251,8 +2251,8 @@ add_action( 'wp_footer', function () use ( $options ) {
 			$ip_collection = $settings['ip_collection'];
 		}
 		if ( '1' != $ip_collection ) {
-			if ( $_SERVER['REMOTE_ADDR'] ) {
-				$ip = $_SERVER['REMOTE_ADDR'];
+			if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+				$ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
 			} else {
 				$ip = __( 'Unknown', 'quiz-master-next' );
 			}
@@ -2269,8 +2269,6 @@ add_action( 'wp_footer', function () use ( $options ) {
 				$ip = getenv( 'HTTP_FORWARDED' );
 			} elseif ( getenv( 'REMOTE_ADDR' ) ) {
 				$ip = getenv( 'REMOTE_ADDR' );
-			} else {
-				$ip = $_SERVER['REMOTE_ADDR'];
 			}
 		}
 

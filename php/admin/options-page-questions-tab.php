@@ -51,7 +51,7 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     = intval( $_GET['quiz_id'] );
+	$quiz_id     = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$user_id     = get_current_user_id();
 	$form_type   = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
 	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
@@ -736,7 +736,7 @@ add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
  * @since 5.2.0
  */
 function qsm_ajax_save_pages() {
-	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sandy-page' ) ) {
+	if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sandy-page' ) ) {
 		die( 'Busted!' );
 	}
 
@@ -744,7 +744,7 @@ function qsm_ajax_save_pages() {
 	$json    = array(
 		'status' => 'error',
 	);
-	$quiz_id = intval( $_POST['quiz_id'] );
+	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array();
@@ -794,14 +794,14 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  * Send data to sendy
  */
 function qsm_send_data_sendy() {
-	if ( ! wp_verify_nonce( $_POST['nonce'], 'ajax-nonce-sendy-save' ) ) {
+	if ( isset( $_POST['nonce'] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sendy-save' ) ) {
 		die( 'Busted!' );
 	}
 
 	$sendy_url = 'http://sendy.expresstech.io';
 	$list      = '4v8zvoyXyTHSS80jeavOpg';
-	$name      = sanitize_text_field( wp_unslash( $_POST['name'] ) );
-	$email     = sanitize_email( wp_unslash( $_POST['email'] ) );
+	$name      = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$email     = isset( $_POST['email'] ) ? sanitize_email( wp_unslash( $_POST['email'] ) ) : '';
 
 	// subscribe
 	$postdata = http_build_query(
@@ -868,7 +868,7 @@ function qsm_dashboard_delete_result() {
  * @since 7.1.3
  */
 function qsm_delete_question_question_bank() {
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'delete_question_question_bank_nonce' ) ) {
+	if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_question_bank_nonce' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -880,7 +880,7 @@ function qsm_delete_question_question_bank() {
 		);
 		  wp_die();
 	}
-	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_textarea_field( $_POST['question_ids'] ) : '';
+	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_textarea_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
 	$response     = array();
 	if ( $question_arr ) {
@@ -917,7 +917,7 @@ add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_qu
  * @since 7.1.11
  */
 function qsm_delete_question_from_database() {
-	if ( ! wp_verify_nonce( $_REQUEST['nonce'], 'delete_question_from_database' ) ) {
+	if ( isset( $_REQUEST['nonce'] ) && ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -929,7 +929,7 @@ function qsm_delete_question_from_database() {
 		);
 		  wp_die();
 	}
-	$question_id = intval( $_POST['question_id'] );
+	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
@@ -951,8 +951,8 @@ add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 
 function qsm_save_new_category() {
 
-	$category   = sanitize_text_field( wp_unslash( $_POST['name'] ) );
-	$parent     = intval( $_POST['parent'] );
+	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
 	$parent     = ( $parent == -1 ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,

@@ -30,12 +30,12 @@ function qsm_generate_quizzes_surveys_page() {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['delete_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		do_action( 'qsm_before_delete_quiz' , $quiz_id );
-		$quiz_name = sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) );
+		$quiz_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
 
 	// Duplicate Quiz.
-	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_duplicate_quiz_nonce'] ) ), 'qsm_duplicate_quiz' ) ) {
+	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'], $_POST['duplicate_new_quiz_name'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_duplicate_quiz_nonce'] ) ), 'qsm_duplicate_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['duplicate_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		$quiz_name = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES );
@@ -44,7 +44,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Resets stats for a quiz.
 	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_reset_stats_nonce'] ) ), 'qsm_reset_stats' ) ) {
-		$quiz_id = intval( $_POST['reset_quiz_id'] );
+		$quiz_id = isset( $_POST['reset_quiz_id'] ) ? intval( $_POST['reset_quiz_id'] ) : '';
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
@@ -98,14 +98,15 @@ function qsm_generate_quizzes_surveys_page() {
 	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_search_multiple_delete_nonce'] ) ), 'qsm_search_multiple_delete' ) ) {
 		if ( ( isset( $_POST['qsm-ql-action-top'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-top'] ) ) == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-bottom'] ) ) == 'delete_pr' ) ) {
 			if ( isset( $_POST['chk_remove_all'] ) ) {
-				foreach ( $_POST['chk_remove_all'] as $quiz_id ) {
+				$c_all = array_map( 'sanitize_text_field', wp_unslash( $_POST['chk_remove_all'] ) );
+				foreach ( $c_all as $quiz_id ) {
 					$mlwQuizMasterNext->quizCreator->delete_quiz( intval( $quiz_id ), intval( $quiz_id ) );
 				}
 			}
 		}
 	}
 	/*Set Request To Post as form method is Post.(AA)*/
-	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
+	if ( isset( $_POST['btnSearchQuiz'], $_POST['s'] ) && $_POST['s'] != '' ) {
 		$search       = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['s'] ) ), ENT_QUOTES );
 		$condition    = " WHERE deleted=0 AND quiz_name LIKE '%$search%'";
 		$qry          = stripslashes( $wpdb->prepare( "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
@@ -151,7 +152,7 @@ function qsm_generate_quizzes_surveys_page() {
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, '', '', (array) $user->roles, $user->ID, $limit, $offset, $where );
 	}
 	/*Written to get results form search.(AA)*/
-	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
+	if ( isset( $_POST['btnSearchQuiz'], $_POST['s'] ) && $_POST['s'] != '' ) {
 		$search_quiz = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['s'] ) ), ENT_QUOTES );
 		$condition   = " WHERE deleted=0 AND quiz_name LIKE '%$search_quiz%'";
 		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
@@ -260,11 +261,11 @@ function qsm_generate_quizzes_surveys_page() {
 						for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<!-- Changed Request to Post -->
 					<input type="search" id="quiz_search" name="s"
-						value="<?php echo isset( $_POST['s'] ) && $_POST['s'] != '' ? esc_attr( $_POST['s'] ) : ''; ?>">
+						value="<?php echo isset( $_POST['s'] ) && $_POST['s'] != '' ? esc_attr( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : ''; ?>">
 					<input id="search-submit" class="button" type="submit" name="btnSearchQuiz" value="Search Quiz">
 					<?php if ( class_exists( 'QSM_Export_Import' ) ) { ?>
 					<a class="button button-primary"
-						href="<?php echo admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import'; ?>"
+						href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>"
 						target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a>
 					<?php } else { ?>
 					<a id="show_import_export_popup" href="#" style="position: relative;top: 0px;"
@@ -283,7 +284,7 @@ function qsm_generate_quizzes_surveys_page() {
 					</div>
 					<div class="tablenav-pages">
 						<span
-							class="displaying-num"><?php echo number_format_i18n( $total ) . ' ' . sprintf( _n( 'item', 'items', $total ), number_format_i18n( $total ) ); ?></span>
+							class="displaying-num"><?php echo esc_html( number_format_i18n( $total ) . ' ' . sprintf( _n( 'item', 'items', $total, 'quiz-master-next' ), number_format_i18n( $total ) ) ); ?></span>
 						<span class="pagination-links" <?php
 						if ( (int) $num_of_pages <= 1 ) {
 							echo 'style="display:none;"';
@@ -297,7 +298,7 @@ function qsm_generate_quizzes_surveys_page() {
 								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the first page', 'quiz-master-next' ); ?>">&laquo;</a>
 							<a class="prev-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $prev_page ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
@@ -310,10 +311,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
 							<a class="next-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $next_page ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the next page', 'quiz-master-next' ); ?>">&rsaquo;</a>
 							<a class="last-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $num_of_pages ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the last page', 'quiz-master-next' ); ?>">&raquo;</a>
 							<?php } ?>
 						</span>
@@ -467,7 +468,7 @@ function qsm_generate_quizzes_surveys_page() {
 							value="<?php esc_attr_e( 'Apply', 'quiz-master-next' ); ?>">
 					<div class="tablenav-pages">
 						<span
-							class="displaying-num"><?php echo number_format_i18n( $total ) . ' ' . sprintf( _n( 'item', 'items', $total ), number_format_i18n( $total ) ); ?></span>
+							class="displaying-num"><?php echo esc_html( number_format_i18n( $total ) . ' ' . sprintf( _n( 'item', 'items', $total, 'quiz-master-next' ), number_format_i18n( $total ) ) ); ?></span>
 						<span class="pagination-links" <?php
 						if ( (int) $num_of_pages <= 1 ) {
 							echo 'style="display:none;"';
@@ -481,7 +482,7 @@ function qsm_generate_quizzes_surveys_page() {
 								href="<?php echo '?page=mlw_quiz_list&paged=1&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the first page', 'quiz-master-next' ); ?>">&laquo;</a>
 							<a class="prev-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $prev_page . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $prev_page ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the previous page', 'quiz-master-next' ); ?>">&lsaquo;</a>
 							<?php } ?>
 							<span class="paging-input">
@@ -494,10 +495,10 @@ function qsm_generate_quizzes_surveys_page() {
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
 							<a class="next-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $next_page . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $next_page  ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the next page', 'quiz-master-next' ); ?>">&rsaquo;</a>
 							<a class="last-page button"
-								href="<?php echo '?page=mlw_quiz_list&paged=' . $num_of_pages . '&s=' . esc_attr( $search ); ?>"
+								href="<?php echo '?page=mlw_quiz_list&paged=' . esc_attr( $num_of_pages ) . '&s=' . esc_attr( $search ); ?>"
 								title="<?php esc_attr_e( 'Go to the last page', 'quiz-master-next' ); ?>">&raquo;</a>
 							<?php } ?>
 						</span>
