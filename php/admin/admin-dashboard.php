@@ -18,7 +18,7 @@ function qsm_get_blog_data_rss(){
 	$blog_data_obj = fetch_feed( 'https://quizandsurveymaster.com/feed/' );
 	$maxitems = 0;
 	if ( ! is_wp_error( $blog_data_obj ) ) {
-		$maxitems = $blog_data_obj->get_item_quantity( 2 ); 
+		$maxitems = $blog_data_obj->get_item_quantity( 2 );
 		$blog_data_items = $blog_data_obj->get_items( 0, $maxitems );
 	}
 	$blog_data = array();
@@ -26,7 +26,7 @@ function qsm_get_blog_data_rss(){
 		$blog_data[] = array(
 			'link'    => esc_url( $item->get_permalink() ),
 			'title'   => esc_html( $item->get_title() ),
-			'excerpt' => esc_html( $item->get_description() ),               
+			'excerpt' => esc_html( $item->get_description() ),
 		);
 	}
 	return $blog_data;
@@ -596,7 +596,7 @@ function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
 	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name   = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
+		$quiz_name   = isset( $_POST['quiz_name'] ) ? sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) ) : '';
 		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
@@ -605,16 +605,16 @@ function qsm_create_new_quiz_from_wizard() {
 		 * Prepare Quiz Options.
 		 */
 		$quiz_options    = array(
-			'quiz_name'                          => sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ),
-			'quiz_featured_image'                => esc_url_raw( $_POST['quiz_featured_image'] ),
-			'form_type'                          => sanitize_text_field( wp_unslash( $_POST['form_type'] ) ),
-			'system'                             => sanitize_text_field( wp_unslash( $_POST['system'] ) ),
-			'pagination'                         => sanitize_text_field( wp_unslash( $_POST['pagination'] ) ),
-			'progress_bar'                       => sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ),
-			'timer_limit'                        => sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ),
-			'enable_pagination_quiz'             => sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ),
-			'require_log_in'                     => sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ),
-			'disable_scroll_next_previous_click' => sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ),
+			'quiz_name'                          => $quiz_name,
+			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( $_POST['quiz_featured_image'] ) : '',
+			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
+			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
+			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
+			'progress_bar'                       => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : '',
+			'timer_limit'                        => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
+			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
+			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 		);
 		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
@@ -662,7 +662,7 @@ function qsm_dashboard_roadmap( $widget_id ) {
 						target="_blank" rel="noopener"> Roadmap
 					</a>
 					<div class="post-description">
-						Visit out public Roadmap to checkout what's in the development pipepline of QSM. 
+						Visit out public Roadmap to checkout what's in the development pipepline of QSM.
 					</div>
 				</li>
 				<li>

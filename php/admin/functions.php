@@ -31,7 +31,7 @@ function qsm_redirect_to_edit_page( $quiz_id ) {
  * @return void
  */
 function link_featured_image( $quiz_id ) {
-	$url = esc_url_raw( $_POST['quiz_featured_image'] );
+	$url = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( $_POST['quiz_featured_image'] ) : '';
 	if ( ! empty( $url ) ) {
 		update_option( "quiz_featured_image_$quiz_id", $url );
 	}
@@ -673,7 +673,7 @@ function qsm_text_template_variable_list() {
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%AVERAGE_CATEGORY_POINTS_X%' => __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
-		),       
+		),
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
 	return $variable_list;
@@ -776,7 +776,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		}
 	}
 	?>
-<div class="theme-wrapper theme 
+<div class="theme-wrapper theme
 	<?php
 	if ( $saved_quiz_theme == '' || $saved_quiz_theme == 0 ) {
 		echo 'active';
@@ -807,7 +807,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			$theme_name = $theme['theme'];
 			$theme_id   = $theme['id'];
 			?>
-<div class="theme-wrapper theme 
+<div class="theme-wrapper theme
 			<?php
 			if ( $saved_quiz_theme == $theme_id ) {
 				echo 'active';
@@ -962,5 +962,5 @@ function qsm_sanitize_rec_array( $array ) {
 			$array[ $key ] = sanitize_text_field( $value );
 		}
 	}
-   	return $array;                                                       
+   	return $array;
 }

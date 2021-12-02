@@ -32,7 +32,7 @@ class QSM_Background_Request extends WP_Async_Request {
      * during the async request.
      */
     protected function handle() {
-        $message = sanitize_text_field( wp_unslash( $_POST['name'] ) );
+        $message = isse( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
         if ( $message == 'send_emails' ) {
             $qmn_array_for_variables = isset( $_POST['variables'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['variables'] ) ) : array();
             try {
