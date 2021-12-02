@@ -21,11 +21,11 @@ function qsm_block_init() {
 	// Register our block, and explicitly define the attributes we accept.
 	register_block_type( 'qsm/main-block', array(
 		'attributes'      => array(
-			'quiz' => array(
+			'quiz'    => array(
                 'type' => 'string',                            
 			),
             'quiz_id' => array(
-                'type' => 'array',
+                'type'    => 'array',
                 'default' => array(
                     array(
                         'label' => 'quiz name',

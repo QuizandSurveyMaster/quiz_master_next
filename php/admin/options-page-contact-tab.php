@@ -27,14 +27,18 @@ function qsm_options_contact_tab_content() {
   $quiz_id = intval( $_GET["quiz_id"] );
   $user_id = get_current_user_id();
   $contact_form = QSM_Contact_Manager::load_fields();
-  wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array( 'contactForm' => $contact_form, 'quizID' => $quiz_id, 'saveNonce' => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) );
+  wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array(
+	  'contactForm' => $contact_form,
+	  'quizID'      => $quiz_id,
+	  'saveNonce'   => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ),
+  ) );
   ?>
-  <h2 style="display: none;"><?php _e( 'Contact', 'quiz-master-next' ); ?></h2>
-  <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
+  <h2 style="display: none;"><?php esc_html_e( 'Contact', 'quiz-master-next' ); ?></h2>
+  <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
   <div class="contact-message"></div>
-  <a class="save-contact button-primary"><?php _e( 'Save Contact Fields', 'quiz-master-next' ); ?></a>
+  <a class="save-contact button-primary"><?php esc_html_e( 'Save Contact Fields', 'quiz-master-next' ); ?></a>
   <div class="contact-form"></div>
-   <a class="add-contact-field button-primary"><?php _e( 'Add New Field', 'quiz-master-next' ); ?></a>
+   <a class="add-contact-field button-primary"><?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
   <?php
 }
 

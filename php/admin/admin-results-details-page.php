@@ -12,7 +12,7 @@ function qsm_generate_result_details() {
 		return;
 	}
 	global $mlwQuizMasterNext;
-    $active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field( $_GET[ 'tab' ] ) : 'results';
+    $active_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'results';
     $tab_array = $mlwQuizMasterNext->pluginHelper->get_results_tabs();
     ?>
 	<style type="text/css">
@@ -25,7 +25,7 @@ function qsm_generate_result_details() {
 	<h2 style="display: none;"><?php _e('Quiz Results', 'quiz-master-next'); ?></h2>
 	<h2 class="nav-tab-wrapper">
 		<?php
-     foreach( $tab_array as $tab ) {
+     foreach ( $tab_array as $tab ) {
         $active_class = '';
         if ( $active_tab == $tab['slug'] ) {
            $active_class = ' nav-tab-active';
@@ -36,7 +36,7 @@ function qsm_generate_result_details() {
 </h2>
 <div class="result-tab-content">
   <?php
-  foreach( $tab_array as $tab ) {
+  foreach ( $tab_array as $tab ) {
     if ( $active_tab == $tab['slug'] ) {
        call_user_func( $tab['function'] );
    }
@@ -84,12 +84,12 @@ function qsm_generate_results_details_tab() {
     echo '<a style="margin-right: 15px;" href="?page=mlw_quiz_results" class="button button-primary" title="Return to results">'. esc_html__( 'Back to Results', 'quiz-master-next' ) .'</a>';
     if ( ! is_null( $previous_results ) && $previous_results ) {
         echo "<a class='button button-primary' title='View Previous Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $previous_results ) . "\" ><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
-    }else{
+    }else {
         echo "<a class='button button-primary' title='View Previous Result' href='#' disbled=disabled><span class='dashicons dashicons-arrow-left-alt2'></span></a> ";
     }
     if ( ! is_null( $next_results ) && $next_results ) {
     echo " <a class='button button-primary' title='View Next Result' href=\"?page=qsm_quiz_result_details&&result_id=" . intval( $next_results ) . "\" ><span class='dashicons dashicons-arrow-right-alt2'></span></a>";
-    }else{
+    }else {
         echo " <a class='button button-primary' title='View Next Result' href='#' disabled=disabled><span class='dashicons dashicons-arrow-right-alt2'></span></a>";
     }
     echo '</div>';
@@ -107,7 +107,7 @@ function qsm_generate_results_details_tab() {
             0,
             array(),
             '',
-            'contact' => array()
+            'contact' => array(),
         );
     }
 
@@ -141,10 +141,10 @@ function qsm_generate_results_details_tab() {
 	// Get template for admin results.
     $settings = (array) get_option( 'qmn-settings' );
     $new_template_result_detail = '1';
-    if (isset($settings['new_template_result_detail'])){
+    if ( isset($settings['new_template_result_detail']) ) {
         $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
     }
-    if( $new_template_result_detail == 1 ){
+    if ( $new_template_result_detail == 1 ) {
         $template = '';
         if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
             $span_start = '<span class="result-candidate-span"><label>';
@@ -155,11 +155,11 @@ function qsm_generate_results_details_tab() {
             $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
             $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>User Detail</span></h2>';
             $template .= '<div class="inside">';
-            if( isset( $results_array['contact'] ) && is_array( $results_array['contact'] ) && !empty( $results_array['contact'] ) ){
+            if ( isset( $results_array['contact'] ) && is_array( $results_array['contact'] ) && ! empty( $results_array['contact'] ) ) {
                 for ( $i = 0; $i < count( $results_array["contact"] ); $i++ ) {
                     $template .= $span_start. $results_array["contact"][ $i ]["label"] .$span_end. $results_array["contact"][ $i ]["value"] .$spanend;
                 }
-            }else{
+            }else {
                 $template .= $span_start. __( 'Name:', 'quiz-master-next' ) .$span_end. $results_data->name .$spanend;
                 $template .= $span_start. __( 'Business:', 'quiz-master-next' ) .$span_end. $results_data->business .$spanend;
                 $template .= $span_start. __( 'Phone:', 'quiz-master-next' ) .$span_end. $results_data->phone .$spanend;
@@ -168,7 +168,7 @@ function qsm_generate_results_details_tab() {
             $template .= '</div>';
             $template .= '</div>';
             $template .= '</div>';
-            if( isset( $results_data->form_type ) && $results_data->form_type == 0 ){
+            if ( isset( $results_data->form_type ) && $results_data->form_type == 0 ) {
                         //Scoreboard design
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Scorecard</span></h2>';
@@ -194,7 +194,7 @@ function qsm_generate_results_details_tab() {
                     $hour_label = $mlw_complete_hours == 1 ? __( 'hour', 'quiz-master-next' ) : __( 'hours', 'quiz-master-next' );
                     $template .= '<span class="timer-text">'. $hour_label .'</span>';
                     $template .= '</div>';
-                }else{
+                }else {
                     $template .= '<div>';
                     $template .= '<span class="hours timer-span">00</span>';
                     $template .= '<span class="timer-text">hours</span>';
@@ -227,7 +227,7 @@ function qsm_generate_results_details_tab() {
             $template .= '</div>';
             //Comment entered text
 
-            if ( $comments_enabled == "0") {
+            if ( $comments_enabled == "0" ) {
 
                 $template .= '<div class="comment-inner-wrap" style="">';
                 $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
@@ -248,7 +248,7 @@ function qsm_generate_results_details_tab() {
         }else {
         $template = 'Data is missing.';
         }
-    }else{
+    }else {
         //Old template design
         if ( isset( $settings['results_details_template'] ) ) {
             $template = htmlspecialchars_decode( $settings['results_details_template'], ENT_QUOTES );
@@ -268,7 +268,7 @@ function qsm_generate_results_details_tab() {
         }
     }
 
-    if ( !is_serialized( $results_data->quiz_results ) && !is_array( @unserialize( $results_data->quiz_results ) ) ) {
+    if ( ! is_serialized( $results_data->quiz_results ) && ! is_array( @unserialize( $results_data->quiz_results ) ) ) {
         $template = str_replace( "%QUESTIONS_ANSWERS%" , $results_data->quiz_results, $template);
         $template = str_replace( "%TIMER%" , '', $template);
         $template = str_replace( "%COMMENT_SECTION%" , '', $template);
@@ -277,18 +277,18 @@ function qsm_generate_results_details_tab() {
     // Pass through template variable filter
     $template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $results_array );
     $template = str_replace( "\n" , "<br>", $template );
-    if( $new_template_result_detail == 0 ){
+    if ( $new_template_result_detail == 0 ) {
         echo '<div class="old_template_result_wrap">';
     }
 
     $allowed_tags = wp_kses_allowed_html( 'post' );
     $is_allow_html = apply_filters('qsm_admin_results_details_page_allow_html', false);
-    if ($is_allow_html) {
+    if ( $is_allow_html ) {
         $allowed_tags['script'] = array();
     }
     echo wp_kses( $template, $allowed_tags );
 
-    if( $new_template_result_detail == 0 ){
+    if ( $new_template_result_detail == 0 ) {
         echo '</div>';
     }
 	// Hook for below admin results

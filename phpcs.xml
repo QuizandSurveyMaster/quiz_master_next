@@ -33,12 +33,23 @@
 	<rule ref="WordPress">
         <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
-        <!-- <exclude name="WordPress.PHP.StrictInArray.MissingTrueStrict"/>
+        <exclude name="WordPress.PHP.StrictInArray.MissingTrueStrict"/>
+		<exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
 		<exclude name="WordPress.Security.NonceVerification"/>
 		<exclude name="WordPress.DB.SlowDBQuery"/>
-		<exclude name="WordPress.DB.DirectDatabaseQuery"/> -->
+		<exclude name="WordPress.DB.DirectDatabaseQuery"/>
 		<exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found"/>
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
 		<exclude name="WordPress.NamingConventions"/>
+		<exclude name="WordPress.DateTime.RestrictedFunctions.date_date"/>
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode"/>
+		<exclude name="WordPress.WP.CronInterval"/>
+		<exclude name="WordPress.PHP.StrictComparisons.LooseComparison"/>
+		<exclude name="WordPress.DB.PreparedSQL.NotPrepared"/>
+		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared"/>
+		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize"/>
+		<exclude name="WordPress.DB.PreparedSQLPlaceholders.QuotedSimplePlaceholder"/>
+		<exclude name="WordPress.PHP.NoSilencedErrors.Discouraged"/>
     </rule>
 	<rule ref="WordPress-Core" />
 	<rule ref="WordPress-Extra" />

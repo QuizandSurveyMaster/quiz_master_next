@@ -318,14 +318,14 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
 			'id'      => 'not_allow_after_expired_time',
-			'label'       => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'label'   => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
 			'type'    => 'checkbox',
 			'options' => array(
 				array(
 					'value' => 1,
 				),
 			),
-			'default' => 0,		
+			'default' => 0,
 			'ph_text' => __( '', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -715,7 +715,7 @@ class QSM_Install {
 			'id'      => 'preferred_date_format',
 			'label'   => __( 'Preferred Date Format', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => isset(get_option( 'qsm-quiz-settings' )['preferred_date_format'])? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format'),
+			'default' => isset(get_option( 'qsm-quiz-settings' )['preferred_date_format']) ? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format'),
 			'help'    => __( 'Overrides global settings for preferred date format', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );

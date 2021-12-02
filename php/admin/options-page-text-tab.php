@@ -27,18 +27,18 @@ function mlw_options_text_tab_content() {
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
-            <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
+            <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div class="qsm-question-text-tab" id="post-body-content" style="position: relative;">
                         <?php
                         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
                         $editor_text_arr = $text_text_arr = array();
-                        if( $quiz_text_arr ){
+                        if ( $quiz_text_arr ) {
                             foreach ( $quiz_text_arr as $key => $single_text_arr ) {
-                                if( $single_text_arr['type'] == 'editor' ){
+                                if ( $single_text_arr['type'] == 'editor' ) {
                                     $editor_text_arr[] = $single_text_arr;
-                                }else{
+                                }else {
                                     $text_text_arr[] = $single_text_arr;
                                 }
                             }
@@ -49,7 +49,7 @@ function mlw_options_text_tab_content() {
                                 <div class="qsm-row">
                                     <label><?php _e('Select Message', 'quiz-master-next'); ?></label>
                                     <select id="qsm_question_text_message_id">
-                                        <?php if( $editor_text_arr ){
+                                        <?php if ( $editor_text_arr ) {
                                         foreach ( $editor_text_arr as $key => $single_editor_arr ) {
                                             ?>
                                             <option value="<?php echo esc_attr( $single_editor_arr['id'] ); ?>"><?php echo esc_attr( $single_editor_arr['label'] ); ?></option>
@@ -68,7 +68,7 @@ function mlw_options_text_tab_content() {
                             <div class="qsm-text-tab-message-loader" style="display: none;"><div class="qsm-spinner-loader"></div></div>
                             <?php
                             $value_answer = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $editor_text_arr[0]['id'] );
-                            wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array(  'textarea_rows' => 10 ) );
+                            wp_editor( htmlspecialchars_decode( $value_answer, ENT_QUOTES ), 'qsm_question_text_message', array( 'textarea_rows' => 10 ) );
                             ?>
                         </div>
                     </div>
@@ -82,11 +82,11 @@ function mlw_options_text_tab_content() {
                             <div class="qsm-text-variable-wrap">
                                 <?php
                                 $allowed_variables = isset( $editor_text_arr[0]['variables'] ) ? $editor_text_arr[0]['variables'] : array();
-                                if( $allowed_variables ){
+                                if ( $allowed_variables ) {
                                     foreach ( $allowed_variables as $variable ) { ?>
                                         <span class="qsm-text-template-span">
                                             <button class="button button-default"><?php echo wp_kses_post( $variable ); ?></button>
-                                            <?php if( isset( $variable_list[ $variable ] ) ){
+                                            <?php if ( isset( $variable_list[ $variable ] ) ) {
                                                 ?>
                                                 <span class="dashicons dashicons-editor-help qsm-tooltips-icon">
                                                     <span class="qsm-tooltips"><?php echo wp_kses_post( $variable_list[ $variable ] ); ?></span>
@@ -99,7 +99,7 @@ function mlw_options_text_tab_content() {
                                 ?>
                             </div>
                             <div style="display: none;" class="qsm-all-variable-wrap">
-                                <a class="qsm-show-all-variable-text" href="#"><?php _e( 'Show all Variables', 'quiz-master-next' ); ?></a>
+                                <a class="qsm-show-all-variable-text" href="#"><?php esc_html_e( 'Show all Variables', 'quiz-master-next' ); ?></a>
                             </div>
                         </div>
                     </div>
@@ -123,25 +123,28 @@ function mlw_options_text_tab_content() {
  */
 function qsm_get_question_text_message(){
     global $mlwQuizMasterNext;
-    $text_id = isset( $_POST['text_id']  ) ? sanitize_text_field( $_POST['text_id'] ) : '';
-    if( $text_id == '' ){
-        echo json_encode( array( 'success'=> false, 'message' => __('Text id is missing.', 'quiz-master-next')) );
+    $text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
+    if ( $text_id == '' ) {
+        echo wp_json_encode( array(
+			'success' => false,
+			'message' => __('Text id is missing.', 'quiz-master-next'),
+		) );
         exit;
     } else {
         $settings = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', $text_id );
         $quiz_text_arr = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_text' );
         $key = array_search( $text_id, array_column( $quiz_text_arr, 'id' ) );
         $allowed_text = '';
-        if( isset( $quiz_text_arr[$key] ) ){
+        if ( isset( $quiz_text_arr[ $key ] ) ) {
             $variable_list = qsm_text_template_variable_list();
 			/**
 			 * Filter allowed variables for Text Tab options.
 			 */
-			$quiz_text_allowed_variables = apply_filters('qsm_text_allowed_variables', $quiz_text_arr[$key]['variables'], $key);
-            foreach ($quiz_text_allowed_variables as $variable ) {
+			$quiz_text_allowed_variables = apply_filters('qsm_text_allowed_variables', $quiz_text_arr[ $key ]['variables'], $key);
+            foreach ( $quiz_text_allowed_variables as $variable ) {
                 $allowed_text .= '<span class="qsm-text-template-span">';
                 $allowed_text .= '<button class="button button-default">'. $variable .'</button>';
-                if( isset( $variable_list[ $variable ] ) ){
+                if ( isset( $variable_list[ $variable ] ) ) {
                     $allowed_text .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
                     $allowed_text .= '<span class="qsm-tooltips">'. $variable_list[ $variable ] . '</span>';
                     $allowed_text .= '</span>';
@@ -150,11 +153,11 @@ function qsm_get_question_text_message(){
             }
         }
         $return = array(
-            'text_message' => $settings,
+            'text_message'          => $settings,
             'allowed_variable_text' => $allowed_text,
-            'success' => true,
+            'success'               => true,
         );
-        echo json_encode($return);
+        echo wp_json_encode($return);
         exit;
     }
 }
@@ -167,22 +170,22 @@ add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_mess
  */
 function qsm_update_text_message(){
     global $mlwQuizMasterNext;
-    $text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( $_POST['text_id'] ) : '';
-    $message = isset( $_POST['message'] ) ? wp_kses_post( $_POST['message'] ) : '';
+    $text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
+    $message = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
     $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
     $settings[ $text_id ] = $message;
     $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );
     if ( false != $results ) {
         $results = array(
-            'success' => true
+            'success' => true,
         );
-    }else{
+    }else {
         $results = array(
             'success' => false,
-            'message' => __( 'There has been an error in this action. Please share this with the developer', 'quiz-master-next' )
+            'message' => __( 'There has been an error in this action. Please share this with the developer', 'quiz-master-next' ),
         );
     }
-    echo json_encode($results);
+    echo wp_json_encode($results);
     exit;
 }
 add_action( 'wp_ajax_qsm_update_text_message', 'qsm_update_text_message' );
