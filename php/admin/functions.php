@@ -957,7 +957,7 @@ function qsm_get_market_themes() {
 function qsm_sanitize_rec_array( $array ) {
 	foreach ( (array) $array as $key => $value ) {
 		if ( is_array( $value ) ) {
-			$array[ $key ] = pto_sanitize_rec_array( $value );
+			$array[ $key ] = qsm_sanitize_rec_array( $value );
 		} else {
 			$array[ $key ] = sanitize_text_field( $value );
 		}

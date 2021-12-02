@@ -1348,7 +1348,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 			}
 		}
 
-		$mlw_qmn_pagetime                        = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', $_POST['pagetime'] ) : array();
+		$mlw_qmn_pagetime                        = isset( $_POST['pagetime'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['pagetime'] ) ) : array();
 		$mlw_qmn_timer                           = isset( $_POST['timer'] ) ? intval( $_POST['timer'] ) : 0;
 		$mlw_qmn_timer_ms                        = isset( $_POST['timer_ms'] ) ? intval( $_POST['timer_ms'] ) : 0;
 		$qmn_array_for_variables['user_id']      = get_current_user_id();
