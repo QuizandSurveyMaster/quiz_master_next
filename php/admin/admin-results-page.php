@@ -222,7 +222,7 @@ function qsm_results_overview_tab_content() {
 	</div>
 	<div class="tablenav-pages">
 		<span
-			class="displaying-num"><?php echo sprintf( _n( 'One result', '%s results', $qsm_results_count, 'quiz-master-next' ), esc_html( number_format_i18n( $qsm_results_count ) ) ); ?></span>
+			class="displaying-num"><?php echo esc_html( sprintf( _n( 'One result', '%s results', $qsm_results_count, 'quiz-master-next' ), esc_html( number_format_i18n( $qsm_results_count ) ) ) ); ?></span>
 		<span class="pagination-links">
 			<?php
 				$mlw_qmn_previous_page = 0;
