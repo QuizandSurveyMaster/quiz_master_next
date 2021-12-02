@@ -103,14 +103,14 @@ class QSM_Tracking {
   	private function load_data( $tracking ) {
     	global $wpdb;
     	global $mlwQuizMasterNext;
+
     	$data = array();
     	$data["plugin"] = "QSM";
-
     	$data['url']    = home_url();
     	$data["wp_version"] = get_bloginfo( 'version' );
     	$data["php_version"] = PHP_VERSION;
     	$data["mysql_version"] = $wpdb->db_version();
-    	$data["server_app"] = $_SERVER['SERVER_SOFTWARE'];
+    	$data["server_app"] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 
     	// Retrieve current plugin information
 		if ( ! function_exists( 'get_plugins' ) ) {

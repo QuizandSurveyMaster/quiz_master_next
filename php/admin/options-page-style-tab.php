@@ -37,9 +37,9 @@ function qsm_options_styling_tab_content() {
 
 	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( $_POST['qsm_style_tab_nonce'], 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['save_style_options'] ) ) ) {
 
-		$style_quiz_id = intval( $_POST['style_quiz_id'] );
-		$quiz_theme    = sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) );
-		$quiz_style    = sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) );
+		$style_quiz_id = isset( $_POST['style_quiz_id'] ) ? intval( $_POST['style_quiz_id'] ) : '';
+		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
+		$quiz_style    = isset( $_POST['quiz_css'] ) ? sanitize_textarea_field( htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', stripslashes( $_POST['quiz_css'] ) ), ENT_QUOTES ) ) : '';
 
 		// Saves the new css.
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
@@ -79,7 +79,7 @@ function qsm_options_styling_tab_content() {
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
-	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( $_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration' ) ) {
+	if ( isset( $_GET['quiz_id'] ) && isset( $_GET['quiz_theme_id'] ) && isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( $_POST['quiz_theme_integration_nouce'], 'quiz_theme_integration' ) ) {
 		$quiz_id  = (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) );
 		$theme_id = (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) );
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
@@ -100,7 +100,7 @@ function qsm_options_styling_tab_content() {
 	// Read all the themes
 	$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
-	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
+	if ( isset( $_POST['settings'] ) && isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
 		$settings_array = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
@@ -313,7 +313,7 @@ function qsm_display_theme_settings() {
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
 
-	if ( isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
+	if ( isset( $_POST['settings'] ) && isset( $_POST['save_theme_settings_nonce'] ) && wp_verify_nonce( $_POST['save_theme_settings_nonce'], 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
 		$settings_array  = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );

@@ -30,7 +30,7 @@ function qsm_generate_quizzes_surveys_page() {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['delete_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
 		do_action( 'qsm_before_delete_quiz' , $quiz_id );
-		$quiz_name = sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) );
+		$quiz_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 	}
 
@@ -38,13 +38,13 @@ function qsm_generate_quizzes_surveys_page() {
 	if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'] ) && wp_verify_nonce( $_POST['qsm_duplicate_quiz_nonce'], 'qsm_duplicate_quiz' ) ) {
 		$quiz_id   = base64_decode( sanitize_text_field( wp_unslash( $_POST['duplicate_quiz_id'] ) ), true );
 		$quiz_id   = intval( str_replace( 'QID', '', $quiz_id ) );
-		$quiz_name = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES );
+		$quiz_name = isset( $_POST['duplicate_new_quiz_name'] ) ? htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES ) : '';
 		$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) ? sanitize_text_field( wp_unslash( $_POST['duplicate_questions'] ) ) : 0 );
 	}
 
 	// Resets stats for a quiz.
 	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( $_POST['qsm_reset_stats_nonce'], 'qsm_reset_stats' ) ) {
-		$quiz_id = intval( $_POST['reset_quiz_id'] );
+		$quiz_id = isset( $_POST['reset_quiz_id'] ) ? intval( $_POST['reset_quiz_id'] ) : '';
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
@@ -105,7 +105,7 @@ function qsm_generate_quizzes_surveys_page() {
 		}
 	}
 	/*Set Request To Post as form method is Post.(AA)*/
-	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
+	if ( isset( $_POST['btnSearchQuiz'] ) && isset( $_POST['s'] ) && !empty( $_POST['s'] ) ) {
 		$search       = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['s'] ) ), ENT_QUOTES );
 		$condition    = " WHERE deleted=0 AND quiz_name LIKE '%$search%'";
 		$qry          = stripslashes( $wpdb->prepare( "SELECT COUNT('quiz_id') FROM {$wpdb->prefix}mlw_quizzes%1s", $condition ) );
@@ -151,7 +151,7 @@ function qsm_generate_quizzes_surveys_page() {
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, '', '', (array) $user->roles, $user->ID, $limit, $offset, $where );
 	}
 	/*Written to get results form search.(AA)*/
-	if ( isset( $_POST['btnSearchQuiz'] ) && $_POST['s'] != '' ) {
+	if ( isset( $_POST['btnSearchQuiz'] ) && isset( $_POST['s'] ) && !empty( $_POST['s'] ) ) {
 		$search_quiz = htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['s'] ) ), ENT_QUOTES );
 		$condition   = " WHERE deleted=0 AND quiz_name LIKE '%$search_quiz%'";
 		$condition  = apply_filters( 'quiz_query_condition_clause', $condition );
