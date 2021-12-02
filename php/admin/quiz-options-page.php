@@ -51,12 +51,12 @@ function qsm_generate_quiz_options() {
 	// Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_edit_name_quiz_nonce'], 'qsm_edit_name_quiz' ) ) {
 		//$quiz_id   = intval( $_POST['edit_quiz_id'] );
-		$quiz_name = sanitize_text_field( wp_unslash( $_POST['edit_quiz_name'] ) );
+		$quiz_name = isset( $_POST['edit_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['edit_quiz_name'] ) ) : '';
 		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
 	}
 	//Update post status
 	if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( $_POST['qsm_update_quiz_status_nonce'], 'qsm_update_quiz_status' ) ) {
-		$quiz_post_id    = sanitize_text_field( wp_unslash( $_POST['quiz_post_id'] ) );
+		$quiz_post_id    = isset( $_POST['quiz_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_post_id'] ) ) : '';
 		$arg_post_arr    = array(
 			'ID'          => $quiz_post_id,
 			'post_status' => 'publish',
