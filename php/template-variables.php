@@ -1386,7 +1386,7 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 	if ( $strip ) {
 		$data = stripslashes( $data );
 	}
-	return unserialize( $data );
+	return maybe_unserialize( $data );
 }
 
 /**

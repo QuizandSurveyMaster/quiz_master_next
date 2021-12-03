@@ -5,7 +5,8 @@
  * @param string $name
  */
 function qsm_get_widget_data( $name ) {
-	$qsm_admin_dd = json_decode(file_get_contents(QSM_PLUGIN_PATH.'/data/parsing_script.json'),true);
+	$qsm_admin_dd = wp_remote_get(QSM_PLUGIN_URL.'/data/parsing_script.json');
+	$qsm_admin_dd = json_decode(wp_remote_retrieve_body($qsm_admin_dd),true);
 	return isset( $qsm_admin_dd[ $name ] ) ? $qsm_admin_dd[ $name ] : array();
 }
 
@@ -282,8 +283,8 @@ function qsm_generate_dashboard_page() {
  */
 function qsm_wizard_template_quiz_options() {
 	global $mlwQuizMasterNext;
-	$settings              = isset( $_POST['settings'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ) : array();
-	$addons                = isset( $_POST['addons'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['addons'] ) ) : array();
+	$settings              = isset( $_POST['settings'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$addons                = isset( $_POST['addons'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['addons'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$all_settings          = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 	$recommended_addon_str = '';
 	if ( $settings ) {

@@ -250,11 +250,10 @@ class QSM_Emails {
 
 		global $wpdb;
 		$data = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
-
+		
+		$data = maybe_unserialize( $data );
 		// Checks if the emails is an array.
-		if ( is_serialized( $data ) && is_array( maybe_unserialize( $data ) ) ) {
-			$data = maybe_unserialize( $data );
-
+		if ( is_array( $data ) ) {
 			// Checks if the emails array is not the newer version.
 			if ( ! empty( $data ) && ! isset( $data[0]['conditions'] ) ) {
 				$emails = QSM_Emails::convert_to_new_system( $quiz_id );
