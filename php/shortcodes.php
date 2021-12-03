@@ -81,7 +81,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 
 			$start_date = $options['scheduled_time_start'];
 			$end_date   = $options['scheduled_time_end'];
-			$today      = gmdate( 'm/d/Y' );
+			$today      = date( 'm/d/Y' );
 			if ( $end_date != '' && $end_date < $today ) {
 				continue;
 			} elseif ( $include_future_quizzes == 'no' && $start_date > $today ) {
