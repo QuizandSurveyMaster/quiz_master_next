@@ -244,15 +244,17 @@ class QMNQuizManager {
 	 * @return string The content for the shortcode
 	 */
 	public function display_shortcode( $atts ) {
-		extract(
-			shortcode_atts(
-				array(
-					'quiz'            => 0,
-					'question_amount' => 0,
-				),
-				$atts
-			)
+
+		$args = shortcode_atts(
+			array(
+				'quiz'            => 0,
+				'question_amount' => 0,
+			),
+			$atts
 		);
+
+		$quiz	 		= intval( $args['quiz'] );
+		$question_amount= intval( $args['question_amount'] );
 
 		ob_start();
 		if ( isset( $_GET['result_id'] ) && $_GET['result_id'] != '' ) {
@@ -395,14 +397,16 @@ class QMNQuizManager {
 	}
 
 	public function shortcode_display_result( $atts ) {
-		extract(
-			shortcode_atts(
-				array(
-					'id' => 0,
-				),
-				$atts
-			)
+
+		$args = shortcode_atts(
+			array(
+				'id'     => 0,
+			),
+			$atts
 		);
+
+		$id	 	= intval( $args['id'] );
+
 		ob_start();
 		if ( $id == 0 ) {
 			$id = (int) isset( $_GET['result_id'] ) ? sanitize_text_field( wp_unslash( $_GET['result_id'] ) ) : 0;
