@@ -6,3 +6,5 @@ tests/_data
 chromedriver
 php/classes/composer.json
 .DS_Store
+phpcs.xml
+.vscode

@@ -17,16 +17,16 @@ function qsm_get_blog_data_rss(){
 	include_once( ABSPATH . WPINC . '/feed.php' );
 	$blog_data_obj = fetch_feed( 'https://quizandsurveymaster.com/feed/' );
 	$maxitems = 0;
-	if ( ! is_wp_error( $blog_data_obj ) ){
-		$maxitems = $blog_data_obj->get_item_quantity( 2 ); 
+	if ( ! is_wp_error( $blog_data_obj ) ) {
+		$maxitems = $blog_data_obj->get_item_quantity( 2 );
 		$blog_data_items = $blog_data_obj->get_items( 0, $maxitems );
 	}
 	$blog_data = array();
-	foreach ( $blog_data_items as $item ){
-		$blog_data[]= array(
-			'link' => esc_url( $item->get_permalink() ),
-			'title' => esc_html( $item->get_title() ),
-			'excerpt' => esc_html( $item->get_description() )				
+	foreach ( $blog_data_items as $item ) {
+		$blog_data[] = array(
+			'link'    => esc_url( $item->get_permalink() ),
+			'title'   => esc_html( $item->get_title() ),
+			'excerpt' => esc_html( $item->get_description() ),
 		);
 	}
 	return $blog_data;
@@ -69,10 +69,10 @@ function qsm_dashboard_screen_options( $status, $args ) {
 	<fieldset class="metabox-prefs">
 		<legend>Boxes</legend>
 		<?php
-		$hidden_box							 = get_user_option( "metaboxhidden_$page_id", $user->ID );
-		$hidden_box_arr						 = ! empty( $hidden_box ) ? $hidden_box : array();
-		$registered_widget					 = get_option( 'qsm_dashboard_widget_arr', array() );
-		$registered_widget['welcome_panel']	 = array(
+		$hidden_box                          = get_user_option( "metaboxhidden_$page_id", $user->ID );
+		$hidden_box_arr                      = ! empty( $hidden_box ) ? $hidden_box : array();
+		$registered_widget                   = get_option( 'qsm_dashboard_widget_arr', array() );
+		$registered_widget['welcome_panel']  = array(
 			'title' => __( 'Welcome', 'quiz-master-next' ),
 		);
 		if ( $registered_widget ) {
@@ -107,68 +107,68 @@ function qsm_generate_dashboard_page() {
 	global $mlwQuizMasterNext;
 ?>
 <div class="wrap">
-	<h1><?php _e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
+	<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
 	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<div class="qsm-welcome-panel-close">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
 			<p class="current_version"><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
 		</div>
 		<a class="qsm-welcome-panel-dismiss" href="#"
-			aria-label="Dismiss the welcome panel"><?php _e( 'Dismiss', 'quiz-master-next' ); ?></a>
+			aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
 		<div class="welcome-panel-content">
-			<h2><?php _e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h2>
-			<p class="about-description"><?php _e( 'Formerly Quiz Master Next', 'quiz-master-next' ); ?></p>
+			<h2><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h2>
+			<p class="about-description"><?php esc_html_e( 'Formerly Quiz Master Next', 'quiz-master-next' ); ?></p>
 			<div class="welcome-panel-column-container">
 				<div class="welcome-panel-column">
-					<h3><?php _e( 'Get Started', 'quiz-master-next' ); ?></h3>
+					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
 					<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-						href="#"><?php _e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+						href="#"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<p class="hide-if-no-customize">
 						or, <a
-							href="admin.php?page=mlw_quiz_list"><?php _e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
+							href="admin.php?page=mlw_quiz_list"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
 					</p>
 				</div>
 				<div class="welcome-panel-column">
-					<h3><?php _e( 'Next Steps', 'quiz-master-next' ); ?></h3>
+					<h3><?php esc_html_e( 'Next Steps', 'quiz-master-next' ); ?></h3>
 					<ul>
 						<li><a target="_blank" rel="noopener"
 								href="https://quizandsurveymaster.com/docs/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php _e( 'Read Documentation', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-media-document"></span>&nbsp;&nbsp;<?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 						</li>
 						<li><a target="_blank" rel="noopener"
 								href="https://demo.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php _e( 'See demos', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-format-video"></span>&nbsp;&nbsp;<?php esc_html_e( 'See demos', 'quiz-master-next' ); ?></a>
 						</li>
 						<li><a target="_blank" rel="noopener"
 								href="https://quizandsurveymaster.com/pricing/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php _e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-plugins-checked"></span>&nbsp;&nbsp;<?php esc_html_e( 'Extend QSM with PRO Addons', 'quiz-master-next' ); ?></a>
 						</li>
 						<li><a target="_blank" rel="noopener"
 								href="https://themes.quizandsurveymaster.com/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php _e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-admin-appearance"></span>&nbsp;&nbsp;<?php esc_html_e( 'Explore QSM Themes', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
 				<div class="welcome-panel-column welcome-panel-last">
-					<h3><?php _e( 'Useful Links', 'quiz-master-next' ); ?></h3>
+					<h3><?php esc_html_e( 'Useful Links', 'quiz-master-next' ); ?></h3>
 					<ul>
 						<li><a target="_blank" rel="noopener"
 								href="https://quizandsurveymaster.com/contact-support/?utm_source=plugin&utm_medium=dashboard"
 								class="welcome-icon"><span
-									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php _e( 'Contact Support', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-admin-users"></span>&nbsp;&nbsp;<?php esc_html_e( 'Contact Support', 'quiz-master-next' ); ?></a>
 						</li>
 						<li><a target="_blank" rel="noopener"
 								href="https://github.com/QuizandSurveyMaster/quiz_master_next"
 								class="welcome-icon"><span
-									class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php _e( 'Github Repository', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-editor-code"></span>&nbsp;&nbsp;<?php esc_html_e( 'Github Repository', 'quiz-master-next' ); ?></a>
 						</li>
 						<li><a target="_blank" rel="noopener" href="https://www.facebook.com/groups/516958552587745"
 								class="welcome-icon"><span
-									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php _e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
+									class="dashicons dashicons-facebook"></span>&nbsp;&nbsp;<?php esc_html_e( 'Connect on Facebook', 'quiz-master-next' ); ?></a>
 						</li>
 					</ul>
 				</div>
@@ -188,12 +188,12 @@ function qsm_generate_dashboard_page() {
 				'callback' => 'qsm_dashboard_recent_taken_quiz',
 				'title'    => 'Recent Taken Quiz',
 			),
-			'dashboard_roadmap'          => array(
+			'dashboard_roadmap'           => array(
 				'sidebar'  => 'side',
 				'callback' => 'qsm_dashboard_roadmap',
 				'title'    => 'roadmap',
 			),
-			'dashboard_latest_blogs'          => array(
+			'dashboard_latest_blogs'      => array(
 				'sidebar'  => 'normal',
 				'callback' => 'qsm_dashboard_latest_blogs',
 				'title'    => 'Latest Blogs',
@@ -282,8 +282,8 @@ function qsm_generate_dashboard_page() {
  */
 function qsm_wizard_template_quiz_options() {
 	global $mlwQuizMasterNext;
-	$settings              = isset( $_POST['settings'] ) ? $_POST['settings'] : array();
-	$addons                = isset( $_POST['addons'] ) ? $_POST['addons'] : array();
+	$settings              = isset( $_POST['settings'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ) : array();
+	$addons                = isset( $_POST['addons'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['addons'] ) ) : array();
 	$all_settings          = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
 	$recommended_addon_str = '';
 	if ( $settings ) {
@@ -335,10 +335,10 @@ function qsm_dashboard_popular_addon( $widget_id ) {
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
 		<span class="screen-reader-text">Toggle panel:
-			<?php _e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
+			<?php esc_html_e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Most Popular Addon this Week', 'quiz-master-next' ); ?></span>
 	</h2>
 	<div class="inside">
 		<div class="main">
@@ -380,10 +380,10 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
 		<span class="screen-reader-text">Toggle panel:
-			<?php _e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span>
+			<?php esc_html_e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( 'Recently Taken Quizzes', 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="recently-taken-quiz-ul">
@@ -477,7 +477,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					?>
 				</a>
 				<?php
-					echo isset( $mlw_result_data['total_result'] ) ? '(' . esc_html( $mlw_result_data['total_result'] ) . ')' : '';
+					echo isset( $mlw_result_data['total_result'] ) ? '(' . wp_kses_post( $mlw_result_data['total_result'] ) . ')' : '';
 				?>
 			</p>
 		</div>
@@ -495,10 +495,10 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "Latest from our blog", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
@@ -538,11 +538,11 @@ function qsm_dashboard_chagelog( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( 'Changelog', 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
 	<h2 class="hndle ui-sortable-handle">
-		<span><?php _e( 'Changelog ' . '( ' . $mlwQuizMasterNext->version . ' )', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</span>
 	</h2>
 	<div class="inside">
 		<div class="main">
@@ -564,7 +564,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						$cl_str      = $expload_str[1];
 						?>
 
-				<li><span class="<?php echo esc_attr( trim( strtolower( $cl_type ) ) ); ?>"><?php echo trim( $cl_type ); ?></span>
+				<li><span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
 					<?php echo wp_kses_post( $cl_str ); ?></li>
 				<?php
 						$i++;
@@ -576,7 +576,7 @@ function qsm_dashboard_chagelog( $widget_id ) {
 			<?php if ( $change_log_count > 5 ) { ?>
 			<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
 				<a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"
-					rel="noopener"><?php _e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+					rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
 			</div>
 			<?php
 				}
@@ -594,29 +594,31 @@ function qsm_dashboard_chagelog( $widget_id ) {
  */
 function qsm_create_new_quiz_from_wizard() {
 	// Create new quiz.
-	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( $_POST['qsm_new_quiz_nonce'], 'qsm_new_quiz' ) ) {
+	if ( isset( $_POST['qsm_new_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash($_POST['qsm_new_quiz_nonce'] ) ), 'qsm_new_quiz' ) ) {
 		global $mlwQuizMasterNext;
-		$quiz_name	 = sanitize_text_field( htmlspecialchars( stripslashes( $_POST['quiz_name'] ), ENT_QUOTES ) );
-		$theme_id	 = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
+		$quiz_name = isset( $_POST['quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['quiz_name'] ) ) : '';
+		$quiz_name = htmlspecialchars( $quiz_name, ENT_QUOTES );
+
+		$theme_id    = isset( $_POST['quiz_theme_id'] ) ? intval( $_POST['quiz_theme_id'] ) : 0;
 		unset( $_POST['qsm_new_quiz_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
 		unset( $_POST['quiz_theme_id'] );
 		/**
 		 * Prepare Quiz Options.
 		 */
-		$quiz_options	 = array(
-			'quiz_name'							 => sanitize_text_field( $_POST['quiz_name'] ),
-			'quiz_featured_image'				 => esc_url_raw( $_POST['quiz_featured_image'] ),
-			'form_type'							 => sanitize_text_field( $_POST['form_type'] ),
-			'system'							 => sanitize_text_field( $_POST['system'] ),
-			'pagination'						 => sanitize_text_field( $_POST['pagination'] ),
-			'progress_bar'						 => sanitize_text_field( $_POST['progress_bar'] ),
-			'timer_limit'						 => sanitize_text_field( $_POST['timer_limit'] ),
-			'enable_pagination_quiz'			 => sanitize_text_field( $_POST['enable_pagination_quiz'] ),
-			'require_log_in'					 => sanitize_text_field( $_POST['require_log_in'] ),
-			'disable_scroll_next_previous_click' => sanitize_text_field( $_POST['disable_scroll_next_previous_click'] ),
+		$quiz_options    = array(
+			'quiz_name'                          => $quiz_name,
+			'quiz_featured_image'                => isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '',
+			'form_type'                          => isset( $_POST['form_type'] ) ? sanitize_text_field( wp_unslash( $_POST['form_type'] ) ) : '',
+			'system'                             => isset( $_POST['system'] ) ? sanitize_text_field( wp_unslash( $_POST['system'] ) ) : '',
+			'pagination'                         => isset( $_POST['pagination'] ) ? sanitize_text_field( wp_unslash( $_POST['pagination'] ) ) : '',
+			'progress_bar'                       => isset( $_POST['progress_bar'] ) ? sanitize_text_field( wp_unslash( $_POST['progress_bar'] ) ) : '',
+			'timer_limit'                        => isset( $_POST['timer_limit'] ) ? sanitize_text_field( wp_unslash( $_POST['timer_limit'] ) ) : '',
+			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
+			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
+			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 		);
-		$quiz_options	 = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
+		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
 	}
 }
@@ -650,10 +652,10 @@ function qsm_dashboard_roadmap( $widget_id ) {
 	?>
 <div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
 	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php _e( "What's Next", 'quiz-master-next' ); ?></span>
+		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span>
 		<span class="toggle-indicator" aria-hidden="true"></span>
 	</button>
-	<h2 class="hndle ui-sortable-handle"><span><?php _e( "What's Next", 'quiz-master-next' ); ?></span></h2>
+	<h2 class="hndle ui-sortable-handle"><span><?php esc_html_e( "What's Next", 'quiz-master-next' ); ?></span></h2>
 	<div class="inside">
 		<div class="main">
 			<ul class="what-new-ul">
@@ -662,7 +664,7 @@ function qsm_dashboard_roadmap( $widget_id ) {
 						target="_blank" rel="noopener"> Roadmap
 					</a>
 					<div class="post-description">
-						Visit out public Roadmap to checkout what's in the development pipepline of QSM. 
+						Visit out public Roadmap to checkout what's in the development pipepline of QSM.
 					</div>
 				</li>
 				<li>

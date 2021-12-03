@@ -40,8 +40,7 @@ class QSM_Quiz_Settings
      * @since 5.0.0
      * @param int $quiz_id the ID of the quiz that we are handling the settings data for
      */
-    public function prepare_quiz($quiz_id)
-    {
+    public function prepare_quiz( $quiz_id ) {
         $this->quiz_id = intval($quiz_id);
         $this->load_settings();
     }
@@ -53,8 +52,7 @@ class QSM_Quiz_Settings
      * @since 5.0.0
      * @param array $field_array An array of the components for the settings field
      */
-    public function register_setting($field_array, $section = 'quiz_options')
-    {
+    public function register_setting( $field_array, $section = 'quiz_options' ) {
 
     /*
       Example field array
@@ -86,11 +84,10 @@ class QSM_Quiz_Settings
      * @param string $section The section whose fields that are being retrieved
      * @return array All the fields registered the the section provided
      */
-    public function load_setting_fields($section = 'quiz_options')
-    {
+    public function load_setting_fields( $section = 'quiz_options' ) {
 
     // Checks if section exists in registered fields and returns it if it does
-        if (isset($this->registered_fields[ $section ])) {
+        if ( isset($this->registered_fields[ $section ]) ) {
             return $this->registered_fields[ $section ];
         } else {
             return false;
@@ -106,11 +103,10 @@ class QSM_Quiz_Settings
      * @param mixed $default What we need to return if no setting exists with given $setting
      * @return $mixed Value set for $setting or $default if setting does not exist
      */
-    public function get_section_setting($section, $setting, $default = false)
-    {
+    public function get_section_setting( $section, $setting, $default = false ) {
 
     // Return if section or setting is empty
-        if (empty($section) || empty($setting)) {
+        if ( empty($section) || empty($setting) ) {
             return $default;
         }
 
@@ -118,7 +114,7 @@ class QSM_Quiz_Settings
         $section_settings = $this->get_setting($section);
 
         // Return default if section not found
-        if (! $section_settings) {
+        if ( ! $section_settings ) {
             return $default;
         }
 
@@ -126,7 +122,7 @@ class QSM_Quiz_Settings
         $section_settings = maybe_unserialize($section_settings);
 
         // Check if setting exists
-        if (isset($section_settings[ $setting ])) {
+        if ( isset($section_settings[ $setting ]) ) {
 
       // Try to unserialize it and then return it
             return maybe_unserialize($section_settings[ $setting ]);
@@ -145,21 +141,20 @@ class QSM_Quiz_Settings
      * @param mixed $default What we need to return if no setting exists with given $setting
      * @return $mixed Value set for $setting or $default if setting does not exist
      */
-    public function get_setting($setting, $default = false)
-    {
+    public function get_setting( $setting, $default = false ) {
         global $mlwQuizMasterNext;
 
         // Return if empty
-        if (empty($setting)) {
+        if ( empty($setting) ) {
             return false;
         }
 
         // Check if ID is not set, for backwards compatibility
-        if (! $this->quiz_id) {
+        if ( ! $this->quiz_id ) {
             $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
 
             // If get_id doesn't work, return false
-            if (! $quiz_id) {
+            if ( ! $quiz_id ) {
                 return false;
             } else {
                 $this->prepare_quiz($quiz_id);
@@ -167,13 +162,11 @@ class QSM_Quiz_Settings
         }
 
         // Check if setting exists
-        if (isset($this->settings[ $setting ])) {
-
-      // Try to unserialize it and then return it
+        if ( isset($this->settings[ $setting ]) ) {
+            // Try to unserialize it and then return it
             return maybe_unserialize($this->settings[ $setting ]);
         } else {
-
-      // Return the default if no setting exists
+            // Return the default if no setting exists
             return $default;
         }
     }
@@ -186,22 +179,21 @@ class QSM_Quiz_Settings
      * @param mixed  $value The value that needs to be stored for the setting.
      * @return bool True if successful or false if fails
      */
-    public function update_setting($setting, $value)
-    {
+    public function update_setting( $setting, $value ) {
         global $mlwQuizMasterNext;
 
         // Return if empty.
-        if (empty($setting)) {
-            $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Setting was empty with value equal to ' . print_r($value, true), 0, 'error');
+        if ( empty( $setting ) ) {
+            $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Setting was empty with value equal to ' . wp_json_encode( $value ), 0, 'error');
             return false;
         }
 
         // Check if ID is not set, for backwards compatibility.
-        if (! $this->quiz_id) {
+        if ( ! $this->quiz_id ) {
             $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
 
             // If get_id doesn't work, return false.
-            if (! $quiz_id) {
+            if ( ! $quiz_id ) {
                 $mlwQuizMasterNext->log_manager->add('Error when updating setting', 'Quiz ID was not found', 0, 'error');
                 return false;
             } else {
@@ -211,52 +203,52 @@ class QSM_Quiz_Settings
   
 
         $old_value = $this->get_setting($setting);
-        if (isset($_POST['global_setting'])) {
-            $setDefaultvalue=$old_value;
-            $getdefaultvalue= (array) get_option('qsm-quiz-settings');
-            $setDefaultvalue['form_type']=$getdefaultvalue['form_type'];
-            $setDefaultvalue['system']=$getdefaultvalue['system'];
-            $setDefaultvalue['score_roundoff']=$getdefaultvalue['score_roundoff'];
-            $setDefaultvalue['progress_bar']=$getdefaultvalue['progress_bar'];
-            $setDefaultvalue['require_log_in']=$getdefaultvalue['require_log_in'];
-            $setDefaultvalue['pagination']=$getdefaultvalue['pagination'];
-            $setDefaultvalue['timer_limit']=$getdefaultvalue['timer_limit'];
-            $setDefaultvalue['enable_result_after_timer_end']=$getdefaultvalue['enable_result_after_timer_end'];
-            $setDefaultvalue['skip_validation_time_expire']=$getdefaultvalue['skip_validation_time_expire'];
-            $setDefaultvalue['total_user_tries']=$getdefaultvalue['total_user_tries'];
-            $setDefaultvalue['limit_total_entries']=$getdefaultvalue['limit_total_entries'];
-            $setDefaultvalue['question_from_total']=$getdefaultvalue['question_from_total'];
-            $setDefaultvalue['question_per_category']=$getdefaultvalue['question_per_category'];
-            $setDefaultvalue['contact_info_location']=$getdefaultvalue['contact_info_location'];
-            $setDefaultvalue['loggedin_user_contact']=$getdefaultvalue['loggedin_user_contact'];
-            $setDefaultvalue['comment_section']=$getdefaultvalue['comment_section'];
-            $setDefaultvalue['question_numbering']=$getdefaultvalue['question_numbering'];
-            $setDefaultvalue['store_responses']=$getdefaultvalue['store_responses'];
-            $setDefaultvalue['disable_answer_onselect']=$getdefaultvalue['disable_answer_onselect'];
-            $setDefaultvalue['ajax_show_correct']=$getdefaultvalue['ajax_show_correct'];
-            $setDefaultvalue['contact_disable_autofill']=$getdefaultvalue['contact_disable_autofill'];
-            $setDefaultvalue['form_disable_autofill']=$getdefaultvalue['form_disable_autofill'];
-            $setDefaultvalue['show_category_on_front']=$getdefaultvalue['show_category_on_front'];
-            $setDefaultvalue['enable_quick_result_mc']=$getdefaultvalue['enable_quick_result_mc'];
-            $setDefaultvalue['end_quiz_if_wrong']=$getdefaultvalue['end_quiz_if_wrong'];
-            $setDefaultvalue['enable_quick_correct_answer_info']=$getdefaultvalue['enable_quick_correct_answer_info'];
-            $setDefaultvalue['enable_retake_quiz_button']=$getdefaultvalue['enable_retake_quiz_button'];
-            $setDefaultvalue['enable_pagination_quiz']=$getdefaultvalue['enable_pagination_quiz'];
-            $setDefaultvalue['enable_deselect_option']=$getdefaultvalue['enable_deselect_option'];
-            $setDefaultvalue['disable_description_on_result']=$getdefaultvalue['disable_description_on_result'];
-            $setDefaultvalue['disable_scroll_next_previous_click']=$getdefaultvalue['disable_scroll_next_previous_click'];
-            $setDefaultvalue['quiz_animation']=$getdefaultvalue['quiz_animation'];
-            $setDefaultvalue['result_page_fb_image']=$getdefaultvalue['result_page_fb_image'];
-            $setDefaultvalue['randomness_order']=$getdefaultvalue['randomness_order'];
-            $setDefaultvalue['scheduled_time_start']=$getdefaultvalue['scheduled_time_start'];
-            $setDefaultvalue['scheduled_time_end']=$getdefaultvalue['scheduled_time_end'];
-            $setDefaultvalue['not_allow_after_expired_time']=$getdefaultvalue['not_allow_after_expired_time'];
-            $setDefaultvalue['preferred_date_format']=$getdefaultvalue['preferred_date_format'];
+        if ( isset($_POST['global_setting']) ) {
+            $setDefaultvalue = $old_value;
+            $getdefaultvalue = (array) get_option('qsm-quiz-settings');
+            $setDefaultvalue['form_type'] = $getdefaultvalue['form_type'];
+            $setDefaultvalue['system'] = $getdefaultvalue['system'];
+            $setDefaultvalue['score_roundoff'] = $getdefaultvalue['score_roundoff'];
+            $setDefaultvalue['progress_bar'] = $getdefaultvalue['progress_bar'];
+            $setDefaultvalue['require_log_in'] = $getdefaultvalue['require_log_in'];
+            $setDefaultvalue['pagination'] = $getdefaultvalue['pagination'];
+            $setDefaultvalue['timer_limit'] = $getdefaultvalue['timer_limit'];
+            $setDefaultvalue['enable_result_after_timer_end'] = $getdefaultvalue['enable_result_after_timer_end'];
+            $setDefaultvalue['skip_validation_time_expire'] = $getdefaultvalue['skip_validation_time_expire'];
+            $setDefaultvalue['total_user_tries'] = $getdefaultvalue['total_user_tries'];
+            $setDefaultvalue['limit_total_entries'] = $getdefaultvalue['limit_total_entries'];
+            $setDefaultvalue['question_from_total'] = $getdefaultvalue['question_from_total'];
+            $setDefaultvalue['question_per_category'] = $getdefaultvalue['question_per_category'];
+            $setDefaultvalue['contact_info_location'] = $getdefaultvalue['contact_info_location'];
+            $setDefaultvalue['loggedin_user_contact'] = $getdefaultvalue['loggedin_user_contact'];
+            $setDefaultvalue['comment_section'] = $getdefaultvalue['comment_section'];
+            $setDefaultvalue['question_numbering'] = $getdefaultvalue['question_numbering'];
+            $setDefaultvalue['store_responses'] = $getdefaultvalue['store_responses'];
+            $setDefaultvalue['disable_answer_onselect'] = $getdefaultvalue['disable_answer_onselect'];
+            $setDefaultvalue['ajax_show_correct'] = $getdefaultvalue['ajax_show_correct'];
+            $setDefaultvalue['contact_disable_autofill'] = $getdefaultvalue['contact_disable_autofill'];
+            $setDefaultvalue['form_disable_autofill'] = $getdefaultvalue['form_disable_autofill'];
+            $setDefaultvalue['show_category_on_front'] = $getdefaultvalue['show_category_on_front'];
+            $setDefaultvalue['enable_quick_result_mc'] = $getdefaultvalue['enable_quick_result_mc'];
+            $setDefaultvalue['end_quiz_if_wrong'] = $getdefaultvalue['end_quiz_if_wrong'];
+            $setDefaultvalue['enable_quick_correct_answer_info'] = $getdefaultvalue['enable_quick_correct_answer_info'];
+            $setDefaultvalue['enable_retake_quiz_button'] = $getdefaultvalue['enable_retake_quiz_button'];
+            $setDefaultvalue['enable_pagination_quiz'] = $getdefaultvalue['enable_pagination_quiz'];
+            $setDefaultvalue['enable_deselect_option'] = $getdefaultvalue['enable_deselect_option'];
+            $setDefaultvalue['disable_description_on_result'] = $getdefaultvalue['disable_description_on_result'];
+            $setDefaultvalue['disable_scroll_next_previous_click'] = $getdefaultvalue['disable_scroll_next_previous_click'];
+            $setDefaultvalue['quiz_animation'] = $getdefaultvalue['quiz_animation'];
+            $setDefaultvalue['result_page_fb_image'] = $getdefaultvalue['result_page_fb_image'];
+            $setDefaultvalue['randomness_order'] = $getdefaultvalue['randomness_order'];
+            $setDefaultvalue['scheduled_time_start'] = $getdefaultvalue['scheduled_time_start'];
+            $setDefaultvalue['scheduled_time_end'] = $getdefaultvalue['scheduled_time_end'];
+            $setDefaultvalue['not_allow_after_expired_time'] = $getdefaultvalue['not_allow_after_expired_time'];
+            $setDefaultvalue['preferred_date_format'] = $getdefaultvalue['preferred_date_format'];
             // Try to serialize the value.            
             return $this->save_quiz_settings($setting,$setDefaultvalue);
         }
         // If the old value and new value are the same, return false.
-        if ($value === $old_value) {
+        if ( $value === $old_value ) {
             return true;
         }
         // Try to serialize the value.
@@ -267,7 +259,7 @@ class QSM_Quiz_Settings
        *
        * @since 5.0.0
        */ 
-      private function save_quiz_settings($setting,$settingArray) {        
+      private function save_quiz_settings( $setting,$settingArray ) {        
             global $mlwQuizMasterNext;
             $serialized_value = maybe_serialize( $settingArray );
             // Set the new value.
@@ -333,37 +325,37 @@ class QSM_Quiz_Settings
 					$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
 				} else {
 					$scheduled_timeframe = array(
-						'start'	 => '',
-						'end'	 => ''
+						'start' => '',
+						'end'   => '',
 					);
 				}
 
 				// Prepares new quiz_options section's settings
 				$settings_array['quiz_options'] = maybe_serialize( array(
-					'system'					 => $quiz_options->quiz_system,
-					'loggedin_user_contact'		 => $quiz_options->loggedin_user_contact,
-					'contact_info_location'		 => $quiz_options->contact_info_location,
-					'user_name'					 => $quiz_options->user_name,
-					'user_comp'					 => $quiz_options->user_comp,
-					'user_email'				 => $quiz_options->user_email,
-					'user_phone'				 => $quiz_options->user_phone,
-					'comment_section'			 => $quiz_options->comment_section,
-					'randomness_order'			 => $quiz_options->randomness_order,
-					'question_from_total'		 => $quiz_options->question_from_total,
-					'question_per_category'		 => $quiz_options->question_per_category,
-					'total_user_tries'			 => $quiz_options->total_user_tries,
-					'social_media'				 => $quiz_options->social_media,
-					'pagination'				 => $quiz_options->pagination,
-					'timer_limit'				 => $quiz_options->timer_limit,
-					'question_numbering'		 => $quiz_options->question_numbering,
-					'require_log_in'			 => $quiz_options->require_log_in,
-					'limit_total_entries'		 => $quiz_options->limit_total_entries,
-					'scheduled_time_start'		 => $scheduled_timeframe["start"],
-					'scheduled_time_end'		 => $scheduled_timeframe["end"],
-					'disable_answer_onselect'	 => $quiz_options->disable_answer_onselect,
-					'ajax_show_correct'			 => $quiz_options->ajax_show_correct,
-					'preferred_date_format'		 => $quiz_options->preferred_date_format
-					) );
+					'system'                  => $quiz_options->quiz_system,
+					'loggedin_user_contact'   => $quiz_options->loggedin_user_contact,
+					'contact_info_location'   => $quiz_options->contact_info_location,
+					'user_name'               => $quiz_options->user_name,
+					'user_comp'               => $quiz_options->user_comp,
+					'user_email'              => $quiz_options->user_email,
+					'user_phone'              => $quiz_options->user_phone,
+					'comment_section'         => $quiz_options->comment_section,
+					'randomness_order'        => $quiz_options->randomness_order,
+					'question_from_total'     => $quiz_options->question_from_total,
+					'question_per_category'   => $quiz_options->question_per_category,
+					'total_user_tries'        => $quiz_options->total_user_tries,
+					'social_media'            => $quiz_options->social_media,
+					'pagination'              => $quiz_options->pagination,
+					'timer_limit'             => $quiz_options->timer_limit,
+					'question_numbering'      => $quiz_options->question_numbering,
+					'require_log_in'          => $quiz_options->require_log_in,
+					'limit_total_entries'     => $quiz_options->limit_total_entries,
+					'scheduled_time_start'    => $scheduled_timeframe["start"],
+					'scheduled_time_end'      => $scheduled_timeframe["end"],
+					'disable_answer_onselect' => $quiz_options->disable_answer_onselect,
+					'ajax_show_correct'       => $quiz_options->ajax_show_correct,
+					'preferred_date_format'   => $quiz_options->preferred_date_format,
+				) );
 			}
 
 			// If no text is present
@@ -375,7 +367,7 @@ class QSM_Quiz_Settings
 				} else {
 					$pagination_text = array(
 						__( 'Previous', 'quiz-master-next' ),
-						__( 'Next', 'quiz-master-next' )
+						__( 'Next', 'quiz-master-next' ),
 					);
 				}
 
@@ -384,36 +376,36 @@ class QSM_Quiz_Settings
 					$social_media_text = maybe_unserialize( $quiz_options->social_media_text );
 				} else {
 					$social_media_text = array(
-						'twitter'	 => $quiz_options->social_media_text,
-						'facebook'	 => $quiz_options->social_media_text
+						'twitter'  => $quiz_options->social_media_text,
+						'facebook' => $quiz_options->social_media_text,
 					);
 				}
 
 				// Prepares new quiz_text section's settings
 				$settings_array["quiz_text"] = maybe_serialize( array(
-					'message_before'			 => $quiz_options->message_before,
-					'message_comment'			 => $quiz_options->message_comment,
-					'message_end_template'		 => $quiz_options->message_end_template,
-					'comment_field_text'		 => $quiz_options->comment_field_text,
-					'question_answer_template'	 => $quiz_options->question_answer_template,
-					'submit_button_text'		 => $quiz_options->submit_button_text,
-					'name_field_text'			 => $quiz_options->name_field_text,
-					'business_field_text'		 => $quiz_options->business_field_text,
-					'email_field_text'			 => $quiz_options->email_field_text,
-					'phone_field_text'			 => $quiz_options->phone_field_text,
-					'total_user_tries_text'		 => $quiz_options->total_user_tries_text,
-					'twitter_sharing_text'		 => $social_media_text["twitter"],
-					'facebook_sharing_text'		 => $social_media_text["facebook"],
-					'previous_button_text'		 => $pagination_text[0],
-					'next_button_text'			 => $pagination_text[1],
-					'require_log_in_text'		 => $quiz_options->require_log_in_text,
-					'limit_total_entries_text'	 => $quiz_options->limit_total_entries_text,
-					'scheduled_timeframe_text'	 => $quiz_options->scheduled_timeframe_text
-					) );
+					'message_before'           => $quiz_options->message_before,
+					'message_comment'          => $quiz_options->message_comment,
+					'message_end_template'     => $quiz_options->message_end_template,
+					'comment_field_text'       => $quiz_options->comment_field_text,
+					'question_answer_template' => $quiz_options->question_answer_template,
+					'submit_button_text'       => $quiz_options->submit_button_text,
+					'name_field_text'          => $quiz_options->name_field_text,
+					'business_field_text'      => $quiz_options->business_field_text,
+					'email_field_text'         => $quiz_options->email_field_text,
+					'phone_field_text'         => $quiz_options->phone_field_text,
+					'total_user_tries_text'    => $quiz_options->total_user_tries_text,
+					'twitter_sharing_text'     => $social_media_text["twitter"],
+					'facebook_sharing_text'    => $social_media_text["facebook"],
+					'previous_button_text'     => $pagination_text[0],
+					'next_button_text'         => $pagination_text[1],
+					'require_log_in_text'      => $quiz_options->require_log_in_text,
+					'limit_total_entries_text' => $quiz_options->limit_total_entries_text,
+					'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
+				) );
 			}
 
 			// Update new settings system
-			$results			 = $wpdb->update(
+			$results             = $wpdb->update(
 				$wpdb->prefix . "mlw_quizzes", array( 'quiz_settings' => maybe_serialize( $settings_array ) ), array( 'quiz_id' => $this->quiz_id ), array( '%s' ), array( '%d' )
 			);
 		}
@@ -423,22 +415,22 @@ class QSM_Quiz_Settings
 		foreach ( $registered_fields as $section => $fields ) {
 
 			// Check if section exists in settings and, if not, set it to empty array
-			if ( ! isset( $settings_array[$section] ) ) {
-				$settings_array[$section] = array();
+			if ( ! isset( $settings_array[ $section ] ) ) {
+				$settings_array[ $section ] = array();
 			}
 
-			$unserialized_section = maybe_unserialize( $settings_array[$section] );
+			$unserialized_section = maybe_unserialize( $settings_array[ $section ] );
 
 			// Cycle through each setting in section
 			foreach ( $fields as $field ) {
 
 				// Check if setting exists in section settings and, if not, set it to the default
-				if ( ! isset( $unserialized_section[$field["id"]] ) ) {
-					$unserialized_section[$field["id"]] = $field["default"];
+				if ( ! isset( $unserialized_section[ $field["id"] ] ) ) {
+					$unserialized_section[ $field["id"] ] = $field["default"];
 				}
 			}
 
-			$settings_array[$section] = maybe_serialize( $unserialized_section );
+			$settings_array[ $section ] = maybe_serialize( $unserialized_section );
 		}
 
 		$this->settings = $settings_array;
@@ -479,4 +471,4 @@ class QSM_Quiz_Settings
 	}
 }
 
-?>
+

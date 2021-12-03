@@ -21,7 +21,7 @@ add_action( 'qmn_quiz_created', 'qsm_redirect_to_edit_page', 10, 1 );
 function qsm_redirect_to_edit_page( $quiz_id ) {
 	link_featured_image( $quiz_id );
 	$url = admin_url( 'admin.php?page=mlw_quiz_options&&quiz_id=' . $quiz_id );
-	wp_redirect($url);
+	wp_safe_redirect($url);
 }
 
 /**
@@ -31,7 +31,7 @@ function qsm_redirect_to_edit_page( $quiz_id ) {
  * @return void
  */
 function link_featured_image( $quiz_id ) {
-	$url = esc_url_raw( $_POST['quiz_featured_image'] );
+	$url = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '';
 	if ( ! empty( $url ) ) {
 		update_option( "quiz_featured_image_$quiz_id", $url );
 	}
@@ -230,7 +230,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -243,7 +243,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -256,7 +256,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -280,7 +280,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -293,13 +293,13 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<div id="categories">
 		<a id="qsm-category-add-toggle" class="hide-if-no-js">
-			<?php _e( '+ Add New Category', 'quiz-master-next' ); ?>
+			<?php esc_html_e( '+ Add New Category', 'quiz-master-next' ); ?>
 		</a>
 		<p id="qsm-category-add" style="display: none;">
 			<input type="radio" style="display: none;" name="category" class="category-radio" id="new_category_new"
@@ -315,12 +315,12 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="multi_category_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<div id="multi_categories_wrapper" class="categorydiv">
-		<input type='text' class='qsm-category-filter' placeholder=' <?php _e( ' Search', 'quiz-master-next' ); ?> '>
+		<input type='text' class='qsm-category-filter' placeholder=' <?php esc_html_e( ' Search', 'quiz-master-next' ); ?> '>
 		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
 			<?php
 						wp_terms_checklist(
@@ -335,7 +335,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 		</ul>
 		<a href='#' class='button button-primary add-multiple-category'>
-			<?php _e( '+ Add New Category ', 'quiz-master-next' ); ?>
+			<?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?>
 		</a>
 	</div>
 </div>
@@ -346,7 +346,7 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr($key); ?>_area" class="qsm-row <?php echo esc_attr($show_class); ?>">
 	<label>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -381,7 +381,7 @@ function qsm_display_question_option( $key, $single_option ) {
 				}
 			}
 			?>
-		<?php echo isset( $single_option['label'] ) ? $single_option['label'] : ''; ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 		<?php echo wp_kses_post( $tooltip ); ?>
 		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
@@ -409,28 +409,28 @@ function qsm_create_new_quiz_wizard() {
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
 			<header class="qsm-popup__header">
 				<h2 class="qsm-popup__title" id="modal-2-title">
-					<?php _e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h2>
+					<?php esc_html_e( 'Create New Quiz Or Survey', 'quiz-master-next' ); ?></h2>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 			</header>
 			<form action="" method="post" id="new-quiz-form">
 				<?php wp_nonce_field( 'qsm_new_quiz', 'qsm_new_quiz_nonce' ); ?>
 				<main class="qsm-popup__content" id="modal-2-content">
 					<div class="qsm-wizard-menu">
-						<div class="qsm-logo"><img alt="" src="<?php echo QSM_PLUGIN_URL; ?>/assets/icon-128x128.png">
+						<div class="qsm-logo"><img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ); ?>/assets/icon-128x128.png">
 						</div>
 						<div class="qsm-wizard-wrap active" data-show="select_themes">
 							<span
-								class="qsm-wizard-step-text"><?php echo _e( 'Select theme', 'quiz-master-next' ); ?></span>
+								class="qsm-wizard-step-text"><?php esc_html_e( 'Select theme', 'quiz-master-next' ); ?></span>
 						</div>
 						<div class="qsm-wizard-wrap" data-show="quiz_settings">
 							<span
-								class="qsm-wizard-step-text"><?php echo _e( 'Quiz Settings', 'quiz-master-next' ); ?></span>
+								class="qsm-wizard-step-text"><?php esc_html_e( 'Quiz Settings', 'quiz-master-next' ); ?></span>
 						</div>
 						<div class="qsm-wizard-wrap" data-show="addons_list">
-							<span class="qsm-wizard-step-text"><?php echo _e( 'Addons', 'quiz-master-next' ); ?></span>
+							<span class="qsm-wizard-step-text"><?php esc_html_e( 'Addons', 'quiz-master-next' ); ?></span>
 						</div>
 						<span class="qsm-wizard-step-text-optional">
-							<?php echo _e( '(Optional)', 'quiz-master-next' ); ?>
+							<?php esc_html_e( '(Optional)', 'quiz-master-next' ); ?>
 						</span>
 					</div>
 					<ul style="display: none;" class="qsm-new_menu_tab_items">
@@ -439,8 +439,8 @@ function qsm_create_new_quiz_wizard() {
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-admin-generic "></span>
 									<div class="nav-item-label-content">
-										<h4><?php _e( 'Quiz Setting', 'quiz-master-next' ); ?></h4>
-										<span><?php _e( 'Fill quiz settings as per preferences', 'quiz-master-next' ); ?></span>
+										<h4><?php esc_html_e( 'Quiz Setting', 'quiz-master-next' ); ?></h4>
+										<span><?php esc_html_e( 'Fill quiz settings as per preferences', 'quiz-master-next' ); ?></span>
 									</div>
 								</div>
 							</a>
@@ -450,8 +450,8 @@ function qsm_create_new_quiz_wizard() {
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-layout"></span>
 									<div class="nav-item-label-content">
-										<h4><?php _e( 'Select Themes', 'quiz-master-next' ); ?></h4>
-										<span><?php _e( 'Use pre-made theme to speed up the things.', 'quiz-master-next' ); ?></span>
+										<h4><?php esc_html_e( 'Select Themes', 'quiz-master-next' ); ?></h4>
+										<span><?php esc_html_e( 'Use pre-made theme to speed up the things.', 'quiz-master-next' ); ?></span>
 									</div>
 								</div>
 							</a>
@@ -461,8 +461,8 @@ function qsm_create_new_quiz_wizard() {
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-welcome-add-page"></span>
 									<div class="nav-item-label-content">
-										<h4><?php _e( 'Addons', 'quiz-master-next' ); ?></h4>
-										<span><?php _e( 'Use 40+ addons to customize the quiz.', 'quiz-master-next' ); ?></span>
+										<h4><?php esc_html_e( 'Addons', 'quiz-master-next' ); ?></h4>
+										<span><?php esc_html_e( 'Use 40+ addons to customize the quiz.', 'quiz-master-next' ); ?></span>
 									</div>
 								</div>
 							</a>
@@ -470,23 +470,23 @@ function qsm_create_new_quiz_wizard() {
 					</ul>
 					<div id="quiz_settings" class="qsm-new-menu-elements" style="display: none;">
 						<div class="input-group">
-							<label for="quiz_name"><?php _e( 'Quiz Name', 'quiz-master-next' ); ?>
+							<label for="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?>
 								<span
-									class="qsm-opt-desc"><?php _e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
+									class="qsm-opt-desc"><?php esc_html_e( 'Enter a name for this Quiz.', 'quiz-master-next' ); ?></span>
 							</label>
 							<input type="text" class="quiz_name" name="quiz_name" value="" required="">
 						</div>
 						<div class="input-group featured_image">
-							<label for="quiz_name"><?php _e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
+							<label for="quiz_name"><?php esc_html_e( 'Quiz Featured Image', 'quiz-master-next' ); ?>
 								<span class="qsm-opt-desc">
-									<?php _e( 'Enter an external URL or Choose from Media Library.', 'quiz-master-next' ); ?>
-									<?php _e( 'Can be changed further from style tab', 'quiz-master-next' ); ?>
+									<?php esc_html_e( 'Enter an external URL or Choose from Media Library.', 'quiz-master-next' ); ?>
+									<?php esc_html_e( 'Can be changed further from style tab', 'quiz-master-next' ); ?>
 								</span>
 							</label>
 							<span id="qsm_span">
 								<input type="text" class="quiz_featured_image" name="quiz_featured_image" value="">
 								<a id="set_featured_image"
-									class="button "><?php _e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
+									class="button "><?php esc_html_e( 'Set Featured Image', 'quiz-master-next' ); ?></a>
 							</span>
 						</div>
 						<?php
@@ -537,7 +537,7 @@ function qsm_create_new_quiz_wizard() {
 								echo '</div>';
 							}
 						} else {
-							_e( 'No settings found!', 'quiz-master-next' );
+							esc_html_e( 'No settings found!', 'quiz-master-next' );
 						}
 						?>
 					</div>
@@ -546,10 +546,10 @@ function qsm_create_new_quiz_wizard() {
 							<div class="themes wp-clearfix">
 								<ul class="theme-sub-menu">
 									<li class="active"><a data-show="downloaded_theme"
-											href="#"><?php _e( 'Themes', 'quiz-master-next' ); ?></a></li>
+											href="#"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a></li>
 									<?php if ( ! empty( $themes_data ) ) { ?>
 									<li><a data-show="browse_themes"
-											href="#"><?php _e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
+											href="#"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
 									<?php } ?>
 								</ul>
 								<div class="theme-wrap" id="downloaded_theme">
@@ -588,9 +588,9 @@ function qsm_create_new_quiz_wizard() {
 															href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
 															target="_blank" rel="noopener">
 															<?php
-															_e( 'Buy now', 'quiz-master-next' );
+															esc_html_e( 'Buy now', 'quiz-master-next' );
 															echo ' : $ ';
-															echo array_values( $single_arr['price'] )[0];
+															echo esc_html( array_values( $single_arr['price'] )[0] );
 															?>
 														</a>
 													</span>
@@ -605,27 +605,27 @@ function qsm_create_new_quiz_wizard() {
 								</div>
 							</div>
 							<div class="qsm-addon-list-right">
-								<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
+								<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
 								<a style="text-decoration: none; font-size: 15px;" rel="noopener"
 									href="http://quizandsurveymaster.com/addons/?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-									target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+									target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
 				</main>
 			</form>
 			<footer class="qsm-popup__footer">
 				<button id="prev-theme-button"
-					class="button qsm-wizard-borderless"><?php _e( 'Back', 'quiz-master-next' ); ?></button>
+					class="button qsm-wizard-borderless"><?php esc_html_e( 'Back', 'quiz-master-next' ); ?></button>
 				<button id="prev-quiz-button"
-					class="button qsm-wizard-borderless"></span><?php _e( 'Back', 'quiz-master-next' ); ?></button>
+					class="button qsm-wizard-borderless"></span><?php esc_html_e( 'Back', 'quiz-master-next' ); ?></button>
 				<button class="button qsm-wizard-borderless" data-micromodal-close
-					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+					aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 				<button id="next-quiz-button"
-					class="button button-primary"><?php _e( 'Next', 'quiz-master-next' ); ?></button>
+					class="button button-primary"><?php esc_html_e( 'Next', 'quiz-master-next' ); ?></button>
 				<button id="choose-addons-button"
-					class="button button-primary"><?php _e( 'Next', 'quiz-master-next' ); ?></button>
+					class="button button-primary"><?php esc_html_e( 'Next', 'quiz-master-next' ); ?></button>
 				<button id="create-quiz-button"
-					class="button button-primary"><?php _e( 'Create Quiz', 'quiz-master-next' ); ?></button>
+					class="button button-primary"><?php esc_html_e( 'Create Quiz', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
@@ -640,40 +640,40 @@ function qsm_create_new_quiz_wizard() {
 function qsm_text_template_variable_list() {
 	$variable_list = array(
 		'Core' => array(
-			'%POINT_SCORE%'             => __( 'Score for the quiz when using points', 'quiz-master-next' ),
-			'%MAXIMUM_POINTS%'          => __( 'Maximum possible points one can score', 'quiz-master-next' ),
-      '%MINIMUM_POINTS%'          => __( 'Minimum possible points one can score', 'quiz-master-next' ),
-			'%AVERAGE_POINT%'           => __( 'The average amount of points user had per question', 'quiz-master-next' ),
-			'%AMOUNT_CORRECT%'          => __( 'The number of correct answers the user had', 'quiz-master-next' ),
-			'%AMOUNT_INCORRECT%'        => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
-			'%AMOUNT_ATTEMPTED%'        => __( 'The number of questions are attempted', 'quiz-master-next' ),
-			'%TOTAL_QUESTIONS%'         => __( 'The total number of questions in the quiz', 'quiz-master-next' ),
-			'%CORRECT_SCORE%'           => __( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
-			'%USER_NAME%'               => __( 'The name the user entered before the quiz', 'quiz-master-next' ),
-			'%FULL_NAME%'               => __( 'The full name of user with first name and last name', 'quiz-master-next' ),
-			'%USER_BUSINESS%'           => __( 'The business the user entered before the quiz', 'quiz-master-next' ),
-			'%USER_PHONE%'              => __( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
-			'%USER_EMAIL%'              => __( 'The email the user entered before the quiz', 'quiz-master-next' ),
-			'%QUIZ_NAME%'               => __( 'The name of the quiz', 'quiz-master-next' ),
-			'%QUIZ_LINK%'               => __( 'The link of the quiz', 'quiz-master-next' ),
-			'%QUESTIONS_ANSWERS%'       => __( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
-			'%COMMENT_SECTION%'         => __( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
-			'%TIMER%'                   => __( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
-			'%TIMER_MINUTES%'           => __( 'The amount of time user spent on quiz in minutes i.e. If total time is 3 minutes 38 seconds. This will output 3', 'quiz-master-next' ),
-			'%TIMER_SECONDS%'           => __( 'The left over seconds user spent on quiz. i.e. If total time is 3 minutes 38 seconds. This will output 38', 'quiz-master-next' ),
-			'%CATEGORY_POINTS_X%'       => __( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
-			'%CATEGORY_SCORE_X%'        => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
-			'%CATEGORY_AVERAGE_POINTS%' => __( 'The average points from all categories.', 'quiz-master-next' ),
-			'%CATEGORY_AVERAGE_SCORE%'  => __( 'The average score from all categories.', 'quiz-master-next' ),
-			'%QUESTION_MAX_POINTS%'     => __( 'Maximum points of the question', 'quiz-master-next' ),
-			'%FACEBOOK_SHARE%'          => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-			'%TWITTER_SHARE%'           => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
-			'%RESULT_LINK%'             => __( 'The link of the result page.', 'quiz-master-next' ),
-			'%CONTACT_X%'  						  => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-			'%CONTACT_ALL%'             => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-			'%AVERAGE_CATEGORY_POINTS_X%'=> __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
-			'%QUESTION_ANSWER_X%'       => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
-		)		
+			'%POINT_SCORE%'               => __( 'Score for the quiz when using points', 'quiz-master-next' ),
+			'%MAXIMUM_POINTS%'            => __( 'Maximum possible points one can score', 'quiz-master-next' ),
+			'%MINIMUM_POINTS%'            => __( 'Minimum possible points one can score', 'quiz-master-next' ),
+			'%AVERAGE_POINT%'             => __( 'The average amount of points user had per question', 'quiz-master-next' ),
+			'%AMOUNT_CORRECT%'            => __( 'The number of correct answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_INCORRECT%'          => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_ATTEMPTED%'          => __( 'The number of questions are attempted', 'quiz-master-next' ),
+			'%TOTAL_QUESTIONS%'           => __( 'The total number of questions in the quiz', 'quiz-master-next' ),
+			'%CORRECT_SCORE%'             => __( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
+			'%USER_NAME%'                 => __( 'The name the user entered before the quiz', 'quiz-master-next' ),
+			'%FULL_NAME%'                 => __( 'The full name of user with first name and last name', 'quiz-master-next' ),
+			'%USER_BUSINESS%'             => __( 'The business the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_PHONE%'                => __( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_EMAIL%'                => __( 'The email the user entered before the quiz', 'quiz-master-next' ),
+			'%QUIZ_NAME%'                 => __( 'The name of the quiz', 'quiz-master-next' ),
+			'%QUIZ_LINK%'                 => __( 'The link of the quiz', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS%'         => __( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
+			'%COMMENT_SECTION%'           => __( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
+			'%TIMER%'                     => __( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
+			'%TIMER_MINUTES%'             => __( 'The amount of time user spent on quiz in minutes i.e. If total time is 3 minutes 38 seconds. This will output 3', 'quiz-master-next' ),
+			'%TIMER_SECONDS%'             => __( 'The left over seconds user spent on quiz. i.e. If total time is 3 minutes 38 seconds. This will output 38', 'quiz-master-next' ),
+			'%CATEGORY_POINTS_X%'         => __( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_SCORE_X%'          => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_POINTS%'   => __( 'The average points from all categories.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_SCORE%'    => __( 'The average score from all categories.', 'quiz-master-next' ),
+			'%QUESTION_MAX_POINTS%'       => __( 'Maximum points of the question', 'quiz-master-next' ),
+			'%FACEBOOK_SHARE%'            => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
+			'%TWITTER_SHARE%'             => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
+			'%RESULT_LINK%'               => __( 'The link of the result page.', 'quiz-master-next' ),
+			'%CONTACT_X%'                 => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%AVERAGE_CATEGORY_POINTS_X%' => __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next'),
+			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+		),
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
 	return $variable_list;
@@ -745,8 +745,8 @@ add_action( 'admin_init', 'qsm_check_create_tables' );
  * @since 7.0.0
  */
 function qsm_admin_page_access_func() {
-	if ( isset( $_GET['page'] ) && $_GET['page'] == 'quiz-master-next/mlw_quizmaster2.php' ) {
-		wp_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
+	if ( isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'quiz-master-next/mlw_quizmaster2.php' ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=qsm_dashboard' ) );
 		exit;
 	}
 }
@@ -776,7 +776,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		}
 	}
 	?>
-<div class="theme-wrapper theme 
+<div class="theme-wrapper theme
 	<?php
 	if ( $saved_quiz_theme == '' || $saved_quiz_theme == 0 ) {
 		echo 'active';
@@ -786,16 +786,16 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	<input style="display: none" type="radio" name="quiz_theme_id" value="0"
 		<?php checked( $saved_quiz_theme, '0', true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo QSM_PLUGIN_URL . '/assets/screenshot-default-theme.png'; ?>">
+		<img alt="" src="<?php echo esc_url( QSM_PLUGIN_URL ) . '/assets/screenshot-default-theme.png'; ?>">
 		<div class="downloaded-theme-button">
-			<span class="button button-primary"><?php _e( 'Select', 'quiz-master-next' ); ?></span>
+			<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 		</div>
 	</div>
 	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo __( 'Default Theme', 'quiz-master-next' ); ?></h2>
+		<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
 		<div class="theme-actions">
 			<?php if ( $saved_quiz_theme != 'default' ) { ?>
-			<button class="button qsm-activate-theme"><?php _e( 'Activate', 'quiz-master-next' ); ?></button>
+			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
 			<?php } ?>
 		</div>
 	</div>
@@ -807,22 +807,22 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			$theme_name = $theme['theme'];
 			$theme_id   = $theme['id'];
 			?>
-<div class="theme-wrapper theme 
+<div class="theme-wrapper theme
 			<?php
 			if ( $saved_quiz_theme == $theme_id ) {
 				echo 'active';
 			}
 			?>
 			">
-	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo (int) $theme_id; ?>"
+	<input style="display: none" type="radio" name="quiz_theme_id" value="<?php echo intval( $theme_id ); ?>"
 		<?php checked( $saved_quiz_theme, $theme_id, true ); ?>>
 	<div class="theme-screenshot" id="qsm-theme-screenshot">
 		<img alt="" src="<?php echo esc_url( $folder_slug . $theme_name . '/screenshot.png' ); ?>" />
 		<div class="downloaded-theme-button">
-			<span class="button button-primary"><?php _e( 'Select', 'quiz-master-next' ); ?></span>
+			<span class="button button-primary"><?php esc_html_e( 'Select', 'quiz-master-next' ); ?></span>
 		</div>
 	</div>
-	<span class="more-details" style="display: none;"><?php _e( 'Templates', 'quiz-master-next' ); ?></span>
+	<span class="more-details" style="display: none;"><?php esc_html_e( 'Templates', 'quiz-master-next' ); ?></span>
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php echo esc_attr( $theme['theme_name'] ); ?></h2>
 		<div class="theme-actions">
@@ -833,14 +833,14 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			<?php
 				} else {
 					?>
-			<button class="button qsm-activate-theme"><?php _e( 'Activate', 'quiz-master-next' ); ?></button>
+			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
 			<?php
 				}
 				?>
 			<?php } ?>
 			<?php if ( $saved_quiz_theme == $theme_id ) { ?>
 			<a class="button button-primary qsm-customize-color-settings"
-				href="#"><?php _e( 'Customize', 'quiz-master-next' ); ?></a>
+				href="#"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
 			<?php } ?>
 		</div>
 	</div>
@@ -900,9 +900,9 @@ function qsm_get_default_wizard_themes() {
 		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
@@ -928,9 +928,9 @@ function qsm_get_market_themes() {
 		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
 		<div class="market-theme-url">
 			<a class="button button-primary" target="_blank" rel="noopener"
-			   href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Live Preview', 'quiz-master-next' ); ?></a>
+			   href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
 			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php _e( 'Buy Now', 'quiz-master-next' ); ?></a>
+				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="theme-id-container">
@@ -943,8 +943,24 @@ function qsm_get_market_themes() {
 		?>
 <div class="empty-market-place">
 	<span class="dashicons dashicons-welcome-widgets-menus"></span><br />
-	<span class="no-themes-message"><?php _e( 'No more themes found.', 'quiz-master-next' ); ?></span>
+	<span class="no-themes-message"><?php esc_html_e( 'No more themes found.', 'quiz-master-next' ); ?></span>
 </div>
 <?php
 	}
+}
+
+/**
+ * Sanitizes multi-dimentional array
+ *
+ * @since 7.3.5
+ */
+function qsm_sanitize_rec_array( $array ) {
+	foreach ( (array) $array as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$array[ $key ] = qsm_sanitize_rec_array( $value );
+		} else {
+			$array[ $key ] = sanitize_text_field( $value );
+		}
+	}
+   	return $array;
 }

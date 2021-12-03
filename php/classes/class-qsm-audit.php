@@ -37,14 +37,14 @@ class QSM_Audit {
     $inserted = $wpdb->insert(
       $wpdb->prefix . "mlw_qm_audit_trail",
       array(
-        'action_user' => $current_user->display_name,
-        'action' => $action,
-        'time' => date("h:i:s A m/d/Y")
+		  'action_user' => $current_user->display_name,
+		  'action'      => $action,
+		  'time'        => date("h:i:s A m/d/Y"),
       ),
       array(
-        '%s',
-        '%s',
-        '%s'
+		  '%s',
+		  '%s',
+		  '%s',
       )
     );
 
@@ -56,4 +56,4 @@ class QSM_Audit {
     return true;
   }
 }
-?>
+

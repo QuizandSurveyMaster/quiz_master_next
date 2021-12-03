@@ -60,8 +60,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?></span>
-                                <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo htmlspecialchars_decode( $options->name_field_text, ENT_QUOTES ); ?>" value='<?php echo esc_attr( $name ); ?>' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->name_field_text ); ?></span>
+                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo esc_attr( $options->name_field_text ); ?>" value='<?php echo esc_attr( $name ); ?>' />
 				<?php
 			}
 
@@ -72,8 +72,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?></span>
-				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserComp' placeholder="<?php echo htmlspecialchars_decode( $options->business_field_text, ENT_QUOTES ); ?>" value='' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->business_field_text ); ?></span>
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserComp' placeholder="<?php echo esc_attr( $options->business_field_text ); ?>" value='' />
 				<?php
 			}
 
@@ -84,8 +84,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?></span>
-				<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo htmlspecialchars_decode( $options->email_field_text, ENT_QUOTES ); ?>" value='<?php echo esc_attr( $email ); ?>' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->email_field_text ); ?></span>
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
 				<?php
 			}
 
@@ -96,8 +96,8 @@ class QSM_Contact_Manager {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
-				<span class='mlw_qmn_question qsm_question'><?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?></span>
-                                <input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='number' class='<?php echo esc_attr( $class ); ?>' name='mlwUserPhone' placeholder="<?php echo htmlspecialchars_decode( $options->phone_field_text, ENT_QUOTES ); ?>" value='' />
+				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->phone_field_text ); ?></span>
+                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='number' class='<?php echo esc_attr( $class ); ?>' name='mlwUserPhone' placeholder="<?php echo esc_attr( $options->phone_field_text ); ?>" value='' />
 				<?php
 			}
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
@@ -124,15 +124,15 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
-							if( $fields[ $i ]['use'] == 'phone' ){
+							if ( $fields[ $i ]['use'] == 'phone' ) {
 								$class = 'mlwPhoneNumber';
 							}
-							if($fields[ $i ]['use'] == 'phone' && 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ){
+							if ( $fields[ $i ]['use'] == 'phone' && 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) {
 								$class = 'mlwPhoneNumber mlwRequiredNumber qsm_required_text';
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if( $fields[ $i ]['use'] == 'phone' ){ ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if(empty($contact_disable_autofill)){echo esc_attr( $value );} ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if ( $fields[ $i ]['use'] == 'phone' ) { ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
 							<?php
 							break;
 
@@ -142,7 +142,7 @@ class QSM_Contact_Manager {
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if($contact_disable_autofill){ echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if(empty($contact_disable_autofill)){ echo esc_attr( $value ); } ?>' placeholder="<?php echo strip_tags( $fields[ $i ]['label'] ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) { echo esc_attr( $value ); } ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
 							<?php
 							break;
 
@@ -207,31 +207,31 @@ class QSM_Contact_Manager {
 		// If fields are empty, check for backwards compatibility.
 		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
 			$responses[] = array(
-			'label' => 'Name',
-			'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( $_POST["mlwUserName"] ) : 'None',
-			'use' => 'name'
+				'label' => 'Name',
+				'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserName"] ) ) : 'None',
+				'use'   => 'name',
 			);
 			$responses[] = array(
-			'label' => 'Business',
-			'value' => isset( $_POST["mlwUserComp"] ) ? sanitize_text_field( $_POST["mlwUserComp"] ) : 'None',
-			'use' => 'comp'
+				'label' => 'Business',
+				'value' => isset( $_POST["mlwUserComp"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserComp"] ) ) : 'None',
+				'use'   => 'comp',
 			);
 			$responses[] = array(
-			'label' => 'Email',
-			'value' => isset( $_POST["mlwUserEmail"] ) ? sanitize_text_field( $_POST["mlwUserEmail"] ) : 'None',
-			'use' => 'email'
+				'label' => 'Email',
+				'value' => isset( $_POST["mlwUserEmail"] ) ? sanitize_email( wp_unslash( $_POST["mlwUserEmail"] ) ) : 'None',
+				'use'   => 'email',
 			);
 			$responses[] = array(
-			'label' => 'Phone',
-			'value' => isset( $_POST["mlwUserPhone"] ) ? sanitize_text_field( $_POST["mlwUserPhone"] ) : 'None',
-			'use' => 'phone'
+				'label' => 'Phone',
+				'value' => isset( $_POST["mlwUserPhone"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserPhone"] ) ) : 'None',
+				'use'   => 'phone',
 			);
 		} elseif ( ! empty( $fields ) && is_array( $fields ) ) {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 				$field_array = array(
 					'label' => $fields[ $i ]['label'],
-					'value' => isset( $_POST["contact_field_$i"] ) ? sanitize_text_field( $_POST["contact_field_$i"] ) : 'None'
+					'value' => isset( $_POST[ "contact_field_$i" ] ) ? sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) : 'None',
 				);
 				if ( isset( $fields[ $i ]['use'] ) ) {
 					$field_array['use'] = $fields[ $i ]['use'];
@@ -309,7 +309,7 @@ class QSM_Contact_Manager {
 		$allowed_html = array(
 			"a" => array(
 				"href" => array(),
-			)
+			),
 		);
 
 		$is_not_allow_html = apply_filters( 'qsm_admin_contact_label_disallow_html', true );

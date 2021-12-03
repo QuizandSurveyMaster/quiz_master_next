@@ -74,7 +74,7 @@ function qmn_file_upload_review( $id, $question, $answers ) {
 		'question_type' => 'file_upload',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+		$decode_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 		$mlw_user_answer    = trim( $decode_user_answer );
 	} else {
 		$mlw_user_answer = ' ';
@@ -130,11 +130,10 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 				} else {
 					?> <div class="qmn_mc_answer_wrap <?php echo esc_attr( $answer_class ); ?>" id="<?php echo esc_attr( 'question' . $id . '-' . str_replace( ' ', '-', $answer[0] ) ); ?> "> <?php
 				}
-				?> <input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr('question' . $id  ); ?>" id="<?php echo esc_attr('question'. $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" /> <?php
-				?> <label for="<?php echo esc_attr( 'question'. $id . '_' . $mlw_answer_total ); ?>"> <?php
+				?> <input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr('question' . $id  ); ?>" id="<?php echo esc_attr('question'. $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" />  <label for="<?php echo esc_attr( 'question'. $id . '_' . $mlw_answer_total ); ?>"> <?php
 				if ( $answerEditor === 'image' ) {
 					?> 	<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
-						<span class="qsm_image_caption"><?php esc_html_e( trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) ); ?></span><?php
+						<span class="qsm_image_caption"><?php echo esc_html( trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) ); ?></span><?php
 				} else {
 					echo wp_kses( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ),  wp_kses_allowed_html( 'post' ) );
 				}
@@ -168,7 +167,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	);
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+		$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -193,7 +192,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 		} else {
 			$mlw_user_answer = '';
 			if ( isset( $_POST[ 'question' . $id ] ) ) {
-				$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+				$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
 				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
 			}
@@ -269,7 +268,8 @@ function qmn_date_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
+		$question_input = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
+		$decode_user_answer = htmlspecialchars_decode( $question_input , ENT_QUOTES );
 		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -369,7 +369,7 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+		$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -393,7 +393,7 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 		} else {
 			$mlw_user_answer = '';
 			if ( isset( $_POST[ 'question' . $id ] ) ) {
-				$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+				$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
 				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
 			}
@@ -451,14 +451,13 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
-	?><select class="qsm_select <?php echo esc_attr( $require_class );?>" name="question<?php echo esc_attr( $id ); ?>"><?php
-	?><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' );?></option><?php
+	?><select class="qsm_select <?php echo esc_attr( $require_class );?>" name="question<?php echo esc_attr( $id ); ?>"><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' );?></option><?php
 	if ( is_array( $answers ) ) {
 		$mlw_answer_total = 0;
 		foreach ( $answers as $answer ) {
 			$mlw_answer_total++;
 			if ( $answer[0] != '' ) {
-				?><option value="<?php echo esc_attr( $answer[0] ); ?>"><?php  esc_html_e( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option><?php
+				?><option value="<?php echo esc_attr( $answer[0] ); ?>"><?php echo esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option><?php
 			}
 		}
 	}
@@ -485,7 +484,7 @@ function qmn_drop_down_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_text_field( $_POST[ 'question' . $id ] );
+		$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -566,7 +565,8 @@ function qmn_small_open_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
+		$question_input = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
+		$decode_user_answer = htmlspecialchars_decode( $question_input, ENT_QUOTES );
 		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -671,7 +671,7 @@ function qmn_multiple_response_review( $id, $question, $answers ) {
 	$correct_text  = array();
 	foreach ( $answers as $answer ) {
 		for ( $i = 1; $i <= $total_answers; $i++ ) {
-			if ( isset( $_POST[ 'question' . $id . '_' . $i ] ) && sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'question' . $id . '_' . $i ] ), ENT_QUOTES ) ) == esc_attr( $answer[0] ) ) {
+			if ( isset( $_POST[ 'question' . $id . '_' . $i ] ) && htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id . '_' . $i ] ) ), ENT_QUOTES ) == esc_attr( $answer[0] ) ) {
 				$return_array['points']            += $answer[1];
 				$return_array['user_text']         .= htmlspecialchars_decode( $answer[0], ENT_QUOTES ) . '.';
 				$return_array['user_compare_text'] .= sanitize_textarea_field( strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) . '=====';
@@ -751,7 +751,8 @@ function qmn_large_open_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
+		$question_input = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
+		$decode_user_answer = strval( htmlspecialchars_decode( $question_input, ENT_QUOTES ) );
 		$mlw_user_answer    = trim( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $decode_user_answer ) ) );
 	} else {
 		$mlw_user_answer = ' ';
@@ -864,7 +865,8 @@ function qmn_number_review( $id, $question, $answers ) {
 		'correct_text' => '',
 	);
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $_POST[ 'question' . $id ], ENT_QUOTES ) ) ) );
+		$question_input = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
+		$mlw_user_answer = htmlspecialchars_decode( $question_input, ENT_QUOTES );
 	} else {
 		$mlw_user_answer = ' ';
 	}
@@ -1061,7 +1063,7 @@ function qmn_horizontal_multiple_response_review( $id, $question, $answers ) {
 	$correct_text  = array();
 	foreach ( $answers as $answer ) {
 		for ( $i = 1; $i <= $total_answers; $i++ ) {
-			if ( isset( $_POST[ 'question' . $id . '_' . $i ] ) && sanitize_textarea_field( htmlspecialchars( stripslashes( $_POST[ 'question' . $id . '_' . $i ] ), ENT_QUOTES ) ) == esc_attr( $answer[0] ) ) {
+			if ( isset( $_POST[ 'question' . $id . '_' . $i ] ) && htmlspecialchars( sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id . '_' . $i ] ) ), ENT_QUOTES ) == esc_attr( $answer[0] ) ) {
 				$return_array['points']            += $answer[1];
 				$return_array['user_text']         .= strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) . '.';
 				$return_array['user_compare_text'] .= sanitize_textarea_field( strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) . '=====';
@@ -1168,13 +1170,14 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	if ( strpos( $question, '%BLANK%' ) !== false || strpos( $question, '%blank%' ) !== false ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
-	$correct_text=$user_input = $user_text = array();
+	$correct_text = $user_input = $user_text = array();
 	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
-		foreach ( $_POST[ 'question' . $id ] as $input ) {
-			$decode_user_answer = sanitize_textarea_field( strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) ) );
+		$question_input = array_map( 'sanitize_textarea_field', wp_unslash( $_POST[ 'question' . $id ] ) );
+		foreach ( $question_input as $input ) {
+			$decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) );
 			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-				$user_input[] = mb_strtoupper( $mlw_user_answer );
-				$user_text[]  = $mlw_user_answer;
+			$user_input[] = mb_strtoupper( $mlw_user_answer );
+			$user_text[]  = $mlw_user_answer;
 		}
 	}
 
@@ -1188,46 +1191,46 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 				$user_correct += 1;
 			}
 			$total_correct++;
-			$correct_text[]=$answers[$key][0];
+			$correct_text[] = $answers[ $key ][0];
 		}
 		$return_array['correct_text'] = implode( '.', $correct_text );
 		$return_array['user_text'] = implode( '.', $user_text );
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
-		if($total_correct == $user_correct){
+		if ( $total_correct == $user_correct ) {
 			$return_array['correct']   = 'correct';
 		}
 	} else {
 		$answers_array = array();
 		$correct = true;
-		foreach($answers as $answer){
+		foreach ( $answers as $answer ) {
 			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
 			$answers_array[] = mb_strtoupper( $decode_user_text );
 		}
 		$total_user_input = sizeof($user_input);
 		$total_option = sizeof($answers);
-		if($total_user_input < $total_option){
-			foreach($user_input as $k => $input){
+		if ( $total_user_input < $total_option ) {
+			foreach ( $user_input as $k => $input ) {
 				$key = array_search( $input, $answers_array );
-				if($key !== false){
-					$return_array['points'] += $answers[$key][1];
+				if ( $key !== false ) {
+					$return_array['points'] += $answers[ $key ][1];
 				} else {
 					$correct = false;
 				}
-				$correct_text[]=$answers[$key][0];
+				$correct_text[] = $answers[ $key ][0];
 			}
 		} else {
-			foreach($answers_array as $k => $answer){
+			foreach ( $answers_array as $k => $answer ) {
 				$key = array_search( $answer, $user_input );
-				if($key !== false){
-					$return_array['points'] += $answers[$k][1];
+				if ( $key !== false ) {
+					$return_array['points'] += $answers[ $k ][1];
 				} else {
 					$correct = false;
 				}
-				$correct_text[]=$answers[$k][0];
+				$correct_text[] = $answers[ $k ][0];
 			}
 		}
-		if($correct){
+		if ( $correct ) {
 			$return_array['correct']   = 'correct';
 		}
 		$return_array['user_text'] = implode( '.', $user_text );
@@ -1284,11 +1287,11 @@ function qmn_polar_display( $id, $question, $answers ) {
 	$id = esc_attr( intval( $id ) );
 	$answar1 = $first_point;
 	$answar2 = $second_point;
-	$slider_data_atts ='';
-	$slider_data_atts.=' data-answer1='.$answar1.' ';
-	$slider_data_atts.=' data-answer2='.$answar2.' ';
-	$slider_data_atts.=' data-is_reverse='.intval($is_reverse).' ';
-	$slider_data_atts.=' data-is_required='.$required .' ';
+	$slider_data_atts = '';
+	$slider_data_atts .= ' data-answer1='.$answar1.' ';
+	$slider_data_atts .= ' data-answer2='.$answar2.' ';
+	$slider_data_atts .= ' data-is_reverse='.intval($is_reverse).' ';
+	$slider_data_atts .= ' data-is_required='.$required .' ';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
 	} else {
@@ -1330,7 +1333,7 @@ function qmn_polar_review( $id, $question, $answers ) {
 		$return_array['question_text'] = str_replace( array( '%POLAR_SLIDER%', '%polar_slider%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
 	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( $_POST[ 'question' . $id ] );
+		$decode_user_answer = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
 		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
 	} else {
 		$mlw_user_answer = ' ';

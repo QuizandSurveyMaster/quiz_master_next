@@ -212,7 +212,7 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) 
  * @param str $answer
  * @param arr $question_settings
  */
-function qsm_answers_type_evaluated ( $answer, $question_settings ) {
+function qsm_answers_type_evaluated( $answer, $question_settings ) {
 	if ( 'rich' === $question_settings['answerEditor'] ) {
 		$answer = htmlspecialchars_decode( $answer );
 	} elseif ( 'image' === $question_settings['answerEditor'] ) {
@@ -628,10 +628,10 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 			$category_name = $answer_text[1];
 		}
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if( is_array( $answer['multicategories'] ) ) {
+			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
 					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
-					$category_name_of_question= ( !empty( $category_name_object->name ) ? $category_name_object->name : '' );
+					$category_name_of_question = ( ! empty( $category_name_object->name ) ? $category_name_object->name : '' );
 				 	if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
 						$return_points += $answer['points'];
@@ -893,7 +893,7 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  */
 function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question_answer_template, $questions, $qmn_questions, $answer, $qsm_question_cnt, $total_question_cnt ) {
 	global $mlwQuizMasterNext;
-	if ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'qsm_quiz_result_details' ) {
+	if ( is_admin() && isset( $_GET['page'] ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'qsm_quiz_result_details' ) {
 		$user_answer_class     = '';
 		$question_answer_class = '';
 		if ( isset( $mlw_quiz_array['form_type'] ) && $mlw_quiz_array['form_type'] == 0 ) {
@@ -907,9 +907,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				}
 			}
 		}
-
 	} else {
-		if ( isset( $mlw_quiz_array['form_type'] )  && "1" === $mlw_quiz_array['form_type'] ){
+		if ( isset( $mlw_quiz_array['form_type'] ) && "1" === $mlw_quiz_array['form_type'] ) {
 			$user_answer_class     = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
@@ -960,8 +959,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$total_answers = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
 
 			 $qsm_random_quetion_answer = get_post_meta($answer['id'],'qsm_random_quetion_answer',true);
-			 if(!empty($qsm_random_quetion_answer))
-			 {
+			 if ( ! empty($qsm_random_quetion_answer) ) {
 			 	$total_answers = $qsm_random_quetion_answer;
 			 	// No longer Need This Value
 			 	delete_post_meta( $answer['id'], 'qsm_random_quetion_answer');
@@ -1225,7 +1223,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' && $user_answer_new != '' ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
-		}elseif( $answer['question_type'] == 5){
+		}elseif ( $answer['question_type'] == 5 ) {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br(htmlspecialchars_decode( $user_answer_new, ENT_QUOTES )) . $close_span_with_br, $mlw_question_answer_display );
 		}  else {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
@@ -1333,11 +1331,11 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$answar1 = $first_point;
 	$answar2 = $second_point;
 	$user_answer = $answer[1] ;
-	$slider_date_atts ='';
-	$slider_date_atts.=' data-answer1="'.$answar1.'" ';
-	$slider_date_atts.=' data-answer2="'.$answar2.'" ';
-	$slider_date_atts.=' data-is_reverse="'.intval($is_reverse).'" ';
-	$slider_date_atts.=' data-answer_value="'.$user_answer.'" ';
+	$slider_date_atts = '';
+	$slider_date_atts .= ' data-answer1="'.$answar1.'" ';
+	$slider_date_atts .= ' data-answer2="'.$answar2.'" ';
+	$slider_date_atts .= ' data-is_reverse="'.intval($is_reverse).'" ';
+	$slider_date_atts .= ' data-answer_value="'.$user_answer.'" ';
 	$mlw_requireClass = '';
 	if ( $required == 0 ) {
 		$mlw_requireClass = 'mlwRequiredText';
@@ -1345,24 +1343,24 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
 		$right_polar_title_style = "style='font-weight:100;'";
-	} elseif ( $answer['points'] == $answar2 ){
+	} elseif ( $answer['points'] == $answar2 ) {
 		$left_polar_title_style  = "style='font-weight:100;'";
 		$right_polar_title_style = "style='font-weight:900;'";
-	}	elseif ( $answer['points'] == $mid_point ){
+	}   elseif ( $answer['points'] == $mid_point ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:600;'";
-	} elseif ( $answer['points'] < $mid_point ){
+	} elseif ( $answer['points'] < $mid_point ) {
 		$left_polar_title_style  = "style='font-weight:400;'";
 		$right_polar_title_style = "style='font-weight:600;'";
-	}	elseif ( $answer['points'] > $mid_point ){
+	}   elseif ( $answer['points'] > $mid_point ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:400;'";
 	}
-	if ($is_reverse){
-		if( $answer['points'] < $mid_point ){
+	if ( $is_reverse ) {
+		if ( $answer['points'] < $mid_point ) {
 			$left_polar_title_style  = "style='font-weight:400;'";
 			$right_polar_title_style = "style='font-weight:600;'";
-		}	elseif ( $answer['points'] > $mid_point ){
+		}   elseif ( $answer['points'] > $mid_point ) {
 			$left_polar_title_style  = "style='font-weight:600;'";
 			$right_polar_title_style = "style='font-weight:400;'";
 		}

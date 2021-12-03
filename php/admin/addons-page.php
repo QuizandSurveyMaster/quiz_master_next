@@ -15,7 +15,7 @@ function qmn_addons_page() {
 	}
 
 	global $mlwQuizMasterNext;
-	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
+	$active_tab = strtolower( str_replace( ' ', '-', isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : __( 'Featured Addons', 'quiz-master-next' ) ) );
 	$tab_array  = $mlwQuizMasterNext->pluginHelper->get_addon_tabs();
 
 	?>
@@ -26,11 +26,11 @@ function qmn_addons_page() {
 			?>
 		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
-			<?php _e( 'Back to list', 'quiz-master-next' ); ?></a>
+			<?php esc_html_e( 'Back to list', 'quiz-master-next' ); ?></a>
 		<?php
 		}
 		?>
-		<?php _e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
+		<?php esc_html_e( 'QSM Addon Settings', 'quiz-master-next' ); ?>
 	</h2>
 	<h2 class="nav-tab-wrapper" style="display: none;">
 		<?php
@@ -73,25 +73,25 @@ function qsm_generate_featured_addons() {
 <div class="qsm-addon-browse-addons">
 	<div class="qsm-addon-anchor-left">
 		<div class="qsm-install-addon">
-			<a class="active" href="#qsm_installed_addons"><?php _e( 'Installed Addons', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_add_addons"><?php _e( 'Add Addons', 'quiz-master-next' ); ?> <span
+			<a class="active" href="#qsm_installed_addons"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></a>
+			<a href="#qsm_add_addons"><?php esc_html_e( 'Add Addons', 'quiz-master-next' ); ?> <span
 					class="dashicons dashicons-arrow-right-alt2"></span></a>
 		</div>
 		<div class="qsm-add-addon" style="display: none;">
-			<a class="active" href="#qsm_popular_addons"><?php _e( 'Popular', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_onsale_addons"><?php _e( 'On Sale', 'quiz-master-next' ); ?></a>
-			<a href="#qsm_new_addons"><?php _e( 'Recently Updated', 'quiz-master-next' ); ?></a>
+			<a class="active" href="#qsm_popular_addons"><?php esc_html_e( 'Popular', 'quiz-master-next' ); ?></a>
+			<a href="#qsm_onsale_addons"><?php esc_html_e( 'On Sale', 'quiz-master-next' ); ?></a>
+			<a href="#qsm_new_addons"><?php esc_html_e( 'Recently Updated', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<div class="qsm-addon-list-right">
-		<span><?php _e( '40+ addons available', 'quiz-master-next' ); ?></span>
+		<span><?php esc_html_e( '40+ addons available', 'quiz-master-next' ); ?></span>
 		<a rel="noopener" style="text-decoration: none; font-size: 15px;"
 			href="http://quizandsurveymaster.com/addons/?utm_source=qsm-addons-page&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-			target="_blank"><?php _e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
+			target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 	</div>
 </div>
 <div id="qsm_installed_addons" class="qsm-active-addons qsm-primary-acnhor">
-	<h2 class="installed_title"><?php _e( 'Installed Addons', 'quiz-master-next' ); ?></h2>
+	<h2 class="installed_title"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></h2>
 	<?php
 	if ( $tab_array && count( $tab_array ) > 1 ) {
 		?>
@@ -107,7 +107,7 @@ function qsm_generate_featured_addons() {
 			<span class="installed_addon_link">
 				<a class="button button-default" href="?page=qmn_addons&tab=<?php echo esc_attr( $tab['slug'] ); ?>"><span
 						class="dashicons dashicons-admin-generic"></span>
-					<?php _e( 'Settings', 'quiz-master-next' ); ?></a>
+					<?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></a>
 			</span>
 		</div>
 		<?php } ?>
@@ -118,11 +118,11 @@ function qsm_generate_featured_addons() {
 	<div class="no_addons_installed">
 		<div>
 			<?php
-			_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
+			esc_html_e( 'You have currently not installed any addons. Explore our addons repository with 40+ addons to make your quiz even better.', 'quiz-master-next' );
 		?>
 		</div>
 		<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-			href="#qsm_add_addons"><?php _e('Explore Addons', 'quiz-master-next');?></a>
+			href="#qsm_add_addons"><?php esc_html_e('Explore Addons', 'quiz-master-next');?></a>
 	</div>
 	<?php
 	}
@@ -148,7 +148,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -190,7 +190,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -235,7 +235,7 @@ function qsm_generate_featured_addons() {
 								<?php echo wp_kses_post( $single_arr['name'] ); ?>
 							</a>
 							<span class="description">
-								<?php echo wp_trim_words( $single_arr['description'], 8 ); ?>
+								<?php echo esc_html( wp_trim_words( $single_arr['description'], 8 ) ); ?>
 							</span>
 							<?php
 							if ( str_word_count( $single_arr['description'] ) > 9 ) {
@@ -267,7 +267,7 @@ function qsm_generate_featured_addons() {
 		<?php
 		if ( $bundles ) {
 			?>
-		<h3 class="qsm-news-ads-title"><?php _e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
+		<h3 class="qsm-news-ads-title"><?php esc_html_e( 'SAVE WITH OUR BUNDLES', 'quiz-master-next' ); ?></h3>
 		<?php
 			foreach ( $bundles as $key => $bundles_arr ) {
 				?>
@@ -353,7 +353,7 @@ function qsm_display_optin_page() {
 									d="M256 40c118.621 0 216 96.075 216 216 0 119.291-96.61 216-216 216-119.244 0-216-96.562-216-216 0-119.203 96.602-216 216-216m0-32C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm-11.49 120h22.979c6.823 0 12.274 5.682 11.99 12.5l-7 168c-.268 6.428-5.556 11.5-11.99 11.5h-8.979c-6.433 0-11.722-5.073-11.99-11.5l-7-168c-.283-6.818 5.167-12.5 11.99-12.5zM256 340c-15.464 0-28 12.536-28 28s12.536 28 28 28 28-12.536 28-28-12.536-28-28-28z" />
 							</svg>
 							<span class="sib-form-message-panel__inner-text">
-								<?php _e( 'Your subscription could not be saved. Please try again.', 'quiz-master-next' ); ?>
+								<?php esc_html_e( 'Your subscription could not be saved. Please try again.', 'quiz-master-next' ); ?>
 							</span>
 						</div>
 					</div>
@@ -366,7 +366,7 @@ function qsm_display_optin_page() {
 									d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 464c-118.664 0-216-96.055-216-216 0-118.663 96.055-216 216-216 118.664 0 216 96.055 216 216 0 118.663-96.055 216-216 216zm141.63-274.961L217.15 376.071c-4.705 4.667-12.303 4.637-16.97-.068l-85.878-86.572c-4.667-4.705-4.637-12.303.068-16.97l8.52-8.451c4.705-4.667 12.303-4.637 16.97.068l68.976 69.533 163.441-162.13c4.705-4.667 12.303-4.637 16.97.068l8.451 8.52c4.668 4.705 4.637 12.303-.068 16.97z" />
 							</svg>
 							<span class="sib-form-message-panel__inner-text">
-								<?php _e( 'Your subscription has been successful.', 'quiz-master-next' ); ?>
+								<?php esc_html_e( 'Your subscription has been successful.', 'quiz-master-next' ); ?>
 							</span>
 						</div>
 					</div>
@@ -383,7 +383,7 @@ function qsm_display_optin_page() {
 											<label class="entry__label"
 												style="font-size:16px; text-align:left; font-weight:700; font-family:Helvetica, sans-serif; color:#3c4858; border-width:px;"
 												for="EMAIL" data-required="*">
-												<?php _e( 'Enter your email address to subscribe', 'quiz-master-next' ); ?>
+												<?php esc_html_e( 'Enter your email address to subscribe', 'quiz-master-next' ); ?>
 											</label>
 
 											<div class="entry__field">
@@ -398,7 +398,7 @@ function qsm_display_optin_page() {
 										</label>
 										<label class="entry__specification"
 											style="font-size:12px; text-align:left; font-family:Helvetica, sans-serif; color:#8390A4; border-width:px;">
-											<?php _e( 'Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next' ); ?>
+											<?php esc_html_e( 'Provide your email address to subscribe. For e.g abc@xyz.com', 'quiz-master-next' ); ?>
 										</label>
 									</div>
 								</div>
@@ -413,7 +413,7 @@ function qsm_display_optin_page() {
 											<path
 												d="M460.116 373.846l-20.823-12.022c-5.541-3.199-7.54-10.159-4.663-15.874 30.137-59.886 28.343-131.652-5.386-189.946-33.641-58.394-94.896-95.833-161.827-99.676C261.028 55.961 256 50.751 256 44.352V20.309c0-6.904 5.808-12.337 12.703-11.982 83.556 4.306 160.163 50.864 202.11 123.677 42.063 72.696 44.079 162.316 6.031 236.832-3.14 6.148-10.75 8.461-16.728 5.01z" />
 										</svg>
-										<?php _e( 'SUBSCRIBE', 'quiz-master-next' ); ?>
+										<?php esc_html_e( 'SUBSCRIBE', 'quiz-master-next' ); ?>
 									</button>
 								</div>
 							</div>
@@ -423,7 +423,7 @@ function qsm_display_optin_page() {
 									<div class="sib-text-form-block">
 										<p>
 											<a href="https://sendinblue.com" rel="noopener"
-												target="_blank"><?php _e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
+												target="_blank"><?php esc_html_e( 'Terms & Privacy policy', 'quiz-master-next' ); ?></a>
 										</p>
 									</div>
 								</div>
@@ -443,16 +443,17 @@ function qsm_display_optin_page() {
 </div>
 <?php
 }
-function qsm_admin_get_free_addon_page_scripts_style($hook){
-	if ( $hook == 'qsm_page_qsm-free-addon') {
+function qsm_admin_get_free_addon_page_scripts_style( $hook ) {
+	global $mlwQuizMasterNext;
+	if ( $hook == 'qsm_page_qsm-free-addon' ) {
 
-		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css');
-		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css');
-		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css');
-		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css' );
-		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js', array(),'',true);
+		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sendinblue_progress_indicator',  QSM_PLUGIN_CSS_URL.'/sendinblue-progress-indicator.css', array(), $mlwQuizMasterNext->version);
+		wp_enqueue_style( 'qsm_sibforms_css',  QSM_PLUGIN_CSS_URL.'/sib-styles.css', array(), $mlwQuizMasterNext->version );
+		wp_enqueue_script( 'qsm_sibforms_js',  QSM_PLUGIN_JS_URL.'/sibforms-main.js', array(), $mlwQuizMasterNext->version,true);
 		$google_recaptcha_js_url = 'https://www.google.com/recaptcha/api.js?hl=en';
-		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(),'',true);
+		wp_enqueue_script( 'qsm_google_recaptcha',  $google_recaptcha_js_url, array(), $mlwQuizMasterNext->version, true);
 
 		$qsm_sibforms_inline_js = 'window.REQUIRED_CODE_ERROR_MESSAGE = "Please choose a country code";
 

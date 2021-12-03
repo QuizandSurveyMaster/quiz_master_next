@@ -64,7 +64,7 @@ class QSM_Tracking {
 
 		// We only send data if opted in. Opt-in designated by a value of 1 or 2.
 		// We send data once a week.
-    	if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {
+    	if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || ! $last_time ) ) {
       		$this->load_data( $tracking_allowed );
       		$this->send_data();
       		update_option( 'qmn_tracker_last_time', time() );
@@ -85,7 +85,7 @@ class QSM_Tracking {
 			'httpversion' => '1.0',
 			'blocking'    => true,
 			'body'        => $this->data,
-			'user-agent'  => 'QSM Usage Tracker'
+			'user-agent'  => 'QSM Usage Tracker',
 		) );
     	if ( is_wp_error( $response ) ) {
       		global $mlwQuizMasterNext;
@@ -103,17 +103,17 @@ class QSM_Tracking {
   	private function load_data( $tracking ) {
     	global $wpdb;
     	global $mlwQuizMasterNext;
+
     	$data = array();
     	$data["plugin"] = "QSM";
-
     	$data['url']    = home_url();
     	$data["wp_version"] = get_bloginfo( 'version' );
     	$data["php_version"] = PHP_VERSION;
     	$data["mysql_version"] = $wpdb->db_version();
-    	$data["server_app"] = $_SERVER['SERVER_SOFTWARE'];
+    	$data["server_app"] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 
     	// Retrieve current plugin information
-		if( ! function_exists( 'get_plugins' ) ) {
+		if ( ! function_exists( 'get_plugins' ) ) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 		$plugins        = array_keys( get_plugins() );
@@ -181,12 +181,12 @@ class QSM_Tracking {
 		}
 
 		// If the user does not have the required permissions, return.
-		if( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
 		// If the site is on a dev or staging site, we do not need the data.
-		if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
+		if ( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
 			update_option( 'qmn-tracking-notice', '1' );
 		} else {
 			$optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
@@ -212,7 +212,7 @@ class QSM_Tracking {
     	if ( isset( $_GET["qmn_track_check"] ) ) {
 
 			// Checks if user opted into tracking.
-      		if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
+      		if ( sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) ) == 'opt_into_tracking' ) {
         		$settings = (array) get_option( 'qmn-settings' );
         		$settings['tracking_allowed'] = '2';
         		update_option( 'qmn-settings', $settings );
@@ -229,4 +229,4 @@ class QSM_Tracking {
 }
 
 $qsm_tracking = new QSM_Tracking();
-?>
+

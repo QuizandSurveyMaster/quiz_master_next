@@ -90,15 +90,15 @@ class QSM_Changelog_Generator {
 
         if ( $milestone_data && isset( $milestone_data['title'] ) ) {
           $milestone_array = array(
-            'title' => $milestone_data["title"],
-            'description' => $milestone_data["description"],
-            'closed_date' => $milestone_data["closed_at"]
+			  'title'       => $milestone_data["title"],
+			  'description' => $milestone_data["description"],
+			  'closed_date' => $milestone_data["closed_at"],
           );
         } else {
           $milestone_array = array(
-            'title' => '',
-            'description' => '',
-            'closed_date' => ''
+			  'title'       => '',
+			  'description' => '',
+			  'closed_date' => '',
           );
         }
 
@@ -110,10 +110,10 @@ class QSM_Changelog_Generator {
           if ( ! isset( $issue["pull_request"] ) ) {
             if ( "closed" === $issue["state"] ) {
               $changelog["issues"][] = array(
-                'title' => $issue["title"],
-                'labels' => $issue["labels"],
-                'issue' => $issue["number"],
-                'url' => $issue["html_url"]
+				  'title'  => $issue["title"],
+				  'labels' => $issue["labels"],
+				  'issue'  => $issue["number"],
+				  'url'    => $issue["html_url"],
               );
             }
           }
@@ -152,4 +152,4 @@ class QSM_Changelog_Generator {
   }
 }
 
-?>
+

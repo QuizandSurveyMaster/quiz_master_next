@@ -20,47 +20,49 @@ class QSM_Fields {
 
     global $mlwQuizMasterNext;
     global $wpdb;
-    
-    $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
-    
-    // If nonce is correct, save settings
-    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( $_POST['save_settings_nonce'], 'save_settings' ) ) {
 
-		// Cycle through fields to retrieve all posted values      
-		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );      
+    $result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
+
+    // If nonce is correct, save settings
+    if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) {
+
+		// Cycle through fields to retrieve all posted values
+		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 		foreach ( $fields as $field ) {
 
 			// Sanitize the values based on type
-			$sanitized_value = '';
-			switch ( $field["type"] ) {
-				case 'text':
-					$sanitized_value = sanitize_text_field( stripslashes( $_POST[ $field["id"] ] ) );
-					break;
+      $sanitized_value = '';
+      if ( isset( $_POST[ $field["id"] ] ) ) {
+          switch ( $field["type"] ) {
+              case 'text':
+                  $sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+                  break;
 
-				case 'url':
-					$sanitized_value = esc_url_raw( $_POST[ $field["id"] ] );
-					break;
+              case 'url':
+                  $sanitized_value = esc_url_raw( wp_unslash( $_POST[ $field["id"] ] ) );
+                  break;
 
-				case 'radio':
-				case 'date':
-					$sanitized_value = sanitize_text_field( $_POST[ $field["id"] ] );
-					break;
+              case 'radio':
+              case 'date':
+                  $sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+                  break;
 
-				case 'number':
-					$sanitized_value = intval( $_POST[ $field["id"] ] );
-					break;
+              case 'number':
+                  $sanitized_value = intval( $_POST[ $field["id"] ] );
+                  break;
 
-				case 'editor':
-					$sanitized_value = wp_kses_post( stripslashes( $_POST[ $field["id"] ] ) );
-					break;
+              case 'editor':
+                  $sanitized_value = wp_kses_post( wp_unslash( $_POST[ $field["id"] ] ) );
+                  break;
 
-				default:
-					$sanitized_value = isset( $_POST[ $field["id"] ] ) ? sanitize_text_field( $_POST[ $field["id"] ] ) : '';
-					break;
-			}
+              default:
+                  $sanitized_value = sanitize_text_field( wp_unslash( $_POST[ $field["id"] ] ) );
+                  break;
+          }
+      }
 			$settings_array[ $field["id"] ] = $sanitized_value;
-      	}
-            
+    }
+
       	// Update the settings and show alert based on outcome
 		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 		if ( false !== $results ) {
@@ -72,31 +74,31 @@ class QSM_Fields {
     }
 
     // Retrieve the settings for this section
-    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );    
-    if( isset( $settings[ 'form_type' ] ) ){
-        $settings[ 'form_type' ] = $settings[ 'system' ] == '2' ? 1 : $settings[ 'form_type' ];
+    $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+    if ( isset( $settings['form_type'] ) ) {
+        $settings['form_type'] = $settings['system'] == '2' ? 1 : $settings['form_type'];
     }
-    if( isset( $settings[ 'result_page_fb_image' ] ) && $settings[ 'result_page_fb_image' ] == '' ){
-        $settings[ 'result_page_fb_image' ] = $result_page_fb_image != '' ? $result_page_fb_image : $settings[ 'result_page_fb_image' ];
-    }    
+    if ( isset( $settings['result_page_fb_image'] ) && $settings['result_page_fb_image'] == '' ) {
+        $settings['result_page_fb_image'] = $result_page_fb_image != '' ? $result_page_fb_image : $settings['result_page_fb_image'];
+    }
     ?>
 <form action="" method="post">
 	<?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
-	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
+	<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 	<table class="form-table" style="width: 100%;">
 		<?php
         $array_before_legacy = array();
         foreach ( $fields as $key => $field ) {
-            if( isset( $field['legacy_option'] ) && $field['legacy_option'] == 0 ){                
+            if ( isset( $field['legacy_option'] ) && $field['legacy_option'] == 0 ) {
                 $array_before_legacy[] = $field;
                 unset( $fields[ $key ] );
             }
-        }        
-        $key = array_search('legacy_options', array_column($fields, 'id'));        
-        if( isset( $fields[ $key ] ) && !empty( $array_before_legacy ) ){
+        }
+        $key = array_search('legacy_options', array_column($fields, 'id'));
+        if ( isset( $fields[ $key ] ) && ! empty( $array_before_legacy ) ) {
             $i = 1;
             $array_before_legacy = array_reverse($array_before_legacy);
-            foreach ( $array_before_legacy as $bl_value ){                
+            foreach ( $array_before_legacy as $bl_value ) {
                 $fields = array_slice($fields, 0, $key, true) +
                     array( 'lo_' . $i => $bl_value ) +
                     array_slice($fields, $key, count($fields) - $key, true);
@@ -104,17 +106,16 @@ class QSM_Fields {
             }
         }
         // Cycles through each field
-        foreach ( $fields as  $field ) {            
+        foreach ( $fields as  $field ) {
           // Generate the field
           QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
         }
         ?>
 	</table>
-  <?php  if(isset($_GET['tab']) && 'options'==$_GET['tab'] && $_GET['page']=='mlw_quiz_options'){?>
-      <button class="button" name="global_setting" type="submit"><?php _e('Set Global Defaults', 'quiz-master-next'); ?></button>
+  <?php  if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
+      <button class="button" name="global_setting" type="submit"><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></button>
   <?php } ?>
-	<button class="button-primary"><?php _e('Save Changes', 'quiz-master-next'); ?></button>
-  
+	<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 </form>
 <?php
   }
@@ -131,11 +132,11 @@ class QSM_Fields {
 
     // Load default
     $defaults = array(
-      'id' => null,
-      'label' => '',
-      'type' => '',
-      'options' => array(),
-      'variables' => array()
+		'id'        => null,
+		'label'     => '',
+		'type'      => '',
+		'options'   => array(),
+		'variables' => array(),
     );
     $field = wp_parse_args( $field, $defaults );
 
@@ -168,7 +169,7 @@ class QSM_Fields {
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -176,7 +177,7 @@ class QSM_Fields {
 	</th>
 	<td>
 		<input type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
@@ -184,7 +185,7 @@ class QSM_Fields {
 <?php
   }
 
-  
+
   /**
    * Generates a text field
    *
@@ -197,7 +198,7 @@ class QSM_Fields {
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -206,20 +207,20 @@ class QSM_Fields {
 	<td>
 		<input type="url" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value="<?php echo esc_url( $value ); ?>" />
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
 <?php
   }
-  
+
   public static function generate_select_page_field( $field, $value ) {
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -229,17 +230,17 @@ class QSM_Fields {
 		<select id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>">
 			<option value="">Select Page</option>
 			<?php
-              $pages = get_pages(); 
+              $pages = get_pages();
               foreach ( $pages as $page ) { ?>
-			<option value="<?php echo get_page_link( $page->ID ) ?>"
+			<option value="<?php echo esc_url( get_page_link( $page->ID ) ); ?>"
 				<?php selected($value, get_page_link( $page->ID )); ?>><?php echo wp_kses_post( $page->post_title ); ?></option>;
 			<?php } ?>
 		</select>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 		<br />
-		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? $field['note'] : ''; ?>
+		<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? wp_kses_post( $field['note'] ) : ''; ?>
 	</td>
 </tr>
 <?php
@@ -261,7 +262,7 @@ class QSM_Fields {
           if ( is_array( $field["variables"] ) ) {
             ?>
 			<br>
-			<p><?php _e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
+			<p><?php esc_html_e( "Allowed Variables:", 'quiz-master-next' ); ?></p>
 			<?php
             foreach ( $field["variables"] as $variable ) {
               ?>
@@ -286,8 +287,8 @@ class QSM_Fields {
    * @param array $field The array that contains the data for the input field
    * @param mixed $value The current value of the setting
    */
-  public static function generate_date_field( $field, $value ) {    
-   
+  public static function generate_date_field( $field, $value ) {
+
 $date_field_script = "jQuery(function() {	jQuery('#" . $field["id"]."').datetimepicker({ format: 'm/d/Y H:i', step: 1});});";
 
 wp_add_inline_script( 'qsm_admin_js', $date_field_script);
@@ -296,18 +297,18 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td class="<?php echo esc_attr( $field["id"] ); ?>">
-		<?php if( isset($field['ph_text']) && $field['ph_text'] != ''){ ?>
+		<?php if ( isset($field['ph_text']) && $field['ph_text'] != '' ) { ?>
 		<span class="qsm-ph_text"><?php echo wp_kses_post( $field['ph_text'] ); ?></span>
 		<?php } ?>
 		<input autocomplete="off" type="text" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr( $value ); ?>" />
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
@@ -327,7 +328,7 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -335,7 +336,7 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 	</th>
 	<td>
 		<input type="number" step="1" min="0" id="<?php echo esc_attr( $field["id"] ); ?>" name="<?php echo esc_attr( $field["id"] ); ?>" value="<?php echo esc_attr($value); ?>" />
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
@@ -357,7 +358,7 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 <tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -374,14 +375,14 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
               }
             ?>
 		</fieldset>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
 <?php
   }
-  
+
   /**
    * Generates radio inputs
    *
@@ -396,7 +397,7 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 <tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
@@ -412,14 +413,14 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
               }
             ?>
 		</select>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
 <?php
   }
-  
+
   /**
    * Generates category checkbox
    *
@@ -429,28 +430,28 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
    */
   public static function generate_category_field( $field, $value ) {
 	global $wpdb;
-	$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( $_GET['quiz_id'] ) : 0;
+	$quiz_id = isset($_GET['quiz_id']) ? sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : 0;
 	$explode_cat = explode(',', $value);
     ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<?php 
+		<?php
 		$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 		$categories_tree = (isset($categories['tree']) ? $categories['tree'] : array());
 		$questions = QSM_Questions::load_questions_by_pages( $quiz_id );
 		$cat_array = array();
 		if ( $questions ) {
-			$multiple_category_system	 = false;
+			$multiple_category_system    = false;
 			// check if multiple category is enabled.
-			$enabled					 = get_option( 'qsm_multiple_category_enabled' );
+			$enabled                     = get_option( 'qsm_multiple_category_enabled' );
 			if ( $enabled && $enabled != 'cancelled' ) {
 				$multiple_category_system = true;
 			}
@@ -479,53 +480,53 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
 		?>
 		<input type="hidden" class="catergory_comma_values" name="<?php echo esc_attr( $field["id"] ); ?>"
 			value='<?php echo esc_attr( $value ); ?>'>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
 <?php
   }
-  
-  public static function get_category_hierarchical_options($categories = array(), $selected = array(), $prefix = '') {
+
+  public static function get_category_hierarchical_options( $categories = array(), $selected = array(), $prefix = '' ) {
 	  $options = '';
-	  if (! empty($categories)) {
-		  foreach ($categories as $cat) {
+	  if ( ! empty($categories) ) {
+		  foreach ( $categories as $cat ) {
 			  $options .= '<option value="' . $cat->term_id . '" ' . ( in_array( $cat->term_id, $selected ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
-			  if (! empty($cat->children)) {
+			  if ( ! empty($cat->children) ) {
 				  $options .= QSM_Fields::get_category_hierarchical_options( $cat->children, $selected, $prefix . '&nbsp;&nbsp;&nbsp;' );
 			  }
 		  }
 	  }
 	  return $options;
   }
-  
+
   /**
    * @since 7.0
    * @param Array $field
    * @param String $value
-   * 
+   *
    * Generate the hide show div
    */
   public static function generate_hide_show_field( $field, $value ) { ?>
 <tr valign="top">
 	<th scope="row" class="qsm-opt-tr">
 		<a href="#" id="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_attr( $field["label"] ); ?></a>
-		<?php if( isset($field['tooltip']) && $field['tooltip'] != '' ){ ?>
+		<?php if ( isset($field['tooltip']) && $field['tooltip'] != '' ) { ?>
 		<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 			<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
 		</span>
 		<?php } ?>
 	</th>
 	<td>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
-<?php  
+<?php
   }
-  
+
   /**
    * Generates h2 tag for label
    *
@@ -574,14 +575,14 @@ wp_add_inline_script( 'qsm_admin_js', $date_field_script);
               }
             ?>
 		</fieldset>
-		<?php if( isset($field['help']) && $field['help'] != ''){ ?>
+		<?php if ( isset($field['help']) && $field['help'] != '' ) { ?>
 		<span class="qsm-opt-desc"><?php echo wp_kses_post( $field['help'] ); ?></span>
 		<?php } ?>
 	</td>
 </tr>
 <?php
   }
-  
+
 }
 
 ?>

@@ -155,7 +155,7 @@ function qsm_register_rest_routes() {
 function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
-		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( $_REQUEST['category'] ) : '';
+		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['category'] ) ) : '';
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
 	
 		$migrated = false;
@@ -191,19 +191,18 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				$query = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
 				$term_ids = $wpdb->get_results( $query, 'ARRAY_A' );
 				$question_ids = [];
-				foreach( $term_ids as $term_id ) {
+				foreach ( $term_ids as $term_id ) {
 					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
 				}
 				$question_ids = array_unique( $question_ids );
 				$query_result = [];
-				foreach( $question_ids as $question_id ) {
+				foreach ( $question_ids as $question_id ) {
 					$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d ORDER BY question_order ASC LIMIT %d, %d", $question_id, $offset, $limit );
 					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
-					if( ! is_null($question_data)){
+					if ( ! is_null($question_data) ) {
 						$query_result[] = $question_data;
-					}
-					
-				}
+					}               
+}
 				$questions = $query_result;
 			} else {
 				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s ORDER BY question_order ASC LIMIT %d, %d", $category, $offset, $limit );
@@ -222,7 +221,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		);
 
 		$question_array['questions'] = array();
-		foreach( $questions as $question ) {
+		foreach ( $questions as $question ) {
 			$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
 			$question['page'] = isset( $question['page'] ) ? (int) $question['page'] : 0;
 
@@ -236,7 +235,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			if ( ! is_array( $settings ) ) {
 				$settings = array( 'required' => 1 );
 			}
-			if ( empty( $settings['question_title'] ) && empty( $question['question_name'] )) {
+			if ( empty( $settings['question_title'] ) && empty( $question['question_name'] ) ) {
 				continue;
 			}
 			
@@ -328,7 +327,6 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 					'time_taken'       => $date . ' ' . $time,
 				);
 			}
-			print_r( $result_data );
 			exit;
 		} else {
 			return rest_ensure_response( 'No record found.' );
@@ -482,23 +480,23 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$question = QSM_Questions::load_question( $request['id'] );
-			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);			
+			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);         
 			if ( ! empty( $question ) ) {
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 				$question         = array(
-					'id'             => $question['question_id'],
-					'quizID'         => $question['quiz_id'],
-					'type'           => $question['question_type_new'],
-					'name'           => $question['question_name'],
-					'answerInfo'     => $question['question_answer_info'],
-					'comments'       => $question['comments'],
-					'hint'           => $question['hints'],
-					'category'       => (isset($categorysArray['category_name']) && !empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']):"" ) ,
-					'multicategories'=> $question['multicategories'],
-					'required'       => $question['settings']['required'],
-					'answers'        => $question['answers'],
-					'page'           => $question['page'],
-					'question_title' => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+					'id'              => $question['question_id'],
+					'quizID'          => $question['quiz_id'],
+					'type'            => $question['question_type_new'],
+					'name'            => $question['question_name'],
+					'answerInfo'      => $question['question_answer_info'],
+					'comments'        => $question['comments'],
+					'hint'            => $question['hints'],
+					'category'        => (isset($categorysArray['category_name']) && ! empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']) : "" ),
+					'multicategories' => $question['multicategories'],
+					'required'        => $question['settings']['required'],
+					'answers'         => $question['answers'],
+					'page'            => $question['page'],
+					'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 				);
 			}
 			return $question;
@@ -543,7 +541,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 					'answerInfo'              => htmlspecialchars_decode( $question['question_answer_info'], ENT_QUOTES ),
 					'comments'                => $question['comments'],
 					'hint'                    => $question['hints'],
-					'category'                => (isset($categorysArray['category_name']) && !empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']):"" ) ,
+					'category'                => (isset($categorysArray['category_name']) && ! empty($categorysArray['category_name']) ? implode(',',$categorysArray['category_name']) : "" ),
 					'multicategories'         => $question['multicategories'],
 					'required'                => $question['settings']['required'],
 					'answers'                 => $question['answers'],
@@ -587,15 +585,15 @@ function qsm_rest_create_question( WP_REST_Request $request ) {
 		if ( 0 !== $current_user ) {
 			try {
 				$data           = array(
-					'quiz_id'     => $request['quizID'],
-					'type'        => $request['type'],
-					'name'        => $request['name'],
-					'answer_info' => $request['answerInfo'],
-					'comments'    => $request['comments'],
-					'hint'        => $request['hint'],
-					'order'       => 1,
-					'category'    => $request['category'],
-					'multicategories'   => $request['multicategories'],
+					'quiz_id'         => $request['quizID'],
+					'type'            => $request['type'],
+					'name'            => $request['name'],
+					'answer_info'     => $request['answerInfo'],
+					'comments'        => $request['comments'],
+					'hint'            => $request['hint'],
+					'order'           => 1,
+					'category'        => $request['category'],
+					'multicategories' => $request['multicategories'],
 				);
 				$settings       = array(
 					'required'       => $request['required'],
@@ -646,15 +644,15 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 			try {
 				$id                          = intval( $request['id'] );
 				$data                        = array(
-					'quiz_id'     => $request['quizID'],
-					'type'        => $request['type'],
-					'name'        => $request['name'],
-					'answer_info' => $request['answerInfo'],
-					'comments'    => $request['comments'],
-					'hint'        => preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $request['hint'] ),
-					'order'       => 1,
-					'category'    => $request['category'],
-					'multicategories'   => $request['multicategories'],
+					'quiz_id'         => $request['quizID'],
+					'type'            => $request['type'],
+					'name'            => $request['name'],
+					'answer_info'     => $request['answerInfo'],
+					'comments'        => $request['comments'],
+					'hint'            => preg_replace( '#<script(.*?)>(.*?)</script>#is', '', $request['hint'] ),
+					'order'           => 1,
+					'category'        => $request['category'],
+					'multicategories' => $request['multicategories'],
 				);
 				$settings                    = array();
 				$settings['answerEditor']    = $request['answerEditor'];
@@ -717,8 +715,8 @@ function qsm_rest_get_categories( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
-			$categories	 = array();
-			$quiz_id	 = isset( $request['id'] ) ? intval( $request['id'] ) : 0;
+			$categories  = array();
+			$quiz_id     = isset( $request['id'] ) ? intval( $request['id'] ) : 0;
 			if ( 0 !== $quiz_id ) {
 				$categories = QSM_Questions::get_quiz_categories( $quiz_id );
 			}
@@ -727,7 +725,7 @@ function qsm_rest_get_categories( WP_REST_Request $request ) {
 	}
 	return array(
 		'status' => 'error',
-		'msg'	 => __( 'User not logged in', 'quiz-master-next' ),
+		'msg'    => __( 'User not logged in', 'quiz-master-next' ),
 	);
 }
 
@@ -752,18 +750,18 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
  * @since 7.3.6
  * @return array
  */
-function qsm_get_quizzes_list( ){
+function qsm_get_quizzes_list( ) {
 	global $wpdb;
 	$quizzes = $wpdb->get_results( "SELECT quiz_id, quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE deleted='0'" );
 	$qsm_quiz_list[] = array(
-			'label' => __('Select the quiz', 'quiz-master-next'),
-			'value' => ''
+		'label' => __('Select the quiz', 'quiz-master-next'),
+		'value' => '',
 	);
-	if( $quizzes ){
-			foreach( $quizzes as $quiz) {            
+	if ( $quizzes ) {
+			foreach ( $quizzes as $quiz ) {            
 					$qsm_quiz_list[] = array(
-							'label' => $quiz->quiz_name,
-							'value' => $quiz->quiz_id,
+						'label' => $quiz->quiz_name,
+						'value' => $quiz->quiz_id,
 					);            
 			}
 	}

@@ -222,22 +222,21 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$qsm_delete_from_db = isset($_POST['qsm_delete_from_db']) && "1" === $_POST['qsm_delete_from_db'];
-		$qsm_delete_questions_from_qb= isset($_POST['qsm_delete_question_from_qb']) && "1" === $_POST['qsm_delete_question_from_qb'];
+		$qsm_delete_from_db = isset($_POST['qsm_delete_from_db']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
+		$qsm_delete_questions_from_qb = isset($_POST['qsm_delete_question_from_qb']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
 
-		if ( $qsm_delete_from_db ){
+		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_id' => $quiz_id )
 			);
-			if ( $qsm_delete_questions_from_qb ){
+			if ( $qsm_delete_questions_from_qb ) {
 				$wpdb->delete(
 					$wpdb->prefix . 'mlw_quizzes',
 					array( 'quiz_id' => $quiz_id )
 				);
-			}
-
-		}else{
+			}       
+}else {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
@@ -266,7 +265,7 @@ class QMNQuizCreator {
 			}
 		}
 
-		if ($qsm_delete) {
+		if ( $qsm_delete ) {
 			$my_query = new WP_Query(
 				array(
 					'post_type'  => 'qsm_quiz',
@@ -290,7 +289,7 @@ class QMNQuizCreator {
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0002' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-		}		
+		}       
 
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
