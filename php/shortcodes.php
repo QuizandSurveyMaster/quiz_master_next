@@ -76,8 +76,8 @@ function qsm_display_recent_quizzes( $attrs ) {
 	$i       = 0;
 	foreach ( $quizzes as $quiz ) {
 		if ( $i < $no_of_quizzes ) {
-			$setting = unserialize( $quiz->quiz_settings );
-			$options = unserialize( $setting['quiz_options'] );
+			$setting = maybe_unserialize( $quiz->quiz_settings );
+			$options = maybe_unserialize( $setting['quiz_options'] );
 
 			$start_date = $options['scheduled_time_start'];
 			$end_date   = $options['scheduled_time_end'];
@@ -140,8 +140,8 @@ function qsm_generate_fb_header_metadata() {
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );
 		if ( $results_data ) {
 			// Prepare responses array.
-			if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
-				$results = unserialize( $results_data->quiz_results );
+			$results = maybe_unserialize( $results_data->quiz_results );
+			if ( is_array( $results ) ) {
 				if ( ! isset( $results['contact'] ) ) {
 					$results['contact'] = array();
 				}
