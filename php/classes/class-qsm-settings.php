@@ -296,9 +296,7 @@ class QSM_Quiz_Settings
 		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
 
 		// maybe_unserializes array
-		if ( is_array( maybe_unserialize( $settings ) ) ) {
-			$settings_array = maybe_unserialize( $settings );
-		}
+		$settings_array = maybe_unserialize( $settings );
 
 		// If the value is not an array, create an empty array
 		if ( ! is_array( $settings_array ) ) {
@@ -319,11 +317,9 @@ class QSM_Quiz_Settings
 
 			// If no options are present
 			if ( ! isset( $settings_array['quiz_options'] ) ) {
-
+                $scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
 				// Sets up older scheduled timeframe settings
-				if ( is_array( maybe_unserialize( $quiz_options->scheduled_timeframe ) ) ) {
-					$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
-				} else {
+				if ( ! is_array( $scheduled_timeframe ) ) {
 					$scheduled_timeframe = array(
 						'start' => '',
 						'end'   => '',
@@ -360,21 +356,18 @@ class QSM_Quiz_Settings
 
 			// If no text is present
 			if ( ! isset( $settings_array["quiz_text"] ) ) {
-
+                $pagination_text = maybe_unserialize( $quiz_options->pagination_text );
 				// Sets up older pagination text
-				if ( is_array( maybe_unserialize( $quiz_options->pagination_text ) ) ) {
-					$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
-				} else {
+				if ( ! is_array( $pagination_text ) ) {
 					$pagination_text = array(
 						__( 'Previous', 'quiz-master-next' ),
 						__( 'Next', 'quiz-master-next' ),
 					);
 				}
 
+                $social_media_text = maybe_unserialize( $quiz_options->social_media_text );
 				// Sets up older social sharing text
-				if ( is_array( maybe_unserialize( $quiz_options->social_media_text ) ) ) {
-					$social_media_text = maybe_unserialize( $quiz_options->social_media_text );
-				} else {
+				if ( ! is_array( $social_media_text ) ) {
 					$social_media_text = array(
 						'twitter'  => $quiz_options->social_media_text,
 						'facebook' => $quiz_options->social_media_text,

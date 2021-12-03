@@ -706,11 +706,8 @@ class QMNQuizCreator {
 	 */
 	public function update_setting( $setting_name, $setting_value ) {
 		global $wpdb;
-		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_array( maybe_unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
-		}
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		$qmn_settings_array[ $setting_name ] = $setting_value;
 		$results                             = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
@@ -740,11 +737,8 @@ class QMNQuizCreator {
 	 */
 	public function delete_setting( $setting_name ) {
 		global $wpdb;
-		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_array( maybe_unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
-		}
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
 			unset( $qmn_settings_array[ $setting_name ] );
 		}

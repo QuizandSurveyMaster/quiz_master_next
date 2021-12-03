@@ -2061,10 +2061,8 @@ add_action( 'wp_footer', function () use ( $options ) {
 				$attachments = array();
 				$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $qmn_array_for_variables );
 
-				if ( is_serialized( $qmn_quiz_options->user_email_template ) && is_array( maybe_unserialize( $qmn_quiz_options->user_email_template ) ) ) {
-
-					$mlw_user_email_array = maybe_unserialize( $qmn_quiz_options->user_email_template );
-
+				$mlw_user_email_array = maybe_unserialize( $qmn_quiz_options->user_email_template );
+				if ( is_array( $mlw_user_email_array ) ) {
 					// Cycle through emails
 					foreach ( $mlw_user_email_array as $mlw_each ) {
 
@@ -2112,7 +2110,6 @@ add_action( 'wp_footer', function () use ( $options ) {
 						}
 					}
 				} else {
-
 					// Uses older email system still which was before different emails were created.
 					$mlw_message = htmlspecialchars_decode( $qmn_quiz_options->user_email_template, ENT_QUOTES );
 					$mlw_message = apply_filters( 'mlw_qmn_template_variable_results_page', $mlw_message, $qmn_array_for_variables );
@@ -2163,9 +2160,8 @@ add_action( 'wp_footer', function () use ( $options ) {
 
 				$mlw_message = '';
 				$mlw_subject = '';
-				if ( is_serialized( $qmn_quiz_options->admin_email_template ) && is_array( maybe_unserialize( $qmn_quiz_options->admin_email_template ) ) ) {
-					$mlw_admin_email_array = maybe_unserialize( $qmn_quiz_options->admin_email_template );
-
+				$mlw_admin_email_array = maybe_unserialize( $qmn_quiz_options->admin_email_template );
+				if ( is_array( $mlw_admin_email_array ) ) {
 					// Cycle through landing pages
 					foreach ( $mlw_admin_email_array as $mlw_each ) {
 
