@@ -409,7 +409,7 @@ class QMNQuizCreator {
 				'question_numbering'       => $mlw_qmn_duplicate_data->question_numbering,
 				'quiz_settings'            => maybe_serialize( $quiz_settings ),
 				'theme_selected'           => $mlw_qmn_duplicate_data->theme_selected,
-				'last_activity'            => date( 'Y-m-d H:i:s' ),
+				'last_activity'            => date_i18n( 'Y-m-d H:i:s' ),
 				'require_log_in'           => $mlw_qmn_duplicate_data->require_log_in,
 				'require_log_in_text'      => $mlw_qmn_duplicate_data->require_log_in_text,
 				'limit_total_entries'      => $mlw_qmn_duplicate_data->limit_total_entries,
@@ -652,7 +652,7 @@ class QMNQuizCreator {
 					$query .= $values;
 					$saved  = $wpdb->query( $query );
 					if ( $saved != false ) {
-						update_option( "logic_rules_quiz_$mlw_new_id", date( time() ) );
+						update_option( "logic_rules_quiz_$mlw_new_id", date_i18n( time() ) );
 						$update_quiz_settings['logic_rules'] = '';
 					} else {
 						$update_quiz_settings['logic_rules'] = serialize( serialize( $logic_rules ) );

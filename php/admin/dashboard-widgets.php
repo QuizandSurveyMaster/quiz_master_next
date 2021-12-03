@@ -29,9 +29,9 @@ add_action( 'wp_dashboard_setup', 'qmn_add_dashboard_widget' );
 */
 function qmn_snapshot_dashboard_widget() {
 	global $wpdb;
-	$mlw_qmn_today_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", date( "Y-m-d", current_time( 'timestamp' ) ), date( "Y-m-d", current_time( 'timestamp' ) ) ) );
-	$mlw_last_week = mktime(0, 0, 0, date("m")  , date("d") - 7, date("Y"));
-	$mlw_last_week = date("Y-m-d", $mlw_last_week);
+	$mlw_qmn_today_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", date_i18n( "Y-m-d", current_time( 'timestamp' ) ), date_i18n( "Y-m-d", current_time( 'timestamp' ) ) ) );
+	$mlw_last_week = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 7, date_i18n("Y"));
+	$mlw_last_week = date_i18n("Y-m-d", $mlw_last_week);
 	$mlw_qmn_last_weekday_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_week, $mlw_last_week ) );
 	if ( $mlw_qmn_last_weekday_taken != 0 ) {
 		$mlw_qmn_analyze_today = round((($mlw_qmn_today_taken - $mlw_qmn_last_weekday_taken) / $mlw_qmn_last_weekday_taken) * 100, 2);
@@ -40,14 +40,14 @@ function qmn_snapshot_dashboard_widget() {
 		$mlw_qmn_analyze_today = $mlw_qmn_today_taken * 100;
 	}
 
-	$mlw_this_week = mktime(0, 0, 0, date("m")  , date("d") - 6, date("Y"));
-	$mlw_this_week = date("Y-m-d", $mlw_this_week);
-	$mlw_qmn_this_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_week, date("Y-m-d") ) );
+	$mlw_this_week = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 6, date_i18n("Y"));
+	$mlw_this_week = date_i18n("Y-m-d", $mlw_this_week);
+	$mlw_qmn_this_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_week, date_i18n("Y-m-d") ) );
 
-	$mlw_last_week_start = mktime(0, 0, 0, date("m")  , date("d") - 13, date("Y"));
-	$mlw_last_week_start = date("Y-m-d", $mlw_last_week_start);
-	$mlw_last_week_end = mktime(0, 0, 0, date("m")  , date("d") - 7, date("Y"));
-	$mlw_last_week_end = date("Y-m-d", $mlw_last_week_end);
+	$mlw_last_week_start = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 13, date_i18n("Y"));
+	$mlw_last_week_start = date_i18n("Y-m-d", $mlw_last_week_start);
+	$mlw_last_week_end = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 7, date_i18n("Y"));
+	$mlw_last_week_end = date_i18n("Y-m-d", $mlw_last_week_end);
 	$mlw_qmn_last_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_week_start, $mlw_last_week_end ) );
 
 	if ( $mlw_qmn_last_week_taken != 0 ) {
@@ -57,14 +57,14 @@ function qmn_snapshot_dashboard_widget() {
 		$mlw_qmn_analyze_week = $mlw_qmn_this_week_taken * 100;
 	}
 
-	$mlw_this_month = mktime(0, 0, 0, date("m")  , date("d") - 29, date("Y"));
-	$mlw_this_month = date("Y-m-d", $mlw_this_month);
-	$mlw_qmn_this_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_month, date("Y-m-d") ) );
+	$mlw_this_month = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 29, date_i18n("Y"));
+	$mlw_this_month = date_i18n("Y-m-d", $mlw_this_month);
+	$mlw_qmn_this_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_month, date_i18n("Y-m-d") ) );
 
-	$mlw_last_month_start = mktime(0, 0, 0, date("m")  , date("d") - 59, date("Y"));
-	$mlw_last_month_start = date("Y-m-d", $mlw_last_month_start);
-	$mlw_last_month_end = mktime(0, 0, 0, date("m")  , date("d") - 30, date("Y"));
-	$mlw_last_month_end = date("Y-m-d", $mlw_last_month_end);
+	$mlw_last_month_start = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 59, date_i18n("Y"));
+	$mlw_last_month_start = date_i18n("Y-m-d", $mlw_last_month_start);
+	$mlw_last_month_end = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 30, date_i18n("Y"));
+	$mlw_last_month_end = date_i18n("Y-m-d", $mlw_last_month_end);
 	$mlw_qmn_last_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_month_start, $mlw_last_month_end ) );
 
 	if ( $mlw_qmn_last_month_taken != 0 ) {
@@ -74,14 +74,14 @@ function qmn_snapshot_dashboard_widget() {
 		$mlw_qmn_analyze_month = $mlw_qmn_this_month_taken * 100;
 	}
 
-	$mlw_this_quater = mktime(0, 0, 0, date("m")  , date("d") - 89, date("Y"));
-	$mlw_this_quater = date("Y-m-d", $mlw_this_quater);
-	$mlw_qmn_this_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_quater, date("Y-m-d") ));
+	$mlw_this_quater = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 89, date_i18n("Y"));
+	$mlw_this_quater = date_i18n("Y-m-d", $mlw_this_quater);
+	$mlw_qmn_this_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_quater, date_i18n("Y-m-d") ));
 
-	$mlw_last_quater_start = mktime(0, 0, 0, date("m")  , date("d") - 179, date("Y"));
-	$mlw_last_quater_start = date("Y-m-d", $mlw_last_quater_start);
-	$mlw_last_quater_end = mktime(0, 0, 0, date("m")  , date("d") - 90, date("Y"));
-	$mlw_last_quater_end = date("Y-m-d", $mlw_last_quater_end);
+	$mlw_last_quater_start = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 179, date_i18n("Y"));
+	$mlw_last_quater_start = date_i18n("Y-m-d", $mlw_last_quater_start);
+	$mlw_last_quater_end = mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - 90, date_i18n("Y"));
+	$mlw_last_quater_end = date_i18n("Y-m-d", $mlw_last_quater_end);
 	$mlw_qmn_last_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_quater_start, $mlw_last_quater_end ) );
 
 	if ( $mlw_qmn_last_quater_taken != 0 ) {

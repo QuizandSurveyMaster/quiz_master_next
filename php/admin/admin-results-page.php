@@ -388,7 +388,7 @@ function qsm_results_overview_tab_content() {
 			}
 
 			$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
-			$time = date( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
+			$time = date_i18n( "h:i:s A", strtotime( $mlw_quiz_info->time_taken ) );
 
 			if ( isset( $values['time_taken'] ) ) {
 				$values['time_taken']['content'][] = '<abbr title="' . esc_attr( $date . $time ) . '">' . esc_html( $date ) . '</abbr>';

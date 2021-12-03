@@ -37,7 +37,7 @@ class QSM_Audit {
 			array(
 			'action_user' => $current_user->display_name,
 			'action'      => $action,
-			'time'        => date("h:i:s A m/d/Y"),
+			'time'        => date_i18n("h:i:s A m/d/Y"),
 			),
 			array(
 			'%s',

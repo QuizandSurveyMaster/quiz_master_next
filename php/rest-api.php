@@ -320,7 +320,7 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 				}
 				// Time taken
 				$date          = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
-				$time          = date( 'h:i:s A', strtotime( $mlw_quiz_info->time_taken ) );
+				$time          = date_i18n( 'h:i:s A', strtotime( $mlw_quiz_info->time_taken ) );
 				$result_data[] = array(
 					'score'            => $quotes_list,
 					'time_to_complete' => $mlw_complete_time,

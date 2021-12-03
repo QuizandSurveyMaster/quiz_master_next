@@ -137,7 +137,7 @@ function qmn_load_stats( $type, $amount = 0 ) {
 		case 'daily':
 			global $wpdb;
 			for ( $i = 0; $i < $amount; $i++ ) {
-				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - $i, date("Y")));
+				$stat_date = date_i18n("Y-m-d", mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - $i, date_i18n("Y")));
 				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}
@@ -146,8 +146,8 @@ function qmn_load_stats( $type, $amount = 0 ) {
 		case 'weekly':
 				global $wpdb;
 				for ( $i = 0; $i < $amount; $i++ ) {
-					$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - (6 + ($i * 7)), date("Y")));
-					$stat_end_date = date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d") - ($i * 7), date("Y")));
+					$stat_date = date_i18n("Y-m-d", mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - (6 + ($i * 7)), date_i18n("Y")));
+					$stat_end_date = date_i18n("Y-m-d", mktime(0, 0, 0, date_i18n("m")  , date_i18n("d") - ($i * 7), date_i18n("Y")));
 					$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 					array_unshift($stats, $retrieved_stats);
 				}
@@ -156,8 +156,8 @@ function qmn_load_stats( $type, $amount = 0 ) {
 		case 'monthly':
 			global $wpdb;
 			for ( $i = 0; $i < $amount; $i++ ) {
-				$stat_date = date("Y-m-d", mktime(0, 0, 0, date("m") - $i, 1, date("Y")));
-				$stat_end_date = date("Y-m-t", mktime(0, 0, 0, date("m") - $i, date("d"), date("Y")));
+				$stat_date = date_i18n("Y-m-d", mktime(0, 0, 0, date_i18n("m") - $i, 1, date_i18n("Y")));
+				$stat_end_date = date_i18n("Y-m-t", mktime(0, 0, 0, date_i18n("m") - $i, date_i18n("d"), date_i18n("Y")));
 				$retrieved_stats = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $stat_date, $stat_end_date ) );
 				array_unshift($stats, $retrieved_stats);
 			}
