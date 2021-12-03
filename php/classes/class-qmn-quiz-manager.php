@@ -624,8 +624,8 @@ class QMNQuizManager {
 		$question_list         = array();
 		foreach ( $questions as $mlw_question_info ) {
 			$question_list[ $mlw_question_info->question_id ] = get_object_vars( $mlw_question_info );
-			if ( is_serialized( $mlw_question_info->answer_array ) && is_array( maybe_unserialize( $mlw_question_info->answer_array ) ) ) {
-				$mlw_qmn_answer_array_each                                   = maybe_unserialize( $mlw_question_info->answer_array );
+			$mlw_qmn_answer_array_each = maybe_unserialize( $mlw_question_info->answer_array );
+			if ( is_array( $mlw_qmn_answer_array_each ) ) {
 				$mlw_qmn_answer_arrays[ $mlw_question_info->question_id ]    = $mlw_qmn_answer_array_each;
 				$question_list[ $mlw_question_info->question_id ]['answers'] = $mlw_qmn_answer_array_each;
 			} else {
