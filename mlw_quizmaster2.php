@@ -297,45 +297,41 @@ class MLWQuizMasterNext {
 		if ( $hook == 'admin_page_mlw_quiz_options' ) {
 			wp_enqueue_script( 'wp-tinymce' );
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
-			if ( ! isset($_GET['tab']) || "questions" === $_GET['tab'] ) {
-				wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $this->version );
-				wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				wp_enqueue_editor();
-				wp_enqueue_media();
-			}
-			if ( isset($_GET['tab']) ) {
-				$tab = sanitize_text_field( wp_unslash( $_GET['tab'] ) );
-				if ( "contact" === $tab ) {
-					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
-				}
-				if ( "emails" === $tab ) {
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
+			switch ( $current_tab ) {
+				case 'contact':
+					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL . '/qsm-admin-contact.css', array(), $this->version );
+					break;
+				case 'emails':
+				case 'results-pages':
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_enqueue_editor();
 					wp_enqueue_media();
-				}
-				if ( "results-pages" === $tab ) {
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-					wp_enqueue_editor();
-					wp_enqueue_media();
-				}
-				if ( "style" === $tab ) {
+					break;
+				case 'style':
 					wp_enqueue_style( 'wp-color-picker' );
 					wp_enqueue_media();
-				}
-				if ( "options" === $tab ) {
-					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
-					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css', array(), $this->version );
+					break;
+				case 'options':
+					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
+					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL . '/jquery.datetimepicker.css', array(), $this->version );
 					wp_enqueue_script( 'jquery' );
 					wp_enqueue_script( 'jquery-ui-core' );
 					wp_enqueue_script( 'jquery-ui-dialog' );
 					wp_enqueue_script( 'jquery-ui-button' );
-					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js', array(), $this->version, true );
+					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL . '/jquery.datetimepicker.full.min.js', array(), $this->version, true );
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				}
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					break;
+				default:
+					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
+					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+					break;
 			}
 		}
 		//load admin JS after all dependencies are loaded

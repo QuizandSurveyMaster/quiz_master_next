@@ -320,7 +320,7 @@ function qsm_options_questions_tab_content() {
 								);
 								$answer_area_option = apply_filters( 'qsm_question_advanced_option', $answer_area_option );
 								foreach ( $answer_area_option as $qo_key => $single_answer_option ) {
-									echo qsm_display_question_option( $qo_key, $single_answer_option );
+									qsm_display_question_option( $qo_key, $single_answer_option );
 								}
 								?>
 							</div>
@@ -398,7 +398,7 @@ function qsm_options_questions_tab_content() {
 												$keys                   = array_column( $simple_question_option, 'priority' );
 												array_multisort( $keys, SORT_ASC, $simple_question_option );
 												foreach ( $simple_question_option as $qo_key => $single_option ) {
-													echo qsm_display_question_option( $qo_key, $single_option );
+													qsm_display_question_option( $qo_key, $single_option );
 												}
 												?>
 											</div>
@@ -452,7 +452,7 @@ function qsm_options_questions_tab_content() {
 										$keys                     = array_column( $category_question_option, 'priority' );
 										array_multisort( $keys, SORT_ASC, $category_question_option );
 										foreach ( $category_question_option as $qo_key => $single_cat_option ) {
-											echo qsm_display_question_option( $qo_key, $single_cat_option );
+											qsm_display_question_option( $qo_key, $single_cat_option );
 										}
 										?>
 									</div>
@@ -558,7 +558,7 @@ function qsm_options_questions_tab_content() {
 											$keys                     = array_column( $advanced_question_option, 'priority' );
 											array_multisort( $keys, SORT_ASC, $advanced_question_option );
 											foreach ( $advanced_question_option as $qo_key => $single_option ) {
-												echo qsm_display_question_option( $qo_key, $single_option );
+												qsm_display_question_option( $qo_key, $single_option );
 											}
 											?>
 										</div>
