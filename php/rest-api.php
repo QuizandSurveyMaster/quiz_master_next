@@ -305,7 +305,7 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 				}
 				// Time to complete
 				$mlw_complete_time     = '';
-				$mlw_qmn_results_array = @unserialize( $mlw_quiz_info->quiz_results );
+				$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 				if ( is_array( $mlw_qmn_results_array ) ) {
 						$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {

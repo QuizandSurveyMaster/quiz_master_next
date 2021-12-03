@@ -47,7 +47,7 @@
 		<exclude name="WordPress.PHP.StrictComparisons.LooseComparison"/>
 		<exclude name="WordPress.DB.PreparedSQL.NotPrepared"/>
 		<exclude name="WordPress.DB.PreparedSQL.InterpolatedNotPrepared"/>
-		<exclude name="WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize"/>
+		<!-- <exclude name="WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize"/> -->
 		<exclude name="WordPress.DB.PreparedSQLPlaceholders.QuotedSimplePlaceholder"/>
 		<exclude name="WordPress.PHP.NoSilencedErrors.Discouraged"/>
     </rule>

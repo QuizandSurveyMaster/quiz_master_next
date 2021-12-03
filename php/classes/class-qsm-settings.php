@@ -106,12 +106,12 @@ class QSM_Quiz_Settings
     public function get_section_setting( $section, $setting, $default = false ) {
 
     // Return if section or setting is empty
-        if ( empty($section) || empty($setting) ) {
+        if ( empty( $section ) || empty( $setting ) ) {
             return $default;
         }
 
         // Get settings in section
-        $section_settings = $this->get_setting($section);
+        $section_settings = $this->get_setting( $section );
 
         // Return default if section not found
         if ( ! $section_settings ) {
@@ -119,16 +119,16 @@ class QSM_Quiz_Settings
         }
 
         // Maybe unserailize
-        $section_settings = maybe_unserialize($section_settings);
+        $section_settings = maybe_unserialize( $section_settings );
 
         // Check if setting exists
-        if ( isset($section_settings[ $setting ]) ) {
+        if ( isset( $section_settings[ $setting ] ) ) {
 
-      // Try to unserialize it and then return it
-            return maybe_unserialize($section_settings[ $setting ]);
+            // Try to unserialize it and then return it
+            return maybe_unserialize( $section_settings[ $setting ] );
         } else {
 
-      // Return the default if no setting exists
+            // Return the default if no setting exists
             return $default;
         }
     }
@@ -163,7 +163,7 @@ class QSM_Quiz_Settings
 
         // Check if setting exists
         if ( isset($this->settings[ $setting ]) ) {
-            // Try to unserialize it and then return it
+            // Try to maybe_unserialize it and then return it
             return maybe_unserialize($this->settings[ $setting ]);
         } else {
             // Return the default if no setting exists
@@ -295,7 +295,7 @@ class QSM_Quiz_Settings
 		// Loads the settings from the database
 		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
 
-		// Unserializes array
+		// maybe_unserializes array
 		if ( is_array( maybe_unserialize( $settings ) ) ) {
 			$settings_array = maybe_unserialize( $settings );
 		}

@@ -93,9 +93,9 @@ function qsm_generate_results_details_tab() {
 
     // Prepare responses array.
     $total_hidden_questions = 0;
-    if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
-        $results = unserialize($results_data->quiz_results);
-        $total_hidden_questions = isset($results['hidden_questions']) ? count($results['hidden_questions']) : 0;
+    if ( is_serialized( $results_data->quiz_results ) && is_array( maybe_unserialize( $results_data->quiz_results ) ) ) {
+        $results = maybe_unserialize( $results_data->quiz_results );
+        $total_hidden_questions = isset( $results['hidden_questions'] ) ? count( $results['hidden_questions'] ) : 0;
         if ( ! isset( $results["contact"] ) ) {
             $results["contact"] = array();
         }
@@ -143,7 +143,7 @@ function qsm_generate_results_details_tab() {
     }
     if ( $new_template_result_detail == 1 ) {
         $template = '';
-        if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
+        if ( is_serialized( $results_data->quiz_results ) && is_array( maybe_unserialize( $results_data->quiz_results ) ) ) {
             $span_start = '<span class="result-candidate-span"><label>';
             $span_end = '</label><span>';
             $spanend = '</span></span>';
@@ -182,7 +182,7 @@ function qsm_generate_results_details_tab() {
             $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Time Taken</span></h2>';
             $template .= '<div class="inside">';
             $template .= '<div class="timer-div-wrapper">';
-            $mlw_qmn_results_array = @unserialize($results_data->quiz_results);
+            $mlw_qmn_results_array = maybe_unserialize($results_data->quiz_results);
             if ( is_array( $mlw_qmn_results_array ) ) {
                 $mlw_complete_hours = floor($mlw_qmn_results_array[0] / 3600);
                 if ( $mlw_complete_hours > 0 ) {
@@ -265,7 +265,7 @@ function qsm_generate_results_details_tab() {
         }
     }
 
-    if ( ! is_serialized( $results_data->quiz_results ) && ! is_array( @unserialize( $results_data->quiz_results ) ) ) {
+    if ( ! is_serialized( $results_data->quiz_results ) && ! is_array( maybe_unserialize( $results_data->quiz_results ) ) ) {
         $template = str_replace( "%QUESTIONS_ANSWERS%" , $results_data->quiz_results, $template);
         $template = str_replace( "%TIMER%" , '', $template);
         $template = str_replace( "%COMMENT_SECTION%" , '', $template);

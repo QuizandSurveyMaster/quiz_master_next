@@ -204,7 +204,7 @@ class QMNQuizManager {
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
-		$answer_array      = unserialize( $question_array['answer_array'] );
+		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
 		$show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( wp_unslash( $_POST['show_correct_info'] ) ) : 0;
 		$got_ans           = false;
@@ -417,7 +417,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ), array(), $mlwQuizMasterNext->version);
 				wp_enqueue_script( 'math_jax', $this->mathjax_url, false , $this->mathjax_version , true );
-				$quiz_result   = unserialize( $result_data['quiz_results'] );
+				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
 				$response_data = array(
 					'quiz_id'                => $result_data['quiz_id'],
 					'quiz_name'              => $result_data['quiz_name'],
@@ -624,8 +624,8 @@ class QMNQuizManager {
 		$question_list         = array();
 		foreach ( $questions as $mlw_question_info ) {
 			$question_list[ $mlw_question_info->question_id ] = get_object_vars( $mlw_question_info );
-			if ( is_serialized( $mlw_question_info->answer_array ) && is_array( @unserialize( $mlw_question_info->answer_array ) ) ) {
-				$mlw_qmn_answer_array_each                                   = @unserialize( $mlw_question_info->answer_array );
+			if ( is_serialized( $mlw_question_info->answer_array ) && is_array( maybe_unserialize( $mlw_question_info->answer_array ) ) ) {
+				$mlw_qmn_answer_array_each                                   = maybe_unserialize( $mlw_question_info->answer_array );
 				$mlw_qmn_answer_arrays[ $mlw_question_info->question_id ]    = $mlw_qmn_answer_array_each;
 				$question_list[ $mlw_question_info->question_id ]['answers'] = $mlw_qmn_answer_array_each;
 			} else {
@@ -1511,7 +1511,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 			$background_quiz_email_process = isset( $qmn_global_settings['background_quiz_email_process'] ) ? esc_attr( $qmn_global_settings['background_quiz_email_process'] ) : '1';
 			if ( $background_quiz_email_process == 1 ) {
 				// Send the emails in background.
-				$qmn_array_for_variables['quiz_settings']   = isset( $qmn_quiz_options->quiz_settings ) ? @unserialize( $qmn_quiz_options->quiz_settings ) : array();
+				$qmn_array_for_variables['quiz_settings']   = isset( $qmn_quiz_options->quiz_settings ) ? maybe_unserialize( $qmn_quiz_options->quiz_settings ) : array();
 				$qmn_array_for_variables['email_processed'] = 'yes';
 				$this->qsm_background_email->data(
 					array(
@@ -1899,7 +1899,7 @@ add_action( 'wp_footer', function () use ( $options ) {
     }
 
     $question_type = $question['question_type_new'];
-    $question_required = ( 0 === unserialize($question['question_settings'])['required']);
+    $question_required = ( 0 === maybe_unserialize($question['question_settings'])['required']);
     $multi_response = ( "4" === $question_type || "10" === $question_type ) ;
 
     return QMNQuizManager::qsm_max_min_points_conditions( $max_value_array, $min_value_array, $question_required,  $multi_response);
@@ -2006,8 +2006,8 @@ add_action( 'wp_footer', function () use ( $options ) {
 
 			// Loads Social Media Text.
 			$qmn_social_media_text = '';
-			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( @unserialize( $qmn_quiz_options->social_media_text ) ) ) {
-				$qmn_social_media_text = @unserialize( $qmn_quiz_options->social_media_text );
+			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( maybe_unserialize( $qmn_quiz_options->social_media_text ) ) ) {
+				$qmn_social_media_text = maybe_unserialize( $qmn_quiz_options->social_media_text );
 			} else {
 				$qmn_social_media_text = array(
 					'twitter'  => $qmn_quiz_options->social_media_text,
@@ -2063,9 +2063,9 @@ add_action( 'wp_footer', function () use ( $options ) {
 				$attachments = array();
 				$attachments = apply_filters( 'qsm_user_email_attachments', $attachments, $qmn_array_for_variables );
 
-				if ( is_serialized( $qmn_quiz_options->user_email_template ) && is_array( @unserialize( $qmn_quiz_options->user_email_template ) ) ) {
+				if ( is_serialized( $qmn_quiz_options->user_email_template ) && is_array( maybe_unserialize( $qmn_quiz_options->user_email_template ) ) ) {
 
-					$mlw_user_email_array = @unserialize( $qmn_quiz_options->user_email_template );
+					$mlw_user_email_array = maybe_unserialize( $qmn_quiz_options->user_email_template );
 
 					// Cycle through emails
 					foreach ( $mlw_user_email_array as $mlw_each ) {
@@ -2165,8 +2165,8 @@ add_action( 'wp_footer', function () use ( $options ) {
 
 				$mlw_message = '';
 				$mlw_subject = '';
-				if ( is_serialized( $qmn_quiz_options->admin_email_template ) && is_array( @unserialize( $qmn_quiz_options->admin_email_template ) ) ) {
-					$mlw_admin_email_array = @unserialize( $qmn_quiz_options->admin_email_template );
+				if ( is_serialized( $qmn_quiz_options->admin_email_template ) && is_array( maybe_unserialize( $qmn_quiz_options->admin_email_template ) ) ) {
+					$mlw_admin_email_array = maybe_unserialize( $qmn_quiz_options->admin_email_template );
 
 					// Cycle through landing pages
 					foreach ( $mlw_admin_email_array as $mlw_each ) {
