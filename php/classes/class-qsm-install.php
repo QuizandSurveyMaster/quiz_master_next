@@ -1291,7 +1291,7 @@ class QSM_Install {
 			// enabling multiple category for fresh installation
 			$multiple_category = get_option( 'qsm_multiple_category_enabled' );
 			if ( ! $multiple_category ) {
-				add_option( 'qsm_multiple_category_enabled', date( time() ) );
+				add_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 			}
 		}
 
@@ -1663,7 +1663,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'last_activity'" ) != 'last_activity' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD last_activity DATETIME NOT NULL AFTER theme_selected';
 				$results    = $wpdb->query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", date( 'Y-m-d H:i:s' ) );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", gmdate( 'Y-m-d H:i:s' ) );
 				$results    = $wpdb->query( $update_sql );
 			}
 

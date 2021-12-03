@@ -319,8 +319,8 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 						$mlw_complete_time   .= "$mlw_complete_seconds seconds";
 				}
 				// Time taken
-				$date          = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
-				$time          = date( 'h:i:s A', strtotime( $mlw_quiz_info->time_taken ) );
+				$date          = gmdate( get_option( 'date_format' ), strtotime( $mlw_quiz_info->time_taken ) );
+				$time          = gmdate( 'h:i:s A', strtotime( $mlw_quiz_info->time_taken ) );
 				$result_data[] = array(
 					'score'            => $quotes_list,
 					'time_to_complete' => $mlw_complete_time,
