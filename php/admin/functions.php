@@ -583,17 +583,15 @@ function qsm_create_new_quiz_wizard() {
 													<span class="addon-itd-wrap">
 														<img alt="" src="<?php echo esc_url($single_arr['img']); ?>" />
 													</span>
-													<span class="addon-price">
-														<a class="addon-get-link"
-															href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
-															target="_blank" rel="noopener">
-															<?php
-															esc_html_e( 'Buy now', 'quiz-master-next' );
-															echo ' : $ ';
-															echo esc_html( array_values( $single_arr['price'] )[0] );
-															?>
-														</a>
-													</span>
+												</a>
+												<a class="addon-get-link"
+													href="<?php echo esc_url($single_arr['link']); ?>?utm_source=wizard&utm_medium=plugin&utm_content=all-addons-top&utm_campaign=qsm_plugin"
+													target="_blank" rel="noopener">
+													<?php
+													esc_html_e( 'Buy now', 'quiz-master-next' );
+													echo ' : $ ';
+													echo esc_html( array_values( $single_arr['price'] )[0] );
+													?>
 												</a>
 											</div>
 											<?php
@@ -611,6 +609,7 @@ function qsm_create_new_quiz_wizard() {
 									target="_blank"><?php esc_html_e( 'Browse All Addons', 'quiz-master-next' ); ?></a>
 							</div>
 						</div>
+					</div>
 				</main>
 			</form>
 			<footer class="qsm-popup__footer">

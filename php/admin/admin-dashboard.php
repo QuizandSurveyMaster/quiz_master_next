@@ -271,9 +271,11 @@ function qsm_generate_dashboard_page() {
 		?>
 	</div><!-- dashboard-widgets-wrap -->
 </div>
-<!-- Popup for new wizard -->
-<?php qsm_create_new_quiz_wizard(); ?>
 <?php
+	/**
+	 * Popup for new wizard
+	 */
+	qsm_create_new_quiz_wizard();
 }
 
 /**
