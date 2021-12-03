@@ -284,7 +284,7 @@ function qsm_options_questions_tab_content() {
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper"
-								 class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
+								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
 								<label class="answer-header">
 									<?php esc_html_e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"

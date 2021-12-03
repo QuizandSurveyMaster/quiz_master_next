@@ -61,7 +61,7 @@ function qsm_generate_results_details_tab() {
 	global $mlwQuizMasterNext;
 
 	// Gets results data.
-  $result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
+    $result_id    = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : 0;
 	$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ) );
 
 	// Prepare plugin helper.

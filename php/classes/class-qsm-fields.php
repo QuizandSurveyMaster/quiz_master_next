@@ -480,7 +480,7 @@ class QSM_Fields {
 		<?php
   	}
 
-  public static function get_category_hierarchical_options( $categories = array(), $selected = array(), $prefix = '' ) {
+  	public static function get_category_hierarchical_options( $categories = array(), $selected = array(), $prefix = '' ) {
 		$options = '';
 		if ( ! empty($categories) ) {
 			foreach ( $categories as $cat ) {

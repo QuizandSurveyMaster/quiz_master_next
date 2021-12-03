@@ -2602,9 +2602,7 @@ function qmn_update_taken( $display, $qmn_quiz_options, $qmn_array_for_variables
 	return $display;
 }
 
-/*
-  This function helps set the email type to HTML
- */
+//This function helps set the email type to HTML
 
 function mlw_qmn_set_html_content_type() {
 	return 'text/html';

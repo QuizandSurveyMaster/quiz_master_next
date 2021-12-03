@@ -18,38 +18,38 @@ class QSM_Audit {
         $action = sanitize_text_field( $action );
 
         // Retrieves current user's data
-        if ( is_null( $user ) ) {
-          $current_user = wp_get_current_user();
-        } else {
-          $current_user = $user;
-        }
+		if ( is_null( $user ) ) {
+			$current_user = wp_get_current_user();
+		} else {
+			$current_user = $user;
+		}
 
-        // Returns if the current user is not valid
-        if ( ! ( $current_user instanceof WP_User ) ) {
-          return false;
-        }
+		// Returns if the current user is not valid
+		if ( ! ( $current_user instanceof WP_User ) ) {
+			return false;
+		}
 
         global $wpdb;
 
-        // Inserts new audit into table
-        $inserted = $wpdb->insert(
-          $wpdb->prefix . "mlw_qm_audit_trail",
-          array(
-          'action_user' => $current_user->display_name,
-          'action'      => $action,
-          'time'        => date("h:i:s A m/d/Y"),
-          ),
-          array(
-          '%s',
-          '%s',
-          '%s',
-          )
-        );
+		// Inserts new audit into table
+		$inserted = $wpdb->insert(
+			$wpdb->prefix . "mlw_qm_audit_trail",
+			array(
+			'action_user' => $current_user->display_name,
+			'action'      => $action,
+			'time'        => date("h:i:s A m/d/Y"),
+			),
+			array(
+			'%s',
+			'%s',
+			'%s',
+			)
+		);
 
-        // If the insert returns false, then return false
-        if ( false === $inserted ) {
-          return false;
-        }
+		// If the insert returns false, then return false
+		if ( false === $inserted ) {
+			return false;
+		}
 
         return true;
     }
