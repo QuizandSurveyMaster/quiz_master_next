@@ -708,6 +708,9 @@ class QMNQuizCreator {
 		global $wpdb;
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
 		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
+		if ( ! is_array( $qmn_settings_array ) ) {
+			$qmn_settings_array = array();
+		}
 		$qmn_settings_array[ $setting_name ] = $setting_value;
 		$results                             = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
