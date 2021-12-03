@@ -471,12 +471,10 @@ class QMNPluginHelper
      */
     public function get_question_setting( $question_id, $setting ) {
         global $wpdb;
-        $qmn_settings_array = '';
         $settings = $wpdb->get_var($wpdb->prepare("SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", $question_id));
-        if ( is_serialized($settings) && is_array(maybe_unserialize($settings)) ) {
-            $qmn_settings_array = maybe_unserialize($settings);
-        }
-        if ( is_array($qmn_settings_array) && isset($qmn_settings_array[ $setting ]) ) {
+        $qmn_settings_array = maybe_unserialize( $settings );
+
+        if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting ] ) ) {
             return $qmn_settings_array[ $setting ];
         } else {
             return '';

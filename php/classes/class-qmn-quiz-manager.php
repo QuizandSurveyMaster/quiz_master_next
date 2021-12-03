@@ -2001,14 +2001,12 @@ add_action( 'wp_footer', function () use ( $options ) {
 			$settings        = (array) get_option( 'qmn-settings' );
 			$facebook_app_id = '594986844960937';
 			if ( isset( $settings['facebook_app_id'] ) ) {
-				$facebook_app_id = esc_js( $settings['facebook_app_id'] );
+				$facebook_app_id = $settings['facebook_app_id'];
 			}
 
 			// Loads Social Media Text.
-			$qmn_social_media_text = '';
-			if ( is_serialized( $qmn_quiz_options->social_media_text ) && is_array( maybe_unserialize( $qmn_quiz_options->social_media_text ) ) ) {
-				$qmn_social_media_text = maybe_unserialize( $qmn_quiz_options->social_media_text );
-			} else {
+			$qmn_social_media_text = maybe_unserialize( $qmn_quiz_options->social_media_text );
+			if ( ! is_array( $qmn_social_media_text ) ) {
 				$qmn_social_media_text = array(
 					'twitter'  => $qmn_quiz_options->social_media_text,
 					'facebook' => $qmn_quiz_options->social_media_text,
@@ -2016,7 +2014,7 @@ add_action( 'wp_footer', function () use ( $options ) {
 			}
 			$qmn_social_media_text['twitter']  = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text['twitter'], $qmn_array_for_variables );
 			$qmn_social_media_text['facebook'] = apply_filters( 'mlw_qmn_template_variable_results_page', $qmn_social_media_text['facebook'], $qmn_array_for_variables );
-			$social_display                   .= "<br /><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $qmn_social_media_text['facebook'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "', '$facebook_app_id');\">Facebook</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $qmn_social_media_text['twitter'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "');\">Twitter</a><br />";
+			$social_display                   .= "<br /><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $qmn_social_media_text['facebook'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "', '" . esc_js( $facebook_app_id ) . "');\">Facebook</a><a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $qmn_social_media_text['twitter'] ) . "', '" . esc_js( $qmn_quiz_options->quiz_name ) . "');\">Twitter</a><br />";
 		}
 		return apply_filters( 'qmn_returned_social_buttons', $social_display, $qmn_quiz_options, $qmn_array_for_variables );
 	}
