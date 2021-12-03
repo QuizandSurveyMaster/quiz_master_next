@@ -665,18 +665,6 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 						$settings[ $setting_key ] = $setting_value;
 					}
 				}
-								/*
-								 Old code
-				$settings = array(
-					'required' => $request['required'],
-										'autofill' => $request['autofill'],
-										'limit_text' => $request['limit_text'],
-										'limit_multiple_response' => $request['limit_multiple_response'],
-										'file_upload_limit' => $request['file_upload_limit'],
-										'file_upload_type' => $request['file_upload_type'],
-										'question_title' => $request['question_title'],
-										'answerEditor' => $request['answerEditor'],
-				); */
 				$intial_answers = $request['answers'];
 				$answers        = array();
 				if ( is_array( $intial_answers ) ) {

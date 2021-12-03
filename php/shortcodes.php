@@ -9,17 +9,19 @@
  * @return string The HTML the shortcode will be replaced with
  */
 function qsm_quiz_link_shortcode( $atts, $content = '' ) {
-	extract(
-		shortcode_atts(
-			array(
-				'id'     => 0,
-				'class'  => '',
-				'target' => '',
-			),
-			$atts
-		)
+
+	$args = shortcode_atts(
+		array(
+			'id'     => 0,
+			'class'  => '',
+			'target' => '',
+		),
+		$atts
 	);
-	$id = intval( $id );
+
+	$id	= intval( $args['id'] );
+	$class = $args['class'];
+	$target = $args['target'];
 
 	// Find the permalink by finding the post with the meta_key 'quiz_id' of supplied quiz
 	$permalink = '';
@@ -90,7 +92,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 				$url     = do_shortcode( "[qsm_link id='$id'] Take Quiz [/qsm_link]" );
 				$result .= "<div class='ind-quiz'>
                                 <div class='quiz-heading'>
-                                    {$title} 
+                                    {$title}
                                 </div>
                                 <div class='quiz-url'>
                                     {$url}

@@ -324,7 +324,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function qsm_delete_data() {
-		 $settings   = (array) get_option( 'qmn-settings' );
+		$settings   = (array) get_option( 'qmn-settings' );
 		$cpt_archive = '0';
 		if ( isset( $settings['delete_qsm_data'] ) ) {
 			$cpt_archive = esc_attr( $settings['delete_qsm_data'] );
@@ -397,7 +397,7 @@ class QMNGlobalSettingsPage {
 	 * @return void
 	 */
 	public function usage_tracker_field() {
-		 $settings        = (array) get_option( 'qmn-settings' );
+		$settings        = (array) get_option( 'qmn-settings' );
 		$tracking_allowed = '0';
 		if ( isset( $settings['tracking_allowed'] ) ) {
 			$tracking_allowed = esc_attr( $settings['tracking_allowed'] );
@@ -430,10 +430,9 @@ class QMNGlobalSettingsPage {
 			$checked = " checked='checked'";
 		}
 		echo '<label class="switch">';
-			echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
+		echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
-		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>"
-		 . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>". esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
