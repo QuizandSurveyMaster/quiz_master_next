@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.4.0
  */
 function qsm_settings_questions_tab() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
@@ -284,7 +284,7 @@ function qsm_options_questions_tab_content() {
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper"
-								 class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
+								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
 								<label class="answer-header">
 									<?php esc_html_e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -748,8 +748,8 @@ function qsm_ajax_save_pages() {
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
-	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array();
-	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array();
+	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
@@ -879,7 +879,7 @@ function qsm_delete_question_question_bank() {
 				),
 			)
 		);
-		  wp_die();
+		wp_die();
 	}
 	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_textarea_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
@@ -928,11 +928,10 @@ function qsm_delete_question_from_database() {
 				),
 			)
 		);
-		  wp_die();
+		wp_die();
 	}
-
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-  if ( $question_id ) {
+  	if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
 		echo wp_json_encode(

@@ -412,7 +412,7 @@ class QMNPluginHelper
                     $categories = QSM_Questions::get_question_categories( $question_id );
                     if ( ! empty($categories['category_name']) ) {
                         $cat_name = implode( ',' ,$categories['category_name'] );
-                       ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
+                        ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
                     }
                 }
                 call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
@@ -434,10 +434,8 @@ class QMNPluginHelper
         $results_array = array();
         global $wpdb;
         $question = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", intval($question_id)));
-        $answers = array();
-        if ( is_serialized($question->answer_array) && is_array(@unserialize($question->answer_array)) ) {
-            $answers = @unserialize($question->answer_array);
-        } else {
+        $answers = maybe_unserialize( $question->answer_array );
+        if ( empty( $answers ) || ! is_array( $answers ) ) {
             $mlw_answer_array_correct = array( 0, 0, 0, 0, 0, 0 );
             $mlw_answer_array_correct[ $question->correct_answer - 1 ] = 1;
             $answers = array(
@@ -473,12 +471,10 @@ class QMNPluginHelper
      */
     public function get_question_setting( $question_id, $setting ) {
         global $wpdb;
-        $qmn_settings_array = '';
         $settings = $wpdb->get_var($wpdb->prepare("SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", $question_id));
-        if ( is_serialized($settings) && is_array(@unserialize($settings)) ) {
-            $qmn_settings_array = @unserialize($settings);
-        }
-        if ( is_array($qmn_settings_array) && isset($qmn_settings_array[ $setting ]) ) {
+        $qmn_settings_array = maybe_unserialize( $settings );
+
+        if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting ] ) ) {
             return $qmn_settings_array[ $setting ];
         } else {
             return '';
@@ -715,8 +711,8 @@ class QMNPluginHelper
 	public function convert_to_preferred_date_format( $qsm_qna_array ) {
         global $mlwQuizMasterNext;
         $quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-        $qsm_quiz_settings = unserialize($quiz_options->quiz_settings);
-        $qsm_quiz_options = unserialize($qsm_quiz_settings['quiz_options']);
+        $qsm_quiz_settings = maybe_unserialize($quiz_options->quiz_settings);
+        $qsm_quiz_options = maybe_unserialize($qsm_quiz_settings['quiz_options']);
         $qsm_global_settings = get_option( 'qsm-quiz-settings' );
         //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
         if ( isset($qsm_quiz_options['preferred_date_format']) ) {

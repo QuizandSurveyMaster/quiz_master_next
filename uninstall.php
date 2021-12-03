@@ -28,7 +28,7 @@ $qsm_tables = array(
 foreach ( $qsm_tables as $table_name ) {
 	$wpdb->query( 'DROP TABLE IF EXISTS ' . $wpdb->prefix . $table_name );
 }
- 
+
 // Taken from Easy Digital Downloads. Much better way of doing it than I was doing :)
 // Cycle through custom post type array, retreive all posts, delete each one.
 $qsm_post_types = array( 'qsm_quiz', 'qmn_log' );

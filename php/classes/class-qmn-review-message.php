@@ -30,9 +30,9 @@ class QMN_Review_Message {
 	 *
 	 * @since 5.0.0
 	 */
-	 public function add_hooks() {
-		 add_action( 'admin_init', array( $this, 'check_message_display' ) );
-	 }
+	public function add_hooks() {
+		add_action( 'admin_init', array( $this, 'check_message_display' ) );
+	}
 
 	/**
 	 * Checks if message should be displayed

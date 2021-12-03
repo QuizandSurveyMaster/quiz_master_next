@@ -305,7 +305,7 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 				}
 				// Time to complete
 				$mlw_complete_time     = '';
-				$mlw_qmn_results_array = @unserialize( $mlw_quiz_info->quiz_results );
+				$mlw_qmn_results_array = maybe_unserialize( $mlw_quiz_info->quiz_results );
 				if ( is_array( $mlw_qmn_results_array ) ) {
 						$mlw_complete_hours = floor( $mlw_qmn_results_array[0] / 3600 );
 					if ( $mlw_complete_hours > 0 ) {
@@ -665,18 +665,6 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 						$settings[ $setting_key ] = $setting_value;
 					}
 				}
-								/*
-								 Old code
-				$settings = array(
-					'required' => $request['required'],
-										'autofill' => $request['autofill'],
-										'limit_text' => $request['limit_text'],
-										'limit_multiple_response' => $request['limit_multiple_response'],
-										'file_upload_limit' => $request['file_upload_limit'],
-										'file_upload_type' => $request['file_upload_type'],
-										'question_title' => $request['question_title'],
-										'answerEditor' => $request['answerEditor'],
-				); */
 				$intial_answers = $request['answers'];
 				$answers        = array();
 				if ( is_array( $intial_answers ) ) {

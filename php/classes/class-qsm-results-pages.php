@@ -192,11 +192,10 @@ class QSM_Results_Pages {
 
 		global $wpdb;
 		$results = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		$results = maybe_unserialize( $results );
 
 		// Checks if the results is an array.
-		if ( is_serialized( $results ) && is_array( maybe_unserialize( $results ) ) ) {
-			$results = maybe_unserialize( $results );
-
+		if ( is_array( $results ) ) {
 			// Checks if the results array is not the newer version.
 			if ( ! empty( $results ) && ! isset( $results[0]['conditions'] ) ) {
 				$pages = QSM_Results_Pages::convert_to_new_system( $quiz_id );

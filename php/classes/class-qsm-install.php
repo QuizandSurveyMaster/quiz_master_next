@@ -1421,11 +1421,11 @@ class QSM_Install {
 
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->register_quiz_post_types();
-		  // Will be removed
-		  // Create a folder in upload folder
-		  $upload     = wp_upload_dir();
-		  $upload_dir = $upload['basedir'];
-		  $upload_dir = $upload_dir . '/qsm_themes';
+		// Will be removed
+		// Create a folder in upload folder
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/qsm_themes';
 		if ( ! is_dir( $upload_dir ) ) {
 			mkdir( $upload_dir, 0700 );
 		}

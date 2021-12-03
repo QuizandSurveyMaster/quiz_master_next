@@ -71,10 +71,6 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Pagination.
 	$paged = filter_input( INPUT_GET, 'paged' ) ? absint( filter_input( INPUT_GET, 'paged' ) ) : 1;
-	/*
-	 //Not required already checked above as integer.(AA)
-	if (!is_numeric($paged))
-		$paged = 1;*/
 	$limit = 10; // number of rows in page.
 
 	$current_user  = get_current_user_id();
@@ -163,7 +159,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Load quiz posts.
 	$post_to_quiz_array = array();
-	 // Query for post
+	// Query for post
 	$post_arr = array(
 		'post_type'      => 'qsm_quiz',
 		'paged'          => $paged,
@@ -171,7 +167,6 @@ function qsm_generate_quizzes_surveys_page() {
 		'post_status'    => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private' ),
 	);
 	$my_query = new WP_Query( $post_arr );
-
 	if ( $my_query->have_posts() ) {
 		while ( $my_query->have_posts() ) {
 			$my_query->the_post();
@@ -214,7 +209,6 @@ function qsm_generate_quizzes_surveys_page() {
 			'link'                 => $post_to_quiz_array[ $quiz->quiz_id ]['link'],
 			'postID'               => $post_to_quiz_array[ $quiz->quiz_id ]['id'],
 			'views'                => $quiz->quiz_views,
-			/*'taken' => $quiz->quiz_taken,*/
 			'taken'                => $quiz_results_count,
 			'lastActivity'         => $activity_date,
 			'lastActivityDateTime' => $activity_date . ' ' . $activity_time,
@@ -384,18 +378,11 @@ function qsm_generate_quizzes_surveys_page() {
 								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo esc_html( $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : '' ); ?></strong>
 								</a>
 								<div class="row-actions">
-									<a class="qsm-action-link"
-									   href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a>
-									|
-									<a class="qsm-action-link qsm-action-link-duplicate"
-										href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
-									<a class="qsm-action-link qsm-action-link-delete"
-										href="#"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
-									<a class="qsm-action-link"
-									   href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a>
-									|
-									<a class="qsm-action-link" target="_blank" rel="noopener"
-									   href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></a>
+									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> | 
+									<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
+									<a class="qsm-action-link qsm-action-link-delete" href="#"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
+									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> | 
+									<a class="qsm-action-link" target="_blank" rel="noopener" href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></a>
 								</div>
 							</td>
 							<td>

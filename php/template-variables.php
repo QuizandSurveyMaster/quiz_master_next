@@ -957,14 +957,12 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$quiz_system = isset( $mlw_quiz_array['quiz_system'] ) ? $mlw_quiz_array['quiz_system'] : 0;
 		if ( isset( $answer['id'] ) && isset( $questions[ $answer['id'] ] ) && ! empty( $questions[ $answer['id'] ] ) ) {
 			$total_answers = isset( $questions[ $answer['id'] ]['answers'] ) ? $questions[ $answer['id'] ]['answers'] : array();
-
-			 $qsm_random_quetion_answer = get_post_meta($answer['id'],'qsm_random_quetion_answer',true);
-			 if ( ! empty($qsm_random_quetion_answer) ) {
-			 	$total_answers = $qsm_random_quetion_answer;
-			 	// No longer Need This Value
-			 	delete_post_meta( $answer['id'], 'qsm_random_quetion_answer');
-			 }
-
+			$qsm_random_quetion_answer = get_post_meta($answer['id'],'qsm_random_quetion_answer',true);
+			if ( ! empty($qsm_random_quetion_answer) ) {
+				$total_answers = $qsm_random_quetion_answer;
+				// No longer Need This Value
+				delete_post_meta( $answer['id'], 'qsm_random_quetion_answer');
+			}
 			if ( $total_answers ) {
 				if ( isset( $answer['question_type'] ) && in_array( $answer['question_type'], $show_two_option_questions ) ) {
 					$do_show_wrong = true;
@@ -1388,7 +1386,7 @@ function qmn_sanitize_input_data( $data, $strip = false ) {
 	if ( $strip ) {
 		$data = stripslashes( $data );
 	}
-	return unserialize( $data );
+	return maybe_unserialize( $data );
 }
 
 /**

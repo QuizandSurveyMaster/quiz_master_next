@@ -120,7 +120,7 @@ function qsm_data_exporter( $email, $page = 1 ) {
 
 		// Prepares our results array.
 		if ( is_serialized( $result->quiz_results ) ) {
-			$results_array = @unserialize( $result->quiz_results );
+			$results_array = maybe_unserialize( $result->quiz_results );
 			if ( is_array( $results_array ) ) {
 				if ( ! isset( $results['contact'] ) ) {
 					$results['contact'] = array();
