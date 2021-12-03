@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 6.0.2
  */
 function qsm_settings_style_tab() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Style', 'quiz-master-next' ), 'qsm_options_styling_tab_content' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_style_tab', 5 );
@@ -79,7 +79,7 @@ function qsm_options_styling_tab_content() {
 </div>
 <div id="qsm_themes" class="quiz_style_tab_content">
 	<?php
-  if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
+	if ( isset( $_POST['quiz_theme_integration_nouce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['quiz_theme_integration_nouce'] ) ), 'quiz_theme_integration' ) ) {
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['quiz_id'] ) ) : '';
 		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) ) : '';
 
@@ -310,7 +310,7 @@ function qsm_register_theme_Setting_submenu_page() {
 }
 
 function qsm_display_theme_settings() {
-	 global $mlwQuizMasterNext, $wpdb;
+	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
   

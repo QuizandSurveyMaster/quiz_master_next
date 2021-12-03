@@ -315,7 +315,7 @@ add_action( 'plugins_loaded', 'qsm_featured_addons_tab' );
  * Display get a free addon page
  */
 function qsm_display_optin_page() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	?>
 <div class="wrap about-wrap">
 

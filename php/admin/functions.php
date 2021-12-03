@@ -923,29 +923,27 @@ function qsm_get_market_themes() {
 			$theme_screenshot = $theme['img'];
 			$theme_demo       = $theme['demo'];
 			?>
-<div class="theme-wrapper theme market-theme">
-	<div class="theme-screenshot" id="qsm-theme-screenshot">
-		<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
-		<div class="market-theme-url">
-			<a class="button button-primary" target="_blank" rel="noopener"
-			   href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
-			<a class="button" target="_blank" rel="noopener"
-				href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
-		</div>
-	</div>
-	<div class="theme-id-container">
-		<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
-	</div>
-</div>
-<?php
+			<div class="theme-wrapper theme market-theme">
+				<div class="theme-screenshot" id="qsm-theme-screenshot">
+					<img alt="" src="<?php echo esc_url( $theme_screenshot ); ?>" />
+					<div class="market-theme-url">
+						<a class="button button-primary" target="_blank" rel="noopener"	href="<?php echo esc_url( $theme_demo ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Live Preview', 'quiz-master-next' ); ?></a>
+						<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( $theme_url ); ?>?utm_source=plugin&utm_medium=wizard"><?php esc_html_e( 'Buy Now', 'quiz-master-next' ); ?></a>
+					</div>
+				</div>
+				<div class="theme-id-container">
+					<h2 class="theme-name" id="emarket-name"><?php echo esc_url( $theme_name ); ?></h2>
+				</div>
+			</div>
+			<?php
 		}
 	} else {
 		?>
-<div class="empty-market-place">
-	<span class="dashicons dashicons-welcome-widgets-menus"></span><br />
-	<span class="no-themes-message"><?php esc_html_e( 'No more themes found.', 'quiz-master-next' ); ?></span>
-</div>
-<?php
+		<div class="empty-market-place">
+			<span class="dashicons dashicons-welcome-widgets-menus"></span><br />
+			<span class="no-themes-message"><?php esc_html_e( 'No more themes found.', 'quiz-master-next' ); ?></span>
+		</div>
+		<?php
 	}
 }
 

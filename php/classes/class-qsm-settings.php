@@ -10,12 +10,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class QSM_Quiz_Settings
 {
 
-  /**
-   * ID of the quiz
-   *
-   * @var int
-   * @since 5.0.0
-   */
+    /**
+     * ID of the quiz
+     *
+     * @var int
+     * @since 5.0.0
+     */
     private $quiz_id;
 
     /**
@@ -53,26 +53,6 @@ class QSM_Quiz_Settings
      * @param array $field_array An array of the components for the settings field
      */
     public function register_setting( $field_array, $section = 'quiz_options' ) {
-
-    /*
-      Example field array
-      $field_array = array(
-        'id' => 'system',
-        'label' => 'Which system is this quiz graded on?',
-        'type' => 'text',
-        'options' => array(
-          array(
-            'label' => '',
-            'value' => ''
-          )
-        ),
-        'variables' => array(
-          ''
-        ),
-        'default' => ''
-      );
-    */
-
         // Adds field to registered fields
         $this->registered_fields[ $section ][] = $field_array;
     }
@@ -85,8 +65,7 @@ class QSM_Quiz_Settings
      * @return array All the fields registered the the section provided
      */
     public function load_setting_fields( $section = 'quiz_options' ) {
-
-    // Checks if section exists in registered fields and returns it if it does
+        // Checks if section exists in registered fields and returns it if it does
         if ( isset($this->registered_fields[ $section ]) ) {
             return $this->registered_fields[ $section ];
         } else {
@@ -104,8 +83,7 @@ class QSM_Quiz_Settings
      * @return $mixed Value set for $setting or $default if setting does not exist
      */
     public function get_section_setting( $section, $setting, $default = false ) {
-
-    // Return if section or setting is empty
+        // Return if section or setting is empty
         if ( empty($section) || empty($setting) ) {
             return $default;
         }
@@ -124,11 +102,10 @@ class QSM_Quiz_Settings
         // Check if setting exists
         if ( isset($section_settings[ $setting ]) ) {
 
-      // Try to unserialize it and then return it
+        // Try to unserialize it and then return it
             return maybe_unserialize($section_settings[ $setting ]);
         } else {
-
-      // Return the default if no setting exists
+        // Return the default if no setting exists
             return $default;
         }
     }
@@ -152,7 +129,6 @@ class QSM_Quiz_Settings
         // Check if ID is not set, for backwards compatibility
         if ( ! $this->quiz_id ) {
             $quiz_id = $mlwQuizMasterNext->quizCreator->get_id();
-
             // If get_id doesn't work, return false
             if ( ! $quiz_id ) {
                 return false;
@@ -255,30 +231,30 @@ class QSM_Quiz_Settings
         return $this->save_quiz_settings($setting,$value);
     }
     /**
-       * Update setting option fdor Quiz
-       *
-       * @since 5.0.0
-       */ 
-      private function save_quiz_settings( $setting,$settingArray ) {        
-            global $mlwQuizMasterNext;
-            $serialized_value = maybe_serialize( $settingArray );
-            // Set the new value.
-            $this->settings[ $setting ] = $serialized_value;   
-            // Update the database.
-            global $wpdb;
-            $results = $wpdb->update(
-              $wpdb->prefix . 'mlw_quizzes',
-              array( 'quiz_settings' => maybe_serialize( $this->settings ) ),
-              array( 'quiz_id' => $this->quiz_id ),
-              array( '%s' ),
-              array( '%d' )
-            );
-            if ( false === $results ) {
-              $mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-              return false;
-            } else {
-              return true;
-            }
+     * Update setting option fdor Quiz
+     *
+     * @since 5.0.0
+     */ 
+    private function save_quiz_settings( $setting,$settingArray ) {        
+        global $mlwQuizMasterNext;
+        $serialized_value = maybe_serialize( $settingArray );
+        // Set the new value.
+        $this->settings[ $setting ] = $serialized_value;   
+        // Update the database.
+        global $wpdb;
+        $results = $wpdb->update(
+            $wpdb->prefix . 'mlw_quizzes',
+            array( 'quiz_settings' => maybe_serialize( $this->settings ) ),
+            array( 'quiz_id' => $this->quiz_id ),
+            array( '%s' ),
+            array( '%d' )
+        );
+        if ( false === $results ) {
+            $mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+            return false;
+        } else {
+            return true;
+        }
 
 	}
 
@@ -288,13 +264,10 @@ class QSM_Quiz_Settings
 	 * @since 5.0.0
 	 */
 	private function load_settings() {
-
 		global $wpdb;
 		$settings_array = array();
-
 		// Loads the settings from the database
 		$settings = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d", $this->quiz_id ) );
-
 		// Unserializes array
 		if ( is_array( maybe_unserialize( $settings ) ) ) {
 			$settings_array = maybe_unserialize( $settings );
@@ -307,19 +280,14 @@ class QSM_Quiz_Settings
 
 		// If some options are missing
 		if ( ! isset( $settings_array['quiz_options'] ) || ! isset( $settings_array["quiz_text"] ) || ! isset( $settings_array["quiz_leaderboards"] ) ) {
-
 			// Load the old options system
 			$quiz_options = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $this->quiz_id ) );
-
 			// If no leadboard is present
 			if ( ! isset( $settings_array["quiz_leaderboards"] ) ) {
-
 				$settings_array["quiz_leaderboards"] = maybe_serialize( array( 'template' => $quiz_options->leaderboard_template ) );
 			}
-
 			// If no options are present
 			if ( ! isset( $settings_array['quiz_options'] ) ) {
-
 				// Sets up older scheduled timeframe settings
 				if ( is_array( maybe_unserialize( $quiz_options->scheduled_timeframe ) ) ) {
 					$scheduled_timeframe = maybe_unserialize( $quiz_options->scheduled_timeframe );
@@ -329,7 +297,6 @@ class QSM_Quiz_Settings
 						'end'   => '',
 					);
 				}
-
 				// Prepares new quiz_options section's settings
 				$settings_array['quiz_options'] = maybe_serialize( array(
 					'system'                  => $quiz_options->quiz_system,
@@ -360,7 +327,6 @@ class QSM_Quiz_Settings
 
 			// If no text is present
 			if ( ! isset( $settings_array["quiz_text"] ) ) {
-
 				// Sets up older pagination text
 				if ( is_array( maybe_unserialize( $quiz_options->pagination_text ) ) ) {
 					$pagination_text = maybe_unserialize( $quiz_options->pagination_text );
@@ -370,7 +336,6 @@ class QSM_Quiz_Settings
 						__( 'Next', 'quiz-master-next' ),
 					);
 				}
-
 				// Sets up older social sharing text
 				if ( is_array( maybe_unserialize( $quiz_options->social_media_text ) ) ) {
 					$social_media_text = maybe_unserialize( $quiz_options->social_media_text );
@@ -380,7 +345,6 @@ class QSM_Quiz_Settings
 						'facebook' => $quiz_options->social_media_text,
 					);
 				}
-
 				// Prepares new quiz_text section's settings
 				$settings_array["quiz_text"] = maybe_serialize( array(
 					'message_before'           => $quiz_options->message_before,
@@ -403,36 +367,28 @@ class QSM_Quiz_Settings
 					'scheduled_timeframe_text' => $quiz_options->scheduled_timeframe_text,
 				) );
 			}
-
 			// Update new settings system
 			$results             = $wpdb->update(
 				$wpdb->prefix . "mlw_quizzes", array( 'quiz_settings' => maybe_serialize( $settings_array ) ), array( 'quiz_id' => $this->quiz_id ), array( '%s' ), array( '%d' )
 			);
 		}
-
 		// Cycle through registered settings
 		$registered_fields = $this->registered_fields;
 		foreach ( $registered_fields as $section => $fields ) {
-
 			// Check if section exists in settings and, if not, set it to empty array
 			if ( ! isset( $settings_array[ $section ] ) ) {
 				$settings_array[ $section ] = array();
 			}
-
 			$unserialized_section = maybe_unserialize( $settings_array[ $section ] );
-
 			// Cycle through each setting in section
 			foreach ( $fields as $field ) {
-
 				// Check if setting exists in section settings and, if not, set it to the default
 				if ( ! isset( $unserialized_section[ $field["id"] ] ) ) {
 					$unserialized_section[ $field["id"] ] = $field["default"];
 				}
 			}
-
 			$settings_array[ $section ] = maybe_serialize( $unserialized_section );
 		}
-
 		$this->settings = $settings_array;
 	}
 
