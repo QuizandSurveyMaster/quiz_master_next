@@ -7,3 +7,4 @@ chromedriver
 php/classes/composer.json
 .DS_Store
 .vscode
+phpcs.xml

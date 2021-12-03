@@ -50,7 +50,7 @@ function qsm_generate_quizzes_surveys_page() {
 			array(
 				'quiz_views'    => 0,
 				'quiz_taken'    => 0,
-				'last_activity' => date( 'Y-m-d H:i:s' ),
+				'last_activity' => gmdate( 'Y-m-d H:i:s' ),
 			),
 			array( 'quiz_id' => $quiz_id ),
 			array(
@@ -200,8 +200,8 @@ function qsm_generate_quizzes_surveys_page() {
 
 		$quiz_results_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(result_id) FROM {$wpdb->prefix}mlw_results WHERE `deleted`= 0 AND `quiz_id`= %d", $quiz->quiz_id ) );
 
-		$activity_date = date_i18n( get_option( 'date_format' ), strtotime( $quiz->last_activity ) );
-		$activity_time = date( 'h:i:s A', strtotime( $quiz->last_activity ) );
+		$activity_date = gmdate( get_option( 'date_format' ), strtotime( $quiz->last_activity ) );
+		$activity_time = gmdate( 'h:i:s A', strtotime( $quiz->last_activity ) );
 
 		$quiz_json_array[] = array(
 			'id'                   => $quiz->quiz_id,
