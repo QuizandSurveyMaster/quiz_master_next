@@ -19,8 +19,8 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 		$atts
 	);
 
-	$id	 	= intval( $args['id'] );
-	$class 	= $args['class'];
+	$id	= intval( $args['id'] );
+	$class = $args['class'];
 	$target = $args['target'];
 
 	// Find the permalink by finding the post with the meta_key 'quiz_id' of supplied quiz
