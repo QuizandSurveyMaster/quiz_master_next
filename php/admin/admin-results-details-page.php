@@ -245,7 +245,7 @@ function qsm_generate_results_details_tab() {
             $template .= '</div>';
             $template .= '</div>';
         } else {
-            $template = 'Data is missing.';
+            $template = __( 'Data is missing.', 'quiz-master-next' );
         }
     } else {
         //Old template design
