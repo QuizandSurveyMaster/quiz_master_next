@@ -952,12 +952,12 @@ function qsm_get_market_themes() {
  *
  * @since 7.3.5
  */
-function qsm_sanitize_rec_array( $array ) {
+function qsm_sanitize_rec_array( $array, $textarea = false ) {
 	foreach ( (array) $array as $key => $value ) {
 		if ( is_array( $value ) ) {
 			$array[ $key ] = qsm_sanitize_rec_array( $value );
 		} else {
-			$array[ $key ] = sanitize_text_field( $value );
+			$array[ $key ] = $textarea ? sanitize_textarea_field( $value ) : sanitize_text_field( $value );
 		}
 	}
    	return $array;

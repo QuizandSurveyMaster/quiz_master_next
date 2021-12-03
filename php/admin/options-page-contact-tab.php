@@ -63,7 +63,7 @@ function qsm_contact_form_admin_ajax() {
 
 	$results = $data = array();
 	if ( isset( $_POST['contact_form'] ) ) {
-		$data = wp_unslash( $_POST['contact_form'] );
+		$data = qsm_sanitize_rec_array( wp_unslash( $_POST['contact_form'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
 
 	// Sends posted form data to Contact Manager to sanitize and save.
