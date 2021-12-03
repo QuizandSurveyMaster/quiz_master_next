@@ -123,7 +123,7 @@ class QMNQuizManager {
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
 			$file_name   = str_replace( ' ', '-', $file_name );
-			$rawBaseName = 'qsmfileupload_' . md5( gmdate( 'Y-m-d H:i:s' ) ) . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
+			$rawBaseName = 'qsmfileupload_' . uniqid() . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
 			$new_fname   = $rawBaseName . '.' . $extension;
 			$file        = $upload_dir['path'] . '/' . $new_fname;
 			$file_url    = $upload_dir['url'] . '/' . $new_fname;
@@ -1424,7 +1424,7 @@ class QMNQuizManager {
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$unique_id  = md5( gmdate( 'Y-m-d H:i:s' ) );
+			$unique_id  = uniqid();
 			$results_id = 0;
 			// If the store responses in database option is set to Yes.
 			if ( 0 != $qmn_quiz_options->store_responses ) {
