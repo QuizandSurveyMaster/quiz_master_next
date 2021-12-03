@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 6.0.2
  */
 function qsm_settings_style_tab() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Style', 'quiz-master-next' ), 'qsm_options_styling_tab_content' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_style_tab', 5 );
@@ -310,7 +310,7 @@ function qsm_register_theme_Setting_submenu_page() {
 }
 
 function qsm_display_theme_settings() {
-	 global $mlwQuizMasterNext, $wpdb;
+	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
   

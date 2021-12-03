@@ -225,7 +225,7 @@ add_action( 'plugins_loaded', 'qmn_question_type_date' );
  * @since 6.3.7
  */
 function qmn_question_type_date() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Date', 'quiz-master-next' ), 'qmn_date_display', true, 'qmn_date_review', null, null, 12 );
 }
 
@@ -990,7 +990,7 @@ add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' )
  * @since 4.4.0
  */
 function qmn_question_type_horizontal_multiple_response() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Horizontal Multiple Response', 'quiz-master-next' ), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', null, null, 10 );
 }
 

@@ -412,7 +412,7 @@ class QMNPluginHelper
                     $categories = QSM_Questions::get_question_categories( $question_id );
                     if ( ! empty($categories['category_name']) ) {
                         $cat_name = implode( ',' ,$categories['category_name'] );
-                       ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
+                        ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
                     }
                 }
                 call_user_func($type['display'], intval($question_id), $question->question_name, $answers);

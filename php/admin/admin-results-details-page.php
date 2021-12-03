@@ -21,31 +21,31 @@ function qsm_generate_result_details() {
 		.qmn_question_answer b {font-size: 18px;margin-bottom: 0;display: block;}
 		.qmn_question_answer {margin-bottom: 30px;font-size: 16px;line-height: 1.5;}
 	</style>
-<div class="wrap">
-	<h2 style="display: none;"><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
-	<h2 class="nav-tab-wrapper">
-	<?php
-    foreach ( $tab_array as $tab ) {
-        $active_class = '';
-        if ( $active_tab == $tab['slug'] ) {
-            $active_class = ' nav-tab-active';
+    <div class="wrap">
+        <h2 style="display: none;"><?php esc_html_e('Quiz Results', 'quiz-master-next'); ?></h2>
+        <h2 class="nav-tab-wrapper">
+        <?php
+        foreach ( $tab_array as $tab ) {
+            $active_class = '';
+            if ( $active_tab == $tab['slug'] ) {
+                $active_class = ' nav-tab-active';
+            }
+            $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
+            echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $result_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
         }
-        $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
-        echo '<a href="?page=qsm_quiz_result_details&result_id="' . esc_attr( $result_id ) . '"&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
-    }
-    ?>
-</h2>
-<div class="result-tab-content">
+        ?>
+        </h2>
+        <div class="result-tab-content">
+            <?php
+            foreach ( $tab_array as $tab ) {
+                if ( $active_tab == $tab['slug'] ) {
+                    call_user_func( $tab['function'] );
+                }
+            }
+            ?>
+        </div>
+    </div>
     <?php
-    foreach ( $tab_array as $tab ) {
-        if ( $active_tab == $tab['slug'] ) {
-            call_user_func( $tab['function'] );
-        }
-    }
-    ?>
-</div>
-</div>
-<?php
 }
 
 
