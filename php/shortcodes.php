@@ -19,7 +19,7 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 		$atts
 	);
 
-	$id	= intval( $args['id'] );
+	$id = intval( $args['id'] );
 	$class = $args['class'];
 	$target = $args['target'];
 

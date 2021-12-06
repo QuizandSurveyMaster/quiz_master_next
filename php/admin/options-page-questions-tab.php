@@ -869,7 +869,7 @@ function qsm_dashboard_delete_result() {
  * @since 7.1.3
  */
 function qsm_delete_question_question_bank() {
-	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_question_bank_nonce' ) ) {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_question_bank_nonce' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
@@ -881,7 +881,7 @@ function qsm_delete_question_question_bank() {
 		);
 		wp_die();
 	}
-	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_textarea_field( wp_unslash( $_POST['question_ids'] ) ) : '';
+	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
 	$response     = array();
 	if ( $question_arr ) {
@@ -918,7 +918,7 @@ add_action( 'wp_ajax_qsm_delete_question_question_bank', 'qsm_delete_question_qu
  * @since 7.1.11
  */
 function qsm_delete_question_from_database() {
-	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_textarea_field( wp_unslash( $_REQUEST['nonce'] ) ), 'delete_question_from_database' ) ) {
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'delete_question_from_database' ) ) {
 		echo wp_json_encode(
 			array(
 				'success' => false,
