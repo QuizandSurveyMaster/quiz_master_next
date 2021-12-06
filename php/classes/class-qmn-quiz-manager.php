@@ -806,11 +806,6 @@ class QMNQuizManager {
 		$animation_effect       = isset( $options->quiz_animation ) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && $options->enable_pagination_quiz == 1 ? true : false;
 		
-		//repeated htmls
-		$div_hint_open  = '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">';
-		$span_tooltip   = '<span class="qsm_tooltiptext">';
-		$close_span_div = '</span></div>';
-		
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
@@ -884,7 +879,7 @@ class QMNQuizManager {
 						<?php }
 							// Checks if a hint is entered.
 						if ( ! empty( $question['hints'] ) ) {
-							echo $div_hint_open . wp_kses_post( $options->hint_text ) . $span_tooltip . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . $close_span_div;
+							echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . wp_kses_post( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '',  htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 						}
 						?>
 					</div>
@@ -950,7 +945,7 @@ class QMNQuizManager {
 								<?php }
 									// Checks if a hint is entered.
 								if ( ! empty( $question['hints'] ) ) {
-									echo $div_hint_open . wp_kses_post( $options->hint_text ) . $span_tooltip . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . $close_span_div;
+									echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . wp_kses_post( $options->hint_text ) . '<span class="qsm_tooltiptext">' . preg_replace( '#<script(.*?)>(.*?)</script>#is', '', htmlspecialchars_decode( $question['hints'], ENT_QUOTES ) ) . '</span></div>';
 								}
 							?>
 						</div>
