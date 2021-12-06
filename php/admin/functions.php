@@ -528,7 +528,7 @@ function qsm_create_new_quiz_wizard() {
 							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
-								$key              = array_search( $key, array_column( $all_settings, 'id' ) );
+								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
 								$field            = $all_settings[ $key ];
 								$field['label']   = $single_setting['option_name'];
 								$field['default'] = $single_setting['value'];
@@ -859,14 +859,14 @@ function qsm_get_default_wizard_themes() {
 	$keys_to_unset       = array();
 	if ( ! empty( $themes_data ) ) {
 		foreach ( $default_themes as $theme ) {
-			$key = array_search( $theme, array_column( $installed_themes, 'theme_name' ) );
+			$key = array_search( $theme, array_column( $installed_themes, 'theme_name' ), true );
 			if ( $key !== false ) { // installed themes to be removed
-				$key_to_unset = array_search( $theme, array_column( $themes_data, 'name' ) );
+				$key_to_unset = array_search( $theme, array_column( $themes_data, 'name' ), true );
 				if ( $key_to_unset !== false ) {
 					$keys_to_unset[] = $key_to_unset;
 				}
 			} else {
-				$key_to_move = array_search( $theme, array_column( $themes_data, 'name' ) );
+				$key_to_move = array_search( $theme, array_column( $themes_data, 'name' ), true );
 				if ( $key_to_move !== false ) {
 					array_push( $default_themes_data, $themes_data[ $key_to_move ] );
 					// $keys_to_unset[] = $key_to_move;
@@ -874,7 +874,7 @@ function qsm_get_default_wizard_themes() {
 			}
 		}
 		foreach ( $installed_themes as $theme ) {
-			$key = array_search( $theme['theme_name'], array_column( $themes_data, 'name' ) );
+			$key = array_search( $theme['theme_name'], array_column( $themes_data, 'name' ), true );
 			if ( $key !== false ) { // installed themes to be removed
 				$keys_to_unset[] = $key;
 			}

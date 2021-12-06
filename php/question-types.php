@@ -1211,7 +1211,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		$total_option = sizeof($answers);
 		if ( $total_user_input < $total_option ) {
 			foreach ( $user_input as $k => $input ) {
-				$key = array_search( $input, $answers_array );
+				$key = array_search( $input, $answers_array, true );
 				if ( $key !== false ) {
 					$return_array['points'] += $answers[ $key ][1];
 				} else {
@@ -1221,7 +1221,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 			}
 		} else {
 			foreach ( $answers_array as $k => $answer ) {
-				$key = array_search( $answer, $user_input );
+				$key = array_search( $answer, $user_input, true );
 				if ( $key !== false ) {
 					$return_array['points'] += $answers[ $k ][1];
 				} else {
@@ -1310,7 +1310,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 		<div class='right-polar-title'><?php echo esc_html($answers[1][0]); ?></div>
 	</span>
 	<?php
-	
+
 }
 
 /**

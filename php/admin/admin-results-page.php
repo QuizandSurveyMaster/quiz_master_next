@@ -84,7 +84,7 @@ function qsm_results_overview_tab_content() {
 
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
-    
+
 		$mlw_delete_results_id   = isset( $_POST['result_id'] ) ? intval( $_POST['result_id'] ) : 0;
 		$mlw_delete_results_name = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 		do_action('qsm_before_delete_result' , $mlw_delete_results_id);
@@ -117,7 +117,7 @@ function qsm_results_overview_tab_content() {
 
 	// Check if bulk delete has been selected. If so, verify nonce.
 	if ( isset( $_POST["bulk_delete"], $_POST['bulk_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['bulk_delete_nonce'] ) ), 'bulk_delete' ) ) {
-		
+
   		// Ensure the POST variable is an array
 		if ( isset( $_POST["delete_results"] ) && is_array( $_POST["delete_results"] ) ) {
 			$delete_results = array_map( 'sanitize_text_field', wp_unslash( $_POST["delete_results"] ) );
@@ -399,7 +399,7 @@ function qsm_results_overview_tab_content() {
 			}
 
 			foreach ( $values as $k => $v ) {
-				if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip' ] ) ) {
+				if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip' ], true ) ) {
 					$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 					if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
 						$values[ $k ]['content'][] = $content;

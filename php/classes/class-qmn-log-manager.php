@@ -79,7 +79,7 @@ class QMN_Log_Manager
 	 * @return bool True if the type is available
 	 */
 	private function valid_type( $type ) {
-		return in_array( $type, $this->log_types() );
+		return in_array( $type, $this->log_types(), true );
 	}
 
 	/**

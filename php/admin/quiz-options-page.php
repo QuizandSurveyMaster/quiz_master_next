@@ -26,7 +26,7 @@ function qsm_generate_quiz_options() {
 
 	//Check user capability
 	$user = wp_get_current_user();
-	if ( in_array( 'author', (array) $user->roles ) ) {
+	if ( in_array( 'author', (array) $user->roles, true ) ) {
 		$user_id         = sanitize_text_field( $user->ID );
 		$quiz_id         = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 		$quiz_author_id  = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_author_id FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d AND quiz_author_id=%d LIMIT 1", $quiz_id, $user_id ) );
