@@ -865,14 +865,14 @@ class QMNQuizManager {
 				foreach ( $pages[0] as $question_id ) {
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
-					$categor_class   = '';
+					$category_class   = '';
 					if ( ! empty( $question['multicategories'] ) ) {
 						foreach ( $question['multicategories'] as $cat ) {
-							$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+							$category_class .= ' category-section-id-c' . esc_attr( $cat );
 						}
 					}
 					?>
-					<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
+					<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($category_class);?>'
 						data-qid="<?php echo esc_attr($question_id); ?>">
 						<?php
 						$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
@@ -931,14 +931,14 @@ class QMNQuizManager {
 					foreach ( $page as $question_id ) {
 						$question_list .= $question_id . 'Q';
 						$question       = $questions[ $question_id ];
-						$categor_class   = '';
+						$category_class   = '';
 						if ( ! empty( $question['multicategories'] ) ) {
 							foreach ( $question['multicategories'] as $cat ) {
-								$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+								$category_class .= ' category-section-id-c' . esc_attr( $cat );
 							}
 						}
 						?>
-						<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
+						<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($category_class);?>'
 							data-qid='<?php echo esc_attr($question_id); ?>'>
 							<?php
 								$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
@@ -1104,17 +1104,17 @@ class QMNQuizManager {
 				}
 				echo apply_filters( 'qsm_auto_page_begin_row', '', ( $current_page_number - 1 ), $qmn_quiz_options, $qmn_quiz_questions );
 			}
-			$categor_class   = '';
+			$category_class   = '';
 			$multicategories = QSM_Questions::get_question_categories($mlw_question->question_id);
 			$question_categories = isset($multicategories['category_tree']) && ! empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
 			if ( ! empty( $question_categories ) ) {
 				foreach ( $question_categories as $cat ) {
-					$categor_class .= ' category-section-id-c' . esc_attr( $cat );
+					$category_class .= ' category-section-id-c' . esc_attr( $cat );
 				}
 			}
 
 			$question_id_list .= $mlw_question->question_id . 'Q';
-			?><div class="quiz_section qsm-question-wrapper <?php echo esc_attr($animation_effect); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count.' '.$categor_class ); ?>"><?php
+			?><div class="quiz_section qsm-question-wrapper <?php echo esc_attr($animation_effect); ?> question-section-id-<?php echo esc_attr( $mlw_question->question_id ); ?> slide<?php echo esc_attr( $mlw_qmn_section_count.' '.$category_class ); ?>"><?php
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 
 				if ( 0 == $mlw_question->comments ) {
