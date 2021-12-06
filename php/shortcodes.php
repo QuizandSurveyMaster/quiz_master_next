@@ -70,8 +70,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 	global $wpdb;
 	wp_enqueue_style( 'quizzes-list', QSM_PLUGIN_CSS_URL.'/quizzes-list.css', array(), $mlwQuizMasterNext->version );
 
-	$query   = "SELECT quiz_id, quiz_name, quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE deleted=0 ORDER BY  quiz_id DESC";
-	$quizzes = $wpdb->get_results( $query );
+	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, 'quiz_id', 'DESC' );
 	$result  = '<div class="outer-con">';
 	$i       = 0;
 	foreach ( $quizzes as $quiz ) {
