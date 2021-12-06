@@ -21,18 +21,27 @@ function qsm_generate_about_page() {
 	if ( ! current_user_can( 'moderate_comments' ) ) {
 		return;
 	}
-	$tab_array = [['slug'=>'about', 'title'=>'About'],['slug'=>'help', 'title' => 'Help']];
-	$active_tab = isset($_GET['tab']) ? sanitize_text_field( $_GET['tab'] ) : 'about';
+	$tab_array = [
+		[
+			'slug'  => 'about',
+			'title' => 'About',
+		],
+		[
+			'slug'  => 'help',
+			'title' => 'Help',
+		],
+	];
+	$active_tab = isset($_GET['tab']) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'about';
 
 	// Creates the widgets.
 	add_meta_box( 'wpss_mrts', __( 'Need Help?', 'quiz-master-next' ), 'qsm_documentation_meta_box_content', 'meta_box_help' );
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 
-<?php if($active_tab == 'help'){?>
+<?php if ( $active_tab == 'help' ) {?>
 <div class="wrap qsm-help-page">
 	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-	<?php } elseif($active_tab == 'about') {?>
+	<?php } elseif ( $active_tab == 'about' ) {?>
 	<style>
 	div.qsm_icon_wrap {
 		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
@@ -47,9 +56,9 @@ function qsm_generate_about_page() {
 
 		<h2 class="nav-tab-wrapper">
 			<?php
-            foreach ($tab_array as $tab) {
+            foreach ( $tab_array as $tab ) {
                 $active_class = '';
-                if ($active_tab == $tab['slug']) {
+                if ( $active_tab == $tab['slug'] ) {
                     $active_class = ' nav-tab-active';
                 }
                 echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -59,7 +68,7 @@ function qsm_generate_about_page() {
 		<br />
 		<div>
 			<?php
-                if ($active_tab == 'help') {
+                if ( $active_tab == 'help' ) {
                     qsm_show_adverts();
 					?>
 			<div style="width:100%;" class="inner-sidebar1">
@@ -70,7 +79,7 @@ function qsm_generate_about_page() {
 				<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
 			</div>
 			<?php
-                } elseif($active_tab == 'about') {
+                } elseif ( $active_tab == 'about' ) {
 					?>
 			<div class="qsm-tab-content tab-3">
 				<h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors
@@ -85,7 +94,7 @@ function qsm_generate_about_page() {
 							$contributors = json_decode( wp_remote_retrieve_body( $response ) );
 						}
 					}
-					
+
 					if ( is_array( $contributors ) & ! empty( $contributors ) ) {
 						set_transient( 'qmn_contributors', $contributors, 3600 );
 						$contributor_list = '<ul class="wp-people-group">';
@@ -205,10 +214,11 @@ function qsm_get_system_info() {
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
 
+	$server_software = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 	$sys_info .= '<h3>'. __('Server Information', 'quiz-master-next') .'</h3>';
 	$sys_info .= __('PHP : ', 'quiz-master-next') . PHP_VERSION . '<br />';
 	$sys_info .= __('MySQL : ', 'quiz-master-next') . $wpdb->db_version() . '<br />';
-	$sys_info .= __('Webserver : ', 'quiz-master-next') . $_SERVER['SERVER_SOFTWARE'] . '<br />';
+	$sys_info .= __('Webserver : ', 'quiz-master-next') . $server_software . '<br />';
 
 	$total_quizzes          = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_quizzes LIMIT 1" );
 	$total_active_quizzes   = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_quizzes WHERE deleted = 0 LIMIT 1" );

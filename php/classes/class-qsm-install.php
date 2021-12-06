@@ -287,7 +287,7 @@ class QSM_Install {
 				),
 			),
 			'default' => 0,
-			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz' ),
+			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -318,15 +318,15 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
 			'id'      => 'not_allow_after_expired_time',
-			'label'       => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'label'   => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
 			'type'    => 'checkbox',
 			'options' => array(
 				array(
 					'value' => 1,
 				),
 			),
-			'default' => 0,		
-			'ph_text' => __( '', 'quiz-master-next' ),
+			'default' => 0,
+			'ph_text' => '',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -715,7 +715,7 @@ class QSM_Install {
 			'id'      => 'preferred_date_format',
 			'label'   => __( 'Preferred Date Format', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => isset(get_option( 'qsm-quiz-settings' )['preferred_date_format'])? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format'),
+			'default' => isset(get_option( 'qsm-quiz-settings' )['preferred_date_format']) ? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format'),
 			'help'    => __( 'Overrides global settings for preferred date format', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
@@ -1153,7 +1153,7 @@ class QSM_Install {
 			'id'      => 'quiz_processing_message',
 			'label'   => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => __( '', 'quiz-master-next' ),
+			'default' => '',
 			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
@@ -1291,7 +1291,7 @@ class QSM_Install {
 			// enabling multiple category for fresh installation
 			$multiple_category = get_option( 'qsm_multiple_category_enabled' );
 			if ( ! $multiple_category ) {
-				add_option( 'qsm_multiple_category_enabled', date( time() ) );
+				add_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 			}
 		}
 
@@ -1422,11 +1422,11 @@ class QSM_Install {
 
 		global $mlwQuizMasterNext;
 		$mlwQuizMasterNext->register_quiz_post_types();
-		  // Will be removed
-		  // Create a folder in upload folder
-		  $upload     = wp_upload_dir();
-		  $upload_dir = $upload['basedir'];
-		  $upload_dir = $upload_dir . '/qsm_themes';
+		// Will be removed
+		// Create a folder in upload folder
+		$upload     = wp_upload_dir();
+		$upload_dir = $upload['basedir'];
+		$upload_dir = $upload_dir . '/qsm_themes';
 		if ( ! is_dir( $upload_dir ) ) {
 			mkdir( $upload_dir, 0700 );
 		}
@@ -1667,7 +1667,7 @@ class QSM_Install {
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'last_activity'" ) != 'last_activity' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD last_activity DATETIME NOT NULL AFTER theme_selected';
 				$results    = $wpdb->query( $sql );
-				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", date( 'Y-m-d H:i:s' ) );
+				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET last_activity='%s'", gmdate( 'Y-m-d H:i:s' ) );
 				$results    = $wpdb->query( $update_sql );
 			}
 

@@ -1,5 +1,5 @@
 <?php
-if (!defined('ABSPATH')) {
+if ( ! defined('ABSPATH') ) {
     exit;
 }
 
@@ -77,9 +77,8 @@ class QMNPluginHelper
      * @since 4.0.0
      * @return void
      */
-    public function __construct()
-    {
-        add_action('wp_ajax_qmn_question_type_change', array($this, 'get_question_type_edit_content'));
+    public function __construct() {
+        add_action('wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ));
     }
 
     /**
@@ -88,14 +87,13 @@ class QMNPluginHelper
      * @param int $quiz_id The ID of the quiz or survey to load.
      * @return bool True or False if ID is valid.
      */
-    public function prepare_quiz($quiz_id)
-    {
+    public function prepare_quiz( $quiz_id ) {
         $quiz_id = intval($quiz_id);
 
         // Tries to load quiz name to ensure this is a valid ID.
         global $wpdb;
         $quiz_name = $wpdb->get_var($wpdb->prepare("SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id));
-        if (is_null($quiz_name)) {
+        if ( is_null($quiz_name) ) {
             return false;
         }
 
@@ -116,18 +114,17 @@ class QMNPluginHelper
      * @param int $user_id Get the quiz based on user id
      * @return array All of the quizzes as a numerical array of objects
      */
-    public function get_quizzes($include_deleted = false, $order_by = 'quiz_id', $order = 'DESC', $user_role = array(), $user_id = '', $limit = '', $offset = '', $where = '')
-    {
+    public function get_quizzes( $include_deleted = false, $order_by = 'quiz_id', $order = 'DESC', $user_role = array(), $user_id = '', $limit = '', $offset = '', $where = '' ) {
         global $wpdb;
 
         // Set order direction
         $order_direction = 'DESC';
-        if ('ASC' == $order) {
+        if ( 'ASC' == $order ) {
             $order_direction = 'ASC';
         }
 
         // Set field to sort by
-        switch ($order_by) {
+        switch ( $order_by ) {
             case 'last_activity':
                 $order_field = 'last_activity';
                 break;
@@ -151,28 +148,28 @@ class QMNPluginHelper
 
         // Should we include deleted?
         $delete = "WHERE deleted=0";
-        if ($where != '') {
+        if ( $where != '' ) {
             $delete = $delete . ' AND ' . $where;
         }
-        if ($include_deleted) {
+        if ( $include_deleted ) {
             $delete = '';
         }
         $user_str = '';
-        if (in_array('author', (array) $user_role)) {
-            if ($user_id && $delete == '') {
+        if ( in_array('author', (array) $user_role) ) {
+            if ( $user_id && $delete == '' ) {
                 $user_str = "WHERE quiz_author_id = '$user_id'";
-            } else if ($user_id && $delete !== '') {
+            } elseif ( $user_id && $delete !== '' ) {
                 $user_str = " AND quiz_author_id = '$user_id'";
             }
         }
-        if ($where != '' && $user_str != '') {
+        if ( $where != '' && $user_str != '' ) {
             $user_str = $user_str . ' AND ' . $where;
         }
         $where_str = '';
-        if ($user_str == '' && $delete === '' && $where != '') {
+        if ( $user_str == '' && $delete === '' && $where != '' ) {
             $where_str = "WHERE $where";
         }
-        if ($limit != '') {
+        if ( $limit != '' ) {
             $limit = ' limit ' . $offset . ', ' . $limit;
         }
         // Get quizzes and return them
@@ -187,8 +184,7 @@ class QMNPluginHelper
      * @since 5.0.0
      * @param array $field_array An array of the components for the settings field
      */
-    public function register_quiz_setting($field_array, $section = 'quiz_options')
-    {
+    public function register_quiz_setting( $field_array, $section = 'quiz_options' ) {
         global $mlwQuizMasterNext;
         $mlwQuizMasterNext->quiz_settings->register_setting($field_array, $section);
     }
@@ -202,8 +198,7 @@ class QMNPluginHelper
      * @param mixed $default What we need to return if no setting exists with given $setting
      * @return $mixed Value set for $setting or $default if setting does not exist
      */
-    public function get_section_setting($section, $setting, $default = false)
-    {
+    public function get_section_setting( $section, $setting, $default = false ) {
         global $mlwQuizMasterNext;
         return apply_filters('qsm_section_setting_text', $mlwQuizMasterNext->quiz_settings->get_section_setting($section, $setting, $default));
     }
@@ -216,8 +211,7 @@ class QMNPluginHelper
      * @param mixed $default What we need to return if no setting exists with given $setting
      * @return $mixed Value set for $setting or $default if setting does not exist
      */
-    public function get_quiz_setting($setting, $default = false)
-    {
+    public function get_quiz_setting( $setting, $default = false ) {
         global $mlwQuizMasterNext;
         return $mlwQuizMasterNext->quiz_settings->get_setting($setting, $default);
     }
@@ -230,8 +224,7 @@ class QMNPluginHelper
      * @param mixed $value The value that needs to be stored for the setting
      * @return bool True if successful or false if fails
      */
-    public function update_quiz_setting($setting, $value)
-    {
+    public function update_quiz_setting( $setting, $value ) {
         global $mlwQuizMasterNext;
         return $mlwQuizMasterNext->quiz_settings->update_setting($setting, $value);
     }
@@ -243,10 +236,9 @@ class QMNPluginHelper
      * @since 7.0 Added new parameter settings_fields for default setting
      * @param string $section The section that the settings were registered with
      */
-    public function generate_settings_section($section = 'quiz_options', $settings_fields = array())
-    {
+    public function generate_settings_section( $section = 'quiz_options', $settings_fields = array() ) {
         global $mlwQuizMasterNext;
-        if (empty($settings_fields)) {
+        if ( empty($settings_fields) ) {
             $settings_fields = $mlwQuizMasterNext->quiz_settings->load_setting_fields($section);
         }
         QSM_Fields::generate_section($settings_fields, $section);
@@ -259,10 +251,9 @@ class QMNPluginHelper
      * @param $name String of the name of the template
      * @param $file_path String of the path to the css file
      */
-    public function register_quiz_template($name, $file_path)
-    {
+    public function register_quiz_template( $name, $file_path ) {
         $slug = strtolower(str_replace(" ", "-", $name));
-        $this->quiz_templates[$slug] = array(
+        $this->quiz_templates[ $slug ] = array(
             "name" => $name,
             "path" => $file_path,
         );
@@ -275,12 +266,11 @@ class QMNPluginHelper
      * @param $name String of the name of the template. If left empty, will return all templates
      * @return array The array of quiz templates
      */
-    public function get_quiz_templates($slug = null)
-    {
-        if (is_null($slug)) {
+    public function get_quiz_templates( $slug = null ) {
+        if ( is_null($slug) ) {
             return $this->quiz_templates;
-        } elseif (isset($this->quiz_templates[$slug])) {
-            return $this->quiz_templates[$slug];
+        } elseif ( isset($this->quiz_templates[ $slug ]) ) {
+            return $this->quiz_templates[ $slug ];
         } else {
             return false;
         }
@@ -299,16 +289,15 @@ class QMNPluginHelper
      * @param string $slug The slug of the question type to be stored with question in database
      * @return void
      */
-    public function register_question_type($name, $display_function, $graded, $review_function = null, $edit_args = null, $save_edit_function = null, $slug = null)
-    {
-        if (is_null($slug)) {
+    public function register_question_type( $name, $display_function, $graded, $review_function = null, $edit_args = null, $save_edit_function = null, $slug = null ) {
+        if ( is_null($slug) ) {
             $slug = strtolower(str_replace(" ", "-", $name));
         } else {
             $slug = strtolower(str_replace(" ", "-", $slug));
         }
-        if (is_null($edit_args) || !is_array($edit_args)) {
+        if ( is_null($edit_args) || ! is_array($edit_args) ) {
             $validated_edit_function = array(
-                'inputs' => array(
+                'inputs'       => array(
                     'question',
                     'answer',
                     'hint',
@@ -317,29 +306,29 @@ class QMNPluginHelper
                     'category',
                     'required',
                 ),
-                'information' => '',
+                'information'  => '',
                 'extra_inputs' => array(),
-                'function' => '',
+                'function'     => '',
             );
         } else {
             $validated_edit_function = array(
-                'inputs' => $edit_args['inputs'],
-                'information' => $edit_args['information'],
+                'inputs'       => $edit_args['inputs'],
+                'information'  => $edit_args['information'],
                 'extra_inputs' => $edit_args['extra_inputs'],
-                'function' => $edit_args['function'],
+                'function'     => $edit_args['function'],
             );
         }
-        if (is_null($save_edit_function)) {
+        if ( is_null($save_edit_function) ) {
             $save_edit_function = '';
         }
         $new_type = array(
-            'name' => $name,
+            'name'    => $name,
             'display' => $display_function,
-            'review' => $review_function,
-            'graded' => $graded,
-            'edit' => $validated_edit_function,
-            'save' => $save_edit_function,
-            'slug' => $slug,
+            'review'  => $review_function,
+            'graded'  => $graded,
+            'edit'    => $validated_edit_function,
+            'save'    => $save_edit_function,
+            'slug'    => $slug,
         );
         $this->question_types[] = $new_type;
     }
@@ -352,10 +341,9 @@ class QMNPluginHelper
      * @since 4.0.0
      * @return array An array which contains the slug and name of question types that have been registered
      */
-    public function get_question_type_options()
-    {
+    public function get_question_type_options() {
         $type_array = array();
-        foreach ($this->question_types as $type) {
+        foreach ( $this->question_types as $type ) {
             $type_array[] = array(
                 'slug' => $type["slug"],
                 'name' => $type["name"],
@@ -364,11 +352,10 @@ class QMNPluginHelper
         return $type_array;
     }
 
-    public function get_question_type_edit_fields()
-    {
+    public function get_question_type_edit_fields() {
         $type_array = array();
-        foreach ($this->question_types as $type) {
-            $type_array[$type["slug"]] = $type["edit"];
+        foreach ( $this->question_types as $type ) {
+            $type_array[ $type["slug"] ] = $type["edit"];
         }
         return $type_array;
     }
@@ -384,26 +371,26 @@ class QMNPluginHelper
      * @param array $quiz_options An array of the columns of the quiz row from the database
      * @return string The HTML for the question
      */
-    public function display_question($slug, $question_id, $quiz_options)
-    {
+    public function display_question( $slug, $question_id, $quiz_options ) {
         global $wpdb;
         global $qmn_total_questions;
         $question = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", intval($question_id)));
         $answers = array();
-        if (is_serialized($question->answer_array) && is_array(maybe_unserialize($question->answer_array))) {
+        if ( is_serialized($question->answer_array) && is_array(maybe_unserialize($question->answer_array)) ) {
             $answers = maybe_unserialize($question->answer_array);
         } else {
-            $mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
-            $mlw_answer_array_correct[$question->correct_answer - 1] = 1;
+            $mlw_answer_array_correct = array( 0, 0, 0, 0, 0, 0 );
+            $mlw_answer_array_correct[ $question->correct_answer - 1 ] = 1;
             $answers = array(
-                array($question->answer_one, $question->answer_one_points, $mlw_answer_array_correct[0]),
-                array($question->answer_two, $question->answer_two_points, $mlw_answer_array_correct[1]),
-                array($question->answer_three, $question->answer_three_points, $mlw_answer_array_correct[2]),
-                array($question->answer_four, $question->answer_four_points, $mlw_answer_array_correct[3]),
-                array($question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4]),
-                array($question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5]));
+                array( $question->answer_one, $question->answer_one_points, $mlw_answer_array_correct[0] ),
+                array( $question->answer_two, $question->answer_two_points, $mlw_answer_array_correct[1] ),
+                array( $question->answer_three, $question->answer_three_points, $mlw_answer_array_correct[2] ),
+                array( $question->answer_four, $question->answer_four_points, $mlw_answer_array_correct[3] ),
+                array( $question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4] ),
+                array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
+			);
         }
-        if (2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order) {
+        if ( 2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order ) {
             shuffle($answers);
             update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
@@ -412,19 +399,20 @@ class QMNPluginHelper
 		 */
 		$answers = apply_filters('qsm_single_question_answers', $answers, $question, $quiz_options);
 
-        foreach ($this->question_types as $type) {
-            if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
-                if ($type["graded"]) {
+        foreach ( $this->question_types as $type ) {
+            if ( $type["slug"] == strtolower(str_replace(" ", "-", $slug)) ) {
+                if ( $type["graded"] ) {
                     $qmn_total_questions += 1;
-                    if ($quiz_options->question_numbering == 1) { ?>
-                        <span class='mlw_qmn_question_number'><?php esc_html_e( $qmn_total_questions ); ?></span>
+                    if ( $quiz_options->question_numbering == 1 ) { ?>
+                        <span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
                     <?php
                     }
                 }
-                if ($quiz_options->show_category_on_front ) {
+                if ( $quiz_options->show_category_on_front ) {
                     $categories = QSM_Questions::get_question_categories( $question_id );
-                    if(!empty($categories['category_name'])){
-                       ?><div class="quiz-cat"><?php esc_html_e('[' .implode(',' ,$categories['category_name']) . ']' ); ?></div><?php
+                    if ( ! empty($categories['category_name']) ) {
+                        $cat_name = implode( ',' ,$categories['category_name'] );
+                        ?><div class="quiz-cat">[<?php echo esc_html( $cat_name ); ?>]</div><?php
                     }
                 }
                 call_user_func($type['display'], intval($question_id), $question->question_name, $answers);
@@ -442,31 +430,29 @@ class QMNPluginHelper
      * @param int $question_id The id of the question
      * @return array An array of the user's score from the question
      */
-    public function display_review($slug, $question_id)
-    {
+    public function display_review( $slug, $question_id ) {
         $results_array = array();
         global $wpdb;
         $question = $wpdb->get_row($wpdb->prepare("SELECT * FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", intval($question_id)));
-        $answers = array();
-        if (is_serialized($question->answer_array) && is_array(@unserialize($question->answer_array))) {
-            $answers = @unserialize($question->answer_array);
-        } else {
-            $mlw_answer_array_correct = array(0, 0, 0, 0, 0, 0);
-            $mlw_answer_array_correct[$question->correct_answer - 1] = 1;
+        $answers = maybe_unserialize( $question->answer_array );
+        if ( empty( $answers ) || ! is_array( $answers ) ) {
+            $mlw_answer_array_correct = array( 0, 0, 0, 0, 0, 0 );
+            $mlw_answer_array_correct[ $question->correct_answer - 1 ] = 1;
             $answers = array(
-                array($question->answer_one, $question->answer_one_points, $mlw_answer_array_correct[0]),
-                array($question->answer_two, $question->answer_two_points, $mlw_answer_array_correct[1]),
-                array($question->answer_three, $question->answer_three_points, $mlw_answer_array_correct[2]),
-                array($question->answer_four, $question->answer_four_points, $mlw_answer_array_correct[3]),
-                array($question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4]),
-                array($question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5]));
+                array( $question->answer_one, $question->answer_one_points, $mlw_answer_array_correct[0] ),
+                array( $question->answer_two, $question->answer_two_points, $mlw_answer_array_correct[1] ),
+                array( $question->answer_three, $question->answer_three_points, $mlw_answer_array_correct[2] ),
+                array( $question->answer_four, $question->answer_four_points, $mlw_answer_array_correct[3] ),
+                array( $question->answer_five, $question->answer_five_points, $mlw_answer_array_correct[4] ),
+                array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
+			);
         }
-        foreach ($this->question_types as $type) {
-            if ($type["slug"] == strtolower(str_replace(" ", "-", $slug))) {
-                if (!is_null($type["review"])) {
+        foreach ( $this->question_types as $type ) {
+            if ( $type["slug"] == strtolower(str_replace(" ", "-", $slug)) ) {
+                if ( ! is_null($type["review"]) ) {
                     $results_array = call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
                 } else {
-                    $results_array = array('null_review' => true);
+                    $results_array = array( 'null_review' => true );
                 }
             }
         }
@@ -483,16 +469,13 @@ class QMNPluginHelper
      * @param string $setting The name of the setting
      * @return string The value stored for the setting
      */
-    public function get_question_setting($question_id, $setting)
-    {
+    public function get_question_setting( $question_id, $setting ) {
         global $wpdb;
-        $qmn_settings_array = '';
         $settings = $wpdb->get_var($wpdb->prepare("SELECT question_settings FROM " . $wpdb->prefix . "mlw_questions WHERE question_id=%d", $question_id));
-        if (is_serialized($settings) && is_array(@unserialize($settings))) {
-            $qmn_settings_array = @unserialize($settings);
-        }
-        if (is_array($qmn_settings_array) && isset($qmn_settings_array[$setting])) {
-            return $qmn_settings_array[$setting];
+        $qmn_settings_array = maybe_unserialize( $settings );
+
+        if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting ] ) ) {
+            return $qmn_settings_array[ $setting ];
         } else {
             return '';
         }
@@ -508,13 +491,12 @@ class QMNPluginHelper
      * @param string $function The function that displays the tab's content
      * @return void
      */
-    public function register_addon_settings_tab($title, $function)
-    {
+    public function register_addon_settings_tab( $title, $function ) {
         $slug = strtolower(str_replace(" ", "-", $title));
         $new_tab = array(
-            'title' => $title,
+            'title'    => $title,
             'function' => $function,
-            'slug' => $slug,
+            'slug'     => $slug,
         );
         $this->addon_tabs[] = $new_tab;
     }
@@ -527,8 +509,7 @@ class QMNPluginHelper
      * @since 4.0.0
      * @return array The array of registered tabs
      */
-    public function get_addon_tabs()
-    {
+    public function get_addon_tabs() {
         return $this->addon_tabs;
     }
 
@@ -542,13 +523,12 @@ class QMNPluginHelper
      * @param string $function The function that displays the tab's content
      * @return void
      */
-    public function register_stats_settings_tab($title, $function)
-    {
+    public function register_stats_settings_tab( $title, $function ) {
         $slug = strtolower(str_replace(" ", "-", $title));
         $new_tab = array(
-            'title' => $title,
+            'title'    => $title,
             'function' => $function,
-            'slug' => $slug,
+            'slug'     => $slug,
         );
         $this->stats_tabs[] = $new_tab;
     }
@@ -561,8 +541,7 @@ class QMNPluginHelper
      * @since 4.3.0
      * @return array The array of registered tabs
      */
-    public function get_stats_tabs()
-    {
+    public function get_stats_tabs() {
         return $this->stats_tabs;
     }
 
@@ -576,13 +555,12 @@ class QMNPluginHelper
      * @param string $function The function that displays the tab's content
      * @return void
      */
-    public function register_admin_results_tab($title, $function)
-    {
+    public function register_admin_results_tab( $title, $function ) {
         $slug = strtolower(str_replace(" ", "-", $title));
         $new_tab = array(
-            'title' => $title,
+            'title'    => $title,
             'function' => $function,
-            'slug' => $slug,
+            'slug'     => $slug,
         );
         $this->admin_results_tabs[] = $new_tab;
     }
@@ -595,8 +573,7 @@ class QMNPluginHelper
      * @since 5.0.0
      * @return array The array of registered tabs
      */
-    public function get_admin_results_tabs()
-    {
+    public function get_admin_results_tabs() {
         return $this->admin_results_tabs;
     }
 
@@ -610,13 +587,12 @@ class QMNPluginHelper
      * @param string $function The function that displays the tab's content
      * @return void
      */
-    public function register_results_settings_tab($title, $function)
-    {
+    public function register_results_settings_tab( $title, $function ) {
         $slug = strtolower(str_replace(" ", "-", $title));
         $new_tab = array(
-            'title' => $title,
+            'title'    => $title,
             'function' => $function,
-            'slug' => $slug,
+            'slug'     => $slug,
         );
         $this->results_tabs[] = $new_tab;
     }
@@ -629,8 +605,7 @@ class QMNPluginHelper
      * @since 4.1.0
      * @return array The array of registered tabs
      */
-    public function get_results_tabs()
-    {
+    public function get_results_tabs() {
         return $this->results_tabs;
     }
 
@@ -644,13 +619,12 @@ class QMNPluginHelper
      * @param string $function The function that displays the tab's content
      * @return void
      */
-    public function register_quiz_settings_tabs($title, $function)
-    {
+    public function register_quiz_settings_tabs( $title, $function ) {
         $slug = strtolower(str_replace(" ", "-", $title));
         $new_tab = array(
-            'title' => $title,
+            'title'    => $title,
             'function' => $function,
-            'slug' => $slug,
+            'slug'     => $slug,
         );
         $this->settings_tabs[] = $new_tab;
     }
@@ -663,8 +637,7 @@ class QMNPluginHelper
      * @since 4.0.0
      * @return array The array of registered tabs
      */
-    public function get_settings_tabs()
-    {
+    public function get_settings_tabs() {
         return apply_filters('qmn_quiz_setting_tabs' , $this->settings_tabs);
     }
 
@@ -735,22 +708,22 @@ class QMNPluginHelper
 	 * @return array $qsm_qna_array date formatted array of results for the quiz
 	 */
 
-	public function convert_to_preferred_date_format($qsm_qna_array){
+	public function convert_to_preferred_date_format( $qsm_qna_array ) {
         global $mlwQuizMasterNext;
-        $quiz_options= $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-        $qsm_quiz_settings = unserialize($quiz_options->quiz_settings);
-        $qsm_quiz_options=unserialize($qsm_quiz_settings['quiz_options']);
+        $quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+        $qsm_quiz_settings = maybe_unserialize($quiz_options->quiz_settings);
+        $qsm_quiz_options = maybe_unserialize($qsm_quiz_settings['quiz_options']);
         $qsm_global_settings = get_option( 'qsm-quiz-settings' );
         //check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
-        if (isset($qsm_quiz_options['preferred_date_format'])){
-            $preferred_date_format= $qsm_quiz_options['preferred_date_format'];
-        } elseif ( isset($qsm_global_settings['preferred_date_format']) ){
-            $preferred_date_format= isset($qsm_global_settings['preferred_date_format']);
-        }else{
-            $preferred_date_format= get_option( 'date_format');
+        if ( isset($qsm_quiz_options['preferred_date_format']) ) {
+            $preferred_date_format = $qsm_quiz_options['preferred_date_format'];
+        } elseif ( isset($qsm_global_settings['preferred_date_format']) ) {
+            $preferred_date_format = isset($qsm_global_settings['preferred_date_format']);
+        }else {
+            $preferred_date_format = get_option( 'date_format');
         }
         //filter date format
-        $GLOBALS['qsm_date_format']= apply_filters('qms_preferred_date_format', $preferred_date_format);
+        $GLOBALS['qsm_date_format'] = apply_filters('qms_preferred_date_format', $preferred_date_format);
 
         $qsm_qna_array = $this->convert_contacts_to_preferred_date_format($qsm_qna_array);
         $qsm_qna_array = $this->convert_answers_to_preferred_date_format($qsm_qna_array);
@@ -768,12 +741,12 @@ class QMNPluginHelper
 	 * @return array $qsm_qna_array date formatted array of results for the quiz
 	 */
 
-	public function convert_contacts_to_preferred_date_format($qsm_qna_array){
+	public function convert_contacts_to_preferred_date_format( $qsm_qna_array ) {
 
         $qsm_contact_array = $qsm_qna_array['contact'];
-        foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact){
-            if ("date" === $qsm_contact['type'] && null!==$GLOBALS['qsm_date_format']){
-                $qsm_qna_array['contact'][$qsm_contact_id]['value']=date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qsm_contact['value'])));
+        foreach ( $qsm_contact_array as $qsm_contact_id => $qsm_contact ) {
+            if ( "date" === $qsm_contact['type'] && null !== $GLOBALS['qsm_date_format'] ) {
+                $qsm_qna_array['contact'][ $qsm_contact_id ]['value'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qsm_contact['value'])));
             }
         }
         return $qsm_qna_array;
@@ -788,13 +761,13 @@ class QMNPluginHelper
 	 * @return array $qsm_qna_array date formatted array of results for the quiz
 	 */
 
-	public function convert_answers_to_preferred_date_format($qsm_qna_array){
+	public function convert_answers_to_preferred_date_format( $qsm_qna_array ) {
 
         $qsm_qna_list = $qsm_qna_array['question_answers_array'];
-        foreach ($qsm_qna_list as $qna_id => $qna){
-            if ("12"===$qna['question_type'] && null!==$GLOBALS['qsm_date_format']){
-                $qsm_qna_array['question_answers_array'][$qna_id]['1']= date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
-                $qsm_qna_array['question_answers_array'][$qna_id]['2']=  date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));
+        foreach ( $qsm_qna_list as $qna_id => $qna ) {
+            if ( "12" === $qna['question_type'] && null !== $GLOBALS['qsm_date_format'] ) {
+                $qsm_qna_array['question_answers_array'][ $qna_id ]['1'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['1'])));
+                $qsm_qna_array['question_answers_array'][ $qna_id ]['2'] = date_i18n( $GLOBALS['qsm_date_format'], strtotime(($qna['2'])));
             }
         }
         return $qsm_qna_array;
@@ -811,12 +784,12 @@ class QMNPluginHelper
 
 	public function convert_questions_to_preferred_date_format(){
 
-        if(!function_exists('qsm_convert_question_array_date_format')){
-            function qsm_convert_question_array_date_format($questions){
-                foreach ($questions as $question_id => $question_to_convert){
-                    if("12"=== $question_to_convert['question_type_new']){
-                        foreach ($question_to_convert['answers'] as $answer_id => $answer_value){
-                            $questions[$question_id]['answers'][$answer_id][0]= date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
+        if ( ! function_exists('qsm_convert_question_array_date_format') ) {
+            function qsm_convert_question_array_date_format( $questions ) {
+                foreach ( $questions as $question_id => $question_to_convert ) {
+                    if ( "12" === $question_to_convert['question_type_new'] ) {
+                        foreach ( $question_to_convert['answers'] as $answer_id => $answer_value ) {
+                            $questions[ $question_id ]['answers'][ $answer_id ][0] = date_i18n( $GLOBALS['qsm_date_format'], strtotime($answer_value[0]));
                         }
                     }
                 }
@@ -835,11 +808,11 @@ class QMNPluginHelper
 	 * @return array
 	 */
 
-    public function qsm_results_css_inliner($html){
+    public function qsm_results_css_inliner( $html ) {
 
-        $incorrect_answer="<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
-		$correct_answer="<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
-		$simple_answer="<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
+        $incorrect_answer = "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
+		$correct_answer = "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
+		$simple_answer = "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
 		$html = str_replace( '<br/>', '<br>', $html );
 		$html = str_replace( '<br />', '<br>', $html );
 		$html = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $html );

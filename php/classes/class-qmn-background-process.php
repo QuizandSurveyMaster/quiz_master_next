@@ -10,11 +10,11 @@
 
 defined('ABSPATH') || exit;
 
-if (!class_exists('WP_Async_Request', false)) {
+if ( ! class_exists('WP_Async_Request', false) ) {
     include_once dirname(QSM_SUBMENU) . '/php/classes/lib/wp-async-request.php';
 }
 
-if (!class_exists('WP_Background_Process', false)) {
+if ( ! class_exists('WP_Background_Process', false) ) {
     include_once dirname(QSM_SUBMENU) . '/php/classes/lib/wp-background-process.php';
 }
 
@@ -32,15 +32,15 @@ class QSM_Background_Request extends WP_Async_Request {
      * during the async request.
      */
     protected function handle() {
-        $message = sanitize_text_field( $_POST['name'] );
-        if ($message == 'send_emails') {
-            $qmn_array_for_variables = isset( $_POST['variables'] ) ? $_POST['variables'] : array();
+        $message = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
+        if ( $message == 'send_emails' ) {
+            $qmn_array_for_variables = isset( $_POST['variables'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['variables'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             try {
                 $this->really_long_running_task();
                 QSM_Emails::send_emails($qmn_array_for_variables);
-            } catch (Exception $e) {
-                if (defined('WP_DEBUG') && WP_DEBUG) {
-                    trigger_error('Background email triggered fatal error for callback.', E_USER_WARNING);
+            } catch ( Exception $e ) {
+                if ( defined('WP_DEBUG') && WP_DEBUG ) {
+                    trigger_error('Background email triggered fatal error for callback.', E_USER_WARNING); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
                 }
             }
         }

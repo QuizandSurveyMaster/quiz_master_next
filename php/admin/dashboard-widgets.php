@@ -2,15 +2,13 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* This function adds a widget to the dashboard in wordpress. 
+* This function adds a widget to the dashboard in WordPress. 
 * 
 * @return void
 * @since 4.4.0
 */
-function qmn_add_dashboard_widget()
-{
-	if ( current_user_can( 'publish_posts' ) )
-	{
+function qmn_add_dashboard_widget() {
+	if ( current_user_can( 'publish_posts' ) ) {
 		wp_add_dashboard_widget(
 			'qmn_snapshot_widget',
 			__('Quiz And Survey Master Snapshot', 'quiz-master-next'),
@@ -29,76 +27,67 @@ add_action( 'wp_dashboard_setup', 'qmn_add_dashboard_widget' );
 * @return type description
 * @since 4.4.0
 */
-function qmn_snapshot_dashboard_widget()
-{
+function qmn_snapshot_dashboard_widget() {
 	global $wpdb;
-	$mlw_qmn_today_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", date( "Y-m-d", current_time( 'timestamp' ) ), date( "Y-m-d", current_time( 'timestamp' ) ) ) );
-	$mlw_last_week =  mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
-	$mlw_last_week = date("Y-m-d", $mlw_last_week);
+	$mlw_qmn_today_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", gmdate( "Y-m-d", current_time( 'timestamp' ) ), gmdate( "Y-m-d", current_time( 'timestamp' ) ) ) );
+	$mlw_last_week = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 7, gmdate("Y"));
+	$mlw_last_week = gmdate("Y-m-d", $mlw_last_week);
 	$mlw_qmn_last_weekday_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_week, $mlw_last_week ) );
-	if ($mlw_qmn_last_weekday_taken != 0)
-	{
+	if ( $mlw_qmn_last_weekday_taken != 0 ) {
 		$mlw_qmn_analyze_today = round((($mlw_qmn_today_taken - $mlw_qmn_last_weekday_taken) / $mlw_qmn_last_weekday_taken) * 100, 2);
 	}
-	else
-	{
+	else {
 		$mlw_qmn_analyze_today = $mlw_qmn_today_taken * 100;
 	}
 
-	$mlw_this_week =  mktime(0, 0, 0, date("m")  , date("d")-6, date("Y"));
-	$mlw_this_week = date("Y-m-d", $mlw_this_week);
-	$mlw_qmn_this_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_week, date("Y-m-d") ) );
+	$mlw_this_week = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 6, gmdate("Y"));
+	$mlw_this_week = gmdate("Y-m-d", $mlw_this_week);
+	$mlw_qmn_this_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_week, gmdate("Y-m-d") ) );
 
-	$mlw_last_week_start =  mktime(0, 0, 0, date("m")  , date("d")-13, date("Y"));
-	$mlw_last_week_start = date("Y-m-d", $mlw_last_week_start);
-	$mlw_last_week_end =  mktime(0, 0, 0, date("m")  , date("d")-7, date("Y"));
-	$mlw_last_week_end = date("Y-m-d", $mlw_last_week_end);
+	$mlw_last_week_start = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 13, gmdate("Y"));
+	$mlw_last_week_start = gmdate("Y-m-d", $mlw_last_week_start);
+	$mlw_last_week_end = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 7, gmdate("Y"));
+	$mlw_last_week_end = gmdate("Y-m-d", $mlw_last_week_end);
 	$mlw_qmn_last_week_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_week_start, $mlw_last_week_end ) );
 
-	if ($mlw_qmn_last_week_taken != 0)
-	{
+	if ( $mlw_qmn_last_week_taken != 0 ) {
 		$mlw_qmn_analyze_week = round((($mlw_qmn_this_week_taken - $mlw_qmn_last_week_taken) / $mlw_qmn_last_week_taken) * 100, 2);
 	}
-	else
-	{
+	else {
 		$mlw_qmn_analyze_week = $mlw_qmn_this_week_taken * 100;
 	}
 
-	$mlw_this_month =  mktime(0, 0, 0, date("m")  , date("d")-29, date("Y"));
-	$mlw_this_month = date("Y-m-d", $mlw_this_month);
-	$mlw_qmn_this_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_month, date("Y-m-d") ) );
+	$mlw_this_month = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 29, gmdate("Y"));
+	$mlw_this_month = gmdate("Y-m-d", $mlw_this_month);
+	$mlw_qmn_this_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_month, gmdate("Y-m-d") ) );
 
-	$mlw_last_month_start =  mktime(0, 0, 0, date("m")  , date("d")-59, date("Y"));
-	$mlw_last_month_start = date("Y-m-d", $mlw_last_month_start);
-	$mlw_last_month_end =  mktime(0, 0, 0, date("m")  , date("d")-30, date("Y"));
-	$mlw_last_month_end = date("Y-m-d", $mlw_last_month_end);
+	$mlw_last_month_start = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 59, gmdate("Y"));
+	$mlw_last_month_start = gmdate("Y-m-d", $mlw_last_month_start);
+	$mlw_last_month_end = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 30, gmdate("Y"));
+	$mlw_last_month_end = gmdate("Y-m-d", $mlw_last_month_end);
 	$mlw_qmn_last_month_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_month_start, $mlw_last_month_end ) );
 
-	if ($mlw_qmn_last_month_taken != 0)
-	{
+	if ( $mlw_qmn_last_month_taken != 0 ) {
 		$mlw_qmn_analyze_month = round((($mlw_qmn_this_month_taken - $mlw_qmn_last_month_taken) / $mlw_qmn_last_month_taken) * 100, 2);
 	}
-	else
-	{
+	else {
 		$mlw_qmn_analyze_month = $mlw_qmn_this_month_taken * 100;
 	}
 
-	$mlw_this_quater =  mktime(0, 0, 0, date("m")  , date("d")-89, date("Y"));
-	$mlw_this_quater = date("Y-m-d", $mlw_this_quater);
-	$mlw_qmn_this_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_quater, date("Y-m-d") ));
+	$mlw_this_quater = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 89, gmdate("Y"));
+	$mlw_this_quater = gmdate("Y-m-d", $mlw_this_quater);
+	$mlw_qmn_this_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_this_quater, gmdate("Y-m-d") ));
 
-	$mlw_last_quater_start =  mktime(0, 0, 0, date("m")  , date("d")-179, date("Y"));
-	$mlw_last_quater_start = date("Y-m-d", $mlw_last_quater_start);
-	$mlw_last_quater_end =  mktime(0, 0, 0, date("m")  , date("d")-90, date("Y"));
-	$mlw_last_quater_end = date("Y-m-d", $mlw_last_quater_end);
+	$mlw_last_quater_start = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 179, gmdate("Y"));
+	$mlw_last_quater_start = gmdate("Y-m-d", $mlw_last_quater_start);
+	$mlw_last_quater_end = mktime(0, 0, 0, gmdate("m")  , gmdate("d") - 90, gmdate("Y"));
+	$mlw_last_quater_end = gmdate("Y-m-d", $mlw_last_quater_end);
 	$mlw_qmn_last_quater_taken = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->prefix}mlw_results WHERE (time_taken_real BETWEEN '%1s 00:00:00' AND '%2s 23:59:59') AND deleted=0", $mlw_last_quater_start, $mlw_last_quater_end ) );
 
-	if ($mlw_qmn_last_quater_taken != 0)
-	{
+	if ( $mlw_qmn_last_quater_taken != 0 ) {
 		$mlw_qmn_analyze_quater = round((($mlw_qmn_this_quater_taken - $mlw_qmn_last_quater_taken) / $mlw_qmn_last_quater_taken) * 100, 2);
 	}
-	else
-	{
+	else {
 		$mlw_qmn_analyze_quater = $mlw_qmn_this_quater_taken * 100;
 	}
 
@@ -177,16 +166,14 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_qmn_today_taken ); ?></strong>
-				<?php _e('quizzes taken today', 'quiz-master-next'); ?>
+				<?php esc_html_e('quizzes taken today', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
 					echo esc_html( $mlw_qmn_analyze_today."% " );
-					if ($mlw_qmn_analyze_today >= 0)
-					{
+					if ( $mlw_qmn_analyze_today >= 0 ) {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/green_triangle.png'/>";
 					}
-					else
-					{
+					else {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/red_triangle.png'/>";
 					}
 					?>
@@ -196,16 +183,14 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_qmn_this_week_taken ); ?></strong>
-				<?php _e('quizzes taken last 7 days', 'quiz-master-next'); ?>
+				<?php esc_html_e('quizzes taken last 7 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
 					echo esc_html( $mlw_qmn_analyze_week."% " );
-					if ($mlw_qmn_analyze_week >= 0)
-					{
+					if ( $mlw_qmn_analyze_week >= 0 ) {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/green_triangle.png'/>";
 					}
-					else
-					{
+					else {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/red_triangle.png'/>";
 					}
 					?>
@@ -215,16 +200,14 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_qmn_this_month_taken ); ?></strong>
-				<?php _e('quizzes taken last 30 days', 'quiz-master-next'); ?>
+				<?php esc_html_e('quizzes taken last 30 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
 					echo esc_html( $mlw_qmn_analyze_month."% " );
-					if ($mlw_qmn_analyze_month >= 0)
-					{
+					if ( $mlw_qmn_analyze_month >= 0 ) {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/green_triangle.png'/>";
 					}
-					else
-					{
+					else {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/red_triangle.png'/>";
 					}
 					?>
@@ -234,16 +217,14 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_full_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_qmn_this_quater_taken ); ?></strong>
-				<?php _e('quizzes taken last 120 days', 'quiz-master-next'); ?>
+				<?php esc_html_e('quizzes taken last 120 days', 'quiz-master-next'); ?>
 				<span class="qmn_dashboard_graph">
 					<?php
 					echo esc_html( $mlw_qmn_analyze_quater."% " );
-					if ($mlw_qmn_analyze_quater >= 0)
-					{
+					if ( $mlw_qmn_analyze_quater >= 0 ) {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/green_triangle.png'/>";
 					}
-					else
-					{
+					else {
 						echo "<img src='".esc_url(plugin_dir_url( __FILE__ ))."../images/red_triangle.png'/>";
 					}
 					?>
@@ -253,25 +234,25 @@ function qmn_snapshot_dashboard_widget()
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_stat_total_active_quiz ); ?></strong>
-				<?php _e('total active quizzes', 'quiz-master-next'); ?>
+				<?php esc_html_e('total active quizzes', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
 				<strong><?php echo esc_html( $mlw_stat_total_questions ); ?></strong>
-				<?php _e('total active questions', 'quiz-master-next'); ?>
+				<?php esc_html_e('total active questions', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php if (!is_null($mlw_stat_most_popular_quiz)) { echo wp_kses_post( $mlw_stat_most_popular_quiz->quiz_name); } ?></strong>
-				<?php _e('most popular quiz', 'quiz-master-next'); ?>
+				<strong><?php if ( ! is_null($mlw_stat_most_popular_quiz) ) { echo wp_kses_post( $mlw_stat_most_popular_quiz->quiz_name); } ?></strong>
+				<?php esc_html_e('most popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 		<li class="qmn_dashboard_element qmn_half_width">
 			<div class="qmn_dashboard_inside">
-				<strong><?php if (!is_null($mlw_stat_least_popular_quiz)) { echo wp_kses_post( $mlw_stat_least_popular_quiz->quiz_name ); } ?></strong>
-				<?php _e('least popular quiz', 'quiz-master-next'); ?>
+				<strong><?php if ( ! is_null($mlw_stat_least_popular_quiz) ) { echo wp_kses_post( $mlw_stat_least_popular_quiz->quiz_name ); } ?></strong>
+				<?php esc_html_e('least popular quiz', 'quiz-master-next'); ?>
 			</div>
 		</li>
 	</ul>

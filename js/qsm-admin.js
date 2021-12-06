@@ -589,6 +589,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
                     }
                 });
             },
+<<<<<<< HEAD
             deleteQuiz: function(quiz_id) {
                 $('#delete_quiz_id').val(btoa(quiz_id + 'QID'));
                 $.each(qsmQuizObject, function(i, val) {
@@ -597,6 +598,16 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
                     }
                 });
                 MicroModal.show('modal-5');
+=======
+            deleteQuiz: function (quiz_id) {
+            $('#delete_quiz_id').val(quiz_id+'QID');
+            $.each(qsmQuizObject, function (i, val) {
+                if (val.id == quiz_id) {
+                    $('#delete_quiz_name').val(val.name);
+                }
+            });
+            MicroModal.show('modal-5');
+>>>>>>> origin/dev
             },
             editQuizName: function(quiz_id) {
                 $('#edit_quiz_id').val(quiz_id);
@@ -607,9 +618,15 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
                 });
                 MicroModal.show('modal-3');
             },
+<<<<<<< HEAD
             duplicateQuiz: function(quiz_id) {
                 $('#duplicate_quiz_id').val(btoa(quiz_id + 'QID'));
                 MicroModal.show('modal-4');
+=======
+            duplicateQuiz: function (quiz_id) {
+            $('#duplicate_quiz_id').val(quiz_id+'QID');
+            MicroModal.show('modal-4');
+>>>>>>> origin/dev
             },
             /**
              * Opens the popup to reset quiz stats
@@ -1011,11 +1028,19 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
  * QSM - Contact Form
  */
 
+<<<<<<< HEAD
 
 (function($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')) {
         if (window.location.href.indexOf('tab=contact') > 0) {
             var QSMContact;
+=======
+ var QSMContact;
+ (function ($) {
+    if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
+        if (window.location.href.indexOf('tab=contact') > 0 ){
+            
+>>>>>>> origin/dev
             QSMContact = {
                 load: function() {
                     if ($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0) {
