@@ -247,7 +247,7 @@ class QMNQuizManager {
 
 		$args = shortcode_atts(
 			array(
-				'quiz' => 0,
+				'quiz'            => 0,
 				'question_amount' => 0,
 			),
 			$atts
@@ -405,7 +405,7 @@ class QMNQuizManager {
 			$atts
 		);
 
-		$id	= intval( $args['id'] );
+		$id = intval( $args['id'] );
 
 		ob_start();
 		if ( $id == 0 ) {
