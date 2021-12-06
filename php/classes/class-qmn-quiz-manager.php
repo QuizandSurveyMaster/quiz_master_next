@@ -109,7 +109,7 @@ class QMNQuizManager {
 
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
-		if ( isset( $validate_file['type'] ) && $validate_file['type'] != false && in_array( $validate_file['type'], $mimes, true ) ) {
+		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
 			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
@@ -1653,21 +1653,15 @@ class QMNQuizManager {
 
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
-								if ( in_array( intval( $question_type_new ), $result_question_types, true ) ) {
-									if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-										$points_earned += $results_array['points'] ? $results_array['points'] : 0;
-										$answer_points += $results_array['points'] ? $results_array['points'] : 0;
-									}
+								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$points_earned += $results_array['points'] ? $results_array['points'] : 0;
+									$answer_points += $results_array['points'] ? $results_array['points'] : 0;
 								}
 
 								// If the user's answer was correct
-								if ( 'correct' == $results_array['correct'] ) {
-									if ( in_array( intval( $question_type_new ), $result_question_types, true ) ) {
-										if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
-											$total_correct += 1;
-											$correct_status = 'correct';
-										}
-									}
+								if ( 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$total_correct += 1;
+									$correct_status = 'correct';
 								}
 								$user_answer       = $results_array['user_text'];
 								$correct_answer    = $results_array['correct_text'];
