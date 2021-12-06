@@ -118,9 +118,8 @@ class QMNQuizManager {
 			}
 			$upload_dir = wp_upload_dir();
 
-			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['tmp_name'] ) ) : '';
-			// $file_name = $_FILES["file"]["name"];
-			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
+			$datafile   = isset( $_FILES['file']['tmp_name'] ) ?  $_FILES['file']['tmp_name']  : '';
+			$extension 	= pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
 			$file_name   = str_replace( ' ', '-', $file_name );
 			$rawBaseName = 'qsmfileupload_' . uniqid() . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
