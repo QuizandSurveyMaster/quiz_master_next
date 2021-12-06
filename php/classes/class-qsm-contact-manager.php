@@ -317,12 +317,12 @@ class QSM_Contact_Manager {
 		if ( ! empty( $fields ) ) {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
-				$label = wp_kses( stripslashes( $fields[ $i ]['label'] ), $allowed_html );
+				$label = wp_kses( wp_unslash( $fields[ $i ]['label'] ), $allowed_html );
 				$fields[ $i ] = array(
-					'label'    => $is_not_allow_html ? sanitize_text_field( $fields[ $i ]['label'] ) : $label,
-					'use'      => sanitize_text_field( $fields[ $i ]['use'] ),
-					'type'     => sanitize_text_field( $fields[ $i ]['type'] ),
-					'required' => sanitize_text_field( $fields[ $i ]['required'] ),
+					'label'    => $is_not_allow_html ? $fields[ $i ]['label'] : $label,
+					'use'      => $fields[ $i ]['use'],
+					'type'     => $fields[ $i ]['type'],
+					'required' => $fields[ $i ]['required'],
 				);
 			}
 		}

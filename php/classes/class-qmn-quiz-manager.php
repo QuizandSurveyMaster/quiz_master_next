@@ -123,7 +123,7 @@ class QMNQuizManager {
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
 			$file_name   = str_replace( ' ', '-', $file_name );
-			$rawBaseName = 'qsmfileupload_' . md5( date( 'Y-m-d H:i:s' ) ) . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
+			$rawBaseName = 'qsmfileupload_' . uniqid() . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
 			$new_fname   = $rawBaseName . '.' . $extension;
 			$file        = $upload_dir['path'] . '/' . $new_fname;
 			$file_url    = $upload_dir['url'] . '/' . $new_fname;
@@ -827,55 +827,11 @@ class QMNQuizManager {
 						?>
 					</div>
 					<?php
-					if ( 0 == $options->contact_info_location ) {
-						echo QSM_Contact_Manager::display_fields( $options );
-					}
-					?>
-				</div>
-				<?php
-						}
-						foreach ( $pages[0] as $question_id ) {
-							$question_list .= $question_id . 'Q';
-							$question       = $questions[ $question_id ];
-							$categor_class   = '';
-							if ( ! empty( $question['multicategories'] ) ) {
-								foreach ( $question['multicategories'] as $cat ) {
-									$categor_class .= ' category-section-id-c' . esc_attr( $cat );
-								}
-							}
-							?>
-				<div class='quiz_section qsm-question-wrapper question-section-id-<?php echo esc_attr( $question_id ); ?> <?php echo esc_attr($categor_class);?>'
-					data-qid="<?php echo esc_attr($question_id); ?>">
-					<?php
-					$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
-					if ( 0 == $question['comments'] ) { ?>
-						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" />";
-					<?php }
-					if ( 2 == $question['comments'] ) { ?>
-						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" ></textarea>";
-					<?php }
-						// Checks if a hint is entered.
-					if ( ! empty( $question['hints'] ) ) {
-						echo $div_hint_open . wp_kses_post( $options->hint_text ) . $span_tooltip . wp_kses_post( $question['hints'] ) . $close_span_div;
-					}
-					?>
-				</div>
-				<?php
-						}
-						if ( 0 == $options->comment_section ) {
-							$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
-							?>
-				<div class="quiz_section quiz_begin">
-					<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data ); ?></label>
-					<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
-				</div>
-				<?php
-
-						if ( 0 == $options->contact_info_location ) {
+ 						if ( 0 == $options->contact_info_location ) {
 							echo QSM_Contact_Manager::display_fields( $options );
 						}
 						do_action('qsm_after_begin_message', $options, $quiz_data);
-						?>
+					?>
 				</div>
 			</section>
 			<?php
@@ -1424,7 +1380,7 @@ class QMNQuizManager {
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
-			$unique_id  = md5( date( 'Y-m-d H:i:s' ) );
+			$unique_id  = uniqid();
 			$results_id = 0;
 			// If the store responses in database option is set to Yes.
 			if ( 0 != $qmn_quiz_options->store_responses ) {
@@ -1458,7 +1414,7 @@ class QMNQuizManager {
 							'total'           => $qmn_array_for_variables['total_questions'],
 							'user_ip'         => $qmn_array_for_variables['user_ip'],
 							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => date( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
+							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
 							'quiz_results'    => maybe_serialize( $results_array ),
 						),
 						array( 'result_id' => $results_id )
@@ -1481,7 +1437,7 @@ class QMNQuizManager {
 							'user'            => $qmn_array_for_variables['user_id'],
 							'user_ip'         => $qmn_array_for_variables['user_ip'],
 							'time_taken'      => $qmn_array_for_variables['time_taken'],
-							'time_taken_real' => date( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
+							'time_taken_real' => gmdate( 'Y-m-d H:i:s', strtotime( $qmn_array_for_variables['time_taken'] ) ),
 							'quiz_results'    => maybe_serialize( $results_array ),
 							'deleted'         => 0,
 							'unique_id'       => $unique_id,
