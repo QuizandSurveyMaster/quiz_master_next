@@ -754,10 +754,6 @@ add_action( 'admin_page_access_denied', 'qsm_admin_page_access_func' );
 function qsm_fetch_theme_data() {
 	global $themes_data;
 	$themes_data = qsm_get_widget_data( 'themes' );
-	if ( empty( $themes_data ) ) {
-		$qsm_admin_dd = qsm_fetch_data_from_script();
-		$themes_data  = isset( $qsm_admin_dd['themes'] ) ? $qsm_admin_dd['themes'] : array();
-	}
 }
 
 function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
