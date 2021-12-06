@@ -493,7 +493,7 @@ class QMNQuizCreator {
 				}
 			}
 		} else {
-			$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize( unserialize( $update_quiz_settings['logic_rules'] ) ) : array();
+			$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? maybe_unserialize( $update_quiz_settings['logic_rules'] ) : array();
 		}
 
 		if ( false != $results ) {
@@ -638,7 +638,7 @@ class QMNQuizCreator {
 			$value_array = array();
 			if ( is_array( $logic_rules ) && ! empty( $logic_rules ) ) {
 				if ( is_null( $logic_table_exists ) ) {
-					$update_quiz_settings['logic_rules'] = serialize( serialize( $logic_rules ) );
+					$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 				} else {
 					foreach ( $logic_rules as $logic_data ) {
 						$data          = array(
@@ -655,7 +655,7 @@ class QMNQuizCreator {
 						update_option( "logic_rules_quiz_$mlw_new_id", gmdate( time() ) );
 						$update_quiz_settings['logic_rules'] = '';
 					} else {
-						$update_quiz_settings['logic_rules'] = serialize( serialize( $logic_rules ) );
+						$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 					}
 				}
 			}
