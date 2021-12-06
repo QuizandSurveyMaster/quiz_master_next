@@ -235,7 +235,7 @@ class QSM_Fields {
 				<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? wp_kses_post( $field['note'] ) : ''; ?>
 			</td>
 		</tr>
-		<?php					
+		<?php	              
 	}
 
 	/**
