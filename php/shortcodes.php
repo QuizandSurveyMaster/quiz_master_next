@@ -81,9 +81,9 @@ function qsm_display_recent_quizzes( $attrs ) {
 			$start_date = $options['scheduled_time_start'];
 			$end_date   = $options['scheduled_time_end'];
 			$today      = date( 'm/d/Y' );
-			if ( $end_date != '' && $end_date < $today ) {
+			if ( '' !== $end_date && $end_date < $today ) {
 				continue;
-			} elseif ( $include_future_quizzes == 'no' && $start_date > $today ) {
+			} elseif ( 'no' === $include_future_quizzes && $start_date > $today ) {
 				continue;
 			} else {
 				$title   = $quiz->quiz_name;
@@ -102,7 +102,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 			}
 		}
 	}
-	if ( $i == 0 ) {
+	if ( 0 === $i ) {
 		$result .= __( 'No quiz found', 'quiz-master-next' );
 	}
 	$result .= '</div>';
@@ -128,7 +128,7 @@ add_action( 'wp_enqueue_scripts', 'qsm_load_main_scripts' );
  * @global obj $wp_query
  */
 function qsm_generate_fb_header_metadata() {
-	if ( isset( $_GET['result_id'] ) && $_GET['result_id'] != '' ) {
+	if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 		$settings        = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '594986844960937';
 		if ( isset( $settings['facebook_app_id'] ) ) {
@@ -188,7 +188,7 @@ function qsm_generate_fb_header_metadata() {
 			if ( empty( $get_fb_sharing_image ) ) {
 				$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
 			}
-			if ( $get_fb_sharing_image !== '' && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
+			if ( '' !== $get_fb_sharing_image && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
 				$default_fb_image = $get_fb_sharing_image;
 			}
 			$post     = $wp_query->get_queried_object();
@@ -244,7 +244,7 @@ function qsm_get_post_id_from_quiz_id( $quiz_id ) {
 
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div', 10, 3 );
 function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
-	if ( $qmn_quiz_options->enable_result_after_timer_end == 0 ) {
+	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
@@ -260,7 +260,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 }
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div_expired_quiz', 10, 3 );
 function qsm_display_popup_div_expired_quiz( $return_display, $qmn_quiz_options ) {
-	if ( $qmn_quiz_options->enable_result_after_timer_end == 0 ) {
+	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';

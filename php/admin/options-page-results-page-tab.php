@@ -38,7 +38,7 @@ function qsm_options_results_tab_content() {
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
-	if ( $enabled && $enabled != 'cancelled' ) {
+	if ( $enabled && 'cancelled' !== $enabled ) {
 		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
 	} else {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );

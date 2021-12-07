@@ -31,7 +31,7 @@ function qsm_generate_admin_results_page() {
 			// Cycles through the tabs and creates the navigation.
 			foreach ( $tab_array as $tab ) {
 				$active_class = '';
-				if ( $active_tab == $tab['slug'] ) {
+				if ( $active_tab === $tab['slug'] ) {
 					$active_class = 'nav-tab-active';
 				}
 				$tab_url = "?page=mlw_quiz_results&tab={$tab['slug']}";
@@ -46,7 +46,7 @@ function qsm_generate_admin_results_page() {
 		<?php
 			// Locates the active tab and calls its content function.
 			foreach ( $tab_array as $tab ) {
-				if ( $active_tab == $tab['slug'] ) {
+				if ( $active_tab === $tab['slug'] ) {
 					call_user_func( $tab['function'] );
 				}
 			}
@@ -127,7 +127,7 @@ function qsm_results_overview_tab_content() {
 
 				// Santize by ensuring the value is an int
 				$result_id = intval( $result );
-				if ( isset( $_POST['bulk_permanent_delete'] ) && $_POST['bulk_permanent_delete'] == 1 ) {
+				if ( isset( $_POST['bulk_permanent_delete'] ) && "1" === $_POST['bulk_permanent_delete'] ) {
 					$wpdb->delete(
 						$wpdb->prefix . "mlw_results",
 						array( 'result_id' => $result_id )
@@ -253,7 +253,7 @@ function qsm_results_overview_tab_content() {
 						<a class="next-page button" href="<?php echo esc_url_raw( "?page=mlw_quiz_results&qsm_results_page=$result_page$url_query_string" ); ?>">></a>
 						<?php
 					}
-				} elseif ( 0 == $result_page ) {
+				} elseif ( 0 === $result_page ) {
 					if ( $results_left > $table_limit ) {
 						?>
 						<span class="paging-input"><?php echo esc_html( $mlw_current_page ); ?> of <?php echo esc_html( $mlw_total_pages ); ?></span>
@@ -341,17 +341,17 @@ function qsm_results_overview_tab_content() {
 			}
 
 			$out_of_q = $mlw_quiz_info->total - $hidden_questions;
-			$form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
+			$form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : '';
 
 			if ( isset( $values['score'] ) ) {
-				if ( $form_type == 1 || $form_type == 2 ) {
+				if ( '1' === $form_type || '2' === $form_type ) {
 					$values['score']['content'][] = esc_html__( 'Not Graded', 'quiz-master-next' );
 				} else {
-					if ( $mlw_quiz_info->quiz_system == 0 ) {
+					if ( "0" === $mlw_quiz_info->quiz_system ) {
 						$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ) );
-					} elseif ( $mlw_quiz_info->quiz_system == 1 ) {
+					} elseif ( "1" === $mlw_quiz_info->quiz_system ) {
 						$values['score']['content'][] = sprintf( '%1$s %2$s', esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
-					} elseif ( $mlw_quiz_info->quiz_system == 3 ) {
+					} elseif ( "3" === $mlw_quiz_info->quiz_system ) {
 						$values['score']['content'][] = sprintf( '%1$s %2$s %3$s %4$s %5$s <br /> %6$s %7$s', esc_html( $mlw_quiz_info->correct ), esc_html__( 'out of', 'quiz-master-next' ), esc_html( $out_of_q ), esc_html__( 'or', 'quiz-master-next' ), esc_html( $mlw_quiz_info->correct_score ), esc_html( $mlw_quiz_info->point_score ), esc_html__( 'Points', 'quiz-master-next' ) );
 					} else {
 						$values['score']['content'][] = esc_html__( 'Not Graded', 'quiz-master-next' );
@@ -380,7 +380,7 @@ function qsm_results_overview_tab_content() {
 			}
 
 			if ( isset( $values['user'] ) ) {
-				if ( 0 == $mlw_quiz_info->user ) {
+				if ( "0" === $mlw_quiz_info->user ) {
 					$values['user']['content'][] = esc_html__( 'Visitor', 'quiz-master-next' );
 				} else {
 					$values['user']['content'][] = '<a href="' . esc_url( admin_url( 'user-edit.php?user_id=' . $mlw_quiz_info->user ) ) . '">' . esc_html( $mlw_quiz_info->user ) . '</a>';

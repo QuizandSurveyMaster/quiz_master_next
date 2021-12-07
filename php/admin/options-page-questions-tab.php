@@ -261,7 +261,7 @@ function qsm_options_questions_tab_content() {
 								);
 
 								// disabling polar for form type quiz and system correct/incorrect
-								if ( $form_type == 0 && $quiz_system == 0 ) {
+								if ( '0' === $form_type && '0' === $quiz_system ) {
 									$polar_class       = $polar_question_use = '';
 									$description_arr[] = array(
 										'question_type_id' => '13',
@@ -833,7 +833,7 @@ function qsm_send_data_sendy() {
 		)
 	);
 
-	if ( isset( $result['response'] ) && isset( $result['response']['code'] ) && $result['response']['code'] == 200 ) {
+	if ( isset( $result['response'] ) && isset( $result['response']['code'] ) && 200 == $result['response']['code'] ) {
 		$apiBody = json_decode( wp_remote_retrieve_body( $result ) );
 		echo wp_json_encode( $apiBody );
 	}
@@ -954,7 +954,7 @@ function qsm_save_new_category() {
 
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
-	$parent     = ( $parent == -1 ) ? 0 : $parent;
+	$parent     = ( -1 == $parent) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,
 		'qsm_category',

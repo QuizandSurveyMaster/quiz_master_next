@@ -5,7 +5,7 @@ function qsm_fetch_data_from_xml() {
 	$file     = esc_url( 'https://quizandsurveymaster.com/addons.xml' );
 	$response = wp_remote_post( $file, array( 'sslverify' => false ) );
 
-	if ( is_wp_error( $response ) || $response['response']['code'] === 404 ) {
+	if ( is_wp_error( $response ) || 404 === $response['response']['code'] ) {
 		return '<p>' . __( 'Something went wrong', 'quiz-master-next' ) . '</p>';
 	} else {
 		$body       = wp_remote_retrieve_body( $response );
@@ -43,7 +43,7 @@ add_action( 'admin_init', 'qsm_add_author_column_in_db' );
  * Insert new column in quiz table
  */
 function qsm_add_author_column_in_db() {
-	if ( get_option( 'qsm_update_db_column', '' ) != '1' ) {
+	if ( '1' !== get_option( 'qsm_update_db_column', '' ) ) {
 
 		global $wpdb;
 
@@ -79,7 +79,7 @@ function qsm_add_author_column_in_db() {
 	}
 
 	// Update result db
-	if ( get_option( 'qsm_update_result_db_column', '' ) != '1' ) {
+	if ( '1' !== get_option( 'qsm_update_result_db_column', '' ) ) {
 		global $wpdb;
 		$result_table_name    = $wpdb->prefix . 'mlw_results';
 		$table_result_col_obj = $wpdb->get_results(
@@ -101,7 +101,7 @@ function qsm_add_author_column_in_db() {
 	 *
 	 * @since 7.0.0
 	 */
-	if ( get_option( 'qsm_update_quiz_db_column', '' ) != '1' ) {
+	if ( '1' !== get_option( 'qsm_update_quiz_db_column', '' ) ) {
 		global $wpdb;
 		$quiz_table_name    = $wpdb->prefix . 'mlw_quizzes';
 		$table_quiz_col_obj = $wpdb->get_results(
@@ -123,7 +123,7 @@ function qsm_add_author_column_in_db() {
 	 *
 	 * @since 7.0.1
 	 */
-	if ( get_option( 'qsm_update_result_db_column_datatype', '' ) != '1' ) {
+	if ( '1' !== get_option( 'qsm_update_result_db_column_datatype', '' ) ) {
 		global $wpdb;
 		$result_table_name     = $wpdb->prefix . 'mlw_results';
 		$table_quiz_result_obj = $wpdb->get_row(
@@ -135,7 +135,7 @@ function qsm_add_author_column_in_db() {
 			),
 			ARRAY_A
 		);
-		if ( isset( $table_quiz_result_obj['DATA_TYPE'] ) && $table_quiz_result_obj['DATA_TYPE'] == 'text' ) {
+		if ( isset( $table_quiz_result_obj['DATA_TYPE'] ) && 'text' === $table_quiz_result_obj['DATA_TYPE'] ) {
 			$wpdb->query( "ALTER TABLE $result_table_name CHANGE `quiz_results` `quiz_results` LONGTEXT;" );
 		}
 		update_option( 'qsm_update_result_db_column_datatype', '1' );
@@ -172,7 +172,7 @@ add_action( 'admin_init', 'qsm_change_the_post_type' );
  * Transfer all quiz post to new cpt 'qsm_quiz'
  */
 function qsm_change_the_post_type() {
-	if ( get_option( 'qsm_change_the_post_type', '' ) != '1' ) {
+	if ( '1' !== get_option( 'qsm_change_the_post_type', '' ) ) {
 		$post_arr = array(
 			'post_type'      => 'quiz',
 			'posts_per_page' => -1,
@@ -186,7 +186,7 @@ function qsm_change_the_post_type() {
 
 				$post_id  = get_the_ID();
 				$post_obj = get_post( $post_id );
-				if ( $post_obj->post_status == 'trash' ) {
+				if ( 'trash' === $post_obj->post_status ) {
 					$post_obj->post_status = 'draft';
 				}
 				$post_obj->post_type = 'qsm_quiz';
@@ -215,12 +215,12 @@ function qsm_display_question_option( $key, $single_option ) {
 	}
 	$tooltip       = '';
 	$document_text = '';
-	if ( isset( $single_option['tooltip'] ) && $single_option['tooltip'] != '' ) {
+	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
 		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
 		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
 		$tooltip .= '</span>';
 	}
-	if ( isset( $single_option['documentation_link'] ) && $single_option['documentation_link'] != '' ) {
+	if ( isset( $single_option['documentation_link'] ) && '' !== $single_option['documentation_link'] ) {
 		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
 		$document_text .= '<span class="dashicons dashicons-media-document"></span>';
 		$document_text .= '</a>';
@@ -691,7 +691,7 @@ function qsm_update_question_type_col_val() {
 	global $mlwQuizMasterNext;
 
 	if ( version_compare( $mlwQuizMasterNext->version, '6.4.12', '<' ) ) {
-		if ( get_option( 'qsm_upated_question_type_val' ) != '1' ) {
+		if ( '1' !== get_option( 'qsm_upated_question_type_val' ) ) {
 			$table_name = $wpdb->prefix . 'mlw_questions';
 			$status     = $wpdb->query(
 				$wpdb->prepare(
@@ -717,17 +717,17 @@ function qsm_check_create_tables() {
 	$install         = false;
 
 	$quiz_table_name = $wpdb->prefix . 'mlw_quizzes';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) != $quiz_table_name ) {
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_table_name'" ) !== $quiz_table_name ) {
 		$install = true;
 	}
 
 	$quiz_theme_table_name = $wpdb->prefix . 'mlw_themes';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) != $quiz_theme_table_name ) {
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$quiz_theme_table_name'" ) !== $quiz_theme_table_name ) {
 		$install = true;
 	}
 
 	$question_terms_table_name = $wpdb->prefix . 'mlw_question_terms';
-	if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_terms_table_name'" ) != $question_terms_table_name ) {
+	if ( $wpdb->get_var( "SHOW TABLES LIKE '$question_terms_table_name'" ) !== $question_terms_table_name ) {
 		$install = true;
 	}
 
@@ -773,7 +773,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	?>
 <div class="theme-wrapper theme
 	<?php
-	if ( $saved_quiz_theme == '' || $saved_quiz_theme == 0 ) {
+	if ( '' !== $saved_quiz_theme  || 0 == $saved_quiz_theme ) {
 		echo 'active';
 	}
 	?>
@@ -789,7 +789,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	<div class="theme-id-container">
 		<h2 class="theme-name" id="emarket-name"><?php esc_html_e( 'Default Theme', 'quiz-master-next' ); ?></h2>
 		<div class="theme-actions">
-			<?php if ( $saved_quiz_theme != 'default' ) { ?>
+			<?php if ( 'default' !== $saved_quiz_theme ) { ?>
 			<button class="button qsm-activate-theme"><?php esc_html_e( 'Activate', 'quiz-master-next' ); ?></button>
 			<?php } ?>
 		</div>
@@ -804,7 +804,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 			?>
 <div class="theme-wrapper theme
 			<?php
-			if ( $saved_quiz_theme == $theme_id ) {
+			if ( $saved_quiz_theme === $theme_id ) {
 				echo 'active';
 			}
 			?>
@@ -823,7 +823,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 		<div class="theme-actions">
 			<?php
 			if ( $saved_quiz_theme != $theme_id ) {
-				if ( $wizard_theme_list == 'wizard_theme_list' ) {
+				if ( 'wizard_theme_list' === $wizard_theme_list ) {
 					?>
 			<?php
 				} else {
@@ -833,7 +833,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 				}
 				?>
 			<?php } ?>
-			<?php if ( $saved_quiz_theme == $theme_id ) { ?>
+			<?php if ( $saved_quiz_theme === $theme_id ) { ?>
 			<a class="button button-primary qsm-customize-color-settings"
 				href="#"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
 			<?php } ?>
@@ -856,14 +856,14 @@ function qsm_get_default_wizard_themes() {
 	if ( ! empty( $themes_data ) ) {
 		foreach ( $default_themes as $theme ) {
 			$key = array_search( $theme, array_column( $installed_themes, 'theme_name' ) );
-			if ( $key !== false ) { // installed themes to be removed
+			if ( false !== $key ) { // installed themes to be removed
 				$key_to_unset = array_search( $theme, array_column( $themes_data, 'name' ) );
-				if ( $key_to_unset !== false ) {
+				if ( false !== $key_to_unset ) {
 					$keys_to_unset[] = $key_to_unset;
 				}
 			} else {
 				$key_to_move = array_search( $theme, array_column( $themes_data, 'name' ) );
-				if ( $key_to_move !== false ) {
+				if ( false !== $key_to_move ) {
 					array_push( $default_themes_data, $themes_data[ $key_to_move ] );
 					// $keys_to_unset[] = $key_to_move;
 				}
@@ -871,7 +871,7 @@ function qsm_get_default_wizard_themes() {
 		}
 		foreach ( $installed_themes as $theme ) {
 			$key = array_search( $theme['theme_name'], array_column( $themes_data, 'name' ) );
-			if ( $key !== false ) { // installed themes to be removed
+			if ( false !== $key ) { // installed themes to be removed
 				$keys_to_unset[] = $key;
 			}
 		}

@@ -85,14 +85,14 @@ function qsm_generate_quizzes_surveys_page() {
 	$offset = ( $paged - 1 ) * $limit;
 	$where  = '';
 	$search = '';
-	if ( isset( $_REQUEST['s'] ) && $_REQUEST['s'] != '' ) {
+	if ( isset( $_REQUEST['s'] ) && '' !== $_REQUEST['s'] ) {
 		$search = sanitize_text_field( wp_unslash( $_REQUEST['s'] ) );
 		$where  = " quiz_name LIKE '%$search%'";
 	}
 
 	// Multiple Delete quiz.
 	if ( isset( $_POST['qsm_search_multiple_delete_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_search_multiple_delete_nonce'] ) ), 'qsm_search_multiple_delete' ) ) {
-		if ( ( isset( $_POST['qsm-ql-action-top'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-top'] ) ) == 'delete_pr' ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-bottom'] ) ) == 'delete_pr' ) ) {
+		if ( ( isset( $_POST['qsm-ql-action-top'] ) && 'delete_pr' === sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-top'] ) ) ) || ( isset( $_POST['qsm-ql-action-bottom'] ) && 'delete_pr' === sanitize_text_field( wp_unslash( $_POST['qsm-ql-action-bottom'] ) ) ) ) {
 			if ( isset( $_POST['chk_remove_all'] ) ) {
 				$c_all = array_map( 'sanitize_text_field', wp_unslash( $_POST['chk_remove_all'] ) );
 				foreach ( $c_all as $quiz_id ) {
@@ -133,13 +133,13 @@ function qsm_generate_quizzes_surveys_page() {
 	if ( in_array( 'author', (array) $user->roles ) ) {
 		$post_arr['author__in'] = array( $user->ID );
 	}
-	if ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) == 'asc' ) {
-		$post_arr['orderby'] = isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) == 'title' ? 'title' : 'last_activity';
+	if ( isset( $_GET['order'] ) && 'asc' === sanitize_text_field( wp_unslash( $_GET['order'] ) ) ) {
+		$post_arr['orderby'] = isset( $_GET['orderby'] ) && 'title' === sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ? 'title' : 'last_activity';
 		$post_arr['order']   = 'ASC';
 		// Load our quizzes.
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, $post_arr['orderby'], 'ASC', (array) $user->roles, $user->ID, $limit, $offset, $where );
-	} elseif ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) == 'desc' ) {
-		$post_arr['orderby'] = isset( $_GET['orderby'] ) && sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) == 'title' ? 'title' : 'last_activity';
+	} elseif ( isset( $_GET['order'] ) && 'desc' === sanitize_text_field( wp_unslash( $_GET['order'] ) ) ) {
+		$post_arr['orderby'] = isset( $_GET['orderby'] ) && 'title' === sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) ? 'title' : 'last_activity';
 		$post_arr['order']   = 'DESC';
 		// Load our quizzes.
 		$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, $post_arr['orderby'], 'DESC', (array) $user->roles, $user->ID, $limit, $offset, $where );
@@ -243,7 +243,7 @@ function qsm_generate_quizzes_surveys_page() {
 		<div class="qsm-quizzes-page-content">
 			<div class="
 			<?php
-			if ( 'false' != get_option( 'mlw_advert_shows' ) ) {
+			if ( 'false' !== get_option( 'mlw_advert_shows' ) ) {
 				echo 'qsm-quiz-page-wrapper-with-ads';
 			} else {
 				echo 'qsm-quiz-page-wrapper';
@@ -255,7 +255,7 @@ function qsm_generate_quizzes_surveys_page() {
 						for="quiz_search"><?php esc_html_e( 'Search', 'quiz-master-next' ); ?></label>
 					<!-- Changed Request to Post -->
 					<input type="search" id="quiz_search" name="s"
-						value="<?php echo isset( $_POST['s'] ) && $_POST['s'] != '' ? esc_attr( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : ''; ?>">
+						value="<?php echo isset( $_POST['s'] ) && '' !== $_POST['s'] ? esc_attr( sanitize_text_field( wp_unslash( $_POST['s'] ) ) ) : ''; ?>">
 					<input id="search-submit" class="button" type="submit" name="btnSearchQuiz" value="Search Quiz">
 					<?php if ( class_exists( 'QSM_Export_Import' ) ) { ?>
 					<a class="button button-primary"
@@ -284,7 +284,7 @@ function qsm_generate_quizzes_surveys_page() {
 							echo 'style="display:none;"';
 						}
 						?>>
-							<?php if ( $paged == '1' ) { ?>
+							<?php if ( '1' === $paged ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>
@@ -300,7 +300,7 @@ function qsm_generate_quizzes_surveys_page() {
 								<?php esc_html_e( 'of', 'quiz-master-next' ); ?>
 								<span class="total-pages"><?php echo esc_html( $num_of_pages ); ?></span>
 							</span>
-							<?php if ( $paged == $num_of_pages ) { ?>
+							<?php if ( $paged === $num_of_pages ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
@@ -344,8 +344,8 @@ function qsm_generate_quizzes_surveys_page() {
 									name="delete-all-shortcodes-1" id="delete-all-shortcodes-1" value="0"></td>
 							<th class="<?php echo esc_attr( $orderby_class ); ?>">
 								<?php
-									$paged_slug    = isset( $_GET['paged'] ) && $_GET['paged'] != '' ? '&paged=' . sanitize_text_field( wp_unslash( $_GET['paged'] ) ) : '';
-									$searched_slug = isset( $_GET['s'] ) && $_GET['s'] != '' ? '&s=' . sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+									$paged_slug    = isset( $_GET['paged'] ) && '' !== $_GET['paged'] ? '&paged=' . sanitize_text_field( wp_unslash( $_GET['paged'] ) ) : '';
+									$searched_slug = isset( $_GET['s'] ) && '' !== $_GET['s'] ? '&s=' . sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
 									$sorting_url   = '?page=mlw_quiz_list' . $paged_slug . $searched_slug;
 								?>
 								<a href="<?php echo esc_url( $sorting_url . $orderby_slug ); ?>">
@@ -375,7 +375,7 @@ function qsm_generate_quizzes_surveys_page() {
 									id="chk_remove_all" value="<?php echo esc_attr( $single_arr['id'] ); ?>">
 							</th>
 							<td class="post-title column-title">
-								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo esc_html( $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : '' ); ?></strong>
+								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo esc_html( 'publish' !== $single_arr['post_status'] ? '— ' . $single_arr['post_status'] : '' ); ?></strong>
 								</a>
 								<div class="row-actions">
 									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> | 
@@ -461,7 +461,7 @@ function qsm_generate_quizzes_surveys_page() {
 							echo 'style="display:none;"';
 						}
 						?>>
-							<?php if ( $paged == '1' ) { ?>
+							<?php if ( '1' === $paged ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>
@@ -477,7 +477,7 @@ function qsm_generate_quizzes_surveys_page() {
 								<?php esc_html_e( 'of', 'quiz-master-next' ); ?>
 								<span class="total-pages"><?php echo esc_html( $num_of_pages ); ?></span>
 							</span>
-							<?php if ( $paged == $num_of_pages ) { ?>
+							<?php if ( $paged === $num_of_pages ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>
 							<?php } else { ?>
@@ -687,7 +687,7 @@ function qsm_generate_quizzes_surveys_page_screen_options() {
 	$screen = get_current_screen();
 
 	// get out of here if we are not on our settings page
-	if ( ! is_object( $screen ) || $screen->id != $qsm_quiz_list_page ) {
+	if ( ! is_object( $screen ) || $screen->id !== $qsm_quiz_list_page ) {
 		return;
 	}
 
@@ -709,7 +709,7 @@ add_filter( 'set_screen_option_qsm_per_page', 'qsm_set_screen_option', 10, 3 );
  * @return str Save screen option value
  */
 function qsm_set_screen_option( $status, $option, $value ) {
-	if ( 'qsm_per_page' == $option ) {
+	if ( 'qsm_per_page' === $option ) {
 		return $value;
 	}
 }

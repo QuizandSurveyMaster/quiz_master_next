@@ -102,7 +102,7 @@ function qsm_generate_quiz_options() {
 		<div class='mlw_quiz_options'>
 			<h1 style="margin-bottom: 10px;">
 				<?php echo wp_kses_post( $quiz_name ); ?>
-				<?php if ( $post_status == 'draft' ) : ?>
+				<?php if ( 'draft' === $post_status ) : ?>
 					<form method="POST" action="">
 						<?php wp_nonce_field( 'qsm_update_quiz_status', 'qsm_update_quiz_status_nonce' ); ?>
 						<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
@@ -126,7 +126,7 @@ function qsm_generate_quiz_options() {
 					// Cycles through registered tabs to create navigation.
 					foreach ( $tab_array as $tab ) {
 						$active_class = '';
-						if ( $active_tab == $tab['slug'] ) {
+						if ( $active_tab === $tab['slug'] ) {
 							$active_class = 'nav-tab-active';
 						}
 						?><a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a><?php
@@ -137,7 +137,7 @@ function qsm_generate_quiz_options() {
 					<?php
 					// Cycles through tabs looking for current tab to create tab's content.
 					foreach ( $tab_array as $tab ) {
-						if ( $active_tab == $tab['slug'] ) {
+						if ( $active_tab === $tab['slug'] ) {
 							call_user_func( $tab['function'] );
 						}
 					}

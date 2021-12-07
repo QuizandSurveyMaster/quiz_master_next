@@ -32,10 +32,10 @@ class MlwQmnAlertManager {
 	public function showAlerts() {
 		$alert_list = "";
 		foreach ( $this->alerts as $alert ) {
-			if ( $alert['type'] == "success" ) {
+			if ( "success" === $alert['type'] ) {
 				$alert_list .= "<div id=\"message\" class=\"updated below-h2\"><p><strong>".__('Success!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
 			}
-			if ( $alert['type'] == "error" ) {
+			if ( "error" === $alert['type'] ) {
 				$alert_list .= "<div id=\"message\" class=\"error below-h2\"><p><strong>".__('Error!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
 			}
 		}

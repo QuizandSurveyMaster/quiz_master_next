@@ -35,7 +35,7 @@ function qsm_options_styling_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
-	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_style_tab_nonce'] ) ), 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['save_style_options'] ) ) ) {
+	if ( isset( $_POST['qsm_style_tab_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_style_tab_nonce'] ) ), 'qsm_style_tab_nonce_action' ) && isset( $_POST['save_style_options'] ) && 'confirmation' === sanitize_text_field( wp_unslash( $_POST['save_style_options'] ) ) ) {
 
 		$style_quiz_id = isset( $_POST['style_quiz_id'] ) ? intval( $_POST['style_quiz_id'] ) : '';
 		$quiz_theme    = isset( $_POST['save_quiz_theme'] ) ? sanitize_text_field( wp_unslash( $_POST['save_quiz_theme'] ) ) : '';
@@ -84,7 +84,7 @@ function qsm_options_styling_tab_content() {
 		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) ) : '';
 
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
-		if ( isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
+		if ( isset($_POST['save_featured_image']) && 'Save' === $_POST['save_featured_image'] ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
@@ -204,13 +204,13 @@ function qsm_options_styling_tab_content() {
 			<?php
 			foreach ( $registered_templates as $slug => $template ) {
 				?>
-			<div onclick="mlw_qmn_theme('<?php echo esc_attr( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected == $slug ) ? 'mlw_qmn_themeBlockActive' : '';?> "><?php echo wp_kses_post( $template['name'] ); ?></div>
+			<div onclick="mlw_qmn_theme('<?php echo esc_attr( $slug ); ?>');" id="mlw_qmn_theme_block_<?php echo esc_attr( $slug ); ?>" class="qsm-info-widget <?php echo ( $mlw_quiz_options->theme_selected === $slug ) ? 'mlw_qmn_themeBlockActive' : '';?> "><?php echo wp_kses_post( $template['name'] ); ?></div>
 			<?php
 			}
 			?>
 			<div onclick="mlw_qmn_theme('default');" id="mlw_qmn_theme_block_default" class="qsm-info-widget
 			<?php
-			if ( $mlw_quiz_options->theme_selected == 'default' ) {
+			if ( 'default' === $mlw_quiz_options->theme_selected ) {
 					echo 'mlw_qmn_themeBlockActive';
 			}
 			?>

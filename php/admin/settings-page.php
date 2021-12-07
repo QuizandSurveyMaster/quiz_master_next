@@ -49,7 +49,7 @@ class QMNGlobalSettingsPage {
 	 * @since 7.3.5
 	 */
 	public function qsm_admin_enqueue_scripts_settings_page( $hook ) {
-		if ( 'qsm_page_qmn_global_settings' != $hook ) {
+		if ( 'qsm_page_qmn_global_settings' !== $hook ) {
 			return;
 		}
 		global $mlwQuizMasterNext;
@@ -149,7 +149,7 @@ class QMNGlobalSettingsPage {
 			echo '</div>';
 		}
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
-		if ( $enabled == 'cancelled' ) {
+		if ( 'cancelled' === $enabled ) {
 			?>
 <div class="notice notice-info multiple-category-notice">
 	<h3>
@@ -286,7 +286,7 @@ class QMNGlobalSettingsPage {
 			$cpt_search = esc_attr( $settings['cpt_search'] );
 		}
 		$checked = '';
-		if ( $cpt_search == '1' ) {
+		if ( '1' === $cpt_search ) {
 			$checked = " checked='checked'";
 		}
 
@@ -308,7 +308,7 @@ class QMNGlobalSettingsPage {
 			$cpt_archive = esc_attr( $settings['cpt_archive'] );
 		}
 		$checked = '';
-		if ( $cpt_archive == '1' ) {
+		if ( '1' === $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
 		
@@ -330,7 +330,7 @@ class QMNGlobalSettingsPage {
 			$cpt_archive = esc_attr( $settings['delete_qsm_data'] );
 		}
 		$checked = '';
-		if ( $cpt_archive == '1' ) {
+		if ( '1' === $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
 				
@@ -403,7 +403,7 @@ class QMNGlobalSettingsPage {
 			$tracking_allowed = esc_attr( $settings['tracking_allowed'] );
 		}
 		$checked = '';
-		if ( $tracking_allowed == '2' ) {
+		if ( '2' === $tracking_allowed ) {
 			$checked = " checked='checked'";
 		}
 
@@ -452,10 +452,10 @@ class QMNGlobalSettingsPage {
 			}
 		}
 		$g_class = $d_class = '';
-		if ( $active_tab == 'qmn_global_settings' ) {
+		if ( 'qmn_global_settings' === $active_tab ) {
 			$g_class = 'nav-tab-active';
 		}
-		if ( $active_tab == 'quiz-default-qptions' ) {
+		if ( 'quiz-default-qptions' === $active_tab ) {
 			$d_class = 'nav-tab-active';
 		}
 		?>
@@ -467,11 +467,11 @@ class QMNGlobalSettingsPage {
                 <a href="?page=qmn_global_settings&tab=quiz-default-qptions" class="nav-tab <?php echo esc_attr( $d_class ); ?>"><?php esc_html_e('Quiz Default Options', 'quiz-master-next'); ?></a>
             </h2>
 	<form action="options.php" method="POST" class="qsm_global_settings">
-		<?php if ( $active_tab == 'qmn_global_settings' ) {
+		<?php if ( 'qmn_global_settings' === $active_tab ) {
 			settings_fields( 'qmn-settings-group' );
 			do_settings_sections( 'qmn_global_settings' );
 		} ?>
-		<?php if ( $active_tab == 'quiz-default-qptions' ) {
+		<?php if ( 'quiz-default-qptions' === $active_tab ) {
 			settings_fields( 'qsm-quiz-settings-group' );
 			do_settings_sections( 'qsm_default_global_option' );
 		} ?>
@@ -514,9 +514,9 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_form_type  = (isset($globalQuizsetting['form_type']) && '' !== $globalQuizsetting['form_type'] ? $globalQuizsetting['form_type'] : "");
 		echo '<div class="global_form_type_settiong"><select name ="qsm-quiz-settings[form_type]">
-			<option value="0" '.($qsm_form_type == '0' ? "Selected" : "").'>Quiz</option>
-			<option value="1" '.($qsm_form_type == '1' ? "Selected" : "").' >Survey</option>
-			<option value="2" '.($qsm_form_type == '2' ? "Selected" : "").'>Simple Form</option>
+			<option value="0" '.('0' === $qsm_form_type ? "Selected" : "").'>Quiz</option>
+			<option value="1" '.('1' === $qsm_form_type ? "Selected" : "").' >Survey</option>
+			<option value="2" '.('2' === $qsm_form_type ? "Selected" : "").'>Simple Form</option>
 		</select></div>';
 	}
 
