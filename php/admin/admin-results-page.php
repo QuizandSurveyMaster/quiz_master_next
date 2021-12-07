@@ -221,8 +221,7 @@ function qsm_results_overview_tab_content() {
 			class="button action">Bulk Permanent Delete</a>
 	</div>
 	<div class="tablenav-pages">
-		<?php /* translators: %s: Result Count */ ?>
-		<span class="displaying-num"><?php echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) ); ?></span>
+		<span class="displaying-num"><?php echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) ); /* translators: %s: Result Count */ ?></span>
 		<span class="pagination-links">
 			<?php
 				$mlw_qmn_previous_page = 0;
