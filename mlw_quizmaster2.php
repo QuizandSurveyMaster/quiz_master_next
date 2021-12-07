@@ -520,27 +520,21 @@ class MLWQuizMasterNext {
 		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
 		if ( ! $multiple_categories ) {
 			?>
-<div class="notice notice-info multiple-category-notice" style="display:none;">
-	<h3>
-			<?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?>
-	</h3>
-	<p>
-			<?php
-			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
-			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
-			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo wp_kses_post( $message );
-			?>
-	</p>
-	<p class="category-action">
-			<?php
-			$buttons  = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
-			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo wp_kses_post( $buttons );
-			?>
-	</p>
-</div>
-			<?php
+		<div class="notice notice-info multiple-category-notice" style="display:none;">
+			<h3>
+				<?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?>
+			</h3>
+			<p>
+				<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'Please note that this action <b> can not be </b> rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ); ?>
+			</p>
+			<p class="category-action">
+				<a href="#" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>&nbsp;&nbsp;&nbsp;
+				<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
+			</p>
+		</div>
+		<?php
 		}
 	}
 

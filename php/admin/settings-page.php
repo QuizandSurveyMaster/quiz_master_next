@@ -156,18 +156,12 @@ class QMNGlobalSettingsPage {
 		<?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?>
 	</h3>
 	<p>
-		<?php
-			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
-			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
-			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo wp_kses_post( $message );
-			?>
+		<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?>
+		<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?>
+		<?php esc_html_e( 'Please note that this action <b> can not be </b> rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ); ?>
 	</p>
 	<p class="category-action">
-		<?php
-			$buttons = sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo wp_kses_post( $buttons );
-			?>
+		<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
 	</p>
 </div>
 <?php
@@ -311,7 +305,7 @@ class QMNGlobalSettingsPage {
 		if ( '1' === $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
-		
+
 		echo '<label class="switch">';
 			echo '<input type="checkbox" name="qmn-settings[cpt_archive]" id="qmn-settings[cpt_archive]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
@@ -333,7 +327,7 @@ class QMNGlobalSettingsPage {
 		if ( '1' === $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
-				
+
 		echo '<label class="switch">';
 			echo '<input type="checkbox" name="qmn-settings[delete_qsm_data]" id="qmn-settings[delete_qsm_data]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
