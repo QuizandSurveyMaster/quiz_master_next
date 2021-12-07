@@ -77,13 +77,12 @@ function qsm_display_recent_quizzes( $attrs ) {
 		if ( $i < $no_of_quizzes ) {
 			$setting = maybe_unserialize( $quiz->quiz_settings );
 			$options = maybe_unserialize( $setting['quiz_options'] );
-
-			$start_date = $options['scheduled_time_start'];
-			$end_date   = $options['scheduled_time_end'];
-			$today      = date( 'm/d/Y' );
-			if ( '' !== $end_date && $end_date < $today ) {
+			$start_date = strtotime( $options['scheduled_time_start'] );
+			$end_date   = strtotime( $options['scheduled_time_end'] ); 
+			$now      = strtotime( current_time( 'm/d/Y H:i' ) );
+			if ( $end_date && $end_date < $now ) {
 				continue;
-			} elseif ( 'no' === $include_future_quizzes && $start_date > $today ) {
+			} elseif ( $start_date && $start_date > $now && 'no' === $include_future_quizzes ) {
 				continue;
 			} else {
 				$title   = $quiz->quiz_name;
