@@ -84,7 +84,7 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->email_field_text ); ?></span>
-								<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
 				<?php
 			}
 
