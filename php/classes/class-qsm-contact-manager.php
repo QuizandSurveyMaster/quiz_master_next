@@ -37,7 +37,7 @@ class QSM_Contact_Manager {
 		}
 
 		// If user is logged in and the option to allow users to edit is set to no...
-		if ( is_user_logged_in() && '1' === $options->loggedin_user_contact ) {
+		if ( is_user_logged_in() && 1 === intval( $options->loggedin_user_contact ) ) {
 			// ..then, hide the fields.
 			$fields_hidden = true;
 			?>
@@ -179,7 +179,7 @@ class QSM_Contact_Manager {
 		do_action( 'qsm_contact_fields_end' );
 
 		// If logged in user should see fields.
-		if ( is_user_logged_in() && '1' === $options->loggedin_user_contact ) {
+		if ( is_user_logged_in() && 1 === intval( $options->loggedin_user_contact ) ) {
 			?>
 			</div>
 			<?php
@@ -204,7 +204,7 @@ class QSM_Contact_Manager {
 		$fields = self::load_fields();
 
 		// If fields are empty, check for backwards compatibility.
-		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( '2' !== $options->user_name || '2' !== $options->user_comp || '2' !== $options->user_email || '2' !== $options->user_phone ) ) {
+		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== intval( $options->user_name ) || 2 !== intval( $options->user_comp ) || 2 !== intval( $options->user_email ) || 2 !== intval( $options->user_phone ) ) ) {
 			$responses[] = array(
 				'label' => 'Name',
 				'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserName"] ) ) : 'None',

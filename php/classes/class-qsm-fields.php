@@ -70,7 +70,7 @@ class QSM_Fields {
 		// Retrieve the settings for this section
 		$settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
 		if ( isset( $settings['form_type'] ) ) {
-			$settings['form_type'] = '2' === $settings['system'] ? 1 : $settings['form_type'];
+			$settings['form_type'] = 2 === intval( $settings['system'] ) ? 1 : $settings['form_type'];
 		}
 		if ( isset( $settings['result_page_fb_image'] ) && '' === $settings['result_page_fb_image'] ) {
 			$settings['result_page_fb_image'] = '' !== $result_page_fb_image ? $result_page_fb_image : $settings['result_page_fb_image'];

@@ -712,7 +712,7 @@ class QMNQuizManager {
 		$auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
-		$randomness_class = '0' === $options->randomness_order ? '' : 'random';
+		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
 		?><div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme ." ".$randomness_class ); ?> '><?php
 			// Get quiz post based on quiz id
 			$args      = array(
@@ -2004,7 +2004,7 @@ class QMNQuizManager {
 		$mlw_message = '';
 
 		// Check if this quiz has user emails turned on
-		if ( '0' === $qmn_quiz_options->send_user_email ) {
+		if ( 0 === intval( $qmn_quiz_options->send_user_email ) ) {
 
 			// Make sure that the user filled in the email field
 			if ( '' !== $qmn_array_for_variables['user_email'] ) {
@@ -2109,7 +2109,7 @@ class QMNQuizManager {
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 
 		$mlw_message = '';
-		if ( '0' === $qmn_quiz_options->send_admin_email ) {
+		if ( 0 === intval( $qmn_quiz_options->send_admin_email ) ) {
 			if ( '' !== $qmn_quiz_options->admin_email ) {
 				$from_email_array = maybe_unserialize( $qmn_quiz_options->email_from_text );
 				if ( ! isset( $from_email_array['from_email'] ) ) {

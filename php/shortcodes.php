@@ -259,7 +259,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 }
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div_expired_quiz', 10, 3 );
 function qsm_display_popup_div_expired_quiz( $return_display, $qmn_quiz_options ) {
-	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end ) {
+	if ( 0 === intval( $qmn_quiz_options->enable_result_after_timer_end ) ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
