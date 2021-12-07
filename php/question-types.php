@@ -48,7 +48,7 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>
-		<div style="display: none;" class="loading-uploaded-file"><img alt="<?php echo esc_attr( $new_question_title ); ?>" src=" <?php esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif'); ?>"></div>
+		<div style="display: none;" class="loading-uploaded-file"><img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( get_site_url() . '/wp-includes/images/spinner-2x.gif' ); ?>"></div>
 		<div style="display: none;" class="remove-uploaded-file"><span class="dashicons dashicons-trash"></span></div>
 		<input class="mlw_file_upload_hidden_value" type="hidden" name="question<?php echo esc_attr( $id ); ?>" value="" />
 		<span style="display: none;" class='mlw-file-upload-error-msg'></span>

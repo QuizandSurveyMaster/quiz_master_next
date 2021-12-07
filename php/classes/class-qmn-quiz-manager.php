@@ -81,7 +81,6 @@ class QMNQuizManager {
 		if ( $file_upload_type ) {
 			$file_type_exp = explode( ',', $file_upload_type );
 			foreach ( $file_type_exp as $value ) {
-
 				$value = trim( $value );
 				if ( 'image' === $value ) {
 					$mimes[] = 'image/jpeg';
@@ -95,19 +94,25 @@ class QMNQuizManager {
 				} elseif ( 'excel' === $value ) {
 					$mimes[] = 'application/excel, application/vnd.ms-excel, application/x-excel, application/x-msexcel';
 					$mimes[] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
 				} elseif ( empty( $value ) ) {
 					// don't add blank mime type
-
 				} else {
 					$mimes[] = $value;
 				}
 			}
-			$mimes = apply_filters('qsm_file_upload_mime_type',$mimes);
+			$mimes = apply_filters( 'qsm_file_upload_mime_type', $mimes );
 		}
-		$json          = array();
 
-		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '';
+		$json = array();
+		if ( ! isset( $_FILES['file'] ) ) {
+			$json['type']    = 'error';
+			$json['message'] = __( 'File is not uploaded', 'quiz-master-next' );
+			echo wp_json_encode( $json );
+			exit;
+		}
+
+		$uploaded_file = $_FILES['file']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $uploaded_file['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
 		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
 			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
@@ -116,49 +121,36 @@ class QMNQuizManager {
 				echo wp_json_encode( $json );
 				exit;
 			}
-			$upload_dir = wp_upload_dir();
 
-			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? wp_unslash( $_FILES['file']['tmp_name'] ) : '';
-			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
-			// remove white space between file name
-			$file_name   = str_replace( ' ', '-', $file_name );
-			$rawBaseName = 'qsmfileupload_' . uniqid() . '_' . pathinfo( $file_name, PATHINFO_FILENAME );
-			$new_fname   = $rawBaseName . '.' . $extension;
-			$file        = $upload_dir['path'] . '/' . $new_fname;
-			$file_url    = $upload_dir['url'] . '/' . $new_fname;
-			$counter     = 1;
-			if ( file_exists( $file ) ) {
-				while ( file_exists( $file ) ) {
-					$new_fname = $rawBaseName . '-' . $counter . '.' . $extension;
-					$file      = $upload_dir['path'] . '/' . $new_fname;
-					$file_url  = $upload_dir['url'] . '/' . $new_fname;
-					$counter++;
-				}
-			}
-			if ( ! move_uploaded_file( $datafile, $file ) ) {
-				$json['type']    = 'error';
-				$json['message'] = __( 'File not uploaded', 'quiz-master-next' );
-				echo wp_json_encode( $json );
-			} else {
+			$uploaded_file['name'] = 'qsmfileupload_' . uniqid() . '_' . str_replace( '-', '_', $file_name );
+			$upload_overrides = array(
+				'test_form' => false,
+			);
+			$movefile = wp_handle_upload( $uploaded_file, $upload_overrides );
+			if ( $movefile && ! isset( $movefile['error'] ) ) {
 				// Prepare an array of post data for the attachment.
 				$attachment = array(
-					'guid'           => $upload_dir['url'] . '/' . basename( $file ),
-					'post_mime_type' => $validate_file['type'],
-					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file_name ) ),
+					'guid'           => $movefile['url'],
+					'post_mime_type' => $movefile['type'],
+					'post_title'     => preg_replace( '/\\.[^.]+$/', '', basename( $uploaded_file['name'] ) ),
 					'post_content'   => '',
 					'post_status'    => 'inherit',
 				);
 				// Insert the attachment.
-				$attach_id = wp_insert_attachment( $attachment, $file, 0 );
+				$attach_id = wp_insert_attachment( $attachment, $movefile['file'], 0 );
 				if ( $attach_id ) {
 					require_once ABSPATH . 'wp-admin/includes/image.php';
-					$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+					$attach_data = wp_generate_attachment_metadata( $attach_id, $movefile['file'] );
 					wp_update_attachment_metadata( $attach_id, $attach_data );
 				}
 				$json['type']      = 'success';
 				$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
-				$json['file_url']  = $file_url;
-				$json['file_path'] = $new_fname;
+				$json['file_url']  = $movefile['url'];
+				$json['file_path'] = basename( $movefile['url'] );
+				echo wp_json_encode( $json );
+			} else {
+				$json['type']    = 'error';
+				$json['message'] = $movefile['error'];
 				echo wp_json_encode( $json );
 			}
 		} else {
