@@ -773,7 +773,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 	?>
 <div class="theme-wrapper theme
 	<?php
-	if ( '' !== $saved_quiz_theme  || 0 == $saved_quiz_theme ) {
+	if ( '' !== $saved_quiz_theme || 0 == $saved_quiz_theme ) {
 		echo 'active';
 	}
 	?>
