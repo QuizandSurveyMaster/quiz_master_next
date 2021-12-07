@@ -43,7 +43,7 @@ add_action( 'admin_init', 'qsm_add_author_column_in_db' );
  * Insert new column in quiz table
  */
 function qsm_add_author_column_in_db() {
-	if ( '1' != intval ( get_option( 'qsm_update_db_column', '' ) ) ) {
+	if ( 1 !== intval ( get_option( 'qsm_update_db_column', '' ) ) ) {
 
 		global $wpdb;
 
@@ -79,7 +79,7 @@ function qsm_add_author_column_in_db() {
 	}
 
 	// Update result db
-	if ( '1' != get_option( 'qsm_update_result_db_column', '' ) ) {
+	if ( 1 !== intval( get_option( 'qsm_update_result_db_column', '' ) ) ) {
 		global $wpdb;
 		$result_table_name    = $wpdb->prefix . 'mlw_results';
 		$table_result_col_obj = $wpdb->get_results(
@@ -101,7 +101,7 @@ function qsm_add_author_column_in_db() {
 	 *
 	 * @since 7.0.0
 	 */
-	if ( '1' != get_option( 'qsm_update_quiz_db_column', '' ) ) {
+	if ( 1 !== intval( get_option( 'qsm_update_quiz_db_column', '' ) ) ) {
 		global $wpdb;
 		$quiz_table_name    = $wpdb->prefix . 'mlw_quizzes';
 		$table_quiz_col_obj = $wpdb->get_results(
@@ -123,7 +123,7 @@ function qsm_add_author_column_in_db() {
 	 *
 	 * @since 7.0.1
 	 */
-	if ( '1' != get_option( 'qsm_update_result_db_column_datatype', '' ) ) {
+	if ( 1 !== intval( get_option( 'qsm_update_result_db_column_datatype', '' ) ) ) {
 		global $wpdb;
 		$result_table_name     = $wpdb->prefix . 'mlw_results';
 		$table_quiz_result_obj = $wpdb->get_row(
@@ -172,7 +172,7 @@ add_action( 'admin_init', 'qsm_change_the_post_type' );
  * Transfer all quiz post to new cpt 'qsm_quiz'
  */
 function qsm_change_the_post_type() {
-	if ( '1' != get_option( 'qsm_change_the_post_type', '' ) ) {
+	if ( 1 !== intval (get_option( 'qsm_change_the_post_type', '' ) ) ) {
 		$post_arr = array(
 			'post_type'      => 'quiz',
 			'posts_per_page' => -1,
@@ -691,7 +691,7 @@ function qsm_update_question_type_col_val() {
 	global $mlwQuizMasterNext;
 
 	if ( version_compare( $mlwQuizMasterNext->version, '6.4.12', '<' ) ) {
-		if ( '1' != get_option( 'qsm_upated_question_type_val' ) ) {
+		if ( 1 !== intval( get_option( 'qsm_upated_question_type_val' ) ) ) {
 			$table_name = $wpdb->prefix . 'mlw_questions';
 			$status     = $wpdb->query(
 				$wpdb->prepare(
