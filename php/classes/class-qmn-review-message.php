@@ -85,16 +85,15 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function display_admin_message() {
-		$already_url  = esc_url( add_query_arg( 'qmn_review_notice_check', 'already_did' ) );
-		$nope_url  = esc_url( add_query_arg( 'qmn_review_notice_check', 'remove_message' ) );
 		?>
 		<div class='updated'><br />
-			<?php printf( esc_html__( 'Greetings! I just noticed that you now have more than %s quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next' ) ); ?>
+			<?php esc_html_e('Greetings! I just noticed that you now have more than '.$this->trigger.' quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next'); ?>
 			<br /><strong><em>~ QSM Team</em></strong><br /><br />
+			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'already_did')); ?>" class="button-secondary" ><?php esc_html_e('I already did ! ', 'quiz-master-next'); ?> </a>
+			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'remove_message')); ?>" class="button-secondary"><?php esc_html_e('No, this plugin is not good enough', 'quiz-master-next'); ?> </a>
+			<br/><br/>
+		</div>
 		<?php
-		echo ' & nbsp; < a href = "' . esc_url( $already_url ) . '" class = "button-secondary" > ' . esc_html__( 'I already did ! ', 'quiz-master-next' ) . ' < / a > ';
-		echo ' & nbsp; < a href = "' . esc_url( $nope_url ) . '" class = "button-secondary" > ' . esc_html__( 'No, this plugin is not good enough', 'quiz-master-next' ) . ' < / a > ';
-		echo "<br /><br /></div>";
 	}
 
 	/**

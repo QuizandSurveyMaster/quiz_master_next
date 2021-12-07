@@ -206,7 +206,7 @@ class QMNQuizCreator {
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0001' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0001', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
@@ -235,7 +235,7 @@ class QMNQuizCreator {
 					$wpdb->prefix . 'mlw_quizzes',
 					array( 'quiz_id' => $quiz_id )
 				);
-			}       
+			}
 }else {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
@@ -287,9 +287,9 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name" );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0002' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0002', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-		}       
+		}
 
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
@@ -511,7 +511,7 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
 			do_action( 'qmn_quiz_duplicated', $quiz_id, $mlw_new_id );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0011' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0011', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0011', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 		if ( $is_duplicating_questions ) {
@@ -629,7 +629,7 @@ class QMNQuizCreator {
 				}
 
 				if ( $question_results == false ) {
-					$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0020' ), 'error' );
+					$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0020', 'quiz-master-next' ), 'error' );
 					$mlwQuizMasterNext->log_manager->add( 'Error 0020', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 				}
 			}
