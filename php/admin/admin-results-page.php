@@ -82,6 +82,8 @@ function qsm_results_overview_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
 
+	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+
 	// If nonce is correct, delete results.
 	if ( isset( $_POST['delete_results_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['delete_results_nonce'] ) ), 'delete_results' ) ) {
     
@@ -100,8 +102,13 @@ function qsm_results_overview_tab_content() {
 			),
 			array( '%d' )
 		);
+<<<<<<< Updated upstream
 		//get quiz id
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
+=======
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
+
+>>>>>>> Stashed changes
 		if ( false === $results ) {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -112,7 +119,11 @@ function qsm_results_overview_tab_content() {
 		} else {
 			$quiz_id = $mlw_delete_results_id;
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
+<<<<<<< Updated upstream
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name", $quiz_id );
+=======
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted", $quiz_name );
+>>>>>>> Stashed changes
 
 		}
 	}
@@ -149,7 +160,11 @@ function qsm_results_overview_tab_content() {
 				}
 			}
 
+<<<<<<< Updated upstream
 			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", $quiz_id );
+=======
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", $quiz_name );
+>>>>>>> Stashed changes
 		}
 	}
 

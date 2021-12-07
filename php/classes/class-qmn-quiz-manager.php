@@ -59,6 +59,11 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
 		add_action( 'wp_ajax_qsm_export_data', array( $this, 'qsm_export_data' ) );
 		add_action( 'wp_ajax_nopriv_qsm_export_data', array( $this, 'qsm_export_data' ) );
+<<<<<<< Updated upstream
+=======
+		add_action( 'wp_ajax_qsm_delete_audit_data', array( $this, 'qsm_delete_audit_data' ) );
+		add_action( 'wp_ajax_nopriv_qsm_delete_audit_data', array( $this, 'qsm_delete_audit_data' ) );
+>>>>>>> Stashed changes
 		// Upload file of file upload question type
 		add_action( 'wp_ajax_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
 		add_action( 'wp_ajax_nopriv_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
@@ -275,6 +280,18 @@ class QMNQuizManager {
 	}
 
 	/**
+<<<<<<< Updated upstream
+=======
+	 * Delete audit Data 
+	*/
+	public function qsm_delete_audit_data(){
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'mlw_qm_audit_trail';
+		$delete_audit = $wpdb->query( $wpdb->prepare( "UPDATE wp_mlw_qm_audit_trail SET action_user = '', action='', quiz_name='', time=''") );
+	}
+
+	/**
+>>>>>>> Stashed changes
 	 * Generates Content For Quiz Shortcode
 	 *
 	 * Generates the content for the [mlw_quizmaster] shortcode

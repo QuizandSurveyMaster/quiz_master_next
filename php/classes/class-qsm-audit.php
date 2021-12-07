@@ -15,10 +15,15 @@ class QSM_Audit {
    * @param string $action The action that is to be saved into the audit trail
    * @return bool Returns true if successfull and false if fails
    */
+<<<<<<< Updated upstream
   public function new_audit( $action, $quiz_id, $settings_array_json_convert, $user = null ) {
     global $wpdb;
+=======
+  public function new_audit( $action, $quiz_name, $user = null ) {
+>>>>>>> Stashed changes
     // Sanitizes action just in case 3rd party uses this funtion
     $action = sanitize_text_field( $action );
+    //$settings_array_json_convert = sanitize_text_field( $settings_array_json_convert );
 
     $settings_array_json_convert = sanitize_text_field( $settings_array_json_convert );
     // Retrieves current user's data
@@ -34,6 +39,8 @@ class QSM_Audit {
     }
 
     global $wpdb;
+    $quiz_name = sanitize_text_field( $quiz_name );
+
 
     $quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
 
@@ -46,13 +53,21 @@ class QSM_Audit {
         'action_user' => $current_user->display_name,
         'action' => $action,
         'quiz_name' => $quiz_name,
+<<<<<<< Updated upstream
         'form_data' => $settings_array_json_convert,
+=======
+        'form_data' => "",
+>>>>>>> Stashed changes
         'time' => date("h:i:s A m/d/Y")
       ),
       array(
         '%s',
         '%s',
         '%s',
+<<<<<<< Updated upstream
+=======
+        '%s',
+>>>>>>> Stashed changes
         '%s'
       )
     );

@@ -418,7 +418,10 @@ var QSMAdmin;
         deleteResults(qid, qname);
     });
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     jQuery(document).on('click', '#btn_export', function(e) {
         e.preventDefault();
         jQuery.ajax({
@@ -462,6 +465,26 @@ var QSMAdmin;
         });
     });
 
+<<<<<<< Updated upstream
+=======
+    jQuery(document).on('click', '#btn_delete_audit', function(e) {
+        e.preventDefault();
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: "qsm_delete_audit_data",
+            },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+>>>>>>> Stashed changes
 }(jQuery));
 
 // result page

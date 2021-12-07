@@ -1807,7 +1807,11 @@ class QSM_Install {
 			global $wpdb;
 			$table_name = $wpdb->prefix . 'mlw_results';
 			$audit_table = $wpdb->prefix . 'mlw_qm_audit_trail';
+<<<<<<< Updated upstream
 
+=======
+			
+>>>>>>> Stashed changes
 			// Update 2.6.4
 			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'user'" ) != 'user' ) {
 				$sql        = 'ALTER TABLE ' . $table_name . ' ADD user INT NOT NULL AFTER phone';
@@ -1823,6 +1827,7 @@ class QSM_Install {
 				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET user_ip='%s'", 'Unknown' );
 				$results    = $wpdb->query( $update_sql );
 			}
+			
 			// Update 7.1.11
 			if ( $wpdb->get_var( "select data_type from information_schema.columns where table_name = '" . $wpdb->prefix . "mlw_results' and column_name = 'point_score'" ) != 'FLOAT' ) {
 				$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results MODIFY point_score FLOAT NOT NULL;' );

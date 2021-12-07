@@ -2330,3 +2330,9 @@ td.scheduled_time_start {
 #result_page_fb_image {
 	width: 25em;
 }
+
+.tools_btns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

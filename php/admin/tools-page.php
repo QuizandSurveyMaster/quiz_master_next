@@ -143,9 +143,18 @@ function qsm_audit_box() {
 	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, quiz_name, time
 		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
+<<<<<<< Updated upstream
         <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?>
 		<a class='button button-primary btn_export' id="btn_export" title='Export' ><?php esc_html_e('Export', 'quiz-master-next'); ?></a>
 		</p>
+=======
+	<div class="tools_btns">
+        <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
+		<p>
+		<a class='button button-primary btn_export' id="btn_export" title='Export' ><?php esc_html_e('Export', 'quiz-master-next'); ?></a>
+		<a class='button button-primary' id="btn_delete_audit" title='Delete' ><?php esc_html_e('Delete', 'quiz-master-next'); ?></a>
+		</p></div>
+>>>>>>> Stashed changes
 	<?php
 
 	// Determine which navigation to show.
@@ -197,6 +206,7 @@ function qsm_audit_box() {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
+<<<<<<< Updated upstream
 					$alternate = ' class="alternate"';
 				}
 				echo "<tr{$alternate}>";
@@ -206,6 +216,18 @@ function qsm_audit_box() {
 				echo "<td>{$audit->quiz_name}</td>";
 				echo "<td>{$audit->time}</td>";
 				echo "</tr>";
+=======
+					$alternate = 'alternate';
+				} ?>
+				<tr class="<?php echo esc_attr( $alternate ); ?>">
+					<td><?php echo esc_html( $audit->trail_id ); ?></td>
+					<td><?php echo esc_html( $audit->action_user ); ?></td>
+					<td><?php echo esc_html( $audit->action ); ?></td>
+					<td><?php echo esc_html( $audit->quiz_name ); ?></td>
+					<td><?php echo esc_html( $audit->time ); ?></td>
+				</tr>
+				<?php
+>>>>>>> Stashed changes
 			}
 			?>
 		</tbody>

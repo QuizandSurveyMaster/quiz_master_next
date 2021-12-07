@@ -40,7 +40,12 @@ class QSM_Fields {
 <<<<<<< HEAD
 		// Cycle through fields to retrieve all posted values      
 		$settings_array = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );
+<<<<<<< Updated upstream
 		$settings_array_json_convert = maybe_serialize( $settings_array );
+=======
+		$settings_array_json_convert = json_encode( $settings_array );
+
+>>>>>>> Stashed changes
 		foreach ( $fields as $field ) {
 =======
 						case 'radio':
@@ -76,17 +81,28 @@ class QSM_Fields {
 <<<<<<< HEAD
 			$settings_array[ $field["id"] ] = $sanitized_value;
       	}
+<<<<<<< Updated upstream
 
 		  $quiz_id = intval( sanitize_text_field( $_GET["quiz_id"] ) );
             
 		//get quiz id
 		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( sanitize_text_field( $_GET['quiz_id'] ) ) : 0;
 		
+=======
+        
+		//get quiz id
+		$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );  
+>>>>>>> Stashed changes
       	// Update the settings and show alert based on outcome
 		$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
+<<<<<<< Updated upstream
 			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id, $settings_array_json_convert );
+=======
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_name );
+>>>>>>> Stashed changes
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
 =======

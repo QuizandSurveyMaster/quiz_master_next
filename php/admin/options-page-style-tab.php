@@ -42,10 +42,19 @@ function qsm_options_styling_tab_content() {
 		$quiz_style    = isset( $_POST['quiz_css'] ) ? htmlspecialchars( preg_replace( '#<script(.*?)>(.*?)</script>#is', '', sanitize_textarea_field( wp_unslash( $_POST['quiz_css'] ) ) ), ENT_QUOTES ) : '';
 
 		// Saves the new css.
+<<<<<<< Updated upstream
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id );
+=======
+		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, date( 'Y-m-d H:i:s' ), $style_quiz_id ) );
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $style_quiz_id ) );
+
+		if ( false !== $results ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $quiz_name );
+>>>>>>> Stashed changes
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error occured when trying to save the styles. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error saving styles', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -84,11 +93,21 @@ function qsm_options_styling_tab_content() {
 		$theme_id = isset( $_POST['quiz_theme_id'] ) ? (int) sanitize_text_field( wp_unslash( $_POST['quiz_theme_id'] ) ) : '';
 
 		$mlwQuizMasterNext->theme_settings->activate_selected_theme( $quiz_id, $theme_id );
+<<<<<<< Updated upstream
 		if ( isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $quiz_id );
+=======
+		$quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
+
+		if (isset($_POST['save_featured_image']) && $_POST['save_featured_image'] == 'Save' ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
+		} else {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $quiz_name );
+>>>>>>> Stashed changes
 		}
 		$featured_image = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '';
 		if ( ! empty( $quiz_id ) ) {
@@ -114,7 +133,11 @@ function qsm_options_styling_tab_content() {
 			__( 'The theme settings saved successfully.', 'quiz-master-next' ),
 			'success'
 		);
+<<<<<<< Updated upstream
 		$mlwQuizMasterNext->audit_manager->new_audit( "Theme settings Have Been Saved", $quiz_id );
+=======
+		$mlwQuizMasterNext->audit_manager->new_audit( "Theme settings Have Been Saved", $quiz_name );
+>>>>>>> Stashed changes
 	}
 	$folder_name    = QSM_THEME_PATH;
 	$folder_slug    = QSM_THEME_SLUG;
