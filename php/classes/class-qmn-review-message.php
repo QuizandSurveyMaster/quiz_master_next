@@ -87,13 +87,15 @@ class QMN_Review_Message {
 	public function display_admin_message() {
 		?>
 		<div class='updated'><br />
-			<?php esc_html_e('Greetings! I just noticed that you now have more than '.$this->trigger.' quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next'); ?>
-			<br /><strong><em>~ QSM Team</em></strong><br /><br />
+            <?php
+            /* translators: %s: count of quizzes */
+            printf(esc_html__('Greetings! I just noticed that you now have more than %s quiz results. That is awesome! Could you please help me out by giving this plugin a 5-star rating on WordPress? This will help us by helping other users discover this plugin.', 'quiz-master-next'), esc_html($this->trigger)); ?>
+			<br/><strong><em>~ <?php esc_html__('QSM Team', 'quiz-master-next'); ?></em></strong><br /><br />
 			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'already_did')); ?>" class="button-secondary" ><?php esc_html_e('I already did ! ', 'quiz-master-next'); ?> </a>
 			&nbsp;<a href="<?php echo esc_url(add_query_arg('qmn_review_notice_check', 'remove_message')); ?>" class="button-secondary"><?php esc_html_e('No, this plugin is not good enough', 'quiz-master-next'); ?> </a>
 			<br/><br/>
 		</div>
-		<?php
+        <?php
 	}
 
 	/**
