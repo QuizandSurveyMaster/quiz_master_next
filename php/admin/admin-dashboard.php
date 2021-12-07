@@ -44,12 +44,12 @@ function qsm_check_close_hidden_box( $widget_id ) {
 	$user           = wp_get_current_user();
 	$closed_div     = get_user_option( "closedpostboxes_$page_id", $user->ID );
 	if ( $closed_div && is_array( $closed_div ) ) {
-		echo in_array( $widget_id, $closed_div ) ? 'closed' : '';
+		echo in_array( $widget_id, $closed_div, true ) ? 'closed' : '';
 	}
 
 	$hidden_box = get_user_option( "metaboxhidden_$page_id", $user->ID );
 	if ( $hidden_box && is_array( $hidden_box ) ) {
-		echo in_array( $widget_id, $hidden_box ) ? ' hide-if-js' : '';
+		echo in_array( $widget_id, $hidden_box, true ) ? ' hide-if-js' : '';
 	}
 }
 
@@ -80,7 +80,7 @@ function qsm_dashboard_screen_options( $status, $args ) {
 			foreach ( $registered_widget as $key => $value ) {
 				?>
 				<label for="<?php echo esc_attr( $key ); ?>-hide">
-					<input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide" type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php echo ( ! in_array( $key, $hidden_box_arr ) ) ? 'checked="checked"' : ''; ?>>
+					<input class="hide-postbox-tog" name="<?php echo esc_attr( $key ); ?>-hide" type="checkbox" id="<?php echo esc_attr( $key ); ?>-hide" value="<?php echo esc_attr( $key ); ?>" <?php echo ( ! in_array( $key, $hidden_box_arr, true ) ) ? 'checked="checked"' : ''; ?>>
 					<?php echo wp_kses_post( $value['title'] ); ?>
 				</label>
 				<?php
@@ -234,7 +234,7 @@ function qsm_generate_dashboard_page() {
 						$all_widgets = array_merge( $normal_widgets, $side_widgets );
 					if ( $qsm_dashboard_widget ) {
 						foreach ( $qsm_dashboard_widget as $widgte_id => $normal_widget ) {
-							if ( ! in_array( $widgte_id, $all_widgets ) && 'normal' === $normal_widget['sidebar'] ) {
+							if ( ! in_array( $widgte_id, $all_widgets, true ) && 'normal' === $normal_widget['sidebar'] ) {
 								call_user_func( $normal_widget['callback'], $widgte_id );
 							}
 						}
@@ -256,7 +256,7 @@ function qsm_generate_dashboard_page() {
 					}
 					if ( $qsm_dashboard_widget ) {
 						foreach ( $qsm_dashboard_widget as $widgte_id => $normal_widget ) {
-							if ( ! in_array( $widgte_id, $all_widgets ) && 'side' === $normal_widget['sidebar'] ) {
+							if ( ! in_array( $widgte_id, $all_widgets, true ) && 'side' === $normal_widget['sidebar'] ) {
 								call_user_func( $normal_widget['callback'], $widgte_id );
 							}
 						}
@@ -291,7 +291,7 @@ function qsm_wizard_template_quiz_options() {
 	$recommended_addon_str = '';
 	if ( $settings ) {
 		foreach ( $settings as $key => $single_setting ) {
-			$key              = array_search( $key, array_column( $all_settings, 'id' ) );
+			$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
 			$field            = $all_settings[ $key ];
 			$field['label']   = $single_setting['option_name'];
 			$field['default'] = $single_setting['value'];

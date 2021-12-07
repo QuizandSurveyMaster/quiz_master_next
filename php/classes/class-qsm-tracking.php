@@ -119,7 +119,7 @@ class QSM_Tracking {
 		$plugins        = array_keys( get_plugins() );
 		$active_plugins = get_option( 'active_plugins', array() );
 		foreach ( $plugins as $key => $plugin ) {
-			if ( in_array( $plugin, $active_plugins ) ) {
+			if ( in_array( $plugin, $active_plugins, true ) ) {
 				// Remove active plugins from list so we can show active and inactive separately
 				unset( $plugins[ $key ] );
 			}

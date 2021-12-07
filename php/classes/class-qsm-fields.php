@@ -88,7 +88,7 @@ class QSM_Fields {
 						unset( $fields[ $key ] );
 					}
 				}
-				$key = array_search('legacy_options', array_column($fields, 'id'));
+				$key = array_search('legacy_options', array_column($fields, 'id'), true);
 				if ( isset( $fields[ $key ] ) && ! empty( $array_before_legacy ) ) {
 					$i = 1;
 					$array_before_legacy = array_reverse($array_before_legacy);
@@ -235,7 +235,7 @@ class QSM_Fields {
 				<strong style="color: red;">Note: </strong><?php echo isset($field['note']) ? wp_kses_post( $field['note'] ) : ''; ?>
 			</td>
 		</tr>
-		<?php	              
+		<?php
 	}
 
 	/**
@@ -459,7 +459,7 @@ class QSM_Fields {
 							echo QSM_Fields::get_category_hierarchical_options( $categories_tree, $explode_cat );
 						} else {
 							foreach ( $cat_array as $single_cat ) {
-								?><option <?php echo in_array( $single_cat, $explode_cat ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $single_cat ); ?>"><?php echo wp_kses_post( $single_cat ); ?></option><?php
+								?><option <?php echo in_array( $single_cat, $explode_cat, true ) ? 'selected' : ''; ?> value="<?php echo esc_attr( $single_cat ); ?>"><?php echo wp_kses_post( $single_cat ); ?></option><?php
 							}
 						}
 						?></select><?php
@@ -484,7 +484,7 @@ class QSM_Fields {
 		$options = '';
 		if ( ! empty($categories) ) {
 			foreach ( $categories as $cat ) {
-				$options .= '<option value="' . $cat->term_id . '" ' . ( in_array( $cat->term_id, $selected ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
+				$options .= '<option value="' . $cat->term_id . '" ' . ( in_array( $cat->term_id, $selected, true ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
 				if ( ! empty($cat->children) ) {
 					$options .= QSM_Fields::get_category_hierarchical_options( $cat->children, $selected, $prefix . '&nbsp;&nbsp;&nbsp;' );
 				}
