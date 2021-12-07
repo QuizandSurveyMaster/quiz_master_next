@@ -420,7 +420,8 @@ abstract class WP_Background_Process extends WP_Async_Request {
 		// Adds every 5 minutes to the existing schedules.
 		$schedules[ $this->identifier . '_cron_interval' ] = array(
 			'interval' => MINUTE_IN_SECONDS * $interval,
-			'display'  => sprintf( __( 'Every %d Minutes', 'quiz-master-next' ), $interval ), /* translators: %d: time interval in minutes */
+			/* translators: %d: time interval in minutes */
+			'display'  => sprintf( __( 'Every %d Minutes', 'quiz-master-next' ), $interval ),
 		);
 
 		return $schedules;
