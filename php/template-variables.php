@@ -1334,9 +1334,9 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$slider_date_atts .= ' data-answer2="'.$answar2.'" ';
 	$slider_date_atts .= ' data-is_reverse="'.intval($is_reverse).'" ';
 	$slider_date_atts .= ' data-answer_value="'.$user_answer.'" ';
-	$mlw_requireClass = '';
+	$mlw_require_class = '';
 	if ( $required == 0 ) {
-		$mlw_requireClass = 'mlwRequiredText';
+		$mlw_require_class = 'mlwRequiredText';
 	}
 	if ( $answer['points'] == $answar1 ) {
 		$left_polar_title_style  = "style='font-weight:900;'";
@@ -1366,7 +1366,7 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
-	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_requireClass' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
+	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"'.$slider_date_atts.'></div></div>';
 	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . '</div>';
 	$question           = $input_text;
