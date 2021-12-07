@@ -106,7 +106,7 @@ function qsm_results_overview_tab_content() {
 			if ( empty( $error ) ) {
 				$error = __( 'Unknown error', 'quiz-master-next' );
 			}
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There was an error when deleting this result. Error from WordPress: %s', 'quiz-master-next' ), $error ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert(__('There was an error when deleting this result. Error from WordPress: '.$error, 'quiz-master-next'), 'error');
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
@@ -221,8 +221,8 @@ function qsm_results_overview_tab_content() {
 			class="button action">Bulk Permanent Delete</a>
 	</div>
 	<div class="tablenav-pages">
-		<span
-			class="displaying-num"><?php echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) ); ?></span>
+		<?php /* translators: %s: Result Count */ ?>
+		<span class="displaying-num"><?php echo esc_html( sprintf( _n( '%s result', '%s results', $qsm_results_count, 'quiz-master-next' ), number_format_i18n( $qsm_results_count ) ) ); ?></span>
 		<span class="pagination-links">
 			<?php
 				$mlw_qmn_previous_page = 0;

@@ -24,7 +24,7 @@ function qsm_generate_quiz_tools() {
         <style type="text/css">
             #qsm_restore_box .hndle,
             #qsm_audit_box .hndle{
-                padding-left: 15px;                
+                padding-left: 15px;
                 padding-bottom: 0;
             }
             .qsm-tools-page .handle-order-higher,
@@ -150,30 +150,30 @@ function qsm_audit_box() {
 	if ( $page > 0 ) {
 		$previous = $page - 2;
 		?>
-		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $previous ); ?>">
-			<?php echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
+		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($previous); ?>">
+			<?php esc_html_e('Previous '.$table_limit.' Audits', 'quiz-master-next'); ?>
 		</a>
 		<?php
 		if ( $left > $table_limit ) {
 			?>
-			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $page ); ?>">
-				<?php echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
+			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($page); ?>">
+				<?php esc_html_e('Next '.$table_limit.' Audits', 'quiz-master-next'); ?>
 			</a>
 			<?php
 		}
 	} elseif ( $page == 0 ) {
 		if ( $left > $table_limit ) {
 			?>
-			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $page ); ?>">
-				<?php echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
+			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($page); ?>">
+				<?php esc_html_e('Next '.$table_limit.' Audits', 'quiz-master-next'); ?>
 			</a>
 			<?php
 		}
 	} elseif ( $left < $table_limit ) {
 		$previous = $page - 2;
 		?>
-		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $previous ); ?>">
-			<?php echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
+		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($previous); ?>">
+			<?php esc_html_e('Previous '.$table_limit.' Audits', 'quiz-master-next'); ?>
 		</a>
 		<?php
 	}

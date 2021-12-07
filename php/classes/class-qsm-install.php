@@ -747,7 +747,7 @@ class QSM_Install {
 				),
 			),
 			'default' => 0,
-			'tooltip' => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ),
+			'tooltip' => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ), /* translators: %FACEBOOK_SHARE%: Facebook share link, %TWITTER_SHARE%: Twitter share link */
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
