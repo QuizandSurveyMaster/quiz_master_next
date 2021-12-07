@@ -1789,7 +1789,7 @@ class QSM_Install {
 
 			// Update 7.1.11
 			$user_email_template_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'user_email_template'" );
-			if ( $user_email_template_data->Type == 'text' ) {
+			if ( 'text' === $user_email_template_data->Type ) {
 				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  CHANGE user_email_template user_email_template LONGTEXT NOT NULL';
 				$results = $wpdb->query( $sql );
 			}
@@ -1865,18 +1865,15 @@ class QSM_Install {
 	 * @since 4.7.1
 	 */
 	public function plugin_row_meta( $links, $file ) {
-		if ( $file == QSM_PLUGIN_BASENAME ) {
+		if ( QSM_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
 				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
 				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
 			);
 			return array_merge( $links, $row_meta );
 		}
-
 		return (array) $links;
-
 	}
-
 }
 
 $qsm_install = new QSM_Install();

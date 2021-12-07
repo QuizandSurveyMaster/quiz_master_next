@@ -42,7 +42,7 @@ class QMN_Review_Message {
 	public function check_message_display() {
 		$this->admin_notice_check();
 		$this->trigger = $this->check_message_trigger();
-		if ( $this->trigger !== -1 ) {
+		if ( -1 !== $this->trigger ) {
 			$amount = $this->check_results_amount();
 			if ( $amount > $this->trigger ) {
 				add_action( 'admin_notices', array( $this, 'display_admin_message' ) );
@@ -102,21 +102,21 @@ class QMN_Review_Message {
 	 * @since 4.5.0
 	 */
 	public function admin_notice_check() {
-		if ( isset( $_GET["qmn_review_notice_check"] ) && sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) == 'remove_message' ) {
+		if ( isset( $_GET["qmn_review_notice_check"] ) && 'remove_message' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
 			$this->trigger = $this->check_message_trigger();
 			$update_trigger = -1;
-			if ( $this->trigger === -1 ) {
+			if ( -1 !== $this->trigger ) {
 				exit;
-			} elseif ( $this->trigger === 20 ) {
+			} elseif ( 20 !== $this->trigger ) {
 				$update_trigger = 100;
-			} elseif ( $this->trigger === 100 ) {
+			} elseif ( 100 !== $this->trigger ) {
 				$update_trigger = 1000;
-			} elseif ( $this->trigger === 1000 ) {
+			} elseif ( 1000 !== $this->trigger ) {
 				$update_trigger = -1;
 			}
 			update_option( 'qmn_review_message_trigger', $update_trigger );
 		}
-		if ( isset( $_GET["qmn_review_notice_check"] ) && sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) == 'already_did' ) {
+		if ( isset( $_GET["qmn_review_notice_check"] ) && 'already_did' === sanitize_text_field( wp_unslash( $_GET["qmn_review_notice_check"] ) ) ) {
 			update_option( 'qmn_review_message_trigger', -1 );
 		}
 	}

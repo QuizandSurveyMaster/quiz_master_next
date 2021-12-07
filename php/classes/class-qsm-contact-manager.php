@@ -37,7 +37,7 @@ class QSM_Contact_Manager {
 		}
 
 		// If user is logged in and the option to allow users to edit is set to no...
-		if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
+		if ( is_user_logged_in() && '1' === $options->loggedin_user_contact ) {
 			// ..then, hide the fields.
 			$fields_hidden = true;
 			?>
@@ -51,12 +51,12 @@ class QSM_Contact_Manager {
                 $contact_disable_autofill = $options->contact_disable_autofill;
 
 		// If fields are empty and backwards-compatible fields are turned on then, use older system.
-		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
+		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( '2' !== $options->user_name || '2' !== $options->user_comp || '2' !== $options->user_email || '2' !== $options->user_phone ) ) {
 
 			// Check for name field.
-			if ( 2 != $options->user_name ) {
+			if ( '2' !== $options->user_name ) {
 				$class = '';
-				if ( 1 == $options->user_name && ! $fields_hidden ) {
+				if ( '1' === $options->user_name && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -66,9 +66,9 @@ class QSM_Contact_Manager {
 			}
 
 			// Check for comp field.
-			if ( 2 != $options->user_comp ) {
+			if ( '2' !== $options->user_comp ) {
 				$class = '';
-				if ( 1 == $options->user_comp && ! $fields_hidden ) {
+				if ( '1' === $options->user_comp && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -78,9 +78,9 @@ class QSM_Contact_Manager {
 			}
 
 			// Check for email field.
-			if ( 2 != $options->user_email ) {
+			if ( '2' !== $options->user_email ) {
 				$class = '';
-				if ( 1 == $options->user_email && ! $fields_hidden ) {
+				if ( '1' === $options->user_email && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -90,9 +90,9 @@ class QSM_Contact_Manager {
 			}
 
 			// Check for phone field.
-			if ( 2 != $options->user_phone ) {
+			if ( '2' !== $options->user_phone ) {
 				$class = '';
-				if ( 1 == $options->user_phone && ! $fields_hidden ) {
+				if ( '1' === $options->user_phone && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -111,10 +111,10 @@ class QSM_Contact_Manager {
 				?>
 				<div class="qsm_contact_div qsm-contact-type-<?php echo esc_attr( $fields[ $i ]['type'] ); ?>">
 					<?php
-					if ( 'name' == $fields[ $i ]['use'] ) {
+					if ( 'name' === $fields[ $i ]['use'] ) {
 						$value = $name;
 					}
-					if ( 'email' == $fields[ $i ]['use'] ) {
+					if ( 'email' === $fields[ $i ]['use'] ) {
 						$value = $email;
 					}
 
@@ -124,15 +124,15 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
-							if ( $fields[ $i ]['use'] == 'phone' ) {
+							if ( 'phone' === $fields[ $i ]['use'] ) {
 								$class = 'mlwPhoneNumber';
 							}
-							if ( $fields[ $i ]['use'] == 'phone' && 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) {
+							if ( 'phone' === $fields[ $i ]['use'] && 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) {
 								$class = 'mlwPhoneNumber mlwRequiredNumber qsm_required_text';
 							}
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
-							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( $fields[ $i ]['use'] == 'phone' ? 'text' : 'text' ); ?>' <?php if ( $fields[ $i ]['use'] == 'phone' ) { ?> onkeydown="return event.keyCode !== 69" <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( 'phone' === $fields[ $i ]['use'] ? 'text' : 'text' ); ?>' <?php if ( 'phone' === $fields[ $i ]['use'] ) { ?> onkeydown="return event.keyCode !== 69 " <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
 							<?php
 							break;
 
@@ -180,7 +180,7 @@ class QSM_Contact_Manager {
 		do_action( 'qsm_contact_fields_end' );
 
 		// If logged in user should see fields.
-		if ( is_user_logged_in() && 1 == $options->loggedin_user_contact ) {
+		if ( is_user_logged_in() && '1' === $options->loggedin_user_contact ) {
 			?>
 			</div>
 			<?php
@@ -205,7 +205,7 @@ class QSM_Contact_Manager {
 		$fields = self::load_fields();
 
 		// If fields are empty, check for backwards compatibility.
-		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 != $options->user_name || 2 != $options->user_comp || 2 != $options->user_email || 2 != $options->user_phone ) ) {
+		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( '2' !== $options->user_name || '2' !== $options->user_comp || '2' !== $options->user_email || '2' !== $options->user_phone ) ) {
 			$responses[] = array(
 				'label' => 'Name',
 				'value' => isset( $_POST["mlwUserName"] ) ? sanitize_text_field( wp_unslash( $_POST["mlwUserName"] ) ) : 'None',

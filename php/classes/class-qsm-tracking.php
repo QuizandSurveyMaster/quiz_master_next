@@ -64,7 +64,7 @@ class QSM_Tracking {
 
 		// We only send data if opted in. Opt-in designated by a value of 1 or 2.
 		// We send data once a week.
-    	if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || ! $last_time ) ) {
+    	if ( ( '1' === $tracking_allowed || '2' === $tracking_allowed ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || ! $last_time ) ) {
       		$this->load_data( $tracking_allowed );
       		$this->send_data();
       		update_option( 'qmn_tracker_last_time', time() );
@@ -176,7 +176,7 @@ class QSM_Tracking {
 		}
 
 		// If the tracking variable has already been set, return.
-		if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' ) {
+		if ( isset( $settings['tracking_allowed'] ) && '1' === $settings['tracking_allowed'] ) {
 			return;
 		}
 

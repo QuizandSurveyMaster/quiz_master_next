@@ -30,7 +30,7 @@ function qmn_generate_stats_page() {
 			<?php
 			foreach ( $tab_array as $tab ) {
 				$active_class = '';
-				if ( $active_tab == $tab['slug'] ) {
+				if ( $active_tab === $tab['slug'] ) {
 					$active_class = ' nav-tab-active';
 				}
 				echo '<a href="?page=qmn_stats&tab="' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -40,7 +40,7 @@ function qmn_generate_stats_page() {
 		<div>
 		<?php
 			foreach ( $tab_array as $tab ) {
-				if ( $active_tab == $tab['slug'] ) {
+				if ( $active_tab === $tab['slug'] ) {
 					call_user_func($tab['function']);
 				}
 			}
@@ -70,7 +70,7 @@ add_action("plugins_loaded", 'qmn_stats_overview_tab');
  */
 function qmn_stats_overview_content() {
 	$range = "daily";
-	if ( isset($_POST["range"]) && $_POST["range"] != '' ) {
+	if ( isset($_POST["range"]) && '' !== $_POST["range"] ) {
 		$range = sanitize_text_field( wp_unslash( $_POST["range"] ) );
 	}
 	$data = qmn_load_stats($range, 7);
@@ -105,9 +105,9 @@ function qmn_stats_overview_content() {
 		<div class="postbox">
 			<form action="" method="post">
 				<select name="range">
-					<option value="daily" <?php if ( $range == "daily" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Daily', 'quiz-master-next'); ?></option>
-					<option value="weekly" <?php if ( $range == "weekly" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Weekly', 'quiz-master-next'); ?></option>
-					<option value="monthly" <?php if ( $range == "monthly" ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Monthly', 'quiz-master-next'); ?></option>
+					<option value="daily" <?php if ( "daily" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Daily', 'quiz-master-next'); ?></option>
+					<option value="weekly" <?php if ( "weekly" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Weekly', 'quiz-master-next'); ?></option>
+					<option value="monthly" <?php if ( "monthly" === $range ) { echo 'selected="selected"'; } ?>><?php esc_html_e('Monthly', 'quiz-master-next'); ?></option>
 					<?php do_action('qmn_quiz_taken_stats_options'); ?>
 				</select>
 				<button type="submit" class="button"><?php esc_html_e('Filter', 'quiz-master-next'); ?></button>

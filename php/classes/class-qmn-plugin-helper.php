@@ -119,7 +119,7 @@ class QMNPluginHelper
 
         // Set order direction
         $order_direction = 'DESC';
-        if ( 'ASC' == $order ) {
+        if ( 'ASC' === $order ) {
             $order_direction = 'ASC';
         }
 
@@ -148,28 +148,30 @@ class QMNPluginHelper
 
         // Should we include deleted?
         $delete = "WHERE deleted=0";
-        if ( $where != '' ) {
+        if ( '' !== $where ) {
             $delete = $delete . ' AND ' . $where;
         }
         if ( $include_deleted ) {
             $delete = '';
         }
         $user_str = '';
+        if ( in_array('author', (array) $user_role) ) {
+            if ( $user_id && '' === $delete ) {
         if ( in_array('author', (array) $user_role, true ) ) {
-            if ( $user_id && $delete == '' ) {
+            if ( $user_id && '' === $delete ) {
                 $user_str = "WHERE quiz_author_id = '$user_id'";
-            } elseif ( $user_id && $delete !== '' ) {
+            } elseif ( $user_id && '' !== $delete ) {
                 $user_str = " AND quiz_author_id = '$user_id'";
             }
         }
-        if ( $where != '' && $user_str != '' ) {
+        if ( '' !== $where && '' !== $user_str ) {
             $user_str = $user_str . ' AND ' . $where;
         }
         $where_str = '';
-        if ( $user_str == '' && $delete === '' && $where != '' ) {
+        if ( '' === $user_str && '' === $delete && '' !== $where ) {
             $where_str = "WHERE $where";
         }
-        if ( $limit != '' ) {
+        if ( '' !== $limit ) {
             $limit = ' limit ' . $offset . ', ' . $limit;
         }
         // Get quizzes and return them
@@ -390,7 +392,7 @@ class QMNPluginHelper
                 array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
 			);
         }
-        if ( 2 == $quiz_options->randomness_order || 3 == $quiz_options->randomness_order ) {
+        if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval ( $quiz_options->randomness_order ) ) {
             shuffle($answers);
             update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
@@ -400,10 +402,10 @@ class QMNPluginHelper
 		$answers = apply_filters('qsm_single_question_answers', $answers, $question, $quiz_options);
 
         foreach ( $this->question_types as $type ) {
-            if ( $type["slug"] == strtolower(str_replace(" ", "-", $slug)) ) {
+            if ( strtolower(str_replace(" ", "-", $slug)) === $type["slug"] ) {
                 if ( $type["graded"] ) {
                     $qmn_total_questions += 1;
-                    if ( $quiz_options->question_numbering == 1 ) { ?>
+                    if ( 1 === intval ( $quiz_options->question_numbering ) ) { ?>
                         <span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
                     <?php
                     }
@@ -448,7 +450,7 @@ class QMNPluginHelper
 			);
         }
         foreach ( $this->question_types as $type ) {
-            if ( $type["slug"] == strtolower(str_replace(" ", "-", $slug)) ) {
+            if ( strtolower(str_replace(" ", "-", $slug)) === $type["slug"] ) {
                 if ( ! is_null($type["review"]) ) {
                     $results_array = call_user_func($type['review'], intval($question_id), $question->question_name, $answers);
                 } else {

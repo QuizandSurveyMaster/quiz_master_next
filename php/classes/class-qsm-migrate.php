@@ -102,7 +102,7 @@ class QSM_Migrate {
 			$ids  = array();
 			foreach ( $cats as $category ) {
 				$category = trim( $category );
-				if ( $category != '' ) {
+				if ( '' !== $category ) {
 					$cat_data = get_term_by( 'name', $category, 'qsm_category' );
 					if ( $cat_data ) {
 						$ids[] = $cat_data->term_id;

@@ -181,7 +181,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 		if ( isset( $settings['items_per_page_question_bank'] ) ) {
 			$limit = $settings['items_per_page_question_bank'];
 		}
-		$limit       = $limit == '' || $limit == 0 ? 20 : $limit;
+		$limit       = empty( $limit ) ? 20 : $limit;
 		$total_pages = ceil( $total_count / $limit );
 		$pageno      = isset( $_REQUEST['page'] ) ? intval( $_REQUEST['page'] ) : 1;
 		$offset      = ( $pageno - 1 ) * $limit;
@@ -289,16 +289,16 @@ function qsm_get_result_of_quiz( WP_REST_Request $request ) {
 			$result_data = array();
 			foreach ( $mlw_quiz_data as $mlw_quiz_info ) {
 				$form_type = isset( $mlw_quiz_info->form_type ) ? $mlw_quiz_info->form_type : 0;
-				if ( $form_type == 1 || $form_type == 2 ) {
+				if ( 1 === intval( $form_type ) || '2' === intval( $form_type ) ) {
 					$quotes_list = '' . __( 'Not Graded', 'quiz-master-next' ) . '';
 				} else {
-					if ( $mlw_quiz_info->quiz_system == 0 ) {
+					if ( 0 === intval( $mlw_quiz_info->quiz_system ) ) {
 						$quotes_list = '' . $mlw_quiz_info->correct . ' out of ' . $mlw_quiz_info->total . ' or ' . $mlw_quiz_info->correct_score . '%';
 					}
-					if ( $mlw_quiz_info->quiz_system == 1 ) {
+					if ( 1 === intval( $mlw_quiz_info->quiz_system ) ) {
 						$quotes_list = '' . $mlw_quiz_info->point_score . ' Points';
 					}
-					if ( $mlw_quiz_info->quiz_system == 3 ) {
+					if ( 3 === intval( $mlw_quiz_info->quiz_system ) ) {
 						$quotes_list = '' . $mlw_quiz_info->correct . ' out of ' . $mlw_quiz_info->total . ' or ' . $mlw_quiz_info->correct_score . '%<br/>';
 						$quotes_list = '' . $mlw_quiz_info->point_score . ' Points';
 					}

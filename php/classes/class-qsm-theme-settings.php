@@ -172,7 +172,7 @@ class QSM_Theme_Settings {
 			'%d'
 		);
 
-		if ( $theme_id === 0 ) {
+		if ( 0 === $theme_id ) {
 			return;
 		}
 

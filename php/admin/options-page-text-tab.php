@@ -36,7 +36,7 @@ function mlw_options_text_tab_content() {
                         $editor_text_arr = $text_text_arr = array();
                         if ( $quiz_text_arr ) {
                             foreach ( $quiz_text_arr as $key => $single_text_arr ) {
-                                if ( $single_text_arr['type'] == 'editor' ) {
+                                if ( 'editor' === $single_text_arr['type'] ) {
                                     $editor_text_arr[] = $single_text_arr;
                                 }else {
                                     $text_text_arr[] = $single_text_arr;
@@ -124,7 +124,7 @@ function mlw_options_text_tab_content() {
 function qsm_get_question_text_message(){
     global $mlwQuizMasterNext;
     $text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
-    if ( $text_id == '' ) {
+    if ( '' === $text_id ) {
         echo wp_json_encode( array(
 			'success' => false,
 			'message' => __('Text id is missing.', 'quiz-master-next'),
@@ -175,7 +175,7 @@ function qsm_update_text_message(){
     $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
     $settings[ $text_id ] = $message;
     $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );
-    if ( false != $results ) {
+    if ( false !== $results ) {
         $results = array(
             'success' => true,
         );

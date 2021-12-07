@@ -355,7 +355,7 @@ class QMNQuizCreator {
 		$question_term_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $question_term ) );
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
 		$quiz_settings          = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
-		if ( $is_duplicating_questions == 0 ) {
+		if ( 0 == $is_duplicating_questions ) {
 			$quiz_settings['pages'] = '';
 		}
 		$qsm_create_quiz_system = 0;
@@ -496,7 +496,7 @@ class QMNQuizCreator {
 			$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? maybe_unserialize( $update_quiz_settings['logic_rules'] ) : array();
 		}
 
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$current_user = wp_get_current_user();
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
@@ -584,7 +584,7 @@ class QMNQuizCreator {
 				);
 				foreach ( $update_pages as $pages_key => $pages_value ) {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
-						if ( $page_q_id == $mlw_question->question_id ) {
+						if ( $page_q_id === $mlw_question->question_id ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}
@@ -594,7 +594,7 @@ class QMNQuizCreator {
 					foreach ( $logic_rules as $logic_key => $logic_value ) {
 						foreach ( $logic_value as $logic_cond_k => $logic_cond ) {
 							foreach ( $logic_cond as $l_cond_k => $logic_val ) {
-								if ( $logic_val['question'] == $mlw_question->question_id ) {
+								if ( $logic_val['question'] === $mlw_question->question_id ) {
 									$logic_rules[ $logic_key ][ $logic_cond_k ][ $l_cond_k ]['question'] = $wpdb->insert_id;
 								}
 							}
@@ -628,7 +628,7 @@ class QMNQuizCreator {
 					}
 				}
 
-				if ( $question_results == false ) {
+				if ( false === $question_results ) {
 					$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0020', 'quiz-master-next' ), 'error' );
 					$mlwQuizMasterNext->log_manager->add( 'Error 0020', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 				}
@@ -651,7 +651,7 @@ class QMNQuizCreator {
 					$query  = "INSERT INTO $logic_table (quiz_id, logic) VALUES ";
 					$query .= $values;
 					$saved  = $wpdb->query( $query );
-					if ( $saved != false ) {
+					if ( false !== $saved ) {
 						update_option( "logic_rules_quiz_$mlw_new_id", gmdate( time() ) );
 						$update_quiz_settings['logic_rules'] = '';
 					} else {
@@ -723,7 +723,7 @@ class QMNQuizCreator {
 			),
 			array( '%d' )
 		);
-		if ( $results != false ) {
+		if ( false !== $results ) {
 			return true;
 		} else {
 			return false;

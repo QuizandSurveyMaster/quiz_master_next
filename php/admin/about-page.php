@@ -38,10 +38,10 @@ function qsm_generate_about_page() {
 	add_meta_box( 'wpss_mrts', __( 'System Info', 'quiz-master-next' ), 'qsm_system_meta_box_content', 'meta_box_sys_info' );
 	?>
 
-<?php if ( $active_tab == 'help' ) {?>
+<?php if ( 'help' === $active_tab ) {?>
 <div class="wrap qsm-help-page">
 	<h2><?php esc_html_e( 'Help Page', 'quiz-master-next' ); ?></h2>
-	<?php } elseif ( $active_tab == 'about' ) {?>
+	<?php } elseif ( 'about' === $active_tab ) {?>
 	<style>
 	div.qsm_icon_wrap {
 		background: <?php echo 'url("'. esc_url( plugins_url( '../../assets/icon-128x128.png', __FILE__ ) ). '" )';
@@ -58,7 +58,7 @@ function qsm_generate_about_page() {
 			<?php
             foreach ( $tab_array as $tab ) {
                 $active_class = '';
-                if ( $active_tab == $tab['slug'] ) {
+                if ( $active_tab === $tab['slug'] ) {
                     $active_class = ' nav-tab-active';
                 }
                 echo '<a href="?page=qsm_quiz_about&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -68,7 +68,7 @@ function qsm_generate_about_page() {
 		<br />
 		<div>
 			<?php
-                if ( $active_tab == 'help' ) {
+                if ( 'help' === $active_tab ) {
                     qsm_show_adverts();
 					?>
 			<div style="width:100%;" class="inner-sidebar1">
@@ -79,7 +79,7 @@ function qsm_generate_about_page() {
 				<?php do_meta_boxes( 'meta_box_sys_info', 'advanced', '' ); ?>
 			</div>
 			<?php
-                } elseif ( $active_tab == 'about' ) {
+                } elseif ( 'about' === $active_tab ) {
 					?>
 			<div class="qsm-tab-content tab-3">
 				<h2 style="text-align: left;margin-bottom: 35px;margin-top: 25px;font-weight: 500;">GitHub Contributors
@@ -88,7 +88,7 @@ function qsm_generate_about_page() {
 					$contributors = get_transient( 'qmn_contributors' );
 					if ( false === $contributors ) {
 						$response = wp_remote_get( 'https://api.github.com/repos/QuizandSurveyMaster/quiz_master_next/contributors', array( 'sslverify' => false ) );
-						if ( is_wp_error( $response ) || 200 != wp_remote_retrieve_response_code( $response ) ) {
+						if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 							$contributors = array();
 						} else {
 							$contributors = json_decode( wp_remote_retrieve_body( $response ) );

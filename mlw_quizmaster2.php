@@ -256,7 +256,7 @@ class MLWQuizMasterNext {
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 		//dashboard and quiz list pages
-		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
+		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_mlw_quiz_list' === $hook ) {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
 			wp_enqueue_media();
 			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css', array(), $this->version );
@@ -264,14 +264,14 @@ class MLWQuizMasterNext {
 			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 		}
 		// dashboard
-		if ( $hook == 'toplevel_page_qsm_dashboard' ) {
+		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
 			wp_enqueue_script( 'dashboard' );
 			if ( wp_is_mobile() ) {
 				wp_enqueue_script( 'jquery-touch-punch' );
 			}
 		}
 		// result details page
-		if ( $hook == 'admin_page_qsm_quiz_result_details' ) {
+		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
 			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
@@ -282,7 +282,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
 		}
 		//results page
-		if ( $hook == 'qsm_page_mlw_quiz_results' ) {
+		if ( 'qsm_page_mlw_quiz_results' === $hook ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
@@ -290,11 +290,11 @@ class MLWQuizMasterNext {
 			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
 		}
 		//stats page
-		if ( $hook == 'qsm_page_qmn_stats' ) {
+		if ( 'qsm_page_qmn_stats' === $hook ) {
 			wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js', array(),'3.6.0',true);
 		}
 		//quiz option pages
-		if ( $hook == 'admin_page_mlw_quiz_options' ) {
+		if ( 'admin_page_mlw_quiz_options' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
@@ -354,12 +354,12 @@ class MLWQuizMasterNext {
 		$plural_name    = __( 'Quizzes & Surveys', 'quiz-master-next' );
 
 		// Checks if admin turned off archive.
-		if ( isset( $settings['cpt_archive'] ) && '1' == $settings['cpt_archive'] ) {
+		if ( isset( $settings['cpt_archive'] ) && '1' === $settings['cpt_archive'] ) {
 			$has_archive = false;
 		}
 
 		// Checks if admin turned off search.
-		if ( isset( $settings['cpt_search'] ) && '1' == $settings['cpt_search'] ) {
+		if ( isset( $settings['cpt_search'] ) && '1' === $settings['cpt_search'] ) {
 			$exclude_search = true;
 		}
 
@@ -439,7 +439,7 @@ class MLWQuizMasterNext {
 
 	public function parent_file( $file_name ) {
 		global $menu, $submenu, $parent_file, $submenu_file;
-		if ( 'edit-tags.php?taxonomy=qsm_category' == $submenu_file ) {
+		if ( 'edit-tags.php?taxonomy=qsm_category' === $submenu_file ) {
 			$file_name = 'qsm_dashboard';
 		}
 		return $file_name;
@@ -461,7 +461,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
 			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ), __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
 			add_action( "load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options' );
-			if ( $enabled && $enabled != 'cancelled' ) {
+			if ( $enabled && 'cancelled' !== $enabled ) {
 				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
 			}
 			add_submenu_page( null, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
@@ -498,12 +498,9 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_overide_old_setting_options() {
 		$settings = (array) get_option( 'qmn-settings' );
-
 		if ( isset( $settings['facebook_app_id'] ) ) {
-
-				$facebook_app_id = $settings['facebook_app_id'];
-
-			if ( $facebook_app_id == '483815031724529' ) {
+			$facebook_app_id = $settings['facebook_app_id'];
+			if ( '483815031724529' === $facebook_app_id ) {
 				$settings['facebook_app_id'] = '594986844960937';
 				update_option( 'qmn-settings', $settings );
 			}
@@ -511,7 +508,6 @@ class MLWQuizMasterNext {
 			$settings['facebook_app_id'] = '594986844960937';
 			update_option( 'qmn-settings', $settings );
 		}
-
 	}
 
 	/**

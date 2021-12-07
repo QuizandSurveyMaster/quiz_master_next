@@ -55,7 +55,7 @@ class QSM_Emails {
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							if ( $category != '' ) {
+							if ( '' !== $category ) {
 								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 							} else {
 								$test = $response_data['total_score'];
@@ -63,7 +63,7 @@ class QSM_Emails {
 							break;
 
 						case 'points':
-							if ( $category != '' ) {
+							if ( '' !== $category ) {
 								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 							} else {
 								$test = $response_data['total_points'];

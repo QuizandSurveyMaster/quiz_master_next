@@ -22,7 +22,7 @@ function qmn_addons_page() {
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
 		<?php
-		if ( isset( $_GET['tab'] ) && $_GET['tab'] != '' ) {
+		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
 			?>
 		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>
@@ -36,7 +36,7 @@ function qmn_addons_page() {
 		<?php
 		foreach ( $tab_array as $tab ) {
 				$active_class = '';
-			if ( $active_tab == $tab['slug'] ) {
+			if ( $active_tab === $tab['slug'] ) {
 				$active_class = ' nav-tab-active';
 			}
 			echo '<a href="?page=qmn_addons&tab=' . esc_attr( $tab['slug'] ) . '" class="nav-tab' . esc_attr( $active_class ) . '">' . esc_html( $tab['title'] ) . '</a>';
@@ -46,7 +46,7 @@ function qmn_addons_page() {
 	<div>
 		<?php
 		foreach ( $tab_array as $tab ) {
-			if ( $active_tab == $tab['slug'] ) {
+			if ( $active_tab === $tab['slug'] ) {
 				call_user_func( $tab['function'] );
 			}
 		}
@@ -98,8 +98,8 @@ function qsm_generate_featured_addons() {
 	<div class="installed_addons_wrapper">
 		<?php
 		foreach ( $tab_array as $tab ) {
-			if ( trim( $tab['title'] ) == 'Featured Addons' ) {
-							continue;
+			if ( 'Featured Addons' === trim( $tab['title'] ) ) {
+				continue;
 			}
 			?>
 		<div class="installed_addon">
@@ -222,7 +222,7 @@ function qsm_generate_featured_addons() {
 				<?php
 				if ( $new_addons ) {
 					foreach ( $new_addons as $key => $single_arr ) {
-						if ( trim( $single_arr['name'] ) == 'Starter Bundle' || trim( $single_arr['name'] ) == 'Premium Bundle' ) {
+						if ( 'Starter Bundle' === trim( $single_arr['name'] ) || 'Premium Bundle' === trim( $single_arr['name'] ) ) {
 							continue;
 						}
 						?>
@@ -445,7 +445,7 @@ function qsm_display_optin_page() {
 }
 function qsm_admin_get_free_addon_page_scripts_style( $hook ) {
 	global $mlwQuizMasterNext;
-	if ( $hook == 'qsm_page_qsm-free-addon' ) {
+	if ( 'qsm_page_qsm-free-addon' === $hook ) {
 
 		wp_enqueue_style( 'qsm_sendinblue_component_form',  QSM_PLUGIN_CSS_URL.'/sendinblue-component.css', array(), $mlwQuizMasterNext->version);
 		wp_enqueue_style( 'qsm_sendinblue_component_clickable',  QSM_PLUGIN_CSS_URL.'/sendinblue-component-clickable.css', array(), $mlwQuizMasterNext->version);

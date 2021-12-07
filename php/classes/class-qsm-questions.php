@@ -391,7 +391,7 @@ class QSM_Questions {
 			
 			$cat_array = self::get_question_categories_from_quiz_id( $quiz_id );
 			$enabled = get_option( 'qsm_multiple_category_enabled' );
-			if ( $enabled && $enabled != 'cancelled' && ! empty( $cat_array ) ) {
+			if ( $enabled && 'cancelled' !== $enabled && ! empty( $cat_array ) ) {
 				$term_ids = array_unique( array_merge( $term_ids, $cat_array ) );
 			}
 

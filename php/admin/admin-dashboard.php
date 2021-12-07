@@ -61,7 +61,7 @@ function qsm_check_close_hidden_box( $widget_id ) {
  */
 function qsm_dashboard_screen_options( $status, $args ) {
 	$screen = get_current_screen();
-	if ( is_object( $screen ) && trim( $screen->id ) == 'toplevel_page_qsm_dashboard' ) {
+	if ( is_object( $screen ) && 'toplevel_page_qsm_dashboard' === trim( $screen->id ) ) {
 		ob_start();
 		$page_id = $screen->id;
 		$user    = wp_get_current_user();
@@ -220,7 +220,7 @@ function qsm_generate_dashboard_page() {
 				<div id="normal-sortables" class="meta-box-sortables ui-sortable">
 					<?php
 						$normal_widgets = $side_widgets = array();
-					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['normal'] ) && $box_positions['normal'] != '' ) {
+					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['normal'] ) && '' !== $box_positions['normal'] ) {
 						$normal_widgets = explode( ',', $box_positions['normal'] );
 						foreach ( $normal_widgets as $value ) {
 							if ( isset( $qsm_dashboard_widget[ $value ] ) ) {
@@ -228,13 +228,13 @@ function qsm_generate_dashboard_page() {
 							}
 						}
 					}
-					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['side'] ) && $box_positions['side'] != '' ) {
+					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['side'] ) && '' !== $box_positions['side'] ) {
 						$side_widgets = explode( ',', $box_positions['side'] );
 					}
 						$all_widgets = array_merge( $normal_widgets, $side_widgets );
 					if ( $qsm_dashboard_widget ) {
 						foreach ( $qsm_dashboard_widget as $widgte_id => $normal_widget ) {
-							if ( ! in_array( $widgte_id, $all_widgets, true ) && $normal_widget['sidebar'] == 'normal' ) {
+							if ( ! in_array( $widgte_id, $all_widgets, true ) && 'normal' === $normal_widget['sidebar'] ) {
 								call_user_func( $normal_widget['callback'], $widgte_id );
 							}
 						}
@@ -246,7 +246,7 @@ function qsm_generate_dashboard_page() {
 				<div id="side-sortables" class="meta-box-sortables ui-sortable">
 					<?php
 						$normal_widgets = array();
-					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['side'] ) && $box_positions['side'] != '' ) {
+					if ( $box_positions && is_array( $box_positions ) && isset( $box_positions['side'] ) && '' !== $box_positions['side'] ) {
 						$normal_widgets = explode( ',', $box_positions['side'] );
 						foreach ( $normal_widgets as $value ) {
 							if ( isset( $qsm_dashboard_widget[ $value ] ) ) {
@@ -256,7 +256,7 @@ function qsm_generate_dashboard_page() {
 					}
 					if ( $qsm_dashboard_widget ) {
 						foreach ( $qsm_dashboard_widget as $widgte_id => $normal_widget ) {
-							if ( ! in_array( $widgte_id, $all_widgets, true ) && $normal_widget['sidebar'] == 'side' ) {
+							if ( ! in_array( $widgte_id, $all_widgets, true ) && 'side' === $normal_widget['sidebar'] ) {
 								call_user_func( $normal_widget['callback'], $widgte_id );
 							}
 						}
@@ -305,13 +305,13 @@ function qsm_wizard_template_quiz_options() {
 		$recommended_addon_str .= '<ul>';
 		foreach ( $addons as $single_addon ) {
 			$recommended_addon_str .= '<li>';
-			if ( isset( $single_addon['attribute'] ) && $single_addon['attribute'] != '' ) {
+			if ( isset( $single_addon['attribute'] ) && '' !== $single_addon['attribute'] ) {
 				$attr                   = $single_addon['attribute'];
 				$recommended_addon_str .= '<span class="ra-attr qra-att-' . $attr . '">' . $attr . '</span>';
 			}
 			$link                   = isset( $single_addon['link'] ) ? $single_addon['link'] : '';
 			$recommended_addon_str .= '<a target="_blank" href="' . $link . '">';
-			if ( isset( $single_addon['img'] ) && $single_addon['img'] != '' ) {
+			if ( isset( $single_addon['img'] ) && '' !== $single_addon['img'] ) {
 				$img                    = $single_addon['img'];
 				$recommended_addon_str .= '<img src="' . $img . '"/>';
 			}
@@ -397,7 +397,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 						?>
 				<li>
 					<?php
-						if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != '' ) {
+						if ( isset( $single_result_arr['user'] ) && '' !== $single_result_arr['user'] ) {
 							echo '<img src="' . esc_url( get_avatar_url( $single_result_arr['user'] ) ) . '" class="avatar avatar-50 photo" alt="User Avatar">';
 						} else {
 							echo '<img src="' . esc_url( QSM_PLUGIN_URL . '/assets/default_image.png' ) . '" class="avatar avatar-50 photo" alt="Default Image">';
@@ -406,10 +406,10 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					<div class="rtq-main-wrapper">
 						<span class="rtq_user_info">
 							<?php
-							if ( isset( $single_result_arr['user'] ) && $single_result_arr['user'] != 0 ) {
+							if ( isset( $single_result_arr['user'] ) && 0 !== intval( $single_result_arr['user'] ) ) {
 								$edit_link = get_edit_profile_url( $single_result_arr['user'] );
 								$actual_user = get_userdata( $single_result_arr['user'] );
-								$user_name = $single_result_arr['name'] == 'None' ? $actual_user->data->display_name : $single_result_arr['name'];
+								$user_name = 'None' === $single_result_arr['name'] ? $actual_user->data->display_name : $single_result_arr['name'];
 								echo '<a href="' . esc_url( $edit_link ) . '">' . esc_html( $user_name ) . '</a>';
 							} else {
 								echo esc_html__( 'Guest', 'quiz-master-next' );
@@ -422,16 +422,16 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							<?php
 							$quotes_list = '';
 							$form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
-							if ( $form_type == 1 || $form_type == 2 ) {
+							if ( 1 === intval( $form_type ) || 2 === intval( $form_type ) ) {
 								$quotes_list .= __( 'Not Graded', 'quiz-master-next' );
 							} else {
-								if ( $single_result_arr['quiz_system'] == 0 ) {
+								if ( 0 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%';
 								}
-								if ( $single_result_arr['quiz_system'] == 1 ) {
+								if ( 1 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['point_score'] . ' Points';
 								}
-								if ( $single_result_arr['quiz_system'] == 3 ) {
+								if ( 3 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%<br/>';
 									$quotes_list .= $single_result_arr['point_score'] . ' Points';
 								}
@@ -557,24 +557,23 @@ function qsm_dashboard_chagelog( $widget_id ) {
 				<?php
 					$i = 0;
 				foreach ( $change_log as $single_change_log ) {
-					if ( $single_change_log != '' ) {
-						if ( $i == 5 ) {
-												break;
+					if ( '' !== $single_change_log ) {
+						if ( 5 === $i ) {
+							break;
 						}
-
 						$expload_str = explode( ':', $single_change_log );
 						$cl_type     = $expload_str[0];
 						$cl_str      = $expload_str[1];
 						?>
-
-				<li><span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
-					<?php echo wp_kses_post( $cl_str ); ?></li>
-				<?php
+						<li>
+							<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
+							<?php echo wp_kses_post( $cl_str ); ?>
+						</li>
+						<?php
 						$i++;
 					}
 				}
 				?>
-
 			</ul>
 			<?php if ( $change_log_count > 5 ) { ?>
 			<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
@@ -636,9 +635,9 @@ add_action( 'admin_init', 'qsm_create_new_quiz_from_wizard' );
  */
 function qsm_reset_transient_dashboard( $upgrader_object, $options ) {
 	$current_plugin_path_name = QSM_PLUGIN_BASENAME;
-	if ( $options['action'] == 'update' && $options['type'] == 'plugin' ) {
+	if ( 'update' === $options['action'] && 'plugin' === $options['type'] ) {
 		foreach ( $options['plugins'] as $each_plugin ) {
-			if ( $each_plugin == $current_plugin_path_name ) {
+			if ( $each_plugin === $current_plugin_path_name ) {
 				delete_transient( 'qsm_admin_dashboard_data' );
 			}
 		}
