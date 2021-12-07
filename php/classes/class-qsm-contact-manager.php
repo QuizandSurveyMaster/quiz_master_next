@@ -47,28 +47,27 @@ class QSM_Contact_Manager {
 
 		// Loads fields.
 		$fields = self::load_fields();
-
-                $contact_disable_autofill = $options->contact_disable_autofill;
+		$contact_disable_autofill = $options->contact_disable_autofill;
 
 		// If fields are empty and backwards-compatible fields are turned on then, use older system.
-		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( '2' !== $options->user_name || '2' !== $options->user_comp || '2' !== $options->user_email || '2' !== $options->user_phone ) ) {
+		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== intval($options->user_name) || 2 !== intval($options->user_comp) || 2 !== intval($options->user_email) || 2 !== intval($options->user_phone) ) ) {
 
 			// Check for name field.
-			if ( '2' !== $options->user_name ) {
+			if ( 2 !== intval($options->user_name) ) {
 				$class = '';
-				if ( '1' === $options->user_name && ! $fields_hidden ) {
+				if ( 1 === intval($options->user_name) && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->name_field_text ); ?></span>
-                                <input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo esc_attr( $options->name_field_text ); ?>" value='<?php echo esc_attr( $name ); ?>' />
+				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='<?php echo esc_attr( $class ); ?>' name='mlwUserName' placeholder="<?php echo esc_attr( $options->name_field_text ); ?>" value='<?php echo esc_attr( $name ); ?>' />
 				<?php
 			}
 
 			// Check for comp field.
-			if ( '2' !== $options->user_comp ) {
+			if ( 2 !== intval($options->user_comp) ) {
 				$class = '';
-				if ( '1' === $options->user_comp && ! $fields_hidden ) {
+				if ( 1 === intval($options->user_comp) && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -78,9 +77,9 @@ class QSM_Contact_Manager {
 			}
 
 			// Check for email field.
-			if ( '2' !== $options->user_email ) {
+			if ( 2 !== intval($options->user_email) ) {
 				$class = '';
-				if ( '1' === $options->user_email && ! $fields_hidden ) {
+				if ( 1 === intval($options->user_email) && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
@@ -90,9 +89,9 @@ class QSM_Contact_Manager {
 			}
 
 			// Check for phone field.
-			if ( '2' !== $options->user_phone ) {
+			if ( 2 !== intval($options->user_phone) ) {
 				$class = '';
-				if ( '1' === $options->user_phone && ! $fields_hidden ) {
+				if ( 1 === intval($options->user_phone) && ! $fields_hidden ) {
 					$class = 'mlwRequiredText qsm_required_text';
 				}
 				?>
