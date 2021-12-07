@@ -155,8 +155,6 @@ class QMNPluginHelper
             $delete = '';
         }
         $user_str = '';
-        if ( in_array('author', (array) $user_role) ) {
-            if ( $user_id && '' === $delete ) {
         if ( in_array('author', (array) $user_role, true ) ) {
             if ( $user_id && '' === $delete ) {
                 $user_str = "WHERE quiz_author_id = '$user_id'";
