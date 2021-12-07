@@ -48,7 +48,7 @@ class QSM_Contact_Manager {
 		// Loads fields.
 		$fields = self::load_fields();
 
-            $contact_disable_autofill = $options->contact_disable_autofill;
+            	$contact_disable_autofill = $options->contact_disable_autofill;
 
 		// If fields are empty and backwards-compatible fields are turned on then, use older system.
 		if ( ( empty( $fields ) || ! is_array( $fields ) ) && ( 2 !== intval($options->user_name) || 2 !== intval($options->user_comp) || 2 !== intval($options->user_email) || 2 !== intval($options->user_phone) ) ) {
@@ -85,7 +85,7 @@ class QSM_Contact_Manager {
 				}
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo wp_kses_post( $options->email_field_text ); ?></span>
-				<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
+								<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='mlwUserEmail' placeholder="<?php echo esc_attr( $options->email_field_text ); ?>" value='<?php echo esc_attr( $email ); ?>' />
 				<?php
 			}
 
