@@ -863,7 +863,7 @@ function qsm_get_default_wizard_themes() {
 				}
 			} else {
 				$key_to_move = array_search( $theme, array_column( $themes_data, 'name' ), true );
-				if ( $key_to_move !== false ) {
+				if ( false !== $key_to_move ) {
 					array_push( $default_themes_data, $themes_data[ $key_to_move ] );
 					// $keys_to_unset[] = $key_to_move;
 				}

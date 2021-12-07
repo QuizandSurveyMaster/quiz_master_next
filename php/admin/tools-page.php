@@ -161,7 +161,7 @@ function qsm_audit_box() {
 			</a>
 			<?php
 		}
-	} elseif ( $page == 0 ) {
+	} elseif ( 0 == $page ) {
 		if ( $left > $table_limit ) {
 			?>
 			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($page); ?>">
