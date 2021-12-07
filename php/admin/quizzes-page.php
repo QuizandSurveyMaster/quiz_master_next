@@ -130,7 +130,7 @@ function qsm_generate_quizzes_surveys_page() {
 
 	// Check user role and fetch the quiz
 	$user = wp_get_current_user();
-	if ( in_array( 'author', (array) $user->roles ) ) {
+	if ( in_array( 'author', (array) $user->roles, true ) ) {
 		$post_arr['author__in'] = array( $user->ID );
 	}
 	if ( isset( $_GET['order'] ) && sanitize_text_field( wp_unslash( $_GET['order'] ) ) == 'asc' ) {
@@ -378,10 +378,10 @@ function qsm_generate_quizzes_surveys_page() {
 								<a class="row-title" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>" aria-label="<?php echo esc_attr( $single_arr['name'] ); ?>"><?php echo esc_html( $single_arr['name'] ); ?> <strong style="color: #222; text-transform: capitalize;"><?php echo esc_html( $single_arr['post_status'] != 'publish' ? '— ' . $single_arr['post_status'] : '' ); ?></strong>
 								</a>
 								<div class="row-actions">
-									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> | 
-									<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> | 
+									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> |
+									<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
 									<a class="qsm-action-link qsm-action-link-delete" href="#"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
-									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> | 
+									<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
 									<a class="qsm-action-link" target="_blank" rel="noopener" href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></a>
 								</div>
 							</td>

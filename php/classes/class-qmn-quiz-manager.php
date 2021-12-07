@@ -109,7 +109,7 @@ class QMNQuizManager {
 
 		$file_name     = isset( $_FILES['file']['name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ) : '';
 		$validate_file = wp_check_filetype( $file_name );
-		if ( isset( $validate_file['type'] ) && $validate_file['type'] != false && in_array( $validate_file['type'], $mimes ) ) {
+		if ( isset( $validate_file['type'] ) && in_array( $validate_file['type'], $mimes, true ) ) {
 			if ( isset( $_FILES['file']['size'] ) && $_FILES['file']['size'] >= $file_upload_limit * 1024 * 1024 ) {
 				$json['type']    = 'error';
 				$json['message'] = __( 'File is too large. File must be less than ', 'quiz-master-next' ) . $file_upload_limit . ' MB';
@@ -118,7 +118,7 @@ class QMNQuizManager {
 			}
 			$upload_dir = wp_upload_dir();
 
-			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? sanitize_file_name( wp_unslash( $_FILES['file']['tmp_name'] ) ) : '';
+			$datafile   = isset( $_FILES['file']['tmp_name'] ) ? wp_unslash( $_FILES['file']['tmp_name'] ) : '';
 			// $file_name = $_FILES["file"]["name"];
 			$extension = pathinfo( $file_name, PATHINFO_EXTENSION );
 			// remove white space between file name
@@ -529,7 +529,7 @@ class QMNQuizManager {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
 					if ( ! empty( $category_question_ids ) ) {
-						if ( in_array( $question, $category_question_ids) ) {
+						if ( in_array( intval( $question ), $category_question_ids, true ) ) {
 							$question_ids[] = intval( $question );
 						}
 					} else {
@@ -583,7 +583,7 @@ class QMNQuizManager {
 			if ( 1 != $quiz_options->randomness_order && 2 != $quiz_options->randomness_order && $quiz_options->question_per_category == 0 ) {
 				$ordered_questions = array();
 				foreach ( $questions as $question ) {
-					$key = array_search( $question->question_id, $question_ids );
+					$key = array_search( intval( $question->question_id ), $question_ids, true );
 					if ( false !== $key ) {
 						$ordered_questions[ $key ] = $question;
 					}
@@ -806,12 +806,12 @@ class QMNQuizManager {
 		$contact_fields         = QSM_Contact_Manager::load_fields();
 		$animation_effect       = isset( $options->quiz_animation ) && $options->quiz_animation != '' ? ' animated ' . $options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $options->enable_pagination_quiz ) && $options->enable_pagination_quiz == 1 ? true : false;
-		
+
 		//repeated htmls
 		$div_hint_open  = '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">';
 		$span_tooltip   = '<span class="qsm_tooltiptext">';
 		$close_span_div = '</span></div>';
-		
+
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
 			$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
@@ -1639,7 +1639,7 @@ class QMNQuizManager {
 							$answer_points  = 0;
 
 							// Get maximum and minimum points for the quiz
-							if ( ! in_array( $question_id, $hidden_questions ) ) {
+							if ( ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
 								$max_min_result = QMNQuizManager::qsm_max_min_points($options,$question);
 								$total_possible_points += $max_min_result['max_point'];
 								$minimum_possible_points += $max_min_result['min_point'];
@@ -1653,21 +1653,15 @@ class QMNQuizManager {
 
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
-								if ( in_array( $question_type_new, $result_question_types ) ) {
-									if ( ! in_array( $question_id, $hidden_questions ) ) {
-										$points_earned += $results_array['points'] ? $results_array['points'] : 0;
-										$answer_points += $results_array['points'] ? $results_array['points'] : 0;
-									}
+								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$points_earned += $results_array['points'] ? $results_array['points'] : 0;
+									$answer_points += $results_array['points'] ? $results_array['points'] : 0;
 								}
 
 								// If the user's answer was correct
-								if ( 'correct' == $results_array['correct'] ) {
-									if ( in_array( $question_type_new, $result_question_types ) ) {
-										if ( ! in_array( $question_id, $hidden_questions ) ) {
-											$total_correct += 1;
-											$correct_status = 'correct';
-										}
-									}
+								if ( 'correct' == $results_array['correct'] && in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
+									$total_correct += 1;
+									$correct_status = 'correct';
 								}
 								$user_answer       = $results_array['user_text'];
 								$correct_answer    = $results_array['correct_text'];
@@ -1816,7 +1810,7 @@ class QMNQuizManager {
 			if ( empty( $has_diff ) ) {
 				$new_question_data = [];
 				foreach ( $qsm_random_que_ids as $que_id ) {
-					$key = array_search( $que_id, $qs_ids );
+					$key = array_search( $que_id, $qs_ids, true );
 					$new_question_data[] = $question_data[ $key ];
 				}
 				if ( ! empty( $new_question_data ) ) {
@@ -2274,7 +2268,7 @@ class QMNQuizManager {
 	 * @return bool True, if in the active plugins list. False, not in the list.
 	 */
 	private function qsm_plugin_active( $plugin ) {
-		return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || $this->qsm_plugin_active_for_network( $plugin );
+		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || $this->qsm_plugin_active_for_network( $plugin );
 	}
 
 	/**

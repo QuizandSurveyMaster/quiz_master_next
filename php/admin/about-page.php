@@ -201,14 +201,14 @@ function qsm_get_system_info() {
 	$plugins        = get_plugins();
 	$active_plugins = get_option( 'active_plugins', array() );
 	foreach ( $plugins as $plugin_path => $plugin ) {
-		if ( ! in_array( $plugin_path, $active_plugins ) ) {
+		if ( ! in_array( $plugin_path, $active_plugins, true ) ) {
 			continue;
 		}
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
 	}
 	$sys_info .= '<h4>'. __('Inactive', 'quiz-master-next') .'</h4>';
 	foreach ( $plugins as $plugin_path => $plugin ) {
-		if ( in_array( $plugin_path, $active_plugins ) ) {
+		if ( in_array( $plugin_path, $active_plugins, true ) ) {
 			continue;
 		}
 		$sys_info .= $plugin['Name'] . ': ' . $plugin['Version'] . '<br />';
