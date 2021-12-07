@@ -22,7 +22,7 @@ function qmn_addons_page() {
 <div class="wrap qsm-addon-setting-wrap">
 	<h2 style="margin-bottom: 20px;">
 		<?php
-		if ( isset( $_GET['tab'] ) && '' !== $_GET['tab'] ) {
+		if ( isset( $_GET['tab'] ) && '' !== sanitize_text_field( wp_unslash( $_GET['tab'] ) ) ) {
 			?>
 		<a class="button button-default" href="?page=qmn_addons"  style="margin-right: 10px"><span style="margin-top: 4px;"
 				class="dashicons dashicons-arrow-left-alt"></span>

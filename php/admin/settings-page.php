@@ -280,7 +280,7 @@ class QMNGlobalSettingsPage {
 			$cpt_search = esc_attr( $settings['cpt_search'] );
 		}
 		$checked = '';
-		if ( '1' === $cpt_search ) {
+		if ( '1' == $cpt_search ) {
 			$checked = " checked='checked'";
 		}
 
@@ -302,7 +302,7 @@ class QMNGlobalSettingsPage {
 			$cpt_archive = esc_attr( $settings['cpt_archive'] );
 		}
 		$checked = '';
-		if ( '1' === $cpt_archive ) {
+		if ( '1' == $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
 
@@ -324,7 +324,7 @@ class QMNGlobalSettingsPage {
 			$cpt_archive = esc_attr( $settings['delete_qsm_data'] );
 		}
 		$checked = '';
-		if ( '1' === $cpt_archive ) {
+		if ( '1' == $cpt_archive ) {
 			$checked = " checked='checked'";
 		}
 
@@ -397,7 +397,7 @@ class QMNGlobalSettingsPage {
 			$tracking_allowed = esc_attr( $settings['tracking_allowed'] );
 		}
 		$checked = '';
-		if ( '2' === $tracking_allowed ) {
+		if ( '2' == $tracking_allowed ) {
 			$checked = " checked='checked'";
 		}
 
@@ -508,9 +508,9 @@ class QMNGlobalSettingsPage {
 		global $globalQuizsetting;
 		$qsm_form_type  = (isset($globalQuizsetting['form_type']) && '' !== $globalQuizsetting['form_type'] ? $globalQuizsetting['form_type'] : "");
 		echo '<div class="global_form_type_settiong"><select name ="qsm-quiz-settings[form_type]">
-			<option value="0" '.('0' === $qsm_form_type ? "Selected" : "").'>Quiz</option>
-			<option value="1" '.('1' === $qsm_form_type ? "Selected" : "").' >Survey</option>
-			<option value="2" '.('2' === $qsm_form_type ? "Selected" : "").'>Simple Form</option>
+			<option value="0" '.(0 === intval( $qsm_form_type ) ? "Selected" : "").'>Quiz</option>
+			<option value="1" '.(1 === intval( $qsm_form_type ) ? "Selected" : "").' >Survey</option>
+			<option value="2" '.(2 === intval( $qsm_form_type ) ? "Selected" : "").'>Simple Form</option>
 		</select></div>';
 	}
 

@@ -284,7 +284,7 @@ function qsm_generate_quizzes_surveys_page() {
 							echo 'style="display:none;"';
 						}
 						?>>
-							<?php if ( '1' === $paged ) { ?>
+							<?php if ( '1' == $paged ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>
@@ -461,7 +461,7 @@ function qsm_generate_quizzes_surveys_page() {
 							echo 'style="display:none;"';
 						}
 						?>>
-							<?php if ( '1' === $paged ) { ?>
+							<?php if ( '1' == $paged ) { ?>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>
 							<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>
 							<?php } else { ?>

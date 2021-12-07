@@ -355,7 +355,7 @@ class QMNQuizCreator {
 		$question_term_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $question_term ) );
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
 		$quiz_settings          = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
-		if ( 0 === $is_duplicating_questions ) {
+		if ( 0 == $is_duplicating_questions ) {
 			$quiz_settings['pages'] = '';
 		}
 		$qsm_create_quiz_system = 0;

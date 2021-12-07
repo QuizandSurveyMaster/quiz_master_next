@@ -406,7 +406,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 					<div class="rtq-main-wrapper">
 						<span class="rtq_user_info">
 							<?php
-							if ( isset( $single_result_arr['user'] ) && '0' !== $single_result_arr['user'] ) {
+							if ( isset( $single_result_arr['user'] ) && 0 !== intval( $single_result_arr['user'] ) ) {
 								$edit_link = get_edit_profile_url( $single_result_arr['user'] );
 								$actual_user = get_userdata( $single_result_arr['user'] );
 								$user_name = 'None' === $single_result_arr['name'] ? $actual_user->data->display_name : $single_result_arr['name'];
@@ -422,16 +422,16 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 							<?php
 							$quotes_list = '';
 							$form_type = isset( $single_result_arr['form_type'] ) ? $single_result_arr['form_type'] : 0;
-							if ( "1" === $form_type || "2" === $form_type ) {
+							if ( 1 === intval( $form_type ) || 2 === intval( $form_type ) ) {
 								$quotes_list .= __( 'Not Graded', 'quiz-master-next' );
 							} else {
-								if ( "0" === $single_result_arr['quiz_system'] ) {
+								if ( 0 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%';
 								}
-								if ( "1" === $single_result_arr['quiz_system'] ) {
+								if ( 1 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['point_score'] . ' Points';
 								}
-								if ( "3" === $single_result_arr['quiz_system'] ) {
+								if ( 3 === intval( $single_result_arr['quiz_system'] ) ) {
 									$quotes_list .= $single_result_arr['correct'] . ' out of ' . $single_result_arr['total'] . ' or ' . $single_result_arr['correct_score'] . '%<br/>';
 									$quotes_list .= $single_result_arr['point_score'] . ' Points';
 								}

@@ -141,7 +141,7 @@ function qsm_generate_results_details_tab() {
     if ( isset($settings['new_template_result_detail']) ) {
         $new_template_result_detail = esc_attr( $settings['new_template_result_detail'] );
     }
-    if ( '1' === $new_template_result_detail ) {
+    if ( 1 === intval( $new_template_result_detail ) ) {
         $template = '';
         $mlw_qmn_results_array = maybe_unserialize( $results_data->quiz_results );
         if ( is_array( $mlw_qmn_results_array ) ) {
@@ -167,7 +167,7 @@ function qsm_generate_results_details_tab() {
             $template .= '</div>';
             $template .= '</div>';
 
-            if ( isset( $results_data->form_type ) && "0" === $results_data->form_type ) {
+            if ( isset( $results_data->form_type ) && 0 === intval( $results_data->form_type ) ) {
                 //Scoreboard design
                 $template .= '<div class="candidate-detail-wrap overview-inner-wrap">';
                 $template .= '<div id="submitdiv" class="postbox "><h2 class="hndle ui-sortable-handle"><span>Scorecard</span></h2>';
@@ -227,7 +227,7 @@ function qsm_generate_results_details_tab() {
             $template .= '</div>';
             //Comment entered text
 
-            if ( "0" === $comments_enabled ) {
+            if ( 0 === intval( $comments_enabled ) ) {
                 $template .= '<div class="comment-inner-wrap" style="">';
                 $template .= '<div id="submitdiv" class="postbox" ><h2 class="hndle ui-sortable-handle"><span>User Comments</span></h2>';
                 $template .= '<div class="inside">';
@@ -276,7 +276,7 @@ function qsm_generate_results_details_tab() {
     // Pass through template variable filter
     $template = apply_filters( 'mlw_qmn_template_variable_results_page', $template, $results_array );
     $template = str_replace( "\n" , "<br>", $template );
-    if ( '0' === $new_template_result_detail ) {
+    if ( 0 === intval( $new_template_result_detail ) ) {
         echo '<div class="old_template_result_wrap">';
     }
 
@@ -287,7 +287,7 @@ function qsm_generate_results_details_tab() {
     }
     echo wp_kses( $template, $allowed_tags );
 
-    if ( '0' === $new_template_result_detail ) {
+    if ( 0 === intval( $new_template_result_detail ) ) {
         echo '</div>';
     }
 	// Hook for below admin results

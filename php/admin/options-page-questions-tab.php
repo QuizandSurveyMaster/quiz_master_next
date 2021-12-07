@@ -261,7 +261,7 @@ function qsm_options_questions_tab_content() {
 								);
 
 								// disabling polar for form type quiz and system correct/incorrect
-								if ( '0' === $form_type && '0' === $quiz_system ) {
+								if ( 0 === intval ( $form_type ) && 0 === intval ( $quiz_system ) ) {
 									$polar_class       = $polar_question_use = '';
 									$description_arr[] = array(
 										'question_type_id' => '13',

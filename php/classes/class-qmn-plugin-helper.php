@@ -392,7 +392,7 @@ class QMNPluginHelper
                 array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
 			);
         }
-        if ( '2' === $quiz_options->randomness_order || '3' === $quiz_options->randomness_order ) {
+        if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval ( $quiz_options->randomness_order ) ) {
             shuffle($answers);
             update_post_meta($question_id,'qsm_random_quetion_answer',$answers);
         }
@@ -405,7 +405,7 @@ class QMNPluginHelper
             if ( strtolower(str_replace(" ", "-", $slug)) === $type["slug"] ) {
                 if ( $type["graded"] ) {
                     $qmn_total_questions += 1;
-                    if ( '1' === $quiz_options->question_numbering ) { ?>
+                    if ( 1 === intval ( $quiz_options->question_numbering ) ) { ?>
                         <span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
                     <?php
                     }
