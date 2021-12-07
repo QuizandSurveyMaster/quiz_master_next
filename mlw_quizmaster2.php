@@ -529,12 +529,13 @@ class MLWQuizMasterNext {
 				<?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?>
 			</h3>
 			<p>
-				<?php esc_html_e( 'QSM has been updated! We need to upgrade your database so that you can enjoy the latest features.<br/>Please note that this action <b> can not be </b> rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?>
+				<?php esc_html_e( 'Please note that this action <b> can not be </b> rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ); ?>
 			</p>
 			<p class="category-action">
-				<a href="#" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
-				&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
-				?>
+				<a href="#" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>&nbsp;&nbsp;&nbsp;
+				<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
 			</p>
 		</div>
 		<?php
