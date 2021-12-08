@@ -26,8 +26,8 @@ class QSM_Questions {
 		if ( ! is_null( $question ) ) {
 			$multicategories = array();
 			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
-			if (!empty($multicategories_res)){
-				foreach ($multicategories_res as $cat) {
+			if ( ! empty($multicategories_res) ) {
+				foreach ( $multicategories_res as $cat ) {
 					$multicategories[] = $cat['term_id'];
 				}
 			}
@@ -96,8 +96,8 @@ class QSM_Questions {
 				$multicategories = self::get_question_categories($question['question_id']);
 				//get_question_categories
 
-				$question['multicategories'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
-				$question['multicategoriesobject'] = isset($multicategories['category_tree'])  && !empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
+				$question['multicategories'] = isset($multicategories['category_tree']) && ! empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
+				$question['multicategoriesobject'] = isset($multicategories['category_tree']) && ! empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
 				// Prepare answers.
 				$answers = maybe_unserialize( $question['answer_array'] );
 				if ( ! is_array( $answers ) ) {
@@ -152,8 +152,8 @@ class QSM_Questions {
 		foreach ( $questions as $question ) {
 			$multicategories = array();
 			$multicategories_res = $wpdb->get_results("SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question['question_id']}' AND `taxonomy`='qsm_category'", ARRAY_A);
-			if (!empty($multicategories_res)){
-				foreach ($multicategories_res as $cat) {
+			if ( ! empty($multicategories_res) ) {
+				foreach ( $multicategories_res as $cat ) {
 					$multicategories[] = $cat['term_id'];
 				}
 			}
@@ -256,14 +256,14 @@ class QSM_Questions {
 
 		// Prepare defaults and parse.
 		$defaults = array(
-			'quiz_id'     => 0,
-			'type'        => '0',
-			'name'        => '',
-			'answer_info' => '',
-			'comments'    => '1',
-			'hint'        => '',
-			'order'       => 1,
-			'category'    => '',
+			'quiz_id'         => 0,
+			'type'            => '0',
+			'name'            => '',
+			'answer_info'     => '',
+			'comments'        => '1',
+			'hint'            => '',
+			'order'           => 1,
+			'category'        => '',
 			'multicategories' => '',
 		);
 		$data     = wp_parse_args( $data, $defaults );
@@ -274,7 +274,7 @@ class QSM_Questions {
 		$settings = wp_parse_args( $settings, $defaults );
 
 		foreach ( $answers as $key => $answer ) {
-			if ('rich' == $settings['answerEditor']) {
+			if ( 'rich' == $settings['answerEditor'] ) {
 				$answer_text = wp_kses_post( $answer[0] );
 			} else {
 				$answer_text = sanitize_text_field( $answer[0] );
@@ -353,14 +353,17 @@ class QSM_Questions {
 		 * Process Question Categories
 		 */
 		$question_terms_table = $wpdb->prefix . "mlw_question_terms";
-		$wpdb->delete($question_terms_table, array('question_id' => $question_id, 'taxonomy' => 'qsm_category'));
-		if (!empty($data['multicategories'])) {
-			foreach ($data['multicategories'] as $term_id) {
+		$wpdb->delete($question_terms_table, array(
+			'question_id' => $question_id,
+			'taxonomy'    => 'qsm_category',
+		));
+		if ( ! empty($data['multicategories']) ) {
+			foreach ( $data['multicategories'] as $term_id ) {
 				$term_rel_data = array(
 					'question_id' => $question_id,
-					'quiz_id' => intval($data['quiz_id']),
-					'term_id' => $term_id,
-					'taxonomy' => 'qsm_category',
+					'quiz_id'     => intval($data['quiz_id']),
+					'term_id'     => $term_id,
+					'taxonomy'    => 'qsm_category',
 				);
 				$wpdb->insert($question_terms_table, $term_rel_data);
 			}
@@ -380,15 +383,15 @@ class QSM_Questions {
 		global $wpdb;
 		$categories = array();
 		if ( 0 !== $quiz_id ) {
-			$questions		 = QSM_Questions::load_questions_by_pages( $quiz_id );
-			$question_ids	 = array_column( $questions, 'question_id' );
-			$question_ids	 = implode( ',', $question_ids );
-			$question_terms	 = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
-			$term_ids 		 = ! empty( $question_terms ) ? array_unique( array_column( $question_terms, 'term_id' ) ) : array();
+			$questions       = QSM_Questions::load_questions_by_pages( $quiz_id );
+			$question_ids    = array_column( $questions, 'question_id' );
+			$question_ids    = implode( ',', $question_ids );
+			$question_terms  = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+			$term_ids        = ! empty( $question_terms ) ? array_unique( array_column( $question_terms, 'term_id' ) ) : array();
 			
 			$cat_array = self::get_question_categories_from_quiz_id( $quiz_id );
 			$enabled = get_option( 'qsm_multiple_category_enabled' );
-			if ( $enabled && $enabled != 'cancelled' && ! empty( $cat_array ) ) {
+			if ( $enabled && 'cancelled' !== $enabled && ! empty( $cat_array ) ) {
 				$term_ids = array_unique( array_merge( $term_ids, $cat_array ) );
 			}
 
@@ -409,7 +412,7 @@ class QSM_Questions {
 		$questions = self::load_questions_by_pages( $quiz_id );
 		foreach ( $questions as $single_question ) {
 			if ( isset( $single_question['multicategories'] ) && is_array( $single_question['multicategories'] ) ) {
-				foreach( $single_question['multicategories'] as $cat_id ) {
+				foreach ( $single_question['multicategories'] as $cat_id ) {
 					$cat_array[] = $cat_id;
 				}
 			}
@@ -427,19 +430,25 @@ class QSM_Questions {
 	public static function get_question_categories_from_term_ids( $term_ids ) {
 		$categories = array();
 		if ( ! empty( $term_ids ) ) {
-			$categories_names	 = array();
-			$categories_tree	 = array();
-			$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => $term_ids, 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+			$categories_names    = array();
+			$categories_tree     = array();
+			$terms               = get_terms( array(
+				'taxonomy'   => 'qsm_category',
+				'include'    => $term_ids,
+				'hide_empty' => false,
+				'orderby'    => '',
+				'order'      => '',
+			) );
 			if ( ! empty( $terms ) ) {
 				foreach ( $terms as $tax ) {
-					$categories_names[$tax->term_id] = $tax->name;
-					$taxs[$tax->parent][]			 = $tax;
+					$categories_names[ $tax->term_id ] = $tax->name;
+					$taxs[ $tax->parent ][]            = $tax;
 				}
 				$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 			}
 			$categories = array(
-				'list'	 => $categories_names,
-				'tree'	 => $categories_tree,
+				'list' => $categories_names,
+				'tree' => $categories_tree,
 			);
 		}
 		return $categories;
@@ -454,18 +463,24 @@ class QSM_Questions {
 	 */
 	public static function get_question_categories( $question_id = 0 ) {
 		global $wpdb;
-		$categories_tree	 = array();
-		$categories_names	 = array();
+		$categories_tree     = array();
+		$categories_names    = array();
 		if ( 0 !== $question_id ) {
 			$question_terms = $wpdb->get_results( "SELECT `term_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id`='{$question_id}' AND `taxonomy`='qsm_category'", ARRAY_A );
 			if ( ! empty( $question_terms ) ) {
 				$term_ids = array_unique( array_column( $question_terms, 'term_id' ) );
 				if ( ! empty( $term_ids ) ) {
-					$terms				 = get_terms( array( 'taxonomy' => 'qsm_category', 'include' => array_unique( $term_ids ), 'hide_empty' => false, 'orderby' => '', 'order' => '' ) );
+					$terms               = get_terms( array(
+						'taxonomy'   => 'qsm_category',
+						'include'    => array_unique( $term_ids ),
+						'hide_empty' => false,
+						'orderby'    => '',
+						'order'      => '',
+					) );
 					if ( ! empty( $terms ) ) {
 						foreach ( $terms as $tax ) {
-							$categories_names[$tax->term_id] = $tax->name;
-							$taxs[$tax->parent][]			 = $tax;
+							$categories_names[ $tax->term_id ] = $tax->name;
+							$taxs[ $tax->parent ][]            = $tax;
 						}
 						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 
@@ -473,7 +488,10 @@ class QSM_Questions {
 				}
 			}
 		}
-		return array('category_name'=>$categories_names,"category_tree"=>$categories_tree);
+		return array(
+			'category_name' => $categories_names, 
+			"category_tree" => $categories_tree,
+		);
 	}
 	/**
 	 * Create tree structure of terms.
@@ -483,8 +501,8 @@ class QSM_Questions {
 	public static function create_terms_tree( &$list, $parent ) {
 		$taxTree = array();
 		foreach ( $parent as $ind => $val ) {
-			if ( isset( $list[$val->term_id] ) ) {
-				$val->children = self::create_terms_tree( $list, $list[$val->term_id] );
+			if ( isset( $list[ $val->term_id ] ) ) {
+				$val->children = self::create_terms_tree( $list, $list[ $val->term_id ] );
 			}
 			$taxTree[] = $val;
 		}

@@ -546,7 +546,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             });
             },
             deleteQuiz: function (quiz_id) {
-            $('#delete_quiz_id').val(btoa(quiz_id+'QID'));
+            $('#delete_quiz_id').val(quiz_id+'QID');
             $.each(qsmQuizObject, function (i, val) {
                 if (val.id == quiz_id) {
                     $('#delete_quiz_name').val(val.name);
@@ -564,7 +564,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             MicroModal.show('modal-3');
             },
             duplicateQuiz: function (quiz_id) {
-            $('#duplicate_quiz_id').val(btoa(quiz_id+'QID'));
+            $('#duplicate_quiz_id').val(quiz_id+'QID');
             MicroModal.show('modal-4');
             },
             /**
@@ -966,11 +966,11 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
  * QSM - Contact Form
  */
 
- 
+ var QSMContact;
  (function ($) {
     if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         if (window.location.href.indexOf('tab=contact') > 0 ){
-            var QSMContact;
+            
             QSMContact = {
                 load : function() {
                     if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){

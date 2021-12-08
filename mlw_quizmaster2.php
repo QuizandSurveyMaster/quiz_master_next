@@ -256,89 +256,86 @@ class MLWQuizMasterNext {
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
 		//dashboard and quiz list pages
-		if ( $hook == 'toplevel_page_qsm_dashboard' || $hook == 'qsm_page_mlw_quiz_list' ) {
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
+		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_mlw_quiz_list' === $hook ) {
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
 			wp_enqueue_media();
-			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css' );
+			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css', array(), $this->version );
 			wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
 			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
 		}
 		// dashboard
-		if ( $hook == 'toplevel_page_qsm_dashboard' ){
+		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
 			wp_enqueue_script( 'dashboard' );
 			if ( wp_is_mobile() ) {
 				wp_enqueue_script( 'jquery-touch-punch' );
 			}
 		}
 		// result details page
-		if ($hook == 'admin_page_qsm_quiz_result_details'){
-			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css' );
+		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
+			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
 			wp_enqueue_script( 'jquery-ui-slider');
-			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array('jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider'), $this->version, true);
-			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css' );
+			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true);
+			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css', array(), $this->version );
 			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $this->version, true );
-			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
 		}
 		//results page
-		if ($hook == 'qsm_page_mlw_quiz_results'){
+		if ( 'qsm_page_mlw_quiz_results' === $hook ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
-			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
+			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
 		}
 		//stats page
-		if ( $hook == 'qsm_page_qmn_stats'){
+		if ( 'qsm_page_qmn_stats' === $hook ) {
 			wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js', array(),'3.6.0',true);
 		}
 		//quiz option pages
-		if ($hook == 'admin_page_mlw_quiz_options'){
+		if ( 'admin_page_mlw_quiz_options' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
-			if(!isset($_GET['tab']) || "questions" === $_GET['tab'] ){
-				wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL.'/qsm-admin-question.css', array(), $this->version );
-				wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
-				wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				wp_enqueue_editor();
-				wp_enqueue_media();
-			}
-			if (isset($_GET['tab'])){
-				if( "contact" === $_GET['tab']){
-					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL.'/qsm-admin-contact.css', array(), $this->version );
-				}
-				if( "emails" === $_GET['tab'] ){
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
+			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
+			switch ( $current_tab ) {
+				case 'contact':
+					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL . '/qsm-admin-contact.css', array(), $this->version );
+					break;
+				case 'emails':
+				case 'results-pages':
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_enqueue_editor();
 					wp_enqueue_media();
-				}
-				if( "results-pages" === $_GET['tab'] ){
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-					wp_enqueue_editor();
-					wp_enqueue_media();
-				}
-				if( "style" === $_GET['tab']){
+					break;
+				case 'style':
 					wp_enqueue_style( 'wp-color-picker' );
 					wp_enqueue_media();
-				}
-				if ( "options" === $_GET['tab']){
-					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css' );
-					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL.'/jquery.datetimepicker.css' );
+					break;
+				case 'options':
+					wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
+					wp_enqueue_style( 'qsm_datetime_style', QSM_PLUGIN_CSS_URL . '/jquery.datetimepicker.css', array(), $this->version );
 					wp_enqueue_script( 'jquery' );
 					wp_enqueue_script( 'jquery-ui-core' );
 					wp_enqueue_script( 'jquery-ui-dialog' );
 					wp_enqueue_script( 'jquery-ui-button' );
-					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL.'/jquery.datetimepicker.full.min.js' );
+					wp_enqueue_script( 'qmn_datetime_js', QSM_PLUGIN_JS_URL . '/jquery.datetimepicker.full.min.js', array(), $this->version, true );
 					wp_enqueue_script( 'jquery-ui-tabs' );
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
-					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-				}
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					break;
+				default:
+					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
+					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
+					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					wp_enqueue_editor();
+					wp_enqueue_media();
+					break;
 			}
 		}
 		//load admin JS after all dependencies are loaded
-		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util','jquery-ui-sortable'), $this->version, true );
+		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable' ), $this->version, true );
 	}
 
 	/**
@@ -357,12 +354,12 @@ class MLWQuizMasterNext {
 		$plural_name    = __( 'Quizzes & Surveys', 'quiz-master-next' );
 
 		// Checks if admin turned off archive.
-		if ( isset( $settings['cpt_archive'] ) && '1' == $settings['cpt_archive'] ) {
+		if ( isset( $settings['cpt_archive'] ) && '1' === $settings['cpt_archive'] ) {
 			$has_archive = false;
 		}
 
 		// Checks if admin turned off search.
-		if ( isset( $settings['cpt_search'] ) && '1' == $settings['cpt_search'] ) {
+		if ( isset( $settings['cpt_search'] ) && '1' === $settings['cpt_search'] ) {
 			$exclude_search = true;
 		}
 
@@ -440,12 +437,12 @@ class MLWQuizMasterNext {
 		register_taxonomy( 'qsm_category', array( 'qsm-taxonomy' ), $taxonomy_args );
 	}
 
-	public function parent_file( $parent_file ) {
+	public function parent_file( $file_name ) {
 		global $menu, $submenu, $parent_file, $submenu_file;
-		if ( 'edit-tags.php?taxonomy=qsm_category' == $submenu_file ) {
-			$parent_file = 'qsm_dashboard';
+		if ( 'edit-tags.php?taxonomy=qsm_category' === $submenu_file ) {
+			$file_name = 'qsm_dashboard';
 		}
-		return $parent_file;
+		return $file_name;
 	}
 
 	/**
@@ -464,7 +461,7 @@ class MLWQuizMasterNext {
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
 			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ), __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
 			add_action( "load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options' );
-			if ( $enabled && $enabled != 'cancelled' ) {
+			if ( $enabled && 'cancelled' !== $enabled ) {
 				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
 			}
 			add_submenu_page( null, __( 'Settings', 'quiz-master-next' ), __( 'Settings', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_options', 'qsm_generate_quiz_options' );
@@ -501,12 +498,9 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_overide_old_setting_options() {
 		$settings = (array) get_option( 'qmn-settings' );
-
 		if ( isset( $settings['facebook_app_id'] ) ) {
-
-				$facebook_app_id = $settings['facebook_app_id'];
-
-			if ( $facebook_app_id == '483815031724529' ) {
+			$facebook_app_id = $settings['facebook_app_id'];
+			if ( '483815031724529' === $facebook_app_id ) {
 				$settings['facebook_app_id'] = '594986844960937';
 				update_option( 'qmn-settings', $settings );
 			}
@@ -514,7 +508,6 @@ class MLWQuizMasterNext {
 			$settings['facebook_app_id'] = '594986844960937';
 			update_option( 'qmn-settings', $settings );
 		}
-
 	}
 
 	/**
@@ -527,27 +520,20 @@ class MLWQuizMasterNext {
 		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
 		if ( ! $multiple_categories ) {
 			?>
-<div class="notice notice-info multiple-category-notice" style="display:none;">
-	<h3>
-			<?php _e( 'Database update required', 'quiz-master-next' ); ?>
-	</h3>
-	<p>
-			<?php
-			$message  = __( ' QSM has been updated! ', 'quiz-master-next' );
-			$message .= sprintf( __( '%1$s We need to upgrade your database so that you can enjoy the latest features. ', 'quiz-master-next' ), '<br/>' );
-			$message .= sprintf( __( '%1$s Please note that this action %2$s can not be %3$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<br/>', '<b>', '</b>' );
-			echo wp_kses_post( $message );
-			?>
-	</p>
-	<p class="category-action">
-			<?php
-			$buttons  = sprintf( __( '%1$s Cancel %2$s', 'quiz-master-next' ), '<a href="#" class="button cancel-multiple-category">', '</a>' );
-			$buttons .= sprintf( __( '%1$s Update Database %2$s', 'quiz-master-next' ), '&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category">', '</a>' );
-			echo wp_kses_post( $buttons );
-			?>
-	</p>
-</div>
-			<?php
+			<div class="notice notice-info multiple-category-notice" style="display:none;">
+				<h3><?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?></h3>
+				<p>
+					<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?><br>
+					<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br>
+					<?php /* translators: %s: HTML tag */
+					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>'); ?>
+				</p>
+				<p class="category-action">
+					<a href="#" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
+					&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
+				</p>
+			</div>
+		<?php
 		}
 	}
 

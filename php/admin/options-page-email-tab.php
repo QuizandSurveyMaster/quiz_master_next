@@ -30,19 +30,20 @@ add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
 function qsm_options_emails_tab_content() {
 	global $wpdb;
 	global $mlwQuizMasterNext;
-	$quiz_id = intval( $_GET['quiz_id'] );
+
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$user_id = get_current_user_id();
 	$js_data = array(
-		'quizID'      		=> $quiz_id,
-		'nonce'      		=> wp_create_nonce( 'wp_rest' ),
-		'qsm_user_ve' 		=> get_user_meta( $user_id, 'rich_editing', true ),
-		'rest_user_nonce' 	=> wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
+		'quizID'          => $quiz_id,
+		'nonce'           => wp_create_nonce( 'wp_rest' ),
+		'qsm_user_ve'     => get_user_meta( $user_id, 'rich_editing', true ),
+		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
-	if ( $enabled && $enabled != 'cancelled' ) {
+	if ( $enabled && 'cancelled' !== $enabled ) {
 		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
 	} else {
 		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
@@ -55,10 +56,10 @@ function qsm_options_emails_tab_content() {
 	<button class="save-emails button-primary"><?php esc_html_e( 'Save Emails', 'quiz-master-next' ); ?></button>
 	<button class="add-new-email button"><?php esc_html_e( 'Add New Email', 'quiz-master-next' ); ?></button>
 	<a style="float: right;" class="qsm-show-all-variable-text"
-		href="#"><?php _e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span
+		href="#"><?php esc_html_e( 'Insert Template Variables', 'quiz-master-next' ); ?> <span
 			class="dashicons dashicons-upload"></span></a>
 	<a style="margin: 0 10px; float: right;" href="https://quizandsurveymaster.com/docs/v7/emails-tab/" target="_blank"
-		rel="noopener"><?php _e( 'View Documentation', 'quiz-master-next' ); ?></a>
+		rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a>
 	<div id="qsm_emails">
 		<div style="margin-bottom: 30px;margin-top: 35px;" class="qsm-spinner-loader"></div>
 	</div>
@@ -73,11 +74,11 @@ function qsm_options_emails_tab_content() {
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
 			<header class="qsm-popup__header" style="display: block;">
-				<h2 class="qsm-popup__title"><?php _e( 'Template Variables', 'quiz-master-next' ); ?></h2>
+				<h2 class="qsm-popup__title"><?php esc_html_e( 'Template Variables', 'quiz-master-next' ); ?></h2>
 				<span class="description">
-					<?php _e( 'Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next' ); ?>
-					<br /><b><?php _e( 'Note: ', 'quiz-master-next' ); ?></b>
-					<?php _e( 'Always use uppercase while using these variables.', 'quiz-master-next' ); ?>
+					<?php esc_html_e( 'Use these dynamic variables to customize your quiz or survey. Just copy and paste one or more variables into the content templates and these will be replaced by actual values when user takes a quiz.', 'quiz-master-next' ); ?>
+					<br /><strong><?php esc_html_e( 'Note: ', 'quiz-master-next' ); ?></strong>
+					<?php esc_html_e( 'Always use uppercase while using these variables.', 'quiz-master-next' ); ?>
 				</span>
 			</header>
 			<main class="qsm-popup__content" id="show-all-variable-content">
@@ -94,7 +95,7 @@ function qsm_options_emails_tab_content() {
 								?>
 								<div><h2><?php echo esc_attr($category_name);?></h2></div>
 								<?php
-                foreach ($category_variables as $variable_key => $variable) {
+                foreach ( $category_variables as $variable_key => $variable ) {
                 ?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
@@ -115,7 +116,7 @@ function qsm_options_emails_tab_content() {
 			</main>
 			<footer class="qsm-popup__footer" style="text-align: right;">
 				<button class="button button-default" data-micromodal-close=""
-					aria-label="Close this dialog window"><?php _e( 'Close [Esc]', 'quiz-master-next' ); ?></button>
+					aria-label="Close this dialog window"><?php esc_html_e( 'Close [Esc]', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
@@ -169,8 +170,8 @@ function qsm_options_emails_tab_template(){ ?>
 		<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
 		<?php if ( ! empty( $categories ) ) { ?>
 			<select class="email-condition-category">
-				<option value="" <# if (data.category == '') { #>selected<# } #>><?php _e( 'Quiz', 'quiz-master-next' ); ?></option>
-				<option value="" disabled><?php _e( '---Select Category---', 'quiz-master-next' ); ?></option>
+				<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+				<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
 				<?php foreach ( $categories as $cat ) { ?>
 				<option value="<?php echo esc_attr($cat[0]); ?>" <# if (data.category == '<?php echo esc_attr($cat[0]); ?>') { #>selected<# } #>><?php echo esc_attr($cat[0]); ?></option>
 				<?php } ?>
@@ -178,18 +179,18 @@ function qsm_options_emails_tab_template(){ ?>
 			</select>
 		<?php } ?>
 		<select class="email-condition-criteria">
-			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php _e( 'Total points earned', 'quiz-master-next' ); ?></option>
-			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php _e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
+			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
+			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
 			<?php do_action( 'qsm_email_condition_criteria' ); ?>
 		</select>
 		<?php do_action( 'qsm_email_extra_condition_fields' ); ?>
 		<select class="email-condition-operator">
-			<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php _e( 'is equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php _e( 'is not equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php _e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php _e( 'is greater than', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php _e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
-			<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php _e( 'is less than', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="equal" <# if (data.operator == 'equal') { #>selected<# } #>><?php esc_html_e( 'is equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="not-equal" <# if (data.operator == 'not-equal') { #>selected<# } #>><?php esc_html_e( 'is not equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="greater-equal" <# if (data.operator == 'greater-equal') { #>selected<# } #>><?php esc_html_e( 'is greater than or equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="greater" <# if (data.operator == 'greater') { #>selected<# } #>><?php esc_html_e( 'is greater than', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="less-equal" <# if (data.operator == 'less-equal') { #>selected<# } #>><?php esc_html_e( 'is less than or equal to', 'quiz-master-next' ); ?></option>
+			<option class="default_operator" value="less" <# if (data.operator == 'less') { #>selected<# } #>><?php esc_html_e( 'is less than', 'quiz-master-next' ); ?></option>
 			<?php do_action( 'qsm_email_condition_operator' ); ?>
 		</select>
 		<input type="text" class="email-condition-value condition-default-value" value="{{ data.value }}">

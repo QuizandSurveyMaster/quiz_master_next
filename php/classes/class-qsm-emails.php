@@ -49,13 +49,13 @@ class QSM_Emails {
 				foreach ( $email['conditions'] as $condition ) {
 					$value = $condition['value'];
 					$category = '';
-					if( isset($condition['category'])){
+					if ( isset($condition['category']) ) {
 						$category = $condition['category'];
 					}
 					// First, determine which value we need to test.
 					switch ( $condition['criteria'] ) {
 						case 'score':
-							if( $category != '' ){
+							if ( '' !== $category ) {
 								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 							} else {
 								$test = $response_data['total_score'];
@@ -63,7 +63,7 @@ class QSM_Emails {
 							break;
 
 						case 'points':
-							if( $category != '' ){
+							if ( '' !== $category ) {
 								$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 							} else {
 								$test = $response_data['total_points'];
@@ -164,7 +164,7 @@ class QSM_Emails {
 		$to = apply_filters('qsm_send_results_email_addresses', $to, $response_data);
 		$to_array = explode( ',', $to );
 		$to_array = array_unique($to_array);
-		if (empty($to_array)) {
+		if ( empty($to_array) ) {
 			return;
 		}
 		// Prepares our subject.
@@ -250,11 +250,10 @@ class QSM_Emails {
 
 		global $wpdb;
 		$data = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
-
+		
+		$data = maybe_unserialize( $data );
 		// Checks if the emails is an array.
-		if ( is_serialized( $data ) && is_array( maybe_unserialize( $data ) ) ) {
-			$data = maybe_unserialize( $data );
-
+		if ( is_array( $data ) ) {
 			// Checks if the emails array is not the newer version.
 			if ( ! empty( $data ) && ! isset( $data[0]['conditions'] ) ) {
 				$emails = QSM_Emails::convert_to_new_system( $quiz_id );
@@ -485,4 +484,4 @@ class QSM_Emails {
 		}
 	}
 }
-?>
+

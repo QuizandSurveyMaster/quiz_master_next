@@ -172,7 +172,7 @@ class QSM_Theme_Settings {
 			'%d'
 		);
 
-		if ( $theme_id === 0 ) {
+		if ( 0 === $theme_id ) {
 			return;
 		}
 
@@ -233,7 +233,7 @@ class QSM_Theme_Settings {
 		global $wpdb;
 		$query  = $wpdb->prepare( "SELECT quiz_theme_settings FROM {$wpdb->prefix}$this->settings_table WHERE quiz_id = %d AND theme_id = %d", $quiz_id, $theme_id );
 		$result = $wpdb->get_var( $query );
-		return unserialize( $result );
+		return maybe_unserialize( $result );
 	}
 
 	/**
