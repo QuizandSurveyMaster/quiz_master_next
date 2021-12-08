@@ -463,7 +463,7 @@ var QSMAdmin;
     jQuery(document).on('click', '#btn_clear_logs', function(e) {
         e.preventDefault();
         var delete_logs=confirm("Are you sure you want to delete this record?");
-        if (delete_logs==true) {
+        if ( delete_logs ) {
             // your deletion code
             jQuery.ajax({
                 type: 'POST',
