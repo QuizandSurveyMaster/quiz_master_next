@@ -20,6 +20,8 @@ class QSM_Fields {
 		global $mlwQuizMasterNext;
 		global $wpdb;
     	$result_page_fb_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image' );
+		$settings_array_before_update = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( $section );   
+
 		// If nonce is correct, save settings
 		if ( isset( $_POST["save_settings_nonce"] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_settings_nonce'] ) ), 'save_settings' ) ) {
 			// Cycle through fields to retrieve all posted values
@@ -61,8 +63,10 @@ class QSM_Fields {
 			// Update the settings and show alert based on outcome
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 			if ( false !== $results ) {
+				$get_updated_setting_data = array_diff_assoc($settings_array, $settings_array_before_update);
+				$json_updated_setting_data = json_encode($get_updated_setting_data);
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
-				$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited' );
+				$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id, $json_updated_setting_data );
 			} else {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');
 			}

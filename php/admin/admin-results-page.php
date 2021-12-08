@@ -111,7 +111,7 @@ function qsm_results_overview_tab_content() {
 			$mlwQuizMasterNext->log_manager->add( 'Error deleting result', "Tried {$wpdb->last_query} but got $error.", 0, 'error' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your results has been deleted successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From: $mlw_delete_results_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Has Been Deleted From:", $mlw_delete_results_name, "" );
 
 		}
 	}
@@ -148,7 +148,7 @@ function qsm_results_overview_tab_content() {
 				}
 			}
 
-			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Results Have Been Bulk Deleted", "", "" );
 		}
 	}
 

@@ -418,6 +418,71 @@ var QSMAdmin;
         deleteResults(qid, qname);
     });
 
+    jQuery(document).on('click', '#btn_export', function(e) {
+        e.preventDefault();
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: "qsm_export_data",
+            },
+            success: function(response) {
+                /*
+                 * Make CSV downloadable
+                 */
+                var d = new Date();
+
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var output = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+                var downloadLink = document.createElement("a");
+                var fileData = ['\ufeff' + response];
+
+                var blobObject = new Blob(fileData, {
+                    type: "text/csv;charset=utf-8;"
+                });
+
+                var url = URL.createObjectURL(blobObject);
+                downloadLink.href = url;
+                downloadLink.download = "export_" + output + ".csv";
+                /*
+                 * Actually download CSV
+                 */
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+
+            },
+            error: function(errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+    jQuery(document).on('click', '#btn_clear_logs', function(e) {
+        e.preventDefault();
+        var delete_logs=confirm("Are you sure you want to delete this record?");
+        if (delete_logs==true) {
+            // your deletion code
+            jQuery.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    action: "qsm_clear_audit_data",
+                },
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+        
+    });
+
+
 }(jQuery));
 
 // result page
