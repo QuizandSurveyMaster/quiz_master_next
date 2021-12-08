@@ -273,6 +273,7 @@ class QMNQuizManager {
 		global $wpdb;
 		$table_audit = $wpdb->prefix . 'mlw_qm_audit_trail';
 		$clear_audit_data = $wpdb->query("TRUNCATE TABLE $table_audit");
+		exit;
 	}
 	
 
