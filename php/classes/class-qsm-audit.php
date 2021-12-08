@@ -31,7 +31,7 @@ class QSM_Audit {
       return false;
     }
     $quiz_id = esc_attr( $quiz_id );
-    $json_updated_setting_data = $json_updated_setting_data;
+    
     global $wpdb;
     $quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
     $quiz_name = esc_attr( $quiz_name );
