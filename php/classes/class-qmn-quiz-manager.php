@@ -520,7 +520,7 @@ class QMNQuizManager {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
 					if ( ! empty( $category_question_ids ) ) {
-						if ( in_array( intval( $question ), $category_question_ids, true ) ) {
+						if ( in_array( intval( $question ), array_map('intval', $category_question_ids ), true ) ) {
 							$question_ids[] = intval( $question );
 						}
 					} else {
