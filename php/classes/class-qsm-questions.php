@@ -98,20 +98,18 @@ class QSM_Questions {
 
 				$question['multicategories'] = isset($multicategories['category_tree']) && ! empty($multicategories['category_tree'] ) ? array_keys($multicategories['category_name']) : array();
 				$question['multicategoriesobject'] = isset($multicategories['category_tree']) && ! empty($multicategories['category_tree'] ) ? $multicategories['category_tree'] : array();
-				// Prepare answers.
-				$answers = maybe_unserialize( $question['answer_array'] );
-				if ( ! is_array( $answers ) ) {
-					$answers = array();
-				}
-				$question['answers'] = $answers;
-
 				// Prepares settings.
 				$settings = maybe_unserialize( $question['question_settings'] );
 				if ( ! is_array( $settings ) ) {
 					$settings = array( 'required' => 1 );
 				}
 				$question['settings'] = $settings;
-
+				// Prepare answers.
+				$answers = maybe_unserialize( $question['answer_array'] );
+				if ( ! is_array( $answers ) ) {
+					$answers = array();
+				}
+				$question['answers'] = self::sanitize_answers( $answers, $settings );
 				// Get the page.
 				$question_id      = intval( $question['question_id'] );
 				$question['page'] = intval( $page_for_ids[ $question_id ] );
@@ -273,22 +271,7 @@ class QSM_Questions {
 		);
 		$settings = wp_parse_args( $settings, $defaults );
 
-		foreach ( $answers as $key => $answer ) {
-			if ( 'rich' == $settings['answerEditor'] ) {
-				$answer_text = wp_kses_post( $answer[0] );
-			} else {
-				$answer_text = sanitize_text_field( $answer[0] );
-			}
-			$answers_array = array(
-				htmlspecialchars( $answer_text, ENT_QUOTES ),
-				floatval( $answer[1] ),
-				intval( $answer[2] ),
-			);
-			if ( isset( $answer[3] ) ) {
-				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
-			}
-			$answers[ $key ] = $answers_array;
-		}
+		$answers = self::sanitize_answers( $answers, $settings );
 
 		$question_name = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
 		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
@@ -370,6 +353,37 @@ class QSM_Questions {
 		}
 
 		return $question_id;
+	}
+
+	/**
+	 * Creates or saves a question
+	 *
+	 * sanitizes answers
+	 *
+	 * @since 7.3.5
+	 * @param array $answers The answers for the question.
+	 * @return array sanitized $answers The answers for the question.
+	 */
+	public static function sanitize_answers( $answers, $settings ) {
+
+		foreach ( $answers as $key => $answer ) {
+			if ( 'rich' == $settings['answerEditor'] ) {
+				$answer_text = wp_kses_post( $answer[0] );
+			} else {
+				$answer_text = sanitize_text_field( $answer[0] );
+			}
+			$answers_array = array(
+				htmlspecialchars( $answer_text, ENT_QUOTES ),
+				floatval( $answer[1] ),
+				intval( $answer[2] ),
+			);
+			if ( isset( $answer[3] ) ) {
+				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
+			}
+			$answers[ $key ] = $answers_array;
+		}
+
+		return $answers;
 	}
 
 	/**
