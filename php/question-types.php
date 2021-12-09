@@ -1381,6 +1381,6 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 
-	?> <div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' ><?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . esc_attr(  $deselect_answer ) ;?></div><?php
+	?> <div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' ><?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . htmlspecialchars_decode( $deselect_answer, ENT_QUOTES );?></div><?php
 }
 ?>
