@@ -156,7 +156,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Hotfix: Issues with survey form type Fixed
 * Hotfix: Issues with simple form fixed
 * Hotfix: Issues with random questions feature Fixed
-* Hotfix: Issues with comment form and hints fixed 
+* Hotfix: Issues with comment form and hints fixed
+* Hotfix: Issues with deselect option fixed
 
 = 7.3.5 (November 17, 2021) =
 * Bug: Fixed issue while permanently deleting bulk quizzes
