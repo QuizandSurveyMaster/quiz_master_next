@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.5
+Stable tag: 7.3.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+
+= 7.3.6 (December 10, 2021) =
+* Hotfix: Issues with survey form type Fixed
+* Hotfix: Issues with simple form fixed
+* Hotfix: Issues with random questions feature Fixed
+* Hotfix: Issues with comment form and hints fixed 
+
 = 7.3.5 (November 17, 2021) =
 * Bug: Fixed issue while permanently deleting bulk quizzes
 * Bug: Fixed issue while editing questions imported from question bank
@@ -160,6 +167,9 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issues with polar question type
 * Bug: Fixed issue where multiple popups were appearing
 * Bug: Fixed issues where refreshing the page resets answered questions
+* Bug: Fixed issues with QSM block
+* Bug: Fixed issue with autofill for contact input
+* Bug: Fixed issues with polar question type slider on admin results page
 * Feature: Added support for webp file format
 * Feature: Added new template variable %MINIMUM_POINTS%
 * Enhancement: Replaced shortened urls with original urls
