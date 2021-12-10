@@ -520,7 +520,7 @@ class QMNQuizManager {
 			for ( $i = 0; $i < $total_pages; $i++ ) {
 				foreach ( $pages[ $i ] as $question ) {
 					if ( ! empty( $category_question_ids ) ) {
-						if ( in_array( intval( $question ), $category_question_ids, true ) ) {
+						if ( in_array( intval( $question ), array_map('intval', $category_question_ids ), true ) ) {
 							$question_ids[] = intval( $question );
 						}
 					} else {
@@ -864,10 +864,10 @@ class QMNQuizManager {
 						<?php
 						$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 						if ( 0 == $question['comments'] ) { ?>
-							<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" />";
+							<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" />
 						<?php }
 						if ( 2 == $question['comments'] ) { ?>
-							<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" ></textarea>";
+							<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $options->comment_field_text ); ?>" onclick="qmnClearField(this)" ></textarea>
 						<?php }
 							// Checks if a hint is entered.
 						if ( ! empty( $question['hints'] ) ) {
