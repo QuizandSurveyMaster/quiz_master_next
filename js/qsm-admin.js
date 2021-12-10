@@ -462,8 +462,8 @@ var QSMAdmin;
 
     jQuery(document).on('click', '#btn_clear_logs', function(e) {
         e.preventDefault();
-        var delete_logs=confirm("Are you sure you want to delete this record?");
-        if ( delete_logs ) {
+        var delete_logs=confirm(qsm_logs_delete.qsm_delete_audit_logs);
+        if (delete_logs==true) {
             // your deletion code
             jQuery.ajax({
                 type: 'POST',
@@ -480,8 +480,15 @@ var QSMAdmin;
             });
         }
         
+        
     });
-
+    
+    jQuery('.qsm_audit_data').click(function (e) {
+        e.preventDefault();
+        MicroModal.show('qsm_fetch_audit_data');
+        var qsm_get_setting_data = jQuery(this).attr('data-auditid');
+        jQuery('.qsm_setting__data').html('<p>'+JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2)+'</p>');
+    });
 
 }(jQuery));
 

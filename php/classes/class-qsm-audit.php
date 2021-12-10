@@ -14,7 +14,7 @@ class QSM_Audit {
    * @param string $action The action that is to be saved into the audit trail
    * @return bool Returns true if successfull and false if fails
    */
-  public function new_audit( $action,$quiz_id, $json_updated_setting_data, $user = null ) {
+  public function new_audit( $action, $quiz_id, $json_updated_setting_data, $user = null ) {
 
     // Sanitizes action just in case 3rd party uses this funtion
     $action = sanitize_text_field( $action );
@@ -31,7 +31,6 @@ class QSM_Audit {
       return false;
     }
     $quiz_id = esc_attr( $quiz_id );
-    
     global $wpdb;
     $quiz_name = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id=%d LIMIT 1", $quiz_id ) );
     $quiz_name = esc_attr( $quiz_name );
