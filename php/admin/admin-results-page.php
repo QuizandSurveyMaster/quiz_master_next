@@ -307,23 +307,23 @@ function qsm_results_overview_tab_content() {
 <?php
 //process screen options
 $user_id = get_current_user_id();
-if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["results-screen_option_nonce"], 'results_screen_option' ) ) {
-	$results_screen_option['page_url']   = isset($_POST['page_url'])?$_POST['page_url']:"0";
-	$results_screen_option['page_name']  = isset($_POST['page_name'])?$_POST['page_name']:"0";
-	$results_screen_option['business']   = isset($_POST['business'])?$_POST['business']:"0";
-	$results_screen_option['phone']      = isset($_POST['phone'])?$_POST['phone']:"0";
-	$results_screen_option['ip_address'] = isset($_POST['ip_address']) ? $_POST['ip_address']:"0";	
+if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST["results-screen_option_nonce"] ) ), 'results_screen_option' ) ) {
+	$results_screen_option['page_url']   = isset($_POST['page_url']) ? sanitize_text_field( wp_unslash( $_POST['page_url'] ) ) : "0";
+	$results_screen_option['page_name']  = isset($_POST['page_name']) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
+	$results_screen_option['business']   = isset($_POST['business']) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
+	$results_screen_option['phone']      = isset($_POST['phone']) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
+	$results_screen_option['ip_address'] = isset($_POST['ip_address']) ? sanitize_text_field( wp_unslash( $_POST['ip_address'] ) ) : "0";  
 	//set screen option as user meta
 	add_user_meta( $user_id, 'results_screen_option',$results_screen_option, true);
 } else {
 	$results_screen_option = get_user_meta( $user_id, 'results_screen_option')[0];
-	if (empty($results_screen_option)){
-		$results_screen_option= array(
+	if ( empty($results_screen_option) ) {
+		$results_screen_option = array(
 			'page_url'   => '0',
 			'page_name'  => '0',
 			'business'   => '1',
 			'phone'      => '1',
-			'ip_address' => '1'
+			'ip_address' => '1',
 		);
 	}
 }
@@ -345,7 +345,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 		'time_taken'    => __( 'Time Taken', 'quiz-master-next' ),
 		'ip'            => __( 'IP Address', 'quiz-master-next' ),
 		'page_name'     => __( 'Page Name', 'quiz-master-next' ),
-		'page_url'      => __( 'Page URL', 'quiz-master-next' )
+		'page_url'      => __( 'Page URL', 'quiz-master-next' ),
 	) );
 
 	$values = $quiz_infos = [];
@@ -354,20 +354,20 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 		$values[ $key ]['style'] = "";
 	}
 
-	$display_none = ' style="display:none;" ';
-	if ( "0" === $results_screen_option['page_url'] ){
+	$display_none = ' style=display:none; ';
+	if ( "0" === $results_screen_option['page_url'] ) {
 		$values['page_url']['style']  = $display_none;
 	}
-	if ( "0" === $results_screen_option['page_name'] ){
+	if ( "0" === $results_screen_option['page_name'] ) {
 		$values['page_name']['style'] = $display_none;
 	}
-	if ( "0" === $results_screen_option['business'] ){
+	if ( "0" === $results_screen_option['business'] ) {
 		$values['business']['style']  = $display_none ;
 	}
-	if ( "0" === $results_screen_option['phone'] ){
+	if ( "0" === $results_screen_option['phone'] ) {
 		$values['phone']['style']     = $display_none ;
 	}
-	if ( "0" === $results_screen_option['ip_address'] ){
+	if ( "0" === $results_screen_option['ip_address'] ) {
 		$values['ip']['style']        = $display_none ;
 	}
 
@@ -454,7 +454,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 				$values['page_url']['content'][] = '<a href="' . esc_url( $mlw_quiz_info->page_url ) . '">' . esc_html( $mlw_quiz_info->page_url ) . '</a>';
 			}
 			foreach ( $values as $k => $v ) {
-				if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url'], true ) ) {
+				if ( ! in_array( $k, [ 'score', 'time_complete', 'name', 'business', 'email', 'phone', 'user', 'time_taken', 'ip', 'page_name', 'page_url' ], true ) ) {
 					$content = apply_filters( 'mlw_qmn_admin_results_page_column_content', '', $mlw_quiz_info, $k );
 					if ( isset( $values[ $k ] ) && ! empty( $content ) ) {
 						$values[ $k ]['content'][] = $content;
@@ -471,7 +471,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 				<th><?php esc_html_e( 'Quiz Name','quiz-master-next' ); ?></th>
 				<?php foreach ( $values as $k => $v ) {
 					if ( ! empty( $v['content'] ) ) {
-						echo '<th'.$v['style'].'>'. esc_html( $v['title'] ) . '</th>';
+						echo '<th'. esc_html( $v['style'] ) . '>'. esc_html( $v['title'] ) . '</th>';
 					}
 				} ?>
 			</tr>
@@ -487,7 +487,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 						<?php
 						foreach ( $values as $k => $v ) {
 							if ( isset( $v['content'][ $x ] ) ) {
-								echo '<td'.$v['style'].'><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k ) ) . '</span></td>';
+								echo '<td'. esc_html( $v['style'] ) . '><span style="font-size:16px;">' . wp_kses_post( apply_filters( 'mlw_qmn_admin_results_page_result', $v['content'][ $x ], $quiz_infos[ $x ], $k ) ) . '</span></td>';
 							}
 						} ?>
 					</tr><?php
@@ -517,39 +517,39 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-results-screen-option-title">
 			<header class="qsm-popup__header">
-				<h2 class="qsm-popup__title" id="modal-results-screen-option-title"><?php _e( 'Choose Columns to hide/show', 'quiz-master-next' ); ?></h2>
+				<h2 class="qsm-popup__title" id="modal-results-screen-option-title"><?php esc_html_e( 'Choose Columns to hide/show', 'quiz-master-next' ); ?></h2>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 			</header>
 			<main class="qsm-popup__content" id="modal-results-screen-option-content">
 				<form action='' method='post' id="results-screen-option-form" style="display:flex; flex-direction:column;">
 					<label>
 						<input type="checkbox" value="1" name="page_url" <?php checked( $results_screen_option['page_url'], "1", true )?>/>
-						<?php _e( 'Page URL', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'Page URL', 'quiz-master-next' ); ?>
 					</label>
 					<label>
 						<input type="checkbox" name="page_name" value="1" <?php checked( $results_screen_option['page_name'], "1", true )?>/>
-						<?php _e( 'Page Name', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'Page Name', 'quiz-master-next' ); ?>
 					</label>
 					<label>
 						<input type="checkbox" value="1" name="business" <?php checked( $results_screen_option['business'], "1", true )?>/>
-						<?php _e( 'Business', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'Business', 'quiz-master-next' ); ?>
 					</label>
 					<label>
 						<input type="checkbox" name="phone" value="1" <?php checked( $results_screen_option['phone'], "1", true )?>/>
-						<?php _e( 'Phone', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'Phone', 'quiz-master-next' ); ?>
 					</label>
 					<label>
 						<input type="checkbox" name="ip_address" value="1" <?php checked( $results_screen_option['ip_address'], "1", true )?>/>
-						<?php _e( 'IP Address', 'quiz-master-next' ); ?>
+						<?php esc_html_e( 'IP Address', 'quiz-master-next' ); ?>
 					</label>
 					<?php wp_nonce_field( 'results_screen_option', 'results-screen_option_nonce' ); ?>
 				</form>
 			</main>
 			<footer class="qsm-popup__footer">
 				<button id="save-results-screen-option-button"
-					class="qsm-popup__btn qsm-popup__btn-primary"><?php _e( 'Save', 'quiz-master-next' ); ?></button>
+					class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 				<button class="qsm-popup__btn" data-micromodal-close
-					aria-label="Close this dialog window"><?php _e( 'Cancel', 'quiz-master-next' ); ?></button>
+					aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
