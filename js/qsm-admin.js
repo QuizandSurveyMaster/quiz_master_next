@@ -418,6 +418,78 @@ var QSMAdmin;
         deleteResults(qid, qname);
     });
 
+    jQuery(document).on('click', '#btn_export', function(e) {
+        e.preventDefault();
+        jQuery.ajax({
+            type: 'POST',
+            url: ajaxurl,
+            data: {
+                action: "qsm_export_data",
+            },
+            success: function(response) {
+                /*
+                 * Make CSV downloadable
+                 */
+                var d = new Date();
+
+                var month = d.getMonth() + 1;
+                var day = d.getDate();
+                var output = d.getFullYear() + '-' + (('' + month).length < 2 ? '0' : '') + month + '-' + (('' + day).length < 2 ? '0' : '') + day;
+                var downloadLink = document.createElement("a");
+                var fileData = ['\ufeff' + response];
+
+                var blobObject = new Blob(fileData, {
+                    type: "text/csv;charset=utf-8;"
+                });
+
+                var url = URL.createObjectURL(blobObject);
+                downloadLink.href = url;
+                downloadLink.download = "export_" + output + ".csv";
+                /*
+                 * Actually download CSV
+                 */
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+
+            },
+            error: function(errorThrown) {
+                alert(errorThrown);
+            }
+        });
+    });
+
+    jQuery(document).on('click', '#btn_clear_logs', function(e) {
+        e.preventDefault();
+        var delete_logs=confirm(qsm_logs_delete.qsm_delete_audit_logs);
+        if ( delete_logs ) {
+            // your deletion code
+            jQuery.ajax({
+                type: 'POST',
+                url: ajaxurl,
+                data: {
+                    action: "qsm_clear_audit_data",
+                },
+                success: function(response) {
+                    location.reload();
+                },
+                error: function(errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+        
+        
+    });
+    
+    jQuery('.qsm_audit_data').click(function (e) {
+        e.preventDefault();
+        MicroModal.show('qsm_fetch_audit_data');
+        var qsm_get_setting_data = jQuery(this).attr('data-auditid');
+        jQuery('.qsm_setting__data').html('<p>'+JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2)+'</p>');
+    });
+
 }(jQuery));
 
 // result page
