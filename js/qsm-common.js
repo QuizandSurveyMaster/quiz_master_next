@@ -141,7 +141,5 @@
 			'.left-polar-title').css('font-weight', '400');
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.right-polar-title').css('font-weight', '400');
-		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
-			'.qmn_polar').val(value);
 	}
 }(jQuery));
