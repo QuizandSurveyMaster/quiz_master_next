@@ -288,6 +288,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
 			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
+			wp_enqueue_script( 'micromodal_script',  QSM_PLUGIN_JS_URL.'/micromodal.min.js', array( 'jquery'), $this->version, true);
 		}
 		//stats page
 		if ( 'qsm_page_qmn_stats' === $hook ) {
