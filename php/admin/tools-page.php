@@ -211,7 +211,13 @@ function qsm_audit_box() {
 					<tr class="<?php echo esc_attr( $alternate ); ?>">
 						<td><?php echo esc_html( $audit->trail_id ); ?></td>
 						<td><?php echo esc_html( $audit->action_user ); ?></td>
-						<td><a href="#" class="qsm_audit_data" data-auditid="<?php echo esc_html( $audit->form_data ); ?>"><?php echo esc_html( $audit->action ); ?></a></td>
+						<td>
+							<?php if(!empty($audit->form_data)){ ?>
+								<a href="#" class="qsm_audit_data" data-auditid="<?php echo esc_html( $audit->form_data ); ?>"><?php echo esc_html( $audit->action ); ?></a>
+							<?php }else{
+								echo esc_html( $audit->action );
+							}?>
+						</td>
 						<td><?php echo esc_html( $audit->quiz_name ); ?> [ <strong>ID:</strong> <?php echo esc_html( $audit->quiz_id ); ?> ] </td>
 						<td><?php echo esc_html( $audit->time ); ?></td>
 					</tr>

@@ -14,17 +14,14 @@ class QSM_Audit {
    * @param string $action The action that is to be saved into the audit trail
    * @return bool Returns true if successfull and false if fails
    */
-  public function new_audit( $action, $quiz_id, $json_updated_setting_data, $user = null ) {
+  public function new_audit( $action, $quiz_id, $json_updated_setting_data ) {
 
     // Sanitizes action just in case 3rd party uses this funtion
     $action = sanitize_text_field( $action );
 
     // Retrieves current user's data
-    if ( is_null( $user ) ) {
-      $current_user = wp_get_current_user();
-    } else {
-      $current_user = $user;
-    }
+    $current_user = wp_get_current_user();
+    
 
     // Returns if the current user is not valid
     if ( ! ( $current_user instanceof WP_User ) ) {

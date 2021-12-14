@@ -59,6 +59,7 @@ class QSM_Fields {
 				}
 				$settings_array[ $field["id"] ] = $sanitized_value;
 			}
+			$quiz_id = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
 
 			// Update the settings and show alert based on outcome
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
