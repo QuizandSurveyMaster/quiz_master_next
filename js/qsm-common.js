@@ -86,7 +86,7 @@
 					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
 					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
 				} else {
-					qsmPolarSliderQuestionCreate(questionID, value, '' );
+					qsmPolarSliderQuestionCreate(questionID, '' );
 				}
 				if ( isNaN(value) ){
 					jQuery(this).find('a').hide();
@@ -135,7 +135,7 @@
 		}
 	}
 
-	function qsmPolarSliderQuestionCreate(questionID, value){
+	function qsmPolarSliderQuestionCreate(questionID){
 		
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '400');
@@ -143,6 +143,5 @@
 			'.right-polar-title').css('font-weight', '400');
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.qmn_polar').val(value);
-		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find('.ui-slider-handle').html(value);	
 	}
 }(jQuery));
