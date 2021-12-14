@@ -80,12 +80,20 @@
 				}
 			},
 			slide: function( event, ui ) {
-				jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-					'.ui-slider-handle').text( ui.value );
+				
+				if('answer' === page || 'admin' === page){
+					return false;
+				}
+				else{
+					jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+						'.ui-slider-handle').text( ui.value );
+				}
 			},
 			create: function (event, ui){
 				if('answer'=== page){
 					jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
+					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
+					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
 				} else if ( 'admin' === page ) {
 					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
 					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
