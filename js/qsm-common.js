@@ -71,6 +71,10 @@
 			slide: function slider_slide(event, ui) {
 				if('answer'=== page || 'admin' === page){
 					return false;
+				}
+				else{
+					jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+						'.ui-slider-handle').text( ui.value );
 				}			
 			},
 			change: function ( event, ui ){
@@ -82,6 +86,8 @@
 			create: function (event, ui){
 				if('answer'=== page){
 					jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
+					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
+					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
 				} else if ( 'admin' === page ) {
 					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
 					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
@@ -100,7 +106,7 @@
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.qmn_polar').val(ui.value);
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-				'.ui-slider-handle').html(ui.value);	
+				'.ui-slider-handle').text(ui.value);	
 		let lowerMidClass = '.left-polar-title';
 		let upperMidClass = '.right-polar-title';
 		if (isReverse){
