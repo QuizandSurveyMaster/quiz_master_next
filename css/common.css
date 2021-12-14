@@ -79,7 +79,7 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question{
     display: flex;
     justify-content: center;
 }
-.question-type-polar-s .ui-widget-content .ui-state-focus, .question-type-polar-s .ui-widget-content .ui-state-hover{
+.question-type-polar-s a:focus, .question-type-polar-s a:hover{
     background: rgb(119, 113, 113);
     border-color: rgb(119, 113, 113);
 }
