@@ -421,6 +421,15 @@ var QSMAdmin;
 }(jQuery));
 
 // result page
+jQuery('#results-screen-option-button').on('click', function(event){
+    event.preventDefault();
+    MicroModal.show('modal-results-screen-option');
+});
+jQuery('#save-results-screen-option-button').on('click', function(event){
+    event.preventDefault();
+    MicroModal.close('modal-results-screen-option');
+    jQuery('#results-screen-option-form').submit();
+});
 function deleteResults(id, quizName) {
 	jQuery("#delete_dialog").dialog({
 		autoOpen: false,
