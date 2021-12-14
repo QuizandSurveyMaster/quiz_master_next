@@ -79,6 +79,10 @@
 					
 				}
 			},
+			slide: function( event, ui ) {
+				jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+					'.ui-slider-handle').text( ui.value );
+			},
 			create: function (event, ui){
 				if('answer'=== page){
 					jQuery(document).trigger('qsm_after_display_result',[ this, ui ]);
@@ -100,7 +104,7 @@
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.qmn_polar').val(ui.value);
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-				'.ui-slider-handle').html(ui.value);	
+				'.ui-slider-handle').text(ui.value);	
 		let lowerMidClass = '.left-polar-title';
 		let upperMidClass = '.right-polar-title';
 		if (isReverse){
