@@ -86,7 +86,7 @@
 					jQuery(this).find('a').css({'display':'flex','align-items':'center','justify-content':'center','text-decoration':'none','color':'white'});
 					jQuery(this).find('a').html('<p style="margin:0;">'+value+'</p>');
 				} else {
-					qsmPolarSliderQuestionCreate(questionID, '' );
+					qsmPolarSliderQuestionCreate(questionID );
 				}
 				if ( isNaN(value) ){
 					jQuery(this).find('a').hide();
