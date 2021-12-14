@@ -71,22 +71,16 @@
 			slide: function slider_slide(event, ui) {
 				if('answer'=== page || 'admin' === page){
 					return false;
+				}
+				else{
+					jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
+						'.ui-slider-handle').text( ui.value );
 				}			
 			},
 			change: function ( event, ui ){
 				if('answer'!== page || 'admin' !== page){
 					qsmPolarSliderQuestionChange(ui,questionID, answer1, answer2, value , isReverse );
 					
-				}
-			},
-			slide: function( event, ui ) {
-				
-				if('answer' === page || 'admin' === page){
-					return false;
-				}
-				else{
-					jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-						'.ui-slider-handle').text( ui.value );
 				}
 			},
 			create: function (event, ui){
