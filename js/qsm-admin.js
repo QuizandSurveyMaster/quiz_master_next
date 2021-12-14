@@ -422,11 +422,11 @@ var QSMAdmin;
 
 // result page
 jQuery('#results-screen-option-button').on('click', function(event){
-    event.preventDefault;
+    event.preventDefault();
     MicroModal.show('modal-results-screen-option');
 });
 jQuery('#save-results-screen-option-button').on('click', function(event){
-    event.preventDefault;
+    event.preventDefault();
     MicroModal.close('modal-results-screen-option');
     jQuery('#results-screen-option-form').submit();
 });

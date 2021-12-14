@@ -354,20 +354,21 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( $_POST["re
 		$values[ $key ]['style'] = "";
 	}
 
+	$display_none = ' style="display:none;" ';
 	if ( "0" === $results_screen_option['page_url'] ){
-		$values['page_url']['style']  = ' style="display:none;" ';
+		$values['page_url']['style']  = $display_none;
 	}
 	if ( "0" === $results_screen_option['page_name'] ){
-		$values['page_name']['style'] = ' style="display:none;" ';
+		$values['page_name']['style'] = $display_none;
 	}
 	if ( "0" === $results_screen_option['business'] ){
-		$values['business']['style']  = ' style="display:none;" ' ;
+		$values['business']['style']  = $display_none ;
 	}
 	if ( "0" === $results_screen_option['phone'] ){
-		$values['phone']['style']     =  ' style="display:none;" ' ;
+		$values['phone']['style']     = $display_none ;
 	}
 	if ( "0" === $results_screen_option['ip_address'] ){
-		$values['ip']['style']        = ' style="display:none;" ' ;
+		$values['ip']['style']        = $display_none ;
 	}
 
 	if ( $mlw_quiz_data ) {
