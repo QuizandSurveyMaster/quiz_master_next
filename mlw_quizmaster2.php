@@ -288,6 +288,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
 			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
+			wp_enqueue_script( 'micromodal_script',  QSM_PLUGIN_JS_URL.'/micromodal.min.js', array( 'jquery'), $this->version, true);
 		}
 		//stats page
 		if ( 'qsm_page_qmn_stats' === $hook ) {
@@ -335,7 +336,10 @@ class MLWQuizMasterNext {
 			}
 		}
 		//load admin JS after all dependencies are loaded
-		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable' ), $this->version, true );
+		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util','jquery-ui-sortable'), $this->version, true );
+		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
+
+		
 	}
 
 	/**

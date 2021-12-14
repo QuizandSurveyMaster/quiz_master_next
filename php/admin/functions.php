@@ -164,6 +164,49 @@ function qsm_add_author_column_in_db() {
 		$inc_val = $total_count_val + 1;
 		update_option( 'qsm_add_new_column_question_table_table', $inc_val );
 	}
+	/**
+	 * Add new column in the results table
+	 *
+	 * @since 7.3.7
+	 */
+	if ( get_option( 'qsm_update_result_db_column_page_url', '' ) != '1' ) {
+		global $wpdb;
+		$result_table_name    = $wpdb->prefix . 'mlw_results';
+		$table_result_col_obj = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
+				$wpdb->dbname,
+				$result_table_name,
+				'page_url'
+			)
+		);
+		if ( empty( $table_result_col_obj ) ) {
+			$wpdb->query( "ALTER TABLE $result_table_name ADD page_url varchar(255) NOT NULL" );
+		}
+		update_option( 'qsm_update_result_db_column_page_url', '1' );
+	}
+
+	/**
+	 * Add new column in the results table
+	 *
+	 * @since 7.3.7
+	 */
+	if ( get_option( 'qsm_update_result_db_column_page_name', '' ) != '1' ) {
+		global $wpdb;
+		$result_table_name    = $wpdb->prefix . 'mlw_results';
+		$table_result_col_obj = $wpdb->get_results(
+			$wpdb->prepare(
+				'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = %s AND TABLE_NAME = %s AND COLUMN_NAME = %s ',
+				$wpdb->dbname,
+				$result_table_name,
+				'page_name'
+			)
+		);
+		if ( empty( $table_result_col_obj ) ) {
+			$wpdb->query( "ALTER TABLE $result_table_name ADD page_name varchar(255) NOT NULL" );
+		}
+		update_option( 'qsm_update_result_db_column_page_name', '1' );
+	}
 }
 
 add_action( 'admin_init', 'qsm_change_the_post_type' );

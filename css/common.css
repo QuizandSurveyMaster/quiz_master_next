@@ -74,6 +74,15 @@ body .quiz_section .qsm_contact_div .mlw_qmn_question{
     border-color: rgb(119, 113, 113);
     top: -7px;
     border-radius: 0px;
+    text-decoration: none;
+    color: #fff !important;
+    display: flex;
+    justify-content: center;
+}
+.site .question-type-polar-s a.ui-state-focus:focus{
+    background: rgba(119, 113, 113, 1);
+    border-color: rgb(119, 113, 113, 1);
+    text-decoration: none;
 }
 .qsm-deselect-answer{
     float: right;
@@ -344,3 +353,4 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm_quiz_processing_box .qsm_quiz_processing_message{
     margin: 10px 0;
 }
+

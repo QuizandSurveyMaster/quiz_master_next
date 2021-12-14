@@ -57,6 +57,12 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
 		add_action( 'wp_ajax_nopriv_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
+		add_action( 'wp_ajax_qsm_export_data', array( $this, 'qsm_export_data' ) );
+		add_action( 'wp_ajax_nopriv_qsm_export_data', array( $this, 'qsm_export_data' ) );
+
+		add_action( 'wp_ajax_qsm_clear_audit_data', array( $this, 'qsm_clear_audit_data' ) );
+		add_action( 'wp_ajax_nopriv_qsm_clear_audit_data', array( $this, 'qsm_clear_audit_data' ) );
+
 		// Upload file of file upload question type
 		add_action( 'wp_ajax_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
 		add_action( 'wp_ajax_nopriv_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
@@ -220,6 +226,56 @@ class QMNQuizManager {
 		);
 		wp_die();
 	}
+
+	/**
+	 * Export CSV file 
+	*/
+
+	public function qsm_export_data(){
+		global $wpdb;
+		$export_tool_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_qm_audit_trail" );
+		// file creation
+		$qsm_export_filename = "export_".date("d-m-y").".csv";
+
+		// Clean object
+		ob_end_clean ();
+
+		// Open file
+		$qsm_open_file = fopen("php://output","w");
+		fputcsv($qsm_open_file, array('Trail ID', 'User', 'Action', 'Quiz Name', 'Form Data', 'Time'));
+
+		// loop for insert data into CSV file
+		foreach ($export_tool_data as $export_data)
+		{
+			$qsm_export_array = array(
+				"trail_id"=>$export_data->trail_id,
+				"action_user"=>$export_data->action_user,
+				"action"=>$export_data->action,
+				"quiz_name"=>$export_data->quiz_name,
+				"form_data"=>$export_data->form_data,
+				"time"=>$export_data->time
+			);
+			fputcsv($qsm_open_file,$qsm_export_array);
+		}
+		
+		// Close file
+		fclose($qsm_open_file);
+		
+		// download csv file
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=".$qsm_export_filename);
+		header("Content-Type: text/csv;");
+		exit;
+
+	}
+
+	public function qsm_clear_audit_data(){
+		global $wpdb;
+		$table_audit = $wpdb->prefix . 'mlw_qm_audit_trail';
+		$wpdb->query("TRUNCATE TABLE $table_audit");
+		
+	}
+	
 
 	/**
 	 * Generates Content For Quiz Shortcode
@@ -1427,6 +1483,8 @@ class QMNQuizManager {
 							'deleted'         => 0,
 							'unique_id'       => $unique_id,
 							'form_type'       => isset( $qmn_quiz_options->form_type ) ? $qmn_quiz_options->form_type : 0,
+							'page_url'        => $_SERVER["HTTP_REFERER"],
+							'page_name'       => url_to_postid( $_SERVER["HTTP_REFERER"] ) ?  get_the_title( url_to_postid( $_SERVER["HTTP_REFERER"] )) : '',	
 						),
 						array(
 							'%d',
@@ -1448,6 +1506,8 @@ class QMNQuizManager {
 							'%d',
 							'%s',
 							'%d',
+							'%s',
+							'%s',
 						)
 					);
 					$results_id     = $wpdb->insert_id;
