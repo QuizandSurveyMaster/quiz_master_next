@@ -1327,11 +1327,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 /**
  * QSM Question Tab
  */
+ var QSMQuestion;
+ var import_button;
 (function ($) {
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
     if (window.location.href.indexOf('tab') == -1 ||window.location.href.indexOf('tab=questions')> 0 ){
-        var QSMQuestion;
-        var import_button;
+
         $.QSMSanitize = function (input) {
             return input.replace(/<(|\/|[^>\/bi]|\/[^>bi]|[^\/>][^>]+|\/[^>][^>]+)>/g, '');
         };
@@ -1717,6 +1718,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 var question_title = $('#question_title').val();
                 if (name == '' && question_title == '') {
                     alert('Enter Question title or description');
+                    setTimeout(function () {
+                        $('#save-edit-question-spinner').removeClass('is-active');
+                    }, 250);
                     return false;
                 }
                 var advanced_option = {};
