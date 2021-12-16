@@ -64,7 +64,7 @@ class QSM_Tracking {
 
 		// We only send data if opted in. Opt-in designated by a value of 1 or 2.
 		// We send data once a week.
-    	if ( ( $tracking_allowed == '1' || $tracking_allowed == '2' ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || !$last_time ) ) {
+    	if ( ( 1 === intval( $tracking_allowed ) || 2 === intval( $tracking_allowed) ) && ( ( $last_time && $last_time < strtotime( '-1 week' ) ) || ! $last_time ) ) {
       		$this->load_data( $tracking_allowed );
       		$this->send_data();
       		update_option( 'qmn_tracker_last_time', time() );
@@ -85,7 +85,7 @@ class QSM_Tracking {
 			'httpversion' => '1.0',
 			'blocking'    => true,
 			'body'        => $this->data,
-			'user-agent'  => 'QSM Usage Tracker'
+			'user-agent'  => 'QSM Usage Tracker',
 		) );
     	if ( is_wp_error( $response ) ) {
       		global $mlwQuizMasterNext;
@@ -103,23 +103,23 @@ class QSM_Tracking {
   	private function load_data( $tracking ) {
     	global $wpdb;
     	global $mlwQuizMasterNext;
+
     	$data = array();
     	$data["plugin"] = "QSM";
-
     	$data['url']    = home_url();
     	$data["wp_version"] = get_bloginfo( 'version' );
     	$data["php_version"] = PHP_VERSION;
     	$data["mysql_version"] = $wpdb->db_version();
-    	$data["server_app"] = $_SERVER['SERVER_SOFTWARE'];
+    	$data["server_app"] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 
     	// Retrieve current plugin information
-		if( ! function_exists( 'get_plugins' ) ) {
+		if ( ! function_exists( 'get_plugins' ) ) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 		$plugins        = array_keys( get_plugins() );
 		$active_plugins = get_option( 'active_plugins', array() );
 		foreach ( $plugins as $key => $plugin ) {
-			if ( in_array( $plugin, $active_plugins ) ) {
+			if ( in_array( $plugin, $active_plugins, true ) ) {
 				// Remove active plugins from list so we can show active and inactive separately
 				unset( $plugins[ $key ] );
 			}
@@ -173,30 +173,30 @@ class QSM_Tracking {
 		// If the notice has already been shown, return.
 		if ( $show_notice ) {
 			return;
-		}		
+		}
 
 		// If the tracking variable has already been set, return.
-		if ( isset( $settings['tracking_allowed'] ) && $settings['tracking_allowed'] == '1' ) {
+		if ( isset( $settings['tracking_allowed'] ) && 1 === intval( $settings['tracking_allowed'] ) ) {
 			return;
-		}			
+		}
 
 		// If the user does not have the required permissions, return.
-		if( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
-		}			
+		}
 
 		// If the site is on a dev or staging site, we do not need the data.
-		if( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
+		if ( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
 			update_option( 'qmn-tracking-notice', '1' );
 		} else {
 			$optin_url  = esc_url( add_query_arg( 'qmn_track_check', 'opt_into_tracking' ) );
 			$optout_url = esc_url( add_query_arg( 'qmn_track_check', 'opt_out_of_tracking' ) );
 			echo '<div class="updated">';
-				echo '<p>' . __( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
-				echo '<p>' . __( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
-				echo '<p><a href="http://bit.ly/2w6f34x" target="_blank">' . __( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
-				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . __( 'Allow', 'quiz-master-next' ) . '</a>';
-				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . __( 'Do not allow', 'quiz-master-next' ) . '</a>';
+				echo '<p>' . esc_html__( "Allow Quiz And Survey Master to track this plugin's usage and help us make this plugin better?", 'quiz-master-next' ) . '<p>';
+				echo '<p>' . esc_html__( "No sensitive data is tracked. Only feature usage and data about quizzes, surveys, and questions are collected. No questions or user responses is ever collected.", 'quiz-master-next' ) . '<p>';
+				echo '<p><a href="https://quizandsurveymaster.com/what-the-plugin-tracks/?utm_campaign=qsm_plugin&utm_medium=plugin&utm_source=tracking-notice" target="_blank">' . esc_html__( 'Click here to learn more about why we need this data and what we collect', 'quiz-master-next' ) . '</a></p>';
+				echo '&nbsp;<a href="' . esc_url( $optin_url ) . '" class="button-secondary">' . esc_html__( 'Allow', 'quiz-master-next' ) . '</a>';
+				echo '&nbsp;<a href="' . esc_url( $optout_url ) . '" class="button-secondary">' . esc_html__( 'Do not allow', 'quiz-master-next' ) . '</a>';
 			echo '</div>';
 		}
 	}
@@ -212,7 +212,7 @@ class QSM_Tracking {
     	if ( isset( $_GET["qmn_track_check"] ) ) {
 
 			// Checks if user opted into tracking.
-      		if ( $_GET["qmn_track_check"] == 'opt_into_tracking' ) {
+      		if ( sanitize_text_field( wp_unslash( $_GET["qmn_track_check"] ) ) == 'opt_into_tracking' ) {
         		$settings = (array) get_option( 'qmn-settings' );
         		$settings['tracking_allowed'] = '2';
         		update_option( 'qmn-settings', $settings );
@@ -221,7 +221,7 @@ class QSM_Tracking {
         		$settings['tracking_allowed'] = '0';
         		update_option( 'qmn-settings', $settings );
 			}
-			  
+
 			// Prevents notice from being shown again.
       		update_option( 'qmn-tracking-notice', '1' );
     	}
@@ -229,4 +229,4 @@ class QSM_Tracking {
 }
 
 $qsm_tracking = new QSM_Tracking();
-?>
+

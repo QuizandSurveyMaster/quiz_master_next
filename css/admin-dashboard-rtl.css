@@ -25,6 +25,7 @@
 	font-size: 13px;
 	line-height: 1.23076923;
 	text-decoration: none;
+	z-index:999;
 }
 
 .welcome-panel .qsm-welcome-panel-dismiss:before {

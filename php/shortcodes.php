@@ -9,17 +9,19 @@
  * @return string The HTML the shortcode will be replaced with
  */
 function qsm_quiz_link_shortcode( $atts, $content = '' ) {
-	extract(
-		shortcode_atts(
-			array(
-				'id'     => 0,
-				'class'  => '',
-				'target' => '',
-			),
-			$atts
-		)
+
+	$args = shortcode_atts(
+		array(
+			'id'     => 0,
+			'class'  => '',
+			'target' => '',
+		),
+		$atts
 	);
-	$id = intval( $id );
+
+	$id = intval( $args['id'] );
+	$class = $args['class'];
+	$target = $args['target'];
 
 	// Find the permalink by finding the post with the meta_key 'quiz_id' of supplied quiz
 	$permalink = '';
@@ -43,9 +45,10 @@ function qsm_quiz_link_shortcode( $atts, $content = '' ) {
 	// Craft the target attribute if one is passed to shortcode
 	$target_html = '';
 	if ( ! empty( $target ) ) {
-		$target_html = "target='" . esc_attr( $target ) . "'";
+		return "<a href='" . esc_url( $permalink ) . "' target='" . esc_attr( $target ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
+	} else {
+		return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "'>" . esc_html( $content ) . '</a>';
 	}
-	return "<a href='" . esc_url( $permalink ) . "' class='" . esc_attr( $class ) . "' $target_html>" . esc_html( $content ) . '</a>';
 }
 
 add_shortcode( 'qsm_link', 'qsm_quiz_link_shortcode' );
@@ -61,27 +64,25 @@ add_shortcode( 'qsm_link', 'qsm_quiz_link_shortcode' );
  * Shortcode call - [qsm_recent_quizzes no_of_quizzes=5 include_future_quizzes='no' ]
  */
 function qsm_display_recent_quizzes( $attrs ) {
-
+	global $mlwQuizMasterNext;
 	$no_of_quizzes          = isset( $attrs['no_of_quizzes'] ) ? $attrs['no_of_quizzes'] : 10;
 	$include_future_quizzes = isset( $attrs['include_future_quizzes'] ) ? $attrs['include_future_quizzes'] : true;
 	global $wpdb;
-	wp_enqueue_style( 'quizzes-list', plugins_url( '../css/quizzes-list.css', __FILE__ ) );
+	wp_enqueue_style( 'quizzes-list', QSM_PLUGIN_CSS_URL.'/quizzes-list.css', array(), $mlwQuizMasterNext->version );
 
-	$query   = "SELECT quiz_id, quiz_name, quiz_settings FROM {$wpdb->prefix}mlw_quizzes WHERE deleted=0 ORDER BY  quiz_id DESC";
-	$quizzes = $wpdb->get_results( $query );
+	$quizzes = $mlwQuizMasterNext->pluginHelper->get_quizzes( false, 'quiz_id', 'DESC' );
 	$result  = '<div class="outer-con">';
 	$i       = 0;
 	foreach ( $quizzes as $quiz ) {
 		if ( $i < $no_of_quizzes ) {
-			$setting = unserialize( $quiz->quiz_settings );
-			$options = unserialize( $setting['quiz_options'] );
-
-			$start_date = $options['scheduled_time_start'];
-			$end_date   = $options['scheduled_time_end'];
-			$today      = date( 'm/d/Y' );
-			if ( $end_date != '' && $end_date < $today ) {
+			$setting = maybe_unserialize( $quiz->quiz_settings );
+			$options = maybe_unserialize( $setting['quiz_options'] );
+			$start_date = strtotime( $options['scheduled_time_start'] );
+			$end_date   = strtotime( $options['scheduled_time_end'] ); 
+			$now      = strtotime( current_time( 'm/d/Y H:i' ) );
+			if ( $end_date && $end_date < $now ) {
 				continue;
-			} elseif ( $include_future_quizzes == 'no' && $start_date > $today ) {
+			} elseif ( $start_date && $start_date > $now && 'no' === $include_future_quizzes ) {
 				continue;
 			} else {
 				$title   = $quiz->quiz_name;
@@ -89,7 +90,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 				$url     = do_shortcode( "[qsm_link id='$id'] Take Quiz [/qsm_link]" );
 				$result .= "<div class='ind-quiz'>
                                 <div class='quiz-heading'>
-                                    {$title} 
+                                    {$title}
                                 </div>
                                 <div class='quiz-url'>
                                     {$url}
@@ -100,7 +101,7 @@ function qsm_display_recent_quizzes( $attrs ) {
 			}
 		}
 	}
-	if ( $i == 0 ) {
+	if ( 0 === $i ) {
 		$result .= __( 'No quiz found', 'quiz-master-next' );
 	}
 	$result .= '</div>';
@@ -126,19 +127,19 @@ add_action( 'wp_enqueue_scripts', 'qsm_load_main_scripts' );
  * @global obj $wp_query
  */
 function qsm_generate_fb_header_metadata() {
-	if ( isset( $_GET['result_id'] ) && $_GET['result_id'] != '' ) {
+	if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
 		$settings        = (array) get_option( 'qmn-settings' );
 		$facebook_app_id = '594986844960937';
 		if ( isset( $settings['facebook_app_id'] ) ) {
 			$facebook_app_id = esc_js( $settings['facebook_app_id'] );
 		}
 		global $mlwQuizMasterNext, $wpdb, $wp_query;
-		$result_id    = sanitize_text_field( $_GET['result_id'] );
+		$result_id    = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 		$results_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_id ) );
 		if ( $results_data ) {
 			// Prepare responses array.
-			if ( is_serialized( $results_data->quiz_results ) && is_array( @unserialize( $results_data->quiz_results ) ) ) {
-				$results = unserialize( $results_data->quiz_results );
+			$results = maybe_unserialize( $results_data->quiz_results );
+			if ( is_array( $results ) ) {
 				if ( ! isset( $results['contact'] ) ) {
 					$results['contact'] = array();
 				}
@@ -186,18 +187,19 @@ function qsm_generate_fb_header_metadata() {
 			if ( empty( $get_fb_sharing_image ) ) {
 				$get_fb_sharing_image = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'result_page_fb_image', '' );
 			}
-			if ( $get_fb_sharing_image !== '' && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
+			if ( '' !== $get_fb_sharing_image && filter_var( $get_fb_sharing_image, FILTER_VALIDATE_URL ) ) {
 				$default_fb_image = $get_fb_sharing_image;
 			}
 			$post     = $wp_query->get_queried_object();
 			$pagename = $post->post_title;
+			$result_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			?>
-<meta property="og:url" content="<?php echo $sharing_page_id . '?result_id=' . esc_attr( $_GET['result_id'] ); ?>" />
+<meta property="og:url" content="<?php echo esc_url( $sharing_page_id ) . '?result_id=' . esc_attr( $result_id ); ?>" />
 <meta property="og:type" content="article" />
-<meta property="og:title" content="<?php echo $pagename; ?>" />
-<meta property="og:description" content="<?php echo $sharing; ?>" />
-<meta property="og:image" content="<?php echo $default_fb_image; ?>" />
-<meta property="fb:app_id" content="<?php echo $facebook_app_id; ?>" />
+<meta property="og:title" content="<?php echo esc_attr( $pagename ); ?>" />
+<meta property="og:description" content="<?php echo esc_attr( $sharing ); ?>" />
+<meta property="og:image" content="<?php echo esc_url( $default_fb_image ); ?>" />
+<meta property="fb:app_id" content="<?php echo esc_attr( $facebook_app_id ); ?>" />
 <?php
 		}
 	}
@@ -241,7 +243,7 @@ function qsm_get_post_id_from_quiz_id( $quiz_id ) {
 
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div', 10, 3 );
 function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
-	if ( $qmn_quiz_options->enable_result_after_timer_end == 0 ) {
+	if ( '0' === $qmn_quiz_options->enable_result_after_timer_end ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';
@@ -249,7 +251,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 		$return_display .= '<img src="' . QSM_PLUGIN_URL . 'assets/clock.png' . '" alt="clock.png"/>';
 		$return_display .= '<p class="qsm-time-up-text">'. __( 'Time is Up!', 'quiz-master-next' ) .'</p>';
 		$return_display .= '</div>';
-		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">'.  __( 'Cancel', 'quiz-master-next' ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'.__( 'Submit Quiz', 'quiz-master-next' ).'</button></footer>';		$return_display .= '</div>';
+		$return_display .= '<footer class="qsm-popup__footer"><button class="qsm-popup-secondary-button qmn_btn" data-micromodal-close="" aria-label="Close this dialog window">'.  __( 'Cancel', 'quiz-master-next' ).'</button><button data-quiz_id="' . $qmn_quiz_options->quiz_id . '" class="submit-the-form qmn_btn">'.__( 'Submit Quiz', 'quiz-master-next' ).'</button></footer>';      $return_display .= '</div>';
 		$return_display .= '</div>';
 		$return_display .= '</div>';
 	}
@@ -257,7 +259,7 @@ function qsm_display_popup_div( $return_display, $qmn_quiz_options ) {
 }
 add_filter( 'qmn_end_shortcode', 'qsm_display_popup_div_expired_quiz', 10, 3 );
 function qsm_display_popup_div_expired_quiz( $return_display, $qmn_quiz_options ) {
-	if ( $qmn_quiz_options->enable_result_after_timer_end == 0 ) {
+	if ( 0 === intval( $qmn_quiz_options->enable_result_after_timer_end ) ) {
 		$return_display .= '<div style="display: none;" class="qsm-popup qsm-popup-slide" id="modal-4" aria-hidden="false">';
 		$return_display .= '<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">';
 		$return_display .= '<div class="qsm-popup__container qmn_quiz_container" role="dialog" aria-modal="true">';

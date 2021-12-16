@@ -52,13 +52,13 @@ class QSM_Results_Pages {
 					foreach ( $page['conditions'] as $condition ) {
 						$value = $condition['value'];
 						$category = '';
-						if( isset($condition['category'])){
+						if ( isset($condition['category']) ) {
 							$category = $condition['category'];
 						}
 						// First, determine which value we need to test.
 						switch ( $condition['criteria'] ) {
 							case 'score':
-								if( $category != '' ){
+								if ( '' !== $category ) {
 									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_SCORE_$category%", $response_data );
 								} else {
 									$test = $response_data['total_score'];
@@ -67,7 +67,7 @@ class QSM_Results_Pages {
 								break;
 
 							case 'points':
-								if( $category != '' ){
+								if ( '' !== $category ) {
 									$test = apply_filters( 'mlw_qmn_template_variable_results_page', "%CATEGORY_POINTS_$category%", $response_data );
 								} else {
 									$test = $response_data['total_points'];
@@ -111,7 +111,7 @@ class QSM_Results_Pages {
 								}
 								break;
 
-							case 'equal':							
+							case 'equal':                           
 								if ( $test != $value ) {
 									$show = false;
 								}
@@ -192,11 +192,10 @@ class QSM_Results_Pages {
 
 		global $wpdb;
 		$results = $wpdb->get_var( $wpdb->prepare( "SELECT message_after FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
+		$results = maybe_unserialize( $results );
 
 		// Checks if the results is an array.
-		if ( is_serialized( $results ) && is_array( maybe_unserialize( $results ) ) ) {
-			$results = maybe_unserialize( $results );
-
+		if ( is_array( $results ) ) {
 			// Checks if the results array is not the newer version.
 			if ( ! empty( $results ) && ! isset( $results[0]['conditions'] ) ) {
 				$pages = QSM_Results_Pages::convert_to_new_system( $quiz_id );
@@ -294,7 +293,7 @@ class QSM_Results_Pages {
 		// Updates the database with new array to prevent running this step next time.
 		$wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )
@@ -321,6 +320,8 @@ class QSM_Results_Pages {
 			return false;
 		}
 
+		$is_not_allow_html = apply_filters( 'qsm_admin_results_page_disallow_html', true );
+
 		// Sanitizes data in pages.
 		$total = count( $pages );
 		for ( $i = 0; $i < $total; $i++ ) {
@@ -346,16 +347,16 @@ class QSM_Results_Pages {
 			}
 
 			// Sanitize template data 
-			// if ( isset( $pages[ $i ]['page'] ) ) {
-			// 	// Sanitizes the conditions.
-			// 	$pages[ $i ]['page'] = esc_html( $pages[ $i ]['page'] );
-			// }
+			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
+				// Sanitizes the conditions.
+				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
+			}
 		}
 
 		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
-			array( 'message_after' => serialize( $pages ) ),
+			array( 'message_after' => maybe_serialize( $pages ) ),
 			array( 'quiz_id' => $quiz_id ),
 			array( '%s' ),
 			array( '%d' )

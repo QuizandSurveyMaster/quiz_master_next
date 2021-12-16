@@ -68,7 +68,7 @@ class QMNQuizCreator {
 	 * @param string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
-	public function create_quiz( $quiz_name, $theme_id, $quiz_settings = '' ) {
+	public function create_quiz( $quiz_name, $theme_id, $quiz_settings = array() ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 		$current_user = wp_get_current_user();
@@ -115,7 +115,7 @@ class QMNQuizCreator {
 				'timer_limit'              => 0,
 				'quiz_stye'                => '',
 				'question_numbering'       => 0,
-				'quiz_settings'            => $quiz_settings,
+				'quiz_settings'            => maybe_serialize( $quiz_settings ),
 				'theme_selected'           => 'primary',
 				'last_activity'            => current_time( 'mysql' ),
 				'require_log_in'           => 0,
@@ -206,7 +206,7 @@ class QMNQuizCreator {
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0001' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0001', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0001', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
@@ -222,22 +222,21 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$qsm_delete_from_db = isset($_POST['qsm_delete_from_db']) && "1" === $_POST['qsm_delete_from_db'];
-		$qsm_delete_questions_from_qb= isset($_POST['qsm_delete_question_from_qb']) && "1" === $_POST['qsm_delete_question_from_qb'];
+		$qsm_delete_from_db = isset($_POST['qsm_delete_from_db']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
+		$qsm_delete_questions_from_qb = isset($_POST['qsm_delete_question_from_qb']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
 
-		if ( $qsm_delete_from_db ){
+		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
 				$wpdb->prefix . 'mlw_quizzes',
 				array( 'quiz_id' => $quiz_id )
 			);
-			if ( $qsm_delete_questions_from_qb ){
+			if ( $qsm_delete_questions_from_qb ) {
 				$wpdb->delete(
 					$wpdb->prefix . 'mlw_quizzes',
 					array( 'quiz_id' => $quiz_id )
 				);
 			}
-
-		}else{
+}else {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
@@ -266,7 +265,7 @@ class QMNQuizCreator {
 			}
 		}
 
-		if ($qsm_delete) {
+		if ( $qsm_delete ) {
 			$my_query = new WP_Query(
 				array(
 					'post_type'  => 'qsm_quiz',
@@ -288,9 +287,9 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name" );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0002' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0002', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
-		}		
+		}
 
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
@@ -355,8 +354,8 @@ class QMNQuizCreator {
 		$logic_table_exists     = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $logic_table ) );
 		$question_term_exists   = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $question_term ) );
 		$mlw_qmn_duplicate_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name WHERE quiz_id=%d", $quiz_id ) );
-		$quiz_settings          = unserialize( $mlw_qmn_duplicate_data->quiz_settings );
-		if ( $is_duplicating_questions == 0 ) {
+		$quiz_settings          = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
+		if ( 0 == $is_duplicating_questions ) {
 			$quiz_settings['pages'] = '';
 		}
 		$qsm_create_quiz_system = 0;
@@ -408,9 +407,9 @@ class QMNQuizCreator {
 				'timer_limit'              => $mlw_qmn_duplicate_data->timer_limit,
 				'quiz_stye'                => $mlw_qmn_duplicate_data->quiz_stye,
 				'question_numbering'       => $mlw_qmn_duplicate_data->question_numbering,
-				'quiz_settings'            => serialize( $quiz_settings ),
+				'quiz_settings'            => maybe_serialize( $quiz_settings ),
 				'theme_selected'           => $mlw_qmn_duplicate_data->theme_selected,
-				'last_activity'            => date( 'Y-m-d H:i:s' ),
+				'last_activity'            => gmdate( 'Y-m-d H:i:s' ),
 				'require_log_in'           => $mlw_qmn_duplicate_data->require_log_in,
 				'require_log_in_text'      => $mlw_qmn_duplicate_data->require_log_in_text,
 				'limit_total_entries'      => $mlw_qmn_duplicate_data->limit_total_entries,
@@ -481,8 +480,8 @@ class QMNQuizCreator {
 		$mlw_new_id = $wpdb->insert_id;
 
 		// Update quiz settings
-		$update_quiz_settings = unserialize( $mlw_qmn_duplicate_data->quiz_settings );
-		$update_pages         = unserialize( $update_quiz_settings['pages'] );
+		$update_quiz_settings = maybe_unserialize( $mlw_qmn_duplicate_data->quiz_settings );
+		$update_pages         = maybe_unserialize( $update_quiz_settings['pages'] );
 		// get logic data from logic table first or else from quiz_settings
 		if ( ! is_null( $logic_table_exists ) ) {
 			$query       = $wpdb->prepare( "SELECT * FROM $logic_table WHERE quiz_id = %d", $quiz_id );
@@ -490,14 +489,14 @@ class QMNQuizCreator {
 			$logic_rules = array();
 			if ( ! empty( $logic_data ) ) {
 				foreach ( $logic_data as $data ) {
-					$logic_rules[] = unserialize( $data->logic );
+					$logic_rules[] = maybe_unserialize( $data->logic );
 				}
 			}
 		} else {
-			$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? unserialize( unserialize( $update_quiz_settings['logic_rules'] ) ) : array();
+			$logic_rules = isset( $update_quiz_settings['logic_rules'] ) ? maybe_unserialize( $update_quiz_settings['logic_rules'] ) : array();
 		}
 
-		if ( false != $results ) {
+		if ( false !== $results ) {
 			$current_user = wp_get_current_user();
 			$quiz_post    = array(
 				'post_title'   => $quiz_name,
@@ -512,7 +511,7 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
 			do_action( 'qmn_quiz_duplicated', $quiz_id, $mlw_new_id );
 		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0011' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0011', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0011', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 		if ( $is_duplicating_questions ) {
@@ -585,7 +584,7 @@ class QMNQuizCreator {
 				);
 				foreach ( $update_pages as $pages_key => $pages_value ) {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
-						if ( $page_q_id == $mlw_question->question_id ) {
+						if ( $page_q_id === $mlw_question->question_id ) {
 							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}
@@ -595,7 +594,7 @@ class QMNQuizCreator {
 					foreach ( $logic_rules as $logic_key => $logic_value ) {
 						foreach ( $logic_value as $logic_cond_k => $logic_cond ) {
 							foreach ( $logic_cond as $l_cond_k => $logic_val ) {
-								if ( $logic_val['question'] == $mlw_question->question_id ) {
+								if ( $logic_val['question'] === $mlw_question->question_id ) {
 									$logic_rules[ $logic_key ][ $logic_cond_k ][ $l_cond_k ]['question'] = $wpdb->insert_id;
 								}
 							}
@@ -629,22 +628,22 @@ class QMNQuizCreator {
 					}
 				}
 
-				if ( $question_results == false ) {
-					$mlwQuizMasterNext->alertManager->newAlert( sprintf( __( 'There has been an error in this action. Please share this with the developer. Error Code: %s', 'quiz-master-next' ), '0020' ), 'error' );
+				if ( false === $question_results ) {
+					$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0020', 'quiz-master-next' ), 'error' );
 					$mlwQuizMasterNext->log_manager->add( 'Error 0020', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 				}
 			}
-			$update_quiz_settings['pages'] = serialize( $update_pages );
+			$update_quiz_settings['pages'] = maybe_serialize( $update_pages );
 			// saves data in logic table first or else in quiz_settings
 			$value_array = array();
 			if ( is_array( $logic_rules ) && ! empty( $logic_rules ) ) {
 				if ( is_null( $logic_table_exists ) ) {
-					$update_quiz_settings['logic_rules'] = serialize( serialize( $logic_rules ) );
+					$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 				} else {
 					foreach ( $logic_rules as $logic_data ) {
 						$data          = array(
 							$mlw_new_id,
-							serialize( $logic_data ),
+							maybe_serialize( $logic_data ),
 						);
 						$value_array[] = stripslashes( $wpdb->prepare( '(%d, %s)', $data ) );
 					}
@@ -652,11 +651,11 @@ class QMNQuizCreator {
 					$query  = "INSERT INTO $logic_table (quiz_id, logic) VALUES ";
 					$query .= $values;
 					$saved  = $wpdb->query( $query );
-					if ( $saved != false ) {
-						update_option( "logic_rules_quiz_$mlw_new_id", date( time() ) );
+					if ( false !== $saved ) {
+						update_option( "logic_rules_quiz_$mlw_new_id", gmdate( time() ) );
 						$update_quiz_settings['logic_rules'] = '';
 					} else {
-						$update_quiz_settings['logic_rules'] = serialize( serialize( $logic_rules ) );
+						$update_quiz_settings['logic_rules'] = maybe_serialize( $logic_rules );
 					}
 				}
 			}
@@ -664,7 +663,7 @@ class QMNQuizCreator {
 			$wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
-					'quiz_settings' => serialize( $update_quiz_settings ),
+					'quiz_settings' => maybe_serialize( $update_quiz_settings ),
 				),
 				array(
 					'quiz_id' => $mlw_new_id,
@@ -686,9 +685,7 @@ class QMNQuizCreator {
 		global $wpdb;
 		$qmn_settings_array = '';
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
-		}
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
 			return $qmn_settings_array[ $setting_name ];
 		} else {
@@ -709,17 +706,16 @@ class QMNQuizCreator {
 	 */
 	public function update_setting( $setting_name, $setting_value ) {
 		global $wpdb;
-		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
+		if ( ! is_array( $qmn_settings_array ) ) {
+			$qmn_settings_array = array();
 		}
 		$qmn_settings_array[ $setting_name ] = $setting_value;
-		$qmn_serialized_array                = serialize( $qmn_settings_array );
 		$results                             = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
-				'quiz_settings' => $qmn_serialized_array,
+				'quiz_settings' => maybe_serialize( $qmn_settings_array ),
 			),
 			array( 'quiz_id' => $this->quiz_id ),
 			array(
@@ -727,7 +723,7 @@ class QMNQuizCreator {
 			),
 			array( '%d' )
 		);
-		if ( $results != false ) {
+		if ( false !== $results ) {
 			return true;
 		} else {
 			return false;
@@ -744,19 +740,15 @@ class QMNQuizCreator {
 	 */
 	public function delete_setting( $setting_name ) {
 		global $wpdb;
-		$qmn_settings_array = array();
 		$qmn_quiz_settings  = $wpdb->get_var( $wpdb->prepare( 'SELECT quiz_settings FROM ' . $wpdb->prefix . 'mlw_quizzes' . ' WHERE quiz_id=%d', $this->quiz_id ) );
-		if ( is_serialized( $qmn_quiz_settings ) && is_array( @unserialize( $qmn_quiz_settings ) ) ) {
-			$qmn_settings_array = @unserialize( $qmn_quiz_settings );
-		}
+		$qmn_settings_array = maybe_unserialize( $qmn_quiz_settings );
 		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
 			unset( $qmn_settings_array[ $setting_name ] );
 		}
-		$qmn_serialized_array = serialize( $qmn_settings_array );
 		$results              = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
-				'quiz_settings' => $qmn_serialized_array,
+				'quiz_settings' => maybe_serialize( $qmn_settings_array ),
 			),
 			array( 'quiz_id' => $this->quiz_id ),
 			array(

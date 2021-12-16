@@ -24,26 +24,26 @@ function qsm_show_adverts() {
 		global $mlwQuizMasterNext;
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( '../css/qsm-admin.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-                if( false === get_transient('qsm_ads_data') ){
+                if ( false === get_transient('qsm_ads_data') ) {
                     $xml = qsm_fetch_data_from_xml();
-                    if(isset($xml->qsm_ads)){
+                    if ( isset($xml->qsm_ads) ) {
                         $all_ads = $xml->qsm_ads;
-                        $json_ads = json_encode($all_ads);
+                        $json_ads = wp_json_encode($all_ads);
                         $all_ads = $array_into_ads = json_decode($json_ads,TRUE);                        
-                        set_transient( 'qsm_ads_data', $array_into_ads, 60*60*24 );
+                        set_transient( 'qsm_ads_data', $array_into_ads, 60 * 60 * 24 );
                     }
-                }else{
+                }else {
                     $all_ads = get_transient('qsm_ads_data');
                 }
                 $count_ads = count($all_ads['ads']);
                 $ad_text  = '';
-		$rand_int = rand( 0, $count_ads - 1 );
-                $link = '<a target="_blank" href="'. $all_ads['ads'][$rand_int]['link'] .'">'. $all_ads['ads'][$rand_int]['link_text'] .'</a>';
+		        $rand_int = wp_rand( 0, $count_ads - 1 );
+                $link = '<a target="_blank" href="'. $all_ads['ads'][ $rand_int ]['link'] .'">'. $all_ads['ads'][ $rand_int ]['link_text'] .'</a>';
                 $link = str_replace('#38', '&', $link);
-                $ad_text = str_replace('[link]', $link, $all_ads['ads'][$rand_int]['text']);
+                $ad_text = str_replace('[link]', $link, $all_ads['ads'][ $rand_int ]['text']);
 		?>
 <div class="help-decide">
-	<p><?php echo $ad_text . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?>
+	<p><?php echo wp_kses_post( $ad_text ) . ' <a class="remove-adv-button" target="_blank" href="https://quizandsurveymaster.com/downloads/advertisement-gone/"><span class="dashicons dashicons-no-alt"></span> Remove Ads</a>'; ?>
 	</p>
 </div>
 <?php

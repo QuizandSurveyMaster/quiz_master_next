@@ -1,0 +1,353 @@
+{
+  "change_log": [
+    "",
+    " Bug: Fixed the issue with validation of date field for contact section"
+  ],
+  "products": [
+    {
+      "name": "Pro Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Pro.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306210"
+    },
+    {
+      "name": "Plus Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/PLUS.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306190"
+    },
+    {
+      "name": "Basic Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Basic-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=305426"
+    },
+    {
+      "name": "Premium Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/premium-bundle-qsm-scaled.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=275059"
+    }
+  ],
+  "new_addons": [
+    {
+      "name": "Pro Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Pro.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306210",
+      "price": {
+        "amount": "179.00"
+      },
+      "description": "All QSM Addons in one single and affordable package. Over 34 addons are included in this package and new addons are added automatically. Save over $1600 by buying our bundle."
+    },
+    {
+      "name": "Plus Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/PLUS.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306190",
+      "price": {
+        "amount": "149.00"
+      },
+      "description": "14+ addons to add useful features to your quiz and surveys. "
+    },
+    {
+      "name": "Basic Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Basic-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=305426",
+      "price": {
+        "amount": "99.00"
+      },
+      "description": "All the right addons to get you started with QSM premium features. "
+    },
+    {
+      "name": "Pool",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Poolv2-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=302299",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Ivory",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Ivoryv2-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=302297",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Fragrance",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Fragrancev2.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=300658",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Breeze",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Breezev2-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=300513",
+      "price": {
+        "1site": "19.00",
+        "2-5sites": "24.00",
+        "unlimited": "39.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Premium Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/premium-bundle-qsm-scaled.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=275059",
+      "price": {
+        "1site": "147.00",
+        "3sites": "197.00",
+        "25sites": "297.00"
+      },
+      "description": "All QSM Addons in one single and affordable package. Over 34 addons are included in this package and new addons are added automatically. Save over $1600 by buying our bundle."
+    },
+    {
+      "name": "ActiveCampaign Integration",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/07/ActiveCampaign_Integration.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=141594",
+      "price": {
+        "1site": "19.00",
+        "2-5sites": "29.00",
+        "unlimited": "49.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Advanced Timer",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/35.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=109654",
+      "price": {
+        "personal1site": "19.00",
+        "business2-5sites": "39.00",
+        "developerunlimitedsites": "59.00"
+      },
+      "description": ""
+    }
+  ],
+  "blog_post": [
+    {
+      "link": "https://quizandsurveymaster.com/employee-engagement-survey/",
+      "title": "Creating an Employee Engagement Survey in WordPress (5 simple steps)",
+      "excerpt": "<p>Create an employee engagement survey using the QSM plugin for your WordPress website. An employee engagement survey helps in getting to know your employees </p>\n"
+    },
+    {
+      "link": "https://quizandsurveymaster.com/create-interactive-questionnaire/",
+      "title": "How to make Interactive Questionnaire on WordPress? (5 Simple Steps)",
+      "excerpt": "<p>Thinking about adding a fun quiz to your WordPress website? You are in the right place to know all about it and how it is done. So without wasting any time, let us see how you can make interactive questionnaires on WordPress using the QSM plugin. What are Interactive Questionnaires? Many websites host questionnaires under [&hellip;]</p>\n"
+    }
+  ],
+  "popular_products": [
+    {
+      "name": "Google Sheet Connector",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/03/first-1.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=83375",
+      "price": {
+        "personal1site": "29.00",
+        "business2-5sites": "39.00",
+        "developerunlimited": "59.00"
+      },
+      "description": "Sync your surveys with Google Sheets. "
+    },
+    {
+      "name": "Paypal and Stripe Payment Integration",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Paypal-and-Stripe-Payment-Integration.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=63522",
+      "price": {
+        "personal1site": "29.00",
+        "business2-5sites": "39.00",
+        "developerunlimitedsites": "59.00"
+      },
+      "description": "Add payment wall for quiz and surveys using this addon. Integrate Paypal or Stripe and start receiving payments. "
+    },
+    {
+      "name": "Simple Popups",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Simple-Popups.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=38572",
+      "price": {
+        "personal1site": "35.00",
+        "business2-5sites": "56.00",
+        "developerunlimitedsites": "87.00"
+      },
+      "description": "Have you ever wanted to have your quiz or survey inside of a popup? With this easy to use addon, now you can!"
+    },
+    {
+      "name": "Google Analytics Tracking",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Google-Analytics-Tracking.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=34421",
+      "price": {
+        "personal1site": "35.00",
+        "business2-5sites": "56.00",
+        "developerunlimited": "87.00"
+      },
+      "description": "Track your quiz and survey submissions in Google Analytics."
+    },
+    {
+      "name": "Logic",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Logic.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=8071",
+      "price": {
+        "personal1site": "49.00",
+        "business2-5sites": "59.00",
+        "developerunlimitedsites": "99.00"
+      },
+      "description": ""
+    },
+    {
+      "name": "Reporting And Analysis",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Reporting-And-Analysis.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=3437",
+      "price": {
+        "personal1site": "39.00",
+        "business2-5sites": "59.00",
+        "developerunlimitedsites": "99.00"
+      },
+      "description": "Analyze your results by visualizing the data in a variety of different graphs, filter the data, and export the data."
+    },
+    {
+      "name": "Zapier Integration",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Zapier-Integration.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=2809",
+      "price": {
+        "personal1site": "35.00",
+        "business2-5sites": "56.00",
+        "developerunlimitedsites": "87.00"
+      },
+      "description": "With Zapier Integration, Quiz And Survey Master can sends results to over 700 different websites and services using Zapier."
+    },
+    {
+      "name": "Export Results",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/Export-Results.jpg",
+      "link": "https://quizandsurveymaster.com/downloads/export-results/",
+      "price": {
+        "personal1site": "29.00",
+        "business2-5sites": "39.00",
+        "developerunlimitedsites": "59.00"
+      },
+      "description": "This add-on gives you the ability to export your quiz results as a CSV file which can be imported into spreadsheet programs such as Excel and Google Sheets."
+    },
+    {
+      "name": "User Dashboard",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/User-Dashboard.jpg",
+      "link": "https://quizandsurveymaster.com/downloads/user-dashboard/",
+      "price": {
+        "personal1site": "29.00",
+        "business2-5sites": "39.00",
+        "developerunlimitedsites": "59.00"
+      },
+      "description": "This add-on gives you the ability to set up a page where users can review their results from all the quizzes they have taken."
+    },
+    {
+      "name": "MailPoet Integration",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/04/MailPoet-Integration.jpg",
+      "link": "https://quizandsurveymaster.com/downloads/mailpoet-integration/",
+      "price": {
+        "personal1site": "25.00",
+        "business2-5sites": "40.00",
+        "developerunlimitedsites": "62.00"
+      },
+      "description": "Grow your list of subscribers in MailPoet by using this addon to add users who take your quizzes and surveys!"
+    }
+  ],
+  "on_sale_products": [
+    {
+      "name": "Google Sheet Connector",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2020/03/first-1.jpg",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=83375",
+      "price": {
+        "personal1site": "29.00",
+        "business2-5sites": "39.00",
+        "developerunlimited": "59.00"
+      },
+      "description": "Sync your surveys with Google Sheets. "
+    }
+  ],
+  "bundles": [
+    {
+      "name": "Pro Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Pro.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306210",
+      "price": {
+        "amount": "179.00"
+      },
+      "desc": "All QSM Addons in one single and affordable package. Over 34 addons are included in this package and new addons are added automatically. Save over $1600 by buying our bundle.",
+      "icon": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/PRO.png"
+    },
+    {
+      "name": "Plus Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/PLUS.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=306190",
+      "price": {
+        "amount": "149.00"
+      },
+      "desc": "14+ addons to add useful features to your quiz and surveys. ",
+      "icon": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Plus.png"
+    },
+    {
+      "name": "Basic Bundle",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Basic-1.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=305426",
+      "price": {
+        "amount": "99.00"
+      },
+      "desc": "All the right addons to get you started with QSM premium features. ",
+      "icon": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/Basic.png"
+    }
+  ],
+  "themes": [
+    {
+      "name": "Pool",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/theme-pool.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=302299",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": "",
+      "demo": "https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo"
+    },
+    {
+      "name": "Ivory",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/theme-ivory.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=302297",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": "",
+      "demo": "https://themes.quizandsurveymaster.com/ivory-qsm-theme-demo"
+    },
+    {
+      "name": "Fragrance",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/theme-fragrance.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=300658",
+      "price": {
+        "1site": "14.00",
+        "2-5sites": "24.00",
+        "unlimited": "49.00"
+      },
+      "description": "",
+      "demo": "https://themes.quizandsurveymaster.com/fragrance-qsm-theme-demo"
+    },
+    {
+      "name": "Breeze",
+      "img": "https://quizandsurveymaster.com/wp-content/uploads/edd/2021/06/theme-breeze.png",
+      "link": "https://quizandsurveymaster.com/?post_type=download&p=300513",
+      "price": {
+        "1site": "19.00",
+        "2-5sites": "24.00",
+        "unlimited": "39.00"
+      },
+      "description": "",
+      "demo": "https://themes.quizandsurveymaster.com/breeze-qsm-theme-demo"
+    }
+  ]
+}

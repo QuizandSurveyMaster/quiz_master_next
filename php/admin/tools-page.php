@@ -24,7 +24,7 @@ function qsm_generate_quiz_tools() {
         <style type="text/css">
             #qsm_restore_box .hndle,
             #qsm_audit_box .hndle{
-                padding-left: 15px;                
+                padding-left: 15px;
                 padding-bottom: 0;
             }
             .qsm-tools-page .handle-order-higher,
@@ -65,7 +65,7 @@ function qsm_restore_function() {
 				'deleted' => 0,
 			),
 			array(
-				'quiz_id' => sanitize_text_field( intval( $_POST['restore_quiz'] ) ),
+				'quiz_id' => intval( $_POST['restore_quiz'] ),
 			),
 			array(
 				'%d',
@@ -83,7 +83,7 @@ function qsm_restore_function() {
 			$my_query = new WP_Query( array(
 				'post_type'  => 'qsm_quiz',
 				'meta_key'   => 'quiz_id',
-				'meta_value' => sanitize_text_field( intval( $_POST['restore_quiz'] ) ),
+				'meta_value' => intval( $_POST['restore_quiz'] ),
 			));
 			if ( $my_query->have_posts() ) {
 				while ( $my_query->have_posts() ) {
@@ -109,7 +109,7 @@ function qsm_restore_function() {
 			<?php
 			foreach ( $quizzes as $quiz ) {
 				?>
-				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo esc_html( $quiz->quiz_name ); ?></option>
+				<option value="<?php echo esc_attr( $quiz->quiz_id ); ?>"><?php echo wp_kses_post( $quiz->quiz_name ); ?></option>
 				<?php
 			}
 			?>
@@ -150,30 +150,34 @@ function qsm_audit_box() {
 	if ( $page > 0 ) {
 		$previous = $page - 2;
 		?>
-		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $previous ); ?>">
-			<?php echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), $table_limit ); ?>
+		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($previous); ?>">
+			<?php /* translators: %s: table limit */
+			echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
 		</a>
 		<?php
 		if ( $left > $table_limit ) {
 			?>
-			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $page ); ?>">
-				<?php echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), $table_limit ); ?>
+			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($page); ?>">
+			<?php /* translators: %s: table limit */
+			echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
 			</a>
 			<?php
 		}
-	} elseif ( $page == 0 ) {
+	} elseif ( 0 == $page ) {
 		if ( $left > $table_limit ) {
 			?>
-			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $page ); ?>">
-				<?php echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), $table_limit ); ?>
+			<a class="button" id="next_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($page); ?>">
+				<?php /* translators: %s: table limit */
+				echo sprintf( esc_html__( 'Next %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
 			</a>
 			<?php
 		}
 	} elseif ( $left < $table_limit ) {
 		$previous = $page - 2;
 		?>
-		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php esc_attr( $previous ); ?>">
-			<?php echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), $table_limit ); ?>
+		<a class="button" id="prev_page" href="?page=qsm_quiz_tools&&audit_page=<?php echo esc_attr($previous); ?>">
+			<?php /* translators: %s: table limit */
+			echo sprintf( esc_html__( 'Previous %s Audits', 'quiz-master-next' ), esc_html( $table_limit ) ); ?>
 		</a>
 		<?php
 	}
@@ -194,14 +198,15 @@ function qsm_audit_box() {
 				if ( $alternate ) {
 					$alternate = '';
 				} else {
-					$alternate = ' class="alternate"';
-				}
-				echo "<tr{$alternate}>";
-				echo "<td>{$audit->trail_id}</td>";
-				echo "<td>{$audit->action_user}</td>";
-				echo "<td>{$audit->action}</td>";
-				echo "<td>{$audit->time}</td>";
-				echo "</tr>";
+					$alternate = 'alternate';
+				} ?>
+				<tr class="<?php echo esc_attr( $alternate ); ?>">
+					<td><?php echo esc_html( $audit->trail_id ); ?></td>
+					<td><?php echo esc_html( $audit->action_user ); ?></td>
+					<td><?php echo esc_html( $audit->action ); ?></td>
+					<td><?php echo esc_html( $audit->time ); ?></td>
+				</tr>
+				<?php
 			}
 			?>
 		</tbody>
