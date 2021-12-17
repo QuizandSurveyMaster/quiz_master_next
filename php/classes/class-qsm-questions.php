@@ -273,6 +273,17 @@ class QSM_Questions {
 		$settings = wp_parse_args( $settings, $defaults );
 
 		$answers = self::sanitize_answers( $answers, $settings );
+		foreach ( $answers as $key => $answer ) {
+			$answers_array = array(
+				htmlspecialchars( $answer_text, ENT_QUOTES ),
+				floatval( $answer[1] ),
+				intval( $answer[2] ),
+			);
+			if ( isset( $answer[3] ) ) {
+				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
+			}
+			$answers[ $key ] = $answers_array;
+		}
 
 		$question_name             = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
 		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
@@ -372,19 +383,11 @@ class QSM_Questions {
 
 		foreach ( $answers as $key => $answer ) {
 			if ( 'rich' == $settings['answerEditor'] ) {
-				$answer_text = wp_kses_post( $answer[0] );
+				$answer[0] = wp_kses_post( $answer[0] );
 			} else {
-				$answer_text = sanitize_text_field( $answer[0] );
+				$answer[0] = sanitize_text_field( $answer[0] );
 			}
-			$answers_array = array(
-				htmlspecialchars( $answer_text, ENT_QUOTES ),
-				floatval( $answer[1] ),
-				intval( $answer[2] ),
-			);
-			if ( isset( $answer[3] ) ) {
-				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
-			}
-			$answers[ $key ] = $answers_array;
+			$answers[$key] = $answer;
 		}
 
 		return $answers;

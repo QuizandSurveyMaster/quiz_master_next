@@ -228,7 +228,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 				}
 			}
 			if ( 1 == $answer[2] ) {
-				$correct_text[] = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+				$correct_text[] = stripslashes( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
 			}
 		}
 	}
