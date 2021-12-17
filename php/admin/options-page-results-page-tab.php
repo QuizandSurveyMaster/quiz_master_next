@@ -36,14 +36,6 @@ function qsm_options_results_tab_content() {
 		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
-	$categories = array();
-	$enabled    = get_option( 'qsm_multiple_category_enabled' );
-	if ( $enabled && 'cancelled' !== $enabled ) {
-		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
-	} else {
-		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
-	}
-	$categories = $wpdb->get_results( $query, ARRAY_N );
 	?>
 
 <!-- Results Page Section -->
@@ -122,6 +114,16 @@ function qsm_options_results_tab_content() {
  * @since 7.3.5
  */
 function qsm_options_results_tab_template(){
+	global $wpdb;
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '';
+	$categories = array();
+	$enabled    = get_option( 'qsm_multiple_category_enabled' );
+	if ( $enabled && 'cancelled' !== $enabled ) {
+		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+	} else {
+		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
+	}
+	$categories = $wpdb->get_results( $query, ARRAY_N );
 	?>
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
