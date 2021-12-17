@@ -199,7 +199,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text              = array();
 	foreach ( $answers as $answer ) {
 		if ( 'rich' === $answerEditor ) {
-			$answer_option    = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$answer_option    = trim( stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
 			$sinel_answer_cmp = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $answer_option ) );
 			if ( $rich_text_comapre == $sinel_answer_cmp ) {
 				$return_array['points']    = $answer[1];
@@ -209,7 +209,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 				}
 			}
 			if ( 1 == $answer[2] ) {
-				$correct_text[] = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+				$correct_text[] = trim( stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
 			}
 		} else {
 			$mlw_user_answer = '';
@@ -218,7 +218,7 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
 				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
 			}
-			$single_answer = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
+			$single_answer = trim( htmlspecialchars_decode( sanitize_text_field( $answer[0], ENT_QUOTES ) ) );
 			$single_answer = str_replace( '\\', '', $single_answer );
 			if ( $mlw_user_answer == $single_answer ) {
 				$return_array['points']    = $answer[1];
