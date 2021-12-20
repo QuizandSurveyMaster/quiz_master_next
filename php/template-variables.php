@@ -1149,7 +1149,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 											$answer_value = htmlspecialchars( $answer_value );
 										}
 									} else {
-										$answer_value = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
+										$answer_value = $answer[1];
 									}
 									$image_class = '';
 									if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
