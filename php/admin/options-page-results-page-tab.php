@@ -157,15 +157,18 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
 				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-				<?php if ( ! empty( $categories ) ) { ?>
-					<select class="results-page-condition-category">
-						<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-						<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+				<select class="results-page-condition-category">
+					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+					<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+					<?php if ( ! empty( $categories ) ) { ?>
 						<?php foreach ( $categories as $cat ) { ?>
 						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
 						<?php } ?>
-					</select>
-				<?php } ?>
+					<?php } else { ?>
+						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+					<?php } ?>
+				</select>
+				
 				<select class="results-page-condition-criteria">
 					<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
 					<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
