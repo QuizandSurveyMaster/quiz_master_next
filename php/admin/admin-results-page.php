@@ -316,7 +316,9 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_t
 	//set screen option as user meta
 	add_user_meta( $user_id, 'results_screen_option',$results_screen_option, true);
 } else {
-	$results_screen_option = get_user_meta( $user_id, 'results_screen_option')[0];
+	//$results_screen_option = get_user_meta( $user_id, 'results_screen_option')[0];
+	$results_screen_option = get_user_meta( $user_id );
+	$results_screen_option = !empty($results_screen_option['results_screen_option']) ? $results_screen_option['results_screen_option'][0] : '';
 	if ( empty($results_screen_option) ) {
 		$results_screen_option = array(
 			'page_url'   => '0',
