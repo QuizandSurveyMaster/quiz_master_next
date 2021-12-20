@@ -275,7 +275,7 @@ class QSM_Questions {
 		$answers = self::sanitize_answers( $answers, $settings );
 		foreach ( $answers as $key => $answer ) {
 			$answers_array = array(
-				htmlspecialchars( $answer_text, ENT_QUOTES ),
+				htmlspecialchars( $answer[0], ENT_QUOTES ),
 				floatval( $answer[1] ),
 				intval( $answer[2] ),
 			);
