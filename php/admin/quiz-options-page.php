@@ -177,8 +177,8 @@ function qsm_generate_quiz_options() {
 						</form>
 					</main>
 					<footer class="qsm-popup__footer">
-						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary">Edit</button>
-						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>
+						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					</footer>
 				</div>
 			</div>
