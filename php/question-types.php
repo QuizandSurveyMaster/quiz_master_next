@@ -1251,14 +1251,17 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		$return_array['question_text'] = str_replace( array( '%BLANK%', '%blank%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
 	}
 	$correct_text = $user_input = $user_text = array();
+
 	if ( isset( $_POST[ 'question' . $id ] ) && ! empty( $_POST[ 'question' . $id ] ) ) {
 		$question_input = array_map( 'sanitize_textarea_field', wp_unslash( $_POST[ 'question' . $id ] ) );
+
 		foreach ( $question_input as $input ) {
 			$decode_user_answer = strval( stripslashes( htmlspecialchars_decode( $input, ENT_QUOTES ) ) );
 			$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
 			$user_input[]       = mb_strtoupper( $mlw_user_answer );
 			$user_text[]        = $mlw_user_answer;
 		}
+
 	}
 
 	$total_correct = $user_correct = 0;
@@ -1266,6 +1269,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 		foreach ( $answers as $key => $answer ) {
 			$decode_user_text = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
 			$decode_user_text = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_text ) ) );
+
 			if ( mb_strtoupper( $decode_user_text ) == $user_input[ $key ] ) {
 				$return_array['points'] += $answer[1];
 				$user_correct           += 1;
@@ -1273,12 +1277,16 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 			$total_correct++;
 			$correct_text[] = $answers[ $key ][0];
 		}
-		$return_array['correct_text']      = implode( '.', $correct_text );
+
+		$return_array['correct_text']      = strval( htmlspecialchars_decode( implode( '.', $correct_text ), ENT_QUOTES ) );
+
 		$return_array['user_text']         = implode( '.', $user_text );
 		$return_array['user_compare_text'] = implode( '=====', $user_text );
+
 		if ( $total_correct == $user_correct ) {
 			$return_array['correct'] = 'correct';
 		}
+
 	} else {
 		$answers_array = array();
 		$correct       = true;
