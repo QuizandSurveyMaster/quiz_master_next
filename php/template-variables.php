@@ -165,7 +165,7 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
  * @param str $content
  * @param arr $mlw_quiz_array
  */
-function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = '' ) {
+function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%POLL_RESULTS_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%POLL_RESULTS_', '%' );
@@ -1391,11 +1391,11 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:600;'";
 	} elseif ( $answer['points'] < $mid_point ) {
-		$left_polar_title_style  = "style='font-weight:400;'";
-		$right_polar_title_style = "style='font-weight:600;'";
-	} elseif ( $answer['points'] > $mid_point ) {
 		$left_polar_title_style  = "style='font-weight:600;'";
 		$right_polar_title_style = "style='font-weight:400;'";
+	} elseif ( $answer['points'] > $mid_point ) {
+		$left_polar_title_style  = "style='font-weight:400;'";
+		$right_polar_title_style = "style='font-weight:600;'";
 	}
 	if ( $is_reverse ) {
 		if ( $answer['points'] < $mid_point ) {
