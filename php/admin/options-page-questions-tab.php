@@ -14,10 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Adds the settings for questions tab to the Quiz Settings page.
  *
  * @return void
- * @since 4.4.0
+ * @since  4.4.0
  */
 function qsm_settings_questions_tab() {
-	global $mlwQuizMasterNext;
+	 global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
@@ -26,7 +26,7 @@ add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
  * Adds the content for the options for questions tab.
  *
  * @return void
- * @since 4.4.0
+ * @since  4.4.0
  */
 function qsm_options_questions_tab_content() {
 	global $wpdb;
@@ -117,7 +117,7 @@ function qsm_options_questions_tab_content() {
 	<p><?php esc_html_e( 'This quiz has the "How many questions per page would you like?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?>
 	</p>
 </div>
-<?php
+		<?php
 	}
 	$from_total = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'question_from_total' );
 	if ( 0 != $from_total ) {
@@ -126,7 +126,7 @@ function qsm_options_questions_tab_content() {
 	<p><?php esc_html_e( 'This quiz has the "How many questions should be loaded for quiz?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?>
 	</p>
 </div>
-<?php
+		<?php
 	}
 	$randomness = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'randomness_order' );
 	if ( 0 != $randomness ) {
@@ -135,7 +135,7 @@ function qsm_options_questions_tab_content() {
 	<p><?php esc_html_e( 'This quiz has the "Are the questions random?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to "No".', 'quiz-master-next' ); ?>
 	</p>
 </div>
-<?php
+		<?php
 	}
 	?>
 <h3 style="display: none;">Questions</h3>
@@ -150,7 +150,7 @@ function qsm_options_questions_tab_content() {
 		<a href="#" class="button"><?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?></a>
 	</p>
 </div>
-<div class="questions quiz_form_type_<?php echo esc_attr($form_type); ?> quiz_quiz_systen_<?php echo esc_attr($quiz_system); ?>">
+<div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
 	<div class="qsm-showing-loader" style="text-align: center;margin-bottom: 20px;">
 		<div class="qsm-spinner-loader"></div>
 	</div>
@@ -158,7 +158,7 @@ function qsm_options_questions_tab_content() {
 <div class="question-create-page">
 	<div>
 		<button class="new-page-button button button-primary"><span class="dashicons dashicons-plus-alt2"></span>
-			<?php esc_html_e( 'Create New Page', 'quiz-master-next' ); ?></button>
+	<?php esc_html_e( 'Create New Page', 'quiz-master-next' ); ?></button>
 		<button style="display: none;"
 			class="save-page-button button button-primary"><?php esc_html_e( 'Save Questions and Pages', 'quiz-master-next' ); ?></button>
 		<span class="spinner" id="save-edit-quiz-pages" style="float: none;"></span>
@@ -259,9 +259,17 @@ function qsm_options_questions_tab_content() {
 									// 'description'      => __( 'Use points based grading system for Polar questions.', 'quiz-master-next' ),
 									// ),
 								);
-
+								foreach ( $question_types as $type ) {
+									if ( isset( $type['options']['description'] ) && $type['options']['description'] != null ) {
+										$description = array(
+											'question_type_id' => $type['slug'],
+											'description' => __( $type['options']['description'], 'quiz-master-next' ),
+										);
+										array_push( $description_arr, $description );
+									}
+								}
 								// disabling polar for form type quiz and system correct/incorrect
-								if ( 0 === intval ( $form_type ) && 0 === intval ( $quiz_system ) ) {
+								if ( 0 === intval( $form_type ) && 0 === intval( $quiz_system ) ) {
 									$polar_class       = $polar_question_use = '';
 									$description_arr[] = array(
 										'question_type_id' => '13',
@@ -271,20 +279,27 @@ function qsm_options_questions_tab_content() {
 									$polar_class        = 'qsm_show_question_type_13';
 									$polar_question_use = ',13';
 								}
+
+								$show_answer_option = '';
+								foreach ( $question_types as $type ) {
+									if ( isset( $type['options']['show_answer_option'] ) && $type['options']['show_answer_option'] ) {
+										$show_answer_option .= ' qsm_show_question_type_' . $type['slug'];
+									}
+								}
+
 								$description_arr = apply_filters( 'qsm_question_type_description', $description_arr );
 								if ( $description_arr ) {
 									foreach ( $description_arr as $value ) {
 										$question_type_id = $value['question_type_id'];
 										?>
-								<p id="question_type_<?php echo esc_attr($question_type_id); ?>_description"
-									class="question-type-description"><?php echo esc_attr($value['description']); ?></p>
-								<?php
+								<p id="question_type_<?php echo esc_attr( $question_type_id ); ?>_description"
+									class="question-type-description"><?php echo esc_attr( $value['description'] ); ?></p>
+										<?php
 									}
 								}
 								?>
 							</div>
-							<div id="qsm_optoins_wrapper"
-								class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class ); ?>">
+							<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class . $show_answer_option ); ?>">
 								<label class="answer-header">
 									<?php esc_html_e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -309,12 +324,18 @@ function qsm_options_questions_tab_content() {
 								<?php esc_html_e( 'Add Correct Answer Info', 'quiz-master-next' ); ?></a>
 							<div class="qsm-row" style="display: none;">
 								<?php
+								$show_correct_answer_info = '';
+								foreach ( $question_types as $type ) {
+									if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
+										$show_correct_answer_info .= ',' . $type['slug'];
+									}
+								}
 								$answer_area_option = array(
 									'correct_answer_info' => array(
 										'label'   => __( 'Correct Answer Info', 'quiz-master-next' ),
 										'type'    => 'textarea',
 										'default' => '',
-										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use,
+										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
 									),
 								);
@@ -348,6 +369,9 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
+															if ( isset( $type['options']['add_separate_option_text'] ) && $type['options']['add_separate_option_text'] != '' ) {
+																echo '<option disabled>---' . $type['options']['add_separate_option_text'] . '---</option>';
+															}
 															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 														}
 														?>
@@ -357,6 +381,18 @@ function qsm_options_questions_tab_content() {
 													<p class="hidden" id="question_type_info"></p>
 												</div>
 												<?php
+												$show_change_answer_editor = '';
+												foreach ( $question_types as $type ) {
+													if ( isset( $type['options']['show_change_answer_editor'] ) && $type['options']['show_change_answer_editor'] ) {
+														$show_change_answer_editor .= ',' . $type['slug'];
+													}
+												}
+												$show_match_answer = '';
+												foreach ( $question_types as $type ) {
+													if ( isset( $type['options']['show_match_answer'] ) && $type['options']['show_match_answer'] ) {
+														$show_match_answer .= ',' . $type['slug'];
+													}
+												}
 												$simple_question_option = array(
 													'change-answer-editor' => array(
 														'label' => __( 'Answers Type', 'quiz-master-next' ),
@@ -368,7 +404,7 @@ function qsm_options_questions_tab_content() {
 															'image' => __( 'Image Answers', 'quiz-master-next' ),
 														),
 														'default' => 'text',
-														'show' => '0,1,2,4,13',
+														'show' => '0,1,2,4,13' . $show_change_answer_editor,
 														// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
 														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
@@ -391,7 +427,7 @@ function qsm_options_questions_tab_content() {
 															'sequence' => __( 'Sequentially', 'quiz-master-next' ),
 														),
 														'default' => 'random',
-														'show' => '14',
+														'show' => '14' . $show_match_answer,
 													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
@@ -481,6 +517,36 @@ function qsm_options_questions_tab_content() {
 									<div class="inside">
 										<div class="advanced-content">
 											<?php
+											$show_autofill = '';
+											foreach ( $question_types as $type ) {
+												if ( isset( $type['options']['show_autofill'] ) && $type['options']['show_autofill'] ) {
+													$show_autofill .= ',' . $type['slug'];
+												}
+											}
+											$show_limit_text = '';
+											foreach ( $question_types as $type ) {
+												if ( isset( $type['options']['show_limit_text'] ) && $type['options']['show_limit_text'] ) {
+													$show_limit_text .= ',' . $type['slug'];
+												}
+											}
+											$show_limit_multiple_response = '';
+											foreach ( $question_types as $type ) {
+												if ( isset( $type['options']['show_limit_multiple_response'] ) && $type['options']['show_limit_multiple_response'] ) {
+													$show_limit_multiple_response .= ',' . $type['slug'];
+												}
+											}
+											$show_file_upload_type = '';
+											foreach ( $question_types as $type ) {
+												if ( isset( $type['options']['show_file_upload_type'] ) && $type['options']['show_file_upload_type'] ) {
+													$show_file_upload_type .= ',' . $type['slug'];
+												}
+											}
+											$show_file_upload_limit = '';
+											foreach ( $question_types as $type ) {
+												if ( isset( $type['options']['show_file_upload_limit'] ) && $type['options']['show_file_upload_limit'] ) {
+													$show_file_upload_limit .= ',' . $type['slug'];
+												}
+											}
 											$advanced_question_option = array(
 												'comments' => array(
 													'label' => __( 'Comment Field', 'quiz-master-next' ),
@@ -510,7 +576,7 @@ function qsm_options_questions_tab_content() {
 														'1' => __( 'Yes', 'quiz-master-next' ),
 													),
 													'default' => '0',
-													'show' => '3, 14',
+													'show' => '3, 14' . $show_autofill,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
 												),
 												'limit_text' => array(
@@ -518,7 +584,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'text',
 													'priority' => '7',
 													'default' => '',
-													'show' => '3, 5, 7, 14',
+													'show' => '3, 5, 7, 14' . $show_limit_text,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Text',
 												),
 												'limit_multiple_response' => array(
@@ -526,7 +592,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'text',
 													'priority' => '8',
 													'default' => '',
-													'show' => '4,10',
+													'show' => '4,10' . $show_limit_multiple_response,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Multiple-Choice',
 												),
 												'file_upload_type' => array(
@@ -542,7 +608,7 @@ function qsm_options_questions_tab_content() {
 														'video/mp4' => __( 'Video', 'quiz-master-next' ),
 													),
 													'default' => 'image',
-													'show' => '11',
+													'show' => '11' . $show_file_upload_type,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Allow-File-Type',
 												),
 												'file_upload_limit' => array(
@@ -550,7 +616,7 @@ function qsm_options_questions_tab_content() {
 													'type' => 'number',
 													'priority' => '9',
 													'default' => '',
-													'show' => '11',
+													'show' => '11' . $show_file_upload_limit,
 													'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Limit',
 												),
 											);
@@ -611,7 +677,7 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
-<?php add_action('admin_footer', 'qsm_options_questions_tab_template'); ?>
+	<?php add_action( 'admin_footer', 'qsm_options_questions_tab_template' ); ?>
 
 <div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
@@ -724,7 +790,7 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
-<?php
+	<?php
 }
 
 add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
@@ -741,7 +807,7 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
-	$json    = array(
+	$json = array(
 		'status' => 'error',
 	);
 
@@ -764,7 +830,7 @@ add_action( 'wp_ajax_qsm_load_all_quiz_questions', 'qsm_load_all_quiz_questions_
 /**
  * Loads all the questions and echos out JSON
  *
- * @since 0.1.0
+ * @since  0.1.0
  * @return void
  */
 function qsm_load_all_quiz_questions_ajax() {
@@ -796,7 +862,7 @@ add_action( 'wp_ajax_qsm_send_data_sendy', 'qsm_send_data_sendy' );
  */
 function qsm_send_data_sendy() {
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-sendy-save' ) ) {
-    die( 'Busted!' );
+		die( 'Busted!' );
 	}
 
 	$sendy_url = 'http://sendy.expresstech.io';
@@ -879,7 +945,7 @@ function qsm_delete_question_question_bank() {
 				),
 			)
 		);
-		wp_die();
+		  wp_die();
 	}
 	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
@@ -928,10 +994,10 @@ function qsm_delete_question_from_database() {
 				),
 			)
 		);
-		wp_die();
+		  wp_die();
 	}
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
-  	if ( $question_id ) {
+	if ( $question_id ) {
 		global $wpdb;
 		$wpdb->delete( $wpdb->prefix . 'mlw_questions', array( 'question_id' => $question_id ) );
 		echo wp_json_encode(
@@ -951,10 +1017,9 @@ add_action( 'wp_ajax_qsm_delete_question_from_database', 'qsm_delete_question_fr
 add_action( 'wp_ajax_save_new_category', 'qsm_save_new_category' );
 
 function qsm_save_new_category() {
-
 	$category   = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
 	$parent     = isset( $_POST['parent'] ) ? intval( $_POST['parent'] ) : '';
-	$parent     = ( -1 == $parent) ? 0 : $parent;
+	$parent     = ( -1 == $parent ) ? 0 : $parent;
 	$term_array = wp_insert_term(
 		$category,
 		'qsm_category',
@@ -971,7 +1036,7 @@ function qsm_save_new_category() {
  *
  * @since 7.3.5
  */
-function qsm_options_questions_tab_template(){
+function qsm_options_questions_tab_template() {
 	?>
 	<!-- View for Page -->
 	<script type="text/template" id="tmpl-page">
@@ -1046,9 +1111,10 @@ function qsm_options_questions_tab_template(){
 			<# } else { #>
 					<div><input type="text" class="answer-points" value="{{data.points}}" placeholder="Points"/></div>
 			<# } #>
-			<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
+	<?php do_action( 'qsm_admin_single_answer_option_fields' ); ?>
 		</div>
 	</script>
 	<?php
+	do_action( 'qsm_admin_after_single_answer_template' );
 }
 ?>

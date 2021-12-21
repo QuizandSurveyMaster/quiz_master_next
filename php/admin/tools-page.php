@@ -140,10 +140,13 @@ function qsm_audit_box() {
 		$begin = 0;
 	}
 	$left         = $audit_total - ( $page * $table_limit );
-	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT trail_id, action_user, action, time
-		FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
+	$audit_trails = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_qm_audit_trail ORDER BY trail_id DESC LIMIT %d, %d", $begin, $table_limit ) );
 	?>
+	<div class="audit_buttons">
         <p><?php esc_html_e('Total actions since QSM installed:', 'quiz-master-next'); ?> <?php echo esc_html( $audit_total ); ?></p>
+		<p><a class='button button-primary btn_export' id="btn_export" title='Export' ><?php esc_html_e('Export', 'quiz-master-next'); ?></a>
+		<a class='button button-primary btn_clear_logs' id="btn_clear_logs" title='Clear Logs' ><?php esc_html_e('Clear Audit', 'quiz-master-next'); ?></a></p>
+	</div>
 	<?php
 
 	// Determine which navigation to show.
@@ -188,29 +191,62 @@ function qsm_audit_box() {
 				<th>ID</th>
 				<th><?php esc_html_e( 'User', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'quiz-master-next' ); ?></th>
+				<th id="quiz_name"><?php esc_html_e( 'Quiz Name', 'quiz-master-next' ); ?></th>
 				<th><?php esc_html_e( 'Time', 'quiz-master-next' ); ?></th>
 			</tr>
 		</thead>
 		<tbody id="the-list">
 			<?php
+			wp_localize_script( 'qsm_admin_js', 'qsm_logs_delete', array(
+				'qsm_delete_audit_logs' => __('Are you sure you want to delete this record? You will not be able to recover this data!'),
+			));
 			$alternate = '';
-			foreach ( $audit_trails as $audit ) {
-				if ( $alternate ) {
-					$alternate = '';
-				} else {
-					$alternate = 'alternate';
-				} ?>
-				<tr class="<?php echo esc_attr( $alternate ); ?>">
-					<td><?php echo esc_html( $audit->trail_id ); ?></td>
-					<td><?php echo esc_html( $audit->action_user ); ?></td>
-					<td><?php echo esc_html( $audit->action ); ?></td>
-					<td><?php echo esc_html( $audit->time ); ?></td>
-				</tr>
-				<?php
+			if( !empty($audit_trails)){
+				foreach ( $audit_trails as $audit ) {
+					if ( $alternate ) {
+						$alternate = '';
+					} else {
+						$alternate = 'alternate';
+					} ?>
+					<tr class="<?php echo esc_attr( $alternate ); ?>">
+						<td><?php echo esc_html( $audit->trail_id ); ?></td>
+						<td><?php echo esc_html( $audit->action_user ); ?></td>
+						<td>
+							<?php if(!empty($audit->form_data)){ ?>
+								<a href="#" class="qsm_audit_data" data-auditid="<?php echo esc_html( $audit->form_data ); ?>"><?php echo esc_html( $audit->action ); ?></a>
+							<?php }else{
+								echo esc_html( $audit->action );
+							}?>
+						</td>
+						<td><?php echo esc_html( $audit->quiz_name ); ?> [ <strong>ID:</strong> <?php echo esc_html( $audit->quiz_id ); ?> ] </td>
+						<td><?php echo esc_html( $audit->time ); ?></td>
+					</tr>
+					<?php
+				}
 			}
+			else{ ?>
+				<tr class="<?php echo esc_attr( $alternate ); ?>">
+						<td colspan="5">No data found!!</td>
+				</tr>
+			<?php }
+			
 			?>
 		</tbody>
 	</table>
+	<div class="qsm-popup qsm-popup-slide" id="qsm_fetch_audit_data" aria-hidden="true">
+		<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+			<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
+				<header class="qsm-popup__header">
+					<h3 class="qsm-popup__title" id="modal-2-title">
+					<?php _e( 'Settings', 'quiz-master-next' ); ?></h3>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<div class="qsm_setting__data">
+					<p></p>
+				</div>
+			</div>
+		</div>
+	</div>
 	<?php
 }
 ?>

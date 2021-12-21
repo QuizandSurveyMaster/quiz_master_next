@@ -15,10 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QMNQuizCreator {
 
 
+
 	/**
 	 * QMN ID of quiz
 	 *
-	 * @var object
+	 * @var   object
 	 * @since 3.7.1
 	 */
 	private $quiz_id;
@@ -37,8 +38,8 @@ class QMNQuizCreator {
 	/**
 	 * Sets quiz ID
 	 *
-	 * @since 3.8.1
-	 * @param int $quiz_id The ID of the quiz.
+	 * @since  3.8.1
+	 * @param  int $quiz_id The ID of the quiz.
 	 * @access public
 	 * @return void
 	 */
@@ -49,7 +50,7 @@ class QMNQuizCreator {
 	/**
 	 * Gets the quiz ID stored (for backwards compatibility)
 	 *
-	 * @since 5.0.0
+	 * @since  5.0.0
 	 * @return int|false The ID of the quiz stored or false
 	 */
 	public function get_id() {
@@ -64,8 +65,8 @@ class QMNQuizCreator {
 	 * Creates a new quiz with the default settings
 	 *
 	 * @access public
-	 * @since 3.7.1
-	 * @param string $quiz_name The name of the new quiz.
+	 * @since  3.7.1
+	 * @param  string $quiz_name The name of the new quiz.
 	 * @return void
 	 */
 	public function create_quiz( $quiz_name, $theme_id, $quiz_settings = array() ) {
@@ -201,7 +202,7 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->theme_settings->activate_selected_theme( $new_quiz, $theme_id );
 
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created", $new_quiz, "" );
 
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
@@ -215,15 +216,15 @@ class QMNQuizCreator {
 	 * Deletes a quiz with the given quiz_id
 	 *
 	 * @access public
-	 * @since 3.7.1
+	 * @since  3.7.1
 	 * @return void
 	 */
 	public function delete_quiz( $quiz_id, $quiz_name ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$qsm_delete_from_db = isset($_POST['qsm_delete_from_db']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
-		$qsm_delete_questions_from_qb = isset($_POST['qsm_delete_question_from_qb']) && "1" === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
+		$qsm_delete_from_db           = isset( $_POST['qsm_delete_from_db'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
+		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
 
 		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
@@ -236,7 +237,7 @@ class QMNQuizCreator {
 					array( 'quiz_id' => $quiz_id )
 				);
 			}
-}else {
+		} else {
 			$qsm_delete = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(
@@ -248,7 +249,7 @@ class QMNQuizCreator {
 				),
 				array( '%d' )
 			);
-			$deleted = 0;
+			$deleted    = 0;
 			if ( $qsm_delete_questions_from_qb ) {
 				$deleted = 1;
 				$wpdb->update(
@@ -285,7 +286,7 @@ class QMNQuizCreator {
 			}
 			wp_reset_postdata();
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, "" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0002', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -299,9 +300,9 @@ class QMNQuizCreator {
 	 * Edits the name of the quiz with the given ID
 	 *
 	 * @access public
-	 * @since 3.7.1
-	 * @param int    $quiz_id The ID of the quiz.
-	 * @param string $quiz_name The new name of the quiz.
+	 * @since  3.7.1
+	 * @param  int    $quiz_id   The ID of the quiz.
+	 * @param  string $quiz_name The new name of the quiz.
 	 * @return void
 	 */
 	public function edit_quiz_name( $quiz_id, $quiz_name ) {
@@ -320,7 +321,7 @@ class QMNQuizCreator {
 		);
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited: $quiz_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited", $quiz_id, "" );
 		} else {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -341,7 +342,7 @@ class QMNQuizCreator {
 	 * Duplicates the quiz with the given ID and gives new quiz the given quiz name
 	 *
 	 * @access public
-	 * @since 3.7.1
+	 * @since  3.7.1
 	 * @return void
 	 */
 	public function duplicate_quiz( $quiz_id, $quiz_name, $is_duplicating_questions ) {
@@ -508,7 +509,7 @@ class QMNQuizCreator {
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been duplicated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created: $quiz_name" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created", $mlw_new_id, "" );
 			do_action( 'qmn_quiz_duplicated', $quiz_id, $mlw_new_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0011', 'quiz-master-next' ), 'error' );
@@ -585,7 +586,7 @@ class QMNQuizCreator {
 				foreach ( $update_pages as $pages_key => $pages_value ) {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
 						if ( $page_q_id === $mlw_question->question_id ) {
-							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
+							   $update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}
 				}
@@ -676,10 +677,10 @@ class QMNQuizCreator {
 	 * Retrieves setting store in quiz_settings
 	 *
 	 * @deprecated 6.0.3 Use the get_quiz_setting function in the pluginHelper object.
-	 * @since 3.8.1
-	 * @access public
-	 * @param string $setting_name The slug of the setting.
-	 * @return string The value of the setting
+	 * @since      3.8.1
+	 * @access     public
+	 * @param      string $setting_name The slug of the setting.
+	 * @return     string The value of the setting
 	 */
 	public function get_setting( $setting_name ) {
 		global $wpdb;
@@ -698,11 +699,11 @@ class QMNQuizCreator {
 	 * Updates setting stored in quiz_settings
 	 *
 	 * @deprecated 6.0.3 Use the update_quiz_setting function in the pluginHelper object.
-	 * @since 3.8.1
-	 * @access public
-	 * @param string $setting_name The slug of the setting.
-	 * @param mixed  $setting_value The value for the setting.
-	 * @return bool True if update was successful
+	 * @since      3.8.1
+	 * @access     public
+	 * @param      string $setting_name  The slug of the setting.
+	 * @param      mixed  $setting_value The value for the setting.
+	 * @return     bool True if update was successful
 	 */
 	public function update_setting( $setting_name, $setting_value ) {
 		global $wpdb;
@@ -734,9 +735,9 @@ class QMNQuizCreator {
 	 * Deletes setting stored in quiz_settings
 	 *
 	 * @deprecated 6.0.3
-	 * @since 3.8.1
-	 * @access public
-	 * @return void
+	 * @since      3.8.1
+	 * @access     public
+	 * @return     void
 	 */
 	public function delete_setting( $setting_name ) {
 		global $wpdb;
@@ -745,7 +746,7 @@ class QMNQuizCreator {
 		if ( is_array( $qmn_settings_array ) && isset( $qmn_settings_array[ $setting_name ] ) ) {
 			unset( $qmn_settings_array[ $setting_name ] );
 		}
-		$results              = $wpdb->update(
+		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
 				'quiz_settings' => maybe_serialize( $qmn_settings_array ),
