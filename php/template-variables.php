@@ -163,7 +163,7 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
  * @param str $content
  * @param arr $mlw_quiz_array
  */
-function qsm_variable_poll_result( $content, $mlw_quiz_array, $variables = "" ) {
+function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
 	while ( false !== strpos( $content, '%POLL_RESULTS_' ) ) {
 		$question_id = mlw_qmn_get_string_between( $content, '%POLL_RESULTS_', '%' );
