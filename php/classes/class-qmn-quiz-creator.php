@@ -202,7 +202,7 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->theme_settings->activate_selected_theme( $new_quiz, $theme_id );
 
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created", $new_quiz, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'New Quiz/Survey Has Been Created', $new_quiz, '' );
 
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
@@ -225,6 +225,20 @@ class QMNQuizCreator {
 
 		$qsm_delete_from_db           = isset( $_POST['qsm_delete_from_db'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
 		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
+
+		$quizzes = get_posts(
+			array(
+				'post_type'  => 'qsm_quiz',
+				'meta_key'   => 'quiz_id',
+				'meta_value' => $quiz_id,
+			)
+		);
+		foreach ( $quizzes as $quiz ) {
+			if ( ! current_user_can( 'delete_post', $quiz->ID ) ) {
+				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
+				return;
+			}
+		};
 
 		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
@@ -266,32 +280,17 @@ class QMNQuizCreator {
 			}
 		}
 
-		if ( $qsm_delete ) {
-			$my_query = new WP_Query(
-				array(
-					'post_type'  => 'qsm_quiz',
-					'meta_key'   => 'quiz_id',
-					'meta_value' => $quiz_id,
-				)
-			);
-			if ( $my_query->have_posts() ) {
-				while ( $my_query->have_posts() ) {
-					$my_query->the_post();
-					$my_post = array(
-						'ID'          => get_the_ID(),
-						'post_status' => 'trash',
-					);
-					wp_update_post( $my_post );
-				}
+		if ( $qsm_delete && $quizzes ) {
+			foreach ( $quizzes as $quiz ) {
+				wp_trash_post( $quiz->ID );
 			}
-			wp_reset_postdata();
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0002', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
-
+		wp_reset_postdata();
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
 	}
@@ -321,7 +320,7 @@ class QMNQuizCreator {
 		);
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Name Has Been Edited", $quiz_id, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'Quiz/Survey Name Has Been Edited', $quiz_id, '' );
 		} else {
 			$error = $wpdb->last_error;
 			if ( empty( $error ) ) {
@@ -348,6 +347,20 @@ class QMNQuizCreator {
 	public function duplicate_quiz( $quiz_id, $quiz_name, $is_duplicating_questions ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
+
+		$quizzes = get_posts(
+			array(
+				'post_type'  => 'qsm_quiz',
+				'meta_key'   => 'quiz_id',
+				'meta_value' => $quiz_id,
+			)
+		);
+		foreach ( $quizzes as $quiz ) {
+			if ( ! current_user_can( 'edit_post', $quiz->ID ) ) {
+				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
+				return;
+			}
+		};
 		$current_user           = wp_get_current_user();
 		$table_name             = $wpdb->prefix . 'mlw_quizzes';
 		$logic_table            = $wpdb->prefix . 'mlw_logic';
@@ -509,7 +522,7 @@ class QMNQuizCreator {
 			$quiz_post_id = wp_insert_post( $quiz_post );
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been duplicated successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "New Quiz/Survey Has Been Created", $mlw_new_id, "" );
+			$mlwQuizMasterNext->audit_manager->new_audit( 'New Quiz/Survey Has Been Created', $mlw_new_id, '' );
 			do_action( 'qmn_quiz_duplicated', $quiz_id, $mlw_new_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0011', 'quiz-master-next' ), 'error' );
