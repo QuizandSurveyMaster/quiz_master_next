@@ -120,6 +120,11 @@ function qsm_generate_quiz_options() {
 				</a>
 			</h1>
 			<div class="qsm-alerts-placeholder"></div>
+			<!-- Shows warnings, alerts then tab content -->
+			<?php $mlwQuizMasterNext->alertManager->showWarnings(); ?>
+			<div class="qsm-alerts">
+				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
+			</div>
 			<?php if ( $quiz_id ) { ?>
 				<nav class="nav-tab-wrapper">
 					<?php
@@ -154,12 +159,9 @@ function qsm_generate_quiz_options() {
 				</div>
 				<?php
 			}
-			// Shows alerts, ads, then tab content.
+			// Shows ads
+			qsm_show_adverts();
 			?>
-			<div class="qsm-alerts">
-				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-			</div>
-			<?php qsm_show_adverts(); ?>
 		</div>
 		<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
