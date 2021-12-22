@@ -489,7 +489,7 @@ class QSM_Fields {
 		$options = '';
 		if ( ! empty($categories) ) {
 			foreach ( $categories as $cat ) {
-				$options .= '<option value="' . $cat->term_id . '" ' . ( in_array( $cat->term_id, $selected, true ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
+				$options .= '<option value="' . $cat->term_id . '" ' . ( in_array( intval( $cat->term_id ),  array_map( 'intval', $selected ) , true ) ? 'selected' : '' ) . '>' . $prefix . $cat->name . '</option>';
 				if ( ! empty($cat->children) ) {
 					$options .= QSM_Fields::get_category_hierarchical_options( $cat->children, $selected, $prefix . '&nbsp;&nbsp;&nbsp;' );
 				}
