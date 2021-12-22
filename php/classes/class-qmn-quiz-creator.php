@@ -238,7 +238,7 @@ class QMNQuizCreator {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
 				return;
 			}
-		};
+		}
 
 		if ( $qsm_delete_from_db ) {
 			$qsm_delete = $wpdb->delete(
@@ -360,7 +360,7 @@ class QMNQuizCreator {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
 				return;
 			}
-		};
+		}
 		$current_user           = wp_get_current_user();
 		$table_name             = $wpdb->prefix . 'mlw_quizzes';
 		$logic_table            = $wpdb->prefix . 'mlw_logic';
