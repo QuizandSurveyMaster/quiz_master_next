@@ -989,6 +989,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					$do_show_wrong = true;
 					foreach ( $total_answers as $single_answer ) {
 						$current_answer_zero = trim( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
+
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
 								$actual_answer = htmlspecialchars_decode( $answer[1], ENT_QUOTES );
@@ -1034,22 +1035,29 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} elseif ( isset( $answer['question_type'] ) && 14 == $answer['question_type'] ) {
 					$match_answer          = $mlwQuizMasterNext->pluginHelper->get_question_setting( $answer['id'], 'matchAnswer' );
 					$new_array_user_answer = isset( $answer['user_compare_text'] ) ? explode( '=====', $answer['user_compare_text'] ) : array();
+
 					if ( 'sequence' === $match_answer ) {
 						foreach ( $total_answers as $key => $single_answer ) {
 							$show_user_answer  = $new_array_user_answer[ $key ];
+
 							$is_answer_correct = false;
-							if ( mb_strtoupper( $show_user_answer ) == mb_strtoupper( $single_answer[0] ) ) {
+							$decode_show_user_answer = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
+							$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
+							if ( $decode_show_user_answer ==  $decode_single_user_answer) {
 								$is_answer_correct = true;
 							}
 							$index = $key + 1;
-							if ( $is_answer_correct ) {
+							
+							
+							if ( $is_answer_correct) {
 								$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">(' . $index . ') ' . $show_user_answer . '</span>';
 							} else {
 								if ( '' === $show_user_answer ) {
 									$show_user_answer = 'No answer provided';
 								}
+								
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . $single_answer[0] . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) ) . '</span>';
 							}
 						}
 					} else {
