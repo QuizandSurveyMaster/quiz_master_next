@@ -44,27 +44,32 @@ function qsm_generate_quizzes_surveys_page() {
 	// Resets stats for a quiz.
 	if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_reset_stats_nonce'] ) ), 'qsm_reset_stats' ) ) {
 		$quiz_id = isset( $_POST['reset_quiz_id'] ) ? intval( $_POST['reset_quiz_id'] ) : '';
-		$results = $wpdb->update(
-			$wpdb->prefix . 'mlw_quizzes',
-			array(
-				'quiz_views'    => 0,
-				'quiz_taken'    => 0,
-				'last_activity' => gmdate( 'Y-m-d H:i:s' ),
-			),
-			array( 'quiz_id' => $quiz_id ),
-			array(
-				'%d',
-				'%d',
-				'%s',
-			),
-			array( '%d' )
-		);
-		if ( false !== $results ) {
-			$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( 'Quiz Stats Have Been Reset', $quiz_id, '' );
-		} else {
-			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error trying to reset stats. Please try again.', 'quiz-master-next' ), 'error' );
-			$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_post', $quiz_post_id ) ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to reset this quiz.', 'quiz-master-next' ), 'error' );
+		}else{
+			$results = $wpdb->update(
+				$wpdb->prefix . 'mlw_quizzes',
+				array(
+					'quiz_views'    => 0,
+					'quiz_taken'    => 0,
+					'last_activity' => gmdate( 'Y-m-d H:i:s' ),
+				),
+				array( 'quiz_id' => $quiz_id ),
+				array(
+					'%d',
+					'%d',
+					'%s',
+				),
+				array( '%d' )
+			);
+			if ( false !== $results ) {
+				$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
+				$mlwQuizMasterNext->audit_manager->new_audit( 'Quiz Stats Have Been Reset', $quiz_id, '' );
+			} else {
+				$mlwQuizMasterNext->alertManager->newAlert( __( 'Error trying to reset stats. Please try again.', 'quiz-master-next' ), 'error' );
+				$mlwQuizMasterNext->log_manager->add( 'Error resetting stats', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
+			}
 		}
 	}
 
