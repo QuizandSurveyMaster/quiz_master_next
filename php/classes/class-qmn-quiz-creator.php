@@ -280,7 +280,6 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0002', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error 0002', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
-		wp_reset_postdata();
 		// Hook called after quiz or survey is deleted. Hook passes quiz_id to function
 		do_action( 'qmn_quiz_deleted', $quiz_id );
 	}
