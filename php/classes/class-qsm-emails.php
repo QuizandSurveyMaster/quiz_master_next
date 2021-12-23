@@ -23,7 +23,7 @@ class QSM_Emails {
 	 * @param array $response_data The data for the user's submission.
 	 */
 	public static function send_emails( $response_data ) {
-		$emails = self::load_emails( $response_data['quiz_id'] );
+		$emails = $this->load_emails( $response_data['quiz_id'] );
 
 		if ( ! is_array( $emails ) || empty( $emails ) ) {
 			return;
@@ -129,10 +129,10 @@ class QSM_Emails {
 				}
 
 				if ( $show ) {
-					self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+					$this->send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
 				}
 			} else {
-				self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+				$this->send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
 			}
 		}
 
@@ -275,12 +275,12 @@ class QSM_Emails {
 		if ( is_array( $data ) ) {
 			// Checks if the emails array is not the newer version.
 			if ( ! empty( $data ) && ! isset( $data[0]['conditions'] ) ) {
-				$emails = self::convert_to_new_system( $quiz_id );
+				$emails = $this->convert_to_new_system( $quiz_id );
 			} else {
 				$emails = $data;
 			}
 		} else {
-			$emails = self::convert_to_new_system( $quiz_id );
+			$emails = $this->convert_to_new_system( $quiz_id );
 		}
 
 		return $emails;
@@ -310,7 +310,7 @@ class QSM_Emails {
 		$data   = $wpdb->get_row( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
-			$emails = array_merge( $emails, self::convert_emails( $system, $data['user_email_template'] ) );
+			$emails = array_merge( $emails, $this->convert_emails( $system, $data['user_email_template'] ) );
 		}
 		if ( 0 === intval( $data['send_admin_email'] ) ) {
 			$from_email_array = maybe_unserialize( $data['email_from_text'] );
@@ -319,7 +319,7 @@ class QSM_Emails {
 					'reply_to' => 1,
 				);
 			}
-			$emails = array_merge( $emails, self::convert_emails( $system, $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
+			$emails = array_merge( $emails, $this->convert_emails( $system, $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
 		}
 
 		// Updates the database with new array to prevent running this step next time.

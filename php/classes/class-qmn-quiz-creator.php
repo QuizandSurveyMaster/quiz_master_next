@@ -226,18 +226,10 @@ class QMNQuizCreator {
 		$qsm_delete_from_db           = isset( $_POST['qsm_delete_from_db'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
 		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );
 
-		$quizzes = get_posts(
-			array(
-				'post_type'  => 'qsm_quiz',
-				'meta_key'   => 'quiz_id',
-				'meta_value' => $quiz_id,
-			)
-		);
-		foreach ( $quizzes as $quiz ) {
-			if ( ! current_user_can( 'delete_post', $quiz->ID ) ) {
-				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
-				return;
-			}
+		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+		if ( empty( $quiz_post_id ) || ! current_user_can( 'delete_post', $quiz_post_id ) ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to delete this quiz.', 'quiz-master-next' ), 'error' );
+			return;
 		}
 
 		if ( $qsm_delete_from_db ) {
@@ -280,10 +272,8 @@ class QMNQuizCreator {
 			}
 		}
 
-		if ( $qsm_delete && $quizzes ) {
-			foreach ( $quizzes as $quiz ) {
-				wp_trash_post( $quiz->ID );
-			}
+		if ( $qsm_delete && ! empty( $quiz_post_id ) ) {
+			wp_trash_post( $quiz_post_id );
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );
 		} else {
@@ -348,19 +338,12 @@ class QMNQuizCreator {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 
-		$quizzes = get_posts(
-			array(
-				'post_type'  => 'qsm_quiz',
-				'meta_key'   => 'quiz_id',
-				'meta_value' => $quiz_id,
-			)
-		);
-		foreach ( $quizzes as $quiz ) {
-			if ( ! current_user_can( 'edit_post', $quiz->ID ) ) {
-				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
-				return;
-			}
+		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_post', $quiz_post_id ) ) {
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to duplicate this quiz.', 'quiz-master-next' ), 'error' );
+			return;
 		}
+
 		$current_user           = wp_get_current_user();
 		$table_name             = $wpdb->prefix . 'mlw_quizzes';
 		$logic_table            = $wpdb->prefix . 'mlw_logic';
