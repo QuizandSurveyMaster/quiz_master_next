@@ -146,8 +146,7 @@ function qsm_options_questions_tab_content() {
 	<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
 	<p class="search-box">
 		<label class="screen-reader-text" for="question_search">Search Questions:</label>
-		<input type="search" id="question_search" name="question_search" value="">
-		<a href="#" class="button"><?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?></a>
+		<input type="search" id="question_search" name="question_search" value="" placeholder="<?php esc_html_e( 'Search Questions', 'quiz-master-next' ); ?>">
 	</p>
 </div>
 <div class="questions quiz_form_type_<?php echo esc_attr( $form_type ); ?> quiz_quiz_systen_<?php echo esc_attr( $quiz_system ); ?>">
