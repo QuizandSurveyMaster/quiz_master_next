@@ -2479,7 +2479,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             // Adds event handlers for searching questions
             $('#question_search').on('keyup', function () {
                 $('.question').each(function () {
-                    var x = $(this).text().toLowerCase().indexOf($('#question_search').val().toLowerCase());
                     if ($(this).text().toLowerCase().indexOf($('#question_search').val().toLowerCase()) === -1) {
                         $(this).hide();
                     } else {
