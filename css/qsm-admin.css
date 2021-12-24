@@ -2336,3 +2336,7 @@ td.scheduled_time_start {
 	align-items: center;
 	justify-content: space-between;
 }
+input#question_search::-webkit-search-cancel-button {
+    outline: none;
+    appearance: none;
+}

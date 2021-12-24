@@ -2483,6 +2483,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         $(this).hide();
                     } else {
                         $(this).show();
+                        $(this).parent('.page').show();
+
                     }
                 });
                 $('.page').each(function () {
