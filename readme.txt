@@ -152,7 +152,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 
-= 7.3.7 (December 22, 2021) =
+= 7.3.7 (December 27, 2021) =
 * Bug: Fixed the issues in fill in the blanks question type
 * Bug: Fixed the issue of missing category selection option on result page conditions 
 * Bug: Fixed the issue of delete and duplicate capability for non admin 
