@@ -590,7 +590,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 						$length++;
 					}
 				}
-				if ( sizeof( $category_data['ids'] == $length ) ) {
+				if ( sizeof( $category_data['ids'] ) == $length ) {
 					$return_points += $answer['points'];
 				}
 			} else {
@@ -695,7 +695,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 						$length++;
 					}
 				}
-				if ( sizeof( $category_data['ids'] == $length ) ) {
+				if ( sizeof( $category_data['ids'] ) == $length  ) {
 					$total_questions += 1;
 					if ( 'correct' === $answer['correct'] ) {
 						$amount_correct += 1;
