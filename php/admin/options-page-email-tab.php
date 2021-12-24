@@ -83,20 +83,28 @@ function qsm_options_emails_tab_content() {
 			</header>
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
-						$variable_list                                = qsm_text_template_variable_list();
-						$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
-						unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
-						unset( $variable_list['Core']['%TWITTER_SHARE%'] );
-						//filter to add or remove variables from variable list for email tab
-						$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
+				$variable_list                                      = qsm_text_template_variable_list();
+				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
+				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
+				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
+				//filter to add or remove variables from variable list for email tab
+				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
 
-						if ( $variable_list ) {
-							foreach ( $variable_list as $category_name => $category_variables ) {
+				if ( $variable_list ) {
+					//sort $variable list for backward compatibility
+					foreach ( $variable_list as $variable_name => $variable_value) {
+						if ( ! is_array( $variable_value ) ){
+							$variable_list['Other Variables'][$variable_name] = $variable_value ;
+						}
+					}
+					foreach ( $variable_list as $category_name => $category_variables ) {
+						//check if the $category_variables is an array for backward compatibility
+						if ( is_array( $category_variables ) ){
+							?>
+							<div><h2><?php echo esc_attr($category_name);?></h2></div>
+							<?php
+							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
-								<div><h2><?php echo esc_attr($category_name);?></h2></div>
-								<?php
-                foreach ( $category_variables as $variable_key => $variable ) {
-                ?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
 										<span class="button button-default template-variable"><?php echo esc_attr($variable_key); ?></span>
@@ -109,10 +117,11 @@ function qsm_options_emails_tab_content() {
 									</span>
 								</div>
 								<?php
-                }
 							}
 						}
-						?>
+					}
+				}
+				?>
 			</main>
 			<footer class="qsm-popup__footer" style="text-align: right;">
 				<button class="button button-default" data-micromodal-close=""

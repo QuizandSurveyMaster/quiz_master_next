@@ -70,18 +70,26 @@ function qsm_options_results_tab_content() {
 			</header>
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
-						$variable_list                                = qsm_text_template_variable_list();
-						$variable_list['Core']['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
-						$variable_list['Core']['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
-						//filter to add or remove variables from variable list for pdf tab
-						$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
-						if ( $variable_list ) {
-							foreach ( $variable_list as $category_name => $category_variables ) {
+				$variable_list                             = qsm_text_template_variable_list();
+				$variable_list['Core']['%POLL_RESULTS_X%'] = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
+				$variable_list['Core']['%RESULT_ID%']      = __( 'Show result id', 'quiz-master-next' );
+				//filter to add or remove variables from variable list for pdf tab
+				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
+				if ( $variable_list ) {
+					//sort $variable list for backward compatibility
+					foreach ( $variable_list as $variable_name => $variable_value) {
+						if ( ! is_array( $variable_value ) ){
+							$variable_list['Other Variables'][$variable_name] = $variable_value ;
+						}
+					}
+					foreach ( $variable_list as $category_name => $category_variables ) {
+						//check if the $category_variables is an array for backward compatibility
+						if ( is_array( $category_variables ) ){
+							?>
+							<div><h2><?php echo esc_attr( $category_name );?></h2></div>
+							<?php
+							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
-								<div><h2><?php echo esc_attr( $category_name );?></h2></div>
-								<?php
-                foreach ( $category_variables as $variable_key => $variable ) {
-                ?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
 										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
@@ -93,11 +101,12 @@ function qsm_options_results_tab_content() {
 										</span>
 									</span>
 								</div>
-								<?php
-                }
+							<?php
 							}
 						}
-						?>
+					}
+				}
+				?>
 			</main>
 			<footer class="qsm-popup__footer" style="text-align: right;">
 				<button class="button button-default" data-micromodal-close=""
