@@ -153,7 +153,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.3.7 (December 22, 2021) =
-* Hotfix: Improvements in Audit Logs
+* Bug: Fixed the issues in fill in the blanks question type
+* Bug: Fixed the issue of missing category selection option on result page conditions 
+* Bug: Fixed the issue of delete and duplicate capability for non admin 
+* Bug: Fixed the issue of url parameters being translated 
+* Bug: Fixed the issues with category points and score template variables 
+* Feature: Added a feature to hide/show columns in admin results page
+* Enhancement: Introduced Page Name and Page URL columns to admin results table
+* Enhancement: Made UI improvements in polar question type slider
+* Enhancement: Made UI improvements in template variable popup
+* Enhancement: Made improvements in Audit Logs
 
 = 7.3.6 (December 10, 2021) =
 * Hotfix: Issues with survey form type Fixed
