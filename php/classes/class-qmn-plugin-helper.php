@@ -624,9 +624,11 @@ class QMNPluginHelper {
 	 * @param  string $function The function that displays the tab's content
 	 * @return void
 	 */
-	public function register_quiz_settings_tabs( $title, $function ) {
-		$slug                  = strtolower( str_replace( ' ', '-', $title ) );
-		$new_tab               = array(
+	public function register_quiz_settings_tabs( $title, $function, $slug = "" ) {
+		if ( "" === $slug ){
+			$slug = strtolower( str_replace( ' ', '-', $title ) );
+		}
+		$new_tab = array(
 			'title'    => $title,
 			'function' => $function,
 			'slug'     => $slug,
