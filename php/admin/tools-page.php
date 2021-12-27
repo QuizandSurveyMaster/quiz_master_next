@@ -211,7 +211,7 @@ function qsm_audit_box() {
 				'qsm_admin_js',
 				'qsm_logs_delete',
 				array(
-					'qsm_delete_audit_logs' => __( 'Are you sure you want to delete this record? You will not be able to recover this data!' ),
+					'qsm_delete_audit_logs' => esc_html__( 'Are you sure you want to delete this record? You will not be able to recover this data!', 'quiz-master-next' ),
 				)
 			);
 			$alternate = '';

@@ -243,7 +243,8 @@ function qmn_snapshot_dashboard_widget() {
 				<strong>
 				<?php
 				if ( ! is_null( $mlw_stat_most_popular_quiz ) ) {
-					echo wp_kses_post( $mlw_stat_most_popular_quiz->quiz_name ); }
+					echo wp_kses_post( $mlw_stat_most_popular_quiz->quiz_name );
+				}
 				?>
 				</strong>
 				<?php esc_html_e( 'most popular quiz', 'quiz-master-next' ); ?>
@@ -254,7 +255,8 @@ function qmn_snapshot_dashboard_widget() {
 				<strong>
 				<?php
 				if ( ! is_null( $mlw_stat_least_popular_quiz ) ) {
-					echo wp_kses_post( $mlw_stat_least_popular_quiz->quiz_name ); }
+					echo wp_kses_post( $mlw_stat_least_popular_quiz->quiz_name );
+				}
 				?>
 				</strong>
 				<?php esc_html_e( 'least popular quiz', 'quiz-master-next' ); ?>
