@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qsm_settings_style_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Style', 'quiz-master-next' ), 'qsm_options_styling_tab_content' );
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Style', 'quiz-master-next' ), 'qsm_options_styling_tab_content', 'style' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_style_tab', 5 );
 
@@ -45,7 +45,7 @@ function qsm_options_styling_tab_content() {
 		$results = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}mlw_quizzes SET quiz_stye=%s, theme_selected=%s, last_activity=%s WHERE quiz_id=%d", $quiz_style, $quiz_theme, gmdate( 'Y-m-d H:i:s' ), $style_quiz_id ) );
 		if ( false !== $results ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved For Quiz Number $style_quiz_id" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id, "" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error occured when trying to save the styles. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error saving styles', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
@@ -88,7 +88,7 @@ function qsm_options_styling_tab_content() {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Featured image updated successfully.', 'quiz-master-next' ), 'success' );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The theme is applied successfully.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved For Quiz Number $quiz_id" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $quiz_id, "" );
 		}
 		$featured_image = isset( $_POST['quiz_featured_image'] ) ? esc_url_raw( wp_unslash( $_POST['quiz_featured_image'] ) ) : '';
 		if ( ! empty( $quiz_id ) ) {
@@ -114,7 +114,7 @@ function qsm_options_styling_tab_content() {
 			__( 'The theme settings saved successfully.', 'quiz-master-next' ),
 			'success'
 		);
-		$mlwQuizMasterNext->audit_manager->new_audit( "Theme settings Have Been Saved For Quiz Number $quiz_id" );
+		$mlwQuizMasterNext->audit_manager->new_audit( "Theme settings Have Been Saved", $quiz_id, "" );
 	}
 	$folder_name    = QSM_THEME_PATH;
 	$folder_slug    = QSM_THEME_SLUG;
@@ -313,7 +313,7 @@ function qsm_display_theme_settings() {
 	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
-  
+
 	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
     unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );

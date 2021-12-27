@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qsm_options_results_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Results Pages', 'quiz-master-next' ), 'qsm_options_results_tab_content' );
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Results Pages', 'quiz-master-next' ), 'qsm_options_results_tab_content', 'results-pages' );
 }
 add_action( 'plugins_loaded', 'qsm_options_results_tab', 5 );
 
@@ -36,14 +36,6 @@ function qsm_options_results_tab_content() {
 		'rest_user_nonce' => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . $user_id ),
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmResultsObject', $js_data );
-	$categories = array();
-	$enabled    = get_option( 'qsm_multiple_category_enabled' );
-	if ( $enabled && 'cancelled' !== $enabled ) {
-		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
-	} else {
-		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
-	}
-	$categories = $wpdb->get_results( $query, ARRAY_N );
 	?>
 
 <!-- Results Page Section -->
@@ -78,18 +70,26 @@ function qsm_options_results_tab_content() {
 			</header>
 			<main class="qsm-popup__content" id="show-all-variable-content">
 				<?php
-						$variable_list                                = qsm_text_template_variable_list();
-						$variable_list['Core']['%POLL_RESULTS_X%']            = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
-						$variable_list['Core']['%RESULT_ID%']                 = __( 'Show result id', 'quiz-master-next' );
-						//filter to add or remove variables from variable list for pdf tab
-						$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
-						if ( $variable_list ) {
-							foreach ( $variable_list as $category_name => $category_variables ) {
+				$variable_list                             = qsm_text_template_variable_list();
+				$variable_list['Core']['%POLL_RESULTS_X%'] = __( 'X = Question ID Note: only supported for multiple choice answers', 'quiz-master-next' );
+				$variable_list['Core']['%RESULT_ID%']      = __( 'Show result id', 'quiz-master-next' );
+				//filter to add or remove variables from variable list for pdf tab
+				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
+				if ( $variable_list ) {
+					//sort $variable list for backward compatibility
+					foreach ( $variable_list as $variable_name => $variable_value ) {
+						if ( ! is_array( $variable_value ) ) {
+							$variable_list['Other Variables'][ $variable_name ] = $variable_value ;
+						}
+					}
+					foreach ( $variable_list as $category_name => $category_variables ) {
+						//check if the $category_variables is an array for backward compatibility
+						if ( is_array( $category_variables ) ) {
+							?>
+							<div><h2><?php echo esc_attr( $category_name );?></h2></div>
+							<?php
+							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
-								<div><h2><?php echo esc_attr( $category_name );?></h2></div>
-								<?php
-                foreach ( $category_variables as $variable_key => $variable ) {
-                ?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
 										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
@@ -101,11 +101,12 @@ function qsm_options_results_tab_content() {
 										</span>
 									</span>
 								</div>
-								<?php
-                }
+							<?php
 							}
 						}
-						?>
+					}
+				}
+				?>
 			</main>
 			<footer class="qsm-popup__footer" style="text-align: right;">
 				<button class="button button-default" data-micromodal-close=""
@@ -122,6 +123,16 @@ function qsm_options_results_tab_content() {
  * @since 7.3.5
  */
 function qsm_options_results_tab_template(){
+	global $wpdb;
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '';
+	$categories = array();
+	$enabled    = get_option( 'qsm_multiple_category_enabled' );
+	if ( $enabled && 'cancelled' !== $enabled ) {
+		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+	} else {
+		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
+	}
+	$categories = $wpdb->get_results( $query, ARRAY_N );
 	?>
 	<script type="text/template" id="tmpl-results-page">
 		<div class="results-page">
@@ -155,15 +166,18 @@ function qsm_options_results_tab_template(){
 	<script type="text/template" id="tmpl-results-page-condition">
 		<div class="results-page-condition">
 				<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-				<?php if ( ! empty( $categories ) ) { ?>
-					<select class="results-page-condition-category">
-						<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-						<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+				<select class="results-page-condition-category">
+					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+					<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+					<?php if ( ! empty( $categories ) ) { ?>
 						<?php foreach ( $categories as $cat ) { ?>
 						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
 						<?php } ?>
-					</select>
-				<?php } ?>
+					<?php } else { ?>
+						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+					<?php } ?>
+				</select>
+
 				<select class="results-page-condition-criteria">
 					<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
 					<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>

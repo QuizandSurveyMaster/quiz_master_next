@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.6
+Stable tag: 7.3.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+
+= 7.3.7 (December 27, 2021) =
+* Bug: Fixed issues in fill in the blanks question type
+* Bug: Fixed issues with category selection on result page
+* Bug: Fixed issues with deletion and duplication capabilities for non admin users
+* Bug: Fixed issue where url parameters are being translated
+* Bug: Fixed the issues with category points and score template variables
+* Feature: Added a feature to hide/show columns in admin results page
+* Enhancement: Introduced Page Name and Page URL columns to admin results table
+* Enhancement: Made UI improvements in polar question type slider
+* Enhancement: Made UI improvements in template variable popup
+* Enhancement: Made improvements in Audit Logs
 
 = 7.3.6 (December 10, 2021) =
 * Hotfix: Issues with survey form type Fixed

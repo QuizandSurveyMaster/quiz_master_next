@@ -64,7 +64,7 @@ function qsm_generate_quiz_options() {
 		$update_status   = wp_update_post( $arg_post_arr );
 		if ( false !== $update_status ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Quiz status has been updated successfully to publish.', 'quiz-master-next' ), 'success' );
-			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Status Has Been Updated: $quiz_post_id" );
+			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Status Has Been Updated", $quiz_id,"" );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'An error occurred while trying to update the status of your quiz or survey. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error when updating quiz status', "", 0, 'error' );
@@ -120,6 +120,11 @@ function qsm_generate_quiz_options() {
 				</a>
 			</h1>
 			<div class="qsm-alerts-placeholder"></div>
+			<!-- Shows warnings, alerts then tab content -->
+			<?php $mlwQuizMasterNext->alertManager->showWarnings(); ?>
+			<div class="qsm-alerts">
+				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
+			</div>
 			<?php if ( $quiz_id ) { ?>
 				<nav class="nav-tab-wrapper">
 					<?php
@@ -154,12 +159,9 @@ function qsm_generate_quiz_options() {
 				</div>
 				<?php
 			}
-			// Shows alerts, ads, then tab content.
+			// Shows ads
+			qsm_show_adverts();
 			?>
-			<div class="qsm-alerts">
-				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
-			</div>
-			<?php qsm_show_adverts(); ?>
 		</div>
 		<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
@@ -177,8 +179,8 @@ function qsm_generate_quiz_options() {
 						</form>
 					</main>
 					<footer class="qsm-popup__footer">
-						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary">Edit</button>
-						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window">Cancel</button>
+						<button id="edit-name-button" class="qsm-popup__btn qsm-popup__btn-primary"><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
+						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 					</footer>
 				</div>
 			</div>

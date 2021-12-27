@@ -42,5 +42,15 @@ class MlwQmnAlertManager {
 		echo apply_filters( 'qsm_alert_messages', $alert_list );
 	}
 
+	public function showWarnings() {
+		$alert_list = "";
+		foreach ( $this->alerts as $alert ) {
+			if ( "warning" === $alert['type'] ) {
+				$alert_list .= "<div class=\"notice notice-warning \"><p><strong>".__('Warning!', 'quiz-master-next')." </strong>".$alert["message"]."</p></div>";
+			}
+		}
+		echo apply_filters( 'qsm_warning_messages', $alert_list );
+	}
+
 }
 

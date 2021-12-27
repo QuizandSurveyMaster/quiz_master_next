@@ -23,7 +23,7 @@ class QSM_Emails {
 	 * @param array $response_data The data for the user's submission.
 	 */
 	public static function send_emails( $response_data ) {
-		$emails = QSM_Emails::load_emails( $response_data['quiz_id'] );
+		$emails = self::load_emails( $response_data['quiz_id'] );
 
 		if ( ! is_array( $emails ) || empty( $emails ) ) {
 			return;
@@ -47,9 +47,9 @@ class QSM_Emails {
 
 				// Cycle through each condition to see if we should sent this email.
 				foreach ( $email['conditions'] as $condition ) {
-					$value = $condition['value'];
+					$value    = $condition['value'];
 					$category = '';
-					if ( isset($condition['category']) ) {
+					if ( isset( $condition['category'] ) ) {
 						$category = $condition['category'];
 					}
 					// First, determine which value we need to test.
@@ -129,10 +129,10 @@ class QSM_Emails {
 				}
 
 				if ( $show ) {
-					QSM_Emails::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+					self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
 				}
 			} else {
-				QSM_Emails::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+				self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
 			}
 		}
 
@@ -161,21 +161,40 @@ class QSM_Emails {
 		} else {
 			$to = str_replace( '%USER_EMAIL%', '', $to );
 		}
-		$to = apply_filters('qsm_send_results_email_addresses', $to, $response_data);
+		$to       = apply_filters( 'qsm_send_results_email_addresses', $to, $response_data );
 		$to_array = explode( ',', $to );
-		$to_array = array_unique($to_array);
-		if ( empty($to_array) ) {
+		$to_array = array_unique( $to_array );
+		if ( empty( $to_array ) ) {
 			return;
 		}
 		// Prepares our subject.
 		$subject = apply_filters( 'mlw_qmn_template_variable_results_page', $subject, $response_data );
 		// Prepares our content.
+		$incorrect_answer                      = "<span style='color:red;display:block;margin-bottom:5px;'>&#x2715;";
+		$correct_answer                        = "<span style='color:green;display:block;margin-bottom:5px;'>&#10003;";
+		$simple_answer                         = "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;";
+		$content                               = htmlspecialchars_decode( $content, ENT_QUOTES );
 		$response_data['email_template_array'] = true;
-		$content = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
-		$content = htmlspecialchars_decode( $content, ENT_QUOTES );
-		//convert css classes to inline 
-		$content = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner($content);
-		$content = html_entity_decode( $content );
+		$content                               = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
+		$content                               = apply_filters( 'qmn_email_template_variable_results', $content, $response_data );
+		$content                               = str_replace( '<br/>', '<br>', $content );
+		$content                               = str_replace( '<br />', '<br>', $content );
+		$content                               = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $content );
+		$content                               = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $content );
+		$content                               = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer qmn_image_option">', "$correct_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-simple-option qmn_image_option">', "$simple_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer ">', "$correct_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-simple-option ">', "$simple_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $content );
+		$content                               = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $content );
+		$content                               = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $content );
+		$content                               = str_replace( '<span class="qmn_user_correct_answer">', "$correct_answer ", $content );
+		$content                               = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $content );
+		// convert css classes to inline.
+		$content                               = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner( $content );
+		$content                               = html_entity_decode( $content );
 
 		// Prepares our from name and email.
 		$settings   = (array) get_option( 'qmn-settings' );
@@ -214,7 +233,7 @@ class QSM_Emails {
 		/**
 		 * Filter to modify email headers.
 		 */
-		$headers = apply_filters('qsm_send_results_email_headers', $headers, $response_data);
+		$headers = apply_filters( 'qsm_send_results_email_headers', $headers, $response_data );
 
 		// Prepares our attachments. If %USER_EMAIL% was in the $to, then use the user email attachment filter.
 		$attachments = array();
@@ -250,18 +269,18 @@ class QSM_Emails {
 
 		global $wpdb;
 		$data = $wpdb->get_var( $wpdb->prepare( "SELECT user_email_template FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ) );
-		
+
 		$data = maybe_unserialize( $data );
 		// Checks if the emails is an array.
 		if ( is_array( $data ) ) {
 			// Checks if the emails array is not the newer version.
 			if ( ! empty( $data ) && ! isset( $data[0]['conditions'] ) ) {
-				$emails = QSM_Emails::convert_to_new_system( $quiz_id );
+				$emails = self::convert_to_new_system( $quiz_id );
 			} else {
 				$emails = $data;
 			}
 		} else {
-			$emails = QSM_Emails::convert_to_new_system( $quiz_id );
+			$emails = self::convert_to_new_system( $quiz_id );
 		}
 
 		return $emails;
@@ -291,7 +310,7 @@ class QSM_Emails {
 		$data   = $wpdb->get_row( $wpdb->prepare( "SELECT send_user_email, user_email_template, send_admin_email, admin_email_template, email_from_text, admin_email FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $quiz_id ), ARRAY_A );
 		$system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system', 0 );
 		if ( 0 === intval( $data['send_user_email'] ) ) {
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $system, $data['user_email_template'] ) );
+			$emails = array_merge( $emails, self::convert_emails( $system, $data['user_email_template'] ) );
 		}
 		if ( 0 === intval( $data['send_admin_email'] ) ) {
 			$from_email_array = maybe_unserialize( $data['email_from_text'] );
@@ -300,7 +319,7 @@ class QSM_Emails {
 					'reply_to' => 1,
 				);
 			}
-			$emails = array_merge( $emails, QSM_Emails::convert_emails( $system, $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
+			$emails = array_merge( $emails, self::convert_emails( $system, $data['admin_email_template'], $data['admin_email'], $from_email_array['reply_to'] ) );
 		}
 
 		// Updates the database with new array to prevent running this step next time.
