@@ -47,7 +47,7 @@ function qsm_generate_quizzes_surveys_page() {
 		$quiz_post_id = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
 		if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_post', $quiz_post_id ) ) {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to reset this quiz.', 'quiz-master-next' ), 'error' );
-		}else{
+		} else {
 			$results = $wpdb->update(
 				$wpdb->prefix . 'mlw_quizzes',
 				array(

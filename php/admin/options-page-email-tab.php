@@ -92,14 +92,14 @@ function qsm_options_emails_tab_content() {
 
 				if ( $variable_list ) {
 					//sort $variable list for backward compatibility
-					foreach ( $variable_list as $variable_name => $variable_value) {
-						if ( ! is_array( $variable_value ) ){
-							$variable_list['Other Variables'][$variable_name] = $variable_value ;
+					foreach ( $variable_list as $variable_name => $variable_value ) {
+						if ( ! is_array( $variable_value ) ) {
+							$variable_list['Other Variables'][ $variable_name ] = $variable_value ;
 						}
 					}
 					foreach ( $variable_list as $category_name => $category_variables ) {
 						//check if the $category_variables is an array for backward compatibility
-						if ( is_array( $category_variables ) ){
+						if ( is_array( $category_variables ) ) {
 							?>
 							<div><h2><?php echo esc_attr($category_name);?></h2></div>
 							<?php

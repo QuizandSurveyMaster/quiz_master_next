@@ -77,14 +77,14 @@ function qsm_options_results_tab_content() {
 				$variable_list = apply_filters( 'qsm_text_variable_list_result', $variable_list );
 				if ( $variable_list ) {
 					//sort $variable list for backward compatibility
-					foreach ( $variable_list as $variable_name => $variable_value) {
-						if ( ! is_array( $variable_value ) ){
-							$variable_list['Other Variables'][$variable_name] = $variable_value ;
+					foreach ( $variable_list as $variable_name => $variable_value ) {
+						if ( ! is_array( $variable_value ) ) {
+							$variable_list['Other Variables'][ $variable_name ] = $variable_value ;
 						}
 					}
 					foreach ( $variable_list as $category_name => $category_variables ) {
 						//check if the $category_variables is an array for backward compatibility
-						if ( is_array( $category_variables ) ){
+						if ( is_array( $category_variables ) ) {
 							?>
 							<div><h2><?php echo esc_attr( $category_name );?></h2></div>
 							<?php
@@ -177,7 +177,7 @@ function qsm_options_results_tab_template(){
 						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
 					<?php } ?>
 				</select>
-				
+
 				<select class="results-page-condition-criteria">
 					<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
 					<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>

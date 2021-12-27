@@ -625,7 +625,7 @@ class QMNPluginHelper {
 	 * @return void
 	 */
 	public function register_quiz_settings_tabs( $title, $function, $slug = "" ) {
-		if ( "" === $slug ){
+		if ( "" === $slug ) {
 			$slug = strtolower( str_replace( ' ', '-', $title ) );
 		}
 		$new_tab = array(

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since  4.4.0
  */
 function qsm_settings_questions_tab() {
-	 global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Questions', 'quiz-master-next' ), 'qsm_options_questions_tab_content', 'questions' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_questions_tab', 5 );
@@ -259,10 +259,10 @@ function qsm_options_questions_tab_content() {
 									// ),
 								);
 								foreach ( $question_types as $type ) {
-									if ( isset( $type['options']['description'] ) && $type['options']['description'] != null ) {
+									if ( isset( $type['options']['description'] ) && null !== $type['options']['description'] ) {
 										$description = array(
 											'question_type_id' => $type['slug'],
-											'description' => __( $type['options']['description'], 'quiz-master-next' ),
+											'description' => $type['options']['description'],
 										);
 										array_push( $description_arr, $description );
 									}
@@ -368,8 +368,8 @@ function qsm_options_questions_tab_content() {
 													<select name="question_type" id="question_type">
 														<?php
 														foreach ( $question_types as $type ) {
-															if ( isset( $type['options']['add_separate_option_text'] ) && $type['options']['add_separate_option_text'] != '' ) {
-																echo '<option disabled>---' . $type['options']['add_separate_option_text'] . '---</option>';
+															if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
+																echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
 															}
 															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
 														}
@@ -944,7 +944,7 @@ function qsm_delete_question_question_bank() {
 				),
 			)
 		);
-		  wp_die();
+		wp_die();
 	}
 	$question_ids = isset( $_POST['question_ids'] ) ? sanitize_text_field( wp_unslash( $_POST['question_ids'] ) ) : '';
 	$question_arr = explode( ',', $question_ids );
@@ -993,7 +993,7 @@ function qsm_delete_question_from_database() {
 				),
 			)
 		);
-		  wp_die();
+		wp_die();
 	}
 	$question_id = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 	if ( $question_id ) {

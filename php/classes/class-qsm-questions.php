@@ -387,7 +387,7 @@ class QSM_Questions {
 			} else {
 				$answer[0] = sanitize_text_field( $answer[0] );
 			}
-			$answers[$key] = $answer;
+			$answers[ $key ] = $answer;
 		}
 
 		return $answers;
@@ -466,7 +466,7 @@ class QSM_Questions {
 					$categories_names[ $tax->term_id ] = $tax->name;
 					$taxs[ $tax->parent ][]            = $tax;
 				}
-				   $categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+				$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 			}
 			$categories = array(
 				'list' => $categories_names,
@@ -506,7 +506,7 @@ class QSM_Questions {
 							$categories_names[ $tax->term_id ] = $tax->name;
 							$taxs[ $tax->parent ][]            = $tax;
 						}
-						   $categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
+						$categories_tree = self::create_terms_tree( $taxs, $taxs[0] );
 
 					}
 				}
