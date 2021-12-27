@@ -258,9 +258,6 @@ class QMNQuizManager {
 			fputcsv( $qsm_open_file, $qsm_export_array );
 		}
 
-		// Close file
-		fclose( $qsm_open_file );
-
 		// download csv file
 		header( 'Content-Description: File Transfer' );
 		header( 'Content-Disposition: attachment; filename=' . $qsm_export_filename );
