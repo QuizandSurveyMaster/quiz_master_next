@@ -24,10 +24,10 @@ define( 'QSM_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'hide_qsm_adv', true );
 define( 'QSM_THEME_PATH', plugin_dir_path( __DIR__ ) );
 define( 'QSM_THEME_SLUG', plugins_url( '/' ) );
-define('QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css');
-define('QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js');
-define('QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php');
-define('QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next');
+define( 'QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css' );
+define( 'QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js' );
+define( 'QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php' );
+define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
 
 /**
  * This class is the main class of the plugin
@@ -252,16 +252,16 @@ class MLWQuizMasterNext {
 	 */
 	public function qsm_admin_scripts_style( $hook ) {
 		global $mlwQuizMasterNext;
-		//admin styles
+		// admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
 		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
-		//dashboard and quiz list pages
+		// dashboard and quiz list pages
 		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_mlw_quiz_list' === $hook ) {
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			wp_enqueue_media();
-			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL.'/admin-dashboard.css', array(), $this->version );
+			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL . '/admin-dashboard.css', array(), $this->version );
 			wp_style_add_data( 'qsm_admin_dashboard_css', 'rtl', 'replace' );
-			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL.'/jquery-ui.min.css', array(), '1.13.0' );
+			wp_enqueue_style( 'qsm_ui_css', QSM_PLUGIN_CSS_URL . '/jquery-ui.min.css', array(), '1.13.0' );
 		}
 		// dashboard
 		if ( 'toplevel_page_qsm_dashboard' === $hook ) {
@@ -272,32 +272,32 @@ class MLWQuizMasterNext {
 		}
 		// result details page
 		if ( 'admin_page_qsm_quiz_result_details' === $hook ) {
-			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL.'/common.css', array(), $this->version );
+			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL . '/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
-			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL.'/mathjax/tex-mml-chtml.js', false , '3.2.0' , true );
-			wp_enqueue_script( 'jquery-ui-slider');
-			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL.'/jquery.ui.slider-rtl.js',array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true);
-			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL.'/jquery.ui.slider-rtl.css', array(), $this->version );
-			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL.'/qsm-common.js', array(), $this->version, true );
-			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version );
+			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+			wp_enqueue_script( 'jquery-ui-slider' );
+			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true );
+			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $this->version );
+			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $this->version, true );
+			wp_enqueue_style( 'jquery-redmond-theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
 		}
-		//results page
+		// results page
 		if ( 'qsm_page_mlw_quiz_results' === $hook ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'jquery-ui-core' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 			wp_enqueue_script( 'jquery-ui-button' );
-			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL.'/jquery-ui.css', array(), $this->version);
-			wp_enqueue_script( 'micromodal_script',  QSM_PLUGIN_JS_URL.'/micromodal.min.js', array( 'jquery'), $this->version, true);
+			wp_enqueue_style( 'qmn_jquery_redmond_theme', QSM_PLUGIN_CSS_URL . '/jquery-ui.css', array(), $this->version );
+			wp_enqueue_script( 'micromodal_script', QSM_PLUGIN_JS_URL . '/micromodal.min.js', array( 'jquery' ), $this->version, true );
 		}
-		//stats page
+		// stats page
 		if ( 'qsm_page_qmn_stats' === $hook ) {
-			wp_enqueue_script('ChartJS', QSM_PLUGIN_JS_URL.'/chart.min.js', array(),'3.6.0',true);
+			wp_enqueue_script( 'ChartJS', QSM_PLUGIN_JS_URL . '/chart.min.js', array(), '3.6.0', true );
 		}
-		//quiz option pages
+		// quiz option pages
 		if ( 'admin_page_mlw_quiz_options' === $hook ) {
 			wp_enqueue_script( 'wp-tinymce' );
-			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true);
+			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
 				case 'contact':
@@ -335,11 +335,10 @@ class MLWQuizMasterNext {
 					break;
 			}
 		}
-		//load admin JS after all dependencies are loaded
-		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util','jquery-ui-sortable'), $this->version, true );
-		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js'), $this->version, true);
+		// load admin JS after all dependencies are loaded
+		wp_enqueue_script( 'qsm_admin_js', plugins_url( 'js/qsm-admin.js', __FILE__ ), array( 'jquery', 'backbone', 'underscore', 'wp-util', 'jquery-ui-sortable' ), $this->version, true );
+		wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 
-		
 	}
 
 	/**
@@ -529,15 +528,17 @@ class MLWQuizMasterNext {
 				<p>
 					<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?><br>
 					<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br>
-					<?php /* translators: %s: HTML tag */
-					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>'); ?>
+					<?php
+					/* translators: %s: HTML tag */
+					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
+					?>
 				</p>
 				<p class="category-action">
 					<a href="#" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
 					&nbsp;&nbsp;&nbsp;<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
 				</p>
 			</div>
-		<?php
+			<?php
 		}
 	}
 
