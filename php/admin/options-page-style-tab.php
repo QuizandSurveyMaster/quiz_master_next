@@ -313,7 +313,7 @@ function qsm_display_theme_settings() {
 	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id  = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$theme_id = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme( $quiz_id );
-  
+
 	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
     unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );

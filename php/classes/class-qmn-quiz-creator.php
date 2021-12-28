@@ -581,7 +581,7 @@ class QMNQuizCreator {
 				foreach ( $update_pages as $pages_key => $pages_value ) {
 					foreach ( $pages_value as $pages_k_q => $page_q_id ) {
 						if ( $page_q_id === $mlw_question->question_id ) {
-							   $update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
+							$update_pages[ $pages_key ][ $pages_k_q ] = $wpdb->insert_id;
 						}
 					}
 				}
@@ -630,7 +630,7 @@ class QMNQuizCreator {
 				}
 			}
 			$update_quiz_settings['pages'] = maybe_serialize( $update_pages );
-			// saves data in logic table first or else in quiz_settings
+			// saves data in logic table first or else in quiz_settings.
 			$value_array = array();
 			if ( is_array( $logic_rules ) && ! empty( $logic_rules ) ) {
 				if ( is_null( $logic_table_exists ) ) {

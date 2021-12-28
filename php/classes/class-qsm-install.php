@@ -1833,9 +1833,9 @@ class QSM_Install {
 				$results    = $wpdb->query( $sql );
 				$sql        = 'ALTER TABLE ' . $audit_table . ' ADD quiz_name TEXT NOT NULL AFTER quiz_id';
 				$results    = $wpdb->query( $sql );
-				 $sql        = 'ALTER TABLE ' . $audit_table . ' ADD form_data TEXT NOT NULL AFTER quiz_name';
-				 $results    = $wpdb->query( $sql );
-				
+				$sql        = 'ALTER TABLE ' . $audit_table . ' ADD form_data TEXT NOT NULL AFTER quiz_name';
+				$results    = $wpdb->query( $sql );
+
 			}
 			// Update 5.0.0
 			$settings = (array) get_option( 'qmn-settings', array() );

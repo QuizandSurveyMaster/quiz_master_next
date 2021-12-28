@@ -312,12 +312,12 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_t
 	$results_screen_option['page_name']  = isset($_POST['page_name']) ? sanitize_text_field( wp_unslash( $_POST['page_name'] ) ) : "0";
 	$results_screen_option['business']   = isset($_POST['business']) ? sanitize_text_field( wp_unslash( $_POST['business'] ) ) : "0";
 	$results_screen_option['phone']      = isset($_POST['phone']) ? sanitize_text_field( wp_unslash( $_POST['phone'] ) ) : "0";
-	$results_screen_option['ip_address'] = isset($_POST['ip_address']) ? sanitize_text_field( wp_unslash( $_POST['ip_address'] ) ) : "0";  
+	$results_screen_option['ip_address'] = isset($_POST['ip_address']) ? sanitize_text_field( wp_unslash( $_POST['ip_address'] ) ) : "0";
 	//set screen option as user meta
 	add_user_meta( $user_id, 'results_screen_option',$results_screen_option, true);
 } else {
 	$results_screen_option = get_user_meta( $user_id );
-	$results_screen_option = !empty($results_screen_option['results_screen_option']) ? $results_screen_option['results_screen_option'][0] : '';
+	$results_screen_option = ! empty( $results_screen_option['results_screen_option'] ) ? $results_screen_option['results_screen_option'][0] : '';
 	if ( empty($results_screen_option) ) {
 		$results_screen_option = array(
 			'page_url'   => '0',

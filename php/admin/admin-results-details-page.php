@@ -31,7 +31,7 @@ function qsm_generate_result_details() {
                 $active_class = ' nav-tab-active';
             }
             $result_id = isset( $_GET["result_id"] ) ? intval( $_GET["result_id"] ) : '';
-            
+
             echo '<a href="?page=qsm_quiz_result_details&result_id='.esc_attr( $result_id ).'&tab='.esc_attr( $tab['slug'] ).'" class="nav-tab '.esc_attr( $active_class ).'">' . esc_html( $tab['title'] ) . '</a>';
         }
         ?>

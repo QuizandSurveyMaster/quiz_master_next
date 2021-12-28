@@ -153,11 +153,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Changelog ==
 
 = 7.3.7 (December 27, 2021) =
-* Bug: Fixed the issues in fill in the blanks question type
-* Bug: Fixed the issue of missing category selection option on result page conditions 
-* Bug: Fixed the issue of delete and duplicate capability for non admin 
-* Bug: Fixed the issue of url parameters being translated 
-* Bug: Fixed the issues with category points and score template variables 
+* Bug: Fixed issues in fill in the blanks question type
+* Bug: Fixed issues with category selection on result page
+* Bug: Fixed issues with deletion and duplication capabilities for non admin users
+* Bug: Fixed issue where url parameters are being translated
+* Bug: Fixed the issues with category points and score template variables
 * Feature: Added a feature to hide/show columns in admin results page
 * Enhancement: Introduced Page Name and Page URL columns to admin results table
 * Enhancement: Made UI improvements in polar question type slider
