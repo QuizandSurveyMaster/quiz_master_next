@@ -201,7 +201,9 @@ label.inline .mlw_qmn_question,
 .quiz_section select {
   height: 38px;
 }
-
+.quiz_section select.qsm_select.qsm_dropdown {
+  height: auto;
+}
 .quiz_section select:hover,
 .quiz_section textarea:hover,
 .quiz_section input[type="text"]:hover,
