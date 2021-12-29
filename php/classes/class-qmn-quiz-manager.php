@@ -409,6 +409,7 @@ class QMNQuizManager {
 				'skip_validation_time_expire'        => $qmn_quiz_options->skip_validation_time_expire,
 				'timer_limit_val'                    => $qmn_quiz_options->timer_limit,
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
+				'disable_first_page' => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
