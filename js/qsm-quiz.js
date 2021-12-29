@@ -1065,6 +1065,15 @@
 	 if (go_to_top == 1 && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
 		 qsmScrollTo($container);
 	 }
+	 if (qmn_quiz_data[quiz_id].disable_first_page == 1) {
+		if (slide_number == 0 && page_number == 0) {
+			$container.find(".qsm-auto-page-row.quiz_begin").hide();
+			$container.find('.qsm-auto-page-row.qsm-apc-' + (parseInt(page_number) + 1)).show();
+			$container.find('.slide_number_hidden').val(parseInt(slide_number) + 1);
+			$container.find('.current_page_hidden').val(parseInt(page_number) + 2);
+			$container.find(".mlw_previous").hide();
+		}
+	 }
 	 //Show the page counts
 	 if (page_number > 0 && jQuery(quiz_form_id).closest('.qmn_quiz_container').find('.pages_count').length > 0) {
 		 var actual_pages = total_pages - 2;
@@ -1107,6 +1116,13 @@
 	 }
 	 if (go_to_top == 1 && qmn_quiz_data[quiz_id].disable_scroll_next_previous_click != 1) {
 		 qsmScrollTo($container);
+	 }
+	 if (qmn_quiz_data[quiz_id].disable_first_page == 1) {
+		if (page_number == (parseInt(total_pages) - 2)) {
+			$container.find(".qsm-auto-page-row.quiz_begin").hide();
+			$container.find('.qsm-auto-page-row.qsm-apc-' + (parseInt(page_number) + 1)).show();
+			$container.find(".mlw_previous").hide();
+		}
 	 }
 	 if (page_number > 0 && jQuery(quiz_form_id).closest('.qmn_quiz_container').find('.pages_count').length > 0) {
 		 var actual_pages = total_pages - 2;

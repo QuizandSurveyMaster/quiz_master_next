@@ -689,6 +689,25 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Setting for display first page
+		$field_array = array(
+			'id'      => 'disable_first_page',
+			'label'   => __( 'Disable first page on quiz', 'quiz-master-next' ),
+			'type'    => 'radio',
+			'options' => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default' => 0,
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		
 		// Setting for animation
 		$field_array = array(
 			'id'      => 'quiz_animation',
