@@ -781,7 +781,7 @@
 				 }
 				 if (jQuery(this).attr('class').indexOf('mlwRequiredRadio') > -1) {
 					 check_val = jQuery(this).find('input:checked').val();
-					 if (check_val == "No Answer Provided" || check_val == "") {
+					 if (check_val == "No Answer Provided" || check_val == "" || check_val == undefined) {
 						 qmnDisplayError(empty_error, jQuery(this), quiz_form_id);
 						 result = false;
 					 }
