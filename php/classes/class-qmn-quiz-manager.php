@@ -390,6 +390,11 @@ class QMNQuizManager {
 				'quiz_system' => $qmn_quiz_options->system,
 				'user_ip'     => $this->get_user_ip(),
 			);
+			$return_display .= '<script>
+                            if (window.qmn_quiz_data === undefined) {
+                                    window.qmn_quiz_data = new Object();
+                            }
+                    </script>';
 			$qpages                  = array();
 			$qpages_arr              = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 			if ( ! empty( $qpages_arr ) ) {
@@ -433,10 +438,12 @@ class QMNQuizManager {
 
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
+			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
+                    </script>';
+
 			$return_display                            .= ob_get_clean();
 			$return_display                             = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
-			$qmn_quiz_data[ $qmn_json_data['quiz_id'] ] = $qmn_filtered_json;
-			wp_localize_script( 'qsm_quiz', 'qmn_quiz_data', $qmn_quiz_data );
+			
 		}
 		return $return_display;
 	}
@@ -1081,6 +1088,7 @@ class QMNQuizManager {
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php
+
 	}
 
 	/**

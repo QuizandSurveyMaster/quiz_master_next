@@ -494,17 +494,16 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<select class="qsm_select <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>"><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
-		<?php
-		if ( is_array( $answers ) ) {
-			$mlw_answer_total = 0;
-			foreach ( $answers as $answer ) {
-				$mlw_answer_total++;
-				if ( '' !== $answer[0] ) {
-					?>
-				<option value="<?php echo esc_attr( $answer[0] ); ?>"><?php echo esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option>
-					<?php
-				}
+	<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>"><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
+	<?php
+	if ( is_array( $answers ) ) {
+		$mlw_answer_total = 0;
+		foreach ( $answers as $answer ) {
+			$mlw_answer_total++;
+			if ( '' !== $answer[0] ) {
+				?>
+			<option value="<?php echo esc_attr( $answer[0] ); ?>"><?php echo esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option>
+				<?php
 			}
 		}
 		?>
