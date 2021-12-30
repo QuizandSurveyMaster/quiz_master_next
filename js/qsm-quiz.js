@@ -390,6 +390,13 @@
 			 if (1 == $currentPage.data('prevbtn')) {
 				 $quizForm.find('.qsm-previous').hide();
 			 }
+			 if ('1' == qmn_quiz_data[quizID].disable_first_page) {
+				if(pageNumber == 1){
+					$quizForm.find(".quiz_begin").hide();
+					$quizForm.find(".mlw_previous").hide();
+					$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();	
+				}
+			}
 			 if ('1' == qmn_quiz_data[quizID].progress_bar) {
 				 var current_page = jQuery('#quizForm' + quizID).find('.current_page_hidden').val();
 				 var total_page_length = $pages.length - 1;
@@ -442,6 +449,7 @@
 						 $('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					 }
 				 }
+				 
 			 }
 			 page += difference;
 			 QSM.goToPage(quizID, page);
