@@ -98,9 +98,9 @@ function qsm_generate_quiz_options() {
 		wp_reset_postdata();
 	}
 	?>
-	<div class="wrap">
-		<div class='mlw_quiz_options'>
-			<h1 style="margin-bottom: 10px;">
+	<div class="wrap" id="mlw_quiz_wrap">
+		<div class='mlw_quiz_options' id="mlw_quiz_options">
+			<h1 id="qsm_title_quiz" style="margin-bottom: 10px;">
 				<?php echo wp_kses_post( $quiz_name ); ?>
 				<?php if ( 'draft' === $post_status ) : ?>
 					<form method="POST" action="">
