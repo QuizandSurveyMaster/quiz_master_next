@@ -1118,9 +1118,8 @@
 		 qsmScrollTo($container);
 	 }
 	 if (qmn_quiz_data[quiz_id].disable_first_page == 1) {
-		if (page_number == (parseInt(total_pages) - 2)) {
+		if (page_number == 3) {
 			$container.find(".qsm-auto-page-row.quiz_begin").hide();
-			$container.find('.qsm-auto-page-row.qsm-apc-' + (parseInt(page_number) + 1)).show();
 			$container.find(".mlw_previous").hide();
 		}
 	 }
