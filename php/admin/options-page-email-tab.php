@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qsm_settings_email_tab() {
 	global $mlwQuizMasterNext;
-	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Emails', 'quiz-master-next' ), 'qsm_options_emails_tab_content', 'emails');
+	$mlwQuizMasterNext->pluginHelper->register_quiz_settings_tabs( __( 'Emails', 'quiz-master-next' ), 'qsm_options_emails_tab_content', 'emails' );
 }
 add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
 
@@ -40,7 +40,6 @@ function qsm_options_emails_tab_content() {
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 
-	
 	?>
 
 <!-- Emails Section -->
@@ -60,7 +59,7 @@ function qsm_options_emails_tab_content() {
 </section>
 
 <!-- Templates -->
-<?php add_action('admin_footer', 'qsm_options_emails_tab_template'); ?>
+	<?php add_action( 'admin_footer', 'qsm_options_emails_tab_template' ); ?>
 <!--Template popup-->
 <div class="qsm-popup qsm-popup-slide" id="show-all-variable" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
@@ -79,31 +78,31 @@ function qsm_options_emails_tab_content() {
 				$variable_list['Core']['%QUESTIONS_ANSWERS_EMAIL%'] = __( 'Shows the question, the answer provided by user, and the correct answer.', 'quiz-master-next' );
 				unset( $variable_list['Core']['%FACEBOOK_SHARE%'] );
 				unset( $variable_list['Core']['%TWITTER_SHARE%'] );
-				//filter to add or remove variables from variable list for email tab
+				// filter to add or remove variables from variable list for email tab
 				$variable_list = apply_filters( 'qsm_text_variable_list_email', $variable_list );
 
 				if ( $variable_list ) {
-					//sort $variable list for backward compatibility
+					// sort $variable list for backward compatibility
 					foreach ( $variable_list as $variable_name => $variable_value ) {
 						if ( ! is_array( $variable_value ) ) {
-							$variable_list['Other Variables'][ $variable_name ] = $variable_value ;
+							$variable_list['Other Variables'][ $variable_name ] = $variable_value;
 						}
 					}
 					foreach ( $variable_list as $category_name => $category_variables ) {
-						//check if the $category_variables is an array for backward compatibility
+						// check if the $category_variables is an array for backward compatibility
 						if ( is_array( $category_variables ) ) {
 							?>
-							<div><h2><?php echo esc_attr($category_name);?></h2></div>
+							<div><h2><?php echo esc_attr( $category_name ); ?></h2></div>
 							<?php
 							foreach ( $category_variables as $variable_key => $variable ) {
 								?>
 								<div class="popup-template-span-wrap">
 									<span class="qsm-text-template-span">
-										<span class="button button-default template-variable"><?php echo esc_attr($variable_key); ?></span>
+										<span class="button button-default template-variable"><?php echo esc_attr( $variable_key ); ?></span>
 										<span class="button click-to-copy">Click to Copy</span>
 										<span class="temp-var-seperator">
 											<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
-												<span class="qsm-tooltips"><?php echo esc_attr($variable); ?></span>
+												<span class="qsm-tooltips"><?php echo esc_attr( $variable ); ?></span>
 											</span>
 										</span>
 									</span>
@@ -122,7 +121,7 @@ function qsm_options_emails_tab_content() {
 		</div>
 	</div>
 </div>
-<?php
+	<?php
 }
 
 /**
@@ -130,9 +129,9 @@ function qsm_options_emails_tab_content() {
  *
  * @since 7.3.5
  */
-function qsm_options_emails_tab_template(){ 
+function qsm_options_emails_tab_template() {
 	global $wpdb;
-	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$quiz_id    = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
 	$categories = array();
 	$enabled    = get_option( 'qsm_multiple_category_enabled' );
 	if ( $enabled && 'cancelled' !== $enabled ) {
@@ -210,6 +209,6 @@ function qsm_options_emails_tab_template(){
 	</div>
 </script>
 
-<?php
+	<?php
 }
 ?>
