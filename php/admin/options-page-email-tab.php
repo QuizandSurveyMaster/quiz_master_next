@@ -28,7 +28,6 @@ add_action( 'plugins_loaded', 'qsm_settings_email_tab', 5 );
  * @since 4.4.0
  */
 function qsm_options_emails_tab_content() {
-	global $wpdb;
 	global $mlwQuizMasterNext;
 
 	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
@@ -41,14 +40,7 @@ function qsm_options_emails_tab_content() {
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmEmailsObject', $js_data );
 
-	$categories = array();
-	$enabled    = get_option( 'qsm_multiple_category_enabled' );
-	if ( $enabled && 'cancelled' !== $enabled ) {
-		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
-	} else {
-		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
-	}
-	$categories = $wpdb->get_results( $query, ARRAY_N );
+	
 	?>
 
 <!-- Emails Section -->
@@ -138,8 +130,18 @@ function qsm_options_emails_tab_content() {
  *
  * @since 7.3.5
  */
-function qsm_options_emails_tab_template(){ ?>
-
+function qsm_options_emails_tab_template(){ 
+	global $wpdb;
+	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$categories = array();
+	$enabled    = get_option( 'qsm_multiple_category_enabled' );
+	if ( $enabled && 'cancelled' !== $enabled ) {
+		$query = $wpdb->prepare( "SELECT name FROM {$wpdb->prefix}terms WHERE term_id IN ( SELECT DISTINCT term_id FROM {$wpdb->prefix}mlw_question_terms WHERE quiz_id = %d ) ORDER BY name ASC", $quiz_id );
+	} else {
+		$query = $wpdb->prepare( "SELECT DISTINCT category FROM {$wpdb->prefix}mlw_questions WHERE category <> '' AND quiz_id = %d", $quiz_id );
+	}
+	$categories = $wpdb->get_results( $query, ARRAY_N );
+	?>
 <script type="text/template" id="tmpl-email">
 	<div class="qsm-email">
 		<header class="qsm-email-header">
@@ -177,16 +179,17 @@ function qsm_options_emails_tab_template(){ ?>
 <script type="text/template" id="tmpl-email-condition">
 	<div class="email-condition">
 		<button class="delete-condition-button"><span class="dashicons dashicons-trash"></span></button>
-		<?php if ( ! empty( $categories ) ) { ?>
-			<select class="email-condition-category">
-				<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
-				<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
-				<?php foreach ( $categories as $cat ) { ?>
-				<option value="<?php echo esc_attr($cat[0]); ?>" <# if (data.category == '<?php echo esc_attr($cat[0]); ?>') { #>selected<# } #>><?php echo esc_attr($cat[0]); ?></option>
-				<?php } ?>
-				<?php do_action( 'qsm_results_page_condition_criteria' ); ?>
-			</select>
-		<?php } ?>
+		<select class="email-condition-category">
+					<option value="" <# if (data.category == '') { #>selected<# } #>><?php esc_html_e( 'Quiz', 'quiz-master-next' ); ?></option>
+					<option value="" disabled><?php esc_html_e( '---Select Category---', 'quiz-master-next' ); ?></option>
+					<?php if ( ! empty( $categories ) ) { ?>
+						<?php foreach ( $categories as $cat ) { ?>
+						<option value="<?php echo esc_attr( $cat[0] ); ?>" <# if (data.category == '<?php echo esc_attr( $cat[0] ); ?>') { #>selected<# } #>><?php echo esc_attr( $cat[0] ); ?></option>
+						<?php } ?>
+					<?php } else { ?>
+						<option value="" disabled><?php esc_html_e( 'No Categories Available', 'quiz-master-next' ); ?></option>
+					<?php } ?>
+				</select>
 		<select class="email-condition-criteria">
 			<option value="points" <# if (data.criteria == 'points') { #>selected<# } #>><?php esc_html_e( 'Total points earned', 'quiz-master-next' ); ?></option>
 			<option value="score" <# if (data.criteria == 'score') { #>selected<# } #>><?php esc_html_e( 'Correct score percentage', 'quiz-master-next' ); ?></option>
