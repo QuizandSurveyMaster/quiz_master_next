@@ -569,9 +569,9 @@ function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
  * @return string Returns the contents for the results page
  */
 function qmn_variable_category_points( $content, $mlw_quiz_array ) {
-	global $mlwQuizMasterNext;
 	$return_points = 0;
 	while ( strpos( $content, '%CATEGORY_POINTS%' ) !== false || false !== strpos( $content, '%CATEGORY_POINTS_' ) ) {
+		$total_questions = 0;
 		$return_points = 0;
 		preg_match( '~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i', $content, $answer_text );
 		if ( empty( $answer_text ) ) {
@@ -580,24 +580,22 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			$category_name = $answer_text[1];
 		}
 
-		$category_data = $mlwQuizMasterNext->migrationHelper->get_category_data( $category_name );
-
+		
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $category_data['migrated'] ) {
-				$length = 0;
-				foreach ( $category_data['ids'] as $id ) {
-					if ( in_array( $id, $answer['multicategories'], true ) ) {
-						$length++;
+			if ( is_array( $answer['multicategories'] ) ) {
+				foreach ( $answer['multicategories'] as $category ) {
+					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
+					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
+						$total_questions += 1;
+						$return_points   += $answer['points'];
 					}
 				}
-				if ( sizeof( $category_data['ids'] ) == $length ) {
-					$return_points += $answer['points'];
-				}
-			} else {
-				if ( $answer['category'] == $category_name ) {
-					$return_points += $answer['points'];
-				}
 			}
+		}
+		if ( 0 != $total_questions ) {
+				$return_points = strval($return_points);
+		} else {
+			$return_points = 0;
 		}
 		if ( empty( $answer_text ) ) {
 			$content = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
@@ -670,10 +668,10 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
  * @return string Returns the contents for the results page
  */
 function qmn_variable_category_score( $content, $mlw_quiz_array ) {
-	global $mlwQuizMasterNext;
 	$return_score    = 0;
 	$total_questions = 0;
 	$amount_correct  = 0;
+	
 	while ( strpos( $content, '%CATEGORY_SCORE%' ) !== false || false !== strpos( $content, '%CATEGORY_SCORE_' ) ) {
 		$return_score    = 0;
 		$total_questions = 0;
@@ -683,29 +681,16 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			$category_name = mlw_qmn_get_string_between( $content, '%CATEGORY_SCORE_', '%' );
 		} else {
 			$category_name = $answer_text[1];
+
 		}
 
-		$category_data = $mlwQuizMasterNext->migrationHelper->get_category_data( $category_name );
-
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
-			if ( $category_data['migrated'] ) {
-				$length = 0;
-				foreach ( $category_data['ids'] as $id ) {
-					if ( in_array( $id, $answer['multicategories'], true ) ) {
-						$length++;
-					}
-				}
-				if ( sizeof( $category_data['ids'] ) == $length ) {
-					$total_questions += 1;
-					if ( 'correct' === $answer['correct'] ) {
-						$amount_correct += 1;
-					}
-				}
-			} else {
-				if ( $answer['category'] == $category_name ) {
-					$total_questions += 1;
-					if ( 'correct' === $answer['correct'] ) {
-						$amount_correct += 1;
+			if ( is_array( $answer['multicategories'] ) ) {
+				foreach ( $answer['multicategories'] as $category ) {
+					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
+					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
+						$total_questions += 1;
+						$amount_correct   += $answer['points'];
 					}
 				}
 			}
