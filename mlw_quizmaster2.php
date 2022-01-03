@@ -542,8 +542,33 @@ class MLWQuizMasterNext {
 		}
 	}
 
+
 }
 
 global $mlwQuizMasterNext;
 $mlwQuizMasterNext = new MLWQuizMasterNext();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
+
+/**
+ * Displays QSM Admin bar menu
+ *
+ * @return void
+ * @since 7.3.8
+ */
+function qsm_edit_quiz_admin_option() {
+	global $wp_admin_bar, $wpdb;
+	if ( 'qsm_quiz' == get_post_type() ) {
+		$get_qsm_post_id = get_the_ID();
+		$get_qsm_quiz_id = $wpdb->get_results( "SELECT meta_value FROM {$wpdb->prefix}postmeta WHERE post_id=$get_qsm_post_id" );
+		$wp_admin_bar->add_node(
+			array(
+				'id'    => 'edit-quiz',
+				'title' => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
+				'href'  => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $get_qsm_quiz_id[0]->meta_value,
+
+			)
+		);
+	}
+}
+
+add_action( 'admin_bar_menu', 'qsm_edit_quiz_admin_option', 999 );
