@@ -585,7 +585,6 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
 					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
-					$category_name_of_question = ( ! empty( $category_name_object->name ) ? $category_name_object->name : '' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
 						$return_points   += $answer['points'];
@@ -594,7 +593,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			}
 		}
 		if ( 0 != $total_questions ) {
-				$return_points = $return_points;
+				$return_points = strval($return_points);
 		} else {
 			$return_points = 0;
 		}
