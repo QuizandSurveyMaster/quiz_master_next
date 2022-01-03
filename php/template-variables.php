@@ -688,7 +688,6 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
 					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
-					$category_name_of_question = ( ! empty( $category_name_object->name ) ? $category_name_object->name : '' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
 						$amount_correct   += $answer['points'];
