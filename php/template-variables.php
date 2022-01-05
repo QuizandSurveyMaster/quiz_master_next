@@ -550,15 +550,15 @@ function mlw_qmn_variable_date( $content, $results ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
-	$date = '';
+	$date                          = '';
 	$qsm_get_setting_prefered_date = get_option( 'qsm-quiz-settings' );
-	$qsm_get_quiz_option_settings = maybe_unserialize( $mlw_quiz_array['quiz_settings']);
-	$qsm_get_quiz_option_settings = maybe_unserialize( $qsm_get_quiz_option_settings['quiz_options'] );
-	
+	$qsm_get_quiz_option_settings  = maybe_unserialize( $mlw_quiz_array['quiz_settings'] );
+	$qsm_get_quiz_option_settings  = maybe_unserialize( $qsm_get_quiz_option_settings['quiz_options'] );
+
 	if ( isset( $qsm_get_setting_prefered_date['preferred_date_format'] ) ) {
 		$qsm_quiz_date_taken = $qsm_get_setting_prefered_date['preferred_date_format'];
 	} elseif ( isset( $qsm_get_quiz_option_settings['preferred_date_format'] ) ) {
-		$qsm_quiz_date_taken = isset( $qsm_get_quiz_option_settings['preferred_date_format'] );
+		$qsm_quiz_date_taken = $qsm_get_quiz_option_settings['preferred_date_format'];
 	} else {
 		$qsm_quiz_date_taken = get_option( 'date_format' );
 	}
@@ -584,7 +584,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 	$return_points = 0;
 	while ( strpos( $content, '%CATEGORY_POINTS%' ) !== false || false !== strpos( $content, '%CATEGORY_POINTS_' ) ) {
 		$total_questions = 0;
-		$return_points = 0;
+		$return_points   = 0;
 		preg_match( '~%CATEGORY_POINTS%(.*?)%/CATEGORY_POINTS%~i', $content, $answer_text );
 		if ( empty( $answer_text ) ) {
 			$category_name = mlw_qmn_get_string_between( $content, '%CATEGORY_POINTS_', '%' );
@@ -592,11 +592,10 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			$category_name = $answer_text[1];
 		}
 
-		
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
-					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
+					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
 						$return_points   += $answer['points'];
@@ -605,7 +604,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 			}
 		}
 		if ( 0 != $total_questions ) {
-				$return_points = strval($return_points);
+				$return_points = strval( $return_points );
 		} else {
 			$return_points = 0;
 		}
@@ -683,7 +682,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 	$return_score    = 0;
 	$total_questions = 0;
 	$amount_correct  = 0;
-	
+
 	while ( strpos( $content, '%CATEGORY_SCORE%' ) !== false || false !== strpos( $content, '%CATEGORY_SCORE_' ) ) {
 		$return_score    = 0;
 		$total_questions = 0;
@@ -699,10 +698,10 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
-					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
+					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
-						$amount_correct   += $answer['points'];
+						$amount_correct  += $answer['points'];
 					}
 				}
 			}
@@ -1059,9 +1058,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 					} else {
 						$options = array();
 						foreach ( $total_answers as $key => $single_answer ) {
-							$options[] = mb_strtoupper( htmlspecialchars_decode($single_answer[0], ENT_QUOTES ) );
+							$options[] = mb_strtoupper( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
 						}
-						
+
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
 								$key = array_search( mb_strtoupper( $show_user_answer ), $options, true );
