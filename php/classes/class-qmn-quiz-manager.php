@@ -1021,7 +1021,7 @@ class QMNQuizManager {
 					?>
 					<span class="pages_count">
 					<?php
-					$text_c = $pages_count . __( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+					$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
 					echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 					?>
 					</span>
@@ -1226,7 +1226,7 @@ class QMNQuizManager {
 			?>
 			<span class="pages_count" style="display: none;">
 				<?php
-				$text_c = $current_page_number . __( ' out of ', 'quiz-master-next' ) . $total_pagination;
+				$text_c = $current_page_number . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pagination;
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 			</span>
