@@ -552,8 +552,8 @@ function mlw_qmn_variable_date( $content, $results ) {
 function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
 	$date                          = '';
 	$qsm_get_setting_prefered_date = get_option( 'qsm-quiz-settings' );
-	$qsm_get_quiz_settings         = @unserialize($mlw_quiz_array['quiz_settings']);
-	$qsm_get_quiz_option_settings  = @unserialize($qsm_get_quiz_settings['quiz_options']);
+	$qsm_get_quiz_settings         = maybe_serialize($mlw_quiz_array['quiz_settings']);
+	$qsm_get_quiz_option_settings  = maybe_serialize($qsm_get_quiz_settings['quiz_options']);
 
 	if ( isset( $qsm_get_setting_prefered_date['preferred_date_format'] ) ) {
 		$qsm_quiz_date_taken = $qsm_get_setting_prefered_date['preferred_date_format'];
