@@ -1064,8 +1064,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
 								$key = array_search( mb_strtoupper( $show_user_answer ), $options, true );
-
-								if ( false != $key || 0 == $key ) {
+								if ( false !== $key  ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
 									if ( '' === $show_user_answer ) {
