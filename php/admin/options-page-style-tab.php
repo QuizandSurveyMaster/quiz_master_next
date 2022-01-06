@@ -47,7 +47,7 @@ function qsm_options_styling_tab_content() {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The style has been saved successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Styles Have Been Saved", $style_quiz_id, "" );
 		} else {
-			$mlwQuizMasterNext->©->newAlert( __( 'Error occured when trying to save the styles. Please try again.', 'quiz-master-next' ), 'error' );
+			$mlwQuizMasterNext->alertManager->newAlert( __( 'Error occured when trying to save the styles. Please try again.', 'quiz-master-next' ), 'error' );
 			$mlwQuizMasterNext->log_manager->add( 'Error saving styles', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 		}
 	}
