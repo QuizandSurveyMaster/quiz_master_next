@@ -554,6 +554,10 @@ function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
 	$qsm_get_setting_prefered_date = get_option( 'qsm-quiz-settings' );
 	$qsm_get_quiz_settings         = isset( $mlw_quiz_array['quiz_settings'] ) ? $mlw_quiz_array['quiz_settings'] : 0;
 	$qsm_get_quiz_option_settings  = isset( $mlw_quiz_array['quiz_settings'] ) ? $qsm_get_quiz_settings['quiz_options'] : 0;
+	$date                          = '';
+	$qsm_get_setting_prefered_date = get_option( 'qsm-quiz-settings' );
+	$qsm_get_quiz_settings         = $mlw_quiz_array['quiz_settings'];
+	$qsm_get_quiz_option_settings  = $qsm_get_quiz_settings['quiz_options'];
 
 	if ( isset( $qsm_get_setting_prefered_date['preferred_date_format'] ) ) {
 		$qsm_quiz_date_taken = $qsm_get_setting_prefered_date['preferred_date_format'];
@@ -564,7 +568,7 @@ function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
 	}
 
 	if ( isset( $mlw_quiz_array['time_taken'] ) ) {
-		$date = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_array['time_taken'] ) );
+		$date = date_i18n( $qsm_quiz_date_taken, strtotime( $mlw_quiz_array['time_taken'] ) );
 	}
 	$content = str_replace( '%DATE_TAKEN%', $date, $content );
 	return $content;
