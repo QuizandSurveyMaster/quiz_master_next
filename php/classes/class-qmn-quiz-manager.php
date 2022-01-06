@@ -1911,9 +1911,10 @@ class QMNQuizManager {
 
 		// Get random order
 		$qsm_random_que_ids = get_option( 'qsm_random_que_ids' );
+
 		if ( ! empty( $qsm_random_que_ids ) && is_array( $qsm_random_que_ids ) ) {
 			$qs_ids   = array_column( $question_data, 'id' );
-			$has_diff = array_diff( $qs_ids, $qsm_random_que_ids );
+			$has_diff = array_diff( $qsm_random_que_ids, $qs_ids );
 			// Check random option value has all the questions in previous order
 			if ( empty( $has_diff ) ) {
 				$new_question_data = array();
