@@ -479,10 +479,10 @@ var QSMAdmin;
                 }
             });
         }
-        
-        
+
+
     });
-    
+
     jQuery('.qsm_audit_data').click(function (e) {
         e.preventDefault();
         MicroModal.show('qsm_fetch_audit_data');
@@ -570,10 +570,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if( jQuery('.my-color-field').length > 0 ){
                     jQuery('.my-color-field').wpColorPicker();
                 }
-            });
-            jQuery(document).on('click', '#qsm-save-theme-settings', function(e){
-                e.preventDefault();
-                jQuery('.qsm-theme-settings-frm').submit();
             });
         });
     }
