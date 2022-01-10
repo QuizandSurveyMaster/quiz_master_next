@@ -594,11 +594,16 @@ class QMNQuizManager {
 			if ( 0 != $quiz_options->question_per_category && $is_quiz_page ) {
 				$categories      = QSM_Questions::get_quiz_categories( $quiz_id );
 				$category_ids    = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
+
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
+
 				if ( ! empty( $category_ids ) ) {
 					$term_ids = implode( ',', $category_ids );
+					$question_id = implode( ',', $question_ids );
 					$term_ids = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-					$tq_ids   = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id`='{$quiz_id}' AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+
+					$tq_ids   = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+					
 					$random   = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
