@@ -550,23 +550,28 @@ function mlw_qmn_variable_date( $content, $results ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
-	$date                          = '';
-	$qsm_get_setting_prefered_date = get_option( 'qsm-quiz-settings' );
-	$qsm_get_quiz_settings         = $mlw_quiz_array['quiz_settings'];
-	$qsm_get_quiz_option_settings  = $qsm_get_quiz_settings['quiz_options'];
+	global $mlwQuizMasterNext;
 
-	if ( isset( $qsm_get_setting_prefered_date['preferred_date_format'] ) ) {
-		$qsm_quiz_date_taken = $qsm_get_setting_prefered_date['preferred_date_format'];
-	} elseif ( isset( $qsm_get_quiz_option_settings['preferred_date_format'] ) ) {
-		$qsm_quiz_date_taken = $qsm_get_quiz_option_settings['preferred_date_format'];
+	$date = '';
+	$quiz_options        = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+	$qsm_quiz_settings   = maybe_unserialize( $quiz_options->quiz_settings );
+	$qsm_quiz_options    = maybe_unserialize( $qsm_quiz_settings['quiz_options'] );
+	$qsm_global_settings = get_option( 'qsm-quiz-settings' );
+	
+	// check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
+	if ( isset( $qsm_quiz_options['preferred_date_format'] ) ) {
+		$preferred_date_format = $qsm_quiz_options['preferred_date_format'];
+	} elseif ( isset( $qsm_global_settings['preferred_date_format'] ) ) {
+		$preferred_date_format = isset( $qsm_global_settings['preferred_date_format'] );
 	} else {
-		$qsm_quiz_date_taken = get_option( 'date_format' );
+		$preferred_date_format = get_option( 'date_format' );
 	}
-
+	// filter date format
 	if ( isset( $mlw_quiz_array['time_taken'] ) ) {
-		$date = date_i18n( $qsm_quiz_date_taken, strtotime( $mlw_quiz_array['time_taken'] ) );
+		$date = date_i18n( $preferred_date_format, strtotime( $mlw_quiz_array['time_taken'] ) );
 	}
 	$content = str_replace( '%DATE_TAKEN%', $date, $content );
+
 	return $content;
 }
 
@@ -1017,7 +1022,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 							}
 						} else {
-							$user_given_answer          = '' === $answer[1] ? __( 'No answer provided', 'quiz-master-next' ) : $answer[1];
+							$user_given_answer = '' === $answer[1] ? __( 'No answer provided', 'quiz-master-next' ) : $answer[1];
 							$question_with_answer_text .= '<span class="qsm-text-simple-option">' . htmlspecialchars_decode( $user_given_answer, ENT_QUOTES ) . '</span>';
 						}
 					}
