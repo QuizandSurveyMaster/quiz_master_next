@@ -393,10 +393,21 @@ class QMNPluginHelper {
 				array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
 			);
 		}
+		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
 			shuffle( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
+		
+		//convert answer array into key value pair
+		$answers_kvpair = array();
+		foreach ( $answers as $answer_item) {
+			$key = array_search( $answer_item , $answers_original );
+			$answers_kvpair[$key] = $answer_item;
+		}
+		unset($answer_item);
+		$answers = $answers_kvpair;
+
 		/**
 		 * Filter Answers of specific question before display
 		 */
