@@ -1532,11 +1532,11 @@
  });
 
  // captcha question type
-
+ var mlw_code;
  jQuery(document).ready(function() {
 	 let captchaElement = jQuery('#mlw_code_captcha');
 	 if (captchaElement.length !== 0){
-		 var mlw_code = '';
+		 mlw_code = '';
 		 var mlw_chars = '0123456789ABCDEFGHIJKL!@#$%^&*()MNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
 		 var mlw_code_length = 5;
 		 for (var i=0; i<mlw_code_length; i++) {
