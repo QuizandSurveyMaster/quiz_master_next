@@ -1671,10 +1671,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 });
                 var data = {
                     action: 'qsm_save_pages',
-                    pages: pages,
-                    qpages: qpages,
                     quiz_id: qsmQuestionSettings.quizID,
                     nonce: qsmQuestionSettings.saveNonce,
+                    pages: pages,
+                    qpages: qpages,
                 };
 
                 jQuery.ajax(ajaxurl, {
