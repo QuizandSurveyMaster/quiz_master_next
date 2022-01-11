@@ -1366,11 +1366,13 @@
 
 	 // Autocomplete off
 
-	 var quizID = jQuery('.qsm-quiz-container').find('.qmn_quiz_id').val();
-	 var $quizForm = QSM.getQuizForm(quizID);
-	 if (qmn_quiz_data[quizID].form_disable_autofill == 1) {
-		 jQuery('#quizForm' + quizID).attr('autocomplete', 'off');
-	 }
+	jQuery('.qsm-quiz-container').find('.qmn_quiz_id').each(function (){
+		var quizID = jQuery(this).val();
+		var $quizForm = QSM.getQuizForm(quizID);
+		if (qmn_quiz_data[quizID].form_disable_autofill == 1) {
+		    jQuery('#quizForm' + quizID).attr('autocomplete', 'off');
+		}
+	});
 
 
 
