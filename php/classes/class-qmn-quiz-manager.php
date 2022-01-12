@@ -1381,8 +1381,11 @@ class QMNQuizManager {
 				if ( ! $verified ) {
 					echo wp_json_encode(
 						array(
-							'display'  => htmlspecialchars_decode( 'ReCaptcha Validation failed' ),
-							'redirect' => false,
+							'display'       => htmlspecialchars_decode( 'ReCaptcha Validation failed' ),
+							'redirect'      => false,
+							'result_status' => array(
+								'save_response' => false,
+							),
 						)
 					);
 					exit;
