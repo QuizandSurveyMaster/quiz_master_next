@@ -567,7 +567,7 @@ function qsm_create_new_quiz_wizard() {
 								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
 								'value'       => 0,
 							),
-							'disable_first_page' => array(
+							'disable_first_page'     => array(
 								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
 								'value'       => 0,
 							),
