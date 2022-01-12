@@ -1310,7 +1310,7 @@ jQuery(function () {
 			grecaptcha.execute(site_key, {action: submit_action}).then(function(token) {
 				jQuery('#' + form_id).find("#qsm_grecaptcha_v3_response").val(token);
 				qmnFormSubmit(form_id);
-			});;
+			});
 		});
 	});
 
