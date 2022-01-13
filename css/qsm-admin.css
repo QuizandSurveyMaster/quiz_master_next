@@ -1674,14 +1674,14 @@ td.scheduled_time_start {
 }
 
 #show-all-variable .qsm-popup__container {
-	min-width: 50vw;
+	min-width: 80vw;
 	max-width: 1040px;
 	padding: 0;
 }
 
 #show-all-variable-content {
 	margin-bottom: 0 !important;
-	padding: 20px;
+	padding: 20px 73px 20px 30px;
 	margin: 0;
 }
 
@@ -2257,7 +2257,6 @@ td.scheduled_time_start {
 	.result-page-title {
 		margin-bottom: 10px;
 	}
-
 }
 
 .qsm-text-template-span{
@@ -2342,4 +2341,14 @@ input#question_search::-webkit-search-cancel-button {
 }
 #mlw_quiz_wrap div#mlw_quiz_options h1#qsm_title_quiz {
     display: block;
+}
+#result_details {
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+input#duplicate_questions {
+    margin-left: 10px;
 }
