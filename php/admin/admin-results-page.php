@@ -23,9 +23,11 @@ function qsm_generate_admin_results_page() {
 
 	?>
 <div class="wrap">
-	<div style="display:flex;justify-content:space-between;align-items:center;">
-	<h2 style="font-size:2em"><?php esc_html_e( 'Quiz Results', 'quiz-master-next' ); ?></h2>
-	<span id="results-screen-option-button" class="button">Screen Options</span>
+	<div>
+	<h2 id="result_details">
+		<?php esc_html_e( 'Quiz Results', 'quiz-master-next' ); ?>
+		<span id="results-screen-option-button" class="button">Screen Options</span>
+	</h2>
 	</div>
 	<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 	<?php qsm_show_adverts(); ?>
