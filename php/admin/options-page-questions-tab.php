@@ -239,7 +239,7 @@ function qsm_options_questions_tab_content() {
 									),
 									array(
 										'question_type_id' => '6',
-										'description'      => __( 'Displays a simple section on front end.', 'quiz-master-next' ),
+										'description'      => __( 'Displays a simple section on front end. This cannot be empty. ', 'quiz-master-next' ),
 									),
 									array(
 										'question_type_id' => '7',
