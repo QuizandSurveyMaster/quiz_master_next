@@ -298,7 +298,7 @@ function qsm_options_questions_tab_content() {
 								}
 								?>
 							</div>
-							<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo esc_attr( $polar_class . $show_answer_option ); ?>">
+							<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo apply_filters('qsm_polar_class',esc_attr( $polar_class . $show_answer_option )); ?>">
 								<label class="answer-header">
 									<?php esc_html_e( 'Answers', 'quiz-master-next' ); ?>
 									<a class="qsm-question-doc" rel="noopener"
@@ -316,6 +316,7 @@ function qsm_options_questions_tab_content() {
 											class="dashicons dashicons-plus"></span>
 										<?php esc_html_e( 'Add New Answer!', 'quiz-master-next' ); ?></a>
 								</div>
+								<?php do_action('qsm_after_options'); ?>
 							</div>
 							<hr style="margin-bottom:25px;">
 							<a href="#" class="qsm-show-correct-info-box button button-default"><span
