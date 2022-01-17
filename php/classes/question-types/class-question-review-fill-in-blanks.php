@@ -37,9 +37,9 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		global $mlwQuizMasterNext;
         $match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'matchAnswer' );
         if ( 'sequence' === $match_answer ){
-            return $this->process_sequentially();
+            $this->process_sequentially();
         } else {
-            return $this->process_randomly();
+            $this->process_randomly();
         }
     }
 

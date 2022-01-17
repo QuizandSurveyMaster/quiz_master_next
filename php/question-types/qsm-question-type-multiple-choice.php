@@ -93,12 +93,10 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_answer']    = $user_text_array;
 	$return_array['correct_answer'] = $correct_text_array ;
-	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '===', $user_text_array ) : '' ;
-	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '===', $correct_text_array ) : '';
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '' ;
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
-	$return_array['user_answer']    = $user_text_array;
-	$return_array['correct_answer'] = $correct_text_array ;
 	// //
 	// global $mlwQuizMasterNext;
 	// $quiz_id                               = $mlwQuizMasterNext->quizCreator->get_id();
