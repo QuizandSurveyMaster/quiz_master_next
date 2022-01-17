@@ -272,8 +272,8 @@ class QSM_Questions {
 		);
 		$settings = wp_parse_args( $settings, $defaults );
 
-		$answers = self::sanitize_answers( $answers, $settings );
-		foreach ( $answers as $key => $answer ) {
+		$sanitize_answers = self::sanitize_answers( $answers, $settings );
+		foreach ( $sanitize_answers as $key => $answer ) {
 			$answers_array = array(
 				htmlspecialchars( $answer[0], ENT_QUOTES ),
 				floatval( $answer[1] ),
@@ -282,8 +282,9 @@ class QSM_Questions {
 			if ( isset( $answer[3] ) ) {
 				array_push( $answers_array, htmlspecialchars( $answer[3], ENT_QUOTES ) );
 			}
-			$answers[ $key ] = $answers_array;
+			$sanitize_answers[ $key ] = $answers_array;
 		}
+		$answers = apply_filters( 'qsm_answers_before_save', $sanitize_answers, $answers, $data );
 
 		$question_name             = htmlspecialchars( wp_kses_post( $data['name'] ), ENT_QUOTES );
 		$trim_question_description = apply_filters( 'qsm_trim_question_description', true );
