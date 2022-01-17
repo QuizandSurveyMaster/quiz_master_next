@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 class QSM_Question_Review_File_Upload extends QSM_Question_Review {
     function __construct( $question_id = 0 , $question_title_old = '' , $answer_array = array() ){

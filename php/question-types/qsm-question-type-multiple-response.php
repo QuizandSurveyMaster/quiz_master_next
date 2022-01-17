@@ -1,11 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
-* 
-*
-* 
-*/
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 /**
  * This function shows the content of the multiple response question

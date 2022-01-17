@@ -1,12 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
-* 
-*
-* 
-*/
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 /**
  * This function displays the content of the multiple response question type
  *
@@ -24,7 +19,6 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	} else {
 		$mlw_require_class = '';
 	}
-	// $question_title = apply_filters('the_content', $question);
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
 	$limit_mr_text           = '';
 	if ( $limit_multiple_response > 0 ) {

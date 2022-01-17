@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 abstract class QSM_Question_Review {
     public $question_id          = 0 ;

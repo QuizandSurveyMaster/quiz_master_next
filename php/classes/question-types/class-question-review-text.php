@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 class QSM_Question_Review_Text extends QSM_Question_Review {
 

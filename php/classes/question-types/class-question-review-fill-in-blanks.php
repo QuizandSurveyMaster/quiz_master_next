@@ -1,6 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 

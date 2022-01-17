@@ -4,7 +4,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function qsm_question_title_func( $question, $question_type = '', $new_question_title = '', $question_id = 0 ) {
-	// $question_title = apply_filters('the_content', $question);
 	$question_title = $question;
 	global $wp_embed, $mlwQuizMasterNext;
 	$question_title    = $wp_embed->run_shortcode( $question_title );

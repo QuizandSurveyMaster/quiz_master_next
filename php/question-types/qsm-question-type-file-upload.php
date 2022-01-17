@@ -1,12 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
-* 
-*
-* 
-*/
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 /**
  * This function shows the content of the file upload
  *
@@ -24,7 +19,6 @@ function qmn_file_upload_display( $id, $question, $answers ) {
 	} else {
 		$mlw_require_class = '';
 	}
-	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?> <div></div><input type="file" class="mlw_answer_file_upload <?php echo esc_attr( $mlw_require_class ); ?>"/>

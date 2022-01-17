@@ -1,11 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
-* 
-*
-* 
-*/
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 /**
  * This function shows the content of the multiple choice question.
@@ -24,7 +20,6 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	} else {
 		$require_class = '';
 	}
-	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>

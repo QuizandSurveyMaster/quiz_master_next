@@ -1,5 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} 
 
 /**
 * 
@@ -25,7 +27,6 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 		$mlw_require_class = '';
 	}
 	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
-	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
 	?>
