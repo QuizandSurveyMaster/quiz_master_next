@@ -239,7 +239,7 @@ function qsm_options_questions_tab_content() {
 									),
 									array(
 										'question_type_id' => '6',
-										'description'      => __( 'Displays a simple section on front end.', 'quiz-master-next' ),
+										'description'      => __( 'Displays a simple section on front end. Description is mandatory. ', 'quiz-master-next' ),
 									),
 									array(
 										'question_type_id' => '7',
@@ -403,7 +403,7 @@ function qsm_options_questions_tab_content() {
 															'image' => __( 'Image Answers', 'quiz-master-next' ),
 														),
 														'default' => 'text',
-														'show' => '0,1,2,4,13' . $show_change_answer_editor,
+														'show' => '0,1,4,13' . $show_change_answer_editor,
 														// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
 														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
@@ -427,6 +427,17 @@ function qsm_options_questions_tab_content() {
 														),
 														'default' => 'random',
 														'show' => '14' . $show_match_answer,
+													),
+													'text-answer-editor' => array(
+														'label' => __( 'Answers Type', 'quiz-master-next' ),
+														'type' => 'select',
+														'priority' => '4',
+														'options' => array(
+															'text' => __( 'Text Answers', 'quiz-master-next' ),
+														),
+														'default' => 'text',
+														'show' => '2' . $show_change_answer_editor,
+														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
