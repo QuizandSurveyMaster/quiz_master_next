@@ -558,7 +558,7 @@ function mlw_qmn_variable_date_taken( $content, $mlw_quiz_array ) {
 	$qsm_quiz_settings   = maybe_unserialize( $quiz_options->quiz_settings );
 	$qsm_quiz_options    = maybe_unserialize( $qsm_quiz_settings['quiz_options'] );
 	$qsm_global_settings = get_option( 'qsm-quiz-settings' );
-	
+
 	// check if preferred date format is set at quiz level or plugin level. Default to WP date format otherwise
 	if ( isset( $qsm_quiz_options['preferred_date_format'] ) ) {
 		$preferred_date_format = $qsm_quiz_options['preferred_date_format'];
@@ -1070,7 +1070,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
 							foreach ( $new_array_user_answer as $show_user_answer ) {
 								$key = array_search( mb_strtoupper( $show_user_answer ), $options, true );
-								if ( false !== $key  ) {
+								if ( false !== $key ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer">' . htmlspecialchars_decode( $show_user_answer, ENT_QUOTES ) . '</span>';
 								} else {
 									if ( '' === $show_user_answer ) {
@@ -1139,8 +1139,9 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$questionid                 = $questions[ $answer['id'] ]['question_id'];
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
-								$questionid                 = $answer['question_type'];
-								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $questionid, $total_answers, $questions, $answer );
+								$questionid    = $questions[ $answer['id'] ]['question_id'];
+								$question_type = $answer['question_type'];
+								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $question_type, $total_answers, $questions, $answer, $questionid );
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$single_answer_option = $single_answer[0];
@@ -1202,11 +1203,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						} else {
 							if ( 13 == $answer['question_type'] ) {
 								$questionid = $questions[ $answer['id'] ]['question_id'];
-
 								$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 							} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
-								$questionid                 = $answer['question_type'];
-								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $questionid, $total_answers, $questions, $answer );
+								$questionid    = $questions[ $answer['id'] ]['question_id'];
+								$question_type = $answer['question_type'];
+								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $question_type, $total_answers, $questions, $answer, $questionid );
 							} else {
 								foreach ( $total_answers as $single_answer ) {
 									$image_class = '';
