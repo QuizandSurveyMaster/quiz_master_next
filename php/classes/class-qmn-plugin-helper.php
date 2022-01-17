@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QMNPluginHelper {
 
-
 	/**
 	 * Addon Page tabs array
 	 *
@@ -332,7 +331,7 @@ class QMNPluginHelper {
 			'slug'    => $slug,
 			'options' => $options,
 		);
-		$this->question_types[] = $new_type;
+		$this->question_types[$slug] = $new_type;
 	}
 
 	/**

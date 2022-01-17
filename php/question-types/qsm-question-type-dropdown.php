@@ -28,15 +28,16 @@ function qmn_drop_down_display( $id, $question, $answers ) {
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>"><option value=""><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
+	<select class="qsm_select qsm_dropdown <?php echo esc_attr( $require_class ); ?>" name="question<?php echo esc_attr( $id ); ?>">
+	<option disabled selected value><?php echo esc_html__( 'Please select your answer', 'quiz-master-next' ); ?></option>
 		<?php
 		if ( is_array( $answers ) ) {
 			$mlw_answer_total = 0;
-			foreach ( $answers as $answer ) {
+			foreach ( $answers as $answer_index => $answer ) {
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					?>
-				<option value="<?php echo esc_attr( $answer[0] ); ?>"><?php echo esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option>
+				<option value="<?php echo esc_attr( $answer_index ); ?>"><?php echo esc_html( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ); ?></option>
 					<?php
 				}
 			}
@@ -57,34 +58,15 @@ function qmn_drop_down_display( $id, $question, $answers ) {
  * @since  4.4.0
  */
 function qmn_drop_down_review( $id, $question, $answers ) {
-	global $mlwQuizMasterNext;
-	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
-	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
-	);
-	//
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	foreach ( $answers as $answer ) {
-		$answers_loop = trim( stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
-		if ( $mlw_user_answer == $answers_loop ) {
-			$return_array['points']    = $answer[1];
-			$return_array['user_text'] = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-			if ( 1 == $answer[2] ) {
-				$return_array['correct'] = 'correct';
-			}
-		}
-		if ( 1 == $answer[2] ) {
-			$return_array['correct_text'] = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
-		}
-	}
+	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
+	$user_text_array                = $current_question->get_user_answer();
+	$correct_text_array             = $current_question->get_correct_answer();
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '===', $user_text_array ) : '' ;
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '===', $correct_text_array ) : '';
+	$return_array['correct']        = $current_question->get_answer_status();
+	$return_array['points']         = $current_question->get_points();
+	$return_array['user_answer']    = $user_text_array;
+	$return_array['correct_answer'] = $correct_text_array ;
 	/**
 	 * Hook to filter answers array
 	 */

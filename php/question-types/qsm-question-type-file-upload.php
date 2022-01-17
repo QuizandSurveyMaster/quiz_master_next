@@ -47,31 +47,16 @@ function qmn_file_upload_display( $id, $question, $answers ) {
  * @since  5.3.7
  */
 function qmn_file_upload_review( $id, $question, $answers ) {
-	$return_array = array(
-		'points'        => 0,
-		'correct'       => 'incorrect',
-		'user_text'     => '',
-		'correct_text'  => '',
-		'question_type' => 'file_upload',
-	);
-	//
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-		$mlw_user_answer    = trim( $decode_user_answer );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$return_array['user_text'] = $mlw_user_answer;
-	foreach ( $answers as $answer ) {
-		$decode_correct_text          = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( mb_strtoupper( $return_array['user_text'] ) == mb_strtoupper( $return_array['correct_text'] ) ) {
-			$return_array['correct'] = 'correct';
-			$return_array['points']  = $answer[1];
-			break;
-		}
-	}
-	/**
+	$current_question               = new QSM_Question_Review_File_Upload($id, $question, $answers);
+	$user_text_array                = $current_question->get_user_answer();
+	$correct_text_array             = $current_question->get_correct_answer();
+	$return_array['user_text']      = ! empty( $user_text_array ) ? '<a target="_blank" href="' . $user_text_array['url'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>' : '' ;
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '===', $correct_text_array ) : '';
+	$return_array['correct']        = $current_question->get_answer_status('url');
+	$return_array['points']         = $current_question->get_points();
+	$return_array['user_answer']    = $user_text_array;
+	$return_array['correct_answer'] = $correct_text_array ;
+	/** 
 	 * Hook to filter answers array
 	 */
 	return apply_filters( 'qmn_file_upload_review', $return_array, $answers );

@@ -1473,8 +1473,8 @@ class QMNQuizManager {
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
-
-			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables ) );
+			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );  
+			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $qsm_check_answers_return );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -1751,11 +1751,8 @@ class QMNQuizManager {
 							}
 
 							// Send question to our grading function
-							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
-							if ( isset( $results_array['question_type'] ) && 'file_upload' === $results_array['question_type'] ) {
-								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
-							}
-
+							$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
+							$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
 								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
@@ -1799,13 +1796,15 @@ class QMNQuizManager {
 										htmlspecialchars( $user_answer, ENT_QUOTES ),
 										htmlspecialchars( $correct_answer, ENT_QUOTES ),
 										$comment,
-										'correct'         => $correct_status,
-										'id'              => $question['question_id'],
-										'points'          => $answer_points,
-										'category'        => $question['category'],
-										'multicategories' => $question['multicategories'],
-										'question_type'   => $question['question_type_new'],
-										'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+										'user_answer'       => $results_array['user_answer'],
+										'correct_answer'    => $results_array['correct_answer'],
+										'correct'           => $correct_status,
+										'id'                => $question['question_id'],
+										'points'            => $answer_points,
+										'category'          => $question['category'],
+										'multicategories'   => $question['multicategories'],
+										'question_type'     => $question['question_type_new'],
+										'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
 									),
 									$options,
@@ -1837,9 +1836,9 @@ class QMNQuizManager {
 						$total_possible_points   += $max_min_result['max_point'];
 						$minimum_possible_points += $max_min_result['min_point'];
 
-						// Send question to our grading function.
-						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
-
+						// Send question to our grading function
+						$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
+						$results_array = apply_filters( 'qmn_results_array',$results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
 							$points_earned += $results_array['points'];
@@ -1879,6 +1878,8 @@ class QMNQuizManager {
 									htmlspecialchars( $user_answer, ENT_QUOTES ),
 									htmlspecialchars( $correct_answer, ENT_QUOTES ),
 									$comment,
+									'user_answer'       => $results_array['user_answer'],
+									'correct_answer'    => $results_array['correct_answer'],
 									'correct'           => $correct_status,
 									'id'                => $question['question_id'],
 									'points'            => $answer_points,

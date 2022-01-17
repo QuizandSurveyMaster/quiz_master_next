@@ -52,6 +52,14 @@ class QSM_Questions {
 	}
 
 	/**
+	 * 
+	 */
+	public static function load_question_data( $question_id, $question_data ){
+		global $wpdb;
+		return $wpdb->get_var("SELECT {$question_data} FROM {$wpdb->prefix}mlw_questions WHERE question_id = {$question_id} LIMIT 1");
+	}
+
+	/**
 	 * Loads questions for a quiz using the new page system
 	 *
 	 * @since  5.2.0

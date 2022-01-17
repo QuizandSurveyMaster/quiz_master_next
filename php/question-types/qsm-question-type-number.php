@@ -45,28 +45,15 @@ function qmn_number_display( $id, $question, $answers ) {
  * @since  4.4.0
  */
 function qmn_number_review( $id, $question, $answers ) {
-	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
-	);
-	//
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$question_input  = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-		$mlw_user_answer = htmlspecialchars_decode( $question_input, ENT_QUOTES );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$return_array['user_text'] = $mlw_user_answer;
-	foreach ( $answers as $answer ) {
-		$return_array['correct_text'] = strval( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-		if ( strtoupper( $return_array['user_text'] ) == strtoupper( $return_array['correct_text'] ) ) {
-			$return_array['correct'] = 'correct';
-			$return_array['points']  = $answer[1];
-			break;
-		}
-	}
+	$current_question               = new QSM_Question_Review_Text( $id, $question, $answers );
+	$user_text_array                = $current_question->get_user_answer();
+	$correct_text_array             = $current_question->get_correct_answer();
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '' ;
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '===', $correct_text_array ) : '';
+	$return_array['correct']        = $current_question->get_answer_status();
+	$return_array['points']         = $current_question->get_points();
+	$return_array['user_answer']    = $user_text_array;
+	$return_array['correct_answer'] = $correct_text_array ; 
 	/**
 	 * Hook to filter answers array
 	 */

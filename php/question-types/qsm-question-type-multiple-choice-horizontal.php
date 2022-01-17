@@ -38,7 +38,8 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 				if ( '' !== $answer[0] ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					?>
-					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>"><input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer[0] ); ?>" />
+					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>">
+					<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 						<label for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
@@ -78,59 +79,16 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
  * @since  4.4.0
  */
 function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
-	global $mlwQuizMasterNext;
-	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
-	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
-	);
-	//
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-		$mlw_user_answer = trim( stripslashes( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) ) );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$rich_text_comapre = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $mlw_user_answer ) );
-	$correct_text      = array();
-	foreach ( $answers as $answer ) {
-		if ( 'rich' === $answerEditor ) {
-			$answer_option    = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-			$sinel_answer_cmp = preg_replace( "/\s+|\n+|\r/", ' ', htmlentities( $answer_option ) );
-			if ( $rich_text_comapre == $sinel_answer_cmp ) {
-				$return_array['points']    = $answer[1];
-				$return_array['user_text'] = $answer[0];
-				if ( 1 == $answer[2] ) {
-					$return_array['correct'] = 'correct';
-				}
-			}
-			if ( 1 == $answer[2] ) {
-				$correct_text[] = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-			}
-		} else {
-			$mlw_user_answer = '';
-			if ( isset( $_POST[ 'question' . $id ] ) ) {
-				$mlw_user_answer = sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-				$mlw_user_answer = trim( htmlspecialchars_decode( $mlw_user_answer, ENT_QUOTES ) );
-				$mlw_user_answer = str_replace( '\\', '', $mlw_user_answer );
-			}
-			$single_answer = trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-			$single_answer = str_replace( '\\', '', $single_answer );
-			if ( $mlw_user_answer == $single_answer ) {
-				$return_array['points']    = $answer[1];
-				$return_array['user_text'] = $answer[0];
-				if ( 1 == $answer[2] ) {
-					$return_array['correct'] = 'correct';
-				}
-			}
-			if ( 1 == $answer[2] ) {
-				$correct_text[] = stripslashes( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) );
-			}
-		}
-	}
-	$return_array['correct_text'] = implode( '.', $correct_text );
+	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
+	$user_text_array                = $current_question->get_user_answer( 'single_response' );
+	$correct_text_array             = $current_question->get_correct_answer();
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '===', $user_text_array ) : '' ;
+	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '===', $correct_text_array ) : '';
+	$return_array['correct']        = $current_question->get_answer_status( 'single_response' );
+	$return_array['points']         = $current_question->get_points();
+	$return_array['correct_text']   = implode( '.', $correct_text_array );
+	$return_array['user_answer']    = $user_text_array;
+	$return_array['correct_answer'] = $correct_text_array ;
 	/**
 	 * Hook to filter answers array
 	 */

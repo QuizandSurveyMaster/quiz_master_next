@@ -2,12 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* 
-*
-* 
-*/
-
-/**
  * This function displays the accept question
  *
  * @params $id The ID of the multiple choice question

@@ -2,13 +2,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
-* 
-*
-* 
-*/
-
-
-/**
  * This function displays the captcha question
  *
  * @params $id The ID of the multiple choice question
