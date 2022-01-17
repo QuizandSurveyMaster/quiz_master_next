@@ -1427,7 +1427,6 @@ jQuery(function () {
 	//Ajax upload file code
 	jQuery('.quiz_section .mlw_answer_file_upload').on('change', function () {
 		var $this = jQuery(this);
-		var hidden_val = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_hidden_path').val();
 		var file_data = jQuery(this).prop('files')[0];
 		var form_data = new FormData();
 		form_data.append('file', file_data);
@@ -1449,6 +1448,7 @@ jQuery(function () {
 					$this.next().next('.remove-uploaded-file').show();
 					$this.next().next().next('.mlw_file_upload_hidden_value').val(obj.file_url);
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val(obj.file_path);
+					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val(obj.media_id);
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
 				} else {
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').text('').text(obj.message);
@@ -1465,10 +1465,10 @@ jQuery(function () {
 	//Ajax remove file code
 	jQuery('.quiz_section .remove-uploaded-file').on('click', function () {
 		var $this = jQuery(this);
-		var file_data = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_hidden_path').val();
+		var media_id = jQuery(this).parent('.quiz_section').find('.mlw_file_upload_media_id').val();
 		var form_data = new FormData();
 		form_data.append('action', 'qsm_remove_file_fd_question');
-		form_data.append('file_url', file_data);
+		form_data.append('media_id', media_id);
 		jQuery.ajax({
 			url: qmn_ajax_object.ajaxurl,
 			type: 'POST',
@@ -1482,6 +1482,7 @@ jQuery(function () {
 					$this.hide();
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_value').val('');
 					$this.parent('.quiz_section').find('.mlw_file_upload_hidden_path').val('');
+					$this.parent('.quiz_section').find('.mlw_file_upload_media_id').val('');
 					$this.parent('.quiz_section').find('.mlw_answer_file_upload').val('');
 					$this.parent('.quiz_section').find('.mlw-file-upload-error-msg').hide();
 				} else {

@@ -113,7 +113,7 @@ class QMNQuizManager {
 		$json = array();
 		if ( ! isset( $_FILES['file'] ) ) {
 			$json['type']    = 'error';
-			$json['message'] = __( 'File is not uploaded', 'quiz-master-next' );
+			$json['message'] = __( 'File is not uploaded!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 			exit;
 		}
@@ -149,12 +149,17 @@ class QMNQuizManager {
 					include_once ABSPATH . 'wp-admin/includes/image.php';
 					$attach_data = wp_generate_attachment_metadata( $attach_id, $movefile['file'] );
 					wp_update_attachment_metadata( $attach_id, $attach_data );
+					$json['type']      = 'success';
+					$json['media_id']  = $attach_id;
+					$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
+					$json['file_url']  = $movefile['url'];
+					$json['file_path'] = basename( $movefile['url'] );
+					echo wp_json_encode( $json );
+				} else {
+					$json['type']    = 'error';
+					$json['message'] = __( 'Upload failed!', 'quiz-master-next' );
+					echo wp_json_encode( $json );
 				}
-				$json['type']      = 'success';
-				$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
-				$json['file_url']  = $movefile['url'];
-				$json['file_path'] = basename( $movefile['url'] );
-				echo wp_json_encode( $json );
 			} else {
 				$json['type']    = 'error';
 				$json['message'] = $movefile['error'];
@@ -162,7 +167,7 @@ class QMNQuizManager {
 			}
 		} else {
 			$json['type']    = 'error';
-			$json['message'] = __( 'File type is not supported', 'quiz-master-next' );
+			$json['message'] = __( 'File type is not supported!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;
@@ -173,19 +178,18 @@ class QMNQuizManager {
 	 * Remove the uploaded image
 	 */
 	public function qsm_remove_file_fd_question() {
-		$file_url      = isset( $_POST['file_url'] ) ? sanitize_text_field( wp_unslash( $_POST['file_url'] ) ) : '';
-		$upload_dir    = wp_upload_dir();
-		$uploaded_path = $upload_dir['path'];
-		if ( $file_url && stristr( $file_url, 'qsmfileupload_' ) && file_exists( $uploaded_path . '/' . $file_url ) ) {
-			$attachment_url = $upload_dir['url'] . '/' . $file_url;
-			$attachment_id  = $this->qsm_get_attachment_id_from_url( $attachment_url );
-			wp_delete_file( $uploaded_path . '/' . $file_url );
-			wp_delete_attachment( $attachment_id );
-			$json['type']    = 'success';
-			$json['message'] = __( 'File removed successfully', 'quiz-master-next' );
-			echo wp_json_encode( $json );
-			exit;
+		$json = array();
+		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
+		if ( ! empty( $attachment_id ) ) {
+			$delete = wp_delete_attachment( $attachment_id, true );
+			if ( $delete ) {
+				$json['type']    = 'success';
+				$json['message'] = __( 'File removed successfully', 'quiz-master-next' );
+				echo wp_json_encode( $json );
+				exit;
+			}
 		}
+
 		$json['type']    = 'error';
 		$json['message'] = __( 'File not removed', 'quiz-master-next' );
 		echo wp_json_encode( $json );
@@ -2422,45 +2426,6 @@ class QMNQuizManager {
 	public function qsm_process_background_email() {
 		include_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
 		$this->qsm_background_email = new QSM_Background_Request();
-	}
-
-	/**
-	 * Get attachment id from attachment url
-	 *
-	 * @since 7.1.2
-	 *
-	 * @global obj $wpdb
-	 * @param  url $attachment_url
-	 * @return int
-	 */
-	public function qsm_get_attachment_id_from_url( $attachment_url = '' ) {
-
-		global $wpdb;
-		$attachment_id = false;
-
-		// If there is no url, return.
-		if ( '' == $attachment_url ) {
-			return;
-		}
-
-		// Get the upload directory paths
-		$upload_dir_paths = wp_upload_dir();
-
-		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
-		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
-
-			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-
-			// Remove the upload path base directory from the attachment URL
-			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-
-			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
-
-		}
-
-		return $attachment_id;
 	}
 }
 
