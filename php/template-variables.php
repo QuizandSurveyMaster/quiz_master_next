@@ -538,7 +538,7 @@ function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
  */
 function mlw_qmn_variable_date( $content, $results ) {
 	global $mlw_quiz_array;
-	$date    = date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_array['time_taken'] ) );
+	$date    = isset( $mlw_quiz_array['time_taken'] ) ? date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_array['time_taken'] ) ) : '';
 	$content = str_replace( '%CURRENT_DATE%', $date, $content );
 	return $content;
 }
