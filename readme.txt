@@ -160,11 +160,10 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issues with number of questions per category is limited and the random questions.
 * Bug: Fixed security issues.
 * Bug: Fixed issues with date and current date format in template variable.
-* Bug: Fixed issue of QSM theme customize.
+* Bug: Fixed issues with QSM Theme.
 * Feature: Added a feature to edit quiz via frontend quiz page.
 * Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
-* Enhancement: Modified answer matching methods to use answer key.
 * Enhancement: Made improvements in answer matching logic.
 
 = 7.3.7 (December 27, 2021) =
