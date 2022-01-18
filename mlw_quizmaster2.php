@@ -9,7 +9,7 @@
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.7
+ * @version 7.3.8
  * @package QSM
  */
 
@@ -45,7 +45,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.3.7';
+	public $version = '7.3.8';
 
 	/**
 	 * QSM Alert Manager Object

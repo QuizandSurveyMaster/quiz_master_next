@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.7
+Stable tag: 7.3.8
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -151,6 +151,26 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.8 (January 18, 2022) =
+* Bug: Fixed issues while taking quiz with logic questions.
+* Bug: Fixed issues with category selection on email page.
+* Bug: Fixed the issues with category points and score template variables.
+* Bug: Fixed issues when contact form is set to appears at end of the quiz.
+* Bug: Fixed issues in fill in the blanks question type.
+* Bug: Fixed issues in dropdown question type.
+* Bug: Fixed issues in captcha question type.
+* Bug: Fixed all php warnings.
+* Bug: Fixed issues in HTML/Text question type.
+* Bug: Fixed issues in HTML/Text question type.
+* Bug: Fixed issues with multiple quiz shortcode on a same page.
+* Bug: Fixed issues with number of questions per category is limited and the random questions.
+* Bug: Fixed security issues.
+* Bug: Fixed issues with date and current date format in template variable.
+* Feature: Added a feature to edit quiz via frontend quiz page.
+* Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
+* Enhancement: Made UI improvements in QSM.
+
+
 
 = 7.3.7 (December 27, 2021) =
 * Bug: Fixed issues in fill in the blanks question type
@@ -644,3 +664,18 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 = 6.2.1 =
 Upgrade to fix cut submit button on mobile issue
+
+🌐Our Plugins
+
+If you like this plugin, consider exploring our other plugins:
+
+☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
+
+📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
+
+📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
+
+⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
+
+🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
+
