@@ -1967,7 +1967,13 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         $('#answers .answer-points').val('').hide();
                     }
                 }
-
+                if (qsmQuestionSettings.form_type == 0) {
+                    if (questionType == 14) {
+                        $('.correct-answer').hide();
+                    } else {
+                        $('.correct-answer').show();
+                    }
+                }
 
                 if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
                     var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
@@ -2531,6 +2537,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         tinyMCE.get('question-text').setContent('');
                     }
                 }
+                if (14 == question_val) {
+                    $('.correct-answer').hide();
+                }
+                else{
+                    $('.correct-answer').show();
+                }
 
                 // show points field only for polar in survey and simple form
                 if (qsmQuestionSettings.form_type != 0) {
@@ -2540,6 +2552,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         $('.answer-points').val('').hide();
                     }
                 }
+
+                
                 $('.qsm_hide_for_other').hide();
                 if ($('.qsm_show_question_type_' + question_val).length > 0) {
                     $('.qsm_show_question_type_' + question_val).show();
