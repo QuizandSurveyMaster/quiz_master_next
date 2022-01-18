@@ -859,7 +859,7 @@ class QMNPluginHelper {
 	/** */
 	public function categorize_question_types() {
 		$question_type_categorized = array();
-		foreach ( $this->question_types as $type_id => $question_type ){
+		foreach ( $this->question_types as $question_type ){
 			$is_categorized = isset( $question_type ['category'] ) && '' !== $question_type ['category'];
 			if ( $is_categorized ){
 				$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(

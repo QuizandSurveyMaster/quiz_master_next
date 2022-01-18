@@ -206,7 +206,7 @@ function qmn_question_type_text_block() {
 function qmn_question_type_number() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Number', 'quiz-master-next' ), 'qmn_number_display', true, 'qmn_number_review', null, null, 7 );
-	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 7, 'input_field', 'text' ); ;
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 7, 'input_field', 'text' );
 	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 7, 'category', 'NUMBER' );
 
 }
