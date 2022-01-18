@@ -178,7 +178,7 @@ class QMNQuizManager {
 	 * Remove the uploaded image
 	 */
 	public function qsm_remove_file_fd_question() {
-		$json = array();
+		$json          = array();
 		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
 		if ( ! empty( $attachment_id ) ) {
 			$delete = wp_delete_attachment( $attachment_id, true );
@@ -394,7 +394,7 @@ class QMNQuizManager {
 				'quiz_system' => $qmn_quiz_options->system,
 				'user_ip'     => $this->get_user_ip(),
 			);
-			$return_display .= '<script>
+			$return_display         .= '<script>
                             if (window.qmn_quiz_data === undefined) {
                                     window.qmn_quiz_data = new Object();
                             }
@@ -445,8 +445,8 @@ class QMNQuizManager {
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 
-			$return_display                            .= ob_get_clean();
-			$return_display                             = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+			$return_display .= ob_get_clean();
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
 		}
 		return $return_display;
@@ -596,19 +596,19 @@ class QMNQuizManager {
 
 			// check If we should load a specific number of question
 			if ( 0 != $quiz_options->question_per_category && $is_quiz_page ) {
-				$categories      = QSM_Questions::get_quiz_categories( $quiz_id );
-				$category_ids    = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
+				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
+				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
 
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
 
 				if ( ! empty( $category_ids ) ) {
-					$term_ids = implode( ',', $category_ids );
+					$term_ids    = implode( ',', $category_ids );
 					$question_id = implode( ',', $question_ids );
-					$term_ids = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
+					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
 
-					$tq_ids   = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
-					
-					$random   = array();
+					$tq_ids = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+
+					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
 						foreach ( $tq_ids as $key => $val ) {
@@ -1489,7 +1489,7 @@ class QMNQuizManager {
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
-			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );  
+			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $qsm_check_answers_return );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
@@ -1812,15 +1812,15 @@ class QMNQuizManager {
 										htmlspecialchars( $user_answer, ENT_QUOTES ),
 										htmlspecialchars( $correct_answer, ENT_QUOTES ),
 										$comment,
-										'user_answer'       => $results_array['user_answer'],
-										'correct_answer'    => $results_array['correct_answer'],
-										'correct'           => $correct_status,
-										'id'                => $question['question_id'],
-										'points'            => $answer_points,
-										'category'          => $question['category'],
-										'multicategories'   => $question['multicategories'],
-										'question_type'     => $question['question_type_new'],
-										'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+										'user_answer'     => $results_array['user_answer'],
+										'correct_answer'  => $results_array['correct_answer'],
+										'correct'         => $correct_status,
+										'id'              => $question['question_id'],
+										'points'          => $answer_points,
+										'category'        => $question['category'],
+										'multicategories' => $question['multicategories'],
+										'question_type'   => $question['question_type_new'],
+										'question_title'  => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
 										'user_compare_text' => $user_compare_text,
 									),
 									$options,
@@ -1854,7 +1854,7 @@ class QMNQuizManager {
 
 						// Send question to our grading function
 						$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
-						$results_array = apply_filters( 'qmn_results_array',$results_array, $question );
+						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
 							$points_earned += $results_array['points'];
