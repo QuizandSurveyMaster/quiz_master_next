@@ -213,7 +213,7 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
-				if ( $key === intval( $answer ) && 1 === intval( $value[2] ) ) {
+				if ( intval( $answer) === $key && 1 === intval( $value[2] ) ) {
 					$got_ans        = true;
 					$correct_answer = true;
 					break;
