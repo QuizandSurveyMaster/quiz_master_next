@@ -104,7 +104,7 @@ function qsm_options_styling_tab_content() {
 	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
 		unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
+		$settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings(
 			$quiz_id,
 			$saved_quiz_theme,
@@ -243,43 +243,47 @@ function qsm_options_styling_tab_content() {
 <div class="qsm-popup qsm-popup-slide qsm-theme-color-settings" id="qsm-theme-color-settings" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-2-title">
-			<header class="qsm-popup__header">
-				<h2 class="qsm-popup__title" id="modal-2-title">
-					<?php esc_html_e( 'Customize Quiz Theme', 'quiz-master-next' ); ?>
-				</h2>
-				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
-			</header>
-			<main class="qsm-popup__content" id="thme-color-settings-content">
-				<form action="" method="post" class="qsm-theme-settings-frm">
+			<form action="" method="post" class="qsm-theme-settings-frm">
+				<header class="qsm-popup__header">
+					<h2 class="qsm-popup__title" id="modal-2-title">
+						<?php esc_html_e( 'Customize Quiz Theme', 'quiz-master-next' ); ?>
+					</h2>
+					<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+				</header>
+				<main class="qsm-popup__content" id="thme-color-settings-content">
 					<?php wp_nonce_field( 'save_theme_settings', 'save_theme_settings_nonce' ); ?>
 					<table class="form-table" style="width: 100%;">
 						<?php
-						$get_theme_settings = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
-
+						global $wpdb;
+						$get_theme_settings         = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
+						$get_theme_default_settings = $wpdb->get_var( $wpdb->prepare( "SELECT default_settings from wp_mlw_themes WHERE id = %d", $saved_quiz_theme ) );
+						$get_theme_settings         = maybe_unserialize($get_theme_settings);
+						$get_theme_default_settings = maybe_unserialize($get_theme_default_settings);
 						if ( $get_theme_settings ) {
-							$i = 0;
 							foreach ( $get_theme_settings as $key => $theme_val ) {
+								if ( '' === $theme_val ) {
+									$theme_val = $get_theme_default_settings[ $key ];
+								}
 								?>
-						<tr valign="top">
-							<th scope="row" class="qsm-opt-tr">
-								<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
-								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][label]"
-									value="<?php echo esc_attr( $theme_val['label'] ); ?>">
-								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][id]"
-									value="<?php echo esc_attr( $theme_val['id'] ); ?>">
-								<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][type]" value="color">
-							</th>
-							<td>
-								<input name="settings[<?php echo esc_attr( $i ); ?>][default]" type="text"
-									value="<?php echo esc_attr( $theme_val['default'] ); ?>"
-									data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
-							</td>
-						</tr>
-						<?php
-								$i++;
+								<tr valign="top">
+									<th scope="row" class="qsm-opt-tr">
+										<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][label]"
+											value="<?php echo esc_attr( $theme_val['label'] ); ?>">
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][id]"
+											value="<?php echo esc_attr( $theme_val['id'] ); ?>">
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][type]" value="color">
+									</th>
+									<td>
+										<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text"
+											value="<?php echo esc_attr( $theme_val['default'] ); ?>"
+											data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
+									</td>
+								</tr>
+								<?php
 							}
 						} else {
-							?>
+						?>
 						<tr>
 							<td colspan="2">
 								<?php esc_html_e( 'No settings found', 'quiz-master-next' ); ?>
@@ -289,14 +293,14 @@ function qsm_options_styling_tab_content() {
 						}
 						?>
 					</table>
-				</form>
-			</main>
-			<footer class="qsm-popup__footer">
-				<button id="qsm-save-theme-settings"
-					class="button button-primary"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
-				<button class="button" data-micromodal-close
-					aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
-			</footer>
+				</main>
+				<footer class="qsm-popup__footer">
+					<button type="submit" id="qsm-save-theme-settings"
+						class="button button-primary"><?php esc_html_e( 'Save Settings', 'quiz-master-next' ); ?></button>
+					<button class="button" data-micromodal-close
+						aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+				</footer>
+			</form>
 		</div>
 	</div>
 </div>
@@ -317,7 +321,7 @@ function qsm_display_theme_settings() {
 	if ( isset( $_POST['save_theme_settings_nonce'], $_POST['settings'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['save_theme_settings_nonce'] ) ), 'save_theme_settings' ) ) {
     unset( $_POST['save_theme_settings_nonce'] );
 		unset( $_POST['_wp_http_referer'] );
-		$settings_array  = array_map( 'sanitize_text_field', wp_unslash( $_POST['settings'] ) );
+		$settings_array = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$results        = $mlwQuizMasterNext->theme_settings->update_quiz_theme_settings( $quiz_id, $theme_id, $settings_array );
 		?>
 <div class="notice notice-success is-dismissible" style="margin-top:30px;">

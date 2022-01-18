@@ -212,6 +212,7 @@ class QSM_Quiz_Settings
             $setDefaultvalue['enable_deselect_option'] = $getdefaultvalue['enable_deselect_option'];
             $setDefaultvalue['disable_description_on_result'] = $getdefaultvalue['disable_description_on_result'];
             $setDefaultvalue['disable_scroll_next_previous_click'] = $getdefaultvalue['disable_scroll_next_previous_click'];
+            $setDefaultvalue['disable_first_page'] = $getdefaultvalue['disable_first_page'];
             $setDefaultvalue['quiz_animation'] = $getdefaultvalue['quiz_animation'];
             $setDefaultvalue['result_page_fb_image'] = $getdefaultvalue['result_page_fb_image'];
             $setDefaultvalue['randomness_order'] = $getdefaultvalue['randomness_order'];

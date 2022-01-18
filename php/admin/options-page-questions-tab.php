@@ -107,7 +107,8 @@ function qsm_options_questions_tab_content() {
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
 	// Load Question Types.
-	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$question_types             = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$question_types_categorized = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
 
 	// Display warning if using competing options.
 	$pagination = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' );
@@ -239,7 +240,7 @@ function qsm_options_questions_tab_content() {
 									),
 									array(
 										'question_type_id' => '6',
-										'description'      => __( 'Displays a simple section on front end.', 'quiz-master-next' ),
+										'description'      => __( 'Displays a simple section on front end. Description is mandatory. ', 'quiz-master-next' ),
 									),
 									array(
 										'question_type_id' => '7',
@@ -367,11 +368,19 @@ function qsm_options_questions_tab_content() {
 													</label>
 													<select name="question_type" id="question_type">
 														<?php
-														foreach ( $question_types as $type ) {
-															if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
-																echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
-															}
-															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+														foreach ( $question_types_categorized as $category_name => $category_items ) {
+															?>
+															<optgroup label="<?php echo esc_attr( $category_name ) ?>">
+																<?php
+																foreach ( $category_items as $type ) {
+																	if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
+																		echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
+																	}
+																	echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+																}
+																?>
+															</optgroup>
+															<?php
 														}
 														?>
 													</select>
@@ -403,7 +412,7 @@ function qsm_options_questions_tab_content() {
 															'image' => __( 'Image Answers', 'quiz-master-next' ),
 														),
 														'default' => 'text',
-														'show' => '0,1,2,4,13' . $show_change_answer_editor,
+														'show' => '0,1,4,13' . $show_change_answer_editor,
 														// 'tooltip' => __('You can use text and rich answer for question answers.', 'quiz-master-next'),.
 														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
@@ -427,6 +436,17 @@ function qsm_options_questions_tab_content() {
 														),
 														'default' => 'random',
 														'show' => '14' . $show_match_answer,
+													),
+													'text-answer-editor' => array(
+														'label' => __( 'Answers Type', 'quiz-master-next' ),
+														'type' => 'select',
+														'priority' => '4',
+														'options' => array(
+															'text' => __( 'Text Answers', 'quiz-master-next' ),
+														),
+														'default' => 'text',
+														'show' => '2' . $show_change_answer_editor,
+														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
 													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );

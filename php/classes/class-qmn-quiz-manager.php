@@ -113,7 +113,7 @@ class QMNQuizManager {
 		$json = array();
 		if ( ! isset( $_FILES['file'] ) ) {
 			$json['type']    = 'error';
-			$json['message'] = __( 'File is not uploaded', 'quiz-master-next' );
+			$json['message'] = __( 'File is not uploaded!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 			exit;
 		}
@@ -149,12 +149,17 @@ class QMNQuizManager {
 					include_once ABSPATH . 'wp-admin/includes/image.php';
 					$attach_data = wp_generate_attachment_metadata( $attach_id, $movefile['file'] );
 					wp_update_attachment_metadata( $attach_id, $attach_data );
+					$json['type']      = 'success';
+					$json['media_id']  = $attach_id;
+					$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
+					$json['file_url']  = $movefile['url'];
+					$json['file_path'] = basename( $movefile['url'] );
+					echo wp_json_encode( $json );
+				} else {
+					$json['type']    = 'error';
+					$json['message'] = __( 'Upload failed!', 'quiz-master-next' );
+					echo wp_json_encode( $json );
 				}
-				$json['type']      = 'success';
-				$json['message']   = __( 'File uploaded successfully', 'quiz-master-next' );
-				$json['file_url']  = $movefile['url'];
-				$json['file_path'] = basename( $movefile['url'] );
-				echo wp_json_encode( $json );
 			} else {
 				$json['type']    = 'error';
 				$json['message'] = $movefile['error'];
@@ -162,7 +167,7 @@ class QMNQuizManager {
 			}
 		} else {
 			$json['type']    = 'error';
-			$json['message'] = __( 'File type is not supported', 'quiz-master-next' );
+			$json['message'] = __( 'File type is not supported!', 'quiz-master-next' );
 			echo wp_json_encode( $json );
 		}
 		exit;
@@ -173,19 +178,18 @@ class QMNQuizManager {
 	 * Remove the uploaded image
 	 */
 	public function qsm_remove_file_fd_question() {
-		$file_url      = isset( $_POST['file_url'] ) ? sanitize_text_field( wp_unslash( $_POST['file_url'] ) ) : '';
-		$upload_dir    = wp_upload_dir();
-		$uploaded_path = $upload_dir['path'];
-		if ( $file_url && stristr( $file_url, 'qsmfileupload_' ) && file_exists( $uploaded_path . '/' . $file_url ) ) {
-			$attachment_url = $upload_dir['url'] . '/' . $file_url;
-			$attachment_id  = $this->qsm_get_attachment_id_from_url( $attachment_url );
-			wp_delete_file( $uploaded_path . '/' . $file_url );
-			wp_delete_attachment( $attachment_id );
-			$json['type']    = 'success';
-			$json['message'] = __( 'File removed successfully', 'quiz-master-next' );
-			echo wp_json_encode( $json );
-			exit;
+		$json          = array();
+		$attachment_id = isset( $_POST['media_id'] ) ? intval( $_POST['media_id'] ) : '';
+		if ( ! empty( $attachment_id ) ) {
+			$delete = wp_delete_attachment( $attachment_id, true );
+			if ( $delete ) {
+				$json['type']    = 'success';
+				$json['message'] = __( 'File removed successfully', 'quiz-master-next' );
+				echo wp_json_encode( $json );
+				exit;
+			}
 		}
+
 		$json['type']    = 'error';
 		$json['message'] = __( 'File not removed', 'quiz-master-next' );
 		echo wp_json_encode( $json );
@@ -209,7 +213,7 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
-				if ( $value[0] == $answer && 1 == $value[2] ) {
+				if ( intval( $answer) === $key && 1 === intval( $value[2] ) ) {
 					$got_ans        = true;
 					$correct_answer = true;
 					break;
@@ -390,6 +394,11 @@ class QMNQuizManager {
 				'quiz_system' => $qmn_quiz_options->system,
 				'user_ip'     => $this->get_user_ip(),
 			);
+			$return_display         .= '<script>
+                            if (window.qmn_quiz_data === undefined) {
+                                    window.qmn_quiz_data = new Object();
+                            }
+                    </script>';
 			$qpages                  = array();
 			$qpages_arr              = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
 			if ( ! empty( $qpages_arr ) ) {
@@ -409,6 +418,7 @@ class QMNQuizManager {
 				'skip_validation_time_expire'        => $qmn_quiz_options->skip_validation_time_expire,
 				'timer_limit_val'                    => $qmn_quiz_options->timer_limit,
 				'disable_scroll_next_previous_click' => $qmn_quiz_options->disable_scroll_next_previous_click,
+				'disable_first_page'                 => $qmn_quiz_options->disable_first_page,
 				'enable_result_after_timer_end'      => isset( $qmn_quiz_options->enable_result_after_timer_end ) ? $qmn_quiz_options->enable_result_after_timer_end : '',
 				'enable_quick_result_mc'             => isset( $qmn_quiz_options->enable_quick_result_mc ) ? $qmn_quiz_options->enable_quick_result_mc : '',
 				'end_quiz_if_wrong'                  => isset( $qmn_quiz_options->end_quiz_if_wrong ) ? $qmn_quiz_options->end_quiz_if_wrong : '',
@@ -432,10 +442,12 @@ class QMNQuizManager {
 
 			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
 
-			$return_display                            .= ob_get_clean();
-			$return_display                             = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
-			$qmn_quiz_data[ $qmn_json_data['quiz_id'] ] = $qmn_filtered_json;
-			wp_localize_script( 'qsm_quiz', 'qmn_quiz_data', $qmn_quiz_data );
+			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
+                    </script>';
+
+			$return_display .= ob_get_clean();
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+
 		}
 		return $return_display;
 	}
@@ -584,14 +596,19 @@ class QMNQuizManager {
 
 			// check If we should load a specific number of question
 			if ( 0 != $quiz_options->question_per_category && $is_quiz_page ) {
-				$categories      = QSM_Questions::get_quiz_categories( $quiz_id );
-				$category_ids    = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
+				$categories   = QSM_Questions::get_quiz_categories( $quiz_id );
+				$category_ids = ( isset( $categories['list'] ) ? array_keys( $categories['list'] ) : array() );
+
 				$categories_tree = ( isset( $categories['tree'] ) ? $categories['tree'] : array() );
+
 				if ( ! empty( $category_ids ) ) {
-					$term_ids = implode( ',', $category_ids );
-					$term_ids = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
-					$tq_ids   = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `quiz_id`='{$quiz_id}' AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
-					$random   = array();
+					$term_ids    = implode( ',', $category_ids );
+					$question_id = implode( ',', $question_ids );
+					$term_ids    = ( '' !== $quiz_options->randon_category ) ? $quiz_options->randon_category : $term_ids;
+
+					$tq_ids = $wpdb->get_results( "SELECT `term_id`, `question_id` FROM `{$wpdb->prefix}mlw_question_terms` WHERE `question_id` IN ({$question_id}) AND `term_id` IN ({$term_ids}) AND `taxonomy`='qsm_category'", ARRAY_A );
+
+					$random = array();
 					if ( ! empty( $tq_ids ) ) {
 						$term_data = array();
 						foreach ( $tq_ids as $key => $val ) {
@@ -1013,7 +1030,7 @@ class QMNQuizManager {
 					?>
 					<span class="pages_count">
 					<?php
-					$text_c = $pages_count . __( ' out of ', 'quiz-master-next' ) . $total_pages_count;
+					$text_c = $pages_count . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pages_count;
 					echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 					?>
 					</span>
@@ -1080,6 +1097,7 @@ class QMNQuizManager {
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php
+
 	}
 
 	/**
@@ -1217,7 +1235,7 @@ class QMNQuizManager {
 			?>
 			<span class="pages_count" style="display: none;">
 				<?php
-				$text_c = $current_page_number . __( ' out of ', 'quiz-master-next' ) . $total_pagination;
+				$text_c = $current_page_number . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pagination;
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 			</span>
@@ -1273,25 +1291,29 @@ class QMNQuizManager {
 		$section_display       = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_optoin     = $qmn_quiz_options->pagination;
-		// Legacy Code.
-		if ( ! empty( $qmn_quiz_options->message_end_template ) ) {
-			$message_end      = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ) );
-			$message_end      = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables );
-			$section_display .= "<span class='mlw_qmn_message_end'>$message_end</span>";
-			$section_display .= '<br /><br />';
-		}
-		if ( 1 == $qmn_quiz_options->contact_info_location ) {
-			$section_display .= QSM_Contact_Manager::display_fields( $qmn_quiz_options );
-		}
 
 		do_action( 'mlw_qmn_end_quiz_section' );
-		$qsm_d_none = 0 == $qmn_quiz_options->randomness_order ? 'qsm-d-none' : '';
-		if ( ! empty( $section_display ) ) {
+		$qsm_d_none = 0 === intval( $qmn_quiz_options->randomness_order ) ? 'qsm-d-none' : '';
+		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
 			?>
 			<br />
 			<div class="qsm-auto-page-row quiz_section quiz_end <?php echo esc_attr( $qsm_d_none ); ?>">
 				<?php
-				echo wp_kses_post( $section_display );
+				// Legacy Code.
+				if ( ! empty( $qmn_quiz_options->message_end_template ) ) {
+					?>
+					<span class='mlw_qmn_message_end'>
+					<?php
+						$message_end = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ) );
+						echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables );
+					?>
+					</span>
+					<br /><br />
+					<?php
+				}
+				if ( 1 === intval( $qmn_quiz_options->contact_info_location ) ) {
+					echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
+				}
 				?>
 				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $qmn_quiz_options->submit_button_text ); ?>" />
 			</div>
@@ -1363,8 +1385,11 @@ class QMNQuizManager {
 				if ( ! $verified ) {
 					echo wp_json_encode(
 						array(
-							'display'  => htmlspecialchars_decode( 'ReCaptcha Validation failed' ),
-							'redirect' => false,
+							'display'       => htmlspecialchars_decode( 'ReCaptcha Validation failed' ),
+							'redirect'      => false,
+							'result_status' => array(
+								'save_response' => false,
+							),
 						)
 					);
 					exit;
@@ -1464,8 +1489,8 @@ class QMNQuizManager {
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
 
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
-
-			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables ) );
+			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );
+			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $qsm_check_answers_return );
 			$result_display                      = apply_filters( 'qmn_after_check_answers', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables['comments'] = $this->check_comment_section( $qmn_quiz_options, $qmn_array_for_variables );
 			$result_display                      = apply_filters( 'qmn_after_check_comments', $result_display, $qmn_quiz_options, $qmn_array_for_variables );
@@ -1742,11 +1767,8 @@ class QMNQuizManager {
 							}
 
 							// Send question to our grading function
-							$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
-							if ( isset( $results_array['question_type'] ) && 'file_upload' === $results_array['question_type'] ) {
-								$results_array['user_text'] = '<a target="_blank" href="' . $results_array['user_text'] . '">' . __( 'Click here to view', 'quiz-master-next' ) . '</a>';
-							}
-
+							$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
+							$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
 								if ( in_array( intval( $question_type_new ), $result_question_types, true ) && ! in_array( intval( $question_id ), $hidden_questions, true ) ) {
@@ -1790,6 +1812,8 @@ class QMNQuizManager {
 										htmlspecialchars( $user_answer, ENT_QUOTES ),
 										htmlspecialchars( $correct_answer, ENT_QUOTES ),
 										$comment,
+										'user_answer'     => $results_array['user_answer'],
+										'correct_answer'  => $results_array['correct_answer'],
 										'correct'         => $correct_status,
 										'id'              => $question['question_id'],
 										'points'          => $answer_points,
@@ -1828,9 +1852,9 @@ class QMNQuizManager {
 						$total_possible_points   += $max_min_result['max_point'];
 						$minimum_possible_points += $max_min_result['min_point'];
 
-						// Send question to our grading function.
-						$results_array = apply_filters( 'qmn_results_array', $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] ), $question );
-
+						// Send question to our grading function
+						$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
+						$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 						// If question was graded correctly.
 						if ( ! isset( $results_array['null_review'] ) ) {
 							$points_earned += $results_array['points'];
@@ -1870,6 +1894,8 @@ class QMNQuizManager {
 									htmlspecialchars( $user_answer, ENT_QUOTES ),
 									htmlspecialchars( $correct_answer, ENT_QUOTES ),
 									$comment,
+									'user_answer'       => $results_array['user_answer'],
+									'correct_answer'    => $results_array['correct_answer'],
 									'correct'           => $correct_status,
 									'id'                => $question['question_id'],
 									'points'            => $answer_points,
@@ -1898,9 +1924,10 @@ class QMNQuizManager {
 
 		// Get random order
 		$qsm_random_que_ids = get_option( 'qsm_random_que_ids' );
+
 		if ( ! empty( $qsm_random_que_ids ) && is_array( $qsm_random_que_ids ) ) {
 			$qs_ids   = array_column( $question_data, 'id' );
-			$has_diff = array_diff( $qs_ids, $qsm_random_que_ids );
+			$has_diff = array_diff( $qsm_random_que_ids, $qs_ids );
 			// Check random option value has all the questions in previous order
 			if ( empty( $has_diff ) ) {
 				$new_question_data = array();
@@ -2400,45 +2427,6 @@ class QMNQuizManager {
 	public function qsm_process_background_email() {
 		include_once plugin_dir_path( __FILE__ ) . 'class-qmn-background-process.php';
 		$this->qsm_background_email = new QSM_Background_Request();
-	}
-
-	/**
-	 * Get attachment id from attachment url
-	 *
-	 * @since 7.1.2
-	 *
-	 * @global obj $wpdb
-	 * @param  url $attachment_url
-	 * @return int
-	 */
-	public function qsm_get_attachment_id_from_url( $attachment_url = '' ) {
-
-		global $wpdb;
-		$attachment_id = false;
-
-		// If there is no url, return.
-		if ( '' == $attachment_url ) {
-			return;
-		}
-
-		// Get the upload directory paths
-		$upload_dir_paths = wp_upload_dir();
-
-		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
-		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
-
-			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
-
-			// Remove the upload path base directory from the attachment URL
-			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
-
-			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
-			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
-
-		}
-
-		return $attachment_id;
 	}
 }
 

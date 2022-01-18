@@ -479,10 +479,10 @@ var QSMAdmin;
                 }
             });
         }
-        
-        
+
+
     });
-    
+
     jQuery('.qsm_audit_data').click(function (e) {
         e.preventDefault();
         MicroModal.show('qsm_fetch_audit_data');
@@ -570,10 +570,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if( jQuery('.my-color-field').length > 0 ){
                     jQuery('.my-color-field').wpColorPicker();
                 }
-            });
-            jQuery(document).on('click', '#qsm-save-theme-settings', function(e){
-                e.preventDefault();
-                jQuery('.qsm-theme-settings-frm').submit();
             });
         });
     }
@@ -1671,10 +1667,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 });
                 var data = {
                     action: 'qsm_save_pages',
-                    pages: pages,
-                    qpages: qpages,
                     quiz_id: qsmQuestionSettings.quizID,
                     nonce: qsmQuestionSettings.saveNonce,
+                    pages: pages,
+                    qpages: qpages,
                 };
 
                 jQuery.ajax(ajaxurl, {
@@ -1971,7 +1967,13 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         $('#answers .answer-points').val('').hide();
                     }
                 }
-
+                if (qsmQuestionSettings.form_type == 0) {
+                    if (questionType == 14) {
+                        $('.correct-answer').hide();
+                    } else {
+                        $('.correct-answer').show();
+                    }
+                }
 
                 if (answer[5] == 'rich' && qsmQuestionSettings.qsm_user_ve === 'true') {
                     var textarea_id = 'answer-' + answer[4] + '-' + answer[3];
@@ -2535,6 +2537,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         tinyMCE.get('question-text').setContent('');
                     }
                 }
+                if (14 == question_val) {
+                    $('.correct-answer').hide();
+                }
+                else{
+                    $('.correct-answer').show();
+                }
 
                 // show points field only for polar in survey and simple form
                 if (qsmQuestionSettings.form_type != 0) {
@@ -2544,6 +2552,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         $('.answer-points').val('').hide();
                     }
                 }
+
+                
                 $('.qsm_hide_for_other').hide();
                 if ($('.qsm_show_question_type_' + question_val).length > 0) {
                     $('.qsm_show_question_type_' + question_val).show();

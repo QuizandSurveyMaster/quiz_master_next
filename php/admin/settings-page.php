@@ -125,6 +125,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-first-page', __( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1018,6 +1019,24 @@ class QMNGlobalSettingsPage {
 				<label for="disable_scroll_next_previous_click-0">No</label><br>
 			</fieldset>';
 	}
+
+	/**
+	 * Generates Quiz Global  Field For Disable First page
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
+	public function qsm_global_disable_first_page() {
+		global $globalQuizsetting;
+		$qsm_disable_first_page = (isset($globalQuizsetting['disable_first_page']) && '' !== $globalQuizsetting['disable_first_page'] ? $globalQuizsetting['disable_first_page'] : "0");
+		echo '<fieldset class="buttonset buttonset-hide" >
+				<input type="radio" id="disable_first_page-1" name="qsm-quiz-settings[disable_first_page]" value="1" '. checked( $qsm_disable_first_page, '1', false ) .'>
+				<label for="disable_first_page-1">Yes</label><br>
+				<input type="radio" id="disable_first_page-0" name="qsm-quiz-settings[disable_first_page]"  value="0" '. checked( $qsm_disable_first_page, '0', false ) .'>
+				<label for="disable_first_page-0">No</label><br>
+			</fieldset>';
+	}
+
 
 		/**
 	 * Generates Quiz Global  Field For Quiz Animation

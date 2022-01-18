@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.3.7
+ * Version: 7.3.8
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.7
+ * @version 7.3.8
  * @package QSM
  */
 
@@ -38,14 +38,13 @@ define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
  */
 class MLWQuizMasterNext {
 
-
 	/**
 	 * QSM Version Number
 	 *
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.3.7';
+	public $version = '7.3.8';
 
 	/**
 	 * QSM Alert Manager Object
@@ -110,6 +109,14 @@ class MLWQuizMasterNext {
 	 * @since 7.3.0
 	 */
 	public $migrationHelper;
+
+	/**
+	 * Holds quiz_data
+	 *
+	 * @var object
+	 * @since 7.3.8
+	 */
+	public $quiz = array();
 
 	/**
 	 * Main Construct Function
@@ -542,8 +549,33 @@ class MLWQuizMasterNext {
 		}
 	}
 
+
 }
 
 global $mlwQuizMasterNext;
 $mlwQuizMasterNext = new MLWQuizMasterNext();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
+
+/**
+ * Displays QSM Admin bar menu
+ *
+ * @return void
+ * @since 7.3.8
+ */
+function qsm_edit_quiz_admin_option() {
+	global $wp_admin_bar, $wpdb;
+	if ( 'qsm_quiz' == get_post_type() ) {
+		$get_qsm_post_id = get_the_ID();
+		$get_qsm_quiz_id = $wpdb->get_results( "SELECT meta_value FROM {$wpdb->prefix}postmeta WHERE post_id=$get_qsm_post_id" );
+		$wp_admin_bar->add_node(
+			array(
+				'id'    => 'edit-quiz',
+				'title' => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
+				'href'  => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $get_qsm_quiz_id[0]->meta_value,
+
+			)
+		);
+	}
+}
+
+add_action( 'admin_bar_menu', 'qsm_edit_quiz_admin_option', 999 );

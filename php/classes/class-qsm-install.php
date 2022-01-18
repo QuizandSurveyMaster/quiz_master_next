@@ -689,6 +689,25 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Setting for display first page
+		$field_array = array(
+			'id'      => 'disable_first_page',
+			'label'   => __( 'Disable first page on quiz', 'quiz-master-next' ),
+			'type'    => 'radio',
+			'options' => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default' => 0,
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+		
 		// Setting for animation
 		$field_array = array(
 			'id'      => 'quiz_animation',
@@ -1282,7 +1301,7 @@ class QSM_Install {
   			quiz_views INT NOT NULL,
   			quiz_taken INT NOT NULL,
   			deleted INT NOT NULL,
-                        quiz_author_id INT NOT NULL,
+            quiz_author_id INT NOT NULL,
   			PRIMARY KEY  (quiz_id)
   		) $charset_collate;";
 
@@ -1695,6 +1714,12 @@ class QSM_Install {
 				$results    = $wpdb->query( $sql );
 				$update_sql = $wpdb->prepare( "UPDATE {$table_name} SET limit_total_entries_text='%s'", 'Enter Text Here' );
 				$results    = $wpdb->query( $update_sql );
+			}
+
+			// Update 7.3.8
+			if ( $wpdb->get_var( 'SHOW COLUMNS FROM ' . $table_name . " LIKE 'quiz_author_id'" ) != 'quiz_author_id' ) {
+				$sql        = 'ALTER TABLE ' . $table_name . ' ADD quiz_author_id TEXT NOT NULL AFTER deleted';
+				$results    = $wpdb->query( $sql );
 			}
 
 			// Update 3.7.1
