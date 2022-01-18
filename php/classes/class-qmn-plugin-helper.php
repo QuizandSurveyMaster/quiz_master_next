@@ -354,6 +354,15 @@ class QMNPluginHelper {
 		return $type_array;
 	}
 
+	/** 
+	 * 
+	*/
+	public function set_question_type_meta( $type_id, $meta_key , $meta_value ){
+		
+		$this->question_types[ $type_id ][ $meta_key ] = $meta_value;
+		
+	}
+
 	public function get_question_type_edit_fields() {
 		$type_array = array();
 		foreach ( $this->question_types as $type ) {
@@ -845,5 +854,26 @@ class QMNPluginHelper {
 		$html             = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
 
 		return $html;
+	}
+
+	/** */
+	public function categorize_question_types() {
+		$question_type_categorized = array();
+		foreach ( $this->question_types as $question_type ){
+			$is_categorized = isset( $question_type ['category'] ) && '' !== $question_type ['category'];
+			if ( $is_categorized ){
+				$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
+					'slug'    => $question_type['slug'],
+					'name'    => $question_type['name'],					
+				);
+			} else {
+				$question_type_categorized[ 'uncategorized' ][ $question_type['slug'] ] = array(
+					'slug'    => $question_type['slug'],
+					'name'    => $question_type['name'],					
+				);
+
+			}
+		}
+		return $question_type_categorized;
 	}
 }
