@@ -936,7 +936,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
 			if ( 'correct' === $answer['correct'] ) {
-				$user_answer_class     = 'qmn_user_correct_answer';
+				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
 				$user_answer_class     = 'qmn_user_incorrect_answer';
@@ -1102,10 +1102,15 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						if ( isset( $answer['question_type'] ) && ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) ) {
 							foreach ( $total_answers as $single_answer_key => $single_answer ) {
 								$current_answer_key  = $single_answer_key;
-								$is_answer_correct   = false;
+								$user_answer_keys    = array_keys( $answer['user_answer'] );
 								$correct_answer_keys = array_keys( $answer['correct_answer'] );
+								$is_answer_correct   = false;
+								$is_user_answer      = false;
 								if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
-                                    $is_answer_correct = true;
+									$is_answer_correct = true;
+								}
+								if ( in_array( $current_answer_key, $user_answer_keys, true) ){
+									$is_user_answer    = true;
 								}
 								$image_class = '';
 								if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
@@ -1115,11 +1120,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
 									$image_class      = '';
 								}
-								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && $is_answer_correct ) {
+								if ( $is_user_answer  && $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
+								} elseif ( ! $is_user_answer  && $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( $is_answer_correct && 1 !== $single_answer[2] ) {
+								} elseif ( $is_user_answer  && ! $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} else {
 									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
@@ -1134,10 +1139,15 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} else {
 								foreach ( $total_answers as $single_answer_key => $single_answer ) {
 									$current_answer_key  = $single_answer_key;
-									$is_answer_correct   = false;
+									$user_answer_keys    = array_keys( $answer['user_answer'] );
 									$correct_answer_keys = array_keys( $answer['correct_answer'] );
+									$is_answer_correct   = false;
+									$is_user_answer      = false;
 									if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
                                         $is_answer_correct = true;
+									}
+									if ( in_array( $current_answer_key, $user_answer_keys, true) ){
+										$is_user_answer    = true;
 									}
 									$image_class = '';
 									if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
@@ -1146,11 +1156,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									} else {
 										$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
 									}
-									if ( isset( $single_answer[2] ) && 1 == $single_answer[2] && $is_answer_correct ) {
+									if ( $is_user_answer  && $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
+									} elseif ( ! $is_user_answer  && $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( $is_answer_correct && 1 !== $single_answer[2] ) {
+									} elseif ( $is_user_answer  && ! $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
@@ -1170,9 +1180,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									$image_class      = '';
 								}
 								$current_answer_key  = $single_answer_key;
-								$is_answer_correct   = false;
-								$correct_answer_keys = array_keys( $answer['correct_answer'] );
-								if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
+								$user_answer_keys    = array_keys( $answer['user_answer'] );
+								if ( in_array( $current_answer_key, $user_answer_keys , true ) ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} else {
 									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
@@ -1197,10 +1206,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 										$image_class      = '';
 									}
 									$current_answer_key  = $single_answer_key;
-									$is_answer_correct   = false;
-									$correct_answer_keys = array_keys( $answer['correct_answer'] );
-
-									if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
+									$user_answer_keys    = array_keys( $answer['user_answer'] );
+									if ( in_array( $current_answer_key, $user_answer_keys , true ) ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
