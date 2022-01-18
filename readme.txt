@@ -156,10 +156,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issues with category selection on email page.
 * Bug: Fixed the issues with category points and score template variables.
 * Bug: Fixed issues when contact form is set to appears at end of the quiz.
-* Bug: Fixed issues in fill in the blanks question type.
-* Bug: Fixed issues in dropdown question type.
-* Bug: Fixed issues in captcha question type.
-* Bug: Fixed issues in HTML/Text question type.
 * Bug: Fixed issues with multiple quiz shortcode on a same page.
 * Bug: Fixed issues with number of questions per category is limited and the random questions.
 * Bug: Fixed security issues.
@@ -169,6 +165,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
 * Enhancement: Modified answer matching methods to use answer key.
+* Enhancement: Made improvements in answer matching logic.
 
 = 7.3.7 (December 27, 2021) =
 * Bug: Fixed issues in fill in the blanks question type
