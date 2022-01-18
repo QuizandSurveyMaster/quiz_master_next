@@ -53,7 +53,7 @@ function qmn_fill_blank_review( $id, $question, $answers ) {
 	$return_array['user_compare_text'] = ! empty( $user_text_array ) ? implode( '=====', $user_text_array ) : '' ;
 	$return_array['user_answer']       = $user_text_array;
 	$return_array['correct_answer']    = $correct_text_array ;
-	if ( $current_question->get_question_text() ){
+	if ( $current_question->get_question_text() ) {
 		$return_array['question_text'] = $current_question->get_question_text();
 	}
 	/**
