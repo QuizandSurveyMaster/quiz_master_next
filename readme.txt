@@ -157,11 +157,11 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed the issues with category points and score template variables.
 * Bug: Fixed issues when contact form is set to appears at end of the quiz.
 * Bug: Fixed issues with multiple quiz shortcode on a same page.
-* Bug: Fixed issues with number of questions per category is limited and the random questions.
+* Bug: Fixed issues with number of questions per category and random questions logic.
 * Bug: Fixed security issues.
 * Bug: Fixed issues with date and current date format in template variable.
 * Bug: Fixed issues with QSM Theme.
-* Feature: Added a feature to edit quiz via frontend quiz page.
+* Enhancement: Added option to edit quiz in admin bar on frontend..
 * Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
 * Enhancement: Made improvements in answer matching logic.
