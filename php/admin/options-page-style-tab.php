@@ -254,29 +254,33 @@ function qsm_options_styling_tab_content() {
 					<?php wp_nonce_field( 'save_theme_settings', 'save_theme_settings_nonce' ); ?>
 					<table class="form-table" style="width: 100%;">
 						<?php
-						$get_theme_settings = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
-						$get_theme_settings = maybe_unserialize($get_theme_settings);
+						global $wpdb;
+						$get_theme_settings         = $mlwQuizMasterNext->theme_settings->get_active_theme_settings( $quiz_id, $saved_quiz_theme );
+						$get_theme_default_settings = $wpdb->get_var( $wpdb->prepare( "SELECT default_settings from wp_mlw_themes WHERE id = %d", $saved_quiz_theme ) );
+						$get_theme_settings         = maybe_unserialize($get_theme_settings);
+						$get_theme_default_settings = maybe_unserialize($get_theme_default_settings);
 						if ( $get_theme_settings ) {
-							$i = 0;
 							foreach ( $get_theme_settings as $key => $theme_val ) {
+								if( '' === $theme_val ){
+									$theme_val = $get_theme_default_settings[$key];
+								}
 								?>
 								<tr valign="top">
 									<th scope="row" class="qsm-opt-tr">
 										<label for="form_type"><?php echo esc_attr( $theme_val['label'] ); ?></label>
-										<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][label]"
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][label]"
 											value="<?php echo esc_attr( $theme_val['label'] ); ?>">
-										<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][id]"
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][id]"
 											value="<?php echo esc_attr( $theme_val['id'] ); ?>">
-										<input type="hidden" name="settings[<?php echo esc_attr( $i ); ?>][type]" value="color">
+										<input type="hidden" name="settings[<?php echo esc_attr( $key ); ?>][type]" value="color">
 									</th>
 									<td>
-										<input name="settings[<?php echo esc_attr( $i ); ?>][default]" type="text"
+										<input name="settings[<?php echo esc_attr( $key ); ?>][default]" type="text"
 											value="<?php echo esc_attr( $theme_val['default'] ); ?>"
 											data-default-color="<?php echo esc_attr( $theme_val['default'] ); ?>" class="my-color-field" />
 									</td>
 								</tr>
 								<?php
-								$i++;
 							}
 						} else {
 						?>
