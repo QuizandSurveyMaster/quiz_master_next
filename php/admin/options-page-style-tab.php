@@ -261,8 +261,8 @@ function qsm_options_styling_tab_content() {
 						$get_theme_default_settings = maybe_unserialize($get_theme_default_settings);
 						if ( $get_theme_settings ) {
 							foreach ( $get_theme_settings as $key => $theme_val ) {
-								if( '' === $theme_val ){
-									$theme_val = $get_theme_default_settings[$key];
+								if ( '' === $theme_val ) {
+									$theme_val = $get_theme_default_settings[ $key ];
 								}
 								?>
 								<tr valign="top">

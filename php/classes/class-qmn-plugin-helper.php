@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QMNPluginHelper {
 
-
 	/**
 	 * Addon Page tabs array
 	 *
@@ -332,7 +331,7 @@ class QMNPluginHelper {
 			'slug'    => $slug,
 			'options' => $options,
 		);
-		$this->question_types[] = $new_type;
+		$this->question_types[$slug] = $new_type;
 	}
 
 	/**
@@ -353,6 +352,15 @@ class QMNPluginHelper {
 			);
 		}
 		return $type_array;
+	}
+
+	/** 
+	 * 
+	*/
+	public function set_question_type_meta( $type_id, $meta_key , $meta_value ){
+		
+		$this->question_types[ $type_id ][ $meta_key ] = $meta_value;
+		
 	}
 
 	public function get_question_type_edit_fields() {
@@ -393,10 +401,21 @@ class QMNPluginHelper {
 				array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
 			);
 		}
+		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
 			shuffle( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
+		
+		//convert answer array into key value pair
+		$answers_kvpair = array();
+		foreach ( $answers as $answer_item) {
+			$key = array_search( $answer_item , $answers_original );
+			$answers_kvpair[$key] = $answer_item;
+		}
+		unset($answer_item);
+		$answers = $answers_kvpair;
+
 		/**
 		 * Filter Answers of specific question before display
 		 */
@@ -835,5 +854,26 @@ class QMNPluginHelper {
 		$html             = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
 
 		return $html;
+	}
+
+	/** */
+	public function categorize_question_types() {
+		$question_type_categorized = array();
+		foreach ( $this->question_types as $question_type ){
+			$is_categorized = isset( $question_type ['category'] ) && '' !== $question_type ['category'];
+			if ( $is_categorized ){
+				$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
+					'slug'    => $question_type['slug'],
+					'name'    => $question_type['name'],					
+				);
+			} else {
+				$question_type_categorized[ 'uncategorized' ][ $question_type['slug'] ] = array(
+					'slug'    => $question_type['slug'],
+					'name'    => $question_type['name'],					
+				);
+
+			}
+		}
+		return $question_type_categorized;
 	}
 }
