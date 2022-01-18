@@ -159,8 +159,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed issues in fill in the blanks question type.
 * Bug: Fixed issues in dropdown question type.
 * Bug: Fixed issues in captcha question type.
-* Bug: Fixed all php warnings.
-* Bug: Fixed issues in HTML/Text question type.
 * Bug: Fixed issues in HTML/Text question type.
 * Bug: Fixed issues with multiple quiz shortcode on a same page.
 * Bug: Fixed issues with number of questions per category is limited and the random questions.
