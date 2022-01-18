@@ -107,7 +107,8 @@ function qsm_options_questions_tab_content() {
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
 	// Load Question Types.
-	$question_types = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$question_types             = $mlwQuizMasterNext->pluginHelper->get_question_type_options();
+	$question_types_categorized = $mlwQuizMasterNext->pluginHelper->categorize_question_types();
 
 	// Display warning if using competing options.
 	$pagination = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'pagination' );
@@ -367,11 +368,19 @@ function qsm_options_questions_tab_content() {
 													</label>
 													<select name="question_type" id="question_type">
 														<?php
-														foreach ( $question_types as $type ) {
-															if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
-																echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
-															}
-															echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+														foreach( $question_types_categorized as $category_name => $category_items ){
+															?>
+															<optgroup label="<?php echo esc_attr( $category_name ) ?>">
+																<?php
+																foreach ( $category_items as $type ) {
+																	if ( isset( $type['options']['add_separate_option_text'] ) && null !== $type['options']['add_separate_option_text'] ) {
+																		echo '<option disabled>---' . esc_html( $type['options']['add_separate_option_text'] ) . '---</option>';
+																	}
+																	echo '<option value="' . esc_attr( $type['slug'] ) . '">' . esc_html( $type['name'] ) . '</option>';
+																}
+																?>
+															</optgroup>
+															<?php
 														}
 														?>
 													</select>

@@ -14,6 +14,8 @@ add_action( 'plugins_loaded', 'qmn_question_type_multiple_choice' );
 function qmn_question_type_multiple_choice() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Vertical Multiple Choice', 'quiz-master-next' ), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 0, 'input_field', 'radio' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 0, 'category', 'CHOICE' );
 }
 
 add_action( 'plugins_loaded', 'qmn_question_type_file_upload' );
@@ -26,6 +28,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_file_upload' );
 function qmn_question_type_file_upload() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'File Upload', 'quiz-master-next' ), 'qmn_file_upload_display', true, 'qmn_file_upload_review', null, null, 11 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 11, 'input_field', 'attachment' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 11, 'category', 'OTHERS' );
+
 }
 
 /**
@@ -253,6 +258,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_date' );
 function qmn_question_type_date() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Date', 'quiz-master-next' ), 'qmn_date_display', true, 'qmn_date_review', null, null, 12 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 12, 'input_field', 'text' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 12, 'category', 'NUMBER' );
+
 }
 
 /**
@@ -330,6 +338,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_choice' );
 function qmn_question_type_horizontal_multiple_choice() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Horizontal Multiple Choice', 'quiz-master-next' ), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', null, null, 1 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 1, 'input_field', 'radio' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 1, 'category', 'CHOICE' );
+
 }
 
 /**
@@ -472,6 +483,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_drop_down' );
 function qmn_question_type_drop_down() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Drop Down', 'quiz-master-next' ), 'qmn_drop_down_display', true, 'qmn_drop_down_review', null, null, 2 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 2, 'input_field', 'select' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 2, 'category', 'CHOICE' );
+
 }
 
 /**
@@ -568,6 +582,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_small_open' );
 function qmn_question_type_small_open() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Short Answer', 'quiz-master-next' ), 'qmn_small_open_display', true, 'qmn_small_open_review', null, null, 3 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 3, 'input_field', 'text' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 3, 'category', 'TEXT' );
+
 }
 
 /**
@@ -650,6 +667,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
 function qmn_question_type_multiple_response() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Multiple Response', 'quiz-master-next' ), 'qmn_multiple_response_display', true, 'qmn_multiple_response_review', null, null, 4 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 4, 'input_field', 'checkbox' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 4, 'category', 'CHOICE' );
+
 }
 
 /**
@@ -769,6 +789,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_large_open' );
 function qmn_question_type_large_open() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Paragraph', 'quiz-master-next' ), 'qmn_large_open_display', true, 'qmn_large_open_review', null, null, 5 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 5, 'input_field', 'text_area' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 5, 'category', 'TEXT' );
+
 }
 
 /**
@@ -857,6 +880,9 @@ function qmn_question_type_text_block() {
 		'function'     => '',
 	);
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Text/HTML Section', 'quiz-master-next' ), 'qmn_text_block_display', false, null, $edit_args, null, 6 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 6, 'input_field', 'NA' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 6, 'category', 'OTHERS' );
+
 }
 
 /**
@@ -886,6 +912,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_number' );
 function qmn_question_type_number() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Number', 'quiz-master-next' ), 'qmn_number_display', true, 'qmn_number_review', null, null, 7 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 7, 'input_field', 'text' ); ;
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 7, 'category', 'NUMBER' );
+
 }
 
 /**
@@ -973,6 +1002,9 @@ function qmn_question_type_accept() {
 		'function'     => '',
 	);
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Opt-in', 'quiz-master-next' ), 'qmn_accept_display', false, null, $edit_args, null, 8 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 8, 'input_field', 'Checkbox' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 8, 'category', 'CHOICE' );
+
 }
 
 /**
@@ -1020,6 +1052,9 @@ function qmn_question_type_captcha() {
 		'function'     => '',
 	);
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Captcha', 'quiz-master-next' ), 'qmn_captcha_display', false, null, $edit_args, null, 9 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 9, 'input_field', 'NA' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 9, 'category', 'OTHERS' );
+
 }
 
 /**
@@ -1064,6 +1099,9 @@ add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' )
 function qmn_question_type_horizontal_multiple_response() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Horizontal Multiple Response', 'quiz-master-next' ), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', null, null, 10 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 10, 'input_field', 'checkbox' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 10, 'category', 'CHOICE' );
+
 }
 
 /**
@@ -1200,6 +1238,9 @@ function qmn_question_type_fill_blank() {
 	);
 
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Fill In The Blank', 'quiz-master-next' ), 'qmn_fill_blank_display', true, 'qmn_fill_blank_review', $edit_args, null, 14 );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 14, 'input_field', 'text' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 14, 'category', 'OTHERS' );
+
 
 }
 
@@ -1348,137 +1389,7 @@ add_action( 'plugins_loaded', 'qmn_question_type_polar' );
 function qmn_question_type_polar() {
 	global $mlwQuizMasterNext;
 	$mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Polar', 'quiz-master-next' ), 'qmn_polar_display', true, 'qmn_polar_review', null, null, 13 );
-}
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 13, 'input_field', 'slider' );
+	$mlwQuizMasterNext->pluginHelper->set_question_type_meta( 13, 'category', 'CHOICE' );
 
-/**
- * This function displays the fill in the blank question
- *
- * @params $id The ID of the multiple choice question
- * @params $question The question that is being edited.
- * @params @answers The array that contains the answers to the question.
- * @since  6.4.1
- */
-function qmn_polar_display( $id, $question, $answers ) {
-	global $mlwQuizMasterNext;
-	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
-	$limit_text     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$autofill_att   = $autofill ? "autocomplete='off' " : '';
-	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
-	$input_text     = '';
-	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
-	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
-	$is_reverse     = false;
-	$check_point    = $second_point;
-	if ( $first_point > $second_point ) {
-		$is_reverse  = true;
-		$check_point = $first_point;
-	}
-	$total_answer      = count( $answers );
-	$id                = esc_attr( intval( $id ) );
-	$answar1           = $first_point;
-	$answar2           = $second_point;
-	$slider_data_atts  = '';
-	$slider_data_atts .= ' data-answer1=' . $answar1 . ' ';
-	$slider_data_atts .= ' data-answer2=' . $answar2 . ' ';
-	$slider_data_atts .= ' data-is_reverse=' . intval( $is_reverse ) . ' ';
-	$slider_data_atts .= ' data-is_required=' . $required . ' ';
-	if ( 0 == $required ) {
-		$mlw_require_class = 'mlwRequiredText';
-	} else {
-		$mlw_require_class = '';
-	}
-	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	qsm_question_title_func( $question, '', $new_question_title, $id );
-
-	?>
-	<span class="mlw_qmn_question question-type-polar-s">
-		<div class='left-polar-title'> <?php echo esc_html( $answers[0][0] ); ?> </div>
-		<div class='slider-main-wrapper'>
-			<input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
-			<div id="slider-<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
-		</div>
-		<div class='right-polar-title'><?php echo esc_html( $answers[1][0] ); ?></div>
-	</span>
-	<?php
-
-}
-
-/**
- * This function determines how the fill in the blank question is graded.
- *
- * @params $id The ID of the multiple choice question
- * @params $question The question that is being edited.
- * @params @answers The array that contains the answers to the question.
- * @return $return_array Returns the graded question to the results page
- * @since  6.4.1
- */
-function qmn_polar_review( $id, $question, $answers ) {
-	$return_array = array(
-		'points'       => 0,
-		'correct'      => 'incorrect',
-		'user_text'    => '',
-		'correct_text' => '',
-	);
-	if ( strpos( $question, '%POLAR_SLIDER%' ) !== false || strpos( $question, '%polar_slider%' ) !== false ) {
-		$return_array['question_text'] = str_replace( array( '%POLAR_SLIDER%', '%polar_slider%' ), array( '__________', '__________' ), do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
-	}
-	if ( isset( $_POST[ 'question' . $id ] ) ) {
-		$decode_user_answer = sanitize_textarea_field( wp_unslash( $_POST[ 'question' . $id ] ) );
-		$mlw_user_answer    = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_user_answer ) ) );
-	} else {
-		$mlw_user_answer = ' ';
-	}
-	$return_array['user_text'] = $mlw_user_answer;
-	$return_array['points']    = $mlw_user_answer;
-	foreach ( $answers as $answer ) {
-		$decode_correct_text          = $answer[1];
-		$return_array['correct_text'] = trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', $decode_correct_text ) ) );
-		if ( trim( $decode_correct_text ) == $return_array['user_text'] && isset( $answer[2] ) && 1 == $answer[2] ) {
-			$return_array['correct'] = 'correct';
-			break;
-		}
-	}
-	/**
-	 * Hook to filter answers array
-	*/
-	return apply_filters( 'qmn_polar_review', $return_array, $answers );
-}
-
-function qsm_question_title_func( $question, $question_type = '', $new_question_title = '', $question_id = 0 ) {
-	// $question_title = apply_filters('the_content', $question);
-	$question_title = $question;
-	global $wp_embed, $mlwQuizMasterNext;
-	$question_title    = $wp_embed->run_shortcode( $question_title );
-	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
-	$polar_extra_class = '';
-	if ( 'polar' === $question_type ) {
-		$polar_extra_class = 'question-type-polar-s';
-	}
-	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
-	$deselect_answer  = '';
-	if ( isset( $qmn_quiz_options->enable_deselect_option ) && 1 == $qmn_quiz_options->enable_deselect_option && ( 'multiple_choice' === $question_type || 'horizontal_multiple_choice' === $question_type ) ) {
-		$deselect_answer = '<a href="#" class="qsm-deselect-answer">Deselect Answer</a>';
-	}
-
-	if ( $question_id ) {
-		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
-		if ( $featureImageID ) {
-			?>
-			<div class="qsm-featured-image"><?php echo wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ); ?></div>
-			<?php
-		}
-	}
-	if ( '' !== $new_question_title ) {
-		?>
-		<div class='mlw_qmn_new_question'><?php echo esc_html( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ); ?> </div>
-		<?php
-		$polar_extra_class .= ' qsm_remove_bold';
-	}
-
-	?>
-	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' >
-	<?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) . $deselect_answer ); ?>
-	</div>
-	<?php
 }
