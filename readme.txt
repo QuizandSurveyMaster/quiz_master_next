@@ -161,8 +161,8 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed security issues.
 * Bug: Fixed issues with date and current date format in template variable.
 * Bug: Fixed issues with QSM Theme.
-* Enhancement: Added option to edit quiz in admin bar on frontend..
-* Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
+* Enhancement: Added option to edit quiz in admin bar on frontend.
+* Enhancement: Added option to disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
 * Enhancement: Made improvements in answer matching logic.
 
