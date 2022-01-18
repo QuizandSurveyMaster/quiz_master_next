@@ -36,22 +36,21 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 				$mlw_answer_total++;
 				if ( '' !== $answer[0] ) {
 					?>
-				<input type="hidden" name="question<?php echo esc_attr( $id ); ?> " value="This value does not matter" />
-					<span class="mlw_horizontal_multiple">
-						<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
-						<label for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
-							<?php
-							if ( 'image' === $answerEditor ) {
-							?>
-								<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
-								<?php
-								} else {
-									echo wp_kses_post( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) );
-								}
-								?>
-							</label>
-					</span>
+				<span class="mlw_horizontal_multiple">
+					<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) .'[]' ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+					<label for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 					<?php
+					if ( 'image' === $answerEditor ) {
+					?>
+						<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+						<?php
+						} else {
+							echo wp_kses_post( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) );
+						}
+						?>
+					</label>
+				</span>
+				<?php
 				}
 			}
 		}
