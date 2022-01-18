@@ -170,8 +170,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
 
-
-
 = 7.3.7 (December 27, 2021) =
 * Bug: Fixed issues in fill in the blanks question type
 * Bug: Fixed issues with category selection on result page

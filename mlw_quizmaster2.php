@@ -38,7 +38,6 @@ define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
  */
 class MLWQuizMasterNext {
 
-
 	/**
 	 * QSM Version Number
 	 *
