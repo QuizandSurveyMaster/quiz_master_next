@@ -168,6 +168,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Feature: Added a feature to edit quiz via frontend quiz page.
 * Enhancement: Introduced a setting in a options page i.e. Disable first page on quiz.
 * Enhancement: Made UI improvements in QSM.
+* Enhancement: Modified answer matching methods to use answer key.
 
 = 7.3.7 (December 27, 2021) =
 * Bug: Fixed issues in fill in the blanks question type
