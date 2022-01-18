@@ -112,6 +112,14 @@ class MLWQuizMasterNext {
 	public $migrationHelper;
 
 	/**
+	 * Holds quiz_data
+	 *
+	 * @var object
+	 * @since 7.3.8
+	 */
+	public $quiz = array();
+
+	/**
 	 * Main Construct Function
 	 *
 	 * Call functions within class
