@@ -858,22 +858,33 @@ class QMNPluginHelper {
 
 	/** */
 	public function categorize_question_types() {
-		$question_type_categorized = array();
+		$question_type_categorized   = array();
+		$question_type_others        = array();
+		$question_type_uncategorized = array();
 		foreach ( $this->question_types as $question_type ){
 			$is_categorized = isset( $question_type ['category'] ) && '' !== $question_type ['category'];
 			if ( $is_categorized ){
-				$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
-					'slug'    => $question_type['slug'],
-					'name'    => $question_type['name'],					
-				);
+				if ( 'others' === mb_strtolower( $question_type ['category'] ) ) {
+					$question_type_others[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
+						'slug'    => $question_type['slug'],
+						'name'    => $question_type['name'],					
+					);
+				} else {
+					$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
+						'slug'    => $question_type['slug'],
+						'name'    => $question_type['name'],					
+					);
+				}		
 			} else {
-				$question_type_categorized[ 'uncategorized' ][ $question_type['slug'] ] = array(
+				$question_type_uncategorized[ 'uncategorized' ][ $question_type['slug'] ] = array(
 					'slug'    => $question_type['slug'],
 					'name'    => $question_type['name'],					
 				);
 
 			}
 		}
+		$question_type_categorized = array_merge( $question_type_categorized, $question_type_others );
+		$question_type_categorized = array_merge( $question_type_categorized, $question_type_uncategorized );
 		return $question_type_categorized;
 	}
 }
