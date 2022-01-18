@@ -1109,7 +1109,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
 									$is_answer_correct = true;
 								}
-								if ( in_array( $current_answer_key, $user_answer_keys, true) ){
+								if ( in_array( $current_answer_key, $user_answer_keys, true) ) {
 									$is_user_answer    = true;
 								}
 								$image_class = '';
@@ -1120,11 +1120,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
 									$image_class      = '';
 								}
-								if ( $is_user_answer  && $is_answer_correct ) {
+								if ( $is_user_answer && $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( ! $is_user_answer  && $is_answer_correct ) {
+								} elseif ( ! $is_user_answer && $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( $is_user_answer  && ! $is_answer_correct ) {
+								} elseif ( $is_user_answer && ! $is_answer_correct ) {
 									$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 								} else {
 									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
@@ -1146,7 +1146,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
                                         $is_answer_correct = true;
 									}
-									if ( in_array( $current_answer_key, $user_answer_keys, true) ){
+									if ( in_array( $current_answer_key, $user_answer_keys, true) ) {
 										$is_user_answer    = true;
 									}
 									$image_class = '';
@@ -1156,11 +1156,11 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 									} else {
 										$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
 									}
-									if ( $is_user_answer  && $is_answer_correct ) {
+									if ( $is_user_answer && $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( ! $is_user_answer  && $is_answer_correct ) {
+									} elseif ( ! $is_user_answer && $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( $is_user_answer  && ! $is_answer_correct ) {
+									} elseif ( $is_user_answer && ! $is_answer_correct ) {
 										$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
 									} else {
 										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';

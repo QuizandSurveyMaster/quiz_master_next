@@ -321,7 +321,7 @@ class QMNPluginHelper {
 		if ( is_null( $save_edit_function ) ) {
 			$save_edit_function = '';
 		}
-		$new_type               = array(
+		$new_type                      = array(
 			'name'    => $name,
 			'display' => $display_function,
 			'review'  => $review_function,
@@ -331,7 +331,7 @@ class QMNPluginHelper {
 			'slug'    => $slug,
 			'options' => $options,
 		);
-		$this->question_types[$slug] = $new_type;
+		$this->question_types[ $slug ] = $new_type;
 	}
 
 	/**
@@ -354,13 +354,13 @@ class QMNPluginHelper {
 		return $type_array;
 	}
 
-	/** 
-	 * 
-	*/
-	public function set_question_type_meta( $type_id, $meta_key , $meta_value ){
-		
+	/**
+	 *
+	 */
+	public function set_question_type_meta( $type_id, $meta_key, $meta_value ) {
+
 		$this->question_types[ $type_id ][ $meta_key ] = $meta_value;
-		
+
 	}
 
 	public function get_question_type_edit_fields() {
@@ -406,14 +406,14 @@ class QMNPluginHelper {
 			shuffle( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
-		
-		//convert answer array into key value pair
+
+		// convert answer array into key value pair
 		$answers_kvpair = array();
-		foreach ( $answers as $answer_item) {
-			$key = array_search( $answer_item , $answers_original );
-			$answers_kvpair[$key] = $answer_item;
+		foreach ( $answers as $answer_item ) {
+			$key                    = array_search( $answer_item, $answers_original, true );
+			$answers_kvpair[ $key ] = $answer_item;
 		}
-		unset($answer_item);
+		unset( $answer_item );
 		$answers = $answers_kvpair;
 
 		/**
@@ -643,11 +643,11 @@ class QMNPluginHelper {
 	 * @param  string $function The function that displays the tab's content
 	 * @return void
 	 */
-	public function register_quiz_settings_tabs( $title, $function, $slug = "" ) {
-		if ( "" === $slug ) {
+	public function register_quiz_settings_tabs( $title, $function, $slug = '' ) {
+		if ( '' === $slug ) {
 			$slug = strtolower( str_replace( ' ', '-', $title ) );
 		}
-		$new_tab = array(
+		$new_tab               = array(
 			'title'    => $title,
 			'function' => $function,
 			'slug'     => $slug,
@@ -839,7 +839,9 @@ class QMNPluginHelper {
 		$simple_answer    = "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
 		$html             = str_replace( '<br/>', '<br>', $html );
 		$html             = str_replace( '<br />', '<br>', $html );
+		$html             = str_replace( '<span class="qmn_user_incorrect_answer">', "<span style='color:red'>&#x2715; ", $html );
 		$html             = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $html );
+		$html             = str_replace( '<span class="qmn_user_correct_answer">', "<span style='color:green'>&#10003; ", $html );
 		$html             = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $html );
 		$html             = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $html );
 		$html             = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $html );

@@ -368,7 +368,7 @@ function qsm_options_questions_tab_content() {
 													</label>
 													<select name="question_type" id="question_type">
 														<?php
-														foreach( $question_types_categorized as $category_name => $category_items ){
+														foreach ( $question_types_categorized as $category_name => $category_items ) {
 															?>
 															<optgroup label="<?php echo esc_attr( $category_name ) ?>">
 																<?php
