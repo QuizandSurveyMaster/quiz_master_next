@@ -50,7 +50,7 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		if ( $total_user_answers <= $total_correct_answer ) {
 			foreach ( $this->user_answer as $user_answer ) {
 				$answer_key = array_search( $this->prepare_for_string_matching( $user_answer ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
-				if ( $answer_key ) {
+				if ( false !== $answer_key ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[$answer_key][2];
 				} else {
@@ -60,7 +60,7 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		} else {
 			foreach ( $this->correct_answer as $correct_answer ) {
 				$answer_key = array_search( $this->prepare_for_string_matching( $correct_answer ),  array_map( array( $this, 'prepare_for_string_matching' ), $this->user_answer ), true );
-				if ( $answer_key ) {
+				if ( false !== $answer_key ) {
 					$this->answer_status = 'correct';
 					$this->points       += $this->answer_array[$answer_key][2];
 				} else {
