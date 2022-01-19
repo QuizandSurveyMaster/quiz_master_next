@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 abstract class QSM_Question_Review {
-	public $question_id          = 0;
-	public $answer_array         = array();
-	public $user_answer          = array();
-	public $correct_answer       = array();
-	public $answer_status        = 'incorrect';
-	public $points               = 0;
-	public $question_description = '';
-	public $input_field          = '';
+	private $question_id          = 0;
+	private $answer_array         = array();
+	private $user_answer          = array();
+	private $correct_answer       = array();
+	private $answer_status        = 'incorrect';
+	private $points               = 0;
+	private $question_description = '';
+	private $input_field          = '';
 
 	function __construct( $question_id = 0, $question_description = '', $answer_array = array() ) {
 		global $mlwQuizMasterNext;

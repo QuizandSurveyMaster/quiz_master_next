@@ -11,29 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-/*
-Results Array For Reference:
+//Template variable files
+include 'template-variables/qsm-tempvar-question-answers.php';
+//Template variable files for backward compatibility ( @since QSM 7.3.8 )
+include 'backward-compatibility/qsm-backward-compatibility-template-variables.php';
 
-$mlw_qmn_result_array = array(
-'quiz_id' => $mlw_quiz_id,
-'quiz_name' => $mlw_quiz_options->quiz_name,
-'quiz_system' => $mlw_quiz_options->system,
-'total_points' => $mlw_points,
-'total_score' => $mlw_total_score,
-'total_correct' => $mlw_correct,
-'total_questions' => $mlw_total_questions,
-'user_name' => $mlw_user_name,
-'user_business' => $mlw_user_comp,
-'user_email' => $mlw_user_email,
-'user_phone' => $mlw_user_phone,
-'user_id' => get_current_user_id(),
-'question_answers_display' => $mlw_question_answers,
-'question_answers_array' => $mlw_qmn_answer_array,
-'timer' => $mlw_qmn_timer,
-'comments' => $mlw_qm_quiz_comments
-);
-
- */
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_all_contact_fields_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_contact_field_variable', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qmn_variable_category_points', 10, 2 );
@@ -936,7 +918,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
 			if ( 'correct' === $answer['correct'] ) {
-				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
+				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';// todo: email inline css
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
 				$user_answer_class     = 'qmn_user_incorrect_answer';
@@ -1100,35 +1082,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} else {
 					if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 						if ( isset( $answer['question_type'] ) && ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) ) {
-							foreach ( $total_answers as $single_answer_key => $single_answer ) {
-								$current_answer_key  = $single_answer_key;
-								$user_answer_keys    = array_keys( $answer['user_answer'] );
-								$correct_answer_keys = array_keys( $answer['correct_answer'] );
-								$is_answer_correct   = false;
-								$is_user_answer      = false;
-								if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
-									$is_answer_correct = true;
-								}
-								if ( in_array( $current_answer_key, $user_answer_keys, true) ) {
-									$is_user_answer    = true;
-								}
-								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
-									$image_class      = 'qmn_image_option';
-								} else {
-									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
-									$image_class      = '';
-								}
-								if ( $is_user_answer && $is_answer_correct ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( ! $is_user_answer && $is_answer_correct ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								} elseif ( $is_user_answer && ! $is_answer_correct ) {
-									$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								} else {
-									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								}
+							if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
+							} else {
+								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $total_answers, $answer, $question_settings );
 							}
 						} else {
 							if ( 13 == $answer['question_type'] ) {
@@ -1137,55 +1094,19 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 							} else {
-								foreach ( $total_answers as $single_answer_key => $single_answer ) {
-									$current_answer_key  = $single_answer_key;
-									$user_answer_keys    = array_keys( $answer['user_answer'] );
-									$correct_answer_keys = array_keys( $answer['correct_answer'] );
-									$is_answer_correct   = false;
-									$is_user_answer      = false;
-									if ( in_array( $current_answer_key, $correct_answer_keys, true ) ) {
-                                        $is_answer_correct = true;
-									}
-									if ( in_array( $current_answer_key, $user_answer_keys, true) ) {
-										$is_user_answer    = true;
-									}
-									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
-										$image_class      = 'qmn_image_option';
-									} else {
-										$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
-									}
-									if ( $is_user_answer && $is_answer_correct ) {
-										$question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( ! $is_user_answer && $is_answer_correct ) {
-										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									} elseif ( $is_user_answer && ! $is_answer_correct ) {
-										$question_with_answer_text .= '<span class="qsm-text-wrong-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									} else {
-										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									}
+								if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+									$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
+								} else {
+									$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $total_answers, $answer, $question_settings );
 								}
 							}
 						}
 					} else {
 						if ( isset( $answer['question_type'] ) && ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) ) {
-							foreach ( $total_answers as $single_answer_key => $single_answer ) {
-								$image_class = '';
-								if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-									$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
-									$image_class      = 'qmn_image_option';
-								} else {
-									$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
-									$image_class      = '';
-								}
-								$current_answer_key  = $single_answer_key;
-								$user_answer_keys    = array_keys( $answer['user_answer'] );
-								if ( in_array( $current_answer_key, $user_answer_keys , true ) ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								} else {
-									$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
-								}
+							if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
+							} else {
+								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $total_answers, $answer, $question_settings );
 							}
 						} else {
 							if ( 13 == $answer['question_type'] ) {
@@ -1196,22 +1117,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$question_type = $answer['question_type'];
 								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 							} else {
-								foreach ( $total_answers as $single_answer_key => $single_answer ) {
-									$image_class = '';
-									if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-										$show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
-										$image_class      = 'qmn_image_option';
-									} else {
-										$show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
-										$image_class      = '';
-									}
-									$current_answer_key  = $single_answer_key;
-									$user_answer_keys    = array_keys( $answer['user_answer'] );
-									if ( in_array( $current_answer_key, $user_answer_keys , true ) ) {
-										$question_with_answer_text .= '<span class="qsm-text-correct-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									} else {
-										$question_with_answer_text .= '<span class="qsm-text-simple-option ' . $image_class . '">' . $show_user_answer . '</span>';
-									}
+								if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+									$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
+								} else {
+									$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $total_answers, $answer, $question_settings );
 								}
 							}
 						}

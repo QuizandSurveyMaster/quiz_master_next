@@ -1804,6 +1804,9 @@ class QMNQuizManager {
 									$question_text = $results_array['question_text'];
 								}
 
+								$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
+								$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+
 								// Save question data into new array in our array
 								$question_data[] = apply_filters(
 									'qmn_answer_array',
@@ -1812,8 +1815,8 @@ class QMNQuizManager {
 										htmlspecialchars( $user_answer, ENT_QUOTES ),
 										htmlspecialchars( $correct_answer, ENT_QUOTES ),
 										$comment,
-										'user_answer'     => $results_array['user_answer'],
-										'correct_answer'  => $results_array['correct_answer'],
+										'user_answer'     => $user_answer_array,
+										'correct_answer'  => $correct_answer_array,
 										'correct'         => $correct_status,
 										'id'              => $question['question_id'],
 										'points'          => $answer_points,
@@ -1885,6 +1888,8 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
+							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
+							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array
 							$question_data[] = apply_filters(
@@ -1894,8 +1899,8 @@ class QMNQuizManager {
 									htmlspecialchars( $user_answer, ENT_QUOTES ),
 									htmlspecialchars( $correct_answer, ENT_QUOTES ),
 									$comment,
-									'user_answer'       => $results_array['user_answer'],
-									'correct_answer'    => $results_array['correct_answer'],
+									'user_answer'       => $user_answer_array,
+									'correct_answer'    => $correct_answer_array,
 									'correct'           => $correct_status,
 									'id'                => $question['question_id'],
 									'points'            => $answer_points,
