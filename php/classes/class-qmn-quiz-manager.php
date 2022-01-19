@@ -23,6 +23,18 @@ class QMNQuizManager {
 	 * @since 7.3.5
 	 */
 	public $common_css      = QSM_PLUGIN_CSS_URL . '/common.css';
+	/*
+	* Default MathJax inline scripts.
+	*/
+	public static $default_MathJax_script = "MathJax = {
+		tex: {
+		  inlineMath: [['$','$'],['\\\\(','\\\\)']],
+		  processEscapes: true
+		},
+		options: {
+		  ignoreHtmlClass: 'tex2jax_ignore|editor-rich-text'
+		}
+	  };";
 	public $mathjax_url     = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
 	public $mathjax_version = '3.2.0';
 
@@ -316,6 +328,7 @@ class QMNQuizManager {
 			wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
 			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 			wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
+			wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			$query            = $wpdb->prepare( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id );
 			$result           = $wpdb->get_row( $query, ARRAY_A );
@@ -477,6 +490,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 				wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
+				wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
 				$response_data = array(
 					'quiz_id'                => $result_data['quiz_id'],
@@ -774,6 +788,7 @@ class QMNQuizManager {
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
+		wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
 		global $mlw_qmn_section_count;

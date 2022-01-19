@@ -118,6 +118,19 @@ class MLWQuizMasterNext {
 	 */
 	public $quiz = array();
 
+	/*
+	* Default MathJax inline scripts.
+	*/
+	public static $default_MathJax_script = "MathJax = {
+		tex: {
+		  inlineMath: [['$','$'],['\\\\(','\\\\)']],
+		  processEscapes: true
+		},
+		options: {
+		  ignoreHtmlClass: 'tex2jax_ignore|editor-rich-text'
+		}
+	  };";
+
 	/**
 	 * Main Construct Function
 	 *
@@ -282,6 +295,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL . '/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+			wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 			wp_enqueue_script( 'jquery-ui-slider' );
 			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true );
 			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $this->version );
@@ -313,6 +327,7 @@ class MLWQuizMasterNext {
 				case 'emails':
 				case 'results-pages':
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 					break;
@@ -332,11 +347,13 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 					break;
 				default:
 					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
 					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
+					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 					break;
