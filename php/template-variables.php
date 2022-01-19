@@ -1155,7 +1155,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $qsm_user_ans, $mlw_question_answer_display );
 	} else {
 		$user_answer_new = $answer[1];
-		if ( ( 0 == $answer['question_type'] || 1 == $answer['question_type'] || 2 == $answer['question_type'] ) && '' === $answer[1] ) {
+		$is_choice_question_type = ( 0 == $answer['question_type'] || 1 == $answer['question_type'] || 2 == $answer['question_type'] || 4 == $answer['question_type'] || 10 == $answer['question_type'] );
+		if ( $is_choice_question_type && '' === $answer[1 ] ) {
 			$user_answer_new = __( 'No Answer Provided', 'quiz-master-next' );
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {

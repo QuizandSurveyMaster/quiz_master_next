@@ -9,7 +9,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 		parent::__construct( $question_id, $question_title_old, $answer_array );
 	}
 
-	public function set_user_answer() {
+	protected function set_user_answer() {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_response = isset( $_POST[ 'question' . $this->question_id ] ) ? wp_unslash( $_POST[ 'question' . $this->question_id ] ) : null ; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( is_array( $user_response ) ) {
@@ -26,7 +26,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 		}
 	}
 
-	public function set_answer_status() {
+	protected function set_answer_status() {
 		foreach ( $this->user_answer as $user_answer_key => $user_answer_value ) {
 			if ( in_array( $user_answer_key, array_keys( $this->correct_answer ), true ) ) {
 				$this->answer_status = 'correct';

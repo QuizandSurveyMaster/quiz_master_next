@@ -16,7 +16,7 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		}
 	}
 
-	public function set_user_answer() {
+	protected function set_user_answer() {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_response = wp_unslash( $_POST[ 'question' . $this->question_id ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			foreach ( $user_response as $user_answer_key => $user_answer_value ) {
@@ -34,7 +34,7 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		}
 	}
 
-	public function set_answer_status() {
+	protected function set_answer_status() {
 		global $mlwQuizMasterNext;
 		$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'matchAnswer' );
 		if ( 'sequence' === $match_answer ) {

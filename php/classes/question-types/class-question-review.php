@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 abstract class QSM_Question_Review {
-	private $question_id          = 0;
-	private $answer_array         = array();
-	private $user_answer          = array();
-	private $correct_answer       = array();
-	private $answer_status        = 'incorrect';
-	private $points               = 0;
-	private $question_description = '';
-	private $input_field          = '';
+	protected $question_id          = 0;
+	protected $answer_array         = array();
+	protected $user_answer          = array();
+	protected $correct_answer       = array();
+	protected $answer_status        = 'incorrect';
+	protected $points               = 0;
+	protected $question_description = '';
+	protected $input_field          = '';
 
 	function __construct( $question_id = 0, $question_description = '', $answer_array = array() ) {
 		global $mlwQuizMasterNext;
@@ -25,7 +25,7 @@ abstract class QSM_Question_Review {
 		$this->set_answer_status();
 	}
 
-	public function sanitize_answer_from_post( $data, $type = 'text' ) {
+	protected function sanitize_answer_from_post( $data, $type = 'text' ) {
 		if ( 'text_area' === $type ) {
 			return sanitize_textarea_field( wp_unslash( $data ) );
 		} else {
@@ -33,7 +33,7 @@ abstract class QSM_Question_Review {
 		}
 	}
 
-	public function sanitize_answer_from_db( $data, $type = 'text' ) {
+	protected function sanitize_answer_from_db( $data, $type = 'text' ) {
 		if ( 'text_area' === $type ) {
 			return trim( stripslashes( htmlspecialchars_decode( sanitize_textarea_field( $data ), ENT_QUOTES ) ) );
 		} else {
@@ -41,18 +41,18 @@ abstract class QSM_Question_Review {
 		}
 	}
 
-	public function decode_response_from_text_field( $data ) {
+	protected function decode_response_from_text_field( $data ) {
 		return trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', htmlspecialchars_decode( $data, ENT_QUOTES ) ) ) );
 	}
 
 
-	public function prepare_for_string_matching( $data ) {
+	protected function prepare_for_string_matching( $data ) {
 		return mb_strtoupper( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $data ) ) );
 	}
 
-	abstract public function set_user_answer();
+	abstract protected function set_user_answer();
 
-	public function set_correct_answer() {
+	protected function set_correct_answer() {
 		foreach ( $this->answer_array as $answer_key => $answer_value ) {
 			if ( 1 === intval( $answer_value[2] ) ) {
 				$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0], $this->input_field );
@@ -60,7 +60,7 @@ abstract class QSM_Question_Review {
 		}
 	}
 
-	abstract public function set_answer_status();
+	abstract protected function set_answer_status();
 
 	public function get_user_answer() {
 		return $this->user_answer;
