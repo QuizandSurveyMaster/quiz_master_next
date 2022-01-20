@@ -276,6 +276,7 @@ function mlw_qmn_variable_point_score( $content, $mlw_quiz_array ) {
 	$content = str_replace( '%POINT_SCORE%', ( isset( $mlw_quiz_array['total_points'] ) ? $mlw_quiz_array['total_points'] : '' ), $content );
 	return $content;
 }
+
 function mlw_qmn_variable_average_point( $content, $mlw_quiz_array ) {
 	$question_total = 0;
 	if ( isset( $mlw_quiz_array['question_answers_array'] ) ) {
@@ -1082,7 +1083,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				} else {
 					if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 						if ( isset( $answer['question_type'] ) && ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) ) {
-							if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
 							} else {
 								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $total_answers, $answer, $question_settings );
@@ -1094,7 +1095,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
 								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 							} else {
-								if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+								if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 									$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
 								} else {
 									$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $total_answers, $answer, $question_settings );
@@ -1103,7 +1104,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						}
 					} else {
 						if ( isset( $answer['question_type'] ) && ( 4 == $answer['question_type'] || 10 == $answer['question_type'] ) ) {
-							if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+							if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 								$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
 							} else {
 								$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $total_answers, $answer, $question_settings );
@@ -1117,7 +1118,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								$question_type = $answer['question_type'];
 								$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 							} else {
-								if( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ){
+								if ( isset( $answer['user_answer'] ) && isset( $answer['correct_answer'] ) ) {
 									$question_with_answer_text .= qsm_tempvar_qa_text_qt_choice( $total_answers, $answer, $quiz_system, $question_settings );
 								} else {
 									$question_with_answer_text .= qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $total_answers, $answer, $question_settings );
@@ -1155,8 +1156,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		$mlw_question_answer_display = str_replace( '%USER_ANSWER%', $qsm_user_ans, $mlw_question_answer_display );
 	} else {
 		$user_answer_new = $answer[1];
-		$is_choice_question_type = ( 0 == $answer['question_type'] || 1 == $answer['question_type'] || 2 == $answer['question_type'] || 4 == $answer['question_type'] || 10 == $answer['question_type'] );
-		if ( $is_choice_question_type && '' === $answer[1 ] ) {
+		$is_choice_question_type = 0 == $answer['question_type'] || 1 == $answer['question_type'] || 2 == $answer['question_type'] || 4 == $answer['question_type'] || 10 == $answer['question_type'] ;
+		if ( $is_choice_question_type && '' === $answer[1] ) {
 			$user_answer_new = __( 'No Answer Provided', 'quiz-master-next' );
 		}
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {

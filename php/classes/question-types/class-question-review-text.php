@@ -9,16 +9,16 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
 		parent::__construct( $question_id, $question_title_old, $answer_array );
 	}
 
-	protected function set_user_answer() {
+	public function set_user_answer() {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_answer_key                       = 'input';
-			$user_answer_value                     = $this->sanitize_answer_from_post( wp_unslash( $_POST[ 'question' . $this->question_id ], 'text_area' ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$user_answer_value                     = $this->sanitize_answer_from_post( wp_unslash( $_POST[ 'question' . $this->question_id ] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			$user_answer_value                     = $this->decode_response_from_text_field( $user_answer_value );
 			$this->user_answer[ $user_answer_key ] = $user_answer_value;
 		}
 	}
 
-    protected function set_answer_status() {
+    public function set_answer_status() {
         $user_answer_value = $this->user_answer['input'];
         $answer_key        = array_search( $this->prepare_for_string_matching( $user_answer_value ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
         if ( false !== $answer_key ) {

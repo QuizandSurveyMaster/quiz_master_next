@@ -1804,8 +1804,8 @@ class QMNQuizManager {
 									$question_text = $results_array['question_text'];
 								}
 
-								$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
-								$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
+								$user_answer_array    = isset( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
+								$correct_answer_array = isset( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 								// Save question data into new array in our array
 								$question_data[] = apply_filters(

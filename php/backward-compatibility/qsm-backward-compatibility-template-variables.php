@@ -1,6 +1,6 @@
 <?php
 
-function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $answers_from_response, $question_settings ){
+function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';
     $user_selected_answer  = htmlspecialchars_decode( $answers_from_response[1], ENT_QUOTES );
     $new_array_user_answer = isset( $answers_from_response['user_compare_text'] ) ? explode( '=====', $answers_from_response['user_compare_text'] ) : array();
@@ -38,7 +38,7 @@ function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $
     return $question_with_answer_text;
 }
 
-function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, $answers_from_response, $question_settings ){
+function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';
     foreach ( $answers_from_db as $single_answer ) {
         $single_answer_option = $single_answer[0];
@@ -80,10 +80,10 @@ function qsm_bckcmp_tempvar_qa_text_qt_single_choice_correct( $answers_from_db, 
     return $question_with_answer_text;
 }
 
-function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $answers_from_db, $answers_from_response, $question_settings ){
+function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';
     $user_selected_answer = htmlspecialchars_decode( $answers_from_response[1], ENT_QUOTES );
-    foreach ( $total_answers as $single_answer ) {
+    foreach ( $answers_from_db as $single_answer ) {
         $image_class = '';
         if ( isset( $question_settings['answerEditor'] ) && $question_settings['answerEditor'] == 'image' ) {
             $show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
@@ -101,7 +101,7 @@ function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_points( $answers_from_db, $a
     return $question_with_answer_text;
 }
 
-function qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $answers_from_db, $answers_from_response, $question_settings ){
+function qsm_bckcmp_tempvar_qa_text_qt_single_choice_points( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';
     foreach ( $answers_from_db as $single_answer ) {
         $image_class = '';

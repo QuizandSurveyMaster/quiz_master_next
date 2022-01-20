@@ -16,11 +16,11 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 		}
 	}
 
-	protected function set_user_answer() {
+	public function set_user_answer() {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_response = wp_unslash( $_POST[ 'question' . $this->question_id ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			foreach ( $user_response as $user_answer_key => $user_answer_value ) {
-				$user_answer_value                     = $this->sanitize_answer_from_post( $user_answer_value, 'text' );
+				$user_answer_value                     = $this->sanitize_answer_from_post( $user_answer_value );
 				$user_answer_value                     = $this->decode_response_from_text_field( $user_answer_value );
 				$this->user_answer[ $user_answer_key ] = $user_answer_value;
 			}
@@ -30,11 +30,11 @@ class QSM_Question_Review_Fill_In_Blanks extends QSM_Question_Review {
 
 	public function set_correct_answer() {
 		foreach ( $this->answer_array as $answer_key => $answer_value ) {
-			$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0], $this->input_field );
+			$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0] );
 		}
 	}
 
-	protected function set_answer_status() {
+	public function set_answer_status() {
 		global $mlwQuizMasterNext;
 		$match_answer = $mlwQuizMasterNext->pluginHelper->get_question_setting( $this->question_id, 'matchAnswer' );
 		if ( 'sequence' === $match_answer ) {

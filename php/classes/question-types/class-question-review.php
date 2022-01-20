@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 abstract class QSM_Question_Review {
-	protected $question_id          = 0;
-	protected $answer_array         = array();
-	protected $user_answer          = array();
-	protected $correct_answer       = array();
-	protected $answer_status        = 'incorrect';
-	protected $points               = 0;
-	protected $question_description = '';
-	protected $input_field          = '';
+	public $question_id          = 0;
+	public $answer_array         = array();
+	public $user_answer          = array();
+	public $correct_answer       = array();
+	public $answer_status        = 'incorrect';
+	public $points               = 0;
+	public $question_description = '';
+	public $input_field          = '';
 
 	function __construct( $question_id = 0, $question_description = '', $answer_array = array() ) {
 		global $mlwQuizMasterNext;
@@ -25,42 +25,50 @@ abstract class QSM_Question_Review {
 		$this->set_answer_status();
 	}
 
-	protected function sanitize_answer_from_post( $data, $type = 'text' ) {
-		if ( 'text_area' === $type ) {
+	public function sanitize_answer_from_post( $data ) {
+		if ( 'text_area' === $this->input_field ) {
 			return sanitize_textarea_field( wp_unslash( $data ) );
 		} else {
 			return sanitize_text_field( wp_unslash( $data ) );
 		}
 	}
 
-	protected function sanitize_answer_from_db( $data, $type = 'text' ) {
-		if ( 'text_area' === $type ) {
+	public function sanitize_answer_from_db( $data ) {
+		if ( 'text_area' === $this->input_field ) {
 			return trim( stripslashes( htmlspecialchars_decode( sanitize_textarea_field( $data ), ENT_QUOTES ) ) );
 		} else {
 			return trim( stripslashes( htmlspecialchars_decode( sanitize_text_field( $data ), ENT_QUOTES ) ) );
 		}
 	}
 
-	protected function decode_response_from_text_field( $data ) {
-		return trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', htmlspecialchars_decode( $data, ENT_QUOTES ) ) ) );
+	public function decode_response_from_text_field( $data ) {
+		if ( 'text_area' === $this->input_field ) {
+			return trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', htmlspecialchars_decode( $data, ENT_QUOTES ) ) ) );
+		} else {
+			return trim( htmlspecialchars_decode( $data, ENT_QUOTES ) );
+		}
 	}
 
 
-	protected function prepare_for_string_matching( $data ) {
-		return mb_strtoupper( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $data ) ) );
+	public function prepare_for_string_matching( $data ) {
+		if ( 'text_area' === $this->input_field ) {
+			return mb_strtoupper( str_replace( ' ', '', preg_replace( '/\s\s+/', '', $data ) ) );
+		} else {
+			return mb_strtoupper( $data );
+		}
 	}
 
-	abstract protected function set_user_answer();
+	abstract public function set_user_answer();
 
-	protected function set_correct_answer() {
+	public function set_correct_answer() {
 		foreach ( $this->answer_array as $answer_key => $answer_value ) {
 			if ( 1 === intval( $answer_value[2] ) ) {
-				$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0], $this->input_field );
+				$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0] );
 			}
 		}
 	}
 
-	abstract protected function set_answer_status();
+	abstract public function set_answer_status();
 
 	public function get_user_answer() {
 		return $this->user_answer;
