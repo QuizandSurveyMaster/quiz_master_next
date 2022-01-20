@@ -438,17 +438,6 @@ function qsm_options_questions_tab_content() {
 														'default' => 'random',
 														'show' => '14' . $show_match_answer,
 													),
-													'text-answer-editor' => array(
-														'label' => __( 'Answers Type', 'quiz-master-next' ),
-														'type' => 'select',
-														'priority' => '4',
-														'options' => array(
-															'text' => __( 'Text Answers', 'quiz-master-next' ),
-														),
-														'default' => 'text',
-														'show' => '2' . $show_change_answer_editor,
-														'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Answer-Type',
-													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
 												$keys                   = array_column( $simple_question_option, 'priority' );
