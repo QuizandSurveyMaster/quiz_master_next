@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.8
+Stable tag: 7.3.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -158,6 +158,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 16. QSM Ivory Theme
 17. QSM Pool Theme
 18. Database
+
+== Changelog ==
+= 7.3.9 (January 20, 2022) =
+* Hotfix: Issues with markup in email
+* Hotfix: Issues with quiz review for blank submissions
+* Hotfix: Issues with question/average points/score template variable
+* Hotfix: Issues with result items on admin dashboard
 
 == Changelog ==
 = 7.3.8 (January 18, 2022) =
