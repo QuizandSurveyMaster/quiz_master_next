@@ -663,7 +663,9 @@ Upgrade to fix cut submit button on mobile issue
 
 If you like this plugin, consider exploring our other plugins:
 
-☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
+☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
+
+🔒 [Hide My WP](https://hidemywp.net/) - Makes it impossible for a hacker or an attacker to know the location of login url. 
 
 📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
 
@@ -671,5 +673,5 @@ If you like this plugin, consider exploring our other plugins:
 
 ⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
 
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
+
 
