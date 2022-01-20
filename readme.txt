@@ -672,6 +672,3 @@ If you like this plugin, consider exploring our other plugins:
 📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
 
 ⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
-
-
-
