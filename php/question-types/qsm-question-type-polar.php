@@ -41,6 +41,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 	} else {
 		$mlw_require_class = '';
 	}
+	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 
 	?>
