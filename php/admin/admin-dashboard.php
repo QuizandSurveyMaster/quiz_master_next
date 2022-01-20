@@ -109,7 +109,7 @@ function qsm_generate_dashboard_page() {
 ?>
 <div class="wrap">
 	<h1><?php esc_html_e( 'QSM Dashboard', 'quiz-master-next' ); ?></h1>
-	<div id="welcome_panel" class="postbox welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
+	<div id="welcome_panel" class="postbox qsm_dashboard_page welcome-panel <?php qsm_check_close_hidden_box( 'welcome_panel' ); ?>">
 		<div class="qsm-welcome-panel-close">
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
 			<p class="current_version"><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
