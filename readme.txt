@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 7.3.8
+Stable tag: 7.3.9
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,10 +100,19 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-= More free plugins for your WordPress Site =
+🌐Our Plugins
 
-* 🎨 [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
-* 🔒 [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
+If you like this plugin, consider exploring our other plugins:
+
+☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
+
+📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
+
+📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
+
+⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
+
+🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
 
 == Installation ==
 
@@ -149,6 +158,13 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 16. QSM Ivory Theme
 17. QSM Pool Theme
 18. Database
+
+== Changelog ==
+= 7.3.9 (January 20, 2022) =
+* Hotfix: Issues with markup in email
+* Hotfix: Issues with quiz review for blank submissions
+* Hotfix: Issues with question/average points/score template variable
+* Hotfix: Issues with result items on admin dashboard
 
 == Changelog ==
 = 7.3.8 (January 18, 2022) =

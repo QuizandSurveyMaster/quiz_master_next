@@ -2215,6 +2215,11 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             },
             question_type_change: function (previous_question_val, questionID) {
                 //you can override this object
+                var ans_type = $('#change-answer-editor').val();
+                if (2 == questionID && 'text' !== ans_type){
+                    $('#change-answer-editor').val('text');
+                    $('.answers-single').remove();
+                }
             }
         };
 
