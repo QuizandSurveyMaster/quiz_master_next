@@ -2,7 +2,6 @@
 
 function qsm_bckcmp_tempvar_qa_text_qt_multi_choice_correct( $answers_from_db, $answers_from_response, $question_settings ) {
     $question_with_answer_text = '';
-    $user_selected_answer  = htmlspecialchars_decode( $answers_from_response[1], ENT_QUOTES );
     $new_array_user_answer = isset( $answers_from_response['user_compare_text'] ) ? explode( '=====', $answers_from_response['user_compare_text'] ) : array();
     foreach ( $answers_from_db as $single_answer ) {
         $current_answer_text = trim( stripslashes( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) ) );

@@ -61,7 +61,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_minimum_poin
  * Changed the display structure to new structure.
  *
  * @since 6.4.11
- * @param str   $content
+ * @param string   $content
  * @param array $mlw_quiz_array
  * Show particular question answer.
  */
@@ -144,8 +144,8 @@ function qsm_variable_total_attempted_questions( $content, $mlw_quiz_array ) {
 /**
  * Show poll result
  *
- * @param str $content
- * @param arr $mlw_quiz_array
+ * @param string $content
+ * @param array $mlw_quiz_array
  */
 function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 	$quiz_id = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
@@ -193,8 +193,8 @@ function qsm_variable_poll_result( $content, $mlw_quiz_array ) {
 /**
  * Show Answer type evaluated
  *
- * @param str $answer
- * @param arr $question_settings
+ * @param string $answer
+ * @param array $question_settings
  */
 function qsm_answers_type_evaluated( $answer, $question_settings ) {
 	if ( 'rich' === $question_settings['answerEditor'] ) {
@@ -869,9 +869,9 @@ add_filter( 'wp_kses_allowed_html', 'qsm_custom_wpkses_post_tags', 10, 2 );
  *
  * @since 7.1.3
  *
- * @param  arr $mlw_quiz_array
- * @param  str $qmn_question_answer_template
- * @param  str $answer
+ * @param  array $mlw_quiz_array
+ * @param  string $qmn_question_answer_template
+ * @param  string $answer
  * @param  int $qsm_question_cnt
  * @param  int $total_question_cnt
  * @return string
@@ -919,7 +919,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
 			if ( 'correct' === $answer['correct'] ) {
-				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';// todo: email inline css
+				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
 				$user_answer_class     = 'qmn_user_incorrect_answer';
