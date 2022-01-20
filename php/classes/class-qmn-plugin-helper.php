@@ -839,10 +839,6 @@ class QMNPluginHelper {
 		$simple_answer    = "<span style='color:#808080;display:block;margin-bottom:5px;'>&#8226;&nbsp;";
 		$html             = str_replace( '<br/>', '<br>', $html );
 		$html             = str_replace( '<br />', '<br>', $html );
-		$html             = str_replace( '<span class="qmn_user_incorrect_answer">', "<span style='color:red'>&#x2715; ", $html );
-		$html             = str_replace( "<span class='qmn_user_incorrect_answer'>", "<span style='color:red'>&#x2715; ", $html );
-		$html             = str_replace( '<span class="qmn_user_correct_answer">', "<span style='color:green'>&#10003; ", $html );
-		$html             = str_replace( "<span class='qmn_user_correct_answer'>", "<span style='color:green'>&#10003; ", $html );
 		$html             = str_replace( '<span class="qsm-text-wrong-option qmn_image_option">', "$incorrect_answer ", $html );
 		$html             = str_replace( '<span class="qsm-text-correct-option qmn_image_option">', "$correct_answer ", $html );
 		$html             = str_replace( '<span class="qsm-text-correct-option qsm-text-user-correct-answer qmn_image_option">', "$correct_answer ", $html );
@@ -852,7 +848,7 @@ class QMNPluginHelper {
 		$html             = str_replace( '<span class="qsm-text-wrong-option ">', "$incorrect_answer ", $html );
 		$html             = str_replace( '<span class="qsm-text-correct-option ">', "$correct_answer ", $html );
 		$html             = str_replace( '<span class="qmn_user_incorrect_answer">', "$incorrect_answer ", $html );
-		$html             = str_replace( '<span class="qmn_user_incorrect_answer">', "$correct_answer ", $html );
+		$html             = str_replace( '<span class="qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer">', "$correct_answer ", $html );
 		$html             = str_replace( "class='qmn_question_answer", "style='margin-bottom:30px' class='", $html );
 
 		return $html;
@@ -869,18 +865,18 @@ class QMNPluginHelper {
 				if ( 'others' === mb_strtolower( $question_type ['category'] ) ) {
 					$question_type_others[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
 						'slug' => $question_type['slug'],
-						'name' => $question_type['name'],                    
+						'name' => $question_type['name'],
 					);
 				} else {
 					$question_type_categorized[ $question_type ['category'] ] [ $question_type['slug'] ] = array(
 						'slug' => $question_type['slug'],
-						'name' => $question_type['name'],                    
+						'name' => $question_type['name'],
 					);
-				}       
+				}
 			} else {
 				$question_type_uncategorized['uncategorized'][ $question_type['slug'] ] = array(
 					'slug' => $question_type['slug'],
-					'name' => $question_type['name'],                    
+					'name' => $question_type['name'],
 				);
 
 			}
