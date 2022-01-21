@@ -337,7 +337,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_t
 	<input type="hidden" name="bulk_permanent_delete" id="bulk_permanent_delete" value="0" />
 	<?php wp_nonce_field( 'bulk_delete', 'bulk_delete_nonce' );
 
-	$th_elements = array(
+	$th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array(
 		'score'         => __( 'Score', 'quiz-master-next' ),
 		'time_complete' => __( 'Time To Complete', 'quiz-master-next' ),
 		'name'          => __( 'Name', 'quiz-master-next' ),
@@ -349,7 +349,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_t
 		'ip'            => __( 'IP Address', 'quiz-master-next' ),
 		'page_name'     => __( 'Page Name', 'quiz-master-next' ),
 		'page_url'      => __( 'Page URL', 'quiz-master-next' ),
-	);
+	) );
 
 	$values = $quiz_infos = [];
 	foreach ( $th_elements as $key => $th ) {
@@ -357,7 +357,7 @@ if ( isset($_POST["results-screen_option_nonce"]) && wp_verify_nonce( sanitize_t
 		$values[ $key ]['style'] = "";
 	}
 
-	$custom_th_elements = apply_filters( 'mlw_qmn_admin_results_page_headings', array() );
+	$custom_th_elements = apply_filters( 'mlw_qmn_admin_results_page_custom_headings', array() );
 	foreach ( $custom_th_elements as $key => $th ) {
 		$values[ $key ]['title'] = $th;
 		$values[ $key ]['style'] = "";
