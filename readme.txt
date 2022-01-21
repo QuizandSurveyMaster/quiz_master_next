@@ -673,19 +673,4 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Upgrade Notice ==
 
 = 6.2.1 =
-Upgrade to fix cut submit button on mobile issue
-
-🌐Our Plugins
-
-If you like this plugin, consider exploring our other plugins:
-
-☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
-
-📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
-
-📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
-
-⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
-
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
-
+Upgrade to fix cut submit button on mobile issue.
