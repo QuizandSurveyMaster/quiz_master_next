@@ -23,7 +23,7 @@ class QSM_Question_Review_Text extends QSM_Question_Review {
         $answer_key        = array_search( $this->prepare_for_string_matching( $user_answer_value ), array_map( array( $this, 'prepare_for_string_matching' ), $this->correct_answer ), true );
         if ( false !== $answer_key ) {
             $this->answer_status = 'correct';
-            $this->points       += $this->answer_array[ $answer_key ][2];
+            $this->points       += $this->answer_array[ $answer_key ][1];
         }
     }
 }

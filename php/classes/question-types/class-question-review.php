@@ -12,6 +12,8 @@ abstract class QSM_Question_Review {
 	public $points               = 0;
 	public $question_description = '';
 	public $input_field          = '';
+	public $form_type            = 0;
+	public $grading_system       = 0;
 
 	function __construct( $question_id = 0, $question_description = '', $answer_array = array() ) {
 		global $mlwQuizMasterNext;
@@ -20,6 +22,9 @@ abstract class QSM_Question_Review {
 		$this->question_description = $question_description;
 		$this->question_type        = QSM_Questions::load_question_data( $this->question_id, 'question_type_new' );
 		$this->input_field          = $mlwQuizMasterNext->pluginHelper->question_types[ $this->question_type ]['input_field'];
+		$quiz_options               = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
+		$this->form_type            = intval( $quiz_options->form_type );
+		$this->grading_system       = intval( $quiz_options->system );
 		$this->set_user_answer();
 		$this->set_correct_answer();
 		$this->set_answer_status();
@@ -62,7 +67,9 @@ abstract class QSM_Question_Review {
 
 	public function set_correct_answer() {
 		foreach ( $this->answer_array as $answer_key => $answer_value ) {
-			if ( 1 === intval( $answer_value[2] ) ) {
+			if ( 1 === $this->grading_system ) {
+				$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0] );
+			} elseif ( 1 === intval( $answer_value[2] ) ) {
 				$this->correct_answer[ $answer_key ] = $this->sanitize_answer_from_db( $answer_value[0] );
 			}
 		}

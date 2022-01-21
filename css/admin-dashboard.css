@@ -1055,6 +1055,48 @@ h2.hndle.ui-sortable-handle {
 	box-shadow: 0 0 3px rgba(10, 10, 10, 0.2);
 }
 
+.qsm_dashboard_page .welcome-panel-column{
+	display: block;
+}
+
+.qsm_dashboard_page .welcome-panel h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 400;
+	color: #1d2327;
+    line-height: 1.2;
+}
+
+.qsm_dashboard_page .welcome-panel::before{
+	content: none;
+}
+
+.qsm_dashboard_page.postbox {
+    padding: 23px 10px 0;
+}
+
+.qsm_dashboard_page .welcome-panel-content {
+    margin-left: 13px;
+    min-height: auto;
+    display: block;
+}
+
+.qsm_dashboard_page .welcome-panel-column-container {
+    padding: 0 !important;
+    margin: 1.33em 0 0 !important;
+}
+
+.qsm_dashboard_page p.about-description {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #646970;
+}
+
+.qsm_dashboard_page .welcome-panel h3 {
+    margin: 1.33em 0 0;
+}
+
 @media screen and (min-width: 1200px) {
 	#quiz_settings_wrapper tr td fieldset>br {
 		display: none;
