@@ -520,8 +520,7 @@ function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_date( $content, $results ) {
-	global $mlw_quiz_array;
-	$date    = isset( $mlw_quiz_array['time_taken'] ) ? date_i18n( get_option( 'date_format' ), strtotime( $mlw_quiz_array['time_taken'] ) ) : '';
+	$date = date_i18n( get_option( 'date_format' ), wp_timezone_string() );
 	$content = str_replace( '%CURRENT_DATE%', $date, $content );
 	return $content;
 }
