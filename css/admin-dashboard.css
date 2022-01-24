@@ -1059,7 +1059,7 @@ h2.hndle.ui-sortable-handle {
 	display: block;
 }
 
-.qsm_dashboard_page .welcome-panel h2 {
+.qsm_dashboard_page.welcome-panel h2 {
     margin: 0;
     font-size: 21px;
     font-weight: 400;
@@ -1067,7 +1067,7 @@ h2.hndle.ui-sortable-handle {
     line-height: 1.2;
 }
 
-.qsm_dashboard_page .welcome-panel::before{
+.qsm_dashboard_page.welcome-panel::before{
 	content: none;
 }
 
