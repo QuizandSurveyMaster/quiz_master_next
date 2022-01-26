@@ -904,29 +904,29 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( isset( $mlw_quiz_array['form_type'] ) && 0 == $mlw_quiz_array['form_type'] ) {
 			if ( 0 == $mlw_quiz_array['quiz_system'] || 3 == $mlw_quiz_array['quiz_system'] ) {
 				if ( 'correct' === $answer['correct'] ) {
-					$user_answer_class     = 'qmn_user_correct_answer';
+					$user_answer_class = 'qmn_user_correct_answer';
 					$question_answer_class = 'qmn_question_answer_correct';
 				} else {
-					$user_answer_class     = 'qmn_user_incorrect_answer';
+					$user_answer_class = 'qmn_user_incorrect_answer';
 					$question_answer_class = 'qmn_question_answer_incorrect';
 				}
 			}
 		}
 	} else {
-		if ( isset( $mlw_quiz_array['form_type'] ) && '1' === $mlw_quiz_array['form_type'] ) {
-			$user_answer_class     = 'qmn_user_correct_answer';
+		if ( isset( $mlw_quiz_array['form_type'] ) && '1' === $mlw_quiz_array['form_type'] || '2' === $mlw_quiz_array['form_type'] ) {
+			$user_answer_class = 'qmn_user_correct_answer';
 			$question_answer_class = 'qmn_question_answer_correct';
 		} else {
 			if ( 'correct' === $answer['correct'] ) {
-				$user_answer_class     = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
+				$user_answer_class = 'qmn_user_correct_answer qsm-text-correct-option qsm-text-user-correct-answer';
 				$question_answer_class = 'qmn_question_answer_correct';
 			} else {
-				$user_answer_class     = 'qmn_user_incorrect_answer';
+				$user_answer_class = 'qmn_user_incorrect_answer';
 				$question_answer_class = 'qmn_question_answer_incorrect';
 			}
 		}
 	}
-	$open_span_tag                 = '<span class="' . $user_answer_class . '">';
+	$open_span_tag = '<span class="' . $user_answer_class . '">';
 	$mlw_question_answer_display   = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
