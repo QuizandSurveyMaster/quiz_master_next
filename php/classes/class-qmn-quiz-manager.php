@@ -785,6 +785,7 @@ class QMNQuizManager {
 					' out of ',
 					'quiz-master-next'
 				),
+				'quiz_time_over' => __( 'Quiz time is over.', 'quiz-master-next' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );

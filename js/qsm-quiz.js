@@ -201,7 +201,7 @@ var QSMPageTimer;
 				$(".mlw_answer_number").attr('readonly', true);
 
 				$quizForm.closest('.qmn_quiz_container').addClass('qsm_timer_ended');
-				$quizForm.closest('.qmn_quiz_container').prepend('<p class="qmn_error_message" style="color: red;">Quiz time is over</p>');
+				$quizForm.closest('.qmn_quiz_container').prepend('<p class="qmn_error_message" style="color: red;">' + qmn_ajax_object.quiz_time_over + '</p>');
 				if (qmn_quiz_data[quizID].enable_result_after_timer_end == 1) {
 					$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 				} else {
