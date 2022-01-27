@@ -9,7 +9,7 @@
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.9
+ * @version 7.3.10
  * @package QSM
  */
 

@@ -161,12 +161,12 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 7.3.10 (January 27, 2022) =
-* Enhancement: Checked compatibility with WordPress 5.9
+* Checked compatibility with WordPress 5.9
 * Bug: Fixed UI issues in QSM dashboard banner
 * Bug: Fixed CURRENT_DATE template variable with certificate addon
 * Bug: Fixed CATEGORY_SCORE_X template variable
-* Bug: Fixed Answers in Survey & Simple Form are marked with cross
-* Bug: Fixed Translation issues
+* Bug: Fixed incorrectly marked answers in survey & simple form
+* Bug: Fixed translation issues
 
 = 7.3.9 (January 20, 2022) =
 * Hotfix: Issues with markup in email
