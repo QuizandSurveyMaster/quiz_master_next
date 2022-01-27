@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.9
+Stable tag: 7.3.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,14 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.10 (January 27, 2022) =
+* Enhancement: Checked compatibility with WordPress 5.9
+* Bug: Fixed UI issues in QSM dashboard banner
+* Bug: Fixed CURRENT_DATE template variable with certificate addon
+* Bug: Fixed CATEGORY_SCORE_X template variable
+* Bug: Fixed Answers in Survey & Simple Form are marked with cross
+* Bug: Fixed Translation issues
+
 = 7.3.9 (January 20, 2022) =
 * Hotfix: Issues with markup in email
 * Hotfix: Issues with quiz review for blank submissions
