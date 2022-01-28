@@ -464,7 +464,7 @@ class QMNGlobalSettingsPage {
 		echo '<label class="switch">';
 			echo '<input type="checkbox" name="qmn-settings[tracking_allowed]" id="qmn-settings[tracking_allowed]" value="2"' . esc_attr( $checked ) . '/><span class="slider round"></span>';
 		echo '</label>';
-		echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
+		echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . esc_html__( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -486,7 +486,7 @@ class QMNGlobalSettingsPage {
 		echo '<label class="switch">';
 		echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
-		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . __( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -513,29 +513,29 @@ class QMNGlobalSettingsPage {
 			$d_class = 'nav-tab-active';
 		}
 		?>
-<div class="wrap">
-	<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
-	<h2 class="nav-tab-wrapper">
+		<div class="wrap">
+			<h2><?php esc_html_e( 'Global Settings', 'quiz-master-next' ); ?></h2>
+			<h2 class="nav-tab-wrapper">
 				<!-- when tab buttons are clicked we jump back to the same page but with a new parameter that represents the clicked tab. accordingly we make it active -->
 				<a href="?page=qmn_global_settings&tab=qmn_global_settings" class="nav-tab <?php echo esc_attr( $g_class ); ?> "><?php esc_html_e( 'Main Settings', 'quiz-master-next' ); ?></a>
 				<a href="?page=qmn_global_settings&tab=quiz-default-qptions" class="nav-tab <?php echo esc_attr( $d_class ); ?>"><?php esc_html_e( 'Quiz Default Options', 'quiz-master-next' ); ?></a>
 			</h2>
-	<form action="options.php" method="POST" class="qsm_global_settings">
-		<?php
-		if ( 'qmn_global_settings' === $active_tab ) {
-			settings_fields( 'qmn-settings-group' );
-			do_settings_sections( 'qmn_global_settings' );
-		}
-		?>
-		<?php
-		if ( 'quiz-default-qptions' === $active_tab ) {
-			settings_fields( 'qsm-quiz-settings-group' );
-			do_settings_sections( 'qsm_default_global_option' );
-		}
-		?>
-		<?php submit_button(); ?>
-	</form>
-</div>
+			<form action="options.php" method="POST" class="qsm_global_settings">
+				<?php
+				if ( 'qmn_global_settings' === $active_tab ) {
+					settings_fields( 'qmn-settings-group' );
+					do_settings_sections( 'qmn_global_settings' );
+				}
+				?>
+				<?php
+				if ( 'quiz-default-qptions' === $active_tab ) {
+					settings_fields( 'qsm-quiz-settings-group' );
+					do_settings_sections( 'qsm_default_global_option' );
+				}
+				?>
+				<?php submit_button(); ?>
+			</form>
+		</div>
 		<?php
 	}
 
@@ -1100,12 +1100,12 @@ class QMNGlobalSettingsPage {
 	}
 
 
-		/**
-		 * Generates Quiz Global  Field For Quiz Animation
-		 *
-		 * @since 4.1.0
-		 * @return void
-		 */
+	/**
+	 * Generates Quiz Global  Field For Quiz Animation
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
 	public function qsm_global_quiz_animation() {
 		global $globalQuizsetting;
 		global $mlwQuizMasterNext;
@@ -1119,12 +1119,12 @@ class QMNGlobalSettingsPage {
 		echo '</select>';
 	}
 
-		/**
-		 * Generates Quiz Global  Field For Logo URL
-		 *
-		 * @since 4.1.0
-		 * @return void
-		 */
+	/**
+	 * Generates Quiz Global  Field For Logo URL
+	 *
+	 * @since 4.1.0
+	 * @return void
+	 */
 	public function qsm_global_logo_url() {
 		global $globalQuizsetting;
 		$qsm_result_page_fb_image = ( isset( $globalQuizsetting['result_page_fb_image'] ) && '' !== $globalQuizsetting['result_page_fb_image'] ? $globalQuizsetting['result_page_fb_image'] : QSM_PLUGIN_URL . 'assets/icon-200x200.png' );

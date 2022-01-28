@@ -476,7 +476,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 				<a href="admin.php?page=mlw_quiz_results">
 					<?php
 						$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
-						echo isset( $mlw_result_data['total_result'] ) ? __( 'See All Results ', 'quiz-master-next' ) : '';
+						echo isset( $mlw_result_data['total_result'] ) ? esc_html__( 'See All Results ', 'quiz-master-next' ) : '';
 					?>
 				</a>
 				<?php
