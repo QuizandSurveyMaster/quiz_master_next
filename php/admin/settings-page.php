@@ -94,7 +94,7 @@ class QMNGlobalSettingsPage {
 	 * @return array
 	 */
 	public function default_settings() {
-		return $default_settings = array(
+		return array(
 			'form_type'                          => 0,
 			'system'                             => 3,
 			'score_roundoff'                     => 0,
