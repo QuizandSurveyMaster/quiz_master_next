@@ -1,6 +1,6 @@
 <?php
 
-function qsm_tempvar_qa_text_qt_choice( $answers_from_db, $answers_from_response, $grading_system, $question_settings, $form_type ) {
+function qsm_tempvar_qa_text_qt_choice( $answers_from_db, $answers_from_response, $grading_system, $question_settings, $form_type = 0 ) {
     $question_with_answer_text = '';
     foreach ( $answers_from_db as $single_answer_key => $single_answer ) {
         $current_answer_key   = $single_answer_key;
