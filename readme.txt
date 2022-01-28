@@ -168,6 +168,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 * Bug: Fixed incorrectly marked answers in survey & simple form
 * Bug: Fixed translation issues
 * Bug: Fixed issues with global default settings
+* Bug: Fixed issues with multiple response question type
 
 = 7.3.9 (January 20, 2022) =
 * Hotfix: Issues with markup in email
