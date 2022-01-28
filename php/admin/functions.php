@@ -6,7 +6,7 @@ function qsm_fetch_data_from_xml() {
 	$response = wp_remote_post( $file, array( 'sslverify' => false ) );
 
 	if ( is_wp_error( $response ) || 404 === $response['response']['code'] ) {
-		return '<p>' . __( 'Something went wrong', 'quiz-master-next' ) . '</p>';
+		return '<p>' . esc_html__( 'Something went wrong', 'quiz-master-next' ) . '</p>';
 	} else {
 		$body       = wp_remote_retrieve_body( $response );
 		return $xml = simplexml_load_string( $body );
@@ -264,7 +264,7 @@ function qsm_display_question_option( $key, $single_option ) {
 		$tooltip .= '</span>';
 	}
 	if ( isset( $single_option['documentation_link'] ) && '' !== $single_option['documentation_link'] ) {
-		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
+		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . esc_html__( 'View Documentation', 'quiz-master-next' ) . '">';
 		$document_text .= '<span class="dashicons dashicons-media-document"></span>';
 		$document_text .= '</a>';
 	}
@@ -533,46 +533,47 @@ function qsm_create_new_quiz_wizard() {
 							</span>
 						</div>
 						<?php
-						$all_settings            = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-						$quiz_setting_option     = array(
+						$all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
+						global $globalQuizsetting;
+						$quiz_setting_option = array(
 							'form_type'              => array(
-								'option_name' => __( 'Form Type', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Form Type', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['form_type'],
 							),
 							'system'                 => array(
-								'option_name' => __( 'Grading System', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Grading System', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['system'],
 							),
 							'pagination'             => array(
-								'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Questions Per Page', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['pagination'],
 							),
 							'progress_bar'           => array(
-								'option_name' => __( 'Show Progress Bar', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Show Progress Bar', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['progress_bar'],
 							),
 							'timer_limit'            => array(
-								'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Time Limit (in Minute)', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['timer_limit'],
 							),
 							'enable_pagination_quiz' => array(
-								'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Show current page number', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['enable_pagination_quiz'],
 							),
 							'require_log_in'         => array(
-								'option_name' => __( 'Require User Login', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Require User Login', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['require_log_in'],
 							),
 							'disable_scroll_next_previous_click' => array(
-								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['disable_scroll_next_previous_click'],
 							),
 							'disable_first_page'     => array(
-								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
-								'value'       => 0,
+								'option_name' => esc_html__( 'Disable first page on quiz', 'quiz-master-next' ),
+								'value'       => $globalQuizsetting['disable_first_page'],
 							),
 						);
-							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
 								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );
@@ -686,39 +687,39 @@ function qsm_create_new_quiz_wizard() {
 function qsm_text_template_variable_list() {
 	$variable_list = array(
 		'Core' => array(
-			'%POINT_SCORE%'               => __( 'Score for the quiz when using points', 'quiz-master-next' ),
-			'%MAXIMUM_POINTS%'            => __( 'Maximum possible points one can score', 'quiz-master-next' ),
-			'%MINIMUM_POINTS%'            => __( 'Minimum possible points one can score', 'quiz-master-next' ),
-			'%AVERAGE_POINT%'             => __( 'The average amount of points user had per question', 'quiz-master-next' ),
-			'%AMOUNT_CORRECT%'            => __( 'The number of correct answers the user had', 'quiz-master-next' ),
-			'%AMOUNT_INCORRECT%'          => __( 'The number of incorrect answers the user had', 'quiz-master-next' ),
-			'%AMOUNT_ATTEMPTED%'          => __( 'The number of questions are attempted', 'quiz-master-next' ),
-			'%TOTAL_QUESTIONS%'           => __( 'The total number of questions in the quiz', 'quiz-master-next' ),
-			'%CORRECT_SCORE%'             => __( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
-			'%USER_NAME%'                 => __( 'The name the user entered before the quiz', 'quiz-master-next' ),
-			'%FULL_NAME%'                 => __( 'The full name of user with first name and last name', 'quiz-master-next' ),
-			'%USER_BUSINESS%'             => __( 'The business the user entered before the quiz', 'quiz-master-next' ),
-			'%USER_PHONE%'                => __( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
-			'%USER_EMAIL%'                => __( 'The email the user entered before the quiz', 'quiz-master-next' ),
-			'%QUIZ_NAME%'                 => __( 'The name of the quiz', 'quiz-master-next' ),
-			'%QUIZ_LINK%'                 => __( 'The link of the quiz', 'quiz-master-next' ),
-			'%QUESTIONS_ANSWERS%'         => __( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
-			'%COMMENT_SECTION%'           => __( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
-			'%TIMER%'                     => __( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
-			'%TIMER_MINUTES%'             => __( 'The amount of time user spent on quiz in minutes i.e. If total time is 3 minutes 38 seconds. This will output 3', 'quiz-master-next' ),
-			'%TIMER_SECONDS%'             => __( 'The left over seconds user spent on quiz. i.e. If total time is 3 minutes 38 seconds. This will output 38', 'quiz-master-next' ),
-			'%CATEGORY_POINTS_X%'         => __( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
-			'%CATEGORY_SCORE_X%'          => __( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
-			'%CATEGORY_AVERAGE_POINTS%'   => __( 'The average points from all categories.', 'quiz-master-next' ),
-			'%CATEGORY_AVERAGE_SCORE%'    => __( 'The average score from all categories.', 'quiz-master-next' ),
-			'%QUESTION_MAX_POINTS%'       => __( 'Maximum points of the question', 'quiz-master-next' ),
-			'%FACEBOOK_SHARE%'            => __( 'Displays button to share on Facebook.', 'quiz-master-next' ),
-			'%TWITTER_SHARE%'             => __( 'Displays button to share on Twitter.', 'quiz-master-next' ),
-			'%RESULT_LINK%'               => __( 'The link of the result page.', 'quiz-master-next' ),
-			'%CONTACT_X%'                 => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
-			'%AVERAGE_CATEGORY_POINTS_X%' => __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' ),
-			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+			'%POINT_SCORE%'               => esc_html__( 'Score for the quiz when using points', 'quiz-master-next' ),
+			'%MAXIMUM_POINTS%'            => esc_html__( 'Maximum possible points one can score', 'quiz-master-next' ),
+			'%MINIMUM_POINTS%'            => esc_html__( 'Minimum possible points one can score', 'quiz-master-next' ),
+			'%AVERAGE_POINT%'             => esc_html__( 'The average amount of points user had per question', 'quiz-master-next' ),
+			'%AMOUNT_CORRECT%'            => esc_html__( 'The number of correct answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_INCORRECT%'          => esc_html__( 'The number of incorrect answers the user had', 'quiz-master-next' ),
+			'%AMOUNT_ATTEMPTED%'          => esc_html__( 'The number of questions are attempted', 'quiz-master-next' ),
+			'%TOTAL_QUESTIONS%'           => esc_html__( 'The total number of questions in the quiz', 'quiz-master-next' ),
+			'%CORRECT_SCORE%'             => esc_html__( 'Score for the quiz when using correct answers', 'quiz-master-next' ),
+			'%USER_NAME%'                 => esc_html__( 'The name the user entered before the quiz', 'quiz-master-next' ),
+			'%FULL_NAME%'                 => esc_html__( 'The full name of user with first name and last name', 'quiz-master-next' ),
+			'%USER_BUSINESS%'             => esc_html__( 'The business the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_PHONE%'                => esc_html__( 'The phone number the user entered before the quiz', 'quiz-master-next' ),
+			'%USER_EMAIL%'                => esc_html__( 'The email the user entered before the quiz', 'quiz-master-next' ),
+			'%QUIZ_NAME%'                 => esc_html__( 'The name of the quiz', 'quiz-master-next' ),
+			'%QUIZ_LINK%'                 => esc_html__( 'The link of the quiz', 'quiz-master-next' ),
+			'%QUESTIONS_ANSWERS%'         => esc_html__( 'Shows the question, the answer the user provided, and the correct answer', 'quiz-master-next' ),
+			'%COMMENT_SECTION%'           => esc_html__( 'The comments the user entered into comment box if enabled', 'quiz-master-next' ),
+			'%TIMER%'                     => esc_html__( 'The amount of time user spent on quiz in seconds', 'quiz-master-next' ),
+			'%TIMER_MINUTES%'             => esc_html__( 'The amount of time user spent on quiz in minutes i.e. If total time is 3 minutes 38 seconds. This will output 3', 'quiz-master-next' ),
+			'%TIMER_SECONDS%'             => esc_html__( 'The left over seconds user spent on quiz. i.e. If total time is 3 minutes 38 seconds. This will output 38', 'quiz-master-next' ),
+			'%CATEGORY_POINTS_X%'         => esc_html__( 'X: Category name - The amount of points a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_SCORE_X%'          => esc_html__( 'X: Category name - The score a specific category earned.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_POINTS%'   => esc_html__( 'The average points from all categories.', 'quiz-master-next' ),
+			'%CATEGORY_AVERAGE_SCORE%'    => esc_html__( 'The average score from all categories.', 'quiz-master-next' ),
+			'%QUESTION_MAX_POINTS%'       => esc_html__( 'Maximum points of the question', 'quiz-master-next' ),
+			'%FACEBOOK_SHARE%'            => esc_html__( 'Displays button to share on Facebook.', 'quiz-master-next' ),
+			'%TWITTER_SHARE%'             => esc_html__( 'Displays button to share on Twitter.', 'quiz-master-next' ),
+			'%RESULT_LINK%'               => esc_html__( 'The link of the result page.', 'quiz-master-next' ),
+			'%CONTACT_X%'                 => esc_html__( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%CONTACT_ALL%'               => esc_html__( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
+			'%AVERAGE_CATEGORY_POINTS_X%' => esc_html__( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' ),
+			'%QUESTION_ANSWER_X%'         => esc_html__( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
