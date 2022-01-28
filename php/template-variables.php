@@ -690,7 +690,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			if ( $category_data['migrated'] ) {
 				$length = 0;
 				foreach ( $category_data['ids'] as $id ) {
-					if ( in_array( $id, $answer['multicategories'] ) ) {
+					if ( in_array( $id, $answer['multicategories'], true ) ) {
 						$length++;
 					}
 				}
@@ -703,7 +703,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			} else {
 				if ( $answer['category'] == $category_name ) {
 					$total_questions += 1;
-					if ( $answer['correct'] == 'correct' ) {
+					if ( 'correct' == $answer['correct'] ) {
 						$amount_correct += 1;
 					}
 				}
