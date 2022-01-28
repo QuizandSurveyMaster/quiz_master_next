@@ -780,9 +780,9 @@ class QMNQuizManager {
 			'qmn_ajax_object',
 			array(
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
-				'multicheckbox_limit_reach' => esc_html__( 'Limit of choice is reached.', 'quiz-master-next' ),
-				'out_of_text'               => esc_html__( 'out of', 'quiz-master-next' ),
-				'quiz_time_over'            => esc_html__( 'Quiz time is over.', 'quiz-master-next' ),
+				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
+				'out_of_text'               => __( 'out of', 'quiz-master-next' ),
+				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );

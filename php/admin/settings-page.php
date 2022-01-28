@@ -70,21 +70,21 @@ class QMNGlobalSettingsPage {
 	 */
 	public function init() {
 		register_setting( 'qmn-settings-group', 'qmn-settings' );
-		add_settings_section( 'qmn-global-section', esc_html__( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
-		add_settings_field( 'usage-tracker', esc_html__( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'ip-collection', esc_html__( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-search', esc_html__( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-archive', esc_html__( 'Disable Quiz Archive?', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'detele-qsm-data', esc_html__( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'background-quiz-email-process', esc_html__( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'cpt-slug', esc_html__( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'plural-name', esc_html__( 'Post Type Plural Name (Shown in various places such as on archive pages)', 'quiz-master-next' ), array( $this, 'plural_name_field' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'facebook-app-id', esc_html__( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'from-name', esc_html__( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'from-email', esc_html__( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'items-per-page-question-bank', esc_html__( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'new-template-result-detail', esc_html__( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
-		add_settings_field( 'results-details', esc_html__( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_section( 'qmn-global-section', __( 'Main Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qmn_global_settings' );
+		add_settings_field( 'usage-tracker', __( 'Allow Usage Tracking?', 'quiz-master-next' ), array( $this, 'usage_tracker_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'ip-collection', __( 'Disable collecting and storing IP addresses?', 'quiz-master-next' ), array( $this, 'ip_collection_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-search', __( 'Disable Quiz Posts From Being Searched?', 'quiz-master-next' ), array( $this, 'cpt_search_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-archive', __( 'Disable Quiz Archive?', 'quiz-master-next' ), array( $this, 'cpt_archive_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'detele-qsm-data', __( 'Delete all the data related to QSM on deletion?', 'quiz-master-next' ), array( $this, 'qsm_delete_data' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'background-quiz-email-process', __( 'Process emails in background?', 'quiz-master-next' ), array( $this, 'qsm_background_quiz_email_process' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'cpt-slug', __( 'Quiz Url Slug', 'quiz-master-next' ), array( $this, 'cpt_slug_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'plural-name', __( 'Post Type Plural Name (Shown in various places such as on archive pages)', 'quiz-master-next' ), array( $this, 'plural_name_field' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'facebook-app-id', __( 'Facebook App Id', 'quiz-master-next' ), array( $this, 'facebook_app_id' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'from-name', __( 'From Name (The name emails come from)', 'quiz-master-next' ), array( $this, 'from_name' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'from-email', __( 'From Email (The email address that emails come from)', 'quiz-master-next' ), array( $this, 'from_email' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'items-per-page-question-bank', __( 'Items per page in question bank pagination', 'quiz-master-next' ), array( $this, 'items_per_page_question_bank' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'new-template-result-detail', __( 'New Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'new_template_results_details' ), 'qmn_global_settings', 'qmn-global-section' );
+		add_settings_field( 'results-details', __( 'Template For Admin Results Details', 'quiz-master-next' ), array( $this, 'results_details_template' ), 'qmn_global_settings', 'qmn-global-section' );
 	}
 
 	/**
@@ -94,7 +94,7 @@ class QMNGlobalSettingsPage {
 	 * @return array
 	 */
 	public function default_settings() {
-		$default_settings = array(
+		return $default_settings = array(
 			'form_type'                          => 0,
 			'system'                             => 3,
 			'score_roundoff'                     => 0,
@@ -135,8 +135,6 @@ class QMNGlobalSettingsPage {
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
 		);
-		return $default_settings;
-
 	}
 
 	/**
@@ -147,47 +145,47 @@ class QMNGlobalSettingsPage {
 	 */
 	public function quiz_default_global_option_init() {
 		register_setting( 'qsm-quiz-settings-group', 'qsm-quiz-settings' );
-		add_settings_section( 'qmn-global-section', esc_html__( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
-		add_settings_field( 'quiz-type', esc_html__( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'grading-system', esc_html__( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'allow-score-round-off', esc_html__( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-progress-bar', esc_html__( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'require-user-login', esc_html__( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'questions-per-page', esc_html__( 'Questions Per Page', 'quiz-master-next' ), array( $this, 'qsm_global_questions_per_page' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'time-limit-in-minutes', esc_html__( 'Time Limit (in minutes)', 'quiz-master-next' ), array( $this, 'qsm_global_time_limit_in_minutes' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'force-submit-after-timer-expiry', esc_html__( 'Force submit after timer expiry', 'quiz-master-next' ), array( $this, 'qsm_global_force_submit_after_timer_expiry' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'skip-validations-when-time-expire', esc_html__( 'Skip validations when time expire', 'quiz-master-next' ), array( $this, 'qsm_global_skip_validations_when_time_expire' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'limit-attempts', esc_html__( 'Limit Attempts', 'quiz-master-next' ), array( $this, 'qsm_global_limit_attempts' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'limit-entries', esc_html__( 'Limit Entries', 'quiz-master-next' ), array( $this, 'qsm_global_limit_entries' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'limit-number-of-questions', esc_html__( 'Limit number of Questions', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'limit-number-of-questions-per-category', esc_html__( 'Limit number of Questions Per Category', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions_per_category' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'quiz-dates', esc_html__( 'Quiz Dates', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_dates' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'can-submit-after-end-date', esc_html__( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ), array( $this, 'qsm_global_do_not_allow_quiz_submission_after_the_end_datetime' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'random-questions', esc_html__( 'Random Questions', 'quiz-master-next' ), array( $this, 'qsm_global_random_questions' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'contact-form-position', esc_html__( 'Contact form position', 'quiz-master-next' ), array( $this, 'qsm_global_contact_form_position' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-contact-form-to-logged-in-users', esc_html__( 'Show contact form to logged in users', 'quiz-master-next' ), array( $this, 'qsm_global_show_contact_form_to_logged_in_users' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'enable-comments', esc_html__( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-question-numbers', esc_html__( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'save-responses', esc_html__( 'Save Responses', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-change-of-answers', esc_html__( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'add-class-for-correct-incorrect-answers', esc_html__( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-auto-fill-for-contact-input', esc_html__( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-auto-fill-for-quiz-input', esc_html__( 'Disable auto fill for Quiz input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_quiz_input' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'display-category-name-on-front-end', esc_html__( 'Display category name on front end', 'quiz-master-next' ), array( $this, 'qsm_global_display_category_name_on_front_end' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-results-inline', esc_html__( 'Show results inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_results_inline' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'end-quiz-if-there-is-wrong-answer', esc_html__( 'End quiz if there is wrong answer', 'quiz-master-next' ), array( $this, 'qsm_global_end_quiz_if_there_is_wrong_answer' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-correct-answer-inline', esc_html__( 'Show correct answer inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_correct_answer_inline' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'retake-quiz', esc_html__( 'Retake Quiz', 'quiz-master-next' ), array( $this, 'qsm_global_retake_quiz' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'show-current-page-number', esc_html__( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'deselect-answer', esc_html__( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-description-on-quiz-result-page', esc_html__( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', esc_html__( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'disable-first-page', esc_html__( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'quiz-animation', esc_html__( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'logo-url', esc_html__( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'preferred_date_format', esc_html__( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
+		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'require-user-login', __( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'questions-per-page', __( 'Questions Per Page', 'quiz-master-next' ), array( $this, 'qsm_global_questions_per_page' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'time-limit-in-minutes', __( 'Time Limit (in minutes)', 'quiz-master-next' ), array( $this, 'qsm_global_time_limit_in_minutes' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'force-submit-after-timer-expiry', __( 'Force submit after timer expiry', 'quiz-master-next' ), array( $this, 'qsm_global_force_submit_after_timer_expiry' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'skip-validations-when-time-expire', __( 'Skip validations when time expire', 'quiz-master-next' ), array( $this, 'qsm_global_skip_validations_when_time_expire' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'limit-attempts', __( 'Limit Attempts', 'quiz-master-next' ), array( $this, 'qsm_global_limit_attempts' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'limit-entries', __( 'Limit Entries', 'quiz-master-next' ), array( $this, 'qsm_global_limit_entries' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'limit-number-of-questions', __( 'Limit number of Questions', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'limit-number-of-questions-per-category', __( 'Limit number of Questions Per Category', 'quiz-master-next' ), array( $this, 'qsm_global_limit_number_of_questions_per_category' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'quiz-dates', __( 'Quiz Dates', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_dates' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'can-submit-after-end-date', __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ), array( $this, 'qsm_global_do_not_allow_quiz_submission_after_the_end_datetime' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'random-questions', __( 'Random Questions', 'quiz-master-next' ), array( $this, 'qsm_global_random_questions' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'contact-form-position', __( 'Contact form position', 'quiz-master-next' ), array( $this, 'qsm_global_contact_form_position' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-contact-form-to-logged-in-users', __( 'Show contact form to logged in users', 'quiz-master-next' ), array( $this, 'qsm_global_show_contact_form_to_logged_in_users' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-question-numbers', __( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'save-responses', __( 'Save Responses', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-auto-fill-for-contact-input', __( 'Disable auto fill for contact input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_contact_input' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-auto-fill-for-quiz-input', __( 'Disable auto fill for Quiz input', 'quiz-master-next' ), array( $this, 'qsm_global_disable_auto_fill_for_quiz_input' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'display-category-name-on-front-end', __( 'Display category name on front end', 'quiz-master-next' ), array( $this, 'qsm_global_display_category_name_on_front_end' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-results-inline', __( 'Show results inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_results_inline' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'end-quiz-if-there-is-wrong-answer', __( 'End quiz if there is wrong answer', 'quiz-master-next' ), array( $this, 'qsm_global_end_quiz_if_there_is_wrong_answer' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-correct-answer-inline', __( 'Show correct answer inline', 'quiz-master-next' ), array( $this, 'qsm_global_show_correct_answer_inline' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'retake-quiz', __( 'Retake Quiz', 'quiz-master-next' ), array( $this, 'qsm_global_retake_quiz' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-current-page-number', __( 'Show current page number', 'quiz-master-next' ), array( $this, 'qsm_global_show_current_page_number' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'deselect-answer', __( 'Deselect Answer', 'quiz-master-next' ), array( $this, 'qsm_global_deselect_answer' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-description-on-quiz-result-page', __( 'Disable description on quiz result page?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_description_on_quiz_result_page' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-scroll-on-next-and-previous-button-click', __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ), array( $this, 'qsm_global_disable_scroll_on_next_and_previous_button_click' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'disable-first-page', __( 'Disable first page on quiz', 'quiz-master-next' ), array( $this, 'qsm_global_disable_first_page' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
-		$get_default_value = (array) $this->default_settings();
+		$get_default_value = $this->default_settings();
 		$get_saved_value   = get_option( 'qsm-quiz-settings' );
 		$globalQuizsetting = wp_parse_args( $get_saved_value, $get_default_value );
 	}
@@ -322,7 +320,7 @@ class QMNGlobalSettingsPage {
 	 */
 	public function plural_name_field() {
 		$settings    = (array) get_option( 'qmn-settings' );
-		$plural_name = esc_html__( 'Quizzes & Surveys', 'quiz-master-next' );
+		$plural_name = __( 'Quizzes & Surveys', 'quiz-master-next' );
 		if ( isset( $settings['plural_name'] ) ) {
 			$plural_name = esc_attr( $settings['plural_name'] );
 		}
@@ -410,12 +408,12 @@ class QMNGlobalSettingsPage {
 
 		echo '<label style="margin-bottom: 10px;display: inline-block;">';
 			echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='1' " . checked( $background_quiz_email_process, '1', false ) . '/>';
-				echo esc_html__( 'Yes', 'quiz-master-next' );
+				esc_html_e( 'Yes', 'quiz-master-next' );
 				echo '</label>';
 				echo '<br/>';
 				echo '<label>';
 			echo "<input type='radio' name='qmn-settings[background_quiz_email_process]' class='background_quiz_email_process' value='0' " . checked( $background_quiz_email_process, '0', false ) . '/>';
-				echo esc_html__( 'No', 'quiz-master-next' );
+				esc_html_e( 'No', 'quiz-master-next' );
 		echo '</label>';
 	}
 
@@ -466,7 +464,7 @@ class QMNGlobalSettingsPage {
 		echo '<label class="switch">';
 			echo '<input type="checkbox" name="qmn-settings[tracking_allowed]" id="qmn-settings[tracking_allowed]" value="2"' . esc_attr( $checked ) . '/><span class="slider round"></span>';
 		echo '</label>';
-		echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . esc_html__( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
+		echo "<span class='global-sub-text' for='qmn-settings[tracking_allowed]'>" . __( "Allow Quiz And Survey Master to anonymously track this plugin's usage and help us make this plugin better.", 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -488,7 +486,7 @@ class QMNGlobalSettingsPage {
 		echo '<label class="switch">';
 		echo '<input type="checkbox" name="qmn-settings[ip_collection]" id="qmn-settings[ip_collection]" value="1"' . esc_attr( $checked ) . '/>';
 		echo '<span class="slider round"></span></label>';
-		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . esc_html__( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
+		echo "<span class='global-sub-text' for='qmn-settings[ip_collection]'>" . __( 'You must not restrict number of quiz attempts when this option is enabled.', 'quiz-master-next' ) . '</span>';
 	}
 
 	/**
@@ -555,12 +553,12 @@ class QMNGlobalSettingsPage {
 		}
 		echo '<label style="margin-bottom: 10px;display: inline-block;">';
 			echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='1' " . checked( $new_template_result_detail, '1', false ) . '/>';
-				echo esc_html__( 'New Template', 'quiz-master-next' );
+				esc_html_e( 'New Template', 'quiz-master-next' );
 		echo '</label>';
 		echo '<br/>';
 		echo '<label>';
 			echo "<input type='radio' name='qmn-settings[new_template_result_detail]' class='new_template_result_detail' value='0' " . checked( $new_template_result_detail, '0', false ) . '/>';
-				echo esc_html__( 'Old Template', 'quiz-master-next' );
+				esc_html_e( 'Old Template', 'quiz-master-next' );
 		echo '</label>';
 	}
 
@@ -1145,19 +1143,19 @@ class QMNGlobalSettingsPage {
 		$qsm_randomness_order = ( isset( $globalQuizsetting['randomness_order'] ) && '' !== $globalQuizsetting['randomness_order'] ? $globalQuizsetting['randomness_order'] : '' );
 		$options              = array(
 			array(
-				'label' => esc_html__( 'Random Questions', 'quiz-master-next' ),
+				'label' => __( 'Random Questions', 'quiz-master-next' ),
 				'value' => 1,
 			),
 			array(
-				'label' => esc_html__( 'Random Questions And Answers', 'quiz-master-next' ),
+				'label' => __( 'Random Questions And Answers', 'quiz-master-next' ),
 				'value' => 2,
 			),
 			array(
-				'label' => esc_html__( 'Random Answers', 'quiz-master-next' ),
+				'label' => __( 'Random Answers', 'quiz-master-next' ),
 				'value' => 3,
 			),
 			array(
-				'label' => esc_html__( 'Disabled', 'quiz-master-next' ),
+				'label' => __( 'Disabled', 'quiz-master-next' ),
 				'value' => 0,
 			),
 		);

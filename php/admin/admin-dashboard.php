@@ -298,7 +298,7 @@ function qsm_wizard_template_quiz_options() {
 			QSM_Fields::generate_field( $field, $single_setting['value'] );
 		}
 	} else {
-		echo esc_html__( 'No settings are found!', 'quiz-master-next' );
+		esc_html_e( 'No settings are found!', 'quiz-master-next' );
 	}
 	echo '=====';
 	if ( $addons ) {
@@ -412,7 +412,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 								$user_name = 'None' === $single_result_arr['name'] ? $actual_user->data->display_name : $single_result_arr['name'];
 								echo '<a href="' . esc_url( $edit_link ) . '">' . esc_html( $user_name ) . '</a>';
 							} else {
-								echo esc_html__( 'Guest', 'quiz-master-next' );
+								esc_html_e( 'Guest', 'quiz-master-next' );
 							}
 							esc_html_e( ' took quiz ', 'quiz-master-next' );
 							echo '<a href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $single_result_arr['quiz_id'] ) . '">' . esc_html( $single_result_arr['quiz_name'] ) . '</a>';
@@ -476,7 +476,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 				<a href="admin.php?page=mlw_quiz_results">
 					<?php
 						$mlw_result_data = $wpdb->get_row( "SELECT DISTINCT COUNT(result_id) as total_result FROM {$wpdb->prefix}mlw_results WHERE deleted=0", ARRAY_A );
-						echo isset( $mlw_result_data['total_result'] ) ? esc_html__( 'See All Results ', 'quiz-master-next' ) : '';
+						echo isset( $mlw_result_data['total_result'] ) ? __( 'See All Results ', 'quiz-master-next' ) : '';
 					?>
 				</a>
 				<?php
@@ -620,8 +620,8 @@ function qsm_create_new_quiz_from_wizard() {
 			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
 			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
 		);
-		global $globalQuizsetting;
-		$quiz_options    = wp_parse_args( $quiz_options, $globalQuizsetting );
+		$get_saved_value = get_option( 'qsm-quiz-settings' );
+		$quiz_options    = array_replace( $get_saved_value, $quiz_options );
 		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
 	}
