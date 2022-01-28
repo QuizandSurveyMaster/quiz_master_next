@@ -6,11 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 include 'question-types/qsm-question-type-multiple-choice.php';
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_choice' );
 //
-include 'question-types/qsm-question-type-multiple-choice-horizontal.php';
-add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_choice' );
-//
 include 'question-types/qsm-question-type-multiple-response.php';
 add_action( 'plugins_loaded', 'qmn_question_type_multiple_response' );
+//
+include 'question-types/qsm-question-type-multiple-choice-horizontal.php';
+add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_choice' );
 //
 include 'question-types/qsm-question-type-multiple-response-horizontal.php';
 add_action( 'plugins_loaded', 'qmn_question_type_horizontal_multiple_response' );
@@ -67,7 +67,7 @@ include 'classes/question-types/class-question-review-text.php';
  */
 function qmn_question_type_multiple_choice() {
     global $mlwQuizMasterNext;
-    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Vertical Multiple Choice', 'quiz-master-next' ), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0 );
+    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Multiple Choice', 'quiz-master-next' ), 'qmn_multiple_choice_display', true, 'qmn_multiple_choice_review', null, null, 0 );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 0, 'input_field', 'radio' );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 0, 'category', 'Choice' );
 }
@@ -103,7 +103,7 @@ function qmn_question_type_date() {
  */
 function qmn_question_type_horizontal_multiple_choice() {
     global $mlwQuizMasterNext;
-    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Horizontal Multiple Choice', 'quiz-master-next' ), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', null, null, 1 );
+    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Multiple Choice (Horizontal)', 'quiz-master-next' ), 'qmn_horizontal_multiple_choice_display', true, 'qmn_horizontal_multiple_choice_review', null, null, 1 );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 1, 'input_field', 'radio' );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 1, 'category', 'Choice' );
 }
@@ -238,7 +238,7 @@ function qmn_question_type_captcha() {
  */
 function qmn_question_type_horizontal_multiple_response() {
     global $mlwQuizMasterNext;
-    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Horizontal Multiple Response', 'quiz-master-next' ), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', null, null, 10 );
+    $mlwQuizMasterNext->pluginHelper->register_question_type( __( 'Multiple Response (Horizontal)', 'quiz-master-next' ), 'qmn_horizontal_multiple_response_display', true, 'qmn_horizontal_multiple_response_review', null, null, 10 );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 10, 'input_field', 'checkbox' );
     $mlwQuizMasterNext->pluginHelper->set_question_type_meta( 10, 'category', 'Choice' );
 }
