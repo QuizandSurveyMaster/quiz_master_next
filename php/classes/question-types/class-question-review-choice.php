@@ -32,7 +32,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 		foreach ( $this->user_answer as $user_answer_key => $user_answer_value ) {
 			if ( in_array( $user_answer_key, array_keys( $this->correct_answer ), true ) ) {
 				$user_correct_ans  += 1;
-			} else{
+			} else {
 				$user_correct_ans = -1;
 			}
 			$this->points += $this->answer_array[ $user_answer_key ][1];
@@ -42,7 +42,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 				$total_correct_ans++;
 			}
 		}
-		if ( $user_correct_ans == $total_correct_ans ){
+		if ( $user_correct_ans == $total_correct_ans ) {
 			$this->answer_status = 'correct';
 		}
 	}
