@@ -22,7 +22,7 @@ class QMNQuizManager {
 	 * @var   string
 	 * @since 7.3.5
 	 */
-	public $common_css      = QSM_PLUGIN_CSS_URL . '/common.css';
+	public $common_css = QSM_PLUGIN_CSS_URL . '/common.css';
 	/*
 	* Default MathJax inline scripts.
 	*/
@@ -35,8 +35,8 @@ class QMNQuizManager {
 		  ignoreHtmlClass: 'tex2jax_ignore|editor-rich-text'
 		}
 	  };";
-	public $mathjax_url     = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
-	public $mathjax_version = '3.2.0';
+	public $mathjax_url                   = QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js';
+	public $mathjax_version               = '3.2.0';
 
 	protected $qsm_background_email;
 	/**
@@ -225,7 +225,7 @@ class QMNQuizManager {
 		$correct_answer    = false;
 		if ( $answer_array && false === $got_ans ) {
 			foreach ( $answer_array as $key => $value ) {
-				if ( intval( $answer) === $key && 1 === intval( $value[2] ) ) {
+				if ( intval( $answer ) === $key && 1 === intval( $value[2] ) ) {
 					$got_ans        = true;
 					$correct_answer = true;
 					break;
@@ -328,7 +328,7 @@ class QMNQuizManager {
 			wp_enqueue_script( 'qsm_quiz', QSM_PLUGIN_JS_URL . '/qsm-quiz.js', array( 'wp-util', 'underscore', 'jquery', 'jquery-ui-tooltip' ), $mlwQuizMasterNext->version, false );
 			wp_enqueue_script( 'qsm_common', QSM_PLUGIN_JS_URL . '/qsm-common.js', array(), $mlwQuizMasterNext->version, true );
 			wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
-			wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+			wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 			$result_unique_id = sanitize_text_field( wp_unslash( $_GET['result_id'] ) );
 			$query            = $wpdb->prepare( "SELECT result_id FROM {$wpdb->prefix}mlw_results WHERE unique_id = %s", $result_unique_id );
 			$result           = $wpdb->get_row( $query, ARRAY_A );
@@ -490,7 +490,7 @@ class QMNQuizManager {
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'qsm_primary_css', plugins_url( '../../templates/qmn_primary.css', __FILE__ ), array(), $mlwQuizMasterNext->version );
 				wp_enqueue_script( 'math_jax', $this->mathjax_url, false, $this->mathjax_version, true );
-				wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+				wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 				$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
 				$response_data = array(
 					'quiz_id'                => $result_data['quiz_id'],
@@ -781,14 +781,12 @@ class QMNQuizManager {
 			array(
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
-				'out_of_text'               => __(
-					' out of ',
-					'quiz-master-next'
-				),
+				'out_of_text'               => __( 'out of', 'quiz-master-next' ),
+				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
-		wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+		wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 		global $qmn_total_questions;
 		$qmn_total_questions = 0;
 		global $mlw_qmn_section_count;
@@ -1819,7 +1817,7 @@ class QMNQuizManager {
 									$question_text = $results_array['question_text'];
 								}
 
-								$user_answer_array    = isset( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
+								$user_answer_array    = isset( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
 								$correct_answer_array = isset( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 								// Save question data into new array in our array
@@ -1903,7 +1901,7 @@ class QMNQuizManager {
 							if ( isset( $results_array['question_text'] ) ) {
 								$question_text = $results_array['question_text'];
 							}
-							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array() ;
+							$user_answer_array    = is_array( $results_array['user_answer'] ) ? $results_array['user_answer'] : array();
 							$correct_answer_array = is_array( $results_array['correct_answer'] ) ? $results_array['correct_answer'] : array();
 
 							// Save question data into new array in our array

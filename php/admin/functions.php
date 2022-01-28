@@ -533,46 +533,47 @@ function qsm_create_new_quiz_wizard() {
 							</span>
 						</div>
 						<?php
-						$all_settings            = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
-						$quiz_setting_option     = array(
+						$all_settings = $mlwQuizMasterNext->quiz_settings->load_setting_fields( 'quiz_options' );
+						global $globalQuizsetting;
+						$quiz_setting_option = array(
 							'form_type'              => array(
 								'option_name' => __( 'Form Type', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['form_type'],
 							),
 							'system'                 => array(
 								'option_name' => __( 'Grading System', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['system'],
 							),
 							'pagination'             => array(
 								'option_name' => __( 'Questions Per Page', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['pagination'],
 							),
 							'progress_bar'           => array(
 								'option_name' => __( 'Show Progress Bar', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['progress_bar'],
 							),
 							'timer_limit'            => array(
 								'option_name' => __( 'Time Limit (in Minute)', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['timer_limit'],
 							),
 							'enable_pagination_quiz' => array(
 								'option_name' => __( 'Show current page number', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['enable_pagination_quiz'],
 							),
 							'require_log_in'         => array(
 								'option_name' => __( 'Require User Login', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['require_log_in'],
 							),
 							'disable_scroll_next_previous_click' => array(
 								'option_name' => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['disable_scroll_next_previous_click'],
 							),
 							'disable_first_page'     => array(
 								'option_name' => __( 'Disable first page on quiz', 'quiz-master-next' ),
-								'value'       => 0,
+								'value'       => $globalQuizsetting['disable_first_page'],
 							),
 						);
-							$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
+						$quiz_setting_option = apply_filters( 'qsm_quiz_wizard_settings_option', $quiz_setting_option );
 						if ( $quiz_setting_option ) {
 							foreach ( $quiz_setting_option as $key => $single_setting ) {
 								$key              = array_search( $key, array_column( $all_settings, 'id' ), true );

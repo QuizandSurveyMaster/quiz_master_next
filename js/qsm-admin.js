@@ -2321,6 +2321,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (confirm('Are you sure?')) {
                     $(this).parents('.page').remove();
                     $('.save-page-button').trigger('click');
+                    QSMQuestion.countTotal();
                 }
             });
             $(document).on('click', '#answers .delete-answer-button', function (event) {

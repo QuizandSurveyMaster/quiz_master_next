@@ -1,6 +1,6 @@
 <?php
 
-function qsm_tempvar_qa_text_qt_choice( $answers_from_db, $answers_from_response, $grading_system, $question_settings ) {
+function qsm_tempvar_qa_text_qt_choice( $answers_from_db, $answers_from_response, $grading_system, $question_settings, $form_type = 0 ) {
     $question_with_answer_text = '';
     foreach ( $answers_from_db as $single_answer_key => $single_answer ) {
         $current_answer_key   = $single_answer_key;
@@ -24,7 +24,7 @@ function qsm_tempvar_qa_text_qt_choice( $answers_from_db, $answers_from_response
             $show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
             $image_class      = '';
         }
-        if ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) {
+        if ( 0 == $form_type && ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) ) {
             if ( $is_user_answer && $is_answer_correct ) {
                 $question_with_answer_text .= '<span class="qsm-text-correct-option qsm-text-user-correct-answer ' . $image_class . '">' . $show_user_answer . '</span>';
             } elseif ( ! $is_user_answer && $is_answer_correct ) {

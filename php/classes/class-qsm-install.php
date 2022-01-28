@@ -707,7 +707,7 @@ class QSM_Install {
 			'default' => 0,
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		
+
 		// Setting for animation
 		$field_array = array(
 			'id'      => 'quiz_animation',

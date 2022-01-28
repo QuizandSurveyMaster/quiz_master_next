@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.9
+Stable tag: 7.3.10
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,11 +108,11 @@ If you like this plugin, consider exploring our other plugins:
 
 📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
 
-📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
+📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc.
 
-⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
+⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
 
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
+🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network.
 
 == Installation ==
 
@@ -160,6 +160,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.10 (January 28, 2022) =
+* Checked compatibility with WordPress 5.9
+* Bug: Fixed UI issues in QSM dashboard banner
+* Bug: Fixed CURRENT_DATE template variable with certificate addon
+* Bug: Fixed CATEGORY_SCORE_X template variable
+* Bug: Fixed incorrectly marked answers in survey & simple form
+* Bug: Fixed translation issues
+* Bug: Fixed issues with global default settings
+* Bug: Fixed issues with multiple response question type
+
 = 7.3.9 (January 20, 2022) =
 * Hotfix: Issues with markup in email
 * Hotfix: Issues with quiz review for blank submissions
@@ -673,19 +683,4 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Upgrade Notice ==
 
 = 6.2.1 =
-Upgrade to fix cut submit button on mobile issue
-
-🌐Our Plugins
-
-If you like this plugin, consider exploring our other plugins:
-
-☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
-
-📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
-
-📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc. 
-
-⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second. 
-
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network. 
-
+Upgrade to fix cut submit button on mobile issue.
