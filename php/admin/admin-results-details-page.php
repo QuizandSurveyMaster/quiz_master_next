@@ -18,7 +18,7 @@ function qsm_generate_result_details() {
 	<style type="text/css">
 		.prettyprint {width: 200px;}
 		.result-tab-content p {font-size: 16px;}
-		.qmn_question_answer b {font-size: 18px;margin-bottom: 0;display: block;}
+		.qmn_question_answer b, .qmn_question_answer .mlw_qmn_question_number {font-size: 18px;margin-bottom: 0;}
 		.qmn_question_answer {margin-bottom: 30px;font-size: 16px;line-height: 1.5;}
 	</style>
     <div class="wrap">
