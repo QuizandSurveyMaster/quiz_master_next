@@ -426,7 +426,7 @@ class QMNPluginHelper {
 				if ( $type['graded'] ) {
 					$qmn_total_questions += 1;
 					if ( 1 === intval( $quiz_options->question_numbering ) ) { ?>
-						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
+						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php
 					}
 				}

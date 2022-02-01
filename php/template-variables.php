@@ -1387,7 +1387,7 @@ function qsm_variable_minimum_points( $content, $mlw_quiz_array ) {
  */
 function qsm_varibale_question_title_func( $question, $question_type = '', $new_question_title = '', $question_id = 0 ) {
 	$question_title = $question;
-	global $wp_embed, $mlwQuizMasterNext;
+	global $wp_embed, $mlwQuizMasterNext, $qmn_total_questions;
 	$question_title    = $wp_embed->run_shortcode( $question_title );
 	$question_title    = preg_replace( '/\s*[a-zA-Z\/\/:\.]*youtube.com\/watch\?v=([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $question_title );
 	$polar_extra_class = '';
@@ -1401,6 +1401,12 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		$deselect_answer = '<a href="#" class="qsm-deselect-answer">Deselect Answer</a>';
 	}
 
+	$question_numbering  = ''; 
+	$qmn_total_questions += 1;
+	if ( isset( $qmn_quiz_options->question_numbering ) && 1 == $qmn_quiz_options->question_numbering ) { 
+		$question_numbering = '<span class="mlw_qmn_question_number">'.esc_html( $qmn_total_questions ).'.&nbsp;</span>';
+	}
+
 	if ( $question_id ) {
 		$featureImageID = $mlwQuizMasterNext->pluginHelper->get_question_setting( $question_id, 'featureImageID' );
 		if ( $featureImageID ) {
@@ -1412,6 +1418,6 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
 
-	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
+	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" .$question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
 	return $question_display;
 }
