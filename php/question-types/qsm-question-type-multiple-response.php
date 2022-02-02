@@ -18,7 +18,7 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 	$required                = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
 	if ( $limit_multiple_response > 0 ) {
-		$limit_mr_text = 'onchange="qsmCheckMR(this,' . $limit_multiple_response . ')"';
+		$limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';
 	}
 	if ( 0 == $required ) {
 		$mlw_require_class = 'mlwRequiredCheck';
