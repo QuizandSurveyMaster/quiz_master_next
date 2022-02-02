@@ -1274,7 +1274,7 @@ class QMNQuizManager {
 		global $mlw_qmn_section_count;
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-			$qsm_d_none            = 0 == $qmn_quiz_options->randomness_order ? 'qsm-d-none' : '';
+			$qsm_d_none = 0 == $qmn_quiz_options->randomness_order ? 'qsm-d-none' : '';
 			?>
 			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count . ' ' . $qsm_d_none ); ?>" >
 			<?php
@@ -1301,12 +1301,12 @@ class QMNQuizManager {
 	 */
 	public function display_end_section( $qmn_quiz_options, $qmn_array_for_variables ) {
 		global $mlw_qmn_section_count;
-		$section_display       = '';
+		$section_display  = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-		$pagination_optoin     = $qmn_quiz_options->pagination;
-
+		$pagination_optoin = $qmn_quiz_options->pagination;
+		
 		do_action( 'mlw_qmn_end_quiz_section' );
-		$qsm_d_none = 0 === intval( $qmn_quiz_options->randomness_order ) ? 'qsm-d-none' : '';
+		$qsm_d_none = 0 < $pagination_optoin ? 'qsm-d-none' : '';		
 		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
 			?>
 			<br />
