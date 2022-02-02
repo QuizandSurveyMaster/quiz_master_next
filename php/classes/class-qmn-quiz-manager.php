@@ -791,7 +791,7 @@ class QMNQuizManager {
 				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
 				'out_of_text'               => __( 'out of', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
-				'security' => wp_create_nonce( 'qsm_submit_quiz' ),
+				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
