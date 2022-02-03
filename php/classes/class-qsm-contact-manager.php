@@ -230,7 +230,7 @@ class QSM_Contact_Manager {
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 				$field_array = array(
 					'label' => $fields[ $i ]['label'],
-					'value' => isset( $_POST[ "contact_field_$i" ] ) ? sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) : 'None',
+					'value' => isset( $_POST[ "contact_field_$i" ] ) ? htmlentities( sanitize_text_field( wp_unslash( $_POST[ "contact_field_$i" ] ) ) ) : 'None',
 				);
 				if ( isset( $fields[ $i ]['use'] ) ) {
 					$field_array['use'] = $fields[ $i ]['use'];
