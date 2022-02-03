@@ -41,6 +41,7 @@ add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer', 
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_minutes', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_timer_seconds', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date', 10, 2 );
+add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_finished_time', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_date_taken', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'mlw_qmn_variable_social_share', 10, 2 );
 add_filter( 'mlw_qmn_template_variable_results_page', 'qsm_variable_result_id', 10, 2 );
@@ -522,6 +523,19 @@ function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
 function mlw_qmn_variable_date( $content, $results ) {
 	$date = date_i18n( get_option( 'date_format' ), wp_timezone_string() );
 	$content = str_replace( '%CURRENT_DATE%', $date, $content );
+	return $content;
+}
+
+/**
+ * Replaces the variable %FINISHED_TAKEN% and displays the current date
+ *
+ * @param  string $content The contents of the results page
+ * @param  array  $results The array of all the results from user taking the quiz
+ * @return string Returns the contents for the results page
+ */
+function mlw_qmn_variable_finished_time( $content, $mlw_quiz_array ) {
+	$date = date_i18n( get_option( 'time_format' ), $mlw_quiz_array['time_taken'] );
+	$content = str_replace( '%TIME_FINISHED%', $date, $content );
 	return $content;
 }
 
