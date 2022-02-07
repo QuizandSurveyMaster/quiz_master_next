@@ -619,9 +619,14 @@ function qsm_create_new_quiz_from_wizard() {
 			'enable_pagination_quiz'             => isset( $_POST['enable_pagination_quiz'] ) ? sanitize_text_field( wp_unslash( $_POST['enable_pagination_quiz'] ) ) : '',
 			'require_log_in'                     => isset( $_POST['require_log_in'] ) ? sanitize_text_field( wp_unslash( $_POST['require_log_in'] ) ) : '',
 			'disable_scroll_next_previous_click' => isset( $_POST['disable_scroll_next_previous_click'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_scroll_next_previous_click'] ) ) : '',
+			'disable_first_page'                 => isset( $_POST['disable_first_page'] ) ? sanitize_text_field( wp_unslash( $_POST['disable_first_page'] ) ) : '',
 		);
 		$get_saved_value = get_option( 'qsm-quiz-settings' );
 		$quiz_options    = array_replace( $get_saved_value, $quiz_options );
+		$get_saved_value = QMNGlobalSettingsPage::get_global_quiz_settings();
+		if ( ! empty( $get_saved_value ) && is_array( $get_saved_value ) ) {
+			$quiz_options = array_replace( $get_saved_value, $quiz_options );
+		}
 		$quiz_options    = apply_filters( 'qsm_quiz_wizard_settings_option_save', $quiz_options );
 		$mlwQuizMasterNext->quizCreator->create_quiz( $quiz_name, $theme_id, array( 'quiz_options' => $quiz_options ) );
 	}

@@ -189,6 +189,13 @@ class QMNGlobalSettingsPage {
 		$get_saved_value   = get_option( 'qsm-quiz-settings' );
 		$globalQuizsetting = wp_parse_args( $get_saved_value, $get_default_value );
 	}
+
+	public function get_global_quiz_settings() {
+		$get_default_value  = self::default_settings();
+		$get_saved_value    = get_option( 'qsm-quiz-settings' );
+		return wp_parse_args( $get_saved_value, $get_default_value );
+	}
+
 	/**
 	 * Generates Section Text
 	 *
