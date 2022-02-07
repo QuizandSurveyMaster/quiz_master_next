@@ -1819,7 +1819,7 @@ class QSM_Install {
 			// Update 7.1.11
 			$user_email_template_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'user_email_template'" );
 			if ( 'text' === $user_email_template_data->Type ) {
-				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  CHANGE user_email_template user_email_template LONGTEXT NOT NULL';
+				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  MODIFY user_email_template LONGTEXT';
 				$results = $wpdb->query( $sql );
 			}
 
