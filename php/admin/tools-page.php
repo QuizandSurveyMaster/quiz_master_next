@@ -207,13 +207,10 @@ function qsm_audit_box() {
 		</thead>
 		<tbody id="the-list">
 			<?php
-			wp_localize_script(
-				'qsm_admin_js',
-				'qsm_logs_delete',
-				array(
-					'qsm_delete_audit_logs' => esc_html__( 'Are you sure you want to delete this record? You will not be able to recover this data!', 'quiz-master-next' ),
-				)
-			);
+			wp_localize_script( 'qsm_admin_js', 'qsm_tools_page', array(
+				'qsm_delete_audit_logs' => esc_html__( 'Are you sure you want to delete this record? You will not be able to recover this data!', 'quiz-master-next' ),
+				'nonce'                 => wp_create_nonce( 'qsm_tools_' . get_current_user_id() ),
+			) );
 			$alternate = '';
 			if ( ! empty( $audit_trails ) ) {
 				foreach ( $audit_trails as $audit ) {
