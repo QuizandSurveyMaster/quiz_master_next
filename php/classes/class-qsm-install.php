@@ -1826,7 +1826,7 @@ class QSM_Install {
 			// Update 7.3.11
 			$user_message_after_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes  LIKE 'message_after'" );
 			if ( 'text' === $user_message_after_data->Type ) {
-				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes CHANGE message_after message_after LONGTEXT NOT NULL';
+				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes MODIFY message_after LONGTEXT';
 				$results = $wpdb->query( $sql );
 			}
 
