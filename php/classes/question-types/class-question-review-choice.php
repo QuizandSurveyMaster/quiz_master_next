@@ -37,6 +37,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 			} else {
 				$user_correct_ans = -1;
 			}
+			$this->points += $this->answer_array[ $user_answer_key ][1];
 			$check_correct_answer_key = $this->answer_array[ $user_answer_key ][2];
 
 			if ( 1 == $check_correct_answer_key ) {
@@ -45,7 +46,6 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 		}
 		if ( $user_correct_ans == $total_correct_ans && $is_user_attempted) {
 			$this->answer_status = 'correct';
-			$this->points += $this->answer_array[ $user_answer_key ][1];
 		}
 	}
 }
