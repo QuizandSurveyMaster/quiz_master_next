@@ -39,7 +39,7 @@ class QMNGlobalSettingsPage {
 		add_filter(
 			'pre_update_option_qmn-settings',
 			function( $new_value ) {
-				$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] );
+				$new_value['cpt_slug'] = isset( $new_value['cpt_slug'] ) ? sanitize_title( $new_value['cpt_slug'] ) : '';
 				return $new_value;
 			},
 			10,
@@ -143,7 +143,7 @@ class QMNGlobalSettingsPage {
 	 * @since 4.1.0
 	 * @return void
 	 */
-	public function quiz_default_global_option_init() {
+	public static function quiz_default_global_option_init() {
 		register_setting( 'qsm-quiz-settings-group', 'qsm-quiz-settings' );
 		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
 		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -190,9 +190,9 @@ class QMNGlobalSettingsPage {
 		$globalQuizsetting = wp_parse_args( $get_saved_value, $get_default_value );
 	}
 
-	public function get_global_quiz_settings() {
-		$get_default_value  = self::default_settings();
-		$get_saved_value    = get_option( 'qsm-quiz-settings' );
+	public static function get_global_quiz_settings() {
+		$get_default_value = self::default_settings();
+		$get_saved_value   = get_option( 'qsm-quiz-settings' );
 		return wp_parse_args( $get_saved_value, $get_default_value );
 	}
 
