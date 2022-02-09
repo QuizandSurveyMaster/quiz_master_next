@@ -42,7 +42,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 			if ( 1 == $check_correct_answer_key ) {
 				$total_correct_ans++;
 			}
-			$is_user_attempted = false;
+			$is_user_attempted = true;
 		}
 		if ( $user_correct_ans == $total_correct_ans && $is_user_attempted) {
 			$this->answer_status = 'correct';
