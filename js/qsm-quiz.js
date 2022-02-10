@@ -394,7 +394,7 @@ var QSMPageTimer;
 			if(pageNumber == 1){
 				$quizForm.find(".quiz_begin").hide();
 				$quizForm.find(".mlw_previous").hide();
-				$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();	
+				$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();
 			}
 		}
 			if ('1' == qmn_quiz_data[quizID].progress_bar) {
@@ -449,7 +449,7 @@ var QSMPageTimer;
 						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					}
 				}
-				
+
 			}
 			page += difference;
 			QSM.goToPage(quizID, page);
@@ -663,7 +663,7 @@ function isEmail(email) {
 
 /**
  * Limit multiple response based on question limit
- * @returns {undefined}
+ * @returns
  */
 function qsmCheckMR(event, limit) {
 	var checked = jQuery(event).parents('.quiz_section').find(':checkbox:checked').length;
