@@ -1249,7 +1249,7 @@ class QSM_Install {
   			quiz_id mediumint(9) NOT NULL AUTO_INCREMENT,
   			quiz_name TEXT NOT NULL,
   			message_before TEXT NOT NULL,
-  			message_after TEXT NOT NULL,
+  			message_after LONGTEXT NOT NULL,
   			message_comment TEXT NOT NULL,
   			message_end_template TEXT NOT NULL,
   			user_email_template LONGTEXT NOT NULL,
@@ -1819,7 +1819,14 @@ class QSM_Install {
 			// Update 7.1.11
 			$user_email_template_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'user_email_template'" );
 			if ( 'text' === $user_email_template_data->Type ) {
-				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  CHANGE user_email_template user_email_template LONGTEXT NOT NULL';
+				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes  MODIFY user_email_template LONGTEXT';
+				$results = $wpdb->query( $sql );
+			}
+
+			// Update 7.3.11
+			$user_message_after_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_quizzes LIKE 'message_after'" );
+			if ( 'text' === $user_message_after_data->Type  ) {
+				$sql     = 'ALTER TABLE ' . $wpdb->prefix . 'mlw_quizzes MODIFY message_after LONGTEXT';
 				$results = $wpdb->query( $sql );
 			}
 
@@ -1849,7 +1856,8 @@ class QSM_Install {
 				$results    = $wpdb->query( $update_sql );
 			}
 			// Update 7.1.11
-			if ( $wpdb->get_var( "select data_type from information_schema.columns where table_name = '" . $wpdb->prefix . "mlw_results' and column_name = 'point_score'" ) != 'FLOAT' ) {
+			$user_message_after_data = $wpdb->get_row( 'SHOW COLUMNS FROM ' . $wpdb->prefix . "mlw_results LIKE 'point_score'" );
+			if ( 'FLOAT' != $user_message_after_data->Type  ) {
 				$results = $wpdb->query( 'ALTER TABLE ' . $wpdb->prefix . 'mlw_results MODIFY point_score FLOAT NOT NULL;' );
 			}
 
