@@ -519,7 +519,7 @@ function mlw_qmn_variable_timer_seconds( $content, $mlw_quiz_array ) {
  * @return string Returns the contents for the results page
  */
 function mlw_qmn_variable_date( $content, $results ) {
-	$date = date_i18n( get_option( 'date_format' ), current_datetime() );
+	$date = date_i18n( get_option( 'date_format' ), current_time( 'h:i:s A m/d/Y' ) );
 	$content = str_replace( '%CURRENT_DATE%', $date, $content );
 	return $content;
 }
