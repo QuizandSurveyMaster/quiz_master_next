@@ -29,9 +29,11 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 	public function set_answer_status() {
 		$user_correct_ans  = 0;
 		$total_correct_ans = 0;
+		$is_user_attempted = false;
 		foreach ( $this->user_answer as $user_answer_key => $user_answer_value ) {
 			if ( in_array( $user_answer_key, array_keys( $this->correct_answer ), true ) ) {
 				$user_correct_ans  += 1;
+				$is_user_attempted = true;
 			} else {
 				$user_correct_ans = -1;
 			}
@@ -42,7 +44,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 				$total_correct_ans++;
 			}
 		}
-		if ( $user_correct_ans == $total_correct_ans ) {
+		if ( $user_correct_ans == $total_correct_ans && $is_user_attempted) {
 			$this->answer_status = 'correct';
 		}
 	}
