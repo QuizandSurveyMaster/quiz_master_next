@@ -39,7 +39,7 @@ class QMNGlobalSettingsPage {
 		add_filter(
 			'pre_update_option_qmn-settings',
 			function( $new_value ) {
-				$new_value['cpt_slug'] = sanitize_title( $new_value['cpt_slug'] );
+				$new_value['cpt_slug'] = isset( $new_value['cpt_slug'] ) ? sanitize_title( $new_value['cpt_slug'] ) : '';
 				return $new_value;
 			},
 			10,
@@ -190,9 +190,9 @@ class QMNGlobalSettingsPage {
 		$globalQuizsetting = wp_parse_args( $get_saved_value, $get_default_value );
 	}
 
-	public function get_global_quiz_settings() {
-		$get_default_value  = self::default_settings();
-		$get_saved_value    = get_option( 'qsm-quiz-settings' );
+	public static function get_global_quiz_settings() {
+		$get_default_value = self::default_settings();
+		$get_saved_value   = get_option( 'qsm-quiz-settings' );
 		return wp_parse_args( $get_saved_value, $get_default_value );
 	}
 
