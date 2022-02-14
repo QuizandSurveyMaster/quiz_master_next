@@ -70,7 +70,7 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
 		add_action( 'wp_ajax_nopriv_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
-		
+
 		// Exposrt audit trail
 		add_action( 'wp_ajax_qsm_export_data', array( $this, 'qsm_export_data' ) );
 
@@ -257,7 +257,7 @@ class QMNQuizManager {
 		global $wpdb;
 		$export_tool_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_qm_audit_trail" );
 		// file creation
-		$qsm_export_filename = 'export_' . date( 'd-m-y' ) . '.csv';
+		$qsm_export_filename = 'export_' . gmdate( 'd-m-y' ) . '.csv';
 
 		// Clean object
 		ob_end_clean();
