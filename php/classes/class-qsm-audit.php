@@ -41,7 +41,7 @@ class QSM_Audit {
 				'quiz_id'     => $quiz_id,
 				'quiz_name'   => $quiz_name,
 				'form_data'   => $json_updated_setting_data,
-				'time'        => date( 'h:i:s A m/d/Y' ),
+				'time'        => gmdate( 'h:i:s A m/d/Y' ),
 			),
 			array(
 				'%s',

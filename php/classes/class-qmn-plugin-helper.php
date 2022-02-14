@@ -448,18 +448,18 @@ class QMNPluginHelper {
 	 * Shuffle assoc array
 	 *
 	 * @since  7.3.11
-	 * @param  array  $list An array
+	 * @param  array $list An array
 	 * @return array
 	 */
 	public function qsm_shuffle_assoc( $list ) {
 		if ( ! is_array( $list ) ) {
 			return $list;
 		}
-		$keys	 = array_keys( $list );
+		$keys = array_keys( $list );
 		shuffle( $keys );
-		$random	 = array();
+		$random = array();
 		foreach ( $keys as $key ) {
-			$random[$key] = $list[$key];
+			$random[ $key ] = $list[ $key ];
 		}
 		return $random;
 	}
