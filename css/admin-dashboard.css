@@ -89,6 +89,11 @@
 	-moz-columns: 2;
 }
 
+ul.popuar-addon-ul::after {
+    content: '';
+    clear: both;
+}
+
 .qsm-popup .popuar-addon-ul {
 	columns: 1;
 	-webkit-columns: 1;

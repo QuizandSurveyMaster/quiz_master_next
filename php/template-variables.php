@@ -443,6 +443,8 @@ function qsm_all_contact_fields_variable( $content, $results ) {
  */
 function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 	global $mlwQuizMasterNext;
+	$quiz_id          = is_object( $mlw_quiz_array ) ? $mlw_quiz_array->quiz_id : $mlw_quiz_array['quiz_id'];
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 	$logic_rules      = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'logic_rules' );
 	$logic_rules      = qmn_sanitize_input_data( $logic_rules );
 	$hidden_questions = isset( $mlw_quiz_array['hidden_questions'] ) ? $mlw_quiz_array['hidden_questions'] : array();
