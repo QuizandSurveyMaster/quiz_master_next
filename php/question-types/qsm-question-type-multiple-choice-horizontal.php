@@ -1,12 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} 
+}
 
 /**
-* 
 *
-* 
+*
+*
 */
 
 /**
@@ -41,7 +41,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>">
 					<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
-						<label for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
+						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
 								?>

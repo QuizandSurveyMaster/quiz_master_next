@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} 
+}
 
 /**
  * This function shows the content of the multiple choice question.
@@ -49,7 +49,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					}
 					?>
 					<input type='radio' class='qmn_quiz_radio' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
-					<label for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
+					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
 					<?php
 					if ( 'image' === $answerEditor ) {
 						?>
