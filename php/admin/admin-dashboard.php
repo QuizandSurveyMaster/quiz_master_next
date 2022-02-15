@@ -564,6 +564,10 @@ function qsm_dashboard_chagelog( $widget_id ) {
 						$expload_str = explode( ':', $single_change_log );
 						$cl_type     = $expload_str[0];
 						$cl_str      = $expload_str[1];
+						if ( empty( $cl_str ) ) {
+							$cl_str  = $cl_type;
+							$cl_type = '';
+						}
 						?>
 						<li>
 							<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
