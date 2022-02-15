@@ -704,13 +704,8 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 						$category_name_object = get_term_by( 'ID', $id, 'qsm_category' );
 						if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 							$total_questions += 1;
-							if( $answer['points'] > 0 ){
-								$amount_correct  += $answer['points'];
-							}
-							else{
-								if ( 'correct' == $answer['correct'] ) {
-									$amount_correct += 1;
-								}
+							if ( 'correct' == $answer['correct'] ) {
+								$amount_correct += 1;
 							}
 						}
 					}
