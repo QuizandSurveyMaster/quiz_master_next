@@ -161,17 +161,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 7.3.11 (February 17, 2022) =
-* Bug: Fixed issue where limit multiple choice option
-* Bug: Fixed security and Vulnerability issues
-* Bug: Fixed issue while adding quiz
-* Bug: Fixed issue where empty answers marked as correct
-* Bug: Fixed issue where blank screen is shown on the quiz dashboard
-* Bug: Fixed issue with random questions & answers option
-* Bug: Fixed %QUESTIONS_ANSWERS_EMAIL% text issue
-* Bug: Fixed issue with required settings for dropdown questions type
-* Bug: Fixed total question count issue while importing question from question bank
-* Bug: Fixed multiple results pages saving issue
-* Feature: Added template variable for quiz finish time
+* Bug: Fixed validation issues with limit multiple choice option
+* Bug: Fixed issue while creating new quiz
+* Bug: Fixed issue where empty answers are marked as correct
+* Bug: Fixed issue with quiz dashboard
+* Bug: Fixed issue with random questions & answers
+* Bug: Fixed issue with template variable %QUESTIONS_ANSWERS_EMAIL%
+* Bug: Fixed validation issues with dropdown field
+* Bug: Fixed issue while importing questions from question bank
+* Bug: Fixed issue while saving multiple results pages
+* Bug: Fixed various security vulnerabilities
+* Feature: Added new template variable %FINISHED_TIME%
 * Enhancement: Made UI improvements in question numbers
 
 = 7.3.10 (January 28, 2022) =
