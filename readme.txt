@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.10
+Stable tag: 7.3.11
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -160,6 +160,20 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.11 (February 17, 2022) =
+* Bug: Fixed issue where limit multiple choice option
+* Bug: Fixed security and Vulnerability issues
+* Bug: Fixed issue while adding quiz
+* Bug: Fixed issue where empty answers marked as correct
+* Bug: Fixed issue where blank screen is shown on the quiz dashboard
+* Bug: Fixed issue with random questions & answers option
+* Bug: Fixed %QUESTIONS_ANSWERS_EMAIL% text issue
+* Bug: Fixed issue with required settings for dropdown questions type
+* Bug: Fixed total question count issue while importing question from question bank
+* Bug: Fixed multiple results pages saving issue
+* Feature: Added template variable for quiz finish time
+* Enhancement: Made UI improvements in question numbers
+
 = 7.3.10 (January 28, 2022) =
 * Checked compatibility with WordPress 5.9
 * Bug: Fixed UI issues in QSM dashboard banner
