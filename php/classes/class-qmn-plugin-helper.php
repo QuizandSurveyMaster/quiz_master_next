@@ -403,7 +403,7 @@ class QMNPluginHelper {
 		}
 		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
-			shuffle( $answers );
+			$answers = $this->qsm_shuffle_assoc( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
 
@@ -426,7 +426,7 @@ class QMNPluginHelper {
 				if ( $type['graded'] ) {
 					$qmn_total_questions += 1;
 					if ( 1 === intval( $quiz_options->question_numbering ) ) { ?>
-						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?></span>
+						<span class='mlw_qmn_question_number'><?php echo esc_html( $qmn_total_questions ); ?>.&nbsp;</span>
 						<?php
 					}
 				}
@@ -443,6 +443,27 @@ class QMNPluginHelper {
 			}
 		}
 	}
+
+	/**
+	 * Shuffle assoc array
+	 *
+	 * @since  7.3.11
+	 * @param  array $list An array
+	 * @return array
+	 */
+	public function qsm_shuffle_assoc( $list ) {
+		if ( ! is_array( $list ) ) {
+			return $list;
+		}
+		$keys = array_keys( $list );
+		shuffle( $keys );
+		$random = array();
+		foreach ( $keys as $key ) {
+			$random[ $key ] = $list[ $key ];
+		}
+		return $random;
+	}
+
 
 	/**
 	 * Calculates Score For Question

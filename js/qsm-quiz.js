@@ -394,7 +394,7 @@ var QSMPageTimer;
 			if(pageNumber == 1){
 				$quizForm.find(".quiz_begin").hide();
 				$quizForm.find(".mlw_previous").hide();
-				$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();	
+				$quizForm.find('.qsm-page-' + (parseInt(pageNumber))).show();
 			}
 		}
 			if ('1' == qmn_quiz_data[quizID].progress_bar) {
@@ -449,7 +449,7 @@ var QSMPageTimer;
 						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
 					}
 				}
-				
+
 			}
 			page += difference;
 			QSM.goToPage(quizID, page);
@@ -663,7 +663,7 @@ function isEmail(email) {
 
 /**
  * Limit multiple response based on question limit
- * @returns {undefined}
+ * @returns
  */
 function qsmCheckMR(event, limit) {
 	var checked = jQuery(event).parents('.quiz_section').find(':checkbox:checked').length;
@@ -803,7 +803,7 @@ function qmnValidation(element, quiz_form_id) {
 				}
 				if (jQuery(this).attr('class').indexOf('qsmRequiredSelect') > -1) {
 					check_val = jQuery(this).val();
-					if (check_val == "No Answer Provided" || check_val == "") {
+					if (check_val == "No Answer Provided" || check_val == "" || check_val == null) {
 						qmnDisplayError(empty_error, jQuery(this), quiz_form_id);
 						result = false;
 					}
@@ -866,6 +866,7 @@ function qmnFormSubmit(quiz_form_id) {
 		fd.append(input.name, input.value);
 	});
 	fd.append("action", 'qmn_process_quiz');
+	fd.append("nonce", qmn_ajax_object.security	);
 	fd.append("currentuserTime", Math.round(new Date().getTime()/1000));
 	fd.append("currentuserTimeZone",Intl.DateTimeFormat().resolvedOptions().timeZone);
 
@@ -1249,12 +1250,14 @@ function qmnInitPagination(quiz_id) {
 		if (qmnValidatePage('quizForm' + quiz_id)) {
 			qmnNextSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
 		}
+		jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 	});
 
 	jQuery(".mlw_previous").click(function (event) {
 		event.preventDefault();
 		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		qmnPrevSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
+		jQuery(document).trigger('qsm_previous_button_click_after', [quiz_id]);
 	});
 
 	if (qmn_quiz_data[quiz_id].first_page) {

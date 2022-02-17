@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
-} 
+}
 /**
  * This function displays the content of the multiple response question type
  *
@@ -22,7 +22,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
 	$limit_mr_text           = '';
 	if ( $limit_multiple_response > 0 ) {
-		$limit_mr_text = 'onchange="qsmCheckMR(this,' . $limit_multiple_response . ')"';
+		$limit_mr_text = 'onchange=qsmCheckMR(this,' . $limit_multiple_response . ')';
 	}
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
@@ -38,7 +38,7 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 					?>
 				<span class="mlw_horizontal_multiple">
 					<input type="checkbox" <?php echo esc_attr( $limit_mr_text ); ?> name="question<?php echo esc_attr( $id ) .'[]' ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
-					<label for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
+					<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 					<?php
 					if ( 'image' === $answerEditor ) {
 					?>

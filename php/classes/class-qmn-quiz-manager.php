@@ -70,11 +70,12 @@ class QMNQuizManager {
 		add_action( 'wp_ajax_nopriv_qsm_get_quiz_to_reload', array( $this, 'qsm_get_quiz_to_reload' ) );
 		add_action( 'wp_ajax_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
 		add_action( 'wp_ajax_nopriv_qsm_get_question_quick_result', array( $this, 'qsm_get_question_quick_result' ) );
-		add_action( 'wp_ajax_qsm_export_data', array( $this, 'qsm_export_data' ) );
-		add_action( 'wp_ajax_nopriv_qsm_export_data', array( $this, 'qsm_export_data' ) );
 
+		// Exposrt audit trail
+		add_action( 'wp_ajax_qsm_export_data', array( $this, 'qsm_export_data' ) );
+
+		// Clear audit trail
 		add_action( 'wp_ajax_qsm_clear_audit_data', array( $this, 'qsm_clear_audit_data' ) );
-		add_action( 'wp_ajax_nopriv_qsm_clear_audit_data', array( $this, 'qsm_clear_audit_data' ) );
 
 		// Upload file of file upload question type
 		add_action( 'wp_ajax_qsm_upload_image_fd_question', array( $this, 'qsm_upload_image_fd_question' ) );
@@ -249,10 +250,14 @@ class QMNQuizManager {
 	 */
 
 	public function qsm_export_data() {
+		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_tools_' . get_current_user_id() ) ) {
+			wp_send_json_error();
+		}
+
 		global $wpdb;
 		$export_tool_data = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}mlw_qm_audit_trail" );
 		// file creation
-		$qsm_export_filename = 'export_' . date( 'd-m-y' ) . '.csv';
+		$qsm_export_filename = 'export_' . gmdate( 'd-m-y' ) . '.csv';
 
 		// Clean object
 		ob_end_clean();
@@ -279,16 +284,19 @@ class QMNQuizManager {
 		header( 'Content-Disposition: attachment; filename=' . $qsm_export_filename );
 		header( 'Content-Type: text/csv;' );
 		exit;
-
 	}
 
 	public function qsm_clear_audit_data() {
+		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_tools_' . get_current_user_id() ) ) {
+			wp_send_json_error();
+		}
+
 		global $wpdb;
 		$table_audit = $wpdb->prefix . 'mlw_qm_audit_trail';
 		$wpdb->query( "TRUNCATE TABLE $table_audit" );
 
+		wp_send_json_success();
 	}
-
 
 	/**
 	 * Generates Content For Quiz Shortcode
@@ -781,8 +789,9 @@ class QMNQuizManager {
 			array(
 				'ajaxurl'                   => admin_url( 'admin-ajax.php' ),
 				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
-				'out_of_text'               => __( 'out of', 'quiz-master-next' ),
+				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
+				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
@@ -1365,6 +1374,19 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function ajax_submit_results() {
+		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_submit_quiz' ) ) {
+			echo wp_json_encode(
+				array(
+					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),
+					'redirect'      => false,
+					'result_status' => array(
+						'save_response' => false,
+					),
+				)
+			);
+			exit;
+		}
+
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
 
@@ -1398,7 +1420,7 @@ class QMNQuizManager {
 				if ( ! $verified ) {
 					echo wp_json_encode(
 						array(
-							'display'       => htmlspecialchars_decode( 'ReCaptcha Validation failed' ),
+							'display'       => htmlspecialchars_decode( 'ReCaptcha Validation failed!' ),
 							'redirect'      => false,
 							'result_status' => array(
 								'save_response' => false,

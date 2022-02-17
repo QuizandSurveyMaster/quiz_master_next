@@ -425,6 +425,7 @@ var QSMAdmin;
             url: ajaxurl,
             data: {
                 action: "qsm_export_data",
+                nonce: qsm_tools_page.nonce,
             },
             success: function(response) {
                 /*
@@ -451,8 +452,6 @@ var QSMAdmin;
                 document.body.appendChild(downloadLink);
                 downloadLink.click();
                 document.body.removeChild(downloadLink);
-
-
             },
             error: function(errorThrown) {
                 alert(errorThrown);
@@ -462,7 +461,7 @@ var QSMAdmin;
 
     jQuery(document).on('click', '#btn_clear_logs', function(e) {
         e.preventDefault();
-        var delete_logs=confirm(qsm_logs_delete.qsm_delete_audit_logs);
+        var delete_logs=confirm(qsm_tools_page.qsm_delete_audit_logs);
         if ( delete_logs ) {
             // your deletion code
             jQuery.ajax({
@@ -470,6 +469,7 @@ var QSMAdmin;
                 url: ajaxurl,
                 data: {
                     action: "qsm_clear_audit_data",
+                    nonce: qsm_tools_page.nonce,
                 },
                 success: function(response) {
                     location.reload();
@@ -479,8 +479,6 @@ var QSMAdmin;
                 }
             });
         }
-
-
     });
 
     jQuery('.qsm_audit_data').click(function (e) {
@@ -1571,6 +1569,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 QSMQuestion.questions.add(model);
                 QSMQuestion.addQuestionToPage(model);
                 $('.import-button').removeClass('disable_import');
+                QSMQuestion.countTotal();
                 import_button.html('').html('Add Question');
             },
             prepareCategories: function () {
@@ -2401,6 +2400,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     $($('#question-bank').find('[name="qsm-question-checkbox[]"]:checked').parents('.question-bank-question').reverse()).each(function () {
                         $(this).find('.import-button').text('').text('Adding Question');
                         import_button = $(this).find('.import-button');
+                        QSMQuestion.countTotal();
                         QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
                         $(this).find('.import-button').text('').text('Add Question');
                     });

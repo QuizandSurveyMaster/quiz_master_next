@@ -720,6 +720,7 @@ function qsm_text_template_variable_list() {
 			'%CONTACT_ALL%'               => __( 'Value user entered into contact field. X is # of contact field. For example, first contact field would be %CONTACT_1%', 'quiz-master-next' ),
 			'%AVERAGE_CATEGORY_POINTS_X%' => __( 'X: Category name - The average amount of points a specific category earned.', 'quiz-master-next' ),
 			'%QUESTION_ANSWER_X%'         => __( 'X = Question ID. It will show result of particular question.', 'quiz-master-next' ),
+			'%TIME_FINISHED%'             => __( 'Display time after quiz submission.', 'quiz-master-next' ),
 		),
 	);
 	$variable_list = apply_filters( 'qsm_text_variable_list', $variable_list );
