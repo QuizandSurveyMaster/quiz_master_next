@@ -4,7 +4,6 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
     $question_with_answer_text = '';
     foreach ( $total_answers as $single_answer_key => $single_answer ) {
         $user_answer_array    = isset( $answers_from_response['user_answer'] ) && is_array( $answers_from_response['user_answer'] ) ? $answers_from_response['user_answer'] : array();
-        $correct_answer_array = isset( $answers_from_response['correct_answer'] ) && is_array( $answers_from_response['correct_answer'] ) ? $answers_from_response['correct_answer'] : array();
         $user_answer_keys     = ! empty( $user_answer_array ) ? array_keys( $user_answer_array ) : array() ;
         $is_answer_correct    = false;
         $is_user_answer       = false;
