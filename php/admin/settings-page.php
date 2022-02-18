@@ -93,7 +93,7 @@ class QMNGlobalSettingsPage {
 	 * @since 7.3.10
 	 * @return array
 	 */
-	public function default_settings() {
+	public static function default_settings() {
 		return array(
 			'form_type'                          => 0,
 			'system'                             => 3,
@@ -185,7 +185,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
-		$get_default_value = $this->default_settings();
+		$get_default_value = self::default_settings();
 		$get_saved_value   = get_option( 'qsm-quiz-settings' );
 		$globalQuizsetting = wp_parse_args( $get_saved_value, $get_default_value );
 	}
