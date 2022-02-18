@@ -161,7 +161,7 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 7.3.12 (February 18, 2022) =
-* Bug: Fixed issue while creating new quiz
+* Hotfix: Fixed issue while creating new quiz
 
 = 7.3.11 (February 17, 2022) =
 * Bug: Fixed validation issues with limit multiple choice option
