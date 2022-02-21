@@ -46,12 +46,18 @@ function qmn_polar_display( $id, $question, $answers ) {
 
 	?>
 	<span class="mlw_qmn_question question-type-polar-s">
-		<div class='left-polar-title'> <?php echo esc_html( $answers[0][0] ); ?> </div>
+		<div class='left-polar-title'> <?php
+		$left_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" );
+		echo esc_html( $left_title );
+		?> </div>
 		<div class='slider-main-wrapper'>
 			<input type='hidden' class='qmn_polar <?php echo esc_attr( $mlw_require_class ); ?>' id='question<?php echo esc_attr( $id ); ?>' name='question<?php echo esc_attr( $id ); ?>' value=''/>
 			<div id="slider-<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $slider_data_atts ); ?> ></div>
 		</div>
-		<div class='right-polar-title'><?php echo esc_html( $answers[1][0] ); ?></div>
+		<div class='right-polar-title'><?php
+		$right_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" );
+		echo esc_html( $right_title );
+		?></div>
 	</span>
 	<?php
 

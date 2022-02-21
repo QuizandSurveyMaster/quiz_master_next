@@ -13,5 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.4.0
  */
 function qmn_text_block_display( $id, $question, $answers ) {
-	echo wp_kses_post( do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) );
+	$question = do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) );
+	$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question, "question-description-{$id}", "QSM Questions" );
+	echo wp_kses_post( $question );
 }
