@@ -215,7 +215,7 @@ class QMNQuizManager {
 	 * Get question quick result
 	 */
 	public function qsm_get_question_quick_result() {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
