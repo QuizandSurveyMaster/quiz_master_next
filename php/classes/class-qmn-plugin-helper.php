@@ -465,7 +465,7 @@ class QMNPluginHelper {
 	}
 
 	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		if ( ! empty( $string ) ) {
+		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			$string_name = sanitize_title( $string_name );
 			/**
 			 * Register the string for translation
