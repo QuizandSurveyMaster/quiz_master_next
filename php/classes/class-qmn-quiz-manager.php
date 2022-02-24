@@ -2557,7 +2557,7 @@ function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 	if ( true == $checked_pass ) {
 		$qmn_allowed_visit = false;
 		$message           = wpautop( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ) );
-		$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-scheduled-timeframe-message-{$qmn_quiz_options->quiz_id}" );
+		$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-scheduled-timeframe-message-{$options->quiz_id}" );
 		$message           = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message, $variable_data );
 		$display          .= str_replace( "\n", '<br>', $message );
 	}
@@ -2576,7 +2576,7 @@ add_filter( 'qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3 );
  * @return string The altered HTML display for the quiz
  */
 function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
-	global $qmn_allowed_visit;
+	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	if ( 0 != $qmn_quiz_options->total_user_tries ) {
 
 		// Prepares the variables
