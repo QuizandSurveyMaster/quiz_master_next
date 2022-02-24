@@ -465,7 +465,7 @@ class QMNPluginHelper {
 	}
 
 	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			$string_name = sanitize_title( $string_name );
 			/**
@@ -475,7 +475,7 @@ class QMNPluginHelper {
 			/**
 			 * Display original string or translated string
 			 */
-			$string		 = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
+			$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
 		}
 		return $string;
 	}
