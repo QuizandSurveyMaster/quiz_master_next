@@ -1043,12 +1043,12 @@ class QMNQuizManager {
 					$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
 						?>
-						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />";
+						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />
 						<?php
 					}
 					if ( 2 == $question['comments'] ) {
 						?>
-						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>";
+						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>
 						<?php
 					}
 					// Checks if a hint is entered.
