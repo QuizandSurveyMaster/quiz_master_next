@@ -312,17 +312,10 @@ class QMNQuizManager {
 	 * @return string The content for the shortcode
 	 */
 	public function display_shortcode( $atts ) {
-
-		$args = shortcode_atts(
-			array(
-				'quiz'            => 0,
-				'question_amount' => 0,
-			),
-			$atts
-		);
-
-		$quiz            = intval( $args['quiz'] );
-		$question_amount = intval( $args['question_amount'] );
+		$default_params  = apply_filters( 'qsm_shortcode_default_arguments', array( 'quiz' => 0, 'question_amount' => 0 ), $atts );
+		$shortcode_args  = shortcode_atts( $default_params, $atts );
+		$quiz            = intval( $shortcode_args['quiz'] );
+		$question_amount = intval( $shortcode_args['question_amount'] );
 
 		ob_start();
 		if ( isset( $_GET['result_id'] ) && '' !== $_GET['result_id'] ) {
@@ -452,22 +445,22 @@ class QMNQuizManager {
 				'scheduled_time_end'                 => strtotime( $qmn_quiz_options->scheduled_time_end ),
 			);
 
-			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+			$return_display = apply_filters( 'qmn_begin_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 			// Checks if we should be showing quiz or results page.
 			if ( $qmn_allowed_visit && ! isset( $_POST['complete_quiz'] ) && ! empty( $qmn_quiz_options->quiz_name ) ) {
-				$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_array_for_variables, $question_amount );
+				$return_display .= $this->display_quiz( $qmn_quiz_options, $qmn_array_for_variables, $question_amount, $shortcode_args );
 			} elseif ( isset( $_POST['complete_quiz'], $_POST['qmn_quiz_id'] ) && 'confirmation' == sanitize_text_field( wp_unslash( $_POST['complete_quiz'] ) ) && sanitize_text_field( wp_unslash( $_POST['qmn_quiz_id'] ) ) == $qmn_array_for_variables['quiz_id'] ) {
 				$return_display .= $this->display_results( $qmn_quiz_options, $qmn_array_for_variables );
 			}
 
-			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+			$qmn_filtered_json = apply_filters( 'qmn_json_data', $qmn_json_data, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 			$return_display .= '<script>window.qmn_quiz_data["' . $qmn_json_data['quiz_id'] . '"] = ' . wp_json_encode( $qmn_filtered_json ) . '
                     </script>';
 
 			$return_display .= ob_get_clean();
-			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $atts );
+			$return_display  = apply_filters( 'qmn_end_shortcode', $return_display, $qmn_quiz_options, $qmn_array_for_variables, $shortcode_args );
 
 		}
 		return $return_display;
@@ -751,7 +744,7 @@ class QMNQuizManager {
 	 * @uses   QMNQuizManager:display_end_section() Creates display for end section
 	 * @return string The content for the quiz page section
 	 */
-	public function display_quiz( $options, $quiz_data, $question_amount ) {
+	public function display_quiz( $options, $quiz_data, $question_amount, $shortcode_args = array() ) {
 
 		global $qmn_allowed_visit;
 		global $mlwQuizMasterNext;
@@ -870,8 +863,9 @@ class QMNQuizManager {
 						<?php
 					}
 					echo apply_filters( 'qmn_end_quiz_form', '', $options, $quiz_data );
+					do_action( 'qsm_before_end_quiz_form', $options, $quiz_data, $shortcode_args );
 					?>
-					</form>
+				</form>
 		</div>
 		<?php
 
