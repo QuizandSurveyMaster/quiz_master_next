@@ -312,8 +312,7 @@ class QMNQuizManager {
 	 * @return string The content for the shortcode
 	 */
 	public function display_shortcode( $atts ) {
-		$default_params  = apply_filters( 'qsm_shortcode_default_arguments', array( 'quiz' => 0, 'question_amount' => 0 ), $atts );
-		$shortcode_args  = shortcode_atts( $default_params, $atts );
+		$shortcode_args  = shortcode_atts( array( 'quiz' => 0, 'question_amount' => 0 ), $atts );
 		$quiz            = intval( $shortcode_args['quiz'] );
 		$question_amount = intval( $shortcode_args['question_amount'] );
 
