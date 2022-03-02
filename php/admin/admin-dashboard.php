@@ -562,8 +562,8 @@ function qsm_dashboard_chagelog( $widget_id ) {
 							break;
 						}
 						$expload_str = explode( ':', $single_change_log );
-						$cl_type     = $expload_str[0];
-						$cl_str      = $expload_str[1];
+						$cl_type     = isset( $expload_str[1] ) ? $expload_str[0] : '';
+						$cl_str      = isset( $expload_str[1] ) ? $expload_str[1] : $expload_str[0];
 						if ( empty( $cl_str ) ) {
 							$cl_str  = $cl_type;
 							$cl_type = '';
