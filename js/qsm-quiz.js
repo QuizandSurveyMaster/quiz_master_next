@@ -1255,7 +1255,7 @@ function qmnInitPagination(quiz_id) {
 		jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 	});
 
-	jQuery(".mlw_previous").click(function (event) {
+	jQuery(".mlw_previous").unbind().click(function (event) {
 		event.preventDefault();
 		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		qmnPrevSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
