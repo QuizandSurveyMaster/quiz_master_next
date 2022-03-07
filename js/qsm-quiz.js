@@ -1245,7 +1245,7 @@ function qmnInitPagination(quiz_id) {
 		jQuery(document).trigger('qsm_init_progressbar_after', [quiz_id, qmn_quiz_data]);
 	}
 
-	jQuery(".mlw_next").click(function (event) {
+	jQuery(".mlw_next").unbind().click(function (event) {
 		event.preventDefault();
 		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		jQuery(document).trigger('qsm_auto_next_button_click_before', [quiz_id]);
