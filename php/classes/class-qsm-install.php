@@ -259,7 +259,7 @@ class QSM_Install {
 			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
 			'type'    => 'category',
 			'default' => '',
-			'help'    => __( 'Questions will load only from selected categories. This option works only with Random Questions ', 'quiz-master-next' ),
+			'help'    => __( 'Questions will load only from selected categories.', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
