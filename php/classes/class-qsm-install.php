@@ -259,7 +259,7 @@ class QSM_Install {
 			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
 			'type'    => 'category',
 			'default' => '',
-			'help'    => __( 'Questions will load only from selected categories. This option works only with Random Questions ', 'quiz-master-next' ),
+			'help'    => __( 'Questions will load only from selected categories.', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -1925,7 +1925,7 @@ class QSM_Install {
 		if ( QSM_PLUGIN_BASENAME === $file ) {
 			$row_meta = array(
 				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
-				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
+				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_about&tab=help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
 			);
 			return array_merge( $links, $row_meta );
 		}
