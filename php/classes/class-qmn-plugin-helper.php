@@ -440,6 +440,7 @@ class QMNPluginHelper {
 					}
 				}
 				call_user_func( $type['display'], intval( $question_id ), $question->question_name, $answers );
+				do_action( 'qsm_after_question', $question );
 			}
 		}
 	}
