@@ -1263,10 +1263,6 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	$question_display = '';
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
-	$limit_text     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$autofill_att   = $autofill ? "autocomplete='off' " : '';
-	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	$input_text     = '';
 	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
 	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
@@ -1317,10 +1313,10 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 	}
 
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
+	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" ) . '</div>';
 	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"' . $slider_date_atts . '></div></div>';
-	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . '</div>';
+	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" ) . '</div>';
 	$question           = $input_text;
 	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );

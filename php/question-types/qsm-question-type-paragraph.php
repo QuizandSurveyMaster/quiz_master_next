@@ -21,12 +21,11 @@ function qmn_large_open_display( $id, $question, $answers ) {
 	} else {
 		$mlw_require_class = '';
 	}
-	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
 	// $question_title = apply_filters('the_content', $question);
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, '', $new_question_title, $id );
 	?>
-	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" <?php echo esc_attr( $limit_text_att ); ?> cols="70" rows="5" name="question<?php echo esc_attr( $id ); ?>" /></textarea>
+	<textarea class="mlw_answer_open_text <?php echo esc_attr( $mlw_require_class ); ?>" cols="70" rows="5" name="question<?php echo esc_attr( $id ); ?>" <?php if ( $limit_text ) : ?>maxlength="<?php echo esc_attr( $limit_text ); ?>"<?php endif; ?> /></textarea>
 	<?php
 	echo apply_filters( 'qmn_large_open_display_front', '', $id, $question, $answers );
 }
