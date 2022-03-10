@@ -165,7 +165,6 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 = 7.3.13 (March 11, 2022) =
 * Bug: Fixed issue with comments field UI
 * Bug: Fixed issue with support Link
-* Bug: Fixed php warning with changlog
 * Bug: Fixed issue with %CATEGORY_SCORE_X% template variable
 * Bug: Fixed issue while using multiple quiz shortcodes
 * Bug: Fixed issue with qmn_register_my_templates hook
