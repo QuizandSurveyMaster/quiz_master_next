@@ -1413,11 +1413,13 @@ jQuery(function () {
 					var data = jQuery.parseJSON(response);
 					$this.find('.quick-question-res-p').remove();
 					$this.find('.qsm-inline-correct-info').remove();
+					jQuery(document).trigger('qsm_after_answer_input', [data.success, $this, $quizForm]);
 					if (data.success == 'correct') {
 					} else if (data.success == 'incorrect') {
 						$this.append('<div style="color: red" class="quick-question-res-p">' + qmn_quiz_data[quizID].quick_result_wrong_answer_text + '</div>')
 						$this.append('<div class="qsm-inline-correct-info">' + data.message + '</div>');
 						setTimeout(function () {
+							$quizForm.closest('.qmn_quiz_container').find('[class*="Required"]').removeClass();
 							$quizForm.closest('.qmn_quiz_container').find('.qsm-submit-btn').trigger('click');
 						}, 1000);
 					}
