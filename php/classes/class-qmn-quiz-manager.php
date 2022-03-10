@@ -1314,7 +1314,7 @@ class QMNQuizManager {
 		$pagination_optoin     = $qmn_quiz_options->pagination;
 
 		do_action( 'mlw_qmn_end_quiz_section' );
-		$qsm_d_none = 0 === intval( $qmn_quiz_options->randomness_order ) ? 'qsm-d-none' : '';
+		$qsm_d_none = 0 < intval( $pagination_optoin ) ? 'qsm-d-none' : '';
 		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
 			?>
 			<br />
