@@ -789,7 +789,6 @@ class QMNQuizManager {
 				'multicheckbox_limit_reach' => __( 'Limit of choice is reached.', 'quiz-master-next' ),
 				'out_of_text'               => __( ' out of ', 'quiz-master-next' ),
 				'quiz_time_over'            => __( 'Quiz time is over.', 'quiz-master-next' ),
-				'security'                  => wp_create_nonce( 'qsm_submit_quiz' ),
 			)
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
@@ -832,6 +831,7 @@ class QMNQuizManager {
 			?>
 			<form name="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" id="quizForm<?php echo esc_attr( $quiz_data['quiz_id'] ); ?>" action="<?php echo esc_url( $quiz_form_action ); ?>" method="POST" class="qsm-quiz-form qmn_quiz_form mlw_quiz_form" novalidate enctype="multipart/form-data">
 				<input type="hidden" name="qsm_hidden_questions" id="qsm_hidden_questions" value="">
+				<?php wp_nonce_field( 'qsm_quiz_submit_action', 'qsm_submit_quiz' ); ?>
 				<div id="mlw_error_message" class="qsm-error-message qmn_error_message_section"></div>
 				<span id="mlw_top_of_quiz"></span>
 				<?php
@@ -1373,7 +1373,7 @@ class QMNQuizManager {
 	 * @return string The content for the results page section
 	 */
 	public function ajax_submit_results() {
-		if ( ! isset( $_REQUEST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['nonce'] ) ), 'qsm_submit_quiz' ) ) {
+		if ( ! isset( $_REQUEST['qsm_submit_quiz'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['qsm_submit_quiz'] ) ), 'qsm_quiz_submit_action' ) ) {
 			echo wp_json_encode(
 				array(
 					'display'       => htmlspecialchars_decode( 'Nonce Validation failed!' ),

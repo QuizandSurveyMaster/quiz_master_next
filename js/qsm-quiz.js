@@ -866,7 +866,6 @@ function qmnFormSubmit(quiz_form_id) {
 		fd.append(input.name, input.value);
 	});
 	fd.append("action", 'qmn_process_quiz');
-	fd.append("nonce", qmn_ajax_object.security	);
 	fd.append("currentuserTime", Math.round(new Date().getTime()/1000));
 	fd.append("currentuserTimeZone",Intl.DateTimeFormat().resolvedOptions().timeZone);
 
