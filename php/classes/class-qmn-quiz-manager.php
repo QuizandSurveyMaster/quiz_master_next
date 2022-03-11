@@ -1185,22 +1185,22 @@ class QMNQuizManager {
 		$question_id_list       = '';
 		$animation_effect       = isset( $qmn_quiz_options->quiz_animation ) && '' !== $qmn_quiz_options->quiz_animation ? ' animated ' . $qmn_quiz_options->quiz_animation : '';
 		$enable_pagination_quiz = isset( $qmn_quiz_options->enable_pagination_quiz ) && $qmn_quiz_options->enable_pagination_quiz ? $qmn_quiz_options->enable_pagination_quiz : 0;
-		$pagination_optoin      = $qmn_quiz_options->pagination;
-		if ( $enable_pagination_quiz && $pagination_optoin ) {
+		$pagination_option      = $qmn_quiz_options->pagination;
+		if ( $enable_pagination_quiz && $pagination_option ) {
 			$total_pages_count = count( $qmn_quiz_questions );
-			$total_pagination  = ceil( $total_pages_count / $pagination_optoin );
+			$total_pagination  = ceil( $total_pages_count / $pagination_option );
 		}
 		$pages_count         = 1;
 		$current_page_number = 1;
 		foreach ( $qmn_quiz_questions as $mlw_question ) {
-			if ( 0 != $pagination_optoin ) {
-				if ( 1 == $pagination_optoin ) {
+			if ( 0 != $pagination_option ) {
+				if ( 1 == $pagination_option ) {
 					?>
 					<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
 					<?php
 					$current_page_number++;
 				} else {
-					if ( 1 == $pages_count % $pagination_optoin || 1 == $pages_count ) { // beginning of the row or first.
+					if ( 1 == $pages_count % $pagination_option || 1 == $pages_count ) { // beginning of the row or first.
 						?>
 						<div class="qsm-auto-page-row qsm-apc-<?php echo esc_attr( $current_page_number ); ?>" style="display: none;">
 						<?php
@@ -1242,9 +1242,9 @@ class QMNQuizManager {
 				?>
 			</div><!-- .quiz_section -->
 			<?php
-			if ( 0 == $pagination_optoin ) {
+			if ( 0 == $pagination_option ) {
 
-			} elseif ( 1 == $pagination_optoin || 0 == $pages_count % $pagination_optoin || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
+			} elseif ( 1 == $pagination_option || 0 == $pages_count % $pagination_option || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
 				?>
 				</div><!-- .qsm-auto-page-row -->
 				<?php
@@ -1311,10 +1311,10 @@ class QMNQuizManager {
 		global $mlw_qmn_section_count;
 		$section_display       = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
-		$pagination_optoin     = $qmn_quiz_options->pagination;
+		$pagination_option     = $qmn_quiz_options->pagination;
 
 		do_action( 'mlw_qmn_end_quiz_section' );
-		$qsm_d_none = 0 === intval( $qmn_quiz_options->randomness_order ) ? 'qsm-d-none' : '';
+		$qsm_d_none = 0 < intval( $pagination_option ) ? 'qsm-d-none' : '';
 		if ( ! empty( $qmn_quiz_options->message_end_template ) || ( 1 === intval( $qmn_quiz_options->contact_info_location ) && ! empty( QSM_Contact_Manager::display_fields( $qmn_quiz_options ) ) ) ) {
 			?>
 			<br />
