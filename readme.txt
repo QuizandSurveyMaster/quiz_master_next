@@ -162,15 +162,15 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
-= 7.3.13 (March 11, 2022) =
+= 7.3.13 (March 14, 2022) =
 * Bug: Fixed issue with comments field UI
 * Bug: Fixed issue with support Link
 * Bug: Fixed issue with %CATEGORY_SCORE_X% template variable
 * Bug: Fixed issue while using multiple quiz shortcodes
 * Bug: Fixed issue with qmn_register_my_templates hook
-* Bug: Fixed issue with answer test limit
-* Bug: Fixed issue with limit questions
-* Feature: Added option to edit retake button label
+* Bug: Fixed issue with answer text limit
+* Bug: Fixed issue while using limit questions with random questions
+* Feature: Added option to customize the label of Retake Quiz Button
 
 = 7.3.12 (February 18, 2022) =
 * Hotfix: Fixed compatibility issues with php 8
