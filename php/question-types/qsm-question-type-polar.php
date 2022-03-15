@@ -14,11 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_polar_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$required       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
-	$autofill       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'autofill' );
-	$limit_text     = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_text' );
-	$autofill_att   = $autofill ? "autocomplete='off' " : '';
-	$limit_text_att = $limit_text ? "maxlength='" . $limit_text . "' " : '';
-	$input_text     = '';
 	$first_point    = isset( $answers[0][1] ) ? intval( $answers[0][1] ) : 0;
 	$second_point   = isset( $answers[1][1] ) ? intval( $answers[1][1] ) : 0;
 	$is_reverse     = false;

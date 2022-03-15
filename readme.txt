@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.12
+Stable tag: 7.3.13
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,9 +100,11 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-🌐Our Plugins
+🌐Our themes and plugins
 
-If you like this plugin, consider exploring our other plugins:
+If you like this plugin, consider exploring our other themes and plugins:
+
+🧱 [Gutena] (https://wordpress.org/themes/gutena/) - Block Based Theme for WordPress includes over 50 free block patterns with new patterns added every week.
 
 ☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
 
@@ -160,6 +162,16 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.13 (March 14, 2022) =
+* Bug: Fixed issue with comments field UI
+* Bug: Fixed issue with support Link
+* Bug: Fixed issue with %CATEGORY_SCORE_X% template variable
+* Bug: Fixed issue while using multiple quiz shortcodes
+* Bug: Fixed issue with qmn_register_my_templates hook
+* Bug: Fixed issue with answer text limit
+* Bug: Fixed issue while using limit questions with random questions
+* Feature: Added option to customize the label of Retake Quiz Button
+
 = 7.3.12 (February 18, 2022) =
 * Hotfix: Fixed compatibility issues with php 8
 
