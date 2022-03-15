@@ -1242,12 +1242,12 @@ class QMNQuizManager {
 				?>
 			</div><!-- .quiz_section -->
 			<?php
-			if ( 0 == $pagination_option ) {
-
-			} elseif ( 1 == $pagination_option || 0 == $pages_count % $pagination_option || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
-				?>
-				</div><!-- .qsm-auto-page-row -->
-				<?php
+			if ( 0 != $pagination_option ) {
+				if ( 1 == $pagination_option || 0 == $pages_count % $pagination_option || count( $qmn_quiz_questions ) == $pages_count ) { // end of the row or last
+					?>
+					</div><!-- .qsm-auto-page-row -->
+					<?php
+				}
 			}
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			$pages_count++;

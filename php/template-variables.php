@@ -1107,7 +1107,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$questionid                 = $questions[ $answer['id'] ]['question_id'];
 							$question_with_answer_text .= qmn_polar_display_on_resultspage( $questionid, $questions, $total_answers, $answer );
 						} elseif ( in_array( $answer['question_type'], $use_custom_default_template, true ) ) {
-							$questionid                 = $questions[ $answer['id'] ]['question_id'];
 							$question_type              = $answer['question_type'];
 							$question_with_answer_text .= apply_filters( 'qsm_result_page_custom_default_template', $total_answers, $questions, $answer );
 						} else {
@@ -1163,7 +1162,6 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	}
 	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
-		$questionid                  = $answer['question_type'];
 		$qsm_correct_ans             = apply_filters( 'qsm_result_page_custom_correct_answer_template', $questions, $answer );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
