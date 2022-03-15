@@ -47,11 +47,7 @@ abstract class QSM_Question_Review {
 	}
 
 	public function decode_response_from_text_field( $data ) {
-		if ( 'text_area' === $this->input_field ) {
-			return trim( preg_replace( '/\s\s+/', ' ', str_replace( "\n", ' ', htmlspecialchars_decode( $data, ENT_QUOTES ) ) ) );
-		} else {
-			return trim( htmlspecialchars_decode( $data, ENT_QUOTES ) );
-		}
+		return trim( htmlspecialchars_decode( $data, ENT_QUOTES ) );
 	}
 
 

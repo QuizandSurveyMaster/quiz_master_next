@@ -1127,7 +1127,8 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} else {
-					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode( $answer[1], ENT_QUOTES ) . '</span>';
+					$user_answer_text = preg_replace ("/[\n\r]+/", "", nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) );
+					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . $user_answer_text . '</span>';
 				}
 			}
 		}
