@@ -391,7 +391,7 @@ class QSM_Questions {
 	public static function sanitize_answers( $answers, $settings ) {
 
 		foreach ( $answers as $key => $answer ) {
-			if ( 'rich' == $settings['answerEditor'] ) {
+			if ( isset( $settings['answerEditor'] ) && 'rich' == $settings['answerEditor'] ) {
 				$answer[0] = wp_kses_post( $answer[0] );
 			} else {
 				$answer[0] = sanitize_text_field( $answer[0] );
