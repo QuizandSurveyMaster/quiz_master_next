@@ -389,7 +389,7 @@ class QMNQuizManager {
 					wp_enqueue_style( 'qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ) . '../../templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
-				} elseif ( $registered_template && file_exists( get_theme_file_path(  '/templates/' . $registered_template['path'] ) ) ) {
+				} elseif ( $registered_template && file_exists( get_theme_file_path( '/templates/' . $registered_template['path'] ) ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
 					echo "<style type='text/css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
@@ -1104,9 +1104,9 @@ class QMNQuizManager {
 					<div class="qmn_page_counter_message"></div>
 					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
 					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
-					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value='.esc_attr( $options->submit_button_text ).' />
+					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value=' . esc_attr( $options->submit_button_text ) . ' />
 				</div>';
-		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-'.esc_attr( $options->quiz_id ), $tmpl_pagination , 'before');
+		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination, 'before' );
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php
