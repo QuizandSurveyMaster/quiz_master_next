@@ -1097,24 +1097,16 @@ class QMNQuizManager {
 		 *
 		 * @since 7.3.5
 		 */
-		add_action(
-			'wp_footer',
-			function () use ( $options ) {
-				?>
-			<!-- View for pagination -->
-			<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
-				<div class="qsm-pagination qmn_pagination border margin-bottom">
+
+		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
 					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
 					<span class="qmn_page_message"></span>
 					<div class="qmn_page_counter_message"></div>
 					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
 					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
-					<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( $options->submit_button_text ); ?>' />
-				</div>
-			</script>
-				<?php
-			}
-		);
+					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value='.esc_attr( $options->submit_button_text ).' />
+				</div>';
+		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-'.esc_attr( $options->quiz_id ), $tmpl_pagination , 'before');
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php

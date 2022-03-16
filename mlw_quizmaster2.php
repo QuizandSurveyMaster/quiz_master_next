@@ -596,3 +596,38 @@ function qsm_edit_quiz_admin_option() {
 }
 
 add_action( 'admin_bar_menu', 'qsm_edit_quiz_admin_option', 999 );
+
+function qsm_add_inline_tmpl( $handle, $id, $tmpl, $position = 'after' )
+{
+    // Collect input data
+    static $data = [];
+    $data[$handle][$id] = $tmpl;
+
+    // Append template for relevant script handle
+    add_filter(
+        'script_loader_tag',
+        function( $tag, $hndl, $src ) use ( &$data, $handle, $id )
+        {
+            // Nothing to do if no match
+            if( ! isset( $data[$hndl][$id] ) )
+                return $tag;
+
+            // Script tag replacement aka wp_add_inline_script()
+            if ( false !== stripos( $data[$hndl][$id], '</script>' ) )
+                $data[$hndl][$id] = trim( preg_replace(
+                    '#<script[^>]*>(.*)</script>#is',
+                    '$1',
+                     $data[$hndl][$id]
+                ) );
+
+            // Append template
+            $tag .= sprintf(
+                "<script type='text/template' id='%s'>\n%s\n</script>" . PHP_EOL,
+                esc_attr( $id ),
+                $data[$hndl][$id]
+            );
+
+            return $tag;
+        },
+   10, 3 );
+}
