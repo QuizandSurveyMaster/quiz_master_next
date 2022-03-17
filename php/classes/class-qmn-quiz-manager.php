@@ -1099,7 +1099,7 @@ class QMNQuizManager {
 		 */
 
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
-					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
+					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">' . esc_html( $options->previous_button_text ) . '</a>
 					<span class="qmn_page_message"></span>
 					<div class="qmn_page_counter_message"></div>
 					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
