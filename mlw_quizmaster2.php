@@ -603,7 +603,7 @@ add_action( 'admin_bar_menu', 'qsm_edit_quiz_admin_option', 999 );
  * @return void
  * @since 7.3.14
  */
-function qsm_add_inline_tmpl( $handle, $id, $tmpl, $position = 'after' ) {
+function qsm_add_inline_tmpl( $handle, $id, $tmpl ) {
 	// Collect input data
 	static $data            = array();
 	$data[ $handle ][ $id ] = $tmpl;
@@ -611,7 +611,7 @@ function qsm_add_inline_tmpl( $handle, $id, $tmpl, $position = 'after' ) {
 	// Append template for relevant script handle
 	add_filter(
 		'script_loader_tag',
-		function( $tag, $hndl, $src ) use ( &$data, $handle, $id ) {
+		function( $tag, $hndl ) use ( &$data, $id ) {
 			// Nothing to do if no match
 			if ( ! isset( $data[ $hndl ][ $id ] ) ) {
 				return $tag;

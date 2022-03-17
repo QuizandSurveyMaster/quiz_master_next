@@ -1106,7 +1106,7 @@ class QMNQuizManager {
 					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' . esc_html( $options->next_button_text ) . '</a>
 					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value=' . esc_attr( $options->submit_button_text ) . ' />
 				</div>';
-		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination, 'before' );
+		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination );
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php
