@@ -385,8 +385,8 @@ class QMNQuizManager {
 				$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
 				// Check direct file first, then check templates folder in plugin, then check templates file in theme.
 				// If all fails, then load custom styling instead.
-				if ( $registered_template && file_exists( $registered_template['path'] ) ) {
-					wp_enqueue_style( 'qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version );
+				if ( $registered_template && file_exists( ABSPATH . '/' . $registered_template['path'] ) ) {
+					wp_enqueue_style( 'qmn_quiz_template', site_url() . '/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ) . '../../templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
 				} elseif ( $registered_template && file_exists( get_theme_file_path( '/templates/' . $registered_template['path'] ) ) ) {
