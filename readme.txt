@@ -104,7 +104,7 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 
 If you like this plugin, consider exploring our other themes and plugins:
 
-🧱 [Gutena] (https://wordpress.org/themes/gutena/) - Block Based Theme for WordPress includes over 50 free block patterns with new patterns added every week.
+🧱 [Gutena](https://wordpress.org/themes/gutena/) - Block Based Theme for WordPress includes over 50 free block patterns with new patterns added every week.
 
 ☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
 

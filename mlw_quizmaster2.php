@@ -295,7 +295,7 @@ class MLWQuizMasterNext {
 			wp_enqueue_style( 'qsm_common_style', QSM_PLUGIN_CSS_URL . '/common.css', array(), $this->version );
 			wp_style_add_data( 'qsm_common_style', 'rtl', 'replace' );
 			wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-			wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+			wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 			wp_enqueue_script( 'jquery-ui-slider' );
 			wp_enqueue_script( 'jquery-ui-slider-rtl-js', QSM_PLUGIN_JS_URL . '/jquery.ui.slider-rtl.js', array( 'jquery-ui-core', 'jquery-ui-mouse', 'jquery-ui-slider' ), $this->version, true );
 			wp_enqueue_style( 'jquery-ui-slider-rtl-css', QSM_PLUGIN_CSS_URL . '/jquery.ui.slider-rtl.css', array(), $this->version );
@@ -327,7 +327,7 @@ class MLWQuizMasterNext {
 				case 'emails':
 				case 'results-pages':
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 					break;
@@ -347,13 +347,13 @@ class MLWQuizMasterNext {
 					wp_enqueue_script( 'jquery-effects-blind' );
 					wp_enqueue_script( 'jquery-effects-explode' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					break;
 				default:
 					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
 					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
-					wp_add_inline_script( 'math_jax',  self::$default_MathJax_script, 'before' );
+					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
 					wp_enqueue_media();
 					break;
@@ -596,3 +596,48 @@ function qsm_edit_quiz_admin_option() {
 }
 
 add_action( 'admin_bar_menu', 'qsm_edit_quiz_admin_option', 999 );
+
+/**
+ * Add inline QSM template
+ *
+ * @return void
+ * @since 7.3.14
+ */
+function qsm_add_inline_tmpl( $handle, $id, $tmpl ) {
+	// Collect input data
+	static $data            = array();
+	$data[ $handle ][ $id ] = $tmpl;
+
+	// Append template for relevant script handle
+	add_filter(
+		'script_loader_tag',
+		function( $tag, $hndl ) use ( &$data, $id ) {
+			// Nothing to do if no match
+			if ( ! isset( $data[ $hndl ][ $id ] ) ) {
+				return $tag;
+			}
+
+			// Script tag replacement aka wp_add_inline_script()
+			if ( false !== stripos( $data[ $hndl ][ $id ], '</script>' ) ) {
+				$data[ $hndl ][ $id ] = trim(
+					preg_replace(
+						'#<script[^>]*>(.*)</script>#is',
+						'$1',
+						$data[ $hndl ][ $id ]
+					)
+				);
+			}
+
+			// Append template
+			$tag .= sprintf(
+				"<script type='text/template' id='%s'>\n%s\n</script>" . PHP_EOL,
+				esc_attr( $id ),
+				$data[ $hndl ][ $id ]
+			);
+
+			return $tag;
+		},
+		10,
+		3
+	);
+}
