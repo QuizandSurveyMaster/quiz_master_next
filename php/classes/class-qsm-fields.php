@@ -509,7 +509,7 @@ class QSM_Fields {
 		?>
 		<tr valign="top">
 			<th scope="row" class="qsm-opt-tr">
-				<a href="#" id="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_attr( $field["label"] ); ?></a>
+				<a href="javascript:void(0)" id="<?php echo esc_attr( $field["id"] ); ?>"><?php echo esc_attr( $field["label"] ); ?></a>
 				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
 				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
 					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>

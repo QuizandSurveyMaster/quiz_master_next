@@ -228,7 +228,7 @@ class QMNGlobalSettingsPage {
 			?>
 	</p>
 	<p class="category-action">
-		<a href="#" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
+		<a href="javascript:void(0)" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
 	</p>
 </div>
 			<?php

@@ -225,7 +225,7 @@ function qsm_generate_quizzes_surveys_page() {
 	<div class="wrap qsm-quizes-page">
 		<h1>
 			<?php esc_html_e( 'Quizzes/Surveys', 'quiz-master-next' ); ?>
-			<a id="new_quiz_button" href="#" class="add-new-h2"><?php esc_html_e( 'Add New', 'quiz-master-next' ); ?></a>
+			<a id="new_quiz_button" href="javascript:void(0)" class="add-new-h2"><?php esc_html_e( 'Add New', 'quiz-master-next' ); ?></a>
 		</h1>
 		<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 		<?php
@@ -266,7 +266,7 @@ function qsm_generate_quizzes_surveys_page() {
 							href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>"
 							target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a>
 						<?php } else { ?>
-						<a id="show_import_export_popup" href="#" style="position: relative;top: 0px;"
+						<a id="show_import_export_popup" href="javascript:void(0)" style="position: relative;top: 0px;"
 							class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a>
 						<?php } ?>
 					</p>
@@ -385,14 +385,14 @@ function qsm_generate_quizzes_surveys_page() {
 											</a>
 											<div class="row-actions">
 												<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> |
-												<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
-												<a class="qsm-action-link qsm-action-link-delete" href="#"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
+												<a class="qsm-action-link qsm-action-link-duplicate" href="javascript:void(0)"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
+												<a class="qsm-action-link qsm-action-link-delete" href="javascript:void(0)"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
 												<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=<?php echo esc_attr( $single_arr['id'] ); ?>"><?php esc_html_e( 'View Results', 'quiz-master-next' ); ?></a> |
 												<a class="qsm-action-link" target="_blank" rel="noopener" href="<?php echo esc_url( $single_arr['link'] ); ?>"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></a>
 											</div>
 										</td>
 										<td>
-											<a href="#" class="qsm-list-shortcode-view">
+											<a href="javascript:void(0)" class="qsm-list-shortcode-view">
 												<span class="dashicons dashicons-welcome-view-site"></span>
 											</a>
 											<div class="sc-content sc-embed">[qsm quiz=<?php echo esc_attr( $single_arr['id'] ); ?>]</div>
@@ -403,7 +403,7 @@ function qsm_generate_quizzes_surveys_page() {
 											<?php echo esc_html( $single_arr['views'] ); ?>
 											<div class="row-actions">
 												<a class="qsm-action-link qsm-action-link-reset"
-													href="#"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a>
+													href="javascript:void(0)"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a>
 											</div>
 										</td>
 										<td class="comments column-comments" style="text-align: left;">
@@ -735,7 +735,7 @@ function qsm_generate_quizzes_surveys_page_template() {
 				<span class="dashicons dashicons-format-chat"></span>
 				<h2><?php esc_html_e( 'You do not have any quizzes or surveys yet', 'quiz-master-next' ); ?></h2>
 				<div class="buttons">
-					<a class="button button-primary button-hero qsm-wizard-noquiz" href="#"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+					<a class="button button-primary button-hero qsm-wizard-noquiz" href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<a class="button button-secondary button-hero" href="https://quizandsurveymaster.com/docs/" target="_blank"><span class="dashicons dashicons-admin-page"></span> <?php esc_html_e( 'Read Documentation', 'quiz-master-next' ); ?></a>
 				</div>
 				<h3><?php esc_html_e( 'or watch the below video to get started', 'quiz-master-next' ); ?></h3>
@@ -750,8 +750,8 @@ function qsm_generate_quizzes_surveys_page_template() {
 				<div class="row-actions">
 					<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&&quiz_id={{ data.id }}"><?php esc_html_e( 'Edit', 'quiz-master-next' ); ?></a> |
 					<a class="qsm-action-link" href="post.php?post={{ data.postID }}&action=edit"><?php esc_html_e( 'Post Settings', 'quiz-master-next' ); ?></a> |
-					<a class="qsm-action-link qsm-action-link-duplicate" href="#"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
-					<a class="qsm-action-link qsm-action-link-delete" href="#"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link qsm-action-link-duplicate" href="javascript:void(0)"><?php esc_html_e( 'Duplicate', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link qsm-action-link-delete" href="javascript:void(0)"><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></a> |
 					<a class="qsm-action-link" target="_blank" href="{{ data.link }}"><?php esc_html_e( 'Preview', 'quiz-master-next' ); ?></a>
 				</div>
 			</td>
@@ -764,7 +764,7 @@ function qsm_generate_quizzes_surveys_page_template() {
 			<td>
 				{{ data.views }}/{{ data.taken }}
 				<div class="row-actions">
-					<a class="qsm-action-link qsm-action-link-reset" href="#"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a> |
+					<a class="qsm-action-link qsm-action-link-reset" href="javascript:void(0)"><?php esc_html_e( 'Reset', 'quiz-master-next' ); ?></a> |
 					<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&&quiz_id={{ data.id }}"><?php esc_html_e( 'Results', 'quiz-master-next' ); ?></a>
 				</div>
 			</td>

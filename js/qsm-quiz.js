@@ -1207,11 +1207,11 @@ function qmnInitPagination(quiz_id) {
 		.append('<input type="hidden" value="' + qmn_total_pages + '" name="total_pages" class="total_pages_hidden" />')
 		.append('<input type="hidden" value="' + qmn_section_total + '" name="total_sections" class="total_sections_hidden" />')
 		.append('<input type="hidden" value="0" name="previous_amount" class="previous_amount_hidden" />')
-		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">' + qmn_quiz_data[quiz_id].pagination.previous_text + '</a>')
+		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.previous_text + '</a>')
 		.append('<span class="qmn_page_message"></span>')
 		.append('<div class="qmn_page_counter_message"></div>')
 		.append('<div class="qsm-progress-bar" id="qsm_progress_bar_' + quiz_id + '" style="display:none;"><div class="progressbar-text"></div></div>')
-		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
+		.append('<a class="qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' + qmn_quiz_data[quiz_id].pagination.next_text + '</a>');
 
 	if ('1' == qmn_quiz_data[quiz_id].progress_bar) {
 		jQuery(document).trigger('qsm_init_progressbar_before', [quiz_id, qmn_quiz_data]);
@@ -1246,7 +1246,7 @@ function qmnInitPagination(quiz_id) {
 		jQuery(document).trigger('qsm_init_progressbar_after', [quiz_id, qmn_quiz_data]);
 	}
 
-	jQuery(".mlw_next").unbind().click(function (event) {
+	jQuery(document).on( "click", ".qsm-quiz-container-" + quiz_id + " .mlw_next", function (event) {
 		event.preventDefault();
 		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		jQuery(document).trigger('qsm_auto_next_button_click_before', [quiz_id]);
@@ -1256,7 +1256,7 @@ function qmnInitPagination(quiz_id) {
 		jQuery(document).trigger('qsm_next_button_click_after', [quiz_id]);
 	});
 
-	jQuery(".mlw_previous").unbind().click(function (event) {
+	jQuery(document).on( "click", ".qsm-quiz-container-" + quiz_id + " .mlw_previous", function (event) {
 		event.preventDefault();
 		var quiz_id = +jQuery(this).closest('.qmn_quiz_container').find('.qmn_quiz_id').val();
 		qmnPrevSlide(qmn_quiz_data[quiz_id].pagination.amount, 1, '#quizForm' + quiz_id);
