@@ -589,7 +589,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
-					$category_name_object = get_term_by( 'id', $category, 'qsm_category' );
+					$category_name_object = get_term_by( 'ID', $category, 'qsm_category' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
 						$return_points   += $answer['points'];
@@ -626,7 +626,7 @@ function qmn_variable_average_category_points( $content, $mlw_quiz_array ) {
 		foreach ( $mlw_quiz_array['question_answers_array'] as $answer ) {
 			if ( is_array( $answer['multicategories'] ) ) {
 				foreach ( $answer['multicategories'] as $category ) {
-					$category_name_object      = get_term_by( 'id', $category, 'qsm_category' );
+					$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
 					$category_name_of_question = ( ! empty( $category_name_object->name ) ? $category_name_object->name : '' );
 					if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 						$total_questions += 1;
@@ -676,7 +676,7 @@ function qmn_variable_category_score( $content, $mlw_quiz_array ) {
 			if ( $category_data['migrated'] ) {
 				if ( is_array( $answer['multicategories'] ) ) {
 					foreach ( $answer['multicategories'] as $category ) {
-						$category_name_object      = get_term_by( 'id', $category, 'qsm_category' );
+						$category_name_object      = get_term_by( 'ID', $category, 'qsm_category' );
 						if ( $category_name_object->name == $category_name && '11' !== $answer['question_type'] ) {
 							$total_questions += 1;
 							if ( 'correct' == $answer['correct'] ) {
@@ -1127,7 +1127,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 						$question_with_answer_text .= "$open_span_tag" . trim( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) . '</span>';
 					}
 				} else {
-					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . htmlspecialchars_decode( $answer[1], ENT_QUOTES ) . '</span>';
+					$question_with_answer_text .= '<span class="qsm-user-answer-text">' . preg_replace( "/[\n\r]+/", "", nl2br( htmlspecialchars_decode( $answer[1], ENT_QUOTES ) ) ) . '</span>';
 				}
 			}
 		}
