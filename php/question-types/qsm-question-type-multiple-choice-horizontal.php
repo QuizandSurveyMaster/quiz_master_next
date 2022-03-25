@@ -4,10 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
-*
-*
-*
-*/
+ *
+ *
+ *
+ */
 
 /**
  * This function shows the content of the horizontal multiple choice question.
@@ -26,7 +26,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 	} else {
 		$mlw_require_class = '';
 	}
-	$answerEditor = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
+	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
 	qsm_question_title_func( $question, 'horizontal_multiple_choice', $new_question_title, $id );
 	?>
@@ -40,15 +40,24 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 					$answer_class = apply_filters( 'qsm_answer_wrapper_class', '', $answer, $id );
 					?>
 					<span class="mlw_horizontal_choice <?php echo esc_attr( $answer_class ); ?>">
-					<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
+						<input type="radio" class="qmn_quiz_radio" name="question<?php echo esc_attr( $id ); ?>" id="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
 						<label class="qsm-input-label" for="question<?php echo esc_attr( $id ) . '_' . esc_attr( $mlw_answer_total ); ?>">
 							<?php
 							if ( 'image' === $answerEditor ) {
 								?>
-								<img alt="<?php echo esc_attr( $new_question_title ); ?>" src=" <?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+								<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
+								<span class="qsm_image_caption">
+									<?php
+									$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
+									$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+									echo esc_html( $caption_text );
+									?>
+								</span>
 								<?php
 							} else {
-								echo wp_kses_post( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) );
+								$answer_text = trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+								$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+								echo wp_kses_post( $answer_text );
 							}
 							?>
 						</label>
@@ -65,7 +74,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 			<?php
 		}
 		?>
- 	</div>
+	</div>
 	<?php
 	echo apply_filters( 'qmn_horizontal_multiple_choice_display_front', '', $id, $question, $answers );
 }
@@ -83,12 +92,12 @@ function qmn_horizontal_multiple_choice_review( $id, $question, $answers ) {
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer( 'single_response' );
 	$correct_text_array             = $current_question->get_correct_answer();
-	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '' ;
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '';
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status( 'single_response' );
 	$return_array['points']         = $current_question->get_points();
 	$return_array['user_answer']    = $user_text_array;
-	$return_array['correct_answer'] = $correct_text_array ;
+	$return_array['correct_answer'] = $correct_text_array;
 	/**
 	 * Hook to filter answers array
 	 */
