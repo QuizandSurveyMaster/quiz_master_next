@@ -149,6 +149,7 @@ class QMNGlobalSettingsPage {
 		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
 		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'require-user-login', __( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -185,7 +186,6 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
 		$get_default_value = self::default_settings();
 		$get_saved_value   = get_option( 'qsm-quiz-settings' );

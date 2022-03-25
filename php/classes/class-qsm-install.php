@@ -91,6 +91,17 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers default number of answers field
+		$field_array = array(
+			'id'      => 'default_answers',
+			'label'   => __( 'Default Number of Answers', 'quiz-master-next' ),
+			'type'    => 'number',
+			'options' => array(),
+			'default' => 1,
+			'help'    => __( 'Adds number of answer fields', 'quiz-master-next' ),
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers Rounding setting
 		$field_array = array(
 			'id'          => 'score_roundoff',
@@ -739,17 +750,6 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-		// Registers default number of answers field
-		$field_array = array(
-			'id'      => 'default_answers',
-			'label'   => __( 'Default Number of Answers', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 1,
-			'help'    => __( 'Adds number of answer fields', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-		
 		do_action( 'qsm_extra_setting_fields' );
 		// Setting for animation
 		$field_array = array(
