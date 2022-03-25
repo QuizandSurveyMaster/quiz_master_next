@@ -452,7 +452,7 @@ class QMNPluginHelper {
 	 * @param  array $list An array
 	 * @return array
 	 */
-	public function qsm_shuffle_assoc( $list ) {
+	public static function qsm_shuffle_assoc( $list ) {
 		if ( ! is_array( $list ) ) {
 			return $list;
 		}
@@ -465,6 +465,21 @@ class QMNPluginHelper {
 		return $random;
 	}
 
+	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			$string_name = sanitize_title( $string_name );
+			/**
+			 * Register the string for translation
+			 */
+			do_action( 'wpml_register_single_string', $domain, $string_name, $string );
+			/**
+			 * Display original string or translated string
+			 */
+			$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
+		}
+		return $string;
+	}
 
 	/**
 	 * Calculates Score For Question

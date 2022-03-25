@@ -55,11 +55,17 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						?>
 						<img alt="<?php echo esc_attr( $new_question_title ); ?>" src="<?php echo esc_url( trim( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ); ?>" />
 						<span class="qsm_image_caption">
-							<?php echo esc_html( trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) ) ); ?>
+							<?php
+							$caption_text = trim( htmlspecialchars_decode( $answer[3], ENT_QUOTES ) );
+							$caption_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+							echo esc_html( $caption_text );
+							?>
 						</span>
 						<?php
 					} else {
-						echo wp_kses_post( trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) ) );
+						$answer_text = trim( do_shortcode( htmlspecialchars_decode( $answer[0], ENT_QUOTES ) ) );
+						$answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+						echo wp_kses_post( $answer_text );
 					}
 					?>
 					</label>
@@ -94,8 +100,8 @@ function qmn_multiple_choice_review( $id, $question, $answers ) {
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
 	$return_array['user_answer']    = $user_text_array;
-	$return_array['correct_answer'] = $correct_text_array ;
-	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '' ;
+	$return_array['correct_answer'] = $correct_text_array;
+	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '';
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
 	$return_array['correct']        = $current_question->get_answer_status();
 	$return_array['points']         = $current_question->get_points();
