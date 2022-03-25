@@ -134,6 +134,7 @@ class QMNGlobalSettingsPage {
 			'scheduled_time_end'                 => '',
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
+			'default_answers'					 => 1,
 		);
 	}
 
@@ -184,6 +185,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'quiz-animation', __( 'Quiz Animation', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_animation' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'logo-url', __( 'Logo URL', 'quiz-master-next' ), array( $this, 'qsm_global_logo_url' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'preferred_date_format', __( 'Preferred Date Format', 'quiz-master-next' ), array( $this, 'preferred_date_format' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		global $globalQuizsetting;
 		$get_default_value = self::default_settings();
 		$get_saved_value   = get_option( 'qsm-quiz-settings' );
@@ -1223,6 +1225,18 @@ class QMNGlobalSettingsPage {
 		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
 
+	/**
+	 * Generates quiz global field for default answers field
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	public function default_answers(){
+		global $globalQuizsetting;
+		$default_answers = ( isset( $globalQuizsetting['default_answers'] ) ? $globalQuizsetting['default_answers'] : 1 );
+		echo '<input type="number" id="default_answers" name="qsm-quiz-settings[default_answers]" value="' . esc_attr( $default_answers ) . '" min="1">';
+		echo '<span class="qsm-opt-desc">Adds number of answer fields.</span>';
+	}
 
 }
 
