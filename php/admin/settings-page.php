@@ -134,6 +134,7 @@ class QMNGlobalSettingsPage {
 			'scheduled_time_end'                 => '',
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
+			'default_answers'					 => 1,
 		);
 	}
 
@@ -148,6 +149,7 @@ class QMNGlobalSettingsPage {
 		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
 		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'require-user-login', __( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1223,6 +1225,18 @@ class QMNGlobalSettingsPage {
 		echo '<span class="qsm-opt-desc">Set your preferred date format.</span>';
 	}
 
+	/**
+	 * Generates quiz global field for default answers field
+	 *
+	 * @since x.x.x
+	 * @return void
+	 */
+	public function default_answers(){
+		global $globalQuizsetting;
+		$default_answers = ( isset( $globalQuizsetting['default_answers'] ) ? $globalQuizsetting['default_answers'] : 1 );
+		echo '<input type="number" id="default_answers" name="qsm-quiz-settings[default_answers]" value="' . esc_attr( $default_answers ) . '" min="1">';
+		echo '<span class="qsm-opt-desc">Adds number of answer fields.</span>';
+	}
 
 }
 

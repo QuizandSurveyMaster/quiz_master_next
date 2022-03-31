@@ -1717,12 +1717,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 setTimeout(QSMQuestion.removeNew, 250);
             },
             addNewQuestion: function (model) {
+                var default_answers = parseInt(qsmQuestionSettings.default_answers);
+                var count = 0;
                 QSMAdmin.displayAlert('Question created!', 'success');
                 QSMQuestion.addQuestionToPage(model);
                 QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
                 QSMQuestion.countTotal();
-                if ($('#answers').find('.answers-single').length == 0) {
-                    $('#new-answer-button').trigger('click');
+                if ($('#answers').find('.answers-single').length < default_answers) {
+                    while(count < default_answers){
+                        $('#new-answer-button').trigger('click');
+                        count++;
+                    }
                 }
             },
             addQuestionToPage: function (model) {
