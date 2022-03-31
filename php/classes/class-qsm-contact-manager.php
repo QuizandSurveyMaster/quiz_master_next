@@ -129,6 +129,8 @@ class QSM_Contact_Manager {
 							if ( 'phone' === $fields[ $i ]['use'] && 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) {
 								$class = 'mlwPhoneNumber mlwRequiredNumber qsm_required_text';
 							}
+							// Filer Value 
+							$value = apply_filters('qsm_contact_text_filed_value',$value,$fields[ $i ]['use']);
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $fields[ $i ]['label'] ); ?></span>
 							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( 'phone' === $fields[ $i ]['use'] ? 'text' : 'text' ); ?>' <?php if ( 'phone' === $fields[ $i ]['use'] ) { ?> onkeydown="return event.keyCode !== 69 " <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $fields[ $i ]['label'] ) ); ?>" />
