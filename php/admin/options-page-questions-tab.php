@@ -507,7 +507,7 @@ function qsm_options_questions_tab_content() {
 								<div id="featureImagediv" class="postbox">
 									<h2 class="hndle ui-sortable-handle">
 										<span><?php esc_html_e( 'Feature Image', 'quiz-master-next' ); ?></span>
-										<a class="qsm-question-doc" href="javascript:void(0)" target="_blank"
+										<a class="qsm-question-doc" href="javascript:void(0)" rel="noopener" target="_blank"
 											title="View Documentation"><span
 												class="dashicons dashicons-media-document"></span></a>
 									</h2>
