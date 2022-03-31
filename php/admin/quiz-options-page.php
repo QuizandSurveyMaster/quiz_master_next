@@ -109,7 +109,7 @@ function qsm_generate_quiz_options() {
 						<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Publish Quiz', 'quiz-master-next' ); ?>" />
 					</form>
 				<?php endif; ?>
-				<a href="#" title="Edit Name" class="edit-quiz-name">
+				<a href="javascript:void(0)" title="Edit Name" class="edit-quiz-name">
 					<span class="dashicons dashicons-edit"></span>
 				</a>
 				<a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">

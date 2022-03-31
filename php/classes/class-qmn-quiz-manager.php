@@ -802,7 +802,7 @@ class QMNQuizManager {
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
 		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
-		?><div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
+		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
 			// Get quiz post based on quiz id
 			$args      = array(
@@ -1099,11 +1099,11 @@ class QMNQuizManager {
 		 */
 
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
-					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#">' . esc_html( $options->previous_button_text ) . '</a>
+					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $options->previous_button_text ) . '</a>
 					<span class="qmn_page_message"></span>
 					<div class="qmn_page_counter_message"></div>
 					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#">' . esc_html( $options->next_button_text ) . '</a>
+					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' . esc_html( $options->next_button_text ) . '</a>
 					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value=' . esc_attr( $options->submit_button_text ) . ' />
 				</div>';
 		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination );
