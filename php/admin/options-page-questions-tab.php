@@ -51,14 +51,14 @@ function qsm_options_questions_tab_content() {
 		}
 	}
 
-	$quiz_id     	 = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
-	$user_id     	 = get_current_user_id();
-	$form_type   	 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-	$quiz_system 	 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
-	$default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
-	$pages       	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages   	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-	$qpages      	 = array();
+    $quiz_id     	 = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+    $user_id     	 = get_current_user_id();
+    $form_type   	 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+    $quiz_system 	 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+    $default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
+    $pages       	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+    $db_qpages   	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+    $qpages      	 = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
 			'id'           => 1,
@@ -104,7 +104,7 @@ function qsm_options_questions_tab_content() {
 		'question_bank_nonce'    => wp_create_nonce( 'delete_question_question_bank_nonce' ),
 		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
 		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
-		'default_answers'		 => $default_answers
+        'default_answers'		 => $default_answers,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
