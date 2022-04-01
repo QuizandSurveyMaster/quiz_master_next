@@ -83,8 +83,10 @@ function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
 			$last_activity	 = $wpdb->get_var( "SELECT `last_activity` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
 			$activity_date	 = gmdate( get_option( 'date_format' ), strtotime( $last_activity ) );
 			$activity_time	 = gmdate( 'h:i:s A', strtotime( $last_activity ) );
-			$lastActivity	 = '<span class="column-comments">';
 			echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '</abbr>' );
+			break;
+
+		default:
 			break;
 	}
 }
