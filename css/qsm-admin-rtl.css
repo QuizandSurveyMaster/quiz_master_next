@@ -1414,48 +1414,6 @@ div#modal-6 label {
 }
 
 /**
-* No quiz screen design
-*/
-.qsm-no-quiz-wrapper {
-	text-align: center;
-	max-width: 100%;
-	width: 100%;
-}
-
-.qsm-no-quiz-wrapper .dashicons.dashicons-format-chat {
-	font-size: 200px;
-	display: block;
-	/* line-height: 200px; */
-	width: auto;
-	height: auto;
-}
-
-.qsm-no-quiz-wrapper h2 {
-	margin-bottom: 30px;
-}
-
-.qsm-no-quiz-wrapper .buttons {
-	margin-bottom: 30px;
-}
-
-.qsm-no-quiz-wrapper .buttons a {
-	margin-left: 20px;
-}
-
-.qsm-no-quiz-wrapper .buttons a:last-child {
-	color: #8b8888;
-}
-
-.qsm-no-quiz-wrapper .buttons a:last-child .dashicons {
-	line-height: 46px;
-}
-
-.qsm-no-quiz-wrapper h3 {
-	color: #8b8888;
-	margin-bottom: 30px;
-}
-
-/**
 * Option page design
 */
 span.qsm-ph_text {

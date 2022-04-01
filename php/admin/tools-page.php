@@ -82,9 +82,10 @@ function qsm_restore_function() {
 			// Restores the quiz post type for the quiz.
 			$my_query = new WP_Query(
 				array(
-					'post_type'  => 'qsm_quiz',
-					'meta_key'   => 'quiz_id',
-					'meta_value' => intval( $_POST['restore_quiz'] ),
+				'post_status'	 => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'trash' ),
+				'post_type'		 => 'qsm_quiz',
+				'meta_key'		 => 'quiz_id',
+				'meta_value'	 => intval( $_POST['restore_quiz'] ),
 				)
 			);
 			if ( $my_query->have_posts() ) {
