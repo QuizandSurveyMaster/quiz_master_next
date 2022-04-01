@@ -577,7 +577,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 //QSM - Quizzes/Surveys Page
 
 (function ($) {
-    if (jQuery('body').hasClass('qsm_page_mlw_quiz_list') || jQuery('body').hasClass('post-type-qsm_quiz')){
+    if (jQuery('body').hasClass('post-type-qsm_quiz')){
 
         $('#new_quiz_button_two').on('click', function (event) {
             event.preventDefault();
@@ -734,7 +734,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 // QSM - Quiz Wizard
 
 (function ($) {
-    if (jQuery('body').hasClass('qsm_page_mlw_quiz_list') || jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')){
+    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')){
         $('#create-quiz-button').on('click', function (event) {
             if ($('#new-quiz-form').find('.quiz_name').val() === '') {
                 $('#new-quiz-form').find('.quiz_name').addClass('qsm-required');

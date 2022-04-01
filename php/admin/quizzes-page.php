@@ -252,7 +252,7 @@ add_action( 'admin_footer', 'qsm_admin_footer_text' );
  */
 function qsm_admin_footer_text() {
 	global $mlwQuizMasterNext;
-	if ( (isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) || (isset( $_REQUEST['page'] ) && 'mlw_quiz_list' == $_REQUEST['page']) ) {
+	if ( (isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
 		?>
 		<!-- Popup for resetting stats -->
 		<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
