@@ -91,6 +91,17 @@ function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
 	}
 }
 
+add_filter( 'get_edit_post_link', 'qsm_get_edit_post_link', 10, 3 );
+
+function qsm_get_edit_post_link( $link, $post_id, $context ) {
+	global $wpdb, $pagenow, $mlwQuizMasterNext;
+	if ( 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'qsm_quiz' == $_GET['post_type'] ) {
+		$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
+		$link	 = admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id );
+	}
+	return $link;
+}
+
 add_filter( 'post_row_actions', 'qsm_post_row_actions', 10, 2 );
 
 /**
