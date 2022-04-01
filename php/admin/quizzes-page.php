@@ -91,9 +91,9 @@ function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
 	}
 }
 
-add_filter( 'get_edit_post_link', 'qsm_get_edit_post_link', 10, 3 );
+add_filter( 'get_edit_post_link', 'qsm_get_edit_post_link', 10, 2 );
 
-function qsm_get_edit_post_link( $link, $post_id, $context ) {
+function qsm_get_edit_post_link( $link, $post_id ) {
 	global $wpdb, $pagenow, $mlwQuizMasterNext;
 	if ( 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'qsm_quiz' == $_GET['post_type'] ) {
 		$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
@@ -263,7 +263,7 @@ add_action( 'admin_footer', 'qsm_admin_footer_text' );
  */
 function qsm_admin_footer_text() {
 	global $mlwQuizMasterNext;
-	if ( (isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
+	if ( isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type'] ) {
 		?>
 		<!-- Popup for resetting stats -->
 		<div class="qsm-popup qsm-popup-slide" id="modal-1" aria-hidden="true">
