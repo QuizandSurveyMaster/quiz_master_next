@@ -22,6 +22,7 @@ function qsm_redirect_to_edit_page( $quiz_id ) {
 	link_featured_image( $quiz_id );
 	$url = admin_url( 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id );
 	wp_safe_redirect( $url );
+	exit;
 }
 
 /**
