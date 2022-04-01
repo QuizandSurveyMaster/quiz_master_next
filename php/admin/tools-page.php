@@ -226,7 +226,7 @@ function qsm_audit_box() {
 						<td><?php echo esc_html( $audit->action_user ); ?></td>
 						<td>
 							<?php if ( ! empty( $audit->form_data ) ) { ?>
-								<a href="#" class="qsm_audit_data" data-auditid="<?php echo esc_html( $audit->form_data ); ?>"><?php echo esc_html( $audit->action ); ?></a>
+								<a href="javascript:void(0)" class="qsm_audit_data" data-auditid="<?php echo esc_html( $audit->form_data ); ?>"><?php echo esc_html( $audit->action ); ?></a>
 								<?php
 							} else {
 								echo esc_html( $audit->action );

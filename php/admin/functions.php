@@ -478,7 +478,7 @@ function qsm_create_new_quiz_wizard() {
 					</div>
 					<ul style="display: none;" class="qsm-new_menu_tab_items">
 						<li class="qsm-new_menu_tab_li active" data-show="quiz_settings">
-							<a href="#">
+							<a href="javascript:void(0)">
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-admin-generic "></span>
 									<div class="nav-item-label-content">
@@ -489,7 +489,7 @@ function qsm_create_new_quiz_wizard() {
 							</a>
 						</li>
 						<li class="qsm-new_menu_tab_li" data-show="select_themes">
-							<a href="#">
+							<a href="javascript:void(0)">
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-layout"></span>
 									<div class="nav-item-label-content">
@@ -500,7 +500,7 @@ function qsm_create_new_quiz_wizard() {
 							</a>
 						</li>
 						<li class="qsm-new_menu_tab_li" data-show="addons_list">
-							<a href="#">
+							<a href="javascript:void(0)">
 								<div class="nav-item-label">
 									<span class="nav-item-label-icon dashicons dashicons-welcome-add-page"></span>
 									<div class="nav-item-label-content">
@@ -593,11 +593,11 @@ function qsm_create_new_quiz_wizard() {
 						<div class="theme-browser rendered">
 							<div class="themes wp-clearfix">
 								<ul class="theme-sub-menu">
-									<li class="active"><a data-show="downloaded_theme"
-											href="#"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a></li>
+									<li class="active">
+										<a data-show="downloaded_theme" href="javascript:void(0)"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a></li>
 									<?php if ( ! empty( $themes_data ) ) { ?>
-									<li><a data-show="browse_themes"
-											href="#"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
+									<li>
+										<a data-show="browse_themes" href="javascript:void(0)"><?php esc_html_e( 'Explore Marketplace', 'quiz-master-next' ); ?></a></li>
 									<?php } ?>
 								</ul>
 								<div class="theme-wrap" id="downloaded_theme">
@@ -883,8 +883,7 @@ function qsm_get_installed_theme( $saved_quiz_theme, $wizard_theme_list = '' ) {
 				?>
 			<?php } ?>
 			<?php if ( $saved_quiz_theme === $theme_id ) { ?>
-			<a class="button button-primary qsm-customize-color-settings"
-				href="#"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
+			<a class="button button-primary qsm-customize-color-settings" href="javascript:void(0)"><?php esc_html_e( 'Customize', 'quiz-master-next' ); ?></a>
 			<?php } ?>
 		</div>
 	</div>

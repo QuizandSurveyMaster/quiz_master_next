@@ -15,7 +15,7 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	$qmn_quiz_options = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 	$deselect_answer  = '';
 	if ( isset( $qmn_quiz_options->enable_deselect_option ) && 1 == $qmn_quiz_options->enable_deselect_option && ( 'multiple_choice' === $question_type || 'horizontal_multiple_choice' === $question_type ) ) {
-		$deselect_answer = '<a href="#" class="qsm-deselect-answer">'.__( 'Deselect Answer', 'quiz-master-next' ).'</a>';
+		$deselect_answer = '<a href="javascript:void(0)" class="qsm-deselect-answer">'.__( 'Deselect Answer', 'quiz-master-next' ).'</a>';
 	}
 
 	if ( $question_id ) {

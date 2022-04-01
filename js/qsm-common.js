@@ -14,11 +14,11 @@
 		let polarQuestions = jQuery('.question-type-polar-s');
 		if(polarQuestions.length >0){
 			qsmPolarSlider('answer', polarQuestions);
-		}	
+		}
 	});
 
 	function qsmPolarSlider(page , polarQuestions){
-		polarQuestions.each( function(){			
+		polarQuestions.each( function(){
 			let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
 			let questionID = polarQuestion.attr('id').replace('slider-','');
 			qsmPolarSliderEach(polarQuestion,questionID,page);
@@ -28,13 +28,13 @@
 						return jQuery(this).height();
 					}).get();
 				let maxHeight = Math.max.apply(null, heightArray);
-				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);					
+				jQuery('.mlw-qmn-question-result-'+questionID).height(maxHeight);
 			} else {
 				let heightArray = jQuery(".question-section-id-"+questionID+" .question-type-polar-s >> div").map(function() {
 					return jQuery(this).height();
 				}).get();
 				let maxHeight = Math.max.apply(null,heightArray);
-					
+
 				jQuery('.question-section-id-'+questionID+' .question-type-polar-s').height(maxHeight);
 			}
 		});
@@ -57,10 +57,10 @@
 		let value;
 		if ('answer'=== page || 'admin' === page){
 			value = parseInt( polarQuestion.attr("data-answer_value") );
-		} else { 
+		} else {
 			value = parseInt((max-min)/2) + min ;
 		}
-		
+
 		polarQuestion.slider({
 			max: max,
 			min: min,
@@ -75,12 +75,12 @@
 				else{
 					jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 						'.ui-slider-handle').text( ui.value );
-				}			
+				}
 			},
 			change: function ( event, ui ){
 				if('answer'!== page || 'admin' !== page){
 					qsmPolarSliderQuestionChange(ui,questionID, answer1, answer2, value , isReverse );
-					
+
 				}
 			},
 			create: function (event, ui){
@@ -98,7 +98,7 @@
 					jQuery(this).find('a').hide();
 				}
 			}
-			
+
 		});
 	}
 
@@ -106,7 +106,7 @@
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
 			'.qmn_polar').val(ui.value);
 		jQuery('.question-section-id-'+questionID+'  .question-type-polar-s').find(
-				'.ui-slider-handle').text(ui.value);	
+				'.ui-slider-handle').text(ui.value);
 		let lowerMidClass = '.left-polar-title';
 		let upperMidClass = '.right-polar-title';
 		if (isReverse){
@@ -142,7 +142,7 @@
 	}
 
 	function qsmPolarSliderQuestionCreate(questionID){
-		
+
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
 			'.left-polar-title').css('font-weight', '400');
 		jQuery('.question-section-id-'+questionID+' .question-type-polar-s').find(
