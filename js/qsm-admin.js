@@ -684,14 +684,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $('#delete-quiz-form').submit();
         });
 
-        $(document).on('click', '#bulk-submit', function (event) {
-            event.preventDefault();
-            if($("#bulk-action-top").val()=="delete_pr" || $("#bulk-action-bottom").val()=="delete_pr"){
-                MicroModal.show('modal-bulk-delete');
-            } else{
-                $('#posts-filter').submit();
-            }
-        });
+        $( document ).on( 'click', '.post-type-qsm_quiz #doaction, .post-type-qsm_quiz #doaction2', function ( event ) {
+			event.preventDefault();
+			if ( $( "#bulk-action-selector-top" ).val() == "delete_pr" || $( "#bulk-action-selector-bottom" ).val() == "delete_pr" ) {
+				MicroModal.show( 'modal-bulk-delete' );
+			} else {
+				$( '#posts-filter' ).submit();
+			}
+		});
         $(document).on('click', '.qsm-list-shortcode-view', function (e) {
             e.preventDefault();
             var embed_text = $(this).siblings('.sc-embed').text();
