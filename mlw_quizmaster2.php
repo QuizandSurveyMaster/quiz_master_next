@@ -579,16 +579,16 @@ register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
  */
 function qsm_edit_quiz_admin_option() {
 	global $wp_admin_bar, $pagenow, $wpdb;
-	if ( 'qsm_quiz' == get_post_type() && 'edit.php' != $pagenow) {
+	if ( 'qsm_quiz' == get_post_type() && 'edit.php' != $pagenow ) {
 		$post_id = get_the_ID();
 		$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
 		if ( ! empty( $quiz_id ) ) {
 			$wp_admin_bar->remove_menu('edit');
 			$wp_admin_bar->add_menu(
 				array(
-					'id'	 => 'edit-quiz',
-					'title'	 => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
-					'href'	 => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id,
+					'id'    => 'edit-quiz',
+					'title' => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
+					'href'  => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id,
 				)
 			);
 		}

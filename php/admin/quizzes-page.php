@@ -34,8 +34,8 @@ function qsm_set_custom_edit_qsm_quiz_columns( $columns ) {
 	unset( $columns['author'] );
 	unset( $columns['comments'] );
 	unset( $columns['date'] );
-	$columns['shortcode']	 = __( 'Shortcode', 'quiz-master-next' );
-	$columns['views']		 = __( 'Views', 'quiz-master-next' );
+	$columns['shortcode']    = __( 'Shortcode', 'quiz-master-next' );
+	$columns['views']        = __( 'Views', 'quiz-master-next' );
 	$columns['participants'] = __( 'Participants', 'quiz-master-next' );
 	$columns['lastActivity'] = __( 'Last Modified', 'quiz-master-next' );
 	return $columns;
@@ -52,37 +52,37 @@ function qsm_custom_qsm_quiz_columns( $column, $post_id ) {
 	global $wpdb;
 	$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
 	switch ( $column ) {
-		case 'shortcode' :
+		case 'shortcode':
 			$shortcode_links = '<a href="#" class="qsm-list-shortcode-view"><span class="dashicons dashicons-welcome-view-site"></span></a>';
 			$shortcode_links .= '<div class="sc-content sc-embed">[qsm quiz=' . $quiz_id . ']</div>';
 			$shortcode_links .= '<div class="sc-content sc-link">[qsm_link id=' . $quiz_id . ']' . __( 'Click here', 'quiz-master-next' ) . '[/qsm_link]</div>';
 			echo wp_kses_post( $shortcode_links );
 			break;
 
-		case 'views' :
-			$quiz_views	 = $wpdb->get_var( "SELECT `quiz_views` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
-			$views_html	 = $quiz_views;
-			$views_html	 .= '<div class="row-actions">';
-			$views_html	 .= '<a class="qsm-action-link qsm-action-link-reset" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . __( 'Reset', 'quiz-master-next' ) . '</a>';
-			$views_html	 .= '</div>';
+		case 'views':
+			$quiz_views  = $wpdb->get_var( "SELECT `quiz_views` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
+			$views_html  = $quiz_views;
+			$views_html  .= '<div class="row-actions">';
+			$views_html  .= '<a class="qsm-action-link qsm-action-link-reset" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . __( 'Reset', 'quiz-master-next' ) . '</a>';
+			$views_html  .= '</div>';
 			echo wp_kses_post( $views_html );
 			break;
 
-		case 'participants' :
-			$quiz_results_count	 = $wpdb->get_var( "SELECT COUNT(result_id) FROM `{$wpdb->prefix}mlw_results` WHERE `deleted`= 0 AND `quiz_id`= '{$quiz_id}'" );
-			$participants		 = '<span class="column-comments">';
-			$participants		 .= '<span class="post-com-count post-com-count-approved">';
-			$participants		 .= '<span class="comment-count-approved" aria-hidden="true">' . $quiz_results_count . '</span>';
-			$participants		 .= '<span class="screen-reader-text">' . $quiz_results_count . __( 'Participants', 'quiz-master-next' ) . '</span>';
-			$participants		 .= '</span>';
-			$participants		 .= '</span>';
+		case 'participants':
+			$quiz_results_count  = $wpdb->get_var( "SELECT COUNT(result_id) FROM `{$wpdb->prefix}mlw_results` WHERE `deleted`= 0 AND `quiz_id`= '{$quiz_id}'" );
+			$participants        = '<span class="column-comments">';
+			$participants        .= '<span class="post-com-count post-com-count-approved">';
+			$participants        .= '<span class="comment-count-approved" aria-hidden="true">' . $quiz_results_count . '</span>';
+			$participants        .= '<span class="screen-reader-text">' . $quiz_results_count . __( 'Participants', 'quiz-master-next' ) . '</span>';
+			$participants        .= '</span>';
+			$participants        .= '</span>';
 			echo wp_kses_post( $participants );
 			break;
 
-		case 'lastActivity' :
-			$last_activity	 = $wpdb->get_var( "SELECT `last_activity` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
-			$activity_date	 = gmdate( get_option( 'date_format' ), strtotime( $last_activity ) );
-			$activity_time	 = gmdate( 'h:i:s A', strtotime( $last_activity ) );
+		case 'lastActivity':
+			$last_activity   = $wpdb->get_var( "SELECT `last_activity` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
+			$activity_date   = gmdate( get_option( 'date_format' ), strtotime( $last_activity ) );
+			$activity_time   = gmdate( 'h:i:s A', strtotime( $last_activity ) );
 			echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '</abbr>' );
 			break;
 
@@ -100,15 +100,15 @@ add_filter( 'post_row_actions', 'qsm_post_row_actions', 10, 2 );
  * @return string
  */
 function qsm_post_row_actions( $actions, $post ) {
-	$post_status = isset( $_REQUEST['post_status'] ) ? $_REQUEST['post_status'] : 'all';
+	$post_status = isset( $_REQUEST['post_status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ) ) : 'all';
 	if ( 'qsm_quiz' == $post->post_type && 'trash' != $post_status ) {
 		$quiz_id = get_post_meta( $post->ID, 'quiz_id', true );
 		$actions = array(
-			'edit'			 => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html( 'Edit', 'quiz-master-next' ) . '</a>',
-			'duplicate'		 => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html( 'Duplicate', 'quiz-master-next' ) . '</a>',
-			'delete'		 => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html( 'Delete', 'quiz-master-next' ) . '</a>',
-			'view_results'	 => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html( 'View Results', 'quiz-master-next' ) . '</a>',
-			'view'			 => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html( 'Preview', 'quiz-master-next' ) . '</a>',
+			'edit'         => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>',
+			'duplicate'    => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>',
+			'delete'       => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>',
+			'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
+			'view'         => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>',
 		);
 	}
 	return $actions;
@@ -135,17 +135,17 @@ add_filter( 'handle_bulk_actions-edit-qsm_quiz', 'qsm_quiz_bulk_action_handler',
 function qsm_quiz_bulk_action_handler( $redirect_to, $doaction, $post_ids ) {
 	global $mlwQuizMasterNext;
 	if ( 'delete_pr' == $doaction && ! empty( $post_ids ) ) {
-		$_POST['qsm_delete_from_db']			 = isset( $_REQUEST['qsm_delete_from_db'] ) ? $_REQUEST['qsm_delete_from_db'] : 0;
-		$_POST['qsm_delete_question_from_qb']	 = isset( $_REQUEST['qsm_delete_question_from_qb'] ) ? $_REQUEST['qsm_delete_question_from_qb'] : 0;
+		$_POST['qsm_delete_from_db']             = isset( $_REQUEST['qsm_delete_from_db'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qsm_delete_from_db'] ) ) : 0;
+		$_POST['qsm_delete_question_from_qb']    = isset( $_REQUEST['qsm_delete_question_from_qb'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['qsm_delete_question_from_qb'] ) ) : 0;
 		foreach ( $post_ids as $post_id ) {
-			$quiz_id	 = get_post_meta( $post_id, 'quiz_id', true );
+			$quiz_id     = get_post_meta( $post_id, 'quiz_id', true );
 			do_action( 'qsm_before_delete_quiz', $quiz_id );
-			$quiz_name	 = get_the_title( $post_id );
+			$quiz_name   = get_the_title( $post_id );
 			$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 		}
 		$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
-		@setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
-		$redirect_to	 = add_query_arg( 'quiz_bulk_delete', count( $post_ids ), $redirect_to );
+		setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
+		$redirect_to     = add_query_arg( 'quiz_bulk_delete', count( $post_ids ), $redirect_to );
 	}
 	return $redirect_to;
 }
@@ -162,33 +162,33 @@ function qsm_process_post_row_actions() {
 	if ( 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'qsm_quiz' == $_GET['post_type'] ) {
 		// Delete quiz.
 		if ( isset( $_POST['qsm_delete_quiz_nonce'], $_POST['delete_quiz_id'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_delete_quiz_nonce'] ) ), 'qsm_delete_quiz' ) ) {
-			$quiz_id	 = sanitize_text_field( wp_unslash( $_POST['delete_quiz_id'] ) );
-			$quiz_id	 = intval( str_replace( 'QID', '', $quiz_id ) );
+			$quiz_id     = sanitize_text_field( wp_unslash( $_POST['delete_quiz_id'] ) );
+			$quiz_id     = intval( str_replace( 'QID', '', $quiz_id ) );
 			do_action( 'qsm_before_delete_quiz', $quiz_id );
-			$quiz_name	 = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
+			$quiz_name   = isset( $_POST['delete_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['delete_quiz_name'] ) ) : '';
 			$mlwQuizMasterNext->quizCreator->delete_quiz( $quiz_id, $quiz_name );
 		}
 
 		// Duplicate Quiz.
 		if ( isset( $_POST['qsm_duplicate_quiz_nonce'], $_POST['duplicate_quiz_id'], $_POST['duplicate_new_quiz_name'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_duplicate_quiz_nonce'] ) ), 'qsm_duplicate_quiz' ) ) {
-			$quiz_id	 = sanitize_text_field( wp_unslash( $_POST['duplicate_quiz_id'] ) );
-			$quiz_id	 = intval( str_replace( 'QID', '', $quiz_id ) );
-			$quiz_name	 = isset( $_POST['duplicate_new_quiz_name'] ) ? htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES ) : '';
+			$quiz_id     = sanitize_text_field( wp_unslash( $_POST['duplicate_quiz_id'] ) );
+			$quiz_id     = intval( str_replace( 'QID', '', $quiz_id ) );
+			$quiz_name   = isset( $_POST['duplicate_new_quiz_name'] ) ? htmlspecialchars( sanitize_text_field( wp_unslash( $_POST['duplicate_new_quiz_name'] ) ), ENT_QUOTES ) : '';
 			$mlwQuizMasterNext->quizCreator->duplicate_quiz( $quiz_id, $quiz_name, isset( $_POST['duplicate_questions'] ) ? sanitize_text_field( wp_unslash( $_POST['duplicate_questions'] ) ) : 0  );
 		}
 
 		// Resets stats for a quiz.
 		if ( isset( $_POST['qsm_reset_stats_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_reset_stats_nonce'] ) ), 'qsm_reset_stats' ) ) {
-			$quiz_id		 = isset( $_POST['reset_quiz_id'] ) ? intval( $_POST['reset_quiz_id'] ) : '';
-			$quiz_post_id	 = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
+			$quiz_id         = isset( $_POST['reset_quiz_id'] ) ? intval( $_POST['reset_quiz_id'] ) : '';
+			$quiz_post_id    = $wpdb->get_var( "SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'quiz_id' AND meta_value = '$quiz_id'" );
 			if ( empty( $quiz_post_id ) || ! current_user_can( 'edit_post', $quiz_post_id ) ) {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'Sorry, you are not allowed to reset this quiz.', 'quiz-master-next' ), 'error' );
 			} else {
 				$results = $wpdb->update( $wpdb->prefix . 'mlw_quizzes', array(
-					'quiz_views'	 => 0,
-					'quiz_taken'	 => 0,
-					'last_activity'	 => gmdate( 'Y-m-d H:i:s' )
-					), array( 'quiz_id' => $quiz_id ), array( '%d', '%d', '%s' ), array( '%d' )
+					'quiz_views'    => 0,
+					'quiz_taken'    => 0,
+					'last_activity' => gmdate( 'Y-m-d H:i:s' ),
+				), array( 'quiz_id' => $quiz_id ), array( '%d', '%d', '%s' ), array( '%d' )
 				);
 				if ( false !== $results ) {
 					$mlwQuizMasterNext->alertManager->newAlert( __( 'The stats has been reset successfully.', 'quiz-master-next' ), 'success' );
@@ -200,7 +200,7 @@ function qsm_process_post_row_actions() {
 			}
 		}
 		$QSMAlertManager = $mlwQuizMasterNext->alertManager->alerts;
-		@setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
+		setcookie( 'QSMAlertManager', wp_json_encode( $QSMAlertManager ), time() + 86400, COOKIEPATH, COOKIE_DOMAIN );
 	}
 }
 
@@ -234,7 +234,7 @@ function qsm_quiz_list_header() {
 				<?php
 			}
 			if ( isset( $_COOKIE['QSMAlertManager'] ) && ! empty( $_COOKIE['QSMAlertManager'] ) ) {
-				$mlwQuizMasterNext->alertManager->alerts = json_decode( wp_unslash( $_COOKIE['QSMAlertManager'] ), true );
+				$mlwQuizMasterNext->alertManager->alerts = json_decode( sanitize_text_field( wp_unslash( $_COOKIE['QSMAlertManager'] ) ), true );
 				unset( $_COOKIE['QSMAlertManager'] );
 			}
 			$mlwQuizMasterNext->alertManager->showAlerts();
@@ -423,7 +423,7 @@ function qsm_admin_footer_text() {
 				</div>
 			</div>
 		</div>
-		
+
 		<!-- Templates -->
 		<script type="text/template" id="tmpl-no-quiz">
 			<div class="qsm-no-quiz-wrapper">
