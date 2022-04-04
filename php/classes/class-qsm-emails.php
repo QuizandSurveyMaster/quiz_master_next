@@ -152,7 +152,8 @@ class QSM_Emails {
 	public static function send_results_email( $response_data, $to, $subject, $content, $reply_to ) {
 
 		global $mlwQuizMasterNext;
-
+		global $qmn_total_questions;
+		$qmn_total_questions = 0;
 		// Sets up our to email addresses.
 		$user_email = sanitize_email( $response_data['user_email'] );
 		$count      = 0;
