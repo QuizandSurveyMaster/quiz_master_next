@@ -159,10 +159,10 @@
 
 .question,
 .question-bank-question {
-	padding: 15px 10px;
+	padding: 10px;
 	background-color: #F3F3F3;
 	border: 1px solid #cbcbcb;
-	margin: 15px 10px 0;
+	margin: 10px 0;
 }
 
 .question a {
@@ -226,14 +226,18 @@
 
 .qsm-question-bank-select{
 	margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #qsm-import-selected-question {
-	margin-left: 30px;
+	margin-right: 30px;
 }
 
-#qsm-delete-selected-question {
-	margin-left: 10px;
+.qsm-question-bank-header {
+    border-bottom: 2px solid #e3e3e3ad;
+    padding-bottom: 15px;
 }
 
 .question-bank-question div {
@@ -608,8 +612,7 @@ a.import-button.button.disable_import::before {
 }
 
 #question-bank-cat {
-	margin-bottom: 20px;
-	margin-left: 10px;
+	width: 150px;
 }
 
 .ui-state-highlight {

@@ -1516,25 +1516,28 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     $('#question-bank').append(pagination_html);
                 }
                 if (pagination.current_page == 1) {
-                    $('#question-bank').prepend('<div class="qsm-question-bank-search"><form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="' + response.search + '" id="question-bank-search-input" placeholder="Search questions"></form></div>');
-                    $('#question-bank').prepend('<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button><button class="button button-default" id="qsm-delete-selected-question">Delete Selected Question from Bank</button>');
-                }
-                if (pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0) {
-                    var category_arr = qsmQuestionSettings.categories;
-                    $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
-                    $cat_html += '<option value="">All Questions</option>';
-                    $.each(category_arr, function (index, value) {
-                        if (value.category !== '') {
-                            if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
-                                $cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
-                            } else {
-                                $cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
-                            }
+                    if ($('#question-bank-search-form').length == 0) {
+                        $('.qsm-question-bank-search').append('<form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="' + response.search + '" id="question-bank-search-input" placeholder="Search questions"></form>');
+                        if ( qsmQuestionSettings.categories.length > 0) {
+                            var category_arr = qsmQuestionSettings.categories;
+                            $cat_html = '<select name="question-bank-cat" id="question-bank-cat">';
+                            $cat_html += '<option value="">All Categories</option>';
+                            $.each(category_arr, function (index, value) {
+                                if (value.category !== '') {
+                                    if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
+                                        $cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
+                                    } else {
+                                        $cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+                                    }
+                                }
+                            });
+                            $cat_html += '</select>';
+                            $('.qsm-question-bank-search').append($cat_html);
+                            $('#question-bank-cat').val(pagination.category);
                         }
-                    });
-                    $cat_html += '</select>';
-                    $('.qsm-question-bank-search').append($cat_html);
-                    $('#question-bank-cat').val(pagination.category);
+                        $('.qsm-question-bank-search').append('<button class="button button-primary" id="qsm-import-selected-question">Add Selected Questions</button>');
+                    }
+                    $('#question-bank').prepend('<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question">Delete Selected Items from Question Bank</a>');
                 }
             },
             addQuestionToQuestionBank: function (question) {
