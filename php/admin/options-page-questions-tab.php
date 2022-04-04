@@ -170,9 +170,10 @@ function qsm_options_questions_tab_content() {
 <div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-2" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-			<header class="qsm-popup__header">
+			<header class="qsm-popup__header qsm-question-bank-header">
 				<h2 class="qsm-popup__title" id="modal-2-title">
-					<?php esc_html_e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></h2>
+					<?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
+				<div class="qsm-question-bank-search"></div>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 			</header>
 			<main class="qsm-popup__content" id="modal-2-content">
