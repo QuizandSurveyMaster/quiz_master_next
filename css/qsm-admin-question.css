@@ -260,11 +260,17 @@
 }
 
 #qsm-import-selected-question {
-    margin-left: 30px;
+    margin-left: 10px;
 }
 
 #question-bank-search-form{
     float: left;
+}
+
+.qsm-question-bank-header .qsm-popup__close {
+    position: absolute;
+    right: 10px;
+    top: 25px;
 }
 
 .qsm-question-bank-header {
@@ -431,6 +437,7 @@ div#correct_answer_info_area {
     border: 0;
     color: #00449e;
     text-decoration: none;
+	cursor: pointer;
 }
 
 .qsm-popup__header .qsm-popup__close:before {

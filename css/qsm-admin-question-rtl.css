@@ -232,7 +232,17 @@
 }
 
 #qsm-import-selected-question {
-	margin-right: 30px;
+	margin-right: 10px;
+}
+
+#question-bank-search-form{
+    float: right;
+}
+
+.qsm-question-bank-header .qsm-popup__close {
+    position: absolute;
+    left: 10px;
+    top: 25px;
 }
 
 .qsm-question-bank-header {
@@ -399,6 +409,7 @@ div#correct_answer_info_area {
 	border: 0;
 	color: #00449e;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .qsm-popup__header .qsm-popup__close:before {
