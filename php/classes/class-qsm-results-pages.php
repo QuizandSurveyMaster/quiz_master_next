@@ -24,6 +24,7 @@ class QSM_Results_Pages {
 	 * @return string The HTML for the page to be displayed.
 	 */
 	public static function generate_pages( $response_data ) {
+		global $mlwQuizMasterNext;
 		$pages            = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
 		$default          = '%QUESTIONS_ANSWERS%';
 		$redirect         = false;
@@ -35,8 +36,9 @@ class QSM_Results_Pages {
 			do_action( 'qsm_before_results_page' );
 
 			// Cycles through each possible page.
-			foreach ( $pages as $page ) {
-
+			foreach ( $pages as $index => $page ) {
+				
+				$page_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" );
 				// Checks if any conditions are present. Else, set it as the default.
 				if ( ! empty( $page['conditions'] ) ) {
 					/**
@@ -133,13 +135,13 @@ class QSM_Results_Pages {
 
 					// If we passed all conditions, show this page.
 					if ( $show ) {
-						$content = $page['page'];
+						$content = $page_content;
 						if ( $page['redirect'] ) {
 							$redirect = $page['redirect'];
 						}
 					}
 				} else {
-					$default = $page['page'];
+					$default = $page_content;
 					if ( $page['redirect'] ) {
 						$default_redirect = $page['redirect'];
 					}

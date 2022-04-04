@@ -23,6 +23,7 @@ class QSM_Emails {
 	 * @param array $response_data The data for the user's submission.
 	 */
 	public static function send_emails( $response_data ) {
+		global $mlwQuizMasterNext;
 		$emails = self::load_emails( $response_data['quiz_id'] );
 
 		if ( ! is_array( $emails ) || empty( $emails ) ) {
@@ -32,8 +33,10 @@ class QSM_Emails {
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 
 		// Cycles through each possible email.
-		foreach ( $emails as $email ) {
+		foreach ( $emails as $index => $email ) {
 
+			$email_subject = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['subject'], "quiz-email-subject-{$index}-{$response_data['quiz_id']}" );
+			$email_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['content'], "quiz-email-content-{$index}-{$response_data['quiz_id']}" );
 			// Checks if any conditions are present. Else, send it always.
 			if ( ! empty( $email['conditions'] ) ) {
 				/**
@@ -129,10 +132,10 @@ class QSM_Emails {
 				}
 
 				if ( $show ) {
-					self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
 				}
 			} else {
-				self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
 			}
 		}
 
