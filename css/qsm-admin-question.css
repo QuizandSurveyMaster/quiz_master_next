@@ -245,11 +245,15 @@
     clear: both;
 }
 
-.qsm-select-all-label {
-    margin-right: 5px;
+.qsm-question-bank-select .qsm-select-all-label {
+    margin-right: 15px;
     position: relative;
     top: 5px;
     vertical-align: top;
+}
+
+.qsm-question-bank-select{
+	margin-bottom: 15px;
 }
 
 #qsm-import-selected-question {
@@ -632,7 +636,6 @@ a.import-button.button.disable_import::before {
 }
 
 #question-bank-cat {
-    float: right;
     margin-bottom: 20px;
     margin-right: 10px;
 }

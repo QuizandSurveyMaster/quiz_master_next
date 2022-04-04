@@ -1492,14 +1492,15 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     data: {
                         'quizID': 0,
                         'page': $('#question_back_page_number').length > 0 ? parseInt($('#question_back_page_number').val()) + 1 : 1,
-                        'category': $('#question-bank-cat').val()
+                        'category': $('#question-bank-cat').val(),
+                        'search': $('#question-bank-search-input').val()
                     },
                     success: QSMQuestion.questionBankLoadSuccess
                 });
             },
-            questionBankLoadSuccess: function (questions) {
-                var pagination = questions.pagination;
-                var questions = questions.questions;
+            questionBankLoadSuccess: function (response) {
+                var pagination = response.pagination;
+                var questions = response.questions;
                 if ($('.qb-load-more-wrapper').length > 0) {
                     $('.qb-load-more-wrapper').remove();
                 } else {
@@ -1513,6 +1514,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     pagination_html += '<input type="hidden" id="question_back_total_pages" value="' + pagination.total_pages + '"/>';
                     pagination_html += '<a href="javascript:void(0)" class="button button-primary qb-load-more-question">Load More Questions</a></div>';
                     $('#question-bank').append(pagination_html);
+                }
+                if (pagination.current_page == 1) {
+                    $('#question-bank').prepend('<div class="qsm-question-bank-search"><form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="' + response.search + '" id="question-bank-search-input" placeholder="Search questions"></form></div>');
+                    $('#question-bank').prepend('<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button><button class="button button-default" id="qsm-delete-selected-question">Delete Selected Question from Bank</button>');
                 }
                 if (pagination.current_page == 1 && qsmQuestionSettings.categories.length > 0) {
                     var category_arr = qsmQuestionSettings.categories;
@@ -1528,13 +1533,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         }
                     });
                     $cat_html += '</select>';
-                    $('#question-bank').prepend($cat_html);
+                    $('.qsm-question-bank-search').append($cat_html);
                     $('#question-bank-cat').val(pagination.category);
-                }
-                if (pagination.current_page == 1) {
-                    $('#question-bank').prepend('<button class="button button-primary" id="qsm-import-selected-question">Import All Selected Questions</button>');
-                    $('#question-bank').prepend('<button class="button button-default" id="qsm-delete-selected-question">Delete Selected Question from Bank</button>');
-                    $('#question-bank').prepend('<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</button>');
                 }
             },
             addQuestionToQuestionBank: function (question) {
@@ -2261,6 +2261,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 
             //Show category related question
             $(document).on('change', '#question-bank-cat', function (event) {
+                event.preventDefault();
+                QSMQuestion.loadQuestionBank('change');
+            });
+
+            //Show searched question
+            $(document).on('submit', '#question-bank-search-form', function (event) {
                 event.preventDefault();
                 QSMQuestion.loadQuestionBank('change');
             });
