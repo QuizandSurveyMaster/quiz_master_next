@@ -1056,7 +1056,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 },
                 addField : function( fieldArray ) {
                   var new_label =  fieldArray.label.replace(/"/g, "'");
-                  var contactField = $( '<div class="contact-form-field new">' +
+                  var contactField = $( '<div class="contact-form-field new"><span class="dashicons dashicons-move"></span>' +
                       '<div class="contact-form-group">' +
                           '<label class="contact-form-label">Field Type</label>' +
                         '<select class="contact-form-control wide type-control">' +
@@ -1227,20 +1227,20 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
                 });
                 $( '.save-contact' ).on( 'click', function() {
-                QSMContact.save();
+                    QSMContact.save();
                 });
                 $( '.contact-form' ).on( 'click', '.delete-field', function( event ) {
-                event.preventDefault();
-                QSMContact.deleteField( $( this ) );
+                    event.preventDefault();
+                    QSMContact.deleteField( $( this ) );
                 });
                 $( '.contact-form' ).on( 'click', '.copy-field', function( event ) {
-                event.preventDefault();
-                QSMContact.duplicateField( $( this ) );
+                    event.preventDefault();
+                    QSMContact.duplicateField( $( this ) );
                 });
                 $( '.contact-form' ).sortable({
-                cursor: 'move',
-                opacity: 60,
-                placeholder: "ui-state-highlight"
+                    opacity: 70,
+                    cursor: 'grabbing',
+                    handle: 'span.dashicons-move'
                 });
             });
         }
@@ -1706,6 +1706,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     items: '.question',
                     opacity: 70,
                     cursor: 'move',
+                    handle: 'span.dashicons-move',
                     placeholder: "ui-state-highlight",
                     connectWith: '.page',
                     stop: function (evt, ui) {
@@ -2694,6 +2695,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $('.questions').sortable({
                 opacity: 70,
                 cursor: 'move',
+                handle: 'span.dashicons-move',
                 placeholder: "ui-state-highlight",
                 stop: function (evt, ui) {
                     $('.questions > .page').each(function () {
@@ -2710,6 +2712,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             });
             $('.page').sortable({
                 items: '.question',
+                handle: 'span.dashicons-move',
                 opacity: 70,
                 cursor: 'move',
                 placeholder: "ui-state-highlight",
