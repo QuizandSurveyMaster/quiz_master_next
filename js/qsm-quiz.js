@@ -73,7 +73,7 @@ var QSMPageTimer;
 				// ...else, we must be using the questions per page option.
 			} else {
 				if (qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page) {
-					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.mlw_next').on('click', function (event) {
+					$(document).on('click', '.qmn_quiz_container'+ quizID + ' .mlw_next', function (event) {
 						event.preventDefault();
 						if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 							var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
@@ -331,8 +331,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_init_progressbar_after', [quizID, qmn_quiz_data]);
 				}
 				QSM.goToPage(quizID, 1);
-
-				$quizForm.find('.qsm-pagination .qsm-next').on('click', function (event) {
+				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-next', function (event) {
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					QSM.nextPage(quizID);
@@ -342,7 +341,7 @@ var QSMPageTimer;
 					}
 					jQuery(document).trigger('qsm_next_button_click_after', [quizID]);
 				});
-				$quizForm.find('.qsm-pagination .qsm-previous').on('click', function (event) {
+				jQuery(document).on('click', '.qsm-quiz-container-' + quizID + ' .qsm-pagination .qsm-previous', function (event) {
 					jQuery(document).trigger('qsm_previous_button_click_before', [quizID]);
 					event.preventDefault();
 					QSM.prevPage(quizID);
@@ -684,7 +683,7 @@ function qmnDoInit() {
 	// Call main initialization.
 	qsminstance = QSM.init();
 
-	jQuery(".qsm-quiz-container").on("click", ".mlw_next", function () {
+	jQuery(document).on("click", ".qsm-quiz-container .mlw_next", function () {
 		if (quizType == 'paginated') {
 			timer_ms = jQuery("input[name='timer_ms']").val();
 			if (timer_ms == 0) {
