@@ -221,6 +221,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['scheduled_time_end']                 = $globalQuizsetting['scheduled_time_end'];
 			$setDefaultvalue['not_allow_after_expired_time']       = $globalQuizsetting['not_allow_after_expired_time'];
 			$setDefaultvalue['preferred_date_format']              = $globalQuizsetting['preferred_date_format'];
+			$setDefaultvalue['default_answers']                    = $globalQuizsetting['default_answers'];
 			// Try to serialize the value.
 			return $this->save_quiz_settings( $setting, $setDefaultvalue );
 		}

@@ -114,7 +114,7 @@ function qsm_generate_dashboard_page() {
 			<img src="<?php echo esc_url( QSM_PLUGIN_URL . '/assets/icon-128x128.png' ); ?>" alt="Welcome Logo">
 			<p class="current_version"><?php echo esc_attr( $mlwQuizMasterNext->version ); ?></p>
 		</div>
-		<a class="qsm-welcome-panel-dismiss" href="#"
+		<a class="qsm-welcome-panel-dismiss" href="javascript:void(0)"
 			aria-label="Dismiss the welcome panel"><?php esc_html_e( 'Dismiss', 'quiz-master-next' ); ?></a>
 		<div class="welcome-panel-content">
 			<h2><?php esc_html_e( 'Welcome to Quiz And Survey Master!', 'quiz-master-next' ); ?></h2>
@@ -123,7 +123,7 @@ function qsm_generate_dashboard_page() {
 				<div class="welcome-panel-column">
 					<h3><?php esc_html_e( 'Get Started', 'quiz-master-next' ); ?></h3>
 					<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
-						href="#"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
+						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<p class="hide-if-no-customize">
 						or, <a
 							href="admin.php?page=mlw_quiz_list"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
@@ -462,7 +462,7 @@ function qsm_dashboard_recent_taken_quiz( $widget_id ) {
 						<p class="row-actions-c">
 							<a
 								href="admin.php?page=qsm_quiz_result_details&result_id=<?php echo esc_attr( $single_result_arr['result_id'] ); ?>">View</a>
-							| <a href="#" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
+							| <a href="javascript:void(0)" data-result_id="<?php echo esc_attr( $single_result_arr['result_id'] ); ?>"
 								class="trash rtq-delete-result">Delete</a>
 						</p>
 					</div>

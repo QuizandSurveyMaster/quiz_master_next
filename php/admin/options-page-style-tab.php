@@ -62,16 +62,16 @@ function qsm_options_styling_tab_content() {
 <div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 	<ul class="subsubsub">
 		<li>
-			<a href="#" data-id="qsm_themes" class="current quiz_style_tab">
+			<a href="javascript:void(0)" data-id="qsm_themes" class="current quiz_style_tab">
 				<?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a> |
 		</li>
 		<li>
-			<a href="#" data-id="custom_css" class="quiz_style_tab">
+			<a href="javascript:void(0)" data-id="custom_css" class="quiz_style_tab">
 				<?php esc_html_e( 'Custom CSS', 'quiz-master-next' ); ?>
 			</a> |
 		</li>
 		<li>
-			<a href="#" data-id="legacy" class="quiz_style_tab">
+			<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab">
 				<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
 			</a>
 		</li>
@@ -146,11 +146,11 @@ function qsm_options_styling_tab_content() {
 	<div class="wp-filter hide-if-no-js">
 		<ul class="filter-links">
 			<li>
-				<a href="#" class="current" data-id="theme-browser"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
+				<a href="javascript:void(0)" class="current" data-id="theme-browser"><?php esc_html_e( 'Themes', 'quiz-master-next' ); ?></a>
 			</li>
 			<li>
 				<?php if ( $saved_quiz_theme ) { ?>
-				<a href="#" data-id="theme-featured-image"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
+				<a href="javascript:void(0)" data-id="theme-featured-image"><?php esc_html_e( 'Featured Image', 'quiz-master-next' ); ?></a>
 				<?php } ?>
 			</li>
 			<?php do_action( 'qsm_add_filter_menu' ); ?>

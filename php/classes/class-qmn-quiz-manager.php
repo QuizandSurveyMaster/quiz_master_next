@@ -385,14 +385,14 @@ class QMNQuizManager {
 				$registered_template = $mlwQuizMasterNext->pluginHelper->get_quiz_templates( $qmn_quiz_options->theme_selected );
 				// Check direct file first, then check templates folder in plugin, then check templates file in theme.
 				// If all fails, then load custom styling instead.
-				if ( $registered_template && file_exists( $registered_template['path'] ) ) {
-					wp_enqueue_style( 'qmn_quiz_template', $registered_template['path'], array(), $mlwQuizMasterNext->version );
+				if ( $registered_template && file_exists( ABSPATH . $registered_template['path'] ) ) {
+					wp_enqueue_style( 'qmn_quiz_template', site_url( $registered_template['path'] ), array(), $mlwQuizMasterNext->version );
 				} elseif ( $registered_template && file_exists( plugin_dir_path( __FILE__ ) . '../../templates/' . $registered_template['path'] ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', plugins_url( '../../templates/' . $registered_template['path'], __FILE__ ), array(), $mlwQuizMasterNext->version );
-				} elseif ( $registered_template && file_exists( get_theme_file_path(  '/templates/' . $registered_template['path'] ) ) ) {
+				} elseif ( $registered_template && file_exists( get_theme_file_path( '/templates/' . $registered_template['path'] ) ) ) {
 					wp_enqueue_style( 'qmn_quiz_template', get_stylesheet_directory_uri() . '/templates/' . $registered_template['path'], array(), $mlwQuizMasterNext->version );
 				} else {
-					echo "<style type='text/css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
+					echo "<style type='text/css' id='qmn_quiz_template-css'>" . wp_kses_post( htmlspecialchars_decode( $qmn_quiz_options->quiz_stye ) ) . '</style>';
 				}
 			}
 			wp_enqueue_style( 'qmn_quiz_animation_style', QSM_PLUGIN_CSS_URL . '/animate.css', array(), $mlwQuizMasterNext->version );
@@ -802,7 +802,7 @@ class QMNQuizManager {
 		// $saved_quiz_theme = $mlwQuizMasterNext->quiz_settings->get_setting('quiz_new_theme');
 		$saved_quiz_theme = $mlwQuizMasterNext->theme_settings->get_active_quiz_theme_path( $options->quiz_id );
 		$randomness_class = 0 === intval( $options->randomness_order ) ? '' : 'random';
-		?><div class='qsm-quiz-container qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
+		?><div class='qsm-quiz-container qsm-quiz-container-<?php echo esc_attr($quiz_data['quiz_id']); ?> qmn_quiz_container mlw_qmn_quiz <?php echo esc_attr( $auto_pagination_class ); ?> quiz_theme_<?php echo esc_attr( $saved_quiz_theme . ' ' . $randomness_class ); ?> '>
 		<?php
 			// Get quiz post based on quiz id
 			$args      = array(
@@ -1097,24 +1097,16 @@ class QMNQuizManager {
 		 *
 		 * @since 7.3.5
 		 */
-		add_action(
-			'wp_footer',
-			function () use ( $options ) {
-				?>
-			<!-- View for pagination -->
-			<script type="text/template" id="tmpl-qsm-pagination-<?php echo esc_attr( $options->quiz_id ); ?>">
-				<div class="qsm-pagination qmn_pagination border margin-bottom">
-					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="#"><?php echo esc_html( $options->previous_button_text ); ?></a>
+
+		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
+					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $options->previous_button_text ) . '</a>
 					<span class="qmn_page_message"></span>
 					<div class="qmn_page_counter_message"></div>
 					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="#"><?php echo esc_html( $options->next_button_text ); ?></a>
-					<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value='<?php echo esc_attr( $options->submit_button_text ); ?>' />
-				</div>
-			</script>
-				<?php
-			}
-		);
+					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' . esc_html( $options->next_button_text ) . '</a>
+					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value=' . esc_attr( $options->submit_button_text ) . ' />
+				</div>';
+		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination );
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
 		<?php

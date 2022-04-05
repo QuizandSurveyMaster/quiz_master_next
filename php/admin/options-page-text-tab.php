@@ -99,7 +99,7 @@ function mlw_options_text_tab_content() {
                                 ?>
                             </div>
                             <div style="display: none;" class="qsm-all-variable-wrap">
-                                <a class="qsm-show-all-variable-text" href="#"><?php esc_html_e( 'Show all Variables', 'quiz-master-next' ); ?></a>
+                                <a class="qsm-show-all-variable-text" href="javascript:void(0)"><?php esc_html_e( 'Show all Variables', 'quiz-master-next' ); ?></a>
                             </div>
                         </div>
                     </div>
