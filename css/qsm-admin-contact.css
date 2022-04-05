@@ -7,9 +7,16 @@
 
 .contact-form-field {
   padding: 25px 10px 10px;
-    margin: 15px 15px;
-    background: #f1f1f1;
-    border: 1px solid #dfd4d4;
+  margin: 15px 15px;
+  background: #f1f1f1;
+  border: 1px solid #dfd4d4;
+  position: relative;
+}
+.contact-form-field span.dashicons-move {
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  cursor: pointer;
 }
 
 .contact-form-field.new {
