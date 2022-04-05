@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.13
+Stable tag: 7.3.14
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -162,6 +162,17 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.14 (April 5, 2022) =
+* Bug: Fixed issue with paragraph question type
+* Bug: Fixed issue with qmn_register_my_templates hook
+* Bug: Fixed issue with %CATEGORY_POINTS_X% template variable
+* Bug: Fixed issue with question numbers in email
+* Bug: Fixed issue with elementor popup
+* Bug: Issue fixed with touch devices
+* Feature: Added option to set default number of answers
+* Feature: Added option to search questions from question bank
+* Enhancement: Made UI improvements in polar question
+
 = 7.3.13 (March 14, 2022) =
 * Bug: Fixed issue with comments field UI
 * Bug: Fixed issue with support Link
