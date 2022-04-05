@@ -134,7 +134,7 @@ class QMNGlobalSettingsPage {
 			'scheduled_time_end'                 => '',
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
-			'default_answers'					 => 1,
+			'default_answers'                    => 1,
 		);
 	}
 
