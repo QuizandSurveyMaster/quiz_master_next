@@ -1074,7 +1074,7 @@ class QSM_Install {
 			'id'      => 'retake_quiz_button_text',
 			'label'   => __( 'Retake Quiz Button', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => 'Retake Quiz',
+			'default' => __( 'Retake Quiz', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 

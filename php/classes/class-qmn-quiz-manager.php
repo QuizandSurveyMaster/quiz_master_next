@@ -221,7 +221,7 @@ class QMNQuizManager {
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
 		$answer_array      = maybe_unserialize( $question_array['answer_array'] );
 		$correct_info_text = isset( $question_array['question_answer_info'] ) ? html_entity_decode( $question_array['question_answer_info'] ) : '';
-		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo" );
+		$correct_info_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_info_text, "correctanswerinfo-{$question_id}" );
 
 		$show_correct_info = isset( $_POST['show_correct_info'] ) ? sanitize_text_field( wp_unslash( $_POST['show_correct_info'] ) ) : 0;
 		$got_ans           = false;
@@ -429,10 +429,10 @@ class QMNQuizManager {
 				}
 			}
 			$correct_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text );
-			$correct_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_answer_text, "quiz-correct-answer-text-{$qmn_array_for_variables['quiz_id']}" );
+			$correct_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $correct_answer_text, "quiz_quick_result_correct_answer_text-{$qmn_array_for_variables['quiz_id']}" );
 			$wrong_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_wrong_answer_text );
-			$wrong_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz-wrong-answer-text-{$qmn_array_for_variables['quiz_id']}" );
-			$quiz_processing_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz-processing-message-{$qmn_array_for_variables['quiz_id']}" );
+			$wrong_answer_text = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $wrong_answer_text, "quiz_quick_result_wrong_answer_text-{$qmn_array_for_variables['quiz_id']}" );
+			$quiz_processing_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->quiz_processing_message, "quiz_quiz_processing_message-{$qmn_array_for_variables['quiz_id']}" );
 			$qmn_json_data = array(
 				'quiz_id'                            => $qmn_array_for_variables['quiz_id'],
 				'quiz_name'                          => $qmn_array_for_variables['quiz_name'],
@@ -772,10 +772,10 @@ class QMNQuizManager {
 
 		global $qmn_json_data;
 		$qmn_json_data['error_messages'] = array(
-			'email'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->email_error_text, "quiz-email-error-text-{$options->quiz_id}" ),
-			'number'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->number_error_text, "quiz-number-error-text-{$options->quiz_id}" ),
-			'incorrect' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->incorrect_error_text, "quiz-incorrect-error-text-{$options->quiz_id}" ),
-			'empty'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->empty_error_text, "quiz-empty-error-text-{$options->quiz_id}" ),
+			'email'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->email_error_text, "quiz_email_error_text-{$options->quiz_id}" ),
+			'number'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->number_error_text, "quiz_number_error_text-{$options->quiz_id}" ),
+			'incorrect' => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->incorrect_error_text, "quiz_incorrect_error_text-{$options->quiz_id}" ),
+			'empty'     => $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->empty_error_text, "quiz_empty_error_text-{$options->quiz_id}" ),
 		);
 
 		wp_enqueue_script( 'progress-bar', QSM_PLUGIN_JS_URL . '/progressbar.min.js', array(), '1.1.0', true );
@@ -905,9 +905,8 @@ class QMNQuizManager {
 
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) ) {
 			$qmn_json_data['first_page'] = true;
-			$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
-			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_before, "quiz-message-before-{$options->quiz_id}" );
-			$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
+			$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
+			$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $quiz_data );
 			?>
 			<section class="qsm-page <?php echo esc_attr( $animation_effect ); ?>">
 				<div class="quiz_section quiz_begin">
@@ -936,9 +935,8 @@ class QMNQuizManager {
 			<?php
 			if ( ! empty( $options->message_before ) || ( 0 == $options->contact_info_location && $contact_fields ) ) {
 				$qmn_json_data['first_page'] = false;
-				$message_before              = wpautop( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ) );
-				$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_before, "quiz-message-before-{$options->quiz_id}" );
-				$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $quiz_data );
+				$message_before              = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_before, ENT_QUOTES ), "quiz_message_before-{$options->quiz_id}" );
+				$message_before              = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $quiz_data );
 				?>
 					<div class="quiz_section quiz_begin">
 						<div class='qsm-before-message mlw_qmn_message_before'>
@@ -971,38 +969,36 @@ class QMNQuizManager {
 				$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 				if ( 0 == $question['comments'] ) {
 					?>
-					<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />
+					<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz_comment_field_text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />
 					<?php
 				}
 				if ( 2 == $question['comments'] ) {
 					?>
-					<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>
+					<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz_comment_field_text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>
 					<?php
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $question['hints'] ) ) {
-					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz-hint-text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+					echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
 				}
 				?>
 					</div>
 				<?php
 			}
 			if ( 0 == $options->comment_section ) {
-				$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
-				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_comments, "quiz-message-comments-{$options->quiz_id}" );
+				$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 				?>
 					<div class="quiz_section quiz_begin">
-						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data ); ?></label>
+						<label for='mlwQuizComments' class='qsm-comments-label mlw_qmn_comment_section_text'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 						<textarea id='mlwQuizComments' name='mlwQuizComments' class='qsm-comments qmn_comment_section'></textarea>
 					</div>
 				<?php
 			}
 			if ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) {
-				$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
-				$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_after, "quiz-message-end-{$options->quiz_id}" );
+				$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$options->quiz_id}" );
 				?>
 					<div class="quiz_section">
-						<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data ); ?></div>
+						<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data ); ?></div>
 				<?php
 				if ( 1 == $options->contact_info_location ) {
 					echo QSM_Contact_Manager::display_fields( $options );
@@ -1042,17 +1038,17 @@ class QMNQuizManager {
 					$mlwQuizMasterNext->pluginHelper->display_question( $question['question_type_new'], $question_id, $options );
 					if ( 0 == $question['comments'] ) {
 						?>
-						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />
+						<input type="text" class="qsm-question-comment qsm-question-comment-small mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz_comment_field_text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" />
 						<?php
 					}
 					if ( 2 == $question['comments'] ) {
 						?>
-						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz-comment-text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>
+						<textarea class="qsm-question-comment qsm-question-comment-large mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $question_id ); ?>" name="mlwComment<?php echo esc_attr( $question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->comment_field_text, "quiz_comment_field_text-{$options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" ></textarea>
 						<?php
 					}
 					// Checks if a hint is entered.
 					if ( ! empty( $question['hints'] ) ) {
-						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz-hint-text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
+						echo '<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->hint_text, "quiz_hint_text-{$options->quiz_id}" ) ) . '<span class="qsm_tooltiptext">' . wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['hints'], "hint-{$question_id}" ) ) . '</span></div>';
 					}
 					?>
 						</div>
@@ -1073,24 +1069,22 @@ class QMNQuizManager {
 			}
 		}
 		if ( count( $pages ) > 1 && 0 == $options->comment_section ) {
-			$message_comments = wpautop( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ) );
-			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_comments, "quiz-message-comments-{$options->quiz_id}" )
+			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page">
 				<div class="quiz_section quiz_begin">
-					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $quiz_data ); ?></label>
+					<label for="mlwQuizComments" class="qsm-comments-label mlw_qmn_comment_section_text"><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $quiz_data ); ?></label>
 					<textarea id="mlwQuizComments" name="mlwQuizComments" class="qsm-comments qmn_comment_section"></textarea>
 				</div>
 			</section>
 			<?php
 		}
 		if ( count( $pages ) > 1 && ( ! empty( $options->message_end_template ) || ( 1 == $options->contact_info_location && $contact_fields ) ) ) {
-			$message_after = wpautop( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ) );
-			$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_after, "quiz-message-end-{$options->quiz_id}" );
+			$message_after = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$options->quiz_id}" );
 			?>
 			<section class="qsm-page" style="display: none;">
 				<div class="quiz_section">
-					<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_after, $quiz_data ); ?></div>
+					<div class='qsm-after-message mlw_qmn_message_end'><?php echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_after ), $quiz_data ); ?></div>
 					<?php
 					if ( 1 == $options->contact_info_location ) {
 						echo QSM_Contact_Manager::display_fields( $options );
@@ -1147,9 +1141,8 @@ class QMNQuizManager {
 			?>
 			<div class="qsm-auto-page-row quiz_section <?php echo esc_attr( $animation_effect ); ?> quiz_begin">
 				<?php
-				$message_before = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_before, ENT_QUOTES ) );
-				$message_before = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_before, "quiz-message-before-{$qmn_quiz_options->quiz_id}" );
-				$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_before, $qmn_array_for_variables );
+				$message_before = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_before, ENT_QUOTES ), "quiz_message_before-{$qmn_quiz_options->quiz_id}" );
+				$message_before = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_before ), $qmn_array_for_variables );
 				$editor_text    = $wp_embed->run_shortcode( $message_before );
 				$editor_text    = preg_replace( '/\s*[\w\/:\.]*youtube.com\/watch\?v=([\w]+)([\w\*\-\?\&\;\%\=\.]*)/i', '<iframe width="420" height="315" src="//www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>', $editor_text );
 				?>
@@ -1230,18 +1223,18 @@ class QMNQuizManager {
 				$mlwQuizMasterNext->pluginHelper->display_question( $mlw_question->question_type_new, $mlw_question->question_id, $qmn_quiz_options );
 				if ( 0 == $mlw_question->comments ) {
 					?>
-					<input type="text" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz-comment-text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" /><br />
+					<input type="text" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)" /><br />
 					<?php
 				}
 				if ( 2 == $mlw_question->comments ) {
 					?>
-					<textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz-comment-text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)"></textarea><br />
+					<textarea cols="70" rows="5" class="mlw_qmn_question_comment" id="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" name="mlwComment<?php echo esc_attr( $mlw_question->question_id ); ?>" placeholder="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->comment_field_text, "quiz_comment_field_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" onclick="qmnClearField(this)"></textarea><br />
 					<?php
 				}
 				// Checks if a hint is entered.
 				if ( ! empty( $mlw_question->hints ) ) {
 					?>
-					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz-hint-text-{$qmn_quiz_options->quiz_id}" ) ); ?><span class="qsm_tooltiptext"><?php echo wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) ); ?></span></div><br /><br />
+					<div class="qsm-hint qsm_hint mlw_qmn_hint_link qsm_tooltip"><?php echo esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->hint_text, "quiz_hint_text-{$qmn_quiz_options->quiz_id}" ) ); ?><span class="qsm_tooltiptext"><?php echo wp_kses_post( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_question->hints, "hint-{$mlw_question->question_id}" ) ); ?></span></div><br /><br />
 					<?php
 				}
 				?>
@@ -1291,9 +1284,8 @@ class QMNQuizManager {
 			?>
 			<div class="quiz_section quiz_end qsm-auto-page-row qsm-quiz-comment-section slide <?php echo esc_attr( $mlw_qmn_section_count . ' ' . $qsm_d_none ); ?>" >
 			<?php
-			$message_comments = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ) );
-			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_comments, "quiz-message-comments-{$qmn_quiz_options->quiz_id}" );
-			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_comments, $qmn_array_for_variables );
+			$message_comments = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_comment, ENT_QUOTES ), "quiz_message_comment-{$qmn_quiz_options->quiz_id}" );
+			$message_comments = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_comments ), $qmn_array_for_variables );
 			?>
 				<label for="mlwQuizComments" class="mlw_qmn_comment_section_text"><?php echo wp_kses_post( $message_comments ); ?></label><br />
 				<textarea cols="60" rows="10" id="mlwQuizComments" name="mlwQuizComments" class="qmn_comment_section"></textarea>
@@ -1331,9 +1323,8 @@ class QMNQuizManager {
 					?>
 					<span class='mlw_qmn_message_end'>
 					<?php
-						$message_end = wpautop( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ) );
-						$message_end = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $message_end, "quiz-message-end-{$qmn_quiz_options->quiz_id}" );
-						echo apply_filters( 'mlw_qmn_template_variable_quiz_page', $message_end, $qmn_array_for_variables );
+						$message_end = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->message_end_template, ENT_QUOTES ), "quiz_message_end_template-{$qmn_quiz_options->quiz_id}" );
+						echo apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message_end ), $qmn_array_for_variables );
 					?>
 					</span>
 					<br /><br />
@@ -1343,13 +1334,13 @@ class QMNQuizManager {
 					echo QSM_Contact_Manager::display_fields( $qmn_quiz_options );
 				}
 				?>
-				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz-submit-button-text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<input type='submit' class='qsm-btn qsm-submit-btn qmn_btn' value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
 			</div>
 			<?php
 		} else {
 			?>
 			<div class="qsm-auto-page-row quiz_section quiz_end empty_quiz_end <?php echo esc_attr( $qsm_d_none ); ?>" >
-				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz-submit-button-text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
+				<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="<?php echo esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_quiz_options->submit_button_text, "quiz_submit_button_text-{$qmn_quiz_options->quiz_id}" ) ); ?>" />
 			</div>
 			<?php
 		}
@@ -2485,13 +2476,12 @@ function qmn_require_login_check( $display, $qmn_quiz_options, $qmn_array_for_va
 	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	if ( 1 == $qmn_quiz_options->require_log_in && ! is_user_logged_in() ) {
 		$qmn_allowed_visit = false;
+		$mlw_message = '';
 		if ( isset( $qmn_quiz_options->require_log_in_text ) && '' !== $qmn_quiz_options->require_log_in_text ) {
-			$mlw_message = wpautop( htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES ) );
-		} else {
-			$mlw_message = wpautop( htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES ) );
+			$mlw_message = htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES );
 		}
-		$mlw_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-require-login-{$qmn_quiz_options->quiz_id}" );
-		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables );
+		$mlw_message = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz_require_log_in_text-{$qmn_quiz_options->quiz_id}" );
+		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $mlw_message ), $qmn_array_for_variables );
 		$mlw_message = str_replace( "\n", '<br>', $mlw_message );
 		// $display .= do_shortcode($mlw_message);
 		$display .= do_shortcode( $mlw_message );
@@ -2544,11 +2534,10 @@ function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 		}
 	}
 	if ( true == $checked_pass ) {
-		$qmn_allowed_visit = false;
-		$message           = wpautop( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ) );
-		$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-scheduled-timeframe-message-{$options->quiz_id}" );
-		$message           = apply_filters( 'mlw_qmn_template_variable_quiz_page', $message, $variable_data );
-		$display          .= str_replace( "\n", '<br>', $message );
+		$qmn_allowed_visit	 = false;
+		$message			 = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ), "quiz_scheduled_timeframe_text-{$options->quiz_id}" );
+		$message			 = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message ), $variable_data );
+		$display			 .= str_replace( "\n", '<br>', $message );
 	}
 	return $display;
 }
@@ -2585,9 +2574,8 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 
 			// Stops the quiz and prepares entered text
 			$qmn_allowed_visit = false;
-			$mlw_message       = wpautop( htmlspecialchars_decode( $qmn_quiz_options->total_user_tries_text, ENT_QUOTES ) );
-			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-user-tries-too-many-times-{$qmn_quiz_options->quiz_id}" );
-			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables );
+			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->total_user_tries_text, ENT_QUOTES ), "quiz_total_user_tries_text-{$qmn_quiz_options->quiz_id}" );
+			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $mlw_message ), $qmn_array_for_variables );
 			$display          .= $mlw_message;
 		}
 	}
@@ -2602,9 +2590,8 @@ function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_vari
 		global $wpdb;
 		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables['quiz_id'] ) );
 		if ( $mlw_qmn_entries_count >= $qmn_quiz_options->limit_total_entries ) {
-			$mlw_message       = wpautop( htmlspecialchars_decode( $qmn_quiz_options->limit_total_entries_text, ENT_QUOTES ) );
-			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $mlw_message, "quiz-limit-total-entries-message-{$qmn_quiz_options->quiz_id}" );
-			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables );
+			$mlw_message       = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $qmn_quiz_options->limit_total_entries_text, ENT_QUOTES ), "quiz_limit_total_entries_text-{$qmn_quiz_options->quiz_id}" );
+			$mlw_message       = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $mlw_message ), $qmn_array_for_variables );
 			$display          .= $mlw_message;
 			$qmn_allowed_visit = false;
 		}
@@ -2629,8 +2616,8 @@ function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_varia
 			'amount'           => $qmn_quiz_options->pagination,
 			'section_comments' => $qmn_quiz_options->comment_section,
 			'total_questions'  => $total_questions,
-			'previous_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $qmn_quiz_options->previous_button_text ), "quiz-previous-button-text-{$qmn_quiz_options->quiz_id}" ),
-			'next_text'        => $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $qmn_quiz_options->next_button_text ), "quiz-next-button-text-{$qmn_quiz_options->quiz_id}" ),
+			'previous_text'    => $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $qmn_quiz_options->previous_button_text ), "quiz_previous_button_text-{$qmn_quiz_options->quiz_id}" ),
+			'next_text'        => $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $qmn_quiz_options->next_button_text ), "quiz_next_button_text-{$qmn_quiz_options->quiz_id}" ),
 		);
 	}
 	return $display;
