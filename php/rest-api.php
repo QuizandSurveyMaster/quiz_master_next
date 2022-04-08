@@ -142,7 +142,7 @@ function qsm_register_rest_routes() {
 				'permission_callback' => '__return_true',
 			)
 		);
-		
+
 
 }
 
@@ -156,23 +156,28 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 	if ( is_user_logged_in() ) {
 		global $wpdb;
 		$category = isset( $_REQUEST['category'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['category'] ) ) : '';
+		$search = isset( $_REQUEST['search'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['search'] ) ) : '';
 		$enabled = get_option( 'qsm_multiple_category_enabled' );
-	
 		$migrated = false;
 		if ( $enabled && 'cancelled' !== $enabled ) {
 			$migrated = true;
 		}
-
 		if ( ! empty( $category ) ) {
 			if ( $migrated && is_numeric( $category ) ) {
-				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
+				$query = $wpdb->prepare( "SELECT DISTINCT question_id FROM {$wpdb->prefix}mlw_question_terms WHERE term_id = %d", $category );
+				$term_ids = $wpdb->get_results( $query, 'ARRAY_A' );
+				$question_ids = [];
+				foreach ( $term_ids as $term_id ) {
+					$question_ids[] = esc_sql( intval( $term_id['question_id'] ) );
+				}
+				$question_ids = array_unique( $question_ids );
+				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id IN (%s) AND question_settings LIKE %s", implode(',', $question_ids), $search );
 			} else {
-				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s", $category );
+				$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND question_settings LIKE %s", $category, '%' . $search . '%' );
 			}
 		} else {
-			$query = "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank=0";
+			$query = $wpdb->prepare( "SELECT COUNT(question_id) as total_question FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank=0 AND question_settings LIKE %s", '%' . $search . '%' );
 		}
-
 		$total_count_query = $wpdb->get_row( $query, 'ARRAY_A' );
 		$total_count       = isset( $total_count_query['total_question'] ) ? $total_count_query['total_question'] : 0;
 
@@ -197,23 +202,24 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 				$question_ids = array_unique( $question_ids );
 				$query_result = [];
 				foreach ( $question_ids as $question_id ) {
-					$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d ORDER BY question_order ASC LIMIT %d, %d", $question_id, $offset, $limit );
+					$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_id = %d AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $question_id, '%' . $search . '%', $offset, $limit );
 					$question_data = $wpdb->get_row( $query, 'ARRAY_A' );
 					if ( ! is_null($question_data) ) {
 						$query_result[] = $question_data;
-					}               
-}
+					}
+				}
 				$questions = $query_result;
 			} else {
-				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s ORDER BY question_order ASC LIMIT %d, %d", $category, $offset, $limit );
+				$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND category = %s AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", $category, '%' . $search . '%', $offset, $limit );
 				$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 			}
 		} else {
-			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 ORDER BY question_order ASC LIMIT %d, %d", $offset, $limit );
+			$query = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE deleted = 0 AND deleted_question_bank = 0 AND question_settings LIKE %s ORDER BY question_order ASC LIMIT %d, %d", '%' . $search . '%', $offset, $limit );
 			$questions = $wpdb->get_results( $query, 'ARRAY_A' );
 		}
 
 		$question_array               = array();
+		$question_array['search']     = $search;
 		$question_array['pagination'] = array(
 			'total_pages'  => $total_pages,
 			'current_page' => $pageno,
@@ -238,7 +244,7 @@ function qsm_rest_get_bank_questions( WP_REST_Request $request ) {
 			if ( empty( $settings['question_title'] ) && empty( $question['question_name'] ) ) {
 				continue;
 			}
-			
+
 			$question['settings'] = $settings;
 			$question_data = array(
 				'id'                      => $question['question_id'],
@@ -480,7 +486,7 @@ function qsm_rest_get_question( WP_REST_Request $request ) {
 		$current_user = wp_get_current_user();
 		if ( 0 !== $current_user ) {
 			$question = QSM_Questions::load_question( $request['id'] );
-			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);         
+			$categorysArray = QSM_Questions::get_question_categories($question['question_id']);
 			if ( ! empty( $question ) ) {
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 				$question         = array(
@@ -532,7 +538,7 @@ function qsm_rest_get_questions( WP_REST_Request $request ) {
 				$quiz_name        = $wpdb->get_row( $wpdb->prepare( "SELECT quiz_name FROM {$wpdb->prefix}mlw_quizzes WHERE quiz_id = %d", $question['quiz_id'] ), ARRAY_A );
 				$question['page'] = isset( $question['page'] ) ? $question['page'] : 0;
 				$categorysArray = QSM_Questions::get_question_categories($question['question_id']);
-				
+
 				$question_data    = array(
 					'id'                      => $question['question_id'],
 					'quizID'                  => $question['quiz_id'],
@@ -734,7 +740,7 @@ function qsm_verify_rest_user_nonce( $id, $user_id, $rest_nonce ) {
 
 /**
  * Get the quizzes list
- * 
+ *
  * @since 7.3.6
  * @return array
  */
@@ -746,11 +752,11 @@ function qsm_get_quizzes_list( ) {
 		'value' => '',
 	);
 	if ( $quizzes ) {
-			foreach ( $quizzes as $quiz ) {            
+			foreach ( $quizzes as $quiz ) {
 					$qsm_quiz_list[] = array(
 						'label' => $quiz->quiz_name,
 						'value' => $quiz->quiz_id,
-					);            
+					);
 			}
 	}
 	return $qsm_quiz_list;

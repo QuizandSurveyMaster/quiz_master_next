@@ -50,15 +50,14 @@ function qsm_options_questions_tab_content() {
 			);
 		}
 	}
-
-    $quiz_id         = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
-    $user_id         = get_current_user_id();
-    $form_type       = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-    $quiz_system     = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
-    $default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
-    $pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-    $db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-    $qpages          = array();
+	$quiz_id		 = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$user_id		 = get_current_user_id();
+	$form_type		 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+	$quiz_system	 = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
+	$pages			 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+	$db_qpages		 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$qpages			 = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
 			'id'           => 1,
@@ -170,9 +169,10 @@ function qsm_options_questions_tab_content() {
 <div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-2" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
-			<header class="qsm-popup__header">
+			<header class="qsm-popup__header qsm-question-bank-header">
 				<h2 class="qsm-popup__title" id="modal-2-title">
-					<?php esc_html_e( 'Add Question From Question Bank', 'quiz-master-next' ); ?></h2>
+					<?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
+				<div class="qsm-question-bank-search"></div>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 			</header>
 			<main class="qsm-popup__content" id="modal-2-content">

@@ -496,5 +496,5 @@ if ( ! class_exists( 'QSM_Quiz_List' ) ) {
 	}
 
 }
-
-new QSM_Quiz_List();
+global $QSM_Quiz_List;
+$QSM_Quiz_List = new QSM_Quiz_List();

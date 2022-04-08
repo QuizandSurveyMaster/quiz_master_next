@@ -315,6 +315,7 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover {
 		bottom: auto;
 		transform: none;
 		margin-bottom: 30px;
+		float: right;
 	}
 
 	.question-type-polar-s {
