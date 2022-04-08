@@ -522,7 +522,6 @@ class QMNPluginHelper {
 		if ( empty( $default_texts ) ) {
 			return;
 		}
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			foreach ( $default_texts as $key => $text ) {
 				if ( ! empty( $text ) ) {
@@ -578,7 +577,6 @@ class QMNPluginHelper {
 	}
 
 	public static function qsm_register_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			$string_name = sanitize_title( $string_name );
 			/**
@@ -589,7 +587,6 @@ class QMNPluginHelper {
 	}
 
 	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			$default_texts   = self::get_default_texts();
 			$string_name     = sanitize_title( $string_name );
