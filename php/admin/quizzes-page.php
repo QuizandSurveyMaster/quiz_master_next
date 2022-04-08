@@ -151,13 +151,15 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			$post_status = isset( $_REQUEST['post_status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['post_status'] ) ) : 'all';
 			if ( 'qsm_quiz' == $post->post_type && 'trash' != $post_status ) {
 				$quiz_id = get_post_meta( $post->ID, 'quiz_id', true );
-				$actions = array(
-					'edit'         => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>',
-					'duplicate'    => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>',
-					'delete'       => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>',
-					'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
-					'view'         => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>',
-				);
+				if ( ! empty( $quiz_id ) ) {
+					$actions = array(
+						'edit'         => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_options&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Edit', 'quiz-master-next' ) . '</a>',
+						'duplicate'    => '<a class="qsm-action-link qsm-action-link-duplicate" href="#" data-id="' . esc_attr( $quiz_id ) . '">' . esc_html__( 'Duplicate', 'quiz-master-next' ) . '</a>',
+						'delete'       => '<a class="qsm-action-link qsm-action-link-delete" href="#" data-id="' . esc_attr( $quiz_id ) . '" data-name="' . esc_attr( $post->post_title ) . '">' . esc_html__( 'Delete', 'quiz-master-next' ) . '</a>',
+						'view_results' => '<a class="qsm-action-link" href="admin.php?page=mlw_quiz_results&quiz_id=' . esc_attr( $quiz_id ) . '">' . esc_html__( 'View Results', 'quiz-master-next' ) . '</a>',
+						'view'         => '<a class="qsm-action-link" target="_blank" rel="noopener" href="' . esc_url( get_permalink( $post->ID ) ) . '">' . esc_html__( 'Preview', 'quiz-master-next' ) . '</a>',
+					);
+				}
 			}
 			return $actions;
 		}
