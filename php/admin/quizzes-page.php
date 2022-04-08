@@ -248,13 +248,14 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 
 		public function qsm_manage_posts_extra_tablenav( $which ) {
 			global $wpdb, $pagenow, $mlwQuizMasterNext;
+			if ( 'top' != $which ) {
+				return;
+			}
 			if ( 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'qsm_quiz' == $_GET['post_type'] ) {
-				if ( 'top' === $which ) {
-					if ( class_exists( 'QSM_Export_Import' ) ) {
-						?><a class="button button-primary" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" style="position: relative;top: 0px;" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
-					} else {
-						?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
-					}
+				if ( class_exists( 'QSM_Export_Import' ) ) {
+					?><a class="button button-primary" href="<?php echo esc_url( admin_url() . 'admin.php?page=qmn_addons&tab=export-and-import' ); ?>" style="position: relative;top: 0px;" target="_blank" rel="noopener"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
+				} else {
+					?><a id="show_import_export_popup" href="#" style="position: relative;top: 0px;" class="add-new-h2 button-primary"><?php esc_html_e( 'Import & Export', 'quiz-master-next' ); ?></a><?php
 				}
 			}
 		}
