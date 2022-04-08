@@ -680,8 +680,8 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				MicroModal.show( 'modal-bulk-delete' );
 			} else {
 				$( '#posts-filter' ).submit();
-			}
-		});
+            }
+        });
         $(document).on('click', '.qsm-list-shortcode-view', function (e) {
             e.preventDefault();
             var embed_text = $(this).siblings('.sc-embed').text();
