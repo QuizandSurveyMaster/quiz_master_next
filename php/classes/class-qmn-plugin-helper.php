@@ -452,7 +452,7 @@ class QMNPluginHelper {
 	 * @param  array $list An array
 	 * @return array
 	 */
-	public function qsm_shuffle_assoc( $list ) {
+	public static function qsm_shuffle_assoc( $list ) {
 		if ( ! is_array( $list ) ) {
 			return $list;
 		}

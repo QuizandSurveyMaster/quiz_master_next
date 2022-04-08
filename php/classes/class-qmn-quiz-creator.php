@@ -273,7 +273,11 @@ class QMNQuizCreator {
 		}
 
 		if ( $qsm_delete && ! empty( $quiz_post_id ) ) {
-			wp_trash_post( $quiz_post_id );
+			if ( $qsm_delete_from_db ) {
+				wp_delete_post( $quiz_post_id, true );
+			} else {
+				wp_trash_post( $quiz_post_id );
+			}
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );
 		} else {

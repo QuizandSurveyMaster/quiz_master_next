@@ -215,7 +215,7 @@ class QMNQuizManager {
 	 * Get question quick result
 	 */
 	public function qsm_get_question_quick_result() {
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$question_id       = isset( $_POST['question_id'] ) ? intval( $_POST['question_id'] ) : 0;
 		$answer            = isset( $_POST['answer'] ) ? sanitize_text_field( wp_unslash( $_POST['answer'] ) ) : '';
 		$question_array    = $wpdb->get_row( $wpdb->prepare( "SELECT answer_array, question_answer_info FROM {$wpdb->prefix}mlw_questions WHERE question_id = (%d)", $question_id ), 'ARRAY_A' );
@@ -1097,7 +1097,6 @@ class QMNQuizManager {
 		 *
 		 * @since 7.3.5
 		 */
-
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
 					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $options->previous_button_text ) . '</a>
 					<span class="qmn_page_message"></span>
@@ -1125,7 +1124,7 @@ class QMNQuizManager {
 	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_begin_section( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $qmn_json_data, $wp_embed;
+		global $mlwQuizMasterNext, $qmn_json_data, $wp_embed;
 		$contact_fields = QSM_Contact_Manager::load_fields();
 		if ( ! empty( $qmn_quiz_options->message_before ) || ( 0 == $qmn_quiz_options->contact_info_location && $contact_fields ) ) {
 			$qmn_json_data['first_page'] = true;
@@ -1271,7 +1270,7 @@ class QMNQuizManager {
 	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_comment_section( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $mlw_qmn_section_count;
+		global $mlwQuizMasterNext, $mlw_qmn_section_count;
 		if ( 0 == $qmn_quiz_options->comment_section ) {
 			$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 			$qsm_d_none            = 0 == $qmn_quiz_options->randomness_order ? 'qsm-d-none' : '';
@@ -1300,7 +1299,7 @@ class QMNQuizManager {
 	 * @deprecated 5.2.0 Use new page system instead
 	 */
 	public function display_end_section( $qmn_quiz_options, $qmn_array_for_variables ) {
-		global $mlw_qmn_section_count;
+		global $mlwQuizMasterNext, $mlw_qmn_section_count;
 		$section_display       = '';
 		$mlw_qmn_section_count = $mlw_qmn_section_count + 1;
 		$pagination_option     = $qmn_quiz_options->pagination;
@@ -2467,13 +2466,12 @@ $qmnQuizManager = new QMNQuizManager();
 add_filter( 'qmn_begin_shortcode', 'qmn_require_login_check', 10, 3 );
 
 function qmn_require_login_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
-	global $qmn_allowed_visit;
+	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	if ( 1 == $qmn_quiz_options->require_log_in && ! is_user_logged_in() ) {
 		$qmn_allowed_visit = false;
+		$mlw_message = '';
 		if ( isset( $qmn_quiz_options->require_log_in_text ) && '' !== $qmn_quiz_options->require_log_in_text ) {
-			$mlw_message = wpautop( htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES ) );
-		} else {
-			$mlw_message = wpautop( htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES ) );
+			$mlw_message = htmlspecialchars_decode( $qmn_quiz_options->require_log_in_text, ENT_QUOTES );
 		}
 		$mlw_message = apply_filters( 'mlw_qmn_template_variable_quiz_page', $mlw_message, $qmn_array_for_variables );
 		$mlw_message = str_replace( "\n", '<br>', $mlw_message );
@@ -2548,7 +2546,7 @@ add_filter( 'qmn_begin_shortcode', 'qmn_total_user_tries_check', 10, 3 );
  * @return string The altered HTML display for the quiz
  */
 function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
-	global $qmn_allowed_visit;
+	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	if ( 0 != $qmn_quiz_options->total_user_tries ) {
 
 		// Prepares the variables
@@ -2579,7 +2577,7 @@ function qmn_total_user_tries_check( $display, $qmn_quiz_options, $qmn_array_for
 add_filter( 'qmn_begin_quiz', 'qmn_total_tries_check', 10, 3 );
 
 function qmn_total_tries_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
-	global $qmn_allowed_visit;
+	global $mlwQuizMasterNext, $qmn_allowed_visit;
 	if ( 0 != $qmn_quiz_options->limit_total_entries ) {
 		global $wpdb;
 		$mlw_qmn_entries_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(quiz_id) FROM {$wpdb->prefix}mlw_results WHERE deleted=0 AND quiz_id=%d", $qmn_array_for_variables['quiz_id'] ) );
@@ -2597,8 +2595,7 @@ add_filter( 'qmn_begin_quiz', 'qmn_pagination_check', 10, 3 );
 
 function qmn_pagination_check( $display, $qmn_quiz_options, $qmn_array_for_variables ) {
 	if ( 0 != $qmn_quiz_options->pagination ) {
-		global $wpdb;
-		global $qmn_json_data;
+		global $wpdb, $mlwQuizMasterNext, $qmn_json_data;
 		$total_questions = 0;
 		if ( 0 != $qmn_quiz_options->question_from_total ) {
 			$total_questions = $qmn_quiz_options->question_from_total;

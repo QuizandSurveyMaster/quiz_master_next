@@ -125,8 +125,7 @@ function qsm_generate_dashboard_page() {
 					<a class="button button-primary button-hero load-quiz-wizard hide-if-no-customize"
 						href="javascript:void(0)"><?php esc_html_e( 'Create New Quiz/Survey', 'quiz-master-next' ); ?></a>
 					<p class="hide-if-no-customize">
-						or, <a
-							href="admin.php?page=mlw_quiz_list"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
+						or, <a href="edit.php?post_type=qsm_quiz"><?php esc_html_e( 'Edit previously created quizzes', 'quiz-master-next' ); ?></a>
 					</p>
 				</div>
 				<div class="welcome-panel-column">

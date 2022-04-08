@@ -170,12 +170,14 @@ add_action( 'wp_ajax_qsm_get_question_text_message', 'qsm_get_question_text_mess
  */
 function qsm_update_text_message(){
     global $mlwQuizMasterNext;
+    $quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
     $text_id = isset( $_POST['text_id'] ) ? sanitize_text_field( wp_unslash( $_POST['text_id'] ) ) : '';
     $message = isset( $_POST['message'] ) ? wp_kses_post( wp_unslash( $_POST['message'] ) ) : '';
     $settings = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_text' );
     $settings[ $text_id ] = $message;
     $results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_text', $settings );
     if ( false !== $results ) {
+		do_action( 'qsm_saved_text_message', $quiz_id, $text_id, $message );
         $results = array(
             'success' => true,
         );
@@ -189,4 +191,3 @@ function qsm_update_text_message(){
     exit;
 }
 add_action( 'wp_ajax_qsm_update_text_message', 'qsm_update_text_message' );
-?>
