@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 /**
  * This class is a helper class to be used for extending the plugin
@@ -460,11 +461,11 @@ class QMNPluginHelper {
 		if ( ! is_array( $list ) ) {
 			return $list;
 		}
-		$keys	 = array_keys( $list );
+		$keys    = array_keys( $list );
 		shuffle( $keys );
-		$random	 = array();
+		$random  = array();
 		foreach ( $keys as $key ) {
-			$random[$key] = $list[$key];
+			$random[ $key ] = $list[ $key ];
 		}
 		return $random;
 	}
@@ -485,33 +486,33 @@ class QMNPluginHelper {
 
 	public static function get_default_texts() {
 		$defaults = array(
-			'message_before'					 => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-			'message_comment'					 => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
-			'message_end_template'				 => '',
-			'question_answer_template'			 => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
-			'total_user_tries_text'				 => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
-			'require_log_in_text'				 => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
-			'limit_total_entries_text'			 => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
-			'scheduled_timeframe_text'			 => '',
-			'twitter_sharing_text'				 => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'facebook_sharing_text'				 => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'submit_button_text'				 => __( 'Submit', 'quiz-master-next' ),
-			'retake_quiz_button_text'			 => __( 'Retake Quiz', 'quiz-master-next' ),
-			'previous_button_text'				 => __( 'Previous', 'quiz-master-next' ),
-			'next_button_text'					 => __( 'Next', 'quiz-master-next' ),
-			'empty_error_text'					 => __( 'Please complete all required fields!', 'quiz-master-next' ),
-			'email_error_text'					 => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
-			'number_error_text'					 => __( 'This field must be a number!', 'quiz-master-next' ),
-			'incorrect_error_text'				 => __( 'The entered text is not correct!', 'quiz-master-next' ),
-			'comment_field_text'				 => __( 'Comments', 'quiz-master-next' ),
-			'hint_text'							 => __( 'Hint', 'quiz-master-next' ),
-			'quick_result_correct_answer_text'	 => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
-			'quick_result_wrong_answer_text'	 => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
-			'quiz_processing_message'			 => '',
-			'name_field_text'					 => __( 'Name', 'quiz-master-next' ),
-			'business_field_text'				 => __( 'Business', 'quiz-master-next' ),
-			'email_field_text'					 => __( 'Email', 'quiz-master-next' ),
-			'phone_field_text'					 => __( 'Phone Number', 'quiz-master-next' ),
+			'message_before'                   => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+			'message_comment'                  => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+			'message_end_template'             => '',
+			'question_answer_template'         => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
+			'total_user_tries_text'            => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
+			'require_log_in_text'              => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
+			'limit_total_entries_text'         => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
+			'scheduled_timeframe_text'         => '',
+			'twitter_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'facebook_sharing_text'            => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'submit_button_text'               => __( 'Submit', 'quiz-master-next' ),
+			'retake_quiz_button_text'          => __( 'Retake Quiz', 'quiz-master-next' ),
+			'previous_button_text'             => __( 'Previous', 'quiz-master-next' ),
+			'next_button_text'                 => __( 'Next', 'quiz-master-next' ),
+			'empty_error_text'                 => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'email_error_text'                 => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'number_error_text'                => __( 'This field must be a number!', 'quiz-master-next' ),
+			'incorrect_error_text'             => __( 'The entered text is not correct!', 'quiz-master-next' ),
+			'comment_field_text'               => __( 'Comments', 'quiz-master-next' ),
+			'hint_text'                        => __( 'Hint', 'quiz-master-next' ),
+			'quick_result_correct_answer_text' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
+			'quick_result_wrong_answer_text'   => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
+			'quiz_processing_message'          => '',
+			'name_field_text'                  => __( 'Name', 'quiz-master-next' ),
+			'business_field_text'              => __( 'Business', 'quiz-master-next' ),
+			'email_field_text'                 => __( 'Email', 'quiz-master-next' ),
+			'phone_field_text'                 => __( 'Phone Number', 'quiz-master-next' ),
 		);
 		return apply_filters( 'qsm_default_texts', $defaults );
 	}
@@ -536,9 +537,8 @@ class QMNPluginHelper {
 	}
 
 	public function qsm_add_question_translations( $question_id, $question_data ) {
-		$quiz_id	 = isset( $question_data['quiz_id'] ) ? $question_data['quiz_id'] : 0;
-		$settings	 = isset( $question_data['question_settings'] ) ? maybe_unserialize( $question_data['question_settings'] ) : array();
-		$hints		 = isset( $question_data['hints'] ) ? $question_data['hints'] : '';
+		$settings    = isset( $question_data['question_settings'] ) ? maybe_unserialize( $question_data['question_settings'] ) : array();
+		$hints       = isset( $question_data['hints'] ) ? $question_data['hints'] : '';
 		$answer_info = isset( $question_data['question_answer_info'] ) ? html_entity_decode( $question_data['question_answer_info'] ) : '';
 
 		$this->qsm_register_language_support( htmlspecialchars_decode( $settings['question_title'], ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
@@ -591,19 +591,12 @@ class QMNPluginHelper {
 	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
-			$default_texts	 = self::get_default_texts();
-			$string_name	 = sanitize_title( $string_name );
+			$default_texts   = self::get_default_texts();
+			$string_name     = sanitize_title( $string_name );
 			/**
 			 * Display original string or translated string
 			 */
 			if ( "QSM Meta" == $domain && self::qsm_stripos_array( $string_name, array_keys( $default_texts ) ) ) {
-				/*echo "<pre>";
-				print_r( $string_name );
-				echo "<br/>";
-				print_r( $string );
-				echo "<br/>";
-				print_r( apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name ) );
-				echo "</pre>";*/
 				$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
 			} else {
 				$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );

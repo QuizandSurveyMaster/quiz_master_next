@@ -2534,10 +2534,10 @@ function qsm_scheduled_timeframe_check( $display, $options, $variable_data ) {
 		}
 	}
 	if ( true == $checked_pass ) {
-		$qmn_allowed_visit	 = false;
-		$message			 = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ), "quiz_scheduled_timeframe_text-{$options->quiz_id}" );
-		$message			 = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message ), $variable_data );
-		$display			 .= str_replace( "\n", '<br>', $message );
+		$qmn_allowed_visit   = false;
+		$message             = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $options->scheduled_timeframe_text, ENT_QUOTES ), "quiz_scheduled_timeframe_text-{$options->quiz_id}" );
+		$message             = apply_filters( 'mlw_qmn_template_variable_quiz_page', wpautop( $message ), $variable_data );
+		$display             .= str_replace( "\n", '<br>', $message );
 	}
 	return $display;
 }
