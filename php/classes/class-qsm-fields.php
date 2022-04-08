@@ -64,6 +64,7 @@ class QSM_Fields {
 			// Update the settings and show alert based on outcome
 			$results = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( $section, $settings_array );
 			if ( false !== $results ) {
+				do_action( 'qsm_saved_quiz_settings', $quiz_id, $section, $settings_array );
 				$get_updated_setting_data = array_diff_assoc($settings_array, $settings_array_before_update);
 				$json_updated_setting_data = wp_json_encode($get_updated_setting_data);
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
