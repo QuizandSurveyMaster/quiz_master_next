@@ -313,6 +313,7 @@ class QSM_Results_Pages {
 	 * @return bool True or false depending on success.
 	 */
 	public static function save_pages( $quiz_id, $pages ) {
+		global $wpdb, $mlwQuizMasterNext;
 		if ( ! is_array( $pages ) ) {
 			return false;
 		}
@@ -352,10 +353,11 @@ class QSM_Results_Pages {
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
 				// Sanitizes the conditions.
 				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
+				
 			}
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[$i]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
 
-		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'message_after' => maybe_serialize( $pages ) ),

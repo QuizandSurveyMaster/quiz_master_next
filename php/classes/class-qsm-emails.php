@@ -437,6 +437,7 @@ class QSM_Emails {
 	 * @return bool True or false depending on success.
 	 */
 	public static function save_emails( $quiz_id, $emails ) {
+		global $wpdb, $mlwQuizMasterNext;
 		if ( ! is_array( $emails ) ) {
 			return false;
 		}
@@ -472,9 +473,10 @@ class QSM_Emails {
 			} else {
 				$emails[ $i ]['replyTo'] = false;
 			}
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[$i]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[$i]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
 		}
 
-		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'user_email_template' => maybe_serialize( $emails ) ),
