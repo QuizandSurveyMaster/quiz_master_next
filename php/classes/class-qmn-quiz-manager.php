@@ -1736,18 +1736,16 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-		if ( 1 == $options->randomness_order || 2 == $options->randomness_order ) {
-			if ( isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
-				$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
-				$question_array = explode(", ",$question_sql);
-				foreach ( $question_array as $key ) {
-					if ( isset( $questions[ $key ] ) ) {
-						$new_questions[ $key ] = $questions[ $key ];
-					}
+		if ( ( 1 == $options->randomness_order || 2 == $options->randomness_order ) && isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+			$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
+			$question_array = explode(", ",$question_sql);
+			foreach ( $question_array as $key ) {
+				if ( isset( $questions[ $key ] ) ) {
+					$new_questions[ $key ] = $questions[ $key ];
 				}
-				$questions = $new_questions;
-				$pages = array( $question_array );
 			}
+			$questions = $new_questions;
+			$pages = array( $question_array );
 		}
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
