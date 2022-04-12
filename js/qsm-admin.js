@@ -167,16 +167,6 @@ var QSMAdmin;
         );
     });
 
-    jQuery('#create-quiz-button').on('click', function (event) {
-        event.preventDefault();
-        if (jQuery('#new-quiz-form').find('.quiz_name').val() === '') {
-            jQuery('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
-            jQuery('#new-quiz-form').find('.quiz_name').focus();
-            return;
-        }
-        jQuery('#new-quiz-form').submit();
-    });
-
     //Hide/Show legacy option
     jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
     jQuery(document).on('click', '#legacy_options', function (e) {
@@ -577,84 +567,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 //QSM - Quizzes/Surveys Page
 
 (function ($) {
-    if (jQuery('body').hasClass('qsm_page_mlw_quiz_list')){
-        var QSMQuizzesSurveys;
-        QSMQuizzesSurveys = {
-            load: function () {
-            if (0 !== qsmQuizObject.length) {
-                // Do nothing
-            } else {
-                var queryString = window.location.search;
-                var urlParams = new URLSearchParams(queryString);
-                if (urlParams.has('paged') || urlParams.has('s')) {
-                    //do nothing
-                } else {
-                    var template = wp.template('no-quiz');
-                    $('.qsm-quizzes-page-content').hide();
-                    $('#new_quiz_button').parent().after(template());
-                }
-            }
-            },
-            addQuizRow: function (quizData) {
-            var template = wp.template('quiz-row');
-            var values = {
-                'id': quizData.id,
-                'name': quizData.name,
-                'link': quizData.link,
-                'postID': quizData.postID,
-                'views': quizData.views,
-                'taken': quizData.taken,
-                'lastActivity': quizData.lastActivity,
-                'lastActivityDateTime': quizData.lastActivityDateTime,
-                'post_status': quizData.post_status != 'publish' ? '— ' + quizData.post_status : ''
-            };
-            var row = $(template(values));
-            $('#the-list').append(row);
-            },
-            searchQuizzes: function (query) {
-            $(".qsm-quiz-row").each(function () {
-                if (-1 === $(this).find('.row-title').text().toLowerCase().indexOf(query.toLowerCase())) {
-                    $(this).hide();
-                } else {
-                    $(this).show();
-                }
-            });
-            },
-            deleteQuiz: function (quiz_id) {
-            $('#delete_quiz_id').val(quiz_id+'QID');
-            $.each(qsmQuizObject, function (i, val) {
-                if (val.id == quiz_id) {
-                    $('#delete_quiz_name').val(val.name);
-                }
-            });
-            MicroModal.show('modal-5');
-            },
-            editQuizName: function (quiz_id) {
-            $('#edit_quiz_id').val(quiz_id);
-            $.each(qsmQuizObject, function (i, val) {
-                if (val.id == quiz_id) {
-                    $('#edit_quiz_name').val(val.name);
-                }
-            });
-            MicroModal.show('modal-3');
-            },
-            duplicateQuiz: function (quiz_id) {
-            $('#duplicate_quiz_id').val(quiz_id+'QID');
-            MicroModal.show('modal-4');
-            },
-            /**
-             * Opens the popup to reset quiz stats
-             *
-             * @param int The ID of the quiz
-             */
-            openResetPopup: function (quiz_id) {
-            quiz_id = parseInt(quiz_id);
-            $('#reset_quiz_id').val(quiz_id);
-            MicroModal.show('modal-1');
-            },
-        };
-
-        QSMQuizzesSurveys.load();
+    if (jQuery('body').hasClass('post-type-qsm_quiz')){
 
         $('#new_quiz_button_two').on('click', function (event) {
             event.preventDefault();
@@ -730,19 +643,23 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 
         $(document).on('click', '#the-list .qsm-action-link-delete', function (event) {
             event.preventDefault();
-            QSMQuizzesSurveys.deleteQuiz($(this).parents('.qsm-quiz-row').data('id'));
+			var dataid = $(this).data('id');
+			var dataname = $(this).data('name');
+			$('#delete_quiz_id').val(dataid+'QID');
+			$('#delete_quiz_name').val(dataname);
+            MicroModal.show('modal-5');
         });
         $(document).on('click', '#the-list .qsm-action-link-duplicate', function (event) {
             event.preventDefault();
-            QSMQuizzesSurveys.duplicateQuiz($(this).parents('.qsm-quiz-row').data('id'));
-        });
-        $(document).on('click', '#the-list .qsm-edit-name', function (event) {
-            event.preventDefault();
-            QSMQuizzesSurveys.editQuizName($(this).parents('.qsm-quiz-row').data('id'));
+			var dataid = $(this).data('id');
+			$('#duplicate_quiz_id').val(dataid+'QID');
+            MicroModal.show('modal-4');
         });
         $(document).on('click', '#the-list .qsm-action-link-reset', function (event) {
             event.preventDefault();
-            QSMQuizzesSurveys.openResetPopup($(this).parents('.qsm-quiz-row').data('id'));
+			var dataid = $(this).data('id');
+            $('#reset_quiz_id').val(dataid);
+            MicroModal.show('modal-1');
         });
         $('#reset-stats-button').on('click', function (event) {
             event.preventDefault();
@@ -757,12 +674,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $('#delete-quiz-form').submit();
         });
 
-        $(document).on('click', '#bulk-submit', function (event) {
+        $( document ).on( 'click', '.post-type-qsm_quiz #doaction, .post-type-qsm_quiz #doaction2', function ( event ) {
             event.preventDefault();
-            if($("#bulk-action-top").val()=="delete_pr" || $("#bulk-action-bottom").val()=="delete_pr"){
-                MicroModal.show('modal-bulk-delete');
-            } else{
-                $('#posts-filter').submit();
+			if ( $( "#bulk-action-selector-top" ).val() == "delete_pr" || $( "#bulk-action-selector-bottom" ).val() == "delete_pr" ) {
+				MicroModal.show( 'modal-bulk-delete' );
+			} else {
+				$( '#posts-filter' ).submit();
             }
         });
         $(document).on('click', '.qsm-list-shortcode-view', function (e) {
@@ -807,15 +724,15 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 // QSM - Quiz Wizard
 
 (function ($) {
-    if (jQuery('body').hasClass('qsm_page_mlw_quiz_list') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')){
+    if (jQuery('body').hasClass('post-type-qsm_quiz') || jQuery('body').hasClass('toplevel_page_qsm_dashboard')){
         $('#create-quiz-button').on('click', function (event) {
+			event.preventDefault();
             if ($('#new-quiz-form').find('.quiz_name').val() === '') {
                 $('#new-quiz-form').find('.quiz_name').addClass('qsm-required');
                 $('.qsm-wizard-wrap[data-show="quiz_settings"]').trigger('click');
                 $('#new-quiz-form').find('.quiz_name').focus();
                 return;
             }
-            event.preventDefault();
             $('#new-quiz-form').submit();
         });
 
