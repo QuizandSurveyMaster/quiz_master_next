@@ -535,62 +535,65 @@ function qsm_dashboard_latest_blogs( $widget_id ) {
  * Generate change log
  */
 function qsm_dashboard_chagelog( $widget_id ) {
-		$change_log = qsm_get_widget_data( 'change_log' );
-		global $mlwQuizMasterNext;
+	global $wp_filesystem, $mlwQuizMasterNext;
+	require_once ( ABSPATH . '/wp-admin/includes/file.php' );
+	WP_Filesystem();
+	$change_log  = array();
+	$readme_file = QSM_PLUGIN_PATH . 'readme.txt';
+	if ( $wp_filesystem->exists( $readme_file ) ) {
+		$file_content = $wp_filesystem->get_contents( $readme_file );
+		if ( $file_content ) {
+			$parts           = explode( '== Changelog ==', $file_content );
+			$last_change_log = mlw_qmn_get_string_between( $parts[1], ' =', '= ' );
+			$change_log      = array_filter( explode( '* ', trim( $last_change_log ) ) );
+		}
+	}
 	?>
-<div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
-	<button type="button" class="handlediv" aria-expanded="true">
-		<span class="screen-reader-text">Toggle panel: <?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></span>
-		<span class="toggle-indicator" aria-hidden="true"></span>
-	</button>
-	<h2 class="hndle ui-sortable-handle">
-		<span><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</span>
-	</h2>
-	<div class="inside">
-		<div class="main">
-			<?php
-			if ( $change_log ) {
-				$change_log_count = count( $change_log );
-				?>
-			<ul class="changelog-ul">
-				<?php
-					$i = 0;
-				foreach ( $change_log as $single_change_log ) {
-					if ( '' !== $single_change_log ) {
-						if ( 5 === $i ) {
-							break;
-						}
-						$expload_str = explode( ':', $single_change_log );
-						$cl_type     = isset( $expload_str[1] ) ? $expload_str[0] : '';
-						$cl_str      = isset( $expload_str[1] ) ? $expload_str[1] : $expload_str[0];
-						if ( empty( $cl_str ) ) {
-							$cl_str  = $cl_type;
-							$cl_type = '';
+	<div id="<?php echo esc_attr( $widget_id ); ?>" class="postbox <?php qsm_check_close_hidden_box( $widget_id ); ?>">
+		<button type="button" class="handlediv" aria-expanded="true">
+			<span class="screen-reader-text">Toggle panel: <?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?></span>
+			<span class="toggle-indicator" aria-hidden="true"></span>
+		</button>
+		<h2 class="hndle ui-sortable-handle">
+			<span><?php esc_html_e( 'Changelog', 'quiz-master-next' ); ?> (<?php echo esc_html( $mlwQuizMasterNext->version ); ?>)</span>
+		</h2>
+		<div class="inside">
+			<div class="main">
+				<?php if ( $change_log ) : ?>
+					<ul class="changelog-ul">
+						<?php
+						$i = 0;
+						foreach ( $change_log as $single_change_log ) {
+							if ( ! empty( $single_change_log ) ) {
+								if ( 5 === $i ) {
+									break;
+								}
+								$expload_str = explode( ':', $single_change_log );
+								$cl_type     = isset( $expload_str[1] ) ? $expload_str[0] : '';
+								$cl_str      = isset( $expload_str[1] ) ? $expload_str[1] : $expload_str[0];
+								if ( empty( $cl_str ) ) {
+									$cl_str  = $cl_type;
+									$cl_type = '';
+								}
+								?>
+								<li>
+									<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
+									<?php echo wp_kses_post( $cl_str ); ?>
+								</li>
+								<?php
+								$i ++;
+							}
 						}
 						?>
-						<li>
-							<span class="<?php echo esc_attr( strtolower( $cl_type ) ); ?>"><?php echo esc_html( $cl_type ); ?></span>
-							<?php echo wp_kses_post( $cl_str ); ?>
-						</li>
-						<?php
-						$i++;
-					}
-				}
-				?>
-			</ul>
-			<?php if ( $change_log_count > 5 ) { ?>
-			<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
-				<a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank"
-					rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+					</ul>
+				<?php endif; ?>
+				<div class="pa-all-addon" style="border-top: 1px solid #ede8e8;padding-top: 15px;">
+					<a href="https://wordpress.org/plugins/quiz-master-next/#developers" target="_blank" rel="noopener"><?php esc_html_e( 'View Complete Changelog', 'quiz-master-next' ); ?></a>
+				</div>
 			</div>
-			<?php
-				}
-			}
-			?>
 		</div>
 	</div>
-</div>
-<?php
+	<?php
 }
 
 /**

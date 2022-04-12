@@ -2310,6 +2310,5 @@ input#question_search::-webkit-search-cancel-button {
 input#duplicate_questions {
     margin-left: 10px;
 }
-
 .post-type-qsm_quiz .wrap .wp-heading-inline,
 .post-type-qsm_quiz .wrap .wp-heading-inline+.page-title-action{display:none;}
