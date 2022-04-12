@@ -654,6 +654,25 @@ class QMNQuizManager {
 			$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
 			$question_sql = implode( ', ', $question_ids );
 
+			if ( 1 == $quiz_options->randomness_order || 2 == $quiz_options->randomness_order ) {
+				if ( isset($_COOKIE[ 'question_ids_'.$quiz_id ]) ) {
+					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
+				}else {
+					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
+					$question_ids = qsm_shuffle_assoc( $question_ids );
+					$question_sql = implode( ', ', $question_ids );
+					?>
+					<script>
+						const d = new Date();
+						d.setTime(d.getTime() + (365*24*60*60*1000));
+						let expires = "expires="+ d.toUTCString();
+						document.cookie = "question_ids_<?php echo esc_attr( $quiz_id ); ?> = <?php echo esc_attr( $question_sql ) ?>; "+expires+"; path=/";
+					</script>
+					<?php
+				}
+				$order_by_sql = 'ORDER BY FIELD(question_id,'.$question_sql.')';
+			}
+
 			$query     = $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE question_id IN (%1s) %2s %3s %4s", $question_sql, $cat_query, $order_by_sql, $limit_sql );
 			$questions = $wpdb->get_results( stripslashes( $query ) );
 
@@ -680,14 +699,7 @@ class QMNQuizManager {
 			}
 			$questions = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_questions WHERE quiz_id=%d AND deleted=0 %1s %2s %3s", $quiz_id, $question_sql, $order_by_sql, $limit_sql ) );
 		}
-		$questions = apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
-
-		// Create question ids array
-		$qsm_random_que_ids = array_column( $questions, 'question_id' );
-		update_option( 'qsm_random_que_ids', $qsm_random_que_ids );
-
-		// Returns an array of all the loaded questions.
-		return $questions;
+		return apply_filters( 'qsm_load_questions_filter', $questions, $quiz_id, $quiz_options );
 	}
 
 	/**
@@ -1616,7 +1628,7 @@ class QMNQuizManager {
 			$qmn_array_for_variables['response_saved']   = isset( $results_insert ) ? $results_insert : false;
 			$qmn_array_for_variables['result_id']        = $results_id;
 			$qmn_array_for_variables['result_unique_id'] = $unique_id;
-
+			setcookie("question_ids_".$qmn_array_for_variables['quiz_id'], "", time() - 36000, "/");
 			// Converts date to the preferred format
 			global $mlwQuizMasterNext;
 			$qmn_array_for_variables = $mlwQuizMasterNext->pluginHelper->convert_to_preferred_date_format( $qmn_array_for_variables );
@@ -1725,7 +1737,19 @@ class QMNQuizManager {
 		// Load the pages and questions
 		$pages     = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
 		$questions = QSM_Questions::load_questions_by_pages( $options->quiz_id );
-
+		if ( 1 == $options->randomness_order || 2 == $options->randomness_order ) {
+			if ( isset($_COOKIE[ 'question_ids_'.$options->quiz_id ]) ) {
+				$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$options->quiz_id ] ) );
+				$question_array = explode(", ",$question_sql);
+				foreach ( $question_array as $key ) {
+					if ( isset( $questions[ $key ] ) ) {
+						$new_questions[ $key ] = $questions[ $key ];
+					}
+				}
+				$questions = $new_questions;
+				$pages = array( $question_array );
+			}
+		}
 		// Retrieve data from submission
 		$total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
 		$question_list   = array();
@@ -1951,27 +1975,6 @@ class QMNQuizManager {
 			$total_score = round( ( ( $total_correct / $total_questions ) * 100 ), 2 );
 		} else {
 			$total_score = 0;
-		}
-
-		// Get random order
-		$qsm_random_que_ids = get_option( 'qsm_random_que_ids' );
-
-		if ( ! empty( $qsm_random_que_ids ) && is_array( $qsm_random_que_ids ) ) {
-			$qs_ids   = array_column( $question_data, 'id' );
-			$has_diff = array_diff( $qsm_random_que_ids, $qs_ids );
-			// Check random option value has all the questions in previous order
-			if ( empty( $has_diff ) ) {
-				$new_question_data = array();
-				foreach ( $qsm_random_que_ids as $que_id ) {
-					$key                 = array_search( $que_id, $qs_ids, true );
-					$new_question_data[] = $question_data[ $key ];
-				}
-				if ( ! empty( $new_question_data ) ) {
-					$question_data = $new_question_data;
-				}
-			}
-			// We no need longer this option
-			delete_option( 'qsm_random_que_ids' );
 		}
 
 		// Return array to be merged with main user response array
