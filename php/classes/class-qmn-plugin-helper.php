@@ -471,13 +471,13 @@ class QMNPluginHelper {
 	}
 
 	/**
-	 * Find the position of the first occurrence of a substring in an array
+	 * Find the key of the first occurrence of a substring in an array
 	 */
 	public static function qsm_stripos_array( $str, array $arr ) {
 		if ( is_array( $arr ) ) {
 			foreach ( $arr as $a ) {
 				if ( stripos( $str, $a ) !== false ) {
-					return true;
+					return $a;
 				}
 			}
 		}
@@ -569,8 +569,7 @@ class QMNPluginHelper {
 		if ( 'quiz_text' == $section && ! empty( $settings_array ) ) {
 			foreach ( $settings_array as $key => $val ) {
 				if ( ! empty( $val ) ) {
-					$val = htmlspecialchars_decode( $val, ENT_QUOTES );
-					$this->qsm_register_language_support( $val, "quiz_{$key}-{$quiz_id}" );
+					$this->qsm_register_language_support( htmlspecialchars_decode( $val, ENT_QUOTES ), "quiz_{$key}-{$quiz_id}" );
 				}
 			}
 		}
@@ -588,15 +587,29 @@ class QMNPluginHelper {
 
 	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
 		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
-			$default_texts   = self::get_default_texts();
 			$string_name     = sanitize_title( $string_name );
+			$original_string = htmlspecialchars_decode( $string, ENT_QUOTES );
+			$new_string      = apply_filters( 'wpml_translate_single_string', $original_string, $domain, $string_name );
+			$new_string      = htmlspecialchars_decode( $new_string, ENT_QUOTES );
 			/**
-			 * Display original string or translated string
+			 * Return translation for non-default strings.
 			 */
-			if ( "QSM Meta" == $domain && self::qsm_stripos_array( $string_name, array_keys( $default_texts ) ) ) {
-				$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
-			} else {
-				$string = apply_filters( 'wpml_translate_single_string', $string, $domain, $string_name );
+			if ( "QSM Meta" != $domain ) {
+				return $new_string;
+			}
+			/**
+			 * Check if translation exist.
+			 */
+			if ( 0 !== strcasecmp( $original_string, $new_string ) ) {
+				return $new_string;
+			}
+			/**
+			 * Check if translation exist for default string.
+			 */
+			$default_texts   = self::get_default_texts();
+			$default_key     = self::qsm_stripos_array( $string_name, array_keys( $default_texts ) );
+			if ( false !== $default_key && 0 === strcasecmp( $original_string, $default_texts[ $default_key ] ) ) {
+				$string = apply_filters( 'wpml_translate_single_string', $original_string, 'QSM Defaults', 'quiz_' . $default_key );
 			}
 		}
 		return $string;

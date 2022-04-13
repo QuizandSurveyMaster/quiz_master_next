@@ -473,8 +473,8 @@ class QSM_Emails {
 			} else {
 				$emails[ $i ]['replyTo'] = false;
 			}
-			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[$i]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
-			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[$i]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
 		}
 
 		$results = $wpdb->update(

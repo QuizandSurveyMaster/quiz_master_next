@@ -355,7 +355,7 @@ class QSM_Results_Pages {
 				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
 				
 			}
-			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[$i]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
 
 		$results = $wpdb->update(
