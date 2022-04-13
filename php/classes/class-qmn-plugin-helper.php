@@ -524,47 +524,47 @@ class QMNPluginHelper {
 	/**
 	 * Register string in WPML for translation
 	 */
-	public static function qsm_register_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
-			$string_name = sanitize_title( $string_name );
+	public static function qsm_register_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
+		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			$translation_slug = sanitize_title( $translation_slug );
 			/**
 			 * Register the string for translation
 			 */
-			do_action( 'wpml_register_single_string', $domain, $string_name, $string );
+			do_action( 'wpml_register_single_string', $domain, $translation_slug, $translation_text );
 		}
 	}
 
 	/**
 	 * Translate string before display
 	 */
-	public static function qsm_language_support( $string = '', $string_name = '', $domain = 'QSM Meta' ) {
-		if ( ! empty( $string ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
-			$string_name     = sanitize_title( $string_name );
-			$original_string = htmlspecialchars_decode( $string, ENT_QUOTES );
-			$new_string      = apply_filters( 'wpml_translate_single_string', $original_string, $domain, $string_name );
-			$new_string      = htmlspecialchars_decode( $new_string, ENT_QUOTES );
+	public static function qsm_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
+		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			$translation_slug    = sanitize_title( $translation_slug );
+			$original_text       = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+			$new_text            = apply_filters( 'wpml_translate_single_string', $original_text, $domain, $translation_slug );
+			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
 			/**
 			 * Return translation for non-default strings.
 			 */
 			if ( "QSM Meta" != $domain ) {
-				return $new_string;
+				return $new_text;
 			}
 			/**
 			 * Check if translation exist.
 			 */
-			if ( 0 !== strcasecmp( $original_string, $new_string ) ) {
-				return $new_string;
+			if ( 0 !== strcasecmp( $original_text, $new_text ) ) {
+				return $new_text;
 			}
 			/**
 			 * Check if translation exist for default string.
 			 */
 			$default_texts   = self::get_default_texts();
-			$default_key     = self::qsm_stripos_array( $string_name, array_keys( $default_texts ) );
-			if ( false !== $default_key && 0 === strcasecmp( $original_string, $default_texts[ $default_key ] ) ) {
-				$string = apply_filters( 'wpml_translate_single_string', $original_string, 'QSM Defaults', 'quiz_' . $default_key );
+			$default_key     = self::qsm_stripos_array( $translation_slug, array_keys( $default_texts ) );
+			if ( false !== $default_key && 0 === strcasecmp( $original_text, $default_texts[ $default_key ] ) ) {
+				return apply_filters( 'wpml_translate_single_string', $original_text, 'QSM Defaults', 'quiz_' . $default_key );
 			}
 		}
-		return $string;
+		return $translation_text;
 	}
 
 	public function qsm_add_default_translations() {
@@ -575,11 +575,11 @@ class QMNPluginHelper {
 		if ( is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			foreach ( $default_texts as $key => $text ) {
 				if ( ! empty( $text ) ) {
-					$string_name = sanitize_title( 'quiz_' . $key );
+					$translation_slug = sanitize_title( 'quiz_' . $key );
 					/**
 					 * Register the string for translation
 					 */
-					do_action( 'wpml_register_single_string', 'QSM Defaults', $string_name, $text );
+					do_action( 'wpml_register_single_string', 'QSM Defaults', $translation_slug, $text );
 				}
 			}
 		}
