@@ -675,7 +675,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         });
 
         $( document ).on( 'click', '.post-type-qsm_quiz #doaction, .post-type-qsm_quiz #doaction2', function ( event ) {
-            event.preventDefault();
+			event.preventDefault();
 			if ( $( "#bulk-action-selector-top" ).val() == "delete_pr" || $( "#bulk-action-selector-bottom" ).val() == "delete_pr" ) {
 				MicroModal.show( 'modal-bulk-delete' );
 			} else {

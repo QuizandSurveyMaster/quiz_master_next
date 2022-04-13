@@ -50,15 +50,14 @@ function qsm_options_questions_tab_content() {
 			);
 		}
 	}
-
-	$quiz_id = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
-	$user_id = get_current_user_id();
-	$form_type = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
-	$quiz_system = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
+	$quiz_id         = isset( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : 0;
+	$user_id         = get_current_user_id();
+	$form_type       = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'form_type' );
+	$quiz_system     = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'system' );
 	$default_answers = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'default_answers' );
-	$pages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
-	$db_qpages = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
-	$qpages = array();
+	$pages           = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'pages', array() );
+	$db_qpages       = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'qpages', array() );
+	$qpages          = array();
 	if ( ! empty( $pages ) ) {
 		$defaultQPage = array(
 			'id'           => 1,

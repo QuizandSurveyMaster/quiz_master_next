@@ -2,6 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+include_once ABSPATH . 'wp-admin/includes/plugin.php';
 
 /**
  * This class is a helper class to be used for extending the plugin
@@ -78,6 +79,10 @@ class QMNPluginHelper {
 	 */
 	public function __construct() {
 		add_action( 'wp_ajax_qmn_question_type_change', array( $this, 'get_question_type_edit_content' ) );
+		add_action( 'admin_init', array( $this, 'qsm_add_default_translations' ), 9999 );
+		add_action( 'qsm_saved_question', array( $this, 'qsm_add_question_translations' ), 10, 2 );
+		add_action( 'qsm_saved_text_message', array( $this, 'qsm_add_text_message_translations' ), 10, 3 );
+		add_action( 'qsm_saved_quiz_settings', array( $this, 'qsm_add_quiz_settings_translations' ), 10, 3 );
 	}
 
 	/**
@@ -456,13 +461,168 @@ class QMNPluginHelper {
 		if ( ! is_array( $list ) ) {
 			return $list;
 		}
-		$keys = array_keys( $list );
+		$keys    = array_keys( $list );
 		shuffle( $keys );
-		$random = array();
+		$random  = array();
 		foreach ( $keys as $key ) {
 			$random[ $key ] = $list[ $key ];
 		}
 		return $random;
+	}
+
+	/**
+	 * Find the key of the first occurrence of a substring in an array
+	 */
+	public static function qsm_stripos_array( $str, array $arr ) {
+		if ( is_array( $arr ) ) {
+			foreach ( $arr as $a ) {
+				if ( stripos( $str, $a ) !== false ) {
+					return $a;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Default strings
+	 */
+	public static function get_default_texts() {
+		$defaults = array(
+			'message_before'                   => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+			'message_comment'                  => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+			'message_end_template'             => '',
+			'question_answer_template'         => __( '%QUESTION%<br />%USER_ANSWERS_DEFAULT%', 'quiz-master-next' ),
+			'question_answer_email_template'   => __( '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%', 'quiz-master-next' ),
+			'total_user_tries_text'            => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
+			'require_log_in_text'              => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
+			'limit_total_entries_text'         => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
+			'scheduled_timeframe_text'         => '',
+			'twitter_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'facebook_sharing_text'            => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
+			'submit_button_text'               => __( 'Submit', 'quiz-master-next' ),
+			'retake_quiz_button_text'          => __( 'Retake Quiz', 'quiz-master-next' ),
+			'previous_button_text'             => __( 'Previous', 'quiz-master-next' ),
+			'next_button_text'                 => __( 'Next', 'quiz-master-next' ),
+			'empty_error_text'                 => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'email_error_text'                 => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'number_error_text'                => __( 'This field must be a number!', 'quiz-master-next' ),
+			'incorrect_error_text'             => __( 'The entered text is not correct!', 'quiz-master-next' ),
+			'comment_field_text'               => __( 'Comments', 'quiz-master-next' ),
+			'hint_text'                        => __( 'Hint', 'quiz-master-next' ),
+			'quick_result_correct_answer_text' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
+			'quick_result_wrong_answer_text'   => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
+			'quiz_processing_message'          => '',
+			'name_field_text'                  => __( 'Name', 'quiz-master-next' ),
+			'business_field_text'              => __( 'Business', 'quiz-master-next' ),
+			'email_field_text'                 => __( 'Email', 'quiz-master-next' ),
+			'phone_field_text'                 => __( 'Phone Number', 'quiz-master-next' ),
+		);
+		return apply_filters( 'qsm_default_texts', $defaults );
+	}
+
+	/**
+	 * Register string in WPML for translation
+	 */
+	public static function qsm_register_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
+		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			$translation_slug = sanitize_title( $translation_slug );
+			/**
+			 * Register the string for translation
+			 */
+			do_action( 'wpml_register_single_string', $domain, $translation_slug, $translation_text );
+		}
+	}
+
+	/**
+	 * Translate string before display
+	 */
+	public static function qsm_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
+		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			$translation_slug    = sanitize_title( $translation_slug );
+			$original_text       = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+			$new_text            = apply_filters( 'wpml_translate_single_string', $original_text, $domain, $translation_slug );
+			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
+			/**
+			 * Return translation for non-default strings.
+			 */
+			if ( "QSM Meta" != $domain ) {
+				return $new_text;
+			}
+			/**
+			 * Check if translation exist.
+			 */
+			if ( 0 !== strcasecmp( $original_text, $new_text ) ) {
+				return $new_text;
+			}
+			/**
+			 * Check if translation exist for default string.
+			 */
+			$default_texts   = self::get_default_texts();
+			$default_key     = self::qsm_stripos_array( $translation_slug, array_keys( $default_texts ) );
+			if ( false !== $default_key && 0 === strcasecmp( $original_text, $default_texts[ $default_key ] ) ) {
+				return apply_filters( 'wpml_translate_single_string', $original_text, 'QSM Defaults', 'quiz_' . $default_key );
+			}
+		}
+		return $translation_text;
+	}
+
+	public function qsm_add_default_translations() {
+		$default_texts = self::get_default_texts();
+		if ( empty( $default_texts ) ) {
+			return;
+		}
+		if ( is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			foreach ( $default_texts as $key => $text ) {
+				if ( ! empty( $text ) ) {
+					$translation_slug = sanitize_title( 'quiz_' . $key );
+					/**
+					 * Register the string for translation
+					 */
+					do_action( 'wpml_register_single_string', 'QSM Defaults', $translation_slug, $text );
+				}
+			}
+		}
+	}
+
+	public function qsm_add_question_translations( $question_id, $question_data ) {
+		$settings    = isset( $question_data['question_settings'] ) ? maybe_unserialize( $question_data['question_settings'] ) : array();
+		$hints       = isset( $question_data['hints'] ) ? $question_data['hints'] : '';
+		$answer_info = isset( $question_data['question_answer_info'] ) ? html_entity_decode( $question_data['question_answer_info'] ) : '';
+
+		$this->qsm_register_language_support( htmlspecialchars_decode( $settings['question_title'], ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
+		$this->qsm_register_language_support( do_shortcode( $question_data['question_name'] ), "question-description-{$question_id}", "QSM Questions" );
+		$this->qsm_register_language_support( $hints, "hint-{$question_id}" );
+		$this->qsm_register_language_support( $answer_info, "correctanswerinfo-{$question_id}" );
+
+		$answers = isset( $question_data['answer_array'] ) ? maybe_unserialize( $question_data['answer_array'] ) : array();
+		if ( ! empty( $answers ) ) {
+			$answerEditor = isset( $settings['answerEditor'] ) ? $settings['answerEditor'] : 'text';
+			foreach ( $answers as $ans ) {
+				if ( 'image' === $answerEditor ) {
+					$caption_text = trim( htmlspecialchars_decode( $ans[3], ENT_QUOTES ) );
+					$this->qsm_register_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
+				} else {
+					$answer_text = trim( do_shortcode( htmlspecialchars_decode( $ans[0], ENT_QUOTES ) ) );
+					$this->qsm_register_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
+				}
+			}
+		}
+	}
+
+	public function qsm_add_text_message_translations( $quiz_id, $text_id, $message ) {
+		$message = htmlspecialchars_decode( $message, ENT_QUOTES );
+		$this->qsm_register_language_support( $message, "quiz_{$text_id}-{$quiz_id}" );
+	}
+
+	public function qsm_add_quiz_settings_translations( $quiz_id, $section, $settings_array ) {
+		if ( 'quiz_text' == $section && ! empty( $settings_array ) ) {
+			foreach ( $settings_array as $key => $val ) {
+				if ( ! empty( $val ) ) {
+					$this->qsm_register_language_support( htmlspecialchars_decode( $val, ENT_QUOTES ), "quiz_{$key}-{$quiz_id}" );
+				}
+			}
+		}
 	}
 
 	/**
