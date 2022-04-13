@@ -403,7 +403,7 @@ class QMNPluginHelper {
 		}
 		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
-			$answers = $this->qsm_shuffle_assoc( $answers );
+			$answers = self::qsm_shuffle_assoc( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
 
@@ -464,7 +464,6 @@ class QMNPluginHelper {
 		}
 		return $random;
 	}
-
 
 	/**
 	 * Calculates Score For Question
