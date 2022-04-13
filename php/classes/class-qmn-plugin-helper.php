@@ -403,7 +403,7 @@ class QMNPluginHelper {
 		}
 		$answers_original = $answers;
 		if ( 2 === intval( $quiz_options->randomness_order ) || 3 === intval( $quiz_options->randomness_order ) ) {
-			$answers = qsm_shuffle_assoc( $answers );
+			$answers = self::qsm_shuffle_assoc( $answers );
 			update_post_meta( $question_id, 'qsm_random_quetion_answer', $answers );
 		}
 
@@ -443,6 +443,26 @@ class QMNPluginHelper {
 				do_action( 'qsm_after_question', $question );
 			}
 		}
+	}
+
+	/**
+	 * Shuffle assoc array
+	 *
+	 * @since  7.3.11
+	 * @param  array $list An array
+	 * @return array
+	 */
+	public static function qsm_shuffle_assoc( $list ) {
+		if ( ! is_array( $list ) ) {
+			return $list;
+		}
+		$keys = array_keys( $list );
+		shuffle( $keys );
+		$random = array();
+		foreach ( $keys as $key ) {
+			$random[ $key ] = $list[ $key ];
+		}
+		return $random;
 	}
 
 	/**

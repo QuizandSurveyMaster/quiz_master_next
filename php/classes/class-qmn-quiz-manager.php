@@ -659,7 +659,7 @@ class QMNQuizManager {
 					$question_sql = sanitize_text_field( wp_unslash( $_COOKIE[ 'question_ids_'.$quiz_id ] ) );
 				}else {
 					$question_ids = apply_filters( 'qsm_load_questions_ids', $question_ids, $quiz_id, $quiz_options );
-					$question_ids = qsm_shuffle_assoc( $question_ids );
+					$question_ids = QMNPluginHelper::qsm_shuffle_assoc( $question_ids );
 					$question_sql = implode( ', ', $question_ids );
 					?>
 					<script>

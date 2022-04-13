@@ -641,23 +641,3 @@ function qsm_add_inline_tmpl( $handle, $id, $tmpl ) {
 		3
 	);
 }
-
-/**
- * Shuffle assoc array
- *
- * @since  7.3.11
- * @param  array $list An array
- * @return array
- */
-function qsm_shuffle_assoc( $list ) {
-	if ( ! is_array( $list ) ) {
-		return $list;
-	}
-	$keys = array_keys( $list );
-	shuffle( $keys );
-	$random = array();
-	foreach ( $keys as $key ) {
-		$random[ $key ] = $list[ $key ];
-	}
-	return $random;
-}
