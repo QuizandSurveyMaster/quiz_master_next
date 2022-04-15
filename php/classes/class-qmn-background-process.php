@@ -34,10 +34,10 @@ class QSM_Background_Request extends WP_Async_Request {
     protected function handle() {
         $message = isset( $_POST['name'] ) ? sanitize_text_field( wp_unslash( $_POST['name'] ) ) : '';
         if ( 'send_emails' === $message ) {
-            $qmn_array_for_variables = isset( $_POST['variables'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['variables'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            $result_id = isset( $_POST['result_id'] ) ? sanitize_text_field( wp_unslash( $_POST['result_id'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
             try {
                 $this->really_long_running_task();
-                QSM_Emails::send_emails($qmn_array_for_variables);
+                QSM_Emails::send_emails($result_id);
             } catch ( Exception $e ) {
                 if ( defined('WP_DEBUG') && WP_DEBUG ) {
                     trigger_error('Background email triggered fatal error for callback.', E_USER_WARNING); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
