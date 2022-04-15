@@ -55,7 +55,7 @@ class QSM_Emails {
 			'total_attempted_questions' => $quiz_result['total_attempted_questions'],
 			'minimum_possible_points'   => $quiz_result['minimum_possible_points'],
 			'comments'                  => $quiz_result[2],
-			'result_id'                 => $id,
+			'result_id'                 => $result_id,
 		);
 		$emails = self::load_emails( $response_data['quiz_id'] );
 
