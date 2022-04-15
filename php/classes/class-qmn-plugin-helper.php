@@ -538,10 +538,16 @@ class QMNPluginHelper {
 	 * Translate string before display
 	 */
 	public static function qsm_language_support( $translation_text = '', $translation_slug = '', $domain = 'QSM Meta' ) {
+		/**
+		 * Decode HTML Special characters.
+		 */
+		$translation_text = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
+		/**
+		 * Check if WPML String Translation plugin is activated.
+		 */
 		if ( ! empty( $translation_text ) && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
 			$translation_slug    = sanitize_title( $translation_slug );
-			$original_text       = htmlspecialchars_decode( $translation_text, ENT_QUOTES );
-			$new_text            = apply_filters( 'wpml_translate_single_string', $original_text, $domain, $translation_slug );
+			$new_text            = apply_filters( 'wpml_translate_single_string', $translation_text, $domain, $translation_slug );
 			$new_text            = htmlspecialchars_decode( $new_text, ENT_QUOTES );
 			/**
 			 * Return translation for non-default strings.
@@ -552,7 +558,7 @@ class QMNPluginHelper {
 			/**
 			 * Check if translation exist.
 			 */
-			if ( 0 !== strcasecmp( $original_text, $new_text ) ) {
+			if ( 0 !== strcasecmp( $translation_text, $new_text ) ) {
 				return $new_text;
 			}
 			/**
@@ -560,8 +566,8 @@ class QMNPluginHelper {
 			 */
 			$default_texts   = self::get_default_texts();
 			$default_key     = self::qsm_stripos_array( $translation_slug, array_keys( $default_texts ) );
-			if ( false !== $default_key && 0 === strcasecmp( $original_text, $default_texts[ $default_key ] ) ) {
-				return apply_filters( 'wpml_translate_single_string', $original_text, 'QSM Defaults', 'quiz_' . $default_key );
+			if ( false !== $default_key && 0 === strcasecmp( $translation_text, $default_texts[ $default_key ] ) ) {
+				return apply_filters( 'wpml_translate_single_string', $translation_text, 'QSM Defaults', 'quiz_' . $default_key );
 			}
 		}
 		return $translation_text;
@@ -591,7 +597,7 @@ class QMNPluginHelper {
 		$answer_info = isset( $question_data['question_answer_info'] ) ? html_entity_decode( $question_data['question_answer_info'] ) : '';
 
 		$this->qsm_register_language_support( htmlspecialchars_decode( $settings['question_title'], ENT_QUOTES ), "Question-{$question_id}", "QSM Questions" );
-		$this->qsm_register_language_support( do_shortcode( $question_data['question_name'] ), "question-description-{$question_id}", "QSM Questions" );
+		$this->qsm_register_language_support( htmlspecialchars_decode( $question_data['question_name'], ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" );
 		$this->qsm_register_language_support( $hints, "hint-{$question_id}" );
 		$this->qsm_register_language_support( $answer_info, "correctanswerinfo-{$question_id}" );
 
@@ -603,7 +609,7 @@ class QMNPluginHelper {
 					$caption_text = trim( htmlspecialchars_decode( $ans[3], ENT_QUOTES ) );
 					$this->qsm_register_language_support( $caption_text, 'caption-' . $caption_text, 'QSM Answers' );
 				} else {
-					$answer_text = trim( do_shortcode( htmlspecialchars_decode( $ans[0], ENT_QUOTES ) ) );
+					$answer_text = trim( htmlspecialchars_decode( $ans[0], ENT_QUOTES ) );
 					$this->qsm_register_language_support( $answer_text, 'answer-' . $answer_text, 'QSM Answers' );
 				}
 			}
