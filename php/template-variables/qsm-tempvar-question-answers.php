@@ -1,6 +1,7 @@
 <?php
 
 function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, $grading_system, $question_settings, $form_type = 0 ) {
+	global $mlwQuizMasterNext;
     $question_with_answer_text = '';
     foreach ( $total_answers as $single_answer_key => $single_answer ) {
         $user_answer_array    = isset( $answers_from_response['user_answer'] ) && is_array( $answers_from_response['user_answer'] ) ? $answers_from_response['user_answer'] : array();
@@ -15,10 +16,10 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
         }
         $image_class = '';
         if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] ) {
-            $show_user_answer = '<img src="' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '"/>';
+            $show_user_answer = '<img src="' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '"/>';
             $image_class      = 'qmn_image_option';
         } else {
-            $show_user_answer = htmlspecialchars_decode( $single_answer[0], ENT_QUOTES );
+            $show_user_answer = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' );
             $image_class      = '';
         }
         if ( 0 == $form_type && ( 0 === intval( $grading_system ) || 3 === intval( $grading_system ) ) ) {
