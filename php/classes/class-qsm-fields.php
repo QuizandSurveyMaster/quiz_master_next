@@ -560,6 +560,11 @@ class QSM_Fields {
 		<tr valign="top" class="<?php echo esc_attr( $class ); ?>">
 			<th scope="row" class="qsm-opt-tr">
 				<label for="<?php echo esc_attr( $field["id"] ); ?>"><?php echo wp_kses_post( $field['label'] ); ?></label>
+				<?php if ( isset($field['tooltip']) && '' !== $field['tooltip'] ) { ?>
+				<span class="dashicons dashicons-editor-help qsm-tooltips-icon">
+					<span class="qsm-tooltips"><?php echo wp_kses_post( $field['tooltip'] ); ?></span>
+				</span>
+				<?php } ?>
 			</th>
 			<td>
 				<fieldset class="buttonset buttonset-hide" data-hide='1'>
