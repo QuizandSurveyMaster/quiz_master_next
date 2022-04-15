@@ -1682,13 +1682,13 @@ class QMNQuizManager {
 				$this->qsm_background_email->data(
 					array(
 						'name'      => 'send_emails',
-						'variables' => $qmn_array_for_variables,
+						'result_id' => $results_id,
 					)
 				)->dispatch();
 			} else {
 				// Sends the emails.
 				$qmn_array_for_variables['email_processed'] = 'yes';
-				QSM_Emails::send_emails( $qmn_array_for_variables );
+				QSM_Emails::send_emails( $results_id );
 			}
 
 			/**
