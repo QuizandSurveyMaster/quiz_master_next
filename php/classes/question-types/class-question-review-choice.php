@@ -44,7 +44,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 				$total_correct_ans++;
 			}
 		}
-		if( ( $this->all_correct_selected && $user_correct_ans == count( $this->correct_answer ) || !$this->all_correct_selected && $user_correct_ans == $total_correct_ans ) && $is_user_attempted  ){
+		if ( ( $this->all_correct_selected && count( $this->correct_answer ) === $user_correct_ans || ! $this->all_correct_selected && $user_correct_ans === $total_correct_ans ) && $is_user_attempted ) {
 			$this->answer_status = 'correct';
 		}
 	}

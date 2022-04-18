@@ -135,7 +135,7 @@ class QMNGlobalSettingsPage {
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
 			'default_answers'                    => 1,
-			'all_correct_selected'       => 0,
+			'all_correct_selected'               => 0,
 		);
 	}
 

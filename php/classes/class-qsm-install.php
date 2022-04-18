@@ -93,9 +93,9 @@ class QSM_Install {
 
 		// Registers all_correct_selected field
 		$field_array = array(
-			'id'      => 'all_correct_selected',
-			'label'   => __( 'Correct Answer Logic', 'quiz-master-next' ),
-			'type'    => 'radio',
+			'id'          => 'all_correct_selected',
+			'label'       => __( 'Correct Answer Logic', 'quiz-master-next' ),
+			'type'        => 'radio',
 			'options'     => array(
 				array(
 					'label' => __( 'All correct answers', 'quiz-master-next' ),
@@ -104,7 +104,7 @@ class QSM_Install {
 				array(
 					'label' => __( 'Any correct answer', 'quiz-master-next' ),
 					'value' => 0,
-				)
+				),
 			),
 			'default'     => 0,
 			'show_option' => 'qsm_hidden_tr_gradingsystem',
