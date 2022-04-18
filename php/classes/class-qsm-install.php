@@ -91,6 +91,26 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers correct_answer_logic field
+		$field_array = array(
+			'id'          => 'correct_answer_logic',
+			'label'       => __( 'Correct Answer Logic', 'quiz-master-next' ),
+			'type'        => 'radio',
+			'options'     => array(
+				array(
+					'label' => __( 'All correct answers', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Any correct answer', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'     => 0,
+			'show_option' => 'qsm_hidden_tr_gradingsystem',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers default number of answers field
 		$field_array = array(
 			'id'      => 'default_answers',

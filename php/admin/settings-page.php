@@ -135,6 +135,7 @@ class QMNGlobalSettingsPage {
 			'not_allow_after_expired_time'       => 0,
 			'preferred_date_format'              => 'F j, Y',
 			'default_answers'                    => 1,
+			'correct_answer_logic'               => 0,
 		);
 	}
 
@@ -149,6 +150,7 @@ class QMNGlobalSettingsPage {
 		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
 		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'correct_answer_logic', __( 'Correct Answer Logic', 'quiz-master-next' ), array( $this, 'correct_answer_logic' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1236,6 +1238,24 @@ class QMNGlobalSettingsPage {
 		$default_answers = ( isset( $globalQuizsetting['default_answers'] ) ? $globalQuizsetting['default_answers'] : 1 );
 		echo '<input type="number" id="default_answers" name="qsm-quiz-settings[default_answers]" value="' . esc_attr( $default_answers ) . '" min="1">';
 		echo '<span class="qsm-opt-desc">Adds number of answer fields.</span>';
+	}
+
+	/**
+	 * Generates quiz global field for correct answers logic field
+	 *
+	 * @since 7.3.15
+	 * @return void
+	 */
+	public function correct_answer_logic(){
+		global $globalQuizsetting;
+		$qsm_all_correct_selected = ( isset( $globalQuizsetting['correct_answer_logic'] ) && '' !== $globalQuizsetting['correct_answer_logic'] ? $globalQuizsetting['correct_answer_logic'] : '' );
+
+		echo '<fieldset class="buttonset buttonset-hide" >
+			<input type="radio" id="correct_answer_logic-1" name="qsm-quiz-settings[correct_answer_logic]" value="1" ' . checked( $qsm_all_correct_selected, '1', false ) . '>
+			<label for="correct_answer_logic-1">All correct answers</label><br>
+			<input type="radio" id="correct_answer_logic-0" name="qsm-quiz-settings[correct_answer_logic]"  value="0" ' . checked( $qsm_all_correct_selected, '0', false ) . '>
+			<label for="correct_answer_logic-0">Any correct answer</label><br>
+		</fieldset>';
 	}
 
 }
