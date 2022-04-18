@@ -1241,7 +1241,7 @@ class QMNGlobalSettingsPage {
 	}
 
 	/**
-	 * Generates quiz global field for default answers field
+	 * Generates quiz global field for correct answers logic field
 	 *
 	 * @since 7.3.15
 	 * @return void
