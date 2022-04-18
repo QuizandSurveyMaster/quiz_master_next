@@ -91,9 +91,9 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
-		// Registers all_correct_selected field
+		// Registers correct_answer_logic field
 		$field_array = array(
-			'id'          => 'all_correct_selected',
+			'id'          => 'correct_answer_logic',
 			'label'       => __( 'Correct Answer Logic', 'quiz-master-next' ),
 			'type'        => 'radio',
 			'options'     => array(
