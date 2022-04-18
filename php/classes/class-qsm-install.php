@@ -91,6 +91,26 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers all_correct_selected field
+		$field_array = array(
+			'id'      => 'all_correct_selected',
+			'label'   => __( 'Correct Answer Logic', 'quiz-master-next' ),
+			'type'    => 'radio',
+			'options'     => array(
+				array(
+					'label' => __( 'All correct answers', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Any correct answer', 'quiz-master-next' ),
+					'value' => 0,
+				)
+			),
+			'default'     => 0,
+			'show_option' => 'qsm_hidden_tr_gradingsystem',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers default number of answers field
 		$field_array = array(
 			'id'      => 'default_answers',
@@ -99,23 +119,6 @@ class QSM_Install {
 			'options' => array(),
 			'default' => 1,
 			'help'    => __( 'Adds number of answer fields', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
-
-		// Registers all_correct_selected field
-		$field_array = array(
-			'id'      => 'all_correct_selected',
-			'label'   => __( 'Correct only if all correct answers are selected', 'quiz-master-next' ),
-			'type'    => 'checkbox',
-			'options'     => array(
-				array(
-					'value' => 1,
-				),
-			),
-			'default'     => 0,
-			'help'    => __( 'For multiple response question type only', 'quiz-master-next' ),
-			'tooltip'     => __( 'Consider answer as correct only if all correct answers are selected.', 'quiz-master-next' ),
-			'show_option' => 'form_type_0',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 

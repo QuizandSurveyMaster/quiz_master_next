@@ -1117,13 +1117,13 @@ class QMNQuizManager {
 		 * @since 7.3.5
 		 */
 		$tmpl_pagination = '<div class="qsm-pagination qmn_pagination border margin-bottom">
-					<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $options->previous_button_text ) . '</a>
-					<span class="qmn_page_message"></span>
-					<div class="qmn_page_counter_message"></div>
-					<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
-					<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' . esc_html( $options->next_button_text ) . '</a>
-					<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value=' . esc_attr( $options->submit_button_text ) . ' />
-				</div>';
+			<a class="qsm-btn qsm-previous qmn_btn mlw_qmn_quiz_link mlw_previous" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $options->previous_button_text ), "quiz_previous_button_text-{$options->quiz_id}" ) ) . '</a>
+			<span class="qmn_page_message"></span>
+			<div class="qmn_page_counter_message"></div>
+			<div class="qsm-progress-bar" style="display:none;"><div class="progressbar-text"></div></div>
+			<a class="qsm-btn qsm-next qmn_btn mlw_qmn_quiz_link mlw_next" href="javascript:void(0)">' . esc_html( $mlwQuizMasterNext->pluginHelper->qsm_language_support( sanitize_text_field( $options->next_button_text ), "quiz_next_button_text-{$options->quiz_id}" ) ) . '</a>
+			<input type="submit" class="qsm-btn qsm-submit-btn qmn_btn" value="' . esc_attr( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $options->submit_button_text, "quiz_submit_button_text-{$options->quiz_id}" ) ) . '" />
+		</div>';
 		qsm_add_inline_tmpl( 'qsm_quiz', 'tmpl-qsm-pagination-' . esc_attr( $options->quiz_id ), $tmpl_pagination );
 		?>
 		<input type="hidden" name="qmn_question_list" value="<?php echo esc_attr( $question_list ); ?>" />
@@ -1682,13 +1682,13 @@ class QMNQuizManager {
 				$this->qsm_background_email->data(
 					array(
 						'name'      => 'send_emails',
-						'variables' => $qmn_array_for_variables,
+						'result_id' => $results_id,
 					)
 				)->dispatch();
 			} else {
 				// Sends the emails.
 				$qmn_array_for_variables['email_processed'] = 'yes';
-				QSM_Emails::send_emails( $qmn_array_for_variables );
+				QSM_Emails::send_emails( $results_id );
 			}
 
 			/**
@@ -1949,7 +1949,7 @@ class QMNQuizManager {
 							$question_data[] = apply_filters(
 								'qmn_answer_array',
 								array(
-									$question_text,
+									$mlwQuizMasterNext->pluginHelper->qsm_language_support( $question_text, "question-description-{$question_id}", "QSM Questions" ),
 									htmlspecialchars( $user_answer, ENT_QUOTES ),
 									htmlspecialchars( $correct_answer, ENT_QUOTES ),
 									$comment,
@@ -1961,7 +1961,7 @@ class QMNQuizManager {
 									'category'          => $question['category'],
 									'multicategories'   => $question['multicategories'],
 									'question_type'     => $question['question_type_new'],
-									'question_title'    => isset( $question['settings']['question_title'] ) ? $question['settings']['question_title'] : '',
+									'question_title'    => isset( $question['settings']['question_title'] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question['settings']['question_title'], "Question-{$question_id}", "QSM Questions") : '',
 									'user_compare_text' => $user_compare_text,
 								),
 								$options,

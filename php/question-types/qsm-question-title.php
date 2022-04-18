@@ -33,9 +33,8 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		<?php
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-	$question_title = do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) );
 	if ( ! empty( $question_title ) ) {
-		$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question_title, "question-description-{$question_id}", "QSM Questions" );
+		$question_title = do_shortcode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question_title, ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" ) );
 	}
 	?>
 	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' >

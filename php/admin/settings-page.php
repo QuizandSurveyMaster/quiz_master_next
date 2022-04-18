@@ -150,8 +150,8 @@ class QMNGlobalSettingsPage {
 		add_settings_section( 'qmn-global-section', __( 'Quiz Settings', 'quiz-master-next' ), array( $this, 'global_section' ), 'qsm_default_global_option' );
 		add_settings_field( 'quiz-type', __( 'Quiz Type', 'quiz-master-next' ), array( $this, 'qsm_global_quiz_type' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'grading-system', __( 'Grading System', 'quiz-master-next' ), array( $this, 'qsm_global_grading_system' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'all_correct_selected', __( 'Correct Answer Logic', 'quiz-master-next' ), array( $this, 'all_correct_selected' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'default_answers', __( 'Default Number of Answers', 'quiz-master-next' ), array( $this, 'default_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
-		add_settings_field( 'all_correct_selected', __( 'Correct only if all correct answers are selected', 'quiz-master-next' ), array( $this, 'all_correct_selected' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'allow-score-round-off', __( 'Allow Score Round-off', 'quiz-master-next' ), array( $this, 'qsm_global_score_roundoff' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-progress-bar', __( 'Show progress bar', 'quiz-master-next' ), array( $this, 'qsm_global_show_progress_bar' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'require-user-login', __( 'Require User Login', 'quiz-master-next' ), array( $this, 'qsm_global_require_user_login' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1249,10 +1249,13 @@ class QMNGlobalSettingsPage {
 	public function all_correct_selected(){
 		global $globalQuizsetting;
 		$qsm_all_correct_selected = ( isset( $globalQuizsetting['all_correct_selected'] ) && '' !== $globalQuizsetting['all_correct_selected'] ? $globalQuizsetting['all_correct_selected'] : '' );
+
 		echo '<fieldset class="buttonset buttonset-hide" >
-				<input type="checkbox" id="all_correct_selected-1" name="qsm-quiz-settings[all_correct_selected]" value="1" ' . checked( $qsm_all_correct_selected, '1', false ) . '>
-				<br>
-			</fieldset>';
+			<input type="radio" id="all_correct_selected-1" name="qsm-quiz-settings[all_correct_selected]" value="1" ' . checked( $qsm_all_correct_selected, '1', false ) . '>
+			<label for="all_correct_selected-1">All correct answers</label><br>
+			<input type="radio" id="all_correct_selected-0" name="qsm-quiz-settings[all_correct_selected]"  value="0" ' . checked( $qsm_all_correct_selected, '0', false ) . '>
+			<label for="all_correct_selected-0">Any correct answer</label><br>
+		</fieldset>';
 	}
 
 }
