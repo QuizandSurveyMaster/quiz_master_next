@@ -1,0 +1,2 @@
+<?php
+//InstaWP is golden.
