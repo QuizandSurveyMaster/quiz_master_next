@@ -18,6 +18,9 @@ jobs:
           INSTAWP_DOMAIN: ${{secrets.INSTAWP_DOMAIN}}
           INSTAWP_TEMPLATE_SLUG: qsmbugtesting
           REPO_ID: 7
+      - run: echo URL ${{ steps.create-wp.outputs.magic_login }}
+        shell: bash
+        
   run-bugbug:
     needs: create-wp-for-testing
     runs-on: ubuntu-latest
