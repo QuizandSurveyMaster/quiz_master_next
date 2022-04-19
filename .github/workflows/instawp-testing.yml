@@ -15,3 +15,13 @@ jobs:
           INSTAWP_DOMAIN: ${{secrets.INSTAWP_DOMAIN}}
           INSTAWP_TEMPLATE_SLUG: qsmbugtesting
           REPO_ID: 7
+  run-bugbug:
+    needs: create-wp-for-testing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install -g @testrevolution/bugbug-cli
+      - run: bugbug config set-token ${{secrets.BUGBUG_TOKEN}}
+      - run: bugbug remote run test b0c1b510-dde1-487d-b119-fe663c997809 --variable 'magiclogin=https://app.instawp.io/wordpress-auto-login?site=$2y$10$/FAQbpCu49cnPG.hhZGbO.cyXn1AFmeLuHus6jsolDUrne41exbD6'
