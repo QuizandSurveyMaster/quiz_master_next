@@ -8,7 +8,7 @@ jobs:
   create-wp-for-testing:
     runs-on: ubuntu-latest
     outputs:
-      magic_login: ${{ steps.create-wp.outputs.magic_login }}
+      magic_login1: ${{ steps.create-wp.outputs.magic_login }}
     steps:
       - uses: instawp/wordpress-testing-automation@main
         id: create-wp
@@ -18,16 +18,18 @@ jobs:
           INSTAWP_DOMAIN: ${{secrets.INSTAWP_DOMAIN}}
           INSTAWP_TEMPLATE_SLUG: qsmbugtesting
           REPO_ID: 7
-      - run: echo URL ${{ steps.create-wp.outputs.magic_login }}
+      - run: echo URL ${{ steps.create-wp.outputs.magic_login1 }}
         shell: bash
         
   run-bugbug:
     needs: create-wp-for-testing
     runs-on: ubuntu-latest
     steps:
+      - run: echo URL ${{ needs.create-wp-for-testing.outputs.magic_login1 }}
+        shell: bash
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
       - run: npm install -g @testrevolution/bugbug-cli
       - run: bugbug config set-token ${{secrets.BUGBUG_TOKEN}}
-      - run: bugbug remote run test b0c1b510-dde1-487d-b119-fe663c997809 --variable 'magiclogin=${{ needs.create-wp-for-testing.outputs.magic_login }}'
+      - run: bugbug remote run test b0c1b510-dde1-487d-b119-fe663c997809 --variable 'magiclogin=${{ needs.create-wp-for-testing.outputs.magic_login1 }}'
