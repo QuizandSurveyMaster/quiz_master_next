@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: instawp/wordpress-testing-automation@main
+        id: create-wp
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           INSTAWP_TOKEN: ${{secrets.INSTAWP_TOKEN}}
@@ -24,4 +25,4 @@ jobs:
           node-version: '14'
       - run: npm install -g @testrevolution/bugbug-cli
       - run: bugbug config set-token ${{secrets.BUGBUG_TOKEN}}
-      - run: bugbug remote run test b0c1b510-dde1-487d-b119-fe663c997809 --variable 'magiclogin=https://app.instawp.io/wordpress-auto-login?site=$2y$10$/FAQbpCu49cnPG.hhZGbO.cyXn1AFmeLuHus6jsolDUrne41exbD6'
+      - run: bugbug remote run test b0c1b510-dde1-487d-b119-fe663c997809 --variable 'magiclogin=${{ steps.create-wp.outputs.magic_login }}'
