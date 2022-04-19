@@ -562,6 +562,16 @@ class MLWQuizMasterNext {
 			</div>
 			<?php
 		}
+		
+		$settings                        = (array) get_option( 'qmn-settings' );
+		$background_quiz_email_process   = isset( $settings['background_quiz_email_process'] ) ? $settings['background_quiz_email_process'] : 1;
+		if ( 1 == $background_quiz_email_process && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			?>
+			<div class="notice notice-warning">
+				<p><?php esc_html_e( '"Process emails in background" option is enabled. WPML string translation may not work as expected for email templates. Please disable this option to send translated strings in emails.', 'quiz-master-next' ); ?></p>
+			</div>
+			<?php
+		}
 	}
 
 
