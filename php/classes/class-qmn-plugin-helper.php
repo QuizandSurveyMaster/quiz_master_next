@@ -83,6 +83,9 @@ class QMNPluginHelper {
 		add_action( 'qsm_saved_question', array( $this, 'qsm_add_question_translations' ), 10, 2 );
 		add_action( 'qsm_saved_text_message', array( $this, 'qsm_add_text_message_translations' ), 10, 3 );
 		add_action( 'qsm_saved_quiz_settings', array( $this, 'qsm_add_quiz_settings_translations' ), 10, 3 );
+
+		add_action( 'qsm_register_language_support', array( $this, 'qsm_register_language_support' ), 10, 3 );
+		add_filter( 'qsm_language_support', array( $this, 'qsm_language_support' ), 10, 3 );
 	}
 
 	/**
@@ -489,34 +492,34 @@ class QMNPluginHelper {
 	 */
 	public static function get_default_texts() {
 		$defaults = array(
-			'message_before'                   => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
-			'message_comment'                  => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+			'message_before'                   => 'Welcome to your %QUIZ_NAME%',
+			'message_comment'                  => 'Please fill in the comment box below.',
 			'message_end_template'             => '',
-			'question_answer_template'         => __( '%QUESTION%<br />%USER_ANSWERS_DEFAULT%', 'quiz-master-next' ),
-			'question_answer_email_template'   => __( '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%', 'quiz-master-next' ),
-			'total_user_tries_text'            => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
-			'require_log_in_text'              => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
-			'limit_total_entries_text'         => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
+			'question_answer_template'         => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
+			'question_answer_email_template'   => '%QUESTION%<br />Answer Provided: %USER_ANSWER%<br/>Correct Answer: %CORRECT_ANSWER%<br/>Comments Entered: %USER_COMMENTS%',
+			'total_user_tries_text'            => 'You have utilized all of your attempts to pass this quiz.',
+			'require_log_in_text'              => 'This quiz is for logged in users only.',
+			'limit_total_entries_text'         => 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.',
 			'scheduled_timeframe_text'         => '',
-			'twitter_sharing_text'             => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'facebook_sharing_text'            => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
-			'submit_button_text'               => __( 'Submit', 'quiz-master-next' ),
-			'retake_quiz_button_text'          => __( 'Retake Quiz', 'quiz-master-next' ),
-			'previous_button_text'             => __( 'Previous', 'quiz-master-next' ),
-			'next_button_text'                 => __( 'Next', 'quiz-master-next' ),
-			'empty_error_text'                 => __( 'Please complete all required fields!', 'quiz-master-next' ),
-			'email_error_text'                 => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
-			'number_error_text'                => __( 'This field must be a number!', 'quiz-master-next' ),
-			'incorrect_error_text'             => __( 'The entered text is not correct!', 'quiz-master-next' ),
-			'comment_field_text'               => __( 'Comments', 'quiz-master-next' ),
-			'hint_text'                        => __( 'Hint', 'quiz-master-next' ),
-			'quick_result_correct_answer_text' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
-			'quick_result_wrong_answer_text'   => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
+			'twitter_sharing_text'             => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!',
+			'facebook_sharing_text'            => 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!',
+			'submit_button_text'               => 'Submit',
+			'retake_quiz_button_text'          => 'Retake Quiz',
+			'previous_button_text'             => 'Previous',
+			'next_button_text'                 => 'Next',
+			'empty_error_text'                 => 'Please complete all required fields!',
+			'email_error_text'                 => 'Not a valid e-mail address!',
+			'number_error_text'                => 'This field must be a number!',
+			'incorrect_error_text'             => 'The entered text is not correct!',
+			'comment_field_text'               => 'Comments',
+			'hint_text'                        => 'Hint',
+			'quick_result_correct_answer_text' => 'Correct! You have selected correct answer.',
+			'quick_result_wrong_answer_text'   => 'Wrong! You have selected wrong answer.',
 			'quiz_processing_message'          => '',
-			'name_field_text'                  => __( 'Name', 'quiz-master-next' ),
-			'business_field_text'              => __( 'Business', 'quiz-master-next' ),
-			'email_field_text'                 => __( 'Email', 'quiz-master-next' ),
-			'phone_field_text'                 => __( 'Phone Number', 'quiz-master-next' ),
+			'name_field_text'                  => 'Name',
+			'business_field_text'              => 'Business',
+			'email_field_text'                 => 'Email',
+			'phone_field_text'                 => 'Phone Number',
 		);
 		return apply_filters( 'qsm_default_texts', $defaults );
 	}
@@ -854,11 +857,11 @@ class QMNPluginHelper {
 		return apply_filters( 'qmn_quiz_setting_tabs', $this->settings_tabs );
 	}
 
-		/**
-		 * global animatiocv array return
-		 *
-		 * @since 4.7.1
-		 */
+	/**
+	 * global animatiocv array return
+	 *
+	 * @since 4.7.1
+	 */
 	public function quiz_animation_effect() {
 
 		return array(

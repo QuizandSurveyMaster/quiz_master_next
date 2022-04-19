@@ -1171,9 +1171,10 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	}
-	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
+	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], "answer-" . $answer[2], "QSM Answers" ) : 'NA';
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
 		$qsm_correct_ans             = apply_filters( 'qsm_result_page_custom_correct_answer_template', $questions, $answer );
+		$qsm_correct_ans = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qsm_correct_ans, "answer-" . $qsm_correct_ans, "QSM Answers" );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );

@@ -10,18 +10,19 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 	}
 
 	public function set_user_answer() {
+		global $mlwQuizMasterNext;
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_response = wp_unslash( $_POST[ 'question' . $this->question_id ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 			if ( is_array( $user_response ) ) {
 				foreach ( $user_response as $user_response_single ) {
 					$user_answer_key                       = intval( $this->sanitize_answer_from_post( $user_response_single ) );
 					$user_answer_value                     = $this->sanitize_answer_from_db( $this->answer_array[ $user_answer_key ][0] );
-					$this->user_answer[ $user_answer_key ] = $user_answer_value;
+					$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, 'answer-' . $user_answer_value, 'QSM Answers' );
 				}
 			} elseif ( '' !== $user_response ) {
 				$user_answer_key                       = intval( $this->sanitize_answer_from_post( $user_response ) );
 				$user_answer_value                     = $this->sanitize_answer_from_db( $this->answer_array[ $user_answer_key ][0] );
-				$this->user_answer[ $user_answer_key ] = $user_answer_value;
+				$this->user_answer[ $user_answer_key ] = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $user_answer_value, 'answer-' . $user_answer_value, 'QSM Answers' );
 			}
 		}
 	}
