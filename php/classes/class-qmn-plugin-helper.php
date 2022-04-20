@@ -392,7 +392,7 @@ class QMNPluginHelper {
 	 */
 	public function display_question( $slug, $question_id, $quiz_options ) {
 		global $wpdb;
-		global $qmn_total_questions;
+		global $qmn_total_questions, $qmn_all_questions_count;
 		$question = $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->prefix . 'mlw_questions WHERE question_id=%d', intval( $question_id ) ) );
 		$answers  = array();
 		if ( is_serialized( $question->answer_array ) && is_array( maybe_unserialize( $question->answer_array ) ) ) {
@@ -431,6 +431,7 @@ class QMNPluginHelper {
 
 		foreach ( $this->question_types as $type ) {
 			if ( strtolower( str_replace( ' ', '-', $slug ) ) === $type['slug'] ) {
+				$qmn_all_questions_count += 1;
 				if ( $type['graded'] ) {
 					$qmn_total_questions += 1;
 					if ( 1 === intval( $quiz_options->question_numbering ) ) { ?>
