@@ -813,8 +813,8 @@ class QMNQuizManager {
 		);
 		wp_enqueue_script( 'math_jax', $this->mathjax_url, array(), $this->mathjax_version, true );
 		wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
-		global $qmn_total_questions;
-		$qmn_total_questions = 0;
+		global $qmn_total_questions, $qmn_all_questions_count;
+		$qmn_total_questions = $qmn_all_questions_count = 0;
 		global $mlw_qmn_section_count;
 		$mlw_qmn_section_count = 0;
 		$auto_pagination_class = $options->pagination > 0 ? 'qsm_auto_pagination_enabled' : '';
@@ -874,6 +874,7 @@ class QMNQuizManager {
 				echo apply_filters( 'qmn_before_error_message', '', $options, $quiz_data );
 				?>
 				<div id="mlw_error_message_bottom" class="qsm-error-message qmn_error_message_section"></div>
+					<input type="hidden" name="qmn_all_questions_count" id="qmn_all_questions_count" value="<?php echo esc_attr( $qmn_all_questions_count ); ?>" />
 					<input type="hidden" name="total_questions" id="total_questions" value="<?php echo esc_attr( $qmn_total_questions ); ?>" />
 					<input type="hidden" name="timer" id="timer" value="0" />
 					<input type="hidden" name="timer_ms" id="timer_ms" value="0"/>
