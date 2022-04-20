@@ -27,10 +27,8 @@ class QSM_Install {
 	 * @since 4.7.1
 	 */
 	public function add_hooks() {
-		add_action( 'admin_init', array( $this, 'update' ) );
-		add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
-		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'plugins_loaded', array( $this, 'register_default_settings' ) );
+		add_action( 'admin_init', array( $this, 'update' ) );
 	}
 
 	/**
@@ -1268,14 +1266,99 @@ class QSM_Install {
 	}
 
 	/**
+	 * Return a list of tables.
+	 *
+	 * @return array QSM tables.
+	 */
+	public static function get_tables() {
+		global $wpdb;
+		$tables = array(
+			"{$wpdb->prefix}qsm_quizzes",
+			"{$wpdb->prefix}qsm_meta",
+			"{$wpdb->prefix}qsm_questions",
+			"{$wpdb->prefix}qsm_question_terms",
+			"{$wpdb->prefix}qsm_answers",
+			"{$wpdb->prefix}qsm_results",
+			"{$wpdb->prefix}qsm_result_meta",
+		);
+		
+		/**
+		 * Filter the list of known QSM tables.
+		 *
+		 * If QSM plugins need to add new tables, they can inject them here.
+		 *
+		 * @param array $tables An array of QSM-specific database table names.
+		 */
+		$tables = apply_filters( 'qsm_get_db_tables', $tables );
+
+		return $tables;
+	}
+	
+	/**
+	 * Get database schema.
+	 *
+	 * @return string
+	 */
+	protected static function get_schema() {
+		global $wpdb;
+
+		$charset_collate = $wpdb->has_cap( 'collation' ) ? $wpdb->get_charset_collate() : '';
+
+		$tables = "
+CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}qsm_quizzes` (
+  `quiz_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `quiz_name` text NOT NULL,
+  `quiz_system` smallint(4) NOT NULL,
+  `quiz_views` int(11) NOT NULL,
+  `quiz_taken` int(11) NOT NULL,
+  `quiz_author_id` bigint(20) NOT NULL,
+  `deleted` int(11) NOT NULL,
+  `updated` datetime NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`quiz_id`)
+) $collate;
+CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}qsm_meta` (
+  `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `object_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) DEFAULT NULL,
+  `meta_value` longtext,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`meta_id`),
+  KEY `type` (`type`),
+  KEY `object_id` (`object_id`)
+) $collate;
+	
+		";
+
+		return $tables;
+	}
+	
+	/**
+	 * Create database tables.
+	 */
+	public static function create_tables() {
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+
+		dbDelta( self::get_schema() );
+	}
+
+	/**
 	 * Installs the plugin and its database tables
 	 *
 	 * @since 4.7.1
 	 */
 	public static function install() {
 
+		set_transient( 'qsm_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
+		self::create_tables();
+		
+		delete_transient( 'qsm_installing' );
+		do_action( 'qsm_installed' );
+		
 		global $wpdb;
 		$charset_collate = $wpdb->get_charset_collate();
+		
 
 		$quiz_table_name                 = $wpdb->prefix . 'mlw_quizzes';
 		$question_table_name             = $wpdb->prefix . 'mlw_questions';
@@ -1934,34 +2017,6 @@ class QSM_Install {
 			add_option( 'mlw_advert_shows', 'true' );
 		}
 
-	}
-
-	/**
-	 * Adds new links to the plugin action links
-	 *
-	 * @since 4.7.1
-	 */
-	public function plugin_action_links( $links ) {
-		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'edit.php?post_type=qsm_quiz' ) . '" title="' . esc_attr( __( 'Quizzes & Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes & Surveys', 'quiz-master-next' ) . '</a>',
-		);
-		return array_merge( $action_links, $links );
-	}
-
-	/**
-	 * Adds new links to the plugin row meta
-	 *
-	 * @since 4.7.1
-	 */
-	public function plugin_row_meta( $links, $file ) {
-		if ( QSM_PLUGIN_BASENAME === $file ) {
-			$row_meta = array(
-				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
-				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_about&tab=help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
-			);
-			return array_merge( $links, $row_meta );
-		}
-		return (array) $links;
 	}
 }
 

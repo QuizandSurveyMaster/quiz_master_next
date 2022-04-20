@@ -154,6 +154,7 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
+		include 'php/legacy/class-qsm-legacy.php';
 		include 'php/classes/class-qsm-install.php';
 		include 'php/classes/class-qsm-fields.php';
 
@@ -243,6 +244,8 @@ class MLWQuizMasterNext {
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+		add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
@@ -574,7 +577,33 @@ class MLWQuizMasterNext {
 		}
 	}
 
+	/**
+	 * Adds new links to the plugin action links
+	 *
+	 * @since 4.7.1
+	 */
+	public function plugin_action_links( $links ) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=qsm_quiz' ) . '" title="' . esc_attr( __( 'Quizzes & Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes & Surveys', 'quiz-master-next' ) . '</a>',
+		);
+		return array_merge( $action_links, $links );
+	}
 
+	/**
+	 * Adds new links to the plugin row meta
+	 *
+	 * @since 4.7.1
+	 */
+	public function plugin_row_meta( $links, $file ) {
+		if ( QSM_PLUGIN_BASENAME === $file ) {
+			$row_meta = array(
+				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
+				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_about&tab=help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
+			);
+			return array_merge( $links, $row_meta );
+		}
+		return (array) $links;
+	}
 }
 
 global $mlwQuizMasterNext;
