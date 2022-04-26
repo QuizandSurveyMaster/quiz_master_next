@@ -122,4 +122,12 @@ class QSM_Migrate {
 
 		return $response;
 	}
+	
+	/**
+	 * Migrate Questions into new database tables.
+	 * @since 8.0
+	 */
+	public static function migrate_questions() {
+		
+	}
 }

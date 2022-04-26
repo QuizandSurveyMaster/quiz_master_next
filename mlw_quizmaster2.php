@@ -28,6 +28,7 @@ define( 'QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css' );
 define( 'QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js' );
 define( 'QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php' );
 define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
+define( 'QSM_VERSION', '7.3.14' );
 
 /**
  * This class is the main class of the plugin
@@ -45,6 +46,14 @@ class MLWQuizMasterNext {
 	 * @since 4.0.0
 	 */
 	public $version = '7.3.14';
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var WooCommerce
+	 * @since 2.1
+	 */
+	protected static $_instance = null;
 
 	/**
 	 * QSM Alert Manager Object
@@ -130,6 +139,20 @@ class MLWQuizMasterNext {
 		  ignoreHtmlClass: 'tex2jax_ignore|editor-rich-text'
 		}
 	  };";
+	
+	/**
+	 * Main QSM Instance.
+	 *
+	 * Ensures only one instance of WooCommerce is loaded or can be loaded.
+	 *
+	 * @return Main instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
 	/**
 	 * Main Construct Function
@@ -606,9 +629,17 @@ class MLWQuizMasterNext {
 	}
 }
 
+/**
+ * Returns the main instance of QSM.
+ */
+function QSM() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+	return MLWQuizMasterNext::instance();
+}
+
 global $mlwQuizMasterNext;
-$mlwQuizMasterNext = new MLWQuizMasterNext();
+$mlwQuizMasterNext = QSM();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
+
 
 /**
  * Displays QSM Admin bar menu
