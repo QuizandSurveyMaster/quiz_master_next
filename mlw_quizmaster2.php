@@ -177,8 +177,9 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
-		include 'php/legacy/class-qsm-legacy.php';
+		include 'php/qsm-core-functions.php';
 		include 'php/classes/class-qsm-install.php';
+		
 		include 'php/classes/class-qsm-fields.php';
 
 		include 'php/classes/class-qmn-log-manager.php';

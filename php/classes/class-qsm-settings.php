@@ -434,5 +434,3 @@ class QSM_Quiz_Settings {
 		return (object) $quiz_options;
 	}
 }
-
-

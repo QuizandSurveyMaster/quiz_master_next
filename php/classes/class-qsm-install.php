@@ -1301,7 +1301,7 @@ class QSM_Install {
 		}
 		flush_rewrite_rules();
 	}
-
+	
 	/**
 	 * Return a list of tables.
 	 *
@@ -1316,7 +1316,6 @@ class QSM_Install {
 			"{$wpdb->prefix}qsm_terms",
 			"{$wpdb->prefix}qsm_answers",
 			"{$wpdb->prefix}qsm_results",
-			"{$wpdb->prefix}qsm_result_meta",
 		);
 		
 		/**
@@ -1418,16 +1417,7 @@ CREATE TABLE `{$wpdb->prefix}qsm_results` (
   PRIMARY KEY (`id`),
   KEY `quiz_id` (`quiz_id`),
   KEY `user` (`user`),
-  KEY `time_taken` (`time_taken`),
-  KEY `deleted` (`deleted`)
-) ENGINE=InnoDB $collate;
-CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `result_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-  `meta_key` varchar(255) DEFAULT NULL,
-  `meta_value` longtext,
-  PRIMARY KEY (`id`),
-  KEY `result_id` (`result_id`)
+  KEY `time_taken` (`time_taken`)
 ) ENGINE=InnoDB $collate;
 		";
 
