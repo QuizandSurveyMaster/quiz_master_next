@@ -19,17 +19,17 @@ class QSM_Quiz extends QSM_Model {
 	 * @var array
 	 */
 	public $data = array(
-		'id'		 => '',
-		'quiz_id'	 => '',
-		'name'		 => '',
-		'system'	 => '',
-		'views'		 => 0,
-		'taken'		 => 0,
-		'author_id'	 => 0,
-		'deleted'	 => 0,
-		'updated'	 => null,
-		'created'	 => null,
-		'settings'	 => array(),
+		'id'        => '',
+		'quiz_id'   => '',
+		'name'      => '',
+		'system'    => '',
+		'views'     => 0,
+		'taken'     => 0,
+		'author_id' => 0,
+		'deleted'   => 0,
+		'updated'   => null,
+		'created'   => null,
+		'settings'  => array(),
 	);
 
 	/**

@@ -41,10 +41,10 @@ if ( ! function_exists( 'add_qsm_meta' ) ) {
 			return false;
 		}
 		// expected_slashed ($meta_key)
-		$meta_key	 = wp_unslash( $meta_key );
-		$meta_value	 = wp_unslash( $meta_value );
+		$meta_key    = wp_unslash( $meta_key );
+		$meta_value  = wp_unslash( $meta_value );
 		$_meta_value = $meta_value;
-		$meta_value	 = maybe_serialize( $meta_value );
+		$meta_value  = maybe_serialize( $meta_value );
 		/**
 		 * Fires immediately before meta of a specific type is added.
 		 *
@@ -56,12 +56,12 @@ if ( ! function_exists( 'add_qsm_meta' ) ) {
 		 * @param mixed  $_meta_value Metadata value.
 		 */
 		do_action( "add_{$type}_meta", $object_id, $meta_key, $_meta_value );
-		$result		 = $wpdb->insert(
+		$result      = $wpdb->insert(
 			$table, array(
-			'object_id'	 => $object_id,
-			'meta_key'	 => $meta_key,
-			'meta_value' => $meta_value,
-			'type'		 => $type
+				'object_id'  => $object_id,
+				'meta_key'   => $meta_key,
+				'meta_value' => $meta_value,
+				'type'       => $type,
 			)
 		);
 		if ( ! $result ) {
@@ -83,7 +83,6 @@ if ( ! function_exists( 'add_qsm_meta' ) ) {
 
 		return $mid;
 	}
-
 }
 if ( ! function_exists( 'update_qsm_meta' ) ) {
 
@@ -112,19 +111,19 @@ if ( ! function_exists( 'update_qsm_meta' ) ) {
 			return false;
 		}
 		// expected_slashed ($meta_key)
-		$meta_key	 = wp_unslash( $meta_key );
-		$meta_value	 = wp_unslash( $meta_value );
-		$meta_ids	 = $wpdb->get_col( $wpdb->prepare( "SELECT `id` FROM `$table` WHERE `object_id` = %d AND `type` = %s AND `meta_key` = %s", $object_id, $type, $meta_key ) );
+		$meta_key    = wp_unslash( $meta_key );
+		$meta_value  = wp_unslash( $meta_value );
+		$meta_ids    = $wpdb->get_col( $wpdb->prepare( "SELECT `id` FROM `$table` WHERE `object_id` = %d AND `type` = %s AND `meta_key` = %s", $object_id, $type, $meta_key ) );
 		if ( empty( $meta_ids ) ) {
 			return add_qsm_meta( $object_id, $meta_key, $meta_value, $type );
 		}
 
 		$_meta_value = $meta_value;
-		$meta_value	 = maybe_serialize( $meta_value );
-		$where		 = array(
-			'object_id'	 => $object_id,
-			'meta_key'	 => $meta_key,
-			'type'		 => $type
+		$meta_value  = maybe_serialize( $meta_value );
+		$where       = array(
+			'object_id' => $object_id,
+			'meta_key'  => $meta_key,
+			'type'      => $type,
 		);
 
 		foreach ( $meta_ids as $meta_id ) {
@@ -163,7 +162,6 @@ if ( ! function_exists( 'update_qsm_meta' ) ) {
 		}
 		return true;
 	}
-
 }
 if ( ! function_exists( 'get_qsm_meta' ) ) {
 
@@ -195,28 +193,27 @@ if ( ! function_exists( 'get_qsm_meta' ) ) {
 		if ( ! empty( $meta_list ) ) {
 			$cache = array();
 			foreach ( $meta_list as $metarow ) {
-				$mkey	 = $metarow['meta_key'];
-				$mval	 = $metarow['meta_value'];
-				if ( ! isset( $cache[$mkey] ) || ! is_array( $cache[$mkey] ) ) {
-					$cache[$mkey] = array();
+				$mkey    = $metarow['meta_key'];
+				$mval    = $metarow['meta_value'];
+				if ( ! isset( $cache[ $mkey ] ) || ! is_array( $cache[ $mkey ] ) ) {
+					$cache[ $mkey ] = array();
 				}
-				$cache[$mkey][] = $mval;
+				$cache[ $mkey ][] = $mval;
 			}
 			if ( ! $meta_key ) {
 				return $cache;
 			}
-			if ( isset( $cache[$meta_key] ) ) {
+			if ( isset( $cache[ $meta_key ] ) ) {
 				if ( $single ) {
-					return maybe_unserialize( $cache[$meta_key][0] );
+					return maybe_unserialize( $cache[ $meta_key ][0] );
 				} else {
-					return array_map( 'maybe_unserialize', $cache[$meta_key] );
+					return array_map( 'maybe_unserialize', $cache[ $meta_key ] );
 				}
 			}
 		}
 
 		return null;
 	}
-
 }
 if ( ! function_exists( 'delete_qsm_meta' ) ) {
 
@@ -272,5 +269,4 @@ if ( ! function_exists( 'delete_qsm_meta' ) ) {
 
 		return true;
 	}
-
 }
