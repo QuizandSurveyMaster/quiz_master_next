@@ -32,7 +32,6 @@ abstract class QSM_Model {
 
 	public function __construct( $id = 0 ) {
 		$this->set_id( $id );
-		
 	}
 
 	/**

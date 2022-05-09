@@ -31,7 +31,7 @@ class QSM_Migrate {
 		if ( '1' == get_option( 'qsm_db_migrated', '0' ) ) {
 			return;
 		}
-
+		
 		$legacy_quizzes_tbl  = "{$wpdb->prefix}mlw_quizzes";
 		$quizzes_tbl         = "{$wpdb->prefix}qsm_quizzes";
 		$quizzes             = $wpdb->get_results( "SELECT * FROM `{$legacy_quizzes_tbl}` ORDER BY `quiz_id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
@@ -165,10 +165,10 @@ class QSM_Migrate {
 		if ( ! empty( $answers ) ) {
 			foreach ( $answers as $key => $answer ) {
 				$answer_data     = array(
-					'question_id' => $question_id,
-					'answer'      => $answer[0],
-					'point_score' => $answer[1],
-					'correct'     => $answer[2],
+					'question_id'   => $question_id,
+					'answer'        => $answer[0],
+					'point_score'   => $answer[1],
+					'correct_score' => $answer[2],
 				);
 				$answer_insert   = $wpdb->insert( $answers_tbl, $answer_data );
 				if ( $answer_insert ) {
@@ -225,9 +225,70 @@ class QSM_Migrate {
 		if ( '1' == get_option( 'qsm_db_migrated', '0' ) ) {
 			return;
 		}
-
 		$legacy_quizzes_tbl  = "{$wpdb->prefix}mlw_results";
 		$results_tbl         = "{$wpdb->prefix}qsm_results";
+		$result_meta_tbl     = "{$wpdb->prefix}qsm_result_meta";
+		/**
+		 * Get all results.
+		 */
+		$all_results         = $wpdb->get_results( "SELECT * FROM `{$legacy_quizzes_tbl}` ORDER BY `result_id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( ! empty( $all_results ) ) {
+			foreach ( $all_results as $result ) {
+				$result_meta = maybe_unserialize($result->quiz_results);
+				$result_data     = array(
+					'id'              => $result->result_id,
+					'quiz_id'         => $result->quiz_id,
+					'user'            => $result->user,
+					'user_email'      => $result->email,
+					'user_ip'         => $result->user_ip,
+					'point_score'     => $result->point_score,
+					'correct_score'   => $result->correct_score,
+					'total_questions' => $result->total,
+					'time_taken'      => intval( $result_meta[0] ),
+					'unique_id'       => $result->unique_id,
+					'autosaved'       => 0,
+					'deleted'         => $result->deleted,
+					'updated'         => date( 'Y-m-d H:i:s', strtotime( $result->time_taken ) ),
+					'created'         => date( 'Y-m-d H:i:s', strtotime( $result->time_taken ) ),
+				);
+				$result_insert   = $wpdb->insert( $results_tbl, $result_data );
+				if ( $result_insert ) {
+					$result_id                       = $wpdb->insert_id;
+					$result_meta['user_name']        = $result->name;
+					$result_meta['business']         = $result->business;
+					$result_meta['phone']            = $result->phone;
+					$result_meta['total_correct']    = $result->correct;
+					$result_meta['form_type']        = $result->form_type;
+					$result_meta['quiz_system']      = $result->quiz_system;
+					$result_meta['quiz_name']        = $result->quiz_name;
+					$result_meta['page_name']        = $result->page_name;
+					$result_meta['page_url']         = $result->page_url;
+					$result_meta['timer']            = $result_meta[0];
+					$result_meta['question_answers'] = $result_meta[1];
+					$result_meta['comments']         = $result_meta[2];
+					unset( $result_meta[0], $result_meta[1], $result_meta[2] );
+					/**
+					 * Store Result meta data into result meta table
+					 */
+					if ( ! empty( $result_meta ) ) {
+						foreach ( $result_meta as $meta_key => $meta_value ) {
+							$meta_key    = wp_unslash( $meta_key );
+							$meta_value  = maybe_serialize( wp_unslash( $meta_value ) );
+							$result      = $wpdb->insert( $result_meta_tbl, array(
+								'result_id'  => $result_id,
+								'meta_key'   => $meta_key,
+								'meta_value' => $meta_value,
+							)
+							);
+						}
+					}
+					/**
+					 * Fires once a Result has been saved.
+					 */
+					do_action( 'qsm_result_saved', $result_id, $result_data, $result_meta );
+				}
+			}
+		}
 	}
 
 	/**

@@ -1313,6 +1313,7 @@ class QSM_Install {
 			"{$wpdb->prefix}qsm_terms",
 			"{$wpdb->prefix}qsm_answers",
 			"{$wpdb->prefix}qsm_results",
+			"{$wpdb->prefix}qsm_result_meta",
 		);
 
 		/**
@@ -1398,6 +1399,7 @@ CREATE TABLE `{$wpdb->prefix}qsm_answers` (
   `answer` longtext,
   `point_score` float NOT NULL DEFAULT '0',
   `correct` tinyint(4) NOT NULL DEFAULT '0',
+  `meta` longtext,
   PRIMARY KEY (`id`),
   KEY `question_id` (`question_id`),
   KEY `correct` (`correct`)
@@ -1409,7 +1411,7 @@ CREATE TABLE `{$wpdb->prefix}qsm_results` (
   `user_email` varchar(255) DEFAULT NULL,
   `user_ip` varchar(255) DEFAULT NULL,
   `point_score` float NOT NULL DEFAULT '0',
-  `correct` float NOT NULL DEFAULT '0',
+  `correct_score` float NOT NULL DEFAULT '0',
   `total_questions` int(11) NOT NULL,
   `time_taken` int(11) NOT NULL,
   `unique_id` varchar(255) DEFAULT NULL,
@@ -1422,6 +1424,14 @@ CREATE TABLE `{$wpdb->prefix}qsm_results` (
   KEY `user` (`user`),
   KEY `time_taken` (`time_taken`)
 ) ENGINE=InnoDB AUTO_INCREMENT=$result_auto_increment $collate;
+CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `result_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `meta_key` varchar(255) DEFAULT NULL,
+  `meta_value` longtext,
+  PRIMARY KEY (`id`),
+  KEY `result_id` (`result_id`)
+) ENGINE=InnoDB $collate;
 		";
 
 		return $tables;

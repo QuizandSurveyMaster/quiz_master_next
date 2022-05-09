@@ -14,7 +14,7 @@ class QSM_Quiz extends QSM_Model {
 	protected $object_type = 'quiz';
 
 	/**
-	 * Stores product data.
+	 * Stores quiz data.
 	 *
 	 * @var array
 	 */
@@ -34,7 +34,7 @@ class QSM_Quiz extends QSM_Model {
 
 	/**
 	 * 
-	 * @param int|QSM_Quiz|object $id Quiz to init.
+	 * @param int $id Quiz to init.
 	 */
 	public function __construct( $id = 0 ) {
 		parent::__construct( $id );
@@ -52,7 +52,17 @@ class QSM_Quiz extends QSM_Model {
 	
 	public static function add_quiz( $data = array() ) {
 		
-		
+		$quiz_data = array(
+			'name'      => '',
+			'system'    => '',
+			'views'     => 0,
+			'taken'     => 0,
+			'author_id' => 0,
+			'deleted'   => 0,
+			'updated'   => '',
+			'created'   => '',
+		);
+
 		return false;
 	}
 
