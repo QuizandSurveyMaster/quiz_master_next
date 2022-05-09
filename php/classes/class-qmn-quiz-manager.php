@@ -1756,7 +1756,7 @@ class QMNQuizManager {
 			$pages = array( $question_array );
 		}
 		// Retrieve data from submission
-		$total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
+	    $total_questions = isset( $_POST['total_questions'] ) ? intval( $_POST['total_questions'] ) : 0;
 		$question_list   = array();
 		if ( isset( $_POST['qmn_question_list'] ) ) {
 			$qmn_question_list = sanitize_text_field( wp_unslash( $_POST['qmn_question_list'] ) );
@@ -1977,7 +1977,7 @@ class QMNQuizManager {
 
 		// Calculate Total Percent Score And Average Points Only If Total Questions Doesn't Equal Zero To Avoid Division By Zero Error
 		if ( 0 !== $total_questions ) {
-			$total_score = round( ( ( $total_correct / $total_questions ) * 100 ), 2 );
+			$total_score = round( ( ( $total_correct / ( $total_questions - count( $hidden_questions ) ) ) * 100 ), 2 );
 		} else {
 			$total_score = 0;
 		}
