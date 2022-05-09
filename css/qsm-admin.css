@@ -2261,7 +2261,7 @@ td.scheduled_time_start {
 
 .qsm-text-template-span{
 	min-width: 100px;
-	
+
 }
 
 .qsm-text-template-span .button{
@@ -2269,7 +2269,7 @@ td.scheduled_time_start {
 	border: none;
 	min-height: unset;
 	font-size: 12px;
-	background: unset;	
+	background: unset;
 }
 
 .qsm-text-template-span .template-variable:hover {
@@ -2310,7 +2310,7 @@ td.scheduled_time_start {
 	align-items: center;
 	justify-content: center;
 	height: 100%;
-	width:25px;	
+	width:25px;
 	z-index:99;
 	border-left: 1px dashed #a1c1d8;
 	background: #def0ff;
@@ -2324,7 +2324,7 @@ td.scheduled_time_start {
 
 .popup-template-span-wrap .qsm-text-template-span .popup-copied-des span.dashicons{
 	line-height: 1;
-} 
+}
 
 #result_page_fb_image {
 	width: 25em;
@@ -2353,4 +2353,4 @@ input#duplicate_questions {
     margin-left: 10px;
 }
 .post-type-qsm_quiz .wrap .wp-heading-inline,
-.post-type-qsm_quiz .wrap .wp-heading-inline+.page-title-action{display:none;}
+.post-type-qsm_quiz .wrap .wp-heading-inline+.page-title-action{display:none !important;}
