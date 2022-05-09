@@ -12,6 +12,7 @@ class QSM_Question_Review_Choice extends QSM_Question_Review {
 	public function set_user_answer() {
 		if ( isset( $_POST[ 'question' . $this->question_id ] ) ) {
 			$user_response = wp_unslash( $_POST[ 'question' . $this->question_id ] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			
 			if ( is_array( $user_response ) ) {
 				foreach ( $user_response as $user_response_single ) {
 					$user_answer_key                       = intval( $this->sanitize_answer_from_post( $user_response_single ) );

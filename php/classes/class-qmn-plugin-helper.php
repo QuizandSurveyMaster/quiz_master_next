@@ -420,7 +420,6 @@ class QMNPluginHelper {
 		 * Filter Answers of specific question before display
 		 */
 		$answers = apply_filters( 'qsm_single_question_answers', $answers, $question, $quiz_options );
-
 		foreach ( $this->question_types as $type ) {
 			if ( strtolower( str_replace( ' ', '-', $slug ) ) === $type['slug'] ) {
 				if ( $type['graded'] ) {
@@ -493,8 +492,10 @@ class QMNPluginHelper {
 				array( $question->answer_six, $question->answer_six_points, $mlw_answer_array_correct[5] ),
 			);
 		}
-		foreach ( $this->question_types as $type ) {
+		foreach ( $this->question_types as $type ) 
+		{
 			if ( strtolower( str_replace( ' ', '-', $slug ) ) === $type['slug'] ) {
+				
 				if ( ! is_null( $type['review'] ) ) {
 					$results_array = call_user_func( $type['review'], intval( $question_id ), $question->question_name, $answers );
 				} else {
