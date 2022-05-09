@@ -608,6 +608,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$return_points = 0;
 		}
+		$return_points = apply_filters( 'qsm_category_points', $return_points, $category_name, $mlw_quiz_array );
 		$content = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
 	}
 	return $content;
