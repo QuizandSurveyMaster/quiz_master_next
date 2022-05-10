@@ -645,7 +645,6 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 	// Makes sure user is logged in.
 	if ( is_user_logged_in() ) {
 		$current_user = wp_get_current_user();
-
 		$stop = qsm_verify_rest_user_nonce( $request['quizID'], $current_user->ID, $request['rest_nonce'] );
 		if ( ! $stop ) {
 			try {
@@ -683,12 +682,9 @@ function qsm_rest_save_question( WP_REST_Request $request ) {
 					{
 						$answers = $intial_answers;
 					}
-					// $answers = $intial_answers;
 				}
 				$question_id = QSM_Questions::save_question( $id, $data, $answers, $settings );
-
 				do_action( 'qsm_saved_question_data', $question_id, $request );
-
 				return array(
 					'status' => 'success',
 				);

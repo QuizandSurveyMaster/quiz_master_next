@@ -31,6 +31,14 @@ function qmn_accept_display( $id, $question, $answers ) {
 
 function qmn_opt_in_review($id, $question, $answers)
 {
+	if($_POST['question'.$id]== 'on')
+	{
+		$user_compare_text = 'opted';
+	}
+	else
+	{
+		$user_compare_text = 'not-opted';
+	}
 	$current_question               = new QSM_Question_Review_Choice( $id, $question, $answers );
 	$user_text_array                = $current_question->get_user_answer();
 	$correct_text_array             = $current_question->get_correct_answer();
@@ -38,7 +46,8 @@ function qmn_opt_in_review($id, $question, $answers)
 	$return_array['correct_answer'] = $correct_text_array ;
 	$return_array['user_text']      = ! empty( $user_text_array ) ? implode( '.', $user_text_array ) : '' ;
 	$return_array['correct_text']   = ! empty( $correct_text_array ) ? implode( '.', $correct_text_array ) : '';
-	$return_array['correct']        =  $current_question->get_answer_status();
+	$return_array['correct']        =  'opt-in';
 	$return_array['points']         =  '';
+	$return_array['user_compare_text']   =  $user_compare_text;
 	return apply_filters( 'qmn_opt_in_review', $return_array, $answers );
 }

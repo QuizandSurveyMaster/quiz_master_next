@@ -1794,9 +1794,6 @@ class QMNQuizManager {
 
 							// Send question to our grading function
 							$results_array = $mlwQuizMasterNext->pluginHelper->display_review( $question['question_type_new'], $question['question_id'] );
-							// echo $result_array; die;
-							// echo "<pre>";
-							// print_r($results_array); die;	
 							$results_array = apply_filters( 'qmn_results_array', $results_array, $question );
 							// If question was graded correctly.
 							if ( ! isset( $results_array['null_review'] ) ) {
