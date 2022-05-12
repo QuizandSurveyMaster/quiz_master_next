@@ -28,6 +28,7 @@ define( 'QSM_PLUGIN_CSS_URL', QSM_PLUGIN_URL . 'css' );
 define( 'QSM_PLUGIN_JS_URL', QSM_PLUGIN_URL . 'js' );
 define( 'QSM_PLUGIN_PHP_DIR', QSM_THEME_PATH . 'php' );
 define( 'QSM_PLUGIN_TXTDOMAIN', 'quiz-master-next' );
+define( 'QSM_VERSION', '7.3.14' );
 
 /**
  * This class is the main class of the plugin
@@ -45,6 +46,14 @@ class MLWQuizMasterNext {
 	 * @since 4.0.0
 	 */
 	public $version = '7.3.14';
+
+	/**
+	 * The single instance of the class.
+	 *
+	 * @var WooCommerce
+	 * @since 2.1
+	 */
+	protected static $_instance = null;
 
 	/**
 	 * QSM Alert Manager Object
@@ -130,6 +139,20 @@ class MLWQuizMasterNext {
 		  ignoreHtmlClass: 'tex2jax_ignore|editor-rich-text'
 		}
 	  };";
+	
+	/**
+	 * Main QSM Instance.
+	 *
+	 * Ensures only one instance of WooCommerce is loaded or can be loaded.
+	 *
+	 * @return Main instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
 
 	/**
 	 * Main Construct Function
@@ -154,7 +177,9 @@ class MLWQuizMasterNext {
 	 */
 	private function load_dependencies() {
 
+		include 'php/qsm-core-functions.php';
 		include 'php/classes/class-qsm-install.php';
+		
 		include 'php/classes/class-qsm-fields.php';
 
 		include 'php/classes/class-qmn-log-manager.php';
@@ -243,6 +268,8 @@ class MLWQuizMasterNext {
 		add_action( 'admin_init', array( $this, 'qsm_overide_old_setting_options' ) );
 		add_action( 'admin_notices', array( $this, 'qsm_admin_notices' ) );
 		add_filter( 'manage_edit-qsm_category_columns', array( $this, 'modify_qsm_category_columns' ) );
+		add_filter( 'plugin_action_links_' . QSM_PLUGIN_BASENAME, array( $this, 'plugin_action_links' ) );
+		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 2 );
 	}
 
 	/**
@@ -574,12 +601,46 @@ class MLWQuizMasterNext {
 		}
 	}
 
+	/**
+	 * Adds new links to the plugin action links
+	 *
+	 * @since 4.7.1
+	 */
+	public function plugin_action_links( $links ) {
+		$action_links = array(
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=qsm_quiz' ) . '" title="' . esc_attr( __( 'Quizzes & Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes & Surveys', 'quiz-master-next' ) . '</a>',
+		);
+		return array_merge( $action_links, $links );
+	}
 
+	/**
+	 * Adds new links to the plugin row meta
+	 *
+	 * @since 4.7.1
+	 */
+	public function plugin_row_meta( $links, $file ) {
+		if ( QSM_PLUGIN_BASENAME === $file ) {
+			$row_meta = array(
+				'docs'    => '<a href="' . esc_url( 'https://quizandsurveymaster.com/docs/' ) . '" title="' . esc_attr( __( 'View Documentation', 'quiz-master-next' ) ) . '">' . __( 'Documentation', 'quiz-master-next' ) . '</a>',
+				'support' => '<a href="' . admin_url( 'admin.php?page=qsm_quiz_about&tab=help' ) . '" title="' . esc_attr( __( 'Create Support Ticket', 'quiz-master-next' ) ) . '">' . __( 'Support', 'quiz-master-next' ) . '</a>',
+			);
+			return array_merge( $links, $row_meta );
+		}
+		return (array) $links;
+	}
+}
+
+/**
+ * Returns the main instance of QSM.
+ */
+function QSM() { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.FunctionNameInvalid
+	return MLWQuizMasterNext::instance();
 }
 
 global $mlwQuizMasterNext;
-$mlwQuizMasterNext = new MLWQuizMasterNext();
+$mlwQuizMasterNext = QSM();
 register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
+
 
 /**
  * Displays QSM Admin bar menu
