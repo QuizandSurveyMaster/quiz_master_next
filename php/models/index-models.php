@@ -71,13 +71,13 @@ abstract class QSM_Model {
 	 */
 	protected function set_field_value( $field, $value, $section = '' ) {
 		if ( ! empty( $section ) && array_key_exists( $section, $this->data ) ) {
-			$section_data			 = maybe_unserialize( $this->data[$section] );
-			$section_data[$field]	 = $value;
+			$section_data            = maybe_unserialize( $this->data[ $section ] );
+			$section_data[ $field ]    = $value;
 
-			$this->data[$section] = $section_data;
+			$this->data[ $section ] = $section_data;
 		} else {
 			if ( array_key_exists( $field, $this->data ) ) {
-				$this->data[$field] = $value;
+				$this->data[ $field ] = $value;
 			}
 		}
 	}
@@ -94,13 +94,13 @@ abstract class QSM_Model {
 		$value = null;
 
 		if ( ! empty( $section ) && array_key_exists( $section, $this->data ) ) {
-			$section_data = maybe_unserialize( $this->data[$section] );
+			$section_data = maybe_unserialize( $this->data[ $section ] );
 			if ( array_key_exists( $field, $section_data ) ) {
-				$value = $section_data[$field];
+				$value = $section_data[ $field ];
 			}
 		} else {
 			if ( array_key_exists( $field, $this->data ) ) {
-				$value = $this->data[$field];
+				$value = $this->data[ $field ];
 			}
 		}
 

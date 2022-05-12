@@ -216,27 +216,6 @@ class QMNGlobalSettingsPage {
 				echo '<span>' . esc_html__( ' Settings have been updated!', 'quiz-master-next' ) . '</span>';
 			echo '</div>';
 		}
-		$enabled = get_option( 'qsm_multiple_category_enabled' );
-		if ( 'cancelled' === $enabled ) {
-			?>
-<div class="notice notice-info multiple-category-notice">
-	<h3>
-			<?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?>
-	</h3>
-	<p>
-			<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?><br/>
-			<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br/>
-			<?php
-			/* translators: %s: HTML tag */
-			echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
-			?>
-	</p>
-	<p class="category-action">
-		<a href="javascript:void(0)" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
-	</p>
-</div>
-			<?php
-		}
 	}
 
 	/**

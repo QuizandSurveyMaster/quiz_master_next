@@ -1,5 +1,4 @@
 <?php
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -12,11 +11,92 @@ if ( ! defined( 'ABSPATH' ) ) {
 class QSM_Migrate {
 
 	public function __construct() {
-		if ( isset( $_REQUEST['migrate'] ) && 1 == $_REQUEST['migrate'] ) {
-//			self::migrate_quizzes();
-//			self::migrate_questions();
-//			self::migrate_results();
+		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_action( 'wp_ajax_cancel_db_upgrade', array( $this, 'cancel_db_upgrade' ) );
+		add_action( 'wp_ajax_init_db_upgrade', array( $this, 'init_migration' ) );
+	}
+
+	/**
+	 * Display admin notice for database migration.
+	 */
+	public function admin_notices() {
+		$db_migrated = get_option( 'qsm_db_migrated', 0 );
+		if ( ! $db_migrated ) {
+			?>
+			<div class="notice notice-info db-upgrade-notice">
+				<h3><?php esc_html_e( 'QSM - Database update required', 'quiz-master-next' ); ?></h3>
+				<p>
+					<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br>
+					<?php
+					/* translators: %s: HTML tag */
+					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
+					?>
+				</p>
+				<p class="notice-action-links">
+					<a href="javascript:void(0)" class="button cancel-db-upgrade"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
+					&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="button button-primary init-db-upgrade"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
+				</p>
+			</div>
+			<?php
 		}
+	}
+
+	/**
+	 * Cancel database migration
+	 * @global type $wpdb
+	 * @since 8.0
+	 */
+	public static function cancel_db_upgrade() {
+		global $wpdb;
+		update_option( 'qsm_db_migrated', 'cancelled' );
+		exit;
+	}
+
+	/**
+	 * Migrate Quizzes into new database tables.
+	 * @since 8.0
+	 */
+	public static function init_migration() {
+		$response = array(
+			'status'  => true,
+			'quiz'    => 0,
+			'message' => __( 'Database updated successfully.', 'quiz-master-next' ),
+		);
+		/**
+		 * Check if already migrated.
+		 */
+		if ( is_qsm_migrated() ) {
+			$response = array(
+				'status'  => false,
+				'quiz'    => 0,
+				'message' => __( 'Database is already migrated.', 'quiz-master-next' ),
+			);
+			return;
+		}
+
+		/**
+		 * Migrate legacy multiple categories.
+		 */
+		if ( is_qsm_multiple_category_migrated() ) {
+			self::migrate_multiple_categories();
+		}
+
+		/**
+		 * Migrate Quizzes.
+		 */
+		$quizzes = self::migrate_quizzes();
+		if ( false !== $quizzes ) {
+			$response['status']  = true;
+			$response['quiz']    = $quizzes;
+		}
+
+		/**
+		 * Set database migrated flag in option table.
+		 */
+		update_option( 'qsm_db_migrated', gmdate( time() ) );
+
+		echo wp_json_encode( $response );
+		exit;
 	}
 
 	/**
@@ -28,13 +108,14 @@ class QSM_Migrate {
 		/**
 		 * Stop the process if database already migrated.
 		 */
-		if ( '1' == get_option( 'qsm_db_migrated', '0' ) ) {
-			return;
+		if ( is_qsm_quizzes_migrated() ) {
+			return true;
 		}
-		
 		$legacy_quizzes_tbl  = "{$wpdb->prefix}mlw_quizzes";
 		$quizzes_tbl         = "{$wpdb->prefix}qsm_quizzes";
 		$quizzes             = $wpdb->get_results( "SELECT * FROM `{$legacy_quizzes_tbl}` ORDER BY `quiz_id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$total_quizzes       = count( $quizzes );
+		$total_migrated      = 0;
 		if ( ! empty( $quizzes ) ) {
 			foreach ( $quizzes as $quiz ) {
 				$quiz_data = array(
@@ -51,6 +132,7 @@ class QSM_Migrate {
 
 				$quiz_insert = $wpdb->insert( $quizzes_tbl, $quiz_data );
 				if ( $quiz_insert ) {
+					$total_migrated  += 1;
 					$quiz_id         = $wpdb->insert_id;
 					$other_data      = array(
 						'old_quiz_id'         => $quiz->quiz_id,
@@ -84,211 +166,55 @@ class QSM_Migrate {
 				}
 			}
 		}
+		/**
+		 * Set option once quizzes are migrated
+		 */
+		update_option( 'qsm_quizzes_migrated', gmdate( time() ) );
+		return $total_migrated;
 	}
 
-	/**
-	 * Migrate Questions into new database tables.
-	 * @since 8.0
-	 */
-	public static function migrate_questions() {
+	public static function migrate_multiple_categories() {
 		global $wpdb;
-		/**
-		 * Stop the process if database already migrated.
-		 */
-		if ( '1' == get_option( 'qsm_db_migrated', '0' ) ) {
-			return;
-		}
-		$legacy_question_tbl = "{$wpdb->prefix}mlw_questions";
-		$question_tbl        = "{$wpdb->prefix}qsm_questions";
-		/**
-		 * Get all questions.
-		 */
-		$all_questions       = $wpdb->get_results( "SELECT * FROM `{$legacy_question_tbl}` ORDER BY `question_id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( ! empty( $all_questions ) ) {
-			foreach ( $all_questions as $question ) {
-				$settings        = maybe_unserialize( $question->question_settings );
-				$question_data   = array(
-					'id'                => $question->question_id,
-					'quiz_id'           => $question->quiz_id,
-					'name'              => $settings['question_title'],
-					'description'       => $question->question_name,
-					'type'              => $question->question_type_new,
-					'order'             => $question->question_order,
-					'deleted'           => $question->deleted,
-					'deleted_from_bank' => $question->deleted_question_bank,
-					'updated'           => date( 'Y-m-d H:i:s' ),
-					'created'           => date( 'Y-m-d H:i:s' ),
-				);
-				$question_insert = $wpdb->insert( $question_tbl, $question_data );
-				if ( $question_insert ) {
-					$quiz_id     = $question->quiz_id;
-					$question_id = $wpdb->insert_id;
-
-					/**
-					 * Store Question Settings into meta table
-					 */
-					$settings['question_answer_info']    = $question->question_answer_info;
-					$settings['comments']                = $question->comments;
-					$settings['hints']                   = $question->hints;
-					if ( ! empty( $settings ) ) {
-						foreach ( $settings as $meta_key => $meta_value ) {
-							update_qsm_meta( $question_id, $meta_key, $meta_value, 'question' );
-						}
+		$new_category    = '';
+		$term_id         = 0;
+		$values_array    = array();
+		$result          = false;
+		$category_data   = $wpdb->get_results( "SELECT `question_id`, `quiz_id`, `category` FROM `{$wpdb->prefix}mlw_questions` WHERE category <> '' ORDER BY category" );
+		if ( ! empty( $category_data ) ) {
+			foreach ( $category_data as $data ) {
+				if ( $new_category != $data->category ) {
+					$term_data = get_term_by( 'name', $data->category, 'qsm_category' );
+					if ( $term_data ) {
+						$term_id = $term_data->term_id;
+					} else {
+						$term_array  = wp_insert_term( $data->category, 'qsm_category' );
+						$term_id     = $term_array['term_id'];
 					}
-					/**
-					 * Store Answers into answers table
-					 */
-					self::migrate_answers( $question->answer_array, $question_id );
-
-					/**
-					 * Store Question Category into answers table
-					 */
-					self::migrate_question_categories( $question_id, $quiz_id );
-
-					/**
-					 * Fires once a Question has been saved.
-					 */
-					do_action( 'qsm_question_saved', $question_id, $question_data, $settings );
 				}
+				$values_array[] = "($data->question_id, $data->quiz_id, $term_id, 'qsm_category')";
 			}
-		}
-	}
-
-	/**
-	 * Migrate Answers into new database tables.
-	 * @since 8.0
-	 */
-	public static function migrate_answers( $answers, $question_id ) {
-		global $wpdb;
-		$answers_tbl = "{$wpdb->prefix}qsm_answers";
-		$answers     = maybe_unserialize( $answers );
-		if ( ! empty( $answers ) ) {
-			foreach ( $answers as $key => $answer ) {
-				$answer_data     = array(
-					'question_id'   => $question_id,
-					'answer'        => $answer[0],
-					'point_score'   => $answer[1],
-					'correct_score' => $answer[2],
+			$values          = join( ',', $values_array );
+			$insert_query    = stripslashes( $wpdb->prepare( "INSERT INTO {$wpdb->prefix}mlw_question_terms (question_id, quiz_id, term_id, taxonomy) VALUES %1s", $values ) );
+			$result          = $wpdb->query( $insert_query );
+			if ( $result > 0 ) {
+				update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
+				$response    = array(
+					'status' => true,
+					'count'  => $result,
 				);
-				$answer_insert   = $wpdb->insert( $answers_tbl, $answer_data );
-				if ( $answer_insert ) {
-					$answer_id = $wpdb->insert_id;
-					/**
-					 * Fires once a answer has been saved.
-					 */
-					do_action( 'qsm_answer_saved', $answer_id, $question_id, $answer );
-				}
+				$update      = "UPDATE {$wpdb->prefix}mlw_questions SET category = '' ";
+				$updated     = $wpdb->query( $update );
+			} else {
+				$response = array( 'status' => false );
 			}
+		} else {
+			$response = array(
+				'status' => true,
+				'count'  => 0,
+			);
+			update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
 		}
-	}
-
-	/**
-	 * Migrate Categories into new database tables.
-	 * @since 8.0
-	 */
-	public static function migrate_question_categories( $question_id = 0, $quiz_id = 0 ) {
-		global $wpdb;
-		$legacy_terms_tbl    = "{$wpdb->prefix}mlw_question_terms";
-		$terms_tbl           = "{$wpdb->prefix}qsm_terms";
-		$old_terms           = $wpdb->get_results( "SELECT * FROM `{$legacy_terms_tbl}` WHERE `question_id`='{$question_id}' AND `quiz_id`='{$quiz_id}' ORDER BY `id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( ! empty( $old_terms ) ) {
-			foreach ( $old_terms as $term ) {
-				$term_data   = array(
-					'object_id' => $term->question_id,
-					'parent_id' => $term->quiz_id,
-					'term_id'   => $term->term_id,
-					'taxonomy'  => $term->taxonomy,
-					'type'      => 'question',
-				);
-				$term_insert = $wpdb->insert( $terms_tbl, $term_data );
-				if ( $term_insert ) {
-					$term_id = $wpdb->insert_id;
-
-					/**
-					 * Fires once a Question Category has been saved.
-					 */
-					do_action( 'qsm_question_category_saved', $term->term_id, $term->question_id, $term->quiz_id );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Migrate Results into new database tables.
-	 * @since 8.0
-	 */
-	public static function migrate_results() {
-		global $wpdb;
-		/**
-		 * Stop the process if database already migrated.
-		 */
-		if ( '1' == get_option( 'qsm_db_migrated', '0' ) ) {
-			return;
-		}
-		$legacy_quizzes_tbl  = "{$wpdb->prefix}mlw_results";
-		$results_tbl         = "{$wpdb->prefix}qsm_results";
-		$result_meta_tbl     = "{$wpdb->prefix}qsm_result_meta";
-		/**
-		 * Get all results.
-		 */
-		$all_results         = $wpdb->get_results( "SELECT * FROM `{$legacy_quizzes_tbl}` ORDER BY `result_id` ASC" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-		if ( ! empty( $all_results ) ) {
-			foreach ( $all_results as $result ) {
-				$result_meta = maybe_unserialize($result->quiz_results);
-				$result_data     = array(
-					'id'              => $result->result_id,
-					'quiz_id'         => $result->quiz_id,
-					'user'            => $result->user,
-					'user_email'      => $result->email,
-					'user_ip'         => $result->user_ip,
-					'point_score'     => $result->point_score,
-					'correct_score'   => $result->correct_score,
-					'total_questions' => $result->total,
-					'time_taken'      => intval( $result_meta[0] ),
-					'unique_id'       => $result->unique_id,
-					'autosaved'       => 0,
-					'deleted'         => $result->deleted,
-					'updated'         => date( 'Y-m-d H:i:s', strtotime( $result->time_taken ) ),
-					'created'         => date( 'Y-m-d H:i:s', strtotime( $result->time_taken ) ),
-				);
-				$result_insert   = $wpdb->insert( $results_tbl, $result_data );
-				if ( $result_insert ) {
-					$result_id                       = $wpdb->insert_id;
-					$result_meta['user_name']        = $result->name;
-					$result_meta['business']         = $result->business;
-					$result_meta['phone']            = $result->phone;
-					$result_meta['total_correct']    = $result->correct;
-					$result_meta['form_type']        = $result->form_type;
-					$result_meta['quiz_system']      = $result->quiz_system;
-					$result_meta['quiz_name']        = $result->quiz_name;
-					$result_meta['page_name']        = $result->page_name;
-					$result_meta['page_url']         = $result->page_url;
-					$result_meta['timer']            = $result_meta[0];
-					$result_meta['question_answers'] = $result_meta[1];
-					$result_meta['comments']         = $result_meta[2];
-					unset( $result_meta[0], $result_meta[1], $result_meta[2] );
-					/**
-					 * Store Result meta data into result meta table
-					 */
-					if ( ! empty( $result_meta ) ) {
-						foreach ( $result_meta as $meta_key => $meta_value ) {
-							$meta_key    = wp_unslash( $meta_key );
-							$meta_value  = maybe_serialize( wp_unslash( $meta_value ) );
-							$result      = $wpdb->insert( $result_meta_tbl, array(
-								'result_id'  => $result_id,
-								'meta_key'   => $meta_key,
-								'meta_value' => $meta_value,
-							)
-							);
-						}
-					}
-					/**
-					 * Fires once a Result has been saved.
-					 */
-					do_action( 'qsm_result_saved', $result_id, $result_data, $result_meta );
-				}
-			}
-		}
+		return $response;
 	}
 
 	/**

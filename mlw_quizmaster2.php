@@ -569,27 +569,6 @@ class MLWQuizMasterNext {
 	 * @since 7.3.0
 	 */
 	public function qsm_admin_notices() {
-		$multiple_categories = get_option( 'qsm_multiple_category_enabled' );
-		if ( ! $multiple_categories ) {
-			?>
-			<div class="notice notice-info multiple-category-notice" style="display:none;">
-				<h3><?php esc_html_e( 'Database update required', 'quiz-master-next' ); ?></h3>
-				<p>
-					<?php esc_html_e( 'QSM has been updated!', 'quiz-master-next' ); ?><br>
-					<?php esc_html_e( 'We need to upgrade your database so that you can enjoy the latest features.', 'quiz-master-next' ); ?><br>
-					<?php
-					/* translators: %s: HTML tag */
-					echo sprintf( esc_html__( 'Please note that this action %1$s can not be %2$s rolled back. We recommend you to take a backup of your current site before proceeding.', 'quiz-master-next' ), '<b>', '</b>' );
-					?>
-				</p>
-				<p class="category-action">
-					<a href="javascrip:void(0)" class="button cancel-multiple-category"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></a>
-					&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" class="button button-primary enable-multiple-category"><?php esc_html_e( 'Update Database', 'quiz-master-next' ); ?></a>
-				</p>
-			</div>
-			<?php
-		}
-		
 		$settings                        = (array) get_option( 'qmn-settings' );
 		$background_quiz_email_process   = isset( $settings['background_quiz_email_process'] ) ? $settings['background_quiz_email_process'] : 1;
 		if ( 1 == $background_quiz_email_process && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {

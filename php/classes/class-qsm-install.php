@@ -1280,6 +1280,13 @@ class QSM_Install {
 		 */
 		update_option( 'qsm_version', QSM()->version );
 		update_option( 'qsm_db_version', QSM()->version );
+		
+		/**
+		 * Set migration flags for fresh install
+		 */
+		update_option( 'qsm_quizzes_migrated', gmdate( time() ) );
+		update_option( 'qsm_multiple_category_enabled', gmdate( time() ) );
+		update_option( 'qsm_db_migrated', gmdate( time() ) );
 
 		delete_transient( 'qsm_installing' );
 		/**
@@ -1457,6 +1464,10 @@ CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
 		$tables = self::get_tables();
 
 		foreach ( $tables as $table ) {
+			/**
+			 * Fires before dropping database table.
+			 */
+			do_action('qsm_before_drop_db_table', $table);
 			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}

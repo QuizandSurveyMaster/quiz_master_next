@@ -869,62 +869,49 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
     }
 }(jQuery));
 
-//QSM - Admin Notices for enabling multiple categories in QSM 7.3+
-
-(function ($) {
-	$(document).on('click', '.enable-multiple-category', function (e) {
+//QSM - Admin Notices for upgrading database in QSM 8.0+
+( function ( $ ) {
+	$( document ).on( 'click', '.init-db-upgrade', function ( e ) {
 		e.preventDefault();
-		$('.category-action').html('Updating database<span></span>');
-		$('.category-action').prev().hide();
-		$('.category-action').prev().prev().hide();
+		$( '.db-upgrade-notice' ).html( '<p>Updating database.<span></span></p>' );
 		i = 0;
-		category_interval = setInterval(() => {
-			if (i % 3 == 0) {
-				$('.category-action span').html(' .');
+		var category_interval = setInterval( () => {
+			if ( i % 3 == 0 ) {
+				$( '.db-upgrade-notice span' ).html( ' .' );
 			} else {
-				$('.category-action span').append(' .');
+				$( '.db-upgrade-notice span' ).append( ' .' );
 			}
 			i++;
-		}, 500);
-		$.ajax({
+		}, 500 );
+		$.ajax( {
 			type: "POST",
 			url: ajaxurl,
-			data: {
-				action: 'enable_multiple_categories',
-				value: 'enable'
-			},
-			success: function (r) {
-				response = JSON.parse(r);
-				clearInterval(category_interval);
-				if (response.status) {
-					$('.category-action').parents('.multiple-category-notice').removeClass('notice-info').addClass('notice-success').html('<p>Database updated successfully.</p>');
+			data: { action: 'init_db_upgrade' },
+			success: function ( r ) {
+				var response = JSON.parse( r );
+				clearInterval( category_interval );
+				if ( response.status ) {
+					$( '.db-upgrade-notice' ).removeClass( 'notice-info' ).addClass( 'notice-success' ).html( '<p>'+response.message+'</p>' );
 				} else {
-					$('.category-action').parents('.multiple-category-notice').removeClass('notice-info').addClass('notice-error').html('Error! Please try again');
+					$( '.db-upgrade-notice' ).removeClass( 'notice-info' ).addClass( 'notice-error' ).html( '<p>'+response.message+'</p>' );
 				}
-
 			}
-		});
-	});
+		} );
+	} );
 
-	$(document).on('click', '.cancel-multiple-category', function (e) {
+	$( document ).on( 'click', '.cancel-db-upgrade', function ( e ) {
 		e.preventDefault();
-		$('.category-action').html('');
-		$.ajax({
+		$( '.db-upgrade-notice' ).html( '' );
+		$.ajax( {
 			type: "POST",
 			url: ajaxurl,
-			data: {
-				action: 'enable_multiple_categories',
-				value: 'cancel'
-			},
-			success: function (status) {
-				if (status) {
-					$('.multiple-category-notice').hide();
-				}
+			data: { action: 'cancel_db_upgrade' },
+			success: function ( status ) {
+				$( '.db-upgrade-notice' ).hide();
 			}
-		});
-	});
-	$('.multiple-category-notice').show();
-}(jQuery));
+		} );
+	} );
+}( jQuery ) );
 
 // QSM - Admin Stats Page
 (function ($) {

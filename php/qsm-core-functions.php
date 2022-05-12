@@ -1,18 +1,50 @@
 <?php
 
-
 // Include core functions (available in both admin and frontend).
 require_once QSM_PLUGIN_PATH . 'php/models/index-models.php';
 require_once QSM_PLUGIN_PATH . 'php/models/class-quiz-model.php';
 require_once QSM_PLUGIN_PATH . 'php/legacy/class-qsm-legacy.php';
 
+/**
+ * Check if database is migrated
+ * @global type $wpdb
+ * @return boolean
+ */
 function is_qsm_migrated() {
 	global $wpdb;
-	$migrated = false;
-	if ( version_compare( QSM()->version, '8.0', '>=' ) ) {
+	$migrated    = false;
+	$db_migrated = get_option( 'qsm_db_migrated' );
+	if ( $db_migrated && 'cancelled' !== $db_migrated ) {
 		$migrated = true;
 	}
-	if ( 1 == get_option( 'qsm_db_migrated' ) ) {
+	return $migrated;
+}
+
+/**
+ * Check if quizzes are migrated
+ * @global type $wpdb
+ * @return boolean
+ */
+function is_qsm_multiple_category_migrated() {
+	global $wpdb;
+	$migrated    = false;
+	$db_migrated = get_option( 'qsm_multiple_category_enabled', 0 );
+	if ( $db_migrated && 'cancelled' !== $db_migrated ) {
+		$migrated = true;
+	}
+	return $migrated;
+}
+
+/**
+ * Check if quizzes are migrated
+ * @global type $wpdb
+ * @return boolean
+ */
+function is_qsm_quizzes_migrated() {
+	global $wpdb;
+	$migrated    = false;
+	$db_migrated = get_option( 'qsm_quizzes_migrated', 0 );
+	if ( $db_migrated ) {
 		$migrated = true;
 	}
 	return $migrated;
