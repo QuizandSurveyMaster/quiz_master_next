@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class QSM_Question extends QSM_Model {
-
+	
 	/**
 	 * This is the name of this object type.
 	 *
@@ -19,17 +19,17 @@ class QSM_Question extends QSM_Model {
 	 * @var array
 	 */
 	public $data = array(
-		'id'                => '',
-		'quiz_id'           => '',
-		'name'              => '',
-		'description'       => '',
-		'type'              => 0,
-		'order'             => 0,
-		'deleted'           => 0,
-		'deleted_from_bank' => 0,
-		'updated'           => null,
-		'created'           => null,
-		'settings'          => array(),
+		'id'				 => '',
+		'quiz_id'			 => '',
+		'name'				 => '',
+		'description'		 => '',
+		'type'				 => 0,
+		'order'				 => 0,
+		'deleted'			 => 0,
+		'deleted_from_bank'	 => 0,
+		'updated'			 => null,
+		'created'			 => null,
+		'settings'			 => array(),
 	);
 
 	/**
@@ -42,7 +42,7 @@ class QSM_Question extends QSM_Model {
 
 	public function prepare() {
 		$question_id = $this->id;
-		$quiz_id     = $this->quiz_id;
+		$quiz_id	 = $this->quiz_id;
 
 		return false;
 	}

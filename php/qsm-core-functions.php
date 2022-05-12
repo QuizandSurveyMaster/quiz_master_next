@@ -4,7 +4,6 @@
 // Include core functions (available in both admin and frontend).
 require_once QSM_PLUGIN_PATH . 'php/models/index-models.php';
 require_once QSM_PLUGIN_PATH . 'php/models/class-quiz-model.php';
-
 require_once QSM_PLUGIN_PATH . 'php/legacy/class-qsm-legacy.php';
 
 function is_qsm_migrated() {
