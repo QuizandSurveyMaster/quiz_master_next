@@ -1,6 +1,5 @@
 <?php
 $themes_data = array();
-global $mlwQuizMasterNext;
 function qsm_fetch_data_from_xml() {
 	$file     = esc_url( 'https://quizandsurveymaster.com/addons.xml' );
 	$response = wp_remote_post( $file, array( 'sslverify' => false ) );
@@ -41,6 +40,7 @@ add_action( 'admin_init', 'qsm_add_author_column_in_db' );
  * Insert new column in quiz table
  */
 function qsm_add_author_column_in_db() {
+	global $mlwQuizMasterNext;
 	if ( 1 !== intval( get_option( 'qsm_update_db_column', '' ) ) ) {
 		global $wpdb;
 		/*
