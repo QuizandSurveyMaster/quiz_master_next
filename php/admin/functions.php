@@ -1,6 +1,5 @@
 <?php
 $themes_data = array();
-
 function qsm_fetch_data_from_xml() {
 	$file     = esc_url( 'https://quizandsurveymaster.com/addons.xml' );
 	$response = wp_remote_post( $file, array( 'sslverify' => false ) );
@@ -181,9 +180,12 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			$wpdb->query( "ALTER TABLE $result_table_name ADD page_url varchar(255) NOT NULL" );
+			if( $wpdb->query( "ALTER TABLE $result_table_name ADD page_url varchar(255) NOT NULL" ) ) {
+				update_option( 'qsm_update_result_db_column_page_url', '1' );
+			} else {
+				error_log($wpdb->last_error);
+			}
 		}
-		update_option( 'qsm_update_result_db_column_page_url', '1' );
 	}
 
 	/**
@@ -203,9 +205,12 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			$wpdb->query( "ALTER TABLE $result_table_name ADD page_name varchar(255) NOT NULL" );
+			if( $wpdb->query( "ALTER TABLE $result_table_name ADD page_name varchar(255) NOT NULL" ) ) {
+				update_option( 'qsm_update_result_db_column_page_name', '1' );
+			} else {
+				error_log($wpdb->last_error);
+			}
 		}
-		update_option( 'qsm_update_result_db_column_page_name', '1' );
 	}
 }
 
