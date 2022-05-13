@@ -1,5 +1,6 @@
 <?php
 $themes_data = array();
+$qsm_log     = $mlwQuizMasterNext->log_manager;
 function qsm_fetch_data_from_xml() {
 	$file     = esc_url( 'https://quizandsurveymaster.com/addons.xml' );
 	$response = wp_remote_post( $file, array( 'sslverify' => false ) );
@@ -82,10 +83,10 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			if( $wpdb->query( "ALTER TABLE $result_table_name ADD form_type INT NOT NULL" )	) {
+			if ( $wpdb->query( "ALTER TABLE $result_table_name ADD form_type INT NOT NULL" ) ) {
 				update_option( 'qsm_update_result_db_column', '1' );
 			} else {
-				$mlwQuizMasterNext->log_manager->add( 'Error Creating Column form_type in'.$result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
+				$qsm_log->add( 'Error Creating Column form_type in' . $result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
 		}
 	}
@@ -107,10 +108,10 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( ! empty( $table_quiz_col_obj ) ) {
-			if( $wpdb->query( "ALTER TABLE $quiz_table_name CHANGE `system` `quiz_system` INT(11) NOT NULL;" ) ) {
+			if ( $wpdb->query( "ALTER TABLE $quiz_table_name CHANGE `system` `quiz_system` INT(11) NOT NULL;" ) ) {
 				update_option( 'qsm_update_quiz_db_column', '1' );
 			} else {
-				$mlwQuizMasterNext->log_manager->add( 'Error Changing Columns system,quiz_system in'.$quiz_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
+				$qsm_log->add( 'Error Changing Columns system,quiz_system in' . $quiz_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
 		}
 	}
@@ -133,10 +134,10 @@ function qsm_add_author_column_in_db() {
 			ARRAY_A
 		);
 		if ( isset( $table_quiz_result_obj['DATA_TYPE'] ) && 'text' === $table_quiz_result_obj['DATA_TYPE'] ) {
-			if( $wpdb->query( "ALTER TABLE $result_table_name CHANGE `quiz_results` `quiz_results` LONGTEXT;" ) ) {
+			if ( $wpdb->query( "ALTER TABLE $result_table_name CHANGE `quiz_results` `quiz_results` LONGTEXT;" ) ) {
 				update_option( 'qsm_update_result_db_column_datatype', '1' );
 			} else {
-				$mlwQuizMasterNext->log_manager->add( 'Error Changing Columns quiz_results in'.$result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
+				$qsm_log->add( 'Error Changing Columns quiz_results in' . $result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
 		}
 	}
@@ -159,11 +160,11 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			if( $wpdb->query( "ALTER TABLE $question_table_name ADD deleted_question_bank INT NOT NULL" ) ) {
+			if ( $wpdb->query( "ALTER TABLE $question_table_name ADD deleted_question_bank INT NOT NULL" ) ) {
 				$inc_val = $total_count_val + 1;
 				update_option( 'qsm_add_new_column_question_table_table', $inc_val );
 			} else {
-				$mlwQuizMasterNext->log_manager->add( 'Error Creating Columns deleted_question_bank in'.$question_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
+				$qsm_log->add( 'Error Creating Columns deleted_question_bank in' . $question_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
 		}
 	}
@@ -184,11 +185,11 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			if( $wpdb->query( "ALTER TABLE $result_table_name ADD page_url varchar(255) NOT NULL" ) ) {
+			if ( $wpdb->query( "ALTER TABLE $result_table_name ADD page_url varchar(255) NOT NULL" ) ) {
 				update_option( 'qsm_update_result_db_column_page_url', '1' );
 			} else {
 				$error = $wpdb->last_error;
-				$mlwQuizMasterNext->log_manager->add( 'Error Creating Column page_url in'.$result_table_name, "Tried {$wpdb->last_query} but got {$error}.", 0, 'error' );
+				$qsm_log->add( 'Error Creating Column page_url in' . $result_table_name, "Tried {$wpdb->last_query} but got {$error}.", 0, 'error' );
 			}
 		}
 	}
@@ -210,10 +211,10 @@ function qsm_add_author_column_in_db() {
 			)
 		);
 		if ( empty( $table_result_col_obj ) ) {
-			if( $wpdb->query( "ALTER TABLE $result_table_name ADD page_name varchar(255) NOT NULL" ) ) {
+			if ( $wpdb->query( "ALTER TABLE $result_table_name ADD page_name varchar(255) NOT NULL" ) ) {
 				update_option( 'qsm_update_result_db_column_page_name', '1' );
 			} else {
-				$mlwQuizMasterNext->log_manager->add( 'Error Creating Column page_name in'.$result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
+				$qsm_log->add( 'Error Creating Column page_name in' . $result_table_name, "Tried {$wpdb->last_query} but got {$wpdb->last_error}.", 0, 'error' );
 			}
 		}
 	}
