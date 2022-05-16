@@ -68,29 +68,29 @@ var QSMPageTimer;
 				// If there is a first page...
 				if (qmn_quiz_data[quizID].hasOwnProperty('first_page') && !qmn_quiz_data[quizID].first_page) {
 					QSM.activateTimer(quizID);
-					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+					$('.qsm-quiz-container-'+ quizID).find('.stoptimer-p').show();
 				}
 				// ...else, we must be using the questions per page option.
 			} else {
 				if (qmn_quiz_data[quizID].hasOwnProperty('pagination') && qmn_quiz_data[quizID].first_page) {
-					$(document).on('click', '.qmn_quiz_container'+ quizID + ' .mlw_next', function (event) {
+					$(document).on('click', '.qsm-quiz-container-'+ quizID + ' .mlw_next', function (event) {
 						event.preventDefault();
 						if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 							var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
-							if ($('#quizForm' + quizID).closest('.qmn_quiz_container').find('.qmn_pagination > .slide_number_hidden').val() == start_timer) {
+							if ($('.qsm-quiz-container-'+ quizID).find('.qmn_pagination > .slide_number_hidden').val() == start_timer) {
 								QSM.activateTimer(quizID);
-								$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+								$('.qsm-quiz-container-'+ quizID).find('.stoptimer-p').show();
 							}
 						} else {
 							if (!qmn_quiz_data[quizID].timerStatus && (0 == $('.quiz_begin:visible').length || (1 == $('.quiz_begin:visible').length && qmnValidatePage('quizForm' + quizID)))) {
 								QSM.activateTimer(quizID);
-								$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+								$('.qsm-quiz-container-' + quizID).find('.stoptimer-p').show();
 							}
 						}
 					});
 				} else {
 					QSM.activateTimer(quizID);
-					$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+					$('.qsm-quiz-container-' + quizID).find('.stoptimer-p').show();
 				}
 			}
 			jQuery(document).trigger('qsm_init_timer_after', [quizID]);
@@ -335,7 +335,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_next_button_click_before', [quizID]);
 					event.preventDefault();
 					QSM.nextPage(quizID);
-					var $container = jQuery('#quizForm' + quizID).closest('.qmn_quiz_container');
+					var $container = jQuery('.qsm-quiz-container-'+ quizID);
 					if (qmn_quiz_data[quizID].disable_scroll_next_previous_click != 1) {
 						qsmScrollTo($container);
 					}
@@ -345,7 +345,7 @@ var QSMPageTimer;
 					jQuery(document).trigger('qsm_previous_button_click_before', [quizID]);
 					event.preventDefault();
 					QSM.prevPage(quizID);
-					var $container = jQuery('#quizForm' + quizID).closest('.qmn_quiz_container');
+					var $container = jQuery('.qsm-quiz-container-'+ quizID);
 					if (qmn_quiz_data[quizID].disable_scroll_next_previous_click != 1) {
 						qsmScrollTo($container);
 					}
@@ -440,12 +440,12 @@ var QSMPageTimer;
 					var start_timer = parseInt(qmn_quiz_data[quizID].advanced_timer.start_timer_page);
 					if ( page == start_timer ) { // check current page
 						QSM.activateTimer(quizID);
-						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+						$('.qsm-quiz-container-'+ quizID).find('.stoptimer-p').show();
 					}
 				} else {
 					if (!qmn_quiz_data[quizID].timerStatus ) {
 						QSM.activateTimer(quizID);
-						$('#quizForm' + quizID).closest('.qmn_quiz_container').find('.stoptimer-p').show();
+						$('.qsm-quiz-container-'+ quizID).find('.stoptimer-p').show();
 					}
 				}
 
@@ -1193,7 +1193,7 @@ function qmnUpdatePageNumber(amount, quiz_form_id) {
 
 function qmnInitPagination(quiz_id) {
 	var qmn_section_total = +qmn_quiz_data[quiz_id].pagination.total_questions;
-	var qmn_total_questions = jQuery('#quizForm' + quiz_id).find('#total_questions').val();
+	var qmn_total_questions = jQuery('#quizForm' + quiz_id).find('#qmn_all_questions_count').val();
 	var qmn_total_pages = Math.ceil(qmn_total_questions / +qmn_quiz_data[quiz_id].pagination.amount);
 
 	qmn_total_pages = qmn_total_pages + 1; //quiz begin

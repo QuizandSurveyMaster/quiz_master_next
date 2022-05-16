@@ -91,6 +91,26 @@ class QSM_Install {
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
+		// Registers correct_answer_logic field
+		$field_array = array(
+			'id'          => 'correct_answer_logic',
+			'label'       => __( 'Correct Answer Logic', 'quiz-master-next' ),
+			'type'        => 'radio',
+			'options'     => array(
+				array(
+					'label' => __( 'All correct answers', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Any correct answer', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'     => 0,
+			'show_option' => 'qsm_hidden_tr_gradingsystem',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
 		// Registers default number of answers field
 		$field_array = array(
 			'id'      => 'default_answers',
@@ -1074,7 +1094,7 @@ class QSM_Install {
 			'id'      => 'retake_quiz_button_text',
 			'label'   => __( 'Retake Quiz Button', 'quiz-master-next' ),
 			'type'    => 'text',
-			'default' => 'Retake Quiz',
+			'default' => __( 'Retake Quiz', 'quiz-master-next' ),
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1923,7 +1943,7 @@ class QSM_Install {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'admin.php?page=mlw_quiz_list' ) . '" title="' . esc_attr( __( 'Quizzes/Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes/Surveys', 'quiz-master-next' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=qsm_quiz' ) . '" title="' . esc_attr( __( 'Quizzes & Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes & Surveys', 'quiz-master-next' ) . '</a>',
 		);
 		return array_merge( $action_links, $links );
 	}

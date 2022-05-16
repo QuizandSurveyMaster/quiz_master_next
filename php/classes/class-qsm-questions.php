@@ -376,6 +376,16 @@ class QSM_Questions {
 			}
 		}
 
+		/**
+		 * Hook after saving question
+		 */
+		if ( $is_creating ) {
+			do_action( 'qsm_question_added', $question_id, $values );
+		} else {
+			do_action( 'qsm_question_updated', $question_id, $values );
+		}
+		do_action( 'qsm_saved_question', $question_id, $values );
+
 		return $question_id;
 	}
 

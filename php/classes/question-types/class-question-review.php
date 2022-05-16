@@ -14,6 +14,7 @@ abstract class QSM_Question_Review {
 	public $input_field          = '';
 	public $form_type            = 0;
 	public $grading_system       = 0;
+	public $correct_answer_logic = 0;
 
 	function __construct( $question_id = 0, $question_description = '', $answer_array = array() ) {
 		global $mlwQuizMasterNext;
@@ -25,6 +26,7 @@ abstract class QSM_Question_Review {
 		$quiz_options               = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 		$this->form_type            = intval( $quiz_options->form_type );
 		$this->grading_system       = intval( $quiz_options->system );
+		$this->correct_answer_logic = intval( $quiz_options->correct_answer_logic );
 		$this->set_user_answer();
 		$this->set_correct_answer();
 		$this->set_answer_status();

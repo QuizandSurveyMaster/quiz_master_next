@@ -70,27 +70,27 @@ class QMNQuizCreator {
 	 * @return void
 	 */
 	public function create_quiz( $quiz_name, $theme_id, $quiz_settings = array() ) {
-		global $mlwQuizMasterNext;
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 		$current_user = wp_get_current_user();
+		$default_texts = QMNPluginHelper::get_default_texts();
 		$results      = $wpdb->insert(
 			$wpdb->prefix . 'mlw_quizzes',
 			array(
 				'quiz_name'                => $quiz_name,
-				'message_before'           => __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
+				'message_before'           => isset( $default_texts['message_before'] ) ? $default_texts['message_before'] : __( 'Welcome to your %QUIZ_NAME%', 'quiz-master-next' ),
 				'message_after'            => __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' ),
-				'message_comment'          => __( 'Please fill in the comment box below.', 'quiz-master-next' ),
+				'message_comment'          => isset( $default_texts['message_comment'] ) ? $default_texts['message_comment'] : __( 'Please fill in the comment box below.', 'quiz-master-next' ),
 				'message_end_template'     => '',
 				'user_email_template'      => '%QUESTIONS_ANSWERS_EMAIL%',
 				'admin_email_template'     => '%QUESTIONS_ANSWERS_EMAIL%',
-				'submit_button_text'       => __( 'Submit', 'quiz-master-next' ),
-				'name_field_text'          => __( 'Name', 'quiz-master-next' ),
-				'business_field_text'      => __( 'Business', 'quiz-master-next' ),
-				'email_field_text'         => __( 'Email', 'quiz-master-next' ),
-				'phone_field_text'         => __( 'Phone Number', 'quiz-master-next' ),
-				'comment_field_text'       => __( 'Comments', 'quiz-master-next' ),
+				'submit_button_text'       => isset( $default_texts['submit_button_text'] ) ? $default_texts['submit_button_text'] : __( 'Submit', 'quiz-master-next' ),
+				'name_field_text'          => isset( $default_texts['name_field_text'] ) ? $default_texts['name_field_text'] : __( 'Name', 'quiz-master-next' ),
+				'business_field_text'      => isset( $default_texts['business_field_text'] ) ? $default_texts['business_field_text'] : __( 'Business', 'quiz-master-next' ),
+				'email_field_text'         => isset( $default_texts['email_field_text'] ) ? $default_texts['email_field_text'] : __( 'Email', 'quiz-master-next' ),
+				'phone_field_text'         => isset( $default_texts['phone_field_text'] ) ? $default_texts['phone_field_text'] : __( 'Phone Number', 'quiz-master-next' ),
+				'comment_field_text'       => isset( $default_texts['comment_field_text'] ) ? $default_texts['comment_field_text'] : __( 'Comments', 'quiz-master-next' ),
 				'email_from_text'          => 'Wordpress',
-				'question_answer_template' => '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
+				'question_answer_template' => isset( $default_texts['question_answer_template'] ) ? $default_texts['question_answer_template'] : '%QUESTION%<br />%USER_ANSWERS_DEFAULT%',
 				'leaderboard_template'     => '',
 				'quiz_system'              => 0,
 				'randomness_order'         => 0,
@@ -107,12 +107,12 @@ class QMNQuizCreator {
 				'comment_section'          => 1,
 				'question_from_total'      => 0,
 				'total_user_tries'         => 0,
-				'total_user_tries_text'    => __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
+				'total_user_tries_text'    => isset( $default_texts['total_user_tries_text'] ) ? $default_texts['total_user_tries_text'] : __( 'You have utilized all of your attempts to pass this quiz.', 'quiz-master-next' ),
 				'certificate_template'     => '',
 				'social_media'             => 0,
 				'social_media_text'        => __( 'I just scored %CORRECT_SCORE%% on %QUIZ_NAME%!', 'quiz-master-next' ),
 				'pagination'               => 0,
-				'pagination_text'          => __( 'Next', 'quiz-master-next' ),
+				'pagination_text'          => isset( $default_texts['next_button_text'] ) ? $default_texts['next_button_text'] : __( 'Next', 'quiz-master-next' ),
 				'timer_limit'              => 0,
 				'quiz_stye'                => '',
 				'question_numbering'       => 0,
@@ -120,9 +120,9 @@ class QMNQuizCreator {
 				'theme_selected'           => 'primary',
 				'last_activity'            => current_time( 'mysql' ),
 				'require_log_in'           => 0,
-				'require_log_in_text'      => __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
+				'require_log_in_text'      => isset( $default_texts['require_log_in_text'] ) ? $default_texts['require_log_in_text'] : __( 'This quiz is for logged in users only.', 'quiz-master-next' ),
 				'limit_total_entries'      => 0,
-				'limit_total_entries_text' => __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
+				'limit_total_entries_text' => isset( $default_texts['limit_total_entries_text'] ) ? $default_texts['limit_total_entries_text'] : __( 'Unfortunately, this quiz has a limited amount of entries it can recieve and has already reached that limit.', 'quiz-master-next' ),
 				'scheduled_timeframe'      => '',
 				'scheduled_timeframe_text' => '',
 				'quiz_views'               => 0,
@@ -204,6 +204,11 @@ class QMNQuizCreator {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your new quiz or survey has been created successfully. To begin editing, click the Edit link.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( 'New Quiz/Survey Has Been Created', $new_quiz, '' );
 
+			/**
+			 * Prepare quiz result & email templates.
+			 */
+			self::add_quiz_templates($new_quiz);
+			
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $new_quiz );
 		} else {
@@ -273,7 +278,11 @@ class QMNQuizCreator {
 		}
 
 		if ( $qsm_delete && ! empty( $quiz_post_id ) ) {
-			wp_trash_post( $quiz_post_id );
+			if ( $qsm_delete_from_db ) {
+				wp_delete_post( $quiz_post_id, true );
+			} else {
+				wp_trash_post( $quiz_post_id );
+			}
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been deleted successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( "Quiz/Survey Has Been Deleted: $quiz_name", $quiz_id, '' );
 		} else {
@@ -505,6 +514,11 @@ class QMNQuizCreator {
 			add_post_meta( $quiz_post_id, 'quiz_id', $mlw_new_id );
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'Your quiz or survey has been duplicated successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( 'New Quiz/Survey Has Been Created', $mlw_new_id, '' );
+			/**
+			 * Prepare quiz result & email templates.
+			 */
+			self::add_quiz_templates($mlw_new_id);
+
 			do_action( 'qmn_quiz_duplicated', $quiz_id, $mlw_new_id );
 		} else {
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'There has been an error in this action. Please share this with the developer. Error Code: 0011', 'quiz-master-next' ), 'error' );
@@ -665,6 +679,23 @@ class QMNQuizCreator {
 					'quiz_id' => $mlw_new_id,
 				)
 			);
+		}
+	}
+	
+	public static function add_quiz_templates( $quiz_id ) {
+		global $mlwQuizMasterNext;
+		$pages   = QSM_Results_Pages::load_pages( $quiz_id );
+		for ( $i = 0; $i < count( $pages ); $i++ ) {
+			if ( ! empty($pages[ $i ]['page']) ) {
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
+			}
+		}
+		$emails  = QSM_Emails::load_emails( $quiz_id );
+		for ( $i = 0; $i < count( $emails ); $i++ ) {
+			if ( ! empty($emails[ $i ]['content']) ) {
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
+				$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
+			}
 		}
 	}
 
