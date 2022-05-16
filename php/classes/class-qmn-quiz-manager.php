@@ -1267,7 +1267,7 @@ class QMNQuizManager {
 			?>
 			<span class="pages_count" style="display: none;">
 				<?php
-				$text_c = $current_page_number . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pagination;
+				$text_c = esc_html__( '1 out of ', 'quiz-master-next' ) . $total_pagination;
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 			</span>
