@@ -1471,6 +1471,22 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }));
             },
             addQuestionFromQuestionBank: function (questionID) {
+                QSMAdmin.displayAlert('Duplicating question...', 'info');
+                var model = QSMQuestion.questions.get(questionID);
+                console.log(model);
+                console.log(questionID);
+                return;
+                var newModel = _.clone(model.attributes);
+                QSMQuestion.questions.create(
+                    newModel, {
+                        headers: {
+                            'X-WP-Nonce': qsmQuestionSettings.nonce
+                        },
+                        success: QSMQuestion.addNewQuestion,
+                        error: QSMAdmin.displayError
+                    }
+                );
+
                 var model = new QSMQuestion.question({
                     id: questionID
                 });
@@ -1537,7 +1553,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     for (var i = 0; i < qsmQuestionSettings.pages.length; i++) {
                         for (var j = 0; j < qsmQuestionSettings.pages[i].length; j++) {
                             question = QSMQuestion.questions.get(qsmQuestionSettings.pages[i][j]);
-                            QSMQuestion.addQuestionToPage(question);
+                            if( 'undefined' !== typeof question ){
+                            	QSMQuestion.addQuestionToPage(question);
+							}
                         }
                     }
                 } else {
@@ -2314,12 +2332,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 QSMQuestion.addNewAnswer(answer, 0);
             });
 
-            $('.qsm-popup-bank').on('click', '.import-button', function (event) {
+            $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                 event.preventDefault();
                 $(this).text('').text('Adding Question');
                 import_button = $(this);
-                QSMQuestion.addQuestionFromQuestionBank($(this).parents('.question-bank-question').data('question-id'));
                 $('.import-button').addClass('disable_import');
+                QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
             });
 
             //Click on selected question button.

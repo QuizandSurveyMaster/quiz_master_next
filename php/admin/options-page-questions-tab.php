@@ -827,6 +827,8 @@ function qsm_ajax_save_pages() {
 
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+	print_r($pages);
+	print_r($qpages);
 	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
 	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
@@ -1086,7 +1088,7 @@ function qsm_options_questions_tab_template() {
 					<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 				</div>
 				<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-				<div><a href="javascript:void(0)" class="import-button button"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
+				<div><a href="javascript:void(0)" class="import-button button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
 			</div>
 		</script>
 
