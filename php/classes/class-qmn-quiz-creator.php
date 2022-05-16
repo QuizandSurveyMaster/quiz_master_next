@@ -320,7 +320,7 @@ class QMNQuizCreator {
 			$quiz_data = array(
 				'ID'         => $post_id,
 				'post_title' => $quiz_name
-			  );
+			);
 			wp_update_post($quiz_data);
 
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
