@@ -19,7 +19,8 @@
 
 	function qsmPolarSlider(page , polarQuestions){
 		polarQuestions.each( function(){
-			let polarQuestion= jQuery(this).find('.slider-main-wrapper div');
+			let formId = jQuery(this).parents("form").attr("id");
+			let polarQuestion =  jQuery('#'+formId).find('section').find('.qsm-question-wrapper').find('.question-type-polar-s').find('.slider-main-wrapper div');
 			let questionID = polarQuestion.attr('id').replace('slider-','');
 			qsmPolarSliderEach(polarQuestion,questionID,page);
 			if ('answer' === page || 'admin' === page){
