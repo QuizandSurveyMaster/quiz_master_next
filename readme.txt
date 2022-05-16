@@ -2,9 +2,9 @@
 Contributors: quizsurvey,expresstech
 Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress quiz plugin
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 7.3.6
+Stable tag: 7.3.14
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,6 +13,7 @@ Easily create exams, generate leads, surveys and any type of quiz with our popul
 == Description ==
 
 = Demoes! =
+* ➡️ [Try Demo](https://instawp.io/plugins/quiz-master-next) (Get a personal sandbox demo with QSM)
 * [Sample Quiz](https://quizandsurveymaster.com/quiz/sample-quiz/?utm_source=readme&utm_medium=plugin&utm_content=sample-quiz&utm_campaign=qsm_plugin)
 * [Sample Survey](https://quizandsurveymaster.com/quiz/sample-survey/?utm_source=readme&utm_medium=plugin&utm_content=sample-survey&utm_campaign=qsm_plugin)
 * [Personality Quiz](https://quizandsurveymaster.com/quiz/personality-quiz/?utm_source=readme&utm_medium=plugin&utm_campaign=qsm_plugin)
@@ -100,10 +101,21 @@ Quiz And Survey Master is fully functional and is packed with tons of features t
 * Join our [official FB group](https://www.facebook.com/groups/516958552587745).
 * Quiz And Survey Master on [GitHub](https://github.com/QuizandSurveyMaster/quiz_master_next/)!
 
-= More free plugins for your WordPress Site =
+🌐Our themes and plugins
 
-* 🎨 [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) Highly customisable Responsive Menu Plugin for WordPress. No coding experience or knowledge is needed with an easy to use interface you can get it looking exactly as you want with minimal fuss.
-* 🔒 [Hide My WP](https://wordpress.org/plugins/hide-wp-login/) Makes it impossible for a hacker or an attacker to know the location of login url.
+If you like this plugin, consider exploring our other themes and plugins:
+
+🧱 [Gutena](https://wordpress.org/themes/gutena/) - Block Based Theme for WordPress includes over 50 free block patterns with new patterns added every week.
+
+☰ [Responsive Menu](https://wordpress.org/plugins/responsive-menu/) - Best WordPress Menu Builder Plugin to create awesome and interactive mobile & desktop menus for WordPress websites.
+
+📙 [Projectopia](https://wordpress.org/plugins/projectopia-core/) - Project Management & Invoicing plugin for WordPress. Generate invoices, send quotes, generate leads, manage clients, provide support - all inside your WordPress website.
+
+📅 [Booking Ultra](https://wordpress.org/plugins/booking-ultra-pro/) - Appointment Booking plugin for WordPress - Show a quick form to accept bookings for your services with pre-set booking slots. Ideal for salons, medical professionals, lawyers, consultants, etc.
+
+⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
+
+🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network.
 
 == Installation ==
 
@@ -151,6 +163,87 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 7.3.14 (April 5, 2022) =
+* Bug: Fixed issue with paragraph question type
+* Bug: Fixed issue with qmn_register_my_templates hook
+* Bug: Fixed issue with %CATEGORY_POINTS_X% template variable
+* Bug: Fixed issue with question numbers in email
+* Bug: Fixed issue with elementor popup
+* Bug: Issue fixed with touch devices
+* Feature: Added option to set default number of answers
+* Feature: Added option to search questions from question bank
+* Enhancement: Made UI improvements in polar question
+
+= 7.3.13 (March 14, 2022) =
+* Bug: Fixed issue with comments field UI
+* Bug: Fixed issue with support Link
+* Bug: Fixed issue with %CATEGORY_SCORE_X% template variable
+* Bug: Fixed issue while using multiple quiz shortcodes
+* Bug: Fixed issue with qmn_register_my_templates hook
+* Bug: Fixed issue with answer text limit
+* Bug: Fixed issue while using limit questions with random questions
+* Feature: Added option to customize the label of Retake Quiz Button
+
+= 7.3.12 (February 18, 2022) =
+* Hotfix: Fixed compatibility issues with php 8
+
+= 7.3.11 (February 17, 2022) =
+* Bug: Fixed validation issues with limit multiple choice option
+* Bug: Fixed issue while creating new quiz
+* Bug: Fixed issue where empty answers are marked as correct
+* Bug: Fixed issue with quiz dashboard
+* Bug: Fixed issue with random questions & answers
+* Bug: Fixed issue with template variable %QUESTIONS_ANSWERS_EMAIL%
+* Bug: Fixed validation issues with dropdown field
+* Bug: Fixed issue while importing questions from question bank
+* Bug: Fixed issue while saving multiple results pages
+* Bug: Fixed various security vulnerabilities
+* Feature: Added new template variable %FINISHED_TIME%
+* Enhancement: Made UI improvements in question numbers
+
+= 7.3.10 (January 28, 2022) =
+* Checked compatibility with WordPress 5.9
+* Bug: Fixed UI issues in QSM dashboard banner
+* Bug: Fixed CURRENT_DATE template variable with certificate addon
+* Bug: Fixed CATEGORY_SCORE_X template variable
+* Bug: Fixed incorrectly marked answers in survey & simple form
+* Bug: Fixed translation issues
+* Bug: Fixed issues with global default settings
+* Bug: Fixed issues with multiple response question type
+
+= 7.3.9 (January 20, 2022) =
+* Hotfix: Issues with markup in email
+* Hotfix: Issues with quiz review for blank submissions
+* Hotfix: Issues with question/average points/score template variable
+* Hotfix: Issues with result items on admin dashboard
+
+== Changelog ==
+= 7.3.8 (January 18, 2022) =
+* Bug: Fixed issues while taking quiz with logic questions.
+* Bug: Fixed issues with category selection on email page.
+* Bug: Fixed the issues with category points and score template variables.
+* Bug: Fixed issues when contact form is set to appears at end of the quiz.
+* Bug: Fixed issues with multiple quiz shortcode on a same page.
+* Bug: Fixed issues with number of questions per category and random questions logic.
+* Bug: Fixed security issues.
+* Bug: Fixed issues with date and current date format in template variable.
+* Bug: Fixed issues with QSM Theme.
+* Enhancement: Added option to edit quiz in admin bar.
+* Enhancement: Added option to disable first page on quiz.
+* Enhancement: Made UI improvements in QSM.
+* Enhancement: Made improvements in answer matching logic.
+
+= 7.3.7 (December 27, 2021) =
+* Bug: Fixed issues in fill in the blanks question type
+* Bug: Fixed issues with category selection on result page
+* Bug: Fixed issues with deletion and duplication capabilities for non admin users
+* Bug: Fixed issue where url parameters are being translated
+* Bug: Fixed the issues with category points and score template variables
+* Feature: Added a feature to hide/show columns in admin results page
+* Enhancement: Introduced Page Name and Page URL columns to admin results table
+* Enhancement: Made UI improvements in polar question type slider
+* Enhancement: Made UI improvements in template variable popup
+* Enhancement: Made improvements in Audit Logs
 
 = 7.3.6 (December 10, 2021) =
 * Hotfix: Issues with survey form type Fixed
@@ -631,4 +724,4 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 == Upgrade Notice ==
 
 = 6.2.1 =
-Upgrade to fix cut submit button on mobile issue
+Upgrade to fix cut submit button on mobile issue.
