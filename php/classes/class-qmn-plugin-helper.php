@@ -428,7 +428,6 @@ class QMNPluginHelper {
 		 * Filter Answers of specific question before display
 		 */
 		$answers = apply_filters( 'qsm_single_question_answers', $answers, $question, $quiz_options );
-
 		foreach ( $this->question_types as $type ) {
 			if ( strtolower( str_replace( ' ', '-', $slug ) ) === $type['slug'] ) {
 				$qmn_all_questions_count += 1;
