@@ -685,13 +685,12 @@ function qmnDoInit() {
 	// Call main initialization.
 	qsminstance = QSM.init();
 
-	jQuery(document).on("qsm_next_button_click_after", function (event, quiz_id) {
-		alert(quizID);
+	jQuery(document).on("qsm_next_button_click_after", function (_event, _quiz_id) {
 		if (quizType == 'paginated') {
-			timer_ms = jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val();
+			var timer_ms = jQuery(".qsm-quiz-container-"+_quiz_id+" input[name='timer_ms']").val();
 			if (timer_ms == 0) {
-				qsmTimerInterval[quizID] = setInterval(function() { qmnTimeTakenTimer(quizID) }, 1000);
-				jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").each(function () {
+				qsmTimerInterval[_quiz_id] = setInterval(function() { qmnTimeTakenTimer(_quiz_id) }, 1000);
+				jQuery(".qsm-quiz-container-"+_quiz_id+" input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
 					jQuery(this).val(timems);
 				});
