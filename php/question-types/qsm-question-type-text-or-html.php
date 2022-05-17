@@ -16,5 +16,6 @@ function qmn_text_block_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext;
 	$question = do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) );
 	$question = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $question, "question-description-{$id}", "QSM Questions" );
+    $question = apply_filters( 'qmn_text_block_display', $question, $id, $answers);
 	echo wp_kses_post( $question );
 }
