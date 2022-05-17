@@ -1537,7 +1537,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     for (var i = 0; i < qsmQuestionSettings.pages.length; i++) {
                         for (var j = 0; j < qsmQuestionSettings.pages[i].length; j++) {
                             question = QSMQuestion.questions.get(qsmQuestionSettings.pages[i][j]);
-                            QSMQuestion.addQuestionToPage(question);
+                            if( 'undefined' !== typeof question ){
+                            	QSMQuestion.addQuestionToPage(question);
+							}
                         }
                     }
                 } else {
