@@ -103,7 +103,7 @@ var qsmTimerInterval = [];
 		 * @param int quizID The ID of the quiz.
 		 */
 		activateTimer: function (quizID) {
-			timer_ms = jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val();
+			var = timer_ms = jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val();
 			if (timer_ms == 0) {
 				qsmTimerInterval[quizID] = setInterval(function() { qmnTimeTakenTimer(quizID) }, 1000);
 				jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").each(function () {
