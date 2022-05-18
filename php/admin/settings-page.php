@@ -112,6 +112,7 @@ class QMNGlobalSettingsPage {
 			'loggedin_user_contact'              => 0,
 			'comment_section'                    => 0,
 			'question_numbering'                 => 0,
+			'show_optin'                         => 0,
 			'store_responses'                    => 1,
 			'disable_answer_onselect'            => 0,
 			'ajax_show_correct'                  => 0,
@@ -170,6 +171,7 @@ class QMNGlobalSettingsPage {
 		add_settings_field( 'show-contact-form-to-logged-in-users', __( 'Show contact form to logged in users', 'quiz-master-next' ), array( $this, 'qsm_global_show_contact_form_to_logged_in_users' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'enable-comments', __( 'Enable comments', 'quiz-master-next' ), array( $this, 'qsm_global_enable_comments' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'show-question-numbers', __( 'Show question numbers', 'quiz-master-next' ), array( $this, 'qsm_global_show_question_numbers' ), 'qsm_default_global_option', 'qmn-global-section' );
+		add_settings_field( 'show-opt-in-answers-default', __( 'Show Opt-in type Answers to user', 'quiz-master-next' ), array( $this, 'qsm_global_show_optin_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'save-responses', __( 'Save Responses', 'quiz-master-next' ), array( $this, 'qsm_global_save_responses' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'disable-change-of-answers', __( 'Disable change of answers', 'quiz-master-next' ), array( $this, 'qsm_global_disable_change_of_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
 		add_settings_field( 'add-class-for-correct-incorrect-answers', __( 'Add class for correct/incorrect answers', 'quiz-master-next' ), array( $this, 'qsm_global_add_class_for_correct_incorrect_answers' ), 'qsm_default_global_option', 'qmn-global-section' );
@@ -1256,6 +1258,22 @@ class QMNGlobalSettingsPage {
 			<input type="radio" id="correct_answer_logic-0" name="qsm-quiz-settings[correct_answer_logic]"  value="0" ' . checked( $qsm_all_correct_selected, '0', false ) . '>
 			<label for="correct_answer_logic-0">Any correct answer</label><br>
 		</fieldset>';
+	}
+	/**
+	 * Generates quiz global field to check if want to show opt-in type answers to user
+	 *
+	 * @since 7.3.15
+	 * @return void
+	 */
+	public function qsm_global_show_optin_answers() {
+		global $globalQuizsetting;
+		$qsm_question_show_optin_default = ( isset( $globalQuizsetting['show_optin'] ) && '' !== $globalQuizsetting['show_optin'] ? $globalQuizsetting['show_optin'] : '0' );
+		echo '<fieldset class="buttonset buttonset-hide" >
+					<input type="radio" id="show_optin-1" name="qsm-quiz-settings[show_optin]" value="1"  ' . checked( $qsm_question_show_optin_default, '1', false ) . '>
+					<label for="show_optin-1">Yes</label><br>
+					<input type="radio" id="show_optin-0" name="qsm-quiz-settings[show_optin]"  value="0"  ' . checked( $qsm_question_show_optin_default, '0', false ) . '>
+					<label for="show_optin-0">No</label><br>
+			 </fieldset>';
 	}
 
 }

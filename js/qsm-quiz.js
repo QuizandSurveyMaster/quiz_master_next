@@ -844,7 +844,6 @@ function qmnFormSubmit(quiz_form_id) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	var $container = jQuery('#' + quiz_form_id).closest('.qmn_quiz_container');
 	var result = qmnValidation('#' + quiz_form_id + ' *', quiz_form_id);
-
 	if (!result) { return result; }
 
 	/**
@@ -906,6 +905,7 @@ function qmnFormSubmit(quiz_form_id) {
 				qmnDisplayResults(response, quiz_form_id, $container);
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
+				jQuery(".hide").parent().css('display','none');
 			}
 		}
 	});
@@ -1004,6 +1004,7 @@ function qmnInit() {
 							delete disabledAnswer2[key];
 							localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
 					}
+					
 				});
 			}
 
