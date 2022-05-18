@@ -118,10 +118,12 @@ class QSM_Migrate {
 		$total_migrated      = 0;
 		if ( ! empty( $quizzes ) ) {
 			foreach ( $quizzes as $quiz ) {
+				$quiz_settings   = maybe_unserialize( $quiz->quiz_settings );
+				$quiz_options    = isset( $quiz_settings['quiz_options'] ) ? maybe_unserialize( $quiz_settings['quiz_options'] ) : array();
 				$quiz_data = array(
 					'quiz_id'   => $quiz->quiz_id,
 					'name'      => $quiz->quiz_name,
-					'system'    => $quiz->quiz_system,
+					'system'    => $quiz_options['system'],
 					'views'     => $quiz->quiz_views,
 					'taken'     => $quiz->quiz_taken,
 					'author_id' => $quiz->quiz_author_id,
@@ -140,10 +142,12 @@ class QSM_Migrate {
 						'quiz_stye'           => $quiz->quiz_stye,
 						'user_email_template' => $quiz->user_email_template,
 					);
-					$quiz_settings   = maybe_unserialize( $quiz->quiz_settings );
-					$quiz_options    = isset( $quiz_settings['quiz_options'] ) ? maybe_unserialize( $quiz_settings['quiz_options'] ) : array();
 					$quiz_text       = isset( $quiz_settings['quiz_text'] ) ? maybe_unserialize( $quiz_settings['quiz_text'] ) : array();
 					if ( ! empty( $quiz_settings ) ) {
+						/**
+						 * Unset unused settings
+						 */
+						unset( $quiz_options['quiz_name'], $quiz_options['system'] );
 						unset( $quiz_settings['quiz_options'], $quiz_settings['quiz_text'] );
 						foreach ( $quiz_settings as $key => $value ) {
 							$other_data[ $key ] = $value;

@@ -1,8 +1,18 @@
 <?php
 
-// Include core functions (available in both admin and frontend).
+/**
+ * QSM Data Stores
+ */
+require_once QSM_PLUGIN_PATH . 'php/datastore/class-qsm-data-store-interface.php';
+require_once QSM_PLUGIN_PATH . 'php/datastore/class-qsm-data-store.php';
+require_once QSM_PLUGIN_PATH . 'php/datastore/class-qsm-quiz-data-store.php';
+
+/**
+ * QSM Models
+ */
 require_once QSM_PLUGIN_PATH . 'php/models/index-models.php';
 require_once QSM_PLUGIN_PATH . 'php/models/class-quiz-model.php';
+
 require_once QSM_PLUGIN_PATH . 'php/legacy/class-qsm-legacy.php';
 
 /**
@@ -229,10 +239,10 @@ if ( ! function_exists( 'get_qsm_meta' ) ) {
 				if ( ! isset( $cache[ $mkey ] ) || ! is_array( $cache[ $mkey ] ) ) {
 					$cache[ $mkey ] = array();
 				}
-				$cache[ $mkey ][] = $mval;
+				$cache[ $mkey ] = $mval;
 			}
 			if ( ! $meta_key ) {
-				return $cache;
+				return array_map( 'maybe_unserialize', $cache );
 			}
 			if ( isset( $cache[ $meta_key ] ) ) {
 				if ( $single ) {

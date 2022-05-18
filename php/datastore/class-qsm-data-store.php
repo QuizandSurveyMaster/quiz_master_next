@@ -22,12 +22,9 @@ class QSM_Data_Store {
 	private $instance = null;
 
 	/**
-	 * Contains an array of default WC supported data stores.
+	 * Contains an array of default QSM supported data stores.
 	 * Format of object name => class name.
-	 * Example: 'product' => 'WC_Product_Data_Store_CPT'
-	 * You can also pass something like product_<type> for product stores and
-	 * that type will be used first when available, if a store is requested like
-	 * this and doesn't exist, then the store would fall back to 'product'.
+	 * Example: 'quiz' => 'QSM_Quiz_Data_Store'
 	 * Ran through `qsm_data_stores`.
 	 *
 	 * @var array
@@ -95,7 +92,7 @@ class QSM_Data_Store {
 	 *
 	 * @param string $object_type Name of object.
 	 *
-	 * @since 3.0.0
+	 * @since 8.0
 	 * @throws Exception When validation fails.
 	 * @return QSM_Data_Store
 	 */
@@ -106,7 +103,7 @@ class QSM_Data_Store {
 	/**
 	 * Returns the class name of the current data store.
 	 *
-	 * @since 3.0.0
+	 * @since 8.0
 	 * @return string
 	 */
 	public function get_current_class_name() {
@@ -116,8 +113,8 @@ class QSM_Data_Store {
 	/**
 	 * Reads an object from the data store.
 	 *
-	 * @since 3.0.0
-	 * @param WC_Data $data WooCommerce data instance.
+	 * @since 8.0
+	 * @param $data QSM data instance.
 	 */
 	public function read( &$data ) {
 		$this->instance->read( $data );
@@ -126,8 +123,8 @@ class QSM_Data_Store {
 	/**
 	 * Create an object in the data store.
 	 *
-	 * @since 3.0.0
-	 * @param WC_Data $data WooCommerce data instance.
+	 * @since 8.0
+	 * @param $data QSM data instance.
 	 */
 	public function create( &$data ) {
 		$this->instance->create( $data );
@@ -136,8 +133,8 @@ class QSM_Data_Store {
 	/**
 	 * Update an object in the data store.
 	 *
-	 * @since 3.0.0
-	 * @param WC_Data $data WooCommerce data instance.
+	 * @since 8.0
+	 * @param $data QSM data instance.
 	 */
 	public function update( &$data ) {
 		$this->instance->update( $data );
@@ -146,8 +143,8 @@ class QSM_Data_Store {
 	/**
 	 * Delete an object from the data store.
 	 *
-	 * @since 3.0.0
-	 * @param WC_Data $data WooCommerce data instance.
+	 * @since 8.0
+	 * @param $data QSM data instance.
 	 * @param array   $args Array of args to pass to the delete method.
 	 */
 	public function delete( &$data, $args = array() ) {
@@ -159,7 +156,7 @@ class QSM_Data_Store {
 	 * some helper methods for increasing or decreasing usage). This passes
 	 * through to the instance if that function exists.
 	 *
-	 * @since 3.0.0
+	 * @since 8.0
 	 * @param string $method     Method.
 	 * @param mixed  $parameters Parameters.
 	 * @return mixed

@@ -225,8 +225,7 @@ class QMNQuizCreator {
 	 * @return void
 	 */
 	public function delete_quiz( $quiz_id, $quiz_name ) {
-		global $mlwQuizMasterNext;
-		global $wpdb;
+		global $wpdb, $mlwQuizMasterNext;
 
 		$qsm_delete_from_db           = isset( $_POST['qsm_delete_from_db'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_from_db'] ) );
 		$qsm_delete_questions_from_qb = isset( $_POST['qsm_delete_question_from_qb'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['qsm_delete_question_from_qb'] ) );

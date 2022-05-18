@@ -355,6 +355,13 @@ class QMNQuizManager {
 			global $qmn_json_data;
 			$qmn_json_data     = array();
 			$qmn_allowed_visit = true;
+			
+			$quiz_data = new QSM_Quiz($quiz);
+			
+			echo "<pre>";
+			print_r($quiz_data);
+			exit;
+			
 			$success           = $mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz );
 			if ( false === $success ) {
 				return __( 'It appears that this quiz is not set up correctly', 'quiz-master-next' );

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class QSM_Quiz extends QSM_Model {
-	
+
 	/**
 	 * This is the name of this object type.
 	 *
@@ -19,56 +19,137 @@ class QSM_Quiz extends QSM_Model {
 	 * @var array
 	 */
 	protected $data = array(
-		'id'        => '',
-		'quiz_id'   => '',
-		'name'      => '',
-		'system'    => '',
-		'views'     => 0,
-		'taken'     => 0,
-		'author_id' => 0,
-		'deleted'   => 0,
-		'updated'   => null,
-		'created'   => null,
-		'settings'  => array(),
+		'id'		 => '',
+		'quiz_id'	 => '',
+		'name'		 => '',
+		'system'	 => '',
+		'views'		 => 0,
+		'taken'		 => 0,
+		'author_id'	 => 0,
+		'deleted'	 => 0,
+		'updated'	 => null,
+		'created'	 => null,
+		'settings'	 => array(),
 	);
 
 	/**
-	 * 
-	 * @param int $id Quiz to init.
+	 * Quiz constructor.
+	 * @param int|QSM_Quiz|object $quiz Quiz to init.
 	 */
-	public function __construct( $id = 0 ) {
-		parent::__construct( $id );
-		$this->set_id( $id );
-		$this->set_object_type();
-		$this->data = $this->prepare_data();
+	public function __construct( $quiz = 0 ) {
+		parent::__construct( $quiz );
+		if ( is_numeric( $quiz ) && $quiz > 0 ) {
+			$this->set_id( $quiz );
+		} elseif ( $quiz instanceof self ) {
+			$this->set_id( absint( $quiz->get_id() ) );
+		} elseif ( ! empty( $quiz->id ) ) {
+			$this->set_id( absint( $quiz->id ) );
+		} else {
+			$this->set_object_read( true );
+		}
+
+		$this->data_store = QSM_Data_Store::load( $this->object_type );
+		if ( $this->get_id() > 0 ) {
+			$this->data_store->read( $this );
+		}
 	}
 
-	public function prepare_data() {
-		global $wpdb, $mlwQuizMasterNext;
-		
-		$quiz_id = $this->id;
-		
-		
-
-		$quiz_data = '';
-
-		return false;
+	/**
+	 * Get quiz name.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->get_field( 'name' );
 	}
 
-	public static function add_quiz( $data = array() ) {
+	/**
+	 * Get quiz system.
+	 *
+	 * @return string
+	 */
+	public function get_system() {
+		return $this->get_field( 'system' );
+	}
 
-		$quiz_data = array(
-			'name'      => '',
-			'system'    => '',
-			'views'     => 0,
-			'taken'     => 0,
-			'author_id' => 0,
-			'deleted'   => 0,
-			'updated'   => '',
-			'created'   => '',
-		);
+	/**
+	 * Get quiz views.
+	 *
+	 * @return string
+	 */
+	public function get_views() {
+		return $this->get_field( 'views' );
+	}
 
-		return false;
+	/**
+	 * Get quiz taken.
+	 *
+	 * @return string
+	 */
+	public function get_taken() {
+		return $this->get_field( 'taken' );
+	}
+
+	/**
+	 * Get quiz author_id.
+	 *
+	 * @return string
+	 */
+	public function get_author_id() {
+		return $this->get_field( 'author_id' );
+	}
+
+	/**
+	 * Get quiz created date.
+	 *
+	 * @return DateTime|NULL object if the date is set or null if there is no date.
+	 */
+	public function get_date_created() {
+		return $this->get_field( 'created' );
+	}
+
+	/**
+	 * Get quiz modified date.
+	 *
+	 * @return DateTime|NULL object if the date is set or null if there is no date.
+	 */
+	public function get_date_updated() {
+		return $this->get_field( 'updated' );
+	}
+
+	/**
+	 * Check whether quiz is deleted or not
+	 */
+	public function is_deleted() {
+		return $this->get_field( 'deleted' );
+	}
+
+	/**
+	 * Get all quiz settings
+	 * 
+	 * @return array
+	 */
+	public function get_settings() {
+		return $this->get_field( 'settings' );
+	}
+
+	/**
+	 * Delete the product, set its ID to 0, and return result.
+	 *
+	 * @param  bool $force_delete Should the product be deleted permanently.
+	 * @return bool result
+	 */
+	public function delete( $force_delete = false, $delete_questions = false ) {
+		$deleted = parent::delete( $force_delete );
+		if ( $deleted ) {
+			/**
+			 * Delete quiz questions
+			 */
+			if ( $delete_questions ) {
+				$this->data_store->delete_questions( $this, $force_delete );
+			}
+		}
+		return $deleted;
 	}
 
 }
