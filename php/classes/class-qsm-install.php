@@ -445,7 +445,7 @@ class QSM_Install {
 		// Registers show-optin setting
 		$field_array = array(
 			'id'      => 'show_optin',
-			'label'   => __( 'Show Optin Type Answers to Users', 'quiz-master-next' ),
+			'label'   => __( 'Show Opt-in type Answers to User', 'quiz-master-next' ),
 			'type'    => 'radio',
 			'options' => array(
 				array(
