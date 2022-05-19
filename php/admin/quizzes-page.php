@@ -375,7 +375,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><b><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></b>
+									<h3><strong><?php esc_html_e( 'Are you sure you want to delete this quiz or survey?', 'quiz-master-next' ); ?></strong>
 									</h3>
 									<label>
 										<input type="checkbox" value="1" name="qsm_delete_question_from_qb" />
@@ -409,7 +409,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
 								<form action='' method='post' id="bult-delete-quiz-form" style="display:flex; flex-direction:column;">
-									<h3><b><?php esc_html_e( 'Are you sure you want to delete selected quiz or survey?', 'quiz-master-next' ); ?></b>
+									<h3><strong><?php esc_html_e( 'Are you sure you want to delete selected quiz or survey?', 'quiz-master-next' ); ?></strong>
 									</h3>
 									<label>
 										<input type="checkbox" name="qsm_delete_question_from_qb" />
@@ -440,7 +440,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 								<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 							</header>
 							<main class="qsm-popup__content" id="modal-5-content">
-								<h3><b><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></b>
+								<h3><strong><?php esc_html_e( 'Export functionality is provided as Premium addon.', 'quiz-master-next' ); ?></strong>
 								</h3>
 							</main>
 							<footer class="qsm-popup__footer">
