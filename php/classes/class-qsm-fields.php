@@ -70,8 +70,11 @@ class QSM_Fields {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'The settings has been updated successfully.', 'quiz-master-next' ), 'success' );
 				$mlwQuizMasterNext->audit_manager->new_audit( 'Settings Have Been Edited', $quiz_id, $json_updated_setting_data );
 				// update post_modified
-				$datetime  = date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ) );
-				$update = array( 'ID' => get_the_ID(), 'post_modified' => $datetime );
+				$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+				$update = array(
+					'ID'            => get_the_ID(),
+					'post_modified' => $datetime,
+				);
 				wp_update_post( $update );
 			} else {
 				$mlwQuizMasterNext->alertManager->newAlert( __( 'There was an error when updating the settings. Please try again.', 'quiz-master-next' ), 'error');

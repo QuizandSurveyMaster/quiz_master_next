@@ -833,8 +833,11 @@ function qsm_ajax_save_pages() {
 	if ( $response ) {
 		$json['status'] = 'success';
 		// update post_modified
-		$datetime  = date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ) );
-		$update = array( 'ID' => $post_id, 'post_modified' => $datetime );
+		$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+		$update = array(
+			'ID'            => $post_id,
+			'post_modified' => $datetime,
+		);
 		wp_update_post( $update );
 	}
 	echo wp_json_encode( $json );

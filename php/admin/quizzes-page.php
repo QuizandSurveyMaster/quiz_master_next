@@ -69,7 +69,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 				return $columns;
 			}
 			$sorl_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=asc');
-			if( isset( $_GET['orderby'] ) && isset( $_GET['order'] ) && "post_modified" === $_GET['orderby'] && "asc" === $_GET['order'] ){
+			if ( isset( $_GET['orderby'] ) && isset( $_GET['order'] ) && "post_modified" === $_GET['orderby'] && "asc" === $_GET['order'] ) {
 				$sorl_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=desc');
 			}
 			unset( $columns['author'] );
@@ -79,7 +79,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			$columns['total_questions']  = __( 'No. of Questions', 'quiz-master-next' );
 			$columns['views']            = __( 'Views', 'quiz-master-next' );
 			$columns['participants']     = __( 'Participants', 'quiz-master-next' );
-			$columns['post_modified']		 = "<a href='" . $sorl_link . "'>" . __( 'Last Modified', 'quiz-master-next')  . "</a>";
+			$columns['post_modified']        = "<a href='" . $sorl_link . "'>" . __( 'Last Modified', 'quiz-master-next')  . "</a>";
 			return $columns;
 		}
 

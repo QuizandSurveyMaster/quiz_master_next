@@ -258,11 +258,14 @@ class QSM_Quiz_Settings {
 		} else {
 			global $wpdb;
 			$results = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = $this->quiz_id AND meta_key = 'quiz_id'", ARRAY_A );
-			if( !empty( $results ) ){
+			if ( ! empty( $results ) ) {
 				foreach ( $results as $result ) {
 					// update post_modified
-					$datetime  = date( 'Y-m-d H:i:s', current_time( 'timestamp', 0 ) );
-					$update = array( 'ID' => $result['post_id'], 'post_modified' => $datetime );
+					$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+					$update = array(
+						'ID'            => $result['post_id'],
+						'post_modified' => $datetime,
+					);
 					wp_update_post( $update );
 				}
 			}
