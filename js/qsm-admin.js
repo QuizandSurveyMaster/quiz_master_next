@@ -1081,7 +1081,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     var contactFields = $( '.contact-form-field' );
                     var contactForm = [];
                     var contactEach;
-                    var post_id = jQuery('#edit_quiz_post_id').val();
                     $.each( contactFields, function( i, val ) {
                         contactEach = {
                         label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
@@ -1096,7 +1095,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         contact_form: contactForm,
                         quiz_id : qsmContactObject.quizID,
                         nonce : qsmContactObject.saveNonce,
-                        post_id: post_id,
                     };
 
                     jQuery.post( ajaxurl, data, function( response ) {
