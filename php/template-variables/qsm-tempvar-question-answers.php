@@ -1,5 +1,4 @@
 <?php
-
 function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, $grading_system, $question_settings, $form_type = 0 ) {
 	global $mlwQuizMasterNext;
 	$question_with_answer_text = '';
