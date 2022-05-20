@@ -199,6 +199,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['loggedin_user_contact']              = $globalQuizsetting['loggedin_user_contact'];
 			$setDefaultvalue['comment_section']                    = $globalQuizsetting['comment_section'];
 			$setDefaultvalue['question_numbering']                 = $globalQuizsetting['question_numbering'];
+			$setDefaultvalue['show_optin']                         = $globalQuizsetting['show_optin'];
 			$setDefaultvalue['store_responses']                    = $globalQuizsetting['store_responses'];
 			$setDefaultvalue['disable_answer_onselect']            = $globalQuizsetting['disable_answer_onselect'];
 			$setDefaultvalue['ajax_show_correct']                  = $globalQuizsetting['ajax_show_correct'];

@@ -9,7 +9,7 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 		if ( $answers_from_response['question_type'] == 8 && $answers_from_response['user_compare_text'] == 'not-opted' ) {
 			$class = 'not-opted';
 		}
-		if ( $answers_from_response['question_type'] == 8 && ! current_user_can( 'manage_options' ) ) {
+		if ( $answers_from_response['question_type'] == 8 ) {
 			$quiz_options  = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 			$settings_quiz = maybe_unserialize( $quiz_options->quiz_settings );
 			$options_quiz  = maybe_unserialize( $settings_quiz['quiz_options'] );
