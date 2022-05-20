@@ -823,6 +823,7 @@ function qsm_ajax_save_pages() {
 	);
 
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -831,6 +832,13 @@ function qsm_ajax_save_pages() {
 	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
 		$json['status'] = 'success';
+		// update post_modified
+		$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+		$update = array(
+			'ID'            => $post_id,
+			'post_modified' => $datetime,
+		);
+		wp_update_post( $update );
 	}
 	echo wp_json_encode( $json );
 	wp_die();

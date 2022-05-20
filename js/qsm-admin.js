@@ -1077,24 +1077,24 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                   QSMContact.addField( fieldArray );
                 },
                 save : function() {
-                  QSMContact.displayAlert( 'Saving contact fields...', 'info' );
-                  var contactFields = $( '.contact-form-field' );
-                  var contactForm = [];
-                  var contactEach;
-                  $.each( contactFields, function( i, val ) {
-                    contactEach = {
-                      label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
-                      type: $( this ).find( '.type-control' ).val(),
-                      required: $( this ).find( '.required-control' ).prop( 'checked' ),
-                      use: $( this ).find( '.use-control' ).val()
-                    };
-                    contactForm.push( contactEach );
-                  });
-                  var data = {
+                    QSMContact.displayAlert( 'Saving contact fields...', 'info' );
+                    var contactFields = $( '.contact-form-field' );
+                    var contactForm = [];
+                    var contactEach;
+                    $.each( contactFields, function( i, val ) {
+                        contactEach = {
+                        label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
+                        type: $( this ).find( '.type-control' ).val(),
+                        required: $( this ).find( '.required-control' ).prop( 'checked' ),
+                        use: $( this ).find( '.use-control' ).val()
+                        };
+                        contactForm.push( contactEach );
+                    });
+                    var data = {
                         action: 'qsm_save_contact',
                         contact_form: contactForm,
-                            quiz_id : qsmContactObject.quizID,
-                            nonce : qsmContactObject.saveNonce,
+                        quiz_id : qsmContactObject.quizID,
+                        nonce : qsmContactObject.saveNonce,
                     };
 
                     jQuery.post( ajaxurl, data, function( response ) {
@@ -1565,6 +1565,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 var pages = [];
                 var qpages = [];
                 var pageInfo = null;
+                var post_id = jQuery('#edit_quiz_post_id').val();
 
                 // Cycles through each page and add page + questions to pages variable
                 _.each(jQuery('.page'), function (page) {
@@ -1592,6 +1593,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     nonce: qsmQuestionSettings.saveNonce,
                     pages: pages,
                     qpages: qpages,
+                    post_id: post_id,
                 };
 
                 jQuery.ajax(ajaxurl, {
