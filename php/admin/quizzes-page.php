@@ -68,6 +68,10 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			if ( isset( $_REQUEST['post_status'] ) && 'trash' == $_REQUEST['post_status'] ) {
 				return $columns;
 			}
+			$sorl_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=asc');
+			if( isset( $_GET['orderby'] ) && isset( $_GET['order'] ) && "post_modified" === $_GET['orderby'] && "asc" === $_GET['order'] ){
+				$sorl_link = admin_url('edit.php?post_type=qsm_quiz&orderby=post_modified&order=desc');
+			}
 			unset( $columns['author'] );
 			unset( $columns['comments'] );
 			unset( $columns['date'] );
@@ -75,7 +79,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 			$columns['total_questions']  = __( 'No. of Questions', 'quiz-master-next' );
 			$columns['views']            = __( 'Views', 'quiz-master-next' );
 			$columns['participants']     = __( 'Participants', 'quiz-master-next' );
-			$columns['lastActivity']     = __( 'Last Modified', 'quiz-master-next' );
+			$columns['post_modified']		 = "<a href='" . $sorl_link . "'>" . __( 'Last Modified', 'quiz-master-next')  . "</a>";
 			return $columns;
 		}
 
@@ -120,13 +124,11 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					echo wp_kses_post( $participants );
 					break;
 
-				case 'lastActivity':
-					$last_activity   = $wpdb->get_var( "SELECT `last_activity` FROM `{$wpdb->prefix}mlw_quizzes` WHERE `quiz_id` = '{$quiz_id}'" );
-					$activity_date   = gmdate( get_option( 'date_format' ), strtotime( $last_activity ) );
-					$activity_time   = gmdate( 'h:i:s A', strtotime( $last_activity ) );
-					echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '</abbr>' );
+				case 'post_modified':
+					$activity_date   = get_the_modified_date( get_option( 'date_format' ),$post_id );
+					$activity_time   = get_the_modified_date( 'h:i:s A', $post_id );
+					echo wp_kses_post( '<abbr title="' . $activity_date . ' ' . $activity_time . '">' . $activity_date . '<br/> ' . $activity_time . '</abbr>' );
 					break;
-
 				default:
 					break;
 			}
@@ -277,7 +279,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 						<?php esc_html_e( 'Quizzes & Surveys', 'quiz-master-next' ); ?>
 						<a id="new_quiz_button" href="#" class="add-new-h2"><?php esc_html_e( 'Add New', 'quiz-master-next' ); ?></a>
 					</h1>
-					<?php 
+					<?php
 					if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
 						?>
 						<div class="qsm-info-box">
