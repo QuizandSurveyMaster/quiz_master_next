@@ -118,8 +118,8 @@ abstract class QSM_Model {
 	 * @param  string $context What the value is for. Valid values are view and edit.
 	 * @return mixed
 	 */
-	public function get_field( $field, $section = '' ) {
-		$value = null;
+	public function get_field( $field, $section = '', $default = null ) {
+		$value = $default;
 		if ( ! empty( $section ) && array_key_exists( $section, $this->data ) ) {
 			$section_data = maybe_unserialize( $this->data[$section] );
 			if ( array_key_exists( $field, $section_data ) ) {
@@ -130,7 +130,7 @@ abstract class QSM_Model {
 				$value = $this->data[$field];
 			}
 		}
-		return apply_filters( $this->get_hook_prefix() . $field, $value, $this );
+		return apply_filters( $this->get_hook_prefix() . $field, $value, $section, $this );
 	}
 
 	/**

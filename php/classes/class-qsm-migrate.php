@@ -140,6 +140,7 @@ class QSM_Migrate {
 						'old_quiz_id'         => $quiz->quiz_id,
 						'theme_selected'      => $quiz->theme_selected,
 						'quiz_stye'           => $quiz->quiz_stye,
+						'message_after'       => $quiz->message_after,
 						'user_email_template' => $quiz->user_email_template,
 					);
 					$quiz_text       = isset( $quiz_settings['quiz_text'] ) ? maybe_unserialize( $quiz_settings['quiz_text'] ) : array();

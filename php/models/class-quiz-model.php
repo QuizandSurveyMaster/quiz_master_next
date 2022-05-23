@@ -96,7 +96,12 @@ class QSM_Quiz extends QSM_Model {
 	 * @return string
 	 */
 	public function get_author_id() {
-		return $this->get_field( 'author_id' );
+		$author_id = $this->get_field( 'author_id' );
+		if ( 0 == $author_id ) {
+			$current_user	 = wp_get_current_user();
+			$author_id		 = $current_user->ID;
+		}
+		return $author_id;
 	}
 
 	/**
