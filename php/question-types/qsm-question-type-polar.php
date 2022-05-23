@@ -55,7 +55,7 @@ function qmn_polar_display( $id, $question, $answers ) {
 		?></div>
 	</span>
 	<?php
-
+	echo apply_filters( 'qmn_polar_display_front', '', $id, $question, $answers );
 }
 
 /**

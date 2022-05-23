@@ -9,6 +9,7 @@
 
 var QSM;
 var QSMPageTimer;
+var qsmTimerInterval = [];
 (function ($) {
 	QSM = {
 		/**
@@ -23,24 +24,25 @@ var QSMPageTimer;
 				_.each(qmn_quiz_data, function (quiz) {
 					quizID = parseInt(quiz.quiz_id);
 					QSM.initPagination(quizID);
+					qsmTimerInterval[quizID] = setInterval(function() { qmnTimeTakenTimer(quizID) }, 1000);
 
 					if (quiz.hasOwnProperty('pagination') || quiz.qpages.hasOwnProperty(2)) {
-						qsmEndTimeTakenTimer();
-						jQuery('#timer').val(0);
-						jQuery("input[name='timer_ms']").val(0);
+						qsmEndTimeTakenTimer(quizID);
+						jQuery('.qsm-quiz-container-'+quizID+' #timer').val(0);
+						jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val(0);
 						quizType = 'paginated';
 					}
 
 					if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
-						qsmEndTimeTakenTimer();
-						jQuery('#timer').val(0);
-						jQuery("input[name='timer_ms']").val(0);
+						qsmEndTimeTakenTimer(quizID);
+						jQuery('.qsm-quiz-container-'+quizID+' #timer').val(0);
+						jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val(0);
 						QSMPageTimer.endPageTimer(quizID, true);
 					}
 					if (quiz.hasOwnProperty('timer_limit') && 0 != quiz.timer_limit) {
-						qsmEndTimeTakenTimer();
-						jQuery('#timer').val(0);
-						jQuery("input[name='timer_ms']").val(0);
+						qsmEndTimeTakenTimer(quizID);
+						jQuery('.qsm-quiz-container-'+quizID+' #timer').val(0);
+						jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val(0);
 						QSM.initTimer(quizID);
 						quizType = 'timer';
 					}
@@ -101,10 +103,10 @@ var QSMPageTimer;
 		 * @param int quizID The ID of the quiz.
 		 */
 		activateTimer: function (quizID) {
-			timer_ms = jQuery("input[name='timer_ms']").val();
+			var timer_ms = jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").val();
 			if (timer_ms == 0) {
-				qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
-				jQuery("input[name='timer_ms']").each(function () {
+				qsmTimerInterval[quizID] = setInterval(function() { qmnTimeTakenTimer(quizID) }, 1000);
+				jQuery(".qsm-quiz-container-"+quizID+" input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
 					jQuery(this).val(timems);
 				});
@@ -683,12 +685,12 @@ function qmnDoInit() {
 	// Call main initialization.
 	qsminstance = QSM.init();
 
-	jQuery(document).on("click", ".qsm-quiz-container .mlw_next", function () {
+	jQuery(document).on("qsm_next_button_click_after", function (_event, _quiz_id) {
 		if (quizType == 'paginated') {
-			timer_ms = jQuery("input[name='timer_ms']").val();
+			var timer_ms = jQuery(".qsm-quiz-container-"+_quiz_id+" input[name='timer_ms']").val();
 			if (timer_ms == 0) {
-				qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
-				jQuery("input[name='timer_ms']").each(function () {
+				qsmTimerInterval[_quiz_id] = setInterval(function() { qmnTimeTakenTimer(_quiz_id) }, 1000);
+				jQuery(".qsm-quiz-container-"+_quiz_id+" input[name='timer_ms']").each(function () {
 					var timems = qsmTimeInMS();
 					jQuery(this).val(timems);
 				});
@@ -697,17 +699,17 @@ function qmnDoInit() {
 	});
 }
 
-function qmnTimeTakenTimer() {
-	var x = +jQuery('#timer').val();
+function qmnTimeTakenTimer(quizID) {
+	var x = +jQuery('.qsm-quiz-container-'+quizID+' #timer').val();
 	if (NaN === x) {
 		x = 0;
 	}
 	x = x + 1;
-	jQuery('#timer').val(x);
+	jQuery('.qsm-quiz-container-'+quizID+' #timer').val(x);
 }
 
-function qsmEndTimeTakenTimer() {
-	clearInterval(qsmTimerInterval);
+function qsmEndTimeTakenTimer(quiz_id) {
+	clearInterval(qsmTimerInterval[quiz_id]);
 }
 
 function qsmTimeInMS() {
@@ -842,15 +844,14 @@ function qmnFormSubmit(quiz_form_id) {
 	var quiz_id = +jQuery('#' + quiz_form_id).find('.qmn_quiz_id').val();
 	var $container = jQuery('#' + quiz_form_id).closest('.qmn_quiz_container');
 	var result = qmnValidation('#' + quiz_form_id + ' *', quiz_form_id);
-
 	if (!result) { return result; }
 
 	/**
 	 * Update Timer in MS
 	 */
-	var timer_ms = jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val();
+	var timer_ms = jQuery('#' + quiz_form_id).find(".qsm-quiz-container-"+quiz_id+" input[name='timer_ms']").val();
 	var new_timer_ms = qsmTimeInMS();
-	jQuery('#' + quiz_form_id).find("input[name='timer_ms']").val(Math.abs(new_timer_ms - timer_ms));
+	jQuery('#' + quiz_form_id).find(".qsm-quiz-container-"+quiz_id+" input[name='timer_ms']").val(Math.abs(new_timer_ms - timer_ms));
 
 	jQuery('.mlw_qmn_quiz input:radio').attr('disabled', false);
 	jQuery('.mlw_qmn_quiz input:checkbox').attr('disabled', false);
@@ -870,7 +871,7 @@ function qmnFormSubmit(quiz_form_id) {
 	fd.append("currentuserTimeZone",Intl.DateTimeFormat().resolvedOptions().timeZone);
 
 
-	qsmEndTimeTakenTimer();
+	qsmEndTimeTakenTimer(quizID);
 	if (qmn_quiz_data[quizID].hasOwnProperty('advanced_timer')) {
 		QSMPageTimer.endPageTimer(quiz_id);
 	}
@@ -904,6 +905,7 @@ function qmnFormSubmit(quiz_form_id) {
 				qmnDisplayResults(response, quiz_form_id, $container);
 				jQuery(document).trigger('qsm_after_quiz_submit_load_chart');
 				jQuery(document).trigger('qsm_after_quiz_submit', [quiz_form_id]);
+				jQuery(".hide").parent().css('display','none');
 			}
 		}
 	});
@@ -1002,6 +1004,7 @@ function qmnInit() {
 							delete disabledAnswer2[key];
 							localStorage.setItem("disable_answer",JSON.stringify(disabledAnswer2));						}
 					}
+					
 				});
 			}
 
@@ -1573,5 +1576,4 @@ jQuery(document).ready(function() {
 	}
 });
 
-var qsmTimerInterval = setInterval(qmnTimeTakenTimer, 1000);
 var quizType = 'default';
