@@ -1039,7 +1039,9 @@ class QMNQuizManager {
 				<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
 				<?php
 				foreach ( $page as $question_id ) {
-					if ( ! isset( $questions[ $question_id ] ) ) continue;
+					if ( ! isset( $questions[ $question_id ] ) ) {
+						continue;
+					}
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					$category_class = '';

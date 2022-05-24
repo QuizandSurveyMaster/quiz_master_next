@@ -852,7 +852,7 @@ function qsm_ajax_save_pages() {
 		$q_all_questions = array_merge( $q_all_questions, $q_questions );
 	}
 
-	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
+	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
 	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $new_pages );
 	if ( $response ) {
 		$json['status'] = 'success';
