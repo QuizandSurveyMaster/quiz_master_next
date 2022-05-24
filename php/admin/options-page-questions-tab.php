@@ -831,22 +831,22 @@ function qsm_ajax_save_pages() {
 	$all_questions   = $new_pages = $q_all_questions = $q_new_pages = array();
 
 	//merge duplicate questions
-	foreach( $pages as $page_key => $questions ){
+	foreach ( $pages as $page_key => $questions ) {
 		$questions = array_unique( $questions );
-		foreach( $questions as $q_key => $id){
-			if( !in_array( $id, $all_questions, true ) ) {
-				$new_pages[$page_key][$q_key] = $id;
+		foreach ( $questions as $q_key => $id ) {
+			if ( ! in_array( $id, $all_questions, true ) ) {
+				$new_pages[ $page_key ][ $q_key ] = $id;
 			}
 		}
 		$all_questions = array_merge( $all_questions, $questions );
 	}
 
 	//merge duplicate questions
-	foreach( $qpages as $q_page_key => $q_questions ){
+	foreach ( $qpages as $q_page_key => $q_questions ) {
 		$q_questions['questions'] = array_unique( $q_questions['questions'] );
-		foreach( $q_questions['questions'] as $q_key => $q_id){
-			if( !in_array( $q_id, $q_all_questions, true ) ) {
-				$q_new_pages[$q_page_key][$q_key] = $q_id;
+		foreach ( $q_questions['questions'] as $q_key => $q_id ) {
+			if ( ! in_array( $q_id, $q_all_questions, true ) ) {
+				$q_new_pages[ $q_page_key ][ $q_key ] = $q_id;
 			}
 		}
 		$q_all_questions = array_merge( $q_all_questions, $q_questions );
