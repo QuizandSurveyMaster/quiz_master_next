@@ -1471,7 +1471,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }));
             },
             addQuestionFromQuestionBank: function (questionID) {
-                QSMAdmin.displayAlert('Duplicating question...', 'info');
+                QSMAdmin.displayAlert('Adding question...', 'info');
                 var model = new QSMQuestion.question({
                     id: questionID
                 });
@@ -1486,23 +1486,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             },
             questionBankSuccess: function (model) {
                 var newModel = _.clone(model.attributes);
+                newModel.id = null;
                 QSMQuestion.questions.create(
                     newModel, {
                         headers: {
                             'X-WP-Nonce': qsmQuestionSettings.nonce
                         },
-                        success: function(newModel) {
-                            var page = parseInt($('#add-question-bank-page').val(), 10);
-                            model.set('page', page);
-                            QSMQuestion.questions.add(newModel);
-                            QSMQuestion.addQuestionToPage(newModel);
-                            $('.import-button').removeClass('disable_import');
-                            QSMQuestion.countTotal();
-                            import_button.html('').html('Add Question');
-                        },
+                        success: QSMQuestion.addNewQuestionFromQuestionBank,
                         error: QSMAdmin.displayError
                     }
                 );
+                console.log(newModel);
             },
             prepareCategories: function () {
                 QSMQuestion.categories = [];
@@ -1652,6 +1646,18 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
                 });
                 setTimeout(QSMQuestion.removeNew, 250);
+            },
+            addNewQuestionFromQuestionBank: function (model) {
+                var page = parseInt($('#add-question-bank-page').val(), 10);
+                model.set('page', page);
+                QSMQuestion.questions.add(model);
+                QSMQuestion.addQuestionToPage(model);
+                $('.import-button').removeClass('disable_import');
+                QSMQuestion.countTotal();
+                import_button.html('').html('Add Question');
+                import_button.attr("onclick", "return confirm('Are you sure! you want to import this question again?')");
+                QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
+                $('#save-popup-button').trigger('click');
             },
             addNewQuestion: function (model) {
                 var default_answers = parseInt(qsmQuestionSettings.default_answers);

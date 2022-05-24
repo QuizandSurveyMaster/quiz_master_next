@@ -817,8 +817,6 @@ function qsm_ajax_save_pages() {
 		die( 'Busted!' );
 	}
 
-	echo "<pre>";print_r($_POST);wp_die();
-
 	global $mlwQuizMasterNext;
 	$json = array(
 		'status' => 'error',
@@ -830,8 +828,32 @@ function qsm_ajax_save_pages() {
 
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
-	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+	$all_questions   = $new_pages = $q_all_questions = $q_new_pages = array();
+
+	//merge duplicate questions
+	foreach( $pages as $page_key => $questions ){
+		$questions = array_unique( $questions );
+		foreach( $questions as $q_key => $id){
+			if( !in_array( $id, $all_questions, true ) ) {
+				$new_pages[$page_key][$q_key] = $id;
+			}
+		}
+		$all_questions = array_merge( $all_questions, $questions );
+	}
+
+	//merge duplicate questions
+	foreach( $qpages as $q_page_key => $q_questions ){
+		$q_questions['questions'] = array_unique( $q_questions['questions'] );
+		foreach( $q_questions['questions'] as $q_key => $q_id){
+			if( !in_array( $q_id, $q_all_questions, true ) ) {
+				$q_new_pages[$q_page_key][$q_key] = $q_id;
+			}
+		}
+		$q_all_questions = array_merge( $q_all_questions, $q_questions );
+	}
+
+	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
+	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $new_pages );
 	if ( $response ) {
 		$json['status'] = 'success';
 		// update post_modified

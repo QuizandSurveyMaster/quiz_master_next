@@ -425,7 +425,9 @@ class QMNQuizManager {
 			if ( ! empty( $qpages_arr ) ) {
 				foreach ( $qpages_arr as $key => $qpage ) {
 					unset( $qpage['questions'] );
-					$qpages[ $qpage['id'] ] = $qpage;
+					if( isset( $qpage['id'] ) ){
+						$qpages[ $qpage['id'] ] = $qpage;
+					}
 				}
 			}
 			$correct_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text );
@@ -1037,6 +1039,7 @@ class QMNQuizManager {
 				<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
 				<?php
 				foreach ( $page as $question_id ) {
+					if( !isset( $questions[ $question_id ] ) ) continue;
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					$category_class = '';
