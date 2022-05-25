@@ -1471,6 +1471,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 }));
             },
             addQuestionFromQuestionBank: function (questionID) {
+                QSMAdmin.displayAlert('Adding question...', 'info');
                 var model = new QSMQuestion.question({
                     id: questionID
                 });
@@ -1484,13 +1485,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 });
             },
             questionBankSuccess: function (model) {
-                var page = parseInt($('#add-question-bank-page').val(), 10);
-                model.set('page', page);
-                QSMQuestion.questions.add(model);
-                QSMQuestion.addQuestionToPage(model);
-                $('.import-button').removeClass('disable_import');
-                QSMQuestion.countTotal();
-                import_button.html('').html('Add Question');
+                var newModel = _.clone(model.attributes);
+                newModel.id = null;
+                QSMQuestion.questions.create(
+                    newModel, {
+                        headers: {
+                            'X-WP-Nonce': qsmQuestionSettings.nonce
+                        },
+                        success: QSMQuestion.addNewQuestionFromQuestionBank,
+                        error: QSMAdmin.displayError
+                    }
+                );
             },
             prepareCategories: function () {
                 QSMQuestion.categories = [];
@@ -1640,6 +1645,18 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     }
                 });
                 setTimeout(QSMQuestion.removeNew, 250);
+            },
+            addNewQuestionFromQuestionBank: function (model) {
+                var page = parseInt($('#add-question-bank-page').val(), 10);
+                model.set('page', page);
+                QSMQuestion.questions.add(model);
+                QSMQuestion.addQuestionToPage(model);
+                $('.import-button').removeClass('disable_import');
+                QSMQuestion.countTotal();
+                import_button.html('').html('Add Question');
+                import_button.attr("onclick", "return confirm('Are you sure! you want to import this question again?')");
+                QSMQuestion.openEditPopup(model.id, $('.question[data-question-id=' + model.id + ']').find('.edit-question-button'));
+                $('#save-popup-button').trigger('click');
             },
             addNewQuestion: function (model) {
                 var default_answers = parseInt(qsmQuestionSettings.default_answers);
@@ -2318,12 +2335,12 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 QSMQuestion.addNewAnswer(answer, 0);
             });
 
-            $('.qsm-popup-bank').on('click', '.import-button', function (event) {
+            $(document).on('click', '.qsm-popup-bank .import-button', function (event) {
                 event.preventDefault();
                 $(this).text('').text('Adding Question');
                 import_button = $(this);
-                QSMQuestion.addQuestionFromQuestionBank($(this).parents('.question-bank-question').data('question-id'));
                 $('.import-button').addClass('disable_import');
+                QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
             });
 
             //Click on selected question button.
