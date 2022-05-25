@@ -19,17 +19,18 @@ class QSM_Quiz extends QSM_Model {
 	 * @var array
 	 */
 	protected $data = array(
-		'id'		 => '',
-		'quiz_id'	 => '',
-		'name'		 => '',
-		'system'	 => '',
-		'views'		 => 0,
-		'taken'		 => 0,
-		'author_id'	 => 0,
-		'deleted'	 => 0,
-		'updated'	 => null,
-		'created'	 => null,
-		'settings'	 => array(),
+		'id'              => '',
+		'quiz_id'         => '',
+		'name'            => '',
+		'system'          => '',
+		'views'           => 0,
+		'taken'           => 0,
+		'author_id'       => 0,
+		'deleted'         => 0,
+		'updated'         => null,
+		'created'         => null,
+		'settings'        => array(),
+		'legacy_settings' => array(),
 	);
 
 	/**
@@ -98,8 +99,8 @@ class QSM_Quiz extends QSM_Model {
 	public function get_author_id() {
 		$author_id = $this->get_field( 'author_id' );
 		if ( 0 == $author_id ) {
-			$current_user	 = wp_get_current_user();
-			$author_id		 = $current_user->ID;
+			$current_user    = wp_get_current_user();
+			$author_id       = $current_user->ID;
 		}
 		return $author_id;
 	}
@@ -136,6 +137,15 @@ class QSM_Quiz extends QSM_Model {
 	 */
 	public function get_settings() {
 		return $this->get_field( 'settings' );
+	}
+
+	/**
+	 * Get all quiz settings for legacy support
+	 * 
+	 * @return array
+	 */
+	public function get_legacy_settings() {
+		return $this->get_field( 'legacy_settings' );
 	}
 
 	/**

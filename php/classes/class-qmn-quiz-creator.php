@@ -14,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class QMNQuizCreator {
 
-
-
 	/**
 	 * QMN ID of quiz
 	 *
@@ -74,16 +72,17 @@ class QMNQuizCreator {
 		/**
 		 * Prepare Quiz Data
 		 */
+		$quiz_options = $quiz_settings['quiz_options'];
 		$quiz = new QSM_Quiz();
-		$quiz_data		 = array(
-			'quiz_id'	 => 0,
-			'name'		 => $quiz_name,
-			'system'	 => $quiz_options['system'],
-			'views'		 => 0,
-			'taken'		 => 0,
-			'author_id'	 => $quiz->get_author_id(),
-			'updated'	 => current_time( 'mysql' ),
-			'created'	 => current_time( 'mysql' ),
+		$quiz_data       = array(
+			'quiz_id'   => 0,
+			'name'      => $quiz_name,
+			'system'    => $quiz_options['system'],
+			'views'     => 0,
+			'taken'     => 0,
+			'author_id' => $quiz->get_author_id(),
+			'updated'   => current_time( 'mysql' ),
+			'created'   => current_time( 'mysql' ),
 		);
 		foreach ( $quiz_data as $key => $value ) {
 			$quiz->set_field( $key, $value );
@@ -94,6 +93,8 @@ class QMNQuizCreator {
 		 */
 		if ( ! empty( $quiz_settings ) ) {
 			unset( $quiz_settings['quiz_name'] );
+			$quiz_settings['message_after']          = __( 'Thanks for submitting your response! You can edit this message on the "Results Pages" tab. <br>%CONTACT_ALL% <br>%QUESTIONS_ANSWERS%', 'quiz-master-next' );
+			$quiz_settings['user_email_template']    = '%QUESTIONS_ANSWERS_EMAIL%';
 			foreach ( $quiz_settings as $meta_key => $meta_value ) {
 				$meta_value = maybe_unserialize( $meta_value );
 				$quiz->set_field( $meta_key, $meta_value, 'settings' );

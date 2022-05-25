@@ -11,21 +11,21 @@ abstract class QSM_Model {
 	 *
 	 * @var int
 	 */
-	protected $id			 = 0;
+	protected $id            = 0;
 
 	/**
 	 * This is the name of this object type.
 	 *
 	 * @var string
 	 */
-	protected $object_type	 = '';
+	protected $object_type   = '';
 
 	/**
 	 * Core data for this object. Name value pairs (name + default value).
 	 *
 	 * @var array
 	 */
-	protected $data			 = array();
+	protected $data          = array();
 	
 	/**
 	 * Core data changes for this object.
@@ -39,7 +39,7 @@ abstract class QSM_Model {
 	 *
 	 * @var bool
 	 */
-	protected $object_read	 = false;
+	protected $object_read   = false;
 
 	/**
 	 * Contains a reference to the data store for this class.
@@ -121,13 +121,13 @@ abstract class QSM_Model {
 	public function get_field( $field, $section = '', $default = null ) {
 		$value = $default;
 		if ( ! empty( $section ) && array_key_exists( $section, $this->data ) ) {
-			$section_data = maybe_unserialize( $this->data[$section] );
+			$section_data = maybe_unserialize( $this->data[ $section ] );
 			if ( array_key_exists( $field, $section_data ) ) {
-				$value = $section_data[$field];
+				$value = $section_data[ $field ];
 			}
 		} else {
 			if ( array_key_exists( $field, $this->data ) ) {
-				$value = $this->data[$field];
+				$value = $this->data[ $field ];
 			}
 		}
 		return apply_filters( $this->get_hook_prefix() . $field, $value, $section, $this );
@@ -142,13 +142,32 @@ abstract class QSM_Model {
 	 */
 	public function set_field( $field, $value, $section = '' ) {
 		if ( ! empty( $section ) && array_key_exists( $section, $this->data ) ) {
-			$section_data			 = maybe_unserialize( $this->data[$section] );
-			$section_data[$field]	 = $value;
-			$this->data[$section]	 = $section_data;
+			$section_data            = maybe_unserialize( $this->data[ $section ] );
+			$section_data[ $field ]    = $value;
+			$this->data[ $section ]    = $section_data;
 		} else {
 			if ( array_key_exists( $field, $this->data ) ) {
-				$this->data[$field] = $value;
+				$this->data[ $field ] = $value;
 			}
+		}
+	}
+	/**
+	 * Sets changes for updating process
+	 *
+	 * @param  string $field Name of prop to set.
+	 * @param  mixed  $value Value of the prop.
+	 * @param  string $section The name of the section the setting is registered in
+	 */
+	public function set_changes( $field, $value, $section = '' ) {
+		if ( ! empty( $section ) ) {
+			if ( ! array_key_exists( $section, $this->changes ) ) {
+				$this->changes[ $section ] = array();
+			}
+			$section_data            = maybe_unserialize( $this->changes[ $section ] );
+			$section_data[ $field ]    = $value;
+			$this->changes[ $section ] = $section_data;
+		} else {
+			$this->changes[ $field ] = $value;
 		}
 	}
 	
