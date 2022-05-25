@@ -113,7 +113,7 @@ class QMNQuizCreator {
 			 * Prepare quiz result & email templates.
 			 */
 			self::add_quiz_templates($quiz_id);
-			
+
 			// Hook called after new quiz or survey has been created. Passes quiz_id to hook
 			do_action( 'qmn_quiz_created', $quiz_id );
 		} else {
