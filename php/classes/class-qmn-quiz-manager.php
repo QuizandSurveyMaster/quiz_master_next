@@ -426,7 +426,9 @@ class QMNQuizManager {
 			if ( ! empty( $qpages_arr ) ) {
 				foreach ( $qpages_arr as $key => $qpage ) {
 					unset( $qpage['questions'] );
-					$qpages[ $qpage['id'] ] = $qpage;
+					if ( isset( $qpage['id'] ) ) {
+						$qpages[ $qpage['id'] ] = $qpage;
+					}
 				}
 			}
 			$correct_answer_text = sanitize_text_field( $qmn_quiz_options->quick_result_correct_answer_text );
@@ -1038,6 +1040,9 @@ class QMNQuizManager {
 				<?php do_action( 'qsm_action_before_page', $qpage_id, $qpage ); ?>
 				<?php
 				foreach ( $page as $question_id ) {
+					if ( ! isset( $questions[ $question_id ] ) ) {
+						continue;
+					}
 					$question_list .= $question_id . 'Q';
 					$question       = $questions[ $question_id ];
 					$category_class = '';
@@ -1268,7 +1273,7 @@ class QMNQuizManager {
 			?>
 			<span class="pages_count" style="display: none;">
 				<?php
-				$text_c = $current_page_number . esc_html__( ' out of ', 'quiz-master-next' ) . $total_pagination;
+				$text_c = esc_html__( '1 out of ', 'quiz-master-next' ) . $total_pagination;
 				echo apply_filters( 'qsm_total_pages_count', $text_c, $pages_count, $total_pages_count );
 				?>
 			</span>
@@ -1533,7 +1538,6 @@ class QMNQuizManager {
 		}
 		$qmn_array_for_variables['hidden_questions'] = $hidden_questions;
 		$qmn_array_for_variables                     = apply_filters( 'qsm_result_variables', $qmn_array_for_variables );
-
 		if ( ! isset( $_POST['mlw_code_captcha'] ) || ( isset( $_POST['mlw_code_captcha'], $_POST['mlw_user_captcha'] ) && sanitize_text_field( wp_unslash( $_POST['mlw_user_captcha'] ) ) == sanitize_text_field( wp_unslash( $_POST['mlw_code_captcha'] ) ) ) ) {
 			$qsm_check_answers_return            = $this->check_answers( $qmn_quiz_options, $qmn_array_for_variables );
 			$qmn_array_for_variables             = array_merge( $qmn_array_for_variables, $qsm_check_answers_return );

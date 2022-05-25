@@ -133,9 +133,10 @@ class QSM_Contact_Manager {
 							}
 							// Filer Value 
 							$value = apply_filters('qsm_contact_text_filed_value',$value,$fields[ $i ]['use']);
+							$class = apply_filters('qsm_contact_text_field_class',$class,$fields[ $i ]['use']);
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
-							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='<?php echo esc_attr( 'phone' === $fields[ $i ]['use'] ? 'text' : 'text' ); ?>' <?php if ( 'phone' === $fields[ $i ]['use'] ) { ?> onkeydown="return event.keyCode !== 69 " <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $field_label ) ); ?>" />
+							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' <?php if ( 'phone' === $fields[ $i ]['use'] ) { ?> onkeydown="return event.keyCode !== 69 " <?php } ?>  class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) {echo esc_attr( $value );} ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $field_label ) ); ?>" />
 							<?php
 							break;
 
@@ -143,6 +144,7 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredText qsm_required_text';
 							}
+							$class = apply_filters('qsm_contact_email_field_class',$class,$fields[ $i ]['use']);
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 							<input <?php if ( $contact_disable_autofill ) { echo "autocomplete='off'"; } ?> type='text' class='mlwEmail <?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='<?php if ( empty($contact_disable_autofill) ) { echo esc_attr( $value ); } ?>' placeholder="<?php echo esc_attr( wp_strip_all_tags( $field_label ) ); ?>" />
@@ -153,6 +155,7 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredAccept qsm_required_accept';
 							}
+							$class = apply_filters('qsm_contact_checkbox_field_class',$class,$fields[ $i ]['use']);
 							?>
 							<input type='checkbox' id='contact_field_<?php echo esc_attr( $i ); ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='checked' />
 							<label class='mlw_qmn_question qsm_question' for='contact_field_<?php echo esc_attr( $i ); ?>'><?php echo wp_kses_post( $field_label ); ?></label>
@@ -163,6 +166,7 @@ class QSM_Contact_Manager {
 							if ( ( 'true' === $fields[ $i ]["required"] || true === $fields[ $i ]["required"] ) && ! $fields_hidden ) {
 								$class = 'mlwRequiredDate qsm_required_date';
 							}
+							$class = apply_filters('qsm_contact_date_field_class',$class,$fields[ $i ]['use']);
 							?>
 							<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 							<input type='date' id='contact_field_<?php echo esc_attr( $i ); ?>' class='<?php echo esc_attr( $class ); ?>' name='contact_field_<?php echo esc_attr( $i ); ?>' value='' />

@@ -206,7 +206,7 @@ class QMNQuizCreator {
 	 * @param  string $quiz_name The new name of the quiz.
 	 * @return void
 	 */
-	public function edit_quiz_name( $quiz_id, $quiz_name ) {
+	public function edit_quiz_name( $quiz_id, $quiz_name, $post_id ) {
 		global $mlwQuizMasterNext;
 		global $wpdb;
 		$results = $wpdb->update(
@@ -221,6 +221,12 @@ class QMNQuizCreator {
 			array( '%d' )
 		);
 		if ( false !== $results ) {
+			$quiz_data = array(
+				'ID'         => $post_id,
+				'post_title' => $quiz_name,
+			);
+			wp_update_post($quiz_data);
+
 			$mlwQuizMasterNext->alertManager->newAlert( __( 'The name of your quiz or survey has been updated successfully.', 'quiz-master-next' ), 'success' );
 			$mlwQuizMasterNext->audit_manager->new_audit( 'Quiz/Survey Name Has Been Edited', $quiz_id, '' );
 		} else {
@@ -585,7 +591,7 @@ class QMNQuizCreator {
 			);
 		}
 	}
-	
+
 	public static function add_quiz_templates( $quiz_id ) {
 		global $mlwQuizMasterNext;
 		$pages   = QSM_Results_Pages::load_pages( $quiz_id );

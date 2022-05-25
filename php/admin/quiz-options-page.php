@@ -50,9 +50,9 @@ function qsm_generate_quiz_options() {
 	wp_localize_script( 'qsm_admin_js', 'qsmTextTabObject', array( 'quiz_id' => $quiz_id ) );
 	// Edit Quiz Name.
 	if ( isset( $_POST['qsm_edit_name_quiz_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_edit_name_quiz_nonce'] ) ) , 'qsm_edit_name_quiz' ) ) {
-		//$quiz_id   = intval( $_POST['edit_quiz_id'] );
 		$quiz_name = isset( $_POST['edit_quiz_name'] ) ? sanitize_text_field( wp_unslash( $_POST['edit_quiz_name'] ) ) : '';
-		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name );
+		$post_id = isset( $_POST['edit_quiz_post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['edit_quiz_post_id'] ) ) : '';
+		$mlwQuizMasterNext->quizCreator->edit_quiz_name( $quiz_id, $quiz_name, $post_id );
 	}
 	//Update post status
 	if ( isset( $_POST['qsm_update_quiz_status_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['qsm_update_quiz_status_nonce'] ) ), 'qsm_update_quiz_status' ) ) {
@@ -173,8 +173,9 @@ function qsm_generate_quiz_options() {
 					<main class="qsm-popup__content" id="modal-3-content">
 						<form action='' method='post' id="edit-name-form">
 							<label><?php esc_html_e( 'Name', 'quiz-master-next' ); ?></label>
-							<input type="text" id="edit_quiz_name" name="edit_quiz_name" value="<?php echo esc_attr( $quiz_name ); ?>" />
+							<input type="text" id="edit_quiz_name" class="regular-text" name="edit_quiz_name" value="<?php echo esc_attr( $quiz_name ); ?>" />
 							<input type="hidden" id="edit_quiz_id" name="edit_quiz_id" value="<?php echo isset( $_GET['quiz_id'] ) && is_int( $_GET['quiz_id'] ) ? intval( $_GET['quiz_id'] ) : '0'; ?>" />
+							<input type="hidden" id="edit_quiz_post_id" name="edit_quiz_post_id" value="<?php echo get_the_ID(); ?>" />
 							<?php wp_nonce_field( 'qsm_edit_name_quiz', 'qsm_edit_name_quiz_nonce' ); ?>
 						</form>
 					</main>

@@ -823,14 +823,46 @@ function qsm_ajax_save_pages() {
 	);
 
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
 
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$response_qpages = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
-	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
+	$all_questions   = $new_pages = $q_all_questions = $q_new_pages = array();
+
+	//merge duplicate questions
+	foreach ( $pages as $page_key => $questions ) {
+		$questions = array_unique( $questions );
+		foreach ( $questions as $q_key => $id ) {
+			if ( ! in_array( $id, $all_questions, true ) ) {
+				$new_pages[ $page_key ][ $q_key ] = $id;
+			}
+		}
+		$all_questions = array_merge( $all_questions, $questions );
+	}
+
+	//merge duplicate questions
+	foreach ( $qpages as $q_page_key => $q_questions ) {
+		$q_questions['questions'] = array_unique( $q_questions['questions'] );
+		foreach ( $q_questions['questions'] as $q_key => $q_id ) {
+			if ( ! in_array( $q_id, $q_all_questions, true ) ) {
+				$q_new_pages[ $q_page_key ][ $q_key ] = $q_id;
+			}
+		}
+		$q_all_questions = array_merge( $q_all_questions, $q_questions );
+	}
+
+	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
+	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $new_pages );
 	if ( $response ) {
 		$json['status'] = 'success';
+		// update post_modified
+		$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+		$update = array(
+			'ID'            => $post_id,
+			'post_modified' => $datetime,
+		);
+		wp_update_post( $update );
 	}
 	echo wp_json_encode( $json );
 	wp_die();
@@ -1086,7 +1118,7 @@ function qsm_options_questions_tab_template() {
 					<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 				</div>
 				<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-				<div><a href="javascript:void(0)" class="import-button button"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
+				<div><a href="javascript:void(0)" class="import-button button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
 			</div>
 		</script>
 

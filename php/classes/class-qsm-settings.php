@@ -199,6 +199,7 @@ class QSM_Quiz_Settings {
 			$setDefaultvalue['loggedin_user_contact']              = $globalQuizsetting['loggedin_user_contact'];
 			$setDefaultvalue['comment_section']                    = $globalQuizsetting['comment_section'];
 			$setDefaultvalue['question_numbering']                 = $globalQuizsetting['question_numbering'];
+			$setDefaultvalue['show_optin']                         = $globalQuizsetting['show_optin'];
 			$setDefaultvalue['store_responses']                    = $globalQuizsetting['store_responses'];
 			$setDefaultvalue['disable_answer_onselect']            = $globalQuizsetting['disable_answer_onselect'];
 			$setDefaultvalue['ajax_show_correct']                  = $globalQuizsetting['ajax_show_correct'];
@@ -255,6 +256,19 @@ class QSM_Quiz_Settings {
 			$mlwQuizMasterNext->log_manager->add( 'Error when updating setting', $wpdb->last_error . ' from ' . $wpdb->last_query, 0, 'error' );
 			return false;
 		} else {
+			global $wpdb;
+			$results = $wpdb->get_results( "SELECT post_id FROM $wpdb->postmeta WHERE meta_value = $this->quiz_id AND meta_key = 'quiz_id'", ARRAY_A );
+			if ( ! empty( $results ) ) {
+				foreach ( $results as $result ) {
+					// update post_modified
+					$datetime  = current_time( 'Y-m-d H:i:s', 0 );
+					$update = array(
+						'ID'            => $result['post_id'],
+						'post_modified' => $datetime,
+					);
+					wp_update_post( $update );
+				}
+			}
 			return true;
 		}
 

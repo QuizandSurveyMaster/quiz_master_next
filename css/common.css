@@ -357,4 +357,6 @@ footer.qsm-popup__footer button.qsm-popup-secondary-button:hover{
 .qsm_quiz_processing_box .qsm_quiz_processing_message{
     margin: 10px 0;
 }
-
+.qsm-text-correct-option.not-opted {
+    color: #6f7479;
+  }
