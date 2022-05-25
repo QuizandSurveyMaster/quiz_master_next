@@ -1496,7 +1496,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         error: QSMAdmin.displayError
                     }
                 );
-                console.log(newModel);
             },
             prepareCategories: function () {
                 QSMQuestion.categories = [];
