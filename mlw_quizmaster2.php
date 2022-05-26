@@ -50,7 +50,7 @@ class MLWQuizMasterNext {
 	/**
 	 * The single instance of the class.
 	 *
-	 * @var WooCommerce
+	 * @var MLWQuizMasterNext
 	 * @since 2.1
 	 */
 	protected static $_instance = null;
@@ -143,7 +143,7 @@ class MLWQuizMasterNext {
 	/**
 	 * Main QSM Instance.
 	 *
-	 * Ensures only one instance of WooCommerce is loaded or can be loaded.
+	 * Ensures only one instance of MLWQuizMasterNext is loaded or can be loaded.
 	 *
 	 * @return Main instance.
 	 */

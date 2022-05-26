@@ -1,10 +1,8 @@
 <?php
 /**
- * WC Data Store.
+ * QSM Data Store.
  *
- * @package WooCommerce\Classes
- * @since   3.0.0
- * @version 3.0.0
+ * @version 8.0
  */
 
 defined( 'ABSPATH' ) || exit;

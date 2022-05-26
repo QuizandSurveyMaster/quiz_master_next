@@ -10,6 +10,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 4.7.1
  */
 class QSM_Install {
+	
+	/**
+	 * DB updates and callbacks that need to be run per version.
+	 *
+	 * Please note that these functions are invoked when QSM is updated from a previous version,
+	 * but NOT when QSM is newly installed.
+	 *
+	 * @var array
+	 */
+	private static $db_updates = array(
+		'8.0' => array(
+			'qsm_update_80',
+			'qsm_update_80_db_version'
+		),
+	);
 
 	/**
 	 * Main Constructor
@@ -27,8 +42,20 @@ class QSM_Install {
 	 * @since 4.7.1
 	 */
 	public function add_hooks() {
+		add_action( 'init', array( __CLASS__, 'check_version' ), 5 );
 		add_action( 'plugins_loaded', array( $this, 'register_default_settings' ) );
-		add_action( 'admin_init', array( $this, 'update' ) );
+	}
+	
+	/**
+	 * Check QSM version and run the updater is required.
+	 *
+	 * This check is done on all requests and runs if the versions do not match.
+	 */
+	public static function check_version() {
+		if ( version_compare( get_option( 'qsm_version' ), QSM()->version, '<' ) ) {
+			self::update_qsm_version();
+			self::maybe_update_db_version();
+		}
 	}
 
 	/**
@@ -1289,17 +1316,14 @@ class QSM_Install {
 	 */
 	public static function install() {
 		set_transient( 'qsm_installing', 'yes', MINUTE_IN_SECONDS * 10 );
+
 		/**
 		 * Create Required Database Tables.
 		 */
 		self::create_tables();
+		self::update_qsm_version();
+		self::maybe_update_db_version();
 
-		/**
-		 * Add/Update Latest QSM version in option table.
-		 */
-		update_option( 'qsm_version', QSM()->version );
-		update_option( 'qsm_db_version', QSM()->version );
-		
 		/**
 		 * Set migration flags for fresh install
 		 */
@@ -1490,6 +1514,60 @@ CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
 			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
+	
+	/**
+	 * Get list of DB update callbacks.
+	 *
+	 * @since  8.0
+	 * @return array
+	 */
+	public static function get_db_update_callbacks() {
+		return self::$db_updates;
+	}
+	
+	/**
+	 * See if we need to show or run database updates during install.
+	 *
+	 * @since 8.0
+	 */
+	private static function maybe_update_db_version() {
+		if ( self::needs_db_update() ) {
+			self::update();
+		} else {
+			self::update_db_version();
+		}
+	}
+	
+	/**
+	 * Is a DB update needed?
+	 *
+	 * @since  8.0
+	 * @return boolean
+	 */
+	public static function needs_db_update() {
+		$current_db_version = get_option( 'qsm_db_version', null );
+		$updates            = self::get_db_update_callbacks();
+		$update_versions    = array_keys( $updates );
+		usort( $update_versions, 'version_compare' );
+
+		return ! is_null( $current_db_version ) && version_compare( $current_db_version, end( $update_versions ), '<' );
+	}
+	
+	/**
+	 * Update WC version to current.
+	 */
+	public static function update_qsm_version() {
+		update_option( 'qsm_version', QSM()->version );
+	}
+	
+	/**
+	 * Update DB version to current.
+	 *
+	 * @param string|null $version New QSM DB version or null.
+	 */
+	public static function update_db_version( $version = null ) {
+		update_option( 'qsm_db_version', is_null( $version ) ? QSM()->version : $version );
+	}
 
 	/**
 	 * Updates the plugin
@@ -1498,18 +1576,23 @@ CREATE TABLE `{$wpdb->prefix}qsm_result_meta` (
 	 */
 	public static function update() {
 		global $wpdb, $mlwQuizMasterNext;
-		$current_version = $mlwQuizMasterNext->version;
-		if ( ! get_option( 'qsm_version' ) ) {
-			update_option( 'qsm_version', $current_version );
-		}
 
-		if ( $current_version != get_option( 'qsm_db_version' ) ) {
-			QSM_Legacy::update();
-			
-			self::create_tables();
-			
-			update_option( 'qsm_db_version', $current_version );
+		/**
+		 * Include Updater file
+		 */
+		include_once dirname( __FILE__ ) . '/qsm-update-functions.php';
+
+		foreach ( self::get_db_update_callbacks() as $version => $update_callbacks ) {
+			if ( version_compare( get_option( 'qsm_db_version' ), $version, '<' ) ) {
+				foreach ( $update_callbacks as $update_callback ) {
+					if ( function_exists( $update_callback ) ) {
+						$update_callback();
+					}
+				}
+			}
 		}
+		
+		self::update_db_version();
 	}
 
 	public static function get_current_auto_increment_value( $table_name = '' ) {
