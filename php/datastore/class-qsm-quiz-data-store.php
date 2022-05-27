@@ -444,5 +444,151 @@ class QSM_Quiz_Data_Store implements QSM_Data_Store_Interface {
 		 */
 		do_action( 'qsm_quiz_updated', $quiz->get_id(), $quiz );
 	}
+	
+	/**
+	 * Query for Quiz matching specific criteria.
+	 *
+	 * @param array $args Query arguments.
+	 *
+	 * @return array
+	 */
+	public function query( $args ) {
+		global $wpdb;
+		
+		$defaults	 = array(
+			'orderby'	 => 'created',
+			'order'		 => 'DESC',
+			'include'	 => array(),
+			'exclude'	 => array(),
+			's'			 => '', /* Search keyword */
+			'exact'		 => 0,
+			'per_page'	 => -1,
+			'offset'	 => 0,
+			'paged'		 => 0,
+		);
+		$parsed_args = wp_parse_args( $args, $defaults );
+		
+		// First let's clear some variables.
+		$search           = '';
+		$where            = '';
+		$limits           = '';
+		$orderby          = '';
+
+		// If a search pattern is specified, load the posts that match.
+		if ( strlen( $parsed_args['s'] ) ) {
+			$search = $this->parse_search( $parsed_args );
+		}
+
+		//Prepare include ids
+		if ( $q['include'] ) {
+			$include = implode( ',', array_map( 'absint', $q['include'] ) );
+			$where	 .= " AND `quiz_id` IN ($include)";
+		}
+
+		//Prepare exclude ids
+		if ( $q['exclude'] ) {
+			$exclude = implode( ',', array_map( 'absint', $q['exclude'] ) );
+			$where	 .= " AND `quiz_id` NOT IN ($exclude)";
+		}
+		
+		// Order by.
+		if ( empty( $q['orderby'] ) ) {
+			$orderby = "`created` " . $q['order'];
+		} elseif ( 'none' === $q['orderby'] ) {
+			$orderby = '';
+		} else {
+			$parsed = $this->parse_orderby( $q['orderby'] );
+			if ( $parsed ) {
+				$orderby = $parsed . " " . $q['order'];
+			}
+		}
+
+		if ( ! empty( $orderby ) ) {
+			$orderby = 'ORDER BY ' . $orderby;
+		}
+
+		//Prepare Limit query
+		if ( $q['per_page'] ) {
+			$q['per_page']	 = (int) $q['per_page'];
+			$page			 = absint( $q['paged'] );
+			if ( ! $page ) {
+				$page = 1;
+			}
+			if ( isset( $q['offset'] ) && is_numeric( $q['offset'] ) ) {
+				$offset = absint( $q['offset'] ) . ', ';
+			} else {
+				$offset = absint( ( $page - 1 ) * $q['per_page'] ) . ', ';
+			}
+			$limits = 'LIMIT ' . $offset . $q['per_page'];
+		}
+		
+		$quizzes = $wpdb->get_results("SELECT * FROM `{$wpdb->prefix}qsm_quizzes` WHERE 1=1 {$where} {$orderby} {$limits}", ARRAY_A );
+		
+		if ( $quizzes ) {
+			return $quizzes;
+		}
+		return array();
+	}
+	
+	/**
+	 * Generates SQL for the WHERE clause based on passed search terms.
+	 *
+	 * @param array $q Query variables.
+	 * @return string WHERE clause.
+	 */
+	protected function parse_search( &$q ) {
+		$q['s']	 = stripslashes( $q['s'] );
+		// There are no line breaks in <input /> fields.
+		$q['s']	 = str_replace( array( "\r", "\n" ), '', $q['s'] );
+		$term	 = ! empty( $q['exact'] ) ? $q['s'] : '%' . $q['s'] . '%';
+		$search	 = "`name` LIKE {$term} ";
+		return $search;
+	}
+	
+	/**
+	 * Converts the given orderby alias (if allowed) to a properly-prefixed value.
+	 *
+	 * @param string $orderby Alias for the field to order by.
+	 * @return string|false value to used in the ORDER clause. False otherwise.
+	 */
+	protected function parse_orderby( $orderby ) {
+		// Used to filter values.
+		$allowed_keys = array(
+			'id',
+			'quiz_id',
+			'name',
+			'quiz_name',
+			'system',
+			'views',
+			'taken',
+			'author_id',
+			'updated',
+			'created',
+			'rand',
+		);
+
+		if ( ! in_array( $orderby, $allowed_keys, true ) ) {
+			return false;
+		}
+
+		$orderby_clause = '';
+
+		switch ( $orderby ) {
+			case 'quiz_name':
+				$orderby_clause	 = 'name';
+				break;
+			case 'id':
+				$orderby_clause	 = 'quiz_id';
+				break;
+			case 'rand':
+				$orderby_clause	 = 'RAND()';
+				break;
+			default:
+				$orderby_clause	 = $orderby;
+				break;
+		}
+
+		return $orderby_clause;
+	}
 
 }

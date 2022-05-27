@@ -60,6 +60,21 @@ function is_qsm_quizzes_migrated() {
 	return $migrated;
 }
 
+/**
+ * Standard way of retrieving quizzes based on certain parameters.
+ *
+ * @since  8.0
+ * @param  array $args Array of args (above).
+ * @return array Array of quiz objects if is true, or just an array of values.
+ */
+function qsm_get_quizzes( $args ) {
+	/**
+	 * Get quizzes from data store based on arguments.
+	 */
+	$results = QSM_Data_Store::load( 'quiz' )->query( $args );
+	return apply_filters( 'qsm_get_quizzes', $results, $args );
+}
+
 if ( ! function_exists( 'add_qsm_meta' ) ) {
 
 	/**

@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-abstract class QSM_Model {
+abstract class QSM_Data {
 
 	/**
 	 * ID for this object.
@@ -151,6 +151,7 @@ abstract class QSM_Model {
 			}
 		}
 	}
+
 	/**
 	 * Sets changes for updating process
 	 *

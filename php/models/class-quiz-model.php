@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QSM_Quiz extends QSM_Model {
+class QSM_Quiz extends QSM_Data {
 
 	/**
 	 * This is the name of this object type.
