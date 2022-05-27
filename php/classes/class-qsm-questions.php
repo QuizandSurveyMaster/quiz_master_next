@@ -543,11 +543,13 @@ class QSM_Questions {
 	 */
 	public static function create_terms_tree( &$list, $parent ) {
 		$taxTree = array();
-		foreach ( $parent as $ind => $val ) {
-			if ( isset( $list[ $val->term_id ] ) ) {
-				$val->children = self::create_terms_tree( $list, $list[ $val->term_id ] );
+		if ( is_array($parent) ) {
+			foreach ( $parent as $ind => $val ) {
+				if ( isset( $list[ $val->term_id ] ) ) {
+					$val->children = self::create_terms_tree( $list, $list[ $val->term_id ] );
+				}
+				$taxTree[] = $val;
 			}
-			$taxTree[] = $val;
 		}
 		return $taxTree;
 	}
