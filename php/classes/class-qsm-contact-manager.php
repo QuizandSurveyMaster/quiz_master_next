@@ -307,7 +307,9 @@ class QSM_Contact_Manager {
 		 * If $field is empty, Return default fields for edit screen.
 		 */
 		if ( empty( $fields ) && 'edit' == $type ) {
-			$fields = $default_fields;
+			foreach ( $default_fields as $key => $field ) {
+				$fields[] = $field;
+			}
 		}
 		return $fields;
 	}
