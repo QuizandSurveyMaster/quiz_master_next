@@ -964,201 +964,191 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         if (window.location.href.indexOf('tab=contact') > 0 ){
 
             QSMContact = {
-                load : function() {
-                    if($.isArray(qsmContactObject.contactForm) && qsmContactObject.contactForm.length > 0){
-                        $.each( qsmContactObject.contactForm, function( i, val ) {
-                          QSMContact.addField( val );
-                        });
-                    }
-                },
-                addField : function( fieldArray ) {
-                  var new_label =  fieldArray.label.replace(/"/g, "'");
-                  var contactField = $( '<div class="contact-form-field new"><span class="dashicons dashicons-move"></span>' +
-                      '<div class="contact-form-group">' +
-                          '<label class="contact-form-label">Field Type</label>' +
-                        '<select class="contact-form-control wide type-control">' +
-                          '<option value="none">Select a type...</option>' +
-                          '<option value="text">Small Open Answer</option>' +
-                          '<option value="email">Email</option>' +
-                          '<option value="checkbox">Checkbox</option>' +
-                          '<option value="date">Date</option>' +
-                        '</select>' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Label</label>' +
-                        '<input type="text" class="contact-form-control label-control" value="' + new_label + '">' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Used For</label>' +
-                        '<select class="contact-form-control use-control">' +
-                          '<option value="none"></option>' +
-                          '<option value="name">Name</option>' +
-                          '<option value="email">Email</option>' +
-                          '<option value="comp">Business</option>' +
-                          '<option value="phone">Phone</option>' +
-                        '</select>' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<label class="contact-form-label">Required?</label>' +
-                        '<input type="checkbox" class="required-control">' +
-                      '</div>' +
-                      '<div class="contact-form-group">' +
-                        '<a href="javascript:void(0)" class="delete-field">Delete</a> | ' +
-                        '<a href="javascript:void(0)" class="copy-field">Duplicate</a>' +
-                      '</div>' +
-                    '</div>'
-                  );
-                  if ( true === fieldArray.required || "true" === fieldArray.required ) {
-                    contactField.find( '.required-control' ).prop( 'checked', true );
-                  }
-                  switch ( fieldArray.type ) {
-                    case 'text':
-                      contactField.find( '.type-control option[value="text"]').prop( 'selected', true );
-                      break;
-                    case 'email':
-                      contactField.find( '.type-control option[value="email"]').prop( 'selected', true );
-                      break;
-                    case 'checkbox':
-                      contactField.find( '.type-control option[value="checkbox"]').prop( 'selected', true );
-                      break;
-                    case 'date':
-                      contactField.find( '.type-control option[value="date"]').prop( 'selected', true );
-                      break;
-                    default:
+                load: function () {
+					if ( $.isArray( qsmContactObject.contactForm ) && qsmContactObject.contactForm.length > 0 ) {
+						$.each( qsmContactObject.contactForm, function ( i, val ) {
+							QSMContact.addField( val );
+						} );
+					}
+				},
+				addField: function ( fieldArray ) {
+					var template = wp.template( 'contact-form-field' );
 
-                  }
-                  switch ( fieldArray.use ) {
-                    case 'name':
-                      contactField.find( '.use-control option[value="name"]').prop( 'selected', true );
-                      break;
-                    case 'email':
-                      contactField.find( '.use-control option[value="email"]').prop( 'selected', true );
-                      break;
-                    case 'comp':
-                      contactField.find( '.use-control option[value="comp"]').prop( 'selected', true );
-                      break;
-                    case 'phone':
-                      contactField.find( '.use-control option[value="phone"]').prop( 'selected', true );
-                      break;
-                    default:
+					$( '.contact-form' ).append( template( fieldArray ) );
 
-                  }
-                  $( '.contact-form' ).append( contactField );
-                  setTimeout( QSMContact.removeNew, 250 );
-                },
-                removeNew: function() {
-                  $( '.contact-form-field' ).removeClass( 'new' );
-                },
-                duplicateField: function( linkClicked ) {
-                  var field = linkClicked.parents( '.contact-form-field' );
-                  var fieldArray = {
-                    label: field.find( '.label-control' ).val(),
-                    type: field.find( '.type-control' ).val(),
-                    required: field.find( '.required-control' ).prop( 'checked' ),
-                    use: field.find( '.use-control' ).val()
-                  };
-                  QSMContact.addField( fieldArray );
-                },
-                deleteField: function( field ) {
-                  var parent = field.parents( '.contact-form-field' );
-                  parent.addClass( 'deleting' );
-                  setTimeout( function() {
-                    parent.remove();
-                  }, 250 );
-                },
-                newField : function() {
-                  var fieldArray = {
-                    label : '',
-                    type : 'text',
-                    answers : [],
-                    required : false,
-                    use: ''
-                  };
-                  QSMContact.addField( fieldArray );
-                },
-                save : function() {
-                    QSMContact.displayAlert( 'Saving contact fields...', 'info' );
-                    var contactFields = $( '.contact-form-field' );
-                    var contactForm = [];
-                    var contactEach;
-                    $.each( contactFields, function( i, val ) {
-                        contactEach = {
-                        label: $( this ).find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
-                        type: $( this ).find( '.type-control' ).val(),
-                        required: $( this ).find( '.required-control' ).prop( 'checked' ),
-                        use: $( this ).find( '.use-control' ).val()
-                        };
-                        contactForm.push( contactEach );
-                    });
-                    var data = {
-                        action: 'qsm_save_contact',
-                        contact_form: contactForm,
-                        quiz_id : qsmContactObject.quizID,
-                        nonce : qsmContactObject.saveNonce,
-                    };
+					$( '.contact-form-field' ).each( function () {
+						QSMContact.hideShowSettings( $( this ) );
+					} );
+					setTimeout( QSMContact.removeNew, 250 );
+				},
+                removeNew: function () {
+					$( '.contact-form-field' ).removeClass( 'new' );
+				},
+				duplicateField: function ( linkClicked ) {
+					var fieldArray = QSMContact.prepareFieldData( linkClicked.parents( '.contact-form-field' ) );
+					QSMContact.addField( fieldArray );
+				},
+				deleteField: function ( field ) {
+					var parent = field.parents( '.contact-form-field' );
+					parent.addClass( 'deleting' );
+					setTimeout( function () {
+						parent.remove();
+					}, 250 );
+				},
+                newField: function () {
+					var fieldArray = {
+						label: '',
+						type: 'text',
+						answers: [],
+						required: false,
+						use: '',
+						enable: true,
+						is_default: false
+					};
+					jQuery( document ).trigger( 'qsm_add_contact_field', [fieldArray] );
+					QSMContact.addField( fieldArray );
+				},
+				prepareFieldData: function ( field ) {
+					var fieldArray = {
+						label: field.find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
+						type: field.find( '.type-control' ).val(),
+						required: field.find( '.required-control' ).prop( 'checked' ),
+						use: field.find( '.use-control' ).val(),
+						enable: field.find( '.enable-control' ).prop( 'checked' ),
+					};
+					/**
+					 * Store Other settings
+					 */
+					field.find( '.contact-form-field-settings :input' ).each( function () {
+						var inputName = $( this ).attr( 'name' );
+						var inputVal = $( this ).val();
+						if ( 'checkbox' == $( this ).attr( 'type' ) ) {
+							inputVal = $( this ).prop( 'checked' );
+						}
+						fieldArray[inputName] = inputVal;
+					} );
+					return fieldArray;
+				},
+                save: function () {
+					QSMContact.displayAlert( 'Saving contact fields...', 'info' );
+					var contactFields = $( '.contact-form-field' );
+					var contactForm = [];
+					var contactEach;
+					$.each( contactFields, function ( i, val ) {
+						contactEach = QSMContact.prepareFieldData( $( this ) );
+						contactForm.push( contactEach );
+					} );
+					var data = {
+						action: 'qsm_save_contact',
+						contact_form: contactForm,
+						quiz_id: qsmContactObject.quizID,
+						nonce: qsmContactObject.saveNonce,
+					};
 
-                    jQuery.post( ajaxurl, data, function( response ) {
-                        QSMContact.saved( JSON.parse( response ) );
-                    });
-                },
-                saved : function( response ) {
-                  if ( response.status ) {
-                    QSMContact.displayAlert( '<strong>Success</strong> Your contact fields have been saved!', 'success' );
-                  } else {
-                    QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your contact fields. Please try again.', 'error' );
-                  }
-                },
-                displayAlert: function( message, type ) {
-                  QSMContact.clearAlerts();
-                  $( '.contact-message' ).addClass( 'notice' );
-                  switch ( type ) {
-                    case 'info':
-                      $( '.contact-message' ).addClass( 'notice-info' );
-                      break;
-                    case 'error':
-                      $( '.contact-message' ).addClass( 'notice-error' );
-                      break;
-                    case 'success':
-                      $( '.contact-message' ).addClass( 'notice-success' );
-                      break;
-                    default:
-                  }
-                  $( '.contact-message' ).append( '<p>' + message + '</p>' );
-                },
-                clearAlerts: function() {
-                  $( '.contact-message' ).empty().removeClass().addClass( 'contact-message' );
-                }
+					jQuery.post( ajaxurl, data, function ( response ) {
+						QSMContact.saved( JSON.parse( response ) );
+					} );
+				},
+				saved: function ( response ) {
+					if ( response.status ) {
+						QSMContact.displayAlert( '<strong>Success</strong> Your contact fields have been saved!', 'success' );
+					} else {
+						QSMContact.displayAlert( '<strong>Error</strong> There was an error encountered when saving your contact fields. Please try again.', 'error' );
+					}
+				},
+				displayAlert: function ( message, type ) {
+					QSMContact.clearAlerts();
+					$( '.contact-message' ).addClass( 'notice' );
+					switch ( type ) {
+						case 'info':
+							$( '.contact-message' ).addClass( 'notice-info' );
+							break;
+						case 'error':
+							$( '.contact-message' ).addClass( 'notice-error' );
+							break;
+						case 'success':
+							$( '.contact-message' ).addClass( 'notice-success' );
+							break;
+						default:
+					}
+					$( '.contact-message' ).append( '<p>' + message + '</p>' );
+				},
+				clearAlerts: function () {
+					$( '.contact-message' ).empty().removeClass().addClass( 'contact-message' );
+				},
+				hideShowSettings: function ( field ) {
+					var type = field.find( '.type-control' ).val();
+					if ( field.find( '.required-control' ).prop( 'checked' ) ) {
+						field.find( '.field-required-flag' ).show();
+					}
+					if ( !field.find( '.enable-control' ).prop( 'checked' ) ) {
+						field.addClass( 'disabled-field' );
+					}
+					field.find( '.contact-form-field-settings .contact-form-group:not(.required-option)' ).hide();
+					if ( 'text' == type || 'number' == type ) {
+						field.find( '.contact-form-field-settings .min-max-option' ).show();
+					}
+					if ( 'email' == type ) {
+						field.find( '.contact-form-field-settings .email-option' ).show();
+					}
+					jQuery( document ).trigger( 'qsm_contact_field_hide_show_settings', [field, type] );
+				}
             };
             $(function() {
-
                 QSMContact.load();
-                if( $('.contact-form > .contact-form-field').length === 0 ){
-                    $('.save-contact').hide();
-                }
-                $( '.add-contact-field' ).on( 'click', function() {
-                QSMContact.newField();
-                    if( $('.contact-form > .contact-form-field').length === 0 ){
-                        $('.save-contact').hide();
-                    }else{
-                        $('.save-contact').show();
-                    }
-                });
-                $( '.save-contact' ).on( 'click', function() {
-                    QSMContact.save();
-                });
-                $( '.contact-form' ).on( 'click', '.delete-field', function( event ) {
-                    event.preventDefault();
-                    QSMContact.deleteField( $( this ) );
-                });
-                $( '.contact-form' ).on( 'click', '.copy-field', function( event ) {
-                    event.preventDefault();
-                    QSMContact.duplicateField( $( this ) );
-                });
-                $( '.contact-form' ).sortable({
-                    opacity: 70,
-                    cursor: 'grabbing',
-                    handle: 'span.dashicons-move'
-                });
+				if ( $( '.contact-form > .contact-form-field' ).length === 0 ) {
+					$( '.save-contact' ).hide();
+				}
+				$( '.add-contact-field' ).on( 'click', function () {
+					QSMContact.newField();
+					if ( $( '.contact-form > .contact-form-field' ).length === 0 ) {
+						$( '.save-contact' ).hide();
+					} else {
+						$( '.save-contact' ).show();
+					}
+				} );
+				$( '.save-contact' ).on( 'click', function () {
+					QSMContact.save();
+				} );
+				$( '.contact-form' ).on( 'click', '.delete-field', function ( event ) {
+					event.preventDefault();
+					if ( !$( this ).hasClass( 'disabled' ) ) {
+						QSMContact.deleteField( $( this ) );
+					}
+					return false;
+				} );
+				$( '.contact-form' ).on( 'click', '.copy-field', function ( event ) {
+					event.preventDefault();
+					QSMContact.duplicateField( $( this ) );
+				} );
+				$( '.contact-form' ).on( 'click', '.settings-field', function ( event ) {
+					event.preventDefault();
+					$( '.contact-form-field-settings:visible' ).hide();
+					$( this ).parents( '.contact-form-field' ).find( '.contact-form-field-settings' ).toggle();
+				} );
+				$( '.contact-form' ).on( 'change', '.type-control', function ( event ) {
+					event.preventDefault();
+					QSMContact.hideShowSettings( $( this ).parents( '.contact-form-field' ) );
+				} );
+				$( '.contact-form' ).on( 'change', '.required-control', function ( event ) {
+					event.preventDefault();
+					$( this ).parents( '.contact-form-field' ).find( '.field-required-flag' ).hide();
+					if ( $( this ).is( ':checked' ) ) {
+						$( this ).parents( '.contact-form-field' ).find( '.field-required-flag' ).show();
+					}
+				} );
+				$( '.contact-form' ).on( 'change', '.enable-control', function ( event ) {
+					event.preventDefault();
+					$( this ).parents( '.contact-form-field' ).addClass( 'disabled-field' );
+					if ( $( this ).is( ':checked' ) ) {
+						$( this ).parents( '.contact-form-field' ).removeClass( 'disabled-field' );
+					}
+				} );
+				$( '.contact-form' ).sortable( {
+					opacity: 70,
+					cursor: 'grabbing',
+					handle: 'span.dashicons-move'
+				} );
             });
         }
     }
