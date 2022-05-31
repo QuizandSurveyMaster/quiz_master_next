@@ -1010,7 +1010,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				},
 				prepareFieldData: function ( field ) {
 					var fieldArray = {
-						label: field.find( '.label-control' ).val().replace( /(<([^>]+)>)/ig, '' ),
+						label: field.find( '.label-control' ).val(),
 						type: field.find( '.type-control' ).val(),
 						required: field.find( '.required-control' ).prop( 'checked' ),
 						use: field.find( '.use-control' ).val(),

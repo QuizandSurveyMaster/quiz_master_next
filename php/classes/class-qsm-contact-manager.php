@@ -20,7 +20,7 @@ class QSM_Contact_Manager {
 	 * @return array The array of default contact fields
 	 */
 	public static function default_fields() {
-		$fields = array(
+		return array(
 			'name'  => array(
 				'label'      => 'Name',
 				'type'       => 'text',
@@ -54,7 +54,6 @@ class QSM_Contact_Manager {
 				'is_default' => 'true',
 			),
 		);
-		return $fields;
 	}
 
 	/**
@@ -149,7 +148,7 @@ class QSM_Contact_Manager {
 			$total_fields = count( $fields );
 			for ( $i = 0; $i < $total_fields; $i++ ) {
 
-				if ( ( 'true' === $fields[ $i ]["enable"] || true === $fields[ $i ]["enable"] ) ) {
+				if ( 'true' === $fields[ $i ]["enable"] || true === $fields[ $i ]["enable"] ) {
 					$value = '';
 					?>
 					<div class="qsm_contact_div qsm-contact-type-<?php echo esc_attr( $fields[ $i ]['type'] ); ?>">

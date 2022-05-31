@@ -801,24 +801,21 @@ function qmnValidation(element, quiz_form_id) {
 			}
 			if ( jQuery( this ).attr( 'class' ).indexOf( 'mlwUrl' ) !== -1 && this.value !== "" ) {
 				// Remove any trailing and preceeding space.
-				var x = jQuery.trim( this.value );
-				if ( !isUrlValid( x ) ) {
+				if ( !isUrlValid( jQuery.trim( this.value ) ) ) {
 					qmnDisplayError( incorrect_error, jQuery( this ), quiz_form_id );
 					result = false;
 				}
 			}
 			if ( jQuery( this ).attr( 'class' ).indexOf( 'mlwMinLength' ) !== -1 && this.value !== "" ) {
 				// Remove any trailing and preceeding space.
-				var x = jQuery.trim( this.value );
-				if ( x.length < jQuery( this ).attr( 'minlength' ) ) {
+				if ( jQuery.trim( this.value ).length < jQuery( this ).attr( 'minlength' ) ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result = false;
 				}
 			}
 			if ( jQuery( this ).attr( 'class' ).indexOf( 'mlwMaxLength' ) !== -1 && this.value !== "" ) {
 				// Remove any trailing and preceeding space.
-				var x = jQuery.trim( this.value );
-				if ( x.length > jQuery( this ).attr( 'maxlength' ) ) {
+				if ( jQuery.trim( this.value ).length > jQuery( this ).attr( 'maxlength' ) ) {
 					qmnDisplayError( number_error, jQuery( this ), quiz_form_id );
 					result = false;
 				}
