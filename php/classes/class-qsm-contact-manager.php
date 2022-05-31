@@ -450,13 +450,12 @@ class QSM_Contact_Manager {
 			case 'url':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_url_filed_value', $default_value, $field['use'] );
 					$fieldAttr .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
 				}
-				$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
-				$class           = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
+				$class           = apply_filters( 'qsm_contact_url_field_class', $class, $field['use'] );
 				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
@@ -467,7 +466,7 @@ class QSM_Contact_Manager {
 			case 'number':
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
-					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$default_value   = apply_filters( 'qsm_contact_number_filed_value', $default_value, $field['use'] );
 					$fieldAttr .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
@@ -485,8 +484,7 @@ class QSM_Contact_Manager {
 				if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) {
 					$class .= ' mlwMaxLength ';
 				}
-				$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
-				$class           = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
+				$class           = apply_filters( 'qsm_contact_number_field_class', $class, $field['use'] );
 				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
