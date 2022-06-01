@@ -167,6 +167,19 @@ var QSMAdmin;
         );
     });
 
+    //Hide/Show legacy option
+    jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
+    jQuery(document).on('click', '#legacy_options', function (e) {
+        e.preventDefault();
+        if (jQuery('#legacy_options').parents('tr').next('tr').is(':visible')) {
+            jQuery(this).text('').text('Show Legacy options');
+            jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
+        } else {
+            jQuery(this).text('').text('Hide Legacy options');
+            jQuery('#legacy_options').parents('tr').nextAll('tr').show();
+        }
+    });
+
     //Dismiss the welcome panel
     jQuery('.qsm-welcome-panel-dismiss').click(function (e) {
         e.preventDefault();
@@ -495,24 +508,22 @@ function deleteResults(id, quizName) {
 
 //quiz options style tab
 
+jQuery('.quiz_style_tab').click(function(e) {
+    e.preventDefault();
+    var current_id = jQuery(this).attr('data-id');
+    jQuery('.quiz_style_tab').removeClass('current');
+    jQuery(this).addClass('current');
+    jQuery('.quiz_style_tab_content').hide();
+    jQuery('#' + current_id).show();
+});
+
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
-    if ( 0 < window.location.href.indexOf('tab=style')|| 0 < window.location.href.indexOf('tab=options') ){
+    if (window.location.href.indexOf('tab=style')> 0 ){
         function mlw_qmn_theme(theme) {
             document.getElementById('save_quiz_theme').value = theme;
             jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
             jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
         }
-
-        jQuery(document).ready(function() {
-        jQuery('.quiz_style_tab').click(function(e) {
-            e.preventDefault();
-            var current_id = jQuery(this).attr('data-id');
-            jQuery('.quiz_style_tab').removeClass('current');
-            jQuery(this).addClass('current');
-            jQuery('.quiz_style_tab_content').hide();
-            jQuery('#' + current_id).show();
-        });
-        });
 
         jQuery(document).ready(function() {
         jQuery(document).on('click', '.qsm-activate-theme', function() {
