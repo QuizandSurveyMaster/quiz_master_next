@@ -38,6 +38,7 @@ function qsm_options_contact_tab_content() {
 	?>
 	<div class="contact-message"></div>
 	<div class="contact-form-builder-wrap">
+		<p style="float: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank" rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
 		<h2><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
 		<div class="contact-form"></div>
 		<div class="qsm-tab-footer">

@@ -2,6 +2,11 @@
 	display: inline-block;
 	box-sizing: border-box;
 }
+.contact-form-builder-wrap a{
+	display: inline-block;
+	box-sizing: border-box;
+	text-decoration: none;
+}
 .contact-form {
 	display: inline-block;
 	width: 100%; 
@@ -92,10 +97,7 @@
 	border-radius: 0 5px 5px 0;
 }
 .contact-form-field .contact-form-actions-box a {
-	display: inline-block;
-	box-sizing: border-box;
 	padding: 10px;
-	text-decoration: none;
 	color: #3c434a;
 	border: 1px solid #ddd;
 	cursor: pointer;
