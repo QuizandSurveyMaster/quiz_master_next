@@ -1751,10 +1751,12 @@ td.scheduled_time_start {
 
 .qsm-option-tab-dropdown-item{
     border-bottom: 1px solid #c3c4c7;
+	min-width: 53px;
+    width: 100%;
 }
 
 .qsm-option-tab-dropdown:hover .qsm-option-tab-dropdown-list{
-    display: grid;
+    display: block;
 }
 
 .mlw_quiz_options .edit-quiz-name {

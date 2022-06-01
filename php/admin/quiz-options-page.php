@@ -148,7 +148,7 @@ function qsm_generate_quiz_options() {
 					if ( 0 < $addon_tabs ) {
 						?>
 						<div class="qsm-option-tab-dropdown">
-							<a href="javascript:void(0)" class="nav-tab <?php echo '' === $active_class ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Addon option', 'quiz-master-next' ); ?>
+							<a href="javascript:void(0)" class="nav-tab <?php echo '' === $active_class ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
 
 							</a>
