@@ -1123,8 +1123,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				} );
 				$( '.contact-form' ).on( 'click', '.settings-field', function ( event ) {
 					event.preventDefault();
-					$( '.contact-form-field-settings:visible' ).hide();
-					$( this ).parents( '.contact-form-field' ).find( '.contact-form-field-settings' ).toggle();
+					var target = $( this ).parents( '.contact-form-field' ).find( '.contact-form-field-settings' );
+					$( '.contact-form-field-settings' ).not( target ).hide();
+					target.toggle();
 				} );
 				$( '.contact-form' ).on( 'change', '.type-control', function ( event ) {
 					event.preventDefault();
