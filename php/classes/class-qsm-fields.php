@@ -126,7 +126,7 @@ class QSM_Fields {
 					// Cycles through each field
 					foreach ( $fields as  $field ) {
 					// Generate the field
-						if( isset( $field['option_tab'] ) && 'general' === $field['option_tab'] ){
+						if ( isset( $field['option_tab'] ) && 'general' === $field['option_tab'] ) {
 							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 						}
 					}
@@ -139,7 +139,7 @@ class QSM_Fields {
 					// Cycles through each field
 					foreach ( $fields as  $field ) {
 						// Generate the field
-						if( isset( $field['option_tab'] ) && 'quiz_submission' === $field['option_tab'] ){
+						if ( isset( $field['option_tab'] ) && 'quiz_submission' === $field['option_tab'] ) {
 							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 						}
 					}
@@ -152,7 +152,7 @@ class QSM_Fields {
 					// Cycles through each field
 					foreach ( $fields as  $field ) {
 						// Generate the field
-						if( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ){
+						if ( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ) {
 							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 						}
 					}
@@ -165,7 +165,7 @@ class QSM_Fields {
 					// Cycles through each field
 					foreach ( $fields as  $field ) {
 						// Generate the field
-						if( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ){
+						if ( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ) {
 							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 						}
 					}
@@ -178,7 +178,7 @@ class QSM_Fields {
 					// Cycles through each field
 					foreach ( $fields as  $field ) {
 						// Generate the field
-						if( isset( $field['option_tab'] ) && 'legacy' === $field['option_tab'] ){
+						if ( isset( $field['option_tab'] ) && 'legacy' === $field['option_tab'] ) {
 							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
 						}
 					}
