@@ -1722,6 +1722,28 @@ td.scheduled_time_start {
 	margin-top: 20px;
 }
 
+.qsm-option-tab-dropdown{
+	position: relative;
+	display: inline-block;
+	margin-bottom: -5px;
+}
+
+.qsm-option-tab-dropdown-list {
+    position: absolute;
+    right: 0;
+    z-index: 9999;
+    top: 35px;
+    display: none;
+}
+
+.qsm-option-tab-dropdown-item{
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.qsm-option-tab-dropdown:hover .qsm-option-tab-dropdown-list{
+    display: grid;
+}
+
 .mlw_quiz_options .edit-quiz-name {
 	float: none;
 	text-decoration: none;
@@ -2112,7 +2134,7 @@ td.scheduled_time_start {
 	border: none;
 	min-height: unset;
 	font-size: 12px;
-	background: unset;	
+	background: unset;
 }
 
 .qsm-text-template-span .template-variable:hover {
@@ -2154,7 +2176,7 @@ td.scheduled_time_start {
 	align-items: center;
 	justify-content: center;
 	height: 100%;
-	width:25px;	
+	width:25px;
 	z-index:99;
 	border-left: 1px dashed #a1c1d8;
 	background: #def0ff;
@@ -2168,7 +2190,7 @@ td.scheduled_time_start {
 
 .popup-template-span-wrap .qsm-text-template-span .popup-copied-des span.dashicons{
 	line-height: 1;
-} 
+}
 
 #result_page_fb_image {
 	width: 25em;
