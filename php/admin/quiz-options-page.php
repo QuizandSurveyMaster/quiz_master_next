@@ -145,17 +145,17 @@ function qsm_generate_quiz_options() {
 							$addon_tabs++;
 						}
 					}
-					if( 0 < $addon_tabs ){
+					if ( 0 < $addon_tabs ) {
 						?>
 						<div class="qsm-option-tab-dropdown">
-							<a href="javascript:void(0)" class="nav-tab <?php echo '' === $active_class ? 'nav-tab-active' : ''; ?>"><?php _e( 'Addon option', 'quiz-master-next' ); ?>
+							<a href="javascript:void(0)" class="nav-tab <?php echo '' === $active_class ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Addon option', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
 
 							</a>
 							<div class="qsm-option-tab-dropdown-list">
 								<?php
 									foreach ( $tab_array as $tab ) {
-										if ( !in_array( $tab['slug'], $qsm_core_tabs, true ) ) {
+										if ( ! in_array( $tab['slug'], $qsm_core_tabs, true ) ) {
 											$active_class = '';
 											if ( $active_tab === $tab['slug'] ) {
 												$active_class = 'nav-tab-active';
