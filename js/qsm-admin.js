@@ -1662,6 +1662,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         count++;
                     }
                 }
+                $('.save-page-button').trigger('click');
             },
             addQuestionToPage: function (model) {
                 var page = model.get('page') + 1;
@@ -2178,7 +2179,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $('.questions').on('click', '.new-question-button', function (event) {
                 event.preventDefault();
                 QSMQuestion.createQuestion($(this).parents('.page').index());
-                $('.save-page-button').trigger('click');
             });
 
             $('.questions').on('click', '.add-question-bank-button', function (event) {
@@ -2217,7 +2217,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             $(document).on('click', '.questions .duplicate-question-button', function (event) {
                 event.preventDefault();
                 QSMQuestion.duplicateQuestion($(this).parents('.question').data('question-id'));
-                $('.save-page-button').trigger('click');
             });
             $('.questions').on('click', '.delete-question-button', function (event) {
                 event.preventDefault();
