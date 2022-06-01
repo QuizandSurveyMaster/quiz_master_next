@@ -37,16 +37,13 @@ function qsm_options_contact_tab_content() {
 	) );
 	?>
 	<div class="contact-message"></div>
-	<div class="qsm-tab-header">
-		<h2><?php esc_html_e( 'Contact Fields', 'quiz-master-next' ); ?></h2>
-		<a class="save-contact button-primary"><?php esc_html_e( 'Save Fields', 'quiz-master-next' ); ?></a>
-		<div class="clear clearfix"></div>
-	</div>
-	<div class="contact-form"></div>
-	<div class="qsm-tab-footer">
-		<a class="add-contact-field button">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
-		<a class="save-contact button-primary"><?php esc_html_e( 'Save Fields', 'quiz-master-next' ); ?></a>
-		<div class="clear clearfix"></div>
+	<div class="contact-form-builder-wrap">
+		<h2><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
+		<div class="contact-form"></div>
+		<div class="qsm-tab-footer">
+			<a class="add-contact-field button">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
+			<a class="save-contact button-primary"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
+		</div>
 	</div>
 	<?php
 	add_action( 'admin_footer', 'qsm_options_contact_tab_template' );

@@ -1,20 +1,25 @@
-.qsm-tab-header, .qsm-tab-footer{
+.contact-form-builder-wrap{
+	display: inline-block;
+	box-sizing: border-box;
+}
+.contact-form {
+	display: inline-block;
+	width: 100%; 
+	box-sizing: border-box;
+	margin: 10px 0;
+}
+.qsm-tab-footer{
 	display: flex;
+	width: 100%;
 	flex-wrap: nowrap;
 	align-content: center;
 	justify-content: space-between;
 	align-items: center;
 }
-.contact-form {
-	display: inline-block;
-	/* width: 100%; */
-	box-sizing: border-box;
-	margin: 10px 0;
-}
 .contact-form-field {
 	display: flex;
-	padding: 20px 5px;
-	margin: 15px 0;
+	padding: 12px 5px;
+	margin: 0 0 10px;
 	background: #ffffff;
 	border: 1px solid #dfd4d4;
 	justify-content: space-between;
@@ -43,7 +48,7 @@
 	width: 25px;
 	padding: 0 0 0 15px;
 }
-.contact-form-field .field-required-flag{display: none;position: absolute;top: 8px;left: 8px;font-size: 24px;font-weight: bold;color: red;}
+.contact-form-field .field-required-flag{display: none;position: absolute;top: 5px;right: 6px;font-size: 20px;font-weight: bold;color: red;}
 .contact-form-field .sortable-handle a.move-field{
 	display: inline-block;
 	box-sizing: border-box;
@@ -52,8 +57,8 @@
 	cursor: move;
 }
 .contact-form-field .sortable-handle a.move-field span{
-	font-size: 25px;
-	height: auto;
+	color: #A6ABAF;
+	font-size: 22px;
 }
 .contact-form-field .contact-form-group .contact-form-label {
 	display: block;
