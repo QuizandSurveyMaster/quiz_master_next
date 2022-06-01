@@ -1735,6 +1735,28 @@ td.scheduled_time_start {
 	margin-top: 20px;
 }
 
+.qsm-option-tab-dropdown{
+	position: relative;
+	display: inline-block;
+	margin-bottom: -5px;
+}
+
+.qsm-option-tab-dropdown-list {
+    position: absolute;
+    left: 0;
+    z-index: 9999;
+    top: 35px;
+    display: none;
+}
+
+.qsm-option-tab-dropdown-item{
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.qsm-option-tab-dropdown:hover .qsm-option-tab-dropdown-list{
+    display: grid;
+}
+
 .mlw_quiz_options .edit-quiz-name {
 	float: none;
 	text-decoration: none;
