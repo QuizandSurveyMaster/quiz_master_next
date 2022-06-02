@@ -570,24 +570,16 @@ class QMNGlobalSettingsPage {
 					</div>
 
 					<div id="qsm_general" class="quiz_style_tab_content">
-						<table class="form-table" style="width: 100%;">
-							<?php do_settings_sections( 'qsm_default_global_option_general' ); ?>
-						</table>
+						<?php do_settings_sections( 'qsm_default_global_option_general' ); ?>
 					</div>
 					<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
-						<table class="form-table" style="width: 100%;">
-							<?php do_settings_sections( 'qsm_default_global_option_quiz_submission' ); ?>
-						</table>
+						<?php do_settings_sections( 'qsm_default_global_option_quiz_submission' ); ?>
 					</div>
 					<div id="display" class="quiz_style_tab_content" style="display:none">
-						<table class="form-table" style="width: 100%;">
-							<?php do_settings_sections( 'qsm_default_global_option_display' ); ?>
-						</table>
+						<?php do_settings_sections( 'qsm_default_global_option_display' ); ?>
 					</div>
 					<div id="contact_form" class="quiz_style_tab_content" style="display:none">
-						<table class="form-table" style="width: 100%;">
-							<?php do_settings_sections( 'qsm_default_global_option_contact' ); ?>
-						</table>
+						<?php do_settings_sections( 'qsm_default_global_option_contact' ); ?>
 					</div>
 					<?php
 				}
