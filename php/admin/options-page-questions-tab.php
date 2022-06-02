@@ -1099,18 +1099,18 @@ function qsm_options_questions_tab_template() {
 
 	<!-- View for Question -->
 	<script type="text/template" id="tmpl-question">
-		<div class="question question-new" data-question-id="{{data.id }}">
-				<div class="question-content">
-					<div><span class="dashicons dashicons-move"></span></div>
-					<div><a href="javascript:void(0)" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
-					<div><a href="javascript:void(0)" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-					<div><a href="javascript:void(0)" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
-					<div class="question-content-text">{{{data.question}}}</div>
-					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
-				</div>
+	<div class="question question-new" data-question-id="{{data.id }}">
+			<div class="question-content">
+				<div><span class="dashicons dashicons-move"></span></div>
+				<div class="question-content-text">{{{data.question}}}</div>
+				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
+				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
+				<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
 			</div>
-		</script>
-
+			<div class="question-category" style="margin-left:50px;font-style:italic;"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
+		</div>
+	</script>
+	
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
 		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
@@ -1160,4 +1160,3 @@ function qsm_options_questions_tab_template() {
 	<?php
 	do_action( 'qsm_admin_after_single_answer_template' );
 }
-?>
