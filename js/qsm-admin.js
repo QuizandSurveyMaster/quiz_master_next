@@ -1038,9 +1038,20 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 						contactEach = QSMContact.prepareFieldData( $( this ) );
 						contactForm.push( contactEach );
 					} );
+					
+					var settings = {};
+					$('#contactformsettings input').each(function (){
+						if ('checkbox' == $(this).attr('type')) {
+							settings[$(this).attr('name')] = ($(this).prop( 'checked' ) ? '1' : '0');
+						} else {
+							settings[$(this).attr('name')] = $(this).val();
+						}
+					});
+					
 					var data = {
 						action: 'qsm_save_contact',
 						contact_form: contactForm,
+						settings: settings,
 						quiz_id: qsmContactObject.quizID,
 						nonce: qsmContactObject.saveNonce,
 					};
@@ -1083,6 +1094,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					}
 					if ( !field.find( '.enable-control' ).prop( 'checked' ) ) {
 						field.addClass( 'disabled-field' );
+						if ( $( '.hide-disabled-fields' ).prop( 'checked' ) ) {
+							field.addClass( 'hidden-field' );
+						}
 					}
 					field.find( '.contact-form-field-settings .contact-form-group:not(.required-option)' ).hide();
 					if ( 'text' == type || 'number' == type ) {
@@ -1143,6 +1157,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					$( this ).parents( '.contact-form-field' ).addClass( 'disabled-field' );
 					if ( $( this ).is( ':checked' ) ) {
 						$( this ).parents( '.contact-form-field' ).removeClass( 'disabled-field' );
+					}
+					QSMContact.hideShowSettings( $( this ).parents( '.contact-form-field' ) );
+				} );
+				$( document ).on( 'change', '.hide-disabled-fields', function ( event ) {
+					event.preventDefault();
+					var is_hide = $( this ).prop( 'checked' );
+					jQuery.post( ajaxurl, { action: 'qsm_hide_disabled_contact_fields', hide: is_hide } );
+					if ( is_hide ) {
+						$( '.contact-form-field.disabled-field' ).addClass( 'hidden-field' );
+					} else {
+						$( '.contact-form-field' ).removeClass( 'hidden-field' );
 					}
 				} );
 				$( '.contact-form' ).sortable( {

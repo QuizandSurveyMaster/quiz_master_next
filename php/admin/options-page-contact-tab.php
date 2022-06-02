@@ -29,7 +29,9 @@ function qsm_options_contact_tab_content() {
 
 	$quiz_id         = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
 	$user_id         = get_current_user_id();
+	$hide_fields = get_user_meta($user_id, 'qsm_hide_disabled_contact_fields', true);
 	$contact_form    = QSM_Contact_Manager::load_fields( 'edit' );
+	$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 	wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array(
 		'contactForm' => $contact_form,
 		'quizID'      => $quiz_id,
@@ -37,13 +39,39 @@ function qsm_options_contact_tab_content() {
 	) );
 	?>
 	<div class="contact-message"></div>
-	<div class="contact-form-builder-wrap">
-		<p style="float: right;"><a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank" rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
-		<h2><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
-		<div class="contact-form"></div>
-		<div class="qsm-tab-footer">
-			<a class="add-contact-field button">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
-			<a class="save-contact button-primary"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
+	<h2 class="qsm-page-subheading"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
+	<div id="poststuff" class="contact-form-builder-wrap">
+		<div class="contact-tab-content">
+			<label class="hide-control">
+				<input type="checkbox" class="hide-disabled-fields" <?php echo ('true' == $hide_fields && true == $hide_fields) ? 'checked' : ''; ?> >
+				<span><?php esc_html_e( 'Hide Disabled Fields', 'quiz-master-next' ); ?></span>
+			</label>
+			<div class="contact-form"></div>
+			<a class="add-contact-field qsm-dashed-btn qsm-block-btn">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
+		</div>
+		<div class="contact-tab-sidebar">
+			<div id="contactformsettings" class="postbox ">
+				<div class="postbox-header">
+					<h2 class="hndle"><?php esc_html_e( 'Contact Form Settings', 'quiz-master-next' ); ?></h2>
+				</div>
+				<div class="inside">
+					<div class="inside-row">
+						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php _e('Show contact form at the quiz ends', 'quiz-master-next');?></span></label>
+					</div>
+					<div class="inside-row">
+						<label><input type="checkbox" name="loggedin_user_contact" value="1" <?php checked( $quiz_options['loggedin_user_contact'], '1', true )?>><span><?php _e('Hide contact form to logged in users', 'quiz-master-next');?></span></label>
+					</div>
+					<div class="inside-row">
+						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php _e('Disable autofill', 'quiz-master-next');?></span></label>
+					</div>
+					<div class="inside-row text-right">
+						<a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank" rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a>
+					</div>
+					<div class="inside-row">
+						<a class="save-contact button-primary"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<?php
@@ -51,7 +79,6 @@ function qsm_options_contact_tab_content() {
 }
 
 add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
-
 /**
  * Saves the contact form from the quiz settings tab
  *
@@ -61,6 +88,7 @@ add_action( 'wp_ajax_qsm_save_contact', 'qsm_contact_form_admin_ajax' );
 function qsm_contact_form_admin_ajax() {
 	global $wpdb, $mlwQuizMasterNext;
 	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	$mlwQuizMasterNext->pluginHelper->prepare_quiz( intval( $quiz_id ) );
 	$user_id = get_current_user_id();
 	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ) ) {
 		die( 'Busted!' );
@@ -70,10 +98,33 @@ function qsm_contact_form_admin_ajax() {
 	if ( isset( $_POST['contact_form'] ) ) {
 		$data = qsm_sanitize_rec_array( wp_unslash( $_POST['contact_form'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	}
+	/**
+	 * Store contact form related quiz options.
+	 */
+	if ( isset( $_POST['settings'] ) ) {
+		$quiz_options	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+		$settings		 = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		foreach ( $settings as $key => $val ) {
+			$quiz_options[$key] = $val;
+		}
+		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );
+	}
 
 	// Sends posted form data to Contact Manager to sanitize and save.
 	$results['status'] = QSM_Contact_Manager::save_fields( $quiz_id, $data );
 	echo wp_json_encode( $results );
+	die();
+}
+
+add_action( 'wp_ajax_qsm_hide_disabled_contact_fields', 'qsm_hide_disabled_contact_fields' );
+function qsm_hide_disabled_contact_fields() {
+	global $wpdb, $mlwQuizMasterNext;
+	$user_id = get_current_user_id();
+	if ( isset( $_POST['hide'] ) ) {
+		update_user_meta($user_id, 'qsm_hide_disabled_contact_fields', sanitize_text_field( $_POST['hide'] ));
+	}
+	// Sends posted form data to Contact Manager to sanitize and save.
+	echo '1';
 	die();
 }
 
@@ -111,7 +162,7 @@ function qsm_options_contact_tab_template() {
 				</div>
 			</div>
 			<div class="contact-form-group contact-form-switch">
-				<label class="endable-disable-switch" title="<?php _e('Enable / Disable Field', 'quiz-master-next');?>"><input type="checkbox" class="enable-control" <# if ( "true" == data.enable || true == data.enable ) { #>checked<# } #> ><span class="switch-slider"></span></label>
+				<label class="qsm-switch" title="<?php _e('Enable / Disable Field', 'quiz-master-next');?>"><input type="checkbox" class="enable-control" <# if ( "true" == data.enable || true == data.enable ) { #>checked<# } #> ><span class="switch-slider"></span></label>
 			</div>
 			<div class="contact-form-field-settings arrow-left" style="display:none;">
 				<h3><?php _e('Settings', 'quiz-master-next');?></h3>
