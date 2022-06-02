@@ -1693,10 +1693,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 } else {
                     questionName = new_question_title;
                 }
-
-                if (questionName == '')
-                    questionName = 'Your new question!';
-
+                if (questionName == '') {
+					questionName = 'Your new question!';
+				}
                 $('.page:nth-child(' + page + ')').append(template({
                     id: model.id,
                     category: model.get('category'),
@@ -1864,10 +1863,21 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (new_question_title !== '') {
                     questionName = $.QSMSanitize(new_question_title);
                 }
+				var category = [model.get('category')];
+				category.push(model.get('category'));
+				var multicategories = model.get('multicategories');
+                if (multicategories === null || typeof multicategories === "undefined") {
+                    //No Action Require
+                } else {
+                    $.each(multicategories, function (i, val) {
+                        category.push($(".qsm-popup__content #qsm_category-" + val + " label").text().trim());
+                    });
+					category = category.filter(item => item);
+                }
                 $('.question[data-question-id=' + model.id + ']').replaceWith(template({
                     id: model.id,
                     type: model.get('type'),
-                    category: model.get('category'),
+                    category: category.join(', '),
                     question: questionName
                 }));
                 setTimeout(function () {
