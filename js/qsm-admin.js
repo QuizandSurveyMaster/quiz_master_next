@@ -507,6 +507,14 @@ function deleteResults(id, quizName) {
 }
 
 //quiz options style tab
+jQuery('.quiz_style_tab').click(function(e) {
+    e.preventDefault();
+    var current_id = jQuery(this).attr('data-id');
+    jQuery('.quiz_style_tab').removeClass('current');
+    jQuery(this).addClass('current');
+    jQuery('.quiz_style_tab_content').hide();
+    jQuery('#' + current_id).show();
+});
 
 if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
     if (window.location.href.indexOf('tab=style')> 0 ){
@@ -515,17 +523,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             jQuery("div.mlw_qmn_themeBlockActive").toggleClass("mlw_qmn_themeBlockActive");
             jQuery("#mlw_qmn_theme_block_" + theme).toggleClass("mlw_qmn_themeBlockActive");
         }
-
-        jQuery(document).ready(function() {
-        jQuery('.quiz_style_tab').click(function(e) {
-            e.preventDefault();
-            var current_id = jQuery(this).attr('data-id');
-            jQuery('.quiz_style_tab').removeClass('current');
-            jQuery(this).addClass('current');
-            jQuery('.quiz_style_tab_content').hide();
-            jQuery('#' + current_id).show();
-        });
-        });
 
         jQuery(document).ready(function() {
         jQuery(document).on('click', '.qsm-activate-theme', function() {

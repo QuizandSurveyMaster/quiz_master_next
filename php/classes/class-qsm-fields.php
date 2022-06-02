@@ -91,34 +91,100 @@ class QSM_Fields {
 		?>
 		<form action="" method="post">
 			<?php wp_nonce_field( 'save_settings','save_settings_nonce' ); ?>
-			<button class="button-primary"><?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
-			<table class="form-table" style="width: 100%;">
-				<?php
-				$array_before_legacy = array();
-				foreach ( $fields as $key => $field ) {
-					if ( isset( $field['legacy_option'] ) && 0 == $field['legacy_option'] ) {
-						$array_before_legacy[] = $field;
-						unset( $fields[ $key ] );
+			<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
+				<ul class="subsubsub">
+					<li>
+						<a href="javascript:void(0)" data-id="qsm_general" class="current quiz_style_tab">
+							<?php esc_html_e( 'General', 'quiz-master-next' ); ?></a> |
+					</li>
+					<li>
+						<a href="javascript:void(0)" data-id="quiz_submission" class="quiz_style_tab">
+							<?php esc_html_e( 'Quiz submission', 'quiz-master-next' ); ?>
+						</a> |
+					</li>
+					<li>
+						<a href="javascript:void(0)" data-id="display" class="quiz_style_tab">
+							<?php esc_html_e( 'Display', 'quiz-master-next' ); ?>
+						</a> |
+					</li>
+					<li>
+						<a href="javascript:void(0)" data-id="contact_form" class="quiz_style_tab">
+							<?php esc_html_e( 'Contact form', 'quiz-master-next' ); ?>
+						</a> |
+					</li>
+					<li>
+						<a href="javascript:void(0)" data-id="legacy" class="quiz_style_tab">
+							<?php esc_html_e( 'Legacy', 'quiz-master-next' ); ?>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div id="qsm_general" class="quiz_style_tab_content">
+				<table class="form-table" style="width: 100%;">
+					<?php
+					// Cycles through each field
+					foreach ( $fields as  $field ) {
+					// Generate the field
+						if ( isset( $field['option_tab'] ) && 'general' === $field['option_tab'] ) {
+							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						}
 					}
-				}
-				$key = array_search('legacy_options', array_column($fields, 'id'), true);
-				if ( isset( $fields[ $key ] ) && ! empty( $array_before_legacy ) ) {
-					$i = 1;
-					$array_before_legacy = array_reverse($array_before_legacy);
-					foreach ( $array_before_legacy as $bl_value ) {
-						$fields = array_slice($fields, 0, $key, true) +
-							array( 'lo_' . $i => $bl_value ) +
-							array_slice($fields, $key, count($fields) - $key, true);
-						$i++;
+					?>
+				</table>
+			</div>
+			<div id="quiz_submission" class="quiz_style_tab_content" style="display:none">
+				<table class="form-table" style="width: 100%;">
+					<?php
+					// Cycles through each field
+					foreach ( $fields as  $field ) {
+						// Generate the field
+						if ( isset( $field['option_tab'] ) && 'quiz_submission' === $field['option_tab'] ) {
+							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						}
 					}
-				}
-				// Cycles through each field
-				foreach ( $fields as  $field ) {
-				// Generate the field
-				QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
-				}
-				?>
-			</table>
+					?>
+				</table>
+			</div>
+			<div id="display" class="quiz_style_tab_content" style="display:none">
+				<table class="form-table" style="width: 100%;">
+					<?php
+					// Cycles through each field
+					foreach ( $fields as  $field ) {
+						// Generate the field
+						if ( isset( $field['option_tab'] ) && 'display' === $field['option_tab'] ) {
+							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						}
+					}
+					?>
+				</table>
+			</div>
+			<div id="contact_form" class="quiz_style_tab_content" style="display:none">
+				<table class="form-table" style="width: 100%;">
+					<?php
+					// Cycles through each field
+					foreach ( $fields as  $field ) {
+						// Generate the field
+						if ( isset( $field['option_tab'] ) && 'contact_form' === $field['option_tab'] ) {
+							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						}
+					}
+					?>
+				</table>
+			</div>
+			<div id="legacy" class="quiz_style_tab_content" style="display:none">
+				<table class="form-table" style="width: 100%;">
+					<?php
+					// Cycles through each field
+					foreach ( $fields as  $field ) {
+						// Generate the field
+						if ( isset( $field['option_tab'] ) && 'legacy' === $field['option_tab'] ) {
+							QSM_Fields::generate_field( $field, $settings[ $field["id"] ] );
+						}
+					}
+					?>
+				</table>
+			</div>
 		<?php  if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 			<button class="button" name="global_setting" type="submit"><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></button>
 		<?php } ?>
