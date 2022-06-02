@@ -507,7 +507,6 @@ function deleteResults(id, quizName) {
 }
 
 //quiz options style tab
-
 jQuery('.quiz_style_tab').click(function(e) {
     e.preventDefault();
     var current_id = jQuery(this).attr('data-id');
