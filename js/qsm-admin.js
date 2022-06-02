@@ -1863,8 +1863,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 if (new_question_title !== '') {
                     questionName = $.QSMSanitize(new_question_title);
                 }
-				var category = [model.get('category')];
-				category.push(model.get('category'));
+				var category = [];
 				var multicategories = model.get('multicategories');
                 if (multicategories === null || typeof multicategories === "undefined") {
                     //No Action Require
