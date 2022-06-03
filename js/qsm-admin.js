@@ -1883,7 +1883,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     //No Action Require
                 } else {
                     $.each(multicategories, function (i, val) {
-                        category.push($(".qsm-popup__content #qsm_category-" + val + " label").text().trim());
+                        category.push($(".qsm-popup__content #qsm_category-" + val + " label:first-child")[0].textContent);
                     });
 					category = category.filter(item => item);
                 }
