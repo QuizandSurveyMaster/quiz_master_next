@@ -2453,3 +2453,36 @@ input#duplicate_questions {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
 }
+.qsm-actions-link-box {
+	display: inline-flex;
+	align-items: center;
+	flex-wrap: nowrap;
+	box-shadow: 0 0 5px 0px #ddd;
+	border-radius: 5px;
+	margin: 0 5px;
+}
+.qsm-actions-link-box a:first-child {
+	border-radius: 5px 0 0 5px;
+}
+.qsm-actions-link-box a:last-child {
+	border-radius: 0 5px 5px 0;
+}
+.qsm-actions-link-box a {
+	padding: 9px;
+	color: #3c434a;
+	border: 1px solid #ddd;
+	cursor: pointer;
+}
+.qsm-actions-link-box a.disabled{
+	cursor: not-allowed;
+}
+.qsm-actions-link-box a:hover,
+.qsm-actions-link-box a:focus {
+	outline: none;
+	box-shadow: none;
+	background: #eee;
+}
+.qsm-actions-link-box a span {
+	font-size: 16px;
+	height: auto;
+}

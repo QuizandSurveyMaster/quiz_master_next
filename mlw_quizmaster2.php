@@ -471,6 +471,27 @@ class MLWQuizMasterNext {
 		}
 		return $file_name;
 	}
+	
+	/**
+	 * Setting Menu Position
+	 */
+	public static function get_free_menu_position( $start, $increment = 0.1 ) {
+		foreach ( $GLOBALS['menu'] as $key => $menu ) {
+			$menus_positions[] = floatval( $key );
+		}
+		if ( ! in_array( $start, $menus_positions ) ) {
+			$start = strval( $start );
+			return $start;
+		} else {
+			$start += $increment;
+		}
+		/* the position is already reserved find the closet one */
+		while ( in_array( $start, $menus_positions ) ) {
+			$start += $increment;
+		}
+		$start = strval( $start );
+		return $start;
+	}
 
 	/**
 	 * Setup Admin Menu
@@ -484,7 +505,8 @@ class MLWQuizMasterNext {
 		if ( function_exists( 'add_menu_page' ) ) {
 			global $qsm_quiz_list_page;
 			$enabled            = get_option( 'qsm_multiple_category_enabled' );
-			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
+			$menu_position = self::get_free_menu_position(26.1, 0.3);
+			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
 			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 0 );
 			if ( $enabled && 'cancelled' !== $enabled ) {
 				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );

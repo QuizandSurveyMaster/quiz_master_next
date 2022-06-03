@@ -1094,7 +1094,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					}
 					if ( !field.find( '.enable-control' ).prop( 'checked' ) ) {
 						field.addClass( 'disabled-field' );
-						if ( $( '.hide-disabled-fields' ).prop( 'checked' ) ) {
+						if ( !$( '.show-disabled-fields' ).prop( 'checked' ) ) {
 							field.addClass( 'hidden-field' );
 						}
 					}
@@ -1160,14 +1160,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 					}
 					QSMContact.hideShowSettings( $( this ).parents( '.contact-form-field' ) );
 				} );
-				$( document ).on( 'change', '.hide-disabled-fields', function ( event ) {
+				$( document ).on( 'change', '.show-disabled-fields', function ( event ) {
 					event.preventDefault();
-					var is_hide = $( this ).prop( 'checked' );
-					jQuery.post( ajaxurl, { action: 'qsm_hide_disabled_contact_fields', hide: is_hide } );
-					if ( is_hide ) {
-						$( '.contact-form-field.disabled-field' ).addClass( 'hidden-field' );
-					} else {
+					var is_show = $( this ).prop( 'checked' );
+					jQuery.post( ajaxurl, { action: 'qsm_show_disabled_contact_fields', show: is_show } );
+					if ( is_show ) {
 						$( '.contact-form-field' ).removeClass( 'hidden-field' );
+					} else {
+						$( '.contact-form-field.disabled-field' ).addClass( 'hidden-field' );
 					}
 				} );
 				$( '.contact-form' ).sortable( {

@@ -24,27 +24,26 @@ add_action( "plugins_loaded", 'qsm_settings_contact_tab', 5 );
  * @since 4.7.0
  */
 function qsm_options_contact_tab_content() {
-	global $wpdb;
-	global $mlwQuizMasterNext;
-
-	$quiz_id         = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
-	$user_id         = get_current_user_id();
-	$hide_fields = get_user_meta($user_id, 'qsm_hide_disabled_contact_fields', true);
-	$contact_form    = QSM_Contact_Manager::load_fields( 'edit' );
-	$quiz_options = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+	global $wpdb, $mlwQuizMasterNext;
+	$quiz_id		 = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
+	$user_id		 = get_current_user_id();
+	$show_fields	 = get_user_meta( $user_id, 'qsm_show_disabled_contact_fields', true );
+	$show_fields	 = empty( $show_fields ) ? true : $show_fields;
+	$contact_form	 = QSM_Contact_Manager::load_fields( 'edit' );
+	$quiz_options	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 	wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array(
-		'contactForm' => $contact_form,
-		'quizID'      => $quiz_id,
-		'saveNonce'   => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ),
+		'contactForm'	 => $contact_form,
+		'quizID'		 => $quiz_id,
+		'saveNonce'		 => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ),
 	) );
 	?>
 	<div class="contact-message"></div>
-	<h2 class="qsm-page-subheading"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
+	<h2 class="qsm-page-subheading" style="font-weight: 500;"><?php esc_html_e( 'Setup Contact Form', 'quiz-master-next' ); ?></h2>
 	<div id="poststuff" class="contact-form-builder-wrap">
 		<div class="contact-tab-content">
 			<label class="hide-control">
-				<input type="checkbox" class="hide-disabled-fields" <?php echo ('true' == $hide_fields && true == $hide_fields) ? 'checked' : ''; ?> >
-				<span><?php esc_html_e( 'Hide Disabled Fields', 'quiz-master-next' ); ?></span>
+				<input type="checkbox" class="show-disabled-fields" <?php echo ('true' == $show_fields && true == $show_fields) ? 'checked' : ''; ?> >
+				<span><?php esc_html_e( 'Show Disabled Fields', 'quiz-master-next' ); ?></span>
 			</label>
 			<div class="contact-form"></div>
 			<a class="add-contact-field qsm-dashed-btn qsm-block-btn">+ <?php esc_html_e( 'Add New Field', 'quiz-master-next' ); ?></a>
@@ -52,26 +51,24 @@ function qsm_options_contact_tab_content() {
 		<div class="contact-tab-sidebar">
 			<div id="contactformsettings" class="postbox ">
 				<div class="postbox-header">
-					<h2 class="hndle"><?php esc_html_e( 'Contact Form Settings', 'quiz-master-next' ); ?></h2>
+					<h2 class="hndle"><?php esc_html_e( 'Form Options', 'quiz-master-next' ); ?></h2>
 				</div>
 				<div class="inside">
 					<div class="inside-row">
-						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php _e('Show contact form at the quiz ends', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="contact_info_location" value="1" <?php checked( $quiz_options['contact_info_location'], '1', true )?>><span><?php _e('Show contact form after the quiz', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<label><input type="checkbox" name="loggedin_user_contact" value="1" <?php checked( $quiz_options['loggedin_user_contact'], '1', true )?>><span><?php _e('Hide contact form to logged in users', 'quiz-master-next');?></span></label>
+						<label><input type="checkbox" name="loggedin_user_contact" value="0" <?php checked( $quiz_options['loggedin_user_contact'], 0, true )?>><span><?php _e('Show contact form to logged in users', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php _e('Disable autofill', 'quiz-master-next');?></span></label>
-					</div>
-					<div class="inside-row text-right">
-						<a href="https://quizandsurveymaster.com/docs/v7/contact-tab/" target="_blank" rel="noopener"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a>
+						<label><input type="checkbox" name="disable_first_page" value="1" <?php checked( $quiz_options['disable_first_page'], '1', true )?>><span><?php _e('Disable first page of quiz', 'quiz-master-next');?></span></label>
 					</div>
 					<div class="inside-row">
-						<a class="save-contact button-primary"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
+						<label><input type="checkbox" name="contact_disable_autofill" value="1" <?php checked( $quiz_options['contact_disable_autofill'], '1', true )?>><span><?php _e('Disable autofill entries', 'quiz-master-next');?></span></label>
 					</div>
 				</div>
 			</div>
+			<a class="save-contact button-primary qsm-block-btn" style="padding: 4px;"><?php esc_html_e( 'Save Form', 'quiz-master-next' ); ?></a>
 		</div>
 	</div>
 	<?php
@@ -107,6 +104,9 @@ function qsm_contact_form_admin_ajax() {
 		foreach ( $settings as $key => $val ) {
 			$quiz_options[$key] = $val;
 		}
+		if (isset($settings['loggedin_user_contact'])) {
+			$quiz_options['loggedin_user_contact'] = (1 == $settings['loggedin_user_contact']) ? 0 : 1;
+		}
 		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );
 	}
 
@@ -116,12 +116,12 @@ function qsm_contact_form_admin_ajax() {
 	die();
 }
 
-add_action( 'wp_ajax_qsm_hide_disabled_contact_fields', 'qsm_hide_disabled_contact_fields' );
-function qsm_hide_disabled_contact_fields() {
+add_action( 'wp_ajax_qsm_show_disabled_contact_fields', 'qsm_show_disabled_contact_fields' );
+function qsm_show_disabled_contact_fields() {
 	global $wpdb, $mlwQuizMasterNext;
 	$user_id = get_current_user_id();
-	if ( isset( $_POST['hide'] ) ) {
-		update_user_meta($user_id, 'qsm_hide_disabled_contact_fields', sanitize_text_field( $_POST['hide'] ));
+	if ( isset( $_POST['show'] ) ) {
+		update_user_meta($user_id, 'qsm_show_disabled_contact_fields', sanitize_text_field( $_POST['show'] ));
 	}
 	// Sends posted form data to Contact Manager to sanitize and save.
 	echo '1';
@@ -155,7 +155,7 @@ function qsm_options_contact_tab_template() {
 				<input type="hidden" class="use-control" value="{{data.use}}">
 			</div>
 			<div class="contact-form-group contact-form-actions">
-				<div class="contact-form-actions-box">
+				<div class="qsm-actions-link-box contact-form-actions-box">
 					<a href="javascript:void(0)" class="settings-field" title="<?php _e('Settings', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-generic"></span></a>
 					<a href="javascript:void(0)" class="copy-field" title="<?php _e('Duplicate', 'quiz-master-next');?>"><span class="dashicons dashicons-admin-page"></span></a>
 					<a href="javascript:void(0)" class="delete-field <# if ( "true" == data.is_default || true == data.is_default ) { #>disabled<# } #>" title="<?php _e('Delete', 'quiz-master-next');?>"><span class="dashicons dashicons-trash"></span></a>
