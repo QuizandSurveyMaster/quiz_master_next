@@ -295,12 +295,6 @@ function qsm_options_questions_tab_content() {
 								?>
 							</div>
 							<div id="qsm_optoins_wrapper" class="qsm-row qsm_hide_for_other qsm_show_question_type_0 qsm_show_question_type_1 qsm_show_question_type_2 qsm_show_question_type_3 qsm_show_question_type_4 qsm_show_question_type_5 qsm_show_question_type_7 qsm_show_question_type_10 qsm_show_question_type_12 qsm_show_question_type_14 <?php echo apply_filters('qsm_polar_class',esc_attr( $polar_class . $show_answer_option )); ?>">
-								<label class="answer-header">
-									<?php esc_html_e( 'Answers', 'quiz-master-next' ); ?>
-									<a class="qsm-question-doc" rel="noopener" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Answers" target="_blank" title="View Documentation">
-										<span class="dashicons dashicons-media-document"></span>
-									</a>
-								</label>
 								<div class="correct-header"><?php esc_html_e( 'Correct', 'quiz-master-next' ); ?></div>
 								<div class="answers" id="answers">
 
@@ -310,29 +304,31 @@ function qsm_options_questions_tab_content() {
 								</div>
 								<?php do_action('qsm_after_options'); ?>
 							</div>
-							<a href="javascript:void(0)" class="qsm-show-correct-info-box">+ <?php esc_html_e( 'Add Correct Answer Info', 'quiz-master-next' ); ?></a>
-							<div class="qsm-row" style="display: none;">
-								<?php
-								$show_correct_answer_info = '';
-								foreach ( $question_types as $type ) {
-									if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
-										$show_correct_answer_info .= ',' . $type['slug'];
+							<div class="qsm-question-desc-wrap">
+								<a href="javascript:void(0)" class="qsm-show-correct-info-box">+ <?php esc_html_e( 'Add Correct Answer Info', 'quiz-master-next' ); ?></a>
+								<div class="qsm-row" style="display: none;">
+									<?php
+									$show_correct_answer_info = '';
+									foreach ( $question_types as $type ) {
+										if ( isset( $type['options']['show_correct_answer_info'] ) && $type['options']['show_correct_answer_info'] ) {
+											$show_correct_answer_info .= ',' . $type['slug'];
+										}
 									}
-								}
-								$answer_area_option = array(
-									'correct_answer_info' => array(
-										'label'   => __( 'Correct Answer Info', 'quiz-master-next' ),
-										'type'    => 'textarea',
-										'default' => '',
-										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
-										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
-									),
-								);
-								$answer_area_option = apply_filters( 'qsm_question_advanced_option', $answer_area_option );
-								foreach ( $answer_area_option as $qo_key => $single_answer_option ) {
-									qsm_display_question_option( $qo_key, $single_answer_option );
-								}
-								?>
+									$answer_area_option = array(
+										'correct_answer_info' => array(
+											'label'   => __( 'Correct Answer Info', 'quiz-master-next' ),
+											'type'    => 'textarea',
+											'default' => '',
+											'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
+											'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
+										),
+									);
+									$answer_area_option = apply_filters( 'qsm_question_advanced_option', $answer_area_option );
+									foreach ( $answer_area_option as $qo_key => $single_answer_option ) {
+										qsm_display_question_option( $qo_key, $single_answer_option );
+									}
+									?>
+								</div>
 							</div>
 							<div class="qsm-row question-settings-wrap">
 								<label class="answer-header"><?php esc_html_e( 'Settings', 'quiz-master-next' ); ?></label>
@@ -369,26 +365,6 @@ function qsm_options_questions_tab_content() {
 										}
 									}
 									$advanced_question_option = array(
-										'required' => array(
-											'label' => __( 'Required?', 'quiz-master-next' ),
-											'type' => 'single_checkbox',
-											'priority' => '2',
-											'options' => array(
-												'0' => __( 'Yes', 'quiz-master-next' ),
-											),
-											'default' => '0',
-										),
-										'autofill' => array(
-											'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
-											'type' => 'single_checkbox',
-											'priority' => '6',
-											'options' => array(
-												'1' => __( 'Yes', 'quiz-master-next' ),
-											),
-											'default' => '0',
-											'show' => '3, 14' . $show_autofill,
-											'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
-										),
 										'comments' => array(
 											'label' => __( 'Comment Field', 'quiz-master-next' ),
 											'type' => 'select',
@@ -407,6 +383,17 @@ function qsm_options_questions_tab_content() {
 											'default' => '',
 											'priority' => '4',
 											'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Hints',
+										),
+										'autofill' => array(
+											'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
+											'type' => 'single_checkbox',
+											'priority' => '6',
+											'options' => array(
+												'1' => __( 'Yes', 'quiz-master-next' ),
+											),
+											'default' => '0',
+											'show' => '3, 14' . $show_autofill,
+											'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
 										),
 										'limit_text' => array(
 											'label' => __( 'Limit Text', 'quiz-master-next' ),
@@ -540,6 +527,15 @@ function qsm_options_questions_tab_content() {
 														'default' => 'random',
 														'show' => '14' . $show_match_answer,
 													),
+													'required' => array(
+														'label' => __( 'Required?', 'quiz-master-next' ),
+														'type' => 'single_checkbox',
+														'priority' => '2',
+														'options' => array(
+															'0' => __( 'Yes', 'quiz-master-next' ),
+														),
+														'default' => '0',
+													),
 												);
 												$simple_question_option = apply_filters( 'qsm_question_format_option', $simple_question_option );
 												$keys                   = array_column( $simple_question_option, 'priority' );
@@ -548,17 +544,12 @@ function qsm_options_questions_tab_content() {
 													qsm_display_question_option( $qo_key, $single_option );
 												}
 												?>
-											</div>
-											<div id="major-publishing-actions">
-												<div id="delete-action">
-													<a class="submitdelete deletion" data-micromodal-close
-														aria-label="Close this">Cancel</a>
+												<div id="delete-action" style="float: none;">
+													<a class="submitdelete deletion" data-micromodal-close aria-label="Close this">Cancel</a>
 												</div>
 												<div id="publishing-action">
-													<span class="spinner" id="save-edit-question-spinner"
-														style="float: none;"></span>
-													<button id="save-popup-button" class="button button-primary">Save
-														Question</button>
+													<span class="spinner" id="save-edit-question-spinner" style="float: none;"></span>
+													<button id="save-popup-button" class="button button-primary">Save Question</button>
 												</div>
 											</div>
 										</div>
