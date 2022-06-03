@@ -187,10 +187,12 @@
 
 .question,
 .question-bank-question {
-    padding: 10px;
-    background-color: #F3F3F3;
-    border: 1px solid #cbcbcb;
-    margin: 10px 0;
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    box-shadow: 0 0 5px 1px #ddd;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 10px 0 0;
 }
 
 .question a {
@@ -199,12 +201,22 @@
 
 .question-content {
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
 }
 
+.question-content .qsm-actions-link-box{
+    display: none;
+}
+.question-content:hover .qsm-actions-link-box{
+    display: inline-flex;
+}
 .question-content .dashicons {
-    font-size: 22px;
+    font-size: 20px;
     color: #1F8CBE;
 }
 
@@ -222,8 +234,12 @@
     font-size: 16px;
     font-weight: 500;
 }
-
+.question-content .form-actions{
+    min-height: 40px;
+}
 .question-content .question-category {
+    display: inline-block;
+    width: 100%;
     color: #939697;
     font-size: 14px;
     font-weight: normal;
