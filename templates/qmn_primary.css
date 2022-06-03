@@ -306,7 +306,7 @@ label.inline .mlw_qmn_question,
 .quiz_section.qmn_error input[type="text"]:focus,
 .quiz_section.qmn_error input[type="number"]:focus,
 .quiz_section.qmn_error input[type="email"]:focus,
-.quiz_section.qmn_error input[type="url"]:hover,
+.quiz_section.qmn_error input[type="url"]:focus,
 .quiz_section.qmn_error input[type="checkbox"]:focus,
 .quiz_section.qmn_error input[type="file"]:focus
 .quiz_section.qmn_error input[type="date"]:focus {
