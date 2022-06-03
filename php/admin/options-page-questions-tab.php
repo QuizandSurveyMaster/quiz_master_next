@@ -1103,11 +1103,15 @@ function qsm_options_questions_tab_template() {
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div class="question-content-text">{{{data.question}}}</div>
-				<div><a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a></div>
-				<div><a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a></div>
-				<div><a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a></div>
+				<div class="form-actions">
+					<div class="qsm-actions-link-box">
+						<a href="#" title="Edit Question" class="edit-question-button"><span class="dashicons dashicons-edit"></span></a>
+						<a href="#" title="Clone Question" class="duplicate-question-button"><span class="dashicons dashicons-admin-page"></span></a>
+						<a href="#" title="Delete Question" class="delete-question-button" data-question-iid="{{data.id }}"><span class="dashicons dashicons-trash"></span></a>
+					</div>
+				</div>
+				<div class="question-category" style="margin-left:50px;font-style:italic;"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 			</div>
-			<div class="question-category" style="margin-left:50px;font-style:italic;"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 		</div>
 	</script>
 	

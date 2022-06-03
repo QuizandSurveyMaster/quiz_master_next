@@ -2566,7 +2566,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     questionElements = $(this).parents('.questionElements');
                     var question_description = wp.editor.getContent('question-text');
                     if (question_description == '' || question_description == null) {
-                        console.log(questionElements.find('#question_type').val());
                         if (6 == questionElements.find('#question_type').val()) {
                             tinyMCE.get('question-text').setContent('');
                         } else {
@@ -2775,7 +2774,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                                     }
                                     $('.qsm_category_checklist li#qsm_category-' + result.term_id).children('label').children('input').prop('checked', true);
                                     $('.qsm_category_checklist li#qsm_category-' + result.term_id).parents('li').each(function () {
-                                        console.log($(this).children('label').children('input'));
                                         $(this).children('label').children('input').prop('checked', true);
                                     });
                                 }

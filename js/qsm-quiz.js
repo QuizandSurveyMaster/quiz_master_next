@@ -674,7 +674,6 @@ function isValidDomains( email, domains ) {
 		return true;
 	}
 	for ( var i = 0; i < domains.length; i++ ) {
-		console.log( email.indexOf( domains[i] ) );
 		if ( email.indexOf( domains[i] ) != -1 ) {
 			return true;
 		}
@@ -940,7 +939,6 @@ function qmnFormSubmit(quiz_form_id) {
 	jQuery(document).trigger('qsm_before_quiz_submit', [quiz_form_id]);
 	jQuery('#' + quiz_form_id + ' input[type=submit]').attr('disabled', 'disabled');
 	qsmDisplayLoading($container, quiz_id);
-	// console.log( 'submitted data:' + unindexed_array );
 	jQuery.ajax({
 		url: qmn_ajax_object.ajaxurl,
 		data: fd,
