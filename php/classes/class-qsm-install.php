@@ -832,16 +832,6 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		do_action( 'qsm_extra_setting_fields' );
-		// Setting for animation
-		$field_array = array(
-			'id'      => 'legacy_options',
-			'label'   => __( 'Show Legacy Options', 'quiz-master-next' ),
-			'type'    => 'hide_show',
-			'default' => '',
-			'help'    => __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
-		// 'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers social_media setting
 		$field_array = array(
@@ -1153,6 +1143,7 @@ class QSM_Install {
 			'label'   => __( 'Submit Button', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1161,6 +1152,7 @@ class QSM_Install {
 			'label'   => __( 'Retake Quiz Button', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'Retake Quiz', 'quiz-master-next' ),
+			'option_tab'  => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1170,6 +1162,7 @@ class QSM_Install {
 			'label'   => __( 'Previous button', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1179,15 +1172,7 @@ class QSM_Install {
 			'label'   => __( 'Next button', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Registers submit_button_text setting
-		$field_array = array(
-			'id'      => 'validation_text_section',
-			'label'   => __( 'Validation Messages', 'quiz-master-next' ),
-			'type'    => 'section_heading',
-			'default' => 0,
+			'option_tab'  => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1197,6 +1182,7 @@ class QSM_Install {
 			'label'   => __( 'All required fields', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'option_tab'  => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1206,6 +1192,7 @@ class QSM_Install {
 			'label'   => __( 'Invalid email', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'option_tab'  => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1215,6 +1202,7 @@ class QSM_Install {
 			'label'   => __( 'Invalid number', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'This field must be a number!', 'quiz-master-next' ),
+			'option_tab'  => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1224,15 +1212,7 @@ class QSM_Install {
 			'label'   => __( 'Invalid Captcha', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'The entered text is not correct!', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Registers submit_button_text setting
-		$field_array = array(
-			'id'      => 'other_text_section',
-			'label'   => __( 'Other', 'quiz-master-next' ),
-			'type'    => 'section_heading',
-			'default' => 0,
+			'option_tab'  => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1242,6 +1222,7 @@ class QSM_Install {
 			'label'   => __( 'Comments field', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1251,6 +1232,7 @@ class QSM_Install {
 			'label'   => __( 'Hint Text', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => __( 'Hint', 'quiz-master-next' ),
+			'option_tab'  => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1261,6 +1243,7 @@ class QSM_Install {
 			'type'    => 'text',
 			'default' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
 			'tooltip' => __( 'Text to show when the selected option is correct answer.', 'quiz-master-next' ),
+			'option_tab'  => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1271,6 +1254,7 @@ class QSM_Install {
 			'type'    => 'text',
 			'default' => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
 			'tooltip' => __( 'Text to show when the selected option is wrong answer.', 'quiz-master-next' ),
+			'option_tab'  => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1281,17 +1265,7 @@ class QSM_Install {
 			'type'    => 'text',
 			'default' => '',
 			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Setting for animation
-		$field_array = array(
-			'id'      => 'legacy_options',
-			'label'   => __( 'Show Legacy Options', 'quiz-master-next' ),
-			'type'    => 'hide_show',
-			'default' => '',
-			'help'    => __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
-		// 'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
+			'option_tab'  => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1301,6 +1275,7 @@ class QSM_Install {
 			'label'   => __( 'Name field', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1310,6 +1285,7 @@ class QSM_Install {
 			'label'   => __( 'Business field', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1319,6 +1295,7 @@ class QSM_Install {
 			'label'   => __( 'Email field', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1328,6 +1305,7 @@ class QSM_Install {
 			'label'   => __( 'Phone number field', 'quiz-master-next' ),
 			'type'    => 'text',
 			'default' => 0,
+			'option_tab'  => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
