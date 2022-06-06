@@ -477,6 +477,19 @@ var QSMAdmin;
         var qsm_get_setting_data = jQuery(this).attr('data-auditid');
         jQuery('.qsm_setting__data').html('<p>'+JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2)+'</p>');
     });
+	
+	jQuery( document ).on( 'click', '.qsm-toggle-box-handle', function ( e ) {
+		e.preventDefault();
+		var parent = jQuery(this).parent('.qsm-toggle-box');
+		var content = parent.find('.qsm-toggle-box-content');
+		if (content.is(":visible")) {
+			content.hide();
+			parent.removeClass('opened');
+		} else {
+			content.show();
+			parent.addClass('opened');
+		}
+	} );
 
 }(jQuery));
 
@@ -2555,22 +2568,22 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             //Hide/show quesion description
             $(document).on('click', '.qsm-show-question-desc-box', function (e) {
                 e.preventDefault();
-                if ($(this).next('.qsm-row').is(':visible')) {
-                    $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_desc_text);
-                    $(this).next('.qsm-row').slideUp();
-                } else {
-                    $(this).hide();
-                    questionElements = $(this).parents('.questionElements');
-                    var question_description = wp.editor.getContent('question-text');
-                    if (question_description == '' || question_description == null) {
-                        if (6 == questionElements.find('#question_type').val()) {
-                            tinyMCE.get('question-text').setContent('');
-                        } else {
-                            tinyMCE.get('question-text').setContent('Add description here!');
-                        }
-                    }
-                    $(this).next('.qsm-row').slideDown();
-                }
+				$(this).hide();
+				var question_description = wp.editor.getContent('question-text');
+				if (question_description == '' || question_description == null) {
+					var questionElements = $(this).parents('.questionElements');
+					if (6 == questionElements.find('#question_type').val()) {
+						tinyMCE.get('question-text').setContent('');
+					} else {
+						tinyMCE.get('question-text').setContent('Add description here!');
+					}
+				}
+				$(this).next('.qsm-row').show();
+            });
+            $(document).on('click', '.qsm-hide-question-desc-box', function (e) {
+                e.preventDefault();
+				$(this).parents('.qsm-row.qsm-editor-wrap').hide();
+				$('.qsm-show-question-desc-box').show();
             });
 
             //Open file upload on feature image

@@ -1317,7 +1317,7 @@ h3.addon_category_name {
 .qsm-addon-setting-wrap input[type="number"] {
 	background: #ffffff none repeat scroll 0 0;
 	border: 1px solid #dddddd;
-	border-radius: 5px;
+	border-radius: 1px;
 	box-shadow: none;
 	color: #666666;
 	/*padding: 10px 15px;*/
@@ -2487,4 +2487,68 @@ input#duplicate_questions {
 .qsm-actions-link-box a span {
 	font-size: 16px;
 	height: auto;
+}
+
+.qsm-toggle-box{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    margin: 6px 0;
+    background: #fefefe;
+    border: 1px solid #f0f0f0;
+}
+.qsm-toggle-box .qsm-toggle-box-handle{
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 12px 20px;
+    margin: 0;
+    background: #FFF;
+    color: #666666;
+    cursor: pointer;
+}
+.qsm-toggle-box .qsm-toggle-box-handle:hover,
+.qsm-toggle-box .qsm-toggle-box-handle:focus{outline:none;text-decoration: none;box-shadow: none;}
+.qsm-toggle-box .toggle-indicator{
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    float: right;
+    color: inherit;
+}
+.qsm-toggle-box .toggle-indicator:before{
+    content: "\f347";
+    display: inline-block;
+    font: normal 20px/1 dashicons;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none;
+}
+.qsm-toggle-box.opened .toggle-indicator:before{
+    content: "\f343";
+}
+.qsm-toggle-box .qsm-toggle-box-content{
+	display: none;
+	padding: 15px 20px;
+	border-top: 1px solid #dadada;
+}
+.qsm-toggle-box .qsm-toggle-box-content label{
+    display: inline-block;
+    margin: 0 0 5px;
+}
+.qsm-toggle-box .qsm-toggle-box-content select,
+.qsm-toggle-box .qsm-toggle-box-content textarea,
+.qsm-toggle-box .qsm-toggle-box-content input[type=text],
+.qsm-toggle-box .qsm-toggle-box-content input[type=date],
+.qsm-toggle-box .qsm-toggle-box-content input[type=number],
+.qsm-toggle-box .qsm-toggle-box-content input[type=url]{
+	display: block;
+	max-width: 100%;
+	width: 200px;
+	border: 1px solid #dddddd;
+	border-radius: 1px;
 }
