@@ -25,16 +25,16 @@ add_action( "plugins_loaded", 'qsm_settings_contact_tab', 5 );
  */
 function qsm_options_contact_tab_content() {
 	global $wpdb, $mlwQuizMasterNext;
-	$quiz_id		 = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
-	$user_id		 = get_current_user_id();
-	$show_fields	 = get_user_meta( $user_id, 'qsm_show_disabled_contact_fields', true );
-	$show_fields	 = empty( $show_fields ) ? true : $show_fields;
-	$contact_form	 = QSM_Contact_Manager::load_fields( 'edit' );
-	$quiz_options	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+	$quiz_id         = isset( $_GET["quiz_id"] ) ? intval( $_GET["quiz_id"] ) : 0;
+	$user_id         = get_current_user_id();
+	$show_fields     = get_user_meta( $user_id, 'qsm_show_disabled_contact_fields', true );
+	$show_fields     = empty( $show_fields ) ? true : $show_fields;
+	$contact_form    = QSM_Contact_Manager::load_fields( 'edit' );
+	$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
 	wp_localize_script( 'qsm_admin_js', 'qsmContactObject', array(
-		'contactForm'	 => $contact_form,
-		'quizID'		 => $quiz_id,
-		'saveNonce'		 => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ),
+		'contactForm' => $contact_form,
+		'quizID'      => $quiz_id,
+		'saveNonce'   => wp_create_nonce( 'ajax-nonce-contact-save-' . $quiz_id . '-' . $user_id ),
 	) );
 	?>
 	<div class="contact-message"></div>
@@ -99,12 +99,12 @@ function qsm_contact_form_admin_ajax() {
 	 * Store contact form related quiz options.
 	 */
 	if ( isset( $_POST['settings'] ) ) {
-		$quiz_options	 = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
-		$settings		 = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$quiz_options    = $mlwQuizMasterNext->pluginHelper->get_quiz_setting( 'quiz_options' );
+		$settings        = qsm_sanitize_rec_array( wp_unslash( $_POST['settings'] ), true ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		foreach ( $settings as $key => $val ) {
-			$quiz_options[$key] = $val;
+			$quiz_options[ $key ] = $val;
 		}
-		if (isset($settings['loggedin_user_contact'])) {
+		if ( isset($settings['loggedin_user_contact']) ) {
 			$quiz_options['loggedin_user_contact'] = (1 == $settings['loggedin_user_contact']) ? 0 : 1;
 		}
 		$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'quiz_options', $quiz_options );

@@ -167,19 +167,6 @@ var QSMAdmin;
         );
     });
 
-    //Hide/Show legacy option
-    jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
-    jQuery(document).on('click', '#legacy_options', function (e) {
-        e.preventDefault();
-        if (jQuery('#legacy_options').parents('tr').next('tr').is(':visible')) {
-            jQuery(this).text('').text('Show Legacy options');
-            jQuery('#legacy_options').parents('tr').nextAll('tr').hide();
-        } else {
-            jQuery(this).text('').text('Hide Legacy options');
-            jQuery('#legacy_options').parents('tr').nextAll('tr').show();
-        }
-    });
-
     //Dismiss the welcome panel
     jQuery('.qsm-welcome-panel-dismiss').click(function (e) {
         e.preventDefault();
@@ -1048,7 +1035,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 						contactEach = QSMContact.prepareFieldData( $( this ) );
 						contactForm.push( contactEach );
 					} );
-					
+
 					var settings = {};
 					$('#contactformsettings input').each(function (){
 						if ('checkbox' == $(this).attr('type')) {
@@ -1057,7 +1044,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 							settings[$(this).attr('name')] = $(this).val();
 						}
 					});
-					
+
 					var data = {
 						action: 'qsm_save_contact',
 						contact_form: contactForm,
