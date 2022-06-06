@@ -1017,6 +1017,13 @@ Misc.
 	margin-right: 5px;
 }
 
+.qsm_tab_content a{
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+}
+.qsm_tab_content a:hover,.qsm_tab_content a:focus{outline: none;text-decoration: none;box-shadow: none;}
+
 /* Popup */
 
 .qsm-popup {
@@ -1320,11 +1327,8 @@ h3.addon_category_name {
 	border-radius: 1px;
 	box-shadow: none;
 	color: #666666;
-	/*padding: 10px 15px;*/
 	width: auto;
 	height: auto;
-	/*min-width: 230px;*/
-	/*max-width:100%;*/
 }
 
 .qsm_tab_content textarea {
@@ -2504,7 +2508,7 @@ input#duplicate_questions {
     box-sizing: border-box;
     font-size: 16px;
     text-decoration: none;
-    padding: 12px 20px;
+    padding: 15px 20px;
     margin: 0;
     background: #FFF;
     color: #666666;
@@ -2534,7 +2538,7 @@ input#duplicate_questions {
 .qsm-toggle-box .qsm-toggle-box-content{
 	display: none;
 	padding: 15px 20px;
-	border-top: 1px solid #dadada;
+	border-top: 1px solid #eee;
 }
 .qsm-toggle-box .qsm-toggle-box-content label{
     display: inline-block;

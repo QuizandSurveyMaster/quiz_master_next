@@ -728,7 +728,6 @@ a.import-button.button.disable_import::before {
 	margin: 0 0 20px 0;
 }
 
-.qsm-show-correct-info-box,
 .qsm-show-question-desc-box {
 	display: inline-block;
 	margin-bottom: 10px !important;
@@ -763,12 +762,10 @@ a#qsm-category-add-toggle {
 	float: left;
 }
 
-.qsm-show-correct-info-box,
 .qsm-show-question-desc-box {
 	background: #fff;
 }
 
-.qsm-show-correct-info-box span.dashicons,
 .qsm-show-question-desc-box span.dashicons {
 	line-height: 29px;
 }

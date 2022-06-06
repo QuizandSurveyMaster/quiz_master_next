@@ -86,23 +86,20 @@ function qsm_options_questions_tab_content() {
 	}
 	$qpages    = apply_filters( 'qsm_filter_quiz_page_attributes', $qpages, $pages );
 	$json_data = array(
-		'quizID'                 => $quiz_id,
-		'answerText'             => __( 'Answer', 'quiz-master-next' ),
-		'nonce'                  => wp_create_nonce( 'wp_rest' ),
-		'pages'                  => $pages,
-		'qpages'                 => $qpages,
-		'qsm_user_ve'            => get_user_meta( $user_id, 'rich_editing', true ),
-		'saveNonce'              => wp_create_nonce( 'ajax-nonce-sandy-page' ),
-		'categories'             => $question_categories,
-		'form_type'              => $form_type,
-		'quiz_system'            => $quiz_system,
-		// 'multiple_categories'    => $multiple_categories,
-		'hide_desc_text'         => __( 'Hide Description', 'quiz-master-next' ),
-		'show_correct_info_text' => __( 'Edit Correct Answer Info', 'quiz-master-next' ),
-		'question_bank_nonce'    => wp_create_nonce( 'delete_question_question_bank_nonce' ),
-		'single_question_nonce'  => wp_create_nonce( 'delete_question_from_database' ),
-		'rest_user_nonce'        => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
-        'default_answers'        => $default_answers,
+		'quizID'                => $quiz_id,
+		'answerText'            => __( 'Answer', 'quiz-master-next' ),
+		'nonce'                 => wp_create_nonce( 'wp_rest' ),
+		'pages'                 => $pages,
+		'qpages'                => $qpages,
+		'qsm_user_ve'           => get_user_meta( $user_id, 'rich_editing', true ),
+		'saveNonce'             => wp_create_nonce( 'ajax-nonce-sandy-page' ),
+		'categories'            => $question_categories,
+		'form_type'             => $form_type,
+		'quiz_system'           => $quiz_system,
+		'question_bank_nonce'   => wp_create_nonce( 'delete_question_question_bank_nonce' ),
+		'single_question_nonce' => wp_create_nonce( 'delete_question_from_database' ),
+		'rest_user_nonce'       => wp_create_nonce( 'wp_rest_nonce_' . $quiz_id . '_' . get_current_user_id() ),
+        'default_answers'       => $default_answers,
 	);
 	wp_localize_script( 'qsm_admin_js', 'qsmQuestionSettings', $json_data );
 
@@ -334,89 +331,89 @@ function qsm_options_questions_tab_content() {
 								}
 								$advanced_question_option = array(
 									'correct_answer_info' => array(
-										'heading'   => __( 'Correct Answer Info', 'quiz-master-next' ),
+										'heading'  => __( 'Correct Answer Info', 'quiz-master-next' ),
 										'label'    => '',
-										'type'    => 'textarea',
-										'default' => '',
+										'type'     => 'textarea',
+										'default'  => '',
 										'priority' => '1',
-										'show'    => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
+										'show'     => '0,1,2,3,4,5,7,10,12,14' . $polar_question_use . $show_correct_answer_info,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
 									),
-									'comments' => array(
-										'heading' => __( 'Comment', 'quiz-master-next' ),
-										'label' => __( 'Field Type', 'quiz-master-next' ),
-										'type' => 'select',
+									'comments'            => array(
+										'heading'  => __( 'Comment', 'quiz-master-next' ),
+										'label'    => __( 'Field Type', 'quiz-master-next' ),
+										'type'     => 'select',
 										'priority' => '3',
-										'options' => array(
+										'options'  => array(
 											'0' => __( 'Small Text Field', 'quiz-master-next' ),
 											'2' => __( 'Large Text Field', 'quiz-master-next' ),
 											'1' => __( 'None', 'quiz-master-next' ),
 										),
-										'default' => '1',
+										'default'  => '1',
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Comment-Field',
 									),
-									'hint'     => array(
-										'heading' => __( 'Hint', 'quiz-master-next' ),
-										'label' => __( 'Hint Text', 'quiz-master-next' ),
-										'type' => 'text',
-										'default' => '',
+									'hint'                => array(
+										'heading'  => __( 'Hint', 'quiz-master-next' ),
+										'label'    => __( 'Hint Text', 'quiz-master-next' ),
+										'type'     => 'text',
+										'default'  => '',
 										'priority' => '4',
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Hints',
 									),
-									'autofill' => array(
-										'heading' => __( 'Autofill', 'quiz-master-next' ),
-										'label' => __( 'Hide Autofill?', 'quiz-master-next' ),
-										'type' => 'single_checkbox',
+									'autofill'            => array(
+										'heading'  => __( 'Autofill', 'quiz-master-next' ),
+										'label'    => __( 'Hide Autofill?', 'quiz-master-next' ),
+										'type'     => 'single_checkbox',
 										'priority' => '6',
-										'options' => array(
+										'options'  => array(
 											'1' => __( 'Yes', 'quiz-master-next' ),
 										),
-										'default' => '0',
-										'show' => '3, 14' . $show_autofill,
+										'default'  => '0',
+										'show'     => '3, 14' . $show_autofill,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Hide-Autofill',
 									),
-									'limit_text' => array(
-										'heading' => __( 'Limit Text', 'quiz-master-next' ),
-										'label' => __( 'Maximum number of characters allowed', 'quiz-master-next' ),
-										'type' => 'text',
+									'limit_text'          => array(
+										'heading'  => __( 'Limit Text', 'quiz-master-next' ),
+										'label'    => __( 'Maximum number of characters allowed', 'quiz-master-next' ),
+										'type'     => 'text',
 										'priority' => '7',
-										'default' => '',
-										'show' => '3, 5, 7, 14' . $show_limit_text,
+										'default'  => '',
+										'show'     => '3, 5, 7, 14' . $show_limit_text,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Text',
 									),
 									'limit_multiple_response' => array(
-										'heading' => __( 'Limit Multiple choice', 'quiz-master-next' ),
-										'label' => __( 'Maximum number of choice selection allowed', 'quiz-master-next' ),
-										'type' => 'text',
+										'heading'  => __( 'Limit Multiple choice', 'quiz-master-next' ),
+										'label'    => __( 'Maximum number of choice selection allowed', 'quiz-master-next' ),
+										'type'     => 'text',
 										'priority' => '8',
-										'default' => '',
-										'show' => '4,10' . $show_limit_multiple_response,
+										'default'  => '',
+										'show'     => '4,10' . $show_limit_multiple_response,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Limit-Multiple-Choice',
 									),
-									'file_upload_limit' => array(
-										'heading' => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
-										'label' => '',
-										'type' => 'number',
+									'file_upload_limit'   => array(
+										'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
+										'label'    => '',
+										'type'     => 'number',
 										'priority' => '9',
-										'default' => '',
-										'show' => '11' . $show_file_upload_limit,
+										'default'  => '',
+										'show'     => '11' . $show_file_upload_limit,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#File-Upload-Limit',
 									),
-									'file_upload_type' => array(
-										'heading' => __( 'Allow File type', 'quiz-master-next' ),
-										'label' => '',
-										'type' => 'multi_checkbox',
+									'file_upload_type'    => array(
+										'heading'  => __( 'Allow File type', 'quiz-master-next' ),
+										'label'    => '',
+										'type'     => 'multi_checkbox',
 										'priority' => '10',
-										'options' => array(
+										'options'  => array(
 											'text/plain' => __( 'Text File', 'quiz-master-next' ),
-											'image' => __( 'Image', 'quiz-master-next' ),
+											'image'      => __( 'Image', 'quiz-master-next' ),
 											'application/pdf' => __( 'PDF File', 'quiz-master-next' ),
-											'doc' => __( 'Doc File', 'quiz-master-next' ),
-											'excel' => __( 'Excel File', 'quiz-master-next' ),
-											'video/mp4' => __( 'Video', 'quiz-master-next' ),
+											'doc'        => __( 'Doc File', 'quiz-master-next' ),
+											'excel'      => __( 'Excel File', 'quiz-master-next' ),
+											'video/mp4'  => __( 'Video', 'quiz-master-next' ),
 										),
-										'default' => 'image',
-										'show' => '11' . $show_file_upload_type,
+										'default'  => 'image',
+										'show'     => '11' . $show_file_upload_type,
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/advanced-options/#Allow-File-Type',
 									),
 								);
@@ -543,10 +540,7 @@ function qsm_options_questions_tab_content() {
 								<div id="categorydiv" class="postbox">
 									<h2 class="hndle ui-sortable-handle">
 										<span><?php esc_html_e( 'Select Category', 'quiz-master-next' ); ?></span>
-										<a class="qsm-question-doc" rel="noopener"
-											href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category"
-											target="_blank" title="View Documentation"><span
-												class="dashicons dashicons-editor-help"></span></a>
+										<a class="qsm-question-doc" rel="noopener" href="https://quizandsurveymaster.com/docs/v7/questions-tab/#Category" target="_blank" title="View Documentation"><span class="dashicons dashicons-editor-help"></span></a>
 									</h2>
 									<div class="inside">
 										<?php
@@ -716,10 +710,9 @@ function qsm_options_questions_tab_content() {
 						<td><?php esc_html_e( 'Category Name', 'quiz-master-next' ); ?>
 						</td>
 						<td><input type="text" id="new-category-name" /></td>
+					</tr>
 					<tr>
-					<tr>
-						<td><?php esc_html_e( 'Parent Category', 'quiz-master-next' ); ?>
-						</td>
+						<td><?php esc_html_e( 'Parent Category', 'quiz-master-next' ); ?></td>
 						<td>
 							<?php
 							wp_dropdown_categories(

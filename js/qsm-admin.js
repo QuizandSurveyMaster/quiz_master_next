@@ -1467,7 +1467,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         }
                         $('.qsm-question-bank-search').append('<button class="button button-primary" id="qsm-import-selected-question">Add Selected Questions</button>');
                     }
-                    $('#question-bank').prepend('<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question">Delete Selected Items from Question Bank</a>');
+					$( '<div class="qsm-question-bank-select"><label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> Select All Question</label><a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question">Delete Selected Items from Question Bank</a>' ).insertBefore( '#question-bank' );
                 }
             },
             addQuestionToQuestionBank: function (question) {
@@ -1967,11 +1967,14 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                         CurrentElement.parents('.question').next('.questionElements').slideUp('slow');
                         $('.questions').sortable('enable');
                         $('.page').sortable('enable');
+                        CurrentElement.parents('.question').removeClass('opened');
                     } else {
+                        CurrentElement.parents('.question').addClass('opened');
                         CurrentElement.parents('.question').next('.questionElements').slideDown('slow');
                     }
                     return;
                 } else {
+                    CurrentElement.parents('.question').addClass('opened');
                     $('.questions .questionElements').slideDown('slow');
                     $('.questions .questionElements').remove();
                 }
@@ -2362,6 +2365,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 import_button = $(this);
                 $('.import-button').addClass('disable_import');
                 QSMQuestion.addQuestionFromQuestionBank($(this).data('question-id'));
+				MicroModal.close('modal-2');
             });
 
             //Click on selected question button.
@@ -2380,6 +2384,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                     });
                     $('.import-button').addClass('disable_import');
                     $('#question-bank').find('[name="qsm-question-checkbox[]"]').attr('checked', false);
+					MicroModal.close('modal-2');
                 }
             });
             //Delete question from question bank
@@ -2605,17 +2610,6 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
                 button.hide().prev().html('Upload image');
             });
 
-            //Hide/show correct answer info
-            $(document).on('click', '.qsm-show-correct-info-box', function (e) {
-                e.preventDefault();
-                if ($(this).next('.qsm-row').is(':visible')) {
-                    $(this).html('').html('<span class="dashicons dashicons-plus-alt2"></span> ' + qsmQuestionSettings.show_correct_info_text);
-                    $(this).next('.qsm-row').slideUp();
-                } else {
-                    $(this).hide();
-                    $(this).next('.qsm-row').slideDown();
-                }
-            });
         });
         var decodeEntities = (function () {
             //create a new html document (doesn't execute script tags in child elements)
@@ -2722,6 +2716,10 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
         $(document).on('click', '.add-multiple-category', function (e) {
             e.preventDefault();
             MicroModal.show('modal-9', {
+                onShow: function () {
+                    $('#new-category-name').val($('.qsm-category-filter').val());
+					$('.qsm-category-filter').val('').trigger('keyup');;
+				},
                 onClose: function () {
                     $('#modal-9-content .info').html('');
                     $('#new-category-name').val('');
