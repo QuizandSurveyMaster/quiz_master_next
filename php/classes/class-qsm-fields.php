@@ -92,7 +92,7 @@ class QSM_Fields {
 		<form action="" method="post">
 			<?php wp_nonce_field( 'save_settings','save_settings_nonce' );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
-			if( 'options' === $current_tab ):
+			if ( 'options' === $current_tab ) :
 			?>
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
@@ -191,7 +191,7 @@ class QSM_Fields {
 				</div>
 			<?php
 			endif;
-			if( 'text' === $current_tab ): ?>
+			if ( 'text' === $current_tab ) : ?>
 				<div class="qsm-sub-tab-menu" style="display: inline-block;width: 100%;">
 					<ul class="subsubsub">
 						<li>
