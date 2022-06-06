@@ -1717,18 +1717,37 @@ td.scheduled_time_start {
 	float: right;
 }
 
-.mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit {
-	box-shadow: none;
-	float: right;
-	margin-right: 5px;
+.mlw_quiz_options .button.button-default.qsm-btn-quiz-edit {
+    margin-right: 5px;
+    text-align: center;
+    line-height: 1.6em;
+    border: none;
+    background: #fff;
+    border-radius: 0;
+    padding-bottom: 8px;
+	border-bottom: 2px solid transparent;
 }
 
-.mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit:hover {
-	opacity: 0.8;
+.mlw_quiz_options .button.button-default.qsm-btn-quiz-edit:hover {
+	border-bottom: 2px solid;
 }
 
-.mlw_quiz_options a.button.button-default.qsm-btn-quiz-edit span.dashicons {
+.mlw_quiz_options .button.button-default.qsm-btn-quiz-edit span.dashicons {
 	line-height: 27px;
+}
+
+.qsm-btn-quiz-edit .qsm-option-tab-dropdown-item {
+    text-align: left;
+    color: inherit;
+    background: #fff;
+    border-color: #efefefd1;
+    padding: 9px;
+	margin: 0;
+}
+
+.qsm-btn-quiz-edit .qsm-option-tab-dropdown-list {
+    margin-top: 16px;
+	box-shadow: 1px 1px 20px 1px #bbbbbb;
 }
 
 .mlw_quiz_options .nav-tab-wrapper {
@@ -1758,6 +1777,7 @@ td.scheduled_time_start {
 .qsm-option-tab-dropdown:hover .qsm-option-tab-dropdown-list{
     display: block;
 }
+
 
 .mlw_quiz_options .edit-quiz-name {
 	float: none;
@@ -2363,8 +2383,13 @@ input#question_search::-webkit-search-cancel-button {
     outline: none;
     appearance: none;
 }
-#mlw_quiz_wrap div#mlw_quiz_options h1#qsm_title_quiz {
-    display: block;
+#mlw_quiz_wrap div#mlw_quiz_options #qsm_title_quiz {
+    display: flex;
+	justify-content:space-between;
+	background: #fff;
+    margin: -10px -21px 0;
+    padding: 15px 20px 0px;
+    box-shadow: 1px 1px 31px 0px #bfbfbf;
 }
 #result_details {
     font-size: 2em;
