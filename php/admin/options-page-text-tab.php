@@ -27,7 +27,6 @@ function mlw_options_text_tab_content() {
         $variable_list = qsm_text_template_variable_list();
 	?>
         <div class="qsm-text-main-wrap">
-            <p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/text-tab/" target="_blank"><?php esc_html_e( 'View Documentation', 'quiz-master-next' ); ?></a></p>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div class="qsm-question-text-tab" id="post-body-content" style="position: relative;">
