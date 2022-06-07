@@ -104,23 +104,40 @@ function qsm_generate_quiz_options() {
 	<div class="wrap" id="mlw_quiz_wrap">
 		<div class='mlw_quiz_options' id="mlw_quiz_options">
 			<h1 id="qsm_title_quiz" style="margin-bottom: 10px;">
-				<?php echo wp_kses_post( $quiz_name ); ?>
-				<?php if ( 'draft' === $post_status ) : ?>
-					<form method="POST" action="">
-						<?php wp_nonce_field( 'qsm_update_quiz_status', 'qsm_update_quiz_status_nonce' ); ?>
-						<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
-						<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Publish Quiz', 'quiz-master-next' ); ?>" />
-					</form>
-				<?php endif; ?>
-				<a href="javascript:void(0)" title="Edit Name" class="edit-quiz-name">
-					<span class="dashicons dashicons-edit"></span>
-				</a>
-				<a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
-					<span class="dashicons dashicons-welcome-view-site"></span>
-				</a>
-				<a class="button button-default qsm-btn-quiz-edit" href="<?php echo esc_url( $edit_link ); ?>">
-					<span class="dashicons dashicons-admin-settings"></span>
-				</a>
+				<div>
+					<?php echo wp_kses_post( $quiz_name ); ?>
+					<?php if ( 'draft' === $post_status ) : ?>
+						<form method="POST" action="">
+							<?php wp_nonce_field( 'qsm_update_quiz_status', 'qsm_update_quiz_status_nonce' ); ?>
+							<input type="hidden" name="quiz_post_id" value="<?php echo esc_attr( $post_id ); ?>" />
+							<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Publish Quiz', 'quiz-master-next' ); ?>" />
+						</form>
+					<?php endif; ?>
+					<a href="javascript:void(0)" title="Edit Name" class="edit-quiz-name">
+						<span class="dashicons dashicons-edit"></span>
+					</a>
+				</div>
+				<div>
+					<button class="button button-default qsm-btn-quiz-edit qsm-option-tab-dropdown" rel="noopener">
+						<span class="dashicons dashicons-editor-help"></span><br/><?php echo __( 'Help', 'quiz-master-next' ); ?>
+						<div class="qsm-option-tab-dropdown-list">
+							<a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Get support', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Overview', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/question-types/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Question Types', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/advanced-topics/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Advanced Topics', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/qsm-themes/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'QSM Themes', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/add-ons/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Add-ons', 'quiz-master-next' ); ?></a>
+							<a href="https://quizandsurveymaster.com/docs/" rel="noopener" target="_black" class="nav-tab qsm-option-tab-dropdown-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'All Docs', 'quiz-master-next' ); ?></a>
+						</div>
+					</button>
+					<a class="button button-default qsm-btn-quiz-edit" href="<?php echo esc_url( $edit_link ); ?>">
+						<span class="dashicons dashicons-admin-settings"></span><br/><?php echo __( 'Settings', 'quiz-master-next' ); ?>
+					</a>
+					<a class="button button-default qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
+						<span class="dashicons dashicons-welcome-view-site"></span><br/><?php echo __( 'View', 'quiz-master-next' ); ?>
+					</a>
+				</div>
 			</h1>
 			<div class="qsm-alerts-placeholder"></div>
 			<!-- Shows warnings, alerts then tab content -->
@@ -128,7 +145,9 @@ function qsm_generate_quiz_options() {
 			<div class="qsm-alerts">
 				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
 			</div>
-			<?php if ( $quiz_id ) { ?>
+			<?php if ( $quiz_id ) {
+				$active_class_aadon = true;
+				?>
 				<nav class="nav-tab-wrapper">
 					<?php
 					// Cycles through registered tabs to create navigation.
@@ -137,6 +156,7 @@ function qsm_generate_quiz_options() {
 							$active_class = '';
 							if ( $active_tab === $tab['slug'] ) {
 								$active_class = 'nav-tab-active';
+								$active_class_aadon = false;
 							}
 							?>
 							<a href="?page=mlw_quiz_options&quiz_id=<?php echo esc_attr( $quiz_id ); ?>&tab=<?php echo esc_attr( $tab['slug'] ); ?>" class="nav-tab <?php echo esc_attr( $active_class ); ?>"><?php echo wp_kses_post( $tab['title'] ); ?></a>
@@ -148,7 +168,7 @@ function qsm_generate_quiz_options() {
 					if ( 0 < $addon_tabs ) {
 						?>
 						<div class="qsm-option-tab-dropdown">
-							<a href="javascript:void(0)" class="nav-tab <?php echo '' === $active_class ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
+							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
 
 							</a>
