@@ -136,10 +136,6 @@ function qsm_options_questions_tab_content() {
 		<?php
 	}
 	?>
-<h3 style="display: none;">Questions</h3>
-<p style="text-align: right;"><a href="https://quizandsurveymaster.com/docs/v7/questions-tab/" rel="noopener"
-		target="_blank">View
-		Documentation</a></p>
 <div class="question-controls">
 	<span><b><?php esc_html_e( 'Total Questions:', 'quiz-master-next' ); ?></b> <span id="total-questions"></span></span>
 	<p class="search-box">
@@ -162,22 +158,31 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 <!-- Popup for question bank -->
-<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-2" aria-hidden="true">
+<div class="qsm-popup qsm-popup-slide qsm-standard-popup qsm-popup-bank" id="modal-2" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 			<header class="qsm-popup__header qsm-question-bank-header">
-				<h2 class="qsm-popup__title" id="modal-2-title">
-					<?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
-				<div class="qsm-question-bank-search"></div>
+				<h2 class="qsm-popup__title" id="modal-2-title"><?php esc_html_e( 'Question Bank', 'quiz-master-next' ); ?></h2>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 			</header>
 			<main class="qsm-popup__content" id="modal-2-content">
 				<input type="hidden" name="add-question-bank-page" id="add-question-bank-page" value="">
+				<div class="qsm-question-bank-filters">
+					<div class="qsm-question-bank-select">
+						<label class="qsm-select-all-label"><input type="checkbox" id="qsm_select_all_question" /> <?php esc_html_e( 'Select All Question', 'quiz-master-next' ); ?></label>
+					</div>
+					<div class="qsm-question-bank-search">
+						<form action="" method="post" id="question-bank-search-form"><input type="search" name="search" value="" id="question-bank-search-input" placeholder="<?php esc_html_e( 'Search questions', 'quiz-master-next' ); ?>"></form>
+						<select name="question-bank-cat" id="question-bank-cat">
+							<option value=""><?php esc_html_e( 'All Categories', 'quiz-master-next' ); ?></option>
+						</select>
+					</div>
+				</div>
 				<div id="question-bank"></div>
 			</main>
-			<footer class="qsm-popup__footer">
-				<button class="qsm-popup__btn" data-micromodal-close
-					aria-label="Close this dialog window">Close</button>
+			<footer class="qsm-popup__footer qsm-question-bank-footer">
+				<a href="javascript:void(0)" class="qsm-action-link-delete" id="qsm-delete-selected-question"><?php esc_html_e( 'Delete from Question Bank', 'quiz-master-next' ); ?></a>
+				<button class="button button-primary" id="qsm-import-selected-question"><?php esc_html_e( 'Add Questions', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
@@ -599,8 +604,8 @@ function qsm_options_questions_tab_content() {
 
 <!--Views-->
 
-<!-- Popup for question bank -->
-<div class="qsm-popup qsm-popup-slide qsm-popup-bank" id="modal-page-1" aria-hidden="true">
+<!-- Popup for page settings -->
+<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-page-1" aria-hidden="true">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 			<header class="qsm-popup__header">
@@ -626,9 +631,8 @@ function qsm_options_questions_tab_content() {
 				</div>
 			</main>
 			<footer class="qsm-popup__footer">
-				<button id="save-page-popup-button" class="qsm-popup__btn qsm-popup__btn-primary">Save Page</button>
-				<button class="qsm-popup__btn" data-micromodal-close
-					aria-label="Close this dialog window">Close</button>
+				<button id="delete-page-popup-button" class="delete-page-button"><?php esc_html_e( 'Delete Page', 'quiz-master-next' ); ?></button>
+				<button id="save-page-popup-button" class="button button-primary"><?php esc_html_e( 'Save Page', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
@@ -1030,8 +1034,8 @@ function qsm_options_questions_tab_template() {
 	<script type="text/template" id="tmpl-page">
 		<div class="page page-new" data-page-id="{{data.id }}">
 			<div class="page-header">
-				<div><span class="dashicons dashicons-move"></span> <a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a> <span class="page-number"></span></div>
-				<div><a href="javascript:void(0)" class="delete-page-button" title="Delete Page"><span class="dashicons dashicons-trash"></span></a></div>
+				<div><span class="dashicons dashicons-move"></span> <span class="page-number"></span></div>
+				<div><a href="javascript:void(0)" class="edit-page-button" title="Edit Page"><span class="dashicons dashicons-admin-generic"></span></a></div>
 			</div>
 			<div class="page-footer">
 				<div class="page-header-buttons">
@@ -1069,7 +1073,7 @@ function qsm_options_questions_tab_template() {
 				<input type="checkbox" name="qsm-question-checkbox[]" class="qsm-question-checkbox" />
 			</div>
 			<div><p>{{{data.question}}}</p><p style="font-size: 12px;color: gray;font-style: italic;"><b>Quiz Name:</b> {{data.quiz_name}}    <# if ( data.category != '' ) { #> <b>Category:</b> {{data.category}} <# } #></p></div>
-			<div><a href="javascript:void(0)" class="import-button button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
+			<div><a href="javascript:void(0)" class="button import-button" data-question-id="{{data.id}}"><?php esc_html_e( 'Add Question', 'quiz-master-next' ); ?></a></div>
 		</div>
 	</script>
 
