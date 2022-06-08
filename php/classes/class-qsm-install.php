@@ -364,6 +364,7 @@ class QSM_Install {
 			'default' => '',
 			'help'    => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
 			'ph_text' => __( 'End Date', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
