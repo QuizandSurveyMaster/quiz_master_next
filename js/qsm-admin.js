@@ -2210,11 +2210,17 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 
             $('.questions').on('click', '.new-question-button', function (event) {
                 event.preventDefault();
+				if (jQuery('.questionElements').is(':visible')) {
+					$('#save-popup-button').trigger('click');
+				}
                 QSMQuestion.createQuestion($(this).parents('.page').index());
             });
 
             $('.questions').on('click', '.add-question-bank-button', function (event) {
                 event.preventDefault();
+				if (jQuery('.questionElements').is(':visible')) {
+					$('#save-popup-button').trigger('click');
+				}
                 QSMQuestion.openQuestionBank($(this).parents('.page').index());
             });
 

@@ -337,7 +337,6 @@ function qsm_options_questions_tab_content() {
 								$advanced_question_option = array(
 									'correct_answer_info' => array(
 										'heading'  => __( 'Correct Answer Info', 'quiz-master-next' ),
-										'label'    => '',
 										'type'     => 'textarea',
 										'default'  => '',
 										'priority' => '1',
@@ -345,7 +344,7 @@ function qsm_options_questions_tab_content() {
 										'documentation_link' => 'https://quizandsurveymaster.com/docs/v7/questions-tab/#Correct-Answer-Info',
 									),
 									'comments'            => array(
-										'heading'  => __( 'Comment', 'quiz-master-next' ),
+										'heading'  => __( 'Comment Box', 'quiz-master-next' ),
 										'label'    => __( 'Field Type', 'quiz-master-next' ),
 										'type'     => 'select',
 										'priority' => '3',
@@ -397,7 +396,6 @@ function qsm_options_questions_tab_content() {
 									),
 									'file_upload_limit'   => array(
 										'heading'  => __( 'File upload limit ( in MB )', 'quiz-master-next' ),
-										'label'    => '',
 										'type'     => 'number',
 										'priority' => '9',
 										'default'  => '',
@@ -406,7 +404,6 @@ function qsm_options_questions_tab_content() {
 									),
 									'file_upload_type'    => array(
 										'heading'  => __( 'Allow File type', 'quiz-master-next' ),
-										'label'    => '',
 										'type'     => 'multi_checkbox',
 										'priority' => '10',
 										'options'  => array(
@@ -699,15 +696,13 @@ function qsm_options_questions_tab_content() {
 	</div>
 </div>
 
-<div class="qsm-popup qsm-popup-slide" id="modal-9" aria-hidden="false">
+<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-9" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-9-title">
 			<header class="qsm-popup__header">
-				<h3 class="qsm-popup__title" id="modal-9-title"><?php esc_html_e( 'Add New Category', 'quiz-master-next' ); ?>
-				</h3>
+				<h2 class="qsm-popup__title" id="modal-9-title"><?php esc_html_e( 'Add New Category', 'quiz-master-next' ); ?></h2>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
 			</header>
-			<hr />
 			<main class="qsm-popup__content" id="modal-9-content">
 				<table class="modal-9-table">
 					<tr>
@@ -739,12 +734,8 @@ function qsm_options_questions_tab_content() {
 				</table>
 				<div class="info"></div>
 			</main>
-			<hr />
 			<footer class="qsm-popup__footer">
-				<button id="save-multi-category-button"
-					class="qsm-popup__btn qsm-popup__btn-primary"></span><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
-				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
-					aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+				<button id="save-multi-category-button" class="qsm-popup__btn qsm-popup__btn-primary"></span><?php esc_html_e( 'Save', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>
@@ -1051,7 +1042,7 @@ function qsm_options_questions_tab_template() {
 		<div class="question question-new" data-question-id="{{data.id }}">
 			<div class="question-content">
 				<div><span class="dashicons dashicons-move"></span></div>
-				<div>
+				<div class="question-content-title-box">
 					<div class="question-content-text">{{{data.question}}}</div>
 					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 				</div>

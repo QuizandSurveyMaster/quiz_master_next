@@ -128,7 +128,7 @@ function qsm_generate_quiz_options() {
 						<span class="dashicons dashicons-editor-help"></span><?php echo __( 'Help', 'quiz-master-next' ); ?>
 					</a>
 					<div class="qsm-help-tab-dropdown-list">
-						<a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Get support', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Support.svg' ?>"> <?php echo __( 'Get support', 'quiz-master-next' ); ?></a>
 						<a href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Overview', 'quiz-master-next' ); ?></a>
 						<a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
 						<a href="https://quizandsurveymaster.com/docs/question-types/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Question Types', 'quiz-master-next' ); ?></a>
@@ -168,9 +168,10 @@ function qsm_generate_quiz_options() {
 					if ( 0 < $addon_tabs ) {
 						?>
 						<div class="qsm-option-tab-dropdown">
-							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>"><?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
+							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>">
+								<img class="qsm-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Puzzle.svg' ?>">
+								<?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
-
 							</a>
 							<div class="qsm-option-tab-dropdown-list">
 								<?php
