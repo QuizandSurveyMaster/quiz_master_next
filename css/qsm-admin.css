@@ -2652,14 +2652,12 @@ input#duplicate_questions {
 	border-radius: 1px;
 }
 
-.qsm-standard-popup{}
 .qsm-standard-popup .qsm-popup__container{
     padding: 0;
     margin: 0;
     position: relative;
     min-width: 450px;
 }
-.qsm-standard-popup .qsm-popup__header{}
 .qsm-standard-popup .qsm-popup__header h2{
     padding: 10px 20px;
 }
