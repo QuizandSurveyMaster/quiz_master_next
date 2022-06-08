@@ -483,6 +483,7 @@ class QSM_Install {
 				),
 			),
 			'default' => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -586,7 +587,7 @@ class QSM_Install {
 				),
 			),
 			'default'    => 0,
-			'option_tab' => 'contact_form',
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
