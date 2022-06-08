@@ -2430,6 +2430,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 
             //Select all button.
             $(document).on('change', '.qsm-question-checkbox', function (event) {
+                event.preventDefault();
 				if ($('.qsm-question-checkbox:checked').length > 0) {
 					$('.qsm-question-bank-footer').addClass('opened');
 				} else {
@@ -2437,6 +2438,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 				}
             });
             $(document).on('change', '#qsm_select_all_question', function (event) {
+                event.preventDefault();
                 $('.qsm-question-checkbox').prop('checked', jQuery('#qsm_select_all_question').prop('checked'));
 				if ($('.qsm-question-checkbox:checked').length > 0) {
 					$('.qsm-question-bank-footer').addClass('opened');
@@ -2736,7 +2738,7 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
             MicroModal.show('modal-9', {
                 onShow: function () {
                     $('#new-category-name').val($('.qsm-category-filter').val());
-					$('.qsm-category-filter').val('').trigger('keyup');;
+					$('.qsm-category-filter').val('').trigger('keyup');
 				},
                 onClose: function () {
                     $('#modal-9-content .info').html('');

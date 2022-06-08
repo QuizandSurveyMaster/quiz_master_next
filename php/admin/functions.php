@@ -476,16 +476,10 @@ function qsm_generate_question_option( $key, $single_option ) {
 		$show_class .= ' qsm_hide_for_other';
 	}
 	$tooltip       = '';
-	$document_text = '';
 	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
 		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
 		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
 		$tooltip .= '</span>';
-	}
-	if ( isset( $single_option['documentation_link'] ) && '' !== $single_option['documentation_link'] ) {
-		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-		$document_text .= '<span class="dashicons dashicons-editor-help"></span>';
-		$document_text .= '</a>';
 	}
 	?>
 	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-toggle-box <?php echo esc_attr( $show_class ); ?>">

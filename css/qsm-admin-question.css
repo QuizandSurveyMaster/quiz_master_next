@@ -633,9 +633,6 @@ a.import-button.button.disable_import::before {
     text-align: center;
     margin: 0 0 20px 0;
 }
-.question-title{
-    
-}
 .qsm-show-question-desc-box {
     display: inline-block;
     margin-bottom: 10px !important;
