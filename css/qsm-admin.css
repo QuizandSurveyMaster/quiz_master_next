@@ -1191,7 +1191,8 @@ body .qsm-popup__btn-primary {
 .qsm-popup input[type=text],
 .qsm-popup input[type=search],
 .qsm-popup input[type=number]{
-    max-width: 200px;
+    min-width: auto !important;
+    max-width: 200px !important;
     border: 1px solid #dddddd;
     border-radius: 1px;
 }
@@ -2645,6 +2646,7 @@ input#duplicate_questions {
 	display: inline-block;
 	max-width: 100%;
 	width: 200px;
+	min-width: auto;
 	border: 1px solid #dddddd;
 	border-radius: 1px;
 }
