@@ -357,13 +357,14 @@ class QSM_Install {
 
 		// Registers scheduled_time_end setting
 		$field_array = array(
-			'id'      => 'scheduled_time_end',
-			'label'   => '',
-			'type'    => 'date',
-			'options' => array(),
-			'default' => '',
-			'help'    => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
-			'ph_text' => __( 'End Date', 'quiz-master-next' ),
+			'id'         => 'scheduled_time_end',
+			'label'      => '',
+			'type'       => 'date',
+			'options'    => array(),
+			'default'    => '',
+			'help'       => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
+			'ph_text'    => __( 'End Date', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
@@ -1202,6 +1203,38 @@ class QSM_Install {
 			'label'      => __( 'Invalid number', 'quiz-master-next' ),
 			'type'       => 'text',
 			'default'    => __( 'This field must be a number!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers url_error_text setting
+		$field_array = array(
+			'id'         => 'url_error_text',
+			'label'      => __( 'Invalid URL', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'The entered URL is not valid!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers minlength_error_text setting
+		$field_array = array(
+			'id'         => 'minlength_error_text',
+			'label'      => __( 'Minimum Length', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Required atleast %minlength% characters.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Use %minlength% to display number of characters required.', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers maxlength_error_text setting
+		$field_array = array(
+			'id'         => 'maxlength_error_text',
+			'label'      => __( 'Maximum Length', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Maximum %maxlength% characters allowed.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Use %maxlength% to display number of characters allowed.', 'quiz-master-next' ),
 			'option_tab' => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );

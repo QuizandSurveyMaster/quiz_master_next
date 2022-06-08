@@ -299,6 +299,7 @@ if ( ! class_exists( 'QSMQuizList' ) ) {
 					?>
 				</div>
 				<div class="clear"></div>
+				<style type="text/css">.post-type-qsm_quiz .wrap .wp-heading-inline, .post-type-qsm_quiz .wrap .wp-heading-inline+.page-title-action {display: none !important;}</style>
 				<?php
 			}
 		}

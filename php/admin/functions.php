@@ -289,7 +289,7 @@ function qsm_display_question_option( $key, $single_option ) {
 	}
 	if ( isset( $single_option['documentation_link'] ) && '' !== $single_option['documentation_link'] ) {
 		$document_text .= '<a class="qsm-question-doc" href="' . esc_url( $single_option['documentation_link'] ) . '" target="_blank" title="' . __( 'View Documentation', 'quiz-master-next' ) . '">';
-		$document_text .= '<span class="dashicons dashicons-media-document"></span>';
+		$document_text .= '<span class="dashicons dashicons-editor-help"></span>';
 		$document_text .= '</a>';
 	}
 	switch ( $type ) {
@@ -347,9 +347,9 @@ function qsm_display_question_option( $key, $single_option ) {
 			?>
 <div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row <?php echo esc_attr( $show_class ); ?>">
 	<label>
-			<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
-			<?php echo wp_kses_post( $tooltip ); ?>
-			<?php echo wp_kses_post( $document_text ); ?>
+		<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
+		<?php echo wp_kses_post( $tooltip ); ?>
+		<?php echo wp_kses_post( $document_text ); ?>
 	</label>
 	<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>"><?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?></textarea>
 </div>
@@ -380,31 +380,29 @@ function qsm_display_question_option( $key, $single_option ) {
 
 		case 'multi_category':
 			?>
-<div id="multi_category_area" class="qsm-row <?php echo esc_attr( $show_class ); ?>">
+<div id="multi_category_area" class="qsm-row multi_category_area <?php echo esc_attr( $show_class ); ?>">
 	<label>
 			<?php echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : ''; ?>
 			<?php echo wp_kses_post( $tooltip ); ?>
 			<?php echo wp_kses_post( $document_text ); ?>
 	</label>
-	<div id="multi_categories_wrapper" class="categorydiv">
-		<input type='text' class='qsm-category-filter' placeholder=' <?php esc_html_e( ' Search', 'quiz-master-next' ); ?> '>
+	<input type='text' class='qsm-category-filter' placeholder=' <?php esc_html_e( ' Search', 'quiz-master-next' ); ?> '>
+	<div id="multi_categories_wrapper" class="categorydiv qsm_categories_list">
 		<ul id=" multicategories_checklist" class="qsm_category_checklist categorychecklist form-no-clear">
 			<?php
-						wp_terms_checklist(
-							0,
-							array(
-								'taxonomy'             => 'qsm_category',
-								'descendants_and_self' => 0,
-								'selected_cats'        => false,
-								'echo'                 => true,
-							)
-						);
+			wp_terms_checklist(
+				0,
+				array(
+					'taxonomy'             => 'qsm_category',
+					'descendants_and_self' => 0,
+					'selected_cats'        => false,
+					'echo'                 => true,
+				)
+			);
 			?>
 		</ul>
-		<a href='#' class='button button-primary add-multiple-category'>
-			<?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?>
-		</a>
 	</div>
+	<a href='javascript:void(0)' class='add-multiple-category'><?php esc_html_e( '+ Add New Category ', 'quiz-master-next' ); ?></a>
 </div>
 			<?php
 			break;
@@ -460,6 +458,128 @@ function qsm_display_question_option( $key, $single_option ) {
 			// Do nothing
 	}
 
+}
+
+/**
+ * Generate Question Options
+ * @since  8.0
+ * @param arr $single_option
+ */
+function qsm_generate_question_option( $key, $single_option ) {
+	$type       = isset( $single_option['type'] ) ? $single_option['type'] : 'text';
+	$show       = isset( $single_option['show'] ) ? explode( ',', $single_option['show'] ) : array();
+	$show_class = '';
+	if ( $show ) {
+		foreach ( $show as $show_value ) {
+			$show_class .= 'qsm_show_question_type_' . trim( $show_value ) . ' ';
+		}
+		$show_class .= ' qsm_hide_for_other';
+	}
+	$tooltip       = '';
+	if ( isset( $single_option['tooltip'] ) && '' !== $single_option['tooltip'] ) {
+		$tooltip .= '<span class="dashicons dashicons-editor-help qsm-tooltips-icon">';
+		$tooltip .= '<span class="qsm-tooltips">' . esc_html( $single_option['tooltip'] ) . '</span>';
+		$tooltip .= '</span>';
+	}
+	?>
+	<div id="<?php echo esc_attr( $key ); ?>_area" class="qsm-row qsm-toggle-box <?php echo esc_attr( $show_class ); ?>">
+		<label class="qsm-toggle-box-handle">
+			<?php echo isset( $single_option['heading'] ) ? wp_kses_post( $single_option['heading'] ) : ''; ?>
+			<?php echo wp_kses_post( $tooltip ); ?>
+			<span class="toggle-indicator" aria-hidden="true"></span>
+		</label>
+		<div class="qsm-toggle-box-content qsm-editor-wrap">
+			<?php
+			switch ( $type ) {
+				case 'text':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<input type="text" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
+					<?php
+					break;
+
+				case 'number':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<input type="number" name="<?php echo esc_attr( $key ); ?>" value="<?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?>" id="<?php echo esc_attr( $key ); ?>" />
+					<?php
+					break;
+
+				case 'select':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<select name="<?php echo esc_attr( $key ); ?>" id="<?php echo esc_attr( $key ); ?>">
+						<?php
+						$default = isset( $single_option['default'] ) ? $single_option['default'] : '';
+						if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+							foreach ( $single_option['options'] as $okey => $value ) {
+								?>
+								<option value="<?php echo esc_attr( $okey ); ?>" <?php echo ( $okey === $default ) ? 'selected="selected"' : ''; ?>><?php echo esc_attr( $value ); ?></option>
+								<?php
+							}
+						}
+						?>
+					</select>
+					<?php
+					break;
+
+				case 'textarea':
+					if ( isset( $single_option['label'] ) ) {
+						?><label><?php echo wp_kses_post( $single_option['label'] ); ?></label><?php
+					}
+					?>
+					<textarea id="<?php echo esc_attr( $key ); ?>" name="<?php echo esc_attr( $key ); ?>"><?php echo isset( $single_option['default'] ) ? esc_html( $single_option['default'] ) : ''; ?></textarea>
+					<?php
+					break;
+
+				case 'multi_checkbox':
+					$parent_key = $key;
+					$default    = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						foreach ( $single_option['options'] as $key => $value ) {
+							?>
+							<label>
+								<input name="<?php echo esc_attr( $parent_key ); ?>[]" type="checkbox" value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<?php echo esc_attr( $value ); ?>
+							</label>
+							<br />
+							<?php
+						}
+					}
+					break;
+
+				case 'single_checkbox':
+					$parent_key  = $key;
+					$default     = isset( $single_option['default'] ) ? $single_option['default'] : '';
+					if ( isset( $single_option['options'] ) && is_array( $single_option['options'] ) ) {
+						?>
+						<label>
+							<?php
+							foreach ( $single_option['options'] as $key => $value ) {
+								?>
+								<input name="<?php echo esc_attr( $parent_key ); ?>" id="<?php echo esc_attr( $parent_key ); ?>" type="checkbox"value="<?php echo esc_attr( $key ); ?>" <?php echo ( $key === $default ) ? 'checked' : ''; ?> />
+								<?php
+							}
+							echo isset( $single_option['label'] ) ? wp_kses_post( $single_option['label'] ) : '';
+							?>
+						</label>
+						<?php
+					}
+					break;
+
+				default:
+					// Do nothing
+			}
+			?>
+		</div>
+	</div>
+	<?php
 }
 
 /**
