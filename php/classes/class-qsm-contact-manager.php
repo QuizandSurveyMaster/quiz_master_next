@@ -422,8 +422,8 @@ class QSM_Contact_Manager {
 
 			case 'email':
 				if ( isset( $field['allowdomains'] ) && ! empty( $field['allowdomains'] ) ) {
-					$allowdomains = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
-					$fieldAttr .= " data-domains='" . wp_json_encode( $allowdomains ) . "' ";
+					$allowdomains	 = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
+					$fieldAttr		 .= " data-domains='" . implode( ',', array_filter( $allowdomains ) ) . "' ";
 				}
 				$class = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
 				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";

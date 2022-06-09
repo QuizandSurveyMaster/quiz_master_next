@@ -789,10 +789,11 @@ function qmnValidation(element, quiz_form_id) {
 				 * Validate email from allowed domains.
 				 */
 				var domains = jQuery( this ).attr( 'data-domains' );
-				domains = jQuery.parseJSON( domains );
-				if ( !isValidDomains( x, domains ) ) {
-					qmnDisplayError( error_messages.email_error_text, jQuery( this ), quiz_form_id );
-					result = false;
+				if ( 'undefined' != typeof domains ) {
+					if ( !isValidDomains( x, domains.split( "," ) ) ) {
+						qmnDisplayError( error_messages.email_error_text, jQuery( this ), quiz_form_id );
+						result = false;
+					}
 				}
 			}
 			if ( jQuery( this ).attr( 'class' ).indexOf( 'mlwUrl' ) !== -1 && this.value !== "" ) {
