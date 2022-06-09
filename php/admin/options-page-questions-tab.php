@@ -634,15 +634,13 @@ function qsm_options_questions_tab_content() {
 
 	<?php add_action( 'admin_footer', 'qsm_options_questions_tab_template' ); ?>
 
-<div class="qsm-popup qsm-popup-slide" id="modal-7" aria-hidden="false">
+<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="modal-7" aria-hidden="false">
 	<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 		<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-7-title">
 			<header class="qsm-popup__header">
-				<h3 class="qsm-popup__title" id="modal-7-title"><?php esc_html_e( 'Delete Options', 'quiz-master-next' ); ?>
-				</h3>
+				<h2 class="qsm-popup__title" id="modal-7-title"><?php esc_html_e( 'Delete Options', 'quiz-master-next' ); ?></h2>
 				<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
 			</header>
-			<hr />
 			<main class="qsm-popup__content" id="modal-7-content">
 				<form action='' method='post' id="delete-question-form">
 					<table class="modal-7-table">
@@ -658,14 +656,9 @@ function qsm_options_questions_tab_content() {
 					</table>
 				</form>
 			</main>
-			<hr />
 			<footer class="qsm-popup__footer">
-				<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span
-						class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
-				<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span
-						class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
-				<button id="cancel-button" class="qsm-popup__btn" data-micromodal-close=""
-					aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
+				<button id="unlink-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-trash"></span><?php esc_html_e( 'Unlink', 'quiz-master-next' ); ?></button>
+				<button id="delete-question-button" class="qsm-popup__btn qsm-popup__btn-primary"><span class="dashicons dashicons-warning"></span><?php esc_html_e( 'Delete', 'quiz-master-next' ); ?></button>
 			</footer>
 		</div>
 	</div>

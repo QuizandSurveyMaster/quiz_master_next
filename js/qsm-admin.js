@@ -1457,9 +1457,9 @@ if (jQuery('body').hasClass('admin_page_mlw_quiz_options')){
 						$.each(category_arr, function (index, value) {
 							if (value.category !== '') {
 								if (typeof value.cat_id !== 'undefined' && value.cat_id !== '') {
-									$cat_html += '<option value="' + value.cat_id + '">' + value.category + ' Questions</option>';
+									$cat_html += '<option value="' + value.cat_id + '">' + value.category + '</option>';
 								} else {
-									$cat_html += '<option value="' + value.category + '">' + value.category + ' Questions</option>';
+									$cat_html += '<option value="' + value.category + '">' + value.category + '</option>';
 								}
 							}
 						});
