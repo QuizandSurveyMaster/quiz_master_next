@@ -112,8 +112,7 @@ function qsm_options_questions_tab_content() {
 	if ( 0 != $pagination ) {
 		?>
 <div class="notice notice-warning">
-	<p><?php esc_html_e( 'This quiz has the "How many questions per page would you like?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?>
-	</p>
+	<p><?php esc_html_e( 'This quiz has the "How many questions per page would you like?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?></p>
 </div>
 		<?php
 	}
@@ -121,8 +120,7 @@ function qsm_options_questions_tab_content() {
 	if ( 0 != $from_total ) {
 		?>
 <div class="notice notice-warning">
-	<p><?php esc_html_e( 'This quiz has the "How many questions should be loaded for quiz?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?>
-	</p>
+	<p><?php esc_html_e( 'This quiz has the "How many questions should be loaded for quiz?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to 0.', 'quiz-master-next' ); ?></p>
 </div>
 		<?php
 	}
@@ -130,8 +128,7 @@ function qsm_options_questions_tab_content() {
 	if ( 0 != $randomness ) {
 		?>
 <div class="notice notice-warning">
-	<p><?php esc_html_e( 'This quiz has the "Are the questions random?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to "No".', 'quiz-master-next' ); ?>
-	</p>
+	<p><?php esc_html_e( 'This quiz has the "Are the questions random?" option enabled. The pages below will not be used while that option is enabled. To turn off, go to the "Options" tab and set that option to "No".', 'quiz-master-next' ); ?></p>
 </div>
 		<?php
 	}
