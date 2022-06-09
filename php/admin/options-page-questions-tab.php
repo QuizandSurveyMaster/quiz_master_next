@@ -304,7 +304,7 @@ function qsm_options_questions_tab_content() {
 								<?php do_action('qsm_after_options'); ?>
 							</div>
 							<div class="qsm-question-misc-options">
-								<?php 
+								<?php
 								$show_correct_answer_info = '';
 								$show_autofill = '';
 								$show_limit_text = '';
@@ -422,7 +422,7 @@ function qsm_options_questions_tab_content() {
 								foreach ( $advanced_question_option as $qo_key => $single_option ) {
 									qsm_generate_question_option( $qo_key, $single_option );
 								}
-								
+
 								do_action( 'qsm_question_form_fields', $quiz_id );
 								?>
 							</div>
@@ -766,7 +766,6 @@ function qsm_ajax_save_pages() {
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$all_questions   = $new_pages = $q_all_questions = $q_new_pages = array();
-
 	//merge duplicate questions
 	foreach ( $pages as $page_key => $questions ) {
 		$questions = array_unique( $questions );
@@ -779,14 +778,9 @@ function qsm_ajax_save_pages() {
 	}
 
 	//merge duplicate questions
-	foreach ( $qpages as $q_page_key => $q_questions ) {
-		$q_questions['questions'] = array_unique( $q_questions['questions'] );
-		foreach ( $q_questions['questions'] as $q_key => $q_id ) {
-			if ( ! in_array( $q_id, $q_all_questions, true ) ) {
-				$q_new_pages[ $q_page_key ][ $q_key ] = $q_id;
-			}
-		}
-		$q_all_questions = array_merge( $q_all_questions, $q_questions );
+	foreach ( $qpages as $key => $q_questions ) {
+		$q_new_pages[$key] = array_unique( $q_questions );
+		$q_new_pages[$key]['questions'] = array_unique( $q_questions['questions'] );
 	}
 
 	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
@@ -1053,7 +1047,7 @@ function qsm_options_questions_tab_template() {
 			</div>
 		</div>
 	</script>
-	
+
 	<!-- View for question in question bank -->
 	<script type="text/template" id="tmpl-single-question-bank-question">
 		<div class="question-bank-question" data-question-id="{{data.id}}" data-category-name="{{data.category}}">
