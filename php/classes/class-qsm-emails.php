@@ -212,6 +212,7 @@ class QSM_Emails {
 		$content                               = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content                               = apply_filters( 'qmn_email_template_variable_results', $content, $response_data );
 		// convert css classes to inline.
+		$content                               = apply_filters( 'qsm_results_css_inliner', $content );
 		$content                               = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner( $content );
 		$content                               = html_entity_decode( $content );
 
