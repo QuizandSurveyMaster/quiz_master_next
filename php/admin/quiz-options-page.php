@@ -105,7 +105,7 @@ function qsm_generate_quiz_options() {
 		<div class='mlw_quiz_options' id="mlw_quiz_options">
 			<div class="qsm-quiz-nav-bar">
 				<div class="qsm-quiz-heading">
-					<h1 id="qsm_title_quiz"><?php echo wp_kses_post( $quiz_name ); ?></h1>
+					<span id="qsm_quiz_title" class="qsm_quiz_title"><?php echo wp_kses_post( $quiz_name ); ?></span>
 					<a href="javascript:void(0)" title="Edit Name" class="edit-quiz-name">
 						<span class="dashicons dashicons-edit"></span>
 					</a>
@@ -141,6 +141,7 @@ function qsm_generate_quiz_options() {
 			</div>
 			<div class="qsm-alerts-placeholder"></div>
 			<!-- Shows warnings, alerts then tab content -->
+			<h1 style="display: none;"><?php echo wp_kses_post( $quiz_name ); ?></h1><!-- Do Not Remove this H1. This is required to display notices. -->
 			<?php $mlwQuizMasterNext->alertManager->showWarnings(); ?>
 			<div class="qsm-alerts">
 				<?php $mlwQuizMasterNext->alertManager->showAlerts(); ?>
