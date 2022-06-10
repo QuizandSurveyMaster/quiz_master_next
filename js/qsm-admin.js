@@ -50,6 +50,11 @@ var QSMAdmin;
         QSMAdmin.selectTab($(this));
     });
 
+    //show set global default potion popup
+    $(document).on('click', '#qsm-blobal-settings', function () {
+        MicroModal.show('qsm-global-default-popup');
+    });
+
     $('#qmn_check_all').change(function () {
         $('.qmn_delete_checkbox').prop('checked', jQuery('#qmn_check_all').prop('checked'));
     });
@@ -464,7 +469,7 @@ var QSMAdmin;
         var qsm_get_setting_data = jQuery(this).attr('data-auditid');
         jQuery('.qsm_setting__data').html('<p>'+JSON.stringify(JSON.parse(qsm_get_setting_data), null, 2)+'</p>');
     });
-	
+
 	jQuery( document ).on( 'click', '.qsm-toggle-box-handle', function ( e ) {
 		e.preventDefault();
 		var parent = jQuery(this).parent('.qsm-toggle-box');
@@ -477,7 +482,7 @@ var QSMAdmin;
 			parent.addClass('opened');
 		}
 	} );
-	
+
 	jQuery( document ).on( 'click', '.qsm-help-tab-handle', function ( e ) {
 		e.preventDefault();
 		jQuery('.qsm-help-tab-dropdown-list').toggleClass('opened');

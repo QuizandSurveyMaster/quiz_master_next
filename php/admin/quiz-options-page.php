@@ -242,6 +242,27 @@ function qsm_generate_quiz_options() {
 				</div>
 			</div>
 		</div>
+		<!-- set global setting popup start -->
+		<div class="qsm-popup qsm-popup-slide qsm-standard-popup" id="qsm-global-default-popup" aria-hidden="true">
+			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
+				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+					<header class="qsm-popup__header">
+						<h2 class="qsm-popup__title" id="modal-1-title"><?php echo __( 'Are you sure?', 'quiz-master-next' ); ?></h2>
+						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
+					</header>
+					<main class="qsm-popup__content" id="qsm-global-default-popup-content">
+						<p><?php echo __( 'Do you want to set default options?', 'quiz-master-next' ); ?></p>
+					</main>
+					<footer class="qsm-popup__footer">
+						<form action="" method="post">
+							<?php wp_nonce_field( 'set_global_default_settings','save_global_default_ettings_nonce' ); ?>
+							<button name="global_setting" class="button button-primary" type="submit"><?php echo __( 'Set Global Defaults', 'quiz-master-next' ); ?></button>
+							</form>
+					</footer>
+				</div>
+			</div>
+		</div>
+		<!-- set global setting popup end -->
 	</div><!-- Backbone Views -->
 	<script type="text/javascript">jQuery(document).ready(function(){jQuery(".qsm-alerts-placeholder").length>0&&jQuery(".qsm-alerts").length>0&&jQuery(".qsm-alerts-placeholder").replaceWith(jQuery(".qsm-alerts"))});</script>
 	<?php
