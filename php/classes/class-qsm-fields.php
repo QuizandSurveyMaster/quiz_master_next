@@ -272,7 +272,7 @@ class QSM_Fields {
 			if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
 				<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></a> |
 			<?php } ?>
-			<button class="button-primary qsm-popup__btn qsm-popup__btn-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+			<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
 		</form>
 		<?php
   	}
