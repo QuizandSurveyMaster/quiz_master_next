@@ -601,6 +601,18 @@ ul.popuar-addon-ul::after {
 	opacity: 0.1;
 }
 
+.qsm-badge {
+    background: linear-gradient(225deg, #344ad6, #42d96b);
+    z-index: 9999;
+    position: absolute;
+    color: #fff;
+    right: 5px;
+    top: 5px;
+    border-radius: 10px;
+    padding: 0 10px;
+    text-transform: uppercase;
+}
+
 #accordion .ui-accordion-header-icon {
 	position: absolute;
 	right: 24px;
