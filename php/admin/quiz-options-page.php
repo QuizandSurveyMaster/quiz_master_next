@@ -170,7 +170,7 @@ function qsm_generate_quiz_options() {
 						?>
 						<div class="qsm-option-tab-dropdown">
 							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>">
-								<img class="qsm-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Puzzle.svg' ?>">
+								<!--<img class="qsm-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Puzzle.svg' ?>">-->
 								<?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
 							</a>
