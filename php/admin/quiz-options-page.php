@@ -219,11 +219,11 @@ function qsm_generate_quiz_options() {
 			qsm_show_adverts();
 			?>
 		</div>
-		<div class="qsm-popup qsm-popup-slide" id="modal-3" aria-hidden="false">
+		<div class="qsm-popup qsm-popup-slide  qsm-standard-popup" id="modal-3" aria-hidden="false">
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close="">
 				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-3-title">
 					<header class="qsm-popup__header">
-						<h2 class="qsm-popup__title" id="modal-3-title">Edit Name</h2>
+						<h2 class="qsm-popup__title" id="modal-3-title"><?php esc_html_e( 'Edit Name', 'quiz-master-next' ); ?></h2>
 						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close=""></a>
 					</header>
 					<main class="qsm-popup__content" id="modal-3-content">
