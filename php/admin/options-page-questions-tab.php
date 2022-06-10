@@ -71,7 +71,8 @@ function qsm_options_questions_tab_content() {
 			$qpage['id']           = $k + 1;
 			$qpage['pagekey']      = ( isset( $qpage['pagekey'] ) && ! empty( $qpage['pagekey'] ) ) ? $qpage['pagekey'] : uniqid();
 			$qpage['hide_prevbtn'] = ( isset( $qpage['hide_prevbtn'] ) && ! empty( $qpage['hide_prevbtn'] ) ) ? $qpage['hide_prevbtn'] : 0;
-			$qpage['questions']    = $val;
+			$pages[ $k ]             = array_values( $val );
+			$qpage['questions']    = array_values( $val );
 			$qpages[]              = $qpage;
 		}
 	} else {
@@ -736,7 +737,6 @@ function qsm_options_questions_tab_content() {
 
 add_action( 'wp_ajax_qsm_save_pages', 'qsm_ajax_save_pages' );
 
-
 /**
  * Saves the pages and order from the Questions tab
  *
@@ -748,36 +748,33 @@ function qsm_ajax_save_pages() {
 	}
 
 	global $mlwQuizMasterNext;
-	$json = array(
+	$json            = array(
 		'status' => 'error',
 	);
-
-	$quiz_id = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
-	$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
+	$quiz_id         = isset( $_POST['quiz_id'] ) ? intval( $_POST['quiz_id'] ) : 0;
+	$post_id         = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : 0;
 	$mlwQuizMasterNext->pluginHelper->prepare_quiz( $quiz_id );
-
 	$pages           = isset( $_POST['pages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['pages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 	$qpages          = isset( $_POST['qpages'] ) ? qsm_sanitize_rec_array( wp_unslash( $_POST['qpages'] ) ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$all_questions   = $new_pages = $q_all_questions = $q_new_pages = array();
+	$all_questions   = array();
 	//merge duplicate questions
 	foreach ( $pages as $page_key => $questions ) {
-		$questions = array_unique( $questions );
-		foreach ( $questions as $q_key => $id ) {
+		$page_questions  = array();
+		$questions       = array_unique( $questions );
+		foreach ( $questions as $id ) {
 			if ( ! in_array( $id, $all_questions, true ) ) {
-				$new_pages[ $page_key ][ $q_key ] = $id;
+				$page_questions[] = $id;
 			}
 		}
-		$all_questions = array_merge( $all_questions, $questions );
+		$all_questions       = array_merge( $all_questions, $questions );
+		$pages[ $page_key ]    = $page_questions;
+		if ( isset( $qpages[ $page_key ] ) ) {
+			$qpages[ $page_key ]['questions'] = $page_questions;
+		}
 	}
 
-	//merge duplicate questions
-	foreach ( $qpages as $key => $q_questions ) {
-		$q_new_pages[$key] = array_unique( $q_questions );
-		$q_new_pages[$key]['questions'] = array_unique( $q_questions['questions'] );
-	}
-
-	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );
-	$response        = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $new_pages );
+	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $qpages );
+	$response = $mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'pages', $pages );
 	if ( $response ) {
 		$json['status'] = 'success';
 		// update post_modified
