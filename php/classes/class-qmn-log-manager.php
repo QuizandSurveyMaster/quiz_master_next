@@ -99,7 +99,10 @@ class QMN_Log_Manager
 			'post_parent'  => $parent,
 			'log_type'     => $type,
 		);
-		return $this->insert_log( $log_data );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return $this->insert_log( $log_data );
+		}
+		return false;
 	}
 
 	/**
