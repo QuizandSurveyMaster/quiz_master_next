@@ -772,8 +772,8 @@ function qsm_ajax_save_pages() {
 
 	//merge duplicate questions
 	foreach ( $qpages as $key => $q_questions ) {
-		$q_new_pages[$key] = array_unique( $q_questions );
-		$q_new_pages[$key]['questions'] = array_unique( $q_questions['questions'] );
+		$q_new_pages[ $key ] = array_unique( $q_questions );
+		$q_new_pages[ $key ]['questions'] = array_unique( $q_questions['questions'] );
 	}
 
 	$mlwQuizMasterNext->pluginHelper->update_quiz_setting( 'qpages', $q_new_pages );

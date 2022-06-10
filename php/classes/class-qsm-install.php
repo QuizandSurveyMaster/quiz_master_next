@@ -469,10 +469,10 @@ class QSM_Install {
 
 		// Registers show-optin setting
 		$field_array = array(
-			'id'      => 'show_optin',
-			'label'   => __( 'Show Opt-in type Answers to User', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'show_optin',
+			'label'      => __( 'Show Opt-in type Answers to User', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -482,7 +482,7 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
 			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
