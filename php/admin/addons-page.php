@@ -75,9 +75,9 @@ function qsm_generate_featured_addons() {
 		<div class="qsm-install-addon">
 			<a class="active" href="#qsm_installed_addons"><?php esc_html_e( 'Installed Addons', 'quiz-master-next' ); ?></a>
 			<a href="#qsm_add_addons"><?php esc_html_e( 'Add Addons', 'quiz-master-next' ); ?> 
-				<?php if ( is_rtl() ): ?>
+				<?php if ( is_rtl() ) : ?>
 					<span class="dashicons dashicons-arrow-left-alt2"></span>
-				<?php else: ?>
+				<?php else : ?>
 					<span class="dashicons dashicons-arrow-right-alt2"></span>
 				<?php endif; ?>
 			</a>
