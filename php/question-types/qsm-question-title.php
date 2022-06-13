@@ -27,15 +27,19 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		}
 	}
 	if ( '' !== $new_question_title ) {
+		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		?>
-		<div class='mlw_qmn_new_question'><?php echo esc_html( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ); ?> </div>
+		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> </div>
 		<?php
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-
+	if ( ! empty( $question_title ) ) {
+		$question_title = do_shortcode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $question_title, ENT_QUOTES ), "question-description-{$question_id}", "QSM Questions" ) );
+	}
 	?>
 	<div class='mlw_qmn_question <?php echo esc_attr( $polar_extra_class ); ?>' >
-	<?php echo do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) . $deselect_answer ); ?>
+	<?php do_action('qsm_before_question_title',$question, $question_type, $new_question_title, $question_id ); ?>
+	<?php echo wp_kses_post( $question_title . $deselect_answer ); ?>
 	</div>
 	<?php
 }

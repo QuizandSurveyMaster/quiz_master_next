@@ -87,12 +87,14 @@ function qsm_variable_single_question_answer( $content, $mlw_quiz_array ) {
 					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 					$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_email_template'] ) : $qmn_question_answer_template;
 				}
+				$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_question_answer_template, "quiz_question_answer_email_template-{$quiz_id}" );
 			} else {
 				$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
 				if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
 					$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 					$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_template'] ) : $qmn_question_answer_template;
 				}
+				$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_question_answer_template, "quiz_question_answer_template-{$quiz_id}" );
 			}
 			$mlw_question_answer_display = htmlspecialchars_decode( $qmn_question_answer_template, ENT_QUOTES );
 			$questions                   = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
@@ -244,6 +246,7 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 		$url            = qsm_get_post_id_from_quiz_id( $mlw_quiz_array['quiz_id'] );
 		$page_link      = $url . '?result_id=' . '%FB_RESULT_ID%';
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'facebook_sharing_text', '%QUIZ_NAME%' );
+		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_facebook_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
 		$fb_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/facebook.png';
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('facebook', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "', '$facebook_app_id', '$page_link');\"><img src='" . $fb_image . "' alt='" . __( 'Facebbok Share', 'quiz-master-next' ) . "' /></a>";
@@ -252,6 +255,7 @@ function mlw_qmn_variable_social_share( $content, $mlw_quiz_array ) {
 	if ( false !== strpos( $content, '%TWITTER_SHARE%' ) ) {
 		$tw_image       = plugins_url( '', dirname( __FILE__ ) ) . '/assets/twitter.png';
 		$sharing        = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'twitter_sharing_text', '%QUIZ_NAME%' );
+		$sharing        = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $sharing, "quiz_twitter_sharing_text-{$mlw_quiz_array['quiz_id']}" );
 		$sharing        = apply_filters( 'mlw_qmn_template_variable_results_page', $sharing, $mlw_quiz_array );
 		$social_display = "<a class=\"mlw_qmn_quiz_link\" onclick=\"qmnSocialShare('twitter', '" . esc_js( $sharing ) . "', '" . esc_js( $mlw_quiz_array['quiz_name'] ) . "');\"><img src='" . $tw_image . "' alt='" . __( 'Twitter Share', 'quiz-master-next' ) . "' /></a>";
 		$content        = str_replace( '%TWITTER_SHARE%', $social_display, $content );
@@ -459,12 +463,14 @@ function mlw_qmn_variable_question_answers( $content, $mlw_quiz_array ) {
 				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 				$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_email_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_email_template'] ) : $qmn_question_answer_template;
 			}
+			$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_question_answer_template, "quiz_question_answer_email_template-{$quiz_id}" );
 		} else {
 			$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_text', 'question_answer_template', '%QUESTION%<br/>%USER_ANSWERS_DEFAULT%' );
 			if ( isset( $mlw_quiz_array['quiz_settings'] ) && ! empty( $mlw_quiz_array['quiz_settings'] ) ) {
 				$quiz_text_settings           = isset( $mlw_quiz_array['quiz_settings']['quiz_text'] ) ? qmn_sanitize_input_data( $mlw_quiz_array['quiz_settings']['quiz_text'], true ) : array();
 				$qmn_question_answer_template = isset( $quiz_text_settings['question_answer_template'] ) ? apply_filters( 'qsm_section_setting_text', $quiz_text_settings['question_answer_template'] ) : $qmn_question_answer_template;
 			}
+			$qmn_question_answer_template = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qmn_question_answer_template, "quiz_question_answer_template-{$quiz_id}" );
 		}
 		$questions     = QSM_Questions::load_questions_by_pages( $mlw_quiz_array['quiz_id'] );
 		$qmn_questions = array();
@@ -602,6 +608,7 @@ function qmn_variable_category_points( $content, $mlw_quiz_array ) {
 		} else {
 			$return_points = 0;
 		}
+		$return_points = apply_filters( 'qsm_category_points', $return_points, $category_name, $mlw_quiz_array );
 		$content = str_replace( '%CATEGORY_POINTS_' . $category_name . '%', $return_points, $content );
 	}
 	return $content;
@@ -928,18 +935,23 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 	$disable_description_on_result = $mlwQuizMasterNext->pluginHelper->get_section_setting( 'quiz_options', 'disable_description_on_result' );
 	// Get question setting
 	$question_settings = isset( $questions[ $answer['id'] ]['settings'] ) ? $questions[ $answer['id'] ]['settings'] : array();
+	$question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer['question_title'], "Question-{$answer['id']}", "QSM Questions");
+	$question_description = '';
+	if ( ! empty( $answer[0] ) ) {
+		$question_description = do_shortcode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[0], "question-description-{$answer['id']}", "QSM Questions" ) );
+	}
 	if ( isset( $answer['question_title'] ) && '' !== $answer['question_title'] ) {
 		$add_br = '';
 		if ( '' !== $answer[0] ) {
 			$add_br = '<br/>';
 		}
 		if ( 1 == $disable_description_on_result ) {
-			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . htmlspecialchars_decode( $answer['question_title'], ENT_QUOTES ) . '</b>', $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_title . '</b>', $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . htmlspecialchars_decode( $answer['question_title'], ENT_QUOTES ) . '</b>' . $add_br . htmlspecialchars_decode( $answer[0], ENT_QUOTES ) . $add_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_title . '</b>' . $add_br . $question_description . $add_br, $mlw_question_answer_display );
 		}
 	} else {
-		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . htmlspecialchars_decode( $answer[0], ENT_QUOTES ) . '</b>', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%QUESTION%', '<b>' . $question_description . '</b>', $mlw_question_answer_display );
 	}
 	$mlw_question_answer_display = qsm_varibale_question_title_func( $mlw_question_answer_display );
 	$extra_border_bottom_class   = '';
@@ -969,7 +981,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 				if ( isset( $answer['question_type'] ) && in_array( intval( $answer['question_type'] ), $question_with_text_input, true ) ) {
 					$do_show_wrong = true;
 					foreach ( $total_answers as $single_answer_key => $single_answer ) {
-						$current_answer_zero = trim( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
+						$current_answer_zero = trim( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
 
 						if ( 0 == $form_type && ( 0 == $quiz_system || 3 == $quiz_system ) ) {
 							if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
@@ -986,7 +998,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							}
 						} else {
 							if ( isset( $single_answer[2] ) && strcasecmp( htmlspecialchars_decode( $answer[1], ENT_QUOTES ), $current_answer_zero ) == 0 ) {
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 								$do_show_wrong              = false;
 							}
 						}
@@ -997,7 +1009,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 							$question_with_answer_text .= '<span class="qsm-text-wrong-option">' . htmlspecialchars_decode( $user_given_answer, ENT_QUOTES ) . '</span>';
 							foreach ( $total_answers as $single_answer ) {
 								if ( isset( $single_answer[2] ) && 1 == $single_answer[2] ) {
-									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) . '</span>';
+									$question_with_answer_text .= '<span class="qsm-text-correct-option">' . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) . '</span>';
 									break;
 								}
 							}
@@ -1023,7 +1035,7 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 
 							$is_answer_correct         = false;
 							$decode_show_user_answer   = htmlspecialchars_decode( mb_strtoupper( $show_user_answer ), ENT_QUOTES );
-							$decode_single_user_answer = mb_strtoupper( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
+							$decode_single_user_answer = mb_strtoupper( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) );
 							if ( $decode_show_user_answer == $decode_single_user_answer ) {
 								$is_answer_correct = true;
 							}
@@ -1037,13 +1049,13 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 								}
 
 								$question_with_answer_text .= '<span class="qsm-text-wrong-option">(' . $index . ') ' . $show_user_answer . '</span>';
-								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) ) . '</span>';
+								$question_with_answer_text .= '<span class="qsm-text-correct-option">(' . $index . ') ' . strval( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ) ) . '</span>';
 							}
 						}
 					} else {
 						$options = array();
 						foreach ( $total_answers as $key => $single_answer ) {
-							$options[] = mb_strtoupper( htmlspecialchars_decode( $single_answer[0], ENT_QUOTES ) );
+							$options[] = mb_strtoupper( htmlspecialchars_decode( $mlwQuizMasterNext->pluginHelper->qsm_language_support( $single_answer[0], 'answer-' . $single_answer[0], 'QSM Answers' ), ENT_QUOTES ) );
 						}
 
 						if ( sizeof( $new_array_user_answer ) < sizeof( $total_answers ) ) {
@@ -1154,21 +1166,22 @@ function qsm_questions_answers_shortcode_to_text( $mlw_quiz_array, $qmn_question
 		if ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && '' !== $user_answer_new ) {
 			$image_url                   = htmlspecialchars_decode( $user_answer_new, ENT_QUOTES );
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag<img src='$image_url'/>$close_span_with_br", $mlw_question_answer_display );
-		} elseif ( 5 == $answer['question_type'] ) {
+		} elseif ( 5 == $answer['question_type'] || 3 == $answer['question_type'] ) {
 			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . nl2br( htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) ) . $close_span_with_br, $mlw_question_answer_display );
 		} else {
-			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . htmlspecialchars_decode( $user_answer_new, ENT_QUOTES ) . $close_span_with_br, $mlw_question_answer_display );
+			$mlw_question_answer_display = str_replace( '%USER_ANSWER%', "$open_span_tag" . do_shortcode( $user_answer_new ) . $close_span_with_br, $mlw_question_answer_display );
 		}
 	}
-	$answer_2 = ! empty( $answer[2] ) ? $answer[2] : 'NA';
+	$answer_2 = ! empty( $answer[2] ) ? $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answer[2], "answer-" . $answer[2], "QSM Answers" ) : 'NA';
 	if ( in_array( $answer['question_type'], $use_custom_correct_answer_template, true ) ) {
 		$qsm_correct_ans             = apply_filters( 'qsm_result_page_custom_correct_answer_template', $questions, $answer );
+		$qsm_correct_ans = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $qsm_correct_ans, "answer-" . $qsm_correct_ans, "QSM Answers" );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', $qsm_correct_ans, $mlw_question_answer_display );
 	} elseif ( isset( $question_settings['answerEditor'] ) && 'image' === $question_settings['answerEditor'] && 'NA' !== $answer_2 ) {
 		$image_url                   = htmlspecialchars_decode( $answer_2, ENT_QUOTES );
 		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '<br/><img src="' . $image_url . '"/>', $mlw_question_answer_display );
 	} else {
-		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '' . htmlspecialchars_decode( $answer_2, ENT_QUOTES ) . '<br/>', $mlw_question_answer_display );
+		$mlw_question_answer_display = str_replace( '%CORRECT_ANSWER%', '' . do_shortcode( $answer_2 ) . '<br/>', $mlw_question_answer_display );
 	}
 	$answer_3                    = ! empty( $answer[3] ) ? $answer[3] : 'NA';
 	$mlw_question_answer_display = str_replace( '%USER_COMMENTS%', $answer_3, $mlw_question_answer_display );
@@ -1304,11 +1317,10 @@ function qmn_polar_display_on_resultspage( $id, $question, $answers, $answer ) {
 		}
 	}
 
-	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
-	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $answers[0][0] . '</div>';
+	$input_text        .= "<div class='left-polar-title' $left_polar_title_style >" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[0][0], "answer-" . $answers[0][0], "QSM Answers" ) . '</div>';
 	$input_text        .= "<div class='slider-main-wrapper'><input type='hidden' class='qmn_polar $mlw_require_class' id='question" . esc_attr( $id ) . "' name='question" . esc_attr( $id ) . "' />";
 	$input_text        .= '<div id="slider-' . esc_attr( $id ) . '"' . $slider_date_atts . '></div></div>';
-	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $answers[1][0] . '</div>';
+	$input_text        .= "<div class='right-polar-title' $right_polar_title_style>" . $mlwQuizMasterNext->pluginHelper->qsm_language_support( $answers[1][0], "answer-" . $answers[1][0], "QSM Answers" ) . '</div>';
 	$question           = $input_text;
 	$question_display  .= "<span class='mlw_qmn_question mlw-qmn-question-result-$id question-type-polar-s'>" . do_shortcode( htmlspecialchars_decode( $question, ENT_QUOTES ) ) . '</span>';
 	return apply_filters( 'qmn_polar_display_front', $question_display, $id, $question, $answers );
@@ -1384,11 +1396,11 @@ function qsm_varibale_question_title_func( $question, $question_type = '', $new_
 			$question_display .= '<div class="qsm-featured-image">' . wp_get_attachment_image( $featureImageID, apply_filters( 'qsm_filter_feature_image_size', 'full', $question_id ) ) . '</div>';
 		}
 	}
-	if ( '' === $new_question_title ) {
-		$question_display  .= "<div class='mlw_qmn_new_question'>" . sanitize_text_field( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ) ) . '</div>';
+	if ( '' !== $new_question_title ) {
+		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
+		$question_display  .= "<div class='mlw_qmn_new_question'>" . $new_question_title  . '</div>';
 		$polar_extra_class .= ' qsm_remove_bold';
 	}
-
 	$question_display .= "<div class='mlw_qmn_question {$polar_extra_class}' >" . $question_numbering . do_shortcode( htmlspecialchars_decode( $question_title, ENT_QUOTES ) ) . $deselect_answer . '</div>';
 	return $question_display;
 }

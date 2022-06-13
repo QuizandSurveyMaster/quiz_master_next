@@ -44,10 +44,10 @@ class QSM_Install {
 
 		// Registers system setting
 		$field_array = array(
-			'id'      => 'form_type',
-			'label'   => __( 'Quiz Type', 'quiz-master-next' ),
-			'type'    => 'select',
-			'options' => array(
+			'id'         => 'form_type',
+			'label'      => __( 'Quiz Type', 'quiz-master-next' ),
+			'type'       => 'select',
+			'options'    => array(
 				array(
 					'label' => __( 'Quiz', 'quiz-master-next' ),
 					'value' => 0,
@@ -61,7 +61,8 @@ class QSM_Install {
 					'value' => 2,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -88,17 +89,40 @@ class QSM_Install {
 			'help'        => __( 'Select the system for grading the quiz.', 'quiz-master-next' ),
 			'tooltip'     => __( 'To know more about our grading systems please ', 'quiz-master-next' ) . '<a target="_blank" href="https://quizandsurveymaster.com/docs/">' . __( 'read the documentation.', 'quiz-master-next' ) . '</a>',
 			'show_option' => 'form_type_0',
+			'option_tab'  => 'general',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers correct_answer_logic field
+		$field_array = array(
+			'id'          => 'correct_answer_logic',
+			'label'       => __( 'Correct Answer Logic', 'quiz-master-next' ),
+			'type'        => 'radio',
+			'options'     => array(
+				array(
+					'label' => __( 'All correct answers', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'Any correct answer', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'     => 0,
+			'show_option' => 'qsm_hidden_tr_gradingsystem',
+			'option_tab'  => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers default number of answers field
 		$field_array = array(
-			'id'      => 'default_answers',
-			'label'   => __( 'Default Number of Answers', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 1,
-			'help'    => __( 'Adds number of answer fields', 'quiz-master-next' ),
+			'id'         => 'default_answers',
+			'label'      => __( 'Default Number of Answers', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 1,
+			'help'       => __( 'Adds number of answer fields', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -114,15 +138,16 @@ class QSM_Install {
 			),
 			'default'     => 0,
 			'show_option' => 'form_type_0',
+			'option_tab'  => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers progress_bar setting
 		$field_array = array(
-			'id'      => 'progress_bar',
-			'label'   => __( 'Show progress bar', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'progress_bar',
+			'label'      => __( 'Show progress bar', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -132,16 +157,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers require_log_in setting
 		$field_array = array(
-			'id'      => 'require_log_in',
-			'label'   => __( 'Require User Login', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'require_log_in',
+			'label'      => __( 'Require User Login', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -151,39 +177,43 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Enabling this allows only logged in users to take the quiz', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers pagination setting
 		$field_array = array(
-			'id'      => 'pagination',
-			'label'   => __( 'Questions Per Page', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
+			'id'         => 'pagination',
+			'label'      => __( 'Questions Per Page', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Override the default pagination created on questions tab', 'quiz-master-next' ),
+			'option_tab' => 'general',
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers timer_limit setting
 		$field_array = array(
-			'id'      => 'timer_limit',
-			'label'   => __( 'Time Limit (in minutes)', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
+			'id'         => 'timer_limit',
+			'label'      => __( 'Time Limit (in minutes)', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Leave 0 for no time limit', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Settings for quick result
 		$field_array = array(
-			'id'      => 'enable_result_after_timer_end',
-			'label'   => __( 'Force submit after timer expiry', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_result_after_timer_end',
+			'label'      => __( 'Force submit after timer expiry', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -193,15 +223,16 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
-			'id'      => 'skip_validation_time_expire',
-			'label'   => __( 'Skip validations when time expire', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'skip_validation_time_expire',
+			'label'      => __( 'Skip validations when time expire', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -211,75 +242,81 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 1,
+			'default'    => 1,
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers total_user_tries setting
 		$field_array = array(
-			'id'      => 'total_user_tries',
-			'label'   => __( 'Limit Attempts', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Leave 0 for unlimited attempts', 'quiz-master-next' ),
-			'tooltip' => __( 'Limits how many times a user can take the quiz', 'quiz-master-next' ),
+			'id'         => 'total_user_tries',
+			'label'      => __( 'Limit Attempts', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Leave 0 for unlimited attempts', 'quiz-master-next' ),
+			'tooltip'    => __( 'Limits how many times a user can take the quiz', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers limit_total_entries setting
 		$field_array = array(
-			'id'      => 'limit_total_entries',
-			'label'   => __( 'Limit Entries', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Leave 0 for unlimited entries', 'quiz-master-next' ),
-			'tooltip' => __( 'Limits how many users can take the quiz.', 'quiz-master-next' ),
+			'id'         => 'limit_total_entries',
+			'label'      => __( 'Limit Entries', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Leave 0 for unlimited entries', 'quiz-master-next' ),
+			'tooltip'    => __( 'Limits how many users can take the quiz.', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers question_from_total setting
 		$field_array = array(
-			'id'      => 'question_from_total',
-			'label'   => __( 'Limit number of Questions', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Leave 0 to load all questions', 'quiz-master-next' ),
-			'tooltip' => __( 'Show only limited number of questions from your quiz.', 'quiz-master-next' ),
+			'id'         => 'question_from_total',
+			'label'      => __( 'Limit number of Questions', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Leave 0 to load all questions', 'quiz-master-next' ),
+			'tooltip'    => __( 'Show only limited number of questions from your quiz.', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers question_per_category setting
 		$field_array = array(
-			'id'      => 'question_per_category',
-			'label'   => __( 'Limit number of Questions Per Category ', 'quiz-master-next' ),
-			'type'    => 'number',
-			'options' => array(),
-			'default' => 0,
-			'help'    => __( 'Leave 0 to load all questions. You also need to set Limit Number of questions, as well as select Question Categories', 'quiz-master-next' ),
-			'tooltip' => __( 'Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.', 'quiz-master-next' ),
+			'id'         => 'question_per_category',
+			'label'      => __( 'Limit number of Questions Per Category ', 'quiz-master-next' ),
+			'type'       => 'number',
+			'options'    => array(),
+			'default'    => 0,
+			'help'       => __( 'Leave 0 to load all questions. You also need to set Limit Number of questions, as well as select Question Categories', 'quiz-master-next' ),
+			'tooltip'    => __( 'Show only limited number of category questions from your quiz.You also need to set Limit Number of questions.', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers category setting
 		$field_array = array(
-			'id'      => 'randon_category',
-			'label'   => __( 'Questions Categories', 'quiz-master-next' ),
-			'type'    => 'category',
-			'default' => '',
-			'help'    => __( 'Questions will load only from selected categories.', 'quiz-master-next' ),
+			'id'         => 'randon_category',
+			'label'      => __( 'Questions Categories', 'quiz-master-next' ),
+			'type'       => 'category',
+			'default'    => '',
+			'help'       => __( 'Questions will load only from selected categories.', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers randomness_order setting
 		$field_array = array(
-			'id'      => 'randomness_order',
-			'label'   => __( 'Random Questions', 'quiz-master-next' ),
-			'type'    => 'select',
-			'options' => array(
+			'id'         => 'randomness_order',
+			'label'      => __( 'Random Questions', 'quiz-master-next' ),
+			'type'       => 'select',
+			'options'    => array(
 				array(
 					'label' => __( 'Random Questions', 'quiz-master-next' ),
 					'value' => 1,
@@ -297,56 +334,60 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'tooltip' => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz-master-next' ),
+			'default'    => 0,
+			'tooltip'    => __( 'Randomize the order of questions or answers every time a quiz loads', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers scheduled_time_start setting
 		$field_array = array(
-			'id'      => 'scheduled_time_start',
-			'label'   => __( 'Quiz Dates', 'quiz-master-next' ),
-			'type'    => 'date',
-			'options' => array(),
-			'default' => '',
-			'help'    => '',
-			'ph_text' => __( 'Start Date', 'quiz-master-next' ),
-			'help'    => __( 'If set, Quiz will be accessible only after this date', 'quiz-master-next' ),
-			'tooltip' => __( 'Leave blank for no date limit', 'quiz-master-next' ),
+			'id'         => 'scheduled_time_start',
+			'label'      => __( 'Quiz Dates', 'quiz-master-next' ),
+			'type'       => 'date',
+			'options'    => array(),
+			'default'    => '',
+			'help'       => '',
+			'ph_text'    => __( 'Start Date', 'quiz-master-next' ),
+			'help'       => __( 'If set, Quiz will be accessible only after this date', 'quiz-master-next' ),
+			'tooltip'    => __( 'Leave blank for no date limit', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers scheduled_time_end setting
 		$field_array = array(
-			'id'      => 'scheduled_time_end',
-			'label'   => '',
-			'type'    => 'date',
-			'options' => array(),
-			'default' => '',
-			'help'    => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
-			'ph_text' => __( 'End Date', 'quiz-master-next' ),
+			'id'         => 'scheduled_time_end',
+			'label'      => '',
+			'type'       => 'date',
+			'options'    => array(),
+			'default'    => '',
+			'help'       => __( ' If set, Quiz will not be accessible after this date', 'quiz-master-next' ),
+			'ph_text'    => __( 'End Date', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 		$field_array = array(
-			'id'      => 'not_allow_after_expired_time',
-			'label'   => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
-			'type'    => 'checkbox',
-			'options' => array(
+			'id'         => 'not_allow_after_expired_time',
+			'label'      => __( 'Do not allow quiz submission after the end date/time', 'quiz-master-next' ),
+			'type'       => 'checkbox',
+			'options'    => array(
 				array(
 					'value' => 1,
 				),
 			),
-			'default' => 0,
-			'ph_text' => '',
+			'default'    => 0,
+			'ph_text'    => '',
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers contact_info_location setting
 		$field_array = array(
-			'id'      => 'contact_info_location',
-			'label'   => __( 'Contact form position', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'contact_info_location',
+			'label'      => __( 'Contact form position', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Show before quiz begins', 'quiz-master-next' ),
 					'value' => 0,
@@ -356,18 +397,19 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Select when to display the contact form', 'quiz-master-next' ),
-			'tooltip' => __( 'The form can be configured in Contact tab', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Select when to display the contact form', 'quiz-master-next' ),
+			'tooltip'    => __( 'The form can be configured in Contact tab', 'quiz-master-next' ),
+			'option_tab' => 'contact_form',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers loggedin_user_contact setting
 		$field_array = array(
-			'id'      => 'loggedin_user_contact',
-			'label'   => __( 'Show contact form to logged in users', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'loggedin_user_contact',
+			'label'      => __( 'Show contact form to logged in users', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 0,
@@ -377,18 +419,19 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Logged in users can edit their contact information', 'quiz-master-next' ),
-			'tooltip' => __( 'The information will still get saved if this option is disabled', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Logged in users can edit their contact information', 'quiz-master-next' ),
+			'tooltip'    => __( 'The information will still get saved if this option is disabled', 'quiz-master-next' ),
+			'option_tab' => 'contact_form',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers comment_section setting
 		$field_array = array(
-			'id'      => 'comment_section',
-			'label'   => __( 'Enable comments', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'comment_section',
+			'label'      => __( 'Enable comments', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 0,
@@ -398,17 +441,18 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 1,
-			'help'    => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
+			'default'    => 1,
+			'help'       => __( 'Allow users to enter their comments after the quiz', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers question_numbering setting
 		$field_array = array(
-			'id'      => 'question_numbering',
-			'label'   => __( 'Show question numbers', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'question_numbering',
+			'label'      => __( 'Show question numbers', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -418,16 +462,37 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'display',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
+
+		// Registers show-optin setting
+		$field_array = array(
+			'id'         => 'show_optin',
+			'label'      => __( 'Show Opt-in type Answers to User', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
+				array(
+					'label' => __( 'Yes', 'quiz-master-next' ),
+					'value' => 1,
+				),
+				array(
+					'label' => __( 'No', 'quiz-master-next' ),
+					'value' => 0,
+				),
+			),
+			'default'    => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers store_responses setting
 		$field_array = array(
-			'id'      => 'store_responses',
-			'label'   => __( 'Save Responses', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'store_responses',
+			'label'      => __( 'Save Responses', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -437,17 +502,18 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 1,
-			'help'    => __( 'The results will be permanently stored in a database', 'quiz-master-next' ),
+			'default'    => 1,
+			'help'       => __( 'The results will be permanently stored in a database', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers disable_answer_onselect setting
 		$field_array = array(
-			'id'      => 'disable_answer_onselect',
-			'label'   => __( 'Disable change of answers', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'disable_answer_onselect',
+			'label'      => __( 'Disable change of answers', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -457,18 +523,19 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Works with multiple choice questions only', 'quiz-master-next' ),
-			'tooltip' => __( 'The question will be disabled once an answer is selected', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Works with multiple choice questions only', 'quiz-master-next' ),
+			'tooltip'    => __( 'The question will be disabled once an answer is selected', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers ajax_show_correct setting
 		$field_array = array(
-			'id'      => 'ajax_show_correct',
-			'label'   => __( 'Add class for correct/incorrect answers', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'ajax_show_correct',
+			'label'      => __( 'Add class for correct/incorrect answers', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -478,18 +545,19 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Works with multiple choice questions only', 'quiz-master-next' ),
-			'tooltip' => __( 'Dynamically add class for incorrect/correct answer after user selects answer.', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Works with multiple choice questions only', 'quiz-master-next' ),
+			'tooltip'    => __( 'Dynamically add class for incorrect/correct answer after user selects answer.', 'quiz-master-next' ),
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers hide_auto fill setting
 		$field_array = array(
-			'id'      => 'contact_disable_autofill',
-			'label'   => __( 'Disable auto fill for contact input', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'contact_disable_autofill',
+			'label'      => __( 'Disable auto fill for contact input', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -499,15 +567,16 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'contact_form',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
-			'id'      => 'form_disable_autofill',
-			'label'   => __( 'Disable auto fill for Quiz input', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'form_disable_autofill',
+			'label'      => __( 'Disable auto fill for Quiz input', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -517,16 +586,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers show category on front setting
 		$field_array = array(
-			'id'      => 'show_category_on_front',
-			'label'   => __( 'Display category name on front end', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'show_category_on_front',
+			'label'      => __( 'Display category name on front end', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -536,16 +606,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Settings for quick result
 		$field_array = array(
-			'id'      => 'enable_quick_result_mc',
-			'label'   => __( 'Show results inline', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_quick_result_mc',
+			'label'      => __( 'Show results inline', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -555,16 +626,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Instantly displays the result for each question', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Instantly displays the result for each question', 'quiz-master-next' ),
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		$field_array = array(
-			'id'      => 'end_quiz_if_wrong',
-			'label'   => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'end_quiz_if_wrong',
+			'label'      => __( 'End quiz if there is wrong answer', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -574,17 +646,18 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'This option works with vertical Multiple Choice , horizontal Multiple Choice , drop down , multiple response and horizontal multiple response question types', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Settings for quick result
 		$field_array = array(
-			'id'      => 'enable_quick_correct_answer_info',
-			'label'   => __( 'Show correct answer inline', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_quick_correct_answer_info',
+			'label'      => __( 'Show correct answer inline', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes When answer is correct', 'quiz-master-next' ),
 					'value' => 1,
@@ -598,17 +671,18 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Show correct user info when inline result is enabled.', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Show correct user info when inline result is enabled.', 'quiz-master-next' ),
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for retake quiz
 		$field_array = array(
-			'id'      => 'enable_retake_quiz_button',
-			'label'   => __( 'Retake Quiz', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_retake_quiz_button',
+			'label'      => __( 'Retake Quiz', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -618,17 +692,18 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Show a button on result page to retake the quiz', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Show a button on result page to retake the quiz', 'quiz-master-next' ),
+			'option_tab' => 'quiz_submission',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for pagination of quiz
 		$field_array = array(
-			'id'      => 'enable_pagination_quiz',
-			'label'   => __( 'Show current page number', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_pagination_quiz',
+			'label'      => __( 'Show current page number', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -638,16 +713,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for pagination of quiz
 		$field_array = array(
-			'id'      => 'enable_deselect_option',
-			'label'   => __( 'Deselect Answer', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'enable_deselect_option',
+			'label'      => __( 'Deselect Answer', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -657,17 +733,18 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
-			'help'    => __( 'Users are able deselect an answer and leave it blank. Works with Multiple Choice and Horizintal Multiple Choice questions only', 'quiz-master-next' ),
+			'default'    => 0,
+			'help'       => __( 'Users are able deselect an answer and leave it blank. Works with Multiple Choice and Horizintal Multiple Choice questions only', 'quiz-master-next' ),
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for pagination of quiz
 		$field_array = array(
-			'id'      => 'disable_description_on_result',
-			'label'   => __( 'Disable description on quiz result page?', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'disable_description_on_result',
+			'label'      => __( 'Disable description on quiz result page?', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -677,16 +754,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'general',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for pagination of quiz
 		$field_array = array(
-			'id'      => 'disable_scroll_next_previous_click',
-			'label'   => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'disable_scroll_next_previous_click',
+			'label'      => __( 'Disable scroll on next and previous button click?', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -696,16 +774,17 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for display first page
 		$field_array = array(
-			'id'      => 'disable_first_page',
-			'label'   => __( 'Disable first page on quiz', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'disable_first_page',
+			'label'      => __( 'Disable first page on quiz', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -715,59 +794,53 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
+			'option_tab' => 'contact_form',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Setting for animation
 		$field_array = array(
-			'id'      => 'quiz_animation',
-			'label'   => __( 'Quiz Animation', 'quiz-master-next' ),
-			'type'    => 'select',
-			'options' => $mlwQuizMasterNext->pluginHelper->quiz_animation_effect(),
-			'default' => '',
+			'id'         => 'quiz_animation',
+			'label'      => __( 'Quiz Animation', 'quiz-master-next' ),
+			'type'       => 'select',
+			'options'    => $mlwQuizMasterNext->pluginHelper->quiz_animation_effect(),
+			'default'    => '',
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// result page for sharing
 		$field_array = array(
-			'id'      => 'result_page_fb_image',
-			'label'   => __( 'Logo URL', 'quiz-master-next' ),
-			'type'    => 'url',
-			'default' => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
-			'tooltip' => __( 'Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next' ),
-			'help'    => __( 'If left blank, this will default to QSM logo', 'quiz-master-next' ),
+			'id'         => 'result_page_fb_image',
+			'label'      => __( 'Logo URL', 'quiz-master-next' ),
+			'type'       => 'url',
+			'default'    => QSM_PLUGIN_URL . 'assets/icon-200x200.png',
+			'tooltip'    => __( 'Enter the url of an image which will be used as logo while sharing on facebook.', 'quiz-master-next' ),
+			'help'       => __( 'If left blank, this will default to QSM logo', 'quiz-master-next' ),
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers Preferred date type settings in the quiz options
 		$field_array = array(
-			'id'      => 'preferred_date_format',
-			'label'   => __( 'Preferred Date Format', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => isset( get_option( 'qsm-quiz-settings' )['preferred_date_format'] ) ? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format' ),
-			'help'    => __( 'Overrides global settings for preferred date format', 'quiz-master-next' ),
+			'id'         => 'preferred_date_format',
+			'label'      => __( 'Preferred Date Format', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => isset( get_option( 'qsm-quiz-settings' )['preferred_date_format'] ) ? get_option( 'qsm-quiz-settings' )['preferred_date_format'] : get_option( 'date_format' ),
+			'help'       => __( 'Overrides global settings for preferred date format', 'quiz-master-next' ),
+			'option_tab' => 'display',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		do_action( 'qsm_extra_setting_fields' );
-		// Setting for animation
-		$field_array = array(
-			'id'      => 'legacy_options',
-			'label'   => __( 'Show Legacy Options', 'quiz-master-next' ),
-			'type'    => 'hide_show',
-			'default' => '',
-			'help'    => __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
-		// 'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers social_media setting
 		$field_array = array(
-			'id'      => 'social_media',
-			'label'   => __( 'Social Sharing Buttons', 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'social_media',
+			'label'      => __( 'Social Sharing Buttons', 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'Yes', 'quiz-master-next' ),
 					'value' => 1,
@@ -777,18 +850,19 @@ class QSM_Install {
 					'value' => 0,
 				),
 			),
-			'default' => 0,
+			'default'    => 0,
 			/* translators: %FACEBOOK_SHARE%: Facebook share link, %TWITTER_SHARE%: Twitter share link */
-			'tooltip' => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ),
+			'tooltip'    => __( 'Please use the new template variables instead.%FACEBOOK_SHARE% %TWITTER_SHARE%', 'quiz-master-next' ),
+			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers user_name setting
 		$field_array = array(
-			'id'      => 'user_name',
-			'label'   => __( "Ask user's name", 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'user_name',
+			'label'      => __( "Ask user's name", 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'No', 'quiz-master-next' ),
 					'value' => 2,
@@ -803,16 +877,17 @@ class QSM_Install {
 				),
 
 			),
-			'default' => 2,
+			'default'    => 2,
+			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers user_comp setting
 		$field_array = array(
-			'id'      => 'user_comp',
-			'label'   => __( "Ask user's business", 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'user_comp',
+			'label'      => __( "Ask user's business", 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'No', 'quiz-master-next' ),
 					'value' => 2,
@@ -826,16 +901,17 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 2,
+			'default'    => 2,
+			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers user_email setting
 		$field_array = array(
-			'id'      => 'user_email',
-			'label'   => __( "Ask user's email", 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'user_email',
+			'label'      => __( "Ask user's email", 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'No', 'quiz-master-next' ),
 					'value' => 2,
@@ -849,16 +925,17 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 2,
+			'default'    => 2,
+			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
 		// Registers user_phone setting
 		$field_array = array(
-			'id'      => 'user_phone',
-			'label'   => __( "Ask user's phone", 'quiz-master-next' ),
-			'type'    => 'radio',
-			'options' => array(
+			'id'         => 'user_phone',
+			'label'      => __( "Ask user's phone", 'quiz-master-next' ),
+			'type'       => 'radio',
+			'options'    => array(
 				array(
 					'label' => __( 'No', 'quiz-master-next' ),
 					'value' => 2,
@@ -872,7 +949,8 @@ class QSM_Install {
 					'value' => 1,
 				),
 			),
-			'default' => 2,
+			'default'    => 2,
+			'option_tab' => 'legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_options' );
 
@@ -1063,185 +1141,205 @@ class QSM_Install {
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		$field_array = array(
-			'id'      => 'submit_button_text',
-			'label'   => __( 'Submit Button', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'submit_button_text',
+			'label'      => __( 'Submit Button', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		$field_array = array(
-			'id'      => 'retake_quiz_button_text',
-			'label'   => __( 'Retake Quiz Button', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 'Retake Quiz',
+			'id'         => 'retake_quiz_button_text',
+			'label'      => __( 'Retake Quiz Button', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Retake Quiz', 'quiz-master-next' ),
+			'option_tab' => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers previous_button_text setting
 		$field_array = array(
-			'id'      => 'previous_button_text',
-			'label'   => __( 'Previous button', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'previous_button_text',
+			'label'      => __( 'Previous button', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers next_button_text setting
 		$field_array = array(
-			'id'      => 'next_button_text',
-			'label'   => __( 'Next button', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Registers submit_button_text setting
-		$field_array = array(
-			'id'      => 'validation_text_section',
-			'label'   => __( 'Validation Messages', 'quiz-master-next' ),
-			'type'    => 'section_heading',
-			'default' => 0,
+			'id'         => 'next_button_text',
+			'label'      => __( 'Next button', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-button',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers empty_error_text setting
 		$field_array = array(
-			'id'      => 'empty_error_text',
-			'label'   => __( 'All required fields', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'id'         => 'empty_error_text',
+			'label'      => __( 'All required fields', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Please complete all required fields!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers email_error_text setting
 		$field_array = array(
-			'id'      => 'email_error_text',
-			'label'   => __( 'Invalid email', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'id'         => 'email_error_text',
+			'label'      => __( 'Invalid email', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Not a valid e-mail address!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers number_error_text setting
 		$field_array = array(
-			'id'      => 'number_error_text',
-			'label'   => __( 'Invalid number', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'This field must be a number!', 'quiz-master-next' ),
+			'id'         => 'number_error_text',
+			'label'      => __( 'Invalid number', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'This field must be a number!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers url_error_text setting
+		$field_array = array(
+			'id'         => 'url_error_text',
+			'label'      => __( 'Invalid URL', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'The entered URL is not valid!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers minlength_error_text setting
+		$field_array = array(
+			'id'         => 'minlength_error_text',
+			'label'      => __( 'Minimum Length', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Required atleast %minlength% characters.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Use %minlength% to display number of characters required.', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
+		);
+		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
+
+		// Registers maxlength_error_text setting
+		$field_array = array(
+			'id'         => 'maxlength_error_text',
+			'label'      => __( 'Maximum Length', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Maximum %maxlength% characters allowed.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Use %maxlength% to display number of characters allowed.', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers incorrect_error_text setting
 		$field_array = array(
-			'id'      => 'incorrect_error_text',
-			'label'   => __( 'Invalid Captcha', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'The entered text is not correct!', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Registers submit_button_text setting
-		$field_array = array(
-			'id'      => 'other_text_section',
-			'label'   => __( 'Other', 'quiz-master-next' ),
-			'type'    => 'section_heading',
-			'default' => 0,
+			'id'         => 'incorrect_error_text',
+			'label'      => __( 'Invalid Captcha', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'The entered text is not correct!', 'quiz-master-next' ),
+			'option_tab' => 'text-validation-messages',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers comment_field_text setting
 		$field_array = array(
-			'id'      => 'comment_field_text',
-			'label'   => __( 'Comments field', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'comment_field_text',
+			'label'      => __( 'Comments field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers hint_text setting
 		$field_array = array(
-			'id'      => 'hint_text',
-			'label'   => __( 'Hint Text', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'Hint', 'quiz-master-next' ),
+			'id'         => 'hint_text',
+			'label'      => __( 'Hint Text', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Hint', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers quick result correct answer setting
 		$field_array = array(
-			'id'      => 'quick_result_correct_answer_text',
-			'label'   => __( 'Correct answer message', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
-			'tooltip' => __( 'Text to show when the selected option is correct answer.', 'quiz-master-next' ),
+			'id'         => 'quick_result_correct_answer_text',
+			'label'      => __( 'Correct answer message', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Correct! You have selected correct answer.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Text to show when the selected option is correct answer.', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers quick result wrong answer setting
 		$field_array = array(
-			'id'      => 'quick_result_wrong_answer_text',
-			'label'   => __( 'Incorrect answer message', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
-			'tooltip' => __( 'Text to show when the selected option is wrong answer.', 'quiz-master-next' ),
+			'id'         => 'quick_result_wrong_answer_text',
+			'label'      => __( 'Incorrect answer message', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => __( 'Wrong! You have selected wrong answer.', 'quiz-master-next' ),
+			'tooltip'    => __( 'Text to show when the selected option is wrong answer.', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers quick result wrong answer setting
 		$field_array = array(
-			'id'      => 'quiz_processing_message',
-			'label'   => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => '',
-			'tooltip' => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
-		);
-		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
-
-		// Setting for animation
-		$field_array = array(
-			'id'      => 'legacy_options',
-			'label'   => __( 'Show Legacy Options', 'quiz-master-next' ),
-			'type'    => 'hide_show',
-			'default' => '',
-			'help'    => __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ),
-		// 'tooltip' => __('All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next')
+			'id'         => 'quiz_processing_message',
+			'label'      => __( 'Quiz Submit/Processing Message', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => '',
+			'tooltip'    => __( 'Text to show while submitting the quiz.', 'quiz-master-next' ),
+			'option_tab' => 'text-other',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers name_field_text setting
 		$field_array = array(
-			'id'      => 'name_field_text',
-			'label'   => __( 'Name field', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'name_field_text',
+			'label'      => __( 'Name field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers business_field_text setting
 		$field_array = array(
-			'id'      => 'business_field_text',
-			'label'   => __( 'Business field', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'business_field_text',
+			'label'      => __( 'Business field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers email_field_text setting
 		$field_array = array(
-			'id'      => 'email_field_text',
-			'label'   => __( 'Email field', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'email_field_text',
+			'label'      => __( 'Email field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
 		// Registers phone_field_text setting
 		$field_array = array(
-			'id'      => 'phone_field_text',
-			'label'   => __( 'Phone number field', 'quiz-master-next' ),
-			'type'    => 'text',
-			'default' => 0,
+			'id'         => 'phone_field_text',
+			'label'      => __( 'Phone number field', 'quiz-master-next' ),
+			'type'       => 'text',
+			'default'    => 0,
+			'option_tab' => 'text-legacy',
 		);
 		$mlwQuizMasterNext->pluginHelper->register_quiz_setting( $field_array, 'quiz_text' );
 
@@ -1923,7 +2021,7 @@ class QSM_Install {
 	 */
 	public function plugin_action_links( $links ) {
 		$action_links = array(
-			'settings' => '<a href="' . admin_url( 'admin.php?page=mlw_quiz_list' ) . '" title="' . esc_attr( __( 'Quizzes/Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes/Surveys', 'quiz-master-next' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'edit.php?post_type=qsm_quiz' ) . '" title="' . esc_attr( __( 'Quizzes & Surveys', 'quiz-master-next' ) ) . '">' . __( 'Quizzes & Surveys', 'quiz-master-next' ) . '</a>',
 		);
 		return array_merge( $action_links, $links );
 	}

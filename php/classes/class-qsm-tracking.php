@@ -41,7 +41,7 @@ class QSM_Tracking {
   	private function add_hooks() {
     	add_action( 'admin_notices', array( $this, 'admin_notice' ) );
     	add_action( 'admin_init', array( $this, 'admin_notice_check' ) );
-    	add_action( 'plugins_loaded', array( $this, 'track_check' ) );
+    	add_action( 'init', array( $this, 'track_check' ) );
   	}
 
 	/**

@@ -20,9 +20,43 @@ class QSM_Emails {
 	 * Sends the emails for the quiz.
 	 *
 	 * @since 6.2.0
-	 * @param array $response_data The data for the user's submission.
+	 * @param array $results_id result ID.
 	 */
-	public static function send_emails( $response_data ) {
+	public static function send_emails( $result_id ) {
+		global $mlwQuizMasterNext;
+		global $wpdb;
+		$result_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}mlw_results WHERE result_id = %d", $result_id ), ARRAY_A );
+		if ( ! is_array( $result_data ) || empty( $result_data ) ) {
+			return;
+		}
+		$quiz_result   = maybe_unserialize( $result_data['quiz_results'] );
+		$response_data = array(
+			'quiz_id'                   => $result_data['quiz_id'],
+			'quiz_name'                 => $result_data['quiz_name'],
+			'quiz_system'               => $result_data['quiz_system'],
+			'user_ip'                   => $result_data['user_ip'],
+			'user_name'                 => $result_data['name'],
+			'user_business'             => $result_data['business'],
+			'user_email'                => $result_data['email'],
+			'user_phone'                => $result_data['phone'],
+			'user_id'                   => $result_data['user'],
+			'timer'                     => $quiz_result[0],
+			'timer_ms'                  => $quiz_result['timer_ms'],
+			'time_taken'                => $result_data['time_taken'],
+			'contact'                   => $quiz_result['contact'],
+			'hidden_questions'          => $quiz_result['hidden_questions'],
+			'total_points'              => $result_data['point_score'],
+			'total_score'               => $result_data['correct_score'],
+			'total_correct'             => $result_data['correct'],
+			'total_questions'           => $result_data['total'],
+			'question_answers_display'  => '', // Kept for backwards compatibility
+			'question_answers_array'    => $quiz_result[1],
+			'total_possible_points'     => $quiz_result['total_possible_points'],
+			'total_attempted_questions' => $quiz_result['total_attempted_questions'],
+			'minimum_possible_points'   => $quiz_result['minimum_possible_points'],
+			'comments'                  => $quiz_result[2],
+			'result_id'                 => $result_id,
+		);
 		$emails = self::load_emails( $response_data['quiz_id'] );
 
 		if ( ! is_array( $emails ) || empty( $emails ) ) {
@@ -32,8 +66,10 @@ class QSM_Emails {
 		add_filter( 'wp_mail_content_type', 'mlw_qmn_set_html_content_type' );
 
 		// Cycles through each possible email.
-		foreach ( $emails as $email ) {
+		foreach ( $emails as $index => $email ) {
 
+			$email_subject = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['subject'], "quiz-email-subject-{$index}-{$response_data['quiz_id']}" );
+			$email_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $email['content'], "quiz-email-content-{$index}-{$response_data['quiz_id']}" );
 			// Checks if any conditions are present. Else, send it always.
 			if ( ! empty( $email['conditions'] ) ) {
 				/**
@@ -129,10 +165,10 @@ class QSM_Emails {
 				}
 
 				if ( $show ) {
-					self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+					self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
 				}
 			} else {
-				self::send_results_email( $response_data, $email['to'], $email['subject'], $email['content'], $email['replyTo'] );
+				self::send_results_email( $response_data, $email['to'], $email_subject, $email_content, $email['replyTo'] );
 			}
 		}
 
@@ -176,6 +212,7 @@ class QSM_Emails {
 		$content                               = apply_filters( 'mlw_qmn_template_variable_results_page', $content, $response_data );
 		$content                               = apply_filters( 'qmn_email_template_variable_results', $content, $response_data );
 		// convert css classes to inline.
+		$content                               = apply_filters( 'qsm_results_css_inliner', $content );
 		$content                               = $mlwQuizMasterNext->pluginHelper->qsm_results_css_inliner( $content );
 		$content                               = html_entity_decode( $content );
 
@@ -434,6 +471,7 @@ class QSM_Emails {
 	 * @return bool True or false depending on success.
 	 */
 	public static function save_emails( $quiz_id, $emails ) {
+		global $wpdb, $mlwQuizMasterNext;
 		if ( ! is_array( $emails ) ) {
 			return false;
 		}
@@ -469,9 +507,10 @@ class QSM_Emails {
 			} else {
 				$emails[ $i ]['replyTo'] = false;
 			}
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['subject'], "quiz-email-subject-{$i}-{$quiz_id}" );
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $emails[ $i ]['content'], "quiz-email-content-{$i}-{$quiz_id}" );
 		}
 
-		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'user_email_template' => maybe_serialize( $emails ) ),

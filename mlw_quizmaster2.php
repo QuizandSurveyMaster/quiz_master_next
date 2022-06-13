@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Quiz And Survey Master
  * Description: Easily and quickly add quizzes and surveys to your website.
- * Version: 7.3.14
+ * Version: 8.0
  * Author: ExpressTech
  * Author URI: https://quizandsurveymaster.com/
  * Plugin URI: https://expresstech.io/
  * Text Domain: quiz-master-next
  *
  * @author QSM Team
- * @version 7.3.14
+ * @version 8.0
  * @package QSM
  */
 
@@ -44,7 +44,7 @@ class MLWQuizMasterNext {
 	 * @var string
 	 * @since 4.0.0
 	 */
-	public $version = '7.3.14';
+	public $version = '8.0';
 
 	/**
 	 * QSM Alert Manager Object
@@ -274,9 +274,11 @@ class MLWQuizMasterNext {
 		global $mlwQuizMasterNext;
 		// admin styles
 		wp_enqueue_style( 'qsm_admin_style', plugins_url( 'css/qsm-admin.css', __FILE__ ), array(), $this->version );
-		wp_style_add_data( 'qsm_admin_style', 'rtl', 'replace' );
+		if ( is_rtl() ) {
+			wp_enqueue_style( 'qsm_admin_style_rtl', plugins_url( 'css/qsm-admin-rtl.css', __FILE__ ), array(), $this->version );
+		}
 		// dashboard and quiz list pages
-		if ( 'toplevel_page_qsm_dashboard' === $hook || 'qsm_page_mlw_quiz_list' === $hook ) {
+		if ( 'toplevel_page_qsm_dashboard' === $hook || ('edit.php' == $hook && isset( $_REQUEST['post_type'] ) && 'qsm_quiz' == $_REQUEST['post_type']) ) {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			wp_enqueue_media();
 			wp_enqueue_style( 'qsm_admin_dashboard_css', QSM_PLUGIN_CSS_URL . '/admin-dashboard.css', array(), $this->version );
@@ -321,11 +323,11 @@ class MLWQuizMasterNext {
 			wp_enqueue_script( 'micromodal_script', plugins_url( 'js/micromodal.min.js', __FILE__ ), array( 'jquery', 'qsm_admin_js' ), $this->version, true );
 			$current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'questions';
 			switch ( $current_tab ) {
-				case 'contact':
-					wp_enqueue_style( 'qsm_contact_admin_style', QSM_PLUGIN_CSS_URL . '/qsm-admin-contact.css', array(), $this->version );
-					break;
-				case 'emails':
-				case 'results-pages':
+				case 'questions':
+					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
+					if ( is_rtl() ) {
+						wp_enqueue_style( 'qsm_admin_question_css_rtl', plugins_url( 'css/qsm-admin-question-rtl.css', __FILE__ ), array(), $this->version );
+					}
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
@@ -350,8 +352,6 @@ class MLWQuizMasterNext {
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					break;
 				default:
-					wp_enqueue_style( 'qsm_admin_question_css', QSM_PLUGIN_CSS_URL . '/qsm-admin-question.css', array(), $this->version );
-					wp_style_add_data( 'qsm_admin_question_css', 'rtl', 'replace' );
 					wp_enqueue_script( 'math_jax', QSM_PLUGIN_JS_URL . '/mathjax/tex-mml-chtml.js', false, '3.2.0', true );
 					wp_add_inline_script( 'math_jax', self::$default_MathJax_script, 'before' );
 					wp_enqueue_editor();
@@ -411,7 +411,7 @@ class MLWQuizMasterNext {
 			'new_item'           => __( 'New Quiz', 'quiz-master-next' ),
 			'edit_item'          => __( 'Edit Quiz', 'quiz-master-next' ),
 			'view_item'          => __( 'View Quiz', 'quiz-master-next' ),
-			'all_items'          => __( 'All Quizzes', 'quiz-master-next' ),
+			'all_items'          => __( 'Quizzes & Surveys', 'quiz-master-next' ),
 			'search_items'       => __( 'Search Quizzes', 'quiz-master-next' ),
 			'parent_item_colon'  => __( 'Parent Quiz:', 'quiz-master-next' ),
 			'not_found'          => __( 'No Quiz Found', 'quiz-master-next' ),
@@ -422,7 +422,7 @@ class MLWQuizMasterNext {
 		$quiz_args = array(
 			'public'              => true,
 			'show_ui'             => true,
-			'show_in_menu'        => false,
+			'show_in_menu'        => 'qsm_dashboard',
 			'show_in_nav_menus'   => true,
 			'labels'              => $quiz_labels,
 			'publicly_queryable'  => true,
@@ -473,6 +473,27 @@ class MLWQuizMasterNext {
 	}
 
 	/**
+	 * Setting Menu Position
+	 */
+	public static function get_free_menu_position( $start, $increment = 0.1 ) {
+		foreach ( $GLOBALS['menu'] as $key => $menu ) {
+			$menus_positions[] = floatval( $key );
+		}
+		if ( ! in_array( $start, $menus_positions, true ) ) {
+			$start = strval( $start );
+			return $start;
+		} else {
+			$start += $increment;
+		}
+		/* the position is already reserved find the closet one */
+		while ( in_array( $start, $menus_positions, true ) ) {
+			$start += $increment;
+		}
+		$start = strval( $start );
+		return $start;
+	}
+
+	/**
 	 * Setup Admin Menu
 	 *
 	 * Creates the admin menu and pages for the plugin and attaches functions to them
@@ -484,10 +505,9 @@ class MLWQuizMasterNext {
 		if ( function_exists( 'add_menu_page' ) ) {
 			global $qsm_quiz_list_page;
 			$enabled            = get_option( 'qsm_multiple_category_enabled' );
-			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback' );
-			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page' );
-			$qsm_quiz_list_page = add_submenu_page( 'qsm_dashboard', __( 'Quizzes/Surveys', 'quiz-master-next' ), __( 'Quizzes/Surveys', 'quiz-master-next' ), 'edit_posts', 'mlw_quiz_list', 'qsm_generate_quizzes_surveys_page' );
-			add_action( "load-$qsm_quiz_list_page", 'qsm_generate_quizzes_surveys_page_screen_options' );
+			$menu_position = self::get_free_menu_position(26.1, 0.3);
+			$qsm_dashboard_page = add_menu_page( 'Quiz And Survey Master', __( 'QSM', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 'dashicons-feedback', $menu_position );
+			add_submenu_page( 'qsm_dashboard', __( 'Dashboard', 'quiz-master-next' ), __( 'Dashboard', 'quiz-master-next' ), 'edit_posts', 'qsm_dashboard', 'qsm_generate_dashboard_page', 0 );
 			if ( $enabled && 'cancelled' !== $enabled ) {
 				$qsm_taxonomy_menu_hook = add_submenu_page( 'qsm_dashboard', __( 'Question Categories', 'quiz-master-next' ), __( 'Question Categories', 'quiz-master-next' ), 'edit_posts', 'edit-tags.php?taxonomy=qsm_category' );
 			}
@@ -564,6 +584,16 @@ class MLWQuizMasterNext {
 			</div>
 			<?php
 		}
+
+		$settings                        = (array) get_option( 'qmn-settings' );
+		$background_quiz_email_process   = isset( $settings['background_quiz_email_process'] ) ? $settings['background_quiz_email_process'] : 1;
+		if ( 1 == $background_quiz_email_process && is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
+			?>
+			<div class="notice notice-warning">
+				<p><?php esc_html_e( '"Process emails in background" option is enabled. WPML string translation may not work as expected for email templates. Please disable this option to send translated strings in emails.', 'quiz-master-next' ); ?></p>
+			</div>
+			<?php
+		}
 	}
 
 
@@ -580,18 +610,20 @@ register_activation_hook( __FILE__, array( 'QSM_Install', 'install' ) );
  * @since 7.3.8
  */
 function qsm_edit_quiz_admin_option() {
-	global $wp_admin_bar, $wpdb;
-	if ( 'qsm_quiz' == get_post_type() ) {
-		$get_qsm_post_id = get_the_ID();
-		$get_qsm_quiz_id = $wpdb->get_results( "SELECT meta_value FROM {$wpdb->prefix}postmeta WHERE post_id=$get_qsm_post_id" );
-		$wp_admin_bar->add_node(
-			array(
-				'id'    => 'edit-quiz',
-				'title' => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
-				'href'  => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $get_qsm_quiz_id[0]->meta_value,
-
-			)
-		);
+	global $wp_admin_bar, $pagenow, $wpdb;
+	if ( 'qsm_quiz' == get_post_type() && 'edit.php' != $pagenow ) {
+		$post_id = get_the_ID();
+		$quiz_id = get_post_meta( $post_id, 'quiz_id', true );
+		if ( ! empty( $quiz_id ) ) {
+			$wp_admin_bar->remove_menu('edit');
+			$wp_admin_bar->add_menu(
+				array(
+					'id'    => 'edit-quiz',
+					'title' => '<span class="ab-icon dashicons dashicons-edit"></span><span class="ab-label">' . __( 'Edit Quiz', 'quiz-master-next' ) . '</span>',
+					'href'  => admin_url() . 'admin.php?page=mlw_quiz_options&quiz_id=' . $quiz_id,
+				)
+			);
+		}
 	}
 }
 

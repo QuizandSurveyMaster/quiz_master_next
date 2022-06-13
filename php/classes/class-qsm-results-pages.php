@@ -24,6 +24,7 @@ class QSM_Results_Pages {
 	 * @return string The HTML for the page to be displayed.
 	 */
 	public static function generate_pages( $response_data ) {
+		global $mlwQuizMasterNext;
 		$pages            = QSM_Results_Pages::load_pages( $response_data['quiz_id'] );
 		$default          = '%QUESTIONS_ANSWERS%';
 		$redirect         = false;
@@ -35,8 +36,9 @@ class QSM_Results_Pages {
 			do_action( 'qsm_before_results_page' );
 
 			// Cycles through each possible page.
-			foreach ( $pages as $page ) {
-
+			foreach ( $pages as $index => $page ) {
+				
+				$page_content = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $page['page'], "quiz-result-page-{$index}-{$response_data['quiz_id']}" );
 				// Checks if any conditions are present. Else, set it as the default.
 				if ( ! empty( $page['conditions'] ) ) {
 					/**
@@ -133,13 +135,13 @@ class QSM_Results_Pages {
 
 					// If we passed all conditions, show this page.
 					if ( $show ) {
-						$content = $page['page'];
+						$content = $page_content;
 						if ( $page['redirect'] ) {
 							$redirect = $page['redirect'];
 						}
 					}
 				} else {
-					$default = $page['page'];
+					$default = $page_content;
 					if ( $page['redirect'] ) {
 						$default_redirect = $page['redirect'];
 					}
@@ -311,6 +313,7 @@ class QSM_Results_Pages {
 	 * @return bool True or false depending on success.
 	 */
 	public static function save_pages( $quiz_id, $pages ) {
+		global $wpdb, $mlwQuizMasterNext;
 		if ( ! is_array( $pages ) ) {
 			return false;
 		}
@@ -350,10 +353,11 @@ class QSM_Results_Pages {
 			if ( isset( $pages[ $i ]['page'] ) && $is_not_allow_html ) {
 				// Sanitizes the conditions.
 				$pages[ $i ]['page'] = wp_kses_post( $pages[ $i ]['page'] );
+				
 			}
+			$mlwQuizMasterNext->pluginHelper->qsm_register_language_support( $pages[ $i ]['page'], "quiz-result-page-{$i}-{$quiz_id}" );
 		}
 
-		global $wpdb;
 		$results = $wpdb->update(
 			$wpdb->prefix . 'mlw_quizzes',
 			array( 'message_after' => maybe_serialize( $pages ) ),

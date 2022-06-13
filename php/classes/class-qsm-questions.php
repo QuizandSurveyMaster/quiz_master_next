@@ -376,6 +376,16 @@ class QSM_Questions {
 			}
 		}
 
+		/**
+		 * Hook after saving question
+		 */
+		if ( $is_creating ) {
+			do_action( 'qsm_question_added', $question_id, $values );
+		} else {
+			do_action( 'qsm_question_updated', $question_id, $values );
+		}
+		do_action( 'qsm_saved_question', $question_id, $values );
+
 		return $question_id;
 	}
 
@@ -533,11 +543,13 @@ class QSM_Questions {
 	 */
 	public static function create_terms_tree( &$list, $parent ) {
 		$taxTree = array();
-		foreach ( $parent as $ind => $val ) {
-			if ( isset( $list[ $val->term_id ] ) ) {
-				$val->children = self::create_terms_tree( $list, $list[ $val->term_id ] );
+		if ( is_array($parent) ) {
+			foreach ( $parent as $ind => $val ) {
+				if ( isset( $list[ $val->term_id ] ) ) {
+					$val->children = self::create_terms_tree( $list, $list[ $val->term_id ] );
+				}
+				$taxTree[] = $val;
 			}
-			$taxTree[] = $val;
 		}
 		return $taxTree;
 	}
