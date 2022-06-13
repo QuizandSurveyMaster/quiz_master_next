@@ -252,13 +252,17 @@ function qsm_generate_quiz_options() {
 						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 					</header>
 					<main class="qsm-popup__content" id="qsm-global-default-popup-content">
-						<p><?php esc_html_e( 'Do you want to set default options?', 'quiz-master-next' ); ?></p>
+						<p>
+							<?php esc_html_e( 'Do you want to continue and reset all the settings as per', 'quiz-master-next' ); ?>
+							<a href="<?php echo esc_url( admin_url( 'admin.php?page=qmn_global_settings&tab=quiz-default-options' ) );?>" target="_blank"><?php esc_html_e( 'global defaults', 'quiz-master-next' ); ?></a> ?
+						</p>
 					</main>
 					<footer class="qsm-popup__footer">
+						<button class="qsm-popup__btn" data-micromodal-close="" aria-label="Close this dialog window"><?php esc_html_e( 'Cancel', 'quiz-master-next' ); ?></button>
 						<form action="" method="post">
 							<?php wp_nonce_field( 'set_global_default_settings','save_global_default_ettings_nonce' ); ?>
-							<button name="global_setting" class="button button-primary" type="submit"><?php esc_html_e( 'Set Global Defaults', 'quiz-master-next' ); ?></button>
-							</form>
+							<button name="global_setting" class="button button-primary" type="submit"><?php esc_html_e( 'Continue', 'quiz-master-next' ); ?></button>
+						</form>
 					</footer>
 				</div>
 			</div>
