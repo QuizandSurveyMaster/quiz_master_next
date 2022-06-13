@@ -163,31 +163,24 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 
 == Changelog ==
 = 8.0 (June 13, 2022) =
+* Feature: Added WPML compatibility
+* Feature: Added option to select correct answer logic
+* Feature: Added option to show and hide Opt-in question type on result page
+* Feature: Added validation options in contact form fields
+* Enhancement: Improved UI for question editor in admin panel
+* Enhancement: Redesigned contact tab interface in admin panel
+* Enhancement: Autosave last question when user creates new question
+* Enhancement: Added column to show the number of questions in quiz list
+* Enhancement: Added qsm_results_css_inliner hook to edit email template
 * Bug: Fixed issue with quiz links
 * Bug: Fixed deletion issue with trash quizzes
-* Bug: Fixed issue with randome questions order
-* Bug: Fixed issue with %AMOUNT_INCORRECT% & %AMOUNT_ATTEMPTED% template variables
-* Bug: Fixed issue with random question changing questions order after reload
+* Bug: Fixed issues with random questions order
+* Bug: Fixed %AMOUNT_INCORRECT% & %AMOUNT_ATTEMPTED% variables
 * Bug: Fixed issue while updating quiz title
 * Bug: Fixed issue with duplicate question while importing from question bank
 * Bug: Fixed JS issue with polar question type
-* Bug: Fixed PHP warning and errors
-* Bug: Fixed issue with duplicate questions
-* Bug: Fixed issue with same questions in multiple question
+* Bug: Fixed several PHP warning and errors
 * Bug: Fixed issue with HTML tags in answer text editor
-* Feature: Added option to sort quizzes by modification date
-* Feature: Added option to select correct answer logic
-* Feature: Added option to show and hide Opt-in question type on result page
-* Feature: Added WPML compatibility
-* Feature: Added option to autosave questions when creating new question
-* Feature: Added qsm_results_css_inliner hook to edit email template
-* Feature: Added option to validate contact feilds
-* Enhancement: Added column to show the number of questions
-* Enhancement: Made UI improvements in setting tabs
-* Enhancement: Split options page into sub sections
-* Enhancement: Added an expandable link to view helpful docs
-* Enhancement: Made UI improvements in contact feilds
-* Enhancement: Made UI improvements in questions tab
 
 = 7.3.14 (April 5, 2022) =
 * Bug: Fixed issue with paragraph question type
