@@ -119,23 +119,24 @@ function qsm_generate_quiz_options() {
 				</div>
 				<div class="qsm-quiz-top-nav-links">
 					<a class="qsm-btn-quiz-edit" rel="noopener" target="_blank" href="<?php echo esc_url( $post_permalink ); ?>">
-						<span class="dashicons dashicons-external"></span><?php echo __( 'View Quiz', 'quiz-master-next' ); ?>
+						<span class="dashicons dashicons-external"></span><?php esc_html_e( 'View Quiz', 'quiz-master-next' ); ?>
 					</a>
 					<a class="qsm-btn-quiz-edit" href="<?php echo esc_url( $edit_link ); ?>">
-						<span class="dashicons dashicons-admin-settings"></span><?php echo __( 'Settings', 'quiz-master-next' ); ?>
+						<span class="dashicons dashicons-admin-settings"></span><?php esc_html_e( 'Settings', 'quiz-master-next' ); ?>
 					</a>
 					<a href="javascript:void(0)" class="qsm-btn-quiz-edit qsm-help-tab-handle" rel="noopener">
-						<span class="dashicons dashicons-editor-help"></span><?php echo __( 'Help', 'quiz-master-next' ); ?>
+						<span class="dashicons dashicons-editor-help"></span><?php esc_html_e( 'Help', 'quiz-master-next' ); ?>
 					</a>
 					<div class="qsm-help-tab-dropdown-list">
-						<a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Support.svg' ?>"> <?php echo __( 'Get support', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Overview', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/question-types/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Question Types', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/advanced-topics/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Advanced Topics', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/qsm-themes/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'QSM Themes', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/add-ons/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'Add-ons', 'quiz-master-next' ); ?></a>
-						<a href="https://quizandsurveymaster.com/docs/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php echo __( 'All Docs', 'quiz-master-next' ); ?></a>
+						<h3><?php esc_html_e( 'Useful Resources', 'quiz-master-next' ); ?></h3>
+						<a href="https://quizandsurveymaster.com/contact-support/?utm_source=qsm-help-page&utm_medium=plugin&utm_campaign=qsm_plugin&utm_content=contact_us" rel="noopener" target="_black" class="qsm-help-tab-item "><img class="qsm-help-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL.'assets/Support.svg' ) ?>"> <?php esc_html_e( 'Get support', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/about-quiz-survey-master/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Overview', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/creating-quizzes-and-surveys/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Creating Quizzes', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/question-types/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Question Types', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/advanced-topics/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Advanced Topics', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/qsm-themes/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'QSM Themes', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/add-ons/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?></a>
+						<a href="https://quizandsurveymaster.com/docs/" rel="noopener" target="_black" class="qsm-help-tab-item "><span class="dashicons dashicons-media-document"></span> <?php esc_html_e( 'All Docs', 'quiz-master-next' ); ?></a>
 					</div>
 				</div>
 			</div>
@@ -170,7 +171,7 @@ function qsm_generate_quiz_options() {
 						?>
 						<div class="qsm-option-tab-dropdown">
 							<a href="javascript:void(0)" class="nav-tab <?php echo $active_class_aadon ? 'nav-tab-active' : ''; ?>">
-								<!--<img class="qsm-tab-icon" alt="" src="<?php echo QSM_PLUGIN_URL.'assets/Puzzle.svg' ?>">-->
+								<!--<img class="qsm-tab-icon" alt="" src="<?php echo esc_url( QSM_PLUGIN_URL.'assets/Puzzle.svg' ); ?>">-->
 								<?php esc_html_e( 'Add-ons', 'quiz-master-next' ); ?>
 								<span class="dashicons dashicons-arrow-down"></span>
 							</a>
@@ -247,16 +248,16 @@ function qsm_generate_quiz_options() {
 			<div class="qsm-popup__overlay" tabindex="-1" data-micromodal-close>
 				<div class="qsm-popup__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
 					<header class="qsm-popup__header">
-						<h2 class="qsm-popup__title" id="modal-1-title"><?php echo __( 'Are you sure?', 'quiz-master-next' ); ?></h2>
+						<h2 class="qsm-popup__title" id="modal-1-title"><?php esc_html_e( 'Are you sure?', 'quiz-master-next' ); ?></h2>
 						<a class="qsm-popup__close" aria-label="Close modal" data-micromodal-close></a>
 					</header>
 					<main class="qsm-popup__content" id="qsm-global-default-popup-content">
-						<p><?php echo __( 'Do you want to set default options?', 'quiz-master-next' ); ?></p>
+						<p><?php esc_html_e( 'Do you want to set default options?', 'quiz-master-next' ); ?></p>
 					</main>
 					<footer class="qsm-popup__footer">
 						<form action="" method="post">
 							<?php wp_nonce_field( 'set_global_default_settings','save_global_default_ettings_nonce' ); ?>
-							<button name="global_setting" class="button button-primary" type="submit"><?php echo __( 'Set Global Defaults', 'quiz-master-next' ); ?></button>
+							<button name="global_setting" class="button button-primary" type="submit"><?php esc_html_e( 'Set Global Defaults', 'quiz-master-next' ); ?></button>
 							</form>
 					</footer>
 				</div>

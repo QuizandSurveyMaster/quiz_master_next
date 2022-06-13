@@ -1025,7 +1025,7 @@ function qsm_options_questions_tab_template() {
 				<div><span class="dashicons dashicons-move"></span></div>
 				<div class="question-content-title-box">
 					<div class="question-content-text">{{{data.question}}}</div>
-					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php _e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
+					<div class="question-category"><# if ( 0 !== data.category.length ) { #> <?php esc_html_e( 'Category:', 'quiz-master-next' ); ?> {{data.category}} <# } #></div>
 				</div>
 				<div class="form-actions">
 					<div class="qsm-actions-link-box">

@@ -296,7 +296,7 @@ class QSM_Contact_Manager {
 				 */
 				$missing = array_diff( array_keys( $default_fields ), $used_keys );
 				foreach ( $default_fields as $key => $field ) {
-					if ( in_array( $key, $missing ) ) {
+					if ( in_array( $key, $missing, true ) ) {
 						$fields[] = $field;
 					}
 				}
@@ -368,14 +368,14 @@ class QSM_Contact_Manager {
 	 */
 	public static function generate_contact_field( $field, $index, $quiz_options, $default_value = '' ) {
 		global $mlwQuizMasterNext;
-		$fields_hidden = false;
-		$contact_disable_autofill = $quiz_options->contact_disable_autofill;
+		$fields_hidden               = false;
+		$contact_disable_autofill    = $quiz_options->contact_disable_autofill;
 		if ( is_user_logged_in() && 1 === intval( $quiz_options->loggedin_user_contact ) ) {
 			$fields_hidden = true;
 		}
 		$field_label = $mlwQuizMasterNext->pluginHelper->qsm_language_support( $field['label'], "quiz_contact_field_text-{$index}-{$quiz_options->quiz_id}" );
-		$fieldAttr = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
-		$class = '';
+		$fieldAttr   = " name='contact_field_" . esc_attr( $index ) . "' id='contact_field_" . esc_attr( $index ) . "' ";
+		$class       = '';
 		if ( ( 'true' === $field["required"] || true === $field["required"] ) && ! $fields_hidden ) {
 			$class .= 'mlwRequiredText qsm_required_text';
 		}
@@ -387,7 +387,7 @@ class QSM_Contact_Manager {
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
-					$fieldAttr .= " value='" . esc_attr( $default_value ) . "' ";
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
 				}
@@ -401,19 +401,19 @@ class QSM_Contact_Manager {
 				 * Add minimum length validation
 				 */
 				if ( isset( $field['minlength'] ) && 0 < intval( $field['minlength'] ) ) {
-					$fieldAttr .= " minlength='" . intval( $field['minlength'] ) . "' ";
-					$class .= ' mlwMinLength ';
+					$fieldAttr   .= " minlength='" . intval( $field['minlength'] ) . "' ";
+					$class       .= ' mlwMinLength ';
 				}
 				/**
 				 * Add maximum length validation
 				 */
 				if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) {
-					$fieldAttr .= " maxlength='" . intval( $field['maxlength'] ) . "' ";
-					$class .= ' mlwMaxLength ';
+					$fieldAttr   .= " maxlength='" . intval( $field['maxlength'] ) . "' ";
+					$class       .= ' mlwMaxLength ';
 				}
-				
-				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
-				$class           = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
+
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$class       = apply_filters( 'qsm_contact_text_field_class', $class, $field['use'] );
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='text' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
@@ -421,12 +421,19 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'email':
+				// Filer Value 
+				if ( empty( $contact_disable_autofill ) ) {
+					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
+				} else {
+					$fieldAttr .= " autocomplete='off' ";
+				}
 				if ( isset( $field['allowdomains'] ) && ! empty( $field['allowdomains'] ) ) {
 					$allowdomains    = array_map( 'trim', explode( ',', $field['allowdomains'] ) );
 					$fieldAttr       .= " data-domains='" . implode( ',', array_filter( $allowdomains ) ) . "' ";
 				}
-				$class = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
-				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$class       = apply_filters( 'qsm_contact_email_field_class', $class, $field['use'] );
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='email' class='mlwEmail <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
@@ -442,7 +449,14 @@ class QSM_Contact_Manager {
 				break;
 
 			case 'date':
-				$class = apply_filters('qsm_contact_date_field_class',$class,$field['use']);
+				// Filer Value 
+				if ( empty( $contact_disable_autofill ) ) {
+					$default_value   = apply_filters( 'qsm_contact_text_filed_value', $default_value, $field['use'] );
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
+				} else {
+					$fieldAttr .= " autocomplete='off' ";
+				}
+				$class = apply_filters( 'qsm_contact_date_field_class', $class, $field['use'] );
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='date' class='<?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> value='' />
@@ -453,12 +467,12 @@ class QSM_Contact_Manager {
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_url_filed_value', $default_value, $field['use'] );
-					$fieldAttr .= " value='" . esc_attr( $default_value ) . "' ";
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
 				}
-				$class           = apply_filters( 'qsm_contact_url_field_class', $class, $field['use'] );
-				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$class       = apply_filters( 'qsm_contact_url_field_class', $class, $field['use'] );
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='url' class='mlwUrl <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> />
@@ -469,7 +483,7 @@ class QSM_Contact_Manager {
 				// Filer Value 
 				if ( empty( $contact_disable_autofill ) ) {
 					$default_value   = apply_filters( 'qsm_contact_number_filed_value', $default_value, $field['use'] );
-					$fieldAttr .= " value='" . esc_attr( $default_value ) . "' ";
+					$fieldAttr       .= " value='" . esc_attr( $default_value ) . "' ";
 				} else {
 					$fieldAttr .= " autocomplete='off' ";
 				}
@@ -477,8 +491,8 @@ class QSM_Contact_Manager {
 				 * Add minimum length validation
 				 */
 				if ( isset( $field['minlength'] ) && 0 < intval( $field['minlength'] ) ) {
-					$fieldAttr .= " minlength='" . intval( $field['minlength'] ) . "' ";
-					$class .= ' mlwMinLength ';
+					$fieldAttr   .= " minlength='" . intval( $field['minlength'] ) . "' ";
+					$class       .= ' mlwMinLength ';
 				}
 				/**
 				 * Add maximum length validation
@@ -486,15 +500,15 @@ class QSM_Contact_Manager {
 				if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) {
 					$class .= ' mlwMaxLength ';
 				}
-				$class           = apply_filters( 'qsm_contact_number_field_class', $class, $field['use'] );
-				$fieldAttr .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
+				$class       = apply_filters( 'qsm_contact_number_field_class', $class, $field['use'] );
+				$fieldAttr   .= " placeholder='" . esc_attr( wp_strip_all_tags( $field_label ) ) . "' ";
 				?>
 				<span class='mlw_qmn_question qsm_question'><?php echo esc_attr( $field_label ); ?></span>
 				<input type='number' class='mlwRequiredNumber <?php echo esc_attr( $class ); ?>' <?php echo $fieldAttr; ?> <?php if ( isset( $field['maxlength'] ) && 0 < intval( $field['maxlength'] ) ) : ?>maxlength='<?php echo intval( $field['maxlength'] ); ?>' oninput='maxLengthCheck(this)' <?php endif; ?> />
 				<?php
 				break;
 			default:
-				do_action('qsm_extra_contact_filed' ,$fields, $quiz_options);
+				do_action( 'qsm_extra_contact_filed', $fields, $quiz_options );
 				break;
 		}
 	}

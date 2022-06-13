@@ -479,14 +479,14 @@ class MLWQuizMasterNext {
 		foreach ( $GLOBALS['menu'] as $key => $menu ) {
 			$menus_positions[] = floatval( $key );
 		}
-		if ( ! in_array( $start, $menus_positions ) ) {
+		if ( ! in_array( $start, $menus_positions, true ) ) {
 			$start = strval( $start );
 			return $start;
 		} else {
 			$start += $increment;
 		}
 		/* the position is already reserved find the closet one */
-		while ( in_array( $start, $menus_positions ) ) {
+		while ( in_array( $start, $menus_positions, true ) ) {
 			$start += $increment;
 		}
 		$start = strval( $start );
