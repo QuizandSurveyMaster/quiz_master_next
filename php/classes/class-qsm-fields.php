@@ -122,7 +122,6 @@ class QSM_Fields {
 						</li>
 					</ul>
 				</div>
-
 				<div id="qsm_general" class="quiz_style_tab_content">
 					<table class="form-table" style="width: 100%;">
 						<?php
@@ -268,11 +267,13 @@ class QSM_Fields {
 						?>
 					</table>
 				</div>
-			<?php endif;
-			if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
-				<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Set Global Defaults', 'quiz-master-next'); ?></a> |
-			<?php } ?>
-			<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+			<?php endif; ?>
+			<div class="qsm-tab-btns">
+				<button class="button-primary" type="submit"> <?php esc_html_e('Save Changes', 'quiz-master-next'); ?></button>
+				<?php if ( isset($_GET['tab'], $_GET['page']) && 'options' == sanitize_text_field( wp_unslash( $_GET['tab'] ) ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) == 'mlw_quiz_options' ) {?>
+					<a id="qsm-blobal-settings" href="javascript:void(0)" ><?php esc_html_e('Reset to Defaults', 'quiz-master-next'); ?></a>
+				<?php } ?>
+			</div>
 		</form>
 		<?php
   	}

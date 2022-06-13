@@ -487,6 +487,14 @@ var QSMAdmin;
 		e.preventDefault();
 		jQuery('.qsm-help-tab-dropdown-list').toggleClass('opened');
 	} );
+	
+	$( document ).mouseup( function ( e ){
+		var link = $( ".qsm-help-tab-handle" );
+		var container = $( ".qsm-help-tab-dropdown-list" );
+		if ( !link.is( e.target ) && !container.is( e.target ) && container.has( e.target ).length === 0 ) {
+			container.removeClass('opened');
+		}
+	} );
 
 }(jQuery));
 
