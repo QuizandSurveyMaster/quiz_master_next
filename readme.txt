@@ -4,7 +4,7 @@ Tags: quiz, survey, lead, test, score, exam, questionnaire, question,wordpress q
 Requires at least: 4.9
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 7.3.14
+Stable tag: 8.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,8 +116,6 @@ If you like this plugin, consider exploring our other themes and plugins:
 
 ⚡ [InstaWP](https://instawp.io/) - Launch a quick WordPress site with this sandbox service. Create New WordPress instance within a second.
 
-🔒 [Hide My WP](https://hidemywp.net/) - Hide your WordPress from bots, attackers & spammers. Hides all the known URLs, paths, plugins, themes which can reveal that you are using WP, also comes with an in-built firewall & trust network.
-
 == Installation ==
 
 * Navigate to Add New Plugin page within your WordPress
@@ -164,6 +162,33 @@ This is usually a theme conflict. You can [checkout out our common conflict solu
 18. Database
 
 == Changelog ==
+= 8.0 (June 13, 2022) =
+* Bug: Fixed issue with quiz links
+* Bug: Fixed deletion issue with trash quizzes
+* Bug: Fixed issue with randome questions order
+* Bug: Fixed issue with %AMOUNT_INCORRECT% & %AMOUNT_ATTEMPTED% template variables
+* Bug: Fixed issue with random question changing questions order after reload
+* Bug: Fixed issue while updating quiz title
+* Bug: Fixed issue with duplicate question while importing from question bank
+* Bug: Fixed JS issue with polar question type
+* Bug: Fixed PHP warning and errors
+* Bug: Fixed issue with duplicate questions
+* Bug: Fixed issue with same questions in multiple question
+* Bug: Fixed issue with HTML tags in answer text editor
+* Feature: Added option to sort quizzes by modification date
+* Feature: Added option to select correct answer logic
+* Feature: Added option to show and hide Opt-in question type on result page
+* Feature: Added WPML compatibility
+* Feature: Added option to autosave questions when creating new question
+* Feature: Added qsm_results_css_inliner hook to edit email template
+* Feature: Added option to validate contact feilds
+* Enhancement: Added column to show the number of questions
+* Enhancement: Made UI improvements in setting tabs
+* Enhancement: Split options page into sub sections
+* Enhancement: Added an expandable link to view helpful docs
+* Enhancement: Made UI improvements in contact feilds
+* Enhancement: Made UI improvements in questions tab
+
 = 7.3.14 (April 5, 2022) =
 * Bug: Fixed issue with paragraph question type
 * Bug: Fixed issue with qmn_register_my_templates hook
