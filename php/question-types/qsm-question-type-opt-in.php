@@ -38,7 +38,7 @@ function qmn_accept_display( $id, $question, $answers ) {
 }
 
 function qmn_opt_in_review( $id, $question, $answers ) {
-	if ( $_POST[ 'question' . $id ] == 'on' ) {
+	if ( isset( $_POST[ 'question' . $id ] ) && 'on' == sanitize_text_field( wp_unslash( $_POST[ 'question' . $id ] ) ) ) {
 		$user_compare_text = 'opted';
 	} else {
 		$user_compare_text = 'not-opted';

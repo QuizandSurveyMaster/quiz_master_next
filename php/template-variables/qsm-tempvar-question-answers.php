@@ -6,15 +6,15 @@ function qsm_tempvar_qa_text_qt_choice( $total_answers, $answers_from_response, 
 	$optin                     = '';
 	$hide                      = '';
 	foreach ( $total_answers as $single_answer_key => $single_answer ) {
-		if ( $answers_from_response['question_type'] == 8 && $answers_from_response['user_compare_text'] == 'not-opted' ) {
+		if ( 8 == $answers_from_response['question_type'] && 'not-opted' == $answers_from_response['user_compare_text'] ) {
 			$class = 'not-opted';
 		}
-		if ( $answers_from_response['question_type'] == 8 ) {
+		if ( 8 == $answers_from_response['question_type'] ) {
 			$quiz_options  = $mlwQuizMasterNext->quiz_settings->get_quiz_options();
 			$settings_quiz = maybe_unserialize( $quiz_options->quiz_settings );
 			$options_quiz  = maybe_unserialize( $settings_quiz['quiz_options'] );
 			$optin         = $options_quiz['show_optin'];
-			if ( $optin == 0 ) {
+			if ( 0 == $optin ) {
 				$hide = 'hide';
 			}
 		}

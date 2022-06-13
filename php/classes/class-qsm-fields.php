@@ -176,7 +176,7 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php echo __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field
@@ -255,7 +255,7 @@ class QSM_Fields {
 					</table>
 				</div>
 				<div id="text-legacy" class="quiz_style_tab_content" style="display:none">
-					<p><?php echo __( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
+					<p><?php esc_html_e( 'All the legacy options are deprecated and will be removed in upcoming version', 'quiz-master-next' ); ?></p>
 					<table class="form-table" style="width: 100%;">
 						<?php
 						// Cycles through each field

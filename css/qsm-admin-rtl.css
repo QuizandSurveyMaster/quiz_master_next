@@ -1,5 +1,6 @@
 .qsm-help-tab-dropdown-list{transform: translateX(-100%);left: 0;right: auto;}
 .qsm-quiz-nav-bar .qsm-help-tab-dropdown-list a.qsm-help-tab-item{text-align: right;}
+.qsm-quiz-nav-bar .qsm-help-tab-dropdown-list a.qsm-help-tab-item:after{content: '\f340';left: 20px;right:auto;}
 .qsm-toggle-box .toggle-indicator{float: left;}
 .contact-tab-content{margin-right: 0;margin-left: 40px;}
 .contact-tab-content .hide-control{float: left;}
